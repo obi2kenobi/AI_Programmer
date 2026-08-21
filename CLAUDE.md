@@ -131,3 +131,28 @@ When debugging, change one thing at a time and verify the result before making t
 ## 6. Project-Specific Context
 
 These rules are universal and portable across projects. Concrete project context — file roles, commands, per-project conventions — lives in **`PROJECT.md`**. Read it at the start of each session and keep it in sync.
+
+---
+
+## 7. Delegation & Routing
+
+This repo **calls the LLMs**: uniform wrappers in `llm/` let any project, script, or agent delegate
+to any brain with the same gesture (`llm/ask-qwen.sh "..."`, stdin for long context).
+
+### When to delegate — and to whom
+- **Local brain (ask-qwen)**: high-volume, low-risk, verifiable work — digests, drafts, triage,
+  mechanical commesse. Zero marginal cost, data never leaves the Mac. Measured: 3.7-5.9 tok/s idle.
+- **Night shift** (see `night-shift/README.md`): GitHub issues labeled `night-shift` become draft
+  PRs overnight. No time limit per issue (decided 2026-08-21). Issues must be **pre-loaded work
+  orders** (snippets, line numbers, ready greps) — never investigation briefs: three nights proved
+  the local model understands but does not converge when judgment is required.
+- **Cloud brains (ask-opus / ask-glm)**: programmatic pipelines. Otherwise work in direct sessions.
+
+### Never delegate
+- Architectural decisions, investigations, judgment calls — these belong to the day brains.
+- Anything whose verification was not declared **before** the work started (_"Done means proven"_).
+- Secret **values** in any prompt (references by file path only — _"Never expose secrets"_).
+
+### Full method
+`night-shift/README.md` (method, binding rules, measured numbers) and `llm/README.md`
+(decision matrix). System map with every constraint and its provenance: `docs/system.md`.
