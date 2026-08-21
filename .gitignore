@@ -4,3 +4,6 @@ night-shift/repos.conf
 # Cache Python degli strumenti BC
 __pycache__/
 *.pyc
+
+# grafo graphify: artefatto locale
+graphify-out/
