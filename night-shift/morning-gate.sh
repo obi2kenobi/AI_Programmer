@@ -44,7 +44,8 @@ for REPO in "${REPO_LIST[@]}"; do
   DIR="$WORK/${REPO##*/}"
   gh pr list -R "$REPO" --state open --json number,headRefName,title --limit 50 2>/dev/null \
     | jq -c '.[] | select(.headRefName | startswith("night/"))' > /tmp/gate-prs.json
-  N=$(jq 'length' < /tmp/gate-prs.json)
+  # -s (slurp): conta gli elementi dello stream — senza, jq conta le CHIAVI dell'oggetto
+  N=$(jq -s 'length' < /tmp/gate-prs.json); N="${N:-0}"
   echo "## $REPO — $N PR notturne aperte" >> "$REPORT"
   [ "$N" -eq 0 ] && { echo "_Nessuna. Il sistema ha lavorato o non aveva coda._" >> "$REPORT"; echo "" >> "$REPORT"; continue; }
 
@@ -63,10 +64,12 @@ for REPO in "${REPO_LIST[@]}"; do
     echo "**Diff:**" >> "$REPORT"
     git -C "$DIR" diff --stat "origin/main...$BRANCH" >> "$REPORT" 2>/dev/null
 
-    # 1. Verifiche dichiarate
+    # 1. Verifiche dichiarate — lette da origin/main: la dichiarazione è della REPO,
+    #    non del branch della PR (che può essere nato prima della dichiarazione)
     VERDICT="—"
-    if [ -f "$DIR/.night-verify" ]; then
-      echo "**Verifiche dichiarate (.night-verify):**" >> "$REPORT"
+    NIGHT_VERIFY=$(git -C "$DIR" show origin/main:.night-verify 2>/dev/null || true)
+    if [ -n "$NIGHT_VERIFY" ]; then
+      echo "**Verifiche dichiarate (.night-verify, da main):**" >> "$REPORT"
       V_RC=0
       while IFS= read -r cmd; do
         cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
@@ -76,10 +79,10 @@ for REPO in "${REPO_LIST[@]}"; do
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
         fi
-      done < "$DIR/.night-verify"
+      done <<< "$NIGHT_VERIFY"
       [ "$V_RC" -eq 0 ] && VERDICT="verifiche-ok" || VERDICT="verifiche-fallite"
     else
-      echo "**Verifiche dichiarate:** nessun file \`.night-verify\` nella repo — il silenzio non è un verdetto: dichiarale." >> "$REPORT"
+      echo "**Verifiche dichiarate:** nessun file \`.night-verify\` su main — il silenzio non è un verdetto: dichiarale." >> "$REPORT"
       VERDICT="non-dichiarate"
     fi
 
