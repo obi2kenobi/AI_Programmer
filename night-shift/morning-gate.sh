@@ -44,7 +44,7 @@ TOTAL=0 PASS=0 FAIL=0
 
 for REPO in "${REPO_LIST[@]}"; do
   DIR="$WORK/${REPO##*/}"
-  gh pr list -R "$REPO" --state open --json number,headRefName,title --limit 50 2>/dev/null \
+  gh pr list -R "$REPO" --state open --json number,headRefName,title,mergeable --limit 50 2>/dev/null \
     | jq -c '.[] | select(.headRefName | test("^night/|^claude/"))' > /tmp/gate-prs.json
   # -s (slurp): conta gli elementi dello stream — senza, jq conta le CHIAVI dell'oggetto
   N=$(jq -s 'length' < /tmp/gate-prs.json); N="${N:-0}"
@@ -63,11 +63,16 @@ for REPO in "${REPO_LIST[@]}"; do
     NUM=$(echo "$row" | jq -r '.number')
     BRANCH=$(echo "$row" | jq -r '.headRefName')
     TITLE=$(echo "$row" | jq -r '.title')
+    MERGEABLE=$(echo "$row" | jq -r '.mergeable')
     ISSUE_NUM="${BRANCH#night/issue-}"
     TOTAL=$((TOTAL+1))
     echo "" >> "$REPORT"
     echo "### PR #$NUM — $TITLE (\`$BRANCH\`)" >> "$REPORT"
-    git -C "$DIR" checkout -q "$BRANCH" 2>/dev/null || git -C "$DIR" checkout -q -b "$BRANCH" "origin/$BRANCH"
+    # Giro 8 dei test 2026-08-21 (night-shift-pilot): due PR gemelle passavano le verifiche
+    # ciascuna sul proprio branch mentre erano in conflitto reale tra loro — il gate non lo
+    # segnalava mai, lo scopriva solo chi provava a mergere. Il silenzio non è un verdetto qui
+    # come altrove in questo script: se GitHub la segna CONFLICTING, lo diciamo prima del resto.
+    [ "$MERGEABLE" = "CONFLICTING" ] && echo "⛔ **Non mergeable: conflitto con \`$DB\` — risolvere prima di leggere il resto di questa sezione.**" >> "$REPORT"
     echo "**Diff:**" >> "$REPORT"
     git -C "$DIR" diff --stat "origin/$DB...$BRANCH" >> "$REPORT" 2>/dev/null
 

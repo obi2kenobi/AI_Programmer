@@ -43,3 +43,9 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-21 | `morning-gate.sh:157` propone, su verifica fallita, un `gh issue create` correttivo il cui `--body` dice solo "Dettagli nel report locale del gate" — ma quel report è un file LOCALE alla macchina che ha eseguito il gate. Verificato leggendo il flusso: l'output vero del fallimento (righe 84-88, il `tail -3` del comando fallito) esiste già nello stesso `$REPORT`, ma non viene copiato nella issue correttiva — chi lavora quella issue da un'altra macchina o sessione (incluso il caso cloud/ibrido già noto) non ha modo di leggere il report citato. Non corretto qui: cambia il contenuto di una issue pubblica con l'output di un comando (potrebbe contenere path o dati locali) — richiede una scelta di cosa è sicuro incollare, non solo "incollare tutto" | decisione di design (cosa dell'output è sicuro copiare in una issue pubblica) — richiede il sì di Luca | quando si decide se/come portare l'estratto del fallimento (non l'intero report) dentro il body della issue correttiva |
+
+## Dal Giro 8 dei "10 giri extra" (2026-08-21, notte)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-21 | `morning-gate.sh` ora chiede `mergeable` a `gh pr list` e segnala `⛔ Non mergeable` nel report (fix applicato per il buco trovato al Giro 8: due PR gemelle in conflitto reale, il gate non lo diceva mai). Il campo è quello documentato nello schema `gh pr list --json` (MERGEABLE/CONFLICTING/UNKNOWN), non inventato, e `bash -n` passa — ma non eseguito dal vivo contro un `gh` autenticato, perché questa sessione non ne ha uno | nessun `gh` CLI autenticato disponibile in questa sessione cloud | primo giro reale del morning-gate sul Mac dopo questa PR — verificare che la riga compaia per una PR davvero in conflitto |
