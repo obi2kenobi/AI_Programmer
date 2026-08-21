@@ -57,7 +57,10 @@ della prosa della commessa:
   Bilancio_di_Massa_PEFC issue #11). Se la commessa dice "il dato è già in `X`", apri `X` e
   conta i campi — non assumere che "già presenti" significhi "nello stesso oggetto".
 - **Gli endpoint OData hanno buchi noti**: niente OR annidati su certi filtri (torna HTTP 501
-  — visto in `Cache.gs` di Bilancio_di_Massa_PEFC), paginazione con `@odata.nextLink` da non
+  — il dettaglio "HTTP 501" è in `SAL.md:235-236` di Bilancio_di_Massa_PEFC, non in
+  `Cache.gs`: il codice lì (riga 14) dice solo "non supporta filtri complessi", senza lo
+  status code — citazione corretta al Giro 11/12 dei test 2026-08-21, prima diceva solo
+  "Cache.gs" e l'ancora non c'era per quel dettaglio specifico), paginazione con `@odata.nextLink` da non
   dimenticare. Se la commessa descrive un filtro complesso, verifica che l'endpoint citato lo
   supporti davvero, non che "dovrebbe".
 - **Il catalogo endpoint è la fonte di verità sui campi**, non la memoria di chi scrive la
