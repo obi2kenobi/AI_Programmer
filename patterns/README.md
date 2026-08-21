@@ -30,3 +30,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [segreto-come-impronta](segreto-come-impronta.md) | AI_Develop: tools/maschera-segreti.js:mascheraSegreti | 2026-08-11 |
 | [soglia-con-provenienza](soglia-con-provenienza.md) | AI_Develop: tools/soglie.js:derive | 2026-08-07 |
 | [banco-sintetico-per-calcoli-critici](banco-sintetico-per-calcoli-critici.md) | Bilancio_periodico: tools/test-sp.js · gas/Sp.js:366 | 2026-08-21 |
+| [scarto-mai-silenzioso](scarto-mai-silenzioso.md) | progetto onboardato: Extractor.gs:applicaVincoliRange_ | 2026-08-21 |
+| [stato-vuoto-dalla-pipeline](stato-vuoto-dalla-pipeline.md) | progetto onboardato: WebApp.gs:aggregaPerDashboard_ | 2026-08-21 |
