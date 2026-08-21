@@ -596,3 +596,34 @@ il resto. Verificato: `bash -n` passa; **non eseguito dal vivo contro `gh pr lis
 (nessun `gh` autenticato in questa sessione) — il campo `mergeable` è documentato
 nello schema `gh pr list --json`, non inventato, ma la prova end-to-end resta da fare
 sul Mac.
+
+### 2026-08-21, notte (14) — Giro 9: gate-esito.sh su dati VERI, non su un test giocattolo
+
+I tre casi che il primo test di `gate-esito.sh` aveva confermato (formato nuovo,
+formato storico, doppia registrazione respinta) erano su un CSV sintetico minimale.
+Giro 9: stesso script, ma testato su una COPIA di lavoro del vero `metrics/gate.csv`
+(mai toccato l'originale — verificato con `git diff`, vuoto). Quel file reale ha una
+forma che un test giocattolo non riproduce: 5 righe storiche a 6 campi PIÙ 2 righe
+nuove a 7 campi vuote, tutte per lo STESSO repo+PR (`AI_Develop #369`), impilate da
+notti diverse prima che qualcuno registrasse un esito.
+
+**Trovato un bug reale, non ipotetico.** Prima chiamata (`gate-esito.sh ... 369
+merge`): corretta, scrive sull'ULTIMA riga pendente (riga 9) — esattamente il
+comportamento dichiarato. **Seconda chiamata identica, stesso comando**: doveva
+essere respinta ("esito già registrato") e invece ha scritto di nuovo, esito
+"registrato" su una riga DIVERSA e più vecchia (riga 7, anch'essa a 7 campi ma
+ancora vuota) — lo stesso evento reale (un merge) finirebbe duplicato su due righe
+del CSV, gonfiando le metriche aggregate di `gate-summary.sh`. Riprodotto due volte
+di seguito, stesso esito.
+
+**Causa verificata leggendo il codice**: lo script cerca "l'ultima riga pendente"
+ad ogni chiamata, non "esiste già un esito per questo repo+PR in una qualunque
+riga" — quindi se più righe pendenti si sono accumulate nel tempo (realistico: la
+notte scrive una riga nuova a ogni gate, un PR può restare aperto su più notti),
+una seconda chiamata trova sempre un'altra vittima. **Non corretto qui**: la
+soluzione ovvia ("respingi se un esito esiste già per questo repo+PR") romperebbe
+il caso legittimo opposto — un PR con esito `commessa` che poi, dopo la correzione,
+riceve una riga nuova con esito `merge` in una notte successiva. Distinguere i due
+casi (doppia registrazione per errore vs. secondo esito legittimo su un ciclo
+correttivo) è una decisione di design sul significato di "esito", non un fix
+meccanico — voce in DEBITI.md con la riproduzione esatta, per il sì di Luca.
