@@ -66,3 +66,18 @@ alle 23:00 (LaunchAgent). Il Mac: alimentatore, coperchio aperto, app pesanti ch
 - [ ] Il diff tocca SOLO ciò che l'issue chiedeva
 - [ ] Il banco avversariale non ha prodotto smentite valide
 - [ ] I valori attesi nei test non sono stati «adattati» per farli passare
+
+## La commessa si costruis col grafo (dal 2026-08-21)
+
+Il collo di bottiglia misurato dell'agente notturno è LEGGERE file (issue #363: 4.300 righe a
+chunk di 80). Da oggi due regole:
+
+1. **Il cervello di giorno costruisce la commessa interrogando il grafo**: `graphify query
+   "<dove sta X>"` → file:riga esatti da incollare nell'issue. La commessa precaricata diventa
+   chirurgica perché la navigazione è già fatta.
+2. **L'agente notturno naviga col grafo, non legge**: la skill graphify (`.opencode/skills/`,
+   installata con `graphify install --platform opencode --project`) insegna il fast-path —
+   se `graphify-out/graph.json` esiste, si interroga prima di leggere.
+
+Grafi da costruire: `graphify extract . --code-only` (deterministico, 0 LLM, 0 token).
+Versione pinata 0.9.48; regole del grafo nel SAL (orientarsi sì, oracolo no; `calls` non risolti).

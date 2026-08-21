@@ -156,3 +156,11 @@ to any brain with the same gesture (`llm/ask-qwen.sh "..."`, stdin for long cont
 ### Full method
 `night-shift/README.md` (method, binding rules, measured numbers) and `llm/README.md`
 (decision matrix). System map with every constraint and its provenance: `docs/system.md`.
+
+### Navigation before reading (graphify, from 2026-08-21)
+Before paging through files to locate code, query the graph: `graphify query "<question>"`
+returns a deterministic subgraph with exact `file:L` references (build with
+`graphify extract . --code-only` if `graphify-out/graph.json` is missing). The local brain at
+~4 tok/s must never pay the read-everything tax — and neither should you. Trust the graph for
+orientation and location; never as an oracle for call semantics (`calls` edges are unresolved —
+lesson paid by AI_Develop on 2026-08-08).

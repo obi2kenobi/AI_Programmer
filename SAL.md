@@ -43,3 +43,24 @@ Regola che ne esce, già implicita nel turno notturno e ora estesa a tutto il si
 legge le dichiarazioni da `origin/main`, mai dal branch della PR (il branch può essere nato
 prima della dichiarazione). Primo giro completo del giudice: PR #369 → verifiche dichiarate
 ✅ (test-motore 2005/0) → banco avversariale con proposta di smentita → metrica registrata.
+
+### 2026-08-21, pomeriggio — graphify entra nel sistema come strato di navigazione
+
+Il fatto che lo impone: l'agente notturno consuma la notte leggendo file (il collo di bottiglia
+misurato sull'issue #363). `graphify query` restituisce un sottografo deterministico con file e
+riga esatti — verificato dal vivo sul hub: «avvio del server ollama» → `ensure_server()` a
+`night-shift.sh:L45` con l'intorno di chiamate, in una interrogazione.
+
+**Versione pinata: 0.9.48** (trovata installata la 0.8.50 — vecchia). Lezione di AI_Develop
+importata: lo schema cambia fra minor (0.8→0.9.36 ha rotto tre tool contemporaneamente) —
+aggiornare solo a versioni verificate e stampare la versione sugli artefatti.
+
+**Le tre regole del grafo** (tutte pagate da AI_Develop, le adottiamo):
+1. il grafo serve per ORIENTARSI e TROVARE (file:riga), non come oracolo
+2. gli edge `calls` non sono risolti: non farci conto (grafo-findings.js li evita da mesi)
+3. verificare-il-grafo, non fidarsi (template: grafo-verifica.js — oracolo indipendente + fail)
+
+Completato anche il riuso Wayfinder: endpoint Anthropic-inbound verificato → nasce
+`llm/claude-local.sh` (Claude Code come harness sul locale); `connect claude` non automatizzato
+in questa build, ricetta manuale documentata in `router/README.md`. Route nominate: SPERIMENTALI
+(instradano ma rispondono vuoto nel test). Privacy posture documentata come leva per i dati BC.
