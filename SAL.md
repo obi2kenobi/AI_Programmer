@@ -795,3 +795,16 @@ Nota onesta riportata nel pattern stesso: la logica del click è stata provata c
 *simulato* su un punto scatter non ha affidabilmente centrato l'hit-test pixel della
 libreria — l'ultimo miglio di automazione non è la stessa cosa della logica sottostante,
 e va detto quando succede, non nascosto sotto un "verificato" generico.
+
+### 2026-08-21 — Giro 3 sullo stesso progetto onboardato: un addendum, non un pattern nuovo
+
+Giro 3 (nuova funzionalità, dichiarata da tempo nella roadmap del progetto). Il primo tentativo
+di banco Node/vm per la nuova logica è fallito — non per un bug nel codice testato, ma perché le
+date sintetiche del banco erano costruite con `new Date(...)` dell'host, mentre il codice testato
+gira in un contesto `vm` con una REALM diversa: `instanceof Date` fallisce silenziosamente tra
+realm diverse anche per due date "identiche" nel valore. Non un pattern nuovo — un caso specifico
+di `banco-sintetico-per-calcoli-critici` (già esistente) che vale la pena scrivere PERCHÉ chi
+userà il banco-sintetico su un codice che usa `instanceof Date`/`Array` ci sbatterà contro
+inevitabilmente e leggerà il fallimento come un bug nel codice, non nel banco. **Aggiunto un
+addendum al pattern esistente**, non una nuova voce nel registro — non tutto quello che si impara
+merita un pattern a sé; a volte è solo un caso in più dello stesso.
