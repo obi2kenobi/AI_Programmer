@@ -35,18 +35,34 @@ with io.open(csv, encoding="utf-8") as f:
     righe = f.read().splitlines()
 
 target = f"{repo},#{pr},"
-idx = None
-for i, r in enumerate(righe):
-    if target not in r:
-        continue
-    campi = r.split(",")
+righe_target = [i for i, r in enumerate(righe) if target in r]
+if not righe_target:
+    print(f"nessuna riga per {repo} #{pr}", file=sys.stderr); sys.exit(1)
+
+idx = None          # ultima riga ancora pendente (senza esito)
+ultimo_esito = None # ultimo esito già scritto per questo repo+pr, in ordine di file
+
+for i in righe_target:
+    campi = righe[i].split(",")
     if len(campi) == 6 or (len(campi) >= 7 and campi[6] == ""):
         idx = i  # continua: l'ULTIMA riga corrispondente ancora senza esito
+    elif len(campi) >= 7 and campi[6] != "":
+        ultimo_esito = campi[6]  # continua: l'ultimo esito visto, in ordine di file
+
+# Bug trovato al Giro 9 dei test 2026-08-21: con più righe pendenti per lo stesso
+# repo+PR (realistico — più notti sullo stesso PR aperto), una doppia chiamata
+# scriveva l'esito due volte su righe diverse invece di respingere la seconda.
+# Fix: un esito TERMINALE (merge/chiusura) chiude la questione per sempre — nessuna
+# riga pendente più vecchia va toccata dopo. "commessa" non è terminale: un ciclo
+# correttivo può legittimamente produrre più avanti una riga nuova con un esito
+# successivo (es. commessa → poi merge dopo la correzione), quindi non blocca.
+if ultimo_esito in ("merge", "chiusura"):
+    print(f"esito già registrato per {repo} #{pr} ({ultimo_esito}, stato finale)", file=sys.stderr)
+    sys.exit(1)
 
 if idx is None:
-    if not any(target in r for r in righe):
-        print(f"nessuna riga per {repo} #{pr}", file=sys.stderr); sys.exit(1)
-    print(f"esito già registrato per {repo} #{pr}", file=sys.stderr); sys.exit(1)
+    print(f"nessuna riga in attesa di esito per {repo} #{pr}", file=sys.stderr)
+    sys.exit(1)
 
 campi = righe[idx].split(",")
 # formato storico a 6 campi: manca la colonna, si aggiunge con la sua virgola.

@@ -673,3 +673,29 @@ imprecisa esattamente nel modo che il pattern `citazione-non-presidio` avverte:
 un'ancora che esiste ma non per il fatto specifico che le si attribuisce non è
 una salvaguardia vera. **Corretto**: la citazione ora punta a entrambe le fonti,
 distinguendo cosa dice il codice da cosa dice il diario del progetto.
+
+### 2026-08-21, notte (17) — le due correzioni in sospeso, eseguite col sì di Luca
+
+Luca ha detto "esegui le correzioni" — le due voci DEBITI dei Giri 6 e 9 che
+aspettavano una decisione di design. Entrambe saldate, entrambe riprovate dal vivo:
+
+- **`gate-esito.sh` (Giro 9)**: semantica scelta — un esito TERMINALE (`merge`,
+  `chiusura`) chiude repo+PR per sempre; `commessa` no. Riprodotto lo STESSO bug
+  esatto sulla stessa copia del vero `metrics/gate.csv` (mai l'originale): la
+  doppia chiamata ora è respinta. Costruito anche il caso legittimo che il fix
+  doveva salvare — `commessa` su una riga, poi `merge` su una riga successiva —
+  e verificato che riesce, seguito da un terzo tentativo correttamente respinto.
+  Ririprovati i 3 casi originari (storico/nuovo/doppia registrazione): ancora
+  tutti corretti.
+- **`morning-gate.sh` (Giro 6)**: la issue correttiva ora porta un estratto vero
+  del fallimento (`FAIL_DETAIL`: le ultime righe della verifica o del banco
+  falliti), incorporato con un heredoc quotato (`$(cat <<'GATE_EOF' ... GATE_EOF)`)
+  invece dell'interpolazione diretta in una stringa fra virgolette. **Provato dal
+  vivo, non solo letto**: costruito un `FAIL_DETAIL` avversariale con backtick,
+  `$(whoami)`, `$HOME`, generato il comando suggerito, eseguito contro un `gh`
+  finto — ogni carattere arriva come testo letterale nell'argomento `--body`,
+  nessuna espansione, nessuna esecuzione indesiderata.
+
+`bash -n` passa su entrambi gli script; `shellcheck` non installato in questa
+sessione (annotato, non finto). L'esecuzione end-to-end contro un `gh` autenticato
+vero resta al primo gate reale sul Mac dopo questa PR — dichiarato in DEBITI.md.

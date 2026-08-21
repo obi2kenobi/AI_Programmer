@@ -80,6 +80,7 @@ for REPO in "${REPO_LIST[@]}"; do
     #    non del branch della PR (che può essere nato prima della dichiarazione)
     VERDICT="—"
     NIGHT_VERIFY=$(git -C "$DIR" show "origin/$DB:.night-verify" 2>/dev/null || true)
+    FAIL_DETAIL=""  # Giro 6 dei test 2026-08-21: l'estratto del fallimento, per la issue correttiva
     if [ -n "$NIGHT_VERIFY" ]; then
       echo "**Verifiche dichiarate (.night-verify, da main):**" >> "$REPORT"
       V_RC=0
@@ -90,6 +91,7 @@ for REPO in "${REPO_LIST[@]}"; do
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
+          FAIL_DETAIL="$FAIL_DETAIL"$'\n'"- \`$cmd\`:"$'\n'"$(echo "$OUT" | tail -8)"
         fi
       done <<< "$NIGHT_VERIFY"
       [ "$V_RC" -eq 0 ] && VERDICT="verifiche-ok" || VERDICT="verifiche-fallite"
@@ -133,6 +135,7 @@ $DIFF_TXT"
           else
             echo "- esito: **SMENTITA** (exit $BRC) — ${OUT_TAIL:-(nessun output)}" >> "$REPORT"
             BANCO="eseguito:smentita"
+            FAIL_DETAIL="$FAIL_DETAIL"$'\n'"- banco avversariale, comando \`$CMD\`:"$'\n'"$OUT_TAIL"
           fi
           # l'avversario non lascia tracce nella copia di lavoro
           git -C "$DIR" checkout -q -- . 2>/dev/null; git -C "$DIR" clean -fdq 2>/dev/null
@@ -156,10 +159,24 @@ ${DIFF_TXT}"
     echo "$(date '+%Y-%m-%d'),$REPO,#$NUM,#$ISSUE_NUM,$VERDICT,$BANCO," >> "$HUB_METRICS"
 
     if [ "$VERDICT" = "verifiche-fallite" ] || [ "$BANCO" = "eseguito:smentita" ]; then
+      # Giro 6 dei test 2026-08-21: prima diceva solo "Dettagli nel report locale del
+      # gate" — irraggiungibile da chi lavora la issue correttiva altrove. Ora l'estratto
+      # vero del fallimento entra nel body, via heredoc quotato ('GATE_EOF'): al riparo da
+      # backtick/virgolette/$ che l'output di un comando qualunque potrebbe contenere.
       echo "" >> "$REPORT"
       echo "> ⛔ **Proposta correttiva** (il correttore — da approvare):" >> "$REPORT"
       echo "> \`\`\`bash" >> "$REPORT"
-      echo "gh issue create -R $REPO --label night-shift --title \"correzione: PR #$NUM — verifiche o banco avversario falliti\" --body \"La PR #$NUM non supera il gate del mattino (verifiche: $VERDICT, banco: $BANCO). Correggere quanto serve senza ampliare lo scope. Dettagli nel report locale del gate.\"" >> "$REPORT"
+      echo "gh issue create -R $REPO --label night-shift --title \"correzione: PR #$NUM — verifiche o banco avversario falliti\" --body \"\$(cat <<'GATE_EOF'" >> "$REPORT"
+      echo "La PR #$NUM non supera il gate del mattino (verifiche: $VERDICT, banco: $BANCO)." >> "$REPORT"
+      if [ -n "$FAIL_DETAIL" ]; then
+        echo "" >> "$REPORT"
+        echo "Dettaglio del fallimento:" >> "$REPORT"
+        echo "$FAIL_DETAIL" >> "$REPORT"
+      fi
+      echo "" >> "$REPORT"
+      echo "Correggere quanto serve senza ampliare lo scope." >> "$REPORT"
+      echo "GATE_EOF" >> "$REPORT"
+      echo ")\"" >> "$REPORT"
       echo "\`\`\`" >> "$REPORT"
     fi
   done < <(jq -c '.' /tmp/gate-prs.json)
