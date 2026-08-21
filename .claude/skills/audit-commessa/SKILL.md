@@ -27,7 +27,13 @@ l'utente non specifica quali, prendi tutte le `night-shift` open del repo indica
    2026-08-21: "fermati e dillo" non specificava a chi/dove — un commento sull'issue rende
    la scoperta visibile a chi la possiede, non solo alla sessione che ha auditato).
 2. **Estrai ogni claim verificabile**: nomi di variabili/funzioni citati, forma di un oggetto
-   dati, "dove vive" un dato, colonne/campi che la commessa assume esistano.
+   dati, "dove vive" un dato, colonne/campi che la commessa assume esistano — E ogni
+   **convenzione di dominio** presentata come fatto (es. "il prefisso X significa Y",
+   "i clienti con pattern Z sono..."). Se esiste `docs/GRAMMATICA_DOMINIO.md`, verificaci
+   la convenzione PRIMA di crederla: una riga assente o marcata `⏳ da confermare` significa
+   che la commessa tratta un'ipotesi come un fatto (trovato al Giro 5 dei test 2026-08-21:
+   una convenzione inventata sul prefisso articolo avrebbe svuotato il 100% di un report
+   reale — verificato eseguendo il filtro sui dati, non presumendo).
 3. **Apri il file vero e verifica.** Non fidarti del nome che "suona giusto": leggi la
    funzione citata, conta i campi, esegui uno snippet quando è più veloce che leggere
    (`node -e`, un test sintetico — pattern `esegui-non-leggere`). Se il progetto ha un banco

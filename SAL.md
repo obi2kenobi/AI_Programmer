@@ -516,3 +516,18 @@ un'audit sprecata su una commessa che la notte salterebbe comunque.
 DOVE — ambiguo tra "dillo alla sessione che chiama" e "dillo sulla issue". Ho deciso per
 un commento sull'issue (visibile a chi la possiede, non solo in chat) e ho chiarito la
 SKILL.md di conseguenza, così le prossime invocazioni non debbano decidere da capo.
+
+### 2026-08-21, notte (10) — Giro 5: una convenzione di dominio inventata, non confermata
+
+Issue #15: "i codici `ART-` sono articoli di test, esclusi dai report" — convenzione
+scritta come fatto, MAI confermata. Verificato: `docs/GRAMMATICA_DOMINIO.md` non la
+cita, e la sua stessa regola dice che una riga senza fonte è un'ipotesi. Eseguito
+l'impatto reale sul mock: il filtro avrebbe escluso 6/6 righe (tutti gli articoli
+mock sono `ART-*`) — uno svuotamento totale di qualunque report, non un dettaglio.
+Corretta l'issue, commessa sospesa (nessuna implementazione: una scelta di dominio con
+impatto non si decide da sé).
+
+**Correzione applicata al master**: il metodo di `audit-commessa` (§1.2) verificava
+solo claim su forma-dati/campi, non convenzioni di dominio presentate come fatto —
+aggiunto un passo esplicito che impone il controllo su `GRAMMATICA_DOMINIO.md` anche
+per questo tipo di claim, con la prova di questo giro come esempio ancorato.
