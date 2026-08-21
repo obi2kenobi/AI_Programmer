@@ -105,3 +105,33 @@ autovaluta) — il **comando /goal** per i loop diurni (verifica dichiarata, tet
 log in `loops/`, avversario prima della vittoria), e la **tensione dichiarata**: notte senza
 limite di tempo vs /goal sempre col tetto — commessa lunga unica vs ottimizzazione iterativa,
 entrambe giuste nel loro contesto.
+
+### 2026-08-21, pomeriggio tardi — ponytail e superpowers: il delta, non il catechismo
+
+Due framework entrano nel sistema lo stesso giorno, con lo stesso criterio: si adotta ciò che
+il metodo NON ha già.
+
+**Ponytail** (107k ⭐, MIT; ~54% meno codice nei benchmark — ricalibrati dopo la contestazione
+della community, onestà metodologica che ci è piaciuta): la scala a sette pioli entra in §2
+come PROCEDURA del "zero waste" (*serve? → riusa → stdlib → nativo → dipendenza esistente →
+una riga → il minimo*), dopo la lettura mai prima. Plugin installato su **OpenCode** (la notte
+scrive minimale: a 4 tok/s meno output = notte più veloce — l'ottimizzazione più economica
+misurata finora, batte DFlash che era una regressione) e su **Claude Code**. Nasce
+**DEBITI.md** (da /ponytail-debt: le scorciatoie rimandate si scrivono). Il gate passa a
+**tre controlli**: verifiche dichiarate + banco avversariale ESECUTORE (velocizzato: via
+thinking dalla generazione — il test lo teneva 25 minuti) + verifica di MINIMITÀ consultiva
+(livello 4, delete-list in stile /ponytail-review; bloccante solo quando le metriche lo
+giustificheranno).
+
+**Superpowers** (275k ⭐, MIT, 476k installazioni, Jesse Vincent): mappatura onesta prima di
+adottare — TDD rigoroso = il nostro banco-scritto-prima; debugging 4 fasi ≈ §5; review agent
+= il gate. Il delta vero che entra: il **guardrail tre-strike in §5** (dopo tre fix falliti si
+ferma TUTTO e si rivede l'architettura: il difetto non è dove si crede) e **/brainstorming per
+ZCode** (disciplina socratica, una domanda per ciclo, convergenza su formulazione verificabile
+→ /goal o commessa). Plugin installato su Claude Code dal marketplace ufficiale.
+
+**Cosa NON adottiamo** (economia del metodo, ragioni scritte): subagent-dev-review (c'è il
+gate), skill-writing TDD (c'è skill-creator), execute-plan a blocchi (le sessioni lo fanno
+nativamente), ponytail-ultra e ponytail-mcp (non misurati sul modello locale).
+
+Il flusso giorno-perfetto che ne esce, documentato: **/brainstorming → /goal → (notte) → gate**.

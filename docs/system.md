@@ -88,3 +88,12 @@ log di ogni tentativo in `loops/`). Tensione dichiarata e voluta: la notte non h
 tempo (decisione del 2026-08-21, guardia = review del mattino); i loop `/goal` diurni hanno
 sempre un tetto — commessa unica e lunga vs ottimizzazione iterativa: contesti diversi,
 regole diverse, entrambe giuste.
+
+## Plugin adottati nel tessuto (2026-08-21)
+
+| Plugin | Dove | Cosa porta | Cosa NON abbiamo preso |
+|---|---|---|---|
+| **ponytail** (107k ⭐) | OpenCode (notte) + Claude Code | scala minimale in §2, notte minimalista, DEBITI.md, minimità nel gate | ultra, mcp |
+| **superpowers** (275k ⭐) | Claude Code | guardrail tre-strike §5, /brainstorming ZCode | subagent-review, execute-plan, skill-writing |
+
+Flusso giorno: **/brainstorming → /goal → (notte minimalista) → gate a tre controlli**.
