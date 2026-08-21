@@ -11,15 +11,25 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 gh auth status >/dev/null 2>&1 || { echo "gh non autenticato"; exit 1; }
 gh repo view "$REPO" >/dev/null 2>&1 || { echo "repo non trovata: $REPO"; exit 1; }
 
-# SECRET-SCAN (review §4.3): prima di toccare una repo esistente, guardare cosa contiene
-command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source "$WORK" --no-banner 2>&1 | tail -1; } || echo "(gitleaks assente: secret-scan saltato)"
-
+# SECRET-SCAN (review §4.3): DOPO il clone, PRIMA di toccare la repo. I tre casi sono
+# distinti e detti chiaramente (finding del test PEFC 2026-08-21: prima stava prima del
+# clone e un errore veniva riportato come "gitleaks assente" — tre bug in uno)
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$REPO" >/dev/null 2>&1 \
   && echo "label night-shift creata" || echo "label già presente"
 
-# .night-verify: lo crea solo se assente (mai sovrascrivere ciò che la repo dichiara)
 WORK="$HOME/night-shift-work/${REPO##*/}"
 [ -d "$WORK/.git" ] || gh repo clone "$REPO" "$WORK" -- --depth=50 -q
+
+if command -v gitleaks >/dev/null 2>&1; then
+  if gitleaks detect --source "$WORK" --no-banner >/dev/null 2>&1; then
+    echo "secret-scan: pulito"
+  else
+    echo "⛔ gitleaks ha trovato segreti nella repo — risolverli PRIMA di continuare (procedura: mirror + filter-repo, vedi SAL 2026-08-21)"
+    exit 1
+  fi
+else
+  echo "⚠ gitleaks NON INSTALLATO (brew install gitleaks): secret-scan saltato — installalo e riesegui"
+fi
 if [ ! -f "$WORK/.night-verify" ]; then
   cat > "$WORK/.night-verify" <<'EOF'
 # Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate).
