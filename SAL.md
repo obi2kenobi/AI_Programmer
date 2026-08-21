@@ -531,3 +531,26 @@ impatto non si decide da sé).
 solo claim su forma-dati/campi, non convenzioni di dominio presentate come fatto —
 aggiunto un passo esplicito che impone il controllo su `GRAMMATICA_DOMINIO.md` anche
 per questo tipo di claim, con la prova di questo giro come esempio ancorato.
+
+### 2026-08-21, notte (11) — Giro 6: una regressione vera, e cosa fa davvero il gate
+
+Issue #16: cambiare l'ordinamento di `fatturatoPerClienteArticolo` (per cliente invece
+che per importo) — richiesta plausibile, non un errore evidente. Implementata da sola:
+`npm test` → 11/12, 1 fallito (l'ordine atteso dal test esistente). Verificato che
+nessun altro consumatore dipendesse da quell'ordine, poi corretto il test al nuovo
+contratto — non disattivato. 12/12, PR #17 mersa.
+
+**Verifica di un fatto sul sistema, non presunto**: sono andato a leggere cosa fa
+DAVVERO `morning-gate.sh` su una verifica fallita (non l'ho mai eseguito dal vivo prima
+d'ora in questo modo): non merge mai da solo — scrive un verdetto `verifiche-fallite`
+sempre visibile nel riepilogo finale, e propone (testo, non eseguito) un comando
+`gh issue create` correttivo "da approvare". Design corretto: nessun merge automatico,
+umano sempre nel loop.
+
+**Correzione applicata al master**: quel comando correttivo propone un body che dice
+solo "Dettagli nel report locale del gate" — ma il report è un file sul Mac che ha
+eseguito il gate, irraggiungibile da chi lavorerà la issue correttiva altrove (stesso
+tipo di buco già noto per il percorso cloud/ibrido). L'output vero del fallimento
+esiste già nello stesso report, solo non viene copiato nella issue. Voce in DEBITI.md:
+non corretto il codice (decidere cosa dell'output è sicuro incollare in una issue
+pubblica è una scelta di Luca, non mia).
