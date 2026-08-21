@@ -411,3 +411,33 @@ chiedere il via libera al merge più spesso del normale.
 **Gap onesto confermato due volte**: il banco avversariale resta non eseguibile da una
 sessione cloud (nessun cervello locale/Opus raggiungibile) — segnalato in entrambe le PR,
 non finto.
+
+### 2026-08-21, notte (6) — Giro 1 dei "3 giri con test autonomi": audit-commessa alla prova
+
+Luca ha chiesto almeno 3 giri autonomi (test + sviluppo), ognuno con un'analisi sincera e
+una correzione al progetto master. Giro 1: stress-test deliberato di `audit-commessa` — ho
+scritto io stesso l'issue #8 di `night-shift-pilot` con un'affermazione sulla forma dei dati
+FALSA ma plausibile ("il dato per-cliente è già disponibile in `riepilogoFatturato`"),
+apposta senza verificarla, per vedere se la skill la cattura prima che diventi codice.
+
+**Esito sul contenuto: la skill ha funzionato.** Applicata come da manuale (§1.3: eseguire,
+non leggere), ha smascherato la falsità con un `node -e` reale su `src/fatturato.js`:
+`riepilogoFatturato` costruisce una mappa `perCliente` completa ma la scarta, restituendo
+solo `clienteTop` (un vincitore, non l'elenco) — esattamente il pattern "aggregazione
+riassuntiva ≠ dettaglio completo" già pagato su Bilancio_di_Massa_PEFC #11 e scritto nella
+lente BC della skill. Corretta l'issue #8 con `## Forma dei dati (verificata sul codice)` e
+la correzione concreta per chi implementerà la commessa.
+
+**Esito sul processo, non richiesto ma trovato per strada — questo è il vincolo reale**:
+invocare `audit-commessa` è FALLITO due volte di seguito ("Unknown skill: audit-commessa")
+mentre ero sul branch corretto (`claude/nuovi-ruoli-audit`, PR #8 non ancora mersa) con il
+file `.claude/skills/audit-commessa/SKILL.md` confermato presente su disco — poi ha
+funzionato al tentativo successivo, senza che io avessi fatto altro che passare un turno.
+La causa più probabile: l'elenco delle skill disponibili per la sessione non si aggiorna in
+modo sincrono al `git checkout`, ma con un ritardo di durata non garantita. **Questo è un
+difetto operativo reale**: una skill che vive solo su un branch/PR non mersa è, per questo
+motivo, invocabile in modo inaffidabile nella stessa sessione — non un problema della skill
+in sé, ma del momento in cui viene provata. Correzione applicata al master: voce in
+DEBITI.md che raccomanda di non concludere "skill assente" al primo fallimento quando il
+file esiste sul branch giusto, e di preferire il merge delle PR che introducono skill non
+appena il contenuto è verificato, proprio per non pagare due volte questo ritardo.
