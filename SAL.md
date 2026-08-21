@@ -135,3 +135,41 @@ gate), skill-writing TDD (c'è skill-creator), execute-plan a blocchi (le sessio
 nativamente), ponytail-ultra e ponytail-mcp (non misurati sul modello locale).
 
 Il flusso giorno-perfetto che ne esce, documentato: **/brainstorming → /goal → (notte) → gate**.
+
+### 2026-08-21, sera — la review di Opus applicata: ogni punto verificato sul codice, poi corretto
+
+Review esterna del hub (sessione Claude Code, branch di analisi) con mandato esplicito di
+riverificare ogni punto prima di toccare nulla — fatto, e il report era accurato al 100% su
+quanto verificabile. Cosa è stato corretto, con la prova:
+
+**Bug §2.1 (confermato: header a 7 colonne, righe a 6):** il CSV ora scrive la settima colonna
+(vuota al gate) e nasce `gate-esito.sh` per registrare l'esito umano (merge/chiusura/commessa)
+sull'ultima riga corrispondente. Le righe storiche col vocabolario vecchio NON sono state
+riscritte: il drift si annota qui (righe con banco `proposto`/`vuoto` precedono l'esecutore).
+
+**Bug §2.2 (confermato: main hardcoded in 6 punti + silenziatore alla r.85):** `night-shift/lib.sh`
+con `default_branch()` (symbolic-ref → gh repo view → main con AVVISO). Refactor completo;
+checkout fallito → log duro + riclone, mai continuare in silenzio.
+
+**Sicurezza §3 (buco reale: find -delete e git reset --hard passavano la blacklist):** difesa in
+profondità approvata da Luca — allowlist per segmento (split su && || ; |, git readonly) come
+prima linea + **sandbox seatbelt** (`sandbox.sb`: rete negata, scritture solo nella copia
+disposabile) come seconda + watchdog 120s esteso anche alle .night-verify (l'asimmetria).
+**Testato dal vivo: curl in sandbox = exit 7 (connessione negata), scrittura fuori workdir
+vietata, dentro concessa.**
+
+**Processo §4:** percorso cloud/ibrido documentato in onboard-repo.sh e system.md (MCP può
+commit-tare file; label e repos.conf restano manuali sul Mac); drift-check del CLAUDE.md nel
+gate (informativo); **credenziali BC in CDG_Costi_Diretti: VERIFICATO peggio del报告 — oltre al
+file rtf, lo stesso segreto Azure era sparso in 21 commit (Config.gs, script, SAL.md). Storia
+ripulita con filter-repo (file rtf rimosso + 2 valori segreti sostituiti con --replace-text),
+gitleaks post-scan: ZERO leak. ⛔ L'AZIONE CHE RESTA È DI LUCA: ruotare le credenziali su
+Azure — le vecchie hanno viaggiato nella storia git. gitleaks ora gira in bootstrap (bloccante
+pre-push) e come pre-scan in onboard.**
+
+**Minors §5:** il hub ora ha il suo `.night-verify` (shellcheck + bash -n — il sistema che
+pretende verifiche dichiarate finalmente le dichiara per sé); warning quando si tocca il limite
+50; DEBITI.md compilato con i rinvi deliberati (rotazione log, portabilità, test bc_*).
+
+Nota operativa per Luca: i cloni locali di CDG_Costi_Diretti vanno RICLONATI (la storia è stata
+riscritta, gli hash sono cambiati).

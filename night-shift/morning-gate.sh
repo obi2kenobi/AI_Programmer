@@ -15,6 +15,7 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
+source "$HERE/lib.sh"
 CONF="$HERE/repos.conf"
 HUB_METRICS="$(cd "$HERE/.." && pwd)/metrics/gate.csv"
 WORK="$HOME/night-shift-work"
@@ -51,6 +52,11 @@ for REPO in "${REPO_LIST[@]}"; do
 
   [ -d "$DIR/.git" ] || { gh repo clone "$REPO" "$DIR" -- --depth=50 -q; }
   git -C "$DIR" fetch origin --prune -q
+  DB=$(default_branch "$DIR") || log "ATTENZIONE: default branch non rilevato in $REPO, assumo main"
+  # review §4.2: drift-check del CLAUDE.md (informativo, non bloccante)
+  if ! diff -q <(git -C "$DIR" show "origin/$DB:CLAUDE.md" 2>/dev/null) "$HERE/../CLAUDE.md" >/dev/null 2>&1; then
+    echo "_⚠ Drift: il CLAUDE.md della repo $REPO differisce da quello del hub (regole ereditate non allineate — valutare l'aggiornamento)._" >> "$REPORT"
+  fi
 
   while IFS= read -r row; do
     NUM=$(echo "$row" | jq -r '.number')
@@ -62,19 +68,19 @@ for REPO in "${REPO_LIST[@]}"; do
     echo "### PR #$NUM — $TITLE (\`$BRANCH\`)" >> "$REPORT"
     git -C "$DIR" checkout -q "$BRANCH" 2>/dev/null || git -C "$DIR" checkout -q -b "$BRANCH" "origin/$BRANCH"
     echo "**Diff:**" >> "$REPORT"
-    git -C "$DIR" diff --stat "origin/main...$BRANCH" >> "$REPORT" 2>/dev/null
+    git -C "$DIR" diff --stat "origin/$DB...$BRANCH" >> "$REPORT" 2>/dev/null
 
     # 1. Verifiche dichiarate — lette da origin/main: la dichiarazione è della REPO,
     #    non del branch della PR (che può essere nato prima della dichiarazione)
     VERDICT="—"
-    NIGHT_VERIFY=$(git -C "$DIR" show origin/main:.night-verify 2>/dev/null || true)
+    NIGHT_VERIFY=$(git -C "$DIR" show "origin/$DB:.night-verify" 2>/dev/null || true)
     if [ -n "$NIGHT_VERIFY" ]; then
       echo "**Verifiche dichiarate (.night-verify, da main):**" >> "$REPORT"
       V_RC=0
       while IFS= read -r cmd; do
         cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
         echo "- \`$cmd\`:" >> "$REPORT"
-        if OUT=$( cd "$DIR" && eval "$cmd" 2>&1 ); then
+        if OUT=$( cd "$DIR" && run_guarded 120 bash -c "$cmd" 2>&1 ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
@@ -93,7 +99,7 @@ for REPO in "${REPO_LIST[@]}"; do
     ASK="$HERE/../llm/ask-qwen.sh"
     [ "$ADVERSARY" = "opus" ] && ASK="$HERE/../llm/ask-opus.sh"
     if [ -x "$ASK" ]; then
-      DIFF_TXT=$(git -C "$DIR" diff "origin/main...$BRANCH" 2>/dev/null | head -300)
+      DIFF_TXT=$(git -C "$DIR" diff "origin/$DB...$BRANCH" 2>/dev/null | head -300)
       if [ -n "$DIFF_TXT" ]; then
         BANCO_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull request. Scrivi UN solo comando shell, eseguibile dalla root della repo, che SMASCHERA un difetto della PR se esiste: deve riuscire (exit 0) se la PR è solida, fallire (exit != 0) se è difettosa. Vincoli rigidissimi: niente rete, niente operazioni distruttive (rm/mv/chmod/git push), nessuna modifica permanente. Sono ammessi node/python/grep/git/cat e simili. Rispondi con UN SOLO blocco di codice contenente il comando, senza spiegazioni.
 
@@ -103,17 +109,15 @@ $DIFF_TXT"
         if [ -z "$CMD" ]; then
           echo "**Banco avversariale:** nessun comando estratto dalla risposta del cervello ($ADVERSARY)" >> "$REPORT"
           BANCO="vuoto"
-        elif echo "$CMD" | grep -qiE "(^|[ ;|&])(rm|sudo|curl|wget|chmod|chown)([ ;]|$)|git push|mkfs"; then
-          echo "**Banco avversariale:** comando generato SCARTATO dalla guardia (operazioni vietate): \`$CMD\`" >> "$REPORT"
-          BANCO="scartato"
+        elif ! gate_allowlist_ok "$CMD"; then
+          echo "**Banco avversariale:** comando SCARTATO dall'allowlist (solo strumenti di lettura/verifica, git readonly): \`$CMD\`" >> "$REPORT"
+          BANCO="scartato-allowlist"
         else
-          # esecuzione con watchdog 120s, nella copia di lavoro, sul branch della PR
-          ( cd "$DIR" && eval "$CMD" ) > /tmp/gate-banco.out 2>&1 &
-          BPID=$!
-          ( sleep 120; kill -TERM "$BPID" 2>/dev/null ) &
-          WDG=$!
-          wait "$BPID"; BRC=$?
-          kill "$WDG" 2>/dev/null
+          # Difesa in profondità (review §3): allowlist ✓ + sandbox seatbelt (no rete, scritture
+          # solo nella copia disposabile) + watchdog 120s
+          sed "s|__WORKDIR__|$DIR|g" "$HERE/sandbox.sb" > /tmp/gate-sandbox.sb
+          ( cd "$DIR" && run_guarded 120 sandbox-exec -f /tmp/gate-sandbox.sb bash -c "$CMD" ) > /tmp/gate-banco.out 2>&1
+          BRC=$?
           OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200)
           echo "**Banco avversariale ESEGUITO** (cervello: $ADVERSARY):" >> "$REPORT"
           echo "- comando: \`$CMD\`" >> "$REPORT"
@@ -143,7 +147,7 @@ ${DIFF_TXT}"
 
     # 3-4. memoria + verdetto
     case "$VERDICT" in verifiche-ok) PASS=$((PASS+1));; *) FAIL=$((FAIL+1));; esac
-    echo "$(date '+%Y-%m-%d'),$REPO,#$NUM,#$ISSUE_NUM,$VERDICT,$BANCO" >> "$HUB_METRICS"
+    echo "$(date '+%Y-%m-%d'),$REPO,#$NUM,#$ISSUE_NUM,$VERDICT,$BANCO," >> "$HUB_METRICS"
 
     if [ "$VERDICT" = "verifiche-fallite" ] || [ "$BANCO" = "eseguito:smentita" ]; then
       echo "" >> "$REPORT"

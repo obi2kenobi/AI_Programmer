@@ -1,0 +1,12 @@
+;; sandbox.sb — profilo seatbelt per l'esecuzione dei comandi del gate (review §3, 2026-08-21).
+;; Il modello di minaccia: comandi generati da LLM su input potenzialmente iniettato.
+;; Seconda linea di difesa dopo l'allowlist: NESSUNA rete, scritture SOLO nella copia
+;; di lavoro (disposabile, ripristinata dopo) e in /tmp. __WORKDIR__ sostituito a runtime.
+(version 1)
+(allow default)
+(deny network*)
+(deny file-write*)
+(allow file-write*
+  (subpath "__WORKDIR__")
+  (subpath "/private/tmp")
+  (literal "/dev/null"))
