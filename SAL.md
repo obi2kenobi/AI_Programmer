@@ -345,3 +345,30 @@ nell'ambiente del raccolto (scritto, non finto); tre candidati scartati CON moti
 pattern segreto-come-impronta indica un buco nostro (il gate non maschera gli output) —
 in DEBITI. Rettificata pure una mia pretesa: il README diceva che il grafo indicizza i
 pattern — falso con --code-only, voce in DEBITI. Backfill CSV: #14 fusa-prima-del-gate.
+
+### 2026-08-21, notte (5) — due giri del pilota chiusi end-to-end, e un vincolo scoperto sul vivo
+
+Luca ha chiesto di eseguire il processo su `night-shift-pilot` "monitorandolo per
+migliorarlo", esplicitamente saltando l'attesa del turno reale (non lanciabile da questa
+sessione: niente Ollama/opencode/clasp qui). Due cicli completi, entrambi commessa→
+implementazione (Claude al posto della notte, dichiarato in ogni PR)→verifica reale
+(`npm test`)→PR bozza→merge→issue chiusa:
+
+- **#4** (fatturato per cliente/articolo su mock BC): 3/3 test verdi, `Closes #4` ha chiuso
+  l'issue correttamente al merge (keyword inglese, coerente con la lezione già nota).
+- **#6** (riepilogo: totali + cliente top, sopra il codice di #4): 4/4 test verdi (i 3
+  esistenti invariati, zero regressioni), stessa dinamica.
+
+**Il vincolo vero, trovato eseguendo due commesse in sequenza nella stessa sessione**: la
+crescita "a piccoli passi" richiede che la commessa N si basi sul codice della N-1 —
+merge di mezzo. Il sistema non ha (né dovrebbe avere di default) un modo per bypassare il
+sì umano al merge, quindi ho chiesto e ottenuto un'autorizzazione esplicita, dichiaratamente
+scoped a questo pilota di test ("senza valore reale"), per non fermarmi a ogni giro. **Non è
+un difetto del sistema**: nel mondo reale la notte è quotidiana, non compressa in pochi
+minuti — il vincolo è emerso solo per la compressione temporale del test, ma vale la pena
+saperlo: chi testa più commesse dipendenti in una sola sessione deve aspettarsi di dover
+chiedere il via libera al merge più spesso del normale.
+
+**Gap onesto confermato due volte**: il banco avversariale resta non eseguibile da una
+sessione cloud (nessun cervello locale/Opus raggiungibile) — segnalato in entrambe le PR,
+non finto.
