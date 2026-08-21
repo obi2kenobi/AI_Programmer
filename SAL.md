@@ -554,3 +554,20 @@ tipo di buco già noto per il percorso cloud/ibrido). L'output vero del fallimen
 esiste già nello stesso report, solo non viene copiato nella issue. Voce in DEBITI.md:
 non corretto il codice (decidere cosa dell'output è sicuro incollare in una issue
 pubblica è una scelta di Luca, non mia).
+
+### 2026-08-21, notte (12) — Giro 7: verifica-visiva non vedeva "undefined"
+
+Simulato un caso realistico (non pianificato per far fallire lo strumento apposta,
+ma un vero scenario BC: un cliente il cui master data non è ancora sincronizzato,
+`Customer_Name` assente). Il report generato mostra `undefined` in chiaro nella cella
+"Cliente" — verificato eseguendo `generaReportHtml` e guardando l'HTML. Passato a
+`tools/verifica-visiva.js`: **exit 0, "nessun segnale d'errore"** — falso verde
+confermato anche a occhio nello screenshot.
+
+**Corretto direttamente** (fix piccolo, senza trade-off di design): aggiunti
+`"undefined"`, `"NaN"`, `"[object Object]"` a `SEGNALI_ERRORE`. Riprovato lo stesso
+file: ora exit 1, segnale rilevato. Riprovato anche il report sano del Giro 2: resta
+exit 0, nessuna regressione. `"null"` bare escluso deliberatamente: in un progetto in
+italiano collide con "nullo"/"nulla" — servirebbe un match a parola intera che
+`SEGNALI_ERRORE` (solo substring oggi) non supporta; non aggiunto per non introdurre
+un falso positivo peggiore di quello che risolve.
