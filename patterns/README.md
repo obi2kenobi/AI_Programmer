@@ -29,3 +29,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [versione-sugli-artefatti](versione-sugli-artefatti.md) | AI_Develop: tools/grafo-findings.js:221 | 2026-08-08 |
 | [segreto-come-impronta](segreto-come-impronta.md) | AI_Develop: tools/maschera-segreti.js:mascheraSegreti | 2026-08-11 |
 | [soglia-con-provenienza](soglia-con-provenienza.md) | AI_Develop: tools/soglie.js:derive | 2026-08-07 |
+| [banco-sintetico-per-calcoli-critici](banco-sintetico-per-calcoli-critici.md) | Bilancio_periodico: tools/test-sp.js · gas/Sp.js:366 | 2026-08-21 |
