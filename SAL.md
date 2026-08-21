@@ -160,7 +160,7 @@ vietata, dentro concessa.**
 
 **Processo §4:** percorso cloud/ibrido documentato in onboard-repo.sh e system.md (MCP può
 commit-tare file; label e repos.conf restano manuali sul Mac); drift-check del CLAUDE.md nel
-gate (informativo); **credenziali BC in CDG_Costi_Diretti: VERIFICATO peggio del报告 — oltre al
+gate (informativo); **credenziali BC in CDG_Costi_Diretti: VERIFICATO peggio del report — oltre al
 file rtf, lo stesso segreto Azure era sparso in 21 commit (Config.gs, script, SAL.md). Storia
 ripulita con filter-repo (file rtf rimosso + 2 valori segreti sostituiti con --replace-text),
 gitleaks post-scan: ZERO leak. ⛔ L'AZIONE CHE RESTA È DI LUCA: ruotare le credenziali su
