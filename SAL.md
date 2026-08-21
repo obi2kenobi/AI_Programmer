@@ -627,3 +627,29 @@ riceve una riga nuova con esito `merge` in una notte successiva. Distinguere i d
 casi (doppia registrazione per errore vs. secondo esito legittimo su un ciclo
 correttivo) è una decisione di design sul significato di "esito", non un fix
 meccanico — voce in DEBITI.md con la riproduzione esatta, per il sì di Luca.
+
+### 2026-08-21, notte (15) — Giro 10: Closes multiplo e prima commessa chore, entrambi puliti
+
+Ultimo dei 10 giri extra. Due issue gemelle (#22 LICENSE, #23 .editorconfig),
+un'unica PR con `Closes #22` e `Closes #23` nel body, prima commessa di tipo
+`chore` in questo pilota (finora solo feat/fix/refactor). Verificato via API dopo
+il merge: entrambe le issue `state: closed`, `state_reason: completed`, entrambe
+con `closed_by_pull_requests` che punta alla stessa PR #24 — GitHub riconosce
+correttamente due keyword indipendenti nello stesso body, non solo la prima.
+
+**Esito onesto: nessun difetto trovato, nessuna correzione al master per questo
+giro.** Non ogni giro deve produrne una — forzarne una qui sarebbe meno onesto che
+dirlo chiaramente. Comportamento mercanico di GitHub confermato, non specifico ad
+alcun codice di questo sistema.
+
+---
+
+**Chiusura dei 10 giri extra (Giri 4-10, oltre ai 3 iniziali).** Sintesi dei
+risultati concreti sul master: 2 fix diretti a codice condiviso (`verifica-visiva.js`
+non vedeva `undefined`/`NaN`; `morning-gate.sh` non segnalava PR non mergeable), 1
+bug reale documentato ma non corretto perché richiede una decisione di design
+(`gate-esito.sh`, doppia registrazione), 2 chiarimenti al metodo di `audit-commessa`
+(dove riportare "Design assente"; verificare anche le convenzioni di dominio, non
+solo la forma-dati), 1 giro senza difetti (Giro 10). Il filo comune resta lo stesso
+di tutta la sessione: ogni claim in questo diario è stato eseguito, non presunto —
+compreso "non ho trovato niente" quando è stato il caso.
