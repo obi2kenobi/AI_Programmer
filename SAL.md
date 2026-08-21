@@ -571,3 +571,28 @@ exit 0, nessuna regressione. `"null"` bare escluso deliberatamente: in un proget
 italiano collide con "nullo"/"nulla" — servirebbe un match a parola intera che
 `SEGNALI_ERRORE` (solo substring oggi) non supporta; non aggiunto per non introdurre
 un falso positivo peggiore di quello che risolve.
+
+### 2026-08-21, notte (13) — Giro 8: due commesse gemelle, un conflitto reale, e un buco nel gate
+
+Due issue (#18, #19) create dalla stessa base commit, stesso punto di
+`src/fatturato.js`, apposta per produrre un conflitto di merge vero. Mersa #19 per
+prima; la PR di #18 è arrivata a `mergeable_state: "dirty"` — verificato via API, non
+presunto. Risolto correttamente: `git merge origin/main`, conflitto vero su due file,
+tenute ENTRAMBE le funzioni (indipendenti, nessuna esclude l'altra), 14/14 test dopo
+la risoluzione — nessun lavoro scartato, nessun `--force`.
+
+**Correzione applicata al master, trovata verificando come si comporterebbe il gate
+reale su questo stesso scenario**: letto `night-shift/night-shift.sh` — ogni branch
+`night/issue-N` nasce da `origin/$DB` al momento della creazione (riga 168), quindi
+due commesse nella stessa notte possono benissimo generare questo identico conflitto
+in produzione, non solo nel test. Verificato che `morning-gate.sh` non menziona MAI
+`mergeable`/`conflict` (grep, zero risultati) — potrebbe scrivere "verifiche-ok" per
+una PR che i test passano sul proprio branch ma che GitHub rifiuterebbe di mergere,
+e l'umano lo scoprirebbe solo provando a mergere. **Corretto direttamente** (aggiunta
+informativa, nessun comportamento nuovo, GitHub blocca già il merge da solo):
+`gh pr list` ora chiede anche il campo `mergeable`, e il report segnala
+`⛔ Non mergeable: conflitto con main` in testa alla sezione della PR, prima di tutto
+il resto. Verificato: `bash -n` passa; **non eseguito dal vivo contro `gh pr list`**
+(nessun `gh` autenticato in questa sessione) — il campo `mergeable` è documentato
+nello schema `gh pr list --json`, non inventato, ma la prova end-to-end resta da fare
+sul Mac.
