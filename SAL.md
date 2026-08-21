@@ -241,3 +241,15 @@ vivo: `cat ~/.config/gh/hosts.yml` in sandbox → Operation not permitted; `/etc
 workdir restano leggibili. Chiuso in pubblico anche il falso positivo del quoting: lo split
 dei segmenti ora rispetta le virgolette (`grep -c "a;b" file` passa). I due debiti di
 dev-critic sono marcati SALDATI in DEBITI.md.
+
+### 2026-08-21, notte (3) — gate-summary: i dati promessi diventano leggibili
+
+Il prerequisito dell'handoff verificato SENZA assumerlo: la colonna esito era vuota (#369
+aspetta la review di Luca — e questo è già aging vero) e #364 era stata fusa prima che la
+colonna esistesse. Backfill onesto del fatto vero (#364 → merge, con le condizioni dell'epoca)
+e test di `gate-esito.sh` sul formato a 7 campi (correttamente rifiuta il doppio inserimento).
+Nasce `night-shift/gate-summary.sh` (modulo `csv` di Python, zero dipendenze): per repo %
+verifiche ok, % smentite del banco, aree fragili (commesse correttive ripetute ≥2) e aging
+deduplicato per PR sull'attesa VERA (riga più vecchia). Prima lettura dai dati: 5/7 verifiche
+ok, 0 smentite, 1 merge — e #369 in attesa. Allineato anche system.md sul percorso cloud/ibrido
+(gli era sfuggito, nota dell'handoff: dichiarato ma non scritto lì).
