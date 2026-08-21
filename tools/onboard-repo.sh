@@ -43,6 +43,14 @@ else
   echo ".night-verify già presente, intoccato"
 fi
 
+# Template issue night-shift con Design obbligatorio (miglioramento #1, 2026-08-21)
+if [ ! -f "$WORK/.github/ISSUE_TEMPLATE/night-shift.md" ]; then
+  mkdir -p "$WORK/.github/ISSUE_TEMPLATE"
+  cp "$HERE/.github/ISSUE_TEMPLATE/night-shift.md" "$WORK/.github/ISSUE_TEMPLATE/night-shift.md" 2>/dev/null \
+    && git -C "$WORK" add .github && git -C "$WORK" commit -q -m "chore: template issue night-shift (Design obbligatorio)" && git -C "$WORK" push -q \
+    && echo "template issue creato e spinto" || echo "⚠ template non copiato (hub senza template)"
+fi
+
 CONF="$HERE/night-shift/repos.conf"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
 grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }

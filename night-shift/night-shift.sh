@@ -143,6 +143,16 @@ shift_repo() {
     BODY=$(echo "$row" | jq -r '.body // ""')
     [ -z "$NUM" ] || [ "$NUM" = "null" ] && continue
 
+    # Miglioramento #1 (analisi processo 2026-08-21): il processo non dipende più dalla
+    # disciplina dell'operatore — un'issue night-shift senza sezione "## Design" NON parte.
+    # Il design può essere un link, un riferimento al SAL del progetto, o tre righe di ratio:
+    # deve esserci, dichiarato, PRIMA del lavoro.
+    if ! printf '%s' "$BODY" | grep -q "^## Design"; then
+      log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
+      continue
+    fi
+
     # Idempotenza: PR aperta → skip; PR fusa → chiude l'issue e skip
     local PR_STATE
     PR_STATE=$(gh pr view "night/issue-$NUM" -R "$REPO" --json state -q .state 2>/dev/null)
