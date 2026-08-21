@@ -279,3 +279,27 @@ scritta: **il giorno non tocca il workdir della notte, passa dall'API** (il temp
 messo su main via gh api dopo l'errore). Nuove commesse #12 (registri nel PDF, da SAL §6.8) e
 #13 (formati italiani nel PDF, da SAL §8) — entrambe nascono dal SAL del progetto, non dal
 pattern matching: il processo corretto comincia prima ancora del turno.
+
+### 2026-08-21, sera (3) — il primo A/B giorno-vs-notte, e la commessa col difetto
+
+Luca ha mandato Claude (giorno) sulla STESSA commessa #11 che la notte stava macinando.
+**Risultato netto**: Claude completa in 10m35s con qualità superiore al previsto — regex
+verificata byte-per-byte, **codice eseguito in Node con 13 asserzioni su dati sintetici
+(tutte passate)**, un limite onesto trovato ESECUTANDO e documentato nella PR (#14). La notte:
+1h24m e ancora zero file scritti. Il sistema ha la sua prima misura A/B: il fattore ~10x
+a favore del giorno su commesse con esplorazione, e la conferma che la notte è per il volume
+meccanico, non per l'ignoto.
+
+**La scoperta più utile però è un difetto MIO**: la commessa #11 assumeva che i dati
+per-codice fossero nell'oggetto bilancio — Claude, eseguendo, ha scoperto che l'acquistato è
+aggregato per famiglia e il dettaglio per-codice è un dataset separato on-demand. Il giorno
+se ne accorge leggendo; la notte probabilmente ci annega (l'ipotesi più probabile del suo
+silenzio). Lezione strutturale: **la commessa deve dichiarare la FORMA DEI DATI verificata
+sul codice** — ora il template issue ha la sezione obbligatoria "## Forma dei dati".
+
+Le tre cose che Claude non ha capito dalla documentazione → tre azioni fatte:
+1. forma dei dati non documentata → sezione obbligatoria nel template (sopra)
+2. grammatica dei codici articolo non documentata → TODO dominio (da chiedere a Matteo,
+   candidato a docs/GRAMMATICA_CODICI.md quando qualcuno la sa scrivere)
+3. CLAUDE.md §6 di PEFC citava il progetto Motore (engine, pnpm, PHP!) → corretto via API
+   con il contesto reale del repo
