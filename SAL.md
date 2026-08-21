@@ -32,3 +32,14 @@ Costruito su tutto ciò che le tre notti su AI_Develop hanno insegnato (cinque d
 d'infrastruttura trovati e corretti; il modello locale capisce ma non converge sulle indagini;
 le issue devono essere commesse). Primo carico notturno per il hub: compilazione della colonna
 _Significato_ BC — lavoro documentale, zero credenziali, il riscontro resta umano.
+
+### 2026-08-21, ore 12 — prima lezione operativa del gate (e chi la firma)
+
+Assemblando il sistema, chi scrive ha spinto `.night-verify` su AI_Develop dal branch della PR
+invece che da main: il commit è evaporato in un merge shallow senza inquinare la PR (verificato),
+ma la dichiarazione è arrivata a destinazione solo al secondo tentativo, dal checkout pulito.
+Regola che ne esce, già implicita nel turno notturno e ora estesa a tutto il sistema:
+**ogni operazione git parte da main pulito o dichiara esplicitamente il branch** — e il gate
+legge le dichiarazioni da `origin/main`, mai dal branch della PR (il branch può essere nato
+prima della dichiarazione). Primo giro completo del giudice: PR #369 → verifiche dichiarate
+✅ (test-motore 2005/0) → banco avversariale con proposta di smentita → metrica registrata.
