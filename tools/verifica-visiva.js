@@ -15,10 +15,17 @@ const CHROME = process.env.CHROME_PATH || "/opt/pw-browsers/chromium-1194/chrome
 const FLAGS_COMUNI = ["--headless=new", "--no-sandbox", "--disable-gpu", "--virtual-time-budget=8000"];
 
 // Segnali noti di Apps Script/webapp rotta — non un elenco esaustivo, un primo filtro onesto.
+// "undefined"/"NaN"/"[object Object]" aggiunti al Giro 7 dei test 2026-08-21: un report con
+// un campo mancante (es. Customer_Name assente) li mostra a schermo e prima passava per sano
+// (verificato dal vivo: night-shift-pilot, riga con Customer_Name mancante -> "undefined" in
+// tabella, exit 0 prima del fix). "null" bare escluso apposta: in un progetto in italiano
+// collide con "nullo"/"nulla" (falso positivo) — richiederebbe un match a parola intera, non
+// fatto qui perché SEGNALI_ERRORE oggi è solo substring, non regex.
 const SEGNALI_ERRORE = [
   "Autorizzazione richiesta", "Richiesta di autorizzazione", "Authorization required",
   "Errore di script", "Script error", "exception", "Spiacenti, si è verificato un errore",
   "Sorry, unable to open the file at this time",
+  "undefined", "NaN", "[object Object]",
 ];
 const SOGLIA_TESTO_VUOTO = 40; // caratteri di testo visibile sotto cui la pagina è "vuota"
 
