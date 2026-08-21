@@ -97,3 +97,12 @@ regole diverse, entrambe giuste.
 | **superpowers** (275k ⭐) | Claude Code | guardrail tre-strike §5, /brainstorming ZCode | subagent-review, execute-plan, skill-writing |
 
 Flusso giorno: **/brainstorming → /goal → (notte minimalista) → gate a tre controlli**.
+
+## Percorso cloud/ibrido (da review 2026-08-21 §4.1)
+
+Una sessione cloud/remota (es. Claude Code nel container) NON ha `gh` CLI né accesso a
+`night-shift/repos.conf` (locale del Mac per design). Cosa può fare da sola: commit di file
+(es. `.night-verify`) via tool MCP GitHub. Cosa resta manuale sul Mac del proprietario: creare
+la label `night-shift` (i tool MCP disponibili non la creano) e aggiungere la repo a
+`repos.conf`. Un agente cloud che esegue l'onboarding deve dirlo all'utente, non tacere i
+passi rimasti (dettaglio operativo in testa a `tools/onboard-repo.sh`).
