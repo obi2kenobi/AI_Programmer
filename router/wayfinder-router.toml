@@ -1,0 +1,32 @@
+# wayfinder-router.toml — il tessuto di routing del sistema AI_Programmer.
+# Copia/aggancia la tua config reale con: wayfinder-router init (o collega questa).
+# La config NON contiene segreti (solo riferimenti env) quindi può stare nel repo pubblico.
+
+# Il metodo tradotto in config: THRESHOLD lessicale → locale vs hosted.
+[routing]
+threshold = 0.09
+weights = { reasoning_term_count = 5.0, math_symbol_count = 3.0, constraint_term_count = 1.5 }
+
+[gateway]
+route_on = "last_user"
+sticky = false
+
+# Destinazione LOCALE: il cervello notturno (Ollama, Qwen3.8-27B Q4).
+[gateway.models.local]
+base_url = "http://localhost:11434/v1"
+model = "qwen3.8:27b-mtp-q4_K_M"
+
+# Route nominate = i workflow del metodo (selezionabili: model = "@route/night").
+[gateway.routes.night]
+description = "Turno di notte: sempre locale, mai hosted"
+models = ["local"]
+
+[gateway.routes.digest]
+description = "Digest/triage one-shot: locale, economico"
+models = ["local"]
+
+# LIMITI DICHIARATI (verificati sui sorgenti, 2026-08-21 — vedi docs/system.md):
+# - outbound ANTHROPIC non implementato: Opus non passa da qui (ask-opus va diretto)
+# - tier hosted: assente per scelta (decisione Luca 2026-08-21) — si accende qui
+#   quando le metriche del gate lo giusticheranno
+# - Apple Foundation Models: rimandato a maturazione
