@@ -20,8 +20,12 @@ l'utente non specifica quali, prendi tutte le `night-shift` open del repo indica
 
 1. **Struttura del template.** Verifica che la issue abbia `## Design` (obbligatoria: il
    turno salta le issue senza, `.github/ISSUE_TEMPLATE/night-shift.md`) e `## Commessa`. Se
-   manca `## Design`, fermati qui e dillo — non ha senso auditare i dati di una commessa che
-   la notte non toccherebbe comunque.
+   manca `## Design`, fermati qui — non ha senso auditare i dati di una commessa che la
+   notte non toccherebbe comunque — e **dillo con un commento sulla issue stessa** (non nel
+   body, che resta di chi la possiede): cosa manca, che l'audit dei dati non procede finché
+   non c'è, senza chiudere né correggere altro (trovato ambiguo al Giro 4 dei test
+   2026-08-21: "fermati e dillo" non specificava a chi/dove — un commento sull'issue rende
+   la scoperta visibile a chi la possiede, non solo alla sessione che ha auditato).
 2. **Estrai ogni claim verificabile**: nomi di variabili/funzioni citati, forma di un oggetto
    dati, "dove vive" un dato, colonne/campi che la commessa assume esistano.
 3. **Apri il file vero e verifica.** Non fidarti del nome che "suona giusto": leggi la

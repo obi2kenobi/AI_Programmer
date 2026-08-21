@@ -503,3 +503,16 @@ la esegue da sé.
 Chiuso anche il ciclo pratico: `src/diagnostica.js` corretto per mascherare `apiKey` con
 un'impronta (pattern `segreto-come-impronta`, non con un'omissione silenziosa) prima del
 merge della PR del pilota — la scoperta non resta solo teorica.
+
+### 2026-08-21, notte (9) — Luca chiede altri 10 giri: Giro 4, Design assente
+
+Luca ha chiesto altri 10 giri dopo i primi 3. Giro 4: issue #14 creata apposta SENZA
+`## Design` (e con un claim sui dati sbagliato, "il campo filtro è già in Amount" quando
+serve `Posting_Date`). **Esito positivo**: applicando `audit-commessa` mi sono fermato al
+passo 1 come da regola, senza guardare il claim sui dati — comportamento corretto, non
+un'audit sprecata su una commessa che la notte salterebbe comunque.
+
+**Finding minore, corretto**: la regola diceva solo "fermati e dillo" senza specificare
+DOVE — ambiguo tra "dillo alla sessione che chiama" e "dillo sulla issue". Ho deciso per
+un commento sull'issue (visibile a chi la possiede, non solo in chat) e ho chiarito la
+SKILL.md di conseguenza, così le prossime invocazioni non debbano decidere da capo.
