@@ -64,10 +64,22 @@ ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
 ollama list 2>/dev/null | grep -q "$MODEL_TAG" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
 if ! probe; then
   log "Sonda fallita: riavvio server (errori Metal dopo lunga vita)..."
-  pkill -f "ollama serve" 2>/dev/null; sleep 4
-  OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 \
-    /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
-  sleep 8
+  # Finding #4 (2026-08-21): il server è di LAUNCHD (KeepAlive) — se lo killiamo e ne
+  # avviamo uno nostro, lui resuscita e ci contende la porta: si perde la gara entrambi.
+  # Strategia: se l'agente esiste, KICKSTART a lui e si aspetta la sua resurrezione;
+  # solo senza agente (altre macchine) si avvia un'istanza propria.
+  if launchctl list 2>/dev/null | grep -q "ollama"; then
+    launchctl kickstart -k "gui/$(id -u)/$(launchctl list | awk '/ollama/{print $3}')" 2>/dev/null
+    for _ in $(seq 1 30); do
+      curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && break
+      sleep 2
+    done
+  else
+    pkill -f "ollama serve" 2>/dev/null; sleep 4
+    OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 \
+      /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
+    sleep 8
+  fi
   probe || { log "ERRORE: server non risponde nemmeno dopo il riavvio"; exit 1; }
   log "Server riavviato e sano"
 fi
