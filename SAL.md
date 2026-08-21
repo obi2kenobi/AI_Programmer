@@ -64,3 +64,32 @@ Completato anche il riuso Wayfinder: endpoint Anthropic-inbound verificato → n
 `llm/claude-local.sh` (Claude Code come harness sul locale); `connect claude` non automatizzato
 in questa build, ricetta manuale documentata in `router/README.md`. Route nominate: SPERIMENTALI
 (instradano ma rispondono vuoto nel test). Privacy posture documentata come leva per i dati BC.
+
+### 2026-08-21, sera — l'esperimento DFlash2: il video prometteva 3x, i fatti dicono altro
+
+Occasione: un video mostrava Qwen3.8-27B a 10 tok/s via llama.cpp e 2,7-3,4x col draft model
+DFlash2 (z-lab). Abbiamo misurato tutto sul nostro Mac (metodo: stessa identica richiesta).
+
+**Risultati (stessa richiesta, 400 token):**
+
+| Configurazione | Velocità | Condizione |
+|---|---|---|
+| Ollama, Q4_K_M MTP (il nostro) | 3,7 tok/s | funzionante |
+| llama.cpp mainline, stesso GGUF | 3,7 tok/s | **nessun guadagno** |
+| llama.cpp + DFlash2 (build PR #27342) | **0,14 tok/s** | thrashing: 10,2 GB di swap |
+
+**Le tre lezioni (tutte con la prova):**
+1. **llama.cpp diretto NON è più veloce di Ollama** su questa macchina — il 2x del video non
+   si riproduce nelle nostre condizioni. Il collo è la banda memoria, non il runtime.
+2. **DFlash2 su 24 GB unificati è una regressione, non un'accelerazione**: target (16,8) +
+   drafter (1,1) + contesti sforano il working set Metal e ogni token paga il disco. Serve RAM
+   maggiore. Il GGUF del drafter resta in `~/models-dflash2-q4.gguf` per il giorno in cui
+   l'hardware crescerà.
+3. ⛔ **LA SCOPERATA DELLA SESSIONE: il working set Metal è ~75% della RAM** (~18 GB sui
+   nostri 24) e l'OS lo STRINGE sotto pressione. Questa È la causa dei nostri «errori Metal»
+   ricorrenti: configurazioni che stanno dentro il limite oggi falliscono domani quando il
+   sistema si riprende margine. Regola: mai forzare `-ngl 99`, sempre fit automatico; il
+   Q5_XL (21 GB) non è mai stato vicino a funzionare — ora sappiamo perché con precisione.
+
+Il turno notturno resta su Ollama + Q4_K_M MTP: 3,7-5,9 tok/s, il massimo dimostrato su
+questa macchina. Il file `llama-bench.log` conserva le prove.
