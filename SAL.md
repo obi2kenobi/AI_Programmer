@@ -196,3 +196,35 @@ Si decide di non lasciare questo metodo confinato a una sessione di chat: nasce 
 istituzionalizza il metodo (lettura critica + uso reale) e aggiunge un compito che il gate
 notturno non fa: proporre **funzionalità non ancora considerate**, non solo trovare difetti in
 ciò che esiste.
+
+### 2026-08-21, notte — dev-critic verifica la review Opus: un fix confermato solo a metà
+
+Primo uso reale della skill appena nata, sulle correzioni appena applicate (voce sopra). Metodo
+rispettato: non fidarsi del diff, eseguirlo.
+
+**`gate-esito.sh` era rotto dal giorno stesso della sua nascita.** `morning-gate.sh` scrive ora
+7 campi con virgola finale per l'esito vuoto; `gate-esito.sh` riconosceva "esito già presente"
+contando le virgole con una soglia scritta per il *vecchio* formato a 6 campi — quindi
+scambiava OGNI riga nuova (esito vuoto) per "già registrata" e si rifiutava sempre di scrivere.
+Riprodotto dal vivo (`bash gate-esito.sh owner/repo 99 merge` → `esito già registrato`, falso).
+Il bug §2.1 della review originale (livello memoria vuoto) era quindi ancora aperto, solo
+spostato: prima la colonna non veniva scritta, ora viene scritta ma non si può mai aggiornare.
+**Corretto**: riconoscimento per numero di CAMPI (non virgole) con distinzione esplicita dei due
+formati; tre casi testati dal vivo (formato nuovo, formato storico, doppia registrazione
+respinta) — tutti corretti.
+
+**La sicurezza §3 resta solo parzialmente chiusa — verificato, non corretto in questo giro.**
+`gate_allowlist_ok()` controlla solo il primo token del segmento: `bash -c`, `python3 -c`,
+`awk 'BEGIN{system()}'`, `sed .../e` restano nell'allowlist e sono state provate dal vivo a
+bucarla (tutte passano). Il sandbox seatbelt non compensa: nega rete e scrittura fuori workdir,
+non la lettura — un `cat ~/.ssh/id_rsa` in sandbox leggerebbe comunque il file (solo non
+potrebbe spedirlo in rete). Non è un fix meccanico come gate-esito: cambia il modello di
+minaccia, quindi resta in `DEBITI.md` per una decisione esplicita con Luca, non corretto a
+sorpresa.
+
+**Nuova funzionalità proposta (scope dichiarato vs implementato):** `docs/system.md` promette
+che "le decisioni future le decidono i dati accumulati" in `metrics/gate.csv` — ma oggi nessuno
+strumento lo legge, nemmeno dopo il fix di `gate-esito.sh`. Proposta: `gate-summary.sh`, un
+riepilogo periodico (% verifiche ok, % smentite dal banco, repo con più commesse correttive
+ripetute, PR senza esito da troppi giorni) — da costruire DOPO aver verificato che l'esito si
+popola davvero nel tempo, altrimenti sarebbe un riepilogo di dati vuoti.
