@@ -35,4 +35,12 @@ labels: ["night-shift"]
      Se la commessa tocca il frontend di una webapp (Index.html/App.html o equivalente),
      valuta se allegare una verifica visiva (skill `verifica-visiva`) prima che la review
      umana sia l'unico controllo sullo schermo — richiede un deploy raggiungibile, non è
-     sempre applicabile. -->
+     sempre applicabile.
+     Se la commessa aggiunge o modifica codice che STAMPA/LOGGA output derivato da config
+     di connessione, credenziali o dati di terzi (diagnostica, debug, trascrizioni), valuta
+     la lente sicurezza di `dev-critic` (§2bis) PRIMA del merge — nessun passo del gate la
+     esegue automaticamente, e i due incidenti reali che l'hanno originata (allowlist
+     bucabile, credenziali committate) non sono mai stati trovati da sé. Verificato dal
+     vivo (night-shift-pilot, Giro 3 dei test autonomi, 2026-08-21): eseguendo per davvero
+     una funzione di diagnostica scritta a commessa, la chiave finiva in chiaro a console
+     — la lente la cattura solo se qualcuno la invoca, non da sola. -->
