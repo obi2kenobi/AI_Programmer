@@ -268,3 +268,14 @@ rotto, processo-saltabile, zombie opencode, doppio proprietario del server, turn
 (lock per repo). L'analisi completa con le proposte: docs/test-processo-2026-08-21.md —
 la prima: template issue con sezione DESIGN obbligatoria, così il metodo non dipende più
 dalla disciplina dell'operatore.
+
+### 2026-08-21, sera (2) — secondo turno preparato e il processo si difende da solo
+
+Miglioramento #1 dell'analisi implementato E testato in serata: il turno ora **salta le issue
+senza \`## Design\`** (con commento esplicativo nell'issue) e il template GitHub le fa nascere
+già col posto per il design — bootstrap lo crea, onboard lo porta. Finding #6 pagato subito:
+committare nel workdir mentre il turno lo possiede finisce sul branch della notte — regola
+scritta: **il giorno non tocca il workdir della notte, passa dall'API** (il template è stato
+messo su main via gh api dopo l'errore). Nuove commesse #12 (registri nel PDF, da SAL §6.8) e
+#13 (formati italiani nel PDF, da SAL §8) — entrambe nascono dal SAL del progetto, non dal
+pattern matching: il processo corretto comincia prima ancora del turno.
