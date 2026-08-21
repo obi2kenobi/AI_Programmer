@@ -190,3 +190,9 @@ so "later" doesn't become "never".
 After **three failed fix attempts** on the same bug, stop patching: the defect is almost
 certainly not where you think it is. Escalate to an architecture/hypothesis review — re-read
 the flow, question the assumption the fixes were built on — before attempt four.
+
+### Patterns before reinventing (2026-08-21)
+Before writing infrastructure code (watchdogs, locks, sandboxing, CSV handling, command
+guards), check `patterns/`: each entry is a proven snippet ANCHORED to code that uses it —
+cite the pattern in commesse and code instead of re-deriving it. If the anchor is gone,
+the pattern is dead: say so, don't trust folklore.
