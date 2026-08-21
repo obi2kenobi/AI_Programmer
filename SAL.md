@@ -441,3 +441,30 @@ in sé, ma del momento in cui viene provata. Correzione applicata al master: voc
 DEBITI.md che raccomanda di non concludere "skill assente" al primo fallimento quando il
 file esiste sul branch giusto, e di preferire il merge delle PR che introducono skill non
 appena il contenuto è verificato, proprio per non pagare due volte questo ritardo.
+
+Chiuso anche il ciclo pratico: implementata la commessa #8 corretta (`csvFatturatoPerCliente`
+costruito da zero, non estratto da `riepilogoFatturato`), 6/6 test verdi, PR #9 mersa,
+`Closes #8` verificato al merge.
+
+### 2026-08-21, notte (7) — Giro 2 dei "3 giri autonomi": verifica-visiva su un artefatto vero
+
+Giro 2: creata la commessa #10 (report HTML statico del fatturato, `src/report.js` +
+`tools/genera-report.js` → `dist/report.html`, gitignored) apposta per dare a
+`verifica-visiva` un vero artefatto del pilota da controllare — non più solo le pagine
+sintetiche scritte a mano per testare lo strumento la prima volta (limite scritto in
+DEBITI.md dopo l'aggiunta del roster).
+
+**Esito: positivo, e verificato per davvero.** `node tools/verifica-visiva.js file://.../dist/report.html out.png`
+→ exit 0; ho guardato lo screenshot (non solo il verdetto del tool) e corrisponde
+esattamente ai dati generati (5 righe, stessi clienti/articoli/importi del file HTML).
+Ho anche provato un caso limite reale — non ipotetico — che un report vero incontrerebbe:
+0 fatture nel periodo (stato legittimo, non un errore). Nessun falso positivo: titolo e
+intestazioni tabella restano sopra la soglia di "pagina vuota" (40 caratteri) della skill
+anche senza righe di dati.
+
+**Limite onesto, non richiuso**: questo resta un test su `file://` locale via Chromium
+headless, non su un vero deploy Apps Script (dominio `script.google.com`, OAuth) — quel
+gap dichiarato in DEBITI.md non si chiude da questa sessione (nessun clasp/OAuth
+disponibile). Correzione applicata al master: la voce DEBITI.md è stata aggiornata per
+riflettere il progresso reale senza sovra-dichiararlo — "provata anche su un artefatto
+vero" è vero, "provata su un deploy reale" resta falso finché qualcuno con clasp non lo fa.
