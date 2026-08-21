@@ -1,6 +1,6 @@
 ---
 name: dev-critic
-description: Trova punti deboli, debito tecnico e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. CDG_Costi_Diretti) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
+description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. CDG_Costi_Diretti) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
 ---
 
 # dev-critic — critico e scopritore di sviluppo
@@ -42,6 +42,30 @@ procedere a indovinare (regola del progetto: "se qualcosa è poco chiaro, chiedi
 Per ogni finding: severità, perché conta, un suggerimento concreto (non vago) e — se è una
 scelta di design con impatto (sicurezza, breaking change, costo) — dillo esplicitamente e non
 procedere senza il sì del proprietario.
+
+## 2bis. Lente sicurezza — sempre applicata, non solo quando sospetti qualcosa
+
+Due incidenti reali in questo stesso sistema (2026-08-21) sono nati da codice che
+"sembrava" a posto a lettura: `gate_allowlist_ok()` bloccava solo il primo token di un
+comando (bypassabile con `bash -c`/`python3 -c`), e `credenziali BC.rtf` è finita committata
+nella storia git di un progetto onboardato. Nessuno dei due è stato trovato leggendo il
+codice per la prima intenzione — solo provando ad aggirarlo o ispezionando cosa contiene
+davvero il repo prima di toccarlo. Applica sempre, non solo se il target "sembra" sensibile:
+
+- **Se il target esegue codice generato da un LLM** (banco avversariale, agenti che
+  eseguono comandi): una blacklist per parola chiave non basta — verifica se un interprete
+  general-purpose (`bash`, `sh`, `python3`, `node`, `awk`, `sed`) resta nell'allowlist, e
+  se sì prova a bucarla per davvero (pattern `allowlist-per-segmento`).
+- **Se il target stampa output derivato da codice/dati di terzi** (report, trascrizioni,
+  log): verifica se un segreto (token, chiave, password) potrebbe finire a schermo in
+  chiaro — e se il progetto ha già un modo per mascherarlo (pattern `segreto-come-impronta`)
+  prima di proporne uno nuovo.
+- **Prima di toccare o onboardare un repo esistente**: ispeziona cosa contiene (file di
+  credenziali, `.rtf`/`.env`/config con segreti) PRIMA di lavorarci, non dopo — un secret
+  scanner (gitleaks) è preferibile a una lettura a occhio.
+- **Se il target ha un sandbox dichiarato** (seatbelt, container): verifica cosa NEGA
+  davvero, non cosa dice di negare — un sandbox che blocca solo la rete lascia comunque
+  leggibili le credenziali locali a chi ci gira dentro.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 

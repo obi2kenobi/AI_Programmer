@@ -345,3 +345,42 @@ nell'ambiente del raccolto (scritto, non finto); tre candidati scartati CON moti
 pattern segreto-come-impronta indica un buco nostro (il gate non maschera gli output) —
 in DEBITI. Rettificata pure una mia pretesa: il README diceva che il grafo indicizza i
 pattern — falso con --code-only, voce in DEBITI. Backfill CSV: #14 fusa-prima-del-gate.
+
+### 2026-08-21, notte (4) — quattro ambiti mancanti nel roster, chiesti da Luca dopo l'analisi
+
+Luca ha chiesto un giudizio sul roster di cervelli/ruoli del sistema, "in base ai GAS fatti
+e analizzati" (CDG, Bilancio_di_Massa_PEFC, il parco di AI_Develop). Risposta: il PROCESSO è
+maturo e misurato (A/B, audit-commesse), ma i ruoli restano due soli (notte meccanica,
+giorno generico) contro un roster molto più specializzato osservato in AI_Develop
+(bc-specialist, ui-engineer, business-development-specialist, ecc.). Quattro aggiunte,
+tutte richieste e implementate lo stesso giro:
+
+- **`audit-commessa`** (`.claude/skills/audit-commessa/`) — scoperta collaterale: `/audit-commesse`
+  e `/design-doc`, citati come comandi in SAL.md e docs/system.md, non esistevano come file
+  in nessun repo (solo prosa). `audit-commessa` li rende un artefatto vero e ci porta dentro
+  la lente Business Central (aggregazione per famiglia ≠ per codice, endpoint con buchi
+  noti, CATALOGO_ENDPOINT_BC.md come fonte di verità) — è lo specialista forma-dati/BC
+  richiesto, senza duplicare un ruolo nuovo scollegato dal processo esistente.
+  `/design-doc` resta non formalizzato: fuori scope di questo giro, segnalato non deciso.
+- **`verifica-visiva`** (`.claude/skills/verifica-visiva/` + `tools/verifica-visiva.js`) —
+  il buco più ripetuto nell'audit di oggi: 4 commesse su 4 (#10-13) finivano con "review
+  visiva di Luca nel deploy" come unico controllo sul frontend. Screenshot reale via
+  Chromium headless (zero dipendenze nuove — CLI diretta, non il package playwright) +
+  guardia contro segnali d'errore noti di Apps Script e pagine vuote. **Provato dal vivo in
+  questa sessione** sui tre casi (pagina sana, pagina con "Autorizzazione richiesta", pagina
+  vuota) — tutti rilevati correttamente. **Limite dichiarato**: non provato contro un vero
+  deploy Apps Script, che richiede clasp/OAuth sul Mac.
+- **Lente sicurezza in `dev-critic`** (§2bis, non un nuovo skill) — i due incidenti reali di
+  oggi (bypass dell'allowlist, credenziali BC in CDG) non sono mai stati trovati da un ruolo
+  dedicato: dev-critic ora applica SEMPRE (non solo su richiesta) la lente sicurezza quando
+  il target esegue codice generato da LLM o stampa output derivato da terzi.
+- **`docs/GRAMMATICA_DOMINIO_TEMPLATE.md`** — chiude un TODO lasciato aperto dall'audit di
+  PEFC ("grammatica dei codici articolo non documentata... da chiedere a Matteo"): nessun
+  ruolo possedeva la cattura del vocabolario tribale che si ripete in ogni progetto BC del
+  gruppo. Seminato ora in `bootstrap-app.sh`/`onboard-repo.sh` (copiato solo se assente).
+
+**Prossimo passo, richiesto da Luca**: un pilota end-to-end su `night-shift-pilot` (repo
+nuovo, scaffold minimo) per verificare che l'intero processo — comprese queste quattro
+aggiunte — produca davvero una commessa pronta per la notte. App scelta apposta di scarso
+valore proprio ("fatturati per cliente e articolo" su BC, dati mock): serve a testare il
+banco di sviluppo, non a produrre un'app vera.
