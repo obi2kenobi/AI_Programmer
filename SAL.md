@@ -253,3 +253,18 @@ verifiche ok, % smentite del banco, aree fragili (commesse correttive ripetute �
 deduplicato per PR sull'attesa VERA (riga più vecchia). Prima lettura dai dati: 5/7 verifiche
 ok, 0 smentite, 1 merge — e #369 in attesa. Allineato anche system.md sul percorso cloud/ibrido
 (gli era sfuggito, nota dell'handoff: dichiarato ma non scritto lì).
+
+### 2026-08-21, sera — il test che contava: sviluppare una feature NUOVA
+
+Mandato di Luca: usare il sistema per una feature vera su Bilancio_di_Massa_PEFC, guardare
+dove fallisce. Il test ha trovato il bug più importante DENTRO l'operatore: la prima proposta
+era pattern-matching (bottone gemello), non progettazione — /brainstorming saltato. Il redo
+ha eseguito il processo per intero: 3 agenti in parallelo leggono tutto (prodotto, motore
+Python, intento/storia), gap analysis col desiderio del progetto alla mano (il suo SAL §6
+aveva già la roadmap), scelta socratica → **analisi per spessore** (la granularità del banco
+di Matteo, assente in dashboard). Design documentato, commessa #11 chirurgica, turno in corsa
+con anche la #10 (CSV). Cinque finding d'infrastruttura in giornata, tutti corretti: pre-scan
+rotto, processo-saltabile, zombie opencode, doppio proprietario del server, turni sovrapposti
+(lock per repo). L'analisi completa con le proposte: docs/test-processo-2026-08-21.md —
+la prima: template issue con sezione DESIGN obbligatoria, così il metodo non dipende più
+dalla disciplina dell'operatore.
