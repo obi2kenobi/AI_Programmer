@@ -699,3 +699,34 @@ aspettavano una decisione di design. Entrambe saldate, entrambe riprovate dal vi
 `bash -n` passa su entrambi gli script; `shellcheck` non installato in questa
 sessione (annotato, non finto). L'esecuzione end-to-end contro un `gh` autenticato
 vero resta al primo gate reale sul Mac dopo questa PR — dichiarato in DEBITI.md.
+
+### 2026-08-21, notte (18) — un bug reale su un progetto vero apre una lente mancante nel roster
+
+Luca ha chiesto di seguire con attenzione anche gli agenti/il roster, in particolare sui
+temi matematico-finanziari: "capire col tempo se gli esperti sono tutti e sono corretti o
+hanno bisogno di revisioni". Occasione concreta, non ipotetica: continuando l'analisi su
+`Bilancio_periodico` (progetto vero, cliente vero — vedi il suo SAL.md), costruito un
+banco di verifica in Node per `gas/Sp.js` (Stato Patrimoniale per le banche) — **trovato
+un segno sbagliato** nella formula del plug (`resto2 = serve - suIva`, doveva essere
+`serve + suIva`), invisibile a lettura E invisibile a "quadratura: 0,00 ✅" perché il
+passo di tie-out finale (per centesimi di arrotondamento) assorbiva SEMPRE l'intero
+residuo, qualunque fosse la sua entità — ogni riscontro storico del progetto tornava "in
+pareggio" anche quando la logica non lo era. Corretto e riverificato su 8 scenari
+sintetici (`tools/test-sp.js`, ora nel repo del cliente); aggiunta una guardia che
+segnala un residuo anomalo invece di assorbirlo in silenzio.
+
+**Il gap di roster che questo espone**: nessuna delle lenti esistenti (dev-critic
+generico, sicurezza §2bis, audit-commessa sulla forma-dati, verifica-visiva sullo
+schermo) avrebbe mai trovato questo bug — nessuna prevede di ESEGUIRE le formule di
+calcolo con dati sintetici e misurare l'invariante di dominio PRIMA di un passo di
+aggiustamento finale. **Aggiunta**: `dev-critic` §2ter — lente matematico-finanziaria,
+stesso schema della lente sicurezza (sempre applicata quando il target ha questa
+caratteristica, non solo su richiesta). Pattern gemello registrato:
+`patterns/banco-sintetico-per-calcoli-critici.md`, ancorato a `tools/test-sp.js` (banco
+vero, provato) e `gas/Sp.js:366` (il bug corretto) di Bilancio_periodico.
+
+**Nota onesta sul metodo di scoperta**: il bug non è stato trovato applicando la nuova
+lente (che non esisteva ancora) — è stato trovato per tentativi, con più derivazioni a
+mano sbagliate corrette solo eseguendo il codice vero. La lente esiste ORA perché quel
+percorso (spesso fatica sprecata a mano, poi risolta in un minuto di esecuzione) merita
+di diventare il primo passo la prossima volta, non l'ultimo.

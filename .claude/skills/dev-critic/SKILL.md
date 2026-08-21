@@ -1,6 +1,6 @@
 ---
 name: dev-critic
-description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. CDG_Costi_Diretti) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
+description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento — lente §2ter) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. CDG_Costi_Diretti) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
 ---
 
 # dev-critic — critico e scopritore di sviluppo
@@ -66,6 +66,38 @@ davvero il repo prima di toccarlo. Applica sempre, non solo se il target "sembra
 - **Se il target ha un sandbox dichiarato** (seatbelt, container): verifica cosa NEGA
   davvero, non cosa dice di negare — un sandbox che blocca solo la rete lascia comunque
   leggibili le credenziali locali a chi ci gira dentro.
+
+## 2ter. Lente matematico-finanziaria — quando il target fa calcoli che devono essere giusti
+
+Nata da un bug reale (2026-08-21, Bilancio_periodico — progetto vero, cliente vero, non un
+pilota): `gas/Sp.js` (Stato Patrimoniale per le banche) aveva un segno sbagliato nella
+formula del plug (`resto2 = serve - suIva`, doveva essere `serve + suIva`). Il bug era
+invisibile a lettura E invisibile a "quadratura: 0,00 ✅" — il passo finale di tie-out
+(pensato per pochi centesimi di arrotondamento) assorbiva SEMPRE l'intero residuo,
+qualunque fosse la sua entità, quindi ogni riscontro storico tornava "in pareggio" anche
+quando la logica sottostante non lo era. Trovato solo eseguendo la funzione vera con dati
+sintetici (`tools/test-sp.js` in Bilancio_periodico) e guardando il residuo PRIMA del
+passo di aggiustamento finale, non dopo. Applica quando il target contiene formule con un
+invariante di dominio verificabile (contabilità: Attivo=Passivo; riparti che devono
+sommare al 100%; conversioni; arrotondamenti):
+
+- **Isola le funzioni di calcolo pure** (senza rete/GAS/DB) e costruisci un banco che le
+  esegue davvero con dati sintetici minimi ma realistici nella forma — mai fermarsi alla
+  lettura delle formule, un errore di segno si nasconde bene nella prosa di un commento.
+- **Misura l'invariante PRIMA di un eventuale passo di aggiustamento finale** (rounding,
+  plug, tie-out, quadratura forzata): quel passo esiste per nascondere il rumore, non
+  l'errore — se lo misuri solo DOPO, un bug vero e un centesimo di arrotondamento sono
+  indistinguibili. Se il residuo pre-aggiustamento supera una soglia ragionevole (non
+  pochi centesimi), è un sintomo da riportare, e se il codice lo assorbe comunque in
+  silenzio, proponi una guardia che lo segnali (pattern `soglia-con-provenienza`).
+- **Prova scenari avversariali, non solo il caso felice**: segno invertito (perdita
+  invece di utile), lo squilibrio che supera la capienza di ogni meccanismo di
+  assorbimento, voci a saldo zero, valori enormi. Il caso che ha rivelato il bug reale
+  sopra era il caso NORMALE (l'IVA assorbe una parte del plug), non un edge case scelto
+  ad arte — non fidarti che "i numeri reali già validati" abbiano davvero esercitato la
+  formula nel modo giusto.
+- Il pattern esteso (banco Node/vm su codice GAS puro, senza dipendenze) è documentato in
+  `patterns/banco-sintetico-per-calcoli-critici.md`.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 
