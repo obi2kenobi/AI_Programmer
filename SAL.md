@@ -776,3 +776,22 @@ tecnica di `segreto-come-impronta`, solo applicata a metà), un prompt LLM per u
 booleano corretto per un caso di misclassificazione noto e mai chiuso, e il CLAUDE.md del
 progetto stesso — che si dichiara vincolante — desincronizzato dal codice reale (due
 decisioni tecniche superate erano ancora scritte come attuali).
+
+### 2026-08-21 — Giro 2 sullo stesso progetto onboardato: un terzo pattern, sul TEST non sul fix
+
+Giro 2 (nuova funzionalità, richiesta esplicita già scritta nella roadmap del progetto — non
+una scelta nostra). La funzionalità in sé (rendere cliccabili tabelle e grafici rimasti fuori
+da una scheda-dettaglio prodotto già esistente altrove) non generalizza a un pattern — è
+troppo specifica. Quello che generalizza è COME è stata verificata: una web app Google Apps
+Script non ha un ambiente locale eseguibile, ma il frontend è HTML/JS puro dentro
+`HtmlService` — risolvendo a mano gli `include()`, stubbando `google.script.run` con
+l'output vero di una funzione di backend eseguita a parte (non un finto scritto a mano — si
+ricadrebbe nel problema di `stato-vuoto-dalla-pipeline`), e localizzando le dipendenze CDN
+quando la rete non arriva al browser (curl sì, browser headless no — differenza reale
+riscontrata in questo ambiente), si ottiene un banco di verifica in un browser reale senza
+mai toccare Apps Script. **Nuovo pattern**: `patterns/banco-browser-per-webapp-gas.md`.
+Nota onesta riportata nel pattern stesso: la logica del click è stata provata con certezza
+(stessa funzione, stessa forma di argomenti della libreria grafica); il click del mouse
+*simulato* su un punto scatter non ha affidabilmente centrato l'hit-test pixel della
+libreria — l'ultimo miglio di automazione non è la stessa cosa della logica sottostante,
+e va detto quando succede, non nascosto sotto un "verificato" generico.
