@@ -19,6 +19,7 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
+source "$HERE/lib.sh"
 CONF="$HERE/repos.conf"
 LOG="$HOME/night-shift.log"
 WORK="$HOME/night-shift-work"
@@ -80,11 +81,19 @@ shift_repo() {
   gh auth status >/dev/null 2>&1 || { log "ERRORE: gh non autenticato"; return 1; }
 
   local DIR="$WORK/${REPO##*/}"
+  # review §2.2: il default branch si DETECTA (mai assumere main) e un checkout fallito
+  # si dice forte e si risolve col riclone — mai continuare su stato stantio in silenzio
   if [ -d "$DIR/.git" ]; then
     git -C "$DIR" fetch origin --prune -q
-    git -C "$DIR" checkout main -q 2>/dev/null && git -C "$DIR" reset --hard origin/main -q
   else
     gh repo clone "$REPO" "$DIR" -- --depth=50 -q || { log "ERRORE: clone di $REPO fallito"; return 1; }
+  fi
+  local DB
+  DB=$(default_branch "$DIR") || log "ATTENZIONE: default branch non rilevato in $REPO, assumo main"
+  if ! git -C "$DIR" checkout "$DB" -q 2>/dev/null || ! git -C "$DIR" reset --hard "origin/$DB" -q; then
+    log "ERRORE: checkout/reset di $DB fallito in $DIR — riclono pulito"
+    rm -rf "$DIR"
+    gh repo clone "$REPO" "$DIR" -- --depth=50 -q || { log "ERRORE: riclone di $REPO fallito"; return 1; }
   fi
   git -C "$DIR" config user.name  >/dev/null 2>&1 || git -C "$DIR" config user.name  "Night Shift"
   git -C "$DIR" config user.email >/dev/null 2>&1 || git -C "$DIR" config user.email "night-shift@localhost"
@@ -92,6 +101,7 @@ shift_repo() {
   local ISSUES COUNT
   ISSUES=$(gh issue list -R "$REPO" --label night-shift --state open --json number,title,body --limit 50)
   COUNT=$(echo "$ISSUES" | jq 'length')
+  [ "$COUNT" -ge 50 ] && log "ATTENZIONE: limite 50 issue raggiunto in $REPO — possibile troncamento silenzioso (review §5)"
   log "TURNO su $REPO: $COUNT issue in coda"
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
@@ -119,7 +129,7 @@ shift_repo() {
 
     BRANCH="night/issue-$NUM"
     log "--- Issue #$NUM: $TITLE"
-    git -C "$DIR" checkout -B "$BRANCH" origin/main -q
+    git -C "$DIR" checkout -B "$BRANCH" "origin/$DB" -q
     git -C "$DIR" clean -fdq
 
     local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari. Se una cartella è dichiarata specchio o sola lettura (es. gas-src/), non scriverci MAI. Rispetta le convenzioni di commit del repo.
@@ -149,7 +159,7 @@ $BODY"
     git -C "$DIR" push -q -u origin "$BRANCH" || { log "Issue #$NUM: push fallito"; FAILED=$((FAILED+1)); continue; }
 
     local PR_URL
-    PR_URL=$(gh pr create -R "$REPO" --draft --base main --head "$BRANCH" \
+    PR_URL=$(gh pr create -R "$REPO" --draft --base "$DB" --head "$BRANCH" \
       --title "night: $TITLE" \
       --body "PR bozza dal turno di notte (Qwen3.8-27B locale via AI_Programmer).
 
