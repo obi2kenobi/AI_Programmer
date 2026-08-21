@@ -228,3 +228,16 @@ strumento lo legge, nemmeno dopo il fix di `gate-esito.sh`. Proposta: `gate-summ
 riepilogo periodico (% verifiche ok, % smentite dal banco, repo con più commesse correttive
 ripetute, PR senza esito da troppi giorni) — da costruire DOPO aver verificato che l'esito si
 popola davvero nel tempo, altrimenti sarebbe un riepilogo di dati vuoti.
+
+### 2026-08-21, notte (2) — il bypass dell'allowlist chiuso con l'opzione (c) di Luca
+
+Decisione presa da Luca sulle opzioni presentate (handoff serale): **entrambe**. Fatto e
+dimostrato con gli stessi comandi che avevano trovato il bypass (ora devono fallire — e
+falliscono): interpreti general-purpose rimossi dall'allowlist (`bash -c`, `python3 -c`,
+`awk system()`, `sed /e`, `node -e`, `npm run` → tutti BLOCCATI; il banco smentisce con
+grep/cat/git readonly) e sandbox con **letture negate sui percorsi sensibili** (`.ssh`,
+`.aws`, `.gnupg`, token gh in `.config/gh`, credenziali Claude, `.ollama`) — provato dal
+vivo: `cat ~/.config/gh/hosts.yml` in sandbox → Operation not permitted; `/etc/hosts` e
+workdir restano leggibili. Chiuso in pubblico anche il falso positivo del quoting: lo split
+dei segmenti ora rispetta le virgolette (`grep -c "a;b" file` passa). I due debiti di
+dev-critic sono marcati SALDATI in DEBITI.md.

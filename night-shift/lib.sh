@@ -28,25 +28,45 @@ run_guarded() {
   return $rc
 }
 
-# gate_allowlist_ok(): TRUE solo se OGNI segmento del comando (split su && || ; |)
-# inizia con uno strumento ammesso — e git solo in forma readonly.
-# Review §3: la blacklist da sola è bucabile (find -delete, git reset --hard...);
-# questa è la prima linea, il sandbox-exec è la seconda.
+# gate_allowlist_ok(): TRUE solo se OGNI segmento del comando (split consapevole delle
+# virgolette su && || ; |) inizia con uno strumento che NON PUÒ eseguire codice via argomenti.
+# Decisione di Luca 2026-08-21 (opzione c): niente interpreti general-purpose — bash -c,
+# python3 -c, awk system(), sed /e, npm run bypassavano il controllo sul primo token
+# (verificato dal vivo da dev-critic, vedi DEBITI.md). Il banco smentisce con grep/cat/git.
 gate_allowlist_ok() {
   python3 - "$1" <<'PY'
-import sys, re, shlex
+import sys, re
 cmd = sys.argv[1]
-ALLOWED = {"node","npm","pnpm","yarn","python3","python","grep","cat","ls","wc",
-           "awk","sed","jq","echo","test","bash","sh","diff","head","tail","git"}
+# split consapevole delle virgolette: gli operatori DENTRO stringhe citate non separano
+# (chiude anche il falso positivo documentato in DEBITI: grep -c "a;b" file)
+def split_operators(c):
+    out, buf, q = [], [], None
+    i = 0
+    while i < len(c):
+        ch = c[i]
+        if q:
+            buf.append(ch)
+            if ch == q: q = None
+        elif ch in "\"'":
+            q = ch; buf.append(ch)
+        elif c[i:i+2] in ("&&", "||"):
+            out.append("".join(buf)); buf = []; i += 2; continue
+        elif ch in ";|":
+            out.append("".join(buf)); buf = []
+        else:
+            buf.append(ch)
+        i += 1
+    out.append("".join(buf))
+    return out
+
+ALLOWED = {"grep","cat","diff","wc","head","tail","ls","test","jq","echo","git"}
 GIT_RO = {"diff","log","show","grep","status","rev-parse","ls-files","blame"}
-for seg in re.split(r"&&|\|\||;|\|", cmd):
+for seg in split_operators(cmd):
     seg = seg.strip()
     if not seg:
         continue
-    try:
-        tokens = shlex.split(seg)
-    except ValueError:
-        sys.exit(1)
+    # token grezzo senza shlex (shlex esploderebbe su sintassi shell complessa):
+    tokens = seg.split()
     if not tokens:
         continue
     if tokens[0] not in ALLOWED:

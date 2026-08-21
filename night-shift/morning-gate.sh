@@ -115,7 +115,7 @@ $DIFF_TXT"
         else
           # Difesa in profondità (review §3): allowlist ✓ + sandbox seatbelt (no rete, scritture
           # solo nella copia disposabile) + watchdog 120s
-          sed "s|__WORKDIR__|$DIR|g" "$HERE/sandbox.sb" > /tmp/gate-sandbox.sb
+          sed -e "s|__WORKDIR__|$DIR|g" -e "s|__HOME__|$HOME|g" "$HERE/sandbox.sb" > /tmp/gate-sandbox.sb
           ( cd "$DIR" && run_guarded 120 sandbox-exec -f /tmp/gate-sandbox.sb bash -c "$CMD" ) > /tmp/gate-banco.out 2>&1
           BRC=$?
           OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200)
