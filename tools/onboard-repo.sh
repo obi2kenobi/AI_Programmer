@@ -51,6 +51,14 @@ if [ ! -f "$WORK/.github/ISSUE_TEMPLATE/night-shift.md" ]; then
     && echo "template issue creato e spinto" || echo "⚠ template non copiato (hub senza template)"
 fi
 
+# Vocabolario di dominio (aggiunta 2026-08-21): seed solo se assente, mai sovrascritto.
+if [ ! -f "$WORK/docs/GRAMMATICA_DOMINIO.md" ]; then
+  mkdir -p "$WORK/docs"
+  cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" "$WORK/docs/GRAMMATICA_DOMINIO.md" \
+    && git -C "$WORK" add docs/GRAMMATICA_DOMINIO.md && git -C "$WORK" commit -q -m "chore: template vocabolario di dominio" && git -C "$WORK" push -q \
+    && echo "GRAMMATICA_DOMINIO.md creato e spinto" || echo "⚠ template vocabolario non copiato"
+fi
+
 CONF="$HERE/night-shift/repos.conf"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
 grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }
