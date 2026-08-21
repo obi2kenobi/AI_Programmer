@@ -55,3 +55,36 @@ commessa (issue night-shift) → notte (PR bozza) → gate (verifiche + smentita
    → esito: merge (tuo sì) | chiusura | commessa correttiva (da approvare)
    → lezione scritta in SAL.md + riga in metrics/gate.csv → il ciclo migliora
 ```
+
+---
+
+## Il ciclo come loop engineering (2026-08-21)
+
+Il sistema pratica **loop engineering** da prima di conoscere il nome: trigger che avviano un
+harness, verifica, memoria su file, ciclo che riparte. Il vocabolario pubblico (Boris Cherny —
+"non scrivo più prompt, disegno loop"; Peter Steinberger; Karpathy col suo AutoResearch — le sue
+quattro regole sono in CLAUDE.md dal principio) arriva dopo e formalizza.
+
+| Loop engineering | Qui |
+|---|---|
+| Trigger (evento o orario) | issue `night-shift` + launchd 23:00 |
+| Harness (subtask, stato su file, contesto fresco per step) | CLAUDE.md + SAL + grafo + commesse precaricate |
+| Verifica | `.night-verify` + morning-gate col banco |
+| Memoria persistente (file system come estensione del contesto) | SAL.md + metrics/gate.csv + lezioni |
+| Loop sul loop | commessa → notte → gate → correttore → notte |
+
+**I cinque livelli di verifica** (tassonomia assorbita, i nostri nomi):
+
+| Livello | Qui |
+|---|---|
+| 1 · deterministico (booleano) | `.night-verify`: exit code, test-motore |
+| 2 · regole e vincoli numerici | soglie, conteggi asserzioni, metriche del gate |
+| 3 · verità terrena ritardata | **il "riscontro" BC**: Verificato ☐ che matura quando i dati veri arrivano; esiti deploy |
+| 4 · LLM giudice | banco avversariale — variante POTENZIATA: un modello che prova a smentire batte un modello che si autovaluta |
+| 5 · checkpoint umano | la review di Luca — mai saltato, chiude ogni ciclo |
+
+Comando per i loop diurni iterativi: **`/goal`** (obiettivo verificabile + tetto di tentativi,
+log di ogni tentativo in `loops/`). Tensione dichiarata e voluta: la notte non ha limite di
+tempo (decisione del 2026-08-21, guardia = review del mattino); i loop `/goal` diurni hanno
+sempre un tetto — commessa unica e lunga vs ottimizzazione iterativa: contesti diversi,
+regole diverse, entrambe giuste.
