@@ -808,3 +808,52 @@ userà il banco-sintetico su un codice che usa `instanceof Date`/`Array` ci sbat
 inevitabilmente e leggerà il fallimento come un bug nel codice, non nel banco. **Aggiunto un
 addendum al pattern esistente**, non una nuova voce nel registro — non tutto quello che si impara
 merita un pattern a sé; a volte è solo un caso in più dello stesso.
+
+### 2026-08-21 — Chiusura dei 5 giri autonomi su un secondo progetto onboardato: cosa ha funzionato nel processo
+
+Luca aveva chiesto esplicitamente di osservare come il sistema si comporta "in loop" su 5 giri
+completamente autonomi (1 giro di correzione ampia + 4 di nuove funzionalità), migliorando sia lo
+script del progetto sia il sistema stesso a ogni passo, senza fermarsi a chiedere conferma
+step-by-step come CLAUDE.md richiederebbe normalmente — un'eccezione esplicita e dichiarata alla
+regola "repeat the request... wait for explicit approval", non una sua violazione silenziosa.
+Onestà di processo, non solo di risultato: cosa ha tenuto e cosa no.
+
+**Ha tenuto**:
+- **Un branch, una PR, un merge per giro** — mai una commessa unica a fine sessione. Ogni giro
+  verificabile e revertibile indipendentemente dagli altri; la cronologia commit racconta la
+  sequenza reale, non un blob finale.
+- **Verifica per esecuzione ad ogni giro, mai per lettura sola** — banco Node/vm sul codice VERO
+  per la logica pura (5 banchi nuovi in 5 giri), banco Playwright con `google.script.run` stubbato
+  e Chart.js scaricato in locale quando la feature era di UI (drill-down, grafico storico) e non
+  bastava un banco puro. Due volte il primo tentativo di banco è fallito per un bug DEL BANCO
+  (Date cross-realm, tab-selector sbagliato in un test) — mai scambiato per un bug del codice senza
+  verificare, mai lasciato correre "probabilmente funziona".
+- **Onestà sui limiti della verifica**, ripetuta in ogni giro senza eccezioni: cosa è stato provato
+  dal vivo in un browser reale, cosa solo a livello di logica/handler (il click Chart.js simulato
+  che non centrava l'hit-test pixel), cosa resta da confermare lato cliente perché richiede
+  `clasp push`/chiavi API reali/dati con ≥2 run — mai un "verificato" generico che nasconde quale
+  dei tre livelli è stato raggiunto.
+- **Le feature scelte erano tracciabili a una fonte**, non inventate: la roadmap dichiarata del
+  progetto stesso (drill-down, Trend & Alert, storico prezzo — tutti già scritti nella specifica
+  originale o nel SAL del progetto) o un rischio operativo reale trovato leggendo il codice
+  (trigger settimanale mai automatizzato). Mai una funzionalità aggiunta solo perché "sarebbe
+  carina".
+- **La lezione metodologica, quando genuina, è tornata qui anonimizzata** — due nuovi pattern, un
+  addendum a uno esistente, mai forzati quando il giro non aveva prodotto niente di generalizzabile
+  oltre il fix specifico (Giro 4 e Giro 5 non hanno prodotto nessuna voce di pattern: non tutto
+  quello che si fa qui deve generare una pagina di metodo).
+
+**Non ha tenuto/da migliorare**:
+- **`git push` verso il repo del progetto ha avuto ripetuti 502/503 transitori** ("session scope
+  unavailable") durante la sessione — risolto con un retry loop in background (`until git push...;
+  do sleep 15; done`), non con i soli 4 tentativi con backoff fisso previsti dalla procedura
+  standard, insufficienti quando il guasto dura più di ~30 secondi. Da portare nella procedura
+  operativa: se il retry a backoff fisso si esaurisce e il proxy segnala esplicitamente un problema
+  transitorio (non una policy denial 403/407), un retry loop in background è preferibile a
+  rinunciare o a ripetere manualmente.
+- **Il banco Playwright non è ripetibile automaticamente** — richiede Chromium + una copia locale
+  di eventuali dipendenze CDN, ricostruito a mano ad ogni giro con un piccolo script diverso.
+  Riusabile come METODO (`banco-browser-per-webapp-gas`), non come strumento pronto all'uso: se
+  questo genere di verifica ricorre spesso su progetti futuri, vale la pena costruire un piccolo
+  harness generico (repo/percorso dei file GAS in input, stub configurabile) invece di riscriverlo
+  da zero ogni volta — non fatto in questa sessione, segnalato come possibile debito futuro.
