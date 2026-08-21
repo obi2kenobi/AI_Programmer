@@ -730,3 +730,49 @@ lente (che non esisteva ancora) — è stato trovato per tentativi, con più der
 mano sbagliate corrette solo eseguendo il codice vero. La lente esiste ORA perché quel
 percorso (spesso fatica sprecata a mano, poi risolta in un minuto di esecuzione) merita
 di diventare il primo passo la prossima volta, non l'ultimo.
+
+### 2026-08-21 — nuova regola: qui solo metodo, mai il nome dei progetti onboardati
+
+Luca ha chiesto esplicitamente che questo repo (pubblico) contenga sistema e metodo, MAI
+riferimenti a quali progetti/clienti lavoriamo — solo forma anonima da qui in avanti. Le
+voci precedenti che nominano `Bilancio_periodico`/`CDG_Costi_Diretti` restano invariate
+(la regola vale in avanti, non è stata chiesta una bonifica retroattiva — se in futuro
+Luca vorrà anche quella, è un passo separato ed esplicito). Le due voci che seguono
+adottano già la nuova convenzione: "un progetto onboardato" al posto del nome, il
+dominio di business omesso, solo file/funzione (generici, non identificano da soli quale
+cliente).
+
+### 2026-08-21 — Giro 1 di 5 su un progetto onboardato: due bug della stessa famiglia di (18), un secondo pattern nuovo
+
+Primo di 5 giri di sviluppo autonomo su un secondo progetto onboardato (pipeline GAS di
+raccolta dati esterni + dashboard di analisi — stesso genere di stack di
+Bilancio_periodico, cliente diverso). Applicata la lente §2ter appena introdotta in (18):
+banco sintetico Node/vm sul codice vero, eseguito prima di fidarsi di qualunque "quadra".
+
+Trovati e corretti **due bug reali della stessa famiglia**, in punti diversi dello stesso
+progetto:
+1. Un oggetto "stato vuoto" scritto a mano per il caso "nessun dato ancora" era rimasto
+   con la forma vecchia dopo che la funzione di aggregazione reale era stata riscritta con
+   nuove chiavi — non un crash (il consumatore a valle aveva già una guardia difensiva),
+   ma un contratto silenziosamente sbagliato. Fix: il caso vuoto ora chiama la stessa
+   pipeline reale con input vuoto, non descrive più la forma a mano — non può più
+   divergere per costruzione. **Nuovo pattern**: `patterns/stato-vuoto-dalla-pipeline.md`.
+2. Una funzione di validazione (range plausibili su campi numerici) azzerava
+   silenziosamente ogni valore fuori soglia, zero log, zero traccia — indistinguibile da
+   un campo mai estratto. Non è la prima volta: lo stesso schema esatto (un residuo/scarto
+   reale mascherato invece che segnalato) era già comparso due volte all'interno di
+   Bilancio_periodico dopo la voce (18) — un plug contabile che assorbiva un residuo nel
+   tie-out, e un pool di costi che spariva sotto una guardia anti-divisione-per-zero. Tre
+   occorrenze indipendenti in due progetti bastano per un pattern a sé, distinto dal banco
+   sintetico (quello è la tecnica di TEST, questo è la FORMA del fix): **nuovo pattern**
+   `patterns/scarto-mai-silenzioso.md` — una funzione che scarta/clampa deve ritornare
+   cosa ha scartato, il chiamante lo logga, la regola/soglia non cambia.
+
+Anche corretti nello stesso giro (non generalizzati a pattern, casi singoli): una funzione
+di test di modulo che non girava più da tempo (riferiva campi superati da una riscrittura
+precedente — avrebbe lanciato un errore se eseguita), un'asimmetria nel mascheramento
+segreti nei log d'errore (una chiave era già mascherata negli errori, l'altra no — stessa
+tecnica di `segreto-come-impronta`, solo applicata a metà), un prompt LLM per un campo
+booleano corretto per un caso di misclassificazione noto e mai chiuso, e il CLAUDE.md del
+progetto stesso — che si dichiara vincolante — desincronizzato dal codice reale (due
+decisioni tecniche superate erano ancora scritte come attuali).
