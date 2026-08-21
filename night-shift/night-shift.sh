@@ -62,6 +62,10 @@ probe() {
 
 ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
 ollama list 2>/dev/null | grep -q "$MODEL_TAG" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
+# Finding #3 (2026-08-21): opencode orfani di ore rubano il modello e inquinano i turni.
+# Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
+pkill -f "opencode run" 2>/dev/null && log "Puliti processi opencode orfani" && sleep 2 || true
+
 if ! probe; then
   log "Sonda fallita: riavvio server (errori Metal dopo lunga vita)..."
   # Finding #4 (2026-08-21): il server è di LAUNCHD (KeepAlive) — se lo killiamo e ne
@@ -91,6 +95,16 @@ shift_repo() {
   log "===== REPO $REPO (commit: $CTYPE) ====="
 
   gh auth status >/dev/null 2>&1 || { log "ERRORE: gh non autenticato"; return 1; }
+
+  # Lock per repo (finding #5, 2026-08-21): il turno manuale e quello delle 23:00 non si
+  # pestano i piedi. Lock a directory con età: un lock più vecchio di 12h è Considerato morto.
+  local LOCK="$WORK/.lock-${REPO//\//_}"
+  if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) )) -lt 43200 ]; then
+    log "REPO $REPO: lock attivo di un altro turno, salto"
+    return 0
+  fi
+  mkdir -p "$LOCK"
+  trap 'rmdir "$LOCK" 2>/dev/null' RETURN
 
   local DIR="$WORK/${REPO##*/}"
   # review §2.2: il default branch si DETECTA (mai assumere main) e un checkout fallito
