@@ -334,3 +334,14 @@ La difesa in profondità ora è: template (Design + Forma dei dati obbligatori) 
 ciò che l'autore non vedeva. Regola aggiunta alla自身的 pratica: chi scrive commesse verifica
 le affermazioni del SAL contro il codice — un diario che dice il passato come presente è
 peggiore di un diario mancante (rettifica scritta anche nel SAL di PEFC).
+
+### 2026-08-21, notte (3) — il raccolto di AI_Develop entra: 18 pattern vivi
+
+La PR #7 di Claude (8 pattern setacciati dai 93 strumenti di AI_Develop, tutti ancorati e
+provati per esecuzione dove possibile) è MERGED — e con essa la #14 (spessori): Luca ha
+fuso entrambe in giornata. La libreria patterns/ conta ora 18 voci vive. Note di_onestà:
+il pattern trovare-non-e-fallire dichiara che riallinea-mirror.sh intero non ha mai girato
+nell'ambiente del raccolto (scritto, non finto); tre candidati scartati CON motivo. Il
+pattern segreto-come-impronta indica un buco nostro (il gate non maschera gli output) —
+in DEBITI. Rettificata pure una mia pretesa: il README diceva che il grafo indicizza i
+pattern — falso con --code-only, voce in DEBITI. Backfill CSV: #14 fusa-prima-del-gate.

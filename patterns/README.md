@@ -3,8 +3,9 @@
 Ogni pattern è uno snippet/rule **provato**, con l'ÀNCORA al codice che lo usa (file:funzione)
 e la lezione che l'ha creato. Regola ereditata da `pattern-strumenti.js` di AI_Develop:
 **l'ancora deve esistere, o la voce non sopravvive** — lo snippet non ancorato è folklore.
-Consumo: gli agenti citano il pattern nelle commesse invece di iniettare codice; il grafo
-li indicizza (`graphify query "watchdog"` → il pattern con la sua àncora).
+Consumo: gli agenti citano il pattern nelle commesse invece di iniettare codice. La ricerca
+oggi è il registro qui sotto; l'indicizzazione nel grafo richiede il pass semantico dei
+documenti (DEBITI: da valutare se vale i token).
 
 ## Registro
 
