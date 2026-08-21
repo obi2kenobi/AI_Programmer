@@ -1,7 +1,8 @@
 #!/bin/bash
 # morning-gate.sh — il giudizio del mattino: AI_Develop come giudice, censore, correttore.
 #
-# Per ogni PR night/* aperta su ogni repo della coda:
+# Per ogni PR night/* O claude/* aperta su ogni repo della coda (il giudice ha due occhi:
+# anche il lavoro del giorno passa verifiche e banco — 2026-08-21):
 #   1. VERIFICHE DICHIARATE: esegue i comandi nel file .night-verify della repo
 #      (se assente, lo dice invece di tacere — regola "un silenzio non è un verdetto")
 #   2. BANCO AVVERSARIALE: chiede al modello locale di provare a SMENTERE la PR
@@ -44,7 +45,7 @@ TOTAL=0 PASS=0 FAIL=0
 for REPO in "${REPO_LIST[@]}"; do
   DIR="$WORK/${REPO##*/}"
   gh pr list -R "$REPO" --state open --json number,headRefName,title --limit 50 2>/dev/null \
-    | jq -c '.[] | select(.headRefName | startswith("night/"))' > /tmp/gate-prs.json
+    | jq -c '.[] | select(.headRefName | test("^night/|^claude/"))' > /tmp/gate-prs.json
   # -s (slurp): conta gli elementi dello stream — senza, jq conta le CHIAVI dell'oggetto
   N=$(jq -s 'length' < /tmp/gate-prs.json); N="${N:-0}"
   echo "## $REPO — $N PR notturne aperte" >> "$REPORT"

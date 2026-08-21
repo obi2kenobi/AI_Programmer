@@ -303,3 +303,14 @@ Le tre cose che Claude non ha capito dalla documentazione → tre azioni fatte:
    candidato a docs/GRAMMATICA_CODICI.md quando qualcuno la sa scrivere)
 3. CLAUDE.md §6 di PEFC citava il progetto Motore (engine, pnpm, PHP!) → corretto via API
    con il contesto reale del repo
+
+### 2026-08-21, notte — le interazioni col giorno diventano workflow del sistema
+
+Le sessioni Claude di oggi (review, dev-critic, A/B, audit lanciato da Luca) non restano
+scambi: diventano fasi ripetibili. Nascono `/audit-commesse` (il pre-flight serale che
+verifica le assunzioni delle commesse sul codice prima che la notte le incontri — la lezione
+dell'A/B strutturata) e `/design-doc` (il design con opzioni che non implementa: la scelta
+resta umana), entrambi per Claude E ZCode. Il gate ora giudica anche i branch claude/*: il
+lavoro del giorno passa verifiche e banco come quello notturno — un giudice, due occhi.
+Il ciclo completo: brainstorming → design-doc → commessa → audit-commesse → notte → gate
+→ review. Ogni fase ha il suo comando, ogni comando il suo perché scritto.
