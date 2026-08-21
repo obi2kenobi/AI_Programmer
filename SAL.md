@@ -346,6 +346,45 @@ pattern segreto-come-impronta indica un buco nostro (il gate non maschera gli ou
 in DEBITI. Rettificata pure una mia pretesa: il README diceva che il grafo indicizza i
 pattern — falso con --code-only, voce in DEBITI. Backfill CSV: #14 fusa-prima-del-gate.
 
+### 2026-08-21, notte (4) — quattro ambiti mancanti nel roster, chiesti da Luca dopo l'analisi
+
+Luca ha chiesto un giudizio sul roster di cervelli/ruoli del sistema, "in base ai GAS fatti
+e analizzati" (CDG, Bilancio_di_Massa_PEFC, il parco di AI_Develop). Risposta: il PROCESSO è
+maturo e misurato (A/B, audit-commesse), ma i ruoli restano due soli (notte meccanica,
+giorno generico) contro un roster molto più specializzato osservato in AI_Develop
+(bc-specialist, ui-engineer, business-development-specialist, ecc.). Quattro aggiunte,
+tutte richieste e implementate lo stesso giro:
+
+- **`audit-commessa`** (`.claude/skills/audit-commessa/`) — scoperta collaterale: `/audit-commesse`
+  e `/design-doc`, citati come comandi in SAL.md e docs/system.md, non esistevano come file
+  in nessun repo (solo prosa). `audit-commessa` li rende un artefatto vero e ci porta dentro
+  la lente Business Central (aggregazione per famiglia ≠ per codice, endpoint con buchi
+  noti, CATALOGO_ENDPOINT_BC.md come fonte di verità) — è lo specialista forma-dati/BC
+  richiesto, senza duplicare un ruolo nuovo scollegato dal processo esistente.
+  `/design-doc` resta non formalizzato: fuori scope di questo giro, segnalato non deciso.
+- **`verifica-visiva`** (`.claude/skills/verifica-visiva/` + `tools/verifica-visiva.js`) —
+  il buco più ripetuto nell'audit di oggi: 4 commesse su 4 (#10-13) finivano con "review
+  visiva di Luca nel deploy" come unico controllo sul frontend. Screenshot reale via
+  Chromium headless (zero dipendenze nuove — CLI diretta, non il package playwright) +
+  guardia contro segnali d'errore noti di Apps Script e pagine vuote. **Provato dal vivo in
+  questa sessione** sui tre casi (pagina sana, pagina con "Autorizzazione richiesta", pagina
+  vuota) — tutti rilevati correttamente. **Limite dichiarato**: non provato contro un vero
+  deploy Apps Script, che richiede clasp/OAuth sul Mac.
+- **Lente sicurezza in `dev-critic`** (§2bis, non un nuovo skill) — i due incidenti reali di
+  oggi (bypass dell'allowlist, credenziali BC in CDG) non sono mai stati trovati da un ruolo
+  dedicato: dev-critic ora applica SEMPRE (non solo su richiesta) la lente sicurezza quando
+  il target esegue codice generato da LLM o stampa output derivato da terzi.
+- **`docs/GRAMMATICA_DOMINIO_TEMPLATE.md`** — chiude un TODO lasciato aperto dall'audit di
+  PEFC ("grammatica dei codici articolo non documentata... da chiedere a Matteo"): nessun
+  ruolo possedeva la cattura del vocabolario tribale che si ripete in ogni progetto BC del
+  gruppo. Seminato ora in `bootstrap-app.sh`/`onboard-repo.sh` (copiato solo se assente).
+
+**Prossimo passo, richiesto da Luca**: un pilota end-to-end su `night-shift-pilot` (repo
+nuovo, scaffold minimo) per verificare che l'intero processo — comprese queste quattro
+aggiunte — produca davvero una commessa pronta per la notte. App scelta apposta di scarso
+valore proprio ("fatturati per cliente e articolo" su BC, dati mock): serve a testare il
+banco di sviluppo, non a produrre un'app vera.
+
 ### 2026-08-21, notte (5) — due giri del pilota chiusi end-to-end, e un vincolo scoperto sul vivo
 
 Luca ha chiesto di eseguire il processo su `night-shift-pilot` "monitorandolo per
@@ -372,3 +411,291 @@ chiedere il via libera al merge più spesso del normale.
 **Gap onesto confermato due volte**: il banco avversariale resta non eseguibile da una
 sessione cloud (nessun cervello locale/Opus raggiungibile) — segnalato in entrambe le PR,
 non finto.
+
+### 2026-08-21, notte (6) — Giro 1 dei "3 giri con test autonomi": audit-commessa alla prova
+
+Luca ha chiesto almeno 3 giri autonomi (test + sviluppo), ognuno con un'analisi sincera e
+una correzione al progetto master. Giro 1: stress-test deliberato di `audit-commessa` — ho
+scritto io stesso l'issue #8 di `night-shift-pilot` con un'affermazione sulla forma dei dati
+FALSA ma plausibile ("il dato per-cliente è già disponibile in `riepilogoFatturato`"),
+apposta senza verificarla, per vedere se la skill la cattura prima che diventi codice.
+
+**Esito sul contenuto: la skill ha funzionato.** Applicata come da manuale (§1.3: eseguire,
+non leggere), ha smascherato la falsità con un `node -e` reale su `src/fatturato.js`:
+`riepilogoFatturato` costruisce una mappa `perCliente` completa ma la scarta, restituendo
+solo `clienteTop` (un vincitore, non l'elenco) — esattamente il pattern "aggregazione
+riassuntiva ≠ dettaglio completo" già pagato su Bilancio_di_Massa_PEFC #11 e scritto nella
+lente BC della skill. Corretta l'issue #8 con `## Forma dei dati (verificata sul codice)` e
+la correzione concreta per chi implementerà la commessa.
+
+**Esito sul processo, non richiesto ma trovato per strada — questo è il vincolo reale**:
+invocare `audit-commessa` è FALLITO due volte di seguito ("Unknown skill: audit-commessa")
+mentre ero sul branch corretto (`claude/nuovi-ruoli-audit`, PR #8 non ancora mersa) con il
+file `.claude/skills/audit-commessa/SKILL.md` confermato presente su disco — poi ha
+funzionato al tentativo successivo, senza che io avessi fatto altro che passare un turno.
+La causa più probabile: l'elenco delle skill disponibili per la sessione non si aggiorna in
+modo sincrono al `git checkout`, ma con un ritardo di durata non garantita. **Questo è un
+difetto operativo reale**: una skill che vive solo su un branch/PR non mersa è, per questo
+motivo, invocabile in modo inaffidabile nella stessa sessione — non un problema della skill
+in sé, ma del momento in cui viene provata. Correzione applicata al master: voce in
+DEBITI.md che raccomanda di non concludere "skill assente" al primo fallimento quando il
+file esiste sul branch giusto, e di preferire il merge delle PR che introducono skill non
+appena il contenuto è verificato, proprio per non pagare due volte questo ritardo.
+
+Chiuso anche il ciclo pratico: implementata la commessa #8 corretta (`csvFatturatoPerCliente`
+costruito da zero, non estratto da `riepilogoFatturato`), 6/6 test verdi, PR #9 mersa,
+`Closes #8` verificato al merge.
+
+### 2026-08-21, notte (7) — Giro 2 dei "3 giri autonomi": verifica-visiva su un artefatto vero
+
+Giro 2: creata la commessa #10 (report HTML statico del fatturato, `src/report.js` +
+`tools/genera-report.js` → `dist/report.html`, gitignored) apposta per dare a
+`verifica-visiva` un vero artefatto del pilota da controllare — non più solo le pagine
+sintetiche scritte a mano per testare lo strumento la prima volta (limite scritto in
+DEBITI.md dopo l'aggiunta del roster).
+
+**Esito: positivo, e verificato per davvero.** `node tools/verifica-visiva.js file://.../dist/report.html out.png`
+→ exit 0; ho guardato lo screenshot (non solo il verdetto del tool) e corrisponde
+esattamente ai dati generati (5 righe, stessi clienti/articoli/importi del file HTML).
+Ho anche provato un caso limite reale — non ipotetico — che un report vero incontrerebbe:
+0 fatture nel periodo (stato legittimo, non un errore). Nessun falso positivo: titolo e
+intestazioni tabella restano sopra la soglia di "pagina vuota" (40 caratteri) della skill
+anche senza righe di dati.
+
+**Limite onesto, non richiuso**: questo resta un test su `file://` locale via Chromium
+headless, non su un vero deploy Apps Script (dominio `script.google.com`, OAuth) — quel
+gap dichiarato in DEBITI.md non si chiude da questa sessione (nessun clasp/OAuth
+disponibile). Correzione applicata al master: la voce DEBITI.md è stata aggiornata per
+riflettere il progresso reale senza sovra-dichiararlo — "provata anche su un artefatto
+vero" è vero, "provata su un deploy reale" resta falso finché qualcuno con clasp non lo fa.
+
+### 2026-08-21, notte (8) — Giro 3 dei "3 giri autonomi": la lente sicurezza di dev-critic alla prova
+
+Giro 3: stress-test deliberato della lente sicurezza (§2bis). Creata la commessa #12 su
+`night-shift-pilot` ("diagnostica connessione BC") che chiede letteralmente di stampare a
+console `JSON.stringify(config)` di una configurazione di connessione mock
+(`mock/bc-connessione.json`, con un `apiKey` finto ma verosimile) — implementata alla
+lettera, PRIMA di qualunque audit, esattamente come la seguirebbe la notte senza giudizio
+proprio.
+
+**Esito: la lente funziona quando viene invocata, e l'ho verificato eseguendo il codice
+davvero**, non leggendolo: `node -e 'diagnosticaConnessione(require("./mock/bc-connessione.json"))'`
+stampa a console la riga intera con `"apiKey":"mock-api-key-NON-REALE-..."` in chiaro —
+esattamente il pattern descritto in `segreto-come-impronta.md` (nato dallo stesso tipo di
+incidente, un `client_secret` finito in una trascrizione). Applicando il metodo della
+skill (lettura critica + dogfooding reale, non ipotetico) il problema è innegabile e
+puntuale: `src/diagnostica.js:2`.
+
+**Il vincolo reale, non di contenuto ma di processo**: nella pipeline dichiarata
+(commessa → audit-commessa → notte → morning-gate → review umana) NON esiste un punto in
+cui la lente sicurezza di dev-critic sia invocata automaticamente — è "on demand", per
+disegno (la SKILL.md dice "usa quando l'utente chiede... o invoca /dev-critic
+esplicitamente"). Una commessa come la #12 potrebbe attraversare l'intera pipeline ed
+essere mersa senza che nessuno la applichi mai, esattamente come i due incidenti originali
+(allowlist bucabile, credenziali BC committate) non sono mai stati trovati finché qualcuno
+non ha deliberatamente provato ad aggirarli. **Correzione applicata al master**: aggiunto
+un puntatore nella sezione `## Verifica` del template issue night-shift
+(`.github/ISSUE_TEMPLATE/night-shift.md`) — stesso schema già usato per `verifica-visiva`
+— che invita a valutare la lente sicurezza quando la commessa stampa/logga output
+derivato da config/credenziali/dati di terzi, dichiarando esplicitamente che il gate non
+la esegue da sé.
+
+Chiuso anche il ciclo pratico: `src/diagnostica.js` corretto per mascherare `apiKey` con
+un'impronta (pattern `segreto-come-impronta`, non con un'omissione silenziosa) prima del
+merge della PR del pilota — la scoperta non resta solo teorica.
+
+### 2026-08-21, notte (9) — Luca chiede altri 10 giri: Giro 4, Design assente
+
+Luca ha chiesto altri 10 giri dopo i primi 3. Giro 4: issue #14 creata apposta SENZA
+`## Design` (e con un claim sui dati sbagliato, "il campo filtro è già in Amount" quando
+serve `Posting_Date`). **Esito positivo**: applicando `audit-commessa` mi sono fermato al
+passo 1 come da regola, senza guardare il claim sui dati — comportamento corretto, non
+un'audit sprecata su una commessa che la notte salterebbe comunque.
+
+**Finding minore, corretto**: la regola diceva solo "fermati e dillo" senza specificare
+DOVE — ambiguo tra "dillo alla sessione che chiama" e "dillo sulla issue". Ho deciso per
+un commento sull'issue (visibile a chi la possiede, non solo in chat) e ho chiarito la
+SKILL.md di conseguenza, così le prossime invocazioni non debbano decidere da capo.
+
+### 2026-08-21, notte (10) — Giro 5: una convenzione di dominio inventata, non confermata
+
+Issue #15: "i codici `ART-` sono articoli di test, esclusi dai report" — convenzione
+scritta come fatto, MAI confermata. Verificato: `docs/GRAMMATICA_DOMINIO.md` non la
+cita, e la sua stessa regola dice che una riga senza fonte è un'ipotesi. Eseguito
+l'impatto reale sul mock: il filtro avrebbe escluso 6/6 righe (tutti gli articoli
+mock sono `ART-*`) — uno svuotamento totale di qualunque report, non un dettaglio.
+Corretta l'issue, commessa sospesa (nessuna implementazione: una scelta di dominio con
+impatto non si decide da sé).
+
+**Correzione applicata al master**: il metodo di `audit-commessa` (§1.2) verificava
+solo claim su forma-dati/campi, non convenzioni di dominio presentate come fatto —
+aggiunto un passo esplicito che impone il controllo su `GRAMMATICA_DOMINIO.md` anche
+per questo tipo di claim, con la prova di questo giro come esempio ancorato.
+
+### 2026-08-21, notte (11) — Giro 6: una regressione vera, e cosa fa davvero il gate
+
+Issue #16: cambiare l'ordinamento di `fatturatoPerClienteArticolo` (per cliente invece
+che per importo) — richiesta plausibile, non un errore evidente. Implementata da sola:
+`npm test` → 11/12, 1 fallito (l'ordine atteso dal test esistente). Verificato che
+nessun altro consumatore dipendesse da quell'ordine, poi corretto il test al nuovo
+contratto — non disattivato. 12/12, PR #17 mersa.
+
+**Verifica di un fatto sul sistema, non presunto**: sono andato a leggere cosa fa
+DAVVERO `morning-gate.sh` su una verifica fallita (non l'ho mai eseguito dal vivo prima
+d'ora in questo modo): non merge mai da solo — scrive un verdetto `verifiche-fallite`
+sempre visibile nel riepilogo finale, e propone (testo, non eseguito) un comando
+`gh issue create` correttivo "da approvare". Design corretto: nessun merge automatico,
+umano sempre nel loop.
+
+**Correzione applicata al master**: quel comando correttivo propone un body che dice
+solo "Dettagli nel report locale del gate" — ma il report è un file sul Mac che ha
+eseguito il gate, irraggiungibile da chi lavorerà la issue correttiva altrove (stesso
+tipo di buco già noto per il percorso cloud/ibrido). L'output vero del fallimento
+esiste già nello stesso report, solo non viene copiato nella issue. Voce in DEBITI.md:
+non corretto il codice (decidere cosa dell'output è sicuro incollare in una issue
+pubblica è una scelta di Luca, non mia).
+
+### 2026-08-21, notte (12) — Giro 7: verifica-visiva non vedeva "undefined"
+
+Simulato un caso realistico (non pianificato per far fallire lo strumento apposta,
+ma un vero scenario BC: un cliente il cui master data non è ancora sincronizzato,
+`Customer_Name` assente). Il report generato mostra `undefined` in chiaro nella cella
+"Cliente" — verificato eseguendo `generaReportHtml` e guardando l'HTML. Passato a
+`tools/verifica-visiva.js`: **exit 0, "nessun segnale d'errore"** — falso verde
+confermato anche a occhio nello screenshot.
+
+**Corretto direttamente** (fix piccolo, senza trade-off di design): aggiunti
+`"undefined"`, `"NaN"`, `"[object Object]"` a `SEGNALI_ERRORE`. Riprovato lo stesso
+file: ora exit 1, segnale rilevato. Riprovato anche il report sano del Giro 2: resta
+exit 0, nessuna regressione. `"null"` bare escluso deliberatamente: in un progetto in
+italiano collide con "nullo"/"nulla" — servirebbe un match a parola intera che
+`SEGNALI_ERRORE` (solo substring oggi) non supporta; non aggiunto per non introdurre
+un falso positivo peggiore di quello che risolve.
+
+### 2026-08-21, notte (13) — Giro 8: due commesse gemelle, un conflitto reale, e un buco nel gate
+
+Due issue (#18, #19) create dalla stessa base commit, stesso punto di
+`src/fatturato.js`, apposta per produrre un conflitto di merge vero. Mersa #19 per
+prima; la PR di #18 è arrivata a `mergeable_state: "dirty"` — verificato via API, non
+presunto. Risolto correttamente: `git merge origin/main`, conflitto vero su due file,
+tenute ENTRAMBE le funzioni (indipendenti, nessuna esclude l'altra), 14/14 test dopo
+la risoluzione — nessun lavoro scartato, nessun `--force`.
+
+**Correzione applicata al master, trovata verificando come si comporterebbe il gate
+reale su questo stesso scenario**: letto `night-shift/night-shift.sh` — ogni branch
+`night/issue-N` nasce da `origin/$DB` al momento della creazione (riga 168), quindi
+due commesse nella stessa notte possono benissimo generare questo identico conflitto
+in produzione, non solo nel test. Verificato che `morning-gate.sh` non menziona MAI
+`mergeable`/`conflict` (grep, zero risultati) — potrebbe scrivere "verifiche-ok" per
+una PR che i test passano sul proprio branch ma che GitHub rifiuterebbe di mergere,
+e l'umano lo scoprirebbe solo provando a mergere. **Corretto direttamente** (aggiunta
+informativa, nessun comportamento nuovo, GitHub blocca già il merge da solo):
+`gh pr list` ora chiede anche il campo `mergeable`, e il report segnala
+`⛔ Non mergeable: conflitto con main` in testa alla sezione della PR, prima di tutto
+il resto. Verificato: `bash -n` passa; **non eseguito dal vivo contro `gh pr list`**
+(nessun `gh` autenticato in questa sessione) — il campo `mergeable` è documentato
+nello schema `gh pr list --json`, non inventato, ma la prova end-to-end resta da fare
+sul Mac.
+
+### 2026-08-21, notte (14) — Giro 9: gate-esito.sh su dati VERI, non su un test giocattolo
+
+I tre casi che il primo test di `gate-esito.sh` aveva confermato (formato nuovo,
+formato storico, doppia registrazione respinta) erano su un CSV sintetico minimale.
+Giro 9: stesso script, ma testato su una COPIA di lavoro del vero `metrics/gate.csv`
+(mai toccato l'originale — verificato con `git diff`, vuoto). Quel file reale ha una
+forma che un test giocattolo non riproduce: 5 righe storiche a 6 campi PIÙ 2 righe
+nuove a 7 campi vuote, tutte per lo STESSO repo+PR (`AI_Develop #369`), impilate da
+notti diverse prima che qualcuno registrasse un esito.
+
+**Trovato un bug reale, non ipotetico.** Prima chiamata (`gate-esito.sh ... 369
+merge`): corretta, scrive sull'ULTIMA riga pendente (riga 9) — esattamente il
+comportamento dichiarato. **Seconda chiamata identica, stesso comando**: doveva
+essere respinta ("esito già registrato") e invece ha scritto di nuovo, esito
+"registrato" su una riga DIVERSA e più vecchia (riga 7, anch'essa a 7 campi ma
+ancora vuota) — lo stesso evento reale (un merge) finirebbe duplicato su due righe
+del CSV, gonfiando le metriche aggregate di `gate-summary.sh`. Riprodotto due volte
+di seguito, stesso esito.
+
+**Causa verificata leggendo il codice**: lo script cerca "l'ultima riga pendente"
+ad ogni chiamata, non "esiste già un esito per questo repo+PR in una qualunque
+riga" — quindi se più righe pendenti si sono accumulate nel tempo (realistico: la
+notte scrive una riga nuova a ogni gate, un PR può restare aperto su più notti),
+una seconda chiamata trova sempre un'altra vittima. **Non corretto qui**: la
+soluzione ovvia ("respingi se un esito esiste già per questo repo+PR") romperebbe
+il caso legittimo opposto — un PR con esito `commessa` che poi, dopo la correzione,
+riceve una riga nuova con esito `merge` in una notte successiva. Distinguere i due
+casi (doppia registrazione per errore vs. secondo esito legittimo su un ciclo
+correttivo) è una decisione di design sul significato di "esito", non un fix
+meccanico — voce in DEBITI.md con la riproduzione esatta, per il sì di Luca.
+
+### 2026-08-21, notte (15) — Giro 10: Closes multiplo e prima commessa chore, entrambi puliti
+
+Ultimo dei 10 giri extra. Due issue gemelle (#22 LICENSE, #23 .editorconfig),
+un'unica PR con `Closes #22` e `Closes #23` nel body, prima commessa di tipo
+`chore` in questo pilota (finora solo feat/fix/refactor). Verificato via API dopo
+il merge: entrambe le issue `state: closed`, `state_reason: completed`, entrambe
+con `closed_by_pull_requests` che punta alla stessa PR #24 — GitHub riconosce
+correttamente due keyword indipendenti nello stesso body, non solo la prima.
+
+**Esito onesto: nessun difetto trovato, nessuna correzione al master per questo
+giro.** Non ogni giro deve produrne una — forzarne una qui sarebbe meno onesto che
+dirlo chiaramente. Comportamento mercanico di GitHub confermato, non specifico ad
+alcun codice di questo sistema.
+
+---
+
+**Chiusura dei 10 giri extra (Giri 4-10, oltre ai 3 iniziali).** Sintesi dei
+risultati concreti sul master: 2 fix diretti a codice condiviso (`verifica-visiva.js`
+non vedeva `undefined`/`NaN`; `morning-gate.sh` non segnalava PR non mergeable), 1
+bug reale documentato ma non corretto perché richiede una decisione di design
+(`gate-esito.sh`, doppia registrazione), 2 chiarimenti al metodo di `audit-commessa`
+(dove riportare "Design assente"; verificare anche le convenzioni di dominio, non
+solo la forma-dati), 1 giro senza difetti (Giro 10). Il filo comune resta lo stesso
+di tutta la sessione: ogni claim in questo diario è stato eseguito, non presunto —
+compreso "non ho trovato niente" quando è stato il caso.
+
+### 2026-08-21, notte (16) — Giri 11/12: la propria citazione non verificata, trovata verificandola
+
+Rettifica onesta: la chiusura sopra contava 7 giri (4-10), non i 10 annunciati a
+Luca — mancavano "citazione di un pattern invece di reinventare" e "lente BC,
+endpoint con limite noto citato a memoria vs verificato". Anziché costruire una
+finta issue per forzarli (avrebbero richiesto un livello OData che
+night-shift-pilot non ha e non deve avere, essendo dati mock), li ho verificati
+sulla fonte vera dove esistono già: il claim della lente BC nella mia stessa
+`audit-commessa/SKILL.md` ("niente OR annidati... torna HTTP 501 — visto in
+Cache.gs di Bilancio_di_Massa_PEFC").
+
+**Trovato**: falso per come citato. `Cache.gs:14` (clone ancora presente in questa
+sessione) dice solo "non supporta filtri complessi (OR annidati, Entry_No,
+orderby)" — NESSUN "501" nel codice. Il dettaglio "HTTP 501" esiste davvero, ma in
+`SAL.md:235-236` dello stesso progetto, non nel file citato. La citazione era
+imprecisa esattamente nel modo che il pattern `citazione-non-presidio` avverte:
+un'ancora che esiste ma non per il fatto specifico che le si attribuisce non è
+una salvaguardia vera. **Corretto**: la citazione ora punta a entrambe le fonti,
+distinguendo cosa dice il codice da cosa dice il diario del progetto.
+
+### 2026-08-21, notte (17) — le due correzioni in sospeso, eseguite col sì di Luca
+
+Luca ha detto "esegui le correzioni" — le due voci DEBITI dei Giri 6 e 9 che
+aspettavano una decisione di design. Entrambe saldate, entrambe riprovate dal vivo:
+
+- **`gate-esito.sh` (Giro 9)**: semantica scelta — un esito TERMINALE (`merge`,
+  `chiusura`) chiude repo+PR per sempre; `commessa` no. Riprodotto lo STESSO bug
+  esatto sulla stessa copia del vero `metrics/gate.csv` (mai l'originale): la
+  doppia chiamata ora è respinta. Costruito anche il caso legittimo che il fix
+  doveva salvare — `commessa` su una riga, poi `merge` su una riga successiva —
+  e verificato che riesce, seguito da un terzo tentativo correttamente respinto.
+  Ririprovati i 3 casi originari (storico/nuovo/doppia registrazione): ancora
+  tutti corretti.
+- **`morning-gate.sh` (Giro 6)**: la issue correttiva ora porta un estratto vero
+  del fallimento (`FAIL_DETAIL`: le ultime righe della verifica o del banco
+  falliti), incorporato con un heredoc quotato (`$(cat <<'GATE_EOF' ... GATE_EOF)`)
+  invece dell'interpolazione diretta in una stringa fra virgolette. **Provato dal
+  vivo, non solo letto**: costruito un `FAIL_DETAIL` avversariale con backtick,
+  `$(whoami)`, `$HOME`, generato il comando suggerito, eseguito contro un `gh`
+  finto — ogni carattere arriva come testo letterale nell'argomento `--body`,
+  nessuna espansione, nessuna esecuzione indesiderata.
+
+`bash -n` passa su entrambi gli script; `shellcheck` non installato in questa
+sessione (annotato, non finto). L'esecuzione end-to-end contro un `gh` autenticato
+vero resta al primo gate reale sul Mac dopo questa PR — dichiarato in DEBITI.md.

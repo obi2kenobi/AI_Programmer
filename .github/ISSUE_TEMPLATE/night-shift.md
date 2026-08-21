@@ -16,7 +16,13 @@ labels: ["night-shift"]
      coinvolti (campi, aggregazioni, dove vivono davvero — file:funzione), VERIFICATA
      sul codice da chi scrive la commessa, non assunta dalla documentazione.
      Lezione pagata dall'A/B 2026-08-21: un'assunzione sbagliata qui costa alla notte
-     un'ora di palude mentre il giorno se ne accorge leggendo. -->
+     un'ora di palude mentre il giorno se ne accorge leggendo.
+     Se il progetto parla con Business Central, applica anche la lente BC della skill
+     `audit-commessa` (aggregazione per famiglia ≠ per codice, endpoint con buchi noti,
+     CATALOGO_ENDPOINT_BC.md come fonte di verità sui campi). Se un termine di dominio
+     (codice articolo, BU, convenzione fornitore) non è ovvio dal codice, cita
+     `docs/GRAMMATICA_DOMINIO.md` invece di indovinarlo — se la riga non c'è ancora,
+     dillo qui invece di scrivere un'ipotesi come fatto. -->
 
 ## Commessa (contesto precaricato)
 
@@ -25,4 +31,16 @@ labels: ["night-shift"]
 
 ## Verifica
 
-<!-- Cosa verifica il gate (.night-verify se eseguibili) e cosa resta alla review umana. -->
+<!-- Cosa verifica il gate (.night-verify se eseguibili) e cosa resta alla review umana.
+     Se la commessa tocca il frontend di una webapp (Index.html/App.html o equivalente),
+     valuta se allegare una verifica visiva (skill `verifica-visiva`) prima che la review
+     umana sia l'unico controllo sullo schermo — richiede un deploy raggiungibile, non è
+     sempre applicabile.
+     Se la commessa aggiunge o modifica codice che STAMPA/LOGGA output derivato da config
+     di connessione, credenziali o dati di terzi (diagnostica, debug, trascrizioni), valuta
+     la lente sicurezza di `dev-critic` (§2bis) PRIMA del merge — nessun passo del gate la
+     esegue automaticamente, e i due incidenti reali che l'hanno originata (allowlist
+     bucabile, credenziali committate) non sono mai stati trovati da sé. Verificato dal
+     vivo (night-shift-pilot, Giro 3 dei test autonomi, 2026-08-21): eseguendo per davvero
+     una funzione di diagnostica scritta a commessa, la chiave finiva in chiaro a console
+     — la lente la cattura solo se qualcuno la invoca, non da sola. -->

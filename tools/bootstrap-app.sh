@@ -34,6 +34,11 @@ cat > .night-verify <<EOF
 # VUOTO = il gate lo dice ("il silenzio non è un verdetto"): dichiarale appena puoi.
 EOF
 
+# Vocabolario di dominio (aggiunta 2026-08-21): si riempie coi fatti confermati dal business,
+# non si scrive vuoto per sempre — ma il posto per scriverlo c'è dal primo commit.
+mkdir -p docs
+cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" docs/GRAMMATICA_DOMINIO.md
+
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
