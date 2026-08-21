@@ -10,3 +10,13 @@
   (subpath "__WORKDIR__")
   (subpath "/private/tmp")
   (literal "/dev/null"))
+
+;; Letture NEGATE sui percorsi sensibili del Mac (decisione Luca 2026-08-21, opzione c):
+;; il vettore era l'esfiltrazione locale — un comando che legge chiavi non può leggerle.
+(deny file-read*
+  (subpath "__HOME__/.ssh")
+  (subpath "__HOME__/.aws")
+  (subpath "__HOME__/.gnupg")
+  (subpath "__HOME__/.config/gh")
+  (subpath "__HOME__/.claude/.credentials.json")
+  (subpath "__HOME__/.ollama"))
