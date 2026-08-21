@@ -93,3 +93,15 @@ DFlash2 (z-lab). Abbiamo misurato tutto sul nostro Mac (metodo: stessa identica 
 
 Il turno notturno resta su Ollama + Q4_K_M MTP: 3,7-5,9 tok/s, il massimo dimostrato su
 questa macchina. Il file `llama-bench.log` conserva le prove.
+
+### 2026-08-21, sera — loop engineering: il nome arriva dopo la pratica
+
+Il sistema pratica loop engineering dalla prima notte (trigger→harness→verifica→memoria→ciclo)
+senza conoscerne il nome; il vocabolario pubblico (Cherny, Steinberger, Karpathy-AutoResearch)
+arriva ora e lo formalizza in `docs/system.md`. Si adottano tre cose: la **tassonomia dei cinque
+livelli di verifica** — che svela che il "riscontro" BC è verità terrena ritardata (livello 3)
+praticata da giugno, e che il nostro banco è un livello 4 potenziato (smentisce, non si
+autovaluta) — il **comando /goal** per i loop diurni (verifica dichiarata, tetto di tentativi,
+log in `loops/`, avversario prima della vittoria), e la **tensione dichiarata**: notte senza
+limite di tempo vs /goal sempre col tetto — commessa lunga unica vs ottimizzazione iterativa,
+entrambe giuste nel loro contesto.

@@ -81,3 +81,16 @@ chunk di 80). Da oggi due regole:
 
 Grafi da costruire: `graphify extract . --code-only` (deterministico, 0 LLM, 0 token).
 Versione pinata 0.9.48; regole del grafo nel SAL (orientarsi sì, oracolo no; `calls` non risolti).
+
+## I cinque livelli di verifica (tassonomia 2026-08-21)
+
+Ogni verifica del sistema si dichiara col suo livello — la tassonomia completa e la mappa
+loop-engineering del sistema: `docs/system.md`.
+
+| Livello | Qui |
+|---|---|
+| 1 · deterministico | `.night-verify` (exit code), test-motore |
+| 2 · vincoli numerici | soglie, conteggi, metriche del gate |
+| 3 · verità terrena ritardata | il "riscontro" BC (Verificato ☐ che matura), esiti deploy |
+| 4 · LLM giudice | banco avversariale (variante forte: smentisce, non si autovaluta) |
+| 5 · checkpoint umano | review di Luca — chiude ogni ciclo |

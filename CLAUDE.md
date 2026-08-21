@@ -164,3 +164,10 @@ returns a deterministic subgraph with exact `file:L` references (build with
 ~4 tok/s must never pay the read-everything tax — and neither should you. Trust the graph for
 orientation and location; never as an oracle for call semantics (`calls` edges are unresolved —
 lesson paid by AI_Develop on 2026-08-08).
+
+### Goal loops (/goal)
+For iterative optimization during the day use `/goal <verifiable objective> | max N attempts`:
+restate the objective as a verification with its level (1-5, see docs/system.md), one change per
+attempt, log every attempt in `loops/<date>-<slug>.md`, adversarial check before claiming
+success, hard attempt cap. Note the deliberate asymmetry: night shift has NO time limit (single
+long commessa); day goal loops always have a cap (iterative optimization).
