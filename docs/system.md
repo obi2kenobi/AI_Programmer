@@ -106,3 +106,18 @@ Una sessione cloud/remota (es. Claude Code nel container) NON ha `gh` CLI né ac
 la label `night-shift` (i tool MCP disponibili non la creano) e aggiungere la repo a
 `repos.conf`. Un agente cloud che esegue l'onboarding deve dirlo all'utente, non tacere i
 passi rimasti (dettaglio operativo in testa a `tools/onboard-repo.sh`).
+
+## Il ciclo guadagna la fase di audit (2026-08-21, sera)
+
+```
+/brainstorming → design-doc → commessa → /audit-commesse (il giorno verifica le assunzioni
+sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi) → review di Luca
+```
+
+- **`/audit-commesse <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
+  reale, corregge i body, compila la "Forma dei dati (verificata)". Nato dall'A/B: la commessa
+  con l'assunzione sbagliata costa alla notte ore, al giorno una lettura
+- **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni con trade-off, senza implementare —
+  la scelta resta di Luca. È il passo /brainstorming che diventa documento
+- **Il gate guarda anche i branch `claude/*`**: il lavoro del giorno passa le stesse verifiche
+  dichiarate e lo stesso banco avversariale di quello notturno
