@@ -35,6 +35,8 @@ cat > .night-verify <<EOF
 EOF
 
 echo "# $NAME" > README.md
+# SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
+command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
 git add -A && git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
 gh repo create "$NAME" $VIS --source . --push -q
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
