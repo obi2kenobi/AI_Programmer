@@ -23,6 +23,11 @@ avversariale, memoria (questo file + `metrics/gate.csv`).
 - **2026-08-21 · Il giudizio è avversariale**: il morning-gate non colleziona report, prova a
   smentire le PR (metodo del Supervisore in AI_Develop, applicato al sistema). I fallimenti
   diventano proposte di commesse correttive — nulla si rifà senza il sì di Luca.
+- **2026-08-21 · La scoperta di gap/nuove idee diventa una skill, non un'abitudine** (deciso da
+  Luca): il ruolo "cervello di giorno per giudizio/architettura" della matrice `llm/README.md`
+  esisteva solo come istruzione implicita ("fallo tu quando serve"). Diventa la skill
+  `dev-critic` (`.claude/skills/dev-critic/`), richiamabile on-demand da qualunque sessione
+  (questo hub o un progetto onboardato), non legata al turno notturno.
 
 ## Log cronologico
 
@@ -173,3 +178,21 @@ pretende verifiche dichiarate finalmente le dichiara per sé); warning quando si
 
 Nota operativa per Luca: i cloni locali di CDG_Costi_Diretti vanno RICLONATI (la storia è stata
 riscritta, gli hash sono cambiati).
+
+### 2026-08-21, notte — dev-critic: il critico costruttivo diventa un comando, non un'abitudine
+
+Occasione: la revisione manuale sopra (letti tutti gli script, poi onboarding REALE di
+`CDG_Costi_Diretti` per verificarli sul campo) ha trovato bug non visibili dalla sola lettura
+(`gate.csv` non scrive mai la colonna "esito"; `main` hardcoded come default branch in più
+punti; banco avversariale che esegue `eval` su un comando generato da LLM con solo una
+blacklist regex, nessun sandbox reale) e gap di processo (nessun percorso per onboarding da
+sessione cloud senza `gh`; `credenziali BC.rtf` committata in CDG scoperta ispezionando prima
+di toccare) — tutti poi confermati e corretti, come documentato sopra.
+
+La lezione che ne esce: **il dogfooding reale trova ciò che l'ispezione statica non trova** —
+tre dei gap sopra sarebbero rimasti invisibili senza aver provato l'onboarding per davvero.
+Si decide di non lasciare questo metodo confinato a una sessione di chat: nasce la skill
+`dev-critic`, richiamabile on-demand su qualunque target (hub o progetto onboardato), che
+istituzionalizza il metodo (lettura critica + uso reale) e aggiunge un compito che il gate
+notturno non fa: proporre **funzionalità non ancora considerate**, non solo trovare difetti in
+ciò che esiste.

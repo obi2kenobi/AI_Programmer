@@ -21,7 +21,7 @@ cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"   # contesto v
 |---|---|---|
 | Digest/bozze/triage one-shot, alta volume, privacy | **ask-qwen** (locale) | costo marginale zero, dati che non lasciano il Mac; 3,7-5,9 tok/s a Mac scarico |
 | Commesse meccaniche ripetitive | **ask-qwen** via turno notturno | tutta la notte che serve (nessun limite di tempo, decisione 2026-08-21) |
-| Indagine, giudizio, architettura, correzione | **sessione diretta** (ZCode/GLM o Claude Code/Opus) | tre notti di test: il modello locale capisce ma non converge dove serve giudizio — la lezione dell'issue #363 |
+| Indagine, giudizio, architettura, correzione | **sessione diretta** (ZCode/GLM o Claude Code/Opus) — skill `dev-critic` per il giro di scoperta gap/nuove idee | tre notti di test: il modello locale capisce ma non converge dove serve giudizio — la lezione dell'issue #363 |
 | Compito cloud programmatico (pipeline, script) | **ask-opus** | `claude -p` headless; auth nel Keychain (funziona da terminale utente/launchd) |
 | Compito GLM programmatico | **ask-glm** | richiede `ZHIPUAI_API_KEY`; via naturale resta la sessione ZCode |
 
