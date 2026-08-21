@@ -86,31 +86,70 @@ for REPO in "${REPO_LIST[@]}"; do
       VERDICT="non-dichiarate"
     fi
 
-    # 2. Banco avversariale: il modello locale prova a smentire
+    # 2. Banco avversariale ESECUTORE: genera la smentita e LA ESEGUE sul branch
+    #    (livello 4 → livello 1-2: la proposta diventa verdetto. 2026-08-21)
     BANCO="—"
-    ASK_QWEN="$HERE/../llm/ask-qwen.sh"
-    if [ -x "$ASK_QWEN" ]; then
+    ADVERSARY="${ADVERSARY:-qwen}"
+    ASK="$HERE/../llm/ask-qwen.sh"
+    [ "$ADVERSARY" = "opus" ] && ASK="$HERE/../llm/ask-opus.sh"
+    if [ -x "$ASK" ]; then
       DIFF_TXT=$(git -C "$DIR" diff "origin/main...$BRANCH" 2>/dev/null | head -300)
       if [ -n "$DIFF_TXT" ]; then
-        BANCO_PROMPT="Ecco il diff di una pull request. Il tuo compito: PROVA A SMENERLA. Scrivi UNA verifica concreta (test, comando o controllo manuale) che questa bozza NON supererebbe se contiene un difetto — concentra il ragionamento sui punti deboli reali: valori attesi, effetti collaterali, casi limite non gestiti. Se il diff non ha punti deboli evidenti, dillo onestamente. Massimo 10 righe.
+        BANCO_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull request. Scrivi UN solo comando shell, eseguibile dalla root della repo, che SMASCHERA un difetto della PR se esiste: deve riuscire (exit 0) se la PR è solida, fallire (exit != 0) se è difettosa. Vincoli rigidissimi: niente rete, niente operazioni distruttive (rm/mv/chmod/git push), nessuna modifica permanente. Sono ammessi node/python/grep/git/cat e simili. Rispondi con UN SOLO blocco di codice contenente il comando, senza spiegazioni.
 
 $DIFF_TXT"
-        BANCO_OUT=$(printf '%s' "$BANCO_PROMPT" | QWEN_THINK=true "$ASK_QWEN" "Fai quanto chiesto sopra." 2>/dev/null || true)
-        echo "**Banco avversariale (proposta di smentita da eseguire in review):**" >> "$REPORT"
-        echo '```' >> "$REPORT"; echo "${BANCO_OUT:-(modello non disponibile)}" >> "$REPORT"; echo '```' >> "$REPORT"
-        BANCO="proposto"
+        BANCO_OUT=$(printf '%s' "$BANCO_PROMPT" | "$ASK" "Fai quanto chiesto sopra." 2>/dev/null || true)
+        CMD=$(printf '%s' "$BANCO_OUT" | awk '/^```/{f=!f; next} f' | head -1 | sed 's/^[a-z]*://; s/^ *//; s/ *$//')
+        if [ -z "$CMD" ]; then
+          echo "**Banco avversariale:** nessun comando estratto dalla risposta del cervello ($ADVERSARY)" >> "$REPORT"
+          BANCO="vuoto"
+        elif echo "$CMD" | grep -qiE "(^|[ ;|&])(rm|sudo|curl|wget|chmod|chown)([ ;]|$)|git push|mkfs"; then
+          echo "**Banco avversariale:** comando generato SCARTATO dalla guardia (operazioni vietate): \`$CMD\`" >> "$REPORT"
+          BANCO="scartato"
+        else
+          # esecuzione con watchdog 120s, nella copia di lavoro, sul branch della PR
+          ( cd "$DIR" && eval "$CMD" ) > /tmp/gate-banco.out 2>&1 &
+          BPID=$!
+          ( sleep 120; kill -TERM "$BPID" 2>/dev/null ) &
+          WDG=$!
+          wait "$BPID"; BRC=$?
+          kill "$WDG" 2>/dev/null
+          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200)
+          echo "**Banco avversariale ESEGUITO** (cervello: $ADVERSARY):" >> "$REPORT"
+          echo "- comando: \`$CMD\`" >> "$REPORT"
+          if [ "$BRC" -eq 0 ]; then
+            echo "- esito: **la bozza SOPRAVVIVE alla smentita** (exit 0) — ${OUT_TAIL:-(nessun output)}" >> "$REPORT"
+            BANCO="eseguito:sopravvissuta"
+          else
+            echo "- esito: **SMENTITA** (exit $BRC) — ${OUT_TAIL:-(nessun output)}" >> "$REPORT"
+            BANCO="eseguito:smentita"
+          fi
+          # l'avversario non lascia tracce nella copia di lavoro
+          git -C "$DIR" checkout -q -- . 2>/dev/null; git -C "$DIR" clean -fdq 2>/dev/null
+        fi
       fi
+    fi
+
+    # 2-bis. Verifica di MINIMITÀ (livello 4, consultiva — da /ponytail-review, 2026-08-21):
+    # delete-list proposta sul diff; informa la review, in v1 non cambia il verdetto.
+    if [ -n "${DIFF_TXT:-}" ] && [ -x "$HERE/../llm/ask-qwen.sh" ]; then
+      MIN_PROMPT="Sei il revisore anti-over-engineering. Ecco il diff di una pull request. Indica SOLO le parti in eccesso rispetto a ciò che serviva: codice che si può eliminare o ridurre senza perdere funzione, dipendenze non necessarie, astrazioni superflue. Se il diff è già minimale, scrivi ESATTAMENTE: già minimale. Massimo 8 righe.
+
+${DIFF_TXT}"
+      MIN_OUT=$(printf '%s' "$MIN_PROMPT" | "$HERE/../llm/ask-qwen.sh" "Fai quanto chiesto sopra." 2>/dev/null || true)
+      echo "**Minimità (delete-list proposta, consultiva):**" >> "$REPORT"
+      echo '```' >> "$REPORT"; echo "${MIN_OUT:-(non disponibile)}" >> "$REPORT"; echo '```' >> "$REPORT"
     fi
 
     # 3-4. memoria + verdetto
     case "$VERDICT" in verifiche-ok) PASS=$((PASS+1));; *) FAIL=$((FAIL+1));; esac
     echo "$(date '+%Y-%m-%d'),$REPO,#$NUM,#$ISSUE_NUM,$VERDICT,$BANCO" >> "$HUB_METRICS"
 
-    if [ "$VERDICT" = "verifiche-fallite" ]; then
+    if [ "$VERDICT" = "verifiche-fallite" ] || [ "$BANCO" = "eseguito:smentita" ]; then
       echo "" >> "$REPORT"
       echo "> ⛔ **Proposta correttiva** (il correttore — da approvare):" >> "$REPORT"
       echo "> \`\`\`bash" >> "$REPORT"
-      echo "gh issue create -R $REPO --label night-shift --title \"correzione: PR #$NUM non passa le verifiche\" --body \"La PR #$NUM fallisce le verifiche dichiarate. Correggere quanto serve per farle passare, senza ampliare lo scope.\"" >> "$REPORT"
+      echo "gh issue create -R $REPO --label night-shift --title \"correzione: PR #$NUM — verifiche o banco avversario falliti\" --body \"La PR #$NUM non supera il gate del mattino (verifiche: $VERDICT, banco: $BANCO). Correggere quanto serve senza ampliare lo scope. Dettagli nel report locale del gate.\"" >> "$REPORT"
       echo "\`\`\`" >> "$REPORT"
     fi
   done < <(jq -c '.' /tmp/gate-prs.json)

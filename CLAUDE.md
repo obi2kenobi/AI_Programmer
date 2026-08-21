@@ -171,3 +171,22 @@ restate the objective as a verification with its level (1-5, see docs/system.md)
 attempt, log every attempt in `loops/<date>-<slug>.md`, adversarial check before claiming
 success, hard attempt cap. Note the deliberate asymmetry: night shift has NO time limit (single
 long commessa); day goal loops always have a cap (iterative optimization).
+
+### The minimal-code ladder (from ponytail, adopted 2026-08-21)
+"Zero waste" as a **procedure**, in strict order — climb it before writing any code, always
+AFTER reading and understanding (lazy about the solution, never about reading):
+1. Does this need to exist at all? (YAGNI — if no, stop)
+2. Already in the codebase? Reuse it
+3. Does the stdlib do it? Use it
+4. Does the platform do it natively? (native `<input type="date">`, not flatpickr)
+5. Is a dependency already installed? Use it
+6. Can it be one line? One line
+7. Otherwise: the minimum that works
+Validation, error handling, security and accessibility are never cut — code is small because
+it's necessary, not because it's golfed. **Every deferred shortcut goes in `DEBITI.md`** —
+so "later" doesn't become "never".
+
+### Three strikes, then architecture (from superpowers, adopted 2026-08-21)
+After **three failed fix attempts** on the same bug, stop patching: the defect is almost
+certainly not where you think it is. Escalate to an architecture/hypothesis review — re-read
+the flow, question the assumption the fixes were built on — before attempt four.
