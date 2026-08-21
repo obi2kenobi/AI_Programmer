@@ -653,3 +653,23 @@ bug reale documentato ma non corretto perché richiede una decisione di design
 solo la forma-dati), 1 giro senza difetti (Giro 10). Il filo comune resta lo stesso
 di tutta la sessione: ogni claim in questo diario è stato eseguito, non presunto —
 compreso "non ho trovato niente" quando è stato il caso.
+
+### 2026-08-21, notte (16) — Giri 11/12: la propria citazione non verificata, trovata verificandola
+
+Rettifica onesta: la chiusura sopra contava 7 giri (4-10), non i 10 annunciati a
+Luca — mancavano "citazione di un pattern invece di reinventare" e "lente BC,
+endpoint con limite noto citato a memoria vs verificato". Anziché costruire una
+finta issue per forzarli (avrebbero richiesto un livello OData che
+night-shift-pilot non ha e non deve avere, essendo dati mock), li ho verificati
+sulla fonte vera dove esistono già: il claim della lente BC nella mia stessa
+`audit-commessa/SKILL.md` ("niente OR annidati... torna HTTP 501 — visto in
+Cache.gs di Bilancio_di_Massa_PEFC").
+
+**Trovato**: falso per come citato. `Cache.gs:14` (clone ancora presente in questa
+sessione) dice solo "non supporta filtri complessi (OR annidati, Entry_No,
+orderby)" — NESSUN "501" nel codice. Il dettaglio "HTTP 501" esiste davvero, ma in
+`SAL.md:235-236` dello stesso progetto, non nel file citato. La citazione era
+imprecisa esattamente nel modo che il pattern `citazione-non-presidio` avverte:
+un'ancora che esiste ma non per il fatto specifico che le si attribuisce non è
+una salvaguardia vera. **Corretto**: la citazione ora punta a entrambe le fonti,
+distinguendo cosa dice il codice da cosa dice il diario del progetto.
