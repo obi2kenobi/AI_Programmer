@@ -314,3 +314,23 @@ resta umana), entrambi per Claude E ZCode. Il gate ora giudica anche i branch cl
 lavoro del giorno passa verifiche e banco come quello notturno — un giudice, due occhi.
 Il ciclo completo: brainstorming → design-doc → commessa → audit-commesse → notte → gate
 → review. Ogni fase ha il suo comando, ogni comando il suo perché scritto.
+
+### 2026-08-21, notte (2) — il primo giro di /audit-commesse: 3 commesse su 4 difettose
+
+Luca ha lanciato l'audit su Claude la sera stessa in cui il comando è nato. Verdetto:
+**tre commesse su quattro avevano difetti veri** — #13 interamente obsoleta (il PDF era già in
+formato italiano: la nota SAL che la giustificava descriveva uno stato superato MAI
+aggiornato — rettificata via API con la regola che ne esce), #10 con premessa falsa (il CSV
+esiste già, verificato per esecuzione — ridotta a micro-commessa sul gap reale: la data nel
+nome file), #12 con due assunzioni sbagliate (tabella DDS esistente da estendere, funzione
+citata errata — riscritta). #11: assunzioni giuste ma specifica incompleta — l'audit ha
+trovato la causa probabile dello stallo notturno (la fonte per-codice mai nominata). Notte
+fermata su #11: la consegna esiste già (PR #14 del giorno), la coda riparte alle 23:00 con
+le commesse corrette.
+
+**Il dato di sistema che conta**: il tasso di difetti delle commesse scritte a mano era 75%.
+La difesa in profondità ora è: template (Design + Forma dei dati obbligatori) → audit serale
+→ notte. L'audit ha pagato il biglietto al primo giro, trovando con esecuzione (non lettura)
+ciò che l'autore non vedeva. Regola aggiunta alla自身的 pratica: chi scrive commesse verifica
+le affermazioni del SAL contro il codice — un diario che dice il passato come presente è
+peggiore di un diario mancante (rettifica scritta anche nel SAL di PEFC).
