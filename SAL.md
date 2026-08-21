@@ -468,3 +468,38 @@ gap dichiarato in DEBITI.md non si chiude da questa sessione (nessun clasp/OAuth
 disponibile). Correzione applicata al master: la voce DEBITI.md è stata aggiornata per
 riflettere il progresso reale senza sovra-dichiararlo — "provata anche su un artefatto
 vero" è vero, "provata su un deploy reale" resta falso finché qualcuno con clasp non lo fa.
+
+### 2026-08-21, notte (8) — Giro 3 dei "3 giri autonomi": la lente sicurezza di dev-critic alla prova
+
+Giro 3: stress-test deliberato della lente sicurezza (§2bis). Creata la commessa #12 su
+`night-shift-pilot` ("diagnostica connessione BC") che chiede letteralmente di stampare a
+console `JSON.stringify(config)` di una configurazione di connessione mock
+(`mock/bc-connessione.json`, con un `apiKey` finto ma verosimile) — implementata alla
+lettera, PRIMA di qualunque audit, esattamente come la seguirebbe la notte senza giudizio
+proprio.
+
+**Esito: la lente funziona quando viene invocata, e l'ho verificato eseguendo il codice
+davvero**, non leggendolo: `node -e 'diagnosticaConnessione(require("./mock/bc-connessione.json"))'`
+stampa a console la riga intera con `"apiKey":"mock-api-key-NON-REALE-..."` in chiaro —
+esattamente il pattern descritto in `segreto-come-impronta.md` (nato dallo stesso tipo di
+incidente, un `client_secret` finito in una trascrizione). Applicando il metodo della
+skill (lettura critica + dogfooding reale, non ipotetico) il problema è innegabile e
+puntuale: `src/diagnostica.js:2`.
+
+**Il vincolo reale, non di contenuto ma di processo**: nella pipeline dichiarata
+(commessa → audit-commessa → notte → morning-gate → review umana) NON esiste un punto in
+cui la lente sicurezza di dev-critic sia invocata automaticamente — è "on demand", per
+disegno (la SKILL.md dice "usa quando l'utente chiede... o invoca /dev-critic
+esplicitamente"). Una commessa come la #12 potrebbe attraversare l'intera pipeline ed
+essere mersa senza che nessuno la applichi mai, esattamente come i due incidenti originali
+(allowlist bucabile, credenziali BC committate) non sono mai stati trovati finché qualcuno
+non ha deliberatamente provato ad aggirarli. **Correzione applicata al master**: aggiunto
+un puntatore nella sezione `## Verifica` del template issue night-shift
+(`.github/ISSUE_TEMPLATE/night-shift.md`) — stesso schema già usato per `verifica-visiva`
+— che invita a valutare la lente sicurezza quando la commessa stampa/logga output
+derivato da config/credenziali/dati di terzi, dichiarando esplicitamente che il gate non
+la esegue da sé.
+
+Chiuso anche il ciclo pratico: `src/diagnostica.js` corretto per mascherare `apiKey` con
+un'impronta (pattern `segreto-come-impronta`, non con un'omissione silenziosa) prima del
+merge della PR del pilota — la scoperta non resta solo teorica.
