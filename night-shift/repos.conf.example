@@ -1,0 +1,11 @@
+# repos.conf — la coda reale del turno di notte. UNA COPIA PER MACCHINA.
+# Questo file è LOCALE E GITIGNORED: il repo è pubblico e i nomi delle repo
+# private non ci entrano (decisione 2026-08-21, vedi SAL.md).
+#
+# Formato: owner/repo [tipo_commit]
+#   tipo_commit opzionale: prefisso del messaggio per rispettare le convenzioni
+#   del repo ospite (es. "docs" per AI_Programmer, "chore" come default).
+#
+# Esempi (sostituisci con le tue):
+#   mario/altro-progetto docs
+#   mario/supervisore chore
