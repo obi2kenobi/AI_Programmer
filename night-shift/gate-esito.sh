@@ -20,7 +20,13 @@ esac
 
 [ -f "$CSV" ] || { echo "$CSV inesistente" >&2; exit 1; }
 
-# Annota l'ULTIMA riga corrispondente (repo,pr) che non abbia già un esito
+# Annota l'ULTIMA riga corrispondente (repo,pr) che non abbia già un esito.
+# NOTA (bug trovato con dogfooding, 2026-08-21): morning-gate.sh scrive ORA 7 campi con
+# virgola finale per l'esito vuoto ("...,banco,") — un conteggio di virgole fisso (==5/>=6)
+# scritto per il formato pre-fix a 6 campi scambiava "esito vuoto" per "esito già presente"
+# su OGNI riga nuova, rendendo questo script inutilizzabile dal giorno del fix in poi.
+# Si riconosce lo stato dal numero di CAMPI (split), non dal conteggio di virgole, e si
+# distinguono esplicitamente i due formati (storico a 6 campi / attuale a 7 con ultimo vuoto).
 python3 - "$CSV" "$REPO" "$PR" "$ESITO" <<'PY'
 import sys, io
 
@@ -31,20 +37,21 @@ with io.open(csv, encoding="utf-8") as f:
 target = f"{repo},#{pr},"
 idx = None
 for i, r in enumerate(righe):
-    if target in r and not r.rstrip().endswith(("," + esito,)) and r.count(",") == 5:
-        idx = i  # continua: l'ULTIMA riga da 6 campi (senza esito)
+    if target not in r:
+        continue
+    campi = r.split(",")
+    if len(campi) == 6 or (len(campi) >= 7 and campi[6] == ""):
+        idx = i  # continua: l'ULTIMA riga corrispondente ancora senza esito
 
 if idx is None:
-    # nessuna riga da 6 campi: prova l'ultima riga corrispondente in generale
-    for i, r in enumerate(righe):
-        if target in r:
-            idx = i
-    if idx is None:
+    if not any(target in r for r in righe):
         print(f"nessuna riga per {repo} #{pr}", file=sys.stderr); sys.exit(1)
-    if righe[idx].count(",") >= 6:
-        print(f"esito già registrato per {repo} #{pr}", file=sys.stderr); sys.exit(1)
+    print(f"esito già registrato per {repo} #{pr}", file=sys.stderr); sys.exit(1)
 
-righe[idx] = righe[idx] + f",{esito}"
+campi = righe[idx].split(",")
+# formato storico a 6 campi: manca la colonna, si aggiunge con la sua virgola.
+# formato attuale a 7 campi: la virgola c'è già (campo vuoto), si scrive solo il valore.
+righe[idx] = righe[idx] + (f",{esito}" if len(campi) == 6 else esito)
 with io.open(csv, "w", encoding="utf-8") as f:
     f.write("\n".join(righe) + "\n")
 print(f"esito registrato: {repo} #{pr} → {esito}")
