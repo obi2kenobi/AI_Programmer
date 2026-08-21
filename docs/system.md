@@ -1,0 +1,57 @@
+# La mappa del sistema — AI_Programmer come base di sviluppo globale
+
+> Assemblato il 2026-08-21. Ogni vincolo porta la sua provenienza: cosa è misurato,
+> cosa è deciso, cosa è un limite dichiarato di strumenti di terzi. Niente promesse vuote.
+
+```
+┌───────────────────── AI_Programmer (hub, PUBBLICO) ─────────────────────┐
+│ L0 BASE      CLAUDE.md (regole Karpathy §1-6 + §7 delega) · PROJECT.md  │
+│              multi-progetto · conoscenza docs/bc · SAL.md · fabbrica    │
+│ L1 CERVELLI  llm/ask-qwen (locale) · ask-opus (claude -p) · ask-glm    │
+│              (API opzionale) — contratto unico, matrice in llm/README  │
+│              router/ WayfinderRouter: tessuto per OpenCode, route       │
+│              nominate @route/night @route/digest                       │
+│ L2 LAVORO    giorno: sessioni dirette + deleghe llm/ask-*              │
+│              notte: night-shift 23:00 multi-repo (repos.conf LOCALE)   │
+│ L3 GIUDIZIO  morning-gate: verifiche dichiarate + banco avversariale   │
+│              + proposte correttive (sì umano obbligatorio)             │
+│ L4 MEMORIA   SAL.md + metrics/gate.csv → le decisioni future le        │
+│              decidono i dati accumulati, non le opinioni               │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+## Chi fa cosa, e perché
+
+| Ruolo | Chi | Provenienza della scelta |
+|---|---|---|
+| Cervello giorno primario | ZCode / GLM 5.3 | sessione diretta |
+| Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain: funziona da terminale utente e launchd, non da shell sandbox) |
+| Braccia notturne | Qwen3.8-27B Q4_K_M via Ollama | batteria qualità 4/4 pari alla Q5, 3,7-5,9 tok/s, margine RAM (misure 2026-08-18) |
+| Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
+| Giudice/censore/correttore | AI_Develop + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
+| Memoria | SAL.md + metrics/gate.csv | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
+
+## Limiti dichiarati (cosa il sistema NON fa, oggi)
+
+1. **Opus non passa dal router** — outbound Anthropic assente in Wayfinder (2026-08)
+2. **ask-glm** richiede `ZHIPUAI_API_KEY`; endpoint non testato né da Wayfinder né da noi.
+   Via naturale: sessione ZCode
+3. **Apple Foundation Models**: rimandato — superficie sperimentale (2026-08)
+4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su AI_Develop).
+   Le indagini restano ai cervelli di giorno
+5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
+
+## La fabbrica
+
+- `tools/bootstrap-app.sh <nome>` — repo nuova col sistema pre-cablato
+  (regole ereditate, PROJECT.md stub, label night-shift, `.night-verify` dichiarato)
+- `tools/onboard-repo.sh <owner/repo>` — repo esistente dentro il sistema
+  (label, repos.conf, `.night-verify` da riempire)
+
+## Il ciclo completo (come si chiude)
+
+```
+commessa (issue night-shift) → notte (PR bozza) → gate (verifiche + smentita)
+   → esito: merge (tuo sì) | chiusura | commessa correttiva (da approvare)
+   → lezione scritta in SAL.md + riga in metrics/gate.csv → il ciclo migliora
+```
