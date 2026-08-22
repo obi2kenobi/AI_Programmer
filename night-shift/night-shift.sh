@@ -228,7 +228,20 @@ shift_repo() {
     git -C "$DIR" checkout -B "$BRANCH" "origin/$DB" -q
     git -C "$DIR" clean -fdq
 
-    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari. Se una cartella è dichiarata specchio o sola lettura (le cartelle specchio dichiarate dalla repo), non scriverci MAI. Rispetta le convenzioni di commit del repo.
+    # gap reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): il prompt parlava di
+    # "cartelle specchio dichiarate dalla repo" ma non esisteva NESSUN file/convenzione con
+    # cui una repo potesse dichiararle — citazione senza presidio, identica nello spirito a
+    # /design-doc prima del Set 2. Convenzione minima: .night-mirror nella repo, una
+    # cartella per riga (stesso formato di .night-verify). Se presente, le cartelle vengono
+    # elencate DAVVERO nel prompt (non solo evocate in astratto); se assente, la frase sulle
+    # cartelle specchio non viene nemmeno scritta — non ha senso menzionare un vincolo che
+    # per questa repo non esiste.
+    MIRROR_NOTE=""
+    if [ -f "$DIR/.night-mirror" ]; then
+      MIRROR_LIST=$(grep -vE '^\s*#|^\s*$' "$DIR/.night-mirror" | tr '\n' ',' | sed 's/,$//')
+      [ -n "$MIRROR_LIST" ] && MIRROR_NOTE=" Cartelle specchio/sola lettura DICHIARATE da questa repo (.night-mirror), non scriverci MAI: $MIRROR_LIST."
+    fi
+    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
 
 Issue #$NUM: $TITLE
 

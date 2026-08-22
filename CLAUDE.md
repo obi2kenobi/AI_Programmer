@@ -124,6 +124,10 @@ proprio questo ciclo, non un'ipotesi:
 - **La keyword di chiusura issue va in INGLESE** (`Closes #N`, `Fixes #N`) — GitHub non
   auto-chiude le issue con la traduzione italiana. Verificato più volte nella storia di
   questo sistema (`SAL.md`).
+- **Cartelle specchio/sola lettura**: il turno notturno rispetta un file `.night-mirror`
+  nella root della repo (una cartella per riga, come `.night-verify`) — se presente, quelle
+  cartelle vengono dichiarate esplicitamente all'agente e non vengono mai scritte. Prima di
+  questo giro il prompt ne parlava senza che esistesse alcun modo per una repo di dichiararle.
 
 ---
 
