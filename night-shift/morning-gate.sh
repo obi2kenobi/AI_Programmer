@@ -107,6 +107,11 @@ for REPO in "${REPO_LIST[@]}"; do
     ADVERSARY="${ADVERSARY:-qwen}"
     ASK="$HERE/../llm/ask-qwen.sh"
     [ "$ADVERSARY" = "opus" ] && ASK="$HERE/../llm/ask-opus.sh"
+    # gap reale (set 1 "armonizza gli agenti"): GLM è un cervello di giorno pienamente
+    # documentato (llm/README.md, llm/ask-glm.sh) ma non era mai selezionabile per il
+    # banco avversariale — solo qwen/opus erano cablati. Asimmetria diretta col mandato
+    # di armonizzare notte+giorno "code e glm": ora ADVERSARY=glm è una via reale.
+    [ "$ADVERSARY" = "glm" ] && ASK="$HERE/../llm/ask-glm.sh"
     if [ -x "$ASK" ]; then
       DIFF_TXT=$(git -C "$DIR" diff "origin/$DB...$BRANCH" 2>/dev/null | head -300)
       if [ -n "$DIFF_TXT" ]; then
