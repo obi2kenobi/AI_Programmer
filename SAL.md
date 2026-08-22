@@ -1116,3 +1116,26 @@ emersa RIPRODUCENDO il giro 2 dell'ultimo ciclo per costruire un nuovo test, e h
 smentito la propria diagnosi precedente. Lezione di metodo: anche un fix già
 committato e testato può portare la causa sbagliata se il sintomo (l'hang) non è
 stato isolato dal resto (qui: mai provato senza la chiamata vera al cervello).
+
+### 2026-08-22, notte (8) — Set 2/3: capacità di progettare, 3 skill mai esistite + bug ad alta severità
+
+Set 2 — "migliorare la capacità di progettare nuovo software" (processo esistente +
+nuovi strumenti). Dieci giri su .claude/skills/, night-shift.sh, morning-gate.sh, lib.sh.
+
+| Giro | Cosa | Trovato |
+|---|---|---|
+| 1-3 | `/design-doc`, `/brainstorming`, `/goal`: citati ovunque (METHOD.md, docs/system.md, CLAUDE.md §7) come fonti di verità in `.zcode/commands/`/`.claude/commands/` — NESSUNA delle due directory esiste nel repo. `loops/` vuota da sempre | ricerca sul repo |
+| 4 | `docs/stato-2026-08-22.md` citato in METHOD.md, mai scritto | ricerca sul repo |
+| 5 | design-gate: due messaggi dedicati "SENZA sezione" erano dead code (il check di qualità intercetta sempre prima una sezione assente) | simulazione su 6 casi |
+| 6 | design-gate: soglia 80 caratteri bucabile con prosa di riempimento senza riferimento reale | verificato dal vivo, 87 char di nulla passavano |
+| 7 | `/nuova-commessa` non referenziava `/design-doc` nonostante la pipeline dichiarata | lettura incrociata |
+| 8 | night-shift.sh non registrava le issue saltate per Design/Territorio (proposta 2026-08-21 mai fatta) | grep |
+| 9 | **`run_guarded()` impiegava SEMPRE l'intera durata del watchdog** (120s in produzione) per OGNI comando `.night-verify` e il banco avversariale, anche se il comando reale finiva in millisecondi — un `sleep` orfano teneva aperta la pipe di una command substitution. Trovato per caso costruendo il test di un ALTRO bug (VERDICT="verifiche-ok" con zero comandi eseguiti — falso verde su ogni repo appena bootstrappata) | `time`, poi riprodotto e corretto due volte (il primo fix era sbagliato) |
+| 10 | categoria "non-verificabile" per repo senza modo di verificare (proposta 2026-08-21 mai fatta) | grep |
+
+**Il dato del ciclo**: il giro 9 è la scoperta più importante di questo set, e non era
+nella lista di partenza — è emersa mentre si costruiva il test per un bug diverso. Il
+PRIMO tentativo di fix (un subshell "killer" con `exec sleep`) sembrava corretto a
+lettura ma si è rivelato sbagliato alla PROVA dal vivo (un subshell non può fare `wait`
+su un job che non è figlio suo): riproveur lo stesso identico caso di studio di sempre —
+eseguire, non leggere, anche il proprio fix.
