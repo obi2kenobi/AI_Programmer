@@ -35,6 +35,9 @@ cat > .night-verify <<EOF
 # Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate).
 # Esempi: node tools/test.js · pnpm test · python3 -m pytest
 # VUOTO = il gate lo dice ("il silenzio non è un verdetto"): dichiarale appena puoi.
+# Se questo progetto non ha NESSUN modo di verificare in automatico (es. webapp GAS, la
+# verifica passa dal deploy umano): dichiaralo esplicitamente, non lasciare vuoto —
+#   # NON-VERIFICABILE: <motivo>
 EOF
 
 # Vocabolario di dominio (aggiunta 2026-08-21): si riempie coi fatti confermati dal business,

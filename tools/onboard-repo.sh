@@ -34,6 +34,9 @@ if [ ! -f "$WORK/.night-verify" ]; then
   cat > "$WORK/.night-verify" <<'EOF'
 # Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate).
 # Esempi: node tools/test.js · pnpm test
+# Se questo progetto non ha NESSUN modo di verificare in automatico (es. webapp GAS, la
+# verifica passa dal deploy umano): dichiaralo esplicitamente, non lasciare vuoto —
+#   # NON-VERIFICABILE: <motivo>
 EOF
   git -C "$WORK" add .night-verify
   git -C "$WORK" commit -q -m "chore: .night-verify per il gate del mattino (onboarding sistema)"
