@@ -1,7 +1,8 @@
 #!/bin/bash
 # ask-opus.sh — delega un compito al cervello OPUS (Claude) via Claude Code headless.
 # Contratto comune ai wrapper llm/ask-*: prompt come argomento, contesto via stdin,
-# risposta su stdout. Exit 0 ok / 1 errore.
+# risposta su stdout. Exit 0 ok / 1 errore / 2 via non configurata (auth assente —
+# armonizzato con ask-glm.sh, che distingue da tempo "non configurato" da "errore").
 #
 # NOTA (verificata 2026-08-21, macOS): l'autenticazione di Claude Code vive nel Keychain
 # macOS: funziona dal terminale dell'utente e da launchd, non da una shell sandboxed SUL MAC.
@@ -47,6 +48,13 @@ if [ "$RC" -eq 124 ]; then
   exit 1
 elif [ "$RC" -ne 0 ]; then
   echo "ask-opus: $OUT" >&2
+  # armonizzazione (set 1 "armonizza gli agenti"): ask-glm.sh usa exit 2 per "via
+  # non configurata", distinto da un errore generico (exit 1) — qui tornava sempre
+  # 1, indistinguibile programmaticamente da qualsiasi altro fallimento. Un
+  # chiamante (es. il banco avversariale con ADVERSARY=opus) non poteva reagire
+  # diversamente a "manca l'auth" rispetto a "claude ha fallito per altro".
+  grep -qiE "not logged in|not authenticated|please (run|use) .?(claude )?login|invalid api key|no credentials" <<<"$OUT" \
+    && exit 2
   exit 1
 fi
 echo "$OUT"

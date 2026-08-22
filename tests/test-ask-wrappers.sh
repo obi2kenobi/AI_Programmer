@@ -99,6 +99,29 @@ grep -q '"model": "modello-custom-qwen"' /tmp/model-curl.log 2>/dev/null \
   || ko "ask-qwen: ASK_MODEL ignorato: $(cat /tmp/model-curl.log 2>/dev/null)"
 rm -rf "$MODELTMP" /tmp/model-curl.log
 
+# --- set 1, giro 5: ask-opus.sh armonizza exit 2 per auth assente (come ask-glm.sh) ---
+OPUSTMP=$(mktemp -d)
+cat > "$OPUSTMP/claude" <<'EOF'
+#!/bin/bash
+echo "Error: not logged in. Please run 'claude login' first." >&2
+exit 1
+EOF
+chmod +x "$OPUSTMP/claude"
+OUT_AUTH=$(PATH="$OPUSTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "test" </dev/null 2>&1); RC_AUTH=$?
+[ "$RC_AUTH" -eq 2 ] && ok "ask-opus: auth assente → exit 2 (armonizzato con ask-glm)" \
+  || ko "ask-opus: auth assente ha dato rc=$RC_AUTH invece di 2: $OUT_AUTH"
+
+cat > "$OPUSTMP/claude" <<'EOF'
+#!/bin/bash
+echo "Error: internal server error, code 500" >&2
+exit 1
+EOF
+chmod +x "$OPUSTMP/claude"
+OUT_ERR=$(PATH="$OPUSTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "test" </dev/null 2>&1); RC_ERR=$?
+[ "$RC_ERR" -eq 1 ] && ok "ask-opus: errore generico resta exit 1 (distinto da auth assente)" \
+  || ko "ask-opus: errore generico ha dato rc=$RC_ERR invece di 1: $OUT_ERR"
+rm -rf "$OPUSTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
