@@ -28,7 +28,7 @@
 | Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain: funziona da terminale utente e launchd, non da shell sandbox) |
 | Braccia notturne | Qwen3.8-27B Q4_K_M via Ollama | batteria qualità 4/4 pari alla Q5, 3,7-5,9 tok/s, margine RAM (misure 2026-08-18) |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
-| Giudice/censore/correttore | AI_Develop + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
+| Giudice/censore/correttore | REPO-A + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
 | Memoria | SAL.md + metrics/gate.csv | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
 
 ## Limiti dichiarati (cosa il sistema NON fa, oggi)
@@ -37,7 +37,7 @@
 2. **ask-glm** richiede `ZHIPUAI_API_KEY`; endpoint non testato né da Wayfinder né da noi.
    Via naturale: sessione ZCode
 3. **Apple Foundation Models**: rimandato — superficie sperimentale (2026-08)
-4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su AI_Develop).
+4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su REPO-A).
    Le indagini restano ai cervelli di giorno
 5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
 

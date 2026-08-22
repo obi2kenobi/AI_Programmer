@@ -163,7 +163,7 @@ returns a deterministic subgraph with exact `file:L` references (build with
 `graphify extract . --code-only` if `graphify-out/graph.json` is missing). The local brain at
 ~4 tok/s must never pay the read-everything tax — and neither should you. Trust the graph for
 orientation and location; never as an oracle for call semantics (`calls` edges are unresolved —
-lesson paid by AI_Develop on 2026-08-08).
+lesson paid by REPO-A on 2026-08-08).
 
 ### Goal loops (/goal)
 For iterative optimization during the day use `/goal <verifiable objective> | max N attempts`:
@@ -196,3 +196,9 @@ Before writing infrastructure code (watchdogs, locks, sandboxing, CSV handling, 
 guards), check `patterns/`: each entry is a proven snippet ANCHORED to code that uses it —
 cite the pattern in commesse and code instead of re-deriving it. If the anchor is gone,
 the pattern is dead: say so, don't trust folklore.
+
+### Public repo, private work (2026-08-22 — binding)
+This hub is PUBLIC and contains method only: **never write names of private repos, people,
+or company specifics in any versioned file**. Use anonymous codes (REPO-A, REPO-B…); the
+mapping lives ONLY in `night-shift/repos.key` (local, gitignored). `tools/privacy-check.sh`
+enforces it and runs in `.night-verify`: a leak fails the gate. Method, not gossip.

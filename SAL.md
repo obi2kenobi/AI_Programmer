@@ -16,12 +16,12 @@ avversariale, memoria (questo file + `metrics/gate.csv`).
   con contratto unico: chiunque può delegare a qualsiasi cervello. WayfinderRouter come tessuto
   per OpenCode; Opus resta diretto perché il router non implementa l'outbound Anthropic
   (verificato sui sorgenti, non presunto).
-- **2026-08-21 · Nessun limite di tempo per issue notturna** (deciso da Luca, mutuata da AI_Develop):
+- **2026-08-21 · Nessun limite di tempo per issue notturna** (deciso da Luca, mutuata da REPO-A):
   fino a che non ha finito, il tempo non esiste. Guardie: prompt anti-loop + review del mattino.
 - **2026-08-21 · Config reale fuori dal repo pubblico**: `night-shift/repos.conf` è gitignored —
   i nomi delle repo private non entrano in un repo pubblico. Nel repo solo `repos.conf.example`.
 - **2026-08-21 · Il giudizio è avversariale**: il morning-gate non colleziona report, prova a
-  smentire le PR (metodo del Supervisore in AI_Develop, applicato al sistema). I fallimenti
+  smentire le PR (metodo del Supervisore in REPO-A, applicato al sistema). I fallimenti
   diventano proposte di commesse correttive — nulla si rifà senza il sì di Luca.
 - **2026-08-21 · La scoperta di gap/nuove idee diventa una skill, non un'abitudine** (deciso da
   Luca): il ruolo "cervello di giorno per giudizio/architettura" della matrice `llm/README.md`
@@ -33,14 +33,14 @@ avversariale, memoria (questo file + `metrics/gate.csv`).
 
 ### 2026-08-21 — assemblaggio del sistema
 
-Costruito su tutto ciò che le tre notti su AI_Develop hanno insegnato (cinque difetti
+Costruito su tutto ciò che le tre notti su REPO-A hanno insegnato (cinque difetti
 d'infrastruttura trovati e corretti; il modello locale capisce ma non converge sulle indagini;
 le issue devono essere commesse). Primo carico notturno per il hub: compilazione della colonna
 _Significato_ BC — lavoro documentale, zero credenziali, il riscontro resta umano.
 
 ### 2026-08-21, ore 12 — prima lezione operativa del gate (e chi la firma)
 
-Assemblando il sistema, chi scrive ha spinto `.night-verify` su AI_Develop dal branch della PR
+Assemblando il sistema, chi scrive ha spinto `.night-verify` su REPO-A dal branch della PR
 invece che da main: il commit è evaporato in un merge shallow senza inquinare la PR (verificato),
 ma la dichiarazione è arrivata a destinazione solo al secondo tentativo, dal checkout pulito.
 Regola che ne esce, già implicita nel turno notturno e ora estesa a tutto il sistema:
@@ -56,11 +56,11 @@ misurato sull'issue #363). `graphify query` restituisce un sottografo determinis
 riga esatti — verificato dal vivo sul hub: «avvio del server ollama» → `ensure_server()` a
 `night-shift.sh:L45` con l'intorno di chiamate, in una interrogazione.
 
-**Versione pinata: 0.9.48** (trovata installata la 0.8.50 — vecchia). Lezione di AI_Develop
+**Versione pinata: 0.9.48** (trovata installata la 0.8.50 — vecchia). Lezione di REPO-A
 importata: lo schema cambia fra minor (0.8→0.9.36 ha rotto tre tool contemporaneamente) —
 aggiornare solo a versioni verificate e stampare la versione sugli artefatti.
 
-**Le tre regole del grafo** (tutte pagate da AI_Develop, le adottiamo):
+**Le tre regole del grafo** (tutte pagate da REPO-A, le adottiamo):
 1. il grafo serve per ORIENTARSI e TROVARE (file:riga), non come oracolo
 2. gli edge `calls` non sono risolti: non farci conto (grafo-findings.js li evita da mesi)
 3. verificare-il-grafo, non fidarsi (template: grafo-verifica.js — oracolo indipendente + fail)
@@ -165,7 +165,7 @@ vietata, dentro concessa.**
 
 **Processo §4:** percorso cloud/ibrido documentato in onboard-repo.sh e system.md (MCP può
 commit-tare file; label e repos.conf restano manuali sul Mac); drift-check del CLAUDE.md nel
-gate (informativo); **credenziali BC in CDG_Costi_Diretti: VERIFICATO peggio del report — oltre al
+gate (informativo); **credenziali BC in REPO-C: VERIFICATO peggio del report — oltre al
 file rtf, lo stesso segreto Azure era sparso in 21 commit (Config.gs, script, SAL.md). Storia
 ripulita con filter-repo (file rtf rimosso + 2 valori segreti sostituiti con --replace-text),
 gitleaks post-scan: ZERO leak. ⛔ L'AZIONE CHE RESTA È DI LUCA: ruotare le credenziali su
@@ -176,13 +176,13 @@ pre-push) e come pre-scan in onboard.**
 pretende verifiche dichiarate finalmente le dichiara per sé); warning quando si tocca il limite
 50; DEBITI.md compilato con i rinvi deliberati (rotazione log, portabilità, test bc_*).
 
-Nota operativa per Luca: i cloni locali di CDG_Costi_Diretti vanno RICLONATI (la storia è stata
+Nota operativa per Luca: i cloni locali di REPO-C vanno RICLONATI (la storia è stata
 riscritta, gli hash sono cambiati).
 
 ### 2026-08-21, notte — dev-critic: il critico costruttivo diventa un comando, non un'abitudine
 
 Occasione: la revisione manuale sopra (letti tutti gli script, poi onboarding REALE di
-`CDG_Costi_Diretti` per verificarli sul campo) ha trovato bug non visibili dalla sola lettura
+`REPO-C` per verificarli sul campo) ha trovato bug non visibili dalla sola lettura
 (`gate.csv` non scrive mai la colonna "esito"; `main` hardcoded come default branch in più
 punti; banco avversariale che esegue `eval` su un comando generato da LLM con solo una
 blacklist regex, nessun sandbox reale) e gap di processo (nessun percorso per onboarding da
@@ -256,13 +256,13 @@ ok, 0 smentite, 1 merge — e #369 in attesa. Allineato anche system.md sul perc
 
 ### 2026-08-21, sera — il test che contava: sviluppare una feature NUOVA
 
-Mandato di Luca: usare il sistema per una feature vera su Bilancio_di_Massa_PEFC, guardare
+Mandato di Luca: usare il sistema per una feature vera su REPO-B, guardare
 dove fallisce. Il test ha trovato il bug più importante DENTRO l'operatore: la prima proposta
 era pattern-matching (bottone gemello), non progettazione — /brainstorming saltato. Il redo
 ha eseguito il processo per intero: 3 agenti in parallelo leggono tutto (prodotto, motore
 Python, intento/storia), gap analysis col desiderio del progetto alla mano (il suo SAL §6
 aveva già la roadmap), scelta socratica → **analisi per spessore** (la granularità del banco
-di Matteo, assente in dashboard). Design documentato, commessa #11 chirurgica, turno in corsa
+di il referente di dominio, assente in dashboard). Design documentato, commessa #11 chirurgica, turno in corsa
 con anche la #10 (CSV). Cinque finding d'infrastruttura in giornata, tutti corretti: pre-scan
 rotto, processo-saltabile, zombie opencode, doppio proprietario del server, turni sovrapposti
 (lock per repo). L'analisi completa con le proposte: docs/test-processo-2026-08-21.md —
@@ -299,7 +299,7 @@ sul codice** — ora il template issue ha la sezione obbligatoria "## Forma dei 
 
 Le tre cose che Claude non ha capito dalla documentazione → tre azioni fatte:
 1. forma dei dati non documentata → sezione obbligatoria nel template (sopra)
-2. grammatica dei codici articolo non documentata → TODO dominio (da chiedere a Matteo,
+2. grammatica dei codici articolo non documentata → TODO dominio (da chiedere a il referente di dominio,
    candidato a docs/GRAMMATICA_CODICI.md quando qualcuno la sa scrivere)
 3. CLAUDE.md §6 di PEFC citava il progetto Motore (engine, pnpm, PHP!) → corretto via API
    con il contesto reale del repo
@@ -335,9 +335,9 @@ ciò che l'autore non vedeva. Regola aggiunta alla自身的 pratica: chi scrive 
 le affermazioni del SAL contro il codice — un diario che dice il passato come presente è
 peggiore di un diario mancante (rettifica scritta anche nel SAL di PEFC).
 
-### 2026-08-21, notte (3) — il raccolto di AI_Develop entra: 18 pattern vivi
+### 2026-08-21, notte (3) — il raccolto di REPO-A entra: 18 pattern vivi
 
-La PR #7 di Claude (8 pattern setacciati dai 93 strumenti di AI_Develop, tutti ancorati e
+La PR #7 di Claude (8 pattern setacciati dai 93 strumenti di REPO-A, tutti ancorati e
 provati per esecuzione dove possibile) è MERGED — e con essa la #14 (spessori): Luca ha
 fuso entrambe in giornata. La libreria patterns/ conta ora 18 voci vive. Note di_onestà:
 il pattern trovare-non-e-fallire dichiara che riallinea-mirror.sh intero non ha mai girato
@@ -349,9 +349,9 @@ pattern — falso con --code-only, voce in DEBITI. Backfill CSV: #14 fusa-prima-
 ### 2026-08-21, notte (4) — quattro ambiti mancanti nel roster, chiesti da Luca dopo l'analisi
 
 Luca ha chiesto un giudizio sul roster di cervelli/ruoli del sistema, "in base ai GAS fatti
-e analizzati" (CDG, Bilancio_di_Massa_PEFC, il parco di AI_Develop). Risposta: il PROCESSO è
+e analizzati" (CDG, REPO-B, il parco di REPO-A). Risposta: il PROCESSO è
 maturo e misurato (A/B, audit-commesse), ma i ruoli restano due soli (notte meccanica,
-giorno generico) contro un roster molto più specializzato osservato in AI_Develop
+giorno generico) contro un roster molto più specializzato osservato in REPO-A
 (bc-specialist, ui-engineer, business-development-specialist, ecc.). Quattro aggiunte,
 tutte richieste e implementate lo stesso giro:
 
@@ -375,7 +375,7 @@ tutte richieste e implementate lo stesso giro:
   dedicato: dev-critic ora applica SEMPRE (non solo su richiesta) la lente sicurezza quando
   il target esegue codice generato da LLM o stampa output derivato da terzi.
 - **`docs/GRAMMATICA_DOMINIO_TEMPLATE.md`** — chiude un TODO lasciato aperto dall'audit di
-  PEFC ("grammatica dei codici articolo non documentata... da chiedere a Matteo"): nessun
+  PEFC ("grammatica dei codici articolo non documentata... da chiedere a il referente di dominio"): nessun
   ruolo possedeva la cattura del vocabolario tribale che si ripete in ogni progetto BC del
   gruppo. Seminato ora in `bootstrap-app.sh`/`onboard-repo.sh` (copiato solo se assente).
 
@@ -424,7 +424,7 @@ apposta senza verificarla, per vedere se la skill la cattura prima che diventi c
 non leggere), ha smascherato la falsità con un `node -e` reale su `src/fatturato.js`:
 `riepilogoFatturato` costruisce una mappa `perCliente` completa ma la scarta, restituendo
 solo `clienteTop` (un vincitore, non l'elenco) — esattamente il pattern "aggregazione
-riassuntiva ≠ dettaglio completo" già pagato su Bilancio_di_Massa_PEFC #11 e scritto nella
+riassuntiva ≠ dettaglio completo" già pagato su REPO-B #11 e scritto nella
 lente BC della skill. Corretta l'issue #8 con `## Forma dei dati (verificata sul codice)` e
 la correzione concreta per chi implementerà la commessa.
 
@@ -604,7 +604,7 @@ formato storico, doppia registrazione respinta) erano su un CSV sintetico minima
 Giro 9: stesso script, ma testato su una COPIA di lavoro del vero `metrics/gate.csv`
 (mai toccato l'originale — verificato con `git diff`, vuoto). Quel file reale ha una
 forma che un test giocattolo non riproduce: 5 righe storiche a 6 campi PIÙ 2 righe
-nuove a 7 campi vuote, tutte per lo STESSO repo+PR (`AI_Develop #369`), impilate da
+nuove a 7 campi vuote, tutte per lo STESSO repo+PR (`REPO-A #369`), impilate da
 notti diverse prima che qualcuno registrasse un esito.
 
 **Trovato un bug reale, non ipotetico.** Prima chiamata (`gate-esito.sh ... 369
@@ -663,7 +663,7 @@ finta issue per forzarli (avrebbero richiesto un livello OData che
 night-shift-pilot non ha e non deve avere, essendo dati mock), li ho verificati
 sulla fonte vera dove esistono già: il claim della lente BC nella mia stessa
 `audit-commessa/SKILL.md` ("niente OR annidati... torna HTTP 501 — visto in
-Cache.gs di Bilancio_di_Massa_PEFC").
+Cache.gs di REPO-B").
 
 **Trovato**: falso per come citato. `Cache.gs:14` (clone ancora presente in questa
 sessione) dice solo "non supporta filtri complessi (OR annidati, Entry_No,
@@ -735,7 +735,7 @@ di diventare il primo passo la prossima volta, non l'ultimo.
 
 Luca ha chiesto esplicitamente che questo repo (pubblico) contenga sistema e metodo, MAI
 riferimenti a quali progetti/clienti lavoriamo — solo forma anonima da qui in avanti. Le
-voci precedenti che nominano `Bilancio_periodico`/`CDG_Costi_Diretti` restano invariate
+voci precedenti che nominano `Bilancio_periodico`/`REPO-C` restano invariate
 (la regola vale in avanti, non è stata chiesta una bonifica retroattiva — se in futuro
 Luca vorrà anche quella, è un passo separato ed esplicito). Le due voci che seguono
 adottano già la nuova convenzione: "un progetto onboardato" al posto del nome, il

@@ -2,8 +2,8 @@
 
 Ogni progetto che onboarda copia questo file in `docs/GRAMMATICA_DOMINIO.md` (nel proprio
 repo, non qui) e lo riempie progressivamente. Nasce da un buco riconosciuto ma non chiuso
-nell'audit di Bilancio_di_Massa_PEFC (2026-08-21): *"grammatica dei codici articolo non
-documentata → TODO dominio (da chiedere a Matteo)"* — nessun ruolo o documento possedeva la
+nell'audit di REPO-B (2026-08-21): *"grammatica dei codici articolo non
+documentata → TODO dominio (da chiedere a il referente di dominio)"* — nessun ruolo o documento possedeva la
 responsabilità di catturare il vocabolario tribale che si ripete identico in ogni progetto
 collegato a Business Central dello stesso gruppo.
 

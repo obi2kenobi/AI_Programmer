@@ -1,6 +1,6 @@
 ---
 name: dev-critic
-description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento — lente §2ter) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. CDG_Costi_Diretti) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
+description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento — lente §2ter) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. REPO-C) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
 ---
 
 # dev-critic — critico e scopritore di sviluppo
@@ -8,7 +8,7 @@ description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist b
 Trova ciò che l'ispezione superficiale non trova: usa lo strumento davvero, non solo leggerlo.
 Nasce da una lezione pagata in questa stessa sessione: la sola lettura degli script di
 AI_Programmer non aveva mostrato i gap reali — l'onboarding vero di un progetto esistente
-(CDG_Costi_Diretti) sì (percorso cloud non documentato, drift di CLAUDE.md, credenziali
+(REPO-C) sì (percorso cloud non documentato, drift di CLAUDE.md, credenziali
 committate). Questa skill istituzionalizza quel metodo.
 
 ## 0. Target

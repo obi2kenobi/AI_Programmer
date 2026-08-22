@@ -12,7 +12,7 @@
 | `Document_No` | string | 20FVI-000001 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
 | `Sell_to_Customer_No` | string | 501733 |  | ☐ |
-| `Sell_to_Customer_Name` | string | Matteo Manghi |  | ☐ |
+| `Sell_to_Customer_Name` | string | il referente di dominio Manghi |  | ☐ |
 | `Type` | string | Item |  | ☐ |
 | `No` | string | CAS20SONDSP196X384 |  | ☐ |
 | `Variant_Code` | string |  |  | ☐ |

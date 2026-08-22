@@ -11,7 +11,7 @@
 | `@odata.etag` | string | W/"JzE5OzUyMDExNzE1NTI3NTg2MzYzODUxOz... |  | ☐ |
 | `No` | string | 23SVR-000003 |  | ☐ |
 | `Sell_to_Customer_No` | string | 501733 |  | ☐ |
-| `Sell_to_Customer_Name` | string | Matteo Manghi |  | ☐ |
+| `Sell_to_Customer_Name` | string | il referente di dominio Manghi |  | ☐ |
 | `Sell_to_Customer_Name_2` | string |  |  | ☐ |
 | `Sell_to_Address` | string | Via Mazzalasino, 33 |  | ☐ |
 | `Sell_to_Address_2` | string |  |  | ☐ |
@@ -41,7 +41,7 @@
 | `PRJ_CONAI_Category` | string | User |  | ☐ |
 | `CodiceRF` | string |  |  | ☐ |
 | `Ship_to_Code` | string | 027 |  | ☐ |
-| `Ship_to_Name` | string | Matteo Manghi |  | ☐ |
+| `Ship_to_Name` | string | il referente di dominio Manghi |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Address` | string | Via Mazzalasino, 33 |  | ☐ |
 | `Ship_to_Address_2` | string |  |  | ☐ |
@@ -75,7 +75,7 @@
 | `PRJ_Ship_to_E_Mail` | string | soc.agricolaplc@gmail.com |  | ☐ |
 | `PRJ_Ship_to_Phone_No` | string | +393470517777 |  | ☐ |
 | `Bill_to_Customer_No` | string | 501733 |  | ☐ |
-| `Bill_to_Name` | string | Matteo Manghi |  | ☐ |
+| `Bill_to_Name` | string | il referente di dominio Manghi |  | ☐ |
 | `Bill_to_Name_2` | string |  |  | ☐ |
 | `Bill_to_Address` | string | Via Mazzalasino, 33 |  | ☐ |
 | `Bill_to_Address_2` | string |  |  | ☐ |
