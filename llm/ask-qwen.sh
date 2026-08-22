@@ -3,7 +3,8 @@
 # Contratto comune ai wrapper llm/ask-*: prompt come argomento, contesto via stdin,
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
-# Variabili: QWEN_MODEL (default qwen3.8:27b-mtp-q4_K_M) · QWEN_CTX (16384) · QWEN_THINK
+# Variabili: QWEN_MODEL (default qwen3.8:27b-mtp-q4_K_M, sovrascrivibile anche con
+#            ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
 #            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
 #            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
 set -euo pipefail
@@ -17,7 +18,9 @@ set -euo pipefail
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
 
-MODEL="${QWEN_MODEL:-qwen3.8:27b-mtp-q4_K_M}"
+# bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
+# override universale, qui era ignorato — solo QWEN_MODEL funzionava.
+MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8:27b-mtp-q4_K_M}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"
 API="http://localhost:11434"

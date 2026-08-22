@@ -76,6 +76,29 @@ grep -q -- "--max-time 42 " /tmp/qwen-curl-args.log 2>/dev/null \
   || ko "ask-qwen: ASK_TIMEOUT non propagato: $(cat /tmp/qwen-curl-args.log 2>/dev/null)"
 rm -rf "$QWENTMP" /tmp/qwen-curl-args.log
 
+# --- bug reale (set 1, giro 4): ASK_MODEL ignorato da ask-glm.sh/ask-qwen.sh ---
+MODELTMP=$(mktemp -d)
+cat > "$MODELTMP/curl" <<'EOF'
+#!/bin/bash
+echo "$*" >> /tmp/model-curl.log
+[[ "$*" == *"api/version"* ]] && exit 0
+echo '{"choices":[{"message":{"content":"ok"}}],"message":{"content":"ok"}}'
+EOF
+chmod +x "$MODELTMP/curl"
+
+rm -f /tmp/model-curl.log
+( unset GLM_MODEL; PATH="$MODELTMP:$PATH" ZHIPUAI_API_KEY=x ASK_MODEL=modello-custom bash "$HERE/llm/ask-glm.sh" "test" </dev/null >/dev/null 2>&1 )
+grep -q '"model": "modello-custom"' /tmp/model-curl.log 2>/dev/null \
+  && ok "ask-glm: ASK_MODEL usato quando GLM_MODEL è assente (bug corretto)" \
+  || ko "ask-glm: ASK_MODEL ignorato: $(cat /tmp/model-curl.log 2>/dev/null)"
+
+rm -f /tmp/model-curl.log
+( unset QWEN_MODEL; PATH="$MODELTMP:$PATH" ASK_MODEL=modello-custom-qwen bash "$HERE/llm/ask-qwen.sh" "test" </dev/null >/dev/null 2>&1 )
+grep -q '"model": "modello-custom-qwen"' /tmp/model-curl.log 2>/dev/null \
+  && ok "ask-qwen: ASK_MODEL usato quando QWEN_MODEL è assente (bug corretto)" \
+  || ko "ask-qwen: ASK_MODEL ignorato: $(cat /tmp/model-curl.log 2>/dev/null)"
+rm -rf "$MODELTMP" /tmp/model-curl.log
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

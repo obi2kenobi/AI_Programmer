@@ -8,7 +8,8 @@
 # dice chiaramente come usare GLM (sessione ZCode) invece di fallire in silenzio.
 #
 # Variabili: ZHIPUAI_API_KEY (richiesta) · GLM_BASE_URL (default open.bigmodel.cn/api/paas/v4)
-#            GLM_MODEL (default glm-5.3) · ASK_TIMEOUT secondi (600)
+#            GLM_MODEL (default glm-5.3, sovrascrivibile anche con ASK_MODEL) ·
+#            ASK_TIMEOUT secondi (600)
 set -euo pipefail
 
 PROMPT="${1:-}"
@@ -38,7 +39,11 @@ STDIN_DATA=""
 $STDIN_DATA"
 
 BASE="${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}"
-MODEL="${GLM_MODEL:-glm-5.3}"
+# bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
+# override universale per tutti i wrapper ask-*, ma qui era ignorato — solo
+# GLM_MODEL funzionava. GLM_MODEL resta la via specifica (precedenza se entrambe
+# impostate: chi configura la variabile specifica sa cosa vuole).
+MODEL="${GLM_MODEL:-${ASK_MODEL:-glm-5.3}}"
 TIMEOUT="${ASK_TIMEOUT:-600}"
 
 PAYLOAD=$(python3 - "$MODEL" "$PROMPT" <<'PY'
