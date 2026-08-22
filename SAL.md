@@ -37,6 +37,9 @@
 - [2026-08-22, mattina — la notte ha parlato: 11h39m su #12, zero file](#2026-08-22-mattina-la-notte-ha-parlato-11h39m-su-12-zero-file)
 - [2026-08-22, sera — ciclo dei 5 giri completato: il processo osservato in loop](#2026-08-22-sera-ciclo-dei-5-giri-completato-il-processo-osservato-in-loop)
 - [2026-08-22, notte — ciclo 2 su REPO-D: la progettazione protagonista](#2026-08-22-notte-ciclo-2-su-repo-d-la-progettazione-protagonista)
+- [2026-08-22, notte (2) — 10 giri di auto-miglioramento: il sistema giudica se stesso](#2026-08-22-notte-2-10-giri-di-auto-miglioramento-il-sistema-giudica-se-stesso)
+- [2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero](#2026-08-22-notte-3-10-giri-di-feature-cosa-mancava-davvero)
+- [2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")](#2026-08-22-notte-4-le-decisioni-di-dominio-prese-mandato-di-luca-decidi-da-solo)
 
 
 ## Stato
