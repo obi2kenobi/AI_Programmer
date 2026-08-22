@@ -163,6 +163,26 @@ shift_repo() {
     # Qualità minima delle sezioni (giro 8/10): "## Design" con 3 parole passa il gate
     # formale ma non il metodo. Il Design deve dire DA DOVE nasce (SAL/analisi/rif),
     # il Territorio deve nominare almeno un file.
+    #
+    # bug reale (dogfooding, set 2 "capacità di progettare", 2026-08-22): i controlli di
+    # ASSENZA (sotto) stavano DOPO quelli di QUALITÀ (sopra) — quando una sezione manca
+    # del tutto, la sua estrazione awk produce stringa vuota, che il controllo di qualità
+    # intercetta SEMPRE per primo (lunghezza 0 < 80, o nessun pattern file trovato in
+    # stringa vuota) con un messaggio meno preciso ("troppo povera" invece di "assente").
+    # I due commenti dedicati "manca la sezione" non sono MAI arrivati a un operatore
+    # reale — verificato con simulazione. Ordine corretto: assenza prima, qualità dopo.
+    if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then
+      log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
+      continue
+    fi
+
+    if ! printf '%s' "$BODY" | grep -q "^## Design"; then
+      log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
+      continue
+    fi
+
     DESIGN_BODY=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f' | tr -d '[:space:]')
     if [ "${#DESIGN_BODY}" -lt 80 ]; then
       log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
@@ -173,19 +193,6 @@ shift_repo() {
     if ! printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b'; then
       log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." >/dev/null 2>&1
-      continue
-    fi
-
-    # Regola del territorio (2026-08-22): senza dichiarazione, la commessa non parte
-    if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then
-      log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
-      continue
-    fi
-
-    if ! printf '%s' "$BODY" | grep -q "^## Design"; then
-      log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
       continue
     fi
 
