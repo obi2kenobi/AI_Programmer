@@ -1078,3 +1078,17 @@ di `sal-indice.sh` su una copia è stato lanciato per errore anche sul SAL.md re
 Osservazione aggiuntiva: `llm/ask-opus.sh`, richiamato ricorsivamente da questa stessa
 sessione, ha mostrato latenza variabile (una run ha superato i 2 minuti) — aggiunto un
 timeout al test che lo esercita, per non bloccare la suite a tempo indefinito.
+
+### 2026-08-22, notte (6) — correzione: la diagnosi "claude -p lento" era sbagliata
+
+Nel ciclo precedente (giro 4/10) un hang di 2+ minuti era stato attribuito a "chiamata
+ricorsiva a claude -p lenta o bloccata", con un timeout aggiunto al TEST come guardia.
+Set 1 del ciclo nuovo ("armonizza gli agenti") ha riprodotto l'hang dal vivo con
+`< <(sleep 100)`: la causa vera è `[ ! -t 0 ] && STDIN_DATA=$(cat)` in tutti e tre i
+wrapper `llm/ask-*.sh` — `-t 0` non distingue "arriva un contesto vero in pipe" da "non
+c'è nulla ma non è un terminale", e `cat` blocca a tempo indefinito nel secondo caso.
+
+Annotato come richiede CLAUDE.md §1: un errore della NOTA precedente (l'ipotesi
+"claude lento"), non un difetto del sistema scoperto oggi — il sistema aveva davvero
+un bug, solo diagnosticato nel posto sbagliato. Corretto con `timeout 5 cat` nei tre
+wrapper; il timeout già presente nel test resta comunque una buona guardia generale.
