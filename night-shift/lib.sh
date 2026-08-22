@@ -15,6 +15,22 @@ default_branch() {
   return 1
 }
 
+# rotate_log_if_big(): ruota un log oltre soglia (default 10MB) — una sola generazione
+# (file → file.1, sovrascrivendo un .1 precedente: non serve di più per un log locale
+# di debug, non un archivio). Debito aperto dal 2026-08-21 ("nessun limite raggiunto");
+# night-shift.log e morning-gate.log crescono senza limite da allora.
+rotate_log_if_big() {
+  local file="$1" soglia_mb="${2:-10}"
+  [ -f "$file" ] || return 0
+  local size_bytes
+  size_bytes=$(wc -c < "$file" 2>/dev/null) || return 0
+  local soglia_bytes=$((soglia_mb * 1024 * 1024))
+  if [ "$size_bytes" -ge "$soglia_bytes" ]; then
+    mv -f "$file" "$file.1"
+    : > "$file"
+  fi
+}
+
 # run_guarded(): esegue un comando con watchdog (i secondi) — l'asimmetria trovata dalla
 # review §3 (.night-verify senza timeout fermava il gate per sempre) non torna.
 run_guarded() {

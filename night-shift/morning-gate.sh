@@ -22,6 +22,7 @@ HUB_METRICS="$(cd "$HERE/.." && pwd)/metrics/gate.csv"
 WORK="$HOME/night-shift-work"
 REPORT="$HOME/morning-gate-report.md"
 GATE_LOG="$HOME/morning-gate.log"
+rotate_log_if_big "$GATE_LOG"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$GATE_LOG"; }
 

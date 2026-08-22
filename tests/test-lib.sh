@@ -81,6 +81,25 @@ M3=$(echo 'niente da mascherare qui' | mask_secrets)
 [ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \
   || ko "mask_secrets falso positivo: $M3"
 
+# --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
+LOGTMP=$(mktemp -d)
+echo "riga piccola" > "$LOGTMP/small.log"
+rotate_log_if_big "$LOGTMP/small.log" 10
+[ ! -f "$LOGTMP/small.log.1" ] && ok "rotate_log_if_big: file sotto soglia non ruota" \
+  || ko "rotate_log_if_big: ha ruotato un file piccolo"
+
+head -c 2000000 /dev/zero > "$LOGTMP/big.log"; echo "marker-fine" >> "$LOGTMP/big.log"
+rotate_log_if_big "$LOGTMP/big.log" 1
+[ -f "$LOGTMP/big.log.1" ] && grep -q "marker-fine" "$LOGTMP/big.log.1" \
+  && ok "rotate_log_if_big: file oltre soglia ruotato, contenuto preservato in .1" \
+  || ko "rotate_log_if_big: rotazione mancata o contenuto perso"
+[ -f "$LOGTMP/big.log" ] && [ ! -s "$LOGTMP/big.log" ] && ok "rotate_log_if_big: nuovo log vuoto pronto" \
+  || ko "rotate_log_if_big: il nuovo log non è vuoto"
+
+rotate_log_if_big "$LOGTMP/assente.log" 1
+ok "rotate_log_if_big: file assente, no-op senza errore"
+rm -rf "$LOGTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
