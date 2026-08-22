@@ -147,6 +147,13 @@ shift_repo() {
     # disciplina dell'operatore — un'issue night-shift senza sezione "## Design" NON parte.
     # Il design può essere un link, un riferimento al SAL del progetto, o tre righe di ratio:
     # deve esserci, dichiarato, PRIMA del lavoro.
+    # Regola del territorio (2026-08-22): senza dichiarazione, la commessa non parte
+    if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then
+      log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
+      continue
+    fi
+
     if ! printf '%s' "$BODY" | grep -q "^## Design"; then
       log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
@@ -181,7 +188,12 @@ $BODY"
 
     if [ "$OP_RC" -ne 0 ]; then
       log "Issue #$NUM: OpenCode fallito, skip"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte: esecuzione fallita (vedi log locale). Riproverà alla prossima esecuzione." >/dev/null 2>&1
+      FAIL_PREC=$(gh issue view "$NUM" -R "$REPO" --json comments -q '[.comments[].body | select(test("esecuzione fallita"))] | length' 2>/dev/null || echo 0)
+      if [ "${FAIL_PREC:-0}" -ge 1 ]; then
+        gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte: esecuzione fallita per la $((FAIL_PREC+1))ª volta. Regola dell'A/B: due fallimenti notturni = territorio da giorno — valuta di passarla al giorno (Claude/GLM la chiudono in minuti)." >/dev/null 2>&1
+      else
+        gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte: esecuzione fallita (vedi log locale). Riproverà alla prossima esecuzione." >/dev/null 2>&1
+      fi
       FAILED=$((FAILED+1)); continue
     fi
 

@@ -45,7 +45,7 @@ TOTAL=0 PASS=0 FAIL=0
 for REPO in "${REPO_LIST[@]}"; do
   DIR="$WORK/${REPO##*/}"
   gh pr list -R "$REPO" --state open --json number,headRefName,title,mergeable --limit 50 2>/dev/null \
-    | jq -c '.[] | select(.headRefName | test("^night/|^claude/"))' > /tmp/gate-prs.json
+    | jq -c '.[] | select(.headRefName | test("^night/|^claude/|^glm/"))' > /tmp/gate-prs.json
   # -s (slurp): conta gli elementi dello stream — senza, jq conta le CHIAVI dell'oggetto
   N=$(jq -s 'length' < /tmp/gate-prs.json); N="${N:-0}"
   echo "## $REPO — $N PR notturne aperte" >> "$REPORT"
@@ -126,7 +126,7 @@ $DIFF_TXT"
           sed -e "s|__WORKDIR__|$DIR|g" -e "s|__HOME__|$HOME|g" "$HERE/sandbox.sb" > /tmp/gate-sandbox.sb
           ( cd "$DIR" && run_guarded 120 sandbox-exec -f /tmp/gate-sandbox.sb bash -c "$CMD" ) > /tmp/gate-banco.out 2>&1
           BRC=$?
-          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200)
+          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200 | sed -E 's/(secret|token|password|key)[a-z_]*[=: ][^ ,"]+/\1=***MASCHERATO***/gi')
           echo "**Banco avversariale ESEGUITO** (cervello: $ADVERSARY):" >> "$REPORT"
           echo "- comando: \`$CMD\`" >> "$REPORT"
           if [ "$BRC" -eq 0 ]; then
