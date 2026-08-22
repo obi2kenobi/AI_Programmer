@@ -2,3 +2,4 @@
 shellcheck night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
 bash tools/privacy-check.sh
+bash tests/test-lib.sh
