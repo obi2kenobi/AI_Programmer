@@ -857,3 +857,14 @@ Onestà di processo, non solo di risultato: cosa ha tenuto e cosa no.
   questo genere di verifica ricorre spesso su progetti futuri, vale la pena costruire un piccolo
   harness generico (repo/percorso dei file GAS in input, stub configurabile) invece di riscriverlo
   da zero ogni volta — non fatto in questa sessione, segnalato come possibile debito futuro.
+### 2026-08-22, mattina — la notte ha parlato: 11h39m su #12, zero file
+
+Prima notte completamente automatica col sistema a regime. Il design-gate HA FUNZIONATO:
+le 4 commesse vecchie senza ## Design (#363, #2, #3, #4) tutte saltate col commento — il
+processo si difende. Ma la notte su #12 (commessa corretta dall'audit, design passata,
+forma dei dati presente) è rimasta 11 ore e 39 minuti senza scrivere un file: fermata la
+mano la mattina. Conferma definitiva dell'A/B: il limite della notte non è il biglietto,
+è il TERRITORIO — file grandi da esplorare = giorno, sempre. Regola di smistamento che ne
+esce (proposta a Luca): le commesse notturne dichiarano anche la dimensione del territorio
+(file piccoli e righe indicate), altrimenti passano al giorno. Stato completo del progetto:
+docs/stato-2026-08-22.md.
