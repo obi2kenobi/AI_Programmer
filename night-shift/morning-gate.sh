@@ -85,8 +85,16 @@ for REPO in "${REPO_LIST[@]}"; do
     if [ -n "$NIGHT_VERIFY" ]; then
       echo "**Verifiche dichiarate (.night-verify, da main):**" >> "$REPORT"
       V_RC=0
+      # bug reale, alta severità (dogfooding, set 2 "capacità di progettare", 2026-08-22):
+      # un .night-verify con SOLO righe di commento — ESATTAMENTE il default generato da
+      # tools/bootstrap-app.sh per ogni repo nuova — fa collassare ogni riga nel `continue`
+      # sotto, zero comandi eseguiti, V_RC resta 0 invariato → VERDICT="verifiche-ok".
+      # Falso verde: verificato dal vivo con un file identico al template reale. CMD_ESEGUITI
+      # distingue "ho verificato e va tutto bene" da "non ho verificato nulla".
+      CMD_ESEGUITI=0
       while IFS= read -r cmd; do
         cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
+        CMD_ESEGUITI=$((CMD_ESEGUITI+1))
         echo "- \`$cmd\`:" >> "$REPORT"
         if OUT=$( cd "$DIR" && run_guarded 120 bash -c "$cmd" 2>&1 ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
@@ -95,7 +103,14 @@ for REPO in "${REPO_LIST[@]}"; do
           FAIL_DETAIL="$FAIL_DETAIL"$'\n'"- \`$cmd\`:"$'\n'"$(echo "$OUT" | tail -8)"
         fi
       done <<< "$NIGHT_VERIFY"
-      [ "$V_RC" -eq 0 ] && VERDICT="verifiche-ok" || VERDICT="verifiche-fallite"
+      if [ "$CMD_ESEGUITI" -eq 0 ]; then
+        echo "**Verifiche dichiarate:** \`.night-verify\` esiste ma non contiene nessun comando eseguibile (solo commenti/righe vuote) — non è lo stesso di 'tutto ok', è lo stesso di 'niente verificato'." >> "$REPORT"
+        VERDICT="verifiche-vuote"
+      elif [ "$V_RC" -eq 0 ]; then
+        VERDICT="verifiche-ok"
+      else
+        VERDICT="verifiche-fallite"
+      fi
     else
       echo "**Verifiche dichiarate:** nessun file \`.night-verify\` su main — il silenzio non è un verdetto: dichiarale." >> "$REPORT"
       VERDICT="non-dichiarate"
