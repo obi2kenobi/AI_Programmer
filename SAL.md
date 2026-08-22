@@ -989,3 +989,23 @@ Osservazione di metodo: le 10 feature rispondono tutte alla stessa domanda —
 è il collo di bottiglia quando fa cose ripetibili (leggere report, ricordarsi audit,
 scrivere SAL, verificare ancore, controllare salute). Il sistema cresce automatizzando
 l'operatore, non sostituendolo: le decisioni restano sue (review, merge, rotazione).
+
+### 2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")
+
+| # | Decisione | Perché |
+|---|---|---|
+| Suggeritore target | **−5%** (confermato) | produttore vs retail: leggermente sotto la mediana categoria è la posizione competitiva senza svendersi |
+| Watchlist | **anche soglia SUPERIORE** | quando un concorrente ALZA i prezzi è il tuo spazio: segnalarlo è intelligenza competitiva, non solo costo |
+| Tassonomia alluminio | **categoria dedicata C8** | un gazebo in alluminio con tetto in policarbonato NON è pieghevole: cambia le mediane di C7 e la lettura del mercato |
+| Digest email | **solo quando ci sono variazioni** | un'email vuota ogni settimana insegna a ignorarla |
+| Qualità: scarno 50% | **confermato** | sotto il 50% i dati non bastano per decidere |
+| Qualità: stale 9 giorni | **confermato** | run settimanale (7g) + 2 di margine |
+| Confronto n≥3 | **confermato** | ~1051 URL / 20 insegne ≈ 50 per insegna: 3 per categoria è un filtro minimo che basta |
+| Export CSV | **solo dominio** (confermato) | già restrictivo, nessuna apertura |
+| Radar in digest | **sì** | i nuovi entrati sono intelligence azionabile, non solo dashboard |
+| Calendario pocodati | **10 osservazioni, solo mesi passati** | campione minimo per non mentire |
+| Morning-digest email | **configurare la stessa del notturno** | un solo canale, meno rumore |
+| Audit reminder | **21:30 confermato** | 1.5h prima del turno: tempo per agire, non troppo presto per dimenticare |
+| Multi-cadence | **REPO-A settimanale (lun), le altre giornaliere** | il giudice non deve correre ogni notte |
+| Cursor per-id | **fix ORA** | rischio reale di perdita dati durante run |
+| Onboarding checkpoint | **rinvio accettato** | 5 competitor entro 6 min GAS oggi |
