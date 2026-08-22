@@ -50,6 +50,30 @@ DUR=$((T1-T0))
 [ $DUR -le 4 ] && ok "run_guarded: sleep 30 ucciso entro ~2s (durato $DUR s)" || ko "run_guarded: durato $DUR s — il watchdog non morde"
 run_guarded 5 true && ok "run_guarded: comando veloce passa pulito" || ko "run_guarded: fallisce su comando sano"
 
+# bug reale, alta severità (set 2 giro 9, 2026-08-22): il test sopra (fuori da una command
+# substitution) NON avrebbe mai visto il bug — un `sleep` orfano tiene aperta una pipe di
+# $(...) finché non finisce DA SOLO, quindi run_guarded impiegava SEMPRE l'intera durata
+# del watchdog quando chiamato dentro $(...), esattamente come lo chiama morning-gate.sh
+# per OGNI comando .night-verify e per il banco avversariale. Verificato dal vivo: 10.0s
+# esatti per un comando istantaneo con watchdog 10s, prima del fix.
+T0=$(date +%s)
+OUT_CS=$(run_guarded 8 bash -c "true" 2>&1)
+RC_CS=$?
+T1=$(date +%s)
+DUR_CS=$((T1-T0))
+[ $DUR_CS -le 3 ] && ok "run_guarded dentro command substitution: comando veloce torna subito (${DUR_CS}s, non 8s)" \
+  || ko "run_guarded dentro \$(...): ${DUR_CS}s — il bug del sleep orfano è tornato"
+
+# nessun processo sleep residuo dopo un giro rapido (l'orfano del bug vecchio restava vivo)
+if command -v pgrep >/dev/null 2>&1; then
+  sleep 1
+  RESIDUI=$(pgrep -f "sleep 8$" 2>/dev/null | wc -l | tr -d ' ')
+  [ "${RESIDUI:-0}" -eq 0 ] && ok "run_guarded: nessun processo sleep orfano residuo" \
+    || ko "run_guarded: $RESIDUI processo/i sleep orfano/i ancora vivo/i"
+else
+  ok "run_guarded: pgrep assente, controllo residui saltato (non bloccante)"
+fi
+
 # --- repo_code: anonimizzazione con chiave (repo fittizia in tmp) ---
 KEYTMP=$(mktemp -d)
 printf '# test\nREPO-X=finto/proprio\n' > "$KEYTMP/repos.key"
