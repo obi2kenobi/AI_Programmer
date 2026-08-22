@@ -941,3 +941,28 @@ mercato (_wall_28): difetto di design intercettato prima della produzione e conv
 in normalizzazione per categoria base. E ha corretto le aspettative dell'autore altre
 quattro volte (l'aritmetica del fixture si conta a mano, sempre). 55 asserzioni nuove,
 16 avversariali, PR impilate col merge in ordine dichiarato.
+
+### 2026-08-22, notte (2) — 10 giri di auto-miglioramento: il sistema giudica se stesso
+
+Il mandato: il sistema migliora AI_Programmer e il metodo viene analizzato a ogni passo.
+Dieci PR (#14-#21, una finita per errore direttamente su main — scivolone di checkout
+dichiarato: giro 3):
+
+| Giro | Cosa | Prova |
+|---|---|---|
+| 1 | regression test per lib.sh: i 6 bypass storici non riaprono MAI | 25 asserzioni |
+| 2 | test per gate-esito e gate-summary (i bug del CSV come regression) | 10 |
+| 3 | wrapper mai eseguiti → eseguiti (percorsi di fallimento) | 7 |
+| 4 | privacy v2 + **bug latente del guardiano trovato dal test**: git -C non vale per grep, il check passava tutto se invocato fuori dalla root — silenziosamente, da sempre | 5 (con leak piantate) |
+| 5 | indice del SAL generato e verificato nel gate (30 voci) | presidio |
+| 6 | summary v2: il rigore del banco misurato (scarti allowlist %) | live |
+| 7 | idempotenza install (onesto: test debole in HOME finta) | 4 |
+| 8 | qualità minima Design (≥80 char col da-dove) e Territorio (nomina file) | presidio |
+| 9 | bootstrap --dry-run | sintassi |
+| 10 | METHOD.md: la porta del sistema | docs |
+
+**Il dato del ciclo**: il test del giro 4 ha trovato un bug latente nel guardiano della
+privacy che c'era DA SEMPRE — il check funzionava solo se lanciato dalla root del repo,
+il che significa che IL GATE l'ha sempre invocato correttamente per caso. Regola rafforzata:
+**il guardiano si prova anche dalle posizioni sbagliate** — un check che funziona solo
+nella posizione giusta non è un presidio, è una coincidenza.
