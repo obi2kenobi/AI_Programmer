@@ -59,6 +59,30 @@ if [ ! -f "$WORK/docs/GRAMMATICA_DOMINIO.md" ]; then
     && echo "GRAMMATICA_DOMINIO.md creato e spinto" || echo "⚠ template vocabolario non copiato"
 fi
 
+# gap reale (set 3 "flusso delle idee", 2026-08-22): le skill del hub (dev-critic,
+# audit-commessa, verifica-visiva, design-doc, brainstorming, goal) non arrivavano MAI a
+# una repo onboardata — solo le regole (mai copiate qui nemmeno loro, a differenza di
+# bootstrap-app.sh: un repo esistente potrebbe avere un CLAUDE.md proprio, non si sovrascrive)
+# e i template. Copia solo le skill MANCANTI, una per una — mai sovrascrive una skill che il
+# progetto avesse già personalizzato con lo stesso nome.
+SKILLS_AGGIUNTE=0
+mkdir -p "$WORK/.claude/skills"
+for skill_dir in "$HERE"/.claude/skills/*/; do
+  skill_name="$(basename "$skill_dir")"
+  if [ ! -d "$WORK/.claude/skills/$skill_name" ]; then
+    cp -r "$skill_dir" "$WORK/.claude/skills/$skill_name"
+    git -C "$WORK" add ".claude/skills/$skill_name"
+    SKILLS_AGGIUNTE=$((SKILLS_AGGIUNTE+1))
+  fi
+done
+if [ "$SKILLS_AGGIUNTE" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $SKILLS_AGGIUNTE skill del hub propagate (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$SKILLS_AGGIUNTE skill del hub aggiunte e spinte"
+else
+  echo "skill del hub già tutte presenti, intoccate"
+fi
+
 CONF="$HERE/night-shift/repos.conf"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
 grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }
