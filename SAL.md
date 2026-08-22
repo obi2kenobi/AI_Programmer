@@ -868,3 +868,18 @@ mano la mattina. Conferma definitiva dell'A/B: il limite della notte non è il b
 esce (proposta a Luca): le commesse notturne dichiarano anche la dimensione del territorio
 (file piccoli e righe indicate), altrimenti passano al giorno. Stato completo del progetto:
 docs/stato-2026-08-22.md.
+
+### 2026-08-22, mattina (2) — messo a posto tutto: la regola del territorio, e il giorno chiude #10+#12
+
+Miglioramenti di processo entrati (tutti dalla lezione dell'11 ore):
+- **Regola del Territorio**: sezione obbligatoria nelle commesse (quanto codice serve leggere) — il turno la salta come il Design se manca; il template la chiede alla nascita
+- **Escalation automatica**: al secondo fallimento notturno di una issue, il commento propone di passarla al giorno (regola dell'A/B applicata dal sistema, non più solo ricordata da noi)
+- **Corsia glm/***: il gate giudica anche il lavoro di GLM (terzo cervello, stessa legge di notte e claude)
+- **Mascheramento segreti** negli output del gate (DEBITI saldato, pattern segreto-come-impronta applicato)
+
+Esecuzioni: **le commesse BC #2/#3/#4 riabilitate** (Design + Territorio piccolo aggiunti — il
+lavoro perfetto per stanotte: un file md a colonna). **Il giorno ha chiuso #10 e #12** in un
+colpo (PR #15 su PEFC, branch glm/): nome file CSV datato (un punto per tutte le tabelle,
+testato in Node) e registri di conformità nel PDF (tabella DDS 4→6 colonne, avviso assenti
+con la funzione GIUSTA, le 7 voci del sistema di gestione) — sintassi JS verificata per
+esecuzione. Stanotte la notte prova le BC: la prima prova della regola del territorio.

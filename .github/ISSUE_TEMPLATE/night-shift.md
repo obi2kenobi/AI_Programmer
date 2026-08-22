@@ -24,6 +24,14 @@ labels: ["night-shift"]
      `docs/GRAMMATICA_DOMINIO.md` invece di indovinarlo — se la riga non c'è ancora,
      dillo qui invece di scrivere un'ipotesi come fatto. -->
 
+## Territorio
+
+<!-- OBBLIGATORIO: quanto codice bisogna LEGGERE per eseguire (file e loro dimensione).
+     Regola dell'11 ore (2026-08-22): la notte non converge sui territori grandi —
+     file da centinaia di righe da esplorare = GIORNO. Notturno solo se: file piccoli,
+     righe indicate, nessuna esplorazione. Se il territorio è grande, NON scrivere questa
+     commessa: passa il lavoro al giorno. -->
+
 ## Commessa (contesto precaricato)
 
 <!-- I punti esatti: file, righe, funzioni, regex/pattern già validati, cosa toccare
