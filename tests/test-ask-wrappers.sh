@@ -29,8 +29,14 @@ OUT3=$(bash "$HERE/llm/ask-opus.sh" 2>&1); RC3=$?
 # Non è un difetto di ask-opus.sh (fa esattamente il suo contratto in entrambi i
 # casi) — era un'assunzione del TEST, non del sistema: annotato qui, non come
 # difetto del wrapper.
-OUT4=$(bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
-if [ "$RC4" -eq 0 ]; then
+# timeout: quando l'auth è presente, questo invoca un vero claude -p ricorsivo dalla
+# sessione stessa — osservato variabile in latenza (una run di questa stessa suite
+# è arrivata a superare 2 minuti). Un limite duro evita che UN test blocchi tutta la
+# suite all'infinito; un timeout qui è un FAIL leggibile, non un mistero.
+OUT4=$(timeout 90 bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
+if [ "$RC4" -eq 124 ]; then
+  ko "ask-opus: timeout dopo 90s (chiamata ricorsiva a claude -p lenta o bloccata)"
+elif [ "$RC4" -eq 0 ]; then
   [ -n "$OUT4" ] && ok "ask-opus con auth presente: risposta non vuota (rc=0)" || ko "ask-opus rc=0 ma output vuoto"
 else
   grep -qiE "gateway|Keychain|ask-opus:|login" <<<"$OUT4" && ok "ask-opus con auth assente: diagnosi leggibile (rc=$RC4)" || ko "opus diag: $OUT4"
