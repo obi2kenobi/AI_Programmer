@@ -42,6 +42,14 @@ EOF
 mkdir -p docs
 cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" docs/GRAMMATICA_DOMINIO.md
 
+# gap reale (set 3 "flusso delle idee", 2026-08-22): le skill Claude costruite nel hub
+# (dev-critic, audit-commessa, verifica-visiva, design-doc, brainstorming, goal) restavano
+# intrappolate lì — CLAUDE.md (le regole) si eredita da sempre, ma gli STRUMENTI che quelle
+# regole presuppongono (es. "usa dev-critic prima di...") non arrivavano mai al progetto
+# nuovo. Una sessione di giorno sul progetto appena creato non aveva accesso a nessuna skill.
+mkdir -p .claude/skills
+cp -r "$HERE/.claude/skills/." .claude/skills/
+
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
