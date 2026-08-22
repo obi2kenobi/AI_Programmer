@@ -46,6 +46,16 @@ fi
 OUT5=$(echo "contenuto" | bash "$HERE/llm/ask-qwen.sh" 2>&1); RC5=$?
 grep -q "uso:" <<<"$OUT5" && ok "ask-qwen senza prompt: usage anche con stdin in arrivo" || ko "qwen usage: $OUT5"
 
+# --- bug reale (set 1, giro 1): senza prompt NON deve tentare di avviare Ollama.
+# Prima validava il prompt DOPO il tentativo (fino a 30s sprecati + processo in
+# background su una chiamata invalida) — verificato con `time`: 30.4s reali.
+T0=$(date +%s)
+bash "$HERE/llm/ask-qwen.sh" >/dev/null 2>&1 || true
+T1=$(date +%s)
+DUR=$((T1-T0))
+[ "$DUR" -le 3 ] && ok "ask-qwen senza prompt: fallisce subito, non tenta Ollama (${DUR}s)" \
+  || ko "ask-qwen senza prompt: ${DUR}s — tenta ancora di avviare Ollama prima di validare"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

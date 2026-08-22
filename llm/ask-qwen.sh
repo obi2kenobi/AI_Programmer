@@ -6,6 +6,15 @@
 # Variabili: QWEN_MODEL (default qwen3.8:27b-mtp-q4_K_M) · QWEN_CTX (16384) · QWEN_THINK
 set -euo pipefail
 
+# bug reale (dogfooding, set 1 "armonizza gli agenti"): il prompt veniva validato
+# DOPO aver tentato di avviare Ollama — una chiamata senza argomenti (es. "ask-qwen.sh"
+# per errore, o un probe automatico) sprecava fino a 30s e poteva avviare un processo
+# in background prima di dire "uso: ...". Verificato con `time`: 30.4s reali. Gli altri
+# wrapper (ask-glm.sh, ask-opus.sh) validano il prompt PRIMA di ogni side-effect — qui
+# si armonizza allo stesso ordine.
+PROMPT="${1:-}"
+[ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+
 MODEL="${QWEN_MODEL:-qwen3.8:27b-mtp-q4_K_M}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"
@@ -17,8 +26,6 @@ if ! curl -sf "$API/api/version" >/dev/null 2>&1; then
   for _ in $(seq 1 30); do curl -sf "$API/api/version" >/dev/null 2>&1 && break; sleep 1; done
 fi
 
-PROMPT="${1:-}"
-[ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
 STDIN_DATA=""
 [ ! -t 0 ] && STDIN_DATA=$(cat)
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
