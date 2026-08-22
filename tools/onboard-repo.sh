@@ -34,6 +34,9 @@ if [ ! -f "$WORK/.night-verify" ]; then
   cat > "$WORK/.night-verify" <<'EOF'
 # Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate).
 # Esempi: node tools/test.js · pnpm test
+# Se questo progetto non ha NESSUN modo di verificare in automatico (es. webapp GAS, la
+# verifica passa dal deploy umano): dichiaralo esplicitamente, non lasciare vuoto —
+#   # NON-VERIFICABILE: <motivo>
 EOF
   git -C "$WORK" add .night-verify
   git -C "$WORK" commit -q -m "chore: .night-verify per il gate del mattino (onboarding sistema)"
@@ -57,6 +60,51 @@ if [ ! -f "$WORK/docs/GRAMMATICA_DOMINIO.md" ]; then
   cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" "$WORK/docs/GRAMMATICA_DOMINIO.md" \
     && git -C "$WORK" add docs/GRAMMATICA_DOMINIO.md && git -C "$WORK" commit -q -m "chore: template vocabolario di dominio" && git -C "$WORK" push -q \
     && echo "GRAMMATICA_DOMINIO.md creato e spinto" || echo "⚠ template vocabolario non copiato"
+fi
+
+# gap reale (set 3 "flusso delle idee", 2026-08-22): le skill del hub (dev-critic,
+# audit-commessa, verifica-visiva, design-doc, brainstorming, goal) non arrivavano MAI a
+# una repo onboardata — solo le regole (mai copiate qui nemmeno loro, a differenza di
+# bootstrap-app.sh: un repo esistente potrebbe avere un CLAUDE.md proprio, non si sovrascrive)
+# e i template. Copia solo le skill MANCANTI, una per una — mai sovrascrive una skill che il
+# progetto avesse già personalizzato con lo stesso nome.
+SKILLS_AGGIUNTE=0
+mkdir -p "$WORK/.claude/skills"
+for skill_dir in "$HERE"/.claude/skills/*/; do
+  skill_name="$(basename "$skill_dir")"
+  if [ ! -d "$WORK/.claude/skills/$skill_name" ]; then
+    cp -r "$skill_dir" "$WORK/.claude/skills/$skill_name"
+    git -C "$WORK" add ".claude/skills/$skill_name"
+    SKILLS_AGGIUNTE=$((SKILLS_AGGIUNTE+1))
+  fi
+done
+if [ "$SKILLS_AGGIUNTE" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $SKILLS_AGGIUNTE skill del hub propagate (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$SKILLS_AGGIUNTE skill del hub aggiunte e spinte"
+else
+  echo "skill del hub già tutte presenti, intoccate"
+fi
+
+# gap reale (set 3 "flusso delle idee"): stesso ragionamento per patterns/ (CLAUDE.md §7,
+# "prima di scrivere infrastruttura, controlla patterns/") — merge per-file, mai sovrascrive
+# un pattern che il progetto avesse già con lo stesso nome.
+PATTERNS_AGGIUNTI=0
+mkdir -p "$WORK/patterns"
+for pattern_file in "$HERE"/patterns/*.md; do
+  pattern_name="$(basename "$pattern_file")"
+  if [ ! -f "$WORK/patterns/$pattern_name" ]; then
+    cp "$pattern_file" "$WORK/patterns/$pattern_name"
+    git -C "$WORK" add "patterns/$pattern_name"
+    PATTERNS_AGGIUNTI=$((PATTERNS_AGGIUNTI+1))
+  fi
+done
+if [ "$PATTERNS_AGGIUNTI" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $PATTERNS_AGGIUNTI pattern del hub propagati (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$PATTERNS_AGGIUNTI pattern del hub aggiunti e spinti"
+else
+  echo "pattern del hub già tutti presenti, intoccati"
 fi
 
 CONF="$HERE/night-shift/repos.conf"

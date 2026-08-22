@@ -22,6 +22,7 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/lib.sh"
 CONF="$HERE/repos.conf"
 LOG="$HOME/night-shift.log"
+rotate_log_if_big "$LOG"
 WORK="$HOME/night-shift-work"
 MODEL_TAG="qwen3.8:27b-mtp-q4_K_M"
 OCPROVIDER="ollama/$MODEL_TAG"
@@ -144,6 +145,11 @@ shift_repo() {
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
   local PR_CREATED=0 FAILED=0 IDX=0
+  # giro 8/10 (set 2 "capacità di progettare"): proposta mai implementata di
+  # docs/test-processo-2026-08-21.md ("il turno scrive nel log l'esito-fase
+  # design-linked: sì/no — il dato per misurare se il miglioramento funziona").
+  # Conta quante issue saltano per Design/Territorio insufficiente in questo turno.
+  local SKIPPED_DESIGN=0
   local ROWS=()
   while IFS= read -r line; do ROWS+=("$line"); done < <(echo "$ISSUES" | jq -c '.[]')
 
@@ -162,30 +168,49 @@ shift_repo() {
     # Qualità minima delle sezioni (giro 8/10): "## Design" con 3 parole passa il gate
     # formale ma non il metodo. Il Design deve dire DA DOVE nasce (SAL/analisi/rif),
     # il Territorio deve nominare almeno un file.
-    DESIGN_BODY=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f' | tr -d '[:space:]')
-    if [ "${#DESIGN_BODY}" -lt 80 ]; then
-      log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." >/dev/null 2>&1
-      continue
-    fi
-    TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
-    if ! printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b'; then
-      log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." >/dev/null 2>&1
-      continue
-    fi
-
-    # Regola del territorio (2026-08-22): senza dichiarazione, la commessa non parte
+    #
+    # bug reale (dogfooding, set 2 "capacità di progettare", 2026-08-22): i controlli di
+    # ASSENZA (sotto) stavano DOPO quelli di QUALITÀ (sopra) — quando una sezione manca
+    # del tutto, la sua estrazione awk produce stringa vuota, che il controllo di qualità
+    # intercetta SEMPRE per primo (lunghezza 0 < 80, o nessun pattern file trovato in
+    # stringa vuota) con un messaggio meno preciso ("troppo povera" invece di "assente").
+    # I due commenti dedicati "manca la sezione" non sono MAI arrivati a un operatore
+    # reale — verificato con simulazione. Ordine corretto: assenza prima, qualità dopo.
     if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then
       log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
     if ! printf '%s' "$BODY" | grep -q "^## Design"; then
       log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
+    fi
+
+    DESIGN_RAW=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
+    DESIGN_BODY=$(printf '%s' "$DESIGN_RAW" | tr -d '[:space:]')
+    if [ "${#DESIGN_BODY}" -lt 80 ]; then
+      log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." >/dev/null 2>&1
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
+    fi
+    # bug reale (dogfooding, set 2 "capacità di progettare"): la sola lunghezza è una
+    # soglia bucabile con prosa di riempimento senza alcun DA-DOVE reale — verificato dal
+    # vivo con una frase di 87 caratteri, nessun link/SAL/issue/file, che passava il gate.
+    # Stesso pattern citazione-non-presidio già chiuso altrove nel repo (privacy-check.sh,
+    # segreto-come-impronta): una lunghezza non è una fonte. Richiede almeno UN riferimento
+    # verificabile (URL, link markdown, SAL.md, un'issue #N, o un percorso di file).
+    if ! printf '%s' "$DESIGN_RAW" | grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b'; then
+      log "Issue #$NUM: ## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." >/dev/null 2>&1
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
+    fi
+    TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
+    if ! printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b'; then
+      log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." >/dev/null 2>&1
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
     # Idempotenza: PR aperta → skip; PR fusa → chiude l'issue e skip
@@ -203,7 +228,20 @@ shift_repo() {
     git -C "$DIR" checkout -B "$BRANCH" "origin/$DB" -q
     git -C "$DIR" clean -fdq
 
-    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari. Se una cartella è dichiarata specchio o sola lettura (le cartelle specchio dichiarate dalla repo), non scriverci MAI. Rispetta le convenzioni di commit del repo.
+    # gap reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): il prompt parlava di
+    # "cartelle specchio dichiarate dalla repo" ma non esisteva NESSUN file/convenzione con
+    # cui una repo potesse dichiararle — citazione senza presidio, identica nello spirito a
+    # /design-doc prima del Set 2. Convenzione minima: .night-mirror nella repo, una
+    # cartella per riga (stesso formato di .night-verify). Se presente, le cartelle vengono
+    # elencate DAVVERO nel prompt (non solo evocate in astratto); se assente, la frase sulle
+    # cartelle specchio non viene nemmeno scritta — non ha senso menzionare un vincolo che
+    # per questa repo non esiste.
+    MIRROR_NOTE=""
+    if [ -f "$DIR/.night-mirror" ]; then
+      MIRROR_LIST=$(grep -vE '^\s*#|^\s*$' "$DIR/.night-mirror" | tr '\n' ',' | sed 's/,$//')
+      [ -n "$MIRROR_LIST" ] && MIRROR_NOTE=" Cartelle specchio/sola lettura DICHIARATE da questa repo (.night-mirror), non scriverci MAI: $MIRROR_LIST."
+    fi
+    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
 
 Issue #$NUM: $TITLE
 
@@ -253,12 +291,23 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
     git -C "$DIR" checkout main -q
   done
 
-  log "REPO $REPO FINITA: $PR_CREATED PR bozza, $FAILED fallite"
+  # bug reale (dogfooding, nuovo ciclo 10 giri): PR_CREATED/FAILED sono `local` a
+  # questa funzione — una volta finita, spariscono. Il SAL scritto dopo il for
+  # più sotto li leggeva vuoti ad OGNI turno reale (verificato con simulazione:
+  # una variabile local non esiste più fuori dalla funzione che l'ha dichiarata).
+  # Si aggregano qui nei contatori globali, prima che il contesto locale sparisca.
+  TOT_PR_CREATED=$((TOT_PR_CREATED+PR_CREATED))
+  TOT_FAILED=$((TOT_FAILED+FAILED))
+  TOT_SKIPPED_DESIGN=$((TOT_SKIPPED_DESIGN+SKIPPED_DESIGN))
+  log "REPO $REPO FINITA: $PR_CREATED PR bozza, $FAILED fallite, $SKIPPED_DESIGN saltate per Design/Territorio"
 }
 
 # --- Esecuzione -----------------------------------------------------------------
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 GLOBAL_RC=0
+TOT_PR_CREATED=0
+TOT_FAILED=0
+TOT_SKIPPED_DESIGN=0
 for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1
 done
@@ -270,7 +319,7 @@ if [ -f "$HUB_SAL" ]; then
   DT=$(date '+%Y-%m-%d')
   cat >> "$HUB_SAL" <<SALEOF
 
-### $DT, turno automatico — $PR_CREATED PR create, $FAILED fallite
+### $DT, turno automatico — $TOT_PR_CREATED PR create, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio insufficiente
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
 SALEOF

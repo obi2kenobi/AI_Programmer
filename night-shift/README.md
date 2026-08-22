@@ -54,7 +54,13 @@ alle 23:00 (LaunchAgent). Il Mac: alimentatore, coperchio aperto, app pesanti ch
 
 ## Il gate del mattino (`morning-gate.sh`)
 
-1. **Verifiche dichiarate**: la repo dichiara i comandi in `.night-verify` (una riga per comando)
+1. **Verifiche dichiarate**: la repo dichiara i comandi in `.night-verify` (una riga per comando).
+   Se non esiste: `non-dichiarate`. Se esiste ma non contiene nessun comando reale (solo
+   commenti — capita facile, è il default di `bootstrap-app.sh`): `verifiche-vuote`, non un
+   falso `verifiche-ok` (set 2 2026-08-22, bug reale corretto). Se la repo non ha NESSUN modo
+   di verificare in automatico (es. GAS-only, la verifica passa dal deploy umano), dichiaralo
+   con una riga `# NON-VERIFICABILE: <motivo>` — verdetto `non-verificabile`, distinto da
+   "dimenticato" (proposta #2 di `docs/test-processo-2026-08-21.md`, mai implementata prima)
 2. **Banco avversariale**: il modello locale prova a smentire la PR (metodo del Supervisore)
 3. **Report** in `~/morning-gate-report.md` + riga in `metrics/gate.csv`
 4. **Il correttore**: i fallimenti diventano proposte di commesse correttive da incollare —

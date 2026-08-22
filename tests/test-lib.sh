@@ -50,6 +50,30 @@ DUR=$((T1-T0))
 [ $DUR -le 4 ] && ok "run_guarded: sleep 30 ucciso entro ~2s (durato $DUR s)" || ko "run_guarded: durato $DUR s — il watchdog non morde"
 run_guarded 5 true && ok "run_guarded: comando veloce passa pulito" || ko "run_guarded: fallisce su comando sano"
 
+# bug reale, alta severità (set 2 giro 9, 2026-08-22): il test sopra (fuori da una command
+# substitution) NON avrebbe mai visto il bug — un `sleep` orfano tiene aperta una pipe di
+# $(...) finché non finisce DA SOLO, quindi run_guarded impiegava SEMPRE l'intera durata
+# del watchdog quando chiamato dentro $(...), esattamente come lo chiama morning-gate.sh
+# per OGNI comando .night-verify e per il banco avversariale. Verificato dal vivo: 10.0s
+# esatti per un comando istantaneo con watchdog 10s, prima del fix.
+T0=$(date +%s)
+OUT_CS=$(run_guarded 8 bash -c "true" 2>&1)
+RC_CS=$?
+T1=$(date +%s)
+DUR_CS=$((T1-T0))
+[ $DUR_CS -le 3 ] && ok "run_guarded dentro command substitution: comando veloce torna subito (${DUR_CS}s, non 8s)" \
+  || ko "run_guarded dentro \$(...): ${DUR_CS}s — il bug del sleep orfano è tornato"
+
+# nessun processo sleep residuo dopo un giro rapido (l'orfano del bug vecchio restava vivo)
+if command -v pgrep >/dev/null 2>&1; then
+  sleep 1
+  RESIDUI=$(pgrep -f "sleep 8$" 2>/dev/null | wc -l | tr -d ' ')
+  [ "${RESIDUI:-0}" -eq 0 ] && ok "run_guarded: nessun processo sleep orfano residuo" \
+    || ko "run_guarded: $RESIDUI processo/i sleep orfano/i ancora vivo/i"
+else
+  ok "run_guarded: pgrep assente, controllo residui saltato (non bloccante)"
+fi
+
 # --- repo_code: anonimizzazione con chiave (repo fittizia in tmp) ---
 KEYTMP=$(mktemp -d)
 printf '# test\nREPO-X=finto/proprio\n' > "$KEYTMP/repos.key"
@@ -65,6 +89,40 @@ OUT=$( HERE="$KEYTMP" bash -c "source '$ORIG_HERE/night-shift/lib.sh'; repo_code
 echo "$OUT" | head -1 | grep -q "REPO-X" && ok "repo_code: nome in chiave → codice anonimo" || ko "repo_code chiave: $OUT"
 echo "$OUT" | tail -1 | grep -q "altra/qualunque" && ok "repo_code: nome fuori chiave passa invariato" || ko "repo_code ignoto"
 rm -rf "$KEYTMP"
+
+# --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
+M1=$(echo 'export GH_TOKEN=ghp_abcdef1234567890' | mask_secrets)
+grep -q '\*\*\*MASCHERATO\*\*\*' <<<"$M1" && ! grep -q 'ghp_abcdef1234567890' <<<"$M1" \
+  && ok "mask_secrets: token=valore mascherato" || ko "mask_secrets token=: $M1"
+
+# bug reale trovato con dogfooding: "Authorization: Bearer <jwt>" passava intero,
+# perché "Authorization" non è tra le parole chiave (secret|token|password|key)
+M2=$(echo 'curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.super.secretpayload"' | mask_secrets)
+grep -q '\*\*\*MASCHERATO\*\*\*' <<<"$M2" && ! grep -q 'secretpayload' <<<"$M2" \
+  && ok "mask_secrets: Authorization Bearer mascherato (bug reale corretto)" || ko "mask_secrets bearer: $M2"
+
+M3=$(echo 'niente da mascherare qui' | mask_secrets)
+[ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \
+  || ko "mask_secrets falso positivo: $M3"
+
+# --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
+LOGTMP=$(mktemp -d)
+echo "riga piccola" > "$LOGTMP/small.log"
+rotate_log_if_big "$LOGTMP/small.log" 10
+[ ! -f "$LOGTMP/small.log.1" ] && ok "rotate_log_if_big: file sotto soglia non ruota" \
+  || ko "rotate_log_if_big: ha ruotato un file piccolo"
+
+head -c 2000000 /dev/zero > "$LOGTMP/big.log"; echo "marker-fine" >> "$LOGTMP/big.log"
+rotate_log_if_big "$LOGTMP/big.log" 1
+[ -f "$LOGTMP/big.log.1" ] && grep -q "marker-fine" "$LOGTMP/big.log.1" \
+  && ok "rotate_log_if_big: file oltre soglia ruotato, contenuto preservato in .1" \
+  || ko "rotate_log_if_big: rotazione mancata o contenuto perso"
+[ -f "$LOGTMP/big.log" ] && [ ! -s "$LOGTMP/big.log" ] && ok "rotate_log_if_big: nuovo log vuoto pronto" \
+  || ko "rotate_log_if_big: il nuovo log non è vuoto"
+
+rotate_log_if_big "$LOGTMP/assente.log" 1
+ok "rotate_log_if_big: file assente, no-op senza errore"
+rm -rf "$LOGTMP"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
