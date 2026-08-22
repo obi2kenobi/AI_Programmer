@@ -904,3 +904,29 @@ Osservazioni di processo del giro: (1) i 3 difetti critici erano tutti della cla
 (3) un fix ha rotto un test esistente perché usava una costante non caricata dal contesto
 — risolto completando il test, non indebolendo il fix: il test serve al codice, non
 viceversa.
+
+### 2026-08-22, sera — ciclo dei 5 giri completato: il processo osservato in loop
+
+Cinque giri su REPO-D (1 sweep + 4 feature), tutto da un solo operatore in loop: 5 PR,
+20 difetti corretti, 55 asserzioni nuove tutte verdi. Le osservazioni che il loop ha
+estorto — le quattro che valgono regole:
+
+1. **Il test smentisce l'autore, non il codice** — quattro volte (su giri 4 e 5) le
+   aspettative scritte a mano erano sbagliate e il codice giusto: mediana che non si muove
+   con le code, regola n≥3 che esclude l'insegna da due punti dati, punto-e-virgola naked
+   in un CSV virgola-separated. Regola: l'aspettativa si DERIVA (si calcola a mano passo
+   per passo) o si costruisce da un caso noto — non si abbozza a memoria.
+2. **Verificare la PR prima di dichiararla, non dopo** — l'hook del digest è mancato al
+   primo commit (anchor spostato) e il commit è partito lo stesso: trovato riguardando.
+   Regole: nessun commit dopo un edit programmatico senza grep della prova, e il flusso
+   edit→verifica→commit è SEMPRE in quest'ordine.
+3. **I test caricano le loro dipendenze transitive** — successo due volte (percentile_,
+   RAW_DATA_HEADERS): il test che carica un modulo nuovo scopre le sue dipendenze e le
+   aggiunge — non indebolisce il codice per adattarlo al test.
+4. **I check sintattici non vedono la spazzanza semantica** — una stringa-colore corrotta
+   è passata 'JS OK': il codice generato programmaticamente si RIGUARDA con occhi umani
+   prima del commit.
+
+E una conferma: la caccia con 3 agenti in parallelo + la parte meccanica a mano è il
+rapporto qualità/tempo migliore mai misurato nel sistema per il lavoro di giorno su
+territori grandi. Le 5 PR aspettano la review di Luca col gate.
