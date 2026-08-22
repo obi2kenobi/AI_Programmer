@@ -28,7 +28,7 @@ if not rows:
 
 oggi = date.today()
 stats = defaultdict(lambda: {"righe": 0, "ver_ok": 0, "smentite": 0, "commesse": 0,
-                             "merge": 0, "chiusure": 0, "aging_pr": {}})
+                             "merge": 0, "chiusure": 0, "aging_pr": {}, "scarti": 0, "eseguiti": 0})
 for r in rows:
     s = stats[r["repo"]]
     s["righe"] += 1
@@ -36,6 +36,10 @@ for r in rows:
         s["ver_ok"] += 1
     if r["banco"] == "eseguito:smentita":
         s["smentite"] += 1
+    if str(r["banco"]).startswith("scartato"):
+        s["scarti"] += 1
+    if str(r["banco"]).startswith("eseguito"):
+        s["eseguiti"] += 1
     esito = (r.get("esito") or "").strip()
     if esito == "commessa":
         s["commesse"] += 1
@@ -60,6 +64,8 @@ for repo, s in sorted(stats.items()):
     print(f"\n{repo}")
     print(f"  verifiche ok: {s['ver_ok']}/{s['righe']} ({pct(s['ver_ok'])}) · smentite banco: {s['smentite']} ({pct(s['smentite'])})")
     print(f"  esiti umani: {s['merge']} merge · {s['chiusure']} chiusure · {s['commesse']} commesse correttive", end="")
+    if s["eseguiti"]:
+        print(f" · banco: {s['eseguiti']} eseguiti ({s['scarti']} scartati dall'allowlist = {100*s['scarti']/s['eseguiti']:.0f}% di rigore)", end="")
     if s["commesse"] >= 2:
         print("  ⚠ AREA FRAGILE: commesse correttive ripetute", end="")
     print()
