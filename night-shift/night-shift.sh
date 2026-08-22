@@ -235,4 +235,18 @@ for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1
 done
 log "=== TURNO FINITO ==="
+
+# Giro 9/10: il turno scrive il proprio SAL nel hub (la memoria non dipende da chi ricorda)
+HUB_SAL="$HERE/SAL.md"
+if [ -f "$HUB_SAL" ]; then
+  DT=$(date '+%Y-%m-%d')
+  cat >> "$HUB_SAL" <<SALEOF
+
+### $DT, turno automatico — $PR_CREATED PR create, $FAILED fallite
+
+$(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
+SALEOF
+  log "SAL del hub aggiornato con l'esito del turno"
+fi
+
 exit $GLOBAL_RC
