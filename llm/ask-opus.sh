@@ -3,8 +3,11 @@
 # Contratto comune ai wrapper llm/ask-*: prompt come argomento, contesto via stdin,
 # risposta su stdout. Exit 0 ok / 1 errore.
 #
-# NOTA (verificata 2026-08-21): l'autenticazione di Claude Code vive nel Keychain macOS:
-# funziona dal terminale dell'utente e da launchd, NON da shell sandboxed.
+# NOTA (verificata 2026-08-21, macOS): l'autenticazione di Claude Code vive nel Keychain
+# macOS: funziona dal terminale dell'utente e da launchd, non da una shell sandboxed SUL MAC.
+# Non generalizza a ogni sandbox: una sessione cloud (Claude Code on the web/agent SDK) ha
+# la sua auth propria e QUI risponde davvero (verificato 2026-08-22, nuovo ciclo 10 giri —
+# vedi tests/test-ask-wrappers.sh, che ora accetta entrambi gli esiti).
 # Variabili: ASK_MODEL (default: modello predefinito di Claude Code) · ASK_TIMEOUT secondi (600)
 set -euo pipefail
 
