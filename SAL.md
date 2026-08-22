@@ -1092,3 +1092,27 @@ Annotato come richiede CLAUDE.md §1: un errore della NOTA precedente (l'ipotesi
 "claude lento"), non un difetto del sistema scoperto oggi — il sistema aveva davvero
 un bug, solo diagnosticato nel posto sbagliato. Corretto con `timeout 5 cat` nei tre
 wrapper; il timeout già presente nel test resta comunque una buona guardia generale.
+
+### 2026-08-22, notte (7) — Set 1/3: agenti giorno+notte armonizzati, 8 bug reali
+
+Mandato di Luca: tre nuovi cicli tematici. Set 1 — "migliorare gli agenti, non solo
+notturni ma anche e sopratutto quelli diurni (code e glm)". Dieci giri su llm/ask-*.sh,
+morning-gate.sh, docs/system.md.
+
+| Giro | Cosa | Trovato eseguendo |
+|---|---|---|
+| 1 | ask-qwen.sh validava il prompt DOPO aver tentato Ollama — 30.4s sprecati su chiamata invalida | `time` |
+| 2 | **Correzione di una diagnosi errata**: l'hang di 2+ minuti del ciclo precedente non era "claude -p lento" — è `$(cat)` senza limite su stdin non-tty-senza-EOF, in TUTTI i wrapper | riprodotto con `< <(sleep 100)` |
+| 3 | ask-qwen.sh ignorava ASK_TIMEOUT (--max-time fisso 1800) | curl finto |
+| 4 | ASK_MODEL "universale" per contratto ma implementato solo in ask-opus.sh | curl finto |
+| 5 | ask-opus.sh: exit 2 per auth assente, armonizzato con ask-glm.sh | claude finto |
+| 6 | GLM mai cablato come ADVERSARY nel banco (solo qwen/opus) | estratta la logica reale |
+| 7-8 | ask-glm.sh e ask-qwen.sh: risposta malformata → traceback Python grezzo invece di diagnosi pulita | curl finto, 3 casi avversariali ciascuno |
+| 9 | docs/system.md disallineato dalla correzione già fatta nell'header di ask-opus.sh | lettura incrociata |
+| 10 | nessuna traccia dei cervelli di giorno in memoria condivisa (asimmetria con SAL/gate.csv del notturno) — colmata con llm/_usage.sh | cervelli finti |
+
+**Il dato del ciclo**: la scoperta più importante non era nella lista di partenza — è
+emersa RIPRODUCENDO il giro 2 dell'ultimo ciclo per costruire un nuovo test, e ha
+smentito la propria diagnosi precedente. Lezione di metodo: anche un fix già
+committato e testato può portare la causa sbagliata se il sintomo (l'hang) non è
+stato isolato dal resto (qui: mai provato senza la chiamata vera al cervello).
