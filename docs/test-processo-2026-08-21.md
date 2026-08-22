@@ -1,7 +1,7 @@
 # Test del processo end-to-end — sviluppare una feature nuova con AI_Programmer
 
 > 2026-08-21, ore 17-18. Mandato di Luca: usare il sistema per sviluppare una NUOVA funzionalità
-> su una repo reale (Bilancio_di_Massa_PEFC), capire **dove fallisce e dove migliorare**.
+> su una repo reale (REPO-B), capire **dove fallisce e dove migliorare**.
 > Questo documento è il deliverable del test: l'analisi del processo con i fatti, non le opinioni.
 
 ## Com'è andato il processo (la cronaca onesta)

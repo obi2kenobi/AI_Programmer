@@ -1,3 +1,4 @@
-# Verifiche dichiarate del hub (dogfooding, review §5: il sistema le chiede agli altri, ora anche a se stesso)
+# Verifiche dichiarate del hub (dogfooding)
 shellcheck night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
+bash tools/privacy-check.sh

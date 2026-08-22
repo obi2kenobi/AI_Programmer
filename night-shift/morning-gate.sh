@@ -1,5 +1,5 @@
 #!/bin/bash
-# morning-gate.sh — il giudizio del mattino: AI_Develop come giudice, censore, correttore.
+# morning-gate.sh — il giudizio del mattino: REPO-A come giudice, censore, correttore.
 #
 # Per ogni PR night/* O claude/* aperta su ogni repo della coda (il giudice ha due occhi:
 # anche il lavoro del giorno passa verifiche e banco — 2026-08-21):
@@ -156,7 +156,7 @@ ${DIFF_TXT}"
 
     # 3-4. memoria + verdetto
     case "$VERDICT" in verifiche-ok) PASS=$((PASS+1));; *) FAIL=$((FAIL+1));; esac
-    echo "$(date '+%Y-%m-%d'),$REPO,#$NUM,#$ISSUE_NUM,$VERDICT,$BANCO," >> "$HUB_METRICS"
+    echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$ISSUE_NUM,$VERDICT,$BANCO," >> "$HUB_METRICS"
 
     if [ "$VERDICT" = "verifiche-fallite" ] || [ "$BANCO" = "eseguito:smentita" ]; then
       # Giro 6 dei test 2026-08-21: prima diceva solo "Dettagli nel report locale del

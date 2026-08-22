@@ -5,7 +5,7 @@
 # issue aperte con label night-shift → branch night/issue-N → OpenCode headless (Qwen locale)
 # → commit → PR BOZZA (mai push su main) → commento nell'issue.
 #
-# Tutto ciò che tre notti su AI_Develop hanno insegnato è qui dentro:
+# Tutto ciò che tre notti su REPO-A hanno insegnato è qui dentro:
 #   - sonda di salute del server (errori Metal dopo lunga vita → riavvio automatico)
 #   - loop delle issue su array (lo stdin del while read veniva mangiato)
 #   - bash 3.2 (niente mapfile) e cd nel subshell (l'agente lavorava nella directory sbagliata)
@@ -175,7 +175,7 @@ shift_repo() {
     git -C "$DIR" checkout -B "$BRANCH" "origin/$DB" -q
     git -C "$DIR" clean -fdq
 
-    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari. Se una cartella è dichiarata specchio o sola lettura (es. gas-src/), non scriverci MAI. Rispetta le convenzioni di commit del repo.
+    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari. Se una cartella è dichiarata specchio o sola lettura (le cartelle specchio dichiarate dalla repo), non scriverci MAI. Rispetta le convenzioni di commit del repo.
 
 Issue #$NUM: $TITLE
 

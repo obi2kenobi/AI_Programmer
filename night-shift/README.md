@@ -1,6 +1,6 @@
 # Il turno di notte — il metodo (v2, generalizzato)
 
-> Il metodo nato su AI_Develop (tre notti di test veri, 2026-08-18/21) e promosso a sistema.
+> Il metodo nato su REPO-A (tre notti di test veri, 2026-08-18/21) e promosso a sistema.
 > Ogni regola porta accanto **il fatto misurato che l'ha imposta** — non la motivazione teorica.
 
 ## Il principio
@@ -24,7 +24,7 @@ MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale �
 | **L'issue è una commessa precaricata** (snippet, righe, grep pronti) | tre notti: il modello capisce ma a ~4 tok/s non converge se deve esplorare 4.300 righe per giudicare |
 | **Nessun limite di tempo per issue** (Luca, 2026-08-21) | il watchdog da 90 min ha interrotto l'agente «a un passo dalla fine» tre volte di fila |
 | **PR sempre BOZZA su branch `night/issue-N`** | la review del mattino è parte del metodo |
-| **Mai scrivere in cartelle specchio/sola lettura** | `gas-src/` in AI_Develop: regola fondativa del repo ospite |
+| **Mai scrivere in cartelle specchio/sola lettura** | `gas-src/` in REPO-A: regola fondativa del repo ospite |
 | **Idempotenza completa** | PR aperta → skip; PR fusa → chiude l'issue dimenticata (la keyword italiana non auto-chiudeva) |
 | **Sonda di salute del server + un modello per turno** | dopo scambi di modelli a caldo, errori Metal con risposte vuote silenziose |
 | **Config reale fuori dal repo pubblico** | `repos.conf` gitignored: i nomi delle repo private non si pubblicano |

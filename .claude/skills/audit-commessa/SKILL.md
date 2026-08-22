@@ -1,6 +1,6 @@
 ---
 name: audit-commessa
-description: Pre-flight serale su una commessa (issue con label night-shift) prima che il turno di notte la incontri — verifica sul codice reale ogni assunzione su dati/funzioni/strutture che la commessa fa, con enfasi sulla forma dei dati Business Central quando il progetto ne dipende. Nato dal primo giro reale (2026-08-21, Bilancio_di_Massa_PEFC): 3 commesse su 4 avevano difetti veri, tutti di forma-dati, trovati eseguendo non leggendo. Usa quando l'utente chiede di auditare/verificare una o più commesse notturne, invoca /audit-commesse esplicitamente, o prima di lasciare una issue night-shift pronta per la notte su un progetto che parla con BC. Non sostituisce dev-critic (quello guarda l'intero progetto per gap/nuove idee); questo guarda SOLO le commesse in coda, contro il codice che già esiste.
+description: Pre-flight serale su una commessa (issue con label night-shift) prima che il turno di notte la incontri — verifica sul codice reale ogni assunzione su dati/funzioni/strutture che la commessa fa, con enfasi sulla forma dei dati Business Central quando il progetto ne dipende. Nato dal primo giro reale (2026-08-21, REPO-B): 3 commesse su 4 avevano difetti veri, tutti di forma-dati, trovati eseguendo non leggendo. Usa quando l'utente chiede di auditare/verificare una o più commesse notturne, invoca /audit-commesse esplicitamente, o prima di lasciare una issue night-shift pronta per la notte su un progetto che parla con BC. Non sostituisce dev-critic (quello guarda l'intero progetto per gap/nuove idee); questo guarda SOLO le commesse in coda, contro il codice che già esiste.
 ---
 
 # audit-commessa — il pre-flight che il turno non può fare da solo
@@ -54,10 +54,10 @@ della prosa della commessa:
   "per famiglia"/"per gruppo" NON implica che il dettaglio per singolo codice esista nello
   stesso oggetto — spesso è un dataset separato, caricato on-demand da un'altra funzione
   (lezione diretta: `bilancio.acquistato` per famiglia vs `righeAcquisto_()` per codice,
-  Bilancio_di_Massa_PEFC issue #11). Se la commessa dice "il dato è già in `X`", apri `X` e
+  REPO-B issue #11). Se la commessa dice "il dato è già in `X`", apri `X` e
   conta i campi — non assumere che "già presenti" significhi "nello stesso oggetto".
 - **Gli endpoint OData hanno buchi noti**: niente OR annidati su certi filtri (torna HTTP 501
-  — il dettaglio "HTTP 501" è in `SAL.md:235-236` di Bilancio_di_Massa_PEFC, non in
+  — il dettaglio "HTTP 501" è in `SAL.md:235-236` di REPO-B, non in
   `Cache.gs`: il codice lì (riga 14) dice solo "non supporta filtri complessi", senza lo
   status code — citazione corretta al Giro 11/12 dei test 2026-08-21, prima diceva solo
   "Cache.gs" e l'ancora non c'era per quel dettaglio specifico), paginazione con `@odata.nextLink` da non
@@ -84,4 +84,4 @@ della prosa della commessa:
 
 Un body di issue aggiornato con `## Forma dei dati (verificata sul codice)`, e un riepilogo
 finale: quante commesse auditate, quante correzioni, quante erano già giuste — lo stesso
-formato del primo giro (Bilancio_di_Massa_PEFC, 2026-08-21: 3/4 difettose).
+formato del primo giro (REPO-B, 2026-08-21: 3/4 difettose).

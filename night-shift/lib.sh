@@ -78,3 +78,16 @@ for seg in split_operators(cmd):
 sys.exit(0)
 PY
 }
+
+# repo_code(): il hub è pubblico — nei dati versionati (metrics, report esportati) le repo
+# sono CODICI ANONIMI. La chiave vive solo in repos.key (locale, gitignored).
+repo_code() {
+  local repo="$1" key="$HERE/repos.key"
+  if [ -f "$key" ]; then
+    while IFS='=' read -r code name; do
+      case "$code" in \#*|"") continue ;; esac
+      [ "$name" = "$repo" ] && { echo "$code"; return 0; }
+    done < "$key"
+  fi
+  echo "$repo"
+}
