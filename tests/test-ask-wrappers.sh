@@ -142,6 +142,27 @@ check_glm_response "HTML non-JSON"     "<html>errore</html>"    "ERRORE glm"
 check_glm_response "JSON forma errata" '{"unexpected": true}'   "ERRORE glm"
 rm -rf "$GLMTMP"
 
+# --- set 1, giro 8: stesso bug in ask-qwen.sh (traceback su risposta malformata) ---
+QWENRESPTMP=$(mktemp -d)
+check_qwen_response() {
+  local nome="$1" body="$2" atteso_grep="$3"
+  cat > "$QWENRESPTMP/curl" <<EOF
+#!/bin/bash
+[[ "\$*" == *"api/version"* ]] && exit 0
+printf '%s' '$body'
+EOF
+  chmod +x "$QWENRESPTMP/curl"
+  local OUT RC
+  OUT=$(PATH="$QWENRESPTMP:$PATH" bash "$HERE/llm/ask-qwen.sh" "test" </dev/null 2>&1); RC=$?
+  ! grep -q "Traceback" <<<"$OUT" && grep -q "$atteso_grep" <<<"$OUT" \
+    && ok "ask-qwen risposta $nome: diagnosi pulita, niente traceback (rc=$RC)" \
+    || ko "ask-qwen risposta $nome: $OUT (rc=$RC)"
+}
+check_qwen_response "vuota"             ""                       "ERRORE ollama"
+check_qwen_response "HTML non-JSON"     "<html>errore</html>"    "ERRORE ollama"
+check_qwen_response "JSON forma errata" '{"unexpected": true}'   "ERRORE ollama"
+rm -rf "$QWENRESPTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

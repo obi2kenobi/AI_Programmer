@@ -62,12 +62,25 @@ START=$(date +%s)
 RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" -d "$PAYLOAD")
 END=$(date +%s)
 
+# stesso bug reale del giro 7 in ask-glm.sh: un corpo vuoto/non-JSON (Ollama giù
+# a metà avvio, connessione persa) faceva esplodere json.load con un traceback
+# Python grezzo invece della diagnosi pulita "ERRORE ollama: ..." promessa dal
+# contratto. Stessa difesa: try/except su decode e su message.content.
 echo "$RESP" | python3 -c '
 import json, sys
-r = json.load(sys.stdin)
+raw = sys.stdin.read()
+try:
+    r = json.loads(raw)
+except json.JSONDecodeError:
+    print("ERRORE ollama: risposta non valida dal server (non è JSON) —", raw[:200] or "(corpo vuoto)", file=sys.stderr)
+    sys.exit(1)
 if "error" in r:
     print("ERRORE ollama:", r["error"], file=sys.stderr); sys.exit(1)
-print(r["message"]["content"])
+try:
+    print(r["message"]["content"])
+except (KeyError, TypeError):
+    print("ERRORE ollama: risposta JSON di forma inattesa (manca message.content) —", raw[:200], file=sys.stderr)
+    sys.exit(1)
 ' || exit 1
 
 echo "$RESP" | python3 -c '
