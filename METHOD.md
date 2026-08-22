@@ -11,8 +11,8 @@
 
 | Fase | Comando/strumento | Fonte di verità |
 |---|---|---|
-| Brainstorming (socratico) | `/brainstorming` | `.zcode/commands/`, `.claude/commands/` |
-| Design (opzioni+trade-off, NON implementa) | `/design-doc` | idem |
+| Brainstorming (socratico) | `/brainstorming` | citato, non ancora implementato (debito aperto) |
+| Design (opzioni+trade-off, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
