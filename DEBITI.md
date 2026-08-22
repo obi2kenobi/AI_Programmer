@@ -13,7 +13,7 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 |---|---|---|---|
 | 2026-08-21 | Rotazione log di ~/night-shift.log e ~/morning-gate.log | nessun limite raggiunto | quando un file supera ~10 MB |
 | 2026-08-21 | Path /opt/homebrew hardcoded (ollama) — portabilità Intel/Linux | scelta "solo Mac Apple Silicon" dichiarata | se il sistema girerà altrove |
-| 2026-08-21 | Test funzionali per bc_map.py / bc_index.py | nessuna regressione ancora | alla prima modifica sostanziale |
+| 2026-08-21 ✅ SALDATO (nuovo ciclo 10 giri, giro 9/10, 2026-08-22) | Test funzionali per bc_map.py / bc_index.py | bc_map.py chiama davvero l'API BC (OAuth) — non testabile in sandbox, resta manuale; bc_index.py invece è puro | tests/test-bc-index.sh: esegue bc_index.py su una COPIA reale di docs/bc/endpoints (88 file), verifica righe/conteggio/ordinamento. bc_map.py resta debito aperto (serve un ambiente con credenziali BC vere) |
 
 ## Da dev-critic — verifica dogfooding della review Opus (2026-08-21, notte)
 
