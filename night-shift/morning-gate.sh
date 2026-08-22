@@ -82,7 +82,18 @@ for REPO in "${REPO_LIST[@]}"; do
     VERDICT="—"
     NIGHT_VERIFY=$(git -C "$DIR" show "origin/$DB:.night-verify" 2>/dev/null || true)
     FAIL_DETAIL=""  # Giro 6 dei test 2026-08-21: l'estratto del fallimento, per la issue correttiva
-    if [ -n "$NIGHT_VERIFY" ]; then
+    # giro 10/10 (set 2 "capacità di progettare"): proposta #2 di
+    # docs/test-processo-2026-08-21.md, mai implementata — "il gate dichiara la categoria
+    # repo non-verificabile, non il generico non-dichiarate" (repo GAS-only dove la
+    # verifica di livello 1-2 passa dal deploy umano). Distinta da "verifiche-vuote" (giro
+    # 9: il file c'è ma sembra dimenticato) — qui la repo DICHIARA esplicitamente, col
+    # motivo, di non poter verificare in automatico. Marcatore: una riga
+    # "# NON-VERIFICABILE: <motivo>" in .night-verify.
+    NV_MOTIVO=$(printf '%s' "$NIGHT_VERIFY" | grep -iE '^#\s*NON-VERIFICABILE\s*:' | head -1 | sed -E 's/^#\s*NON-VERIFICABILE\s*:\s*//I')
+    if [ -n "$NV_MOTIVO" ]; then
+      echo "**Verifiche dichiarate:** repo marcata \`NON-VERIFICABILE\` — $NV_MOTIVO. La verifica di livello 1-2 passa da un controllo umano/deploy, non dal gate automatico." >> "$REPORT"
+      VERDICT="non-verificabile"
+    elif [ -n "$NIGHT_VERIFY" ]; then
       echo "**Verifiche dichiarate (.night-verify, da main):**" >> "$REPORT"
       V_RC=0
       # bug reale, alta severità (dogfooding, set 2 "capacità di progettare", 2026-08-22):

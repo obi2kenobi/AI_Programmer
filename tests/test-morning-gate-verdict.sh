@@ -15,9 +15,11 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 verdetto_per() {
   local dir="$1" db="$2"
-  local night_verify v_rc=0 cmd_eseguiti=0 out
+  local night_verify v_rc=0 cmd_eseguiti=0 out nv_motivo
   night_verify=$(git -C "$dir" show "$db:.night-verify" 2>/dev/null || true)
   [ -z "$night_verify" ] && { echo "non-dichiarate"; return; }
+  nv_motivo=$(printf '%s' "$night_verify" | grep -iE '^#\s*NON-VERIFICABILE\s*:' | head -1)
+  [ -n "$nv_motivo" ] && { echo "non-verificabile"; return; }
   while IFS= read -r cmd; do
     cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
     cmd_eseguiti=$((cmd_eseguiti+1))
@@ -71,6 +73,14 @@ V4=$(verdetto_per "$TMP4" "master")
 [ "$V4" = "non-dichiarate" ] && ok "nessun file .night-verify: non-dichiarate (invariato)" \
   || ko "caso file assente rotto: VERDICT=$V4"
 rm -rf "$TMP4"
+
+# --- set 2 giro 10: dichiarazione esplicita di non-verificabilità (repo GAS-only ecc.) ---
+TMP5=$(mktemp -d)
+mkrepo "$TMP5" "# NON-VERIFICABILE: progetto Apps Script, la verifica passa dal deploy umano"
+V5=$(verdetto_per "$TMP5" "master")
+[ "$V5" = "non-verificabile" ] && ok "repo con marcatore NON-VERIFICABILE: verdetto distinto (non verifiche-vuote, non non-dichiarate)" \
+  || ko "marcatore NON-VERIFICABILE non riconosciuto: VERDICT=$V5"
+rm -rf "$TMP5"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
