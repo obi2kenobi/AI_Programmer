@@ -12,8 +12,15 @@ cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"   # contesto v
 
 - Prompt come argomento, contesto lungo via stdin (mai incollato nel prompt)
 - Risposta pulita su **stdout**; statistiche/diagnosi su **stderr**
-- Exit 0 ok · 1 errore · 2 via non configurata (solo ask-glm)
-- Override per chiamata: `ASK_MODEL`, `ASK_TIMEOUT`; specifiche: `QWEN_MODEL`, `QWEN_CTX`, `QWEN_THINK`
+- Exit 0 ok · 1 errore · 2 via non configurata (ask-glm sempre; ask-opus quando
+  l'errore di `claude -p` indica auth assente — armonizzato, set 1 2026-08-22)
+- Override per chiamata: `ASK_MODEL`, `ASK_TIMEOUT` — **davvero** universali su tutti e
+  tre i wrapper (set 1 2026-08-22: prima solo parzialmente implementati, verificato e
+  corretto); specifiche: `QWEN_MODEL`, `QWEN_CTX`, `QWEN_THINK`, `GLM_MODEL`
+- **Traccia locale** (`~/.ai-programmer-usage.log`, mai versionata, best-effort):
+  ogni chiamata registra cervello/esito/durata/lunghezza prompt — mai il contenuto.
+  Simmetria con la memoria del turno notturno (SAL.md + metrics/gate.csv). Percorso
+  configurabile con `ASK_USAGE_LOG` (utile nei test, per non scrivere nel vero $HOME).
 
 ## La matrice decisionale — quale cervello per quale compito (fatti misurati, 2026-08)
 

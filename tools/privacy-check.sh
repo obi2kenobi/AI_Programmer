@@ -1,39 +1,55 @@
 #!/bin/bash
-# privacy-check.sh — il hub è PUBBLICO: nessun nome di repo privata nei file versionati.
-# La chiave (night-shift/repos.key) è locale e gitignored: questo check la usa come lista
-# nera e FALLISCE se un nome compare nei file committati. Pattern: citazione-non-presidio.
+# privacy-check.sh — il hub è PUBBLICO: nessun nome di repo privata nei file versionati
+# NÉ nella storia git — un nome committato e poi rimosso dal file resta comunque
+# leggibile per sempre via git log/show (GitHub non lo dimentica). La chiave
+# (night-shift/repos.key) è locale e gitignored: questo check la usa come lista nera.
+# Pattern: citazione-non-presidio.
+#
+# v3 (nuovo ciclo 10 giri, 2026-08-22): prima scansionava solo `git ls-files` (i file
+# tracciati OGGI) — un nome committato e poi tolto dal file corrente restava esposto
+# per sempre nella storia, e il check diceva comunque "pulito". Aggiunta la scansione
+# della storia: contenuto di ogni commit passato (pickaxe -S) e messaggi di commit
+# (--grep), su TUTTI i branch (--all), non solo quello corrente.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 KEY="$HERE/night-shift/repos.key"
 [ -f "$KEY" ] || { echo "privacy-check: manca la chiave locale (repos.key) — niente da controllare"; exit 0; }
 RC=0
-while IFS='=' read -r code name; do
-  case "$code" in \#*|"") continue ;; esac
-  base="${name##*/}"
-  HITS=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$base" 2>/dev/null) | grep -v "repos.key" || true)
-  HITS2=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$name" 2>/dev/null) | grep -v "repos.key" || true)
-  ALL=$(printf '%s\n%s\n' "$HITS" "$HITS2" | grep -v '^$' | sort -u || true)
+
+# scan_termine <termine> <etichetta>: FALLISCE se il termine compare nei file tracciati
+# oggi, nel CONTENUTO di un commit passato (pickaxe), o nel messaggio di un commit passato.
+scan_termine() {
+  local termine="$1" etichetta="$2"
+  [ -z "$termine" ] && return 0
+  local FILES HIST MSG ALL
+  FILES=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$termine" 2>/dev/null) | grep -v "repos.key" || true)
+  HIST=$( (cd "$HERE" && git log --all --oneline -S"$termine" -- . 2>/dev/null) | sed 's/^/storia: /' || true)
+  MSG=$( (cd "$HERE" && git log --all --oneline --grep="$termine" -F 2>/dev/null) | sed 's/^/messaggio: /' || true)
+  ALL=$(printf '%s\n%s\n%s\n' "$FILES" "$HIST" "$MSG" | grep -v '^$' || true)
   if [ -n "$ALL" ]; then
-    echo "⛔ NOME PRIVATO NEL REPO PUBBLICO ($base) in:" >&2
+    echo "⛔ $etichetta NEL REPO PUBBLICO ($termine) in:" >&2
     echo "$ALL" | head -8 >&2
     RC=1
   fi
+}
+
+while IFS='=' read -r code name; do
+  case "$code" in \#*|"") continue ;; esac
+  base="${name##*/}"
+  scan_termine "$base" "NOME PRIVATO"
+  scan_termine "$name" "NOME PRIVATO"
 done < "$KEY"
-# v2 (giro 4/10): anche PERSONE e TERMINI riservati — chiavi PERSONA=x / TERMINI=a,b,c
-# nella stessa repos.key (locale, gitignored). La privacy non è solo il nome delle repo.
+
+# v2 (giro 4/10 del ciclo precedente): anche PERSONE e TERMINI riservati — chiavi
+# PERSONA=x / TERMINI=a,b,c nella stessa repos.key. La privacy non è solo il nome delle repo.
 while IFS='=' read -r chiave valore; do
   case "$chiave" in PERSONA|TERMINI) ;; *) continue ;; esac
-  IFS=',' read -ra TERMINI <<<"$valore"
-  for t in "${TERMINI[@]}"; do
+  IFS=',' read -ra TERMINI_ARR <<<"$valore"
+  for t in "${TERMINI_ARR[@]}"; do
     tt=$(echo "$t" | xargs)
-    [ -z "$tt" ] && continue
-    H=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$tt" 2>/dev/null) | grep -v "repos.key" || true)
-    if [ -n "$H" ]; then
-      echo "⛔ TERMINE PRIVATO NEL REPO PUBBLICO ($tt) in:" >&2
-      echo "$H" | head -8 >&2
-      RC=1
-    fi
+    scan_termine "$tt" "TERMINE PRIVATO"
   done
 done < "$KEY"
-[ $RC -eq 0 ] && echo "privacy-check: pulito"
+
+[ $RC -eq 0 ] && echo "privacy-check: pulito (file correnti + storia git, tutti i branch)"
 exit $RC

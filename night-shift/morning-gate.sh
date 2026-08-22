@@ -22,6 +22,7 @@ HUB_METRICS="$(cd "$HERE/.." && pwd)/metrics/gate.csv"
 WORK="$HOME/night-shift-work"
 REPORT="$HOME/morning-gate-report.md"
 GATE_LOG="$HOME/morning-gate.log"
+rotate_log_if_big "$GATE_LOG"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$GATE_LOG"; }
 
@@ -64,7 +65,16 @@ for REPO in "${REPO_LIST[@]}"; do
     BRANCH=$(echo "$row" | jq -r '.headRefName')
     TITLE=$(echo "$row" | jq -r '.title')
     MERGEABLE=$(echo "$row" | jq -r '.mergeable')
-    ISSUE_NUM="${BRANCH#night/issue-}"
+    # bug reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): "${BRANCH#night/issue-}"
+    # non rimuove nulla se il branch non inizia per "night/issue-" — esattamente il caso
+    # dei branch claude/* e glm/* che questo stesso gate giudica "con due occhi" (riga 4).
+    # Verificato dal vivo: per un branch claude/qualcosa, ISSUE_NUM diventava l'INTERO nome
+    # del branch, finendo così com'è nella colonna "issue" di metrics/gate.csv — corrompe
+    # la memoria condivisa (principio L4 di docs/system.md) con stringhe invece di numeri.
+    case "$BRANCH" in
+      night/issue-*) ISSUE_NUM="${BRANCH#night/issue-}" ;;
+      *) ISSUE_NUM="—" ;;  # lavoro di giorno non legato a un'issue night-shift: onesto, non un dato finto
+    esac
     TOTAL=$((TOTAL+1))
     echo "" >> "$REPORT"
     echo "### PR #$NUM — $TITLE (\`$BRANCH\`)" >> "$REPORT"
@@ -81,11 +91,30 @@ for REPO in "${REPO_LIST[@]}"; do
     VERDICT="—"
     NIGHT_VERIFY=$(git -C "$DIR" show "origin/$DB:.night-verify" 2>/dev/null || true)
     FAIL_DETAIL=""  # Giro 6 dei test 2026-08-21: l'estratto del fallimento, per la issue correttiva
-    if [ -n "$NIGHT_VERIFY" ]; then
+    # giro 10/10 (set 2 "capacità di progettare"): proposta #2 di
+    # docs/test-processo-2026-08-21.md, mai implementata — "il gate dichiara la categoria
+    # repo non-verificabile, non il generico non-dichiarate" (repo GAS-only dove la
+    # verifica di livello 1-2 passa dal deploy umano). Distinta da "verifiche-vuote" (giro
+    # 9: il file c'è ma sembra dimenticato) — qui la repo DICHIARA esplicitamente, col
+    # motivo, di non poter verificare in automatico. Marcatore: una riga
+    # "# NON-VERIFICABILE: <motivo>" in .night-verify.
+    NV_MOTIVO=$(printf '%s' "$NIGHT_VERIFY" | grep -iE '^#\s*NON-VERIFICABILE\s*:' | head -1 | sed -E 's/^#\s*NON-VERIFICABILE\s*:\s*//I')
+    if [ -n "$NV_MOTIVO" ]; then
+      echo "**Verifiche dichiarate:** repo marcata \`NON-VERIFICABILE\` — $NV_MOTIVO. La verifica di livello 1-2 passa da un controllo umano/deploy, non dal gate automatico." >> "$REPORT"
+      VERDICT="non-verificabile"
+    elif [ -n "$NIGHT_VERIFY" ]; then
       echo "**Verifiche dichiarate (.night-verify, da main):**" >> "$REPORT"
       V_RC=0
+      # bug reale, alta severità (dogfooding, set 2 "capacità di progettare", 2026-08-22):
+      # un .night-verify con SOLO righe di commento — ESATTAMENTE il default generato da
+      # tools/bootstrap-app.sh per ogni repo nuova — fa collassare ogni riga nel `continue`
+      # sotto, zero comandi eseguiti, V_RC resta 0 invariato → VERDICT="verifiche-ok".
+      # Falso verde: verificato dal vivo con un file identico al template reale. CMD_ESEGUITI
+      # distingue "ho verificato e va tutto bene" da "non ho verificato nulla".
+      CMD_ESEGUITI=0
       while IFS= read -r cmd; do
         cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
+        CMD_ESEGUITI=$((CMD_ESEGUITI+1))
         echo "- \`$cmd\`:" >> "$REPORT"
         if OUT=$( cd "$DIR" && run_guarded 120 bash -c "$cmd" 2>&1 ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
@@ -94,7 +123,14 @@ for REPO in "${REPO_LIST[@]}"; do
           FAIL_DETAIL="$FAIL_DETAIL"$'\n'"- \`$cmd\`:"$'\n'"$(echo "$OUT" | tail -8)"
         fi
       done <<< "$NIGHT_VERIFY"
-      [ "$V_RC" -eq 0 ] && VERDICT="verifiche-ok" || VERDICT="verifiche-fallite"
+      if [ "$CMD_ESEGUITI" -eq 0 ]; then
+        echo "**Verifiche dichiarate:** \`.night-verify\` esiste ma non contiene nessun comando eseguibile (solo commenti/righe vuote) — non è lo stesso di 'tutto ok', è lo stesso di 'niente verificato'." >> "$REPORT"
+        VERDICT="verifiche-vuote"
+      elif [ "$V_RC" -eq 0 ]; then
+        VERDICT="verifiche-ok"
+      else
+        VERDICT="verifiche-fallite"
+      fi
     else
       echo "**Verifiche dichiarate:** nessun file \`.night-verify\` su main — il silenzio non è un verdetto: dichiarale." >> "$REPORT"
       VERDICT="non-dichiarate"
@@ -106,10 +142,22 @@ for REPO in "${REPO_LIST[@]}"; do
     ADVERSARY="${ADVERSARY:-qwen}"
     ASK="$HERE/../llm/ask-qwen.sh"
     [ "$ADVERSARY" = "opus" ] && ASK="$HERE/../llm/ask-opus.sh"
+    # gap reale (set 1 "armonizza gli agenti"): GLM è un cervello di giorno pienamente
+    # documentato (llm/README.md, llm/ask-glm.sh) ma non era mai selezionabile per il
+    # banco avversariale — solo qwen/opus erano cablati. Asimmetria diretta col mandato
+    # di armonizzare notte+giorno "code e glm": ora ADVERSARY=glm è una via reale.
+    [ "$ADVERSARY" = "glm" ] && ASK="$HERE/../llm/ask-glm.sh"
     if [ -x "$ASK" ]; then
       DIFF_TXT=$(git -C "$DIR" diff "origin/$DB...$BRANCH" 2>/dev/null | head -300)
       if [ -n "$DIFF_TXT" ]; then
-        BANCO_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull request. Scrivi UN solo comando shell, eseguibile dalla root della repo, che SMASCHERA un difetto della PR se esiste: deve riuscire (exit 0) se la PR è solida, fallire (exit != 0) se è difettosa. Vincoli rigidissimi: niente rete, niente operazioni distruttive (rm/mv/chmod/git push), nessuna modifica permanente. Sono ammessi node/python/grep/git/cat e simili. Rispondi con UN SOLO blocco di codice contenente il comando, senza spiegazioni.
+        # bug reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): il prompt diceva
+        # "sono ammessi node/python/..." ma gate_allowlist_ok() in lib.sh non li ammette
+        # affatto (rimossi per sicurezza, opzione (c) di Luca — bypassabili con bash -c/
+        # python3 -c/node -e) — verificato dal vivo: ogni comando node/python viene SEMPRE
+        # scartato. L'avversario, invitato dal prompt a usarli, sprecava l'intero turno di
+        # giudizio su un comando garantito allo scarto. Prompt corretto per riflettere
+        # l'allowlist VERA, non quella immaginata prima della stretta di sicurezza.
+        BANCO_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull request. Scrivi UN solo comando shell, eseguibile dalla root della repo, che SMASCHERA un difetto della PR se esiste: deve riuscire (exit 0) se la PR è solida, fallire (exit != 0) se è difettosa. Vincoli rigidissimi: niente rete, niente operazioni distruttive (rm/mv/chmod/git push), nessuna modifica permanente, NESSUN interprete general-purpose (node/python/bash -c/sh -c vengono scartati automaticamente, qualunque cosa contengano). Sono ammessi SOLO: grep, cat, diff, wc, head, tail, ls, test, jq, echo, e git in sola lettura (diff/log/show/grep/status/rev-parse/ls-files/blame). Rispondi con UN SOLO blocco di codice contenente il comando, senza spiegazioni.
 
 $DIFF_TXT"
         BANCO_OUT=$(printf '%s' "$BANCO_PROMPT" | "$ASK" "Fai quanto chiesto sopra." 2>/dev/null || true)
@@ -126,7 +174,7 @@ $DIFF_TXT"
           sed -e "s|__WORKDIR__|$DIR|g" -e "s|__HOME__|$HOME|g" "$HERE/sandbox.sb" > /tmp/gate-sandbox.sb
           ( cd "$DIR" && run_guarded 120 sandbox-exec -f /tmp/gate-sandbox.sb bash -c "$CMD" ) > /tmp/gate-banco.out 2>&1
           BRC=$?
-          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200 | sed -E 's/(secret|token|password|key)[a-z_]*[=: ][^ ,"]+/\1=***MASCHERATO***/gi')
+          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200 | mask_secrets)
           echo "**Banco avversariale ESEGUITO** (cervello: $ADVERSARY):" >> "$REPORT"
           echo "- comando: \`$CMD\`" >> "$REPORT"
           if [ "$BRC" -eq 0 ]; then

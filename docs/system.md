@@ -25,7 +25,7 @@
 | Ruolo | Chi | Provenienza della scelta |
 |---|---|---|
 | Cervello giorno primario | ZCode / GLM 5.3 | sessione diretta |
-| Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain: funziona da terminale utente e launchd, non da shell sandbox) |
+| Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain SUL MAC: funziona da terminale utente e launchd, non da shell sandbox locale; **una sessione cloud ha auth propria e risponde davvero** — verificato 2026-08-22, vedi `llm/ask-opus.sh`) |
 | Braccia notturne | Qwen3.8-27B Q4_K_M via Ollama | batteria qualità 4/4 pari alla Q5, 3,7-5,9 tok/s, margine RAM (misure 2026-08-18) |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
 | Giudice/censore/correttore | REPO-A + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
@@ -118,6 +118,8 @@ sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi)
   reale, corregge i body, compila la "Forma dei dati (verificata)". Nato dall'A/B: la commessa
   con l'assunzione sbagliata costa alla notte ore, al giorno una lettura
 - **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni con trade-off, senza implementare —
-  la scelta resta di Luca. È il passo /brainstorming che diventa documento
+  la scelta resta di Luca. È il passo /brainstorming che diventa documento. Implementato
+  come skill Claude in `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato
+  qui senza esistere — stesso debito già chiuso per `/audit-commesse`)
 - **Il gate guarda anche i branch `claude/*`**: il lavoro del giorno passa le stesse verifiche
   dichiarate e lo stesso banco avversariale di quello notturno

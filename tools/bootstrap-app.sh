@@ -35,6 +35,9 @@ cat > .night-verify <<EOF
 # Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate).
 # Esempi: node tools/test.js · pnpm test · python3 -m pytest
 # VUOTO = il gate lo dice ("il silenzio non è un verdetto"): dichiarale appena puoi.
+# Se questo progetto non ha NESSUN modo di verificare in automatico (es. webapp GAS, la
+# verifica passa dal deploy umano): dichiaralo esplicitamente, non lasciare vuoto —
+#   # NON-VERIFICABILE: <motivo>
 EOF
 
 # Vocabolario di dominio (aggiunta 2026-08-21): si riempie coi fatti confermati dal business,
@@ -42,11 +45,36 @@ EOF
 mkdir -p docs
 cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" docs/GRAMMATICA_DOMINIO.md
 
+# gap reale (set 3 "flusso delle idee", 2026-08-22): le skill Claude costruite nel hub
+# (dev-critic, audit-commessa, verifica-visiva, design-doc, brainstorming, goal) restavano
+# intrappolate lì — CLAUDE.md (le regole) si eredita da sempre, ma gli STRUMENTI che quelle
+# regole presuppongono (es. "usa dev-critic prima di...") non arrivavano mai al progetto
+# nuovo. Una sessione di giorno sul progetto appena creato non aveva accesso a nessuna skill.
+mkdir -p .claude/skills
+cp -r "$HERE/.claude/skills/." .claude/skills/
+
+# gap reale (set 3 "flusso delle idee"): patterns/ (trucchi provati, ancorati al codice
+# che li usa) non lasciava mai il hub — CLAUDE.md §7 dice "prima di scrivere
+# infrastruttura, controlla patterns/" come regola UNIVERSALE, ma il posto dove
+# guardare non arrivava al progetto nuovo. Copiato come riferimento locale (di
+# sola lettura concettuale: gli ancoraggi restano quelli del hub, non si riscrivono).
+mkdir -p patterns
+cp -r "$HERE/patterns/." patterns/
+
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
-[ $DRY_RUN -eq 1 ] || git add -A && [ $DRY_RUN -eq 1 ] || git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
-[ $DRY_RUN -eq 1 ] && echo "(dry: creerebbe la repo)" || gh repo create "$NAME" $VIS --source . --push -q
+if [ $DRY_RUN -eq 1 ]; then
+  echo "(dry: creerebbe la repo)"
+else
+  # bug reale (dogfooding, nuovo ciclo 10 giri): la vecchia catena
+  # "[ dry ] || git add -A && [ dry ] || git commit" non si fermava se git add
+  # falliva — set -e non intercetta un fallimento intermedio dentro una catena
+  # &&/||, e git commit veniva eseguito comunque (verificato con simulazione).
+  git add -A
+  git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
+  gh repo create "$NAME" $VIS --source . --push -q
+fi
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
 
 # La iscrive alla coda locale (se esiste repos.conf)

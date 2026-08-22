@@ -37,6 +37,10 @@
 - [2026-08-22, mattina — la notte ha parlato: 11h39m su #12, zero file](#2026-08-22-mattina-la-notte-ha-parlato-11h39m-su-12-zero-file)
 - [2026-08-22, sera — ciclo dei 5 giri completato: il processo osservato in loop](#2026-08-22-sera-ciclo-dei-5-giri-completato-il-processo-osservato-in-loop)
 - [2026-08-22, notte — ciclo 2 su REPO-D: la progettazione protagonista](#2026-08-22-notte-ciclo-2-su-repo-d-la-progettazione-protagonista)
+- [2026-08-22, notte (2) — 10 giri di auto-miglioramento: il sistema giudica se stesso](#2026-08-22-notte-2-10-giri-di-auto-miglioramento-il-sistema-giudica-se-stesso)
+- [2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero](#2026-08-22-notte-3-10-giri-di-feature-cosa-mancava-davvero)
+- [2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")](#2026-08-22-notte-4-le-decisioni-di-dominio-prese-mandato-di-luca-decidi-da-solo)
+- [2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo](#2026-08-22-notte-5-terzo-ciclo-di-10-giri-bug-reali-trovati-eseguendo-non-leggendo)
 
 
 ## Stato
@@ -1044,3 +1048,128 @@ l'operatore, non sostituendolo: le decisioni restano sue (review, merge, rotazio
 | Multi-cadence | **REPO-A settimanale (lun), le altre giornaliere** | il giudice non deve correre ogni notte |
 | Cursor per-id | **fix ORA** | rischio reale di perdita dati durante run |
 | Onboarding checkpoint | **rinvio accettato** | 5 competitor entro 6 min GAS oggi |
+
+### 2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo
+
+Mandato di Luca: nuovo ciclo di 10 giri per migliorare operativamente il processo,
+monitorando per capire come migliorare. I due cicli precedenti (#14-#21 test/hardening,
+#22-#31 feature mancanti) erano già mersati su main. Uso dev-critic sul hub stesso
+(lettura critica + dogfooding reale, non solo ispezione statica) per trovare i gap di
+questo terzo ciclo — niente ripetuto dai due precedenti.
+
+| Giro | Cosa | Trovato eseguendo |
+|---|---|---|
+| 1 | system-health.sh: `$⛔/RED` non si espandeva MAI — il verdetto finale non mostrava mai i critici, in nessun ambiente, da sempre | eseguendo lo script |
+| 2-3 | morning-digest.sh: dead code (EMAIL calcolato, mai usato) + BODY assegnato al PATH del report invece che al suo contenuto + injection AppleScript (virgolette/backslash non escaped) | intercettando osascript con un finto eseguibile |
+| 4 | test-ask-wrappers.sh falliva IN QUESTA STESSA SESSIONE: l'assunzione "auth assente" non vale in un ambiente cloud dove `claude` è già autenticato — non un difetto del wrapper, un'assunzione del test mai verificata fuori dal Mac | il test è fallito davvero, dal vivo |
+| 5 | privacy-check.sh vedeva solo `git ls-files` (i file di OGGI) — un nome committato e poi rimosso resta esposto per sempre nella storia, e il check diceva "pulito". Mai applicata al hub stesso la lezione dell'incidente citato in dev-critic/SKILL.md | riprodotto con un repo git sintetico: commit-poi-rimozione, il vecchio check l'avrebbe lasciato passare |
+| 6 | morning-gate.sh: la mascheratura segreti non copriva "Authorization: Bearer \<token\>" — un JWT sarebbe passato intero nel report | verificato con sed su un caso realistico |
+| 7 | bootstrap-app.sh: la catena `[ dry ] \|\| git add -A && [ dry ] \|\| git commit` non si fermava se `git add` falliva — `set -e` non intercetta un fallimento intermedio dentro una catena &&/\|\| | riprodotto con una `git` finta che fa fallire add |
+| 8 | night-shift.sh: l'auto-SAL (giro 9/10 del ciclo precedente) scriveva contatori SEMPRE VUOTI — PR_CREATED/FAILED sono `local` dentro shift_repo(), spariscono dopo il for. La feature pensata per "la memoria non dipende da chi ricorda" non si ricordava nulla da sola | riprodotto con simulazione bash |
+| 9 | test di regressione per bc_index.py (debito 2026-08-21): puro, testabile su una copia reale di docs/bc/endpoints senza tocca il README vero. bc_map.py resta debito (richiede OAuth BC vero) | — |
+| 10 | rotazione log oltre soglia (debito 2026-08-21, "nessun limite raggiunto"): `rotate_log_if_big()` in lib.sh, una generazione, richiamata da night-shift.sh e morning-gate.sh | test sintetico |
+
+**Il dato del ciclo**: 6 bug su 10 giri erano REALI, non ipotetici — e tre di loro
+(giro 4, 7, 8) sono emersi SOLO eseguendo il codice o simulandone la struttura di
+controllo, non leggendolo: la lettura da sola li avrebbe lasciati passare, esattamente
+come predetto dal metodo di dev-critic. Nota di processo: durante l'analisi, un test
+di `sal-indice.sh` su una copia è stato lanciato per errore anche sul SAL.md reale
+(rigenerazione dell'indice, nessuna perdita — committato a parte con messaggio onesto).
+Osservazione aggiuntiva: `llm/ask-opus.sh`, richiamato ricorsivamente da questa stessa
+sessione, ha mostrato latenza variabile (una run ha superato i 2 minuti) — aggiunto un
+timeout al test che lo esercita, per non bloccare la suite a tempo indefinito.
+
+### 2026-08-22, notte (6) — correzione: la diagnosi "claude -p lento" era sbagliata
+
+Nel ciclo precedente (giro 4/10) un hang di 2+ minuti era stato attribuito a "chiamata
+ricorsiva a claude -p lenta o bloccata", con un timeout aggiunto al TEST come guardia.
+Set 1 del ciclo nuovo ("armonizza gli agenti") ha riprodotto l'hang dal vivo con
+`< <(sleep 100)`: la causa vera è `[ ! -t 0 ] && STDIN_DATA=$(cat)` in tutti e tre i
+wrapper `llm/ask-*.sh` — `-t 0` non distingue "arriva un contesto vero in pipe" da "non
+c'è nulla ma non è un terminale", e `cat` blocca a tempo indefinito nel secondo caso.
+
+Annotato come richiede CLAUDE.md §1: un errore della NOTA precedente (l'ipotesi
+"claude lento"), non un difetto del sistema scoperto oggi — il sistema aveva davvero
+un bug, solo diagnosticato nel posto sbagliato. Corretto con `timeout 5 cat` nei tre
+wrapper; il timeout già presente nel test resta comunque una buona guardia generale.
+
+### 2026-08-22, notte (7) — Set 1/3: agenti giorno+notte armonizzati, 8 bug reali
+
+Mandato di Luca: tre nuovi cicli tematici. Set 1 — "migliorare gli agenti, non solo
+notturni ma anche e sopratutto quelli diurni (code e glm)". Dieci giri su llm/ask-*.sh,
+morning-gate.sh, docs/system.md.
+
+| Giro | Cosa | Trovato eseguendo |
+|---|---|---|
+| 1 | ask-qwen.sh validava il prompt DOPO aver tentato Ollama — 30.4s sprecati su chiamata invalida | `time` |
+| 2 | **Correzione di una diagnosi errata**: l'hang di 2+ minuti del ciclo precedente non era "claude -p lento" — è `$(cat)` senza limite su stdin non-tty-senza-EOF, in TUTTI i wrapper | riprodotto con `< <(sleep 100)` |
+| 3 | ask-qwen.sh ignorava ASK_TIMEOUT (--max-time fisso 1800) | curl finto |
+| 4 | ASK_MODEL "universale" per contratto ma implementato solo in ask-opus.sh | curl finto |
+| 5 | ask-opus.sh: exit 2 per auth assente, armonizzato con ask-glm.sh | claude finto |
+| 6 | GLM mai cablato come ADVERSARY nel banco (solo qwen/opus) | estratta la logica reale |
+| 7-8 | ask-glm.sh e ask-qwen.sh: risposta malformata → traceback Python grezzo invece di diagnosi pulita | curl finto, 3 casi avversariali ciascuno |
+| 9 | docs/system.md disallineato dalla correzione già fatta nell'header di ask-opus.sh | lettura incrociata |
+| 10 | nessuna traccia dei cervelli di giorno in memoria condivisa (asimmetria con SAL/gate.csv del notturno) — colmata con llm/_usage.sh | cervelli finti |
+
+**Il dato del ciclo**: la scoperta più importante non era nella lista di partenza — è
+emersa RIPRODUCENDO il giro 2 dell'ultimo ciclo per costruire un nuovo test, e ha
+smentito la propria diagnosi precedente. Lezione di metodo: anche un fix già
+committato e testato può portare la causa sbagliata se il sintomo (l'hang) non è
+stato isolato dal resto (qui: mai provato senza la chiamata vera al cervello).
+
+### 2026-08-22, notte (8) — Set 2/3: capacità di progettare, 3 skill mai esistite + bug ad alta severità
+
+Set 2 — "migliorare la capacità di progettare nuovo software" (processo esistente +
+nuovi strumenti). Dieci giri su .claude/skills/, night-shift.sh, morning-gate.sh, lib.sh.
+
+| Giro | Cosa | Trovato |
+|---|---|---|
+| 1-3 | `/design-doc`, `/brainstorming`, `/goal`: citati ovunque (METHOD.md, docs/system.md, CLAUDE.md §7) come fonti di verità in `.zcode/commands/`/`.claude/commands/` — NESSUNA delle due directory esiste nel repo. `loops/` vuota da sempre | ricerca sul repo |
+| 4 | `docs/stato-2026-08-22.md` citato in METHOD.md, mai scritto | ricerca sul repo |
+| 5 | design-gate: due messaggi dedicati "SENZA sezione" erano dead code (il check di qualità intercetta sempre prima una sezione assente) | simulazione su 6 casi |
+| 6 | design-gate: soglia 80 caratteri bucabile con prosa di riempimento senza riferimento reale | verificato dal vivo, 87 char di nulla passavano |
+| 7 | `/nuova-commessa` non referenziava `/design-doc` nonostante la pipeline dichiarata | lettura incrociata |
+| 8 | night-shift.sh non registrava le issue saltate per Design/Territorio (proposta 2026-08-21 mai fatta) | grep |
+| 9 | **`run_guarded()` impiegava SEMPRE l'intera durata del watchdog** (120s in produzione) per OGNI comando `.night-verify` e il banco avversariale, anche se il comando reale finiva in millisecondi — un `sleep` orfano teneva aperta la pipe di una command substitution. Trovato per caso costruendo il test di un ALTRO bug (VERDICT="verifiche-ok" con zero comandi eseguiti — falso verde su ogni repo appena bootstrappata) | `time`, poi riprodotto e corretto due volte (il primo fix era sbagliato) |
+| 10 | categoria "non-verificabile" per repo senza modo di verificare (proposta 2026-08-21 mai fatta) | grep |
+
+**Il dato del ciclo**: il giro 9 è la scoperta più importante di questo set, e non era
+nella lista di partenza — è emersa mentre si costruiva il test per un bug diverso. Il
+PRIMO tentativo di fix (un subshell "killer" con `exec sleep`) sembrava corretto a
+lettura ma si è rivelato sbagliato alla PROVA dal vivo (un subshell non può fare `wait`
+su un job che non è figlio suo): riproveur lo stesso identico caso di studio di sempre —
+eseguire, non leggere, anche il proprio fix.
+
+### 2026-08-22, notte (9) — Set 3/3: flusso delle idee, tutte le interazioni
+
+Set 3 — "il flusso delle idee, l'interazione fra una parte e l'altra" (giorno↔notte,
+hub↔progetti onboardati, agente↔agente — "tutte le parti", mandato di Luca). Dieci giri.
+
+| Giro | Cosa | Trovato |
+|---|---|---|
+| 1-2 | `.claude/skills/` (6 skill) non arrivava MAI a un progetto — né nuovo (bootstrap-app.sh) né esistente (onboard-repo.sh, merge prudente: mai sovrascrive personalizzazioni) | ricerca sul repo |
+| 3-4 | `patterns/` (23 trucchi provati) stesso gap, stesso fix (copia + merge prudente) | ricerca sul repo |
+| 5 | morning-gate.sh: `ISSUE_NUM` diventava l'INTERO nome del branch per PR `claude/*`/`glm/*`, corrompendo `metrics/gate.csv` con stringhe invece di numeri | verificato dal vivo |
+| 6-7 | Il marcatore `NON-VERIFICABILE` (Set 2 giro 10) non era menzionato nei template `.night-verify` di bootstrap/onboard | lettura incrociata |
+| 8 | Il prompt del banco avversariale diceva "sono ammessi node/python" — l'allowlist li scarta SEMPRE (rimossi per sicurezza in un ciclo precedente). Ogni scelta di quel tipo sprecava l'intero turno di giudizio | verificato dal vivo con `gate_allowlist_ok` |
+| 9 | CLAUDE.md non documentava il prefisso di branch richiesto dal gate (`night/`,`claude/`,`glm/`) né la regola "Closes in inglese" — vivevano solo in commenti di codice/SAL.md | ricerca sul repo |
+| 10 | "cartelle specchio dichiarate dalla repo" citate nel prompt della notte senza alcun meccanismo di dichiarazione — introdotto `.night-mirror` | ricerca sul repo |
+
+**Il dato del ciclo**: 6 dei 10 giri sono varianti dello stesso pattern — "citazione senza
+presidio" applicato non a un comando (come nel Set 2) ma a un CANALE fra parti del
+sistema: uno strumento esiste ma non viaggia dove serve, una convenzione esiste ma non è
+scritta dove chi ne ha bisogno la legge, un prompt promette una capacità che il codice
+non concede. Il flusso delle idee, quando si guarda con attenzione, si rompe più spesso
+per canali mai costruiti che per bug nella logica.
+
+## Riepilogo dei tre set (30 giri totali, dopo i 10 iniziali)
+
+- **Set 1** (agenti giorno+notte armonizzati): 8 bug reali, tra cui la correzione di una
+  diagnosi errata del ciclo precedente (l'hang non era "claude lento", era stdin senza EOF).
+- **Set 2** (capacità di progettare software): 3 skill mai esistite implementate
+  (`/design-doc`, `/brainstorming`, `/goal`), 1 bug ad alta severità in `run_guarded()`
+  (ogni verifica costava 120s invece di terminare quando finita), 1 falso verde nel
+  VERDICT del gate, 2 proposte di processo del 2026-08-21 mai chiuse.
+- **Set 3** (flusso delle idee, tutte le interazioni): skill e pattern del hub ora
+  raggiungono i progetti, 1 bug di corruzione dati corretto, 3 convenzioni tacite
+  documentate dove serve, il prompt del banco avversariale sincronizzato con la realtà.

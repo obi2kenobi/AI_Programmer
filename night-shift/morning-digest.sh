@@ -4,12 +4,6 @@
 # Destinatario: ScriptProperty DIGEST_EMAIL (vuoto = no-op educato, come il digest notturno).
 set -euo pipefail
 
-EMAIL=$(python3 -c "
-import subprocess
-try:
-    r = subprocess.check_output(['osascript', '-e', 'tell application \"System Events\" to get the name of every user'], timeout=3)
-    print('')
-except: print('')" 2>/dev/null || echo "")
 # il destinatario vive in night-shift/repos.key (locale, gitignored): DIGEST_EMAIL=...
 KEY="$(cd "$(dirname "$0")" && pwd)/repos.key"
 DEST=""
@@ -29,16 +23,25 @@ SUBJ=$(grep "Totale:" "$REPORT" | head -1 | sed 's/[*\`]//g' | head -c 120)
 [ -z "$SUBJ" ] && SUBJ="Gate del mattino — $(date '+%Y-%m-%d')"
 
 # corpo: il report + il summary numerico
-BODY="$REPORT
+BODY="$(cat "$REPORT")
 
 ---
 $(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')"
 
+# escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
+# arbitrario (titoli PR, output di comandi) — senza escaping, una virgoletta o un
+# backslash al suo interno rompe o inietta nello script AppleScript. Stessa lezione
+# già applicata al body della gh issue in morning-gate.sh, mai portata qui.
+escape_as() { printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
+SUBJ_ESC=$(escape_as "$SUBJ")
+BODY_ESC=$(escape_as "$BODY")
+DEST_ESC=$(escape_as "$DEST")
+
 osascript -e "
 tell application \"Mail\"
-  set newMsg to make new outgoing message with properties {subject:\"[Gate] $SUBJ\", content:\"$BODY\", visible:false}
+  set newMsg to make new outgoing message with properties {subject:\"[Gate] $SUBJ_ESC\", content:\"$BODY_ESC\", visible:false}
   tell newMsg
-    make new to recipient at end of to recipients with properties {address:\"$DEST\"}
+    make new to recipient at end of to recipients with properties {address:\"$DEST_ESC\"}
   end tell
   send newMsg
 end tell" 2>/dev/null && echo "Digest inviato a $DEST" || {

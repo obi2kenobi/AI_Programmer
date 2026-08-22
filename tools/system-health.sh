@@ -69,5 +69,5 @@ if [ "$N_REPO" -gt 0 ]; then
 fi
 
 echo ""
-echo "== Verdetto: $GREEN ok · $YELLOW attenzione · $⛔/RED critici =="
+echo "== Verdetto: $GREEN ok · $YELLOW attenzione · $RED critici =="
 [ $RED -eq 0 ]
