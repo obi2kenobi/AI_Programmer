@@ -66,6 +66,21 @@ echo "$OUT" | head -1 | grep -q "REPO-X" && ok "repo_code: nome in chiave → co
 echo "$OUT" | tail -1 | grep -q "altra/qualunque" && ok "repo_code: nome fuori chiave passa invariato" || ko "repo_code ignoto"
 rm -rf "$KEYTMP"
 
+# --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
+M1=$(echo 'export GH_TOKEN=ghp_abcdef1234567890' | mask_secrets)
+grep -q '\*\*\*MASCHERATO\*\*\*' <<<"$M1" && ! grep -q 'ghp_abcdef1234567890' <<<"$M1" \
+  && ok "mask_secrets: token=valore mascherato" || ko "mask_secrets token=: $M1"
+
+# bug reale trovato con dogfooding: "Authorization: Bearer <jwt>" passava intero,
+# perché "Authorization" non è tra le parole chiave (secret|token|password|key)
+M2=$(echo 'curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.super.secretpayload"' | mask_secrets)
+grep -q '\*\*\*MASCHERATO\*\*\*' <<<"$M2" && ! grep -q 'secretpayload' <<<"$M2" \
+  && ok "mask_secrets: Authorization Bearer mascherato (bug reale corretto)" || ko "mask_secrets bearer: $M2"
+
+M3=$(echo 'niente da mascherare qui' | mask_secrets)
+[ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \
+  || ko "mask_secrets falso positivo: $M3"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

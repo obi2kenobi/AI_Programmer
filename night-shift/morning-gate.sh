@@ -126,7 +126,7 @@ $DIFF_TXT"
           sed -e "s|__WORKDIR__|$DIR|g" -e "s|__HOME__|$HOME|g" "$HERE/sandbox.sb" > /tmp/gate-sandbox.sb
           ( cd "$DIR" && run_guarded 120 sandbox-exec -f /tmp/gate-sandbox.sb bash -c "$CMD" ) > /tmp/gate-banco.out 2>&1
           BRC=$?
-          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200 | sed -E 's/(secret|token|password|key)[a-z_]*[=: ][^ ,"]+/\1=***MASCHERATO***/gi')
+          OUT_TAIL=$(tail -5 /tmp/gate-banco.out | tr '\n' ' ' | head -c 200 | mask_secrets)
           echo "**Banco avversariale ESEGUITO** (cervello: $ADVERSARY):" >> "$REPORT"
           echo "- comando: \`$CMD\`" >> "$REPORT"
           if [ "$BRC" -eq 0 ]; then

@@ -79,6 +79,21 @@ sys.exit(0)
 PY
 }
 
+# mask_secrets(): maschera segreti nell'output del banco avversariale prima che finisca
+# nel report (pattern segreto-come-impronta). Copre due forme, non una lista esaustiva
+# di forme di segreto (quello richiederebbe un rilevatore per-forma come segreti-parco.js,
+# fuori scope qui — annotato in DEBITI.md):
+#   1. "parola-chiave=valore" o "parola-chiave: valore" (secret/token/password/key)
+#   2. "Authorization: Bearer/Basic/Token <valore>" — trovato scoperto con dogfooding
+#      (nuovo ciclo 10 giri, 2026-08-22): un comando che stampa un header HTTP con un
+#      Bearer token passava INTERO, perché "Authorization" non contiene nessuna delle
+#      parole chiave della forma 1.
+mask_secrets() {
+  sed -E \
+    -e 's/(secret|token|password|key)[a-z_]*[=: ][^ ,"]+/\1=***MASCHERATO***/gi' \
+    -e 's/(Authorization)[=: ]+(Bearer|Basic|Token)[= ]+[^ ,"]+/\1: \2 ***MASCHERATO***/gi'
+}
+
 # repo_code(): il hub è pubblico — nei dati versionati (metrics, report esportati) le repo
 # sono CODICI ANONIMI. La chiave vive solo in repos.key (locale, gitignored).
 repo_code() {
