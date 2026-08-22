@@ -40,6 +40,7 @@
 - [2026-08-22, notte (2) — 10 giri di auto-miglioramento: il sistema giudica se stesso](#2026-08-22-notte-2-10-giri-di-auto-miglioramento-il-sistema-giudica-se-stesso)
 - [2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero](#2026-08-22-notte-3-10-giri-di-feature-cosa-mancava-davvero)
 - [2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")](#2026-08-22-notte-4-le-decisioni-di-dominio-prese-mandato-di-luca-decidi-da-solo)
+- [2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo](#2026-08-22-notte-5-terzo-ciclo-di-10-giri-bug-reali-trovati-eseguendo-non-leggendo)
 
 
 ## Stato
@@ -1047,3 +1048,33 @@ l'operatore, non sostituendolo: le decisioni restano sue (review, merge, rotazio
 | Multi-cadence | **REPO-A settimanale (lun), le altre giornaliere** | il giudice non deve correre ogni notte |
 | Cursor per-id | **fix ORA** | rischio reale di perdita dati durante run |
 | Onboarding checkpoint | **rinvio accettato** | 5 competitor entro 6 min GAS oggi |
+
+### 2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo
+
+Mandato di Luca: nuovo ciclo di 10 giri per migliorare operativamente il processo,
+monitorando per capire come migliorare. I due cicli precedenti (#14-#21 test/hardening,
+#22-#31 feature mancanti) erano già mersati su main. Uso dev-critic sul hub stesso
+(lettura critica + dogfooding reale, non solo ispezione statica) per trovare i gap di
+questo terzo ciclo — niente ripetuto dai due precedenti.
+
+| Giro | Cosa | Trovato eseguendo |
+|---|---|---|
+| 1 | system-health.sh: `$⛔/RED` non si espandeva MAI — il verdetto finale non mostrava mai i critici, in nessun ambiente, da sempre | eseguendo lo script |
+| 2-3 | morning-digest.sh: dead code (EMAIL calcolato, mai usato) + BODY assegnato al PATH del report invece che al suo contenuto + injection AppleScript (virgolette/backslash non escaped) | intercettando osascript con un finto eseguibile |
+| 4 | test-ask-wrappers.sh falliva IN QUESTA STESSA SESSIONE: l'assunzione "auth assente" non vale in un ambiente cloud dove `claude` è già autenticato — non un difetto del wrapper, un'assunzione del test mai verificata fuori dal Mac | il test è fallito davvero, dal vivo |
+| 5 | privacy-check.sh vedeva solo `git ls-files` (i file di OGGI) — un nome committato e poi rimosso resta esposto per sempre nella storia, e il check diceva "pulito". Mai applicata al hub stesso la lezione dell'incidente citato in dev-critic/SKILL.md | riprodotto con un repo git sintetico: commit-poi-rimozione, il vecchio check l'avrebbe lasciato passare |
+| 6 | morning-gate.sh: la mascheratura segreti non copriva "Authorization: Bearer \<token\>" — un JWT sarebbe passato intero nel report | verificato con sed su un caso realistico |
+| 7 | bootstrap-app.sh: la catena `[ dry ] \|\| git add -A && [ dry ] \|\| git commit` non si fermava se `git add` falliva — `set -e` non intercetta un fallimento intermedio dentro una catena &&/\|\| | riprodotto con una `git` finta che fa fallire add |
+| 8 | night-shift.sh: l'auto-SAL (giro 9/10 del ciclo precedente) scriveva contatori SEMPRE VUOTI — PR_CREATED/FAILED sono `local` dentro shift_repo(), spariscono dopo il for. La feature pensata per "la memoria non dipende da chi ricorda" non si ricordava nulla da sola | riprodotto con simulazione bash |
+| 9 | test di regressione per bc_index.py (debito 2026-08-21): puro, testabile su una copia reale di docs/bc/endpoints senza tocca il README vero. bc_map.py resta debito (richiede OAuth BC vero) | — |
+| 10 | rotazione log oltre soglia (debito 2026-08-21, "nessun limite raggiunto"): `rotate_log_if_big()` in lib.sh, una generazione, richiamata da night-shift.sh e morning-gate.sh | test sintetico |
+
+**Il dato del ciclo**: 6 bug su 10 giri erano REALI, non ipotetici — e tre di loro
+(giro 4, 7, 8) sono emersi SOLO eseguendo il codice o simulandone la struttura di
+controllo, non leggendolo: la lettura da sola li avrebbe lasciati passare, esattamente
+come predetto dal metodo di dev-critic. Nota di processo: durante l'analisi, un test
+di `sal-indice.sh` su una copia è stato lanciato per errore anche sul SAL.md reale
+(rigenerazione dell'indice, nessuna perdita — committato a parte con messaggio onesto).
+Osservazione aggiuntiva: `llm/ask-opus.sh`, richiamato ricorsivamente da questa stessa
+sessione, ha mostrato latenza variabile (una run ha superato i 2 minuti) — aggiunto un
+timeout al test che lo esercita, per non bloccare la suite a tempo indefinito.
