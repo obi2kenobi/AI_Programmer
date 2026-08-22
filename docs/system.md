@@ -25,7 +25,7 @@
 | Ruolo | Chi | Provenienza della scelta |
 |---|---|---|
 | Cervello giorno primario | ZCode / GLM 5.3 | sessione diretta |
-| Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain: funziona da terminale utente e launchd, non da shell sandbox) |
+| Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain SUL MAC: funziona da terminale utente e launchd, non da shell sandbox locale; **una sessione cloud ha auth propria e risponde davvero** — verificato 2026-08-22, vedi `llm/ask-opus.sh`) |
 | Braccia notturne | Qwen3.8-27B Q4_K_M via Ollama | batteria qualità 4/4 pari alla Q5, 3,7-5,9 tok/s, margine RAM (misure 2026-08-18) |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
 | Giudice/censore/correttore | REPO-A + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
