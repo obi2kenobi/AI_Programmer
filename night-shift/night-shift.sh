@@ -253,12 +253,21 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
     git -C "$DIR" checkout main -q
   done
 
+  # bug reale (dogfooding, nuovo ciclo 10 giri): PR_CREATED/FAILED sono `local` a
+  # questa funzione — una volta finita, spariscono. Il SAL scritto dopo il for
+  # più sotto li leggeva vuoti ad OGNI turno reale (verificato con simulazione:
+  # una variabile local non esiste più fuori dalla funzione che l'ha dichiarata).
+  # Si aggregano qui nei contatori globali, prima che il contesto locale sparisca.
+  TOT_PR_CREATED=$((TOT_PR_CREATED+PR_CREATED))
+  TOT_FAILED=$((TOT_FAILED+FAILED))
   log "REPO $REPO FINITA: $PR_CREATED PR bozza, $FAILED fallite"
 }
 
 # --- Esecuzione -----------------------------------------------------------------
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 GLOBAL_RC=0
+TOT_PR_CREATED=0
+TOT_FAILED=0
 for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1
 done
@@ -270,7 +279,7 @@ if [ -f "$HUB_SAL" ]; then
   DT=$(date '+%Y-%m-%d')
   cat >> "$HUB_SAL" <<SALEOF
 
-### $DT, turno automatico — $PR_CREATED PR create, $FAILED fallite
+### $DT, turno automatico — $TOT_PR_CREATED PR create, $TOT_FAILED fallite
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
 SALEOF
