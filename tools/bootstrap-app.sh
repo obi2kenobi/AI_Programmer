@@ -45,8 +45,17 @@ cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" docs/GRAMMATICA_DOMINIO.md
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
-[ $DRY_RUN -eq 1 ] || git add -A && [ $DRY_RUN -eq 1 ] || git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
-[ $DRY_RUN -eq 1 ] && echo "(dry: creerebbe la repo)" || gh repo create "$NAME" $VIS --source . --push -q
+if [ $DRY_RUN -eq 1 ]; then
+  echo "(dry: creerebbe la repo)"
+else
+  # bug reale (dogfooding, nuovo ciclo 10 giri): la vecchia catena
+  # "[ dry ] || git add -A && [ dry ] || git commit" non si fermava se git add
+  # falliva — set -e non intercetta un fallimento intermedio dentro una catena
+  # &&/||, e git commit veniva eseguito comunque (verificato con simulazione).
+  git add -A
+  git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
+  gh repo create "$NAME" $VIS --source . --push -q
+fi
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
 
 # La iscrive alla coda locale (se esiste repos.conf)
