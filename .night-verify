@@ -6,3 +6,4 @@ bash tests/test-lib.sh
 bash tests/test-gate-tools.sh
 bash tests/test-ask-wrappers.sh
 bash tests/test-privacy.sh
+bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }
