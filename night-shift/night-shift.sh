@@ -145,6 +145,11 @@ shift_repo() {
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
   local PR_CREATED=0 FAILED=0 IDX=0
+  # giro 8/10 (set 2 "capacità di progettare"): proposta mai implementata di
+  # docs/test-processo-2026-08-21.md ("il turno scrive nel log l'esito-fase
+  # design-linked: sì/no — il dato per misurare se il miglioramento funziona").
+  # Conta quante issue saltano per Design/Territorio insufficiente in questo turno.
+  local SKIPPED_DESIGN=0
   local ROWS=()
   while IFS= read -r line; do ROWS+=("$line"); done < <(echo "$ISSUES" | jq -c '.[]')
 
@@ -174,13 +179,13 @@ shift_repo() {
     if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then
       log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
     if ! printf '%s' "$BODY" | grep -q "^## Design"; then
       log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
     DESIGN_RAW=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
@@ -188,7 +193,7 @@ shift_repo() {
     if [ "${#DESIGN_BODY}" -lt 80 ]; then
       log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
     # bug reale (dogfooding, set 2 "capacità di progettare"): la sola lunghezza è una
     # soglia bucabile con prosa di riempimento senza alcun DA-DOVE reale — verificato dal
@@ -199,13 +204,13 @@ shift_repo() {
     if ! printf '%s' "$DESIGN_RAW" | grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b'; then
       log "Issue #$NUM: ## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
     TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
     if ! printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b'; then
       log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." >/dev/null 2>&1
-      continue
+      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
     # Idempotenza: PR aperta → skip; PR fusa → chiude l'issue e skip
@@ -280,7 +285,8 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
   # Si aggregano qui nei contatori globali, prima che il contesto locale sparisca.
   TOT_PR_CREATED=$((TOT_PR_CREATED+PR_CREATED))
   TOT_FAILED=$((TOT_FAILED+FAILED))
-  log "REPO $REPO FINITA: $PR_CREATED PR bozza, $FAILED fallite"
+  TOT_SKIPPED_DESIGN=$((TOT_SKIPPED_DESIGN+SKIPPED_DESIGN))
+  log "REPO $REPO FINITA: $PR_CREATED PR bozza, $FAILED fallite, $SKIPPED_DESIGN saltate per Design/Territorio"
 }
 
 # --- Esecuzione -----------------------------------------------------------------
@@ -288,6 +294,7 @@ log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_FAILED=0
+TOT_SKIPPED_DESIGN=0
 for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1
 done
@@ -299,7 +306,7 @@ if [ -f "$HUB_SAL" ]; then
   DT=$(date '+%Y-%m-%d')
   cat >> "$HUB_SAL" <<SALEOF
 
-### $DT, turno automatico — $TOT_PR_CREATED PR create, $TOT_FAILED fallite
+### $DT, turno automatico — $TOT_PR_CREATED PR create, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio insufficiente
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
 SALEOF
