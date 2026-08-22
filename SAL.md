@@ -966,3 +966,26 @@ privacy che c'era DA SEMPRE — il check funzionava solo se lanciato dalla root 
 il che significa che IL GATE l'ha sempre invocato correttamente per caso. Regola rafforzata:
 **il guardiano si prova anche dalle posizioni sbagliate** — un check che funziona solo
 nella posizione giusta non è un presidio, è una coincidenza.
+
+### 2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero
+
+Dieci PR (#22-#31), il sistema guadagna ciò che non sapeva di non avere:
+
+| Giro | PR | Feature | Il gap che colmava |
+|---|---|---|---|
+| 1 | #22 | **health check** | 7 componenti, nessuno sapeva chi vive — e infatti ha subito trovato launchd nightshift FERMO e 22 GB di swap |
+| 2 | #23 | **verify-patterns** | la regola diceva 'l'ancora muore, la voce muore' ma nessuno verificava — 19 vive, 1 morta (corretta) |
+| 3 | #24 | **morning-digest** | Luca doveva ANDARE a leggere il report: ora arriva in mailbox |
+| 4 | #25 | **backup config** | repos.conf, key, metrics: l'unica copia viveva su un Mac |
+| 5 | #26 | **promemoria audit** | l'audit serale era manuale e facile da dimenticare |
+| 6 | #27 | **multi-cadence** | tutte le repo alla stessa frequenza; ora per-repo |
+| 7 | #28 | **status page** | tutto era CLI e file sparsi; ora una vista HTML |
+| 8 | #29 | **/nuova-commessa wizard** | le commesse buone erano arte manuale |
+| 9 | #30 | **auto-SAL del turno** | l'esito notturno viveva solo nel log |
+| 10 | #31 | **manuale operativo** | il perché c'era, le mani no |
+
+Osservazione di metodo: le 10 feature rispondono tutte alla stessa domanda —
+**"cosa deve fare il sistema che oggi fa l'operatore a mano?"**. Il pattern: l'operatore
+è il collo di bottiglia quando fa cose ripetibili (leggere report, ricordarsi audit,
+scrivere SAL, verificare ancore, controllare salute). Il sistema cresce automatizzando
+l'operatore, non sostituendolo: le decisioni restano sue (review, merge, rotazione).
