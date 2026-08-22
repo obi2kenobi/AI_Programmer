@@ -122,6 +122,26 @@ OUT_ERR=$(PATH="$OPUSTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "test" </dev/null 2
   || ko "ask-opus: errore generico ha dato rc=$RC_ERR invece di 1: $OUT_ERR"
 rm -rf "$OPUSTMP"
 
+# --- set 1, giro 7: ask-glm.sh non deve mai dare un traceback Python grezzo ---
+GLMTMP=$(mktemp -d)
+check_glm_response() {
+  local nome="$1" body="$2" atteso_grep="$3"
+  cat > "$GLMTMP/curl" <<EOF
+#!/bin/bash
+printf '%s' '$body'
+EOF
+  chmod +x "$GLMTMP/curl"
+  local OUT RC
+  OUT=$(PATH="$GLMTMP:$PATH" ZHIPUAI_API_KEY=x bash "$HERE/llm/ask-glm.sh" "test" </dev/null 2>&1); RC=$?
+  ! grep -q "Traceback" <<<"$OUT" && grep -q "$atteso_grep" <<<"$OUT" \
+    && ok "ask-glm risposta $nome: diagnosi pulita, niente traceback (rc=$RC)" \
+    || ko "ask-glm risposta $nome: $OUT (rc=$RC)"
+}
+check_glm_response "vuota"             ""                       "ERRORE glm"
+check_glm_response "HTML non-JSON"     "<html>errore</html>"    "ERRORE glm"
+check_glm_response "JSON forma errata" '{"unexpected": true}'   "ERRORE glm"
+rm -rf "$GLMTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

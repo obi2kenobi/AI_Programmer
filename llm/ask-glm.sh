@@ -59,10 +59,25 @@ PY
 RESP=$(curl -s --max-time "$TIMEOUT" "$BASE/chat/completions" \
   -H "Authorization: Bearer $ZHIPUAI_API_KEY" -H "Content-Type: application/json" -d "$PAYLOAD")
 
+# bug reale (set 1 "armonizza gli agenti"): un corpo vuoto/non-JSON (curl senza
+# rete, endpoint giù, HTML d'errore) faceva esplodere json.load con un traceback
+# Python grezzo su stderr — verificato dal vivo con un corpo vuoto: JSONDecodeError
+# non gestita, non la diagnosi pulita "ERRORE glm: ..." che il resto del contratto
+# promette. Anche una risposta JSON valida ma di forma inattesa (senza "choices")
+# dava lo stesso trattamento (KeyError grezzo).
 echo "$RESP" | python3 -c '
 import json, sys
-r = json.load(sys.stdin)
+raw = sys.stdin.read()
+try:
+    r = json.loads(raw)
+except json.JSONDecodeError:
+    print("ERRORE glm: risposta non valida dal server (non è JSON) —", raw[:200] or "(corpo vuoto)", file=sys.stderr)
+    sys.exit(1)
 if "error" in r:
     print("ERRORE glm:", r["error"], file=sys.stderr); sys.exit(1)
-print(r["choices"][0]["message"]["content"])
+try:
+    print(r["choices"][0]["message"]["content"])
+except (KeyError, IndexError, TypeError):
+    print("ERRORE glm: risposta JSON di forma inattesa (manca choices[0].message.content) —", raw[:200], file=sys.stderr)
+    sys.exit(1)
 ' || exit 1
