@@ -26,8 +26,11 @@ if ! curl -sf "$API/api/version" >/dev/null 2>&1; then
   for _ in $(seq 1 30); do curl -sf "$API/api/version" >/dev/null 2>&1 && break; sleep 1; done
 fi
 
+# stesso bug reale di ask-opus.sh/ask-glm.sh: `[ ! -t 0 ] && $(cat)` senza limite
+# può bloccarsi a tempo indefinito quando stdin non è un terminale ma non emette
+# EOF subito. Timeout 5s (vedi ask-opus.sh per la riproduzione dal vivo).
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(cat)
+[ ! -t 0 ] && STDIN_DATA=$(timeout 5 cat 2>/dev/null || true)
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---

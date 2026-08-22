@@ -14,8 +14,16 @@ set -euo pipefail
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-opus.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
 
+# CORREZIONE (set 1 "armonizza gli agenti", 2026-08-22): il ciclo precedente aveva
+# attribuito un hang osservato di oltre 2 minuti a "claude -p ricorsivo lento".
+# Riprodotto dal vivo ora: la causa vera è `[ ! -t 0 ] && STDIN_DATA=$(cat)` — in
+# alcuni contesti non interattivi stdin non è un terminale ma NON emette EOF subito
+# (nessun dato in arrivo, il descrittore resta aperto): `cat` blocca a tempo
+# indefinito. `-t 0` da solo non basta a distinguere "arriva davvero un contenuto
+# in pipe" da "non c'è nulla ma non è un terminale". Annotato come errore della
+# nota precedente, non un nuovo difetto del sistema — SAL.md ne porta la traccia.
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(cat)
+[ ! -t 0 ] && STDIN_DATA=$(timeout 5 cat 2>/dev/null || true)
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---
@@ -23,6 +31,22 @@ $STDIN_DATA"
 
 MODEL_ARGS=()
 [ -n "${ASK_MODEL:-}" ] && MODEL_ARGS=(--model "$ASK_MODEL")
+TIMEOUT="${ASK_TIMEOUT:-600}"
 
-OUT=$(claude -p "$PROMPT" "${MODEL_ARGS[@]}" 2>&1) || { echo "ask-opus: $OUT" >&2; exit 1; }
+# ASK_TIMEOUT era documentato nell'header ma non implementato — nessun limite su
+# `claude -p`. Aggiunto come difesa in profondità (oltre al fix dello stdin sopra):
+# anche una chiamata vera al cervello deve avere un limite. set +e locale per
+# leggere l'exit code senza far esplodere set -e sull'assegnazione (stesso
+# tranello del giro 7 del ciclo precedente).
+set +e
+OUT=$(timeout "$TIMEOUT" claude -p "$PROMPT" "${MODEL_ARGS[@]}" 2>&1)
+RC=$?
+set -e
+if [ "$RC" -eq 124 ]; then
+  echo "ask-opus: timeout dopo ${TIMEOUT}s (claude -p non ha risposto in tempo — ASK_TIMEOUT per allungarlo)" >&2
+  exit 1
+elif [ "$RC" -ne 0 ]; then
+  echo "ask-opus: $OUT" >&2
+  exit 1
+fi
 echo "$OUT"

@@ -30,9 +30,13 @@ OUT3=$(bash "$HERE/llm/ask-opus.sh" 2>&1); RC3=$?
 # casi) — era un'assunzione del TEST, non del sistema: annotato qui, non come
 # difetto del wrapper.
 # timeout: quando l'auth è presente, questo invoca un vero claude -p ricorsivo dalla
-# sessione stessa — osservato variabile in latenza (una run di questa stessa suite
-# è arrivata a superare 2 minuti). Un limite duro evita che UN test blocchi tutta la
-# suite all'infinito; un timeout qui è un FAIL leggibile, non un mistero.
+# sessione stessa — una run di questa suite è arrivata a superare 2 minuti.
+# CORREZIONE (set 1 "armonizza gli agenti", 2026-08-22): attribuito allora a "claude -p
+# lento", causa vera trovata dopo — la lettura di stdin in ask-opus.sh (`$(cat)` senza
+# limite) può bloccarsi a tempo indefinito, non la chiamata al cervello. Corretto in
+# ask-opus.sh (timeout 5s sulla lettura di stdin, vedi tests/test-stdin-timeout.sh).
+# Il timeout qui resta comunque una buona guardia: un limite duro evita che UN test
+# blocchi tutta la suite all'infinito, qualunque sia la causa di un futuro rallentamento.
 OUT4=$(timeout 90 bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
 if [ "$RC4" -eq 124 ]; then
   ko "ask-opus: timeout dopo 90s (chiamata ricorsiva a claude -p lenta o bloccata)"

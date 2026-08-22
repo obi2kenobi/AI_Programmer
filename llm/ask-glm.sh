@@ -25,8 +25,13 @@ EOF
   exit 2
 fi
 
+# bug reale (set 1 "armonizza gli agenti", 2026-08-22): `[ ! -t 0 ] && $(cat)` senza
+# limite può bloccarsi a tempo indefinito in contesti non interattivi dove stdin non
+# è un terminale ma non emette EOF subito (riprodotto dal vivo su ask-opus.sh, stesso
+# pattern qui). Timeout 5s: sufficiente per un file già scritto piped via `cat`, non
+# per uno stream che arriva lentamente (limite noto, non un uso previsto dal contratto).
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(cat)
+[ ! -t 0 ] && STDIN_DATA=$(timeout 5 cat 2>/dev/null || true)
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---
