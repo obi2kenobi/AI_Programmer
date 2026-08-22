@@ -83,6 +83,27 @@ else
   echo "skill del hub già tutte presenti, intoccate"
 fi
 
+# gap reale (set 3 "flusso delle idee"): stesso ragionamento per patterns/ (CLAUDE.md §7,
+# "prima di scrivere infrastruttura, controlla patterns/") — merge per-file, mai sovrascrive
+# un pattern che il progetto avesse già con lo stesso nome.
+PATTERNS_AGGIUNTI=0
+mkdir -p "$WORK/patterns"
+for pattern_file in "$HERE"/patterns/*.md; do
+  pattern_name="$(basename "$pattern_file")"
+  if [ ! -f "$WORK/patterns/$pattern_name" ]; then
+    cp "$pattern_file" "$WORK/patterns/$pattern_name"
+    git -C "$WORK" add "patterns/$pattern_name"
+    PATTERNS_AGGIUNTI=$((PATTERNS_AGGIUNTI+1))
+  fi
+done
+if [ "$PATTERNS_AGGIUNTI" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $PATTERNS_AGGIUNTI pattern del hub propagati (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$PATTERNS_AGGIUNTI pattern del hub aggiunti e spinti"
+else
+  echo "pattern del hub già tutti presenti, intoccati"
+fi
+
 CONF="$HERE/night-shift/repos.conf"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
 grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }
