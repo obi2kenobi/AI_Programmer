@@ -883,3 +883,24 @@ colpo (PR #15 su PEFC, branch glm/): nome file CSV datato (un punto per tutte le
 testato in Node) e registri di conformità nel PDF (tabella DDS 4→6 colonne, avviso assenti
 con la funzione GIUSTA, le 7 voci del sistema di gestione) — sintassi JS verificata per
 esecuzione. Stanotte la notte prova le BC: la prima prova della regola del territorio.
+
+### 2026-08-22, pomeriggio — ciclo dei 5 giri su REPO-D (mandato: tutto da solo, processo osservato)
+
+Fase 0 prima di tutto: **il hub era pubblico e spifferava nomi di repo private** (24 file).
+Anonimizzato, chiave solo locale (repos.key gitignored), il gate scrive codici nel CSV e
+privacy-check entra nel .night-verify: una perdita futura FALLISCE il gate. Il check stesso
+è nato con un bug (grep -qv = quiet: divorava l'output e passava sempre) — trovato
+eseguendolo contro il caso noto-difettoso, prima lezione del ciclo: **un guardiano si prova
+anche quando deve fallire, non solo quando deve passare**.
+
+**Giro 1 (sweep bug) completato**: 3 agenti in parallelo per la caccia (pipeline, dati,
+webapp — il territorio era grande: il giorno legge, per la regola nuova), 20 difetti
+trovati (3 critici, 8 maggiori), ogni fix verificato, i testabili coperti da un test file
+nuovo con 11 asserzioni + i 4 esistenti verdi. PR aperta, commit per step logico.
+Osservazioni di processo del giro: (1) i 3 difetti critici erano tutti della classe
+'silenzioso' — dati sbagliati senza errore, il tipo che solo l'esecuzione rivela;
+(2) il test file nuovo è nato DOPO i fix: la prossima volta nasce CON il primo fix
+(regola: ogni fix porta la sua asserzione nello stesso commit, quando testabile);
+(3) un fix ha rotto un test esistente perché usava una costante non caricata dal contesto
+— risolto completando il test, non indebolendo il fix: il test serve al codice, non
+viceversa.
