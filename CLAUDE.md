@@ -113,6 +113,18 @@ Never use `--force` on shared branches unless explicitly asked.
 ### Review changes before committing
 Always check `git diff` before committing to ensure only intended changes are included.
 
+### Convenzioni tacite del gate notturno (set 3 "flusso delle idee", 2026-08-22)
+Due regole vivevano solo in commenti di codice (`night-shift/*.sh`) o in `SAL.md`, mai in
+un posto che un agente di giorno o un progetto onboardato leggesse — scoperto costruendo
+proprio questo ciclo, non un'ipotesi:
+- **Il branch deve iniziare per `night/`, `claude/` o `glm/`** — `night-shift/morning-gate.sh`
+  giudica SOLO le PR i cui branch matchano questo prefisso (`gh pr list` filtrato per
+  `headRefName`). Un branch con un altro prefisso (`feature/x`, `fix/y`) viene ignorato in
+  silenzio: nessun errore, nessun avviso, semplicemente il gate non lo vede mai.
+- **La keyword di chiusura issue va in INGLESE** (`Closes #N`, `Fixes #N`) — GitHub non
+  auto-chiude le issue con la traduzione italiana. Verificato più volte nella storia di
+  questo sistema (`SAL.md`).
+
 ---
 
 ## 5. Error Handling
