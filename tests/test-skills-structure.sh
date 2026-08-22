@@ -46,6 +46,9 @@ check_referenced_paths() {
 check_skill_frontmatter "design-doc" "$HERE/.claude/skills/design-doc/SKILL.md"
 check_referenced_paths  "design-doc" "$HERE/.claude/skills/design-doc/SKILL.md"
 
+check_skill_frontmatter "brainstorming" "$HERE/.claude/skills/brainstorming/SKILL.md"
+check_referenced_paths  "brainstorming" "$HERE/.claude/skills/brainstorming/SKILL.md"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
