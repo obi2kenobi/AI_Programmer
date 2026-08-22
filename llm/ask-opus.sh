@@ -11,9 +11,15 @@
 # vedi tests/test-ask-wrappers.sh, che ora accetta entrambi gli esiti).
 # Variabili: ASK_MODEL (default: modello predefinito di Claude Code) · ASK_TIMEOUT secondi (600)
 set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd)"
 
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-opus.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+
+# giro 10/10 (set 1): traccia locale minima — il notturno ha SAL.md+gate.csv, i
+# cervelli di giorno non lasciavano nulla. Vedi llm/_usage.sh.
+source "$HERE/_usage.sh"
+trap 'log_ask_usage ask-opus "${#PROMPT}"' EXIT
 
 # CORREZIONE (set 1 "armonizza gli agenti", 2026-08-22): il ciclo precedente aveva
 # attribuito un hang osservato di oltre 2 minuti a "claude -p ricorsivo lento".

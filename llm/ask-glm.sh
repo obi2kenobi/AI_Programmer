@@ -11,9 +11,14 @@
 #            GLM_MODEL (default glm-5.3, sovrascrivibile anche con ASK_MODEL) ·
 #            ASK_TIMEOUT secondi (600)
 set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd)"
 
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-glm.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+
+# giro 10/10 (set 1 "armonizza gli agenti"): traccia locale minima — vedi llm/_usage.sh.
+source "$HERE/_usage.sh"
+trap 'log_ask_usage ask-glm "${#PROMPT}"' EXIT
 
 if [ -z "${ZHIPUAI_API_KEY:-}" ]; then
   cat >&2 <<'EOF'

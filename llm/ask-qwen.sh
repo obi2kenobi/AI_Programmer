@@ -8,6 +8,7 @@
 #            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
 #            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
 set -euo pipefail
+HERE="$(cd "$(dirname "$0")" && pwd)"
 
 # bug reale (dogfooding, set 1 "armonizza gli agenti"): il prompt veniva validato
 # DOPO aver tentato di avviare Ollama — una chiamata senza argomenti (es. "ask-qwen.sh"
@@ -17,6 +18,10 @@ set -euo pipefail
 # si armonizza allo stesso ordine.
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+
+# giro 10/10 (set 1 "armonizza gli agenti"): traccia locale minima — vedi llm/_usage.sh.
+source "$HERE/_usage.sh"
+trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 
 # bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
 # override universale, qui era ignorato — solo QWEN_MODEL funzionava.
