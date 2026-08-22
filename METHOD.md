@@ -18,7 +18,7 @@
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
 | Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
 | Registro esiti | `gate-esito.sh`, `gate-summary.sh` | `metrics/gate.csv` |
-| Loop diurni con verifica | `/goal ... \| max N` | `.zcode/commands/goal.md` |
+| Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere, `loops/` era vuota) |
 
 ## Le regole che contano (le altre stanno nelle fonti)
 

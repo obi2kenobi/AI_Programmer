@@ -49,6 +49,9 @@ check_referenced_paths  "design-doc" "$HERE/.claude/skills/design-doc/SKILL.md"
 check_skill_frontmatter "brainstorming" "$HERE/.claude/skills/brainstorming/SKILL.md"
 check_referenced_paths  "brainstorming" "$HERE/.claude/skills/brainstorming/SKILL.md"
 
+check_skill_frontmatter "goal" "$HERE/.claude/skills/goal/SKILL.md"
+check_referenced_paths  "goal" "$HERE/.claude/skills/goal/SKILL.md"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
