@@ -35,9 +35,21 @@ if [ $# -gt 0 ]; then
   for a in "$@"; do REPO_LIST+=("$a"); done
 else
   [ -f "$CONF" ] || { echo "uso: night-shift.sh owner/repo ... — oppure crea $CONF (vedi repos.conf.example)" >&2; exit 1; }
+  # Formato: owner/repo [tipo] [cadenza]
+  # Cadence: giornaliera (default), settimanale, o giorno settimana (lun/mar/.../dom)
+  GIORNO_ODIerno=$(date '+%u')  # 1=lun ... 7=dom
+  declare -a GIORNI=(lun mar mer gio ven sab dom)
+  OGGI=${GIORNI[$((GIORNO_ODIerno-1))]}
   while IFS= read -r line; do
     line="${line%%#*}"; [ -z "$(echo "$line" | tr -d '[:space:]')" ] && continue
-    REPO_LIST+=("$line")
+    CAD=$(echo "$line" | awk '{print $3}')
+    ENTRY=$(echo "$line" | awk '{print $1, $2}')
+    case "$CAD" in
+      ""|giornaliera) REPO_LIST+=("$ENTRY") ;;
+      settimanale) [ "$OGGI" = "lun" ] && REPO_LIST+=("$ENTRY") ;;
+      lun|mar|mer|gio|ven|sab|dom) [ "$CAD" = "$OGGI" ] && REPO_LIST+=("$ENTRY") ;;
+      *) log "ATTENZIONE: cadenza '$CAD' sconosciuta in '$ENTRY', la salto" ;;
+    esac
   done < "$CONF"
 fi
 [ "${#REPO_LIST[@]}" -eq 0 ] && { echo "nessuna repo configurata" >&2; exit 1; }
