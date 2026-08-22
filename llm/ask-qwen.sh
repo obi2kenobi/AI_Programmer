@@ -4,6 +4,8 @@
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
 # Variabili: QWEN_MODEL (default qwen3.8:27b-mtp-q4_K_M) · QWEN_CTX (16384) · QWEN_THINK
+#            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
+#            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
 set -euo pipefail
 
 # bug reale (dogfooding, set 1 "armonizza gli agenti"): il prompt veniva validato
@@ -48,8 +50,13 @@ print(json.dumps({
 PY
 )
 
+# bug reale (dogfooding, set 1 "armonizza gli agenti"): --max-time era fisso a 1800,
+# ignorando ASK_TIMEOUT — llm/README.md lo dichiara un override universale per
+# TUTTI i wrapper, ma qui non aveva alcun effetto (verificato leggendo il valore
+# passato a curl con ASK_TIMEOUT impostato: restava sempre 1800).
+TIMEOUT="${ASK_TIMEOUT:-1800}"
 START=$(date +%s)
-RESP=$(curl -s --max-time 1800 "$API/api/chat" -d "$PAYLOAD")
+RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" -d "$PAYLOAD")
 END=$(date +%s)
 
 echo "$RESP" | python3 -c '

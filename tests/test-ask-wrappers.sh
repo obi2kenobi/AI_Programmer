@@ -60,6 +60,22 @@ DUR=$((T1-T0))
 [ "$DUR" -le 3 ] && ok "ask-qwen senza prompt: fallisce subito, non tenta Ollama (${DUR}s)" \
   || ko "ask-qwen senza prompt: ${DUR}s — tenta ancora di avviare Ollama prima di validare"
 
+# --- bug reale (set 1, giro 3): ASK_TIMEOUT ignorato, --max-time fisso a 1800 ---
+QWENTMP=$(mktemp -d)
+cat > "$QWENTMP/curl" <<'EOF'
+#!/bin/bash
+echo "$*" >> /tmp/qwen-curl-args.log
+[[ "$*" == *"api/version"* ]] && exit 0
+echo '{"message":{"content":"ok"}}'
+EOF
+chmod +x "$QWENTMP/curl"
+rm -f /tmp/qwen-curl-args.log
+PATH="$QWENTMP:$PATH" ASK_TIMEOUT=42 bash "$HERE/llm/ask-qwen.sh" "test" </dev/null >/dev/null 2>&1
+grep -q -- "--max-time 42 " /tmp/qwen-curl-args.log 2>/dev/null \
+  && ok "ask-qwen: ASK_TIMEOUT=42 arriva davvero a curl --max-time (bug corretto)" \
+  || ko "ask-qwen: ASK_TIMEOUT non propagato: $(cat /tmp/qwen-curl-args.log 2>/dev/null)"
+rm -rf "$QWENTMP" /tmp/qwen-curl-args.log
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
