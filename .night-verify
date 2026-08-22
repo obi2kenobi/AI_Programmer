@@ -5,3 +5,4 @@ bash tools/privacy-check.sh
 bash tests/test-lib.sh
 bash tests/test-gate-tools.sh
 bash tests/test-ask-wrappers.sh
+bash tests/test-privacy.sh
