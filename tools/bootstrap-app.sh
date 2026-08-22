@@ -50,6 +50,14 @@ cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" docs/GRAMMATICA_DOMINIO.md
 mkdir -p .claude/skills
 cp -r "$HERE/.claude/skills/." .claude/skills/
 
+# gap reale (set 3 "flusso delle idee"): patterns/ (trucchi provati, ancorati al codice
+# che li usa) non lasciava mai il hub — CLAUDE.md §7 dice "prima di scrivere
+# infrastruttura, controlla patterns/" come regola UNIVERSALE, ma il posto dove
+# guardare non arrivava al progetto nuovo. Copiato come riferimento locale (di
+# sola lettura concettuale: gli ancoraggi restano quelli del hub, non si riscrivono).
+mkdir -p patterns
+cp -r "$HERE/patterns/." patterns/
+
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
