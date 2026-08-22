@@ -4,6 +4,41 @@
 > Ogni decisione porta la data e i fatti che l'hanno imposta. Aggiornato dal morning-gate
 > e a ogni decisione strutturale.
 
+<!-- SAL-INDICE: generato da tools/sal-indice.sh — non editare a mano -->
+## Indice del diario
+
+- [2026-08-21 — assemblaggio del sistema](#2026-08-21-assemblaggio-del-sistema)
+- [2026-08-21, ore 12 — prima lezione operativa del gate (e chi la firma)](#2026-08-21-ore-12-prima-lezione-operativa-del-gate-e-chi-la-firma)
+- [2026-08-21, pomeriggio — graphify entra nel sistema come strato di navigazione](#2026-08-21-pomeriggio-graphify-entra-nel-sistema-come-strato-di-navigazione)
+- [2026-08-21, sera — l'esperimento DFlash2: il video prometteva 3x, i fatti dicono altro](#2026-08-21-sera-l-esperimento-dflash2-il-video-prometteva-3x-i-fatti-dicono-altro)
+- [2026-08-21, sera — loop engineering: il nome arriva dopo la pratica](#2026-08-21-sera-loop-engineering-il-nome-arriva-dopo-la-pratica)
+- [2026-08-21, pomeriggio tardi — ponytail e superpowers: il delta, non il catechismo](#2026-08-21-pomeriggio-tardi-ponytail-e-superpowers-il-delta-non-il-catechismo)
+- [2026-08-21, notte — dev-critic verifica la review Opus: un fix confermato solo a metà](#2026-08-21-notte-dev-critic-verifica-la-review-opus-un-fix-confermato-solo-a-met)
+- [2026-08-21, notte (2) — il bypass dell'allowlist chiuso con l'opzione (c) di Luca](#2026-08-21-notte-2-il-bypass-dell-allowlist-chiuso-con-l-opzione-c-di-luca)
+- [2026-08-21, notte (3) — gate-summary: i dati promessi diventano leggibili](#2026-08-21-notte-3-gate-summary-i-dati-promessi-diventano-leggibili)
+- [2026-08-21, sera — il test che contava: sviluppare una feature NUOVA](#2026-08-21-sera-il-test-che-contava-sviluppare-una-feature-nuova)
+- [2026-08-21, sera (2) — secondo turno preparato e il processo si difende da solo](#2026-08-21-sera-2-secondo-turno-preparato-e-il-processo-si-difende-da-solo)
+- [2026-08-21, sera (3) — il primo A/B giorno-vs-notte, e la commessa col difetto](#2026-08-21-sera-3-il-primo-a-b-giorno-vs-notte-e-la-commessa-col-difetto)
+- [2026-08-21, notte — le interazioni col giorno diventano workflow del sistema](#2026-08-21-notte-le-interazioni-col-giorno-diventano-workflow-del-sistema)
+- [2026-08-21, notte (2) — il primo giro di /audit-commesse: 3 commesse su 4 difettose](#2026-08-21-notte-2-il-primo-giro-di-audit-commesse-3-commesse-su-4-difettose)
+- [2026-08-21, notte (3) — il raccolto di REPO-A entra: 18 pattern vivi](#2026-08-21-notte-3-il-raccolto-di-repo-a-entra-18-pattern-vivi)
+- [2026-08-21, notte (4) — quattro ambiti mancanti nel roster, chiesti da Luca dopo l'analisi](#2026-08-21-notte-4-quattro-ambiti-mancanti-nel-roster-chiesti-da-luca-dopo-l-analisi)
+- [2026-08-21, notte (6) — Giro 1 dei "3 giri con test autonomi": audit-commessa alla prova](#2026-08-21-notte-6-giro-1-dei-3-giri-con-test-autonomi-audit-commessa-alla-prova)
+- [2026-08-21, notte (7) — Giro 2 dei "3 giri autonomi": verifica-visiva su un artefatto vero](#2026-08-21-notte-7-giro-2-dei-3-giri-autonomi-verifica-visiva-su-un-artefatto-vero)
+- [2026-08-21, notte (9) — Luca chiede altri 10 giri: Giro 4, Design assente](#2026-08-21-notte-9-luca-chiede-altri-10-giri-giro-4-design-assente)
+- [2026-08-21, notte (10) — Giro 5: una convenzione di dominio inventata, non confermata](#2026-08-21-notte-10-giro-5-una-convenzione-di-dominio-inventata-non-confermata)
+- [2026-08-21, notte (11) — Giro 6: una regressione vera, e cosa fa davvero il gate](#2026-08-21-notte-11-giro-6-una-regressione-vera-e-cosa-fa-davvero-il-gate)
+- [2026-08-21, notte (12) — Giro 7: verifica-visiva non vedeva "undefined"](#2026-08-21-notte-12-giro-7-verifica-visiva-non-vedeva-undefined)
+- [2026-08-21, notte (14) — Giro 9: gate-esito.sh su dati VERI, non su un test giocattolo](#2026-08-21-notte-14-giro-9-gate-esito-sh-su-dati-veri-non-su-un-test-giocattolo)
+- [2026-08-21, notte (15) — Giro 10: Closes multiplo e prima commessa chore, entrambi puliti](#2026-08-21-notte-15-giro-10-closes-multiplo-e-prima-commessa-chore-entrambi-puliti)
+- [2026-08-21, notte (17) — le due correzioni in sospeso, eseguite col sì di Luca](#2026-08-21-notte-17-le-due-correzioni-in-sospeso-eseguite-col-s-di-luca)
+- [2026-08-21 — nuova regola: qui solo metodo, mai il nome dei progetti onboardati](#2026-08-21-nuova-regola-qui-solo-metodo-mai-il-nome-dei-progetti-onboardati)
+- [2026-08-21 — Giro 3 sullo stesso progetto onboardato: un addendum, non un pattern nuovo](#2026-08-21-giro-3-sullo-stesso-progetto-onboardato-un-addendum-non-un-pattern-nuovo)
+- [2026-08-22, mattina — la notte ha parlato: 11h39m su #12, zero file](#2026-08-22-mattina-la-notte-ha-parlato-11h39m-su-12-zero-file)
+- [2026-08-22, sera — ciclo dei 5 giri completato: il processo osservato in loop](#2026-08-22-sera-ciclo-dei-5-giri-completato-il-processo-osservato-in-loop)
+- [2026-08-22, notte — ciclo 2 su REPO-D: la progettazione protagonista](#2026-08-22-notte-ciclo-2-su-repo-d-la-progettazione-protagonista)
+
+
 ## Stato
 
 `PRIMA INSTALLAZIONE` (2026-08-21) — sistema completo assemblato: base (regole + conoscenza),
