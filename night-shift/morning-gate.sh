@@ -150,7 +150,14 @@ for REPO in "${REPO_LIST[@]}"; do
     if [ -x "$ASK" ]; then
       DIFF_TXT=$(git -C "$DIR" diff "origin/$DB...$BRANCH" 2>/dev/null | head -300)
       if [ -n "$DIFF_TXT" ]; then
-        BANCO_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull request. Scrivi UN solo comando shell, eseguibile dalla root della repo, che SMASCHERA un difetto della PR se esiste: deve riuscire (exit 0) se la PR è solida, fallire (exit != 0) se è difettosa. Vincoli rigidissimi: niente rete, niente operazioni distruttive (rm/mv/chmod/git push), nessuna modifica permanente. Sono ammessi node/python/grep/git/cat e simili. Rispondi con UN SOLO blocco di codice contenente il comando, senza spiegazioni.
+        # bug reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): il prompt diceva
+        # "sono ammessi node/python/..." ma gate_allowlist_ok() in lib.sh non li ammette
+        # affatto (rimossi per sicurezza, opzione (c) di Luca — bypassabili con bash -c/
+        # python3 -c/node -e) — verificato dal vivo: ogni comando node/python viene SEMPRE
+        # scartato. L'avversario, invitato dal prompt a usarli, sprecava l'intero turno di
+        # giudizio su un comando garantito allo scarto. Prompt corretto per riflettere
+        # l'allowlist VERA, non quella immaginata prima della stretta di sicurezza.
+        BANCO_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull request. Scrivi UN solo comando shell, eseguibile dalla root della repo, che SMASCHERA un difetto della PR se esiste: deve riuscire (exit 0) se la PR è solida, fallire (exit != 0) se è difettosa. Vincoli rigidissimi: niente rete, niente operazioni distruttive (rm/mv/chmod/git push), nessuna modifica permanente, NESSUN interprete general-purpose (node/python/bash -c/sh -c vengono scartati automaticamente, qualunque cosa contengano). Sono ammessi SOLO: grep, cat, diff, wc, head, tail, ls, test, jq, echo, e git in sola lettura (diff/log/show/grep/status/rev-parse/ls-files/blame). Rispondi con UN SOLO blocco di codice contenente il comando, senza spiegazioni.
 
 $DIFF_TXT"
         BANCO_OUT=$(printf '%s' "$BANCO_PROMPT" | "$ASK" "Fai quanto chiesto sopra." 2>/dev/null || true)
