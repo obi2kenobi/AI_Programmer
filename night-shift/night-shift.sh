@@ -183,10 +183,22 @@ shift_repo() {
       continue
     fi
 
-    DESIGN_BODY=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f' | tr -d '[:space:]')
+    DESIGN_RAW=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
+    DESIGN_BODY=$(printf '%s' "$DESIGN_RAW" | tr -d '[:space:]')
     if [ "${#DESIGN_BODY}" -lt 80 ]; then
       log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." >/dev/null 2>&1
+      continue
+    fi
+    # bug reale (dogfooding, set 2 "capacità di progettare"): la sola lunghezza è una
+    # soglia bucabile con prosa di riempimento senza alcun DA-DOVE reale — verificato dal
+    # vivo con una frase di 87 caratteri, nessun link/SAL/issue/file, che passava il gate.
+    # Stesso pattern citazione-non-presidio già chiuso altrove nel repo (privacy-check.sh,
+    # segreto-come-impronta): una lunghezza non è una fonte. Richiede almeno UN riferimento
+    # verificabile (URL, link markdown, SAL.md, un'issue #N, o un percorso di file).
+    if ! printf '%s' "$DESIGN_RAW" | grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b'; then
+      log "Issue #$NUM: ## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
+      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." >/dev/null 2>&1
       continue
     fi
     TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')

@@ -42,9 +42,14 @@ echo "SAL: $TOT_PR_CREATED PR create, $TOT_FAILED fallite"
   || ko "aggregazione sbagliata: $OUT_NUOVA"
 
 # --- verifica sul file reale: i contatori globali devono esistere PRIMA del primo shift_repo ---
-grep -q 'TOT_PR_CREATED=0' <<<"$(sed -n '256,285p' "$(cd "$(dirname "$0")/.." && pwd)/night-shift/night-shift.sh")" \
+# range di righe, non fisso: robusto a modifiche future del file (già disallineato una
+# volta dopo il giro 5 del set 2, che ha spostato le righe più in basso).
+REAL_NS="$(cd "$(dirname "$0")/.." && pwd)/night-shift/night-shift.sh"
+RIGA_TOT=$(grep -n '^TOT_PR_CREATED=0$' "$REAL_NS" | cut -d: -f1)
+RIGA_FOR=$(grep -n '^for ENTRY in' "$REAL_NS" | cut -d: -f1)
+[ -n "$RIGA_TOT" ] && [ -n "$RIGA_FOR" ] && [ "$RIGA_TOT" -lt "$RIGA_FOR" ] \
   && ok "night-shift.sh dichiara TOT_PR_CREATED prima del for (set -u non esplode)" \
-  || ko "TOT_PR_CREATED non trovato dichiarato prima del for in night-shift.sh"
+  || ko "TOT_PR_CREATED (riga ${RIGA_TOT:-assente}) non precede il for (riga ${RIGA_FOR:-assente})"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
