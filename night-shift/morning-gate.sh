@@ -65,7 +65,16 @@ for REPO in "${REPO_LIST[@]}"; do
     BRANCH=$(echo "$row" | jq -r '.headRefName')
     TITLE=$(echo "$row" | jq -r '.title')
     MERGEABLE=$(echo "$row" | jq -r '.mergeable')
-    ISSUE_NUM="${BRANCH#night/issue-}"
+    # bug reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): "${BRANCH#night/issue-}"
+    # non rimuove nulla se il branch non inizia per "night/issue-" — esattamente il caso
+    # dei branch claude/* e glm/* che questo stesso gate giudica "con due occhi" (riga 4).
+    # Verificato dal vivo: per un branch claude/qualcosa, ISSUE_NUM diventava l'INTERO nome
+    # del branch, finendo così com'è nella colonna "issue" di metrics/gate.csv — corrompe
+    # la memoria condivisa (principio L4 di docs/system.md) con stringhe invece di numeri.
+    case "$BRANCH" in
+      night/issue-*) ISSUE_NUM="${BRANCH#night/issue-}" ;;
+      *) ISSUE_NUM="—" ;;  # lavoro di giorno non legato a un'issue night-shift: onesto, non un dato finto
+    esac
     TOTAL=$((TOTAL+1))
     echo "" >> "$REPORT"
     echo "### PR #$NUM — $TITLE (\`$BRANCH\`)" >> "$REPORT"
