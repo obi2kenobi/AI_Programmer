@@ -1139,3 +1139,37 @@ PRIMO tentativo di fix (un subshell "killer" con `exec sleep`) sembrava corretto
 lettura ma si è rivelato sbagliato alla PROVA dal vivo (un subshell non può fare `wait`
 su un job che non è figlio suo): riproveur lo stesso identico caso di studio di sempre —
 eseguire, non leggere, anche il proprio fix.
+
+### 2026-08-22, notte (9) — Set 3/3: flusso delle idee, tutte le interazioni
+
+Set 3 — "il flusso delle idee, l'interazione fra una parte e l'altra" (giorno↔notte,
+hub↔progetti onboardati, agente↔agente — "tutte le parti", mandato di Luca). Dieci giri.
+
+| Giro | Cosa | Trovato |
+|---|---|---|
+| 1-2 | `.claude/skills/` (6 skill) non arrivava MAI a un progetto — né nuovo (bootstrap-app.sh) né esistente (onboard-repo.sh, merge prudente: mai sovrascrive personalizzazioni) | ricerca sul repo |
+| 3-4 | `patterns/` (23 trucchi provati) stesso gap, stesso fix (copia + merge prudente) | ricerca sul repo |
+| 5 | morning-gate.sh: `ISSUE_NUM` diventava l'INTERO nome del branch per PR `claude/*`/`glm/*`, corrompendo `metrics/gate.csv` con stringhe invece di numeri | verificato dal vivo |
+| 6-7 | Il marcatore `NON-VERIFICABILE` (Set 2 giro 10) non era menzionato nei template `.night-verify` di bootstrap/onboard | lettura incrociata |
+| 8 | Il prompt del banco avversariale diceva "sono ammessi node/python" — l'allowlist li scarta SEMPRE (rimossi per sicurezza in un ciclo precedente). Ogni scelta di quel tipo sprecava l'intero turno di giudizio | verificato dal vivo con `gate_allowlist_ok` |
+| 9 | CLAUDE.md non documentava il prefisso di branch richiesto dal gate (`night/`,`claude/`,`glm/`) né la regola "Closes in inglese" — vivevano solo in commenti di codice/SAL.md | ricerca sul repo |
+| 10 | "cartelle specchio dichiarate dalla repo" citate nel prompt della notte senza alcun meccanismo di dichiarazione — introdotto `.night-mirror` | ricerca sul repo |
+
+**Il dato del ciclo**: 6 dei 10 giri sono varianti dello stesso pattern — "citazione senza
+presidio" applicato non a un comando (come nel Set 2) ma a un CANALE fra parti del
+sistema: uno strumento esiste ma non viaggia dove serve, una convenzione esiste ma non è
+scritta dove chi ne ha bisogno la legge, un prompt promette una capacità che il codice
+non concede. Il flusso delle idee, quando si guarda con attenzione, si rompe più spesso
+per canali mai costruiti che per bug nella logica.
+
+## Riepilogo dei tre set (30 giri totali, dopo i 10 iniziali)
+
+- **Set 1** (agenti giorno+notte armonizzati): 8 bug reali, tra cui la correzione di una
+  diagnosi errata del ciclo precedente (l'hang non era "claude lento", era stdin senza EOF).
+- **Set 2** (capacità di progettare software): 3 skill mai esistite implementate
+  (`/design-doc`, `/brainstorming`, `/goal`), 1 bug ad alta severità in `run_guarded()`
+  (ogni verifica costava 120s invece di terminare quando finita), 1 falso verde nel
+  VERDICT del gate, 2 proposte di processo del 2026-08-21 mai chiuse.
+- **Set 3** (flusso delle idee, tutte le interazioni): skill e pattern del hub ora
+  raggiungono i progetti, 1 bug di corruzione dati corretto, 3 convenzioni tacite
+  documentate dove serve, il prompt del banco avversariale sincronizzato con la realtà.
