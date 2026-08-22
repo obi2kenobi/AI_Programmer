@@ -930,3 +930,14 @@ estorto — le quattro che valgono regole:
 E una conferma: la caccia con 3 agenti in parallelo + la parte meccanica a mano è il
 rapporto qualità/tempo migliore mai misurato nel sistema per il lavoro di giorno su
 territori grandi. Le 5 PR aspettano la review di Luca col gate.
+
+### 2026-08-22, notte — ciclo 2 su REPO-D: la progettazione protagonista
+
+Cinque feature con design-doc (docs/DESIGN_CICLO_2.md nella repo: opzioni pesate, scelte
+dichiarate, verifica per livello) impilate in PR ordinate. Il dato nuovo del ciclo: **il
+test come strumento di DESIGN, non solo di correttezza** — ha scoperto che le categorie
+del classificatore non si sarebbero mai incontrate fra prodotti propri (_wall_na) e
+mercato (_wall_28): difetto di design intercettato prima della produzione e convertito
+in normalizzazione per categoria base. E ha corretto le aspettative dell'autore altre
+quattro volte (l'aritmetica del fixture si conta a mano, sempre). 55 asserzioni nuove,
+16 avversariali, PR impilate col merge in ordine dichiarato.
