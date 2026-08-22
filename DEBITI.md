@@ -11,9 +11,9 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-21 | Rotazione log di ~/night-shift.log e ~/morning-gate.log | nessun limite raggiunto | quando un file supera ~10 MB |
+| 2026-08-21 ✅ SALDATO (nuovo ciclo 10 giri, giro 10/10, 2026-08-22) | Rotazione log di ~/night-shift.log e ~/morning-gate.log | nessun limite raggiunto | `rotate_log_if_big()` in night-shift/lib.sh (soglia 10MB, una generazione file→file.1), richiamata da night-shift.sh e morning-gate.sh prima del primo log. Test sintetico in tests/test-lib.sh (file piccolo non ruota, file grande ruota con contenuto preservato, file assente no-op) |
 | 2026-08-21 | Path /opt/homebrew hardcoded (ollama) — portabilità Intel/Linux | scelta "solo Mac Apple Silicon" dichiarata | se il sistema girerà altrove |
-| 2026-08-21 | Test funzionali per bc_map.py / bc_index.py | nessuna regressione ancora | alla prima modifica sostanziale |
+| 2026-08-21 ✅ SALDATO (nuovo ciclo 10 giri, giro 9/10, 2026-08-22) | Test funzionali per bc_map.py / bc_index.py | bc_map.py chiama davvero l'API BC (OAuth) — non testabile in sandbox, resta manuale; bc_index.py invece è puro | tests/test-bc-index.sh: esegue bc_index.py su una COPIA reale di docs/bc/endpoints (88 file), verifica righe/conteggio/ordinamento. bc_map.py resta debito aperto (serve un ambiente con credenziali BC vere) |
 
 ## Da dev-critic — verifica dogfooding della review Opus (2026-08-21, notte)
 
@@ -24,7 +24,7 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 | 2026-08-21 | Indicizzare patterns/*.md nel grafo (richiede pass semantico, non --code-only) | costo token da valutare | se i pattern superano ~30 voci |
 | 2026-08-21 | Mascherare segreti negli output del gate (pattern: segreto-come-impronta) | miglioramento suggerito dal raccolto REPO-A, non urgente (output locali) | al prossimo giro su morning-gate |
 | 2026-08-21 (aggiornato Giro 2) | `verifica-visiva` provata su pagine sintetiche E, dal Giro 2, su un vero artefatto generato dal pilota (`night-shift-pilot` issue #10, `file://.../dist/report.html`) — screenshot confermato a occhio, nessun falso positivo su un report a dati vuoti legittimo. Resta NON provata contro un vero deploy Apps Script (dominio script.google.com, OAuth) | richiede clasp/OAuth sul Mac, non disponibile da questa sessione | al primo deploy reale toccato dopo questa PR |
-| 2026-08-21 | `/design-doc` resta citato in prosa (SAL.md/docs/system.md) senza un file che lo implementi, come lo era `/audit-commesse` prima di oggi | fuori scope delle 4 aggiunte richieste — richiede la stessa decisione presa per audit-commessa | quando serve davvero un design-doc e si scopre di nuovo che non esiste |
+| 2026-08-21 ✅ SALDATO (set 2 "capacità di progettare", giro 1/10, 2026-08-22) | `/design-doc` resta citato in prosa (SAL.md/docs/system.md) senza un file che lo implementi, come lo era `/audit-commesse` prima di oggi | fuori scope delle 4 aggiunte richieste — richiede la stessa decisione presa per audit-commessa | Implementato: `.claude/skills/design-doc/SKILL.md`. Verificato che le fonti di verità dichiarate in METHOD.md (`.zcode/commands/`, `.claude/commands/`) non esistono affatto nel repo — corretto il riferimento lì e in docs/system.md |
 
 ## Dal Giro 1 dei "3 giri autonomi" (2026-08-21, notte)
 

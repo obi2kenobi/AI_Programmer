@@ -15,16 +15,57 @@ default_branch() {
   return 1
 }
 
+# rotate_log_if_big(): ruota un log oltre soglia (default 10MB) — una sola generazione
+# (file → file.1, sovrascrivendo un .1 precedente: non serve di più per un log locale
+# di debug, non un archivio). Debito aperto dal 2026-08-21 ("nessun limite raggiunto");
+# night-shift.log e morning-gate.log crescono senza limite da allora.
+rotate_log_if_big() {
+  local file="$1" soglia_mb="${2:-10}"
+  [ -f "$file" ] || return 0
+  local size_bytes
+  size_bytes=$(wc -c < "$file" 2>/dev/null) || return 0
+  local soglia_bytes=$((soglia_mb * 1024 * 1024))
+  if [ "$size_bytes" -ge "$soglia_bytes" ]; then
+    mv -f "$file" "$file.1"
+    : > "$file"
+  fi
+}
+
 # run_guarded(): esegue un comando con watchdog (i secondi) — l'asimmetria trovata dalla
 # review §3 (.night-verify senza timeout fermava il gate per sempre) non torna.
+#
+# bug reale, alta severità (dogfooding, set 2 "capacità di progettare", 2026-08-22):
+# `kill "$wdg"` uccideva solo il SUBSHELL bash che eseguiva "sleep $secs; kill ...", non
+# il processo "sleep" che quel subshell aveva generato come figlio — il "sleep" orfano
+# restava vivo, e dentro una command substitution ($(...), esattamente come lo chiama
+# morning-gate.sh) il descrittore stdout ereditato dal "sleep" orfano teneva la pipe
+# APERTA finché il sonno non finiva DA SOLO. Risultato: ogni comando .night-verify (e il
+# banco avversariale) impiegava SEMPRE l'intera durata del watchdog (120s in produzione)
+# per restituire il risultato, anche se il comando reale finiva in millisecondi —
+# verificato dal vivo con `time`: 10.0s esatti per un `run_guarded 10 bash -c "true"`.
+# Primo tentativo di fix (`exec sleep` nel subshell watchdog) si è rivelato SBAGLIATO
+# alla verifica dal vivo: un secondo subshell non può fare `wait` su un job che non è
+# figlio SUO (è figlio del chiamante) — bash lo rifiuta ("not a child of this shell"),
+# quindi il killer non uccideva mai il comando davvero bloccato, silenziosamente. Fix
+# vero: nessun subshell "figlio di un figlio" — un poll con `kill -0` nel chiamante
+# stesso, che possiede sia il comando che il tempo trascorso. Portabile su bash 3.2
+# (nessun `wait -n`, non disponibile prima di bash 4.3/5.1 — questo repo ha altrove
+# vincoli espliciti di compatibilità con la bash 3.2 di macOS).
 run_guarded() {
   local secs="$1"; shift
   "$@" &
   local pid=$!
-  ( sleep "$secs"; kill -TERM "$pid" 2>/dev/null ) &
-  local wdg=$!
-  wait "$pid"; local rc=$?
-  kill "$wdg" 2>/dev/null
+  local elapsed=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$elapsed" -ge "$secs" ]; then
+      kill -TERM "$pid" 2>/dev/null
+      break
+    fi
+    sleep 1
+    elapsed=$((elapsed+1))
+  done
+  wait "$pid" 2>/dev/null
+  local rc=$?
   return $rc
 }
 
@@ -77,6 +118,21 @@ for seg in split_operators(cmd):
             sys.exit(1)
 sys.exit(0)
 PY
+}
+
+# mask_secrets(): maschera segreti nell'output del banco avversariale prima che finisca
+# nel report (pattern segreto-come-impronta). Copre due forme, non una lista esaustiva
+# di forme di segreto (quello richiederebbe un rilevatore per-forma come segreti-parco.js,
+# fuori scope qui — annotato in DEBITI.md):
+#   1. "parola-chiave=valore" o "parola-chiave: valore" (secret/token/password/key)
+#   2. "Authorization: Bearer/Basic/Token <valore>" — trovato scoperto con dogfooding
+#      (nuovo ciclo 10 giri, 2026-08-22): un comando che stampa un header HTTP con un
+#      Bearer token passava INTERO, perché "Authorization" non contiene nessuna delle
+#      parole chiave della forma 1.
+mask_secrets() {
+  sed -E \
+    -e 's/(secret|token|password|key)[a-z_]*[=: ][^ ,"]+/\1=***MASCHERATO***/gi' \
+    -e 's/(Authorization)[=: ]+(Bearer|Basic|Token)[= ]+[^ ,"]+/\1: \2 ***MASCHERATO***/gi'
 }
 
 # repo_code(): il hub è pubblico — nei dati versionati (metrics, report esportati) le repo

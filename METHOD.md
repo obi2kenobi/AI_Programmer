@@ -11,14 +11,14 @@
 
 | Fase | Comando/strumento | Fonte di verità |
 |---|---|---|
-| Brainstorming (socratico) | `/brainstorming` | `.zcode/commands/`, `.claude/commands/` |
-| Design (opzioni+trade-off, NON implementa) | `/design-doc` | idem |
+| Brainstorming (socratico) | `/brainstorming` | `.claude/skills/brainstorming/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
+| Design (opzioni+trade-off, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
 | Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
 | Registro esiti | `gate-esito.sh`, `gate-summary.sh` | `metrics/gate.csv` |
-| Loop diurni con verifica | `/goal ... \| max N` | `.zcode/commands/goal.md` |
+| Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere, `loops/` era vuota) |
 
 ## Le regole che contano (le altre stanno nelle fonti)
 
@@ -38,5 +38,13 @@
 ## La mappa completa
 
 `docs/system.md` (architettura e limiti dichiarati) · `docs/test-processo-2026-08-21.md`
-(dove il processo fallisce) · `docs/stato-2026-08-22.md` (cosa funziona coi numeri) ·
-`SAL.md` (diario con indice) · `DEBITI.md` (i "poi" che non devono diventare "mai").
+(dove il processo fallisce) · `SAL.md` (diario con indice, "cosa funziona coi numeri" vive
+per ora nelle sue voci datate) · `DEBITI.md` (i "poi" che non devono diventare "mai").
+
+<!-- CORREZIONE (set 2 "capacità di progettare", giro 4/10, 2026-08-22): questa riga citava
+`docs/stato-2026-08-22.md` come parte della mappa — il file non esiste mai stato scritto,
+verificato con una ricerca sul repo. La riga in SAL.md ("Stato completo del progetto:
+docs/stato-2026-08-22.md") molto probabilmente si riferiva al repo onboardato di cui parlava
+quella voce (issue #12), non al hub — ma qui, nella mappa DEL HUB, era una citazione senza
+presidio. Rimossa; se un report numerico del hub servirà davvero, va scritto con dati veri
+al momento, non promesso qui in anticipo. -->
