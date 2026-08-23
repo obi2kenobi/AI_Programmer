@@ -2,8 +2,11 @@
 shellcheck night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
 bash tools/privacy-check.sh
-bash tests/test-lib.sh
-bash tests/test-gate-tools.sh
-bash tests/test-ask-wrappers.sh
-bash tests/test-privacy.sh
+# 4° ciclo, set 1 giro 4 (2026-08-23): questa riga elencava 4 test per nome (test-lib,
+# test-gate-tools, test-ask-wrappers, test-privacy) — gli altri 23+ file tests/test-*.sh
+# accumulati nei cicli successivi (Set 2, Set 3, questo) non erano MAI stati aggiunti:
+# il gate che impone a ogni altra repo "dichiara le tue verifiche o è verifiche-vuote"
+# non applicava a se stesso la propria regola. Un loop sostituisce l'elenco: nessun test
+# nuovo può più restare fuori dal gate per dimenticanza.
+for t in tests/test-*.sh; do bash "$t" || exit 1; done
 bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }

@@ -41,6 +41,11 @@
 - [2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero](#2026-08-22-notte-3-10-giri-di-feature-cosa-mancava-davvero)
 - [2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")](#2026-08-22-notte-4-le-decisioni-di-dominio-prese-mandato-di-luca-decidi-da-solo)
 - [2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo](#2026-08-22-notte-5-terzo-ciclo-di-10-giri-bug-reali-trovati-eseguendo-non-leggendo)
+- [2026-08-22, notte (6) — correzione: la diagnosi "claude -p lento" era sbagliata](#2026-08-22-notte-6-correzione-la-diagnosi-claude-p-lento-era-sbagliata)
+- [2026-08-22, notte (7) — Set 1/3: agenti giorno+notte armonizzati, 8 bug reali](#2026-08-22-notte-7-set-1-3-agenti-giorno-notte-armonizzati-8-bug-reali)
+- [2026-08-22, notte (9) — Set 3/3: flusso delle idee, tutte le interazioni](#2026-08-22-notte-9-set-3-3-flusso-delle-idee-tutte-le-interazioni)
+- [2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo](#2026-08-23-2-set-1-3-giri-2-3-la-skill-raggiunge-la-commessa-poi-il-progetto-nuovo)
+- [2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola](#2026-08-23-3-set-1-3-giro-4-il-gate-non-applicava-a-se-stesso-la-propria-regola)
 
 
 ## Stato
@@ -1232,3 +1237,17 @@ zero avrebbe la label pronta e zero guida su come scrivere una issue che il gate
 salti in silenzio per mancanza di `## Design`. Corretto: `bootstrap-app.sh` ora copia
 anche `.github/ISSUE_TEMPLATE/night-shift.md`. Test:
 `tests/test-bootstrap-issue-template-propagation.sh`.
+
+### 2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola
+
+Leggendo la storia di `.night-verify` (`git log -p`) ho trovato che l'elenco delle
+verifiche dichiarate del hub era fermo all'"autogiro 5/10": 4 test citati per nome
+(`test-lib.sh`, `test-gate-tools.sh`, `test-ask-wrappers.sh`, `test-privacy.sh`). I 23+
+file `tests/test-*.sh` accumulati nei cicli successivi (Set 2, Set 3, questo ciclo,
+incluso il test scritto nel Giro 1 di oggi) non erano MAI stati aggiunti — la stessa
+regola che questo sistema impone a ogni altra repo ("dichiara le tue verifiche o è
+verifiche-vuote") non veniva applicata al hub stesso. Corretto: `.night-verify` ora usa
+`for t in tests/test-*.sh; do bash "$t" || exit 1; done` invece di un elenco — nessun
+test nuovo può più restare fuori dal gate per dimenticanza. Misurato dal vivo: 29 file,
+~31s totali, ampio margine sotto il watchdog di 120s di `run_guarded`. Test:
+`tests/test-night-verify-runs-all-tests.sh`.
