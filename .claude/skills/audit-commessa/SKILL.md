@@ -1,6 +1,6 @@
 ---
 name: audit-commessa
-description: Pre-flight serale su una commessa (issue con label night-shift) prima che il turno di notte la incontri — verifica sul codice reale ogni assunzione su dati/funzioni/strutture che la commessa fa, con enfasi sulla forma dei dati Business Central quando il progetto ne dipende. Nato dal primo giro reale (2026-08-21, REPO-B): 3 commesse su 4 avevano difetti veri, tutti di forma-dati, trovati eseguendo non leggendo. Usa quando l'utente chiede di auditare/verificare una o più commesse notturne, invoca /audit-commesse esplicitamente, o prima di lasciare una issue night-shift pronta per la notte su un progetto che parla con BC. Non sostituisce dev-critic (quello guarda l'intero progetto per gap/nuove idee); questo guarda SOLO le commesse in coda, contro il codice che già esiste.
+description: Pre-flight serale su una commessa (issue con label night-shift) prima che il turno di notte la incontri — verifica sul codice reale ogni assunzione su dati/funzioni/strutture che la commessa fa, con enfasi sulla forma dei dati Business Central quando il progetto ne dipende, e (§2bis, 4° ciclo 2026-08-23) sulla formula citata quando la commessa calcola una cifra contabile/gestionale reale. Nato dal primo giro reale (2026-08-21, REPO-B): 3 commesse su 4 avevano difetti veri, tutti di forma-dati, trovati eseguendo non leggendo. Usa quando l'utente chiede di auditare/verificare una o più commesse notturne, invoca /audit-commesse esplicitamente, o prima di lasciare una issue night-shift pronta per la notte su un progetto che parla con BC o calcola una cifra contabile. Non sostituisce dev-critic (quello guarda l'intero progetto per gap/nuove idee); questo guarda SOLO le commesse in coda, contro il codice che già esiste.
 ---
 
 # audit-commessa — il pre-flight che il turno non può fare da solo
@@ -41,7 +41,9 @@ l'utente non specifica quali, prendi tutte le `night-shift` open del repo indica
    prima, `.gs` dopo), la forma dei dati vera è spesso lì, non nell'oggetto che la dashboard
    espone a schermo.
 4. **Se il progetto dipende da Business Central**, applica anche la lente specifica (§2).
-5. **Correggi il body** della issue (via API, mai committando sul workdir della notte —
+5. **Se la commessa calcola/riconcilia una cifra contabile o gestionale** (margine,
+   valorizzazione, scostamento, roll-forward, ecc.), applica la lente specifica (§2bis).
+6. **Correggi il body** della issue (via API, mai committando sul workdir della notte —
    pattern `workdir-e-proprietario`) aggiungendo `## Forma dei dati (verificata sul codice)`:
    per ogni claim, ✅ se vero con la citazione file:funzione, ❌ con la correzione se falso.
 
@@ -69,6 +71,26 @@ della prosa della commessa:
 - **Le credenziali non si citano per valore**: se la commessa deve menzionare come si
   autentica, cita il percorso del file/la variabile, mai il segreto (pattern
   `segreto-come-impronta` per qualunque output che potrebbe stamparlo per errore).
+
+## 2bis. Lente controllo-gestione — quando la commessa calcola un numero contabile/gestionale
+
+Nata dal Set 1 "agenti" del 4° ciclo (2026-08-23), insieme alla skill
+`.claude/skills/controllo-gestione/SKILL.md`. Verifica specificamente questi punti
+quando la commessa calcola/riconcilia una cifra contabile o gestionale reale (margine,
+valorizzazione, scostamento, roll-forward, ecc.), prima di fidarti della prosa della
+commessa:
+
+- **La formula citata è un vero oracolo, non una plausibile a memoria.** Se la commessa
+  dice "il margine si calcola come X", apri il file:riga citato e verifica che dica
+  davvero X — non che "sembra ragionevole". Se non cita nessun file:riga e nessuna
+  conferma esplicita del proprietario del dominio, la commessa sta indovinando: fermati
+  e dillo con un commento, come per una `## Design` assente (§1.1).
+- **"Dato assente" e "valore zero" restano due categorie distinte** quando il dominio lo
+  richiede (non contato ≠ contato a zero) — se la commessa non lo distingue e il calcolo
+  originale lo fa, è un'assunzione sbagliata da correggere nel body, non un dettaglio.
+- **Un residuo di quadratura/plug misurato solo DOPO un aggiustamento finale non prova
+  nulla** (lente `dev-critic` §2ter) — se la commessa descrive una verifica di questo
+  tipo, verifica che l'invariante sia misurato PRIMA dell'aggiustamento.
 
 ## 3. Regole non negoziabili
 

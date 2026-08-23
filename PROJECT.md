@@ -29,6 +29,14 @@ La _validation artifact_ del progetto (regola universale _"Done means proven"_) 
 
 Lavoro: estrazioni dati, report, dashboard, analisi commerciali — anche via skill `bc-commercial-intelligence`.
 
+### Calcoli contabili/gestionali sui dati BC (4° ciclo, set 3, 2026-08-23)
+Se il lavoro richiede CALCOLARE una cifra (margine, valorizzazione, scostamento,
+roll-forward, indice) e non solo estrarre/mappare dati, usa la skill
+`.claude/skills/controllo-gestione/SKILL.md` (hub AI_Programmer): la formula si cita
+come oracolo dal codice esistente o si chiede al proprietario del dominio, non si
+indovina. Distinta dal censimento campi qui sotto: quello è "che dati esistono", questo
+è "come si trasformano in un numero corretto".
+
 ### Censimento campi prima dell'analisi (vincolante)
 Prima di qualsiasi report/analisi, costruisci un quadro **completo e definitivo** dei dati:
 - **Testa ogni endpoint** di `CATALOGO_ENDPOINT_BC.md` e **testa ogni campo** che restituisce.

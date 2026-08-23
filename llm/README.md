@@ -21,6 +21,9 @@ cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"   # contesto v
   ogni chiamata registra cervello/esito/durata/lunghezza prompt — mai il contenuto.
   Simmetria con la memoria del turno notturno (SAL.md + metrics/gate.csv). Percorso
   configurabile con `ASK_USAGE_LOG` (utile nei test, per non scrivere nel vero $HOME).
+  **Riepilogo**: `llm/usage-summary.sh` — la stessa simmetria completata (4° ciclo, set 3,
+  2026-08-23): il log si scriveva ma nessuno lo leggeva, la traccia entrava e non
+  usciva mai come insight. Per cervello: chiamate, successi, % successo, durata media.
 
 ## La matrice decisionale — quale cervello per quale compito (fatti misurati, 2026-08)
 

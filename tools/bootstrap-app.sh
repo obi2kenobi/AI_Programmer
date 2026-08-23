@@ -2,6 +2,15 @@
 # bootstrap-app.sh — crea una repo nuova DENTRO il sistema: regole ereditate,
 # PROJECT.md stub, label night-shift, .night-verify dichiarato.
 # Uso: bootstrap-app.sh <nome-repo> [--private]
+#
+# PERCORSO CLOUD/IBRIDO (4° ciclo, set 3, giro 7, 2026-08-23 — stesso gap già trovato e
+# corretto in testa a tools/onboard-repo.sh, mai propagato qui): questo script chiama
+# `gh` direttamente in più punti (auth status, repo create, label create, api user) e
+# scrive su `night-shift/repos.conf` (locale del Mac per design) — una sessione cloud
+# (es. Claude Code remoto, senza `gh` CLI) non può eseguirlo. Un agente cloud a cui
+# viene chiesto di creare un nuovo progetto deve DIRLO all'utente, non tentare di
+# eseguire questo script e non tacere i passi che restano manuali sul Mac del
+# proprietario (repo GitHub, label night-shift, riga in repos.conf).
 set -euo pipefail
 
 NAME="${1:?uso: bootstrap-app.sh <nome-repo> [--private] [--dry-run]}"
@@ -60,6 +69,14 @@ cp -r "$HERE/.claude/skills/." .claude/skills/
 # sola lettura concettuale: gli ancoraggi restano quelli del hub, non si riscrivono).
 mkdir -p patterns
 cp -r "$HERE/patterns/." patterns/
+
+# gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
+# viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA
+# della commessa (## Design/## Forma dei dati/## Territorio, obbligatorie o il turno
+# salta l'issue in silenzio) non arrivava mai al progetto nuovo — stesso pattern già
+# corretto per .claude/skills/ e patterns/ qui sopra, mai applicato a questo file.
+mkdir -p .github/ISSUE_TEMPLATE
+cp "$HERE/.github/ISSUE_TEMPLATE/night-shift.md" .github/ISSUE_TEMPLATE/night-shift.md
 
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
