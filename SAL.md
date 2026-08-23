@@ -62,6 +62,7 @@
 - [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacit-contabile)
 - [2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva](#2026-08-23-20-set-3-3-giro-2-la-traccia-dei-cervelli-di-giorno-entrava-e-non-usciva)
 - [2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice](#2026-08-23-21-set-3-3-giro-3-i-codici-anonimi-non-avevano-un-indice)
+- [2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?](#2026-08-23-design-quale-modello-ha-giudicato-ogni-riga-del-banco-avversariale)
 
 
 ## Stato
@@ -1575,3 +1576,28 @@ citazioni già pubbliche, nessuna informazione nuova), mai un nome reale — la 
 vera resta solo in `night-shift/repos.key`. Rimando aggiunto in CLAUDE.md §7. Test:
 `tests/test-repos-index-coerenza.sh` — verifica che ogni codice usato altrove (escluse
 le fixture sintetiche di test) compaia nell'indice.
+
+### 2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?
+
+Dogfooding di `/design-doc` (Set 2) su una scoperta reale del Set 3: `ADVERSARY`
+(qwen/opus/glm) sceglie quale cervello giudica il banco avversariale (Set 1 del ciclo
+precedente, giro 6), ma `metrics/gate.csv` non registra MAI quale modello ha giudicato
+una riga specifica — il principio dichiarato in `docs/system.md` ("le decisioni future
+le decidono i dati accumulati, non le opinioni") non può applicarsi a questa scelta:
+non c'è modo di scoprire dai dati se GLM smentisce più bug veri di Qwen, perché il dato
+non esiste.
+
+**Criteri dichiarati PRIMA delle opzioni**: costo (complessità di modifica), rischio
+(rottura del parsing esistente — `gate-esito.sh` distingue già righe storiche a 6 campi
+da quelle attuali a 7, in modo posizionale e fragile), reversibilità.
+
+| Opzione | Costo | Rischio | Reversibilità |
+|---|---|---|---|
+| A. Nuova colonna `adversary_model` (8° campo) | Medio — tocca `morning-gate.sh` (scrittura) e `gate-esito.sh` (già distingue 2 formati per posizione, ne servirebbe un terzo) | Alto — il parsing posizionale di `gate-esito.sh` è già fragile con 2 formati; un terzo aumenta la superficie di un bug come quello già trovato e corretto (Giro 9 dei test 2026-08-21) | Bassa — le righe storiche a 7 campi resterebbero ambigue per sempre (nessun modo di sapere quale modello le ha giudicate a posteriori) |
+| B. Il modello dentro il valore della colonna `banco` esistente (es. `eseguito:smentita:glm` invece di `eseguito:smentita`) | Basso — nessuna colonna nuova, `gate-summary.sh` già fa parsing per prefisso su questa colonna | Basso — le righe storiche restano valide (nessun suffisso = modello non registrato, non un errore); nessun nuovo formato posizionale in `gate-esito.sh` | Alta — un cambio di formato di stringa, non di schema |
+| C. Non tracciarlo (status quo) | Zero | Nessuno nuovo, ma il costo esistente resta: la scelta del modello non si può mai imparare dai dati | Totale |
+
+**Nessuna scelta è fatta qui**: l'opzione B sembra il miglior compromesso (nessun rischio
+sul parsing fragile già noto), ma è una decisione di design su un file di metriche
+storico — richiede il sì esplicito di Luca prima di toccare `metrics/gate.csv` o gli
+script che lo scrivono/leggono.
