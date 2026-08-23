@@ -79,6 +79,7 @@
 - [2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md](#2026-08-23-set-1-giro-9-la-scoperta-del-giro-8-entra-in-debiti-md)
 - [2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify](#2026-08-23-set-2-giro-2-selezione-del-contesto-nessun-percorso-senza-graphify)
 - [2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale](#2026-08-23-set-2-giro-3-goal-costruito-e-mai-eseguito-chiuso-col-primo-loop-reale)
+- [2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"](#2026-08-23-set-2-giro-4-il-wizard-chiedeva-come-verificare-non-quale-livello)
 
 
 ## Stato
@@ -2007,3 +2008,17 @@ confermata. Log completo: `loops/2026-08-23-suite-sotto-60s.md`.
 Nessun cambiamento al codice richiesto (l'obiettivo era già rispettato) — il valore
 del giro è aver dimostrato che il meccanismo `/goal` funziona end-to-end la prima
 volta che viene usato per davvero, non solo che la sua prosa è ben scritta.
+
+### 2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"
+
+`docs/system.md` definisce una tassonomia condivisa a 5 livelli di verifica
+(deterministico → numerico → verità ritardata → LLM giudice → umano), già richiesta
+esplicitamente da `/goal` (§1: "dichiara qui quale livello copre l'obiettivo") — ma il
+wizard `.zcode-commands-nuova-commessa.md` (punto 6) chiedeva solo "come si verifica"
+senza mai chiedere il livello, restando disallineato dalla stessa tassonomia che
+un'altra parte del sistema già usa attivamente.
+
+Corretto: il punto 6 ora chiede esplicitamente il livello 1-5, con la tassonomia
+richiamata in una riga (non riscritta a memoria — cita `docs/system.md`). Guardia di
+regressione aggiunta a `tests/test-nuova-commessa-wizard-coerenza.sh` (test esistente,
+stesso file sotto verifica, non un file nuovo).
