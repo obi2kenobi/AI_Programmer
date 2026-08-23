@@ -51,6 +51,7 @@
 - [2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano](#2026-08-23-6-set-1-3-giro-7-due-lenti-sullo-stesso-dominio-non-si-conoscevano)
 - [2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo](#2026-08-23-7-set-1-3-giro-8-terzo-caso-dominio-cespiti-il-segno-del-fondo)
 - [2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo](#2026-08-23-8-set-1-3-giro-9-l-audit-serale-non-sapeva-controllare-l-oracolo)
+- [2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca](#2026-08-23-10-set-2-3-giro-1-design-doc-confronta-le-opzioni-non-solo-le-elenca)
 
 
 ## Stato
@@ -1366,3 +1367,24 @@ applica a ogni altro progetto ("dichiara le tue verifiche o è verifiche-vuote")
 applicava a se stesso — 23 test su 29 scritti nei cicli precedenti non venivano mai
 eseguiti automaticamente. Corretto al giro 4, prima di continuare a scrivere altri test
 che sarebbero finiti nello stesso buco.
+
+### 2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca
+
+Nuovo mandato: Set 2 — "capacità di progettare nuovo software" (brainstorming, selezione
+del contesto, scelta delle migliori idee). Chiesto a Luca cosa intendesse per i due punti
+più ambigui: "selezione del contesto" = gestione della context window dell'agente
+(risposta: sì); "scelta delle migliori idee" = criteri di punteggio espliciti nel
+design-doc esistente, non un panel multi-tentativo più pesante (risposta: sì).
+
+**Giro 1**: `/design-doc` produceva opzioni con trade-off narrativi liberi — confrontabili
+solo a occhio, e vulnerabili a criteri diversi scelti a posteriori per far vincere
+l'opzione già preferita (un rischio reale, non teorico: è esattamente come un confronto
+si trucca senza che sembri truccato). Aggiunto un passo che dichiara i criteri PRIMA delle
+opzioni (costo, rischio, reversibilità sempre; 1-2 specifici alla decisione se pertinenti)
+e una tabella opzioni×criteri per applicarli — il punteggio struttura il confronto, non
+lo decide, la scelta resta di chi possiede il progetto. Aggiunto un esempio completo
+lavorato (§1bis). Dogfooding sul mio stesso esempio: un percorso di file scritto senza il
+prefisso della cartella reale (`morning-digest.sh` invece di
+`night-shift/morning-digest.sh`) è stato colto dal test di coerenza esistente
+(`test-skills-structure.sh`) prima del commit. Test:
+`tests/test-design-doc-criteri-punteggio.sh`.
