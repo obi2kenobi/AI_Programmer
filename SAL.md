@@ -68,6 +68,7 @@
 - [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
 - [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
 - [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
+- [2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill](#2026-08-23-set-1-giro-1-nessun-sistema-di-subagent-solo-skill)
 
 
 ## Stato
@@ -1702,4 +1703,32 @@ spesso per un collegamento mai fatto che per un bug nella logica di una singola 
   anonimi; il registro del giorno completato (scrittura c'era, lettura no); due script
   gemelli (`bootstrap-app.sh`/`onboard-repo.sh`) con lo stesso limite non documentato
   allo stesso modo; due decisioni aperte dogfoodate con `/design-doc`, mai implementate
+
+## 5° ciclo — Set 1/3, giro 1: `.claude/agents/` non esisteva
+
+### 2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill
+
+Gap reale trovato leggendo la struttura del repo prima di scrivere qualsiasi cosa
+(regola "Read before acting"): `.claude/skills/` esiste da due cicli, ma
+`.claude/agents/` (il meccanismo nativo di Claude Code per i subagent — frontmatter
+`name`/`description`/`tools`, selezionabili dal tool Agent) non esiste affatto in questo
+hub. Le skill sono metodo invocato a comando; un subagent è un ruolo con accesso
+scoped ai tool, delegabile in autonomia — mancava del tutto per il dominio
+matematico-contabile richiesto da Luca.
+
+Primo agente: `.claude/agents/contabilita-analitica.md` — specialista di contabilità
+analitica/controllo di gestione per Gruppo Camarlinghi, tool scoped a
+`Read, Grep, Glob, Bash` (niente Edit/Write: legge e verifica, non scrive codice di
+produzione senza supervisione), corpo che eredita per intero la regola "una formula
+non si indovina mai" da `.claude/skills/controllo-gestione/SKILL.md` e cita i 4 casi
+reali già risolti (`tools/scostamento_standard_effettivo.py`,
+`tools/riconciliazione_magazzino.py`, `tools/rollforward_cespiti.py`,
+`tools/indici_crisi.py`) come riferimento diretto, non come ispirazione vaga.
+
+Test di riscontro: `tests/test-agents-structure.sh` — stesso schema di
+`test-skills-structure.sh` (frontmatter valido, percorsi citati verificati) ma itera
+sul glob `.claude/agents/*.md` invece di nomi hardcoded, applicando da subito la
+lezione già pagata una volta con `.night-verify` (4 test hardcoded, 23+ file nuovi mai
+eseguiti) — qui il test scala automaticamente man mano che il set aggiunge altri
+agenti, senza bisogno di toccarlo ad ogni giro.
   senza il sì di Luca.
