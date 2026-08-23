@@ -1899,3 +1899,55 @@ verificare in un'installazione Claude Code CLI locale standard (fuori da questa
 sessione remota) se `.claude/agents/*.md` viene letto come previsto — a quel punto il
 limite #6 di `docs/system.md` si restringe da "non invocabile" a "non invocabile solo
 in sessioni remote/cloud", oppure si scopre che il formato dei tre file va corretto.
+
+### 2026-08-23 — Set 1 giro 10 (chiude il set): un bug reale trovato rieseguendo la suite più volte
+
+Verifica end-to-end della riga `.night-verify` che esegue tutta `tests/test-*.sh`
+(stesso schema di chiusura già usato per il set analogo del ciclo precedente): due
+run consecutive misurano ~34s (54 file) — coerente col trend già in `DEBITI.md` — ma
+una run isolata ha misurato **2m9s**, quasi al ceiling di 120s del watchdog
+`run_guarded()`. Non mi sono fermato al numero anomalo: ho cercato la causa invece di
+attribuirla genericamente a "crescita della suite" (lezione già pagata una volta in
+questo stesso file: un vecchio ciclo aveva attribuito un hang simile a "claude -p
+lento" quando la causa vera era altrove).
+
+Causa trovata dal vivo (`ps aux` dopo una run): `tests/test-stdin-timeout.sh` usava
+`< <(sleep 100)` (process substitution) per simulare uno stdin apribile senza EOF —
+ma `timeout 20` uccide solo il comando che LEGGE da quel descrittore, non il processo
+`sleep 100` che lo alimenta, lasciandolo orfano fino alla sua scadenza naturale di
+100s. Ogni esecuzione del test (3 volte, una per wrapper) ne lascia fino a 3; eseguire
+la suite intera molte volte di fila — esattamente cosa fa questo stesso ciclo di
+auto-miglioramento — li accumula, e la loro concorrenza per le risorse del sandbox è
+la causa più plausibile dell'anomalia (non riprodotta a comando dopo il fix, ma la
+correzione rimuove la causa nota indipendentemente).
+
+Fix: `check_bounded()` ora apre una FIFO esplicita invece della process substitution,
+cattura il PID del `sleep` di supporto e lo uccide subito dopo ogni controllo — stesso
+comportamento osservabile dai wrapper (stdin apribile, nessun EOF), zero processi
+orfani. Guardia di regressione aggiunta nello stesso test: dopo ogni `check_bounded`,
+verifica che il PID del sleep sia davvero morto (`kill -0` fallisce), non solo che il
+wrapper abbia risposto in tempo. `DEBITI.md` aggiornato per non lasciare un numero
+anomalo non spiegato nella voce già esistente sulla crescita della suite.
+
+## Riepilogo Set 1/3 (10 giri, 5° ciclo) — "un sistema di agenti per problemi matematico-contabili"
+
+| Giro | Cosa |
+|---|---|
+| 1 | `.claude/agents/` non esisteva — primo agente (`contabilita-analitica`) + test di struttura sul glob |
+| 2 | Secondo agente con ruolo distinto (`costruttore-calcoli-gestionali`), non un duplicato |
+| 3 | Terzo agente (`revisore-calcoli-critici`), dogfoodato sui 4 tool esistenti — un sospetto risolto controllando l'oracolo |
+| 4 | Quinto caso reale minato da gas-src su richiesta esplicita di Luca: scadenzario aging |
+| 5 | Stesso gap già trovato due volte (skills, patterns) mai chiuso per gli agenti — propagazione corretta |
+| 6 | Il sistema di agenti non citava se stesso in system.md/METHOD.md/SKILL.md |
+| 7 | Limite reale dichiarato: `.claude/agents/` non ha equivalente in OpenCode/notte |
+| 8 | Dogfooding sui propri agenti: non invocabili in questa sessione — scoperta corretta ovunque, non nascosta |
+| 9 | La scoperta del giro 8 entra in `DEBITI.md` con condizione di chiusura esplicita |
+| 10 | Bug reale trovato rieseguendo la suite più volte: leak di processi orfani in un test, corretto con guardia di regressione |
+
+**Il dato del set**: il sistema di agenti costruito (3 ruoli distinti, 5 casi reali
+minati da REPO-E) è solido come METODO, ma il giro 8 ha dimostrato che "l'ho costruito
+e documentato" non equivale a "funziona qui" — solo l'averlo provato per davvero ha
+scoperto il limite, esattamente la lezione centrale di dev-critic applicata al proprio
+lavoro appena fatto, non solo al codice altrui. Il giro 10 ripete la stessa lezione su
+un piano diverso: un numero anomalo non spiegato è un invito a indagare, non ad
+archiviarlo come rumore.
