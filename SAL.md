@@ -76,6 +76,7 @@
 - [2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo](#2026-08-23-set-1-giro-6-il-sistema-di-agenti-non-si-conosceva-da-solo)
 - [2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato](#2026-08-23-set-1-giro-7-un-limite-reale-non-ancora-dichiarato)
 - [2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui](#2026-08-23-set-1-giro-8-dogfooding-reale-sui-propri-agenti-non-sono-invocabili-qui)
+- [2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md](#2026-08-23-set-1-giro-9-la-scoperta-del-giro-8-entra-in-debiti-md)
 
 
 ## Stato
@@ -1884,3 +1885,17 @@ via provata; `controllo-gestione/SKILL.md` §6 aggiorna l'avviso — i tre file 
 utili come DOCUMENTAZIONE del metodo divisa per ruolo (il corpo prosa non è
 inutile: descrive comunque bene chi fa cosa), ma non come automazione oggi funzionante
 in questo ambiente. La via provata resta la skill invocata a comando (§1-5).
+
+### 2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md
+
+Il limite trovato al giro 8 (agenti non invocabili in questa sessione) non è una
+scorciatoia presa da questo ciclo, ma è comunque un gap fra "cosa promette il
+sistema" e "cosa fa oggi qui" che merita un posto in `DEBITI.md` (regola CLAUDE.md
+"minimal-code ladder": ogni scorciatoia o gap deferito va scritto, così "dopo" non
+diventa "mai") — non solo nel limite dichiarato in `docs/system.md`, perché
+`DEBITI.md` è il posto dove si tiene traccia di COSA saldare e QUANDO, non solo del
+fatto che un limite esiste. Voce aggiunta con la condizione di chiusura esplicita:
+verificare in un'installazione Claude Code CLI locale standard (fuori da questa
+sessione remota) se `.claude/agents/*.md` viene letto come previsto — a quel punto il
+limite #6 di `docs/system.md` si restringe da "non invocabile" a "non invocabile solo
+in sessioni remote/cloud", oppure si scopre che il formato dei tre file va corretto.
