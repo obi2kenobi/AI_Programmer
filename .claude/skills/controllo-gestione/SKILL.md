@@ -63,13 +63,18 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
   `docs/bc/endpoints/<Nome>.md` — se non c'è ancora, va prima censita (vedi `PROJECT.md`),
   non assunta al volo dentro il nuovo tool.
 
-## 3. Esempio già risolto con questo metodo
+## 3. Esempi già risolti con questo metodo
 
-`tools/riconciliazione_magazzino.py` — riconciliazione inventario fisico. Oracolo: un
-modulo di riconciliazione inventario di un progetto reale di gestione magazzino (repo
-esterno REPO-E, cartella gas-src/, non in questo hub). Caso pilota: `qty_bc=120,
-costo_finale=4.50, qty_fisica=115` → `delta=-5, deltaValore=-22.50€`. Test di riscontro:
-`tests/test-riconciliazione-magazzino.sh`.
+- `tools/riconciliazione_magazzino.py` — riconciliazione inventario fisico. Oracolo: un
+  modulo di riconciliazione inventario di un progetto reale di gestione magazzino (repo
+  esterno REPO-E, cartella gas-src/, non in questo hub). Caso pilota: `qty_bc=120,
+  costo_finale=4.50, qty_fisica=115` → `delta=-5, deltaValore=-22.50€`. Test di
+  riscontro: `tests/test-riconciliazione-magazzino.sh`.
+- `tools/scostamento_standard_effettivo.py` — scostamento costo standard vs effettivo per
+  articolo, con severità e trend. Oracolo: un modulo di controllo di gestione produzione
+  (stesso repo esterno REPO-E, dominio diverso — prova che il metodo generalizza, non è
+  legato a un solo calcolo). Test di riscontro:
+  `tests/test-scostamento-standard-effettivo.sh`.
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 

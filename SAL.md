@@ -47,6 +47,7 @@
 - [2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo](#2026-08-23-2-set-1-3-giri-2-3-la-skill-raggiunge-la-commessa-poi-il-progetto-nuovo)
 - [2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola](#2026-08-23-3-set-1-3-giro-4-il-gate-non-applicava-a-se-stesso-la-propria-regola)
 - [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacit)
+- [2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza](#2026-08-23-5-set-1-3-giro-6-secondo-caso-dominio-diverso-il-metodo-generalizza)
 
 
 ## Stato
@@ -1264,3 +1265,17 @@ sezioni esistenti per `/design-doc`/`/audit-commesse`. Test:
 `tests/test-system-md-controllo-gestione.sh` — verifica anche, come effetto collaterale,
 che OGNI percorso citato in `docs/system.md` (non solo quello nuovo) esista davvero:
 nessuna rottura preesistente trovata.
+
+### 2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza
+
+Il giro 1 aveva risolto un solo caso (riconciliazione magazzino) con la skill
+`controllo-gestione`. Un metodo provato su un solo esempio non è ancora un metodo
+generale. Letto RIGA PER RIGA (non riassunto da un report) il codice reale di un modulo
+di controllo di gestione produzione in REPO-E/gas-src/: scostamento costo
+standard/effettivo per articolo, con media pesata per quantità, soglia configurata al
+10%, severità ALTO/MEDIO, e un trend che confronta prima e seconda metà degli ordini di
+produzione (richiede >=4 ordini, non 3 — un dettaglio che ho sbagliato per primo nel mio
+proprio test, corretto verificando l'aritmetica a mano prima di fidarmi del verde).
+Implementato: `tools/scostamento_standard_effettivo.py`. Test:
+`tests/test-scostamento-standard-effettivo.sh` (12 asserzioni, aritmetica derivata a
+mano). SKILL.md aggiornata con entrambi gli esempi in §3.
