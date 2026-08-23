@@ -2236,3 +2236,16 @@ che `loops/` contenga davvero un log reale, e che nessuno dei due file affermi a
 il contrario al presente. Un tentativo iniziale del test dava un falso positivo su
 `goal/SKILL.md` (bloccava anche la frase corretta al passato, non solo quella stale) —
 corretto prima di committarlo, non dopo.
+
+### 2026-08-23 — Set 3 giro 7: controllo-gestione parlava un vocabolario isolato sulla verifica
+
+`/goal` e il wizard `/nuova-commessa` (5° ciclo, set 2 giro 4) richiedono entrambi di
+dichiarare il livello 1-5 della tassonomia condivisa (`docs/system.md`) — ma il passo
+6 di `controllo-gestione/SKILL.md` ("verifica con un riscontro") restava nel proprio
+vocabolario ("test verde" + "riscontro confermato"), senza collegarlo alla stessa
+tassonomia che il resto del sistema usa attivamente.
+
+Aggiunto il collegamento: test contro un oracolo = livello 1-2, riscontro contro un
+totale BC non ancora chiuso = livello 3 (verità terrena ritardata) — dichiaralo se la
+commessa lo richiede. Test:
+`tests/test-controllo-gestione-livelli-verifica.sh`.

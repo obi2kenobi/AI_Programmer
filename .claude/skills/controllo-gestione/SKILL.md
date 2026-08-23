@@ -49,7 +49,12 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
 6. **Verifica con un riscontro**, non solo un test verde: confronta il risultato con un
    totale noto (l'interfaccia BC, il foglio Google esistente, un conteggio manuale) —
    "fatto" è provato E confermato dal proprietario del dominio (regola CLAUDE.md "Done
-   means proven and confirmed").
+   means proven and confirmed"). Nella tassonomia condivisa di `docs/system.md`
+   §"I cinque livelli di verifica" (5° ciclo, set 3 giro 7, 2026-08-23 — stessa
+   tassonomia già richiesta da `/goal` e dal wizard `/nuova-commessa`): il test contro
+   un oracolo esistente è livello 1-2 (deterministico/soglia), il riscontro contro un
+   totale BC non ancora chiuso è livello 3 (verità terrena ritardata) — dichiaralo se
+   la commessa lo richiede, non lasciarlo implicito.
 
 ## 2. Dove va documentato il calcolo (mai solo nel codice)
 
