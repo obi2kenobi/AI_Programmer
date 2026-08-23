@@ -104,8 +104,11 @@ Una sessione cloud/remota (es. Claude Code nel container) NON ha `gh` CLI né ac
 `night-shift/repos.conf` (locale del Mac per design). Cosa può fare da sola: commit di file
 (es. `.night-verify`) via tool MCP GitHub. Cosa resta manuale sul Mac del proprietario: creare
 la label `night-shift` (i tool MCP disponibili non la creano) e aggiungere la repo a
-`repos.conf`. Un agente cloud che esegue l'onboarding deve dirlo all'utente, non tacere i
-passi rimasti (dettaglio operativo in testa a `tools/onboard-repo.sh`).
+`repos.conf`. Un agente cloud che esegue l'onboarding O il bootstrap di un progetto nuovo
+deve dirlo all'utente, non tacere i passi rimasti (dettaglio operativo in testa sia a
+`tools/onboard-repo.sh` che a `tools/bootstrap-app.sh` — stesso limite, due script
+gemelli, entrambi chiamano `gh` direttamente; 4° ciclo, set 3, giro 8, 2026-08-23: prima
+citava solo "l'onboarding", non il bootstrap).
 
 ## Il ciclo guadagna la fase di audit (2026-08-21, sera)
 

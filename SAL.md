@@ -65,6 +65,7 @@
 - [2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?](#2026-08-23-design-quale-modello-ha-giudicato-ogni-riga-del-banco-avversariale)
 - [2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo](#2026-08-23-23-set-3-3-giro-6-in-testa-al-file-era-in-fondo)
 - [2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello](#2026-08-23-24-set-3-3-giro-7-lo-stesso-gap-mai-propagato-al-file-gemello)
+- [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
 
 
 ## Stato
@@ -1637,3 +1638,10 @@ create, label create, api user) e scrive su `repos.conf`, ma non aveva nessun av
 lo stesso gap, mai propagato al file gemello, perché nessuna verifica collegava i due
 script. Aggiunto lo stesso blocco, adattato alle chiamate reali di questo script. Test:
 `tests/test-bootstrap-app-percorso-cloud.sh`.
+
+### 2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso
+
+`docs/system.md` descriveva il limite "niente `gh` CLI in una sessione cloud" citando
+SOLO `tools/onboard-repo.sh` — ma `bootstrap-app.sh` (giro 7) condivide esattamente lo
+stesso limite e ora lo stesso avviso in testa. Ampliato il testo per citare entrambi gli
+script gemelli. Test: `tests/test-system-md-percorso-cloud-entrambi.sh`.
