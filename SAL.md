@@ -50,6 +50,7 @@
 - [2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza](#2026-08-23-5-set-1-3-giro-6-secondo-caso-dominio-diverso-il-metodo-generalizza)
 - [2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano](#2026-08-23-6-set-1-3-giro-7-due-lenti-sullo-stesso-dominio-non-si-conoscevano)
 - [2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo](#2026-08-23-7-set-1-3-giro-8-terzo-caso-dominio-cespiti-il-segno-del-fondo)
+- [2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo](#2026-08-23-8-set-1-3-giro-9-l-audit-serale-non-sapeva-controllare-l-oracolo)
 
 
 ## Stato
@@ -1313,3 +1314,16 @@ avverte di verificare (nata da un bug reale con un segno invertito in un plug). 
 sintetici derivati a mano PRIMA di eseguire il tool: tutti gli 8 controlli passati al
 primo tentativo. Implementato: `tools/rollforward_cespiti.py`. Test:
 `tests/test-rollforward-cespiti.sh`.
+
+### 2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo
+
+`audit-commessa` fa il pre-flight serale sulle commesse in coda (verifica assunzioni sul
+codice PRIMA che la notte le incontri) e aveva già una lente dedicata per Business
+Central (§2) — ma nessuna per le commesse che calcolano una cifra contabile/gestionale,
+esattamente il tipo di commessa che la nuova skill `controllo-gestione` (giro 1) rende
+possibile scrivere. Senza questa lente, una commessa poteva citare una formula
+"plausibile" mai verificata sul codice reale e l'audit non se ne sarebbe accorto — lo
+stesso rischio che la skill esiste per chiudere, ma solo se qualcuno lo controlla PRIMA
+della notte. Aggiunta la lente `## 2bis` (stesso stile della lente BC), richiamata dal
+passo numerato in §1 come i passi esistenti. Test:
+`tests/test-audit-commessa-controllo-gestione.sh`.
