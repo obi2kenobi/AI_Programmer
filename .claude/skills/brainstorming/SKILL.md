@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: Raffina una richiesta vaga in requisiti concreti PRIMA che qualcuno scriva codice o un design-doc — domande socratiche, una alla volta, senza proporre soluzioni finché il problema non è chiaro. Nato da un incidente reale documentato in docs/test-processo-2026-08-21.md: il primo tentativo di sviluppare una feature nuova è stato "pattern-matching, non progettazione" (un bottone gemello copiato invece di una domanda di dominio) perché l'operatore aveva saltato questo passo — citato ovunque in METHOD.md/docs/system.md come prima fase della pipeline ("/brainstorming → /design-doc → commessa") ma mai implementato come file (stesso debito già chiuso per /design-doc). Usa quando l'utente porta un'idea vaga ("servirebbe qualcosa per X", "vorrei migliorare Y") prima di passare a /design-doc o scrivere codice, o invoca /brainstorming esplicitamente. Non sostituisce /design-doc (quello struttura opzioni già chiare con trade-off); questo arriva prima, quando non è ancora chiaro COSA si vuole davvero.
+description: Raffina una richiesta vaga in requisiti concreti PRIMA che qualcuno scriva codice o un design-doc — domande socratiche, una alla volta, senza proporre soluzioni finché il problema non è chiaro. Nato da un incidente reale documentato in docs/test-processo-2026-08-21.md: il primo tentativo di sviluppare una feature nuova è stato "pattern-matching, non progettazione" (un bottone gemello copiato invece di una domanda di dominio) perché l'operatore aveva saltato questo passo — citato ovunque in METHOD.md/docs/system.md come prima fase della pipeline ("/brainstorming → /design-doc → commessa") ma mai implementato come file (stesso debito già chiuso per /design-doc). Usa quando l'utente porta un'idea vaga ("servirebbe qualcosa per X", "vorrei migliorare Y") prima di passare a /design-doc o scrivere codice, o invoca /brainstorming esplicitamente. Non sostituisce /design-doc (quello struttura opzioni già chiare, confrontandole su criteri espliciti); questo arriva prima, quando non è ancora chiaro COSA si vuole davvero.
 ---
 
 # brainstorming — le domande prima delle risposte
@@ -29,7 +29,7 @@ territorio/commessa, il brainstorming su una richiesta già chiara è solo attri
    domanda che chiude il brainstorming — quando l'utente la sa rispondere in una frase
    verificabile, il passo è finito (regola "Goal-driven execution" di CLAUDE.md).
 4. **Se emergono 2+ strade plausibili**, non scegliere: è il momento di passare a
-   `/design-doc`, che le struttura con trade-off. Il brainstorming produce IL problema
+   `/design-doc`, che le struttura confrontandole su criteri espliciti. Il brainstorming produce IL problema
    chiaro, non la scelta fra soluzioni — quella è lo step successivo, esplicito.
 5. **Ferma il brainstorming quando smette di produrre informazione nuova**, non dopo un
    numero fisso di domande: se la seconda domanda rivela già che la richiesta era chiara

@@ -57,6 +57,7 @@
 - [2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?](#2026-08-23-design-la-lente-sicurezza-dev-critic-2bis-diventa-automatica-nel-gate)
 - [2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc](#2026-08-23-13-set-2-3-giro-5-la-mappa-descriveva-ancora-il-vecchio-design-doc)
 - [2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima](#2026-08-23-14-set-2-3-giro-6-la-stessa-staleness-un-file-mai-testato-prima)
+- [2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato](#2026-08-23-16-set-2-3-giro-8-la-stessa-staleness-un-terzo-posto-mai-controllato)
 
 
 ## Stato
@@ -1472,3 +1473,14 @@ fallimento, "FALLITO (posizione/totale): file" + il suo output) — il tail del 
 mostra sempre un riepilogo vero, mai l'output isolato dell'ultimo file per caso alfabetico.
 Test: `tests/test-night-verify-riepilogo-suite.sh` (mini-suite sintetica isolata, non i
 test reali del hub, per verificare sia il caso verde che quello rotto).
+
+### 2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato
+
+Dopo aver corretto la staleness "design-doc = opzioni con trade-off" in
+METHOD.md/docs/system.md (giro 5) e nel wizard (giro 6), un grep più ampio ha trovato la
+STESSA staleness in un terzo file mai controllato: `.claude/skills/brainstorming/SKILL.md`,
+in tre punti (la description e due righe del metodo) — descriveva ancora `/design-doc`
+con la vecchia formula dopo che i giri 1-4 ne avevano cambiato il meccanismo reale.
+Corretto anche lì, e aggiunto un test grep-based su tutto il repo (non file per file) per
+prevenire la stessa classe di staleness in futuro. Test:
+`tests/test-design-doc-nessuna-menzione-stale.sh`.
