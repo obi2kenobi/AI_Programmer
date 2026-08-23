@@ -81,6 +81,7 @@
 - [2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale](#2026-08-23-set-2-giro-3-goal-costruito-e-mai-eseguito-chiuso-col-primo-loop-reale)
 - [2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"](#2026-08-23-set-2-giro-4-il-wizard-chiedeva-come-verificare-non-quale-livello)
 - [2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a](#2026-08-23-set-2-giro-5-il-gate-meccanico-verifica-che-un-riferimento-somigli-a)
+- [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-buona)
 
 
 ## Stato
@@ -2059,3 +2060,16 @@ una sola decisione. Resta un ordine di lettura, non una raccomandazione a
 implementare — la scelta resta di chi possiede il progetto. Guardia di regressione
 estesa in `tests/test-dev-critic-routing-idee.sh` (test esistente, stessa sezione
 sotto verifica).
+
+### 2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona
+
+`design-doc/SKILL.md` strutturava bene il caso "un'opzione vince sugli altri criteri"
+(§3-4), ma non diceva nulla sul caso in cui tutte e 2-3 le opzioni generate hanno un
+punteggio scadente sui criteri critici — il rischio reale: forzare comunque una
+scelta fra tre opzioni deboli solo perché il formato (tabella + scelta) lo richiede,
+presentandole come "il confronto le ha risolte" quando in realtà nessuna lo era.
+
+Aggiunto §4bis: se nessuna opzione ha un punteggio accettabile, non forzare — è un
+segnale che il PROBLEMA va rivisto, non solo la soluzione: torna a `/brainstorming`
+con quello che le opzioni deboli hanno rivelato (già informazione nuova sul
+problema). Test: `tests/test-design-doc-loopback-brainstorming.sh`.

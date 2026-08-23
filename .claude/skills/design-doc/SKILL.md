@@ -62,6 +62,14 @@ decisioni già chiuse (regola "Only what is asked").
 4. **Le opzioni scartate restano scritte**, col perché — non solo la vincente (regola
    "Surface interpretations and tradeoffs — don't pick silently"). Chi legge fra sei mesi
    deve vedere anche cosa NON si è fatto, non solo cosa sì.
+4bis. **Se NESSUNA opzione ha un punteggio accettabile sui criteri critici** (5° ciclo,
+   set 2, giro 7, 2026-08-23 — "scelta delle migliori idee" quando le idee disponibili
+   sono tutte cattive, non solo quando una vince): non forzare una scelta fra tre
+   opzioni scadenti solo perché la tabella lo richiede. È un segnale che il problema
+   (non la soluzione) va rivisto — torna a `/brainstorming` con quello che le opzioni
+   hanno rivelato ("nessuna strada economica non rischia X" è già informazione nuova
+   sul problema), non presentare comunque tre opzioni deboli come se il confronto le
+   avesse "risolte".
 5. **Non implementare.** Questo comando produce un documento, non una PR. Se l'utente
    chiede anche l'implementazione, trattala come uno step separato ed esplicito DOPO che
    la scelta è stata fatta — mai un'opzione già scritta come codice nella risposta.
