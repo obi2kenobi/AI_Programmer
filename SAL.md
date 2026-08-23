@@ -52,6 +52,7 @@
 - [2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo](#2026-08-23-7-set-1-3-giro-8-terzo-caso-dominio-cespiti-il-segno-del-fondo)
 - [2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo](#2026-08-23-8-set-1-3-giro-9-l-audit-serale-non-sapeva-controllare-l-oracolo)
 - [2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca](#2026-08-23-10-set-2-3-giro-1-design-doc-confronta-le-opzioni-non-solo-le-elenca)
+- [2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno](#2026-08-23-11-set-2-3-giro-2-graphify-esiste-per-la-notte-non-arrivava-al-giorno)
 
 
 ## Stato
@@ -1388,3 +1389,15 @@ prefisso della cartella reale (`morning-digest.sh` invece di
 `night-shift/morning-digest.sh`) è stato colto dal test di coerenza esistente
 (`test-skills-structure.sh`) prima del commit. Test:
 `tests/test-design-doc-criteri-punteggio.sh`.
+
+### 2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno
+
+`graphify` è già regola universale in CLAUDE.md §7 ("Navigazione before reading") e
+installato per l'agente notturno (`.opencode/skills/graphify/`), ma `/design-doc` — il
+momento preciso in cui un agente di giorno deve capire "cosa cambia concretamente" in un
+codebase per generare opzioni — non lo citava affatto. La regola generale esisteva ma
+non arrivava al passo specifico che più ne beneficia (stesso pattern di "citazione
+senza presidio" visto più volte in questo ciclo, applicato qui al contrario: la regola
+c'è, il collegamento no). Aggiunto il rimando nel passo 3 del metodo, con il limite noto
+ricordato esplicitamente (orientamento sì, semantica delle chiamate no — `calls` non è
+risolto). Test: `tests/test-design-doc-graphify.sh`.

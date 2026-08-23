@@ -35,7 +35,14 @@ decisioni già chiuse (regola "Only what is asked").
    "dipendenze nuove", "manutenzione ricorrente") solo se pertinenti, non per riempire una
    lista. Se un criterio proposto dall'utente non è verificabile ("sia elegante"), chiedi
    di riformularlo in modo confrontabile prima di procedere (stesso spirito di `/goal`).
-3. **Genera 2-3 opzioni reali**, non una opzione vera e due paglia. Ogni opzione ha:
+3. **Genera 2-3 opzioni reali**, non una opzione vera e due paglia. Per capire "cosa
+   cambia concretamente" senza leggere tutto il codebase (4° ciclo, set 2
+   "progettare", giro 2, 2026-08-23): se `graphify-out/graph.json` esiste, usa
+   `graphify query`/`graphify explain` per orientarti su dove vivono i componenti
+   coinvolti (regola CLAUDE.md §7 "Navigazione before reading" + `AGENTS.md`) — è
+   orientamento e localizzazione, non un oracolo su COME i componenti si chiamano a
+   vicenda (`calls` non è risolto, lezione già pagata: non fidarti del grafo per la
+   semantica, solo per dove guardare). Poi, per ogni opzione:
    - cosa cambia concretamente (file/componenti coinvolti, a un livello alto — non il
      territorio riga-per-riga, quello è compito della commessa dopo);
    - **un punteggio per ciascun criterio dichiarato al punto 2**, in una tabella
