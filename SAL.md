@@ -56,6 +56,7 @@
 - [2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat](#2026-08-23-12-set-2-3-giro-3-la-tabella-di-confronto-rischiava-di-restare-in-chat)
 - [2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?](#2026-08-23-design-la-lente-sicurezza-dev-critic-2bis-diventa-automatica-nel-gate)
 - [2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc](#2026-08-23-13-set-2-3-giro-5-la-mappa-descriveva-ancora-il-vecchio-design-doc)
+- [2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima](#2026-08-23-14-set-2-3-giro-6-la-stessa-staleness-un-file-mai-testato-prima)
 
 
 ## Stato
@@ -1445,3 +1446,13 @@ METHOD.md e docs/system.md descrivevano ancora `/design-doc` come "opzioni+trade
 (narrativa libera) dopo che i giri 1-4 avevano cambiato il meccanismo reale (criteri
 dichiarati prima, tabella opzioni×criteri, persistenza obbligatoria) — la mappa non
 seguiva più lo strumento che descrive. Aggiornate entrambe le righe.
+
+### 2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima
+
+`.zcode-commands-nuova-commessa.md` (il wizard che compone la commessa night-shift) non
+era mai stato coperto da nessun test, e descriveva ancora `/design-doc` con la vecchia
+formula ("opzioni con trade-off già scelte") — la stessa staleness già trovata e corretta
+in METHOD.md/docs/system.md al giro 5, mai propagata qui perché nessuna verifica
+collegava i due. Corretta la wording, aggiunto un primo test di coerenza per questo
+file (percorsi/strumenti citati esistono davvero). Test:
+`tests/test-nuova-commessa-wizard-coerenza.sh`.
