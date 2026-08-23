@@ -13,7 +13,7 @@
 | Fase | Comando/strumento | Fonte di verità |
 |---|---|---|
 | Brainstorming (socratico) | `/brainstorming` | `.claude/skills/brainstorming/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
-| Design (opzioni+trade-off, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
+| Design (opzioni confrontate su criteri espliciti, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 4° ciclo set 2 2026-08-23: criteri dichiarati prima delle opzioni + tabella opzioni×criteri, non più solo trade-off narrativo) |
 | Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione` | `.claude/skills/controllo-gestione/SKILL.md` (4° ciclo, set 1, giro 1, 2026-08-23) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |

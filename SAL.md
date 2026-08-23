@@ -55,6 +55,7 @@
 - [2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno](#2026-08-23-11-set-2-3-giro-2-graphify-esiste-per-la-notte-non-arrivava-al-giorno)
 - [2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat](#2026-08-23-12-set-2-3-giro-3-la-tabella-di-confronto-rischiava-di-restare-in-chat)
 - [2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?](#2026-08-23-design-la-lente-sicurezza-dev-critic-2bis-diventa-automatica-nel-gate)
+- [2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc](#2026-08-23-13-set-2-3-giro-5-la-mappa-descriveva-ancora-il-vecchio-design-doc)
 
 
 ## Stato
@@ -1437,3 +1438,10 @@ non presunta). L'opzione C sembra il miglior compromesso costo/rischio dichiarat
 implica una decisione di design con un costo/rischio residuo (pattern non contemplati)
 che richiede il sì esplicito di Luca prima di implementarla — esattamente come già
 annotato in `DEBITI.md`.
+
+### 2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc
+
+METHOD.md e docs/system.md descrivevano ancora `/design-doc` come "opzioni+trade-off"
+(narrativa libera) dopo che i giri 1-4 avevano cambiato il meccanismo reale (criteri
+dichiarati prima, tabella opzioni×criteri, persistenza obbligatoria) — la mappa non
+seguiva più lo strumento che descrive. Aggiornate entrambe le righe.

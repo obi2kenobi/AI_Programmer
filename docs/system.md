@@ -117,10 +117,13 @@ sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi)
 - **`/audit-commesse <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
   reale, corregge i body, compila la "Forma dei dati (verificata)". Nato dall'A/B: la commessa
   con l'assunzione sbagliata costa alla notte ore, al giorno una lettura
-- **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni con trade-off, senza implementare —
-  la scelta resta di Luca. È il passo /brainstorming che diventa documento. Implementato
-  come skill Claude in `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato
-  qui senza esistere — stesso debito già chiuso per `/audit-commesse`)
+- **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni confrontate su criteri
+  espliciti (costo/rischio/reversibilità + criteri specifici alla decisione, dichiarati
+  PRIMA delle opzioni, in una tabella opzioni×criteri — 4° ciclo, set 2, 2026-08-23: non
+  più un trade-off narrativo libero), senza implementare — la scelta resta di Luca. È il
+  passo /brainstorming che diventa documento. Implementato come skill Claude in
+  `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato qui senza esistere
+  — stesso debito già chiuso per `/audit-commesse`)
 - **Il gate guarda anche i branch `claude/*`**: il lavoro del giorno passa le stesse verifiche
   dichiarate e lo stesso banco avversariale di quello notturno
 
