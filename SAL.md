@@ -1210,3 +1210,25 @@ contato" sempre distinto da "contato a zero" (regola di business reale trovata n
 originale, preservata come requisito). Caso pilota verificato: `qty_bc=120,
 costo_finale=4.50, qty_fisica=115`
 → `delta=-5, deltaValore=-22.50€`. Test: `tests/test-riconciliazione-magazzino.sh`.
+
+### 2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo
+
+**Giro 2**: `.claude/skills/controllo-gestione/SKILL.md` (giro 1) esisteva ma il template
+`.github/ISSUE_TEMPLATE/night-shift.md` — l'unico posto che chi scrive una commessa legge
+PRIMA di scriverla — non la citava. Stesso pattern trovato più volte nel ciclo precedente
+al contrario: lì una skill era citata senza esistere, qui una skill esiste senza essere
+citata dove serve. Aggiunta una riga nella sezione "## Forma dei dati" (dove già vivono i
+riferimenti a `audit-commessa` per BC e a `GRAMMATICA_DOMINIO.md` per i termini di
+dominio) che rimanda a `controllo-gestione` per le commesse che calcolano/riconciliano
+una cifra contabile o gestionale reale. Test:
+`tests/test-night-shift-template-controllo-gestione.sh`.
+
+**Giro 3**: verificando la propagazione del template ho trovato che
+`tools/bootstrap-app.sh` crea la label GitHub `night-shift` (l'agente notturno la userà
+per pescare le issue) ma non copiava mai il template che insegna la FORMA della commessa
+in un progetto nuovo — stesso gap già corretto per `.claude/skills/` e `patterns/` nel
+set 3 del ciclo precedente, mai applicato a questo file. Un progetto bootstrappato da
+zero avrebbe la label pronta e zero guida su come scrivere una issue che il gate non
+salti in silenzio per mancanza di `## Design`. Corretto: `bootstrap-app.sh` ora copia
+anche `.github/ISSUE_TEMPLATE/night-shift.md`. Test:
+`tests/test-bootstrap-issue-template-propagation.sh`.

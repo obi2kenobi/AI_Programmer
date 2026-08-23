@@ -61,6 +61,14 @@ cp -r "$HERE/.claude/skills/." .claude/skills/
 mkdir -p patterns
 cp -r "$HERE/patterns/." patterns/
 
+# gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
+# viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA
+# della commessa (## Design/## Forma dei dati/## Territorio, obbligatorie o il turno
+# salta l'issue in silenzio) non arrivava mai al progetto nuovo — stesso pattern già
+# corretto per .claude/skills/ e patterns/ qui sopra, mai applicato a questo file.
+mkdir -p .github/ISSUE_TEMPLATE
+cp "$HERE/.github/ISSUE_TEMPLATE/night-shift.md" .github/ISSUE_TEMPLATE/night-shift.md
+
 echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
