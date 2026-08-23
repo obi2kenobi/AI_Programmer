@@ -75,6 +75,7 @@
 - [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-gi-trovato-due-volte-mai-chiuso-per-gli-agenti)
 - [2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo](#2026-08-23-set-1-giro-6-il-sistema-di-agenti-non-si-conosceva-da-solo)
 - [2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato](#2026-08-23-set-1-giro-7-un-limite-reale-non-ancora-dichiarato)
+- [2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui](#2026-08-23-set-1-giro-8-dogfooding-reale-sui-propri-agenti-non-sono-invocabili-qui)
 
 
 ## Stato
@@ -1856,3 +1857,30 @@ limite resti VERO nel tempo (non solo scritto): il test controlla che
 `.opencode/agent/` non esista davvero — se in futuro qualcuno lo introduce, il test
 fallisce e segnala che la dichiarazione in `docs/system.md` è diventata stale, invece
 di lasciarla silenziosamente falsa.
+
+### 2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui
+
+Scoperta importante, non solo un dettaglio: ho provato a invocare per davvero
+`contabilita-analitica` come `subagent_type` del tool Agent (regola dev-critic
+"dogfooding reale, non solo lettura" — applicata ai TRE agenti costruiti da questo
+stesso set, non solo al codice altrui). Risultato: **"Agent type 'contabilita-
+analitica' not found"** — l'elenco degli agenti disponibili in questa sessione
+(Claude Code Remote/cloud) resta fisso ai tipi nativi (general-purpose, Explore,
+Plan, claude-code-guide, statusline-setup, claude), anche DOPO che i tre file
+`.claude/agents/*.md` erano già committati e presenti sul branch corrente.
+
+Non è un bug di questo hub — è un limite dell'ambiente in cui questa sessione gira,
+verificato dal vivo e non semplicemente dedotto dalla documentazione. Non è stato
+possibile verificare se un'installazione Claude Code CLI locale standard (fuori da
+questa sessione remota) leggerebbe `.claude/agents/*.md` come previsto — quella
+verifica richiede un ambiente diverso, non disponibile qui, e va segnalata come tale
+piuttosto che assunta in un senso o nell'altro.
+
+Corretto in tre punti per non lasciare una promessa vuota nel sistema (regola CLAUDE.md
+"limiti dichiarati, non promesse vuote"): il limite #6 in `docs/system.md` riscritto
+per riportare il fatto verificato (non più solo "OpenCode non ce l'ha", ma "qui non è
+invocabile, punto"); la riga di METHOD.md corretta per non presentare la delega come
+via provata; `controllo-gestione/SKILL.md` §6 aggiorna l'avviso — i tre file restano
+utili come DOCUMENTAZIONE del metodo divisa per ruolo (il corpo prosa non è
+inutile: descrive comunque bene chi fa cosa), ma non come automazione oggi funzionante
+in questo ambiente. La via provata resta la skill invocata a comando (§1-5).

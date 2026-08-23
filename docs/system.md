@@ -40,12 +40,22 @@
 4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su REPO-A).
    Le indagini restano ai cervelli di giorno
 5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
-6. **`.claude/agents/` funziona solo nelle sessioni Claude Code**: è il meccanismo nativo
-   di Claude Code (frontmatter `name`/`description`/`tools`, letto dal tool Agent) — verificato
-   che OpenCode (ZCode, e il turno notturno che ci gira sopra) non ha qui nessuna
-   configurazione equivalente (`.opencode/agent/` assente, solo `.opencode/skills/`). I tre
-   agenti del Set 1 "agenti" (5° ciclo) sono quindi disponibili di giorno in Claude Code, non
-   nel turno notturno né in una sessione ZCode, finché non esiste un equivalente OpenCode
+6. **`.claude/agents/` NON è invocabile in questa sessione Claude Code (verificato dal
+   vivo, non solo dedotto)**: i tre agenti del Set 1 "agenti" (5° ciclo) sono file
+   `.md` con frontmatter valido nel formato documentato di Claude Code, ma un
+   tentativo REALE di invocarne uno (`Agent({subagent_type: "contabilita-analitica"})`,
+   set 1 giro 8) è stato rifiutato con "Agent type non trovato" — l'elenco degli agenti
+   disponibili in questa sessione (Claude Code Remote/cloud) resta fisso a quelli
+   nativi (general-purpose, Explore, Plan, ecc.), anche DOPO che i file erano già
+   committati sul branch. Non verificato se un'installazione Claude Code CLI locale
+   standard (fuori da questa sessione remota) li leggerebbe — quella verifica richiede
+   un ambiente diverso da quello disponibile qui. Finché non riverificato in un
+   ambiente che li scopre, trattare i tre agenti come DOCUMENTAZIONE DEL METODO (il
+   corpo prosa resta valido e utile da leggere) più che come automazione funzionante:
+   la skill `.claude/skills/controllo-gestione/SKILL.md` §1-5 resta la via provata che
+   funziona ovunque (invocata a comando, non un subagent selezionato dal roster). Anche
+   OpenCode (ZCode, turno notturno) resta comunque fuori scope: nessuna configurazione
+   equivalente qui (`.opencode/agent/` assente, solo `.opencode/skills/`)
 
 ## La fabbrica
 
