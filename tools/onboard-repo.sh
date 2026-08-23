@@ -119,6 +119,27 @@ else
   echo "pattern del hub già tutti presenti, intoccati"
 fi
 
+# gap reale (5° ciclo, set 1 giro 5, 2026-08-23): stesso ragionamento per .claude/agents/
+# (i subagent Claude Code, distinti dalle skill) — mai propagato, stesso schema esatto già
+# corretto sopra per .claude/skills/ e patterns/, mai applicato a questa terza cartella.
+AGENTS_AGGIUNTI=0
+mkdir -p "$WORK/.claude/agents"
+for agent_file in "$HERE"/.claude/agents/*.md; do
+  agent_name="$(basename "$agent_file")"
+  if [ ! -f "$WORK/.claude/agents/$agent_name" ]; then
+    cp "$agent_file" "$WORK/.claude/agents/$agent_name"
+    git -C "$WORK" add ".claude/agents/$agent_name"
+    AGENTS_AGGIUNTI=$((AGENTS_AGGIUNTI+1))
+  fi
+done
+if [ "$AGENTS_AGGIUNTI" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $AGENTS_AGGIUNTI agente/i del hub propagato/i (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$AGENTS_AGGIUNTI agente/i del hub aggiunto/i e spinto/i"
+else
+  echo "agenti del hub già tutti presenti, intoccati"
+fi
+
 CONF="$HERE/night-shift/repos.conf"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
 grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }

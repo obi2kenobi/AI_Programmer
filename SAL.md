@@ -72,6 +72,7 @@
 - [2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato](#2026-08-23-set-1-giro-2-un-secondo-agente-non-un-duplicato)
 - [2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti](#2026-08-23-set-1-giro-3-il-terzo-ruolo-dogfoodato-per-davvero-sui-4-tool-esistenti)
 - [2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging](#2026-08-23-set-1-giro-4-quinto-caso-reale-minato-da-gas-src-scadenzario-aging)
+- [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-gi-trovato-due-volte-mai-chiuso-per-gli-agenti)
 
 
 ## Stato
@@ -1802,3 +1803,19 @@ tentativo, non il contrario). I tre agenti del set (`contabilita-analitica`,
 `revisore-calcoli-critici`) aggiornati per citare anche questo quinto caso nelle loro
 liste di riferimento — nessuna lista deve restare indietro rispetto ai casi reali
 risolti, stesso principio del glob in `test-agents-structure.sh` (giro 1).
+
+### 2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti
+
+Verificato (mai assunto) se `bootstrap-app.sh`/`onboard-repo.sh` propagano anche
+`.claude/agents/` come già fanno per `.claude/skills/` e `patterns/` (bug trovato e
+corretto per quelle due cartelle nel Set 3 del 4° ciclo): `grep -n "\.claude"` su
+entrambi gli script mostrava solo `.claude/skills`, nessuna riga per `.claude/agents/`
+— stesso gap, terza cartella, mai applicato lo schema già scritto due volte prima.
+Corretto in entrambi gli script con lo stesso pattern esatto già in uso: copia
+wholesale in `bootstrap-app.sh` (progetto nuovo, niente da preservare) e merge
+per-file — mai sovrascrive un agente che il progetto avesse già personalizzato con lo
+stesso nome — in `onboard-repo.sh` (progetto esistente). Test di riscontro:
+`tests/test-bootstrap-agents-propagation.sh` e
+`tests/test-onboard-agents-propagation.sh`, stessa struttura dei test analoghi già
+scritti per le skill (compreso il caso "un agente personalizzato non viene
+sovrascritto").
