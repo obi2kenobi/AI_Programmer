@@ -1951,3 +1951,22 @@ scoperto il limite, esattamente la lezione centrale di dev-critic applicata al p
 lavoro appena fatto, non solo al codice altrui. Il giro 10 ripete la stessa lezione su
 un piano diverso: un numero anomalo non spiegato è un invito a indagare, non ad
 archiviarlo come rumore.
+
+## 5° ciclo — Set 2/3: progettare (brainstorming, selezione del contesto, scelta delle idee)
+
+### 2026-08-23 — Set 2 giro 1: la regola "tabella persistita" era verificata solo nella prosa, non nella realtà
+
+`test-design-doc-tabella-persistita.sh` (4° ciclo) verifica che
+`.claude/skills/design-doc/SKILL.md` §2 RICHIEDA la tabella opzioni×criteri nel
+documento persistito — ma nessun test verificava se le voci REALMENTE scritte in
+`SAL.md` (le due dogfoodate nel ciclo precedente) rispettassero quella regola nella
+pratica. Verificate a mano entrambe: la rispettano già (tabella presente, criteri
+dichiarati prima, almeno 2 opzioni reali) — nessun bug da correggere oggi, ma nessuna
+guardia impediva a una terza voce futura di violarla in silenzio.
+
+Nuovo test: `tests/test-design-doc-sal-entries-hanno-tabella.sh` — estrae ogni voce
+"### ... — design: ..." da `SAL.md` e verifica per ciascuna: criteri dichiarati,
+tabella con colonna "Opzione", almeno 2 opzioni reali confrontate (non una vera e una
+paglia). Stesso principio delle guardie già scritte per i limiti dichiarati in
+`docs/system.md` (5° ciclo, Set 1 giri 6-7): non basta che la regola sia scritta bene,
+deve restare verificabile che venga seguita.
