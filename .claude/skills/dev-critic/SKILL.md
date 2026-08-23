@@ -98,6 +98,10 @@ sommare al 100%; conversioni; arrotondamenti):
   formula nel modo giusto.
 - Il pattern esteso (banco Node/vm su codice GAS puro, senza dipendenze) è documentato in
   `patterns/banco-sintetico-per-calcoli-critici.md`.
+- Questa lente REVISIONA un calcolo già scritto. Per COSTRUIRE un calcolo
+  contabile/gestionale nuovo (non ancora scritto) senza indovinare la formula, usa
+  `.claude/skills/controllo-gestione/SKILL.md` — stessa disciplina (oracolo citato,
+  invariante verificato con dati concreti), applicata prima del codice invece che dopo.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 

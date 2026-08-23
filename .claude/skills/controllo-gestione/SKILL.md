@@ -86,3 +86,15 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
   senza l'altro.
 - Repo pubblica: nomi di repo/progetti privati mai per nome, sempre per codice anonimo
   (regola CLAUDE.md "Public repo, private work").
+
+## 5. Dopo il merge: non è più compito di questa skill
+
+Questa skill copre la COSTRUZIONE (prima del codice). La REVISIONE di un calcolo
+contabile/gestionale già scritto — trovare un segno sbagliato in una formula, un
+plug/quadratura che nasconde un residuo vero — è la lente §2ter di `dev-critic`
+(nata da un bug reale: un segno invertito nel plug di uno stato patrimoniale, invisibile
+a lettura perché il tie-out finale assorbiva sempre l'intero residuo). Il pattern
+`patterns/banco-sintetico-per-calcoli-critici.md` descrive la tecnica (isolare la
+funzione di calcolo pura, eseguirla con dati sintetici, misurare l'invariante PRIMA
+dell'aggiustamento finale) — è la stessa disciplina usata nei test di questa skill
+(§3), applicata lì alla revisione invece che alla costruzione.

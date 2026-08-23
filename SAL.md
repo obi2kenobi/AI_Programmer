@@ -48,6 +48,7 @@
 - [2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola](#2026-08-23-3-set-1-3-giro-4-il-gate-non-applicava-a-se-stesso-la-propria-regola)
 - [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacit)
 - [2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza](#2026-08-23-5-set-1-3-giro-6-secondo-caso-dominio-diverso-il-metodo-generalizza)
+- [2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano](#2026-08-23-6-set-1-3-giro-7-due-lenti-sullo-stesso-dominio-non-si-conoscevano)
 
 
 ## Stato
@@ -1279,3 +1280,21 @@ proprio test, corretto verificando l'aritmetica a mano prima di fidarmi del verd
 Implementato: `tools/scostamento_standard_effettivo.py`. Test:
 `tests/test-scostamento-standard-effettivo.sh` (12 asserzioni, aritmetica derivata a
 mano). SKILL.md aggiornata con entrambi gli esempi in §3.
+
+### 2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano
+
+`dev-critic` ha già una lente §2ter matematico-finanziaria (nata da un bug reale: un
+segno invertito nel plug di uno stato patrimoniale, invisibile a lettura e a
+"quadratura: 0,00 ✅" perché il tie-out assorbiva sempre il residuo) — REVISIONA calcoli
+già scritti. La nuova skill `controllo-gestione` (giro 1) COSTRUISCE calcoli nuovi.
+Stesso dominio, stessa disciplina (oracolo citato, invariante verificato con dati
+concreti), ma nessuna delle due citava l'altra — chi trovava una non scopriva l'altra.
+Aggiunto il rimando in entrambe le direzioni, più la citazione del pattern
+`banco-sintetico-per-calcoli-critici.md` (la tecnica del banco sintetico che i test di
+controllo-gestione già seguono, senza dirlo). Test:
+`tests/test-controllo-gestione-dev-critic-crossref.sh`.
+
+**Scoperta collaterale, non introdotta oggi**: grepando privacy sul mio stesso diff ho
+trovato che quel pattern e dev-critic citano per nome un repo reale, scritti prima che
+esistesse la regola "Public repo, private work". Fuori scope di questo giro — tracciato
+in `DEBITI.md`.
