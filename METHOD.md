@@ -1,7 +1,8 @@
 # METHOD.md — il metodo in una pagina
 
 > Il sistema ha molte stanze; questa è la porta. Ogni elemento rimanda alla sua fonte
-> di verità. Ultima revisione: 2026-08-22 (giro 10/10 del ciclo di auto-miglioramento).
+> di verità. Ultima revisione: 2026-08-23 (4° ciclo, set 1 "agenti/sistema contabile",
+> giro 1/10).
 
 ## Il ciclo
 
@@ -13,6 +14,7 @@
 |---|---|---|
 | Brainstorming (socratico) | `/brainstorming` | `.claude/skills/brainstorming/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
 | Design (opzioni+trade-off, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
+| Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione` | `.claude/skills/controllo-gestione/SKILL.md` (4° ciclo, set 1, giro 1, 2026-08-23) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |

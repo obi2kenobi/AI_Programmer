@@ -1173,3 +1173,40 @@ per canali mai costruiti che per bug nella logica.
 - **Set 3** (flusso delle idee, tutte le interazioni): skill e pattern del hub ora
   raggiungono i progetti, 1 bug di corruzione dati corretto, 3 convenzioni tacite
   documentate dove serve, il prompt del banco avversariale sincronizzato con la realtà.
+
+### 2026-08-23 — 4° ciclo, Set 1/3 giro 1: agenti per problemi matematico-contabili, ancorati a dati reali
+
+Nuovo mandato di Luca: ripetere il ciclo dei tre set altre tre volte, ma Set 1 ora chiede
+esplicitamente di costruire un sistema di agenti per problemi matematico-contabili,
+economico-industriali (contabilità analitica, di magazzino, controllo di gestione) — non
+solo armonizzare gli agenti esistenti. Prima di scrivere qualsiasi formula: chiesto a
+Luca se ancorare al dato reale di Gruppo Camarlinghi o restare generico → risposta:
+ancorato a Business Central, sia skill di metodo che tool eseguibili, con un caso pilota
+reale. Luca ha condiviso un repo esterno — codice **REPO-E** in questo diario, mai il nome
+per intero (regola "Public repo, private work") — con una cartella `gas-src/` di ~90
+progetti Google Apps Script reali dell'azienda, come base di verità.
+
+**Censimento** (agente Explore, non io a memoria): trovati ~10 progetti reali di
+controllo di gestione già implementati in REPO-E/gas-src/ — scostamento standard/effettivo
+ed efficienza manodopera in produzione, riconciliazione inventario fisico e bridge
+volume/prezzo per il magazzino, roll-forward/quadratura dei cespiti, margine per fattura
+di vendita, indici di crisi e analisi di conto economico (quest'ultimo non ancora
+ispezionato a fondo).
+
+**Scoperta collaterale da segnalare, fuori scope di questo hub**: in due progetti dentro
+REPO-E/gas-src/ il `client_secret` di Business Central è scritto in chiaro nel codice
+sorgente, versionato pubblicamente su GitHub (nomi di progetto e dettaglio esatto dati a
+voce a Luca, non versionati qui). Segnalato; non è stato toccato (accesso in sola lettura
+a REPO-E, fuori dal ramo di lavoro di questo ciclo).
+
+**Giro 1**: creata `.claude/skills/controllo-gestione/SKILL.md` — generalizza per questo
+dominio lo schema già in uso ad-hoc per BC ("censimento campi" + "riscontro" di
+PROJECT.md): individuare la fonte dato reale, citare la formula esistente come oracolo
+(mai indovinarla), costruire input/output concreti prima del codice, verificare con un
+riscontro. Primo caso risolto col metodo: `tools/riconciliazione_magazzino.py`, formula
+oracolo = il modulo di riconciliazione inventario del progetto magazzino in
+REPO-E/gas-src/: `delta = qtyFisica - qtyBC; deltaValore = delta * costoFinale`, con "non
+contato" sempre distinto da "contato a zero" (regola di business reale trovata nel codice
+originale, preservata come requisito). Caso pilota verificato: `qty_bc=120,
+costo_finale=4.50, qty_fisica=115`
+→ `delta=-5, deltaValore=-22.50€`. Test: `tests/test-riconciliazione-magazzino.sh`.
