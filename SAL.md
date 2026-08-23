@@ -87,6 +87,7 @@
 - [2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo](#2026-08-23-set-3-giro-4-la-stessa-famiglia-di-bug-diventa-un-pattern-nel-catalogo)
 - [2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente](#2026-08-23-set-3-giro-5-una-regola-del-catalogo-mai-verificata-meccanicamente)
 - [2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti](#2026-08-23-set-3-giro-8-sweep-sistematico-di-tutte-le-citazioni-fra-skill-agenti)
+- [2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix](#2026-08-23-set-3-giro-9-un-ipotesi-di-bug-smentita-dal-vivo-prima-di-diventare-un-fix)
 
 
 ## Stato
@@ -2264,3 +2265,24 @@ Aggiunta la direzione mancante nella description di `dev-critic`. Test:
 `tests/test-dev-critic-audit-commessa-crossref.sh`. Il resto della mappa (controllo-
 gestione↔3 agenti, costruttore↔revisore↔contabilita-analitica) risulta già coerente
 in entrambe le direzioni — nessun altro caso trovato in questo sweep.
+
+### 2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix
+
+Ipotesi: i test esistenti (`test-skills-structure.sh`/`test-agents-structure.sh`)
+verificano il frontmatter con `grep` (apre con `---`, contiene `name: X`) — mai con un
+parser YAML reale. Ho scritto un test che estrae il frontmatter di tutte le 7 skill e
+i 3 agenti e lo passa a `yaml.safe_load` (PyYAML, disponibile in questa sessione).
+Risultato: **10/10 falliscono** con "mapping values are not allowed here" — ogni
+description contiene un `: ` (due punti+spazio) dentro il testo libero (es. "critica
+costruttiva propositiva: idee di sviluppo"), che uno YAML rigoroso rifiuta come valore
+scalare non quotato.
+
+Prima di scriverlo come fix (regola CLAUDE.md "Done means proven"), verificato se
+fosse un bug REALE: le stesse skill sono state elencate correttamente, testo e due
+punti compresi, in decine di `<system-reminder>` di questa sessione per l'intero
+ciclo — prova diretta che il parser REALE di Claude Code non usa YAML rigoroso per
+questo frontmatter (probabilmente un'estrazione riga-per-riga `chiave: resto-della-
+riga`, non un parser YAML completo). Il test che avevo scritto era basato su
+un'ipotesi sbagliata sul formato reale, non su un bug del repo — **eliminato prima di
+committarlo**, non lasciato come falso positivo permanente nella suite. Nessun fix
+necessario: le 10 description restano corrette per il parser che le legge davvero.
