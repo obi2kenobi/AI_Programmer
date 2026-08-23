@@ -58,6 +58,7 @@
 - [2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc](#2026-08-23-13-set-2-3-giro-5-la-mappa-descriveva-ancora-il-vecchio-design-doc)
 - [2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima](#2026-08-23-14-set-2-3-giro-6-la-stessa-staleness-un-file-mai-testato-prima)
 - [2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato](#2026-08-23-16-set-2-3-giro-8-la-stessa-staleness-un-terzo-posto-mai-controllato)
+- [2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo](#2026-08-23-17-set-2-3-giro-9-le-idee-di-dev-critic-non-avevano-un-passo-successivo)
 
 
 ## Stato
@@ -1484,3 +1485,13 @@ con la vecchia formula dopo che i giri 1-4 ne avevano cambiato il meccanismo rea
 Corretto anche lì, e aggiunto un test grep-based su tutto il repo (non file per file) per
 prevenire la stessa classe di staleness in futuro. Test:
 `tests/test-design-doc-nessuna-menzione-stale.sh`.
+
+### 2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo
+
+`dev-critic` propone "nuove funzionalità non considerate" ma non diceva mai qual è il
+passo successivo naturale — stesso gap di flusso già chiuso altrove in questo ciclo
+(audit-commessa↔controllo-gestione, dev-critic↔controllo-gestione al Set 1 giro 7), qui
+applicato alla categoria più generica del proprio output. Senza il rimando, un'idea
+proposta da dev-critic restava un'affermazione isolata, non l'inizio di un percorso.
+Aggiunta la regola: idea vaga → `/brainstorming`; 2+ approcci già visibili →
+`/design-doc`. Test: `tests/test-dev-critic-routing-idee.sh`.
