@@ -84,6 +84,7 @@
 - [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-buona)
 - [2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione](#2026-08-23-set-3-giro-1-un-cross-reference-in-una-sola-direzione)
 - [2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna](#2026-08-23-set-3-giro-2-i-diagrammi-in-cima-mostravano-solo-la-strada-notturna)
+- [2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo](#2026-08-23-set-3-giro-4-la-stessa-famiglia-di-bug-diventa-un-pattern-nel-catalogo)
 
 
 ## Stato
@@ -2190,3 +2191,19 @@ Guardia di regressione aggiunta a `test-repos-index-coerenza.sh` (esistente): ve
 che ogni caso reale citato in `controllo-gestione/SKILL.md` §3 compaia anche nella
 riga REPO-E dell'indice — non basta che il codice esista, la descrizione deve restare
 al passo con ogni nuovo caso minato dallo stesso repo.
+
+### 2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo
+
+Cinque occorrenze indipendenti dello stesso bug in un solo ciclo (`.night-verify` nel
+4° ciclo; `test-skills-structure.sh`, `test-bootstrap-skills-propagation.sh`, e due
+test scritti da me in questo stesso ciclo — `test-bootstrap-agents-propagation.sh` al
+giro 5, PRIMA di imparare la lezione al giro 8) sono un segnale che merita un posto
+nel catalogo `patterns/` (CLAUDE.md §7: "prima di scrivere infrastruttura, controlla
+patterns/"), non solo cinque commit sparsi.
+
+Nuovo pattern: `patterns/copertura-dal-glob.md` — un test che deve coprire "tutti gli
+elementi di una categoria" e li elenca per nome fisso invecchia silenziosamente ogni
+volta che la categoria cresce; il fix è sempre iterare su un glob reale, mai una lista
+scritta a mano. Registrato in `patterns/README.md`. Propagazione già verificata via
+`test-bootstrap-patterns-propagation.sh` (che usa `find`, non una lista — coerente col
+pattern che descrive).

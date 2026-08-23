@@ -33,3 +33,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [scarto-mai-silenzioso](scarto-mai-silenzioso.md) | progetto onboardato: Extractor.gs:applicaVincoliRange_ | 2026-08-21 |
 | [stato-vuoto-dalla-pipeline](stato-vuoto-dalla-pipeline.md) | progetto onboardato: WebApp.gs:aggregaPerDashboard_ | 2026-08-21 |
 | [banco-browser-per-webapp-gas](banco-browser-per-webapp-gas.md) | progetto onboardato: dashboard.html/dashboard_scripts.html | 2026-08-21 |
+| [copertura-dal-glob](copertura-dal-glob.md) | questo hub: tests/test-skills-structure.sh, .night-verify | 2026-08-23 |
