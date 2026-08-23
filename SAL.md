@@ -2093,3 +2093,22 @@ debito privacy già tracciato in `DEBITI.md` (nomi di repo esterni pre-esistenti
 scope). Entrambi esclusi esplicitamente con la ragione scritta, non silenziosamente.
 Trovato anche un vero refuso minore: `audit-commessa` citava `night-shift.sh` senza il
 prefisso `night-shift/` — corretto.
+
+### 2026-08-23 — Set 2 giro 9: lo stesso bug, una quarta e una quinta volta (una scritta da me in questo stesso ciclo)
+
+Cercato sistematicamente altre liste hardcoded dopo il pattern trovato al giro 8:
+`tests/test-bootstrap-skills-propagation.sh` elencava 6 nomi fissi
+(`dev-critic audit-commessa verifica-visiva design-doc brainstorming goal`) —
+`controllo-gestione` (7ª skill, aggiunta nel ciclo precedente) non era mai stata
+verificata da questo test specifico, quarta occorrenza dello stesso bug in questo
+ciclo. Convertito a un glob su `.claude/skills/*/`.
+
+Controllando anche il proprio lavoro di questo stesso ciclo (non solo quello
+altrui — regola dev-critic §"dogfooding reale", applicata a sé stessi):
+`tests/test-bootstrap-agents-propagation.sh`, scritto da me al giro 5 di questo Set 1,
+**prima** di aver imparato la lezione al giro 1/8, aveva la stessa identica lista
+fissa dei 3 agenti. Corretto anch'esso con un glob — un quarto agente futuro sarebbe
+passato inosservato esattamente come `controllo-gestione` lo è stato nell'altro file.
+Nessun bug reale nascosto oggi in nessuno dei due (7/7 skill e 3/3 agenti già
+copiavano correttamente) — il valore è aver chiuso il buco di copertura prima che un
+ottavo elemento futuro ci cadesse dentro in silenzio.

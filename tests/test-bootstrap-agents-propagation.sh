@@ -24,7 +24,13 @@ N_COPIATI=$(find "$TMP/.claude/agents" -maxdepth 1 -mindepth 1 -type f -name '*.
   && ok "tutti i $N_HUB agenti del hub arrivano al progetto nuovo" \
   || ko "copiati $N_COPIATI agenti su $N_HUB nel hub"
 
-for agente in contabilita-analitica costruttore-calcoli-gestionali revisore-calcoli-critici; do
+# 5° ciclo, set 2 giro 9: qui sotto stava una lista di 3 nomi fissi — lo stesso identico
+# bug appena trovato in test-bootstrap-skills-propagation.sh, scritto da me in questo
+# stesso ciclo (giro 5) prima di aver imparato la lezione al giro 1/8. Un quarto agente
+# futuro sarebbe passato inosservato qui esattamente come controllo-gestione lo è stato
+# nell'altro file.
+for agent_file in "$HERE"/.claude/agents/*.md; do
+  agente="$(basename "$agent_file" .md)"
   [ -f "$TMP/.claude/agents/$agente.md" ] && ok "agente '$agente' presente nel progetto copiato" \
     || ko "agente '$agente' assente dopo la copia"
 done
