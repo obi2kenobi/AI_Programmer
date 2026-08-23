@@ -1456,3 +1456,19 @@ in METHOD.md/docs/system.md al giro 5, mai propagata qui perché nessuna verific
 collegava i due. Corretta la wording, aggiunto un primo test di coerenza per questo
 file (percorsi/strumenti citati esistono davvero). Test:
 `tests/test-nuova-commessa-wizard-coerenza.sh`.
+
+### 2026-08-23 (15) — chiude un loose end del Set 1 giro 4: il report del gate mostrava solo l'ultimo test
+
+Non è una scoperta del Set 2 in senso stretto, ma è emersa continuando a dogfoodare per
+davvero il gate (non solo leggerlo) mentre verificavo la pipeline: il loop `for t in
+tests/test-*.sh; do bash "$t" || exit 1; done` scritto al Set 1 giro 4 esegue davvero
+tutti i file — ma il report di `morning-gate.sh` mostra solo il `tail` dell'output
+dell'ULTIMO comando della riga. Con 29+ test in un solo `for`, un successo mostrava "3
+OK, 0 FAIL" (il tail del solo ultimo file eseguito), facendo sembrare che la suite avesse
+3 controlli in tutto — verificato dal vivo eseguendo la riga esatta e guardando cosa
+sarebbe finito nel report, non presumendo che "esegue tutto" bastasse. Corretto: il loop
+ora accumula un contatore e stampa "Suite test hub: N/TOT file superati" (o, sul
+fallimento, "FALLITO (posizione/totale): file" + il suo output) — il tail del report
+mostra sempre un riepilogo vero, mai l'output isolato dell'ultimo file per caso alfabetico.
+Test: `tests/test-night-verify-riepilogo-suite.sh` (mini-suite sintetica isolata, non i
+test reali del hub, per verificare sia il caso verde che quello rotto).
