@@ -88,6 +88,7 @@
 - [2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente](#2026-08-23-set-3-giro-5-una-regola-del-catalogo-mai-verificata-meccanicamente)
 - [2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti](#2026-08-23-set-3-giro-8-sweep-sistematico-di-tutte-le-citazioni-fra-skill-agenti)
 - [2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix](#2026-08-23-set-3-giro-9-un-ipotesi-di-bug-smentita-dal-vivo-prima-di-diventare-un-fix)
+- [2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale](#2026-08-23-set-3-giro-10-chiude-il-set-e-il-ciclo-verifica-end-to-end-finale)
 
 
 ## Stato
@@ -2286,3 +2287,66 @@ riga`, non un parser YAML completo). Il test che avevo scritto era basato su
 un'ipotesi sbagliata sul formato reale, non su un bug del repo — **eliminato prima di
 committarlo**, non lasciato come falso positivo permanente nella suite. Nessun fix
 necessario: le 10 description restano corrette per il parser che le legge davvero.
+
+### 2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale
+
+Rieseguiti tutti i test toccati o rilevanti in questo Set 3
+(`test-skills-structure.sh` su 7 skill, `test-pipeline-diagrammi-mostrano-i-rami.sh`,
+`test-repos-index-coerenza.sh`, `test-patterns-ancore-esistono.sh`,
+`test-dev-critic-audit-commessa-crossref.sh`,
+`test-dev-critic-controllo-gestione-crossref-bidirezionale.sh`) — tutti verdi.
+Working tree pulito, nessuna modifica pendente. Suite completa: 63/63.
+
+## Riepilogo Set 3/3 (10 giri, 5° ciclo) — "flusso delle idee, interazione fra le parti"
+
+| Giro | Cosa |
+|---|---|
+| 1 | Cross-reference mono-direzionale: controllo-gestione citava i 3 agenti, dev-critic §2ter no |
+| 2 | I diagrammi in cima a METHOD.md/docs/system.md mostravano solo la strada notturna, non i due rami |
+| 3 | L'indice REPO-E era rimasto ai 4 casi del ciclo precedente, il 5° (scadenzario) mancava |
+| 4 | Cinque occorrenze dello stesso bug in un ciclo diventano un pattern nel catalogo (`copertura-dal-glob`) |
+| 5 | Una regola del catalogo patterns/ ("l'ancora deve esistere") mai verificata meccanicamente |
+| 6 | `/goal` aveva raggiunto il suo obiettivo (giro 3 del Set 2) ma la prosa non lo sapeva ancora |
+| 7 | `controllo-gestione` parlava un vocabolario isolato sulla verifica, non la tassonomia condivisa |
+| 8 | Sweep sistematico di tutte le citazioni fra skill/agenti: un'altra asimmetria (dev-critic↔audit-commessa) |
+| 9 | Un'ipotesi di bug (YAML rigoroso) smentita dal vivo prima di diventare un fix sbagliato |
+| 10 | Verifica end-to-end finale: tutto verde, working tree pulito |
+
+**Il dato del set**: il tema "interazione fra le parti" si è confermato soprattutto
+come un problema di SINCRONIA — non bug di logica, ma parti del sistema che si sono
+mosse in momenti diversi (agenti creati al Set 1, diagrammi scritti prima che i rami
+esistessero, `/goal` eseguito solo al Set 2 giro 3) senza che le parti collegate lo
+scoprissero da sole. Il giro 9 è il contrappeso necessario: non ogni sospetto è un
+bug, e la stessa disciplina che trova i problemi reali deve anche saper riconoscere
+quando l'ipotesi era sbagliata, prima di introdurne uno nuovo per correggerne uno
+inesistente.
+
+## Riepilogo dei tre set (30 giri, 5° ciclo) — dopo il ciclo precedente da 30 giri
+
+- **Set 1** (un sistema di agenti per problemi matematico-contabili): tre subagent con
+  ruoli distinti (`contabilita-analitica`, `costruttore-calcoli-gestionali`,
+  `revisore-calcoli-critici`), un quinto caso reale minato da REPO-E (scadenzario
+  aging), propagazione corretta a bootstrap/onboard — ma la scoperta più importante
+  del set è stata negativa: dogfoodando i propri agenti, non risultano invocabili in
+  questa sessione (verificato dal vivo, non presunto), documentato ovunque serve
+  invece di nascosto o sopravvalutato. Un bug reale di leak di processi trovato
+  rieseguendo la suite più volte.
+- **Set 2** (progettare: brainstorming, contesto, scelta delle idee): `/design-doc`
+  guadagna un fallback per la selezione del contesto senza graphify e un loopback a
+  `/brainstorming` quando nessuna opzione è buona; `dev-critic` impara a ordinare 3+
+  idee col vocabolario già esistente; `/goal` eseguito per la prima volta da quando
+  esiste; lo stesso bug "lista hardcoded invece di glob" trovato tre volte, una
+  scritta dallo stesso autore nello stesso ciclo e corretta appena scoperta.
+- **Set 3** (flusso delle idee, interazione fra le parti): sweep sistematico di tutte
+  le citazioni fra skill/agenti (un'asimmetria trovata); i diagrammi della pipeline
+  aggiornati per mostrare i rami reali; un nuovo pattern nel catalogo
+  (`copertura-dal-glob`) per la famiglia di bug ricorrente in questo ciclo; la regola
+  del catalogo patterns/ verificata meccanicamente per la prima volta; un'ipotesi di
+  bug smentita prima di diventare un fix sbagliato.
+
+**Il filo comune ai tre set**: la disciplina di dev-critic ("dogfooding reale, non
+solo lettura") applicata non solo al codice altrui ma al proprio lavoro appena fatto
+nello stesso ciclo — sia quando rivela un limite scomodo (Set 1, gli agenti non
+invocabili), sia quando smentisce un proprio sospetto prima che diventi un fix
+sbagliato (Set 3, il falso YAML), sia quando trova lo stesso errore ripetuto dallo
+stesso autore che l'aveva appena corretto altrove (Set 2, le liste hardcoded).
