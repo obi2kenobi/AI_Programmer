@@ -82,6 +82,7 @@
 - [2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"](#2026-08-23-set-2-giro-4-il-wizard-chiedeva-come-verificare-non-quale-livello)
 - [2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a](#2026-08-23-set-2-giro-5-il-gate-meccanico-verifica-che-un-riferimento-somigli-a)
 - [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-buona)
+- [2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione](#2026-08-23-set-3-giro-1-un-cross-reference-in-una-sola-direzione)
 
 
 ## Stato
@@ -2142,3 +2143,22 @@ rispetti, e una lista scritta a mano invecchia silenziosamente ogni volta che il
 sistema cresce di un elemento. Il giro 9 aggiunge un dato scomodo ma onesto: la
 disciplina va applicata anche al proprio lavoro appena fatto nello stesso ciclo, non
 solo a quello dei cicli precedenti.
+
+## 5° ciclo — Set 3/3: flusso delle idee, interazione fra le parti
+
+### 2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione
+
+Prima ipotesi verificata e SCARTATA (per non archiviare un falso positivo): il turno
+notturno (`night-shift.sh`) potrebbe non sapere che `.claude/skills/controllo-gestione/`
+esiste, dato che OpenCode (qwen) non ha una convenzione `.claude/` propria. Verificato
+il flusso reale: il template `.github/ISSUE_TEMPLATE/night-shift.md` istruisce CHI
+SCRIVE la commessa (giorno) a citare l'oracolo della formula GIÀ nel body dell'issue —
+la notte legge il body già completo, non deve mai aprire la skill da sola. Nessun bug:
+il design "commesse precaricate, non brief d'indagine" (CLAUDE.md §7) già lo prevedeva.
+
+Trovato invece un vero gap: `controllo-gestione/SKILL.md` §6 (Set 1 giro 6) cita già i
+tre agenti — ma `dev-critic` §2ter, la lente che `revisore-calcoli-critici` incarna
+esattamente, non citava quell'agente. La direzione mancava in un solo senso. Aggiunta
+la citazione mancante, con lo stesso limite noto ricordato (non invocabile in questa
+sessione) ovunque l'agente viene menzionato — coerenza dell'avviso, non solo del nome.
+Test: `tests/test-dev-critic-controllo-gestione-crossref-bidirezionale.sh`.

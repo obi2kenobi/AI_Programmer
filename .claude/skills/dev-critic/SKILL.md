@@ -114,6 +114,12 @@ sommare al 100%; conversioni; arrotondamenti):
   contabile/gestionale nuovo (non ancora scritto) senza indovinare la formula, usa
   `.claude/skills/controllo-gestione/SKILL.md` — stessa disciplina (oracolo citato,
   invariante verificato con dati concreti), applicata prima del codice invece che dopo.
+- Questa lente esiste anche come subagent dedicato, `.claude/agents/revisore-calcoli-critici.md`
+  (5° ciclo, set 3 giro 1, 2026-08-23 — la direzione mancante: `controllo-gestione`
+  cita già i tre agenti al suo §6, questa lente non citava ancora quello che la
+  incarna). Stesso limite noto degli altri due agenti del set: non invocabile dal
+  tool Agent in questa sessione (`docs/system.md` §"Limiti dichiarati" #6) — utile
+  oggi come descrizione del ruolo diviso per fase, non come automazione provata qui.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 
