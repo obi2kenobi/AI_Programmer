@@ -146,3 +146,13 @@ sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi)
   "## Forma dei dati") e propagata ai progetti nuovi/esistenti come le altre skill
   (`tools/bootstrap-app.sh`, `tools/onboard-repo.sh` — copia wholesale di
   `.claude/skills/`, nessuna riga dedicata necessaria).
+- **`.claude/agents/`** (5° ciclo, set 1 "agenti", 2026-08-23): il metodo sopra diventa
+  anche un piccolo sistema di subagent Claude Code (frontmatter `name`/`description`/
+  `tools`, non solo skill invocate a comando) — tre ruoli distinti, non varianti dello
+  stesso testo: `contabilita-analitica` (applica/verifica un calcolo esistente, sola
+  lettura), `costruttore-calcoli-gestionali` (ne scrive uno nuovo, Edit/Write
+  autorizzati), `revisore-calcoli-critici` (dubita di un calcolo già scritto con la
+  lente dev-critic §2ter, sola lettura). Cinque casi reali risolti finora (magazzino,
+  produzione, cespiti, crisi d'impresa, scadenzario aging), tutti minati da REPO-E.
+  Propagati ai progetti nuovi/esistenti con lo stesso schema di `.claude/skills/`
+  (stesso gap trovato e corretto per la terza cartella, set 1 giro 5).

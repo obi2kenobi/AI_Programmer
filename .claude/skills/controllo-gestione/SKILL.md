@@ -118,3 +118,19 @@ a lettura perché il tie-out finale assorbiva sempre l'intero residuo). Il patte
 funzione di calcolo pura, eseguirla con dati sintetici, misurare l'invariante PRIMA
 dell'aggiustamento finale) — è la stessa disciplina usata nei test di questa skill
 (§3), applicata lì alla revisione invece che alla costruzione.
+
+## 6. Delega a un subagent (5° ciclo, set 1, 2026-08-23)
+
+Questo metodo esiste anche come tre subagent Claude Code (`.claude/agents/`, non solo
+skill invocata a comando), un ruolo per fase:
+
+- `contabilita-analitica` — applica/verifica un calcolo GIÀ risolto (§3) ai dati reali;
+  sola lettura, non dubita della formula.
+- `costruttore-calcoli-gestionali` — segue questo metodo per COSTRUIRE un calcolo
+  NUOVO (nessuno dei casi in §3 lo risolve); Edit/Write autorizzati.
+- `revisore-calcoli-critici` — applica la lente §2ter (sopra) a un calcolo già
+  scritto; sola lettura, non costruisce né applica.
+
+Delegare a uno di questi non sostituisce il metodo di questo file: l'agente eredita
+la stessa disciplina (oracolo prima del codice, mai indovinare), cambia solo chi
+esegue il passo.

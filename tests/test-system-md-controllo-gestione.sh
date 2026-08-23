@@ -20,6 +20,13 @@ grep -q 'mai indovinata\|mai indovinarla\|non indovinata' "$SYS" \
   && ok "la mappa ricorda la regola centrale (mai indovinare la formula)" \
   || ko "la sezione non ricorda la regola centrale"
 
+# 5° ciclo, set 1 giro 6: la mappa deve conoscere anche i subagent .claude/agents/,
+# non solo la skill — stesso principio, un pezzo nuovo del sistema, un'altra parte che
+# lo cita se esiste già.
+grep -q '\.claude/agents/' "$SYS" \
+  && ok "docs/system.md cita .claude/agents/" \
+  || ko "docs/system.md non cita ancora .claude/agents/"
+
 # ogni percorso citato in backtick con estensione reale deve esistere davvero
 REFS=$(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$SYS" | tr -d '`' | sort -u)
 MISSING=0

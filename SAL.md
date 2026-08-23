@@ -73,6 +73,7 @@
 - [2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti](#2026-08-23-set-1-giro-3-il-terzo-ruolo-dogfoodato-per-davvero-sui-4-tool-esistenti)
 - [2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging](#2026-08-23-set-1-giro-4-quinto-caso-reale-minato-da-gas-src-scadenzario-aging)
 - [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-gi-trovato-due-volte-mai-chiuso-per-gli-agenti)
+- [2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo](#2026-08-23-set-1-giro-6-il-sistema-di-agenti-non-si-conosceva-da-solo)
 
 
 ## Stato
@@ -1819,3 +1820,21 @@ stesso nome — in `onboard-repo.sh` (progetto esistente). Test di riscontro:
 `tests/test-onboard-agents-propagation.sh`, stessa struttura dei test analoghi già
 scritti per le skill (compreso il caso "un agente personalizzato non viene
 sovrascritto").
+
+### 2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo
+
+Verificato (grep, non assunto) se `docs/system.md`, `METHOD.md` e la skill
+`controllo-gestione` stessa citassero il nuovo sistema `.claude/agents/` costruito nei
+giri 1-3: nessuno dei tre lo faceva — la mappa completa del sistema, la "porta
+d'ingresso" del metodo, e la skill che gli agenti stessi ereditano non sapevano che i
+tre subagent esistessero. Stesso pattern ricorrente in questo ciclo e nei precedenti
+(una parte costruisce, un'altra parte che ne beneficerebbe non lo scopre mai da sola).
+
+Corretto in tre punti: `docs/system.md` guadagna una sezione dedicata (ruoli, 5 casi
+risolti, propagazione); `METHOD.md` aggiorna la riga controllo-gestione per citare la
+delega possibile a un agente; `controllo-gestione/SKILL.md` guadagna un §6 che elenca
+i tre agenti e chiarisce che delegare non sostituisce il metodo (la stessa disciplina,
+solo un esecutore diverso). Guardia di regressione: due asserzioni aggiunte ai test
+di coerenza già esistenti (`test-system-md-controllo-gestione.sh`,
+`test-method-md-coerenza.sh`) invece di un file nuovo — stessi file, stesso file
+sotto test, nessun motivo di duplicare l'infrastruttura del test.
