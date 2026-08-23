@@ -69,6 +69,7 @@
 - [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
 - [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
 - [2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill](#2026-08-23-set-1-giro-1-nessun-sistema-di-subagent-solo-skill)
+- [2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato](#2026-08-23-set-1-giro-2-un-secondo-agente-non-un-duplicato)
 
 
 ## Stato
@@ -1731,4 +1732,20 @@ sul glob `.claude/agents/*.md` invece di nomi hardcoded, applicando da subito la
 lezione già pagata una volta con `.night-verify` (4 test hardcoded, 23+ file nuovi mai
 eseguiti) — qui il test scala automaticamente man mano che il set aggiunge altri
 agenti, senza bisogno di toccarlo ad ogni giro.
+
+### 2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato
+
+Prima bozza scartata: un secondo agente "magazzino" che ripeteva quasi verbatim il
+corpo di `contabilita-analitica.md` cambiando solo quale tool citare — sarebbe stato
+uno spreco (regola CLAUDE.md "zero waste": tre righe simili sono meglio di
+un'abstrazione prematura, ma qui il rischio era l'opposto, duplicare senza motivo).
+Un "sistema di agenti" reale distingue i RUOLI, non solo il dominio: `contabilita-
+analitica` verifica/applica calcoli già scritti (tool scoped a sola lettura + Bash,
+niente Edit/Write); il nuovo `.claude/agents/costruttore-calcoli-gestionali.md` ha un
+ruolo davvero diverso — costruisce calcoli NUOVI quando nessun tool esistente
+risolve il caso, con Edit/Write autorizzati, seguendo lo stesso metodo (oracolo prima
+del codice, mai indovinare) ma applicato alla costruzione invece che alla
+verifica. Il corpo dell'agente chiude esplicitamente il confine: quando il calcolo è
+pronto, il compito passa fuori dal suo ruolo (revisione → prossimo agente del set,
+giro 3).
   senza il sì di Luca.
