@@ -7,7 +7,10 @@
 ## Il ciclo
 
 ```
-/brainstorming → /design-doc → commessa → /audit-commesse → notte → gate → review di Luca
+/brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
+                              → territorio grande: commessa → /audit-commesse → notte
+                                → gate → review di Luca
+(design-doc torna a brainstorming se nessuna opzione è buona — 5° ciclo, set 2 giro 7)
 ```
 
 | Fase | Comando/strumento | Fonte di verità |

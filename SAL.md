@@ -83,6 +83,7 @@
 - [2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a](#2026-08-23-set-2-giro-5-il-gate-meccanico-verifica-che-un-riferimento-somigli-a)
 - [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-buona)
 - [2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione](#2026-08-23-set-3-giro-1-un-cross-reference-in-una-sola-direzione)
+- [2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna](#2026-08-23-set-3-giro-2-i-diagrammi-in-cima-mostravano-solo-la-strada-notturna)
 
 
 ## Stato
@@ -2162,3 +2163,16 @@ esattamente, non citava quell'agente. La direzione mancava in un solo senso. Agg
 la citazione mancante, con lo stesso limite noto ricordato (non invocabile in questa
 sessione) ovunque l'agente viene menzionato — coerenza dell'avviso, non solo del nome.
 Test: `tests/test-dev-critic-controllo-gestione-crossref-bidirezionale.sh`.
+
+### 2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna
+
+`METHOD.md` e `docs/system.md` aprono con un diagramma "brainstorming → design-doc →
+commessa → notte → gate → review" — una linea retta. Ma il metodo reale, dopo il ciclo
+precedente (design-doc → `/goal` per territorio piccolo) e questo Set 2 (giro 7,
+design-doc → brainstorming se nessuna opzione è buona), ha due rami che il diagramma
+non mostrava mai: chi legge solo il diagramma vedrebbe un'unica strada (la notte),
+quando ne esistono altre due già implementate e testate.
+
+Corretti entrambi i diagrammi per mostrare i due rami. Test:
+`tests/test-pipeline-diagrammi-mostrano-i-rami.sh` — verifica che entrambi i file
+citino sia `/goal` sia il ritorno a `/brainstorming`, non solo la strada notturna.

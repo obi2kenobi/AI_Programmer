@@ -129,8 +129,13 @@ citava solo "l'onboarding", non il bootstrap).
 ## Il ciclo guadagna la fase di audit (2026-08-21, sera)
 
 ```
-/brainstorming → design-doc → commessa → /audit-commesse (il giorno verifica le assunzioni
-sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi) → review di Luca
+/brainstorming ⇄ design-doc (torna a brainstorming se NESSUNA opzione è buona — 5°
+                  ciclo, set 2 giro 7, 2026-08-23: non forzare una scelta scadente)
+                  │
+                  ├─ territorio piccolo/giorno → /goal | max N tentativi
+                  └─ territorio grande/notte   → commessa → /audit-commesse (il giorno
+                     verifica le assunzioni sul codice PRIMA della notte) → notte →
+                     gate (night/* E claude/*: due occhi) → review di Luca
 ```
 
 - **`/audit-commesse <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
