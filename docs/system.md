@@ -40,6 +40,12 @@
 4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su REPO-A).
    Le indagini restano ai cervelli di giorno
 5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
+6. **`.claude/agents/` funziona solo nelle sessioni Claude Code**: è il meccanismo nativo
+   di Claude Code (frontmatter `name`/`description`/`tools`, letto dal tool Agent) — verificato
+   che OpenCode (ZCode, e il turno notturno che ci gira sopra) non ha qui nessuna
+   configurazione equivalente (`.opencode/agent/` assente, solo `.opencode/skills/`). I tre
+   agenti del Set 1 "agenti" (5° ciclo) sono quindi disponibili di giorno in Claude Code, non
+   nel turno notturno né in una sessione ZCode, finché non esiste un equivalente OpenCode
 
 ## La fabbrica
 

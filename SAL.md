@@ -74,6 +74,7 @@
 - [2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging](#2026-08-23-set-1-giro-4-quinto-caso-reale-minato-da-gas-src-scadenzario-aging)
 - [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-gi-trovato-due-volte-mai-chiuso-per-gli-agenti)
 - [2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo](#2026-08-23-set-1-giro-6-il-sistema-di-agenti-non-si-conosceva-da-solo)
+- [2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato](#2026-08-23-set-1-giro-7-un-limite-reale-non-ancora-dichiarato)
 
 
 ## Stato
@@ -1838,3 +1839,20 @@ solo un esecutore diverso). Guardia di regressione: due asserzioni aggiunte ai t
 di coerenza già esistenti (`test-system-md-controllo-gestione.sh`,
 `test-method-md-coerenza.sh`) invece di un file nuovo — stessi file, stesso file
 sotto test, nessun motivo di duplicare l'infrastruttura del test.
+
+### 2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato
+
+`.claude/agents/` è un meccanismo nativo di Claude Code (frontmatter letto dal tool
+Agent) — verificato, non assunto, che OpenCode (ZCode, e il turno notturno che ci gira
+sopra via `night-shift.sh`) non ha qui alcuna configurazione equivalente
+(`.opencode/agent/` assente, esiste solo `.opencode/skills/`). I tre agenti costruiti
+in questo set sono quindi disponibili solo nelle sessioni Claude Code di giorno, non
+nel turno notturno né in ZCode — un limite reale, non una promessa vuota, nello stesso
+spirito degli altri 5 già elencati in `docs/system.md` §"Limiti dichiarati" (es. "Opus
+non passa dal router").
+
+Aggiunto come sesto limite dichiarato, con una guardia di regressione che verifica il
+limite resti VERO nel tempo (non solo scritto): il test controlla che
+`.opencode/agent/` non esista davvero — se in futuro qualcuno lo introduce, il test
+fallisce e segnala che la dichiarazione in `docs/system.md` è diventata stale, invece
+di lasciarla silenziosamente falsa.

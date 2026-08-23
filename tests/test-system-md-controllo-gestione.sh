@@ -27,6 +27,16 @@ grep -q '\.claude/agents/' "$SYS" \
   && ok "docs/system.md cita .claude/agents/" \
   || ko "docs/system.md non cita ancora .claude/agents/"
 
+# 5° ciclo, set 1 giro 7: il limite dichiarato ".claude/agents/ solo Claude Code" deve
+# restare vero, non solo scritto — se qualcuno aggiunge .opencode/agent/ in futuro, il
+# limite in docs/system.md diventa falso e va aggiornato, non lasciato stale.
+grep -q 'funziona solo nelle sessioni Claude Code' "$SYS" \
+  && ok "docs/system.md dichiara il limite .claude/agents/ = solo Claude Code" \
+  || ko "il limite .claude/agents/ non è più dichiarato"
+[ ! -d "$HERE/.opencode/agent" ] \
+  && ok "verificato: .opencode/agent/ non esiste (il limite dichiarato è ancora vero)" \
+  || ko ".opencode/agent/ ora esiste — il limite dichiarato in docs/system.md è STALE, aggiornalo"
+
 # ogni percorso citato in backtick con estensione reale deve esistere davvero
 REFS=$(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$SYS" | tr -d '`' | sort -u)
 MISSING=0
