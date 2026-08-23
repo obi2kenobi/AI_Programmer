@@ -49,6 +49,7 @@
 - [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacit)
 - [2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza](#2026-08-23-5-set-1-3-giro-6-secondo-caso-dominio-diverso-il-metodo-generalizza)
 - [2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano](#2026-08-23-6-set-1-3-giro-7-due-lenti-sullo-stesso-dominio-non-si-conoscevano)
+- [2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo](#2026-08-23-7-set-1-3-giro-8-terzo-caso-dominio-cespiti-il-segno-del-fondo)
 
 
 ## Stato
@@ -1298,3 +1299,17 @@ controllo-gestione già seguono, senza dirlo). Test:
 trovato che quel pattern e dev-critic citano per nome un repo reale, scritti prima che
 esistesse la regola "Public repo, private work". Fuori scope di questo giro — tracciato
 in `DEBITI.md`.
+
+### 2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo
+
+Terzo caso risolto con la skill `controllo-gestione`, terzo dominio diverso (dopo
+magazzino e produzione): roll-forward annuale cespiti. Letto riga per riga il codice
+reale di un modulo di quadratura/roll-forward in REPO-E/gas-src/: costo storico
+(clOpen→clClose per acquisizioni/rivalutazioni/cessioni) e fondo (fondoOpen→fondoClose
+per ammortamento/cessioni), con valore netto = costo storico + fondo — il fondo è
+convenzionalmente negativo, e le cessioni lo riducono aggiungendo `-fondo` (positivo)
+invece di sottrarlo. È esattamente il tipo di segno che la lente `dev-critic` §2ter
+avverte di verificare (nata da un bug reale con un segno invertito in un plug). Numeri
+sintetici derivati a mano PRIMA di eseguire il tool: tutti gli 8 controlli passati al
+primo tentativo. Implementato: `tools/rollforward_cespiti.py`. Test:
+`tests/test-rollforward-cespiti.sh`.

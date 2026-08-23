@@ -75,6 +75,12 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
   (stesso repo esterno REPO-E, dominio diverso — prova che il metodo generalizza, non è
   legato a un solo calcolo). Test di riscontro:
   `tests/test-scostamento-standard-effettivo.sh`.
+- `tools/rollforward_cespiti.py` — roll-forward annuale cespiti (costo storico, fondo,
+  valore netto). Oracolo: un modulo di quadratura/roll-forward cespiti (stesso repo
+  esterno REPO-E, terzo dominio diverso). Il segno del fondo (convenzionalmente
+  negativo) è l'invariante critico — esattamente il tipo di errore che la lente
+  dev-critic §2ter (sopra) cerca in un calcolo già scritto. Test di riscontro:
+  `tests/test-rollforward-cespiti.sh`.
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 
