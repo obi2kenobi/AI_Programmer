@@ -2112,3 +2112,33 @@ passato inosservato esattamente come `controllo-gestione` lo è stato nell'altro
 Nessun bug reale nascosto oggi in nessuno dei due (7/7 skill e 3/3 agenti già
 copiavano correttamente) — il valore è aver chiuso il buco di copertura prima che un
 ottavo elemento futuro ci cadesse dentro in silenzio.
+
+### 2026-08-23 — Set 2 giro 10 (chiude il set): verifica end-to-end di tutta la pipeline di progettazione
+
+Rieseguiti tutti i test di coerenza toccati o rilevanti in questo set
+(`test-skills-structure.sh` su tutte e 7 le skill, `test-design-doc-nessuna-menzione-stale.sh`,
+`test-nuova-commessa-wizard-coerenza.sh`, `test-method-md-coerenza.sh`,
+`test-system-md-controllo-gestione.sh`) — tutti verdi, nessuna regressione introdotta
+dai 9 giri precedenti. Suite completa: 57/57.
+
+## Riepilogo Set 2/3 (10 giri, 5° ciclo) — "progettare: brainstorming, contesto, scelta delle idee"
+
+| Giro | Cosa |
+|---|---|
+| 1 | La regola "tabella persistita" era verificata solo nella prosa — nuovo test sulle voci reali di SAL.md |
+| 2 | Selezione del contesto: nessun percorso quando graphify non è installato (caso reale di questa sessione) |
+| 3 | `/goal` costruito nel ciclo precedente, mai eseguito — primo loop reale, `loops/` non più vuota |
+| 4 | Il wizard chiedeva "come" verificare ma non "quale livello" — disallineato da /goal |
+| 5 | Il gate meccanico verifica che un riferimento SOMIGLI a uno vero, non che lo sia — audit-commessa lo apre davvero |
+| 6 | "Scelta delle migliori idee" al plurale: nessuna riga diceva come ordinare 3+ idee distinte |
+| 7 | Cosa fare quando NESSUNA opzione è buona — design-doc torna a /brainstorming invece di forzare |
+| 8 | Stesso bug (nomi hardcoded, non un glob) trovato una terza volta: 3 skill su 7 non erano mai testate |
+| 9 | Lo stesso bug una 4ª e 5ª volta — una scritta da me in questo stesso ciclo, corretta appena trovata |
+| 10 | Verifica end-to-end di tutta la pipeline: nessuna regressione |
+
+**Il dato del set**: la metà dei giri (1, 8, 9) sono la stessa famiglia di bug —
+verificare la PROSA di una regola non basta se nessuno verifica che la REALTÀ la
+rispetti, e una lista scritta a mano invecchia silenziosamente ogni volta che il
+sistema cresce di un elemento. Il giro 9 aggiunge un dato scomodo ma onesto: la
+disciplina va applicata anche al proprio lavoro appena fatto nello stesso ciclo, non
+solo a quello dei cicli precedenti.
