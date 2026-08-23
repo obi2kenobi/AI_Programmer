@@ -1,0 +1,33 @@
+# Indice dei codici repo (REPO-A, REPO-B, …)
+
+Regola CLAUDE.md "Public repo, private work": questo hub è pubblico, i nomi reali di
+repo private vivono SOLO in `night-shift/repos.key` (locale, gitignored). I codici
+anonimi (REPO-A, REPO-B, …) sono invece sparsi in oltre 15 file (skill, SAL.md,
+docs/system.md, pattern) SENZA un indice che dica cosa rappresenta ciascuno — chi legge
+il hub per la prima volta non ha modo di sapere se "REPO-A" citato in un file è lo
+stesso "REPO-A" citato in un altro, e una sessione futura che sceglie un nuovo codice
+rischia di riusare per errore una lettera già in uso per un repo diverso (rischio
+verificato dal vivo: 4° ciclo, set 1, prima di assegnare REPO-E ho dovuto verificare che
+non collidesse con nessun codice esistente).
+
+Questo file NON contiene nomi reali — solo il RUOLO di ciascun codice, ricostruito da
+citazioni già pubbliche nel repo (nessuna informazione nuova). La mappatura codice→nome
+reale resta solo in `night-shift/repos.key`.
+
+| Codice | Ruolo (senza nome) | Dove citato per la prima volta |
+|---|---|---|
+| REPO-A | Repo pilota del turno notturno — tre notti di test veri (2026-08-18/21) che hanno prodotto il metodo in `night-shift/README.md`. Issue #363: il modello locale non converge sui giudizi. Ha una cartella `gas-src/` dichiarata "cartella specchio/sola lettura" — regola fondativa del sistema | `night-shift/README.md` |
+| REPO-B | Origine della skill `audit-commessa` — primo giro reale (2026-08-21): 3 commesse su 4 avevano difetti di forma-dati, trovati eseguendo non leggendo (issue #11, dettaglio HTTP 501 in `SAL.md:235-236` di quel repo) | `.claude/skills/audit-commessa/SKILL.md` |
+| REPO-C | Origine della skill `dev-critic` — l'onboarding vero di un progetto esistente ha rivelato un percorso cloud non documentato, drift di CLAUDE.md, e credenziali committate: nessuno di questi gap era visibile dalla sola lettura | `.claude/skills/dev-critic/SKILL.md` |
+| REPO-D | Repo del ciclo "5 giri" (mandato: tutto da un solo operatore in loop) e del ciclo 2 successivo, incentrato sulla progettazione | `SAL.md`, voci del 2026-08-22 |
+| REPO-E | Repo esterno con progetti Google Apps Script reali (cartella `gas-src/`, coincidenza di nome con REPO-A — repo diverso, confermato da Luca) — oracolo per la skill `controllo-gestione` (4° ciclo, set 1, 2026-08-23): scostamento standard/effettivo, riconciliazione magazzino, roll-forward cespiti, indici di crisi | `.claude/skills/controllo-gestione/SKILL.md` |
+
+## Come usarlo
+
+- **Prima di citare un repo esterno in un file versionato**: controlla questa tabella —
+  se il repo ha già un codice, riusalo; se è un repo nuovo, aggiungi una riga qui E
+  registra la mappatura reale in `night-shift/repos.key` (locale, sulla macchina di
+  chi possiede il repos.key — questa sessione non può scriverci).
+- **Se un codice qui elencato non corrisponde più a quanto scritto altrove** (un file
+  citato è stato spostato, un dettaglio è cambiato): è una discrepanza reale, aggiorna
+  questa riga E il file di origine, non solo uno dei due.

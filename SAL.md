@@ -61,6 +61,7 @@
 - [2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo](#2026-08-23-17-set-2-3-giro-9-le-idee-di-dev-critic-non-avevano-un-passo-successivo)
 - [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacit-contabile)
 - [2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva](#2026-08-23-20-set-3-3-giro-2-la-traccia-dei-cervelli-di-giorno-entrava-e-non-usciva)
+- [2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice](#2026-08-23-21-set-3-3-giro-3-i-codici-anonimi-non-avevano-un-indice)
 
 
 ## Stato
@@ -1561,3 +1562,16 @@ di `night-shift/gate-summary.sh` applicato a questo log: per cervello, chiamate,
 successi, % successo, durata media — una riga malformata viene dichiarata e scartata,
 non fa fallire il riepilogo. Test: `tests/test-usage-summary.sh` (log sintetico,
 aritmetica derivata a mano).
+
+### 2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice
+
+I codici REPO-A/B/C/D/E sono sparsi in oltre 15 file (skill, SAL.md, docs/system.md,
+pattern) senza un indice che dica cosa rappresenta ciascuno — rischio verificato dal
+vivo: al Set 1 giro 1, prima di assegnare REPO-E ho dovuto controllare a mano che non
+collidesse con un codice già in uso (e ho trovato per coincidenza che REPO-A ha anch'
+esso una cartella `gas-src/`, repo diverso confermato da Luca). Costruito
+`night-shift/repos-index.md`: registra SOLO il ruolo di ciascun codice (ricostruito da
+citazioni già pubbliche, nessuna informazione nuova), mai un nome reale — la mappatura
+vera resta solo in `night-shift/repos.key`. Rimando aggiunto in CLAUDE.md §7. Test:
+`tests/test-repos-index-coerenza.sh` — verifica che ogni codice usato altrove (escluse
+le fixture sintetiche di test) compaia nell'indice.
