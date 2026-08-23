@@ -86,6 +86,7 @@
 - [2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna](#2026-08-23-set-3-giro-2-i-diagrammi-in-cima-mostravano-solo-la-strada-notturna)
 - [2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo](#2026-08-23-set-3-giro-4-la-stessa-famiglia-di-bug-diventa-un-pattern-nel-catalogo)
 - [2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente](#2026-08-23-set-3-giro-5-una-regola-del-catalogo-mai-verificata-meccanicamente)
+- [2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti](#2026-08-23-set-3-giro-8-sweep-sistematico-di-tutte-le-citazioni-fra-skill-agenti)
 
 
 ## Stato
@@ -2249,3 +2250,17 @@ Aggiunto il collegamento: test contro un oracolo = livello 1-2, riscontro contro
 totale BC non ancora chiuso = livello 3 (verità terrena ritardata) — dichiaralo se la
 commessa lo richiede. Test:
 `tests/test-controllo-gestione-livelli-verifica.sh`.
+
+### 2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti
+
+Invece di continuare a scoprire cross-reference asimmetrici uno alla volta per caso
+(giro 1, giro 7), un grep sistematico su TUTTI i file `.claude/skills/*/SKILL.md` e
+`.claude/agents/*.md` per costruire la mappa completa di chi cita chi. Trovato un
+altro caso reale: `audit-commessa` dichiara "non sostituisce dev-critic", ma
+`dev-critic` non diceva mai nulla su `audit-commessa` — stessa famiglia di asimmetria,
+diversa coppia.
+
+Aggiunta la direzione mancante nella description di `dev-critic`. Test:
+`tests/test-dev-critic-audit-commessa-crossref.sh`. Il resto della mappa (controllo-
+gestione↔3 agenti, costruttore↔revisore↔contabilita-analitica) risulta già coerente
+in entrambe le direzioni — nessun altro caso trovato in questo sweep.
