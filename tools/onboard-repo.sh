@@ -2,6 +2,18 @@
 # onboard-repo.sh — porta una repo ESISTENTE dentro il sistema:
 # label night-shift, .night-verify, iscrizione alla coda locale.
 # Uso: onboard-repo.sh owner/repo [tipo_commit]
+#
+# PERCORSO CLOUD/IBRIDO (review §4.1, 2026-08-21; spostato qui in testa al file dal
+# 4° ciclo, set 3, giro 6, 2026-08-23 — docs/system.md dice "in testa a questo file"
+# ma il blocco viveva nelle ultime righe, dopo l'intero script, mai visto da chi legge
+# l'inizio prima di eseguire): una sessione cloud (es. Claude Code remoto) NON ha `gh`
+# CLI (questo script lo chiama sotto, riga per riga) né accesso a `repos.conf` (locale
+# del Mac per design). Cosa può fare da sola: commit di file (es. `.night-verify`) via
+# tool MCP GitHub. Cosa resta manuale sul Mac del proprietario:
+#   - creare la label night-shift (i tool MCP disponibili non la creano)
+#   - aggiungere la repo a night-shift/repos.conf
+# Un agente cloud che esegue l'onboarding deve DIRLO all'utente, non tacere i passi
+# rimasti — e non può eseguire questo script direttamente (nessun `gh`).
 set -euo pipefail
 
 REPO="${1:?uso: onboard-repo.sh owner/repo [tipo_commit]}"
@@ -113,11 +125,3 @@ grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a 
 
 echo ""
 echo "Fatto: $REPO è nel sistema. Prima issue con label night-shift e la notte lavora."
-
-# PERCORSO CLOUD/IBRIDO (review §4.1, 2026-08-21): una sessione cloud (es. Claude Code remoto)
-# NON ha gh CLI né accesso a repos.conf (locale del Mac per design). Cosa può fare da sola:
-#   - commit di file (es. .night-verify) via tool MCP GitHub
-# Cosa resta manuale sul Mac del proprietario:
-#   - creare la label night-shift (i tool MCP disponibili non la creano)
-#   - aggiungere la repo a night-shift/repos.conf
-# Un agente cloud che esegue l'onboarding deve DIRLO all'utente, non tacere i passi rimasti.

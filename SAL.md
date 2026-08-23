@@ -63,6 +63,7 @@
 - [2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva](#2026-08-23-20-set-3-3-giro-2-la-traccia-dei-cervelli-di-giorno-entrava-e-non-usciva)
 - [2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice](#2026-08-23-21-set-3-3-giro-3-i-codici-anonimi-non-avevano-un-indice)
 - [2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?](#2026-08-23-design-quale-modello-ha-giudicato-ogni-riga-del-banco-avversariale)
+- [2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo](#2026-08-23-23-set-3-3-giro-6-in-testa-al-file-era-in-fondo)
 
 
 ## Stato
@@ -1613,3 +1614,15 @@ mai, a differenza di `docs/system.md` dal Set 1 giro 5) ho trovato un bug pre-es
 non introdotto oggi: `gate-esito.sh`/`gate-summary.sh`/`privacy-check.sh` erano citati
 senza la cartella reale (`night-shift/`, `tools/`) — percorsi non cliccabili/verificabili.
 Corretti anche questi. Test: `tests/test-method-md-coerenza.sh`.
+
+### 2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo
+
+`docs/system.md` dichiara che il dettaglio operativo sul percorso cloud/ibrido è "in
+testa a `tools/onboard-repo.sh`" — verificato aprendo il file: il blocco viveva nelle
+ULTIME righe (127 su 127), dopo l'intero script, mai visto da chi legge l'inizio prima
+di eseguire (o — come una sessione cloud, cioè questa stessa sessione — non può nemmeno
+eseguire lo script, perché chiama `gh` direttamente senza mai avvisarlo finché non si
+arriva in fondo). La citazione era vera nel contenuto, sbagliata nella posizione — lo
+stesso effetto pratico di una citazione senza presidio: chi cerca il dettaglio dove
+promesso non lo trova. Spostato il blocco davvero in testa, rimossa la duplicazione.
+Test: `tests/test-onboard-repo-percorso-cloud-in-testa.sh`.
