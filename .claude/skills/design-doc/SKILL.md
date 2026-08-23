@@ -81,6 +81,12 @@ progetto (punto 6).
 
 ## 2. Dove va a vivere il documento (mai solo in chat)
 
+Il documento persistito include SEMPRE la tabella opzioni×criteri del punto 3, non solo
+la scelta finale in prosa (4° ciclo, set 2, giro 3, 2026-08-23) — altrimenti chi legge fra
+sei mesi vede COSA è stato scelto ma non PERCHÉ quel punteggio, e il confronto strutturato
+del passo 3 si perde nel momento esatto in cui servirebbe di più (a decisione già presa,
+quando nessuno lo ricostruisce più a mente).
+
 - **In questo hub**: una voce in `SAL.md` (sezione "### <data> — design: <titolo>"),
   stesso formato delle altre voci — è già la fonte di verità per decisioni qui.
 - **In un progetto onboardato con un proprio diario vivo** (es. `docs/bc/SAL.md`,

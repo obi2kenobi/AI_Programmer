@@ -53,6 +53,7 @@
 - [2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo](#2026-08-23-8-set-1-3-giro-9-l-audit-serale-non-sapeva-controllare-l-oracolo)
 - [2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca](#2026-08-23-10-set-2-3-giro-1-design-doc-confronta-le-opzioni-non-solo-le-elenca)
 - [2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno](#2026-08-23-11-set-2-3-giro-2-graphify-esiste-per-la-notte-non-arrivava-al-giorno)
+- [2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat](#2026-08-23-12-set-2-3-giro-3-la-tabella-di-confronto-rischiava-di-restare-in-chat)
 
 
 ## Stato
@@ -1401,3 +1402,13 @@ senza presidio" visto più volte in questo ciclo, applicato qui al contrario: la
 c'è, il collegamento no). Aggiunto il rimando nel passo 3 del metodo, con il limite noto
 ricordato esplicitamente (orientamento sì, semantica delle chiamate no — `calls` non è
 risolto). Test: `tests/test-design-doc-graphify.sh`.
+
+### 2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat
+
+Il giro 1 aveva aggiunto la tabella opzioni×criteri al METODO di `/design-doc`, ma §2
+("dove va a vivere il documento") non diceva se quella tabella dovesse arrivare nel
+documento persistito (SAL.md/docs/design/) o restare solo nella conversazione —
+esattamente il rischio che la regola CLAUDE.md "Keep living documentation, not just
+commits" esiste per chiudere. Chi legge la voce SAL fra sei mesi avrebbe visto la scelta
+ma non il confronto che l'ha prodotta. Aggiunta una riga esplicita in §2. Test:
+`tests/test-design-doc-tabella-persistita.sh`.
