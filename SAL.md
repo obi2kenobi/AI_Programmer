@@ -60,6 +60,7 @@
 - [2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato](#2026-08-23-16-set-2-3-giro-8-la-stessa-staleness-un-terzo-posto-mai-controllato)
 - [2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo](#2026-08-23-17-set-2-3-giro-9-le-idee-di-dev-critic-non-avevano-un-passo-successivo)
 - [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacit-contabile)
+- [2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva](#2026-08-23-20-set-3-3-giro-2-la-traccia-dei-cervelli-di-giorno-entrava-e-non-usciva)
 
 
 ## Stato
@@ -1548,3 +1549,15 @@ avrebbe rischiato di trattare l'estrazione dati come se fosse anche la verifica 
 formula. Aggiunta una sottosezione dedicata, distinta esplicitamente dal censimento
 campi esistente (cosa esiste ≠ come si calcola). Test:
 `tests/test-project-md-controllo-gestione.sh`.
+
+### 2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva
+
+Il log `~/.ai-programmer-usage.log` (Set 1 del ciclo precedente, giro 10, "nessuna
+traccia dei cervelli di giorno") esiste e viene scritto da ogni chiamata `ask-*.sh`, ma
+nessuno strumento lo leggeva — la stessa asimmetria "notte ha memoria (SAL.md +
+metrics/gate.csv, con `gate-summary.sh` che li riepiloga), giorno no" era stata chiusa
+solo a metà: scrittura sì, lettura no. Costruito `llm/usage-summary.sh`, stesso schema
+di `night-shift/gate-summary.sh` applicato a questo log: per cervello, chiamate,
+successi, % successo, durata media — una riga malformata viene dichiarata e scartata,
+non fa fallire il riepilogo. Test: `tests/test-usage-summary.sh` (log sintetico,
+aritmetica derivata a mano).
