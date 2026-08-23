@@ -1495,3 +1495,40 @@ applicato alla categoria più generica del proprio output. Senza il rimando, un'
 proposta da dev-critic restava un'affermazione isolata, non l'inizio di un percorso.
 Aggiunta la regola: idea vaga → `/brainstorming`; 2+ approcci già visibili →
 `/design-doc`. Test: `tests/test-dev-critic-routing-idee.sh`.
+
+### 2026-08-23 (18) — Set 2/3 giro 10 (chiude il set): design-doc apriva solo la porta della notte
+
+§3 di `/design-doc` citava SOLO `/nuova-commessa` come passo successivo dopo la scelta —
+ma `docs/system.md` e `goal/SKILL.md` distinguono esplicitamente giorno (`/goal`, sempre
+un tetto di tentativi) da notte (commessa unica, mai un tetto): un'opzione scelta con
+territorio piccolo, verificabile in poche iterazioni durante il giorno, non ha motivo di
+passare dalla coda notturna. Aggiunta la seconda porta: `/goal` con l'obiettivo derivato
+dal criterio di successo già dichiarato al punto 1 (non inventato lì). Test:
+`tests/test-design-doc-goal-o-commessa.sh`.
+
+## Riepilogo Set 2/3 (10 giri, 4° ciclo) — "capacità di progettare: contesto e scelta delle idee"
+
+Chiarito con Luca prima di iniziare: "selezione del contesto" = gestione della context
+window dell'agente (non una disciplina dichiarativa); "scelta delle migliori idee" =
+criteri di punteggio espliciti nel `/design-doc` esistente (non un panel multi-tentativo).
+
+| Giro | Cosa |
+|---|---|
+| 1 | `/design-doc`: criteri dichiarati PRIMA delle opzioni + tabella opzioni×criteri, non più trade-off narrativo libero |
+| 2 | `/design-doc` usa `graphify` per orientarsi (regola CLAUDE.md §7 esisteva ma non arrivava al passo che più ne beneficia) |
+| 3 | La tabella di confronto deve arrivare al documento persistito (SAL.md/docs/design/), non restare solo in chat |
+| 4 | Dogfooding reale: il nuovo formato usato su un debito aperto vero (lente sicurezza dev-critic §2bis) — confronto più chiaro della prosa libera precedente |
+| 5-6-8 | Staleness "opzioni+trade-off" trovata e corretta in tre posti diversi (METHOD.md/docs/system.md, wizard nuova-commessa, brainstorming/SKILL.md) — con un test grep-based finale per prevenirla ovunque |
+| 7 | Bug reale trovato dogfoodando: il report del gate mostrava solo l'ultimo test della suite (39 file collassati in una riga), non un totale — chiude un loose end del Set 1 giro 4 |
+| 9 | `dev-critic` ora instrada le proprie idee proposte verso `/brainstorming` o `/design-doc`, non le lascia isolate |
+| 10 | `/design-doc` offre anche `/goal` come passo successivo per territori piccoli/diurni, non solo la commessa notturna |
+
+**Il dato del set**: la metà dei giri (5-6-8-9-10) non ha aggiunto funzionalità nuova —
+ha ricucito collegamenti fra pezzi già esistenti che non si citavano a vicenda o
+descrivevano un meccanismo già superato. Migliorare la capacità di progettare, in
+pratica, è stato soprattutto rendere coerente ciò che c'era già.
+
+**Decisione aperta per Luca** (giro 4, dogfooding su un debito reale): la lente
+sicurezza `dev-critic` §2bis dovrebbe diventare un trigger automatico condizionale nel
+gate (pattern sensibili nel diff) invece di restare "on demand"? Tre opzioni con
+punteggio in dettaglio nella voce SAL del giro 4.

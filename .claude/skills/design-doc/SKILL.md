@@ -100,11 +100,23 @@ In ogni caso: **il documento ha un percorso o un link stabile**, perché la sezi
 per prosa (pattern `citazione-non-presidio`: un design-doc che vive solo nella
 conversazione non è verificabile da chi legge la issue dopo).
 
-## 3. Verso la commessa (dopo la scelta)
+## 3. Dopo la scelta — notte o giorno, non solo la notte (4° ciclo, set 2, giro 10, 2026-08-23)
 
-Quando l'opzione è scelta, il passo successivo è `/nuova-commessa`: la sezione
-`## Design` della issue cita il PERCORSO del documento appena scritto (non lo riassume a
-memoria) — "da dove nasce" diventa un riferimento verificabile, non un'affermazione.
+Quando l'opzione è scelta, il passo successivo dipende dal territorio, non è sempre lo
+stesso:
+
+- **Territorio grande, o esecuzione da modello locale** → `/nuova-commessa`: la sezione
+  `## Design` della issue cita il PERCORSO del documento appena scritto (non lo riassume a
+  memoria) — "da dove nasce" diventa un riferimento verificabile, non un'affermazione.
+- **Territorio piccolo, verificabile in poche iterazioni durante il giorno** → `/goal
+  "<obiettivo verificabile derivato dal criterio di successo del punto 1>" | max N
+  tentativi` — non ha senso passare dalla coda notturna (commessa precaricata, PR bozza,
+  review del mattino) per un cambiamento che il giorno stesso può verificare e chiudere.
+  L'obiettivo del `/goal` è il criterio di successo dichiarato al punto 1 del metodo, non
+  uno nuovo inventato qui.
+
+Nei due casi il documento del design-doc resta il "da dove nasce" — cambia solo CHI
+esegue e con quale disciplina di verifica, non se il design è stato fatto.
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 
