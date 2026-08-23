@@ -71,6 +71,7 @@
 - [2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill](#2026-08-23-set-1-giro-1-nessun-sistema-di-subagent-solo-skill)
 - [2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato](#2026-08-23-set-1-giro-2-un-secondo-agente-non-un-duplicato)
 - [2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti](#2026-08-23-set-1-giro-3-il-terzo-ruolo-dogfoodato-per-davvero-sui-4-tool-esistenti)
+- [2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging](#2026-08-23-set-1-giro-4-quinto-caso-reale-minato-da-gas-src-scadenzario-aging)
 
 
 ## Stato
@@ -1777,3 +1778,27 @@ una suite di test avversariali (segno del fondo, soglia limite con `<=`, denomin
 zero, "4 su 5 non basta") che coprono esattamente gli scenari che questo agente
 avrebbe cercato. Un esito onesto — non ogni giro deve inventare un bug per essere
 utile; qui il valore è la conferma provata, non la scoperta.
+
+### 2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging
+
+Nuovo tool `tools/scadenzario_aging.py`: classificazione a fasce di scadenza (aging)
+e totali per scadenzario clienti/fornitori — quinto dominio diverso (dopo magazzino,
+produzione, cespiti, crisi d'impresa) minato dal repo esterno REPO-E su richiesta
+esplicita di Luca ("puoi utilizzare gas-src per creare snippet di codice o
+ispirarti"). Formula letta riga per riga sul modulo reale di scadenzario: confini di
+fascia con `<` stretto ai limiti negativi e `<=` ai limiti positivi (non simmetrici —
+un dettaglio che sembra arbitrario ma è nel codice originale, non indovinato), e una
+convenzione di segno non ovvia per i fornitori: una fattura diventa un'uscita
+negativa, una nota di credito resta un'entrata positiva, indipendentemente dal segno
+con cui BC restituisce l'importo grezzo.
+
+Esempio input/output derivato PRIMA del codice (regola CLAUDE.md): tutti gli 11
+confini di fascia testati uno per uno ai valori esatti di transizione (-61/-60,
+-31/-30, 0/30/31, 90/91, assente), non solo un caso per fascia — un errore di `<` vs
+`<=` a un solo confine sarebbe passato inosservato con un test più grossolano. Test:
+`tests/test-scadenzario-aging.sh` (23 controlli, tutti verdi al primo run: derivare
+l'aritmetica a mano prima di eseguire ha reso l'implementazione corretta dal primo
+tentativo, non il contrario). I tre agenti del set (`contabilita-analitica`,
+`revisore-calcoli-critici`) aggiornati per citare anche questo quinto caso nelle loro
+liste di riferimento — nessuna lista deve restare indietro rispetto ai casi reali
+risolti, stesso principio del glob in `test-agents-structure.sh` (giro 1).

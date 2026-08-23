@@ -35,6 +35,7 @@ come ispirazione vaga):
 - `tools/riconciliazione_magazzino.py` — riconciliazione inventario fisico.
 - `tools/rollforward_cespiti.py` — roll-forward annuale cespiti.
 - `tools/indici_crisi.py` — indici della crisi d'impresa (CNDCEC/CCII).
+- `tools/scadenzario_aging.py` — fasce di scadenza (aging) e totali clienti/fornitori.
 
 Se il problema portato non rientra in nessuno di questi casi ed è ancora
 vago su cosa deve risultare vero dopo il calcolo, rimanda a `/brainstorming`

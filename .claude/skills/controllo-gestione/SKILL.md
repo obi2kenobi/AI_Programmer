@@ -88,6 +88,13 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
   riprodotta, il tool prende gli aggregati già calcolati come input. Test di riscontro:
   `tests/test-indici-crisi.sh`, con gli stessi tre scenari già validati nel test
   dell'oracolo (riscontro doppio: oracolo + aritmetica a mano).
+- `tools/scadenzario_aging.py` — classificazione a fasce di scadenza (aging) e totali
+  per scadenzario clienti/fornitori, quinto dominio diverso (5° ciclo, stesso repo
+  esterno REPO-E). Confini di fascia (`<` non `<=` ai limiti negativi, `<=` ai limiti
+  positivi) e convenzione di segno fornitori (fattura=uscita negativa, nota di
+  credito=entrata positiva) letti riga per riga sul codice reale, non indovinati. Test
+  di riscontro: `tests/test-scadenzario-aging.sh`, con tutti i confini di fascia
+  verificati uno per uno più un caso aggregato derivato a mano.
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 

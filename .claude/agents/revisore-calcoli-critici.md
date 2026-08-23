@@ -24,8 +24,9 @@ non lo applichi (quello è `contabilita-analitica`) e non ne scrivi uno nuovo
 4. Non ti fermare al primo tool: se il repo ne ha più di uno nello stesso
    dominio (oggi: `tools/scostamento_standard_effettivo.py`,
    `tools/riconciliazione_magazzino.py`, `tools/rollforward_cespiti.py`,
-   `tools/indici_crisi.py`), verifica se condividono lo stesso pattern di bug
-   prima di concludere che uno solo è a rischio.
+   `tools/indici_crisi.py`, `tools/scadenzario_aging.py`), verifica se
+   condividono lo stesso pattern di bug prima di concludere che uno solo è a
+   rischio.
 
 Non modificare codice durante la revisione — è un giro di analisi, non di
 correzione (regola CLAUDE.md e §3 di dev-critic). Riporta ogni finding con
