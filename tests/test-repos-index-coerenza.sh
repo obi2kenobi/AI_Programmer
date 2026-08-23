@@ -34,6 +34,18 @@ done <<< "$USATI"
 [ "$MANCANTI" -eq 0 ] && ok "ogni codice REPO-[A-Z] usato nel repo compare nell'indice" \
   || ko "$MANCANTI codice/i usato/i altrove ma non indicizzato/i"
 
+# 5° ciclo, set 3 giro 3: la riga REPO-E era rimasta ai 4 casi del ciclo precedente,
+# il 5° caso (scadenzario aging, set 1 giro 4 di questo ciclo) non c'era ancora — non
+# basta che il codice sia presente, la sua descrizione deve restare al passo con ogni
+# nuovo caso reale minato dallo stesso repo, non solo i primi. Una parola chiave per
+# caso, non il nome del file (la prosa dell'indice non ripete i basename esatti).
+RIGA_E=$(grep '^| REPO-E' "$IDX")
+for chiave in "scostamento" "riconciliazione magazzino" "roll-forward cespiti" "indici di crisi" "scadenzario aging"; do
+  echo "$RIGA_E" | grep -qi "$chiave" \
+    && ok "REPO-E indicizzato cita il caso '$chiave'" \
+    || ko "REPO-E non cita più il caso '$chiave' — la riga dell'indice è rimasta indietro"
+done
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -2176,3 +2176,17 @@ quando ne esistono altre due già implementate e testate.
 Corretti entrambi i diagrammi per mostrare i due rami. Test:
 `tests/test-pipeline-diagrammi-mostrano-i-rami.sh` — verifica che entrambi i file
 citino sia `/goal` sia il ritorno a `/brainstorming`, non solo la strada notturna.
+
+### 2026-08-23 — Set 3 giro 3: l'indice dei codici anonimi era rimasto indietro sul proprio ciclo
+
+`night-shift/repos-index.md` (4° ciclo, set 3 giro 3) dice esplicitamente nel suo
+"Come usarlo": aggiorna la riga se un codice non corrisponde più a quanto scritto
+altrove. La riga REPO-E elencava ancora solo i 4 casi del ciclo precedente
+(scostamento, riconciliazione, roll-forward, indici di crisi) — il 5° caso
+(scadenzario aging, minato in questo stesso ciclo al Set 1 giro 4) non c'era ancora.
+Corretta.
+
+Guardia di regressione aggiunta a `test-repos-index-coerenza.sh` (esistente): verifica
+che ogni caso reale citato in `controllo-gestione/SKILL.md` §3 compaia anche nella
+riga REPO-E dell'indice — non basta che il codice esista, la descrizione deve restare
+al passo con ogni nuovo caso minato dallo stesso repo.
