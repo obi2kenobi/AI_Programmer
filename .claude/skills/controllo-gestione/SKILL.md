@@ -81,6 +81,13 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
   negativo) è l'invariante critico — esattamente il tipo di errore che la lente
   dev-critic §2ter (sopra) cerca in un calcolo già scritto. Test di riscontro:
   `tests/test-rollforward-cespiti.sh`.
+- `tools/indici_crisi.py` — indici della crisi d'impresa (CNDCEC/CCII), quarto dominio
+  diverso (stesso repo esterno REPO-E) — la lettura più diretta di "temi
+  economico-industriali". Le soglie sono pubbliche (CNDCEC, settore ATECO), non un dato
+  aziendale: la mappatura conto→aggregato (specifica del piano dei conti reale) NON è
+  riprodotta, il tool prende gli aggregati già calcolati come input. Test di riscontro:
+  `tests/test-indici-crisi.sh`, con gli stessi tre scenari già validati nel test
+  dell'oracolo (riscontro doppio: oracolo + aritmetica a mano).
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 

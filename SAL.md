@@ -1327,3 +1327,42 @@ stesso rischio che la skill esiste per chiudere, ma solo se qualcuno lo controll
 della notte. Aggiunta la lente `## 2bis` (stesso stile della lente BC), richiamata dal
 passo numerato in §1 come i passi esistenti. Test:
 `tests/test-audit-commessa-controllo-gestione.sh`.
+
+### 2026-08-23 (9) — Set 1/3 giro 10: quarto caso — indici di crisi, il lato economico-industriale
+
+Quarto caso risolto con la skill `controllo-gestione`, quarto dominio diverso: indici
+della crisi d'impresa (CNDCEC/CCII, D.Lgs 14/2019) — la lettura più diretta di "temi
+economico-industriali" fra quelle chieste dal mandato. Letto riga per riga il codice
+reale in REPO-E/gas-src/: 5 indici settoriali con soglie CNDCEC pubbliche (non un dato
+aziendale, un riferimento regolatorio — a differenza della mappatura conto→aggregato,
+specifica del piano dei conti reale, che NON è riprodotta) e una regola di presunzione
+non banale: PN negativo fa presunzione DA SOLO, altrimenti serve che tutti e 5 gli
+indici siano in allarme insieme (4 su 5 non basta). Test riscontrato due volte: contro
+gli stessi tre scenari già validati nel test dell'oracolo, e contro l'aritmetica derivata
+a mano — un mio primo tentativo di aggiungere un quarto scenario ("4 su 5") aveva
+inavvertitamente costruito numeri che facevano scattare tutti e 5 gli indici, corretto
+verificando a mano prima di fidarmi. Implementato: `tools/indici_crisi.py`. Test:
+`tests/test-indici-crisi.sh`.
+
+## Riepilogo Set 1/3 (10 giri, 4° ciclo) — "agenti per problemi matematico-contabili"
+
+| Giro | Cosa |
+|---|---|
+| 1 | Skill `/controllo-gestione` (metodo: oracolo mai indovinato) + primo caso (magazzino) |
+| 2 | La skill raggiunge la commessa (template issue) |
+| 3 | Il template raggiunge i progetti nuovi (bootstrap-app.sh non lo copiava) |
+| 4 | Bug reale: il gate del hub verificava solo 4 test su 29, non tutti quelli scritti nei cicli |
+| 5 | La mappa completa (docs/system.md) non conosceva ancora la nuova capacità |
+| 6 | Secondo caso (scostamento standard/effettivo) — il metodo generalizza |
+| 7 | dev-critic §2ter e controllo-gestione non si citavano a vicenda (costruzione↔revisione) |
+| 8 | Terzo caso (roll-forward cespiti) — il segno del fondo, invariante critico |
+| 9 | audit-commessa non verificava l'oracolo delle commesse controllo-gestione |
+| 10 | Quarto caso (indici di crisi CNDCEC) — il lato economico-industriale |
+
+**Il dato del ciclo**: 4 casi reali risolti su 4 domini diversi (magazzino, produzione,
+cespiti, crisi d'impresa) provano che il metodo generalizza, non è legato a un calcolo
+solo. Ma la scoperta più severa non era nella lista di partenza: il gate che il hub
+applica a ogni altro progetto ("dichiara le tue verifiche o è verifiche-vuote") non si
+applicava a se stesso — 23 test su 29 scritti nei cicli precedenti non venivano mai
+eseguiti automaticamente. Corretto al giro 4, prima di continuare a scrivere altri test
+che sarebbero finiti nello stesso buco.
