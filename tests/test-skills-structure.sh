@@ -33,6 +33,16 @@ check_referenced_paths() {
     [ -z "$ref" ] && continue
     case "$ref" in
       *"<"*|*SKILL.md) continue ;;  # placeholder generici, non percorsi reali
+      # 5° ciclo, set 2 giro 8 (attivare il glob su tutte le skill ha svelato questi due
+      # falsi positivi, mai visti prima perché audit-commessa/dev-critic non erano mai
+      # stati controllati): "se esiste X nel progetto" è una condizionale su un
+      # progetto ONBOARDATO, non un'affermazione che X esista in questo hub.
+      docs/GRAMMATICA_DOMINIO.md|CATALOGO_ENDPOINT_BC.md) continue ;;
+      # gas/Sp.js e tools/test-sp.js appartengono al debito privacy già tracciato in
+      # DEBITI.md (4° ciclo, Set 1 giro 7: nomi di repo esterni pre-esistenti, fuori
+      # scope finché Luca non chiede una bonifica) — non toccarli qui, non farli
+      # apparire come una citazione rotta di questo hub.
+      gas/Sp.js|tools/test-sp.js) continue ;;
     esac
     if [ ! -e "$HERE/$ref" ]; then
       echo "   riferimento non trovato: $ref"
@@ -43,17 +53,22 @@ check_referenced_paths() {
     || ko "$nome: $missing percorso/i citato/i che non esiste/esistono"
 }
 
-check_skill_frontmatter "design-doc" "$HERE/.claude/skills/design-doc/SKILL.md"
-check_referenced_paths  "design-doc" "$HERE/.claude/skills/design-doc/SKILL.md"
-
-check_skill_frontmatter "brainstorming" "$HERE/.claude/skills/brainstorming/SKILL.md"
-check_referenced_paths  "brainstorming" "$HERE/.claude/skills/brainstorming/SKILL.md"
-
-check_skill_frontmatter "goal" "$HERE/.claude/skills/goal/SKILL.md"
-check_referenced_paths  "goal" "$HERE/.claude/skills/goal/SKILL.md"
-
-check_skill_frontmatter "controllo-gestione" "$HERE/.claude/skills/controllo-gestione/SKILL.md"
-check_referenced_paths  "controllo-gestione" "$HERE/.claude/skills/controllo-gestione/SKILL.md"
+# 5° ciclo, set 2 giro 8: prima 4 skill erano elencate per nome fisso — audit-commessa,
+# dev-critic e verifica-visiva non sono mai state verificate da questo test, per anni di
+# giri diversi, senza che nulla lo segnalasse. Stesso identico bug già corretto due volte
+# altrove in questo ciclo (.night-verify Set1 4°ciclo, .claude/agents/*.md giro1 di
+# questo ciclo, lì scritto giusto la PRIMA volta): itera sul glob, non su nomi hardcoded.
+shopt -s nullglob
+SKILL_FILES=("$HERE"/.claude/skills/*/SKILL.md)
+if [ ${#SKILL_FILES[@]} -eq 0 ]; then
+  ko "nessuna skill trovata in .claude/skills/"
+else
+  for path in "${SKILL_FILES[@]}"; do
+    nome="$(basename "$(dirname "$path")")"
+    check_skill_frontmatter "$nome" "$path"
+    check_referenced_paths  "$nome" "$path"
+  done
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

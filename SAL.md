@@ -2073,3 +2073,23 @@ Aggiunto §4bis: se nessuna opzione ha un punteggio accettabile, non forzare —
 segnale che il PROBLEMA va rivisto, non solo la soluzione: torna a `/brainstorming`
 con quello che le opzioni deboli hanno rivelato (già informazione nuova sul
 problema). Test: `tests/test-design-doc-loopback-brainstorming.sh`.
+
+### 2026-08-23 — Set 2 giro 8: lo stesso bug (nomi hardcoded, non un glob) trovato una terza volta
+
+`test-skills-structure.sh` elencava 4 skill per nome fisso (design-doc, brainstorming,
+goal, controllo-gestione) — `audit-commessa`, `dev-critic` e `verifica-visiva` non
+erano MAI state controllate strutturalmente da questo test, per l'intera vita di
+queste skill, senza che nulla lo segnalasse. Stesso identico bug già corretto due
+volte in questo ciclo (`.night-verify` nel 4° ciclo; `.claude/agents/*.md` scritto
+giusto la prima volta al giro 1 di questo Set 1) — la lezione non era mai stata
+applicata retroattivamente a questo test specifico.
+
+Convertito a un glob su `.claude/skills/*/SKILL.md`. Attivarlo ha subito trovato 2
+falsi positivi reali (non ipotetici): `audit-commessa` cita `docs/GRAMMATICA_DOMINIO.md`
+e `CATALOGO_ENDPOINT_BC.md` come riferimenti CONDIZIONALI ("se esiste... nel
+progetto" — un progetto onboardato, non questo hub) che il check trattava come
+citazioni rotte; `dev-critic` cita `gas/Sp.js`/`tools/test-sp.js`, che appartengono al
+debito privacy già tracciato in `DEBITI.md` (nomi di repo esterni pre-esistenti, fuori
+scope). Entrambi esclusi esplicitamente con la ragione scritta, non silenziosamente.
+Trovato anche un vero refuso minore: `audit-commessa` citava `night-shift.sh` senza il
+prefisso `night-shift/` — corretto.

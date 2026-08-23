@@ -27,7 +27,7 @@ l'utente non specifica quali, prendi tutte le `night-shift` open del repo indica
    2026-08-21: "fermati e dillo" non specificava a chi/dove — un commento sull'issue rende
    la scoperta visibile a chi la possiede, non solo alla sessione che ha auditato).
 1bis. **Il riferimento in `## Design` esiste davvero (5° ciclo, set 2 giro 5,
-   2026-08-23).** Il gate meccanico del turno notturno (`night-shift.sh`) accetta
+   2026-08-23).** Il gate meccanico del turno notturno (`night-shift/night-shift.sh`) accetta
    qualunque stringa che SOMIGLI a un riferimento (un link, "SAL.md", "issue #42", un
    nome file con estensione — regex, non verifica) — un riferimento inventato ma
    verosimile ("vedi SAL.md") passerebbe il gate senza che nulla lo controlli davvero.
