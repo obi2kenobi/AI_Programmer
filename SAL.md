@@ -78,6 +78,7 @@
 - [2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui](#2026-08-23-set-1-giro-8-dogfooding-reale-sui-propri-agenti-non-sono-invocabili-qui)
 - [2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md](#2026-08-23-set-1-giro-9-la-scoperta-del-giro-8-entra-in-debiti-md)
 - [2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify](#2026-08-23-set-2-giro-2-selezione-del-contesto-nessun-percorso-senza-graphify)
+- [2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale](#2026-08-23-set-2-giro-3-goal-costruito-e-mai-eseguito-chiuso-col-primo-loop-reale)
 
 
 ## Stato
@@ -1987,3 +1988,22 @@ di dominio; territorio ampio o nomi dei componenti non ancora noti → l'agente
 `tests/test-design-doc-graphify.sh` (già esistente, non un file nuovo — stesso
 argomento, stesso file sotto test) per verificare che il fallback sia dichiarato e
 citi `Explore`.
+
+### 2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale
+
+Trovato ripetendo lo stesso controllo del Set 1 giro 8 su un altro strumento: `loops/`
+conteneva solo `README.md` — `/goal` (implementato nel 4° ciclo) non era mai stato
+eseguito per davvero da quando esiste. "Costruito e documentato" non è "provato",
+stessa lezione, stesso rischio, stavolta su un comando invece che su un agente.
+
+Eseguito il primo loop reale: obiettivo verificabile "la suite `tests/test-*.sh`
+completa in meno di 60s su una run pulita" (livello 2, tetto 2 tentativi) — motivato
+dalla crescita reale della suite in questo stesso ciclo (50→55 file in poche ore,
+trend già annotato in `DEBITI.md`). Tentativo 1: 35.1s, vittoria. Verifica
+avversariale obbligatoria (§3 della skill, non facoltativa): rieseguita in ordine
+casuale invece che alfabetico, per escludere un tempo favorito dall'ordine — 34.8s,
+confermata. Log completo: `loops/2026-08-23-suite-sotto-60s.md`.
+
+Nessun cambiamento al codice richiesto (l'obiettivo era già rispettato) — il valore
+del giro è aver dimostrato che il meccanismo `/goal` funziona end-to-end la prima
+volta che viene usato per davvero, non solo che la sua prosa è ben scritta.
