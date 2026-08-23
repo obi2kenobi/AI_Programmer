@@ -54,6 +54,7 @@
 - [2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca](#2026-08-23-10-set-2-3-giro-1-design-doc-confronta-le-opzioni-non-solo-le-elenca)
 - [2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno](#2026-08-23-11-set-2-3-giro-2-graphify-esiste-per-la-notte-non-arrivava-al-giorno)
 - [2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat](#2026-08-23-12-set-2-3-giro-3-la-tabella-di-confronto-rischiava-di-restare-in-chat)
+- [2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?](#2026-08-23-design-la-lente-sicurezza-dev-critic-2bis-diventa-automatica-nel-gate)
 
 
 ## Stato
@@ -1412,3 +1413,27 @@ esattamente il rischio che la regola CLAUDE.md "Keep living documentation, not j
 commits" esiste per chiudere. Chi legge la voce SAL fra sei mesi avrebbe visto la scelta
 ma non il confronto che l'ha prodotta. Aggiunta una riga esplicita in §2. Test:
 `tests/test-design-doc-tabella-persistita.sh`.
+
+### 2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?
+
+Dogfooding di `/design-doc` nel suo nuovo formato (giro 1-3) su una decisione reale
+ancora aperta, non un esempio didattico: il debito in `DEBITI.md` ("Dal Giro 3 dei '10
+giri autonomi'") — la lente sicurezza di `dev-critic` (§2bis) non è invocata
+automaticamente in nessun punto della pipeline, resta "on demand" per disegno, e un caso
+reale (night-shift-pilot issue #12) ha prodotto codice che stampava una chiave in chiaro
+senza che nulla nel gate lo segnalasse da sé.
+
+**Criteri dichiarati PRIMA delle opzioni**: costo (tempo/token per commessa), rischio
+(falsi positivi/attrito vs. rischio di un leak non rilevato), reversibilità.
+
+| Opzione | Costo | Rischio | Reversibilità |
+|---|---|---|---|
+| A. Status quo — resta "on demand" (solo promemoria in `.github/ISSUE_TEMPLATE/night-shift.md`) | Zero | Alto — un leak come quello reale (issue #12) passa se nessuno invoca la lente a mano | Totale (nessun cambiamento) |
+| B. Lente §2bis obbligatoria per OGNI commessa nel gate | Alto — una chiamata LLM in più per ogni PR, anche quelle che non toccano logging/diagnostica | Basso sul leak, ma alto sull'attrito (falsi positivi su commesse innocue, costo che scala con il volume) | Media — si rimuove la chiamata, ma il costo già speso non si recupera |
+| C. Lente §2bis condizionale — trigger automatico solo se il diff tocca pattern sensibili (`console.log`/`Logger`/`print(`/file di config o credenziali) | Basso — una chiamata LLM in più solo sulle PR che già toccano quei pattern | Basso — riduce il rischio del leak reale senza il costo di B; resta il rischio (più piccolo) che un pattern nuovo non contemplato nella lista sfugga al trigger | Alta — un grep in più nel gate, facile da rimuovere o estendere |
+
+**Nessuna scelta è fatta qui** (regola: la decisione resta di chi possiede il progetto,
+non presunta). L'opzione C sembra il miglior compromesso costo/rischio dichiarato, ma
+implica una decisione di design con un costo/rischio residuo (pattern non contemplati)
+che richiede il sì esplicito di Luca prima di implementarla — esattamente come già
+annotato in `DEBITI.md`.
