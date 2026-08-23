@@ -66,6 +66,7 @@
 - [2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo](#2026-08-23-23-set-3-3-giro-6-in-testa-al-file-era-in-fondo)
 - [2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello](#2026-08-23-24-set-3-3-giro-7-lo-stesso-gap-mai-propagato-al-file-gemello)
 - [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
+- [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
 
 
 ## Stato
@@ -1645,3 +1646,12 @@ script. Aggiunto lo stesso blocco, adattato alle chiamate reali di questo script
 SOLO `tools/onboard-repo.sh` — ma `bootstrap-app.sh` (giro 7) condivide esattamente lo
 stesso limite e ora lo stesso avviso in testa. Ampliato il testo per citare entrambi gli
 script gemelli. Test: `tests/test-system-md-percorso-cloud-entrambi.sh`.
+
+### 2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite
+
+Misurato dal vivo (non presunto): la suite `tests/test-*.sh` eseguita da `.night-verify`
+è cresciuta da 25 a 50 file in questo solo ciclo, ~31s di esecuzione — ben sotto il
+watchdog di 120s (`run_guarded`), ma il trend è monotono (ogni giro ne aggiunge). Non un
+problema oggi: loggato in `DEBITI.md` come "poi" da non far diventare "mai" — quando la
+suite supererà ~150-180 file, o una singola esecuzione si avvicinerà ai 60-90s, valutare
+se alzare il watchdog di questa riga specifica o parallelizzare.
