@@ -59,6 +59,7 @@
 - [2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima](#2026-08-23-14-set-2-3-giro-6-la-stessa-staleness-un-file-mai-testato-prima)
 - [2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato](#2026-08-23-16-set-2-3-giro-8-la-stessa-staleness-un-terzo-posto-mai-controllato)
 - [2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo](#2026-08-23-17-set-2-3-giro-9-le-idee-di-dev-critic-non-avevano-un-passo-successivo)
+- [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacit-contabile)
 
 
 ## Stato
@@ -1532,3 +1533,18 @@ pratica, è stato soprattutto rendere coerente ciò che c'era già.
 sicurezza `dev-critic` §2bis dovrebbe diventare un trigger automatico condizionale nel
 gate (pattern sensibili nel diff) invece di restare "on demand"? Tre opzioni con
 punteggio in dettaglio nella voce SAL del giro 4.
+
+### 2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile
+
+Nuovo Set 3 del 4° ciclo: flusso delle idee, interazione fra le parti — stesso tema del
+Set 3 del ciclo precedente ("tutte le parti": giorno↔notte, hub↔progetti onboardati,
+agente↔agente), applicato a ciò che è stato costruito in questo ciclo.
+
+**Giro 1**: `PROJECT.md` è il primo file che una sessione di giorno legge per il
+contesto specifico di un progetto (regola CLAUDE.md §6), ma la sua sezione Business
+Central non citava la skill `controllo-gestione` (Set 1 giro 1) — una sessione che
+lavora su un calcolo contabile sui dati BC non avrebbe saputo che il metodo esiste, e
+avrebbe rischiato di trattare l'estrazione dati come se fosse anche la verifica della
+formula. Aggiunta una sottosezione dedicata, distinta esplicitamente dal censimento
+campi esistente (cosa esiste ≠ come si calcola). Test:
+`tests/test-project-md-controllo-gestione.sh`.
