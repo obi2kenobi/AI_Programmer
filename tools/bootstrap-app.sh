@@ -2,6 +2,15 @@
 # bootstrap-app.sh — crea una repo nuova DENTRO il sistema: regole ereditate,
 # PROJECT.md stub, label night-shift, .night-verify dichiarato.
 # Uso: bootstrap-app.sh <nome-repo> [--private]
+#
+# PERCORSO CLOUD/IBRIDO (4° ciclo, set 3, giro 7, 2026-08-23 — stesso gap già trovato e
+# corretto in testa a tools/onboard-repo.sh, mai propagato qui): questo script chiama
+# `gh` direttamente in più punti (auth status, repo create, label create, api user) e
+# scrive su `night-shift/repos.conf` (locale del Mac per design) — una sessione cloud
+# (es. Claude Code remoto, senza `gh` CLI) non può eseguirlo. Un agente cloud a cui
+# viene chiesto di creare un nuovo progetto deve DIRLO all'utente, non tentare di
+# eseguire questo script e non tacere i passi che restano manuali sul Mac del
+# proprietario (repo GitHub, label night-shift, riga in repos.conf).
 set -euo pipefail
 
 NAME="${1:?uso: bootstrap-app.sh <nome-repo> [--private] [--dry-run]}"

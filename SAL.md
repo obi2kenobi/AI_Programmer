@@ -64,6 +64,7 @@
 - [2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice](#2026-08-23-21-set-3-3-giro-3-i-codici-anonimi-non-avevano-un-indice)
 - [2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?](#2026-08-23-design-quale-modello-ha-giudicato-ogni-riga-del-banco-avversariale)
 - [2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo](#2026-08-23-23-set-3-3-giro-6-in-testa-al-file-era-in-fondo)
+- [2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello](#2026-08-23-24-set-3-3-giro-7-lo-stesso-gap-mai-propagato-al-file-gemello)
 
 
 ## Stato
@@ -1626,3 +1627,13 @@ arriva in fondo). La citazione era vera nel contenuto, sbagliata nella posizione
 stesso effetto pratico di una citazione senza presidio: chi cerca il dettaglio dove
 promesso non lo trova. Spostato il blocco davvero in testa, rimossa la duplicazione.
 Test: `tests/test-onboard-repo-percorso-cloud-in-testa.sh`.
+
+### 2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello
+
+`onboard-repo.sh` ha ricevuto al giro 6 un avviso in testa sul percorso cloud/ibrido
+(niente `gh` CLI in una sessione cloud). `bootstrap-app.sh` — il suo gemello per
+progetti NUOVI, non esistenti — chiama `gh` altrettanto direttamente (auth status, repo
+create, label create, api user) e scrive su `repos.conf`, ma non aveva nessun avviso:
+lo stesso gap, mai propagato al file gemello, perché nessuna verifica collegava i due
+script. Aggiunto lo stesso blocco, adattato alle chiamate reali di questo script. Test:
+`tests/test-bootstrap-app-percorso-cloud.sh`.
