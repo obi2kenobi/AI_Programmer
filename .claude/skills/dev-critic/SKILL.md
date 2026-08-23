@@ -42,6 +42,14 @@ procedere a indovinare (regola del progetto: "se qualcosa è poco chiaro, chiedi
   successivo naturale è `/brainstorming`; se sono già visibili 2+ approcci concreti, è
   `/design-doc` (4° ciclo, set 2, giro 9, 2026-08-23) — dillo nel report invece di lasciare
   che l'idea resti un'affermazione isolata senza un passo successivo dichiarato.
+  **Se emergono 3+ idee distinte nello stesso report** (5° ciclo, set 2, giro 6,
+  2026-08-23 — "scelta delle migliori idee": nessun punto del sistema diceva come
+  scegliere DA QUALE idea partire quando più di una emerge insieme, solo come
+  strutturare la scelta DENTRO una singola idea già isolata), ordinale con gli stessi
+  criteri costo/rischio/reversibilità che `/design-doc` già usa per le opzioni — non
+  un punteggio nuovo, lo stesso vocabolario, applicato al portafoglio di idee invece
+  che a una sola. Non è una raccomandazione a implementare: è un ordine di lettura per
+  chi deve scegliere, la scelta resta di chi possiede il progetto.
 
 Per ogni finding: severità, perché conta, un suggerimento concreto (non vago) e — se è una
 scelta di design con impatto (sicurezza, breaking change, costo) — dillo esplicitamente e non

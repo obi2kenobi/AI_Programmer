@@ -2041,3 +2041,21 @@ Aggiunto `.claude/skills/audit-commessa/SKILL.md` §1bis: apri il riferimento ci
 tabella opzioni×criteri richiesta da `design-doc/SKILL.md` §2 — non fidarsi che il
 testo "somigli" a una citazione. Test:
 `tests/test-audit-commessa-riferimento-design-verificato.sh`.
+
+### 2026-08-23 — Set 2 giro 6: "scelta delle migliori idee" al plurale — nessuna riga lo diceva
+
+`/design-doc` struttura la scelta DENTRO una singola idea già isolata (2-3 opzioni per
+lo stesso problema). Nessun punto del sistema (grep confermato: zero risultati su
+"priorità"/"quale prima" in tutte le skill, METHOD.md, docs/system.md) diceva come
+scegliere DA QUALE idea partire quando 3 o più emergono insieme nello stesso report —
+esattamente il caso di questo stesso ciclo di auto-miglioramento (30 giri, decine di
+idee proposte via dev-critic nei cicli precedenti).
+
+Aggiunto in `.claude/skills/dev-critic/SKILL.md` (sezione "Nuove funzionalità non
+considerate"): quando emergono 3+ idee distinte nello stesso report, ordinale con gli
+stessi criteri costo/rischio/reversibilità che `/design-doc` già usa per le opzioni —
+non un punteggio nuovo, lo stesso vocabolario applicato al portafoglio invece che a
+una sola decisione. Resta un ordine di lettura, non una raccomandazione a
+implementare — la scelta resta di chi possiede il progetto. Guardia di regressione
+estesa in `tests/test-dev-critic-routing-idee.sh` (test esistente, stessa sezione
+sotto verifica).

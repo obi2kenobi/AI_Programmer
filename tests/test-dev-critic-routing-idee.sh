@@ -28,6 +28,16 @@ echo "$SEZ" | grep -q "design-doc" \
   && ok "entrambe le skill citate esistono davvero" \
   || ko "una delle skill citate non esiste — citazione senza presidio"
 
+# 5° ciclo, set 2 giro 6: quando emergono 3+ idee distinte, come si scelgono? Prima
+# nessun punto lo diceva — riusa i criteri di design-doc, non ne inventa di nuovi.
+echo "$SEZ" | grep -q "3+ idee distinte" \
+  && ok "la sezione dice come ordinare 3+ idee distinte nello stesso report" \
+  || ko "nessuna guida su come scegliere tra più idee proposte insieme"
+
+echo "$SEZ" | grep -q "costo/rischio/reversibilità" \
+  && ok "riusa i criteri già esistenti di /design-doc, non ne inventa di nuovi" \
+  || ko "non riusa il vocabolario esistente — rischio di criteri duplicati/incoerenti"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
