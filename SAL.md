@@ -1601,3 +1601,15 @@ da quelle attuali a 7, in modo posizionale e fragile), reversibilità.
 sul parsing fragile già noto), ma è una decisione di design su un file di metriche
 storico — richiede il sì esplicito di Luca prima di toccare `metrics/gate.csv` o gli
 script che lo scrivono/leggono.
+
+### 2026-08-23 (22) — Set 3/3 giro 5: METHOD.md non conosceva il registro del giorno, e citava male due percorsi
+
+`METHOD.md` ("il metodo in una pagina") documentava il registro esiti della notte
+(`night-shift/gate-esito.sh`/`gate-summary.sh`) ma non quello del giorno
+(`llm/usage-summary.sh`, costruito al giro 2) né l'indice dei codici anonimi (giro 3) —
+la porta d'ingresso al sistema non elencava due strumenti già esistenti. Aggiunte le
+righe mancanti. Scrivendo il primo test di coerenza per questo file (nessuno lo copriva
+mai, a differenza di `docs/system.md` dal Set 1 giro 5) ho trovato un bug pre-esistente,
+non introdotto oggi: `gate-esito.sh`/`gate-summary.sh`/`privacy-check.sh` erano citati
+senza la cartella reale (`night-shift/`, `tools/`) — percorsi non cliccabili/verificabili.
+Corretti anche questi. Test: `tests/test-method-md-coerenza.sh`.
