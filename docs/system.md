@@ -123,3 +123,20 @@ sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi)
   qui senza esistere — stesso debito già chiuso per `/audit-commesse`)
 - **Il gate guarda anche i branch `claude/*`**: il lavoro del giorno passa le stesse verifiche
   dichiarate e lo stesso banco avversariale di quello notturno
+
+## Il ciclo guadagna il controllo di gestione (4° ciclo, set 1 "agenti", 2026-08-23)
+
+- **`/controllo-gestione`** (Claude e ZCode): ancora un calcolo contabile/gestionale
+  reale (contabilità analitica, di magazzino, controllo di gestione, margini, cespiti) a
+  una formula esistente citata come oracolo (mai indovinata) — generalizza per questo
+  dominio lo schema censimento+riscontro già in uso ad-hoc per Business Central
+  (`PROJECT.md`). Implementato come skill Claude in
+  `.claude/skills/controllo-gestione/SKILL.md`. Nato da un censimento di un repo esterno
+  (codice anonimo **REPO-E**, regola "Public repo, private work": questo hub è pubblico,
+  mai nomi reali) che ha trovato ~10 calcoli di controllo di gestione reali già
+  implementati ma nessun metodo condiviso per affrontarne uno nuovo senza indovinare la
+  formula. Primo caso risolto: `tools/riconciliazione_magazzino.py`.
+- Citata anche nel template `.github/ISSUE_TEMPLATE/night-shift.md` (sezione
+  "## Forma dei dati") e propagata ai progetti nuovi/esistenti come le altre skill
+  (`tools/bootstrap-app.sh`, `tools/onboard-repo.sh` — copia wholesale di
+  `.claude/skills/`, nessuna riga dedicata necessaria).

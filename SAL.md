@@ -46,6 +46,7 @@
 - [2026-08-22, notte (9) — Set 3/3: flusso delle idee, tutte le interazioni](#2026-08-22-notte-9-set-3-3-flusso-delle-idee-tutte-le-interazioni)
 - [2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo](#2026-08-23-2-set-1-3-giri-2-3-la-skill-raggiunge-la-commessa-poi-il-progetto-nuovo)
 - [2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola](#2026-08-23-3-set-1-3-giro-4-il-gate-non-applicava-a-se-stesso-la-propria-regola)
+- [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacit)
 
 
 ## Stato
@@ -1251,3 +1252,15 @@ verifiche-vuote") non veniva applicata al hub stesso. Corretto: `.night-verify` 
 test nuovo può più restare fuori dal gate per dimenticanza. Misurato dal vivo: 29 file,
 ~31s totali, ampio margine sotto il watchdog di 120s di `run_guarded`. Test:
 `tests/test-night-verify-runs-all-tests.sh`.
+
+### 2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità
+
+`docs/system.md` è la "mappa completa" del metodo (citata da `METHOD.md` come fonte di
+verità sull'architettura) ma non menzionava `/controllo-gestione` — chi legge la mappa
+per capire quali agenti/comandi esistono nel sistema non avrebbe saputo che questa
+capacità c'è, malgrado sia già raggiungibile da skill+template+propagazione (giri 1-3).
+Aggiunta una sezione "Il ciclo guadagna il controllo di gestione", stesso stile delle
+sezioni esistenti per `/design-doc`/`/audit-commesse`. Test:
+`tests/test-system-md-controllo-gestione.sh` — verifica anche, come effetto collaterale,
+che OGNI percorso citato in `docs/system.md` (non solo quello nuovo) esista davvero:
+nessuna rottura preesistente trovata.
