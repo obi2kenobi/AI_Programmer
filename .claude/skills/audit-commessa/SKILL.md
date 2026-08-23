@@ -26,6 +26,16 @@ l'utente non specifica quali, prendi tutte le `night-shift` open del repo indica
    non c'è, senza chiudere né correggere altro (trovato ambiguo al Giro 4 dei test
    2026-08-21: "fermati e dillo" non specificava a chi/dove — un commento sull'issue rende
    la scoperta visibile a chi la possiede, non solo alla sessione che ha auditato).
+1bis. **Il riferimento in `## Design` esiste davvero (5° ciclo, set 2 giro 5,
+   2026-08-23).** Il gate meccanico del turno notturno (`night-shift.sh`) accetta
+   qualunque stringa che SOMIGLI a un riferimento (un link, "SAL.md", "issue #42", un
+   nome file con estensione — regex, non verifica) — un riferimento inventato ma
+   verosimile ("vedi SAL.md") passerebbe il gate senza che nulla lo controlli davvero.
+   Questo audit lo fa: apri il riferimento citato (la voce in `SAL.md`, il file in
+   `docs/design/`, la issue/PR) e verifica che esista E, se è un design-doc, che
+   contenga la tabella opzioni×criteri richiesta da
+   `.claude/skills/design-doc/SKILL.md` §2 — non solo che il testo "somigli" a una
+   citazione.
 2. **Estrai ogni claim verificabile**: nomi di variabili/funzioni citati, forma di un oggetto
    dati, "dove vive" un dato, colonne/campi che la commessa assume esistano — E ogni
    **convenzione di dominio** presentata come fatto (es. "il prefisso X significa Y",

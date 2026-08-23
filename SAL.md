@@ -80,6 +80,7 @@
 - [2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify](#2026-08-23-set-2-giro-2-selezione-del-contesto-nessun-percorso-senza-graphify)
 - [2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale](#2026-08-23-set-2-giro-3-goal-costruito-e-mai-eseguito-chiuso-col-primo-loop-reale)
 - [2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"](#2026-08-23-set-2-giro-4-il-wizard-chiedeva-come-verificare-non-quale-livello)
+- [2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a](#2026-08-23-set-2-giro-5-il-gate-meccanico-verifica-che-un-riferimento-somigli-a)
 
 
 ## Stato
@@ -2022,3 +2023,21 @@ Corretto: il punto 6 ora chiede esplicitamente il livello 1-5, con la tassonomia
 richiamata in una riga (non riscritta a memoria — cita `docs/system.md`). Guardia di
 regressione aggiunta a `tests/test-nuova-commessa-wizard-coerenza.sh` (test esistente,
 stesso file sotto verifica, non un file nuovo).
+
+### 2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a
+uno vero, non che lo sia
+
+`test-night-shift-design-gate.sh` (4° ciclo) verifica che il gate del turno notturno
+blocchi un `## Design` senza riferimento reale — ma "riferimento reale" per quel gate
+è una REGEX (un link, "SAL.md", "issue #42", un'estensione file): un testo che
+somiglia a una citazione la passa, anche se il file/la voce citata non esiste o non
+contiene quello che promette. Nessun passo del sistema apriva davvero il riferimento
+per controllare — il gate meccanico non può farlo (nessun accesso al contenuto reale
+dei file citati in modo affidabile a comando), ma `audit-commessa` (pre-flight di
+giorno, con accesso completo al repo) può e deve.
+
+Aggiunto `.claude/skills/audit-commessa/SKILL.md` §1bis: apri il riferimento citato in
+`## Design` e verifica che esista davvero e, se è un design-doc, che contenga la
+tabella opzioni×criteri richiesta da `design-doc/SKILL.md` §2 — non fidarsi che il
+testo "somigli" a una citazione. Test:
+`tests/test-audit-commessa-riferimento-design-verificato.sh`.
