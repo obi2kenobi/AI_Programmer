@@ -218,3 +218,6 @@ This hub is PUBLIC and contains method only: **never write names of private repo
 or company specifics in any versioned file**. Use anonymous codes (REPO-A, REPO-B…); the
 mapping lives ONLY in `night-shift/repos.key` (local, gitignored). `tools/privacy-check.sh`
 enforces it and runs in `.night-verify`: a leak fails the gate. Method, not gossip.
+Before citing a code, check `night-shift/repos-index.md` — a public, name-free registry
+of which role each code already covers (4° ciclo, set 3, 2026-08-23: built after nearly
+colliding a new code with an existing one before assigning REPO-E).

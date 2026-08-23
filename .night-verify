@@ -2,8 +2,20 @@
 shellcheck night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
 bash tools/privacy-check.sh
-bash tests/test-lib.sh
-bash tests/test-gate-tools.sh
-bash tests/test-ask-wrappers.sh
-bash tests/test-privacy.sh
+# 4° ciclo, set 1 giro 4 (2026-08-23): questa riga elencava 4 test per nome (test-lib,
+# test-gate-tools, test-ask-wrappers, test-privacy) — gli altri 23+ file tests/test-*.sh
+# accumulati nei cicli successivi (Set 2, Set 3, questo) non erano MAI stati aggiunti:
+# il gate che impone a ogni altra repo "dichiara le tue verifiche o è verifiche-vuote"
+# non applicava a se stesso la propria regola. Un loop sostituisce l'elenco: nessun test
+# nuovo può più restare fuori dal gate per dimenticanza.
+# 4° ciclo, set 2 giro 7 (2026-08-23): il loop com'era scritto sopra funzionava
+# (eseguiva davvero tutti i file) ma il report del gate mostra solo `tail` dell'output
+# dell'ULTIMO comando eseguito nella riga — con 29+ file in un solo `for`, un successo
+# mostrava "3 OK, 0 FAIL" (il tail del solo ultimo test), facendo sembrare che fossero
+# girati 3 controlli in tutto, non l'intera suite. Trovato eseguendo per davvero questa
+# riga e guardando cosa il gate avrebbe catturato, non leggendo il loop e assumendo che
+# andasse bene. Ora il loop stampa un riepilogo esplicito (N/TOT superati) che il tail
+# del report mostra sempre, e sul fallimento indica quale file (posizione e nome) e il
+# suo output, non solo l'ultimo eseguito prima dell'exit.
+N=0; TOT=$(ls tests/test-*.sh | wc -l | tr -d ' '); for t in tests/test-*.sh; do N=$((N+1)); OUT=$(bash "$t" 2>&1) || { echo "FALLITO ($N/$TOT): $t"; echo "$OUT" | tail -10; exit 1; }; done; echo "Suite test hub: $N/$TOT file superati"
 bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }

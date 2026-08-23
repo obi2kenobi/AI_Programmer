@@ -1,7 +1,8 @@
 # METHOD.md — il metodo in una pagina
 
 > Il sistema ha molte stanze; questa è la porta. Ogni elemento rimanda alla sua fonte
-> di verità. Ultima revisione: 2026-08-22 (giro 10/10 del ciclo di auto-miglioramento).
+> di verità. Ultima revisione: 2026-08-23 (4° ciclo, set 1 "agenti/sistema contabile",
+> giro 1/10).
 
 ## Il ciclo
 
@@ -12,12 +13,14 @@
 | Fase | Comando/strumento | Fonte di verità |
 |---|---|---|
 | Brainstorming (socratico) | `/brainstorming` | `.claude/skills/brainstorming/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
-| Design (opzioni+trade-off, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
+| Design (opzioni confrontate su criteri espliciti, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 4° ciclo set 2 2026-08-23: criteri dichiarati prima delle opzioni + tabella opzioni×criteri, non più solo trade-off narrativo) |
+| Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione` | `.claude/skills/controllo-gestione/SKILL.md` (4° ciclo, set 1, giro 1, 2026-08-23) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
 | Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
-| Registro esiti | `gate-esito.sh`, `gate-summary.sh` | `metrics/gate.csv` |
+| Registro esiti (notte) | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |
+| Registro chiamate (giorno) | `llm/usage-summary.sh` | `~/.ai-programmer-usage.log` (4° ciclo, set 3, giro 5, 2026-08-23: il log esisteva dal ciclo precedente, il riepilogo no) |
 | Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere, `loops/` era vuota) |
 
 ## Le regole che contano (le altre stanno nelle fonti)
@@ -26,7 +29,7 @@
 2. **Design dichiarato** — da dove nasce la commessa (SAL/analisi), prima del lavoro
 3. **Territorio dichiarato** — quanto codice serve leggere; grande = giorno
 4. **Forma dei dati verificata** — le assunzioni si controllano sul codice
-5. **Privacy come presidio** — repo pubblica: nomi mai, codici sempre (`privacy-check.sh` fallisce il gate su una perdita)
+5. **Privacy come presidio** — repo pubblica: nomi mai, codici sempre (`tools/privacy-check.sh` fallisce il gate su una perdita; `night-shift/repos-index.md` registra il ruolo di ogni codice senza nomi reali)
 6. **Il guardiano si prova quando deve fallire** — un check si testa col caso noto-difettoso
 7. **L'aspettativa si deriva** — l'aritmetica del test si conta a mano, non a memoria
 8. **Il giorno non tocca il workdir della notte** — passa dall'API

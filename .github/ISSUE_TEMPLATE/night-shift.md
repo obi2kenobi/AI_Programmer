@@ -22,7 +22,12 @@ labels: ["night-shift"]
      CATALOGO_ENDPOINT_BC.md come fonte di verità sui campi). Se un termine di dominio
      (codice articolo, BU, convenzione fornitore) non è ovvio dal codice, cita
      `docs/GRAMMATICA_DOMINIO.md` invece di indovinarlo — se la riga non c'è ancora,
-     dillo qui invece di scrivere un'ipotesi come fatto. -->
+     dillo qui invece di scrivere un'ipotesi come fatto.
+     Se la commessa CALCOLA/RICONCILIA una cifra contabile o gestionale reale (margine,
+     valorizzazione, scostamento, roll-forward, ecc.), applica la skill
+     `controllo-gestione`: la formula va citata come oracolo dal codice esistente (o
+     confermata dal proprietario del dominio), mai indovinata — scrivi qui la fonte
+     citata. -->
 
 ## Territorio
 

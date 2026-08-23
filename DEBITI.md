@@ -55,3 +55,15 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-21 ✅ SALDATO (Luca ha dato il sì a "esegui le correzioni") | `night-shift/gate-esito.sh` registrava due volte lo stesso esito su righe diverse quando esistevano PIÙ righe pendenti per lo stesso repo+PR (riprodotto dal vivo su una copia di `metrics/gate.csv`, mai l'originale) | semantica scelta: un esito TERMINALE (`merge`/`chiusura`) chiude per sempre repo+PR, qualunque riga pendente più vecchia resti indietro; `commessa` non è terminale, quindi non blocca un `merge` legittimo su una riga successiva dopo un ciclo correttivo | Riprodotto lo stesso bug esatto sulla stessa copia del CSV reale: seconda chiamata ora respinta ("stato finale"). Provato anche il caso legittimo `commessa` → `merge` su una riga nuova (riesce) → un terzo tentativo (respinto, `merge` è terminale). Ririprovati anche i 3 casi originari (formato storico, formato nuovo, doppia registrazione) — tutti ancora corretti |
+
+## Dal 4° ciclo, Set 1/3 "agenti" giro 7 (2026-08-23) — scoperta, non introdotta oggi
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-23 | `patterns/banco-sintetico-per-calcoli-critici.md` (riga 2, l'ancora) e `.claude/skills/dev-critic/SKILL.md` (§2ter) citano per nome un repo reale (`obi2kenobi/Bilancio_periodico`) — scritti prima che la regola "Public repo, private work" (CLAUDE.md, 2026-08-22) esistesse. Trovato per caso oggi grepando privacy sul mio stesso diff (giro 7), non è una violazione introdotta in questo ciclo | fuori scope del giro corrente (Set 1 "agenti"): una bonifica dei nomi pre-esistenti nell'intero repo è un lavoro a sé, non richiesto oggi, e toccherebbe file che nessuna commessa attuale sta modificando | quando Luca chiede esplicitamente una bonifica privacy retroattiva, o quando uno di questi due file viene toccato per un altro motivo — a quel punto anonimizzare per codice anonimo invece di limitarsi al giro richiesto |
+
+## Dal 4° ciclo, Set 3/3 "flusso delle idee" giro 9 (2026-08-23) — non urgente, da tenere d'occhio
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-23 | La riga `.night-verify` che esegue `tests/test-*.sh` (Set 1 giro 4) misura ~31s per 50 file, ben sotto il watchdog di 120s (`run_guarded`) — ma il numero di test è cresciuto da 25 a 50 in un solo ciclo, e il trend è monotono (ogni giro ne aggiunge). Non è un problema oggi: misurato dal vivo, non presunto | non urgente: c'è ancora ~4x margine prima del ceiling; non si corregge un problema che non esiste ancora | quando la suite reale supera ~150-180 file (stimato dal trend attuale), o se una singola esecuzione della riga si avvicina ai 60-90s: a quel punto valutare se spostare il watchdog di questa riga specifica (non l'intero .night-verify) oltre i 120s, o parallelizzare l'esecuzione dei test |

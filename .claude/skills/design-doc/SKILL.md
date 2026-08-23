@@ -1,6 +1,6 @@
 ---
 name: design-doc
-description: Trasforma un'idea o una richiesta vaga in 2-3 opzioni concrete con trade-off espliciti, SENZA implementare — la scelta resta sempre di chi possiede il progetto. Nato da un debito dichiarato in DEBITI.md (2026-08-21): il comando era citato in METHOD.md/docs/system.md come parte della pipeline "/brainstorming → /design-doc → commessa" ma non esisteva nessun file che lo implementasse (le fonti di verità dichiarate, .zcode/commands/ e .claude/commands/, non esistono nel repo). Usa quando l'utente chiede di progettare una feature nuova, valutare alternative architetturali, o invoca /design-doc esplicitamente — prima di scrivere codice, non dopo. Non sostituisce dev-critic (quello trova gap in codice ESISTENTE); questo struttura una decisione su codice che NON esiste ancora. Non sostituisce /nuova-commessa (quello compone l'issue finale); questo produce l'opzione scelta che /nuova-commessa cita come "da dove nasce" la commessa.
+description: Trasforma un'idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilità + criteri specifici alla decisione, in una tabella opzioni×criteri — 4° ciclo, set 2 "progettare", 2026-08-23), SENZA implementare — la scelta resta sempre di chi possiede il progetto. Nato da un debito dichiarato in DEBITI.md (2026-08-21): il comando era citato in METHOD.md/docs/system.md come parte della pipeline "/brainstorming → /design-doc → commessa" ma non esisteva nessun file che lo implementasse (le fonti di verità dichiarate, .zcode/commands/ e .claude/commands/, non esistono nel repo). Usa quando l'utente chiede di progettare una feature nuova, valutare alternative architetturali, o invoca /design-doc esplicitamente — prima di scrivere codice, non dopo. Non sostituisce dev-critic (quello trova gap in codice ESISTENTE); questo struttura una decisione su codice che NON esiste ancora. Non sostituisce /nuova-commessa (quello compone l'issue finale); questo produce l'opzione scelta che /nuova-commessa cita come "da dove nasce" la commessa.
 ---
 
 # design-doc — le opzioni prima del codice
@@ -25,23 +25,67 @@ decisioni già chiuse (regola "Only what is asked").
    riesci a farlo, la richiesta è ancora troppo vaga: fai le domande che mancano (stesso
    spirito di `/brainstorming`, che può precedere questo comando quando i requisiti sono
    ancora aperti).
-2. **Genera 2-3 opzioni reali**, non una opzione vera e due paglia. Ogni opzione ha:
+2. **Dichiara i criteri di confronto PRIMA delle opzioni** (4° ciclo, set 2
+   "progettare", 2026-08-23) — non dopo, e non a criteri diversi per ogni opzione (altrimenti
+   il confronto è truccato: ogni opzione vince sul criterio che la favorisce). Tre criteri
+   sono quasi sempre rilevanti — **costo** (tempo/effort per arrivare a un primo risultato
+   funzionante), **rischio** (cosa si rompe se va male: sicurezza, breaking change, dati),
+   **reversibilità** (quanto costa tornare indietro se la scelta si rivela sbagliata) — a
+   cui aggiungi 1-2 criteri specifici della decisione (es. "tempo a primo valore",
+   "dipendenze nuove", "manutenzione ricorrente") solo se pertinenti, non per riempire una
+   lista. Se un criterio proposto dall'utente non è verificabile ("sia elegante"), chiedi
+   di riformularlo in modo confrontabile prima di procedere (stesso spirito di `/goal`).
+3. **Genera 2-3 opzioni reali**, non una opzione vera e due paglia. Per capire "cosa
+   cambia concretamente" senza leggere tutto il codebase (4° ciclo, set 2
+   "progettare", giro 2, 2026-08-23): se `graphify-out/graph.json` esiste, usa
+   `graphify query`/`graphify explain` per orientarti su dove vivono i componenti
+   coinvolti (regola CLAUDE.md §7 "Navigazione before reading" + `AGENTS.md`) — è
+   orientamento e localizzazione, non un oracolo su COME i componenti si chiamano a
+   vicenda (`calls` non è risolto, lezione già pagata: non fidarti del grafo per la
+   semantica, solo per dove guardare). Poi, per ogni opzione:
    - cosa cambia concretamente (file/componenti coinvolti, a un livello alto — non il
      territorio riga-per-riga, quello è compito della commessa dopo);
-   - il trade-off onesto (costo, rischio, cosa si perde scegliendola) — mai un'opzione
-     senza controindicazioni dichiarate;
+   - **un punteggio per ciascun criterio dichiarato al punto 2**, in una tabella
+     opzioni×criteri, ogni cella con un giudizio breve (Basso/Medio/Alto o una frase, non
+     un numero nudo senza motivazione — un "3/5" senza perché è un trade-off nascosto, non
+     uno confrontabile) — mai un'opzione senza controindicazioni dichiarate;
    - quando ha senso scegliERLA (non "è la migliore", ma "sceglila se ti importa di Z").
-3. **Le opzioni scartate restano scritte**, col perché — non solo la vincente (regola
+   La tabella struttura il confronto; non lo decide — resta all'utente scegliere anche
+   contro il punteggio più alto, se un criterio pesa più degli altri per lui.
+4. **Le opzioni scartate restano scritte**, col perché — non solo la vincente (regola
    "Surface interpretations and tradeoffs — don't pick silently"). Chi legge fra sei mesi
    deve vedere anche cosa NON si è fatto, non solo cosa sì.
-4. **Non implementare.** Questo comando produce un documento, non una PR. Se l'utente
+5. **Non implementare.** Questo comando produce un documento, non una PR. Se l'utente
    chiede anche l'implementazione, trattala come uno step separato ed esplicito DOPO che
    la scelta è stata fatta — mai un'opzione già scritta come codice nella risposta.
-5. **La scelta finale è dichiarata da chi possiede il progetto**, non presunta. Se
+6. **La scelta finale è dichiarata da chi possiede il progetto**, non presunta. Se
    l'utente non ha ancora scelto, il documento resta con le opzioni aperte — non
    inventare una raccomandazione spacciata per decisione.
 
+## 1bis. Esempio del formato (criteri → tabella, non narrativa libera)
+
+Richiesta: "vorrei essere avvisato quando il gate del mattino fallisce, non solo trovarlo
+nel report". Criteri dichiarati PRIMA delle opzioni: **costo**, **rischio**,
+**reversibilità**, più uno specifico alla decisione: **dipendenze nuove**.
+
+| Opzione | Costo | Rischio | Reversibilità | Dipendenze nuove |
+|---|---|---|---|---|
+| A. Estendere `night-shift/morning-digest.sh` esistente (già invia notifiche macOS) | Basso — una riga in più nello script già presente | Basso — nessun canale nuovo, nessun segreto nuovo | Alta — si rimuove una riga | Nessuna |
+| B. Webhook Slack/Discord | Medio — nuovo endpoint, nuovo segreto da gestire | Medio — un segreto in più da mascherare (pattern `segreto-come-impronta`) | Media — richiede rimuovere il webhook lato servizio esterno | Un token/webhook URL |
+| C. Solo il report esistente, nessun avviso attivo | Zero | Zero | Totale (nessun cambiamento) | Nessuna |
+
+La tabella struttura il confronto ma non sceglie: A vince su costo/rischio/reversibilità,
+ma se l'obiettivo è essere avvisato anche lontano dal Mac, B può comunque essere la
+scelta giusta nonostante il punteggio peggiore — la decisione resta di chi possiede il
+progetto (punto 6).
+
 ## 2. Dove va a vivere il documento (mai solo in chat)
+
+Il documento persistito include SEMPRE la tabella opzioni×criteri del punto 3, non solo
+la scelta finale in prosa (4° ciclo, set 2, giro 3, 2026-08-23) — altrimenti chi legge fra
+sei mesi vede COSA è stato scelto ma non PERCHÉ quel punteggio, e il confronto strutturato
+del passo 3 si perde nel momento esatto in cui servirebbe di più (a decisione già presa,
+quando nessuno lo ricostruisce più a mente).
 
 - **In questo hub**: una voce in `SAL.md` (sezione "### <data> — design: <titolo>"),
   stesso formato delle altre voci — è già la fonte di verità per decisioni qui.
@@ -56,15 +100,31 @@ In ogni caso: **il documento ha un percorso o un link stabile**, perché la sezi
 per prosa (pattern `citazione-non-presidio`: un design-doc che vive solo nella
 conversazione non è verificabile da chi legge la issue dopo).
 
-## 3. Verso la commessa (dopo la scelta)
+## 3. Dopo la scelta — notte o giorno, non solo la notte (4° ciclo, set 2, giro 10, 2026-08-23)
 
-Quando l'opzione è scelta, il passo successivo è `/nuova-commessa`: la sezione
-`## Design` della issue cita il PERCORSO del documento appena scritto (non lo riassume a
-memoria) — "da dove nasce" diventa un riferimento verificabile, non un'affermazione.
+Quando l'opzione è scelta, il passo successivo dipende dal territorio, non è sempre lo
+stesso:
+
+- **Territorio grande, o esecuzione da modello locale** → `/nuova-commessa`: la sezione
+  `## Design` della issue cita il PERCORSO del documento appena scritto (non lo riassume a
+  memoria) — "da dove nasce" diventa un riferimento verificabile, non un'affermazione.
+- **Territorio piccolo, verificabile in poche iterazioni durante il giorno** → `/goal
+  "<obiettivo verificabile derivato dal criterio di successo del punto 1>" | max N
+  tentativi` — non ha senso passare dalla coda notturna (commessa precaricata, PR bozza,
+  review del mattino) per un cambiamento che il giorno stesso può verificare e chiudere.
+  L'obiettivo del `/goal` è il criterio di successo dichiarato al punto 1 del metodo, non
+  uno nuovo inventato qui.
+
+Nei due casi il documento del design-doc resta il "da dove nasce" — cambia solo CHI
+esegue e con quale disciplina di verifica, non se il design è stato fatto.
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 
 - Niente implementazione in questo passo — è un documento di decisione, non una PR.
 - Ogni opzione ha un trade-off dichiarato, comprese quelle scartate.
+- I criteri si dichiarano PRIMA delle opzioni, sempre gli stessi per tutte — mai
+  criteri diversi scelti a posteriori per far vincere un'opzione già preferita.
+- Il punteggio struttura il confronto, non lo decide: non trasformare la tabella in
+  una raccomandazione implicita — la scelta resta di chi possiede il progetto.
 - Se la richiesta è ambigua su COSA deve essere vero dopo, fermati e chiedi — non
   indovinare il criterio di successo per poi progettare la risposta sbagliata.

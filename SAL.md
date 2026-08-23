@@ -41,6 +41,33 @@
 - [2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero](#2026-08-22-notte-3-10-giri-di-feature-cosa-mancava-davvero)
 - [2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")](#2026-08-22-notte-4-le-decisioni-di-dominio-prese-mandato-di-luca-decidi-da-solo)
 - [2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo](#2026-08-22-notte-5-terzo-ciclo-di-10-giri-bug-reali-trovati-eseguendo-non-leggendo)
+- [2026-08-22, notte (6) — correzione: la diagnosi "claude -p lento" era sbagliata](#2026-08-22-notte-6-correzione-la-diagnosi-claude-p-lento-era-sbagliata)
+- [2026-08-22, notte (7) — Set 1/3: agenti giorno+notte armonizzati, 8 bug reali](#2026-08-22-notte-7-set-1-3-agenti-giorno-notte-armonizzati-8-bug-reali)
+- [2026-08-22, notte (9) — Set 3/3: flusso delle idee, tutte le interazioni](#2026-08-22-notte-9-set-3-3-flusso-delle-idee-tutte-le-interazioni)
+- [2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo](#2026-08-23-2-set-1-3-giri-2-3-la-skill-raggiunge-la-commessa-poi-il-progetto-nuovo)
+- [2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola](#2026-08-23-3-set-1-3-giro-4-il-gate-non-applicava-a-se-stesso-la-propria-regola)
+- [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacit)
+- [2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza](#2026-08-23-5-set-1-3-giro-6-secondo-caso-dominio-diverso-il-metodo-generalizza)
+- [2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano](#2026-08-23-6-set-1-3-giro-7-due-lenti-sullo-stesso-dominio-non-si-conoscevano)
+- [2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo](#2026-08-23-7-set-1-3-giro-8-terzo-caso-dominio-cespiti-il-segno-del-fondo)
+- [2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo](#2026-08-23-8-set-1-3-giro-9-l-audit-serale-non-sapeva-controllare-l-oracolo)
+- [2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca](#2026-08-23-10-set-2-3-giro-1-design-doc-confronta-le-opzioni-non-solo-le-elenca)
+- [2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno](#2026-08-23-11-set-2-3-giro-2-graphify-esiste-per-la-notte-non-arrivava-al-giorno)
+- [2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat](#2026-08-23-12-set-2-3-giro-3-la-tabella-di-confronto-rischiava-di-restare-in-chat)
+- [2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?](#2026-08-23-design-la-lente-sicurezza-dev-critic-2bis-diventa-automatica-nel-gate)
+- [2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc](#2026-08-23-13-set-2-3-giro-5-la-mappa-descriveva-ancora-il-vecchio-design-doc)
+- [2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima](#2026-08-23-14-set-2-3-giro-6-la-stessa-staleness-un-file-mai-testato-prima)
+- [2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato](#2026-08-23-16-set-2-3-giro-8-la-stessa-staleness-un-terzo-posto-mai-controllato)
+- [2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo](#2026-08-23-17-set-2-3-giro-9-le-idee-di-dev-critic-non-avevano-un-passo-successivo)
+- [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacit-contabile)
+- [2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva](#2026-08-23-20-set-3-3-giro-2-la-traccia-dei-cervelli-di-giorno-entrava-e-non-usciva)
+- [2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice](#2026-08-23-21-set-3-3-giro-3-i-codici-anonimi-non-avevano-un-indice)
+- [2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?](#2026-08-23-design-quale-modello-ha-giudicato-ogni-riga-del-banco-avversariale)
+- [2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo](#2026-08-23-23-set-3-3-giro-6-in-testa-al-file-era-in-fondo)
+- [2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello](#2026-08-23-24-set-3-3-giro-7-lo-stesso-gap-mai-propagato-al-file-gemello)
+- [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
+- [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
+- [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
 
 
 ## Stato
@@ -1173,3 +1200,506 @@ per canali mai costruiti che per bug nella logica.
 - **Set 3** (flusso delle idee, tutte le interazioni): skill e pattern del hub ora
   raggiungono i progetti, 1 bug di corruzione dati corretto, 3 convenzioni tacite
   documentate dove serve, il prompt del banco avversariale sincronizzato con la realtà.
+
+### 2026-08-23 — 4° ciclo, Set 1/3 giro 1: agenti per problemi matematico-contabili, ancorati a dati reali
+
+Nuovo mandato di Luca: ripetere il ciclo dei tre set altre tre volte, ma Set 1 ora chiede
+esplicitamente di costruire un sistema di agenti per problemi matematico-contabili,
+economico-industriali (contabilità analitica, di magazzino, controllo di gestione) — non
+solo armonizzare gli agenti esistenti. Prima di scrivere qualsiasi formula: chiesto a
+Luca se ancorare al dato reale di Gruppo Camarlinghi o restare generico → risposta:
+ancorato a Business Central, sia skill di metodo che tool eseguibili, con un caso pilota
+reale. Luca ha condiviso un repo esterno — codice **REPO-E** in questo diario, mai il nome
+per intero (regola "Public repo, private work") — con una cartella `gas-src/` di ~90
+progetti Google Apps Script reali dell'azienda, come base di verità.
+
+**Censimento** (agente Explore, non io a memoria): trovati ~10 progetti reali di
+controllo di gestione già implementati in REPO-E/gas-src/ — scostamento standard/effettivo
+ed efficienza manodopera in produzione, riconciliazione inventario fisico e bridge
+volume/prezzo per il magazzino, roll-forward/quadratura dei cespiti, margine per fattura
+di vendita, indici di crisi e analisi di conto economico (quest'ultimo non ancora
+ispezionato a fondo).
+
+**Scoperta collaterale da segnalare, fuori scope di questo hub**: in due progetti dentro
+REPO-E/gas-src/ il `client_secret` di Business Central è scritto in chiaro nel codice
+sorgente, versionato pubblicamente su GitHub (nomi di progetto e dettaglio esatto dati a
+voce a Luca, non versionati qui). Segnalato; non è stato toccato (accesso in sola lettura
+a REPO-E, fuori dal ramo di lavoro di questo ciclo).
+
+**Giro 1**: creata `.claude/skills/controllo-gestione/SKILL.md` — generalizza per questo
+dominio lo schema già in uso ad-hoc per BC ("censimento campi" + "riscontro" di
+PROJECT.md): individuare la fonte dato reale, citare la formula esistente come oracolo
+(mai indovinarla), costruire input/output concreti prima del codice, verificare con un
+riscontro. Primo caso risolto col metodo: `tools/riconciliazione_magazzino.py`, formula
+oracolo = il modulo di riconciliazione inventario del progetto magazzino in
+REPO-E/gas-src/: `delta = qtyFisica - qtyBC; deltaValore = delta * costoFinale`, con "non
+contato" sempre distinto da "contato a zero" (regola di business reale trovata nel codice
+originale, preservata come requisito). Caso pilota verificato: `qty_bc=120,
+costo_finale=4.50, qty_fisica=115`
+→ `delta=-5, deltaValore=-22.50€`. Test: `tests/test-riconciliazione-magazzino.sh`.
+
+### 2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo
+
+**Giro 2**: `.claude/skills/controllo-gestione/SKILL.md` (giro 1) esisteva ma il template
+`.github/ISSUE_TEMPLATE/night-shift.md` — l'unico posto che chi scrive una commessa legge
+PRIMA di scriverla — non la citava. Stesso pattern trovato più volte nel ciclo precedente
+al contrario: lì una skill era citata senza esistere, qui una skill esiste senza essere
+citata dove serve. Aggiunta una riga nella sezione "## Forma dei dati" (dove già vivono i
+riferimenti a `audit-commessa` per BC e a `GRAMMATICA_DOMINIO.md` per i termini di
+dominio) che rimanda a `controllo-gestione` per le commesse che calcolano/riconciliano
+una cifra contabile o gestionale reale. Test:
+`tests/test-night-shift-template-controllo-gestione.sh`.
+
+**Giro 3**: verificando la propagazione del template ho trovato che
+`tools/bootstrap-app.sh` crea la label GitHub `night-shift` (l'agente notturno la userà
+per pescare le issue) ma non copiava mai il template che insegna la FORMA della commessa
+in un progetto nuovo — stesso gap già corretto per `.claude/skills/` e `patterns/` nel
+set 3 del ciclo precedente, mai applicato a questo file. Un progetto bootstrappato da
+zero avrebbe la label pronta e zero guida su come scrivere una issue che il gate non
+salti in silenzio per mancanza di `## Design`. Corretto: `bootstrap-app.sh` ora copia
+anche `.github/ISSUE_TEMPLATE/night-shift.md`. Test:
+`tests/test-bootstrap-issue-template-propagation.sh`.
+
+### 2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola
+
+Leggendo la storia di `.night-verify` (`git log -p`) ho trovato che l'elenco delle
+verifiche dichiarate del hub era fermo all'"autogiro 5/10": 4 test citati per nome
+(`test-lib.sh`, `test-gate-tools.sh`, `test-ask-wrappers.sh`, `test-privacy.sh`). I 23+
+file `tests/test-*.sh` accumulati nei cicli successivi (Set 2, Set 3, questo ciclo,
+incluso il test scritto nel Giro 1 di oggi) non erano MAI stati aggiunti — la stessa
+regola che questo sistema impone a ogni altra repo ("dichiara le tue verifiche o è
+verifiche-vuote") non veniva applicata al hub stesso. Corretto: `.night-verify` ora usa
+`for t in tests/test-*.sh; do bash "$t" || exit 1; done` invece di un elenco — nessun
+test nuovo può più restare fuori dal gate per dimenticanza. Misurato dal vivo: 29 file,
+~31s totali, ampio margine sotto il watchdog di 120s di `run_guarded`. Test:
+`tests/test-night-verify-runs-all-tests.sh`.
+
+### 2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità
+
+`docs/system.md` è la "mappa completa" del metodo (citata da `METHOD.md` come fonte di
+verità sull'architettura) ma non menzionava `/controllo-gestione` — chi legge la mappa
+per capire quali agenti/comandi esistono nel sistema non avrebbe saputo che questa
+capacità c'è, malgrado sia già raggiungibile da skill+template+propagazione (giri 1-3).
+Aggiunta una sezione "Il ciclo guadagna il controllo di gestione", stesso stile delle
+sezioni esistenti per `/design-doc`/`/audit-commesse`. Test:
+`tests/test-system-md-controllo-gestione.sh` — verifica anche, come effetto collaterale,
+che OGNI percorso citato in `docs/system.md` (non solo quello nuovo) esista davvero:
+nessuna rottura preesistente trovata.
+
+### 2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza
+
+Il giro 1 aveva risolto un solo caso (riconciliazione magazzino) con la skill
+`controllo-gestione`. Un metodo provato su un solo esempio non è ancora un metodo
+generale. Letto RIGA PER RIGA (non riassunto da un report) il codice reale di un modulo
+di controllo di gestione produzione in REPO-E/gas-src/: scostamento costo
+standard/effettivo per articolo, con media pesata per quantità, soglia configurata al
+10%, severità ALTO/MEDIO, e un trend che confronta prima e seconda metà degli ordini di
+produzione (richiede >=4 ordini, non 3 — un dettaglio che ho sbagliato per primo nel mio
+proprio test, corretto verificando l'aritmetica a mano prima di fidarmi del verde).
+Implementato: `tools/scostamento_standard_effettivo.py`. Test:
+`tests/test-scostamento-standard-effettivo.sh` (12 asserzioni, aritmetica derivata a
+mano). SKILL.md aggiornata con entrambi gli esempi in §3.
+
+### 2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano
+
+`dev-critic` ha già una lente §2ter matematico-finanziaria (nata da un bug reale: un
+segno invertito nel plug di uno stato patrimoniale, invisibile a lettura e a
+"quadratura: 0,00 ✅" perché il tie-out assorbiva sempre il residuo) — REVISIONA calcoli
+già scritti. La nuova skill `controllo-gestione` (giro 1) COSTRUISCE calcoli nuovi.
+Stesso dominio, stessa disciplina (oracolo citato, invariante verificato con dati
+concreti), ma nessuna delle due citava l'altra — chi trovava una non scopriva l'altra.
+Aggiunto il rimando in entrambe le direzioni, più la citazione del pattern
+`banco-sintetico-per-calcoli-critici.md` (la tecnica del banco sintetico che i test di
+controllo-gestione già seguono, senza dirlo). Test:
+`tests/test-controllo-gestione-dev-critic-crossref.sh`.
+
+**Scoperta collaterale, non introdotta oggi**: grepando privacy sul mio stesso diff ho
+trovato che quel pattern e dev-critic citano per nome un repo reale, scritti prima che
+esistesse la regola "Public repo, private work". Fuori scope di questo giro — tracciato
+in `DEBITI.md`.
+
+### 2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo
+
+Terzo caso risolto con la skill `controllo-gestione`, terzo dominio diverso (dopo
+magazzino e produzione): roll-forward annuale cespiti. Letto riga per riga il codice
+reale di un modulo di quadratura/roll-forward in REPO-E/gas-src/: costo storico
+(clOpen→clClose per acquisizioni/rivalutazioni/cessioni) e fondo (fondoOpen→fondoClose
+per ammortamento/cessioni), con valore netto = costo storico + fondo — il fondo è
+convenzionalmente negativo, e le cessioni lo riducono aggiungendo `-fondo` (positivo)
+invece di sottrarlo. È esattamente il tipo di segno che la lente `dev-critic` §2ter
+avverte di verificare (nata da un bug reale con un segno invertito in un plug). Numeri
+sintetici derivati a mano PRIMA di eseguire il tool: tutti gli 8 controlli passati al
+primo tentativo. Implementato: `tools/rollforward_cespiti.py`. Test:
+`tests/test-rollforward-cespiti.sh`.
+
+### 2026-08-23 (8) — Set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo
+
+`audit-commessa` fa il pre-flight serale sulle commesse in coda (verifica assunzioni sul
+codice PRIMA che la notte le incontri) e aveva già una lente dedicata per Business
+Central (§2) — ma nessuna per le commesse che calcolano una cifra contabile/gestionale,
+esattamente il tipo di commessa che la nuova skill `controllo-gestione` (giro 1) rende
+possibile scrivere. Senza questa lente, una commessa poteva citare una formula
+"plausibile" mai verificata sul codice reale e l'audit non se ne sarebbe accorto — lo
+stesso rischio che la skill esiste per chiudere, ma solo se qualcuno lo controlla PRIMA
+della notte. Aggiunta la lente `## 2bis` (stesso stile della lente BC), richiamata dal
+passo numerato in §1 come i passi esistenti. Test:
+`tests/test-audit-commessa-controllo-gestione.sh`.
+
+### 2026-08-23 (9) — Set 1/3 giro 10: quarto caso — indici di crisi, il lato economico-industriale
+
+Quarto caso risolto con la skill `controllo-gestione`, quarto dominio diverso: indici
+della crisi d'impresa (CNDCEC/CCII, D.Lgs 14/2019) — la lettura più diretta di "temi
+economico-industriali" fra quelle chieste dal mandato. Letto riga per riga il codice
+reale in REPO-E/gas-src/: 5 indici settoriali con soglie CNDCEC pubbliche (non un dato
+aziendale, un riferimento regolatorio — a differenza della mappatura conto→aggregato,
+specifica del piano dei conti reale, che NON è riprodotta) e una regola di presunzione
+non banale: PN negativo fa presunzione DA SOLO, altrimenti serve che tutti e 5 gli
+indici siano in allarme insieme (4 su 5 non basta). Test riscontrato due volte: contro
+gli stessi tre scenari già validati nel test dell'oracolo, e contro l'aritmetica derivata
+a mano — un mio primo tentativo di aggiungere un quarto scenario ("4 su 5") aveva
+inavvertitamente costruito numeri che facevano scattare tutti e 5 gli indici, corretto
+verificando a mano prima di fidarmi. Implementato: `tools/indici_crisi.py`. Test:
+`tests/test-indici-crisi.sh`.
+
+## Riepilogo Set 1/3 (10 giri, 4° ciclo) — "agenti per problemi matematico-contabili"
+
+| Giro | Cosa |
+|---|---|
+| 1 | Skill `/controllo-gestione` (metodo: oracolo mai indovinato) + primo caso (magazzino) |
+| 2 | La skill raggiunge la commessa (template issue) |
+| 3 | Il template raggiunge i progetti nuovi (bootstrap-app.sh non lo copiava) |
+| 4 | Bug reale: il gate del hub verificava solo 4 test su 29, non tutti quelli scritti nei cicli |
+| 5 | La mappa completa (docs/system.md) non conosceva ancora la nuova capacità |
+| 6 | Secondo caso (scostamento standard/effettivo) — il metodo generalizza |
+| 7 | dev-critic §2ter e controllo-gestione non si citavano a vicenda (costruzione↔revisione) |
+| 8 | Terzo caso (roll-forward cespiti) — il segno del fondo, invariante critico |
+| 9 | audit-commessa non verificava l'oracolo delle commesse controllo-gestione |
+| 10 | Quarto caso (indici di crisi CNDCEC) — il lato economico-industriale |
+
+**Il dato del ciclo**: 4 casi reali risolti su 4 domini diversi (magazzino, produzione,
+cespiti, crisi d'impresa) provano che il metodo generalizza, non è legato a un calcolo
+solo. Ma la scoperta più severa non era nella lista di partenza: il gate che il hub
+applica a ogni altro progetto ("dichiara le tue verifiche o è verifiche-vuote") non si
+applicava a se stesso — 23 test su 29 scritti nei cicli precedenti non venivano mai
+eseguiti automaticamente. Corretto al giro 4, prima di continuare a scrivere altri test
+che sarebbero finiti nello stesso buco.
+
+### 2026-08-23 (10) — Set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca
+
+Nuovo mandato: Set 2 — "capacità di progettare nuovo software" (brainstorming, selezione
+del contesto, scelta delle migliori idee). Chiesto a Luca cosa intendesse per i due punti
+più ambigui: "selezione del contesto" = gestione della context window dell'agente
+(risposta: sì); "scelta delle migliori idee" = criteri di punteggio espliciti nel
+design-doc esistente, non un panel multi-tentativo più pesante (risposta: sì).
+
+**Giro 1**: `/design-doc` produceva opzioni con trade-off narrativi liberi — confrontabili
+solo a occhio, e vulnerabili a criteri diversi scelti a posteriori per far vincere
+l'opzione già preferita (un rischio reale, non teorico: è esattamente come un confronto
+si trucca senza che sembri truccato). Aggiunto un passo che dichiara i criteri PRIMA delle
+opzioni (costo, rischio, reversibilità sempre; 1-2 specifici alla decisione se pertinenti)
+e una tabella opzioni×criteri per applicarli — il punteggio struttura il confronto, non
+lo decide, la scelta resta di chi possiede il progetto. Aggiunto un esempio completo
+lavorato (§1bis). Dogfooding sul mio stesso esempio: un percorso di file scritto senza il
+prefisso della cartella reale (`morning-digest.sh` invece di
+`night-shift/morning-digest.sh`) è stato colto dal test di coerenza esistente
+(`test-skills-structure.sh`) prima del commit. Test:
+`tests/test-design-doc-criteri-punteggio.sh`.
+
+### 2026-08-23 (11) — Set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno
+
+`graphify` è già regola universale in CLAUDE.md §7 ("Navigazione before reading") e
+installato per l'agente notturno (`.opencode/skills/graphify/`), ma `/design-doc` — il
+momento preciso in cui un agente di giorno deve capire "cosa cambia concretamente" in un
+codebase per generare opzioni — non lo citava affatto. La regola generale esisteva ma
+non arrivava al passo specifico che più ne beneficia (stesso pattern di "citazione
+senza presidio" visto più volte in questo ciclo, applicato qui al contrario: la regola
+c'è, il collegamento no). Aggiunto il rimando nel passo 3 del metodo, con il limite noto
+ricordato esplicitamente (orientamento sì, semantica delle chiamate no — `calls` non è
+risolto). Test: `tests/test-design-doc-graphify.sh`.
+
+### 2026-08-23 (12) — Set 2/3 giro 3: la tabella di confronto rischiava di restare in chat
+
+Il giro 1 aveva aggiunto la tabella opzioni×criteri al METODO di `/design-doc`, ma §2
+("dove va a vivere il documento") non diceva se quella tabella dovesse arrivare nel
+documento persistito (SAL.md/docs/design/) o restare solo nella conversazione —
+esattamente il rischio che la regola CLAUDE.md "Keep living documentation, not just
+commits" esiste per chiudere. Chi legge la voce SAL fra sei mesi avrebbe visto la scelta
+ma non il confronto che l'ha prodotta. Aggiunta una riga esplicita in §2. Test:
+`tests/test-design-doc-tabella-persistita.sh`.
+
+### 2026-08-23 — design: la lente sicurezza (dev-critic §2bis) diventa automatica nel gate?
+
+Dogfooding di `/design-doc` nel suo nuovo formato (giro 1-3) su una decisione reale
+ancora aperta, non un esempio didattico: il debito in `DEBITI.md` ("Dal Giro 3 dei '10
+giri autonomi'") — la lente sicurezza di `dev-critic` (§2bis) non è invocata
+automaticamente in nessun punto della pipeline, resta "on demand" per disegno, e un caso
+reale (night-shift-pilot issue #12) ha prodotto codice che stampava una chiave in chiaro
+senza che nulla nel gate lo segnalasse da sé.
+
+**Criteri dichiarati PRIMA delle opzioni**: costo (tempo/token per commessa), rischio
+(falsi positivi/attrito vs. rischio di un leak non rilevato), reversibilità.
+
+| Opzione | Costo | Rischio | Reversibilità |
+|---|---|---|---|
+| A. Status quo — resta "on demand" (solo promemoria in `.github/ISSUE_TEMPLATE/night-shift.md`) | Zero | Alto — un leak come quello reale (issue #12) passa se nessuno invoca la lente a mano | Totale (nessun cambiamento) |
+| B. Lente §2bis obbligatoria per OGNI commessa nel gate | Alto — una chiamata LLM in più per ogni PR, anche quelle che non toccano logging/diagnostica | Basso sul leak, ma alto sull'attrito (falsi positivi su commesse innocue, costo che scala con il volume) | Media — si rimuove la chiamata, ma il costo già speso non si recupera |
+| C. Lente §2bis condizionale — trigger automatico solo se il diff tocca pattern sensibili (`console.log`/`Logger`/`print(`/file di config o credenziali) | Basso — una chiamata LLM in più solo sulle PR che già toccano quei pattern | Basso — riduce il rischio del leak reale senza il costo di B; resta il rischio (più piccolo) che un pattern nuovo non contemplato nella lista sfugga al trigger | Alta — un grep in più nel gate, facile da rimuovere o estendere |
+
+**Nessuna scelta è fatta qui** (regola: la decisione resta di chi possiede il progetto,
+non presunta). L'opzione C sembra il miglior compromesso costo/rischio dichiarato, ma
+implica una decisione di design con un costo/rischio residuo (pattern non contemplati)
+che richiede il sì esplicito di Luca prima di implementarla — esattamente come già
+annotato in `DEBITI.md`.
+
+### 2026-08-23 (13) — Set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc
+
+METHOD.md e docs/system.md descrivevano ancora `/design-doc` come "opzioni+trade-off"
+(narrativa libera) dopo che i giri 1-4 avevano cambiato il meccanismo reale (criteri
+dichiarati prima, tabella opzioni×criteri, persistenza obbligatoria) — la mappa non
+seguiva più lo strumento che descrive. Aggiornate entrambe le righe.
+
+### 2026-08-23 (14) — Set 2/3 giro 6: la stessa staleness, un file mai testato prima
+
+`.zcode-commands-nuova-commessa.md` (il wizard che compone la commessa night-shift) non
+era mai stato coperto da nessun test, e descriveva ancora `/design-doc` con la vecchia
+formula ("opzioni con trade-off già scelte") — la stessa staleness già trovata e corretta
+in METHOD.md/docs/system.md al giro 5, mai propagata qui perché nessuna verifica
+collegava i due. Corretta la wording, aggiunto un primo test di coerenza per questo
+file (percorsi/strumenti citati esistono davvero). Test:
+`tests/test-nuova-commessa-wizard-coerenza.sh`.
+
+### 2026-08-23 (15) — chiude un loose end del Set 1 giro 4: il report del gate mostrava solo l'ultimo test
+
+Non è una scoperta del Set 2 in senso stretto, ma è emersa continuando a dogfoodare per
+davvero il gate (non solo leggerlo) mentre verificavo la pipeline: il loop `for t in
+tests/test-*.sh; do bash "$t" || exit 1; done` scritto al Set 1 giro 4 esegue davvero
+tutti i file — ma il report di `morning-gate.sh` mostra solo il `tail` dell'output
+dell'ULTIMO comando della riga. Con 29+ test in un solo `for`, un successo mostrava "3
+OK, 0 FAIL" (il tail del solo ultimo file eseguito), facendo sembrare che la suite avesse
+3 controlli in tutto — verificato dal vivo eseguendo la riga esatta e guardando cosa
+sarebbe finito nel report, non presumendo che "esegue tutto" bastasse. Corretto: il loop
+ora accumula un contatore e stampa "Suite test hub: N/TOT file superati" (o, sul
+fallimento, "FALLITO (posizione/totale): file" + il suo output) — il tail del report
+mostra sempre un riepilogo vero, mai l'output isolato dell'ultimo file per caso alfabetico.
+Test: `tests/test-night-verify-riepilogo-suite.sh` (mini-suite sintetica isolata, non i
+test reali del hub, per verificare sia il caso verde che quello rotto).
+
+### 2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato
+
+Dopo aver corretto la staleness "design-doc = opzioni con trade-off" in
+METHOD.md/docs/system.md (giro 5) e nel wizard (giro 6), un grep più ampio ha trovato la
+STESSA staleness in un terzo file mai controllato: `.claude/skills/brainstorming/SKILL.md`,
+in tre punti (la description e due righe del metodo) — descriveva ancora `/design-doc`
+con la vecchia formula dopo che i giri 1-4 ne avevano cambiato il meccanismo reale.
+Corretto anche lì, e aggiunto un test grep-based su tutto il repo (non file per file) per
+prevenire la stessa classe di staleness in futuro. Test:
+`tests/test-design-doc-nessuna-menzione-stale.sh`.
+
+### 2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo
+
+`dev-critic` propone "nuove funzionalità non considerate" ma non diceva mai qual è il
+passo successivo naturale — stesso gap di flusso già chiuso altrove in questo ciclo
+(audit-commessa↔controllo-gestione, dev-critic↔controllo-gestione al Set 1 giro 7), qui
+applicato alla categoria più generica del proprio output. Senza il rimando, un'idea
+proposta da dev-critic restava un'affermazione isolata, non l'inizio di un percorso.
+Aggiunta la regola: idea vaga → `/brainstorming`; 2+ approcci già visibili →
+`/design-doc`. Test: `tests/test-dev-critic-routing-idee.sh`.
+
+### 2026-08-23 (18) — Set 2/3 giro 10 (chiude il set): design-doc apriva solo la porta della notte
+
+§3 di `/design-doc` citava SOLO `/nuova-commessa` come passo successivo dopo la scelta —
+ma `docs/system.md` e `goal/SKILL.md` distinguono esplicitamente giorno (`/goal`, sempre
+un tetto di tentativi) da notte (commessa unica, mai un tetto): un'opzione scelta con
+territorio piccolo, verificabile in poche iterazioni durante il giorno, non ha motivo di
+passare dalla coda notturna. Aggiunta la seconda porta: `/goal` con l'obiettivo derivato
+dal criterio di successo già dichiarato al punto 1 (non inventato lì). Test:
+`tests/test-design-doc-goal-o-commessa.sh`.
+
+## Riepilogo Set 2/3 (10 giri, 4° ciclo) — "capacità di progettare: contesto e scelta delle idee"
+
+Chiarito con Luca prima di iniziare: "selezione del contesto" = gestione della context
+window dell'agente (non una disciplina dichiarativa); "scelta delle migliori idee" =
+criteri di punteggio espliciti nel `/design-doc` esistente (non un panel multi-tentativo).
+
+| Giro | Cosa |
+|---|---|
+| 1 | `/design-doc`: criteri dichiarati PRIMA delle opzioni + tabella opzioni×criteri, non più trade-off narrativo libero |
+| 2 | `/design-doc` usa `graphify` per orientarsi (regola CLAUDE.md §7 esisteva ma non arrivava al passo che più ne beneficia) |
+| 3 | La tabella di confronto deve arrivare al documento persistito (SAL.md/docs/design/), non restare solo in chat |
+| 4 | Dogfooding reale: il nuovo formato usato su un debito aperto vero (lente sicurezza dev-critic §2bis) — confronto più chiaro della prosa libera precedente |
+| 5-6-8 | Staleness "opzioni+trade-off" trovata e corretta in tre posti diversi (METHOD.md/docs/system.md, wizard nuova-commessa, brainstorming/SKILL.md) — con un test grep-based finale per prevenirla ovunque |
+| 7 | Bug reale trovato dogfoodando: il report del gate mostrava solo l'ultimo test della suite (39 file collassati in una riga), non un totale — chiude un loose end del Set 1 giro 4 |
+| 9 | `dev-critic` ora instrada le proprie idee proposte verso `/brainstorming` o `/design-doc`, non le lascia isolate |
+| 10 | `/design-doc` offre anche `/goal` come passo successivo per territori piccoli/diurni, non solo la commessa notturna |
+
+**Il dato del set**: la metà dei giri (5-6-8-9-10) non ha aggiunto funzionalità nuova —
+ha ricucito collegamenti fra pezzi già esistenti che non si citavano a vicenda o
+descrivevano un meccanismo già superato. Migliorare la capacità di progettare, in
+pratica, è stato soprattutto rendere coerente ciò che c'era già.
+
+**Decisione aperta per Luca** (giro 4, dogfooding su un debito reale): la lente
+sicurezza `dev-critic` §2bis dovrebbe diventare un trigger automatico condizionale nel
+gate (pattern sensibili nel diff) invece di restare "on demand"? Tre opzioni con
+punteggio in dettaglio nella voce SAL del giro 4.
+
+### 2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile
+
+Nuovo Set 3 del 4° ciclo: flusso delle idee, interazione fra le parti — stesso tema del
+Set 3 del ciclo precedente ("tutte le parti": giorno↔notte, hub↔progetti onboardati,
+agente↔agente), applicato a ciò che è stato costruito in questo ciclo.
+
+**Giro 1**: `PROJECT.md` è il primo file che una sessione di giorno legge per il
+contesto specifico di un progetto (regola CLAUDE.md §6), ma la sua sezione Business
+Central non citava la skill `controllo-gestione` (Set 1 giro 1) — una sessione che
+lavora su un calcolo contabile sui dati BC non avrebbe saputo che il metodo esiste, e
+avrebbe rischiato di trattare l'estrazione dati come se fosse anche la verifica della
+formula. Aggiunta una sottosezione dedicata, distinta esplicitamente dal censimento
+campi esistente (cosa esiste ≠ come si calcola). Test:
+`tests/test-project-md-controllo-gestione.sh`.
+
+### 2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva
+
+Il log `~/.ai-programmer-usage.log` (Set 1 del ciclo precedente, giro 10, "nessuna
+traccia dei cervelli di giorno") esiste e viene scritto da ogni chiamata `ask-*.sh`, ma
+nessuno strumento lo leggeva — la stessa asimmetria "notte ha memoria (SAL.md +
+metrics/gate.csv, con `gate-summary.sh` che li riepiloga), giorno no" era stata chiusa
+solo a metà: scrittura sì, lettura no. Costruito `llm/usage-summary.sh`, stesso schema
+di `night-shift/gate-summary.sh` applicato a questo log: per cervello, chiamate,
+successi, % successo, durata media — una riga malformata viene dichiarata e scartata,
+non fa fallire il riepilogo. Test: `tests/test-usage-summary.sh` (log sintetico,
+aritmetica derivata a mano).
+
+### 2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice
+
+I codici REPO-A/B/C/D/E sono sparsi in oltre 15 file (skill, SAL.md, docs/system.md,
+pattern) senza un indice che dica cosa rappresenta ciascuno — rischio verificato dal
+vivo: al Set 1 giro 1, prima di assegnare REPO-E ho dovuto controllare a mano che non
+collidesse con un codice già in uso (e ho trovato per coincidenza che REPO-A ha anch'
+esso una cartella `gas-src/`, repo diverso confermato da Luca). Costruito
+`night-shift/repos-index.md`: registra SOLO il ruolo di ciascun codice (ricostruito da
+citazioni già pubbliche, nessuna informazione nuova), mai un nome reale — la mappatura
+vera resta solo in `night-shift/repos.key`. Rimando aggiunto in CLAUDE.md §7. Test:
+`tests/test-repos-index-coerenza.sh` — verifica che ogni codice usato altrove (escluse
+le fixture sintetiche di test) compaia nell'indice.
+
+### 2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?
+
+Dogfooding di `/design-doc` (Set 2) su una scoperta reale del Set 3: `ADVERSARY`
+(qwen/opus/glm) sceglie quale cervello giudica il banco avversariale (Set 1 del ciclo
+precedente, giro 6), ma `metrics/gate.csv` non registra MAI quale modello ha giudicato
+una riga specifica — il principio dichiarato in `docs/system.md` ("le decisioni future
+le decidono i dati accumulati, non le opinioni") non può applicarsi a questa scelta:
+non c'è modo di scoprire dai dati se GLM smentisce più bug veri di Qwen, perché il dato
+non esiste.
+
+**Criteri dichiarati PRIMA delle opzioni**: costo (complessità di modifica), rischio
+(rottura del parsing esistente — `gate-esito.sh` distingue già righe storiche a 6 campi
+da quelle attuali a 7, in modo posizionale e fragile), reversibilità.
+
+| Opzione | Costo | Rischio | Reversibilità |
+|---|---|---|---|
+| A. Nuova colonna `adversary_model` (8° campo) | Medio — tocca `morning-gate.sh` (scrittura) e `gate-esito.sh` (già distingue 2 formati per posizione, ne servirebbe un terzo) | Alto — il parsing posizionale di `gate-esito.sh` è già fragile con 2 formati; un terzo aumenta la superficie di un bug come quello già trovato e corretto (Giro 9 dei test 2026-08-21) | Bassa — le righe storiche a 7 campi resterebbero ambigue per sempre (nessun modo di sapere quale modello le ha giudicate a posteriori) |
+| B. Il modello dentro il valore della colonna `banco` esistente (es. `eseguito:smentita:glm` invece di `eseguito:smentita`) | Basso — nessuna colonna nuova, `gate-summary.sh` già fa parsing per prefisso su questa colonna | Basso — le righe storiche restano valide (nessun suffisso = modello non registrato, non un errore); nessun nuovo formato posizionale in `gate-esito.sh` | Alta — un cambio di formato di stringa, non di schema |
+| C. Non tracciarlo (status quo) | Zero | Nessuno nuovo, ma il costo esistente resta: la scelta del modello non si può mai imparare dai dati | Totale |
+
+**Nessuna scelta è fatta qui**: l'opzione B sembra il miglior compromesso (nessun rischio
+sul parsing fragile già noto), ma è una decisione di design su un file di metriche
+storico — richiede il sì esplicito di Luca prima di toccare `metrics/gate.csv` o gli
+script che lo scrivono/leggono.
+
+### 2026-08-23 (22) — Set 3/3 giro 5: METHOD.md non conosceva il registro del giorno, e citava male due percorsi
+
+`METHOD.md` ("il metodo in una pagina") documentava il registro esiti della notte
+(`night-shift/gate-esito.sh`/`gate-summary.sh`) ma non quello del giorno
+(`llm/usage-summary.sh`, costruito al giro 2) né l'indice dei codici anonimi (giro 3) —
+la porta d'ingresso al sistema non elencava due strumenti già esistenti. Aggiunte le
+righe mancanti. Scrivendo il primo test di coerenza per questo file (nessuno lo copriva
+mai, a differenza di `docs/system.md` dal Set 1 giro 5) ho trovato un bug pre-esistente,
+non introdotto oggi: `gate-esito.sh`/`gate-summary.sh`/`privacy-check.sh` erano citati
+senza la cartella reale (`night-shift/`, `tools/`) — percorsi non cliccabili/verificabili.
+Corretti anche questi. Test: `tests/test-method-md-coerenza.sh`.
+
+### 2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo
+
+`docs/system.md` dichiara che il dettaglio operativo sul percorso cloud/ibrido è "in
+testa a `tools/onboard-repo.sh`" — verificato aprendo il file: il blocco viveva nelle
+ULTIME righe (127 su 127), dopo l'intero script, mai visto da chi legge l'inizio prima
+di eseguire (o — come una sessione cloud, cioè questa stessa sessione — non può nemmeno
+eseguire lo script, perché chiama `gh` direttamente senza mai avvisarlo finché non si
+arriva in fondo). La citazione era vera nel contenuto, sbagliata nella posizione — lo
+stesso effetto pratico di una citazione senza presidio: chi cerca il dettaglio dove
+promesso non lo trova. Spostato il blocco davvero in testa, rimossa la duplicazione.
+Test: `tests/test-onboard-repo-percorso-cloud-in-testa.sh`.
+
+### 2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello
+
+`onboard-repo.sh` ha ricevuto al giro 6 un avviso in testa sul percorso cloud/ibrido
+(niente `gh` CLI in una sessione cloud). `bootstrap-app.sh` — il suo gemello per
+progetti NUOVI, non esistenti — chiama `gh` altrettanto direttamente (auth status, repo
+create, label create, api user) e scrive su `repos.conf`, ma non aveva nessun avviso:
+lo stesso gap, mai propagato al file gemello, perché nessuna verifica collegava i due
+script. Aggiunto lo stesso blocco, adattato alle chiamate reali di questo script. Test:
+`tests/test-bootstrap-app-percorso-cloud.sh`.
+
+### 2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso
+
+`docs/system.md` descriveva il limite "niente `gh` CLI in una sessione cloud" citando
+SOLO `tools/onboard-repo.sh` — ma `bootstrap-app.sh` (giro 7) condivide esattamente lo
+stesso limite e ora lo stesso avviso in testa. Ampliato il testo per citare entrambi gli
+script gemelli. Test: `tests/test-system-md-percorso-cloud-entrambi.sh`.
+
+### 2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite
+
+Misurato dal vivo (non presunto): la suite `tests/test-*.sh` eseguita da `.night-verify`
+è cresciuta da 25 a 50 file in questo solo ciclo, ~31s di esecuzione — ben sotto il
+watchdog di 120s (`run_guarded`), ma il trend è monotono (ogni giro ne aggiunge). Non un
+problema oggi: loggato in `DEBITI.md` come "poi" da non far diventare "mai" — quando la
+suite supererà ~150-180 file, o una singola esecuzione si avvicinerà ai 60-90s, valutare
+se alzare il watchdog di questa riga specifica o parallelizzare.
+
+### 2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate
+
+Chiusura del set: eseguito per intero `.night-verify` così com'è oggi (tranne
+`shellcheck`, non installato in questa sandbox — limite d'ambiente, non del metodo,
+stesso tipo di limite già annotato per Ollama/Qwen nei cicli precedenti). `bash -n` sul
+gate, `privacy-check.sh` (corretto: "manca la chiave locale" in questa sandbox, che non
+ha `repos.key` — comportamento giusto, non un falso verde: il gate reale gira sul Mac
+dove la chiave esiste), l'intera suite (50/50 file superati), e l'indice SAL già
+coerente. Nessuna sorpresa: la prova end-to-end conferma che i 27 giri di questo set (e
+i 30 dei due precedenti) compongono un sistema coerente, non solo singole modifiche
+isolate.
+
+## Riepilogo Set 3/3 (10 giri, 4° ciclo) — "flusso delle idee, interazione fra le parti"
+
+| Giro | Cosa |
+|---|---|
+| 1 | `PROJECT.md` non citava `controllo-gestione` per i calcoli sui dati BC — la prima cosa che una sessione di giorno legge non conosceva la nuova capacità |
+| 2 | `llm/usage-summary.sh`: il log dei cervelli di giorno (ciclo precedente) entrava e non usciva mai come insight — stesso schema di `gate-summary.sh` applicato al giorno |
+| 3 | `night-shift/repos-index.md`: i codici anonimi (REPO-A…E) sparsi in 15+ file senza un indice — rischio di collisione verificato dal vivo prima di assegnare REPO-E |
+| 4 | Dogfooding di `/design-doc` su una decisione aperta reale: tracciare quale modello ha giudicato ogni riga del banco avversariale — nessuna scelta implementata, tre opzioni con punteggio |
+| 5 | `METHOD.md` non citava il registro del giorno né l'indice dei codici; due percorsi citati senza la cartella reale — primo test di coerenza per questo file |
+| 6-7-8 | Il blocco "percorso cloud/ibrido" viveva in fondo a `onboard-repo.sh` (non in testa, come promesso) — corretto, poi propagato al gemello `bootstrap-app.sh` (stesso gap, mai propagato), poi la mappa aggiornata a citare entrambi |
+| 9 | La crescita della suite test (25→50 file in un ciclo) loggata come debito da tenere d'occhio, non un problema oggi |
+| 10 | Verifica end-to-end dell'intero `.night-verify` — tutto coerente |
+
+**Il dato del set**: quasi tutti i giri (1,3,5,6,7,8) sono varianti dello stesso
+pattern — una parte del sistema sa qualcosa che un'altra parte, che ne avrebbe bisogno,
+non sa. Il flusso delle idee, quando si guarda con attenzione ogni volta, si rompe più
+spesso per un collegamento mai fatto che per un bug nella logica di una singola parte.
+
+## Riepilogo dei tre set (30 giri, 4° ciclo) — dopo il ciclo precedente da 40 giri
+
+- **Set 1** (agenti per problemi matematico-contabili): skill `/controllo-gestione`
+  (mai indovinare una formula, citarla come oracolo) + 4 casi reali su 4 domini diversi
+  (magazzino, produzione, cespiti, crisi d'impresa); bug reale nel gate (verificava 4
+  test su 29); un `client_secret` trovato in un repo esterno, segnalato non toccato.
+- **Set 2** (capacità di progettare: contesto e scelta delle idee): `/design-doc`
+  guadagna criteri espliciti dichiarati prima delle opzioni + tabella opzioni×criteri;
+  `graphify` collegato al passo che più ne beneficia; un bug reale nel report del gate
+  (mostrava solo l'ultimo test su 39); tre casi di staleness della vecchia formula
+  "opzioni+trade-off" trovati e corretti in file diversi.
+- **Set 3** (flusso delle idee, interazione fra le parti): un indice per i codici
+  anonimi; il registro del giorno completato (scrittura c'era, lettura no); due script
+  gemelli (`bootstrap-app.sh`/`onboard-repo.sh`) con lo stesso limite non documentato
+  allo stesso modo; due decisioni aperte dogfoodate con `/design-doc`, mai implementate
+  senza il sì di Luca.

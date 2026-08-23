@@ -104,8 +104,11 @@ Una sessione cloud/remota (es. Claude Code nel container) NON ha `gh` CLI né ac
 `night-shift/repos.conf` (locale del Mac per design). Cosa può fare da sola: commit di file
 (es. `.night-verify`) via tool MCP GitHub. Cosa resta manuale sul Mac del proprietario: creare
 la label `night-shift` (i tool MCP disponibili non la creano) e aggiungere la repo a
-`repos.conf`. Un agente cloud che esegue l'onboarding deve dirlo all'utente, non tacere i
-passi rimasti (dettaglio operativo in testa a `tools/onboard-repo.sh`).
+`repos.conf`. Un agente cloud che esegue l'onboarding O il bootstrap di un progetto nuovo
+deve dirlo all'utente, non tacere i passi rimasti (dettaglio operativo in testa sia a
+`tools/onboard-repo.sh` che a `tools/bootstrap-app.sh` — stesso limite, due script
+gemelli, entrambi chiamano `gh` direttamente; 4° ciclo, set 3, giro 8, 2026-08-23: prima
+citava solo "l'onboarding", non il bootstrap).
 
 ## Il ciclo guadagna la fase di audit (2026-08-21, sera)
 
@@ -117,9 +120,29 @@ sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi)
 - **`/audit-commesse <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
   reale, corregge i body, compila la "Forma dei dati (verificata)". Nato dall'A/B: la commessa
   con l'assunzione sbagliata costa alla notte ore, al giorno una lettura
-- **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni con trade-off, senza implementare —
-  la scelta resta di Luca. È il passo /brainstorming che diventa documento. Implementato
-  come skill Claude in `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato
-  qui senza esistere — stesso debito già chiuso per `/audit-commesse`)
+- **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni confrontate su criteri
+  espliciti (costo/rischio/reversibilità + criteri specifici alla decisione, dichiarati
+  PRIMA delle opzioni, in una tabella opzioni×criteri — 4° ciclo, set 2, 2026-08-23: non
+  più un trade-off narrativo libero), senza implementare — la scelta resta di Luca. È il
+  passo /brainstorming che diventa documento. Implementato come skill Claude in
+  `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato qui senza esistere
+  — stesso debito già chiuso per `/audit-commesse`)
 - **Il gate guarda anche i branch `claude/*`**: il lavoro del giorno passa le stesse verifiche
   dichiarate e lo stesso banco avversariale di quello notturno
+
+## Il ciclo guadagna il controllo di gestione (4° ciclo, set 1 "agenti", 2026-08-23)
+
+- **`/controllo-gestione`** (Claude e ZCode): ancora un calcolo contabile/gestionale
+  reale (contabilità analitica, di magazzino, controllo di gestione, margini, cespiti) a
+  una formula esistente citata come oracolo (mai indovinata) — generalizza per questo
+  dominio lo schema censimento+riscontro già in uso ad-hoc per Business Central
+  (`PROJECT.md`). Implementato come skill Claude in
+  `.claude/skills/controllo-gestione/SKILL.md`. Nato da un censimento di un repo esterno
+  (codice anonimo **REPO-E**, regola "Public repo, private work": questo hub è pubblico,
+  mai nomi reali) che ha trovato ~10 calcoli di controllo di gestione reali già
+  implementati ma nessun metodo condiviso per affrontarne uno nuovo senza indovinare la
+  formula. Primo caso risolto: `tools/riconciliazione_magazzino.py`.
+- Citata anche nel template `.github/ISSUE_TEMPLATE/night-shift.md` (sezione
+  "## Forma dei dati") e propagata ai progetti nuovi/esistenti come le altre skill
+  (`tools/bootstrap-app.sh`, `tools/onboard-repo.sh` — copia wholesale di
+  `.claude/skills/`, nessuna riga dedicata necessaria).

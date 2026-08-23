@@ -37,7 +37,11 @@ procedere a indovinare (regola del progetto: "se qualcosa è poco chiaro, chiedi
 - **Gap di processo** — emersi solo provando a usare lo strumento, non dalla lettura del codice.
 - **Nuove funzionalità non considerate** — confronta lo scope DICHIARATO (cosa i documenti
   dicono che il progetto fa o farà) con quello IMPLEMENTATO: cosa è promesso ma assente, cosa un
-  caso d'uso reale richiederebbe e oggi non c'è. Proponi, non implementare senza conferma.
+  caso d'uso reale richiederebbe e oggi non c'è. Proponi, non implementare senza conferma. Se
+  l'idea è ancora vaga (non sai dire in una frase cosa deve essere vero dopo), il passo
+  successivo naturale è `/brainstorming`; se sono già visibili 2+ approcci concreti, è
+  `/design-doc` (4° ciclo, set 2, giro 9, 2026-08-23) — dillo nel report invece di lasciare
+  che l'idea resti un'affermazione isolata senza un passo successivo dichiarato.
 
 Per ogni finding: severità, perché conta, un suggerimento concreto (non vago) e — se è una
 scelta di design con impatto (sicurezza, breaking change, costo) — dillo esplicitamente e non
@@ -98,6 +102,10 @@ sommare al 100%; conversioni; arrotondamenti):
   formula nel modo giusto.
 - Il pattern esteso (banco Node/vm su codice GAS puro, senza dipendenze) è documentato in
   `patterns/banco-sintetico-per-calcoli-critici.md`.
+- Questa lente REVISIONA un calcolo già scritto. Per COSTRUIRE un calcolo
+  contabile/gestionale nuovo (non ancora scritto) senza indovinare la formula, usa
+  `.claude/skills/controllo-gestione/SKILL.md` — stessa disciplina (oracolo citato,
+  invariante verificato con dati concreti), applicata prima del codice invece che dopo.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 
