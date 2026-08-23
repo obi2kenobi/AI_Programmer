@@ -67,6 +67,7 @@
 - [2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello](#2026-08-23-24-set-3-3-giro-7-lo-stesso-gap-mai-propagato-al-file-gemello)
 - [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
 - [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
+- [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
 
 
 ## Stato
@@ -1655,3 +1656,50 @@ watchdog di 120s (`run_guarded`), ma il trend è monotono (ogni giro ne aggiunge
 problema oggi: loggato in `DEBITI.md` come "poi" da non far diventare "mai" — quando la
 suite supererà ~150-180 file, o una singola esecuzione si avvicinerà ai 60-90s, valutare
 se alzare il watchdog di questa riga specifica o parallelizzare.
+
+### 2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate
+
+Chiusura del set: eseguito per intero `.night-verify` così com'è oggi (tranne
+`shellcheck`, non installato in questa sandbox — limite d'ambiente, non del metodo,
+stesso tipo di limite già annotato per Ollama/Qwen nei cicli precedenti). `bash -n` sul
+gate, `privacy-check.sh` (corretto: "manca la chiave locale" in questa sandbox, che non
+ha `repos.key` — comportamento giusto, non un falso verde: il gate reale gira sul Mac
+dove la chiave esiste), l'intera suite (50/50 file superati), e l'indice SAL già
+coerente. Nessuna sorpresa: la prova end-to-end conferma che i 27 giri di questo set (e
+i 30 dei due precedenti) compongono un sistema coerente, non solo singole modifiche
+isolate.
+
+## Riepilogo Set 3/3 (10 giri, 4° ciclo) — "flusso delle idee, interazione fra le parti"
+
+| Giro | Cosa |
+|---|---|
+| 1 | `PROJECT.md` non citava `controllo-gestione` per i calcoli sui dati BC — la prima cosa che una sessione di giorno legge non conosceva la nuova capacità |
+| 2 | `llm/usage-summary.sh`: il log dei cervelli di giorno (ciclo precedente) entrava e non usciva mai come insight — stesso schema di `gate-summary.sh` applicato al giorno |
+| 3 | `night-shift/repos-index.md`: i codici anonimi (REPO-A…E) sparsi in 15+ file senza un indice — rischio di collisione verificato dal vivo prima di assegnare REPO-E |
+| 4 | Dogfooding di `/design-doc` su una decisione aperta reale: tracciare quale modello ha giudicato ogni riga del banco avversariale — nessuna scelta implementata, tre opzioni con punteggio |
+| 5 | `METHOD.md` non citava il registro del giorno né l'indice dei codici; due percorsi citati senza la cartella reale — primo test di coerenza per questo file |
+| 6-7-8 | Il blocco "percorso cloud/ibrido" viveva in fondo a `onboard-repo.sh` (non in testa, come promesso) — corretto, poi propagato al gemello `bootstrap-app.sh` (stesso gap, mai propagato), poi la mappa aggiornata a citare entrambi |
+| 9 | La crescita della suite test (25→50 file in un ciclo) loggata come debito da tenere d'occhio, non un problema oggi |
+| 10 | Verifica end-to-end dell'intero `.night-verify` — tutto coerente |
+
+**Il dato del set**: quasi tutti i giri (1,3,5,6,7,8) sono varianti dello stesso
+pattern — una parte del sistema sa qualcosa che un'altra parte, che ne avrebbe bisogno,
+non sa. Il flusso delle idee, quando si guarda con attenzione ogni volta, si rompe più
+spesso per un collegamento mai fatto che per un bug nella logica di una singola parte.
+
+## Riepilogo dei tre set (30 giri, 4° ciclo) — dopo il ciclo precedente da 40 giri
+
+- **Set 1** (agenti per problemi matematico-contabili): skill `/controllo-gestione`
+  (mai indovinare una formula, citarla come oracolo) + 4 casi reali su 4 domini diversi
+  (magazzino, produzione, cespiti, crisi d'impresa); bug reale nel gate (verificava 4
+  test su 29); un `client_secret` trovato in un repo esterno, segnalato non toccato.
+- **Set 2** (capacità di progettare: contesto e scelta delle idee): `/design-doc`
+  guadagna criteri espliciti dichiarati prima delle opzioni + tabella opzioni×criteri;
+  `graphify` collegato al passo che più ne beneficia; un bug reale nel report del gate
+  (mostrava solo l'ultimo test su 39); tre casi di staleness della vecchia formula
+  "opzioni+trade-off" trovati e corretti in file diversi.
+- **Set 3** (flusso delle idee, interazione fra le parti): un indice per i codici
+  anonimi; il registro del giorno completato (scrittura c'era, lettura no); due script
+  gemelli (`bootstrap-app.sh`/`onboard-repo.sh`) con lo stesso limite non documentato
+  allo stesso modo; due decisioni aperte dogfoodate con `/design-doc`, mai implementate
+  senza il sì di Luca.
