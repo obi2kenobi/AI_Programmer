@@ -77,6 +77,7 @@
 - [2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato](#2026-08-23-set-1-giro-7-un-limite-reale-non-ancora-dichiarato)
 - [2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui](#2026-08-23-set-1-giro-8-dogfooding-reale-sui-propri-agenti-non-sono-invocabili-qui)
 - [2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md](#2026-08-23-set-1-giro-9-la-scoperta-del-giro-8-entra-in-debiti-md)
+- [2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify](#2026-08-23-set-2-giro-2-selezione-del-contesto-nessun-percorso-senza-graphify)
 
 
 ## Stato
@@ -1970,3 +1971,19 @@ tabella con colonna "Opzione", almeno 2 opzioni reali confrontate (non una vera 
 paglia). Stesso principio delle guardie già scritte per i limiti dichiarati in
 `docs/system.md` (5° ciclo, Set 1 giri 6-7): non basta che la regola sia scritta bene,
 deve restare verificabile che venga seguita.
+
+### 2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify
+
+`design-doc/SKILL.md` §3 (4° ciclo) dice "se `graphify-out/graph.json` esiste, usa
+graphify" per orientarsi nel codebase prima di generare le opzioni — ma non diceva
+cosa fare quando NON esiste. Non un caso ipotetico: verificato in questa stessa
+sessione che `graphify-out/` non esiste e il binario `graphify` non è installato — un
+vuoto reale nella selezione del contesto, non teorico.
+
+Aggiunto il ramo mancante: territorio piccolo e già chiaro → `Grep`/`Glob` sui termini
+di dominio; territorio ampio o nomi dei componenti non ancora noti → l'agente
+`Explore` (breadth "quick"/"medium") — stessa soglia già in uso nel resto del sistema
+("3+ query esplorative → Explore"), non una regola nuova. Test estesi in
+`tests/test-design-doc-graphify.sh` (già esistente, non un file nuovo — stesso
+argomento, stesso file sotto test) per verificare che il fallback sia dichiarato e
+citi `Explore`.

@@ -42,7 +42,14 @@ decisioni già chiuse (regola "Only what is asked").
    coinvolti (regola CLAUDE.md §7 "Navigazione before reading" + `AGENTS.md`) — è
    orientamento e localizzazione, non un oracolo su COME i componenti si chiamano a
    vicenda (`calls` non è risolto, lezione già pagata: non fidarti del grafo per la
-   semantica, solo per dove guardare). Poi, per ogni opzione:
+   semantica, solo per dove guardare). **Se `graphify-out/graph.json` NON esiste**
+   (5° ciclo, set 2 "progettare", giro 2, 2026-08-23 — caso reale di questa stessa
+   sessione, non ipotetico: il grafo non è installato qui) — non restare senza un
+   passo: usa `Grep`/`Glob` sui termini di dominio della richiesta per un territorio
+   piccolo e già chiaro, o l'agente `Explore` (breadth "quick"/"medium") quando il
+   territorio è ampio o i nomi dei componenti coinvolti non sono ancora noti — stessa
+   soglia già in uso nel resto del sistema ("3+ query esplorative → Explore"), non una
+   regola nuova inventata qui. Poi, per ogni opzione:
    - cosa cambia concretamente (file/componenti coinvolti, a un livello alto — non il
      territorio riga-per-riga, quello è compito della commessa dopo);
    - **un punteggio per ciascun criterio dichiarato al punto 2**, in una tabella
