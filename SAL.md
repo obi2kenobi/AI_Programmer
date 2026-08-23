@@ -2221,3 +2221,18 @@ pattern, verifica quelle hub-locali (9 su 24; le altre citano repo esterni o pro
 non verificabili da qui, correttamente escluse). Risultato: **9/9 ancore verificate
 esistono davvero** — nessuna ancora morta trovata oggi, un esito onesto che conferma
 la regola del catalogo era già rispettata, non solo scritta.
+
+### 2026-08-23 — Set 3 giro 6: `/goal` aveva raggiunto il suo obiettivo ma nessuno lo sapeva ancora
+
+`METHOD.md` e `.claude/skills/goal/SKILL.md` dicevano ancora "loops/ è vuota" DOPO che
+il Set 2 giro 3 di questo stesso ciclo aveva eseguito il primo loop reale — la prosa
+non seguiva più i fatti, esattamente il pattern ricorrente di questo Set 3 (una parte
+del sistema resta indietro rispetto a un'altra che è appena cambiata).
+
+Corretto: `METHOD.md` aggiorna la riga `/goal`, `goal/SKILL.md` qualifica la storia al
+passato ("finché non è stato scritto questo comando") invece di presentarla come stato
+attuale. Guardia di regressione: `tests/test-goal-loops-non-piu-vuota.sh` — verifica
+che `loops/` contenga davvero un log reale, e che nessuno dei due file affermi ancora
+il contrario al presente. Un tentativo iniziale del test dava un falso positivo su
+`goal/SKILL.md` (bloccava anche la frase corretta al passato, non solo quella stale) —
+corretto prima di committarlo, non dopo.
