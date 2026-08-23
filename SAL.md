@@ -85,6 +85,7 @@
 - [2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione](#2026-08-23-set-3-giro-1-un-cross-reference-in-una-sola-direzione)
 - [2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna](#2026-08-23-set-3-giro-2-i-diagrammi-in-cima-mostravano-solo-la-strada-notturna)
 - [2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo](#2026-08-23-set-3-giro-4-la-stessa-famiglia-di-bug-diventa-un-pattern-nel-catalogo)
+- [2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente](#2026-08-23-set-3-giro-5-una-regola-del-catalogo-mai-verificata-meccanicamente)
 
 
 ## Stato
@@ -2207,3 +2208,16 @@ volta che la categoria cresce; il fix è sempre iterare su un glob reale, mai un
 scritta a mano. Registrato in `patterns/README.md`. Propagazione già verificata via
 `test-bootstrap-patterns-propagation.sh` (che usa `find`, non una lista — coerente col
 pattern che descrive).
+
+### 2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente
+
+`patterns/README.md` dichiara "l'ancora deve esistere, o la voce non sopravvive" —
+ma nessun test verificava mai questa regola per davvero, per NESSUNO dei 24 pattern
+del catalogo, dalla sua creazione. Lo stesso principio "citazione-non-presidio" che
+il catalogo stesso descrive (§dedicato), applicato al catalogo stesso.
+
+Nuovo test: `tests/test-patterns-ancore-esistono.sh` — estrae l'ancora di ogni
+pattern, verifica quelle hub-locali (9 su 24; le altre citano repo esterni o processi
+non verificabili da qui, correttamente escluse). Risultato: **9/9 ancore verificate
+esistono davvero** — nessuna ancora morta trovata oggi, un esito onesto che conferma
+la regola del catalogo era già rispettata, non solo scritta.
