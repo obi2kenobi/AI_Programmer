@@ -40,22 +40,23 @@
 4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su REPO-A).
    Le indagini restano ai cervelli di giorno
 5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
-6. **`.claude/agents/` NON è invocabile in questa sessione Claude Code (verificato dal
-   vivo, non solo dedotto)**: i tre agenti del Set 1 "agenti" (5° ciclo) sono file
-   `.md` con frontmatter valido nel formato documentato di Claude Code, ma un
-   tentativo REALE di invocarne uno (`Agent({subagent_type: "contabilita-analitica"})`,
-   set 1 giro 8) è stato rifiutato con "Agent type non trovato" — l'elenco degli agenti
-   disponibili in questa sessione (Claude Code Remote/cloud) resta fisso a quelli
-   nativi (general-purpose, Explore, Plan, ecc.), anche DOPO che i file erano già
-   committati sul branch. Non verificato se un'installazione Claude Code CLI locale
-   standard (fuori da questa sessione remota) li leggerebbe — quella verifica richiede
-   un ambiente diverso da quello disponibile qui. Finché non riverificato in un
-   ambiente che li scopre, trattare i tre agenti come DOCUMENTAZIONE DEL METODO (il
-   corpo prosa resta valido e utile da leggere) più che come automazione funzionante:
-   la skill `.claude/skills/controllo-gestione/SKILL.md` §1-5 resta la via provata che
-   funziona ovunque (invocata a comando, non un subagent selezionato dal roster). Anche
-   OpenCode (ZCode, turno notturno) resta comunque fuori scope: nessuna configurazione
-   equivalente qui (`.opencode/agent/` assente, solo `.opencode/skills/`)
+6. **`.claude/agents/` — invocabilità dipende da un refresh del roster, non solo dai
+   file (verificato dal vivo due volte, con esiti diversi)**: un primo tentativo REALE
+   di invocare `contabilita-analitica` (set 1 giro 8, stesso giorno) è stato rifiutato
+   con "Agent type non trovato" subito dopo il commit dei tre file — il roster degli
+   agenti disponibili in quella sessione era rimasto quello di apertura sessione. Un
+   secondo tentativo, più tardi lo stesso giorno (dopo il push e l'apertura della PR
+   #35), ha invocato con successo tutti e tre gli agenti — il roster si era
+   aggiornato nel frattempo. Non è chiaro DA COSA dipenda il refresh (nuova sessione?
+   push al branch remoto? un intervallo di tempo?) — non riverificato con un
+   esperimento isolato, quindi non presumerlo. Conseguenza pratica: `.claude/agents/`
+   funziona, ma non è garantito che sia invocabile nella stessa sessione/turno in cui
+   i file vengono creati — se un'invocazione fallisce con "Agent type non trovato"
+   subito dopo aver scritto un nuovo agente, non è necessariamente un bug del file,
+   riprova più tardi o in una sessione nuova prima di concludere che non funzioni.
+   Anche OpenCode (ZCode, turno notturno) resta comunque fuori scope: nessuna
+   configurazione equivalente qui (`.opencode/agent/` assente, solo
+   `.opencode/skills/`)
 
 ## La fabbrica
 

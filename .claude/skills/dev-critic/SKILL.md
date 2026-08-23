@@ -117,9 +117,10 @@ sommare al 100%; conversioni; arrotondamenti):
 - Questa lente esiste anche come subagent dedicato, `.claude/agents/revisore-calcoli-critici.md`
   (5° ciclo, set 3 giro 1, 2026-08-23 — la direzione mancante: `controllo-gestione`
   cita già i tre agenti al suo §6, questa lente non citava ancora quello che la
-  incarna). Stesso limite noto degli altri due agenti del set: non invocabile dal
-  tool Agent in questa sessione (`docs/system.md` §"Limiti dichiarati" #6) — utile
-  oggi come descrizione del ruolo diviso per fase, non come automazione provata qui.
+  incarna). L'invocabilità del tool Agent su questo e gli altri due agenti del set
+  dipende da un refresh del roster (`docs/system.md` §"Limiti dichiarati" #6) — non
+  presumere che un'invocazione fallita subito dopo aver scritto un agente sia un
+  bug del file.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 

@@ -126,13 +126,14 @@ dell'aggiustamento finale) — è la stessa disciplina usata nei test di questa 
 
 ## 6. Delega a un subagent (5° ciclo, set 1, 2026-08-23)
 
-Questo metodo esiste anche descritto come tre subagent Claude Code (`.claude/agents/`,
-non solo skill invocata a comando), un ruolo per fase — ma LIMITE VERIFICATO dal vivo
-(set 1 giro 8, non solo dedotto): in questa sessione (Claude Code Remote/cloud) il
-tool Agent non li trova ("Agent type non trovato"), anche dopo che i file erano già
-committati sul branch. Leggili come documentazione del metodo divisa per ruolo, non
-come automazione oggi funzionante qui — la via provata resta invocare questa skill a
-comando (§1-5). Dettaglio in `docs/system.md` §"Limiti dichiarati" #6.
+Questo metodo esiste anche come tre subagent Claude Code (`.claude/agents/`, non solo
+skill invocata a comando), un ruolo per fase — invocabili con il tool Agent
+(`subagent_type`). Nota di processo (set 1 giro 8, poi corretta): un primo tentativo
+di invocazione subito dopo il commit dei file era stato rifiutato ("Agent type non
+trovato"); un secondo tentativo più tardi lo stesso giorno ha invocato tutti e tre con
+successo — l'invocabilità dipende da un refresh del roster degli agenti disponibili,
+non è garantita nella stessa sessione/turno in cui i file vengono scritti. Dettaglio
+in `docs/system.md` §"Limiti dichiarati" #6.
 
 - `contabilita-analitica` — applica/verifica un calcolo GIÀ risolto (§3) ai dati reali;
   sola lettura, non dubita della formula.

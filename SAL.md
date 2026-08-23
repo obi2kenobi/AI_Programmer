@@ -2350,3 +2350,30 @@ nello stesso ciclo — sia quando rivela un limite scomodo (Set 1, gli agenti no
 invocabili), sia quando smentisce un proprio sospetto prima che diventi un fix
 sbagliato (Set 3, il falso YAML), sia quando trova lo stesso errore ripetuto dallo
 stesso autore che l'aveva appena corretto altrove (Set 2, le liste hardcoded).
+
+### 2026-08-23 — dopo il push e la PR #35: il limite del Set 1 giro 8 era temporaneo, non permanente
+
+Subito dopo l'apertura della PR #35, il roster degli agenti disponibili in questa
+sessione mostrava i tre subagent (`contabilita-analitica`,
+`costruttore-calcoli-gestionali`, `revisore-calcoli-critici`) come tipi disponibili
+per il tool Agent — cosa che NON accadeva al Set 1 giro 8, subito dopo il primo
+commit. Riverificato dal vivo (non presunto dal solo elenco): invocati tutti e tre,
+con un prompt di eco minimo, e tutti e tre hanno risposto correttamente.
+
+Questo NON invalida il metodo del giro 8 (era la verifica corretta da fare in quel
+momento, con l'informazione disponibile allora) — cambia la conclusione: il limite
+non è permanente/ambientale come documentato ("non invocabile in questa sessione
+Claude Code Remote/cloud"), ma dipendente da un refresh del roster degli agenti che
+non si era ancora verificato al momento del primo tentativo. Non isolato
+sperimentalmente cosa fa scattare il refresh (nuova sessione? il push al branch
+remoto? un intervallo di tempo? l'apertura della PR?) — non presumerlo, dichiarato
+come incertezza residua invece di una nuova ipotesi non verificata.
+
+Corretto ovunque la conclusione precedente era stata scritta come limite fisso:
+`docs/system.md` §"Limiti dichiarati" #6, `DEBITI.md` (voce segnata ✅ SALDATO),
+`METHOD.md`, `.claude/skills/controllo-gestione/SKILL.md` §6,
+`.claude/skills/dev-critic/SKILL.md` §2ter, e la relativa guardia di regressione in
+`tests/test-system-md-controllo-gestione.sh`. Le voci storiche di questo file (Set 1
+giro 8/9, PR #35) NON sono state riscritte — restano la cronaca accurata di cosa era
+vero in quel momento con l'informazione allora disponibile; questa voce documenta la
+correzione successiva, non nasconde l'errore di conclusione iniziale.
