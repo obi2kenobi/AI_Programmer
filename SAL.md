@@ -70,6 +70,7 @@
 - [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
 - [2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill](#2026-08-23-set-1-giro-1-nessun-sistema-di-subagent-solo-skill)
 - [2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato](#2026-08-23-set-1-giro-2-un-secondo-agente-non-un-duplicato)
+- [2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti](#2026-08-23-set-1-giro-3-il-terzo-ruolo-dogfoodato-per-davvero-sui-4-tool-esistenti)
 
 
 ## Stato
@@ -1704,6 +1705,7 @@ spesso per un collegamento mai fatto che per un bug nella logica di una singola 
   anonimi; il registro del giorno completato (scrittura c'era, lettura no); due script
   gemelli (`bootstrap-app.sh`/`onboard-repo.sh`) con lo stesso limite non documentato
   allo stesso modo; due decisioni aperte dogfoodate con `/design-doc`, mai implementate
+  senza il sì di Luca.
 
 ## 5° ciclo — Set 1/3, giro 1: `.claude/agents/` non esisteva
 
@@ -1748,4 +1750,30 @@ del codice, mai indovinare) ma applicato alla costruzione invece che alla
 verifica. Il corpo dell'agente chiude esplicitamente il confine: quando il calcolo è
 pronto, il compito passa fuori dal suo ruolo (revisione → prossimo agente del set,
 giro 3).
-  senza il sì di Luca.
+
+### 2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti
+
+Terzo agente: `.claude/agents/revisore-calcoli-critici.md` (tool scope: solo lettura +
+Bash, niente Edit/Write — un giro di analisi non modifica codice, regola CLAUDE.md e
+§3 di dev-critic) — applica la lente §2ter (segno invertito, plug che nasconde un
+residuo) ai calcoli GIÀ scritti in `tools/*.py`, ruolo distinto sia da
+`contabilita-analitica` (applica, non dubita) sia da `costruttore-calcoli-gestionali`
+(scrive nuovo, non revisiona esistente).
+
+Prima di scrivere solo la prosa dell'agente, l'ho eseguito per davvero sui 4 tool già
+in produzione (regola dev-critic "dogfooding reale, non solo lettura"). Un sospetto
+concreto emerso leggendo `tools/indici_crisi.py`: l'indice "Patrimonio netto / Debiti
+totali" usa `a["passivoTot"]` come denominatore — il nome suggerisce "tutto il
+passivo" (che includerebbe il patrimonio netto stesso, gonfiando il denominatore e
+producendo un indice falsato per difetto). Verificato contro l'oracolo reale (repo
+esterno REPO-E, il modulo di calcolo indici crisi, righe 85 e 92 lette per riga, non
+a memoria): `passivoTot = -passivo`, dove `passivo` è la somma della sola categoria
+contabile `'Liabilities'` (i debiti), categoria distinta da `'Equity'` — il nome è
+fedele alla realtà, non ambiguo. Sospetto chiuso senza fix: un falso positivo
+risolto controllando l'oracolo invece di fidarsi del nome della variabile, esattamente
+il tipo di verifica che questo agente esiste per fare. Nessun bug nuovo trovato sui 4
+tool: la disciplina §2ter applicata GIÀ in costruzione (cicli precedenti) ha lasciato
+una suite di test avversariali (segno del fondo, soglia limite con `<=`, denominatore
+zero, "4 su 5 non basta") che coprono esattamente gli scenari che questo agente
+avrebbe cercato. Un esito onesto — non ogni giro deve inventare un bug per essere
+utile; qui il valore è la conferma provata, non la scoperta.
