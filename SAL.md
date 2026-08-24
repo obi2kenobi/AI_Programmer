@@ -2431,3 +2431,24 @@ di questa stessa giornata.
 Guardie di regressione: `tests/test-claude-md-project-first-touch.sh`,
 `tests/test-claude-md-segreto-impronta-regola.sh`,
 `tests/test-claude-md-secret-handoff-oneshot.sh`.
+
+### 2026-08-24 — punto 5: patterns/ auto-consultato via hook PreToolUse (mai fatto prima in questo repo)
+
+Prima volta che questo repo usa un hook `.claude/settings.json` (non esisteva alcun
+`settings.json`). `tools/pattern-reminder-hook.sh` scatta su `PreToolUse` con matcher
+`Edit|Write`: se il `file_path` toccato matcha una categoria sensibile (auth/secret/
+credential/token/login/password, incluse le varianti italiane "credenzial"/"segret"),
+stampa un `additionalContext` con le righe pertinenti di `patterns/README.md` —
+`permissionDecision` è sempre `"allow"`, non blocca mai l'operazione, per costruzione.
+
+Verificato dal vivo, non solo con un pipe-test sintetico (dogfooding, disciplina
+dev-critic §1.2): dopo aver scritto il hook, un vero `Edit` su un file di test con path
+sensibile (`/tmp/hook-test-sensitive/auth-token-test.txt`) ha prodotto realmente il
+`<system-reminder>` con il reminder nello stesso turno — il watcher dei settings ha
+raccolto il file appena creato senza bisogno di `/hooks` o riavvio (diversamente dal
+caso generico descritto dalla guida della skill `update-config`, dove un `settings.json`
+comparso a metà sessione potrebbe non essere osservato). Grep iniziale troppo largo
+(matchava anche una riga di prosa contenente "token" nell'intestazione del registro, non
+solo le righe della tabella pattern) — corretto restringendo il grep alle righe che
+iniziano per `| [`. Test di regressione: `tests/test-pattern-reminder-hook.sh` (9
+controlli, incluso che `permissionDecision` sia sempre `allow`).
