@@ -89,6 +89,7 @@
 - [2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti](#2026-08-23-set-3-giro-8-sweep-sistematico-di-tutte-le-citazioni-fra-skill-agenti)
 - [2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix](#2026-08-23-set-3-giro-9-un-ipotesi-di-bug-smentita-dal-vivo-prima-di-diventare-un-fix)
 - [2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale](#2026-08-23-set-3-giro-10-chiude-il-set-e-il-ciclo-verifica-end-to-end-finale)
+- [2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice](#2026-08-24-feedback-di-un-utente-esterno-reale-5-gap-di-processo-non-di-codice)
 
 
 ## Stato
@@ -2377,3 +2378,32 @@ Corretto ovunque la conclusione precedente era stata scritta come limite fisso:
 giro 8/9, PR #35) NON sono state riscritte — restano la cronaca accurata di cosa era
 vero in quel momento con l'informazione allora disponibile; questa voce documenta la
 correzione successiva, non nasconde l'errore di conclusione iniziale.
+
+### 2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice
+
+Un secondo utente ha usato AI_Programmer (non Luca) e ha riportato 5 criticità
+verificate sul repo prima di intervenire (regola "leggi prima di agire"):
+
+1. **Scoperta delle skill non documentata** — verificato: nessun `README.md` in
+   radice esisteva. Un utente nuovo doveva dedurre dal codice che le skill scattano
+   per matching automatico sulla `description` del frontmatter, non da un elenco.
+   Fix: creato `README.md` in radice con la spiegazione del meccanismo reale
+   (skill vs agenti, il limite noto del refresh del roster, i comandi citati ma non
+   ancora scritti sono debiti in `DEBITI.md`, non bug). Guardia:
+   `tests/test-readme-skill-discovery.sh`.
+2. **La promessa di PROJECT.md non era vincolante** — CLAUDE.md §6 diceva solo
+   "leggilo e tienilo aggiornato", nessun trigger su QUANDO aggiungere una sezione
+   nuova: restava vuota in silenzio per un progetto toccato per la prima volta.
+3. **`segreto-come-impronta` era un pattern facoltativo, non una regola** — un
+   principio critico (mascherare un segreto in output, non solo omettere/stampare)
+   dipendeva dal fatto che qualcuno consultasse `patterns/` di sua iniziativa.
+4. **Nessuna convenzione per il secret handoff one-shot** — un primo login/deploy
+   interattivo (token OAuth, `clasp login`) non aveva risposta diversa da "incollalo
+   in chat", esattamente ciò che il punto 3 vuole evitare.
+5. **`patterns/` non era auto-consultato** — dipendeva dalla memoria dell'agente in
+   quel turno, non da un meccanismo del sistema.
+
+Punti 2-5 diventano regole vincolanti in `CLAUDE.md` (non solo un README esplicativo,
+perché sono principi di comportamento per ogni sessione futura, non solo per un
+utente nuovo che legge una volta). Dettaglio del fix per punto nelle voci successive
+di questa stessa giornata.
