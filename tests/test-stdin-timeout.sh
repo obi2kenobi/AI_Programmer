@@ -9,6 +9,8 @@
 # chiudere, esattamente il caso non-tty-senza-EOF).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# ai_timeout: portabile anche su macOS senza GNU timeout (vedi llm/_timeout.sh)
+source "$HERE/llm/_timeout.sh"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
@@ -50,7 +52,7 @@ check_bounded() {
   sleep 100 > "$FIFO" &
   SLEEP_PID=$!
   T0=$(date +%s)
-  timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >/tmp/stdintest.out 2>&1
+  ai_timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >/tmp/stdintest.out 2>&1
   RC=$?
   T1=$(date +%s); DUR=$((T1-T0))
   kill "$SLEEP_PID" 2>/dev/null

@@ -20,17 +20,17 @@ for f in "${FILES[@]}"; do
     ARGS+=("--filename" "$(basename "$f")" "$T")
   fi
 done
-trap 'rm -f "${TMPFILES[@]}"' EXIT
+trap 'rm -f ${TMPFILES[@]+"${TMPFILES[@]}"}' EXIT
 
 if [ -n "$GIST_ID" ]; then
   # aggiorna il gist esistente
-  gh gist edit "$GIST_ID" --desc "$GIST_DESC" "${ARGS[@]}" 2>/dev/null \
+  gh gist edit "$GIST_ID" --desc "$GIST_DESC" ${ARGS[@]+"${ARGS[@]}"} 2>/dev/null \
     && echo "✓ backup aggiornato: $GIST_ID" \
     || { echo "⚠ aggiornamento fallito, provo a creare"; GIST_ID=""; }
 fi
 
 if [ -z "$GIST_ID" ]; then
-  URL=$(gh gist create --secret --desc "$GIST_DESC" "${ARGS[@]}" 2>/dev/null | tail -1)
+  URL=$(gh gist create --secret --desc "$GIST_DESC" ${ARGS[@]+"${ARGS[@]}"} 2>/dev/null | tail -1)
   if [ -n "$URL" ]; then
     echo "$URL" | grep -oE '[a-f0-9]{32,}' > "$GIST_ID_FILE"
     echo "✓ nuovo gist segreto: $URL"

@@ -15,7 +15,10 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 # estrae ogni voce "### <qualsiasi> — design: <titolo>" fino alla prossima intestazione
-mapfile -t TITOLI < <(grep -n '^### .*— design:' "$SAL" | cut -d: -f1)
+# (bash 3.2 di macOS non ha mapfile — loop portabile, stessa regressione del 2026-08-24
+# che ha rotto ask-opus.sh sull'array vuoto: la suite deve girare sulla bash di sistema)
+TITOLI=()
+while IFS= read -r riga; do TITOLI+=("$riga"); done < <(grep -n '^### .*— design:' "$SAL" | cut -d: -f1)
 
 if [ "${#TITOLI[@]}" -eq 0 ]; then
   ko "nessuna voce di design trovata in SAL.md (nulla da verificare — controllare il pattern)"

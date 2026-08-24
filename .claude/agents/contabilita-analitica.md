@@ -36,6 +36,20 @@ come ispirazione vaga):
 - `tools/rollforward_cespiti.py` — roll-forward annuale cespiti.
 - `tools/indici_crisi.py` — indici della crisi d'impresa (CNDCEC/CCII).
 - `tools/scadenzario_aging.py` — fasce di scadenza (aging) e totali clienti/fornitori.
+- `tools/valorizzazione_magazzino.py` — valorizzazione a costo medio con override
+  gruppo/categoria/articolo (6° ciclo, Set 1: i costi generali % restano NON
+  applicati — formula non provata in REPO-E).
+- `tools/margine_documento.py` — margine per documento accoppiato per riferimento,
+  % sui ricavi, nota di credito che annulla (6° ciclo, Set 1).
+- `tools/accuratezza_fatture_acquisto.py` — matching fattura↔ordine, solo
+  over-invoicing è discrepanza, whitelist fornitori (6° ciclo, Set 1).
+- `tools/leasing_amministrativo.py` — canone con adeguamento Euribor trimestrale
+  ARRETRATO, capitale residuo ad ammortamento uniforme, stime dichiarate (7° ciclo).
+- `tools/rating_dso_clienti.py` — DSO per cliente, matching per codice con
+  fallback cliente+data+importo, factoring come pagamento, DSO 'n.d.' per chi
+  non ha pagato nulla (il confine 0≠'paga subito' dichiarato) (7° ciclo).
+- `tools/bilancio_bu.py` — CE per BU con convenzione segni G/L (amount<0=ricavo),
+  NOBU visibile, quadratura meccanica; ribaltamento REPARTO dichiarato APERTO (7° ciclo).
 
 Se il problema portato non rientra in nessuno di questi casi ed è ancora
 vago su cosa deve risultare vero dopo il calcolo, rimanda a `/brainstorming`

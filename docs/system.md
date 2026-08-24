@@ -54,9 +54,12 @@
    i file vengono creati — se un'invocazione fallisce con "Agent type non trovato"
    subito dopo aver scritto un nuovo agente, non è necessariamente un bug del file,
    riprova più tardi o in una sessione nuova prima di concludere che non funzioni.
-   Anche OpenCode (ZCode, turno notturno) resta comunque fuori scope: nessuna
-   configurazione equivalente qui (`.opencode/agent/` assente, solo
-   `.opencode/skills/`)
+   Anche OpenCode (ZCode, turno notturno) restava fuori scope — **AGGIORNATO 6°
+   ciclo, set 3 (2026-08-24): chiuso per la parte agenti**: `.opencode/agent/`
+   ora specchia i 5 agenti di `.claude/agents/` con corpo identico per contratto
+   (guardia: `tests/test-opencode-agent-sync.sh`) e bootstrap/onboard propagano
+   anche quella cartella. La parte Claude Code del limite (refresh del roster)
+   resta valida.
 
 ## La fabbrica
 
@@ -178,6 +181,134 @@ citava solo "l'onboarding", non il bootstrap).
   produzione, cespiti, crisi d'impresa, scadenzario aging), tutti minati da REPO-E.
   Propagati ai progetti nuovi/esistenti con lo stesso schema di `.claude/skills/`
   (stesso gap trovato e corretto per la terza cartella, set 1 giro 5).
+
+## Il ciclo guadagna la mappa del dominio e il quarto e quinto agente (6° ciclo, set 1 "agenti", 2026-08-24)
+
+- **`docs/mappa-dominio-gas-src.md`**: censimento verificato dei 91 progetti REPO-E
+  (998 file) in 12 categorie, incrociato con gli oracoli esistenti — la legge
+  emersa: i due domini più popolati (ciclo attivo ~20 progetti, ciclo passivo ~10)
+  erano gli unici grandi SENZA oracolo. Il test `tests/test-mappa-dominio-gas-src.sh`
+  presidia forma e privacy della mappa.
+- Tre oracoli nuovi, tutti minati dal codice REPO-E con aritmetica derivata a mano:
+  `tools/valorizzazione_magazzino.py` (costo medio + override
+  gruppo>categoria>articolo; "senza costo" anomalia non-zero; location escluse
+  riportate; **costi generali % NON applicati: caricati in config REPO-E ma senza
+  consumer, formula non provata — l'oracolo dichiara e rifiuta**),
+  `tools/margine_documento.py` (accoppiamento per riferimento normalizzato, % sui
+  ricavi, nota di credito annulla, unmatched=errore non margine zero),
+  `tools/accuratezza_fatture_acquisto.py` (solo over-invoicing è discrepanza —
+  fattura sotto ordine = fatturazione parziale, falso positivo corretto in REPO-E;
+  whitelist fornitori; accuratezza (T−E)/T).
+- **`.claude/agents/` cresce a 5**: `censitore-forma-dati` (sola lettura, produce
+  la "Forma dei dati (verificata)" con provenienze file:riga per commesse e
+  design NUOVI — prima era manuale) e `sviluppatore-gas` (costruisce progetti
+  Apps Script interi col canone dei sei pattern misurati su REPO-E: client BC
+  dedicato, CacheService>PropertiesService, override a livelli, WebApp+dashboard,
+  LockService, assente≠zero). Il trio calcoli esistente resta: applica/costruisci/
+  revisiona. Stessa nota di invocabilità del §"Limiti dichiarati" #6.
+
+## Il design guadagna squalifiche, secondo ordine, spike e selezione del contesto (6° ciclo, set 2 "progettare", 2026-08-24)
+
+- **`/selezione-contesto`** (skill nuova): prima di progettare si sceglie un pacchetto
+  LIMITATO di fonti (SAL del dominio → pattern → mappa dei domini → oracoli →
+  graphify/grep), con budget dichiarato (max ~5 fonti) e ESCLUSIONI scritte —
+  "un'esclusione silenziosa è un buco travestito da scelta". Se il contesto trovato
+  chiude il compito (oracolo/lezione già esistenti), il compito è riportare il
+  riferimento, non progettare.
+- **`/brainstorming`** guadagna la divergenza (2-3 RIFORMULAZIONI del problema prima di
+  convergere — il problema, non soluzioni travestite) e il giro di contesto preventivo:
+  non chiedere all'utente ciò che il sistema sa già.
+- **`/design-doc`** guadagna tre pezzi: §1bis VINCOLI DI SQUALIFICA prima dei criteri
+  (un'opzione che li viola non corre — la gara fra opzioni morte è teatro), gli
+  effetti di secondo ordine per ogni opzione (cosa tocca altrove: notte, gate, skill,
+  progetti che ereditano) e §3bis lo SPIKE (criterio critico ignoto → esperimento a
+  tempo/scopo vincolati via /goal max 1, output da buttare — misurare, non iniziare
+  a implementare).
+- **`dev-critic`** aggancia la mappa dei domini come backlog prioritizzato per densità
+  d'uso: le categorie VUOTO/PARZIALE dicono da dove partire; un'idea che contraddice
+  la mappa va giustificata contro la mappa.
+
+## Il flusso guadagna AGENTS.md, il gate la memoria, la notte gli agenti (6° ciclo, set 3 "flusso/interazione", 2026-08-24)
+
+- **`AGENTS.md` diventa il contratto d'ingresso per agenti LLM** (prima: solo regole
+  graphify): pipeline+artefatti, cervelli con contratto unico, oracoli/agenti per il
+  dominio contabile, come si esce (night-verify, privacy). Un agente che atterra
+  legge una pagina, non deduce.
+- **L'hook pattern-reminder copre anche `Bash`** (matcher `Edit|Write|Bash`): il
+  varco documentato nella voce SAL del 5° ciclo ("non copre clasp deploy, probe su
+  BC") è parzialmente chiuso — i comandi che toccano materiale sensibile
+  (printenv, .env, chiavi, Bearer) ricevono lo stesso reminder. Resta un reminder,
+  non un cancello; l'estensione a UserPromptSubmit (compito↔skill) resta decisione
+  di Luca, come dichiarato allora.
+- **Il gate richiama la memoria**: morning-gate appende al report, quando c'è qualcosa
+  da giudicare o la notte era a coda vuota, il richiamo che la lezione va scritta in
+  SAL.md — l'anello L4 ("SAL.md + metrics/gate.csv") esisteva nei documenti, non nel
+  meccanismo. La prosa resta umana (livello 4-5).
+- **La catena degli artefatti ha una guardia** (`tests/test-flusso-artefatti.sh`):
+  ogni anello (selezione-contesto → brainstorming → design-doc → commessa → notte →
+  gate → SAL) dichiara la consegna al successivo, e la catena è circolare (il SAL è
+  la fonte #1 di selezione-contesto).
+- **La notte ha gli stessi 5 agenti del giorno**: `.opencode/agent/` specchiato,
+  propagato a bootstrap/onboard, con guardia anti-drift sul corpo identico.
+
+## La rotta corretta: il parco come corpus, non come cava (2026-08-24, 6° ciclo, addendum)
+
+Feedback di Luca a caldo sul Set 1: il censimento era per classificazione dei
+nomi + una decina di file letti, e gli oracoli scavati da 3 progetti — «pettini
+adatti a un solo progetto». Il parco REPO-E andava letto come IL CORPUS
+dell'esperienza (procedure, trucchi, errori già pagati, difficoltà), sul
+modello della skill `gas-agent` di REPO-E (95 file: 17 specialisti, mandato,
+famiglie misurate con popolazioni). Fatto:
+
+- **Skill `gas-sviluppo`** (`.claude/skills/gas-sviluppo/`): il corpus
+  distillato con PROVENIENZA dichiarata (l'autorità resta gas-agent di
+  REPO-E). SKILL.md (consulenza vs consegna, loading progressivo) +
+  `.claude/skills/gas-sviluppo/references/metodo.md` (i quattro verbi, le 7 regole del banco, i
+  sabotaggi, l'ordine, i vincoli multi-agente pagati) +
+  `.claude/skills/gas-sviluppo/references/famiglie-difetti.md` (le famiglie MISURATE: nomi in ombra 22
+  divergenti su 9 progetti, nextLink ignorato 26/52, Number('')=0, «non letto»
+  vs «vuoto» 57 siti/14 progetti, lock sulla risorsa, atHour fascia, sentinella
+  0001-01-01 truthy, webapp anonime 20/80 con ogni funzione globale = endpoint,
+  test finti 55/80, guardia cieca sull'estremo... ogni famiglia con popolazione
+  e domanda discriminante) + `.claude/skills/gas-sviluppo/references/consegna.md` (worktree, baseline,
+  parità a 3 livelli col Livello 3 dichiarato NON dimostrato, protocollo PR,
+  clasp mai) + `.claude/skills/gas-sviluppo/references/domini-gestionali.md` (le domande di contabilità,
+  CDG, produzione, sviluppo business).
+- **Agenti generali**: `sviluppatore-gas` riscritto come agente GENERALE che
+  carica il canone progressivamente (non più i soli 6 pattern), e il nuovo
+  `revisore-gas` (i quattro verbi su progetti esistenti: censimento con
+  raggiungibilità prima, banco prima, sabotaggio, tre prodotti). Ora 7 agenti,
+  specchiati OpenCode con anti-drift.
+- Guardia: `tests/test-gas-sviluppo-sistema.sh` (16 controlli: provenienza,
+  regole non negoziabili, popolazioni numeriche ≥15, privacy).
+
+La lezione di metodo, scritta nel SAL: quando il mandato dice «gli agenti
+devono essere adatti a sviluppare QUESTO genere di script», la domanda non è
+«quali formule estraggo» ma «quale esperienza il parco ha già pagato che gli
+agenti devono incarnare». Il censimento per categorie era il passo 1, non il
+lavoro.
+
+## Il 7° ciclo: da prosa a strumenti, e il flusso dogfooddato (2026-08-24)
+
+- **Tre oracoli** per i residui della mappa: `tools/leasing_amministrativo.py`
+  (Euribor trimestrale ARRETRATO, stime del codice REPO-E dichiarate nell'output),
+  `tools/rating_dso_clienti.py` (DSO con factoring; il confine DSO-0≠«paga subito»
+  dichiarato: 'n.d.' per i non misurabili), `tools/bilancio_bu.py` (convenzione segni
+  G/L in testa, NOBU visibile, quadratura meccanica; REPARTO dichiarato APERTO).
+  Ora 11 oracoli.
+- **`tools/gas_qualita.py`**: le famiglie misurate del corpus diventano
+  RILEVATORE meccanico (censimento aid con domanda discriminante, mai verdetto;
+  .js E .gs; mai valori di segreti). Dogfood su progetti veri: conteggi coerenti
+  col corpus, falsi positivi attesi non accusati.
+- **`tools/verifica_banco.py`**: il hub impara a GIUDICARE le uscite dei banchi
+  (riga-verdetto canonica, M dichiarato, attese saltate = rosso, più righe =
+  ambiguo): l'exit code non è un verdetto — ora è meccanico.
+- **Il flusso di progettazione dogfooddato**: design-doc REALE (DTE vs intrastat)
+  nel SAL con squalifiche/criteri/secondo ordine, scelta lasciata a Luca. Le
+  correzioni nate dal dogfood: la RICETTA DELLA DENSITÀ in selezione-contesto
+  (quanto pesa la formula in un dominio: decide oracolo vs progetto — la
+  famiglia dei pettini chiusa per criterio, non per divieto) e la DOMANDA DI
+  DOMINIO in brainstorming (prima del criterio di successo, silenzio vietato).
 
 ## Hook di sistema (2026-08-24 — primo hook di questo repo)
 

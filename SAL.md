@@ -91,6 +91,15 @@
 - [2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale](#2026-08-23-set-3-giro-10-chiude-il-set-e-il-ciclo-verifica-end-to-end-finale)
 - [2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice](#2026-08-24-feedback-di-un-utente-esterno-reale-5-gap-di-processo-non-di-codice)
 - [2026-08-24 — punti 2-4: tre nuove regole vincolanti in CLAUDE.md](#2026-08-24-punti-2-4-tre-nuove-regole-vincolanti-in-claude-md)
+- [2026-08-24 — 6° ciclo, giro 0: baseline verde, tre bug di portabilità macOS](#2026-08-24-6-ciclo-giro-0-baseline-verde-tre-bug-di-portabilit-macos)
+- [2026-08-24 (2) — 6° ciclo, Set 1/3: mappa del dominio, 2 agenti e 3 oracoli](#2026-08-24-2-6-ciclo-set-1-3-mappa-del-dominio-2-agenti-e-3-oracoli)
+- [2026-08-24 (3) — 6° ciclo, Set 2/3: divergenza, contesto col budget, squalifiche e spike](#2026-08-24-3-6-ciclo-set-2-3-divergenza-contesto-col-budget-squalifiche-e-spike)
+- [2026-08-24 (4) — design: i costi generali % nella valorizzazione di magazzino](#2026-08-24-4-design-i-costi-generali-nella-valorizzazione-di-magazzino)
+- [2026-08-24 (5) — 6° ciclo, Set 3/3: flusso=contratto, notte=agenti, gate=memoria](#2026-08-24-5-6-ciclo-set-3-3-flusso-contratto-notte-agenti-gate-memoria)
+- [2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava](#2026-08-24-6-la-rotta-corretta-il-parco-il-corpus-non-la-cava)
+- [2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico](#2026-08-24-7-7-ciclo-set-1-3-tre-oracoli-residui-e-il-rilevatore-meccanico)
+- [2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero](#2026-08-24-8-7-ciclo-set-2-3-il-flusso-di-progettazione-dogfooddato-su-un-caso-vero)
+- [2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi](#2026-08-24-9-7-ciclo-set-3-3-il-hub-impara-a-giudicare-i-banchi)
 
 
 ## Stato
@@ -2496,3 +2505,493 @@ matcher a `Bash`; un hook `UserPromptSubmit` che confronta il compito dichiarato
 description delle skill; un giro periodico di `dev-critic` sull'intero progetto invece
 che a comando) hanno tradeoff diversi (costo, falsi positivi/negativi, portata) — da
 decidere con Luca, non a mia discrezione, prima di scrivere codice.
+
+### 2026-08-24 — 6° ciclo, giro 0: baseline verde, tre bug di portabilità macOS
+
+Prima di aprire i tre set nuovi (mandato di Luca: Set 1 agenti matematico-contabili,
+Set 2 progettazione/brainstorming, Set 3 flusso idee/interazione LLM), la suite
+`.night-verify` andava riportata verde: era ferma al test 2 di 68 (fail-fast) con
+`test-ask-usage-log.sh` rosso. Tre bug trovati eseguendo, non leggendo:
+
+1. **`ask-opus.sh` moriva su `"${MODEL_ARGS[@]}"` con array vuoto** sotto `set -u`
+   sulla bash 3.2 di sistema macOS (`MODEL_ARGS[@]: unbound variable`, rc=1 dal vivo)
+   — la correzione è la guardia `${arr[@]+"${arr[@]}"}`, idioma pre-bash-4.4. Stesso
+   rischio latente in `tools/backup-config.sh` (`ARGS`/`TMPFILES` vuoti), corretto.
+2. **`timeout` non esiste su macOS stock** (GNU coreutils): i tre wrapper `llm/ask-*`
+   e due test lo invocavano direttamente e morivano con rc=127 prima di raggiungere
+   il cervello. Introdotto `llm/_timeout.sh` con `ai_timeout` (GNU timeout → gtimeout
+   → fallback perl fork+wait con alarm). Il fallback uccide il GRUPPO di processi
+   (`setpgrp` + `kill -PID`), non solo il figlio: la versione che uccideva solo il
+   figlio lasciava il nipote (`sleep` dentro `bash -c`) vivo a tenere aperta la pipe
+   della command substitution — la stessa regressione "sleep orfano" già pagata da
+   `run_guarded` (tests/test-lib.sh). Verificato: kill a 3s esatti, rc=124, exit code
+   del comando preservato, stdout intatto.
+3. **`test-morning-gate-verdict.sh` hardcodava `master`** ma questo Mac ha
+   `init.defaultBranch=main`: ogni repo sintetico collassava su "non-dichiarate"
+   senza che nulla di reale fosse rotto. Il test ora rileva il branch con
+   `default_branch` (lib.sh), come fa già il codice di produzione. E
+   `test-design-doc-sal-entries-hanno-tabella.sh` usava `mapfile` (bash 4+, assente
+   sulla 3.2) — sostituito con un ciclo `while read` portabile.
+
+Errori pagati durante il giro, registrati per non ripeterli: (a) la prima versione
+del fallback perl non chiamava `alarm` — definito l'handler e dimenticato il segnale,
+il timeout non scattava mai; (b) un apostrofo italiano in un commento DENTRO la
+stringa perl tra apici singoli chiudeva la stringa e zsh eseguiva pezzi di perl come
+comandi — nei commenti dentro stringhe quotate singole niente apostrofi. Il test di
+regressione `tests/test-ai-timeout.sh` esercita il ramo perl FORZANDOLO
+(`AI_TIMEOUT_FORCE_PERL=1`) sul codice spedito, non su una copia nel test: sul Mac
+dell'autore `timeout` esiste e il fallback resterebbe altrimenti mai provato.
+
+Suite: 68/68 (69 file col nuovo test). Lezione: la portabilità dichiarata del repo
+("solo Mac Apple Silicon") non copriva "quale bash" e "quali coreutils" — due
+assunzioni implicite diverse dentro lo stesso repo.
+
+### 2026-08-24 (2) — 6° ciclo, Set 1/3: mappa del dominio, 2 agenti e 3 oracoli
+
+Mandato di Luca per il Set 1: migliorare gli agenti, verificare se mancano, costruire
+un sistema adatto a problemi matematico-contabili e temi economici-industriali
+(analitica, magazzino, controllo di gestione), idoneo a sviluppare gli script del
+repo esterno REPO-E (91 progetti, 998 file — censiti per intero, non stimati).
+
+**Giro 1 — la mappa.** `docs/mappa-dominio-gas-src.md`: 12 categorie, conteggi, e
+l'incrocio con oracoli/agenti esistenti. La legge emersa dai numeri: i due domini
+più popolati (ciclo attivo ~20 progetti, ciclo passivo ~10) erano gli unici grandi
+senza NESSUN oracolo — i cinque oracoli del 5° ciclo coprivano i domini da cui
+erano nati, non i domini più grandi. Anche i sei pattern trasversali (client BC
+dedicato in 56/91 progetti, CacheService>PropertiesService dopo un incidente reale
+da limite 9KB, override a livelli, WebApp in 31/91, LockService, assente≠zero) e
+l'assenza quasi totale di test (6/91 progetti). Test di forma+privacy:
+`tests/test-mappa-dominio-gas-src.sh`.
+
+**Giro 2 — l'agente censitore.** `censitore-forma-dati`: il censimento della forma
+dei dati (passo #1 del metodo, pattern "forma-dei-dati-verificata") restava
+manuale; ora è un agente in sola lettura che produce la sezione "Forma dei dati
+(verificata)" con provenienze file:riga e ipotesi marcate come tali. Distinto da
+audit-commessa (quello guarda commesse in coda, questo alimenta lavoro nuovo).
+
+**Giri 3-5 — tre oracoli dai domini scoperti.** Tutti con formula minata dal
+codice REPO-E (file:riga nel docstring) e aritmetica derivata a mano nel test:
+- `valorizzazione_magazzino.py`: costo medio "primo non-nullo per codice",
+  override articolo>categoria>gruppo (il primo vince), senza-costo = anomalia
+  (non zero), location escluse MAI scartate in silenzio, giacenza negativa
+  valutata e flaggata. **I costi generali % NON vengono applicati**: in REPO-E la
+  percentuale è caricata in config ma nessun consumer la usa (verificato a grep)
+  — l'oracolo la dichiara "punto di applicazione non provato" invece di
+  indovinarla. È la regola "la formula non si indovina" resa meccanica.
+- `margine_documento.py`: accoppiamento vendita↔acquisto per riferimento
+  normalizzato (trim+upper+solo spazi rimossi — il trattino NO: aspettativa
+  corretta dopo run rossa, il codice REPO-E non accoppia "RF 001" a "RF-001"),
+  margine = vendita−acquisto, percentuale SUI RICAVI (40.0%, non 66.7% sul
+  costo), nota di credito = annullato e riportato, unmatched = ERRORE non margine
+  zero, BU diversa flaggata ma calcolata.
+- `accuratezza_fatture_acquisto.py`: solo l'OVER-invoicing è discrepanza
+  (fattura sotto ordine = fatturazione parziale — in REPO-E era un falso
+  positivo corretto a mano, la lezione sta nel docstring), whitelist fornitori
+  legittima il senza-ordine, erroriReali = anomale+inesistenti+discrepanze,
+  accuratezza (T−E)/T, obiettivo margine <0.1%.
+
+**Giro 6-7 — l'agente costruttore.** `sviluppatore-gas`: costruisce progetti Apps
+Script INTERI (distinto da costruttore-calcoli-gestionali che scrive un calcolo
+Python) col canone dei sei pattern della mappa, censimento e oracolo PRIMA del
+codice, test di riscontro obbligatorio ("non essere il novantaduesimo progetto
+senza test"). Il trio calcoli armonizzato: elenchi aggiornati agli 8 oracoli.
+
+**Giri 8-9 — propagazione e mappe.** I test di propagazione bootstrap/onboard
+erano già glob-based: i due agenti nuovi arrivano ai progetti senza toccare
+nulla (verificato eseguendo, 5/5). `docs/system.md` e METHOD.md aggiornati; un
+riferimento test scritto senza percorso `tests/` è stato colto sul nascere dal
+guardiano del system.md.
+
+**Giro 10 — il dogfooding che chiude il set.** Un guardiano che vigila solo
+sugli altri non è un guardiano: `test-mappa-dominio-gas-src.sh` (nuovo) è
+l'unico test della suite che verifica la PRIVACY di un documento (nessun nome
+cartella-progetto REPO-E) — e il set stesso è stato costruito citando REPO-E e
+mai un cliente, in mappa, oracoli, agenti e SAL. Suite completa: 73/73 verdi.
+
+Lezione del set: il censimento ha spostato il lavoro dove i NUMERI dicevano che
+mancava (ciclo attivo/passivo), non dove la memoria suggeriva; e due aspettative
+dei test erano sbagliate (normalizzazione riferimento; aritmetica a mano
+1000−1200≠−100) — in entrambi i casi la run rossa ha corretto il TEST prima che
+diventasse un falso guardiano, mai il contrario.
+
+### 2026-08-24 (3) — 6° ciclo, Set 2/3: divergenza, contesto col budget, squalifiche e spike
+
+Mandato di Luca per il Set 2: migliorare la capacità di progettare nuovo software —
+brainstorming, selezione del contesto, scelta delle migliori idee.
+
+**Giro 1 — la divergenza mancava.** `/brainstorming` era tutto convergente (socratico,
+una domanda alla volta): sapeva arrivare AL problema ma non sapeva guardare il problema
+da più angoli. Aggiunto il punto 3: dopo le prime risposte, 2-3 RIFORMULAZIONI del
+problema (non soluzioni) tra cui l'utente sceglie — chiudere la divergenza con una
+decisione, non con la stanchezza. E §1bis: il contesto si seleziona PRIMA della prima
+domanda, per non chiedere ciò che il sistema sa già.
+
+**Giro 2 — selezione-contesto.** Skill nuova: pacchetto di fonti nell'ordine di densità
+(SAL del dominio → pattern → mappa → oracoli → graphify/grep), BUDGET dichiarato (max
+~5 fonti), e la parte che nessuno fa: le ESCLUSIONI si scrivono ("un'esclusione
+silenziosa è un buco travestito da scelta"). Se il contesto trovato chiude il compito,
+il compito è riportare il riferimento e fermarsi.
+
+**Giri 3-4 — squalifiche e secondo ordine.** `/design-doc` §1bis: VINCOLI DI
+SQUALIFICA dichiarati prima dei criteri di confronto — un'opzione che li viola non
+entra in gara (una gara con un morto in pista è teatro). Ogni opzione dichiara gli
+EFFETTI DI SECONDO ORDINE: cosa tocca altrove (notte, gate, skill e progetti che
+citano ciò che cambia). Pagato un errore istruttivo: la prima stesura rinumerava i
+punti 3-6 della skill e la guardia di regressione del loopback (che ancora "4bis"
+per numero) è diventata rossa — i numeri dei punti sono riferimenti stabili, citati
+fuori; le aggiunte entrano come bis, non spostano la numeratura. Corretto senza
+toccare la guardia: era lei ad avere ragione.
+
+**Giro 5 — lo spike.** §3bis: quando la cella della tabella che deciderebbe è ignota
+(latenza non documentata, libreria mai provata di notte), esperimento a tempo e scopo
+vincolati — `/goal max 1 tentativo`, output da buttare: quando lo scopo è misurare,
+il risultato è un numero, non una base di codice. Mai "spike" per esplorare l'opzione
+intera: quello è implementare con un altro nome.
+
+**Giro 6 — il backlog non è inventiva.** `dev-critic` aggancia la mappa dei domini:
+le categorie VUOTO/PARZIALE col conteggio di progetti reali sono il backlog già
+prioritizzato per densità d'uso; un'idea che contraddice la mappa va giustificata
+contro la mappa.
+
+**Giri 7-9 — mappe e guardie.** METHOD.md e docs/system.md aggiornati; guardia di
+regressione unica per tutte le aggiunte (`tests/test-design-set2-sesto-ciclo.sh`,
+10 controlli), costruita — come le altre — sui test design-doc esistenti rimasti
+verdi senza eccezioni.
+
+**Giro 10 — il dogfooding: un design-doc vero su un punto vero.** Il residuo del Set 1
+(costi generali % della valorizzazione: caricati in REPO-E, mai applicati) è diventato
+il caso reale della voce "design:" qui sotto — squalifiche prima, criteri prima,
+tre opzioni col secondo ordine, scelta che resta a Luca. Il metodo appena scritto,
+usato subito sul primo problema vero disponibile.
+
+Lezione del set: le guardie di regressione sono contratti — quando una diventa rossa
+per una rinumeratura, la lezione è "i numeri sono API", non "il test è rigido".
+
+### 2026-08-24 (4) — design: i costi generali % nella valorizzazione di magazzino
+
+Il primo caso reale che esercita le aggiunte del Set 2 (squalifiche, secondo ordine,
+spike) — su un punto lasciato aperto dal Set 1, non su un esempio costruito.
+
+Contesto (4 fonti, budget dichiarato — selezione-contesto §2): il docstring di
+`tools/valorizzazione_magazzino.py`, `docs/mappa-dominio-gas-src.md`, il codice
+ValuationConfig REPO-E (via grep), la voce SAL del Set 1. Escluso: il progetto
+magazzino REPO-E per intero (la domanda è la formula d'uso della percentuale, non
+il progetto) — esclusione dichiarata.
+
+Problema in una frase: la percentuale di costi generali (generalCostsPercent) è
+configurata in REPO-E ma nessun consumer la applica — l'oracolo la dichiara e
+rifiuta di indovinarla; cosa deve essere vero dopo: l'oracolo la applica SOLO
+quando la formula è provata, e resta esplicito quando non lo è.
+
+Vincoli di squalifica (prima dei criteri): (1) nessuna formula di business inventata
+— regola del repo, non negoziabile; (2) l'output attuale dell'oracolo (che dichiara
+il rifiuto) non può peggiorare: la percentuale configurata deve restare visibile
+qualunque sia la scelta. Criteri dichiarati prima delle opzioni: costo, rischio,
+reversibilità, più uno specifico: probabilità di trovare la formula vera.
+
+| Opzione | Costo | Rischio | Reversibilità | Trovare la formula vera |
+|---|---|---|---|---|
+| A. Stato quo: rifiuto dichiarato, aspettare la formula dal proprietario | Zero | Basso — nessun numero sbagliato possibile | Totale | Bassa (dipende da una risposta umana) |
+| B. Spike: minare a grep i progetti REPO-E alla ricerca di un'applicazione reale di generalCostsPercent (max 1 tentativo, /goal) | Basso — un giro di grep guidato | Basso — lo spike produce un numero/una citazione, non codice | Totale (output da buttare) | Media — 91 progetti, la formula può vivere in un progetto diverso da quello magazzino |
+| C. Implementare l'ipotesi "sul totale di magazzino" dietro flag disattivato | Medio | Alto — un'ipotesi travestita da calcolo disponibile è il modo più silenzioso di diventare la formula ufficiale | Media — un flag disattivato ha una vita lunga | Nulla — l'ipotesi non diventa vera implementandola |
+
+Effetti di secondo ordine: A lascia ogni dashboard REPO-E che usa costi generali
+confermata nell'attuale ambiguità; B non tocca nulla (spike, output numerico); C
+inquina `censitore-forma-dati` e `sviluppatore-gas` che citano l'oracolo come fonte
+— un oracolo con un'ipotesi dentro non è più un oracolo (il trade-off che squalifica
+C di fatto, senza bisogno del punteggio).
+
+Scelta: resta a Luca — la raccomandazione implicita dell'ordinamento è A subito, B
+come primo passo se/quando serva muoversi senza aspettare (i due non si escludono).
+Nessuna opzione è stata implementata in questo giro.
+
+### 2026-08-24 (5) — 6° ciclo, Set 3/3: flusso=contratto, notte=agenti, gate=memoria
+
+Mandato di Luca per il Set 3: migliorare il flusso delle idee, l'interazione fra le
+parti, la capacità del repo di interagire con agenti LLM per sviluppo software e
+business.
+
+**Giro 2 — l'hook copre Bash (parziale chiusura del filo del 5° ciclo).** La priorità
+indicata da Luca era "un aggancio automatico più ampio del hook attuale". Esteso il
+matcher a `Edit|Write|Bash`: i comandi che toccano materiale sensibile (printenv,
+.env, chiavi, Bearer, keychain, repos.key) ricevono lo stesso reminder dei file
+sensibili — non blocca mai. `clasp deploy` da solo NON produce reminder (falso
+positivo evitato: il deploy non tocca segreti da sé). L'alternativa UserPromptSubmit
+(compito↔skill description) resta decisione di Luca come dichiarato nel SAL: qui si
+è chiusa la parte meccanicamente sicura, non la decisione aperta.
+
+**Giro 3 — la notte ha gli stessi agenti del giorno.** Creato `.opencode/agent/` con
+i 5 agenti specchiati da `.claude/agents/` (stesso corpo per contratto, frontmatter
+OpenCode, nota di specchio): chiude il limite dichiarato #6 nella parte OpenCode.
+Guardia anti-drift (`test-opencode-agent-sync.sh`): i corpi devono restare identici
+— "un agente che diverga fra giorno e notte è due agenti diversi che si credono lo
+stesso". E propagazione: bootstrap copia, onboard fa merge prudente (quarta
+cartella della stessa famiglia di gap già pagata per skills/agents/patterns).
+
+**Giro 4 — AGENTS.md diventa il contratto d'ingresso.** Prima: solo regole graphify.
+Ora: le cinque cose che un agente LLM che atterra deve sapere (regole/mappa,
+pipeline+artefatti, cervelli col contratto unico, oracoli/agenti del dominio
+contabile, come uscire con night-verify+privacy). La capacità di interagire con
+agenti LLM non è solo esporre wrapper: è dire al nuovo arrivato dove sono le regole
+senza fargliele dedurre.
+
+**Giro 5 — la catena degli artefatti ha una guardia, e un anello mancante è saltato
+fuori.** `test-flusso-artefatti.sh` verifica che ogni fase dichiari la consegna
+alla successiva e che la catena sia circolare (il SAL è la fonte #1 di
+selezione-contesto). Scrivendo il test è EMERSO un gap vero: `morning-gate.sh` non
+citava mai SAL.md — l'anello L4 ("SAL.md + metrics/gate.csv") esisteva nei documenti,
+non nel meccanismo. Corretto: il gate appende al report il richiamo alla lezione
+quando c'è qualcosa da giudicare (o coda vuota); la PROSA resta umana (livello 4-5),
+entra solo il richiamo meccanico. Il test che ha trovato il buco è lo stesso che lo
+presidia.
+
+**Giri 6-8 — le mappe dicono la verità nuova.** llm/README guadagna la
+portabilità del timeout e la sezione "come un agente esterno delega qui";
+docs/system.md dichiara la chiusura del limite OpenCode (e la sua guardia
+anti-staleness, giustamente, ha preteso che la dichiarazione CAMBIASSE davvero —
+la prima sostituzione non era avvenuta per un mismatch multilinea, e il test rosso
+l'ha rivelato: i guardiani funzionano quando sono scomodi anche a chi li scrive).
+
+Lezione del set: "interazione fra le parti" qui significa DUE cose concrete —
+contratti d'interfaccia che non dipendono dalla memoria (AGENTS.md, catena
+artefatti con guardia, corpi identici giorno/notte) e anelli meccanici dove i
+documenti promettevano e il codice taceva (il gate e il SAL). Entrambe trovate
+eseguendo i guardiani, nessuna dedotta.
+
+## Riepilogo dei tre set (30 giri, 6° ciclo) — "agenti, progettare, flusso/interazione"
+
+- **Set 1** (un sistema di agenti per problemi matematico-contabili): il censimento
+  integrale di REPO-E (91 progetti, 998 file) ha spostato il lavoro dove i numeri
+  dicevano che mancava — ciclo attivo e passivo, i due domini più popolati, erano
+  scoperti. Tre oracoli nuovi minati dal codice reale (valorizzazione con override,
+  margine per documento, accuratezza fatture con la regola over-invoicing), due
+  agenti nuovi (censitore-forma-dati, sviluppatore-gas), la mappa del dominio con
+  guardia di forma+privacy. Il rifiuto più importante è un NON: i costi generali %
+  non si applicano perché la formula non è provata — l'oracolo dichiara e aspetta.
+- **Set 2** (progettare: brainstorming, contesto, scelta idee): divergenza nel
+  brainstorming (riformulazioni del problema), selezione-contesto con budget ED
+  esclusioni scritte, vincoli di squalifica prima dei criteri nel design-doc,
+  effetti di secondo ordine per opzione, spike a scopo singolo. Dogfood immediato:
+  un design-doc VERO sul residuo del Set 1, con scelta lasciata a Luca. Lezione
+  trasversale: i numeri dei punti sono API — rinumerare rompe i contratti.
+- **Set 3** (flusso idee, interazione parti, agenti LLM): hook esteso a Bash (il
+  varco documentato), .opencode/agent/ specchiato con anti-drift (limite #6 chiuso
+  nella parte notte), AGENTS.md come contratto d'ingresso, catena artefatti con
+  guardia — che ha SCOPERTO il gate senza anello SAL e l'ha chiuso col richiamo
+  meccanico (prosa resta umana).
+
+**Il filo comune del ciclo**: ogni miglioramento è un contratto verificabile dove
+prima c'era memoria o documento — corpi identici giorno/notte, catena di citazioni
+per percorso, dichiarazioni di limite che la guardia pretende restino vere. E il
+metodo si è applicato a se stesso: due aspettative di test corrette da run rosse
+(l'aritmetica a mano sbagliata, la normalizzazione del riferimento), un replace
+silenziosamente non avvenuto scoperto dal guardiano anti-staleness.
+
+Stato finale: suite 76/76 (68 all'apertura, ferma al secondo test per tre bug di
+portabilità macOS: array vuoti bash 3.2, `timeout` assente, `master` hardcoded),
+5 agenti × 2 runtime, 8 oracoli, 12 skill, la mappa del dominio, e quattro
+guardiani nuovi che difendono ciò che questo ciclo ha costruito.
+
+### 2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava
+
+Domanda di Luca a caldo, dopo i tre set: «hai analizzato tutto il parco gas? ti
+sei concentrato su due o tre funzioni... hai capito perché ti ho dato il parco?
+hai estrapolato le procedure, i trucchi, gli errori già fatti, le difficoltà?
+o hai tirato fuori roba che non serve a nulla? prendi spunto da gas-agent:
+qualcosa di GENERALE, non pettini per un solo progetto».
+
+Risposta onesta, prima di tutto a me stesso: NO. Il censimento era per
+classificazione dei NOMI (91 cartelle → 12 categorie) più una decina di file
+letti davvero; gli oracoli scavati da 3 progetti; i «6 pattern» da un passo
+superficiale. Il parco andava letto come il corpus dell'esperienza — e la
+skill gas-agent di REPO-E (95 file: mandato di 997 righe, 17 specialisti,
+famiglie di difetti con POPOLAZIONI misurate, esecuzione con prova di parità,
+routing dei costi) era già il modello, lì, nello stesso repo che mi era stato
+dato.
+
+Fatto in questo giro (dopo aver letto il corpus per intero: mandato,
+esecuzione, routing, coordinamento, e i 17 specialisti digesti da due agenti
+in parallelo):
+
+- **Skill `gas-sviluppo`**: SKILL.md (consulenza vs consegna — confonderle è
+  il modo più facile di fare danni) + 4 references a disclosure progressiva:
+  `metodo.md` (i quattro verbi, l'ordine di 7 passi, le 7 regole del banco,
+  i sabotaggi col numero dichiarato, i vincoli multi-agente: indice git
+  condiviso, scratchpad condiviso, ancore unità di senso, grep e i byte NUL),
+  `famiglie-difetti.md` (le famiglie MISURATE, ognuna con popolazione e
+  domanda discriminante: 22 nomi in ombra divergenti su 9 progetti, nextLink
+  ignorato 26/52, Number('')=0, «non ho potuto leggere»=«vuoto» in 57
+  siti/14 progetti, lock sulla risorsa non sull'entrypoint, atHour fascia,
+  sentinella "0001-01-01" truthy, 20 webapp anonime su 80 con ogni funzione
+  globale = endpoint e l'underscore FINALE che solo protegge, 55/80 con test
+  che non possono fallire, la guardia cieca sull'estremo, le medie di medie,
+  le popolazioni disallineate), `consegna.md` (un task-un worktree-una PR,
+  baseline PRIMA, parità a 3 livelli col 3° dichiarato «non dimostrata»,
+  protocollo PR, clasp MAI, routing dei costi), `domini-gestionali.md` (le
+  domande di contabilità/CDG/produzione/business: il totale è l'ULTIMA cosa
+  da asserire, il denominatore prima dei numeratori, il produttore batte la
+  maggioranza dei consumatori).
+- **Provenienza dichiarata ovunque**: il distillato non si spaccia per
+  originale — l'autorità resta gas-agent di REPO-E; quando REPO-E è montato,
+  le sue pagine vincono. Privacy mantenuta: nessun nome cliente nel corpus
+  portato nell'hub (guardia nel test).
+- **Agenti generali**: `sviluppatore-gas` RISCRITTO (canone = famiglie
+  misurate + metodo, non più i 6 pattern; consulenza/consegna; clasp mai) e
+  il nuovo `revisore-gas` (i quattro verbi su progetti esistenti: censimento
+  con raggiungibilità prima, difetti assenti col comando che li cerca, banco
+  prima, sabotaggio, TRE prodotti). 7 agenti, specchi OpenCode rigenerati,
+  anti-drift verde.
+- Guardia nuova: `tests/test-gas-sviluppo-sistema.sh` (16 controlli, incluse
+  le popolazioni numeriche ≥15 — «una famiglia senza numero è un'opinione»).
+
+La lezione che questo giro lascia nel metodo (ed è la stessa che il corpus
+insegna al suo interno): quando il mandato è «agenti adatti a sviluppare
+questo genere di script», la domanda giusta non è «quali formule estraggo» ma
+«quale esperienza è già stata pagata e dove sta scritta». Il censimento per
+categorie era il passo 1 del lavoro, non il lavoro.
+
+### 2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico
+
+Seconda passata completa richiesta da Luca (stesso mandato dei tre set, repo già
+alzato dal 6° ciclo). Il censimento di questo giro non era per nome ma per
+COPERTURA: 6 agenti × 17 lenti del corpus × 12 categorie della mappa.
+
+**Giri 1-3 — il buco vero non era di agenti ma di STRUMENTI.** Gli agenti
+coprono le lenti (revisore-gas porta le famiglie, il trio i calcoli, censitore
+la forma dei dati); ciò che mancava era la parte MECCANICA del corpus. Costruito
+`tools/gas_qualita.py`: il rilevatore delle famiglie misurate (test che non
+possono fallire, nomi in ombra IDENT vs DIVERGENTI confrontando i corpi, fusi
+fissi, paginazione-indizio, clear-poi-scrivi per funzione, catch muti, webapp
+anonima col caveat deployment, atHour duplicati), ogni famiglia con la sua
+DOMANDA DISCRIMINANTE e la dichiarazione esplicita «QUESTO NON È UN VERDETTO».
+Dogfood su tre progetti veri: Scadenzario accusa 0 fusi fissi (corretto — usa
+Europe/Rome, il falso positivo atteso resta chiuso), CDG trova atHour duplicati
+e 12 clear-poi-scrivi, il magazzino la webapp anonima e 3 siti di paginazione —
+numeri coerenti con le popolazioni del corpus. Test sintetico deterministico:
+13/13, incluse le regole del banco applicate al tool stesso (stampa la cartella
+letta, accetta .js E .gs).
+
+**Giri 4-6 — tre oracoli dai residui della mappa.** `leasing_amministrativo.py`
+(adeguamento Euribor trimestrale ARRETRATO, capitale residuo ad ammortamento
+uniforme, stime 2,5% e 30% del codice REPO-E dichiarate DENTRO l'output, Euribor
+assente = NESSUN adeguamento dichiarato), `rating_dso_clienti.py` (matching per
+codice con fallback cliente+data±7gg+importo±1€, cessione factoring come
+pagamento con data letta dalla descrizione, guard <0/>365 — e il confine
+portato dal corpus: chi ha solo fatture non pagate esce DSO 'n.d.', non 0, perché
+0 si legge 'paga subito'), `bilancio_bu.py` (convenzione dei segni G/L amount<0
+= ricavo dichiarata in testa, NOBU visibile, quadratura meccanica
+somma-margini=totale, ribaltamento REPARTO dichiarato APERTO — non indovinato).
+
+Errore pagato e registrato (di nuovo quello giusto): la mia prima derivazione
+del leasing contava 36 mesi inclusivi; il codice REPO-E usa la differenza
+calendario SENZA aggiustare il giorno (calcolaMesiTra = anni×12+mesi) — run
+rossa, ho corretto IL TEST e anche reso il tool FEDELE all'originale (avevo
+"migliorato" la funzione col day-adjustment: un oracolo replica, non migliora).
+
+**Giri 7-10 — armonizzazione.** Mappa aggiornata (leasing/rating/bilancio:
+stati nuovi; residui ridichiarati: costi generali, REPARTO, DTE, flussi portali);
+trio e revisore/sviluppatore-gas agganciati agli 11 oracoli e al rilevatore
+(revisore parte DAL rilevatore; sviluppatore ci si autocensisce prima di
+consegnare); specchi OpenCode rigenerati. Suite: 79/79 file (77 + 2 test nuovi: oracoli e rilevatore).
+
+### 2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero
+
+Mandato: migliorare la capacità di progettare (brainstorming, selezione contesto,
+scelta idee). Il metodo di questo set è il DOGFOOD: eseguire il flusso su una
+decisione reale e correggere ciò che l'esecuzione rivela — non aggiungere prosa
+a ipotesi.
+
+**Il caso: quale oracolo dopo — DTE o intrastat?** (i due residui della mappa).
+
+Contesto (4 fonti, esclusioni dichiarate — selezione-contesto §2-3): mappa dei
+domini, i due progetti REPO-E (Intrastat ~60 funzioni, DTE v3 2039 righe), il
+digest shipping-automation del corpus (soglie 10%/1,5×/15%), SAL. Escluso: il
+corpus per intero (già digerito nel 6° ciclo). Il giro di contesto ha usato una
+RICETTA che la skill NON dava: grep di densità (calcola/somma/soglia) sui due
+progetti per stimare la densità di formula — DTE denso di aritmetica (costoTotale
+= nolo(listino provincia×fascia P1-P9) + accessori(nPallet), DIR_FIX 1,50,
+confidenza ALTA/MEDIA/BASSA/NULLA), intrastat più controlli-flusso (filtri UE,
+esclusioni, il bug BC dei cespiti fuori periodo). **Prima correzione del dogfood:
+la ricetta entra in selezione-contesto** (§1bis) — "quanto pesa la formula in
+questo dominio" è la domanda che decide se serve un oracolo o un progetto.
+
+Problema in una frase: la mappa dichiara DTE e intrastat residui; cosa deve
+essere vero dopo: il prossimo oracolo nasce dove la formula è DENSA e PROVATA,
+non dove il nome della categoria è rimasto aperto.
+
+Vincoli di squalifica: (1) nessuna formula indovinata (il listino DTE completo
+provincia×fascia non è minato: senza di esso l'oracolo DTE non può nascere);
+(2) nessun oracolo per domini a densità di flusso (l'oracolo sbagliato è un
+pettine). Criteri dichiarati prima delle opzioni: densità di formula minata,
+disponibilità dell'oracolo-dati (listino/tabelle), costo, tempo a primo valore.
+
+| Opzione | Densità formula | Oracolo-dati disponibile | Costo | Primo valore |
+|---|---|---|---|---|
+| A. Oracolo DTE (costo atteso vs fatturato, soglie corpus 10%/1,5×) | Alta — minata a metà (struttura sì, listino NO) | ⚠️ IL LISTINO MANCA: calcolaNoloBase legge un foglio listino non ancora esportato nel repo | Alto se il listino va trascritto a mano | Lontano |
+| B. Oracolo intrastat (cross-check acquisti/vendite UE + esclusioni) | Bassa-media: controlli di coerenza più che aritmetica | Sì (le regole di esclusione sono nel codice) | Medio | Vicino ma valore basso: rischia il pettine |
+| C. Nessun oracolo nuovo: DTE come PROGETTO sviluppatore-gas con il listino come censimento-forma-dati da Luca | Alta nel progetto, zero nell'oracolo | Il listino diventa domanda di dominio (la forma ce l'ha Luca) | Basso per l'hub | Medio |
+
+Effetti di secondo ordine: A senza listino indurrebbe a INVENTARLO (squalifica
+di fatto); B aggiungerebbe un oracolo che la mappa stessa chiama "integrazione
+più che formula" — il tipo esatto che Luca ha bocciato; C sposta il listino al
+suo posto naturale (domanda di dominio in cima, come insegna il corpus).
+
+Scelta: resta a Luca — l'ordinamento implicito è C prima (il listino è una
+domanda di dominio, non un'estrazione), A dopo, quando il listino esiste.
+Nessuna opzione implementata in questo giro: il deliverable del set è il metodo
+verificato, non l'oracolo prevaricato.
+
+**Le correzioni che il dogfood ha prodotto (oltre alla ricetta di densità):**
+brainstorming guadagna il concetto di DOMANDA DI DOMINIO del corpus (la riga
+"se il mondo si comporta così, questa correzione è dannosa" — prima che il
+criterio di successo emerga, non dopo); guardia di regressione
+`tests/test-design-set2-settimo-ciclo.sh` per entrambe.
+
+### 2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi
+
+Mandato: flusso delle idee, interazione fra le parti, capacità di interagire con
+agenti LLM. La mossa del set: il buco d'interazione non era fra agenti, era fra
+il hub e le PROVE — poteva eseguire i .night-verify ma non sapeva giudicare
+l'uscita di un banco GAS.
+
+**`tools/verifica_banco.py`**: il guardiano meccanico della riga-verdetto
+canonica (`attese eseguite: N/M · fallite: K`). Ogni caso del suo test nasce da
+una lezione misurata del corpus: verde raggiungibile; rosso con fallite;
+attese SALTATE (6/8: «un banco che passa da otto a sei verdi non sembra rotto,
+sembra un banco più piccolo» — rosso, con il numero delle sparite scritto);
+riga mancante = NON È UN BANCO (exit 2: «ALL TESTS COMPLETED è una frase, non
+un verdetto»); righe multiple = ambiguo (i sei vocabolari misurati sui 55
+banchi del parco); uscita vuota = non partito; N>M = forma rotta. E il verde
+ricorda la sua condizione: senza sabotaggio il banco non è una prova.
+`revisore-gas` ora consegna le uscite del banco GIÀ verificate meccanicamente
+(specchio OpenCode risincronizzato); AGENTS.md dice all'agente in arrivo che
+esistono oracoli (11), rilevatore e verificatore.
+
+Incidente registrato (set 2): una voce SAL scritta dalla directory sbagliata è
+finita come SAL.md dentro la cartella del parco REPO-E — scoperta perché i grep
+del test non trovavano ciò che era stato scritto. Spostata al posto giusto e
+file spurio rimosso. Lezione: la cwd persiste fra i comandi; chi concatena
+heredoc e relativi percorsi controlla dove sta prima di scrivere.
+
+## Riepilogo dei tre set (7° ciclo) — «strumenti, dogfood, giudizio»
+
+- **Set 1 (agenti/calcoli)**: il censimento per copertura diceva che gli agenti
+  bastano — mancavano gli STRUMENTI: `gas_qualita.py` (le famiglie misurate a
+  rilevatore meccanico, dogfood su progetti veri con falsi positivi non
+  accusati) e tre oracoli (leasing, rating DSO col confine 0≠'paga subito',
+  bilancio BU col REPARTO dichiarato aperto). 11 oracoli totali.
+- **Set 2 (progettazione)**: il flusso DOGFOODDATO su una decisione vera
+  (DTE vs intrastat, design-doc nel SAL, scelta a Luca) ha prodotto due
+  correzioni che nessuna prosa a tavolo avrebbe trovato: la RICETTA DELLA
+  DENSITÀ (quanto pesa la formula in un dominio — decide oracolo vs progetto:
+  la famiglia dei pettini chiusa per criterio) e la DOMANDA DI DOMINIO in
+  brainstorming (silenzio vietato).
+- **Set 3 (flusso/interazione)**: `verifica_banco.py` — il hub giudica le prove
+  GAS meccanicamente (riga canonica, attese saltate, frasi non-verdetto);
+  revisore-gas consegna uscite già verificate; AGENTS.md aggiornato.
+
+**Il filo del ciclo**: tre cose uscite dalla PROSA ed entrate negli strumenti —
+le famiglie (rilevatore), la densità (ricetta), il verdetto (verificatore). E
+due errori pagati col metodo: l'oracolo leasing "migliorato" (day-adjustment)
+riportato FEDELE all'originale; il conteggio di test scritto 80 invece di 79
+e corretto in cronaca. Suite finale: 81/81 file (79+verifica_banco+design-set2; il conteggio corretto DOPO la run, non prima: terza volta che lo scrivevo a-previsto).

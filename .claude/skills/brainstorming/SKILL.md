@@ -25,16 +25,44 @@ territorio/commessa, il brainstorming su una richiesta già chiara è solo attri
    cosa succede oggi senza — se non sai rispondere a queste da solo, falle all'utente.
 2. **Una domanda per turno**, non una lista di dieci. Chi risponde a una domanda alla
    volta resta nel problema; una lista intera invita a rispondere in fretta e superficie.
-3. **Cerca il criterio di successo, non la feature.** "Cosa deve essere vero dopo" è la
+3. **Divergere PRIMA di convergere (6° ciclo, set 2, 2026-08-24).** Dopo le prime 2-3
+   risposte, se il problema ammette letture diverse, proponi 2-3 RIFORMULAZIONI del
+   problema — non soluzioni: "il problema è (a) il flusso che non esiste, (b) la
+   visibilità di quello che esiste, o (c) i dati che non quadrano?". Una riformulazione
+   scelta dall'utente vale più di dieci domande in più: chiude la divergenza con una
+   decisione, non con la stanchezza. Se il problema ha UNA sola lettura plausibile,
+   salta questo passo — divergere su un problema univoco è attrito, non profondità
+   (stesso criterio del punto 5).
+3bis. **Cerca la DOMANDA DI DOMINIO, non solo il criterio di successo** (7°
+   ciclo, set 2 — dal corpus gas-agent di REPO-E): la riga che dice «se il
+   mondo si comporta così, questa soluzione è dannosa». Prima di convergere su
+   COSA deve essere vero dopo, chiediti COSA DIPENDE DAL MONDO REALE e non dal
+   codice: scadenze contrattuali, regole fiscali, convenzioni aziendali non
+   scritte. Se esiste, è la prima cosa da scrivere — e se chi governa non sa
+   rispondere, la soluzione va progettata per dichiararlo, non per indovinarlo.
+   Se non esiste, dichiara «nessuna domanda di dominio: perché» — il silenzio
+   si legge «non serviva» e vuol dire «non ci ho pensato».
+4. **Cerca il criterio di successo, non la feature.** "Cosa deve essere vero dopo" è la
    domanda che chiude il brainstorming — quando l'utente la sa rispondere in una frase
    verificabile, il passo è finito (regola "Goal-driven execution" di CLAUDE.md).
-4. **Se emergono 2+ strade plausibili**, non scegliere: è il momento di passare a
+5. **Se emergono 2+ strade plausibili**, non scegliere: è il momento di passare a
    `/design-doc`, che le struttura confrontandole su criteri espliciti. Il brainstorming produce IL problema
    chiaro, non la scelta fra soluzioni — quella è lo step successivo, esplicito.
-5. **Ferma il brainstorming quando smette di produrre informazione nuova**, non dopo un
+6. **Ferma il brainstorming quando smette di produrre informazione nuova**, non dopo un
    numero fisso di domande: se la seconda domanda rivela già che la richiesta era chiara
    fin dall'inizio, fermati lì — un brainstorming che continua per abitudine è lo stesso
    spreco di un brainstorming saltato (regola "Zero waste").
+
+## 1bis. Il contesto si seleziona prima di chiedere (6° ciclo, set 2, 2026-08-24)
+
+Prima della prima domanda, un giro rapido di contesto con budget (il metodo completo
+è la skill `selezione-contesto`): le voci SAL della stesso dominio, i pattern già
+pagati, la mappa dei domini (`docs/mappa-dominio-gas-src.md`) se la richiesta tocca
+calcoli gestionali. Non per riempire la conversazione di riferimenti — per non
+chiedere all'utente ciò che il sistema SA già, e per riconoscere una lezione già
+scritta quando la rivede. Se il giro di contesto trova il problema già risolto o
+già discusso, dillo alla prima risposta: il brainstorming più breve è quello che
+un altro documento ha già fatto.
 
 ## 2. Cosa NON fare
 

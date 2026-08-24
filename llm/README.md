@@ -35,6 +35,13 @@ cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"   # contesto v
 | Compito cloud programmatico (pipeline, script) | **ask-opus** | `claude -p` headless; auth nel Keychain (funziona da terminale utente/launchd) |
 | Compito GLM programmatico | **ask-glm** | richiede `ZHIPUAI_API_KEY`; via naturale resta la sessione ZCode |
 
+## Come un AGENTE esterno delega qui (6° ciclo, set 3, 2026-08-24)
+
+`AGENTS.md` §3 è il contratto d'ingresso per agenti LLM: pipeline, artefatti, oracoli
+e i cinque subagent (`.claude/agents/` per il giorno, specchiati in `.opencode/agent/`
+per la notte). Un agente che atterra nel repo NON riscopre la mappa: la legge. La
+chiamata ai cervelli resta il gesto unico qui sopra — stesso contratto, stesso rc.
+
 ## Cosa NON delegare mai (a nessun cervello, ma sopratutto al locale)
 
 - Catene agentiche multi-step con decisioni architetturali

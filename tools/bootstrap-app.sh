@@ -76,6 +76,11 @@ cp -r "$HERE/patterns/." patterns/
 # questa terza cartella.
 mkdir -p .claude/agents
 cp -r "$HERE/.claude/agents/." .claude/agents/
+# 6° ciclo, set 3 (2026-08-24): la notte lavora con OpenCode nei progetti — gli agenti
+# specchiati (.opencode/agent/) devono arrivare anche lì, stessa quarta cartella della
+# stessa famiglia di gap già pagata per skills/agents/patterns
+mkdir -p .opencode/agent
+cp -r "$HERE/.opencode/agent/." .opencode/agent/
 
 # gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
 # viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA

@@ -16,7 +16,8 @@ grep -q 'cp -r "\$HERE/.claude/agents/." .claude/agents/' "$HERE/tools/bootstrap
 
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
-( cd "$TMP" && mkdir -p .claude/agents && cp -r "$HERE/.claude/agents/." .claude/agents/ )
+( cd "$TMP" && mkdir -p .claude/agents && cp -r "$HERE/.claude/agents/." .claude/agents/ \
+  && mkdir -p .opencode/agent && cp -r "$HERE/.opencode/agent/." .opencode/agent/ )
 
 N_HUB=$(find "$HERE/.claude/agents" -maxdepth 1 -mindepth 1 -type f -name '*.md' | wc -l | tr -d ' ')
 N_COPIATI=$(find "$TMP/.claude/agents" -maxdepth 1 -mindepth 1 -type f -name '*.md' | wc -l | tr -d ' ')
@@ -34,6 +35,16 @@ for agent_file in "$HERE"/.claude/agents/*.md; do
   [ -f "$TMP/.claude/agents/$agente.md" ] && ok "agente '$agente' presente nel progetto copiato" \
     || ko "agente '$agente' assente dopo la copia"
 done
+
+# 6° ciclo, set 3: anche lo specchio OpenCode arriva al progetto nuovo
+grep -q 'cp -r "\$HERE/.opencode/agent/." .opencode/agent/' "$HERE/tools/bootstrap-app.sh" \
+  && ok "bootstrap-app.sh copia anche .opencode/agent/ (la notte usa OpenCode)" \
+  || ko "bootstrap-app.sh non copia .opencode/agent/"
+N_OP_HUB=$(find "$HERE/.opencode/agent" -maxdepth 1 -mindepth 1 -type f -name '*.md' | wc -l | tr -d ' ')
+N_OP_COPIATI=$(find "$TMP/.opencode/agent" -maxdepth 1 -mindepth 1 -type f -name '*.md' 2>/dev/null | wc -l | tr -d ' ')
+[ "$N_OP_COPIATI" -eq "$N_OP_HUB" ] && [ "$N_OP_COPIATI" -gt 0 ] \
+  && ok "tutti i $N_OP_HUB agenti OpenCode arrivano al progetto nuovo" \
+  || ko "copiati $N_OP_COPIATI agenti OpenCode su $N_OP_HUB nel hub"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
