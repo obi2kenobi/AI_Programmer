@@ -81,14 +81,14 @@ davvero il repo prima di toccarlo. Applica sempre, non solo se il target "sembra
 
 ## 2ter. Lente matematico-finanziaria — quando il target fa calcoli che devono essere giusti
 
-Nata da un bug reale (2026-08-21, Bilancio_periodico — progetto vero, cliente vero, non un
+Nata da un bug reale (2026-08-21, REPO-G — progetto vero, cliente vero, non un
 pilota): `gas/Sp.js` (Stato Patrimoniale per le banche) aveva un segno sbagliato nella
 formula del plug (`resto2 = serve - suIva`, doveva essere `serve + suIva`). Il bug era
 invisibile a lettura E invisibile a "quadratura: 0,00 ✅" — il passo finale di tie-out
 (pensato per pochi centesimi di arrotondamento) assorbiva SEMPRE l'intero residuo,
 qualunque fosse la sua entità, quindi ogni riscontro storico tornava "in pareggio" anche
 quando la logica sottostante non lo era. Trovato solo eseguendo la funzione vera con dati
-sintetici (`tools/test-sp.js` in Bilancio_periodico) e guardando il residuo PRIMA del
+sintetici (`tools/test-sp.js` in REPO-G) e guardando il residuo PRIMA del
 passo di aggiustamento finale, non dopo. Applica quando il target contiene formule con un
 invariante di dominio verificabile (contabilità: Attivo=Passivo; riparti che devono
 sommare al 100%; conversioni; arrotondamenti):

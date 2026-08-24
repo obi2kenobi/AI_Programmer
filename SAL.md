@@ -100,6 +100,7 @@
 - [2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico](#2026-08-24-7-7-ciclo-set-1-3-tre-oracoli-residui-e-il-rilevatore-meccanico)
 - [2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero](#2026-08-24-8-7-ciclo-set-2-3-il-flusso-di-progettazione-dogfooddato-su-un-caso-vero)
 - [2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi](#2026-08-24-9-7-ciclo-set-3-3-il-hub-impara-a-giudicare-i-banchi)
+- [2026-08-24 (10) — il report dal campo su REPO-G: verificato,processato, chiuso](#2026-08-24-10-il-report-dal-campo-su-repo-g-verificato-processato-chiuso)
 
 
 ## Stato
@@ -803,7 +804,7 @@ vero resta al primo gate reale sul Mac dopo questa PR — dichiarato in DEBITI.m
 Luca ha chiesto di seguire con attenzione anche gli agenti/il roster, in particolare sui
 temi matematico-finanziari: "capire col tempo se gli esperti sono tutti e sono corretti o
 hanno bisogno di revisioni". Occasione concreta, non ipotetica: continuando l'analisi su
-`Bilancio_periodico` (progetto vero, cliente vero — vedi il suo SAL.md), costruito un
+`REPO-G` (progetto vero, cliente vero — vedi il suo SAL.md), costruito un
 banco di verifica in Node per `gas/Sp.js` (Stato Patrimoniale per le banche) — **trovato
 un segno sbagliato** nella formula del plug (`resto2 = serve - suIva`, doveva essere
 `serve + suIva`), invisibile a lettura E invisibile a "quadratura: 0,00 ✅" perché il
@@ -821,7 +822,7 @@ aggiustamento finale. **Aggiunta**: `dev-critic` §2ter — lente matematico-fin
 stesso schema della lente sicurezza (sempre applicata quando il target ha questa
 caratteristica, non solo su richiesta). Pattern gemello registrato:
 `patterns/banco-sintetico-per-calcoli-critici.md`, ancorato a `tools/test-sp.js` (banco
-vero, provato) e `gas/Sp.js:366` (il bug corretto) di Bilancio_periodico.
+vero, provato) e `gas/Sp.js:366` (il bug corretto) di REPO-G.
 
 **Nota onesta sul metodo di scoperta**: il bug non è stato trovato applicando la nuova
 lente (che non esisteva ancora) — è stato trovato per tentativi, con più derivazioni a
@@ -833,7 +834,7 @@ di diventare il primo passo la prossima volta, non l'ultimo.
 
 Luca ha chiesto esplicitamente che questo repo (pubblico) contenga sistema e metodo, MAI
 riferimenti a quali progetti/clienti lavoriamo — solo forma anonima da qui in avanti. Le
-voci precedenti che nominano `Bilancio_periodico`/`REPO-C` restano invariate
+voci precedenti che nominano `REPO-G`/`REPO-C` restano invariate
 (la regola vale in avanti, non è stata chiesta una bonifica retroattiva — se in futuro
 Luca vorrà anche quella, è un passo separato ed esplicito). Le due voci che seguono
 adottano già la nuova convenzione: "un progetto onboardato" al posto del nome, il
@@ -844,7 +845,7 @@ cliente).
 
 Primo di 5 giri di sviluppo autonomo su un secondo progetto onboardato (pipeline GAS di
 raccolta dati esterni + dashboard di analisi — stesso genere di stack di
-Bilancio_periodico, cliente diverso). Applicata la lente §2ter appena introdotta in (18):
+REPO-G, cliente diverso). Applicata la lente §2ter appena introdotta in (18):
 banco sintetico Node/vm sul codice vero, eseguito prima di fidarsi di qualunque "quadra".
 
 Trovati e corretti **due bug reali della stessa famiglia**, in punti diversi dello stesso
@@ -859,7 +860,7 @@ progetto:
    silenziosamente ogni valore fuori soglia, zero log, zero traccia — indistinguibile da
    un campo mai estratto. Non è la prima volta: lo stesso schema esatto (un residuo/scarto
    reale mascherato invece che segnalato) era già comparso due volte all'interno di
-   Bilancio_periodico dopo la voce (18) — un plug contabile che assorbiva un residuo nel
+   REPO-G dopo la voce (18) — un plug contabile che assorbiva un residuo nel
    tie-out, e un pool di costi che spariva sotto una guardia anti-divisione-per-zero. Tre
    occorrenze indipendenti in due progetti bastano per un pattern a sé, distinto dal banco
    sintetico (quello è la tecnica di TEST, questo è la FORMA del fix): **nuovo pattern**
@@ -2995,3 +2996,31 @@ le famiglie (rilevatore), la densità (ricetta), il verdetto (verificatore). E
 due errori pagati col metodo: l'oracolo leasing "migliorato" (day-adjustment)
 riportato FEDELE all'originale; il conteggio di test scritto 80 invece di 79
 e corretto in cronaca. Suite finale: 81/81 file (79+verifica_banco+design-set2; il conteggio corretto DOPO la run, non prima: terza volta che lo scrivevo a-previsto).
+
+### 2026-08-24 (10) — il report dal campo su REPO-G: verificato,processato, chiuso
+
+Una sessione esterna ha lavorato un giorno su REPO-G (repo del bilancio, mai
+onboardata) e ha riportato sei finding sul hub stesso, col metodo del hub (ogni
+affermazione col comando che la dimostra). Verificati eseguendo prima di toccare:
+tutti confermati — F3 anzi peggio (11 occorrenze del nome vero in 5 file, non 9;
+la voce DEBITI che dichiarava il problema ne citava 2: grep a campione senza
+chiave, la stessa cecità che denunciava).
+
+Chiusi in questo giro: il gate privacy degradato ora FALLISCE invece di dire
+«pulito» (F3a — il verdetto di un gate che non può giudicare è «degradato»,
+non «promosso»: stessa famiglia del «silenzio non è un verdetto»); 11 siti
+bonificati in codice REPO-G; la storia git resta esposta nei commit passati e
+lo spurgo è decisione di Luca (DEBITI: filter-repo su repo pubblica con
+sessioni attive non si fa in silenzio); sync-repo.sh minimale (F2); il
+promemorio SAL diurno nell'hook esistente, contatore per sessione, mai blocco
+(F5 — pagato un test mal progettato: dopo il reset il 5° edit DEVE ricordare
+di nuovo, il discriminante era il numero nel messaggio, 5 vs 10); PROJECT.md
+dichiara dove vive il catalogo citato + guardia sui percorsi citati (F4); la
+terza corsia «task da una sessione» in METHOD.md (F6 — il report ha ragione:
+la pipeline su un task da un file è cerimonia, e una cerimonia senza rigore
+in più insegna a saltarla anche quando servirebbe).
+
+Resta a Luca (DEBITI): onboarding o esclusione deliberata di REPO-G (F1 —
+credenziali BC dentro la repo: non una dimenticanza da correggere in silenzio)
+e lo spurgo della storia (F3b). Suite: 85/85 atteso (82 + privacy-v4,
+sync-repo, percorsi-citati, hook-sal).

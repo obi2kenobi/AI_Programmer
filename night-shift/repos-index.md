@@ -22,6 +22,7 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-D | Repo del ciclo "5 giri" (mandato: tutto da un solo operatore in loop) e del ciclo 2 successivo, incentrato sulla progettazione | `SAL.md`, voci del 2026-08-22 |
 | REPO-E | Repo esterno con progetti Google Apps Script reali (cartella `gas-src/`, coincidenza di nome con REPO-A — repo diverso, confermato da Luca) — oracolo per la skill `controllo-gestione` (4° ciclo, set 1, 2026-08-23; 5° ciclo, set 1 giro 4, 2026-08-23): scostamento standard/effettivo, riconciliazione magazzino, roll-forward cespiti, indici di crisi, scadenzario aging clienti/fornitori | `.claude/skills/controllo-gestione/SKILL.md` |
 | REPO-F | Progetto GAS/BC reale con una dashboard web (`Dashboard.html`) e un flusso di consegne — caso di campo del 2026-08-24: bug reale (una funzione di backfill mai attivata da un trigger) trovato per indagine diretta, non da una skill invocata | `SAL.md`, voce del 2026-08-24 |
+| REPO-G | repo del bilancio periodico (CE per BU, SP, quadrature) | attiva, MAI onboardata — onboarding o esclusione = decisione aperta (DEBITI 2026-08-24); bonificata nei file 2026-08-24, storia git da purgare o accettare (DEBITI) |
 
 ## Come usarlo
 

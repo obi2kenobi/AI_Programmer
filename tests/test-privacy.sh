@@ -41,6 +41,13 @@ rm "$TMP/x.md" && git -C "$TMP" add -A 2>/dev/null || git -C "$TMP" rm -q --cach
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 [ $RC -eq 0 ] && ok "la chiave locale non versionata non è leak" || ko "fine rc=$RC: $OUT"
 
+# 6) v4 (2026-08-24, report dal campo): chiave ASSENTE = gate degradato, NON "pulito"
+rm "$TMP/night-shift/repos.key"
+OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -q "GATE DEGRADATO" <<<"$OUT" \
+  && ok "chiave assente: exit 1 con GATE DEGRADATO dichiarato (non 'pulito')" \
+  || ko "chiave assente: rc=$RC — il gate cieco si spaccia ancora per pulito: $OUT"
+
 rm -rf "$TMP"
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -7,9 +7,13 @@
 ## Il ciclo
 
 ```
-/brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
-                              → territorio grande: commessa → /audit-commesse → notte
-                                → gate → review di Luca
+/selezione-contesto → /brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
+                                               → territorio grande: commessa → /audit-commesse → notte
+                                                 → gate → review di Luca
+TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
+  chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
+  (leggere prima, chiedere invece di indovinare, banco/prima della dichiarazione di fine,
+  SAL se c'è una scoperta) ma SENZA pipeline: la cerimonia senza rigore in più è spreco.
 (design-doc torna a brainstorming se nessuna opzione è buona — 5° ciclo, set 2 giro 7)
 ```
 

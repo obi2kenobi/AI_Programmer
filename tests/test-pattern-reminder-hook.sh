@@ -17,7 +17,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 command -v jq >/dev/null 2>&1 && ok "jq disponibile (richiesto dal hook)" || ko "jq non disponibile: il hook non può funzionare"
 
-OUT_SENSIBILE=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"credenziali BC.rtf"}}' | bash "$HOOK")
+# i controlli che seguono girano da una directory SENZA SAL.md: il promemoria
+# diurno (F5) conta gli edit per directory e non deve interferire con questi casi
+NOSAL=$(mktemp -d)
+OUT_SENSIBILE=$(cd "$NOSAL" && echo '{"tool_name":"Edit","tool_input":{"file_path":"credenziali BC.rtf"}}' | bash "$HOOK")
 echo "$OUT_SENSIBILE" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
   && ok "path sensibile: produce additionalContext" \
   || ko "path sensibile: nessun additionalContext prodotto"
@@ -28,11 +31,11 @@ echo "$OUT_SENSIBILE" | grep -qi 'segreto-come-impronta' \
   && ok "cita il pattern segreto-come-impronta nel reminder" \
   || ko "non cita il pattern segreto-come-impronta"
 
-OUT_NON_SENSIBILE=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"README.md"}}' | bash "$HOOK")
+OUT_NON_SENSIBILE=$(cd "$NOSAL" && echo '{"tool_name":"Edit","tool_input":{"file_path":"README.md"}}' | bash "$HOOK")
 [ -z "$OUT_NON_SENSIBILE" ] && ok "path non sensibile: nessun output (no-op silenzioso)" \
   || ko "path non sensibile: ha prodotto output inatteso"
 
-OUT_TOKEN=$(echo '{"tool_name":"Write","tool_input":{"file_path":"tools/oauth_token_refresh.py"}}' | bash "$HOOK")
+OUT_TOKEN=$(cd "$NOSAL" && echo '{"tool_name":"Write","tool_input":{"file_path":"tools/oauth_token_refresh.py"}}' | bash "$HOOK")
 echo "$OUT_TOKEN" | jq -e '.hookSpecificOutput' >/dev/null 2>&1 \
   && ok "riconosce anche la categoria 'token' in inglese" \
   || ko "non riconosce 'token' come categoria sensibile"
