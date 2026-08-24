@@ -1,6 +1,6 @@
 ---
 name: dev-critic
-description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento — lente §2ter) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. REPO-C) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora.
+description: Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti — lente sicurezza sempre applicata, §2bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento — lente §2ter) e nuove funzionalità non considerate in uno script, uno strumento o un intero progetto — nel hub AI_Programmer o in un progetto onboardato (es. REPO-C) — combinando lettura critica del codice con un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Fa anche critica costruttiva propositiva: idee di sviluppo non ancora coperte, confrontando lo scope dichiarato (PROJECT.md/SAL.md/README) con quello implementato. Usa quando l'utente chiede di trovare nuove idee o funzionalità mancanti, criticare o revisionare uno script/progetto in modo approfondito, capire cosa manca prima di svilupparlo oltre, o invoca /dev-critic esplicitamente. Non sostituisce code-review (bug nel diff corrente) né simplify (pulizia del codice cambiato): questo guarda l'intero target, comprese le funzionalità che NON esistono ancora. Non sostituisce nemmeno `audit-commessa` (5° ciclo, set 3 giro 8, 2026-08-23 — la relazione era dichiarata solo da quella parte, non da questa): quello guarda SOLO le commesse night-shift già in coda, pre-flight prima della notte; questo guarda l'intero progetto per gap non ancora considerati, prima che diventino commesse.
 ---
 
 # dev-critic — critico e scopritore di sviluppo
@@ -42,6 +42,14 @@ procedere a indovinare (regola del progetto: "se qualcosa è poco chiaro, chiedi
   successivo naturale è `/brainstorming`; se sono già visibili 2+ approcci concreti, è
   `/design-doc` (4° ciclo, set 2, giro 9, 2026-08-23) — dillo nel report invece di lasciare
   che l'idea resti un'affermazione isolata senza un passo successivo dichiarato.
+  **Se emergono 3+ idee distinte nello stesso report** (5° ciclo, set 2, giro 6,
+  2026-08-23 — "scelta delle migliori idee": nessun punto del sistema diceva come
+  scegliere DA QUALE idea partire quando più di una emerge insieme, solo come
+  strutturare la scelta DENTRO una singola idea già isolata), ordinale con gli stessi
+  criteri costo/rischio/reversibilità che `/design-doc` già usa per le opzioni — non
+  un punteggio nuovo, lo stesso vocabolario, applicato al portafoglio di idee invece
+  che a una sola. Non è una raccomandazione a implementare: è un ordine di lettura per
+  chi deve scegliere, la scelta resta di chi possiede il progetto.
 
 Per ogni finding: severità, perché conta, un suggerimento concreto (non vago) e — se è una
 scelta di design con impatto (sicurezza, breaking change, costo) — dillo esplicitamente e non
@@ -106,6 +114,13 @@ sommare al 100%; conversioni; arrotondamenti):
   contabile/gestionale nuovo (non ancora scritto) senza indovinare la formula, usa
   `.claude/skills/controllo-gestione/SKILL.md` — stessa disciplina (oracolo citato,
   invariante verificato con dati concreti), applicata prima del codice invece che dopo.
+- Questa lente esiste anche come subagent dedicato, `.claude/agents/revisore-calcoli-critici.md`
+  (5° ciclo, set 3 giro 1, 2026-08-23 — la direzione mancante: `controllo-gestione`
+  cita già i tre agenti al suo §6, questa lente non citava ancora quello che la
+  incarna). L'invocabilità del tool Agent su questo e gli altri due agenti del set
+  dipende da un refresh del roster (`docs/system.md` §"Limiti dichiarati" #6) — non
+  presumere che un'invocazione fallita subito dopo aver scritto un agente sia un
+  bug del file.
 
 ## 3. Regole non negoziabili (eredità da CLAUDE.md del hub)
 

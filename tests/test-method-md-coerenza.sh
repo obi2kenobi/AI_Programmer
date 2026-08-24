@@ -21,6 +21,12 @@ grep -q "repos-index.md" "$MD" \
   && ok "METHOD.md cita l'indice dei codici anonimi" \
   || ko "METHOD.md non cita l'indice dei codici"
 
+# 5° ciclo, set 1 giro 6: METHOD.md è la porta d'ingresso — deve citare anche i
+# subagent .claude/agents/, non solo la skill /controllo-gestione.
+grep -q '\.claude/agents/' "$MD" \
+  && ok "METHOD.md cita .claude/agents/" \
+  || ko "METHOD.md non cita ancora .claude/agents/"
+
 REFS=$(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$MD" | tr -d '`' | sort -u)
 MISSING=0
 while IFS= read -r ref; do

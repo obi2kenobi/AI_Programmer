@@ -68,6 +68,27 @@
 - [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
 - [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
 - [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
+- [2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill](#2026-08-23-set-1-giro-1-nessun-sistema-di-subagent-solo-skill)
+- [2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato](#2026-08-23-set-1-giro-2-un-secondo-agente-non-un-duplicato)
+- [2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti](#2026-08-23-set-1-giro-3-il-terzo-ruolo-dogfoodato-per-davvero-sui-4-tool-esistenti)
+- [2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging](#2026-08-23-set-1-giro-4-quinto-caso-reale-minato-da-gas-src-scadenzario-aging)
+- [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-gi-trovato-due-volte-mai-chiuso-per-gli-agenti)
+- [2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo](#2026-08-23-set-1-giro-6-il-sistema-di-agenti-non-si-conosceva-da-solo)
+- [2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato](#2026-08-23-set-1-giro-7-un-limite-reale-non-ancora-dichiarato)
+- [2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui](#2026-08-23-set-1-giro-8-dogfooding-reale-sui-propri-agenti-non-sono-invocabili-qui)
+- [2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md](#2026-08-23-set-1-giro-9-la-scoperta-del-giro-8-entra-in-debiti-md)
+- [2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify](#2026-08-23-set-2-giro-2-selezione-del-contesto-nessun-percorso-senza-graphify)
+- [2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale](#2026-08-23-set-2-giro-3-goal-costruito-e-mai-eseguito-chiuso-col-primo-loop-reale)
+- [2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"](#2026-08-23-set-2-giro-4-il-wizard-chiedeva-come-verificare-non-quale-livello)
+- [2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a](#2026-08-23-set-2-giro-5-il-gate-meccanico-verifica-che-un-riferimento-somigli-a)
+- [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-buona)
+- [2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione](#2026-08-23-set-3-giro-1-un-cross-reference-in-una-sola-direzione)
+- [2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna](#2026-08-23-set-3-giro-2-i-diagrammi-in-cima-mostravano-solo-la-strada-notturna)
+- [2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo](#2026-08-23-set-3-giro-4-la-stessa-famiglia-di-bug-diventa-un-pattern-nel-catalogo)
+- [2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente](#2026-08-23-set-3-giro-5-una-regola-del-catalogo-mai-verificata-meccanicamente)
+- [2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti](#2026-08-23-set-3-giro-8-sweep-sistematico-di-tutte-le-citazioni-fra-skill-agenti)
+- [2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix](#2026-08-23-set-3-giro-9-un-ipotesi-di-bug-smentita-dal-vivo-prima-di-diventare-un-fix)
+- [2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale](#2026-08-23-set-3-giro-10-chiude-il-set-e-il-ciclo-verifica-end-to-end-finale)
 
 
 ## Stato
@@ -1703,3 +1724,656 @@ spesso per un collegamento mai fatto che per un bug nella logica di una singola 
   gemelli (`bootstrap-app.sh`/`onboard-repo.sh`) con lo stesso limite non documentato
   allo stesso modo; due decisioni aperte dogfoodate con `/design-doc`, mai implementate
   senza il sì di Luca.
+
+## 5° ciclo — Set 1/3, giro 1: `.claude/agents/` non esisteva
+
+### 2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill
+
+Gap reale trovato leggendo la struttura del repo prima di scrivere qualsiasi cosa
+(regola "Read before acting"): `.claude/skills/` esiste da due cicli, ma
+`.claude/agents/` (il meccanismo nativo di Claude Code per i subagent — frontmatter
+`name`/`description`/`tools`, selezionabili dal tool Agent) non esiste affatto in questo
+hub. Le skill sono metodo invocato a comando; un subagent è un ruolo con accesso
+scoped ai tool, delegabile in autonomia — mancava del tutto per il dominio
+matematico-contabile richiesto da Luca.
+
+Primo agente: `.claude/agents/contabilita-analitica.md` — specialista di contabilità
+analitica/controllo di gestione per Gruppo Camarlinghi, tool scoped a
+`Read, Grep, Glob, Bash` (niente Edit/Write: legge e verifica, non scrive codice di
+produzione senza supervisione), corpo che eredita per intero la regola "una formula
+non si indovina mai" da `.claude/skills/controllo-gestione/SKILL.md` e cita i 4 casi
+reali già risolti (`tools/scostamento_standard_effettivo.py`,
+`tools/riconciliazione_magazzino.py`, `tools/rollforward_cespiti.py`,
+`tools/indici_crisi.py`) come riferimento diretto, non come ispirazione vaga.
+
+Test di riscontro: `tests/test-agents-structure.sh` — stesso schema di
+`test-skills-structure.sh` (frontmatter valido, percorsi citati verificati) ma itera
+sul glob `.claude/agents/*.md` invece di nomi hardcoded, applicando da subito la
+lezione già pagata una volta con `.night-verify` (4 test hardcoded, 23+ file nuovi mai
+eseguiti) — qui il test scala automaticamente man mano che il set aggiunge altri
+agenti, senza bisogno di toccarlo ad ogni giro.
+
+### 2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato
+
+Prima bozza scartata: un secondo agente "magazzino" che ripeteva quasi verbatim il
+corpo di `contabilita-analitica.md` cambiando solo quale tool citare — sarebbe stato
+uno spreco (regola CLAUDE.md "zero waste": tre righe simili sono meglio di
+un'abstrazione prematura, ma qui il rischio era l'opposto, duplicare senza motivo).
+Un "sistema di agenti" reale distingue i RUOLI, non solo il dominio: `contabilita-
+analitica` verifica/applica calcoli già scritti (tool scoped a sola lettura + Bash,
+niente Edit/Write); il nuovo `.claude/agents/costruttore-calcoli-gestionali.md` ha un
+ruolo davvero diverso — costruisce calcoli NUOVI quando nessun tool esistente
+risolve il caso, con Edit/Write autorizzati, seguendo lo stesso metodo (oracolo prima
+del codice, mai indovinare) ma applicato alla costruzione invece che alla
+verifica. Il corpo dell'agente chiude esplicitamente il confine: quando il calcolo è
+pronto, il compito passa fuori dal suo ruolo (revisione → prossimo agente del set,
+giro 3).
+
+### 2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti
+
+Terzo agente: `.claude/agents/revisore-calcoli-critici.md` (tool scope: solo lettura +
+Bash, niente Edit/Write — un giro di analisi non modifica codice, regola CLAUDE.md e
+§3 di dev-critic) — applica la lente §2ter (segno invertito, plug che nasconde un
+residuo) ai calcoli GIÀ scritti in `tools/*.py`, ruolo distinto sia da
+`contabilita-analitica` (applica, non dubita) sia da `costruttore-calcoli-gestionali`
+(scrive nuovo, non revisiona esistente).
+
+Prima di scrivere solo la prosa dell'agente, l'ho eseguito per davvero sui 4 tool già
+in produzione (regola dev-critic "dogfooding reale, non solo lettura"). Un sospetto
+concreto emerso leggendo `tools/indici_crisi.py`: l'indice "Patrimonio netto / Debiti
+totali" usa `a["passivoTot"]` come denominatore — il nome suggerisce "tutto il
+passivo" (che includerebbe il patrimonio netto stesso, gonfiando il denominatore e
+producendo un indice falsato per difetto). Verificato contro l'oracolo reale (repo
+esterno REPO-E, il modulo di calcolo indici crisi, righe 85 e 92 lette per riga, non
+a memoria): `passivoTot = -passivo`, dove `passivo` è la somma della sola categoria
+contabile `'Liabilities'` (i debiti), categoria distinta da `'Equity'` — il nome è
+fedele alla realtà, non ambiguo. Sospetto chiuso senza fix: un falso positivo
+risolto controllando l'oracolo invece di fidarsi del nome della variabile, esattamente
+il tipo di verifica che questo agente esiste per fare. Nessun bug nuovo trovato sui 4
+tool: la disciplina §2ter applicata GIÀ in costruzione (cicli precedenti) ha lasciato
+una suite di test avversariali (segno del fondo, soglia limite con `<=`, denominatore
+zero, "4 su 5 non basta") che coprono esattamente gli scenari che questo agente
+avrebbe cercato. Un esito onesto — non ogni giro deve inventare un bug per essere
+utile; qui il valore è la conferma provata, non la scoperta.
+
+### 2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging
+
+Nuovo tool `tools/scadenzario_aging.py`: classificazione a fasce di scadenza (aging)
+e totali per scadenzario clienti/fornitori — quinto dominio diverso (dopo magazzino,
+produzione, cespiti, crisi d'impresa) minato dal repo esterno REPO-E su richiesta
+esplicita di Luca ("puoi utilizzare gas-src per creare snippet di codice o
+ispirarti"). Formula letta riga per riga sul modulo reale di scadenzario: confini di
+fascia con `<` stretto ai limiti negativi e `<=` ai limiti positivi (non simmetrici —
+un dettaglio che sembra arbitrario ma è nel codice originale, non indovinato), e una
+convenzione di segno non ovvia per i fornitori: una fattura diventa un'uscita
+negativa, una nota di credito resta un'entrata positiva, indipendentemente dal segno
+con cui BC restituisce l'importo grezzo.
+
+Esempio input/output derivato PRIMA del codice (regola CLAUDE.md): tutti gli 11
+confini di fascia testati uno per uno ai valori esatti di transizione (-61/-60,
+-31/-30, 0/30/31, 90/91, assente), non solo un caso per fascia — un errore di `<` vs
+`<=` a un solo confine sarebbe passato inosservato con un test più grossolano. Test:
+`tests/test-scadenzario-aging.sh` (23 controlli, tutti verdi al primo run: derivare
+l'aritmetica a mano prima di eseguire ha reso l'implementazione corretta dal primo
+tentativo, non il contrario). I tre agenti del set (`contabilita-analitica`,
+`revisore-calcoli-critici`) aggiornati per citare anche questo quinto caso nelle loro
+liste di riferimento — nessuna lista deve restare indietro rispetto ai casi reali
+risolti, stesso principio del glob in `test-agents-structure.sh` (giro 1).
+
+### 2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti
+
+Verificato (mai assunto) se `bootstrap-app.sh`/`onboard-repo.sh` propagano anche
+`.claude/agents/` come già fanno per `.claude/skills/` e `patterns/` (bug trovato e
+corretto per quelle due cartelle nel Set 3 del 4° ciclo): `grep -n "\.claude"` su
+entrambi gli script mostrava solo `.claude/skills`, nessuna riga per `.claude/agents/`
+— stesso gap, terza cartella, mai applicato lo schema già scritto due volte prima.
+Corretto in entrambi gli script con lo stesso pattern esatto già in uso: copia
+wholesale in `bootstrap-app.sh` (progetto nuovo, niente da preservare) e merge
+per-file — mai sovrascrive un agente che il progetto avesse già personalizzato con lo
+stesso nome — in `onboard-repo.sh` (progetto esistente). Test di riscontro:
+`tests/test-bootstrap-agents-propagation.sh` e
+`tests/test-onboard-agents-propagation.sh`, stessa struttura dei test analoghi già
+scritti per le skill (compreso il caso "un agente personalizzato non viene
+sovrascritto").
+
+### 2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo
+
+Verificato (grep, non assunto) se `docs/system.md`, `METHOD.md` e la skill
+`controllo-gestione` stessa citassero il nuovo sistema `.claude/agents/` costruito nei
+giri 1-3: nessuno dei tre lo faceva — la mappa completa del sistema, la "porta
+d'ingresso" del metodo, e la skill che gli agenti stessi ereditano non sapevano che i
+tre subagent esistessero. Stesso pattern ricorrente in questo ciclo e nei precedenti
+(una parte costruisce, un'altra parte che ne beneficerebbe non lo scopre mai da sola).
+
+Corretto in tre punti: `docs/system.md` guadagna una sezione dedicata (ruoli, 5 casi
+risolti, propagazione); `METHOD.md` aggiorna la riga controllo-gestione per citare la
+delega possibile a un agente; `controllo-gestione/SKILL.md` guadagna un §6 che elenca
+i tre agenti e chiarisce che delegare non sostituisce il metodo (la stessa disciplina,
+solo un esecutore diverso). Guardia di regressione: due asserzioni aggiunte ai test
+di coerenza già esistenti (`test-system-md-controllo-gestione.sh`,
+`test-method-md-coerenza.sh`) invece di un file nuovo — stessi file, stesso file
+sotto test, nessun motivo di duplicare l'infrastruttura del test.
+
+### 2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato
+
+`.claude/agents/` è un meccanismo nativo di Claude Code (frontmatter letto dal tool
+Agent) — verificato, non assunto, che OpenCode (ZCode, e il turno notturno che ci gira
+sopra via `night-shift.sh`) non ha qui alcuna configurazione equivalente
+(`.opencode/agent/` assente, esiste solo `.opencode/skills/`). I tre agenti costruiti
+in questo set sono quindi disponibili solo nelle sessioni Claude Code di giorno, non
+nel turno notturno né in ZCode — un limite reale, non una promessa vuota, nello stesso
+spirito degli altri 5 già elencati in `docs/system.md` §"Limiti dichiarati" (es. "Opus
+non passa dal router").
+
+Aggiunto come sesto limite dichiarato, con una guardia di regressione che verifica il
+limite resti VERO nel tempo (non solo scritto): il test controlla che
+`.opencode/agent/` non esista davvero — se in futuro qualcuno lo introduce, il test
+fallisce e segnala che la dichiarazione in `docs/system.md` è diventata stale, invece
+di lasciarla silenziosamente falsa.
+
+### 2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui
+
+Scoperta importante, non solo un dettaglio: ho provato a invocare per davvero
+`contabilita-analitica` come `subagent_type` del tool Agent (regola dev-critic
+"dogfooding reale, non solo lettura" — applicata ai TRE agenti costruiti da questo
+stesso set, non solo al codice altrui). Risultato: **"Agent type 'contabilita-
+analitica' not found"** — l'elenco degli agenti disponibili in questa sessione
+(Claude Code Remote/cloud) resta fisso ai tipi nativi (general-purpose, Explore,
+Plan, claude-code-guide, statusline-setup, claude), anche DOPO che i tre file
+`.claude/agents/*.md` erano già committati e presenti sul branch corrente.
+
+Non è un bug di questo hub — è un limite dell'ambiente in cui questa sessione gira,
+verificato dal vivo e non semplicemente dedotto dalla documentazione. Non è stato
+possibile verificare se un'installazione Claude Code CLI locale standard (fuori da
+questa sessione remota) leggerebbe `.claude/agents/*.md` come previsto — quella
+verifica richiede un ambiente diverso, non disponibile qui, e va segnalata come tale
+piuttosto che assunta in un senso o nell'altro.
+
+Corretto in tre punti per non lasciare una promessa vuota nel sistema (regola CLAUDE.md
+"limiti dichiarati, non promesse vuote"): il limite #6 in `docs/system.md` riscritto
+per riportare il fatto verificato (non più solo "OpenCode non ce l'ha", ma "qui non è
+invocabile, punto"); la riga di METHOD.md corretta per non presentare la delega come
+via provata; `controllo-gestione/SKILL.md` §6 aggiorna l'avviso — i tre file restano
+utili come DOCUMENTAZIONE del metodo divisa per ruolo (il corpo prosa non è
+inutile: descrive comunque bene chi fa cosa), ma non come automazione oggi funzionante
+in questo ambiente. La via provata resta la skill invocata a comando (§1-5).
+
+### 2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md
+
+Il limite trovato al giro 8 (agenti non invocabili in questa sessione) non è una
+scorciatoia presa da questo ciclo, ma è comunque un gap fra "cosa promette il
+sistema" e "cosa fa oggi qui" che merita un posto in `DEBITI.md` (regola CLAUDE.md
+"minimal-code ladder": ogni scorciatoia o gap deferito va scritto, così "dopo" non
+diventa "mai") — non solo nel limite dichiarato in `docs/system.md`, perché
+`DEBITI.md` è il posto dove si tiene traccia di COSA saldare e QUANDO, non solo del
+fatto che un limite esiste. Voce aggiunta con la condizione di chiusura esplicita:
+verificare in un'installazione Claude Code CLI locale standard (fuori da questa
+sessione remota) se `.claude/agents/*.md` viene letto come previsto — a quel punto il
+limite #6 di `docs/system.md` si restringe da "non invocabile" a "non invocabile solo
+in sessioni remote/cloud", oppure si scopre che il formato dei tre file va corretto.
+
+### 2026-08-23 — Set 1 giro 10 (chiude il set): un bug reale trovato rieseguendo la suite più volte
+
+Verifica end-to-end della riga `.night-verify` che esegue tutta `tests/test-*.sh`
+(stesso schema di chiusura già usato per il set analogo del ciclo precedente): due
+run consecutive misurano ~34s (54 file) — coerente col trend già in `DEBITI.md` — ma
+una run isolata ha misurato **2m9s**, quasi al ceiling di 120s del watchdog
+`run_guarded()`. Non mi sono fermato al numero anomalo: ho cercato la causa invece di
+attribuirla genericamente a "crescita della suite" (lezione già pagata una volta in
+questo stesso file: un vecchio ciclo aveva attribuito un hang simile a "claude -p
+lento" quando la causa vera era altrove).
+
+Causa trovata dal vivo (`ps aux` dopo una run): `tests/test-stdin-timeout.sh` usava
+`< <(sleep 100)` (process substitution) per simulare uno stdin apribile senza EOF —
+ma `timeout 20` uccide solo il comando che LEGGE da quel descrittore, non il processo
+`sleep 100` che lo alimenta, lasciandolo orfano fino alla sua scadenza naturale di
+100s. Ogni esecuzione del test (3 volte, una per wrapper) ne lascia fino a 3; eseguire
+la suite intera molte volte di fila — esattamente cosa fa questo stesso ciclo di
+auto-miglioramento — li accumula, e la loro concorrenza per le risorse del sandbox è
+la causa più plausibile dell'anomalia (non riprodotta a comando dopo il fix, ma la
+correzione rimuove la causa nota indipendentemente).
+
+Fix: `check_bounded()` ora apre una FIFO esplicita invece della process substitution,
+cattura il PID del `sleep` di supporto e lo uccide subito dopo ogni controllo — stesso
+comportamento osservabile dai wrapper (stdin apribile, nessun EOF), zero processi
+orfani. Guardia di regressione aggiunta nello stesso test: dopo ogni `check_bounded`,
+verifica che il PID del sleep sia davvero morto (`kill -0` fallisce), non solo che il
+wrapper abbia risposto in tempo. `DEBITI.md` aggiornato per non lasciare un numero
+anomalo non spiegato nella voce già esistente sulla crescita della suite.
+
+## Riepilogo Set 1/3 (10 giri, 5° ciclo) — "un sistema di agenti per problemi matematico-contabili"
+
+| Giro | Cosa |
+|---|---|
+| 1 | `.claude/agents/` non esisteva — primo agente (`contabilita-analitica`) + test di struttura sul glob |
+| 2 | Secondo agente con ruolo distinto (`costruttore-calcoli-gestionali`), non un duplicato |
+| 3 | Terzo agente (`revisore-calcoli-critici`), dogfoodato sui 4 tool esistenti — un sospetto risolto controllando l'oracolo |
+| 4 | Quinto caso reale minato da gas-src su richiesta esplicita di Luca: scadenzario aging |
+| 5 | Stesso gap già trovato due volte (skills, patterns) mai chiuso per gli agenti — propagazione corretta |
+| 6 | Il sistema di agenti non citava se stesso in system.md/METHOD.md/SKILL.md |
+| 7 | Limite reale dichiarato: `.claude/agents/` non ha equivalente in OpenCode/notte |
+| 8 | Dogfooding sui propri agenti: non invocabili in questa sessione — scoperta corretta ovunque, non nascosta |
+| 9 | La scoperta del giro 8 entra in `DEBITI.md` con condizione di chiusura esplicita |
+| 10 | Bug reale trovato rieseguendo la suite più volte: leak di processi orfani in un test, corretto con guardia di regressione |
+
+**Il dato del set**: il sistema di agenti costruito (3 ruoli distinti, 5 casi reali
+minati da REPO-E) è solido come METODO, ma il giro 8 ha dimostrato che "l'ho costruito
+e documentato" non equivale a "funziona qui" — solo l'averlo provato per davvero ha
+scoperto il limite, esattamente la lezione centrale di dev-critic applicata al proprio
+lavoro appena fatto, non solo al codice altrui. Il giro 10 ripete la stessa lezione su
+un piano diverso: un numero anomalo non spiegato è un invito a indagare, non ad
+archiviarlo come rumore.
+
+## 5° ciclo — Set 2/3: progettare (brainstorming, selezione del contesto, scelta delle idee)
+
+### 2026-08-23 — Set 2 giro 1: la regola "tabella persistita" era verificata solo nella prosa, non nella realtà
+
+`test-design-doc-tabella-persistita.sh` (4° ciclo) verifica che
+`.claude/skills/design-doc/SKILL.md` §2 RICHIEDA la tabella opzioni×criteri nel
+documento persistito — ma nessun test verificava se le voci REALMENTE scritte in
+`SAL.md` (le due dogfoodate nel ciclo precedente) rispettassero quella regola nella
+pratica. Verificate a mano entrambe: la rispettano già (tabella presente, criteri
+dichiarati prima, almeno 2 opzioni reali) — nessun bug da correggere oggi, ma nessuna
+guardia impediva a una terza voce futura di violarla in silenzio.
+
+Nuovo test: `tests/test-design-doc-sal-entries-hanno-tabella.sh` — estrae ogni voce
+"### ... — design: ..." da `SAL.md` e verifica per ciascuna: criteri dichiarati,
+tabella con colonna "Opzione", almeno 2 opzioni reali confrontate (non una vera e una
+paglia). Stesso principio delle guardie già scritte per i limiti dichiarati in
+`docs/system.md` (5° ciclo, Set 1 giri 6-7): non basta che la regola sia scritta bene,
+deve restare verificabile che venga seguita.
+
+### 2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify
+
+`design-doc/SKILL.md` §3 (4° ciclo) dice "se `graphify-out/graph.json` esiste, usa
+graphify" per orientarsi nel codebase prima di generare le opzioni — ma non diceva
+cosa fare quando NON esiste. Non un caso ipotetico: verificato in questa stessa
+sessione che `graphify-out/` non esiste e il binario `graphify` non è installato — un
+vuoto reale nella selezione del contesto, non teorico.
+
+Aggiunto il ramo mancante: territorio piccolo e già chiaro → `Grep`/`Glob` sui termini
+di dominio; territorio ampio o nomi dei componenti non ancora noti → l'agente
+`Explore` (breadth "quick"/"medium") — stessa soglia già in uso nel resto del sistema
+("3+ query esplorative → Explore"), non una regola nuova. Test estesi in
+`tests/test-design-doc-graphify.sh` (già esistente, non un file nuovo — stesso
+argomento, stesso file sotto test) per verificare che il fallback sia dichiarato e
+citi `Explore`.
+
+### 2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale
+
+Trovato ripetendo lo stesso controllo del Set 1 giro 8 su un altro strumento: `loops/`
+conteneva solo `README.md` — `/goal` (implementato nel 4° ciclo) non era mai stato
+eseguito per davvero da quando esiste. "Costruito e documentato" non è "provato",
+stessa lezione, stesso rischio, stavolta su un comando invece che su un agente.
+
+Eseguito il primo loop reale: obiettivo verificabile "la suite `tests/test-*.sh`
+completa in meno di 60s su una run pulita" (livello 2, tetto 2 tentativi) — motivato
+dalla crescita reale della suite in questo stesso ciclo (50→55 file in poche ore,
+trend già annotato in `DEBITI.md`). Tentativo 1: 35.1s, vittoria. Verifica
+avversariale obbligatoria (§3 della skill, non facoltativa): rieseguita in ordine
+casuale invece che alfabetico, per escludere un tempo favorito dall'ordine — 34.8s,
+confermata. Log completo: `loops/2026-08-23-suite-sotto-60s.md`.
+
+Nessun cambiamento al codice richiesto (l'obiettivo era già rispettato) — il valore
+del giro è aver dimostrato che il meccanismo `/goal` funziona end-to-end la prima
+volta che viene usato per davvero, non solo che la sua prosa è ben scritta.
+
+### 2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"
+
+`docs/system.md` definisce una tassonomia condivisa a 5 livelli di verifica
+(deterministico → numerico → verità ritardata → LLM giudice → umano), già richiesta
+esplicitamente da `/goal` (§1: "dichiara qui quale livello copre l'obiettivo") — ma il
+wizard `.zcode-commands-nuova-commessa.md` (punto 6) chiedeva solo "come si verifica"
+senza mai chiedere il livello, restando disallineato dalla stessa tassonomia che
+un'altra parte del sistema già usa attivamente.
+
+Corretto: il punto 6 ora chiede esplicitamente il livello 1-5, con la tassonomia
+richiamata in una riga (non riscritta a memoria — cita `docs/system.md`). Guardia di
+regressione aggiunta a `tests/test-nuova-commessa-wizard-coerenza.sh` (test esistente,
+stesso file sotto verifica, non un file nuovo).
+
+### 2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a
+uno vero, non che lo sia
+
+`test-night-shift-design-gate.sh` (4° ciclo) verifica che il gate del turno notturno
+blocchi un `## Design` senza riferimento reale — ma "riferimento reale" per quel gate
+è una REGEX (un link, "SAL.md", "issue #42", un'estensione file): un testo che
+somiglia a una citazione la passa, anche se il file/la voce citata non esiste o non
+contiene quello che promette. Nessun passo del sistema apriva davvero il riferimento
+per controllare — il gate meccanico non può farlo (nessun accesso al contenuto reale
+dei file citati in modo affidabile a comando), ma `audit-commessa` (pre-flight di
+giorno, con accesso completo al repo) può e deve.
+
+Aggiunto `.claude/skills/audit-commessa/SKILL.md` §1bis: apri il riferimento citato in
+`## Design` e verifica che esista davvero e, se è un design-doc, che contenga la
+tabella opzioni×criteri richiesta da `design-doc/SKILL.md` §2 — non fidarsi che il
+testo "somigli" a una citazione. Test:
+`tests/test-audit-commessa-riferimento-design-verificato.sh`.
+
+### 2026-08-23 — Set 2 giro 6: "scelta delle migliori idee" al plurale — nessuna riga lo diceva
+
+`/design-doc` struttura la scelta DENTRO una singola idea già isolata (2-3 opzioni per
+lo stesso problema). Nessun punto del sistema (grep confermato: zero risultati su
+"priorità"/"quale prima" in tutte le skill, METHOD.md, docs/system.md) diceva come
+scegliere DA QUALE idea partire quando 3 o più emergono insieme nello stesso report —
+esattamente il caso di questo stesso ciclo di auto-miglioramento (30 giri, decine di
+idee proposte via dev-critic nei cicli precedenti).
+
+Aggiunto in `.claude/skills/dev-critic/SKILL.md` (sezione "Nuove funzionalità non
+considerate"): quando emergono 3+ idee distinte nello stesso report, ordinale con gli
+stessi criteri costo/rischio/reversibilità che `/design-doc` già usa per le opzioni —
+non un punteggio nuovo, lo stesso vocabolario applicato al portafoglio invece che a
+una sola decisione. Resta un ordine di lettura, non una raccomandazione a
+implementare — la scelta resta di chi possiede il progetto. Guardia di regressione
+estesa in `tests/test-dev-critic-routing-idee.sh` (test esistente, stessa sezione
+sotto verifica).
+
+### 2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona
+
+`design-doc/SKILL.md` strutturava bene il caso "un'opzione vince sugli altri criteri"
+(§3-4), ma non diceva nulla sul caso in cui tutte e 2-3 le opzioni generate hanno un
+punteggio scadente sui criteri critici — il rischio reale: forzare comunque una
+scelta fra tre opzioni deboli solo perché il formato (tabella + scelta) lo richiede,
+presentandole come "il confronto le ha risolte" quando in realtà nessuna lo era.
+
+Aggiunto §4bis: se nessuna opzione ha un punteggio accettabile, non forzare — è un
+segnale che il PROBLEMA va rivisto, non solo la soluzione: torna a `/brainstorming`
+con quello che le opzioni deboli hanno rivelato (già informazione nuova sul
+problema). Test: `tests/test-design-doc-loopback-brainstorming.sh`.
+
+### 2026-08-23 — Set 2 giro 8: lo stesso bug (nomi hardcoded, non un glob) trovato una terza volta
+
+`test-skills-structure.sh` elencava 4 skill per nome fisso (design-doc, brainstorming,
+goal, controllo-gestione) — `audit-commessa`, `dev-critic` e `verifica-visiva` non
+erano MAI state controllate strutturalmente da questo test, per l'intera vita di
+queste skill, senza che nulla lo segnalasse. Stesso identico bug già corretto due
+volte in questo ciclo (`.night-verify` nel 4° ciclo; `.claude/agents/*.md` scritto
+giusto la prima volta al giro 1 di questo Set 1) — la lezione non era mai stata
+applicata retroattivamente a questo test specifico.
+
+Convertito a un glob su `.claude/skills/*/SKILL.md`. Attivarlo ha subito trovato 2
+falsi positivi reali (non ipotetici): `audit-commessa` cita `docs/GRAMMATICA_DOMINIO.md`
+e `CATALOGO_ENDPOINT_BC.md` come riferimenti CONDIZIONALI ("se esiste... nel
+progetto" — un progetto onboardato, non questo hub) che il check trattava come
+citazioni rotte; `dev-critic` cita `gas/Sp.js`/`tools/test-sp.js`, che appartengono al
+debito privacy già tracciato in `DEBITI.md` (nomi di repo esterni pre-esistenti, fuori
+scope). Entrambi esclusi esplicitamente con la ragione scritta, non silenziosamente.
+Trovato anche un vero refuso minore: `audit-commessa` citava `night-shift.sh` senza il
+prefisso `night-shift/` — corretto.
+
+### 2026-08-23 — Set 2 giro 9: lo stesso bug, una quarta e una quinta volta (una scritta da me in questo stesso ciclo)
+
+Cercato sistematicamente altre liste hardcoded dopo il pattern trovato al giro 8:
+`tests/test-bootstrap-skills-propagation.sh` elencava 6 nomi fissi
+(`dev-critic audit-commessa verifica-visiva design-doc brainstorming goal`) —
+`controllo-gestione` (7ª skill, aggiunta nel ciclo precedente) non era mai stata
+verificata da questo test specifico, quarta occorrenza dello stesso bug in questo
+ciclo. Convertito a un glob su `.claude/skills/*/`.
+
+Controllando anche il proprio lavoro di questo stesso ciclo (non solo quello
+altrui — regola dev-critic §"dogfooding reale", applicata a sé stessi):
+`tests/test-bootstrap-agents-propagation.sh`, scritto da me al giro 5 di questo Set 1,
+**prima** di aver imparato la lezione al giro 1/8, aveva la stessa identica lista
+fissa dei 3 agenti. Corretto anch'esso con un glob — un quarto agente futuro sarebbe
+passato inosservato esattamente come `controllo-gestione` lo è stato nell'altro file.
+Nessun bug reale nascosto oggi in nessuno dei due (7/7 skill e 3/3 agenti già
+copiavano correttamente) — il valore è aver chiuso il buco di copertura prima che un
+ottavo elemento futuro ci cadesse dentro in silenzio.
+
+### 2026-08-23 — Set 2 giro 10 (chiude il set): verifica end-to-end di tutta la pipeline di progettazione
+
+Rieseguiti tutti i test di coerenza toccati o rilevanti in questo set
+(`test-skills-structure.sh` su tutte e 7 le skill, `test-design-doc-nessuna-menzione-stale.sh`,
+`test-nuova-commessa-wizard-coerenza.sh`, `test-method-md-coerenza.sh`,
+`test-system-md-controllo-gestione.sh`) — tutti verdi, nessuna regressione introdotta
+dai 9 giri precedenti. Suite completa: 57/57.
+
+## Riepilogo Set 2/3 (10 giri, 5° ciclo) — "progettare: brainstorming, contesto, scelta delle idee"
+
+| Giro | Cosa |
+|---|---|
+| 1 | La regola "tabella persistita" era verificata solo nella prosa — nuovo test sulle voci reali di SAL.md |
+| 2 | Selezione del contesto: nessun percorso quando graphify non è installato (caso reale di questa sessione) |
+| 3 | `/goal` costruito nel ciclo precedente, mai eseguito — primo loop reale, `loops/` non più vuota |
+| 4 | Il wizard chiedeva "come" verificare ma non "quale livello" — disallineato da /goal |
+| 5 | Il gate meccanico verifica che un riferimento SOMIGLI a uno vero, non che lo sia — audit-commessa lo apre davvero |
+| 6 | "Scelta delle migliori idee" al plurale: nessuna riga diceva come ordinare 3+ idee distinte |
+| 7 | Cosa fare quando NESSUNA opzione è buona — design-doc torna a /brainstorming invece di forzare |
+| 8 | Stesso bug (nomi hardcoded, non un glob) trovato una terza volta: 3 skill su 7 non erano mai testate |
+| 9 | Lo stesso bug una 4ª e 5ª volta — una scritta da me in questo stesso ciclo, corretta appena trovata |
+| 10 | Verifica end-to-end di tutta la pipeline: nessuna regressione |
+
+**Il dato del set**: la metà dei giri (1, 8, 9) sono la stessa famiglia di bug —
+verificare la PROSA di una regola non basta se nessuno verifica che la REALTÀ la
+rispetti, e una lista scritta a mano invecchia silenziosamente ogni volta che il
+sistema cresce di un elemento. Il giro 9 aggiunge un dato scomodo ma onesto: la
+disciplina va applicata anche al proprio lavoro appena fatto nello stesso ciclo, non
+solo a quello dei cicli precedenti.
+
+## 5° ciclo — Set 3/3: flusso delle idee, interazione fra le parti
+
+### 2026-08-23 — Set 3 giro 1: un cross-reference in una sola direzione
+
+Prima ipotesi verificata e SCARTATA (per non archiviare un falso positivo): il turno
+notturno (`night-shift.sh`) potrebbe non sapere che `.claude/skills/controllo-gestione/`
+esiste, dato che OpenCode (qwen) non ha una convenzione `.claude/` propria. Verificato
+il flusso reale: il template `.github/ISSUE_TEMPLATE/night-shift.md` istruisce CHI
+SCRIVE la commessa (giorno) a citare l'oracolo della formula GIÀ nel body dell'issue —
+la notte legge il body già completo, non deve mai aprire la skill da sola. Nessun bug:
+il design "commesse precaricate, non brief d'indagine" (CLAUDE.md §7) già lo prevedeva.
+
+Trovato invece un vero gap: `controllo-gestione/SKILL.md` §6 (Set 1 giro 6) cita già i
+tre agenti — ma `dev-critic` §2ter, la lente che `revisore-calcoli-critici` incarna
+esattamente, non citava quell'agente. La direzione mancava in un solo senso. Aggiunta
+la citazione mancante, con lo stesso limite noto ricordato (non invocabile in questa
+sessione) ovunque l'agente viene menzionato — coerenza dell'avviso, non solo del nome.
+Test: `tests/test-dev-critic-controllo-gestione-crossref-bidirezionale.sh`.
+
+### 2026-08-23 — Set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna
+
+`METHOD.md` e `docs/system.md` aprono con un diagramma "brainstorming → design-doc →
+commessa → notte → gate → review" — una linea retta. Ma il metodo reale, dopo il ciclo
+precedente (design-doc → `/goal` per territorio piccolo) e questo Set 2 (giro 7,
+design-doc → brainstorming se nessuna opzione è buona), ha due rami che il diagramma
+non mostrava mai: chi legge solo il diagramma vedrebbe un'unica strada (la notte),
+quando ne esistono altre due già implementate e testate.
+
+Corretti entrambi i diagrammi per mostrare i due rami. Test:
+`tests/test-pipeline-diagrammi-mostrano-i-rami.sh` — verifica che entrambi i file
+citino sia `/goal` sia il ritorno a `/brainstorming`, non solo la strada notturna.
+
+### 2026-08-23 — Set 3 giro 3: l'indice dei codici anonimi era rimasto indietro sul proprio ciclo
+
+`night-shift/repos-index.md` (4° ciclo, set 3 giro 3) dice esplicitamente nel suo
+"Come usarlo": aggiorna la riga se un codice non corrisponde più a quanto scritto
+altrove. La riga REPO-E elencava ancora solo i 4 casi del ciclo precedente
+(scostamento, riconciliazione, roll-forward, indici di crisi) — il 5° caso
+(scadenzario aging, minato in questo stesso ciclo al Set 1 giro 4) non c'era ancora.
+Corretta.
+
+Guardia di regressione aggiunta a `test-repos-index-coerenza.sh` (esistente): verifica
+che ogni caso reale citato in `controllo-gestione/SKILL.md` §3 compaia anche nella
+riga REPO-E dell'indice — non basta che il codice esista, la descrizione deve restare
+al passo con ogni nuovo caso minato dallo stesso repo.
+
+### 2026-08-23 — Set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo
+
+Cinque occorrenze indipendenti dello stesso bug in un solo ciclo (`.night-verify` nel
+4° ciclo; `test-skills-structure.sh`, `test-bootstrap-skills-propagation.sh`, e due
+test scritti da me in questo stesso ciclo — `test-bootstrap-agents-propagation.sh` al
+giro 5, PRIMA di imparare la lezione al giro 8) sono un segnale che merita un posto
+nel catalogo `patterns/` (CLAUDE.md §7: "prima di scrivere infrastruttura, controlla
+patterns/"), non solo cinque commit sparsi.
+
+Nuovo pattern: `patterns/copertura-dal-glob.md` — un test che deve coprire "tutti gli
+elementi di una categoria" e li elenca per nome fisso invecchia silenziosamente ogni
+volta che la categoria cresce; il fix è sempre iterare su un glob reale, mai una lista
+scritta a mano. Registrato in `patterns/README.md`. Propagazione già verificata via
+`test-bootstrap-patterns-propagation.sh` (che usa `find`, non una lista — coerente col
+pattern che descrive).
+
+### 2026-08-23 — Set 3 giro 5: una regola del catalogo mai verificata meccanicamente
+
+`patterns/README.md` dichiara "l'ancora deve esistere, o la voce non sopravvive" —
+ma nessun test verificava mai questa regola per davvero, per NESSUNO dei 24 pattern
+del catalogo, dalla sua creazione. Lo stesso principio "citazione-non-presidio" che
+il catalogo stesso descrive (§dedicato), applicato al catalogo stesso.
+
+Nuovo test: `tests/test-patterns-ancore-esistono.sh` — estrae l'ancora di ogni
+pattern, verifica quelle hub-locali (9 su 24; le altre citano repo esterni o processi
+non verificabili da qui, correttamente escluse). Risultato: **9/9 ancore verificate
+esistono davvero** — nessuna ancora morta trovata oggi, un esito onesto che conferma
+la regola del catalogo era già rispettata, non solo scritta.
+
+### 2026-08-23 — Set 3 giro 6: `/goal` aveva raggiunto il suo obiettivo ma nessuno lo sapeva ancora
+
+`METHOD.md` e `.claude/skills/goal/SKILL.md` dicevano ancora "loops/ è vuota" DOPO che
+il Set 2 giro 3 di questo stesso ciclo aveva eseguito il primo loop reale — la prosa
+non seguiva più i fatti, esattamente il pattern ricorrente di questo Set 3 (una parte
+del sistema resta indietro rispetto a un'altra che è appena cambiata).
+
+Corretto: `METHOD.md` aggiorna la riga `/goal`, `goal/SKILL.md` qualifica la storia al
+passato ("finché non è stato scritto questo comando") invece di presentarla come stato
+attuale. Guardia di regressione: `tests/test-goal-loops-non-piu-vuota.sh` — verifica
+che `loops/` contenga davvero un log reale, e che nessuno dei due file affermi ancora
+il contrario al presente. Un tentativo iniziale del test dava un falso positivo su
+`goal/SKILL.md` (bloccava anche la frase corretta al passato, non solo quella stale) —
+corretto prima di committarlo, non dopo.
+
+### 2026-08-23 — Set 3 giro 7: controllo-gestione parlava un vocabolario isolato sulla verifica
+
+`/goal` e il wizard `/nuova-commessa` (5° ciclo, set 2 giro 4) richiedono entrambi di
+dichiarare il livello 1-5 della tassonomia condivisa (`docs/system.md`) — ma il passo
+6 di `controllo-gestione/SKILL.md` ("verifica con un riscontro") restava nel proprio
+vocabolario ("test verde" + "riscontro confermato"), senza collegarlo alla stessa
+tassonomia che il resto del sistema usa attivamente.
+
+Aggiunto il collegamento: test contro un oracolo = livello 1-2, riscontro contro un
+totale BC non ancora chiuso = livello 3 (verità terrena ritardata) — dichiaralo se la
+commessa lo richiede. Test:
+`tests/test-controllo-gestione-livelli-verifica.sh`.
+
+### 2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti
+
+Invece di continuare a scoprire cross-reference asimmetrici uno alla volta per caso
+(giro 1, giro 7), un grep sistematico su TUTTI i file `.claude/skills/*/SKILL.md` e
+`.claude/agents/*.md` per costruire la mappa completa di chi cita chi. Trovato un
+altro caso reale: `audit-commessa` dichiara "non sostituisce dev-critic", ma
+`dev-critic` non diceva mai nulla su `audit-commessa` — stessa famiglia di asimmetria,
+diversa coppia.
+
+Aggiunta la direzione mancante nella description di `dev-critic`. Test:
+`tests/test-dev-critic-audit-commessa-crossref.sh`. Il resto della mappa (controllo-
+gestione↔3 agenti, costruttore↔revisore↔contabilita-analitica) risulta già coerente
+in entrambe le direzioni — nessun altro caso trovato in questo sweep.
+
+### 2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix
+
+Ipotesi: i test esistenti (`test-skills-structure.sh`/`test-agents-structure.sh`)
+verificano il frontmatter con `grep` (apre con `---`, contiene `name: X`) — mai con un
+parser YAML reale. Ho scritto un test che estrae il frontmatter di tutte le 7 skill e
+i 3 agenti e lo passa a `yaml.safe_load` (PyYAML, disponibile in questa sessione).
+Risultato: **10/10 falliscono** con "mapping values are not allowed here" — ogni
+description contiene un `: ` (due punti+spazio) dentro il testo libero (es. "critica
+costruttiva propositiva: idee di sviluppo"), che uno YAML rigoroso rifiuta come valore
+scalare non quotato.
+
+Prima di scriverlo come fix (regola CLAUDE.md "Done means proven"), verificato se
+fosse un bug REALE: le stesse skill sono state elencate correttamente, testo e due
+punti compresi, in decine di `<system-reminder>` di questa sessione per l'intero
+ciclo — prova diretta che il parser REALE di Claude Code non usa YAML rigoroso per
+questo frontmatter (probabilmente un'estrazione riga-per-riga `chiave: resto-della-
+riga`, non un parser YAML completo). Il test che avevo scritto era basato su
+un'ipotesi sbagliata sul formato reale, non su un bug del repo — **eliminato prima di
+committarlo**, non lasciato come falso positivo permanente nella suite. Nessun fix
+necessario: le 10 description restano corrette per il parser che le legge davvero.
+
+### 2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale
+
+Rieseguiti tutti i test toccati o rilevanti in questo Set 3
+(`test-skills-structure.sh` su 7 skill, `test-pipeline-diagrammi-mostrano-i-rami.sh`,
+`test-repos-index-coerenza.sh`, `test-patterns-ancore-esistono.sh`,
+`test-dev-critic-audit-commessa-crossref.sh`,
+`test-dev-critic-controllo-gestione-crossref-bidirezionale.sh`) — tutti verdi.
+Working tree pulito, nessuna modifica pendente. Suite completa: 63/63.
+
+## Riepilogo Set 3/3 (10 giri, 5° ciclo) — "flusso delle idee, interazione fra le parti"
+
+| Giro | Cosa |
+|---|---|
+| 1 | Cross-reference mono-direzionale: controllo-gestione citava i 3 agenti, dev-critic §2ter no |
+| 2 | I diagrammi in cima a METHOD.md/docs/system.md mostravano solo la strada notturna, non i due rami |
+| 3 | L'indice REPO-E era rimasto ai 4 casi del ciclo precedente, il 5° (scadenzario) mancava |
+| 4 | Cinque occorrenze dello stesso bug in un ciclo diventano un pattern nel catalogo (`copertura-dal-glob`) |
+| 5 | Una regola del catalogo patterns/ ("l'ancora deve esistere") mai verificata meccanicamente |
+| 6 | `/goal` aveva raggiunto il suo obiettivo (giro 3 del Set 2) ma la prosa non lo sapeva ancora |
+| 7 | `controllo-gestione` parlava un vocabolario isolato sulla verifica, non la tassonomia condivisa |
+| 8 | Sweep sistematico di tutte le citazioni fra skill/agenti: un'altra asimmetria (dev-critic↔audit-commessa) |
+| 9 | Un'ipotesi di bug (YAML rigoroso) smentita dal vivo prima di diventare un fix sbagliato |
+| 10 | Verifica end-to-end finale: tutto verde, working tree pulito |
+
+**Il dato del set**: il tema "interazione fra le parti" si è confermato soprattutto
+come un problema di SINCRONIA — non bug di logica, ma parti del sistema che si sono
+mosse in momenti diversi (agenti creati al Set 1, diagrammi scritti prima che i rami
+esistessero, `/goal` eseguito solo al Set 2 giro 3) senza che le parti collegate lo
+scoprissero da sole. Il giro 9 è il contrappeso necessario: non ogni sospetto è un
+bug, e la stessa disciplina che trova i problemi reali deve anche saper riconoscere
+quando l'ipotesi era sbagliata, prima di introdurne uno nuovo per correggerne uno
+inesistente.
+
+## Riepilogo dei tre set (30 giri, 5° ciclo) — dopo il ciclo precedente da 30 giri
+
+- **Set 1** (un sistema di agenti per problemi matematico-contabili): tre subagent con
+  ruoli distinti (`contabilita-analitica`, `costruttore-calcoli-gestionali`,
+  `revisore-calcoli-critici`), un quinto caso reale minato da REPO-E (scadenzario
+  aging), propagazione corretta a bootstrap/onboard — ma la scoperta più importante
+  del set è stata negativa: dogfoodando i propri agenti, non risultano invocabili in
+  questa sessione (verificato dal vivo, non presunto), documentato ovunque serve
+  invece di nascosto o sopravvalutato. Un bug reale di leak di processi trovato
+  rieseguendo la suite più volte.
+- **Set 2** (progettare: brainstorming, contesto, scelta delle idee): `/design-doc`
+  guadagna un fallback per la selezione del contesto senza graphify e un loopback a
+  `/brainstorming` quando nessuna opzione è buona; `dev-critic` impara a ordinare 3+
+  idee col vocabolario già esistente; `/goal` eseguito per la prima volta da quando
+  esiste; lo stesso bug "lista hardcoded invece di glob" trovato tre volte, una
+  scritta dallo stesso autore nello stesso ciclo e corretta appena scoperta.
+- **Set 3** (flusso delle idee, interazione fra le parti): sweep sistematico di tutte
+  le citazioni fra skill/agenti (un'asimmetria trovata); i diagrammi della pipeline
+  aggiornati per mostrare i rami reali; un nuovo pattern nel catalogo
+  (`copertura-dal-glob`) per la famiglia di bug ricorrente in questo ciclo; la regola
+  del catalogo patterns/ verificata meccanicamente per la prima volta; un'ipotesi di
+  bug smentita prima di diventare un fix sbagliato.
+
+**Il filo comune ai tre set**: la disciplina di dev-critic ("dogfooding reale, non
+solo lettura") applicata non solo al codice altrui ma al proprio lavoro appena fatto
+nello stesso ciclo — sia quando rivela un limite scomodo (Set 1, gli agenti non
+invocabili), sia quando smentisce un proprio sospetto prima che diventi un fix
+sbagliato (Set 3, il falso YAML), sia quando trova lo stesso errore ripetuto dallo
+stesso autore che l'aveva appena corretto altrove (Set 2, le liste hardcoded).
+
+### 2026-08-23 — dopo il push e la PR #35: il limite del Set 1 giro 8 era temporaneo, non permanente
+
+Subito dopo l'apertura della PR #35, il roster degli agenti disponibili in questa
+sessione mostrava i tre subagent (`contabilita-analitica`,
+`costruttore-calcoli-gestionali`, `revisore-calcoli-critici`) come tipi disponibili
+per il tool Agent — cosa che NON accadeva al Set 1 giro 8, subito dopo il primo
+commit. Riverificato dal vivo (non presunto dal solo elenco): invocati tutti e tre,
+con un prompt di eco minimo, e tutti e tre hanno risposto correttamente.
+
+Questo NON invalida il metodo del giro 8 (era la verifica corretta da fare in quel
+momento, con l'informazione disponibile allora) — cambia la conclusione: il limite
+non è permanente/ambientale come documentato ("non invocabile in questa sessione
+Claude Code Remote/cloud"), ma dipendente da un refresh del roster degli agenti che
+non si era ancora verificato al momento del primo tentativo. Non isolato
+sperimentalmente cosa fa scattare il refresh (nuova sessione? il push al branch
+remoto? un intervallo di tempo? l'apertura della PR?) — non presumerlo, dichiarato
+come incertezza residua invece di una nuova ipotesi non verificata.
+
+Corretto ovunque la conclusione precedente era stata scritta come limite fisso:
+`docs/system.md` §"Limiti dichiarati" #6, `DEBITI.md` (voce segnata ✅ SALDATO),
+`METHOD.md`, `.claude/skills/controllo-gestione/SKILL.md` §6,
+`.claude/skills/dev-critic/SKILL.md` §2ter, e la relativa guardia di regressione in
+`tests/test-system-md-controllo-gestione.sh`. Le voci storiche di questo file (Set 1
+giro 8/9, PR #35) NON sono state riscritte — restano la cronaca accurata di cosa era
+vero in quel momento con l'informazione allora disponibile; questa voce documenta la
+correzione successiva, non nasconde l'errore di conclusione iniziale.

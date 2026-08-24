@@ -36,17 +36,39 @@ export ZHIPUAI_API_KEY="finta-per-test"
 
 check_bounded() {
   local nome="$1" script="$2"; shift 2
-  local T0 T1 DUR RC
+  local T0 T1 DUR RC FIFO SLEEP_PID
+  # bug reale (5° ciclo, set 1 giro 10, scoperto rieseguendo l'intera suite più volte di
+  # fila — esattamente cosa fa questo stesso ciclo): `< <(sleep 100)` (process substitution)
+  # lascia il `sleep 100` orfano quando `timeout` uccide solo il comando che legge da esso,
+  # non il processo che scrive — verificato dal vivo con `ps aux` dopo una run: gli orfani
+  # si accumulano a ogni esecuzione del test (3 per run, uno per wrapper) e restano vivi
+  # fino alla loro scadenza naturale di 100s. Con una FIFO esplicita si ottiene lo stesso
+  # comportamento (stdin apribile senza EOF) ma il PID del sleep resta noto e viene ucciso
+  # subito dopo, non lasciato scadere da solo.
+  FIFO="$TMP/fifo_${nome//[^A-Za-z0-9]/_}"
+  mkfifo "$FIFO"
+  sleep 100 > "$FIFO" &
+  SLEEP_PID=$!
   T0=$(date +%s)
-  timeout 20 bash "$HERE/llm/$script" "$@" < <(sleep 100) >/tmp/stdintest.out 2>&1
+  timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >/tmp/stdintest.out 2>&1
   RC=$?
   T1=$(date +%s); DUR=$((T1-T0))
+  kill "$SLEEP_PID" 2>/dev/null
+  wait "$SLEEP_PID" 2>/dev/null
+  rm -f "$FIFO"
   if [ "$RC" -eq 124 ]; then
     ko "$nome: bloccato oltre 20s con stdin aperto senza EOF (bug NON corretto)"
   elif [ "$DUR" -le 10 ]; then
     ok "$nome: completa in ${DUR}s con stdin aperto senza EOF (limite rispettato)"
   else
     ko "$nome: ${DUR}s — troppo lento, il timeout sullo stdin non sta limitando l'attesa"
+  fi
+
+  # guardia di regressione: il sleep ausiliario deve essere morto qui, non orfano
+  if kill -0 "$SLEEP_PID" 2>/dev/null; then
+    ko "$nome: il processo sleep ausiliario (pid $SLEEP_PID) è ancora vivo — orfano non riaperto"
+  else
+    ok "$nome: nessun processo orfano lasciato dal banco di test"
   fi
 }
 

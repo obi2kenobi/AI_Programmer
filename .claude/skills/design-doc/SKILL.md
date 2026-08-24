@@ -42,7 +42,14 @@ decisioni già chiuse (regola "Only what is asked").
    coinvolti (regola CLAUDE.md §7 "Navigazione before reading" + `AGENTS.md`) — è
    orientamento e localizzazione, non un oracolo su COME i componenti si chiamano a
    vicenda (`calls` non è risolto, lezione già pagata: non fidarti del grafo per la
-   semantica, solo per dove guardare). Poi, per ogni opzione:
+   semantica, solo per dove guardare). **Se `graphify-out/graph.json` NON esiste**
+   (5° ciclo, set 2 "progettare", giro 2, 2026-08-23 — caso reale di questa stessa
+   sessione, non ipotetico: il grafo non è installato qui) — non restare senza un
+   passo: usa `Grep`/`Glob` sui termini di dominio della richiesta per un territorio
+   piccolo e già chiaro, o l'agente `Explore` (breadth "quick"/"medium") quando il
+   territorio è ampio o i nomi dei componenti coinvolti non sono ancora noti — stessa
+   soglia già in uso nel resto del sistema ("3+ query esplorative → Explore"), non una
+   regola nuova inventata qui. Poi, per ogni opzione:
    - cosa cambia concretamente (file/componenti coinvolti, a un livello alto — non il
      territorio riga-per-riga, quello è compito della commessa dopo);
    - **un punteggio per ciascun criterio dichiarato al punto 2**, in una tabella
@@ -55,6 +62,14 @@ decisioni già chiuse (regola "Only what is asked").
 4. **Le opzioni scartate restano scritte**, col perché — non solo la vincente (regola
    "Surface interpretations and tradeoffs — don't pick silently"). Chi legge fra sei mesi
    deve vedere anche cosa NON si è fatto, non solo cosa sì.
+4bis. **Se NESSUNA opzione ha un punteggio accettabile sui criteri critici** (5° ciclo,
+   set 2, giro 7, 2026-08-23 — "scelta delle migliori idee" quando le idee disponibili
+   sono tutte cattive, non solo quando una vince): non forzare una scelta fra tre
+   opzioni scadenti solo perché la tabella lo richiede. È un segnale che il problema
+   (non la soluzione) va rivisto — torna a `/brainstorming` con quello che le opzioni
+   hanno rivelato ("nessuna strada economica non rischia X" è già informazione nuova
+   sul problema), non presentare comunque tre opzioni deboli come se il confronto le
+   avesse "risolte".
 5. **Non implementare.** Questo comando produce un documento, non una PR. Se l'utente
    chiede anche l'implementazione, trattala come uno step separato ed esplicito DOPO che
    la scelta è stata fatta — mai un'opzione già scritta come codice nella risposta.

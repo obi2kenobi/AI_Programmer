@@ -7,21 +7,24 @@
 ## Il ciclo
 
 ```
-/brainstorming → /design-doc → commessa → /audit-commesse → notte → gate → review di Luca
+/brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
+                              → territorio grande: commessa → /audit-commesse → notte
+                                → gate → review di Luca
+(design-doc torna a brainstorming se nessuna opzione è buona — 5° ciclo, set 2 giro 7)
 ```
 
 | Fase | Comando/strumento | Fonte di verità |
 |---|---|---|
 | Brainstorming (socratico) | `/brainstorming` | `.claude/skills/brainstorming/SKILL.md` (set 2 2026-08-22: prima citato senza esistere) |
 | Design (opzioni confrontate su criteri espliciti, NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 4° ciclo set 2 2026-08-23: criteri dichiarati prima delle opzioni + tabella opzioni×criteri, non più solo trade-off narrativo) |
-| Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione` | `.claude/skills/controllo-gestione/SKILL.md` (4° ciclo, set 1, giro 1, 2026-08-23) |
+| Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione`, o delega a un subagent (`contabilita-analitica`/`costruttore-calcoli-gestionali`/`revisore-calcoli-critici`) — invocabilità dipende da un refresh del roster degli agenti, non garantita nella sessione/turno in cui i file vengono scritti (set 1 giro 8, poi confermata funzionante) | `.claude/skills/controllo-gestione/SKILL.md` (4° ciclo, set 1, giro 1); `.claude/agents/` (5° ciclo, set 1, giro 1-3 — nota in docs/system.md §"Limiti dichiarati" #6) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
 | Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
 | Registro esiti (notte) | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |
 | Registro chiamate (giorno) | `llm/usage-summary.sh` | `~/.ai-programmer-usage.log` (4° ciclo, set 3, giro 5, 2026-08-23: il log esisteva dal ciclo precedente, il riepilogo no) |
-| Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere, `loops/` era vuota) |
+| Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 5° ciclo, set 2 giro 3, 2026-08-23: primo loop reale eseguito, `loops/` non più vuota) |
 
 ## Le regole che contano (le altre stanno nelle fonti)
 

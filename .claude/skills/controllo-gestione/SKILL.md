@@ -49,7 +49,12 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
 6. **Verifica con un riscontro**, non solo un test verde: confronta il risultato con un
    totale noto (l'interfaccia BC, il foglio Google esistente, un conteggio manuale) —
    "fatto" è provato E confermato dal proprietario del dominio (regola CLAUDE.md "Done
-   means proven and confirmed").
+   means proven and confirmed"). Nella tassonomia condivisa di `docs/system.md`
+   §"I cinque livelli di verifica" (5° ciclo, set 3 giro 7, 2026-08-23 — stessa
+   tassonomia già richiesta da `/goal` e dal wizard `/nuova-commessa`): il test contro
+   un oracolo esistente è livello 1-2 (deterministico/soglia), il riscontro contro un
+   totale BC non ancora chiuso è livello 3 (verità terrena ritardata) — dichiaralo se
+   la commessa lo richiede, non lasciarlo implicito.
 
 ## 2. Dove va documentato il calcolo (mai solo nel codice)
 
@@ -88,6 +93,13 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
   riprodotta, il tool prende gli aggregati già calcolati come input. Test di riscontro:
   `tests/test-indici-crisi.sh`, con gli stessi tre scenari già validati nel test
   dell'oracolo (riscontro doppio: oracolo + aritmetica a mano).
+- `tools/scadenzario_aging.py` — classificazione a fasce di scadenza (aging) e totali
+  per scadenzario clienti/fornitori, quinto dominio diverso (5° ciclo, stesso repo
+  esterno REPO-E). Confini di fascia (`<` non `<=` ai limiti negativi, `<=` ai limiti
+  positivi) e convenzione di segno fornitori (fattura=uscita negativa, nota di
+  credito=entrata positiva) letti riga per riga sul codice reale, non indovinati. Test
+  di riscontro: `tests/test-scadenzario-aging.sh`, con tutti i confini di fascia
+  verificati uno per uno più un caso aggregato derivato a mano.
 
 ## 4. Regole non negoziabili (eredità da CLAUDE.md)
 
@@ -111,3 +123,25 @@ a lettura perché il tie-out finale assorbiva sempre l'intero residuo). Il patte
 funzione di calcolo pura, eseguirla con dati sintetici, misurare l'invariante PRIMA
 dell'aggiustamento finale) — è la stessa disciplina usata nei test di questa skill
 (§3), applicata lì alla revisione invece che alla costruzione.
+
+## 6. Delega a un subagent (5° ciclo, set 1, 2026-08-23)
+
+Questo metodo esiste anche come tre subagent Claude Code (`.claude/agents/`, non solo
+skill invocata a comando), un ruolo per fase — invocabili con il tool Agent
+(`subagent_type`). Nota di processo (set 1 giro 8, poi corretta): un primo tentativo
+di invocazione subito dopo il commit dei file era stato rifiutato ("Agent type non
+trovato"); un secondo tentativo più tardi lo stesso giorno ha invocato tutti e tre con
+successo — l'invocabilità dipende da un refresh del roster degli agenti disponibili,
+non è garantita nella stessa sessione/turno in cui i file vengono scritti. Dettaglio
+in `docs/system.md` §"Limiti dichiarati" #6.
+
+- `contabilita-analitica` — applica/verifica un calcolo GIÀ risolto (§3) ai dati reali;
+  sola lettura, non dubita della formula.
+- `costruttore-calcoli-gestionali` — segue questo metodo per COSTRUIRE un calcolo
+  NUOVO (nessuno dei casi in §3 lo risolve); Edit/Write autorizzati.
+- `revisore-calcoli-critici` — applica la lente §2ter (sopra) a un calcolo già
+  scritto; sola lettura, non costruisce né applica.
+
+Delegare a uno di questi non sostituisce il metodo di questo file: l'agente eredita
+la stessa disciplina (oracolo prima del codice, mai indovinare), cambia solo chi
+esegue il passo.
