@@ -70,6 +70,13 @@ cp -r "$HERE/.claude/skills/." .claude/skills/
 mkdir -p patterns
 cp -r "$HERE/patterns/." patterns/
 
+# gap reale (5° ciclo, set 1 giro 5, 2026-08-23): stesso ragionamento per .claude/agents/
+# (i subagent Claude Code, distinti dalle skill sopra) — mai propagato ai progetti nuovi,
+# stesso schema già corretto per .claude/skills/ e patterns/ qui sopra, mai applicato a
+# questa terza cartella.
+mkdir -p .claude/agents
+cp -r "$HERE/.claude/agents/." .claude/agents/
+
 # gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
 # viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA
 # della commessa (## Design/## Forma dei dati/## Territorio, obbligatorie o il turno

@@ -24,7 +24,12 @@ N_COPIATE=$(find "$TMP/.claude/skills" -maxdepth 1 -mindepth 1 -type d | wc -l |
   && ok "tutte le $N_HUB skill del hub arrivano al progetto nuovo" \
   || ko "copiate $N_COPIATE skill su $N_HUB nel hub"
 
-for skill in dev-critic audit-commessa verifica-visiva design-doc brainstorming goal; do
+# 5° ciclo, set 2 giro 9: la lista era hardcoded a 6 nomi — controllo-gestione (7ª skill,
+# aggiunta nel ciclo precedente) non era mai stata verificata da questo test, quarta
+# occorrenza dello stesso bug (nomi fissi invece di un glob) trovata in questo ciclo
+# (.night-verify, .claude/agents/*.md, test-skills-structure.sh, e ora questo file).
+for skill_dir in "$HERE"/.claude/skills/*/; do
+  skill="$(basename "$skill_dir")"
   [ -f "$TMP/.claude/skills/$skill/SKILL.md" ] && ok "skill '$skill' presente nel progetto copiato" \
     || ko "skill '$skill' assente dopo la copia"
 done

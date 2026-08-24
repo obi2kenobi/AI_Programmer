@@ -40,6 +40,23 @@
 4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su REPO-A).
    Le indagini restano ai cervelli di giorno
 5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
+6. **`.claude/agents/` — invocabilità dipende da un refresh del roster, non solo dai
+   file (verificato dal vivo due volte, con esiti diversi)**: un primo tentativo REALE
+   di invocare `contabilita-analitica` (set 1 giro 8, stesso giorno) è stato rifiutato
+   con "Agent type non trovato" subito dopo il commit dei tre file — il roster degli
+   agenti disponibili in quella sessione era rimasto quello di apertura sessione. Un
+   secondo tentativo, più tardi lo stesso giorno (dopo il push e l'apertura della PR
+   #35), ha invocato con successo tutti e tre gli agenti — il roster si era
+   aggiornato nel frattempo. Non è chiaro DA COSA dipenda il refresh (nuova sessione?
+   push al branch remoto? un intervallo di tempo?) — non riverificato con un
+   esperimento isolato, quindi non presumerlo. Conseguenza pratica: `.claude/agents/`
+   funziona, ma non è garantito che sia invocabile nella stessa sessione/turno in cui
+   i file vengono creati — se un'invocazione fallisce con "Agent type non trovato"
+   subito dopo aver scritto un nuovo agente, non è necessariamente un bug del file,
+   riprova più tardi o in una sessione nuova prima di concludere che non funzioni.
+   Anche OpenCode (ZCode, turno notturno) resta comunque fuori scope: nessuna
+   configurazione equivalente qui (`.opencode/agent/` assente, solo
+   `.opencode/skills/`)
 
 ## La fabbrica
 
@@ -113,8 +130,13 @@ citava solo "l'onboarding", non il bootstrap).
 ## Il ciclo guadagna la fase di audit (2026-08-21, sera)
 
 ```
-/brainstorming → design-doc → commessa → /audit-commesse (il giorno verifica le assunzioni
-sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi) → review di Luca
+/brainstorming ⇄ design-doc (torna a brainstorming se NESSUNA opzione è buona — 5°
+                  ciclo, set 2 giro 7, 2026-08-23: non forzare una scelta scadente)
+                  │
+                  ├─ territorio piccolo/giorno → /goal | max N tentativi
+                  └─ territorio grande/notte   → commessa → /audit-commesse (il giorno
+                     verifica le assunzioni sul codice PRIMA della notte) → notte →
+                     gate (night/* E claude/*: due occhi) → review di Luca
 ```
 
 - **`/audit-commesse <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
@@ -146,3 +168,13 @@ sul codice PRIMA della notte) → notte → gate (night/* E claude/*: due occhi)
   "## Forma dei dati") e propagata ai progetti nuovi/esistenti come le altre skill
   (`tools/bootstrap-app.sh`, `tools/onboard-repo.sh` — copia wholesale di
   `.claude/skills/`, nessuna riga dedicata necessaria).
+- **`.claude/agents/`** (5° ciclo, set 1 "agenti", 2026-08-23): il metodo sopra diventa
+  anche un piccolo sistema di subagent Claude Code (frontmatter `name`/`description`/
+  `tools`, non solo skill invocate a comando) — tre ruoli distinti, non varianti dello
+  stesso testo: `contabilita-analitica` (applica/verifica un calcolo esistente, sola
+  lettura), `costruttore-calcoli-gestionali` (ne scrive uno nuovo, Edit/Write
+  autorizzati), `revisore-calcoli-critici` (dubita di un calcolo già scritto con la
+  lente dev-critic §2ter, sola lettura). Cinque casi reali risolti finora (magazzino,
+  produzione, cespiti, crisi d'impresa, scadenzario aging), tutti minati da REPO-E.
+  Propagati ai progetti nuovi/esistenti con lo stesso schema di `.claude/skills/`
+  (stesso gap trovato e corretto per la terza cartella, set 1 giro 5).

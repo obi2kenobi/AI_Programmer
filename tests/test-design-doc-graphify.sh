@@ -29,6 +29,16 @@ grep -qE "non.*oracolo|non è un oracolo|non fidarti del grafo" "$DD" \
   && ok "AGENTS.md citato esiste davvero e parla di graphify" \
   || ko "AGENTS.md non esiste o non parla di graphify — citazione senza presidio"
 
+# 5° ciclo, set 2 giro 2: deve esistere un percorso quando graphify NON è installato —
+# caso reale di questa sessione (graphify-out/ assente), non ipotetico.
+grep -qi "NON esiste" "$DD" \
+  && ok "design-doc dichiara un fallback per quando graphify-out/graph.json non esiste" \
+  || ko "design-doc non dice cosa fare senza graphify — un vuoto reale in questa sessione"
+
+grep -q "Explore" "$DD" \
+  && ok "il fallback cita l'agente Explore per territori ampi/nomi non noti" \
+  || ko "il fallback non cita Explore"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

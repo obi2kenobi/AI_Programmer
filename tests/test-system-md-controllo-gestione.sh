@@ -20,6 +20,23 @@ grep -q 'mai indovinata\|mai indovinarla\|non indovinata' "$SYS" \
   && ok "la mappa ricorda la regola centrale (mai indovinare la formula)" \
   || ko "la sezione non ricorda la regola centrale"
 
+# 5° ciclo, set 1 giro 6: la mappa deve conoscere anche i subagent .claude/agents/,
+# non solo la skill — stesso principio, un pezzo nuovo del sistema, un'altra parte che
+# lo cita se esiste già.
+grep -q '\.claude/agents/' "$SYS" \
+  && ok "docs/system.md cita .claude/agents/" \
+  || ko "docs/system.md non cita ancora .claude/agents/"
+
+# 5° ciclo, set 1 giro 7/8, poi corretto dopo il push della PR: l'invocabilità di
+# .claude/agents/ dipende da un refresh del roster (verificato con esiti diversi in
+# due tentativi lo stesso giorno) — non un limite fisso e permanente.
+grep -q 'invocabilità dipende da un refresh del roster' "$SYS" \
+  && ok "docs/system.md dichiara il limite reale (dipende da un refresh, non fisso)" \
+  || ko "il limite sull'invocabilità degli agenti non è più dichiarato correttamente"
+[ ! -d "$HERE/.opencode/agent" ] \
+  && ok "verificato: .opencode/agent/ non esiste (il limite OpenCode dichiarato è ancora vero)" \
+  || ko ".opencode/agent/ ora esiste — il limite dichiarato in docs/system.md è STALE, aggiornalo"
+
 # ogni percorso citato in backtick con estensione reale deve esistere davvero
 REFS=$(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$SYS" | tr -d '`' | sort -u)
 MISSING=0

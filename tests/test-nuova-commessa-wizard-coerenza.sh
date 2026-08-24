@@ -30,6 +30,13 @@ grep -q "graphify" "$W" \
   && ok "graphify citato ha davvero un posto dove vivere (skill o AGENTS.md)" \
   || ko "graphify citato ma nessuna fonte reale nel repo"
 
+# 5° ciclo, set 2 giro 4: il punto 6 (verifica) deve dichiarare il livello 1-5, stessa
+# tassonomia già richiesta da /goal — altrimenti due punti dello stesso sistema parlano
+# di "verifica" con vocabolari diversi.
+grep -q "livello 1-5\|livelli di verifica" "$W" \
+  && ok "il wizard chiede il livello 1-5 della tassonomia condivisa (allineato a /goal)" \
+  || ko "il wizard non chiede il livello — disallineato dalla tassonomia di docs/system.md"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
