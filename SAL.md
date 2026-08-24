@@ -90,6 +90,7 @@
 - [2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix](#2026-08-23-set-3-giro-9-un-ipotesi-di-bug-smentita-dal-vivo-prima-di-diventare-un-fix)
 - [2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale](#2026-08-23-set-3-giro-10-chiude-il-set-e-il-ciclo-verifica-end-to-end-finale)
 - [2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice](#2026-08-24-feedback-di-un-utente-esterno-reale-5-gap-di-processo-non-di-codice)
+- [2026-08-24 — punti 2-4: tre nuove regole vincolanti in CLAUDE.md](#2026-08-24-punti-2-4-tre-nuove-regole-vincolanti-in-claude-md)
 
 
 ## Stato
@@ -2407,3 +2408,26 @@ Punti 2-5 diventano regole vincolanti in `CLAUDE.md` (non solo un README esplica
 perché sono principi di comportamento per ogni sessione futura, non solo per un
 utente nuovo che legge una volta). Dettaglio del fix per punto nelle voci successive
 di questa stessa giornata.
+
+### 2026-08-24 — punti 2-4: tre nuove regole vincolanti in CLAUDE.md
+
+- **§6, "The first-touch trigger"**: prima della prima modifica in un progetto non
+  ancora presente in PROJECT.md, aggiungerne la sezione (anche uno stub) prima di
+  procedere. Dichiarata come regola di processo per l'agente, non un controllo
+  automatico — rilevare "progetto nuovo" dal solo filesystem non è meccanizzabile
+  senza falsi positivi (deciso esplicitamente, non un compromesso silenzioso).
+- **§2, "Mask, don't omit, when a secret could surface in output"**: promuove
+  `patterns/segreto-come-impronta.md` da pattern facoltativo a regola vincolante,
+  citando esplicitamente la fonte (l'ancora non muore, resta anche il pattern con
+  l'implementazione di riferimento). Vieta sia la stampa in chiaro sia l'omissione
+  silenziosa dell'intera riga — un'omissione nasconde anche la lunghezza/forma del
+  segreto, informazione utile la cui assenza può sembrare un bug.
+- **§2, "One-shot secret handoff"**: per un primo login/deploy interattivo, due
+  alternative in ordine di preferenza — (1) l'agente esegue lui stesso il comando
+  interattivo, cosicché il token passi dal flusso del tool e non dalla chat; (2) se
+  un valore deve arrivare dall'utente fuori banda, questo lo scrive in un file locale
+  non tracciato e ne passa solo il percorso.
+
+Guardie di regressione: `tests/test-claude-md-project-first-touch.sh`,
+`tests/test-claude-md-segreto-impronta-regola.sh`,
+`tests/test-claude-md-secret-handoff-oneshot.sh`.
