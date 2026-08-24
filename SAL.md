@@ -2452,3 +2452,47 @@ comparso a metà sessione potrebbe non essere osservato). Grep iniziale troppo l
 solo le righe della tabella pattern) — corretto restringendo il grep alle righe che
 iniziano per `| [`. Test di regressione: `tests/test-pattern-reminder-hook.sh` (9
 controlli, incluso che `permissionDecision` sia sempre `allow`).
+
+### 2026-08-24 — feedback dal campo (REPO-F, BC/GAS): il matching per description non è affidabile quanto presunto
+
+Luca ha lavorato ore su un caso reale (REPO-F, dashboard GAS + backfill mai eseguito
+su Business Central — vedi `night-shift/repos-index.md`) e riporta due letture, una
+confermativa e una nuova e più seria.
+
+**Confermato sul campo**: le regole di processo di CLAUDE.md hanno guidato scelte
+concrete — chiedere conferma prima del push in produzione, fermarsi a indagare la vera
+causa invece di rattoppare il sintomo, riusare pattern esistenti (`enrichContactFromOrder_`
+→ `enrichRequestedDeliveryFromOrder_`, `probeBcEntity_` per diagnosticare invece di
+indovinare). Risultato: trovato il bug vero (un trigger mai attivato), non una toppa.
+
+**Scoperta nuova, più seria di un altro gap nella lista**: due skill che descrivono
+quasi alla lettera il caso di oggi non si sono attivate da sole.
+- `verifica-visiva` esiste apposta per "screenshot di una dashboard GAS appena
+  modificata, prima/dopo" — Luca ha modificato `Dashboard.html` di REPO-F e non l'ha
+  invocata; lo screenshot è arrivato da un'altra strada, non dal meccanismo pensato per
+  questo.
+- `dev-critic` (che "critica un intero progetto con un tentativo reale di usarlo, non
+  solo lettura statica") descrive quasi alla lettera come è stato trovato il bug di una
+  funzione di backfill delle consegne mai eseguita — ma è stato trovato per fiuto investigativo
+  su UN sintomo segnalato, non invocando la skill sull'intero progetto. Conseguenza
+  aperta, non richiusa: se fosse stata invocata su tutto il progetto (90+ file), non
+  solo sul sintomo, avrebbe potuto far emergere ALTRE funzionalità scritte-ma-mai-
+  attivate — restano non cercate.
+
+**Il filo che lega tutti i gap trovati finora** (da questo ciclo e dal precedente):
+PROJECT.md mai aggiornato, `patterns/` mai consultato, skill mai invocate anche quando
+calzano alla lettera — stessa forma ogni volta: contenuto scritto bene, che esiste solo
+se qualcuno se ne ricorda al momento giusto. L'unico correttivo che rompe lo schema è
+il hook `PreToolUse` di ieri — e infatti è anche l'unico con un buco già identificato e
+non richiuso: copre `Edit|Write`, non `Bash` — non copre il modo in cui si è lavorato
+oggi (clasp deploy, probe su BC). Anche il tentativo più concreto di uscire dalla
+dipendenza dalla memoria ha lasciato scoperto lo stesso tipo di varco.
+
+Priorità indicata da Luca per il prossimo giro: non un'altra regola in CLAUDE.md, ma
+un aggancio automatico più ampio del hook attuale — l'unica cosa vista finora che ha
+davvero smesso di dipendere dalla sua memoria. Non ancora implementato in questo
+momento: prima di scegliere UN meccanismo, le interpretazioni possibili (estendere il
+matcher a `Bash`; un hook `UserPromptSubmit` che confronta il compito dichiarato con le
+description delle skill; un giro periodico di `dev-critic` sull'intero progetto invece
+che a comando) hanno tradeoff diversi (costo, falsi positivi/negativi, portata) — da
+decidere con Luca, non a mia discrezione, prima di scrivere codice.
