@@ -19,6 +19,7 @@ PROMPT="${1:-}"
 # giro 10/10 (set 1): traccia locale minima — il notturno ha SAL.md+gate.csv, i
 # cervelli di giorno non lasciavano nulla. Vedi llm/_usage.sh.
 source "$HERE/_usage.sh"
+source "$HERE/_timeout.sh"
 trap 'log_ask_usage ask-opus "${#PROMPT}"' EXIT
 
 # CORREZIONE (set 1 "armonizza gli agenti", 2026-08-22): il ciclo precedente aveva
@@ -30,7 +31,7 @@ trap 'log_ask_usage ask-opus "${#PROMPT}"' EXIT
 # in pipe" da "non c'è nulla ma non è un terminale". Annotato come errore della
 # nota precedente, non un nuovo difetto del sistema — SAL.md ne porta la traccia.
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(timeout 5 cat 2>/dev/null || true)
+[ ! -t 0 ] && STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null || true)
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---
@@ -46,7 +47,10 @@ TIMEOUT="${ASK_TIMEOUT:-600}"
 # leggere l'exit code senza far esplodere set -e sull'assegnazione (stesso
 # tranello del giro 7 del ciclo precedente).
 set +e
-OUT=$(timeout "$TIMEOUT" claude -p "$PROMPT" "${MODEL_ARGS[@]}" 2>&1)
+# "${MODEL_ARGS[@]}" su array vuoto è "unbound variable" sotto set -u sulla bash 3.2
+# di sistema di macOS (verificato: 2026-08-24T12:51Z rc=1 dal vivo) — la guardia
+# ${arr[@]+...} è l'idioma portabile pre-4.4, non un vezzo.
+OUT=$(ai_timeout "$TIMEOUT" claude -p "$PROMPT" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} 2>&1)
 RC=$?
 set -e
 if [ "$RC" -eq 124 ]; then

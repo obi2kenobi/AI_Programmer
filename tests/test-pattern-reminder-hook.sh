@@ -38,9 +38,31 @@ echo "$OUT_TOKEN" | jq -e '.hookSpecificOutput' >/dev/null 2>&1 \
   || ko "non riconosce 'token' come categoria sensibile"
 
 [ -f "$SETTINGS" ] && ok ".claude/settings.json esiste" || ko ".claude/settings.json assente"
-jq -e '.hooks.PreToolUse[] | select(.matcher == "Edit|Write")' "$SETTINGS" >/dev/null 2>&1 \
-  && ok "settings.json registra il hook su Edit|Write" \
+jq -e '.hooks.PreToolUse[] | select(.matcher == "Edit|Write|Bash")' "$SETTINGS" >/dev/null 2>&1 \
+  && ok "settings.json registra il hook su Edit|Write|Bash" \
   || ko "settings.json non registra il hook correttamente"
+
+# --- 6° ciclo, set 3: il ramo Bash (il varco documentato nel SAL del 5° ciclo) ---
+OUT_B_SENS=$(echo '{"tool_name":"Bash","tool_input":{"command":"printenv | grep -i token"}}' | bash "$HOOK")
+echo "$OUT_B_SENS" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
+  && ok "Bash sensibile (printenv): produce additionalContext" \
+  || ko "Bash sensibile: nessun additionalContext"
+echo "$OUT_B_SENS" | jq -e '.hookSpecificOutput.permissionDecision == "allow"' >/dev/null 2>&1 \
+  && ok "Bash sensibile: permissionDecision resta 'allow' (reminder, non cancello)" \
+  || ko "Bash sensibile: permissionDecision non è 'allow'"
+OUT_B_ENV=$(echo '{"tool_name":"Bash","tool_input":{"command":"cat .env.production"}}' | bash "$HOOK")
+echo "$OUT_B_ENV" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
+  && ok "Bash che legge .env: reminder prodotto" || ko "Bash .env: nessun reminder"
+OUT_B_CHIAVE=$(echo '{"tool_name":"Bash","tool_input":{"command":"curl -H \"Authorization: Bearer xyz\" https://x"}}' | bash "$HOOK")
+echo "$OUT_B_CHIAVE" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
+  && ok "Bash con Bearer token nel comando: reminder prodotto" || ko "Bash Bearer: nessun reminder"
+OUT_B_OK=$(echo '{"tool_name":"Bash","tool_input":{"command":"git status && ls -la"}}' | bash "$HOOK")
+[ -z "$OUT_B_OK" ] && ok "Bash ordinario: nessun output (no-op silenzioso)" \
+  || ko "Bash ordinario: output inatteso"
+OUT_B_DEPLOY=$(echo '{"tool_name":"Bash","tool_input":{"command":"clasp deploy"}}' | bash "$HOOK")
+[ -z "$OUT_B_DEPLOY" ] \
+  && ok "clasp deploy: NON è più materia per reminder sensibile (falso positivo evitato: deploy non tocca segreti da solo)" \
+  || ko "clasp deploy produce un reminder non richiesto: $(echo "$OUT_B_DEPLOY" | head -2)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

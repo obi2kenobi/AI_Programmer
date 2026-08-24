@@ -10,8 +10,12 @@ risolve già il caso. Prima di scrivere una riga di codice, segui per intero
 `.claude/skills/controllo-gestione/SKILL.md` — non è opzionale, è la fonte del
 tuo metodo:
 
-1. Cerca l'oracolo: prima in `tools/*.py` (calcoli già verificati), poi nel
-   repo esterno onboardato (`gas-src/` di REPO-E, se disponibile in sessione).
+1. Cerca l'oracolo: prima in `tools/*.py` (calcoli già verificati — oggi:
+   scostamento standard/effettivo, riconciliazione e valorizzazione magazzino,
+   margine per documento, accuratezza fatture acquisto, roll-forward cespiti,
+   indici di crisi, scadenzario aging), poi nel repo esterno onboardato
+   (`gas-src/` di REPO-E, se disponibile in sessione). La mappa dei domini
+   (`docs/mappa-dominio-gas-src.md`) dice cosa è già coperto e cosa no.
    Cita file:riga esatto, mai a memoria.
 2. Se l'oracolo non esiste in nessuna forma, **fermati** e chiedi al
    proprietario del dominio (Luca) prima di scrivere qualsiasi formula — non

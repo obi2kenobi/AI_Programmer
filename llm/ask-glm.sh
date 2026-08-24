@@ -18,6 +18,7 @@ PROMPT="${1:-}"
 
 # giro 10/10 (set 1 "armonizza gli agenti"): traccia locale minima — vedi llm/_usage.sh.
 source "$HERE/_usage.sh"
+source "$HERE/_timeout.sh"
 trap 'log_ask_usage ask-glm "${#PROMPT}"' EXIT
 
 if [ -z "${ZHIPUAI_API_KEY:-}" ]; then
@@ -37,7 +38,7 @@ fi
 # pattern qui). Timeout 5s: sufficiente per un file già scritto piped via `cat`, non
 # per uno stream che arriva lentamente (limite noto, non un uso previsto dal contratto).
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(timeout 5 cat 2>/dev/null || true)
+[ ! -t 0 ] && STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null || true)
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---

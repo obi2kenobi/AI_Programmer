@@ -25,6 +25,16 @@ decisioni già chiuse (regola "Only what is asked").
    riesci a farlo, la richiesta è ancora troppo vaga: fai le domande che mancano (stesso
    spirito di `/brainstorming`, che può precedere questo comando quando i requisiti sono
    ancora aperti).
+1bis. **Dichiara i VINCOLI DI SQUALIFICA prima dei criteri di confronto** (6° ciclo, set 2,
+   2026-08-24 — "scelta delle migliori idee" parte prima: prima di chiedersi quale
+   opzione sia migliore, dichiara quali condizioni rendono un'opzione inaccettabile in
+   partenza, qualunque sia il suo punteggio): es. "nessun segreto nuovo nella repo
+   pubblica", "nessuna dipendenza che rompe il turno notturno", "nessun calcolo
+   contabile senza oracolo". Un'opzione che viola un vincolo non entra nella tabella —
+   o vi entra SOLO per essere registrata come squalificata, col vincolo violato: una
+   gara fra opzioni di cui una è già morta non è un confronto, è teatro. I vincoli di
+   squalifica sono pochi (2-3) e verificabili; tutto ciò che non squalifica è un
+   criterio di confronto, e va al punto successivo.
 2. **Dichiara i criteri di confronto PRIMA delle opzioni** (4° ciclo, set 2
    "progettare", 2026-08-23) — non dopo, e non a criteri diversi per ogni opzione (altrimenti
    il confronto è truccato: ogni opzione vince sul criterio che la favorisce). Tre criteri
@@ -52,6 +62,13 @@ decisioni già chiuse (regola "Only what is asked").
    regola nuova inventata qui. Poi, per ogni opzione:
    - cosa cambia concretamente (file/componenti coinvolti, a un livello alto — non il
      territorio riga-per-riga, quello è compito della commessa dopo);
+   - **cosa tocca ALTrove: gli effetti di secondo ordine** (6° ciclo, set 2, 2026-08-24)
+     — per ogni opzione una riga su cosa potrebbe risentirne INDIRETTAMENTE: il turno
+     notturno, il gate, altre skill/agenti che citano ciò che cambia, i progetti
+     onboardati che ereditano il pattern. Un'opzione che sembra isolata raramente lo è
+     in un sistema dove tutto si cita per riferimento (pattern `citazione-non-presidio`
+     al contrario: le citazioni sono fisarmoniche — aggiungi una, e TUTTE le parti che
+     la citano si muovono);
    - **un punteggio per ciascun criterio dichiarato al punto 2**, in una tabella
      opzioni×criteri, ogni cella con un giudizio breve (Basso/Medio/Alto o una frase, non
      un numero nudo senza motivazione — un "3/5" senza perché è un trade-off nascosto, non
@@ -59,6 +76,15 @@ decisioni già chiuse (regola "Only what is asked").
    - quando ha senso scegliERLA (non "è la migliore", ma "sceglila se ti importa di Z").
    La tabella struttura il confronto; non lo decide — resta all'utente scegliere anche
    contro il punteggio più alto, se un criterio pesa più degli altri per lui.
+3bis. **Se un criterio CRITICO di un'opzione è ignoto, proponi uno spike** (6° ciclo,
+   set 2, 2026-08-24): quando la cella della tabella che deciderebbe la scelta non si
+   può riempire leggendo (una latenza non documentata, una libreria mai usata di
+   notte, un limite di quota non dichiarato), non indovinare la cella e non lasciarla
+   vaga: proponi un esperimento a tempo e scopo vincolati — `/goal "misurare X in
+   condizioni Y" | max 1 tentativo`, output da buttare (il codice dello spike NON è
+   l'inizio dell'implementazione: quando lo scopo è misurare, il risultato è un
+   numero, non una base di codice). Lo spike si fa su UN criterio di UN'opzione, mai
+   "per esplorare l'opzione intera" — quello è implementare con un altro nome.
 4. **Le opzioni scartate restano scritte**, col perché — non solo la vincente (regola
    "Surface interpretations and tradeoffs — don't pick silently"). Chi legge fra sei mesi
    deve vedere anche cosa NON si è fatto, non solo cosa sì.
@@ -80,8 +106,12 @@ decisioni già chiuse (regola "Only what is asked").
 ## 1bis. Esempio del formato (criteri → tabella, non narrativa libera)
 
 Richiesta: "vorrei essere avvisato quando il gate del mattino fallisce, non solo trovarlo
-nel report". Criteri dichiarati PRIMA delle opzioni: **costo**, **rischio**,
-**reversibilità**, più uno specifico alla decisione: **dipendenze nuove**.
+nel report". Vincoli di squalifica (dichiarati PRIMA, verificabili): (1) nessun segreto
+nuovo nella repo pubblica, (2) nessun canale che dipenda da un servizio esterno
+obbligatorio per il gate. Criteri di confronto dichiarati prima delle opzioni: **costo**,
+**rischio**, **reversibilità**, più uno specifico alla decisione: **dipendenze nuove**.
+(L'opzione webhook di terze parti SENZA fallback locale violerebbe il vincolo 2: entra
+nella tabella solo come "squalificata", non come concorrente.)
 
 | Opzione | Costo | Rischio | Reversibilità | Dipendenze nuove |
 |---|---|---|---|---|

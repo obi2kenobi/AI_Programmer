@@ -234,5 +234,16 @@ done
 echo "" >> "$REPORT"
 echo "---" >> "$REPORT"
 echo "**Totale: $TOTAL PR · $PASS con verifiche ok · $FAIL da giudizio/correzione. Report: \`$REPORT\`. Metriche: \`metrics/gate.csv\`. Le proposte correttive si incollano a mano: nessun sì, nessuna commessa.**" >> "$REPORT"
+
+# 6° ciclo, set 3 giro 5 (2026-08-24): l'anello SAL della memoria esisteva solo nei
+# documenti (system.md L4 "SAL.md + metrics/gate.csv") — il gate scriveva le metriche
+# ma nulla RIORDAVA la lezione in SAL.md: il ciclo dichiarato ("la notte insegna, il
+# gate registra, il SAL ricorda") si fermava a metà. La PROSA resta umana (giudizio,
+# livello 4-5): qui entra solo il richiamo meccanico, con la soglia per non riempire
+# il report di rumore quando tutto è passato pulito.
+if [ "$FAIL" -gt 0 ] || [ "$TOTAL" -eq 0 ]; then
+  echo "" >> "$REPORT"
+  echo "**Memoria:** gli esiti sono già in \`metrics/gate.csv\`; la lezione di questo gate (il PERCHÉ di un fallimento, o una notte a coda vuota) va scritta in \`SAL.md\` del hub prima del prossimo giro — è ciò che rende il ciclo circolare, non solo una coda." >> "$REPORT"
+fi
 log "Gate completato: $TOTAL PR esaminate ($PASS ok, $FAIL da correggere). Report: $REPORT"
 echo "Report pronto: $REPORT"
