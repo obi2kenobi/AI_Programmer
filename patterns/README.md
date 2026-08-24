@@ -29,7 +29,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [versione-sugli-artefatti](versione-sugli-artefatti.md) | REPO-A: tools/grafo-findings.js:221 | 2026-08-08 |
 | [segreto-come-impronta](segreto-come-impronta.md) | REPO-A: tools/maschera-segreti.js:mascheraSegreti | 2026-08-11 |
 | [soglia-con-provenienza](soglia-con-provenienza.md) | REPO-A: tools/soglie.js:derive | 2026-08-07 |
-| [banco-sintetico-per-calcoli-critici](banco-sintetico-per-calcoli-critici.md) | Bilancio_periodico: tools/test-sp.js · gas/Sp.js:366 | 2026-08-21 |
+| [banco-sintetico-per-calcoli-critici](banco-sintetico-per-calcoli-critici.md) | REPO-G: tools/test-sp.js · gas/Sp.js:366 | 2026-08-21 |
 | [scarto-mai-silenzioso](scarto-mai-silenzioso.md) | progetto onboardato: Extractor.gs:applicaVincoliRange_ | 2026-08-21 |
 | [stato-vuoto-dalla-pipeline](stato-vuoto-dalla-pipeline.md) | progetto onboardato: WebApp.gs:aggregaPerDashboard_ | 2026-08-21 |
 | [banco-browser-per-webapp-gas](banco-browser-per-webapp-gas.md) | progetto onboardato: dashboard.html/dashboard_scripts.html | 2026-08-21 |

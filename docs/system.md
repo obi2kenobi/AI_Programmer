@@ -310,6 +310,34 @@ lavoro.
   famiglia dei pettini chiusa per criterio, non per divieto) e la DOMANDA DI
   DOMINIO in brainstorming (prima del criterio di successo, silenzio vietato).
 
+## Feedback dal campo su REPO-G processato (2026-08-24, sessione esterna)
+
+Un report di dogfooding (sessione su REPO-G, repo mai onboardata) ha verificato
+eseguendo quanto del metodo fosse disponibile su un progetto reale: quasi niente
+(nessuna skill/agente fisicamente presente) — e ha trovato tre buchi veri
+dell'hub, tutti chiusi o dichiarati:
+
+- **F3 privacy**: `tools/privacy-check.sh` senza `repos.key` usciva 0 («niente da
+  controllare» che si legge «pulito») — esattamente nelle sessioni cloud, dove
+  la chiave non esiste per disegno. Ora: GATE DEGRADATO + exit 1. E il danno era
+  reale: 11 occorrenze del nome vero in 5 file (la voce di DEBITI che dichiarava
+  il problema ne citava 2) — bonificate in codice REPO-G. La STORIA git conserva
+  i nomi nei commit passati: spurgo (filter-repo + force push) o accettazione
+  del passato = decisione di Luca (DEBITI).
+- **F2 sync**: onboard/bootstrap sono a un colpo solo, ogni repo diverge
+  silenziosamente. Nuovo `tools/sync-repo.sh` (diff + PR di solo CLAUDE.md,
+  minimale come chiesto dal report).
+- **F5 memoria diurna**: il promemorio SAL esisteva solo nel morning-gate;
+  l'hook PreToolUse ora conta gli edit di una sessione e al 5° senza SAL.md
+  (se il progetto ne ha uno) mette il promemorio nel contesto — mai un blocco.
+- **F4 citazioni**: PROJECT.md citava un catalogo inesistente nell'hub — ora
+  dichiara dove vive; nuovo test presidia ogni percorso citato.
+- **F6 soglia**: METHOD.md guadagna la terza corsia «task da una sessione»
+  (chiarito in 1-2 domande, un file, verificabile ora: si fa e basta, col
+  metodo ma senza pipeline — la cerimonia senza rigore in più è spreco).
+- **F1**: l'onboarding di REPO-G resta decisione di Luca (credenziali BC nel
+  repo: vedi DEBITI).
+
 ## Hook di sistema (2026-08-24 — primo hook di questo repo)
 
 `.claude/settings.json` esiste da questo giro: prima non c'era alcun hook, la

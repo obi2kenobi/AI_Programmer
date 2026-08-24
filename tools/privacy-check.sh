@@ -13,7 +13,10 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 KEY="$HERE/night-shift/repos.key"
-[ -f "$KEY" ] || { echo "privacy-check: manca la chiave locale (repos.key) — niente da controllare"; exit 0; }
+# v4 (2026-08-24, report dal campo su REPO-G): senza chiave il gate è CIECO — e usciva 0,
+# cioè "promosso", proprio nelle sessioni cloud dove la chiave non esiste per disegno.
+# Un gate che non può giudicare non dice pulito: dice degradato, e fallisce.
+[ -f "$KEY" ] || { echo "⛔ privacy-check: GATE DEGRADATO — repos.key assente: NON ho controllato niente (né file, né storia git). Questo non è un verdetto di pulizia: crea night-shift/repos.key (locale, gitignored) per rendere il gate reale." >&2; exit 1; }
 RC=0
 
 # scan_termine <termine> <etichetta>: FALLISCE se il termine compare nei file tracciati
