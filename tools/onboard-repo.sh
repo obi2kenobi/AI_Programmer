@@ -123,6 +123,17 @@ fi
 # (i subagent Claude Code, distinti dalle skill) — mai propagato, stesso schema esatto già
 # corretto sopra per .claude/skills/ e patterns/, mai applicato a questa terza cartella.
 AGENTS_AGGIUNTI=0
+# 6° ciclo, set 3 (2026-08-24): stesso merge prudente per gli specchi OpenCode
+# (.opencode/agent/) — la notte usa quelli; mai sovrascrivere una personalizzazione
+# locale, solo aggiungere i mancanti
+mkdir -p "$WORK/.opencode/agent"
+for agent_file in "$HERE"/.opencode/agent/*.md; do
+  agent_name="$(basename "$agent_file")"
+  if [ ! -f "$WORK/.opencode/agent/$agent_name" ]; then
+    cp "$agent_file" "$WORK/.opencode/agent/$agent_name"
+    git -C "$WORK" add ".opencode/agent/$agent_name"
+  fi
+done
 mkdir -p "$WORK/.claude/agents"
 for agent_file in "$HERE"/.claude/agents/*.md; do
   agent_name="$(basename "$agent_file")"

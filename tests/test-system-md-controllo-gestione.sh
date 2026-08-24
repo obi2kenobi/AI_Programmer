@@ -33,9 +33,16 @@ grep -q '\.claude/agents/' "$SYS" \
 grep -q 'invocabilità dipende da un refresh del roster' "$SYS" \
   && ok "docs/system.md dichiara il limite reale (dipende da un refresh, non fisso)" \
   || ko "il limite sull'invocabilità degli agenti non è più dichiarato correttamente"
-[ ! -d "$HERE/.opencode/agent" ] \
-  && ok "verificato: .opencode/agent/ non esiste (il limite OpenCode dichiarato è ancora vero)" \
-  || ko ".opencode/agent/ ora esiste — il limite dichiarato in docs/system.md è STALE, aggiornalo"
+# 6° ciclo, set 3 (2026-08-24): il limite OpenCode è stato CHIUSO — l'invariante si
+# inverte: la directory esiste, la dichiarazione lo dice, e la guardia anti-drift
+# tiene i corpi sincronizzati. Un limite dichiarato che si chiude deve lasciare la
+# traccia nella mappa, non solo nel file system.
+[ -d "$HERE/.opencode/agent" ] \
+  && ok "verificato: .opencode/agent/ esiste (limite chiuso nel 6° ciclo, set 3)" \
+  || ko ".opencode/agent/ è tornato assente: la dichiarazione in docs/system.md è di nuovo STALE"
+grep -q "chiuso per la parte" "$HERE/docs/system.md" \
+  && ok "docs/system.md dichiara la chiusura del limite (traccia nella mappa)" \
+  || ko "docs/system.md non dichiara la chiusura del limite OpenCode"
 
 # ogni percorso citato in backtick con estensione reale deve esistere davvero
 REFS=$(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$SYS" | tr -d '`' | sort -u)

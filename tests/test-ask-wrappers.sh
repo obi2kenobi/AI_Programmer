@@ -4,6 +4,8 @@
 # graziosi (niente chiave, niente argomenti) senza chiamare cervelli veri.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# ai_timeout: portabile anche su macOS senza GNU timeout (vedi llm/_timeout.sh)
+source "$HERE/llm/_timeout.sh"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
@@ -37,7 +39,7 @@ OUT3=$(bash "$HERE/llm/ask-opus.sh" 2>&1); RC3=$?
 # ask-opus.sh (timeout 5s sulla lettura di stdin, vedi tests/test-stdin-timeout.sh).
 # Il timeout qui resta comunque una buona guardia: un limite duro evita che UN test
 # blocchi tutta la suite all'infinito, qualunque sia la causa di un futuro rallentamento.
-OUT4=$(timeout 90 bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
+OUT4=$(ai_timeout 90 bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
 if [ "$RC4" -eq 124 ]; then
   ko "ask-opus: timeout dopo 90s (chiamata ricorsiva a claude -p lenta o bloccata)"
 elif [ "$RC4" -eq 0 ]; then
