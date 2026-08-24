@@ -77,6 +77,14 @@ Follow the conventions already present in the codebase: naming, structure, forma
 ### Never expose secrets
 Never log, print, paste, or commit credentials, tokens, or sensitive data (credential files, `.env`, key exports). Refer to secrets by file path, not by value. If a secret appears in something to be committed or shared, stop and flag it.
 
+### Mask, don't omit, when a secret could surface in output (2026-08-24 — binding, promoted from `patterns/segreto-come-impronta.md`)
+Any output that might carry a secret through no fault of its own — a verification run against real credentials, a command whose result you didn't author (LLM-generated shell output, a third-party log, an adversarial-bench transcript) — must not print the raw value AND must not silently omit the whole line either (an omitted line hides whether something WAS a secret, or how long it was, which itself is useful signal and its absence can look like a bug). Replace the recognized secret with `«secret <fingerprint> · N chars»`: the reader sees a secret was there, its shape, its length, without it ever reaching a terminal, log, or chat. See `patterns/segreto-come-impronta.md` for the reference implementation.
+
+### One-shot secret handoff (interactive login/deploy) (2026-08-24 — binding)
+A first-time interactive login or deploy (OAuth device flow, `gh auth login`, `clasp login`) needs a token to move from the user to the tool exactly once. "Paste it in chat" is not an acceptable answer — it is precisely the exposure the rule above exists to prevent. Two options, in this order of preference:
+1. **Run the interactive command yourself, in the terminal.** The tool's own login flow (browser redirect, device code, prompt) then talks directly to the user or the provider — the secret never passes through the conversation at all.
+2. **If a value must come from the user out-of-band** (no interactive flow available): ask them to write it to a local, untracked file and give you only the *path* — never the value in chat. Read it from disk, use it, and never echo it back (same rule as "Never expose secrets").
+
 ---
 
 ## 3. Communication Rules
@@ -147,6 +155,9 @@ When debugging, change one thing at a time and verify the result before making t
 ## 6. Project-Specific Context
 
 These rules are universal and portable across projects. Concrete project context — file roles, commands, per-project conventions — lives in **`PROJECT.md`**. Read it at the start of each session and keep it in sync.
+
+### The first-touch trigger (2026-08-24 — binding)
+Before the first edit or command run in a project not yet listed as a section in `PROJECT.md`, add its section (even a one-line stub: name, path, what it is) before proceeding with the actual work. Without this trigger the promise "one section per project" stays silently unfulfilled — verified in this repo: a project can be worked on for a whole session without ever gaining a section, and nothing flags it. This is a process rule for the agent to self-enforce, not an automated check: detecting "a new project" from the filesystem alone is not reliably mechanizable without false positives.
 
 ---
 
