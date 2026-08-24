@@ -178,3 +178,16 @@ citava solo "l'onboarding", non il bootstrap).
   produzione, cespiti, crisi d'impresa, scadenzario aging), tutti minati da REPO-E.
   Propagati ai progetti nuovi/esistenti con lo stesso schema di `.claude/skills/`
   (stesso gap trovato e corretto per la terza cartella, set 1 giro 5).
+
+## Hook di sistema (2026-08-24 — primo hook di questo repo)
+
+`.claude/settings.json` esiste da questo giro: prima non c'era alcun hook, la
+consultazione di `patterns/` prima di certe modifiche dipendeva dalla memoria
+dell'agente in quel turno (feedback di un utente esterno che ha usato il sistema).
+`PreToolUse` su `Edit|Write` esegue `tools/pattern-reminder-hook.sh`: se il
+`file_path` toccato matcha una categoria sensibile (auth/secret/credential/token/
+login/password, incluse le varianti italiane), stampa un `additionalContext` con le
+righe pertinenti di `patterns/README.md` — non blocca mai l'operazione
+(`permissionDecision` sempre `"allow"`), è un reminder, non un cancello. Verificato
+dal vivo (non solo pipe-test sintetico): un vero Edit su un path sensibile in questa
+stessa sessione ha prodotto il reminder nello stesso turno.

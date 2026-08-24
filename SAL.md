@@ -89,6 +89,8 @@
 - [2026-08-23 — Set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti](#2026-08-23-set-3-giro-8-sweep-sistematico-di-tutte-le-citazioni-fra-skill-agenti)
 - [2026-08-23 — Set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix](#2026-08-23-set-3-giro-9-un-ipotesi-di-bug-smentita-dal-vivo-prima-di-diventare-un-fix)
 - [2026-08-23 — Set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale](#2026-08-23-set-3-giro-10-chiude-il-set-e-il-ciclo-verifica-end-to-end-finale)
+- [2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice](#2026-08-24-feedback-di-un-utente-esterno-reale-5-gap-di-processo-non-di-codice)
+- [2026-08-24 — punti 2-4: tre nuove regole vincolanti in CLAUDE.md](#2026-08-24-punti-2-4-tre-nuove-regole-vincolanti-in-claude-md)
 
 
 ## Stato
@@ -2377,3 +2379,120 @@ Corretto ovunque la conclusione precedente era stata scritta come limite fisso:
 giro 8/9, PR #35) NON sono state riscritte — restano la cronaca accurata di cosa era
 vero in quel momento con l'informazione allora disponibile; questa voce documenta la
 correzione successiva, non nasconde l'errore di conclusione iniziale.
+
+### 2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice
+
+Un secondo utente ha usato AI_Programmer (non Luca) e ha riportato 5 criticità
+verificate sul repo prima di intervenire (regola "leggi prima di agire"):
+
+1. **Scoperta delle skill non documentata** — verificato: nessun `README.md` in
+   radice esisteva. Un utente nuovo doveva dedurre dal codice che le skill scattano
+   per matching automatico sulla `description` del frontmatter, non da un elenco.
+   Fix: creato `README.md` in radice con la spiegazione del meccanismo reale
+   (skill vs agenti, il limite noto del refresh del roster, i comandi citati ma non
+   ancora scritti sono debiti in `DEBITI.md`, non bug). Guardia:
+   `tests/test-readme-skill-discovery.sh`.
+2. **La promessa di PROJECT.md non era vincolante** — CLAUDE.md §6 diceva solo
+   "leggilo e tienilo aggiornato", nessun trigger su QUANDO aggiungere una sezione
+   nuova: restava vuota in silenzio per un progetto toccato per la prima volta.
+3. **`segreto-come-impronta` era un pattern facoltativo, non una regola** — un
+   principio critico (mascherare un segreto in output, non solo omettere/stampare)
+   dipendeva dal fatto che qualcuno consultasse `patterns/` di sua iniziativa.
+4. **Nessuna convenzione per il secret handoff one-shot** — un primo login/deploy
+   interattivo (token OAuth, `clasp login`) non aveva risposta diversa da "incollalo
+   in chat", esattamente ciò che il punto 3 vuole evitare.
+5. **`patterns/` non era auto-consultato** — dipendeva dalla memoria dell'agente in
+   quel turno, non da un meccanismo del sistema.
+
+Punti 2-5 diventano regole vincolanti in `CLAUDE.md` (non solo un README esplicativo,
+perché sono principi di comportamento per ogni sessione futura, non solo per un
+utente nuovo che legge una volta). Dettaglio del fix per punto nelle voci successive
+di questa stessa giornata.
+
+### 2026-08-24 — punti 2-4: tre nuove regole vincolanti in CLAUDE.md
+
+- **§6, "The first-touch trigger"**: prima della prima modifica in un progetto non
+  ancora presente in PROJECT.md, aggiungerne la sezione (anche uno stub) prima di
+  procedere. Dichiarata come regola di processo per l'agente, non un controllo
+  automatico — rilevare "progetto nuovo" dal solo filesystem non è meccanizzabile
+  senza falsi positivi (deciso esplicitamente, non un compromesso silenzioso).
+- **§2, "Mask, don't omit, when a secret could surface in output"**: promuove
+  `patterns/segreto-come-impronta.md` da pattern facoltativo a regola vincolante,
+  citando esplicitamente la fonte (l'ancora non muore, resta anche il pattern con
+  l'implementazione di riferimento). Vieta sia la stampa in chiaro sia l'omissione
+  silenziosa dell'intera riga — un'omissione nasconde anche la lunghezza/forma del
+  segreto, informazione utile la cui assenza può sembrare un bug.
+- **§2, "One-shot secret handoff"**: per un primo login/deploy interattivo, due
+  alternative in ordine di preferenza — (1) l'agente esegue lui stesso il comando
+  interattivo, cosicché il token passi dal flusso del tool e non dalla chat; (2) se
+  un valore deve arrivare dall'utente fuori banda, questo lo scrive in un file locale
+  non tracciato e ne passa solo il percorso.
+
+Guardie di regressione: `tests/test-claude-md-project-first-touch.sh`,
+`tests/test-claude-md-segreto-impronta-regola.sh`,
+`tests/test-claude-md-secret-handoff-oneshot.sh`.
+
+### 2026-08-24 — punto 5: patterns/ auto-consultato via hook PreToolUse (mai fatto prima in questo repo)
+
+Prima volta che questo repo usa un hook `.claude/settings.json` (non esisteva alcun
+`settings.json`). `tools/pattern-reminder-hook.sh` scatta su `PreToolUse` con matcher
+`Edit|Write`: se il `file_path` toccato matcha una categoria sensibile (auth/secret/
+credential/token/login/password, incluse le varianti italiane "credenzial"/"segret"),
+stampa un `additionalContext` con le righe pertinenti di `patterns/README.md` —
+`permissionDecision` è sempre `"allow"`, non blocca mai l'operazione, per costruzione.
+
+Verificato dal vivo, non solo con un pipe-test sintetico (dogfooding, disciplina
+dev-critic §1.2): dopo aver scritto il hook, un vero `Edit` su un file di test con path
+sensibile (`/tmp/hook-test-sensitive/auth-token-test.txt`) ha prodotto realmente il
+`<system-reminder>` con il reminder nello stesso turno — il watcher dei settings ha
+raccolto il file appena creato senza bisogno di `/hooks` o riavvio (diversamente dal
+caso generico descritto dalla guida della skill `update-config`, dove un `settings.json`
+comparso a metà sessione potrebbe non essere osservato). Grep iniziale troppo largo
+(matchava anche una riga di prosa contenente "token" nell'intestazione del registro, non
+solo le righe della tabella pattern) — corretto restringendo il grep alle righe che
+iniziano per `| [`. Test di regressione: `tests/test-pattern-reminder-hook.sh` (9
+controlli, incluso che `permissionDecision` sia sempre `allow`).
+
+### 2026-08-24 — feedback dal campo (REPO-F, BC/GAS): il matching per description non è affidabile quanto presunto
+
+Luca ha lavorato ore su un caso reale (REPO-F, dashboard GAS + backfill mai eseguito
+su Business Central — vedi `night-shift/repos-index.md`) e riporta due letture, una
+confermativa e una nuova e più seria.
+
+**Confermato sul campo**: le regole di processo di CLAUDE.md hanno guidato scelte
+concrete — chiedere conferma prima del push in produzione, fermarsi a indagare la vera
+causa invece di rattoppare il sintomo, riusare pattern esistenti (`enrichContactFromOrder_`
+→ `enrichRequestedDeliveryFromOrder_`, `probeBcEntity_` per diagnosticare invece di
+indovinare). Risultato: trovato il bug vero (un trigger mai attivato), non una toppa.
+
+**Scoperta nuova, più seria di un altro gap nella lista**: due skill che descrivono
+quasi alla lettera il caso di oggi non si sono attivate da sole.
+- `verifica-visiva` esiste apposta per "screenshot di una dashboard GAS appena
+  modificata, prima/dopo" — Luca ha modificato `Dashboard.html` di REPO-F e non l'ha
+  invocata; lo screenshot è arrivato da un'altra strada, non dal meccanismo pensato per
+  questo.
+- `dev-critic` (che "critica un intero progetto con un tentativo reale di usarlo, non
+  solo lettura statica") descrive quasi alla lettera come è stato trovato il bug di una
+  funzione di backfill delle consegne mai eseguita — ma è stato trovato per fiuto investigativo
+  su UN sintomo segnalato, non invocando la skill sull'intero progetto. Conseguenza
+  aperta, non richiusa: se fosse stata invocata su tutto il progetto (90+ file), non
+  solo sul sintomo, avrebbe potuto far emergere ALTRE funzionalità scritte-ma-mai-
+  attivate — restano non cercate.
+
+**Il filo che lega tutti i gap trovati finora** (da questo ciclo e dal precedente):
+PROJECT.md mai aggiornato, `patterns/` mai consultato, skill mai invocate anche quando
+calzano alla lettera — stessa forma ogni volta: contenuto scritto bene, che esiste solo
+se qualcuno se ne ricorda al momento giusto. L'unico correttivo che rompe lo schema è
+il hook `PreToolUse` di ieri — e infatti è anche l'unico con un buco già identificato e
+non richiuso: copre `Edit|Write`, non `Bash` — non copre il modo in cui si è lavorato
+oggi (clasp deploy, probe su BC). Anche il tentativo più concreto di uscire dalla
+dipendenza dalla memoria ha lasciato scoperto lo stesso tipo di varco.
+
+Priorità indicata da Luca per il prossimo giro: non un'altra regola in CLAUDE.md, ma
+un aggancio automatico più ampio del hook attuale — l'unica cosa vista finora che ha
+davvero smesso di dipendere dalla sua memoria. Non ancora implementato in questo
+momento: prima di scegliere UN meccanismo, le interpretazioni possibili (estendere il
+matcher a `Bash`; un hook `UserPromptSubmit` che confronta il compito dichiarato con le
+description delle skill; un giro periodico di `dev-critic` sull'intero progetto invece
+che a comando) hanno tradeoff diversi (costo, falsi positivi/negativi, portata) — da
+decidere con Luca, non a mia discrezione, prima di scrivere codice.
