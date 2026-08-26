@@ -103,6 +103,7 @@
 - [2026-08-24 (10) — il report dal campo su REPO-G: verificato,processato, chiuso](#2026-08-24-10-il-report-dal-campo-su-repo-g-verificato-processato-chiuso)
 - [2026-08-26 — il report dei tagli: il canone ha retto, e cresce di cinque pezzi](#2026-08-26-il-report-dei-tagli-il-canone-ha-retto-e-cresce-di-cinque-pezzi)
 - [2026-08-26 (3) — «standard non opzione»: il metodo diventa meccanico](#2026-08-26-3-standard-non-opzione-il-metodo-diventa-meccanico)
+- [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-gi-chiuso-due-novit)
 
 
 ## Stato
@@ -3098,3 +3099,19 @@ Tre pezzi, tutti meccanici:
 Guardia: `tests/test-standard-non-opzione.sh` (8 controlli). Limite onesto:
 gli hook sono la meccanica di Claude Code; per la notte OpenCode l'aggancio
 equivalente (se esiste) resta da mappare — dichiarato, non Presunto.
+### 2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità
+
+Ricevuta la seconda stesura del report sul campo REPO-G (stessa sessione, sei
+finding invariati, chiusura che chiede a Luca se adattarlo). Verifica eseguita
+punto per punto sul main: TUTTI già chiusi — gate privacy degradato (exit 1),
+bonifica nomi (0 occorrenze residue), decisione onboarding in DEBITI,
+sync-repo.sh, test percorsi PROJECT.md, terza corsia, hook promemoria SAL.
+
+Le due novità della stesura: (1) la correzione spontanea dell'autore su F5 —
+la scoperta NON scritta in SAL è stata scritta più tardi nella stessa sessione,
+di sua iniziativa: il punto di metodo resta («nessun gate me lo ricordava») ed
+è esattamente il buco che l'hook ora copre — la cronaca conferma che il
+promemoria serve anche alle sessioni ben intenzionate; (2) il bug del plug IVA
+a segno invertito, trovato leggendo ed eseguendo query vere: entra nel canone
+come conferma di campo della regola dei segni (domini-gestionali §3) — lo
+stesso difetto in una sede nuova.
