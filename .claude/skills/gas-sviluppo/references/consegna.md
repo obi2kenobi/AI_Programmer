@@ -69,6 +69,16 @@ Livello: <1|2|3> · Come: <comando eseguito> · Esito: <output INCOLLATO, non ri
 
 ## Il cancello umano: `clasp` mai, in nessuna circostanza
 
+> Osservazione dal campo (2026-08-26): il divieto copre DUE rischi distinti
+> che vale la pena nominare separati — (1) il maneggiare le credenziali che
+> autorizzano il deploy (credenziale clasp unica e condivisa: rischio
+> assoluto, non si allenta), (2) la scrittura in produzione senza staging né
+> rollback (rischio reale ma di altra natura). La regola resta integralmente
+> in vigore; allentare la parte (2) — es. deploy assistito con credenziali
+> fuori dalla portata dell'agente — è decisione del proprietario, non
+> un'interpretazione (DEBITI la registra). Il costo del confine com'è: ~20
+> cicli manuali in una sessione, ognuno un'interruzione per l'umano.
+
 - Il push scrive in **produzione** senza staging automatico e senza rollback.
 - Il parco condivide **una sola credenziale clasp** (rate limit e
   attribuzione).

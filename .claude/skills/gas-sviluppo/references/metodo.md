@@ -96,6 +96,28 @@ non lo è, e quello costa il giro intero.
 
 ## Vincoli trasversali (pagati, con la data dentro la fonte)
 
+- **Stima la scala PRIMA di generare** (dal campo, sessione tagli 2026-08-26):
+  prima di produrre un output potenzialmente enorme — tutte le combinazioni,
+  tutte le righe di un export — misurane la dimensione su un campione di dati
+  REALI, non assumerla piccola perché lo era nell'esempio (misurato: una sola
+  materia prima con 50 lunghezze candidate ne genera 148.186 sotto soglia —
+  non deducibile a tavolino, emerso solo eseguendo). Se la scala è ignota, il
+  compromesso «tutte se poche, le migliori se troppe» si decide con la misura
+  in mano, non a priori.
+- **Le scritture su SISTEMI ESTERNI sono una categoria di rischio diversa dal
+  scrivere codice** (dal campo, 2026-08-26): generare file da importare in un
+  ERP live chiede un ritmo di conferme più fitto e STRUTTURATO, non
+  improvvisato — formato dei codici, numerazione, cosa non va toccato, chi
+  importa, con che rituale di rollback. Prima di produrre il file: l'elenco di
+  queste conferme si dichiara e si fa approvare. Il canone è tarato su
+  «scrivere codice»: questo è il pezzo che mancava.
+- **Il banco scritto al volo NON si butta** (dal campo, 2026-08-26): ogni
+  verifica di sessione passata da uno script node improvvisato e poi perso è
+  meglio di un test finto, ma i CASI VERIFICATI (l'input reale, l'atteso, il
+  comando) vanno salvati come riferimento permanente del progetto prima di
+  chiudere — sono il registro da cui il banco vero nascerà, e senza di loro
+  il giro dopo riparte da zero.
+
 - **Esegui, non dedurre**: una regex, una formula, un confronto di date, un
   arrotondamento si eseguono con `node`, riportando comando e uscita.
 - **Prima di inventare, guarda se il parco l'ha già risolto** (esemplari

@@ -101,6 +101,7 @@
 - [2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero](#2026-08-24-8-7-ciclo-set-2-3-il-flusso-di-progettazione-dogfooddato-su-un-caso-vero)
 - [2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi](#2026-08-24-9-7-ciclo-set-3-3-il-hub-impara-a-giudicare-i-banchi)
 - [2026-08-24 (10) — il report dal campo su REPO-G: verificato,processato, chiuso](#2026-08-24-10-il-report-dal-campo-su-repo-g-verificato-processato-chiuso)
+- [2026-08-26 — il report dei tagli: il canone ha retto, e cresce di cinque pezzi](#2026-08-26-il-report-dei-tagli-il-canone-ha-retto-e-cresce-di-cinque-pezzi)
 
 
 ## Stato
@@ -3024,3 +3025,44 @@ Resta a Luca (DEBITI): onboarding o esclusione deliberata di REPO-G (F1 —
 credenziali BC dentro la repo: non una dimenticanza da correggere in silenzio)
 e lo spurgo della storia (F3b). Suite: 85/85 atteso (82 + privacy-v4,
 sync-repo, percorsi-citati, hook-sal).
+
+### 2026-08-26 — il report dei tagli: il canone ha retto, e cresce di cinque pezzi
+
+Secondo report dal campo in una settimana (sessione singola di ottimizzazione
+tagli, ~30 correzioni guidate da dati reali, 0 segreti in chat nonostante
+richieste dirette, ~20 deploy manuali, 4 fogli diagnostici mai spariti in
+silenzio). Verificato eseguendo prima di integrare: le sei proposte erano
+tutte ASSENTI dal canone (grep a vuoto su famiglie/metodo/agente/consegna).
+
+**Cosa ha retto, e vale la cronaca**: «esegui, non dedurre» è stata la regola
+che ha pagato di più (l'errore 400 di BC era spazi non codificati nel $filter —
+emerso testando, non rileggendo; la regola di dominio «un taglio vero ha
+Quantity_per < 1» non era scritta da nessuna parte: emersa dal confronto coi
+dati veri); «scarto mai silenzioso» è DIVENTATA ARCHITETTURA (il foglio dei
+motivi di esclusione ha reso le domande del cliente una lettura di due
+colonne, e ha fatto emergere il bug delle materie prime che si tagliavano da
+solo — visibile solo perché lo scarto era tracciato riga per rigo); 4 famiglie
+su 5 evitate per conoscenza pregressa.
+
+**Le cinque integrazioni (canone)**: la famiglia FORMATTAZIONE FANTASMA (il
+formato resta attaccato alla posizione, non alla colonna logica: mm mostrati
+come % dopo lo spostamento di una colonna — la sesta famiglia scoperta dal
+campo); «stima la scala PRIMA di generare» (148.186 combinazioni da una sola
+materia prima: non deducibile a tavolino); «scritture su SISTEMI ESTERNI =
+categoria di rischio diversa dal scrivere codice» (l'elenco di conferme —
+formato codici, numerazione, cosa non toccare — si dichiara e si approva
+PRIMA di produrre il file per l'ERP); «il banco scritto al volo NON si butta»
+(i casi verificati si salvano come registro permanente del progetto);
+sviluppatore-gas guadagna il punto 6 di verifica (salvataggio dei casi).
+
+**La sesta proposta non si integra: si decide** — separare «niente segreti»
+(da tenere assoluto) da «niente deploy autonomo» (allentabile SOLO con
+credenziali fuori portata) tocca un divieto di sicurezza su produzione vera:
+il canone ora NOMINA i due rischi separati (consegna.md, regola intera), la
+decisione di allentare il secondo sta in DEBITI per Luca. Il costo misurato
+del confine com'è: ~20 interruzioni umane a sessione — è il prezzo della
+credenziale unica condivisa, ed è suo dirimere se vale un rituale di deploy
+assistito.
+
+Guardia: test-gas-sviluppo-sistema passa da 16 a 22 controlli (le aggiunte
+non escono dal canone in silenzio). Specchio OpenCode risincronizzato.

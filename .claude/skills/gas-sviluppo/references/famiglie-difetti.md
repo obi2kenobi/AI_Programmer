@@ -23,6 +23,16 @@
   guardia tarata a 360 s può tagliare notti che finiscono bene — e accanto al
   p95 si legge sempre n), 100 KB per voce di CacheService, ~20k chiamate
   urlFetch/die, 6 MB per fetch, ~60 req/min BC con throttling dinamico.
+- **FORMATTAZIONE FANTASMA** (dal campo, sessione di ottimizzazione tagli
+  2026-08-26): il formato numerico in Fogli Google resta attaccato alla
+  POSIZIONE, non alla colonna logica — una cella formattata come percentuale
+  continua a mostrare percentuale anche dopo che una colonna nuova ne ha
+  spostato il contenuto altrove (millimetri mostrati come %). La cura:
+  azzerare SEMPRE la formattazione dell'area riscritta prima di applicare la
+  nuova (`clearFormats()` o `setBackgrounds/setNumberFormat` esplicito su tutto
+  il blocco), non solo il contenuto. Domanda: *quando riscrivo un foglio per
+  posizioni, chi garantisce che il formato della posizione precedente sia
+  stato cancellato?*
 - **Fuso come offset fisso `'GMT+1'` è sbagliato più di metà anno** (Roma è
   GMT+2 da fine marzo a fine ottobre): 27 offset fissi in 6 progetti su 93;
   l'assenza si dichiara col conto degli `'Europe/Rome'`.
