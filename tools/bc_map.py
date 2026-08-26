@@ -118,7 +118,10 @@ def write_md(endpoint, base_url, rows, fields):
 def parse_catalog(path):
     """Estrae i nomi servizio dal catalogo: tabella §3 (`| Pagina|Query | id | `Nome` |`)."""
     text = open(path, encoding="utf-8").read()
-    names = re.findall(r"\| (?:Pagina|Query) \| \d+ \| `([^`]+)`", text)
+    # due formati: export "Servizi Web" 2026-08-26 (| Pagina | id | nome | `Servizio` | ...)
+    # e il vecchio formato del repo cliente (| Pagina|Query | id | `Nome` |)
+    names = re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `([^`]+)`", text)
+    names += re.findall(r"\| (?:Pagina|Query)\| \d+ \| `([^`]+)`", text)
     seen, out = set(), []
     for n in names:
         if n not in seen:

@@ -22,8 +22,21 @@ def parse(path):
     return name, count, verified
 
 
+def catalogo_mancanti():
+    """I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di censimento."""
+    cat = os.path.join(os.path.dirname(ENDPOINTS_DIR), "CATALOGO_ENDPOINT_BC.md")
+    if not os.path.isfile(cat):
+        return None, []
+    import re as _re
+    text = open(cat, encoding="utf-8").read()
+    servizi = set(_re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `([^`]+)`", text))
+    esistenti = {os.path.basename(p)[:-3] for p in glob.glob(os.path.join(ENDPOINTS_DIR, "*.md"))}
+    return len(servizi), sorted(servizi - esistenti)
+
+
 def main():
     rows = [parse(p) for p in glob.glob(os.path.join(ENDPOINTS_DIR, "*.md"))]
+    n_cat, mancanti = catalogo_mancanti()
     rows.sort(key=lambda r: -r[1])
     lines = [
         "# Business Central — mappatura endpoint",
@@ -45,6 +58,8 @@ def main():
         f"- Endpoint con almeno un campo verificato: {sum(1 for _, _, v in rows if v == '✅')} su {len(rows)}",
         f"- File con data di aggiornamento: {sum(1 for r in glob.glob(os.path.join(ENDPOINTS_DIR, '*.md')) if 'Ultimo aggiornamento:' in open(r, encoding='utf-8').read())} su {len(rows)} (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)",
         "- Refresh: `python3 tools/bc_map.py <NomeServizio>` rigenera UN endpoint preservando Significato/Verificato compilati",
+        "- Su Luca's Mac: `python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in blocco TUTTI i mancanti (salta i già fatti, credenziali locali)",
+        (f"- Catalogo servizi OData: {n_cat} · mancanti al censimento: {len(mancanti)}" if n_cat is not None else "- Catalogo assente (docs/bc/CATALOGO_ENDPOINT_BC.md)"),
         "",
         "| Endpoint | Campi | Verificato |",
         "|---|---|---|",

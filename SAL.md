@@ -105,6 +105,7 @@
 - [2026-08-26 (3) — «standard non opzione»: il metodo diventa meccanico](#2026-08-26-3-standard-non-opzione-il-metodo-diventa-meccanico)
 - [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-gi-chiuso-due-novit)
 - [2026-08-26 (4) — il censimento BC diventa aggiornabile (e confessa: 0 verificati su 88)](#2026-08-26-4-il-censimento-bc-diventa-aggiornabile-e-confessa-0-verificati-su-88)
+- [2026-08-26 (5) — la pozza entra: il catalogo vive nell'hub, i mancanti sono 170](#2026-08-26-5-la-pozza-entra-il-catalogo-vive-nell-hub-i-mancanti-sono-170)
 
 
 ## Stato
@@ -3142,3 +3143,23 @@ noti). Non è un difetto dello strumento: è lo stato reale che l'indice ora
 mostra. Il passo «funzionante» vero è il riscontro, campo per campo, dove i
 progetti lo usano — e la pozza di Luca (108 nel catalogo del cliente) serve
 proprio a chiudere 88→108 col vivo sotto.
+
+### 2026-08-26 (5) — la pozza entra: il catalogo vive nell'hub, i mancanti sono 170
+
+Luca ha incollato l'export della pagina BC "Servizi Web" (264 righe: 223 Pagine,
+6 Codeunit SOAP, 35 Query). Convertito in `docs/bc/CATALOGO_ENDPOINT_BC.md`
+(formato tabella che `bc_map --catalog` sa leggere: parser aggiornato ai due
+formati). F4 chiuso DAVVERO: il riferimento di PROJECT.md ora risolve nell'hub
+(258 servizi OData dichiarati, non più «108 che vivono altrove»).
+
+Il diff meccanico dice la verità che il «108» nascondeva: **258 servizi OData
+nel catalogo, 170 mai censiti** (fra i primi: archivi ordini, attributi
+articolo, CONAI, provvigioni maturate, tutta la serie PS_EDIT_* e metà della
+PS_PowerBI_*). L'indice ora riporta «Catalogo servizi OData: 258 · mancanti al
+censimento: 170» nella sezione Salute — il debito di censimento è un numero
+visibile, non una stima.
+
+Il flusso aggiornabile, completo: sul Mac di Luca (credenziali locali)
+`python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in
+blocco tutti i 170 saltando i fatti, ognuno col merge che preserva le colonne
+curate; `bc_index.py` riconta; la Salute mostra il debito che scende.
