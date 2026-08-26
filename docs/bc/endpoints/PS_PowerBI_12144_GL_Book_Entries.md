@@ -11,19 +11,19 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzE2NTM3NzIxODc3NzU3MjA4NjgxOz... |  | ☐ |
 | `Entry_No` | int | 1 |  | ☐ |
-| `Additional_Currency_Amount` | int | 0 |  | ☐ |
+| `Additional_Currency_Amount` | float | 0 |  | ☐ |
 | `Amount` | float | -20788.41 |  | ☐ |
 | `Credit_Amount` | float | 20788.41 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
 | `Description` | string | 2021/000000 |  | ☐ |
-| `Document_Date` | string | 2021-01-01 |  | ☐ |
+| `Document_Date` | date | 2021-01-01 |  | ☐ |
 | `Document_No` | string | 0001 |  | ☐ |
 | `Document_Type` | string | Invoice |  | ☐ |
 | `External_Document_No` | string | 0001 |  | ☐ |
 | `G_L_Account_No` | string | 0500001002 |  | ☐ |
-| `Official_Date` | string | 2023-12-31 |  | ☐ |
+| `Official_Date` | date | 2023-12-31 |  | ☐ |
 | `Positive` | bool | False |  | ☐ |
-| `Posting_Date` | string | 2023-12-31 |  | ☐ |
+| `Posting_Date` | date | 2023-12-31 |  | ☐ |
 | `Progressive_No` | int | 1 |  | ☐ |
 | `Source_No` | string | 0002952 |  | ☐ |
 | `Source_Type` | string | Customer |  | ☐ |

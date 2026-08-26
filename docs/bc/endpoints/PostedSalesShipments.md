@@ -26,19 +26,19 @@
 | `Ship_to_Post_Code` | string | 10093 |  | ☐ |
 | `Ship_to_Country_Region_Code` | string | IT |  | ☐ |
 | `Ship_to_Contact` | string |  |  | ☐ |
-| `Posting_Date` | string | 2026-08-26 |  | ☐ |
+| `Posting_Date` | date | 2026-08-26 |  | ☐ |
 | `Salesperson_Code` | string | REGGIO |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | BIOC |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `Location_Code` | string | SD |  | ☐ |
 | `No_Printed` | int | 0 |  | ☐ |
-| `Document_Date` | string | 2026-08-26 |  | ☐ |
-| `Requested_Delivery_Date` | string | 2026-09-04 |  | ☐ |
+| `Document_Date` | date | 2026-08-26 |  | ☐ |
+| `Requested_Delivery_Date` | date | 2026-09-04 |  | ☐ |
 | `Shipment_Method_Code` | string | PFLM |  | ☐ |
 | `Shipping_Agent_Code` | string |  |  | ☐ |
 | `Shipping_Agent_Service_Code` | string |  |  | ☐ |
 | `Package_Tracking_No` | string |  |  | ☐ |
 | `ShpfyOrderNo` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2026-09-04 |  | ☐ |
+| `Shipment_Date` | date | 2026-09-04 |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |

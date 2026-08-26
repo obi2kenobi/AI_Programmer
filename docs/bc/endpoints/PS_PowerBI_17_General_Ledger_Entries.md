@@ -12,19 +12,19 @@
 | `@odata.etag` | string | W/"JzIwOzE3OTEzMzA3OTM4MDkyODQ2ODEzMT... |  | ☐ |
 | `Entry_No` | int | 1 |  | ☐ |
 | `Document_Type` | string | Invoice |  | ☐ |
-| `Document_Date` | string | 2021-01-01 |  | ☐ |
+| `Document_Date` | date | 2021-01-01 |  | ☐ |
 | `Document_No` | string | 0001 |  | ☐ |
-| `Account_Id` | string | bbbe9f83-53a9-ee11-be36-000d3ab6afd4 |  | ☐ |
-| `Add_Currency_Credit_Amount` | int | 0 |  | ☐ |
-| `Add_Currency_Debit_Amount` | int | 0 |  | ☐ |
-| `Additional_Currency_Amount` | int | 0 |  | ☐ |
+| `Account_Id` | guid | bbbe9f83-53a9-ee11-be36-000d3ab6afd4 |  | ☐ |
+| `Add_Currency_Credit_Amount` | float | 0 |  | ☐ |
+| `Add_Currency_Debit_Amount` | float | 0 |  | ☐ |
+| `Additional_Currency_Amount` | float | 0 |  | ☐ |
 | `Amount` | float | -20788.41 |  | ☐ |
 | `Bal_Account_No` | string | 0002952 |  | ☐ |
 | `Bal_Account_Type` | string | Customer |  | ☐ |
 | `Business_Unit_Code` | string |  |  | ☐ |
 | `Close_Income_Statement_Dim_ID` | int | 0 |  | ☐ |
 | `Credit_Amount` | float | 20788.41 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
 | `Description` | string | 2021/000000 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
 | `External_Document_No` | string | 0001 |  | ☐ |
@@ -40,15 +40,15 @@
 | `IC_Partner_Code` | string |  |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
 | `Journal_Batch_Name` | string | OPBAL |  | ☐ |
-| `Last_Modified_DateTime` | string | 2024-01-02T10:33:04.377Z |  | ☐ |
+| `Last_Modified_DateTime` | datetime | 2024-01-02T10:33:04.377Z |  | ☐ |
 | `No_Series` | string |  |  | ☐ |
-| `Official_Date` | string | 2023-12-31 |  | ☐ |
+| `Official_Date` | date | 2023-12-31 |  | ☐ |
 | `Positive` | bool | False |  | ☐ |
-| `Posting_Date` | string | 2023-12-31 |  | ☐ |
-| `PostingDateDT` | string | 2023-12-31T00:00:00Z |  | ☐ |
+| `Posting_Date` | date | 2023-12-31 |  | ☐ |
+| `PostingDateDT` | datetime | 2023-12-31T00:00:00Z |  | ☐ |
 | `Prior_Year_Entry` | bool | False |  | ☐ |
 | `Prod_Order_No` | string |  |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Reversed` | bool | False |  | ☐ |
 | `Reversed_Entry_No` | int | 0 |  | ☐ |
@@ -63,6 +63,6 @@
 | `Transaction_No` | int | 1 |  | ☐ |
 | `Use_Tax` | bool | False |  | ☐ |
 | `User_ID` | string | USER_EEB83BD8DDC34A4B92AB0B7EB961D38D |  | ☐ |
-| `VAT_Amount` | int | 0 |  | ☐ |
+| `VAT_Amount` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string |  |  | ☐ |
 | `VAT_Prod_Posting_Group` | string |  |  | ☐ |

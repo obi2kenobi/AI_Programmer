@@ -16,4 +16,4 @@
 | `Search_Name` | string | KIT VITI CASETTA ELBA |  | ☐ |
 | `Version_Nos` | string |  |  | ☐ |
 | `ActiveVersionCode` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 2023-12-23 |  | ☐ |
+| `Last_Date_Modified` | date | 2023-12-23 |  | ☐ |

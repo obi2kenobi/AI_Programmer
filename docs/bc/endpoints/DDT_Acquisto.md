@@ -25,10 +25,10 @@
 | `Buy_from_Country_Region_Code` | string | IT |  | ☐ |
 | `Buy_from_Contact` | string | PAOLO CELL. 348-5172300 |  | ☐ |
 | `No_Printed` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 2024-01-08 |  | ☐ |
-| `Document_Date` | string | 2024-01-08 |  | ☐ |
-| `Requested_Receipt_Date` | string | 0001-01-01 |  | ☐ |
-| `Promised_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2024-01-08 |  | ☐ |
+| `Document_Date` | date | 2024-01-08 |  | ☐ |
+| `Requested_Receipt_Date` | date | 0001-01-01 |  | ☐ |
+| `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Quote_No` | string |  |  | ☐ |
 | `Order_No` | string | 24ODA-0000061 |  | ☐ |
 | `Vendor_Order_No` | string | 1518 |  | ☐ |
@@ -66,7 +66,7 @@
 | `Inbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Shipment_Method_Code` | string | PFO |  | ☐ |
 | `Lead_Time_Calculation` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `PRJ_Ship_to_Name` | string |  |  | ☐ |
 | `PRJ_Ship_to_Address` | string |  |  | ☐ |
 | `PRJ_Ship_to_City` | string |  |  | ☐ |
@@ -77,4 +77,4 @@
 | `PRJ_Ship_to_Phone_No` | string |  |  | ☐ |
 | `PRJ_Action_Approved_By` | string |  |  | ☐ |
 | `PRJ_Action_Reason_Code` | string |  |  | ☐ |
-| `PRJ_Action_Approve_Date` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `PRJ_Action_Approve_Date` | datetime | 0001-01-01T00:00:00Z |  | ☐ |

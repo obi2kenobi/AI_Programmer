@@ -12,26 +12,26 @@
 | `Entry_No` | int | 1 |  | ☐ |
 | `G_L_Entry_No` | int | 3048 |  | ☐ |
 | `FA_No` | string | 19CE-000001 |  | ☐ |
-| `FA_Posting_Date` | string | 2019-01-01 |  | ☐ |
-| `Posting_Date` | string | 2023-12-31 |  | ☐ |
+| `FA_Posting_Date` | date | 2019-01-01 |  | ☐ |
+| `Posting_Date` | date | 2023-12-31 |  | ☐ |
 | `Document_No` | string | PA CESP |  | ☐ |
-| `Document_Date` | string | 2023-12-31 |  | ☐ |
+| `Document_Date` | date | 2023-12-31 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
 | `Description` | string | MUTUO BPM 2019 |  | ☐ |
 | `Depreciation_Book_Code` | string | CIVILISTIC |  | ☐ |
 | `FA_Posting_Category` | string |   |  | ☐ |
 | `FA_Posting_Type` | string | Acquisition Cost |  | ☐ |
-| `Amount` | int | 2125 |  | ☐ |
-| `Debit_Amount` | int | 2125 |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
+| `Amount` | float | 2125 |  | ☐ |
+| `Debit_Amount` | float | 2125 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
 | `Reclassification_Entry` | bool | False |  | ☐ |
 | `Part_of_Book_Value` | bool | True |  | ☐ |
 | `Part_of_Depreciable_Basis` | bool | True |  | ☐ |
 | `Disposal_Calculation_Method` | string |   |  | ☐ |
 | `Disposal_Entry_No` | int | 0 |  | ☐ |
 | `No_of_Depreciation_Days` | int | 0 |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
 | `FA_No_Budgeted_FA_No` | string |  |  | ☐ |
 | `FA_Subclass_Code` | string | QUAL |  | ☐ |
 | `FA_Location_Code` | string |  |  | ☐ |
@@ -40,12 +40,12 @@
 | `Location_Code` | string |  |  | ☐ |
 | `User_ID` | string | USER_EEB83BD8DDC34A4B92AB0B7EB961D38D |  | ☐ |
 | `Depreciation_Method` | string | User-Defined |  | ☐ |
-| `Depreciation_Starting_Date` | string | 2020-01-01 |  | ☐ |
-| `Depreciation_Ending_Date` | string | 0001-01-01 |  | ☐ |
-| `Straight_Line_Percent` | int | 0 |  | ☐ |
-| `No_of_Depreciation_Years` | int | 0 |  | ☐ |
-| `Fixed_Depr_Amount` | int | 0 |  | ☐ |
-| `Declining_Balance_Percent` | int | 0 |  | ☐ |
+| `Depreciation_Starting_Date` | date | 2020-01-01 |  | ☐ |
+| `Depreciation_Ending_Date` | date | 0001-01-01 |  | ☐ |
+| `Straight_Line_Percent` | float | 0 |  | ☐ |
+| `No_of_Depreciation_Years` | float | 0 |  | ☐ |
+| `Fixed_Depr_Amount` | float | 0 |  | ☐ |
+| `Declining_Balance_Percent` | float | 0 |  | ☐ |
 | `Depreciation_Table_Code` | string | IMMORD |  | ☐ |
 | `Journal_Batch_Name` | string | IMP_CESP |  | ☐ |
 | `Source_Code` | string |  |  | ☐ |
@@ -53,21 +53,21 @@
 | `Transaction_No` | int | 874 |  | ☐ |
 | `Bal_Account_No` | string | 0500001002 |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
-| `VAT_Amount` | int | 0 |  | ☐ |
+| `VAT_Amount` | float | 0 |  | ☐ |
 | `Gen_Posting_Type` | string |   |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |
 | `Gen_Prod_Posting_Group` | string |  |  | ☐ |
 | `FA_Class_Code` | string | IMM |  | ☐ |
-| `FA_Exchange_Rate` | int | 0 |  | ☐ |
-| `Amount_LCY` | int | 2125 |  | ☐ |
+| `FA_Exchange_Rate` | float | 0 |  | ☐ |
+| `Amount_LCY` | float | 2125 |  | ☐ |
 | `Result_on_Disposal` | string |   |  | ☐ |
 | `Correction` | bool | False |  | ☐ |
 | `Index_Entry` | bool | False |  | ☐ |
 | `Canceled_from_FA_No` | string |  |  | ☐ |
-| `Depr_Starting_Date_Custom_1` | string | 0001-01-01 |  | ☐ |
-| `Depr_Ending_Date_Custom_1` | string | 0001-01-01 |  | ☐ |
-| `Accum_Depr_Percent_Custom_1` | int | 0 |  | ☐ |
-| `Depr_Percent_this_year_Custom_1` | int | 0 |  | ☐ |
+| `Depr_Starting_Date_Custom_1` | date | 0001-01-01 |  | ☐ |
+| `Depr_Ending_Date_Custom_1` | date | 0001-01-01 |  | ☐ |
+| `Accum_Depr_Percent_Custom_1` | float | 0 |  | ☐ |
+| `Depr_Percent_this_year_Custom_1` | float | 0 |  | ☐ |
 | `Property_Class_Custom_1` | string |   |  | ☐ |
 | `No_Series` | string |  |  | ☐ |
 | `Tax_Area_Code` | string |  |  | ☐ |

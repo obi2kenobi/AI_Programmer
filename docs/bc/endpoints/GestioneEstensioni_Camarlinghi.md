@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzI5MzE0MjYyNDU3NTM1MDgyNzMxOz... |  | ☐ |
-| `Runtime_Package_ID` | string | 658212dd-899e-48ba-ab69-0493f40ed81c |  | ☐ |
+| `Runtime_Package_ID` | guid | 658212dd-899e-48ba-ab69-0493f40ed81c |  | ☐ |
 | `Name` | string | AMC Banking 365 Fundamentals |  | ☐ |
 | `Publisher` | string | Microsoft |  | ☐ |
 | `Version` | string | 28.3.52162.52273 |  | ☐ |

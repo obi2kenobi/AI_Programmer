@@ -19,8 +19,8 @@
 | `Additional_Information` | string |  |  | ☐ |
 | `Additional_Instructions` | string |  |  | ☐ |
 | `Additional_Notes` | string |  |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Amount_Including_VAT` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Amount_Including_VAT` | float | 0 |  | ☐ |
 | `Applies_to_Doc_No` | string |  |  | ☐ |
 | `Applies_to_Doc_Type` | string |   |  | ☐ |
 | `Applies_to_ID` | string |  |  | ☐ |
@@ -45,20 +45,20 @@
 | `Buy_from_Vendor_Name_2` | string |  |  | ☐ |
 | `Buy_from_Vendor_No` | string | 0001941 |  | ☐ |
 | `Campaign_No` | string |  |  | ☐ |
-| `Check_Total` | int | 0 |  | ☐ |
+| `Check_Total` | float | 0 |  | ☐ |
 | `Comment` | bool | False |  | ☐ |
 | `Completely_Received` | bool | False |  | ☐ |
 | `Compress_Prepayment` | bool | True |  | ☐ |
 | `Correction` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
-| `Date_Archived` | string | 2024-01-04 |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
+| `Date_Archived` | date | 2024-01-04 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
-| `Document_Date` | string | 2024-01-04 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2024-01-04 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Fiscal_Code` | string | 11029420012 |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
@@ -70,7 +70,7 @@
 | `Invoice` | bool | False |  | ☐ |
 | `Invoice_Disc_Code` | string | 0001941 |  | ☐ |
 | `Invoice_Discount_Calculation` | string | None |  | ☐ |
-| `Invoice_Discount_Value` | int | 0 |  | ☐ |
+| `Invoice_Discount_Value` | float | 0 |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
 | `Last_Posting_No` | string |  |  | ☐ |
@@ -84,11 +84,11 @@
 | `No_Series` | string | A-ORD |  | ☐ |
 | `No_of_Archived_Versions` | int | 1 |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-01-04 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-01-04 |  | ☐ |
 | `Operation_Type` | string | FT-ACQ-IT+ |  | ☐ |
 | `Order_Address_Code` | string |  |  | ☐ |
 | `Order_Class` | string |  |  | ☐ |
-| `Order_Date` | string | 2024-01-04 |  | ☐ |
+| `Order_Date` | date | 2024-01-04 |  | ☐ |
 | `Pay_to_Address` | string | CSO GIULIO CESARE, 268 |  | ☐ |
 | `Pay_to_Address_2` | string |  |  | ☐ |
 | `Pay_to_City` | string | ACERRA |  | ☐ |
@@ -101,30 +101,30 @@
 | `Pay_to_Name_2` | string |  |  | ☐ |
 | `Pay_to_Post_Code` | string | 10154 |  | ☐ |
 | `Pay_to_Vendor_No` | string | 0001941 |  | ☐ |
-| `Payment_Percent` | int | 0 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Percent` | float | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Terms_Code` | string | DF |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2024-01-04 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2024-01-04 |  | ☐ |
 | `Posting_Description` | string | Ordine 24ODA-0000001 |  | ☐ |
 | `Posting_No` | string |  |  | ☐ |
 | `Posting_No_Series` | string | FT-ACQ-IT+ |  | ☐ |
 | `Posting_from_Whse_Ref` | int | 0 |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
-| `Prepayment_Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
+| `Prepayment_Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Prepayment_No` | string |  |  | ☐ |
 | `Prepayment_No_Series` | string | FT-ACQ-IT+ |  | ☐ |
 | `Prepmt_CM_Refers_to_Period` | string |   |  | ☐ |
 | `Prepmt_Cr_Memo_No` | string |  |  | ☐ |
 | `Prepmt_Cr_Memo_No_Series` | string | FT-ACQ-IT+ |  | ☐ |
-| `Prepmt_Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Prepmt_Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Prepmt_Payment_Terms_Code` | string |  |  | ☐ |
-| `Prepmt_Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
+| `Prepmt_Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
 | `Prepmt_Posting_Description` | string |  |  | ☐ |
 | `Price_Calculation_Method` | string |   |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
-| `Promised_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Purchase_Quote_No` | string |  |  | ☐ |
 | `Purchaser_Code` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
@@ -133,7 +133,7 @@
 | `Receiving_No_Series` | string | A-RIC |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
-| `Requested_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Requested_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Return_Shipment_No` | string |  |  | ☐ |
@@ -170,7 +170,7 @@
 | `Transaction_Specification` | string |  |  | ☐ |
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 11029420012 |  | ☐ |

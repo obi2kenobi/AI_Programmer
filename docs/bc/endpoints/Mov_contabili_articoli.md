@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzExNTU3NDE2MTA4NzM2NjQ0NTU1MT... |  | ☐ |
 | `Entry_No` | int | 224662 |  | ☐ |
-| `Posting_Date` | string | 2026-08-26 |  | ☐ |
+| `Posting_Date` | date | 2026-08-26 |  | ☐ |
 | `Entry_Type` | string | Output |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | 26OP-06686 |  | ☐ |
@@ -24,29 +24,29 @@
 | `Return_Reason_Code` | string |  |  | ☐ |
 | `Global_Dimension_1_Code` | string | IMB |  | ☐ |
 | `Global_Dimension_2_Code` | string |  |  | ☐ |
-| `Expiration_Date` | string | 0001-01-01 |  | ☐ |
+| `Expiration_Date` | date | 0001-01-01 |  | ☐ |
 | `Serial_No` | string |  |  | ☐ |
 | `Lot_No` | string | 2608/26 |  | ☐ |
 | `Package_No` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Quantity` | int | 75 |  | ☐ |
-| `RunningBalance` | int | 0 |  | ☐ |
-| `RunningBalanceLoc` | int | 0 |  | ☐ |
-| `Invoiced_Quantity` | int | 0 |  | ☐ |
-| `Remaining_Quantity` | int | 75 |  | ☐ |
-| `Remaining_Qty_by_Date` | int | 75 |  | ☐ |
-| `Shipped_Qty_Not_Returned` | int | 0 |  | ☐ |
-| `Reserved_Quantity` | int | 0 |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 1 |  | ☐ |
+| `Quantity` | float | 75 |  | ☐ |
+| `RunningBalance` | float | 0 |  | ☐ |
+| `RunningBalanceLoc` | float | 0 |  | ☐ |
+| `Invoiced_Quantity` | float | 0 |  | ☐ |
+| `Remaining_Quantity` | float | 75 |  | ☐ |
+| `Remaining_Qty_by_Date` | float | 75 |  | ☐ |
+| `Shipped_Qty_Not_Returned` | float | 0 |  | ☐ |
+| `Reserved_Quantity` | float | 0 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 1 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
-| `Sales_Amount_Expected` | int | 0 |  | ☐ |
-| `Sales_Amount_Actual` | int | 0 |  | ☐ |
+| `Sales_Amount_Expected` | float | 0 |  | ☐ |
+| `Sales_Amount_Actual` | float | 0 |  | ☐ |
 | `Cost_Amount_Expected` | float | 879.98 |  | ☐ |
-| `Cost_Amount_Actual` | int | 0 |  | ☐ |
-| `Cost_Amount_Non_Invtbl` | int | 0 |  | ☐ |
-| `Cost_Amount_Expected_ACY` | int | 0 |  | ☐ |
-| `Cost_Amount_Actual_ACY` | int | 0 |  | ☐ |
-| `Cost_Amount_Non_Invtbl_ACY` | int | 0 |  | ☐ |
+| `Cost_Amount_Actual` | float | 0 |  | ☐ |
+| `Cost_Amount_Non_Invtbl` | float | 0 |  | ☐ |
+| `Cost_Amount_Expected_ACY` | float | 0 |  | ☐ |
+| `Cost_Amount_Actual_ACY` | float | 0 |  | ☐ |
+| `Cost_Amount_Non_Invtbl_ACY` | float | 0 |  | ☐ |
 | `Completely_Invoiced` | bool | False |  | ☐ |
 | `Open` | bool | True |  | ☐ |
 | `Drop_Shipment` | bool | False |  | ☐ |
@@ -71,9 +71,9 @@
 | `Source_Order_No` | string |  |  | ☐ |
 | `PRJ_Action_Approved_By` | string |  |  | ☐ |
 | `PRJ_Action_Reason_Code` | string |  |  | ☐ |
-| `PRJ_Action_Approve_Date` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `PRJ_Action_Approve_Date` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
 | `PRJ_Serial_no_Info` | string |  |  | ☐ |
-| `PRJ_Action_Date` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `PRJ_Action_Date` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
 | `PRJ_Custom_Vendor_No` | string |  |  | ☐ |
 | `PRJ_Custom_Location_Code` | string |  |  | ☐ |
 | `PRJ_ResProdOrderComp_Line_No` | int | 0 |  | ☐ |

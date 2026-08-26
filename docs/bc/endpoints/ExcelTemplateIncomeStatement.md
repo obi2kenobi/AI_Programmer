@@ -12,7 +12,7 @@
 | `@odata.etag` | string | W/"JzIwOzE3MzE0Njg5NzQxOTQyNTcwODY5MT... |  | ☐ |
 | `lineNumber` | int | 20000 |  | ☐ |
 | `display` | string | CONTO ECONOMICO |  | ☐ |
-| `netChange` | int | 0 |  | ☐ |
+| `netChange` | float | 0 |  | ☐ |
 | `lineType` | string | header |  | ☐ |
 | `indentation` | int | 0 |  | ☐ |
-| `dateFilter` | string | 2026-08-26 |  | ☐ |
+| `dateFilter` | date | 2026-08-26 |  | ☐ |

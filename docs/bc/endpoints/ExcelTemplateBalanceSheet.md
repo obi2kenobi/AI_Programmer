@@ -12,7 +12,7 @@
 | `@odata.etag` | string | W/"JzIwOzEzODEyODk1NDk4Mzc4NjU2NjAzMT... |  | ☐ |
 | `lineNumber` | int | 10000 |  | ☐ |
 | `display` | string | Attività |  | ☐ |
-| `balance` | int | 0 |  | ☐ |
+| `balance` | float | 0 |  | ☐ |
 | `lineType` | string | header |  | ☐ |
 | `indentation` | int | 0 |  | ☐ |
-| `dateFilter` | string | 2026-08-26 |  | ☐ |
+| `dateFilter` | date | 2026-08-26 |  | ☐ |

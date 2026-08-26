@@ -11,7 +11,7 @@
 | `@odata.etag` | string | W/"JzE5OzQ5MzExODM3NDUxNDI1MzQ3MjYxOz... |  | ☐ |
 | `Service_Declaration_No` | string | SERVDECL00002 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
-| `Posting_Date` | string | 2024-01-17 |  | ☐ |
+| `Posting_Date` | date | 2024-01-17 |  | ☐ |
 | `Document_Type` | string | Purchase Invoice |  | ☐ |
 | `Document_No` | string | 24FAU-000023 |  | ☐ |
 | `Transport_Method` | string | I |  | ☐ |
@@ -25,5 +25,5 @@
 | `Country_Region_Code` | string | ES |  | ☐ |
 | `VAT_Reg_No` | string | ESB99372575 |  | ☐ |
 | `Currency_Code` | string | EUR |  | ☐ |
-| `Sales_Amount_LCY` | int | 0 |  | ☐ |
+| `Sales_Amount_LCY` | float | 0 |  | ☐ |
 | `Purchase_Amount_LCY` | float | 235.04 |  | ☐ |

@@ -33,13 +33,13 @@
 | `Currency_Code` | string |  |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Search_Name` | string | SIMBULA SERGIO |  | ☐ |
-| `Credit_Limit_LCY` | int | 0 |  | ☐ |
+| `Credit_Limit_LCY` | float | 0 |  | ☐ |
 | `Blocked` | string |   |  | ☐ |
 | `Sync_in_NetPro` | bool | False |  | ☐ |
 | `Inserted_in_NetPro` | bool | False |  | ☐ |
 | `Updated_in_NetPro` | bool | False |  | ☐ |
 | `Privacy_Blocked` | bool | False |  | ☐ |
-| `Last_Date_Modified` | string | 2026-03-10 |  | ☐ |
+| `Last_Date_Modified` | date | 2026-03-10 |  | ☐ |
 | `Application_Method` | string | Manual |  | ☐ |
 | `Combine_Shipments` | bool | False |  | ☐ |
 | `Combine_Service_Shipments` | bool | False |  | ☐ |
@@ -48,14 +48,14 @@
 | `Shipping_Advice` | string | Partial |  | ☐ |
 | `Shipping_Agent_Code` | string |  |  | ☐ |
 | `Base_Calendar_Code` | string |  |  | ☐ |
-| `Balance_LCY` | int | 0 |  | ☐ |
-| `Balance_Due_LCY` | int | 0 |  | ☐ |
-| `Sales_LCY` | int | 0 |  | ☐ |
+| `Balance_LCY` | float | 0 |  | ☐ |
+| `Balance_Due_LCY` | float | 0 |  | ☐ |
+| `Sales_LCY` | float | 0 |  | ☐ |
 | `Rating` | string | N |  | ☐ |
 | `VAT_Registration_No` | string |  |  | ☐ |
 | `Financial_Entry` | string | 0101 |  | ☐ |
 | `Company_Bank_Account` | string |  |  | ☐ |
-| `Payments_LCY` | int | 0 |  | ☐ |
+| `Payments_LCY` | float | 0 |  | ☐ |
 | `Coupled_to_Dataverse` | bool | False |  | ☐ |
 | `Global_Dimension_1_Filter` | string |  |  | ☐ |
 | `Global_Dimension_2_Filter` | string |  |  | ☐ |

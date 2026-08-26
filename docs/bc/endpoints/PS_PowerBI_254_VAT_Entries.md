@@ -11,17 +11,17 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE1MTUwODIyNDE3MTA2NDE2MDM0MT... |  | ☐ |
 | `Entry_No` | int | 1 |  | ☐ |
-| `Add_Curr_Nondeductible_Amt` | int | 0 |  | ☐ |
-| `Add_Curr_Nondeductible_Base` | int | 0 |  | ☐ |
-| `Add_Curr_Realized_Amount` | int | 0 |  | ☐ |
-| `Add_Curr_Realized_Base` | int | 0 |  | ☐ |
-| `Add_Curr_Rem_Unreal_Amount` | int | 0 |  | ☐ |
-| `Add_Curr_Rem_Unreal_Base` | int | 0 |  | ☐ |
-| `Add_Curr_VAT_Difference` | int | 0 |  | ☐ |
-| `Add_Currency_Unrealized_Amt` | int | 0 |  | ☐ |
-| `Add_Currency_Unrealized_Base` | int | 0 |  | ☐ |
-| `Additional_Currency_Amount` | int | 0 |  | ☐ |
-| `Additional_Currency_Base` | int | 0 |  | ☐ |
+| `Add_Curr_Nondeductible_Amt` | float | 0 |  | ☐ |
+| `Add_Curr_Nondeductible_Base` | float | 0 |  | ☐ |
+| `Add_Curr_Realized_Amount` | float | 0 |  | ☐ |
+| `Add_Curr_Realized_Base` | float | 0 |  | ☐ |
+| `Add_Curr_Rem_Unreal_Amount` | float | 0 |  | ☐ |
+| `Add_Curr_Rem_Unreal_Base` | float | 0 |  | ☐ |
+| `Add_Curr_VAT_Difference` | float | 0 |  | ☐ |
+| `Add_Currency_Unrealized_Amt` | float | 0 |  | ☐ |
+| `Add_Currency_Unrealized_Base` | float | 0 |  | ☐ |
+| `Additional_Currency_Amount` | float | 0 |  | ☐ |
+| `Additional_Currency_Base` | float | 0 |  | ☐ |
 | `Amount` | float | -313.23 |  | ☐ |
 | `Base` | float | -1423.76 |  | ☐ |
 | `Base_Before_Pmt_Disc` | float | -1064.75 |  | ☐ |
@@ -30,9 +30,9 @@
 | `Closed_by_Entry_No` | int | 1485 |  | ☐ |
 | `Contract_No` | string |  |  | ☐ |
 | `Country_Region_Code` | string | IT |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
-| `Deductible_Percent` | int | 100 |  | ☐ |
-| `Document_Date` | string | 2024-01-08 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
+| `Deductible_Percent` | float | 100 |  | ☐ |
+| `Document_Date` | date | 2024-01-08 |  | ☐ |
 | `Document_No` | string | 24FVI-000001 |  | ☐ |
 | `Document_Type` | string | Invoice |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
@@ -47,20 +47,20 @@
 | `Internal_Ref_No` | string |  |  | ☐ |
 | `Last_Name` | string | Giannini |  | ☐ |
 | `No_Series` | string | FT-VEN-IT+ |  | ☐ |
-| `Nondeductible_Amount` | int | 0 |  | ☐ |
-| `Nondeductible_Base` | int | 0 |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-01-08 |  | ☐ |
+| `Nondeductible_Amount` | float | 0 |  | ☐ |
+| `Nondeductible_Base` | float | 0 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-01-08 |  | ☐ |
 | `Payment_Method` | string |  |  | ☐ |
 | `Place_of_Birth` | string |  |  | ☐ |
 | `Plafond_Entry` | bool | False |  | ☐ |
-| `Posting_Date` | string | 2024-01-08 |  | ☐ |
-| `Realized_Amount` | int | 0 |  | ☐ |
-| `Realized_Base` | int | 0 |  | ☐ |
+| `Posting_Date` | date | 2024-01-08 |  | ☐ |
+| `Realized_Amount` | float | 0 |  | ☐ |
+| `Realized_Base` | float | 0 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Refers_To_Period` | string | Current |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
-| `Remaining_Unrealized_Amount` | int | 0 |  | ☐ |
-| `Remaining_Unrealized_Base` | int | 0 |  | ☐ |
+| `Remaining_Unrealized_Amount` | float | 0 |  | ☐ |
+| `Remaining_Unrealized_Base` | float | 0 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Reverse_Sales_VAT` | bool | False |  | ☐ |
 | `Reversed` | bool | False |  | ☐ |
@@ -82,16 +82,16 @@
 | `Transaction_No` | int | 342 |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `Type` | string | Sale |  | ☐ |
-| `Unrealized_Amount` | int | 0 |  | ☐ |
-| `Unrealized_Base` | int | 0 |  | ☐ |
+| `Unrealized_Amount` | float | 0 |  | ☐ |
+| `Unrealized_Base` | float | 0 |  | ☐ |
 | `Unrealized_VAT_Entry_No` | int | 0 |  | ☐ |
 | `Use_Tax` | bool | False |  | ☐ |
 | `User_ID` | string | LAVINIA.CASELLI |  | ☐ |
-| `VAT_Percent` | int | 22 |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Percent` | float | 22 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Calculation_Type` | string | Normal VAT |  | ☐ |
-| `VAT_Difference` | int | 0 |  | ☐ |
+| `VAT_Difference` | float | 0 |  | ☐ |
 | `VAT_Identifier` | string | 220 |  | ☐ |
 | `VAT_Period` | string | 2024/01 |  | ☐ |
 | `VAT_Prod_Posting_Group` | string | 220 |  | ☐ |

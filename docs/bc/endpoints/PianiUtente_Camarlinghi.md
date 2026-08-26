@@ -10,6 +10,6 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE0MjkwNzA0ODc1MTUzMjIzMjQ2MT... |  | ☐ |
-| `Plan_ID` | string | 00000000-0000-0000-0000-000000000007 |  | ☐ |
-| `User_Security_ID` | string | 25280665-bbe5-4077-aafb-06bb857b0c48 |  | ☐ |
+| `Plan_ID` | guid | 00000000-0000-0000-0000-000000000007 |  | ☐ |
+| `User_Security_ID` | guid | 25280665-bbe5-4077-aafb-06bb857b0c48 |  | ☐ |
 | `Name` | string | Delegated Admin agent - Partner |  | ☐ |

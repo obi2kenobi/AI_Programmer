@@ -12,8 +12,8 @@
 | `@odata.etag` | string | W/"JzIwOzEyNTI3NzYxNzI0NjY3ODg0MzgyMT... |  | ☐ |
 | `No` | string | 20FVI-000001 |  | ☐ |
 | `Allow_Line_Disc` | bool | True |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Amount_Including_VAT` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Amount_Including_VAT` | float | 0 |  | ☐ |
 | `Applies_to_Doc_No` | string |  |  | ☐ |
 | `Applies_to_Doc_Type` | string |   |  | ☐ |
 | `Area` | string |  |  | ☐ |
@@ -40,26 +40,26 @@
 | `Coupled_to_CRM` | bool | False |  | ☐ |
 | `Cumulative_Bank_Receipts` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
 | `Cust_Ledger_Entry_No` | int | 100522 |  | ☐ |
 | `Customer_Disc_Group` | string |  |  | ☐ |
 | `Customer_Posting_Group` | string | PRIV |  | ☐ |
 | `Customer_Price_Group` | string | LCDL |  | ☐ |
 | `Customer_Purchase_Order_No` | string | 7237 |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 1 |  | ☐ |
 | `Direct_Debit_Mandate_ID` | string |  |  | ☐ |
 | `Doc_Exch_Original_Identifier` | string |  |  | ☐ |
-| `Document_Date` | string | 2025-07-22 |  | ☐ |
+| `Document_Date` | date | 2025-07-22 |  | ☐ |
 | `Document_Exchange_Identifier` | string |  |  | ☐ |
 | `Document_Exchange_Status` | string | Not Sent |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
 | `Exit_Point` | string | EXW |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
 | `Fattura_Project_Code` | string |  |  | ☐ |
 | `Fattura_Stamp` | bool | False |  | ☐ |
-| `Fattura_Stamp_Amount` | int | 0 |  | ☐ |
+| `Fattura_Stamp_Amount` | float | 0 |  | ☐ |
 | `Fattura_Tender_Code` | string |  |  | ☐ |
 | `First_Name` | string | Matteo |  | ☐ |
 | `Fiscal_Code` | string | MNGMTT80R09H223E |  | ☐ |
@@ -67,29 +67,29 @@
 | `Get_Shipment_Used` | bool | False |  | ☐ |
 | `Individual_Person` | bool | True |  | ☐ |
 | `Invoice_Disc_Code` | string | 501733 |  | ☐ |
-| `Invoice_Discount_Amount` | int | 0 |  | ☐ |
+| `Invoice_Discount_Amount` | float | 0 |  | ☐ |
 | `Invoice_Discount_Calculation` | string | None |  | ☐ |
-| `Invoice_Discount_Value` | int | 0 |  | ☐ |
+| `Invoice_Discount_Value` | float | 0 |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Last_Name` | string | Manghi |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `No_Printed` | int | 0 |  | ☐ |
 | `No_Series` | string | FT-VEN-IT+ |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2025-07-22 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2025-07-22 |  | ☐ |
 | `Operation_Type` | string | FT-VEN-IT+ |  | ☐ |
 | `Opportunity_No` | string |  |  | ☐ |
-| `Order_Date` | string | 2025-07-10 |  | ☐ |
+| `Order_Date` | date | 2025-07-10 |  | ☐ |
 | `Order_No` | string | 25OV-001586 |  | ☐ |
 | `Order_No_Series` | string | V-ORD |  | ☐ |
 | `Package_Tracking_No` | string |  |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Service_Set_ID` | int | 0 |  | ☐ |
 | `Payment_Terms_Code` | string | ORDINE |  | ☐ |
 | `Place_of_Birth` | string |  |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2025-07-22 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2025-07-22 |  | ☐ |
 | `Posting_Description` | string | Ordine 25OV-001586 |  | ☐ |
 | `Pre_Assigned_No` | string |  |  | ☐ |
 | `Pre_Assigned_No_Series` | string |  |  | ☐ |
@@ -100,7 +100,7 @@
 | `Quote_No` | string | 25OFFV-000448 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
-| `Remaining_Amount` | int | 0 |  | ☐ |
+| `Remaining_Amount` | float | 0 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Reversed` | bool | False |  | ☐ |
@@ -129,7 +129,7 @@
 | `Ship_to_Name` | string | Matteo Manghi |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string | 42019 |  | ☐ |
-| `Shipment_Date` | string | 2025-07-22 |  | ☐ |
+| `Shipment_Date` | date | 2025-07-22 |  | ☐ |
 | `Shipment_Method_Code` | string | EXW |  | ☐ |
 | `Shipping_Agent_Code` | string | DTE |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
@@ -141,14 +141,14 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `User_ID` | string | MATTEO.PALETTA |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 08589490153 |  | ☐ |
 | `Your_Reference` | string | 7237 |  | ☐ |
 | `Activity_Code` | string |  |  | ☐ |
-| `Document_Remaining_Amount` | int | 0 |  | ☐ |
-| `Draft_Invoice_SystemId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `Document_Remaining_Amount` | float | 0 |  | ☐ |
+| `Draft_Invoice_SystemId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `Fattura_Document_Type` | string | TD01 |  | ☐ |
 | `Payment_Reference` | string |  |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |

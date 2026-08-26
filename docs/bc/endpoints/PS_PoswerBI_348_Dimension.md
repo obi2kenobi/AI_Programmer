@@ -14,7 +14,7 @@
 | `Code_Caption` | string | Altre attivita'  |  | ☐ |
 | `Consolidation_Code` | string |  |  | ☐ |
 | `Filter_Caption` | string | Altre attivita' Filtro |  | ☐ |
-| `Last_Modified_Date_Time` | string | 2024-02-05T15:14:37.317Z |  | ☐ |
+| `Last_Modified_Date_Time` | datetime | 2024-02-05T15:14:37.317Z |  | ☐ |
 | `Map_to_IC_Dimension_Code` | string |  |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |
 | `Description` | string |  |  | ☐ |

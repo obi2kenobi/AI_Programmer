@@ -10,10 +10,10 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `Document_No` | string | 24OV-002637 |  | ☐ |
-| `Requested_Delivery_Date` | string | 2024-10-29 |  | ☐ |
-| `Shipment_Date` | string | 2024-11-28 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Quantity` | int | 42 |  | ☐ |
+| `Requested_Delivery_Date` | date | 2024-10-29 |  | ☐ |
+| `Shipment_Date` | date | 2024-11-28 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Quantity` | float | 42 |  | ☐ |
 | `Amount` | float | 17920.56 |  | ☐ |
 | `Item_No` | string | CAS16BAIASP198X145 |  | ☐ |
 | `Description` | string | CASETTA BAIA 16MM 216X163 CM |  | ☐ |

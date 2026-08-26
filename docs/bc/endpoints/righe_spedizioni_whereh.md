@@ -25,18 +25,18 @@
 | `Variant_Code` | string |  |  | ☐ |
 | `Description` | string | PELLET ABETE NORICALOR 15 KG |  | ☐ |
 | `Description_2` | string |  |  | ☐ |
-| `Quantity` | int | 4 |  | ☐ |
-| `Qty_Base` | int | 288 |  | ☐ |
-| `Qty_Outstanding` | int | 1 |  | ☐ |
-| `Qty_Outstanding_Base` | int | 72 |  | ☐ |
-| `Pick_Qty` | int | 0 |  | ☐ |
-| `Pick_Qty_Base` | int | 0 |  | ☐ |
-| `Qty_Picked` | int | 0 |  | ☐ |
-| `Qty_Picked_Base` | int | 0 |  | ☐ |
-| `Qty_Shipped` | int | 3 |  | ☐ |
-| `Qty_Shipped_Base` | int | 216 |  | ☐ |
+| `Quantity` | float | 4 |  | ☐ |
+| `Qty_Base` | float | 288 |  | ☐ |
+| `Qty_Outstanding` | float | 1 |  | ☐ |
+| `Qty_Outstanding_Base` | float | 72 |  | ☐ |
+| `Pick_Qty` | float | 0 |  | ☐ |
+| `Pick_Qty_Base` | float | 0 |  | ☐ |
+| `Qty_Picked` | float | 0 |  | ☐ |
+| `Qty_Picked_Base` | float | 0 |  | ☐ |
+| `Qty_Shipped` | float | 3 |  | ☐ |
+| `Qty_Shipped_Base` | float | 216 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PALLET |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 72 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 72 |  | ☐ |
 | `Status` | string | Partially Shipped |  | ☐ |
-| `Due_Date` | string | 2025-10-10 |  | ☐ |
-| `Shipment_Date` | string | 2026-02-26 |  | ☐ |
+| `Due_Date` | date | 2025-10-10 |  | ☐ |
+| `Shipment_Date` | date | 2026-02-26 |  | ☐ |

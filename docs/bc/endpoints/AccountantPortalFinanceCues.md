@@ -50,7 +50,7 @@
 | `RequestsSentForApprovalStyle` | string | None |  | ☐ |
 | `CashAccountsBalanceAmount` | string |                          €0.00 |  | ☐ |
 | `CashAccountsBalanceStyle` | string | None |  | ☐ |
-| `CashAccountsBalanceAmountDecimal` | int | 0 |  | ☐ |
+| `CashAccountsBalanceAmountDecimal` | float | 0 |  | ☐ |
 | `LastDepreciatedPostedDateAmount` | string |                       06/30/26 |  | ☐ |
 | `LastDepreciatedPostedDateStyle` | string | None |  | ☐ |
 | `LastLoginDateAmount` | string | 08/26/26 |  | ☐ |

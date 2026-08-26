@@ -16,13 +16,13 @@
 | `Journal_Template_Name` | string |  |  | ☐ |
 | `Journal_Line_No` | int | 0 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Discount_Percent` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Discount_Percent` | float | 0 |  | ☐ |
 | `Discount_Date_Calculation` | string | 0D |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Due_Date_Calculation` | string | 10D |  | ☐ |
-| `Payment_Percent` | int | 100 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
-| `Prepmt_Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Payment_Percent` | float | 100 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
+| `Prepmt_Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Prepmt_Due_Date_Calculation` | string |  |  | ☐ |

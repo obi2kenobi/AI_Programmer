@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozk1NTEwMTM3ODcwOTUxMDE2MDIxOz... |  | ☐ |
-| `vendorId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `vendorId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `vendorNumber` | string | 600034 |  | ☐ |
 | `name` | string | Total |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
@@ -19,5 +19,5 @@
 | `period1Amount` | float | 186646.16 |  | ☐ |
 | `period2Amount` | float | 158965.13 |  | ☐ |
 | `period3Amount` | float | -14060.44 |  | ☐ |
-| `agedAsOfDate` | string | 2026-08-26 |  | ☐ |
+| `agedAsOfDate` | date | 2026-08-26 |  | ☐ |
 | `periodLengthFilter` | string | 30D |  | ☐ |

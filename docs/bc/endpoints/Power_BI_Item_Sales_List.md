@@ -11,6 +11,6 @@
 |---|---|---|---|---|
 | `Item_No` | string | A0000000000000000001 |  | ☐ |
 | `Search_Description` | string | ANUBE BRONZATE |  | ☐ |
-| `Sales_Post_Date` | string | 2024-01-17 |  | ☐ |
-| `Sold_Quantity` | int | 0 |  | ☐ |
+| `Sales_Post_Date` | date | 2024-01-17 |  | ☐ |
+| `Sold_Quantity` | float | 0 |  | ☐ |
 | `Sales_Entry_No` | int | 4492 |  | ☐ |

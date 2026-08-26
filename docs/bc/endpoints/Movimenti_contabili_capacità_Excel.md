@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE4MTU2MTE2NTE2MzA4MzY4NjgwMT... |  | ☐ |
 | `Entry_No` | int | 42692 |  | ☐ |
-| `Posting_Date` | string | 2026-08-26 |  | ☐ |
+| `Posting_Date` | date | 2026-08-26 |  | ☐ |
 | `Order_Type` | string | Production |  | ☐ |
 | `Order_No` | string | 26OP-06686 |  | ☐ |
 | `Routing_No` | string | COMP-000618 |  | ☐ |
@@ -29,23 +29,23 @@
 | `Work_Shift_Code` | string |  |  | ☐ |
 | `Starting_Time` | string | 00:00:00 |  | ☐ |
 | `Ending_Time` | string | 00:00:00 |  | ☐ |
-| `Concurrent_Capacity` | int | 0 |  | ☐ |
-| `Setup_Time` | int | 0 |  | ☐ |
+| `Concurrent_Capacity` | float | 0 |  | ☐ |
+| `Setup_Time` | float | 0 |  | ☐ |
 | `Run_Time` | float | 4.5 |  | ☐ |
-| `Stop_Time` | int | 0 |  | ☐ |
+| `Stop_Time` | float | 0 |  | ☐ |
 | `Quantity` | float | 4.5 |  | ☐ |
-| `Output_Quantity` | int | 75 |  | ☐ |
+| `Output_Quantity` | float | 75 |  | ☐ |
 | `Expected_Unit_Run_Time` | float | 0.05 |  | ☐ |
 | `Expected_Total_Run_Time` | float | 3.75 |  | ☐ |
 | `Efficiency_Percent` | float | 83.33333333333333 |  | ☐ |
-| `Scrap_Quantity` | int | 0 |  | ☐ |
-| `WIP_Item_Qty` | int | 0 |  | ☐ |
-| `Direct_Cost` | int | 117 |  | ☐ |
-| `Overhead_Cost` | int | 0 |  | ☐ |
-| `CO2e_per_Unit` | int | 0 |  | ☐ |
-| `Total_CO2e` | int | 0 |  | ☐ |
-| `Direct_Cost_ACY` | int | 0 |  | ☐ |
-| `Overhead_Cost_ACY` | int | 0 |  | ☐ |
+| `Scrap_Quantity` | float | 0 |  | ☐ |
+| `WIP_Item_Qty` | float | 0 |  | ☐ |
+| `Direct_Cost` | float | 117 |  | ☐ |
+| `Overhead_Cost` | float | 0 |  | ☐ |
+| `CO2e_per_Unit` | float | 0 |  | ☐ |
+| `Total_CO2e` | float | 0 |  | ☐ |
+| `Direct_Cost_ACY` | float | 0 |  | ☐ |
+| `Overhead_Cost_ACY` | float | 0 |  | ☐ |
 | `Reversed` | bool | False |  | ☐ |
 | `Reversed_by_Entry_No` | int | 0 |  | ☐ |
 | `Reversed_Entry_No` | int | 0 |  | ☐ |

@@ -14,14 +14,14 @@
 | `Document_No` | string | 24SVR-000061 |  | ☐ |
 | `Document_Line_No` | int | 1 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
-| `Document_Posting_Date` | string | 0001-01-01 |  | ☐ |
-| `Document_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Posting_Date` | date | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 0001-01-01 |  | ☐ |
 | `Item_Code` | string | PLT.01001.C.114X155H |  | ☐ |
 | `Raw_Materials_Code` | string | CL |  | ☐ |
 | `Packaging_Type_Code` | string | PALLET |  | ☐ |
 | `Packaging_Type_Description` | string | Conai Legno Pallet |  | ☐ |
 | `Line_Unit_Weight` | float | 26.889 |  | ☐ |
-| `Line_Total_Weight` | int | 0 |  | ☐ |
-| `Line_Taxable_Weight` | int | 0 |  | ☐ |
+| `Line_Total_Weight` | float | 0 |  | ☐ |
+| `Line_Taxable_Weight` | float | 0 |  | ☐ |
 | `Unit_Cost_per_KG` | float | 0.007 |  | ☐ |
-| `Line_Total_Cost_KG` | int | 0 |  | ☐ |
+| `Line_Total_Cost_KG` | float | 0 |  | ☐ |

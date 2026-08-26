@@ -14,24 +14,24 @@
 | `Name_2` | string |  |  | ☐ |
 | `Search_Name` | string | SIMBULA SERGIO |  | ☐ |
 | `IC_Partner_Code` | string |  |  | ☐ |
-| `Balance_LCY` | int | 0 |  | ☐ |
-| `BalanceAsVendor` | int | 0 |  | ☐ |
-| `Balance_Due_LCY` | int | 0 |  | ☐ |
-| `Credit_Limit_LCY` | int | 0 |  | ☐ |
-| `Exposure_LCY` | int | 0 |  | ☐ |
+| `Balance_LCY` | float | 0 |  | ☐ |
+| `BalanceAsVendor` | float | 0 |  | ☐ |
+| `Balance_Due_LCY` | float | 0 |  | ☐ |
+| `Credit_Limit_LCY` | float | 0 |  | ☐ |
+| `Exposure_LCY` | float | 0 |  | ☐ |
 | `Blocked` | string |   |  | ☐ |
 | `Privacy_Blocked` | bool | False |  | ☐ |
 | `Salesperson_Code` | string |  |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Service_Zone_Code` | string |  |  | ☐ |
 | `Document_Sending_Profile` | string |  |  | ☐ |
-| `TotalSales2` | int | 0 |  | ☐ |
-| `CustSalesLCY_CustProfit_AdjmtCostLCY` | int | 0 |  | ☐ |
-| `AdjCustProfit` | int | 0 |  | ☐ |
-| `AdjProfitPct` | int | 0 |  | ☐ |
+| `TotalSales2` | float | 0 |  | ☐ |
+| `CustSalesLCY_CustProfit_AdjmtCostLCY` | float | 0 |  | ☐ |
+| `AdjCustProfit` | float | 0 |  | ☐ |
+| `AdjProfitPct` | float | 0 |  | ☐ |
 | `Tax_Representative_Type` | string |   |  | ☐ |
 | `Tax_Representative_No` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 2026-03-10 |  | ☐ |
+| `Last_Date_Modified` | date | 2026-03-10 |  | ☐ |
 | `Disable_Search_by_Name` | bool | False |  | ☐ |
 | `Priority` | int | 0 |  | ☐ |
 | `Sync_in_NetPro` | bool | False |  | ☐ |
@@ -44,7 +44,7 @@
 | `Resident` | string | Resident |  | ☐ |
 | `First_Name` | string | SERGIO |  | ☐ |
 | `Last_Name` | string | SIMBULA |  | ☐ |
-| `Date_of_Birth` | string | 1969-09-11 |  | ☐ |
+| `Date_of_Birth` | date | 1969-09-11 |  | ☐ |
 | `Place_of_Birth` | string | Cagliari |  | ☐ |
 | `Fiscal_Code` | string | SMBSRG69P11B354C |  | ☐ |
 | `PA_Code` | string |  |  | ☐ |
@@ -86,7 +86,7 @@
 | `Invoice_Disc_Code` | string | 000000000000001 |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
 | `E_Document_Service_Participation_Ids` | int | 0 |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
 | `Application_Method` | string | Manual |  | ☐ |
 | `Partner_Type` | string |   |  | ☐ |
 | `Intrastat_Partner_Type` | string |   |  | ☐ |
@@ -127,33 +127,33 @@
 | `Default_Trans_Type` | string |  |  | ☐ |
 | `Default_Trans_Type_Return` | string |  |  | ☐ |
 | `Def_Transport_Method` | string |  |  | ☐ |
-| `CustomerSince` | string | 0001-01-01 |  | ☐ |
+| `CustomerSince` | date | 0001-01-01 |  | ☐ |
 | `DaysSinceLastSale` | int | 0 |  | ☐ |
 | `DistinctItemsSold` | int | 0 |  | ☐ |
-| `Balance_LCY_2` | int | 0 |  | ☐ |
-| `ExpectedCustMoneyOwed` | int | 0 |  | ☐ |
-| `TotalMoneyOwed` | int | 0 |  | ☐ |
-| `CreditLimit` | int | 0 |  | ☐ |
-| `CalcCreditLimitLCYExpendedPct` | int | 0 |  | ☐ |
-| `Balance_Due` | int | 0 |  | ☐ |
-| `Payments_LCY` | int | 0 |  | ☐ |
-| `CustomerMgt_AvgDaysToPay_No` | int | 0 |  | ☐ |
-| `DaysPaidPastDueDate` | int | 0 |  | ☐ |
+| `Balance_LCY_2` | float | 0 |  | ☐ |
+| `ExpectedCustMoneyOwed` | float | 0 |  | ☐ |
+| `TotalMoneyOwed` | float | 0 |  | ☐ |
+| `CreditLimit` | float | 0 |  | ☐ |
+| `CalcCreditLimitLCYExpendedPct` | float | 0 |  | ☐ |
+| `Balance_Due` | float | 0 |  | ☐ |
+| `Payments_LCY` | float | 0 |  | ☐ |
+| `CustomerMgt_AvgDaysToPay_No` | float | 0 |  | ☐ |
+| `DaysPaidPastDueDate` | float | 0 |  | ☐ |
 | `PaidLateCount` | int | 0 |  | ☐ |
 | `PaidOnTimeCount` | int | 0 |  | ☐ |
-| `PercentPaidLate` | int | 0 |  | ☐ |
+| `PercentPaidLate` | float | 0 |  | ☐ |
 | `OverdueCount` | int | 0 |  | ☐ |
-| `LastPaymentDate` | string | 0001-01-01 |  | ☐ |
-| `LastPaymentAmount` | int | 0 |  | ☐ |
+| `LastPaymentDate` | date | 0001-01-01 |  | ☐ |
+| `LastPaymentAmount` | float | 0 |  | ☐ |
 | `LastPaymentOnTime` | bool | False |  | ☐ |
-| `AmountOnPostedInvoices` | int | 0 |  | ☐ |
-| `AmountOnCrMemo` | int | 0 |  | ☐ |
-| `AmountOnOutstandingInvoices` | int | 0 |  | ☐ |
-| `AmountOnOutstandingCrMemos` | int | 0 |  | ☐ |
-| `Totals` | int | 0 |  | ☐ |
-| `CustInvDiscAmountLCY` | int | 0 |  | ☐ |
+| `AmountOnPostedInvoices` | float | 0 |  | ☐ |
+| `AmountOnCrMemo` | float | 0 |  | ☐ |
+| `AmountOnOutstandingInvoices` | float | 0 |  | ☐ |
+| `AmountOnOutstandingCrMemos` | float | 0 |  | ☐ |
+| `Totals` | float | 0 |  | ☐ |
+| `CustInvDiscAmountLCY` | float | 0 |  | ☐ |
 | `InteractionCount` | int | 0 |  | ☐ |
-| `LastInteractionDate` | string | 0001-01-01 |  | ☐ |
+| `LastInteractionDate` | date | 0001-01-01 |  | ☐ |
 | `LastInteractionType` | string |  |  | ☐ |
 | `MostFrequentInteractionType` | string |  |  | ☐ |
 | `PRJ_Business_Area_Code` | string |  |  | ☐ |

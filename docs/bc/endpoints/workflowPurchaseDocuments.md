@@ -9,7 +9,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzExNDY4MzU1MDQ3NjE3MjMzMDc3MT... |  | ☐ |
-| `id` | string | 1527c653-97a5-ee11-be36-000d3a696397 |  | ☐ |
+| `id` | guid | 1527c653-97a5-ee11-be36-000d3a696397 |  | ☐ |
 | `documentType` | string | Quote |  | ☐ |
 | `buyFromVendorNumber` | string | 0000166 |  | ☐ |
 | `number` | string | 23OFFA-0000001 |  | ☐ |
@@ -28,21 +28,21 @@
 | `shipToAddress2` | string |  |  | ☐ |
 | `shipToCity` | string | Impianto |  | ☐ |
 | `shipToContact` | string |  |  | ☐ |
-| `orderDate` | string | 2023-12-28 |  | ☐ |
-| `postingDate` | string | 0001-01-01 |  | ☐ |
-| `expectedReceiptDate` | string | 0001-01-01 |  | ☐ |
+| `orderDate` | date | 2023-12-28 |  | ☐ |
+| `postingDate` | date | 0001-01-01 |  | ☐ |
+| `expectedReceiptDate` | date | 0001-01-01 |  | ☐ |
 | `postingDescription` | string | Offerta 23OFFA-0000001 |  | ☐ |
 | `paymentTermsCode` | string | 120FM15 |  | ☐ |
-| `dueDate` | string | 0001-01-01 |  | ☐ |
-| `paymentDiscountPercent` | int | 0 |  | ☐ |
-| `pmtDiscountDate` | string | 0001-01-01 |  | ☐ |
+| `dueDate` | date | 0001-01-01 |  | ☐ |
+| `paymentDiscountPercent` | float | 0 |  | ☐ |
+| `pmtDiscountDate` | date | 0001-01-01 |  | ☐ |
 | `shipmentMethodCode` | string | PFO |  | ☐ |
 | `locationCode` | string | PRINCIPALE |  | ☐ |
 | `shortcutDimension1Code` | string |  |  | ☐ |
 | `shortcutDimension2Code` | string |  |  | ☐ |
 | `vendorPostingGroup` | string | FOR_NAZ |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
-| `currencyFactor` | int | 0 |  | ☐ |
+| `currencyFactor` | float | 0 |  | ☐ |
 | `pricesIncludingVat` | bool | False |  | ☐ |
 | `invoiceDiscCode` | string | 0000166 |  | ☐ |
 | `languageCode` | string | ITA |  | ☐ |
@@ -58,8 +58,8 @@
 | `receive` | bool | False |  | ☐ |
 | `invoice` | bool | False |  | ☐ |
 | `printPostedDocuments` | bool | False |  | ☐ |
-| `amount` | int | 0 |  | ☐ |
-| `amountIncludingVat` | int | 0 |  | ☐ |
+| `amount` | float | 0 |  | ☐ |
+| `amountIncludingVat` | float | 0 |  | ☐ |
 | `receivingNumber` | string |  |  | ☐ |
 | `postingNumber` | string |  |  | ☐ |
 | `lastReceivingNumber` | string | 24CAR-0000137 |  | ☐ |
@@ -95,7 +95,7 @@
 | `orderAddressCode` | string |  |  | ☐ |
 | `entryPoint` | string |  |  | ☐ |
 | `correction` | bool | False |  | ☐ |
-| `documentDate` | string | 2023-12-28 |  | ☐ |
+| `documentDate` | date | 2023-12-28 |  | ☐ |
 | `area` | string |  |  | ☐ |
 | `transactionSpecification` | string |  |  | ☐ |
 | `paymentMethodCode` | string | RIBA |  | ☐ |
@@ -106,10 +106,10 @@
 | `taxLiable` | bool | False |  | ☐ |
 | `vatBusPostingGroup` | string | FOR_NAZ |  | ☐ |
 | `appliesToId` | string |  |  | ☐ |
-| `vatBaseDiscountPercent` | int | 0 |  | ☐ |
+| `vatBaseDiscountPercent` | float | 0 |  | ☐ |
 | `status` | string | Open |  | ☐ |
 | `invoiceDiscountCalculation` | string | None |  | ☐ |
-| `invoiceDiscountValue` | int | 0 |  | ☐ |
+| `invoiceDiscountValue` | float | 0 |  | ☐ |
 | `sendIcDocument` | bool | False |  | ☐ |
 | `icStatus` | string | New |  | ☐ |
 | `buyFromIcPartnerCode` | string |  |  | ☐ |
@@ -119,25 +119,25 @@
 | `lastPrepaymentNumber` | string |  |  | ☐ |
 | `prepmtCrMemoNumber` | string |  |  | ☐ |
 | `lastPrepmtCrMemoNumber` | string |  |  | ☐ |
-| `prepaymentPercent` | int | 0 |  | ☐ |
+| `prepaymentPercent` | float | 0 |  | ☐ |
 | `prepaymentNumberSeries` | string | FT-ACQ-IT+ |  | ☐ |
 | `compressPrepayment` | bool | True |  | ☐ |
-| `prepaymentDueDate` | string | 0001-01-01 |  | ☐ |
+| `prepaymentDueDate` | date | 0001-01-01 |  | ☐ |
 | `prepmtCrMemoNumberSeries` | string | FT-ACQ-IT+ |  | ☐ |
 | `prepmtPostingDescription` | string |  |  | ☐ |
-| `prepmtPmtDiscountDate` | string | 0001-01-01 |  | ☐ |
+| `prepmtPmtDiscountDate` | date | 0001-01-01 |  | ☐ |
 | `prepmtPaymentTermsCode` | string |  |  | ☐ |
-| `prepmtPaymentDiscountPercent` | int | 0 |  | ☐ |
+| `prepmtPaymentDiscountPercent` | float | 0 |  | ☐ |
 | `quoteNumber` | string |  |  | ☐ |
 | `jobQueueStatus` | string |   |  | ☐ |
-| `jobQueueEntryId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `jobQueueEntryId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `incomingDocumentEntryNumber` | int | 0 |  | ☐ |
 | `creditorNumber` | string |  |  | ☐ |
 | `paymentReference` | string |  |  | ☐ |
-| `aRcdNotInvExVatLcy` | int | 0 |  | ☐ |
-| `amtRcdNotInvoicedLcy` | int | 0 |  | ☐ |
+| `aRcdNotInvExVatLcy` | float | 0 |  | ☐ |
+| `amtRcdNotInvoicedLcy` | float | 0 |  | ☐ |
 | `dimensionSetId` | int | 0 |  | ☐ |
-| `invoiceDiscountAmount` | int | 0 |  | ☐ |
+| `invoiceDiscountAmount` | float | 0 |  | ☐ |
 | `numberOfArchivedVersions` | int | 0 |  | ☐ |
 | `docNumberOccurrence` | int | 1 |  | ☐ |
 | `campaignNumber` | string |  |  | ☐ |
@@ -147,8 +147,8 @@
 | `completelyReceived` | bool | False |  | ☐ |
 | `postingFromWhseRef` | int | 0 |  | ☐ |
 | `locationFilter` | string |  |  | ☐ |
-| `requestedReceiptDate` | string | 0001-01-01 |  | ☐ |
-| `promisedReceiptDate` | string | 0001-01-01 |  | ☐ |
+| `requestedReceiptDate` | date | 0001-01-01 |  | ☐ |
+| `promisedReceiptDate` | date | 0001-01-01 |  | ☐ |
 | `leadTimeCalculation` | string |  |  | ☐ |
 | `inboundWhseHandlingTime` | string |  |  | ☐ |
 | `vendorAuthorizationNumber` | string |  |  | ☐ |

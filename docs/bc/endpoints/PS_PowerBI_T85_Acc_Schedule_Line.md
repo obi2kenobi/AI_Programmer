@@ -40,9 +40,9 @@
 | `Indentation` | int | 0 |  | ☐ |
 | `Italic` | bool | False |  | ☐ |
 | `Show` | string | Yes |  | ☐ |
-| `SystemCreatedAt` | string | 2023-07-05T11:08:35.327Z |  | ☐ |
-| `SystemCreatedBy` | string | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
-| `SystemModifiedAt` | string | 2023-07-05T11:08:35.327Z |  | ☐ |
-| `SystemModifiedBy` | string | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
+| `SystemCreatedAt` | datetime | 2023-07-05T11:08:35.327Z |  | ☐ |
+| `SystemCreatedBy` | guid | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
+| `SystemModifiedAt` | datetime | 2023-07-05T11:08:35.327Z |  | ☐ |
+| `SystemModifiedBy` | guid | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
 | `Totaling` | string |  |  | ☐ |
 | `Underline` | bool | False |  | ☐ |

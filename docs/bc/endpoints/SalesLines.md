@@ -21,9 +21,9 @@
 | `Description_2` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `Reserve` | string | Optional |  | ☐ |
-| `Quantity` | int | 42 |  | ☐ |
-| `Qty_to_Ship` | int | 0 |  | ☐ |
-| `Reserved_Qty_Base` | int | 0 |  | ☐ |
+| `Quantity` | float | 42 |  | ☐ |
+| `Qty_to_Ship` | float | 0 |  | ☐ |
+| `Reserved_Qty_Base` | float | 0 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
 | `Line_Amount` | float | 17920.56 |  | ☐ |
 | `Allocation_Account_No` | string |  |  | ☐ |
@@ -37,5 +37,5 @@
 | `ShortcutDimCode_x005B_6_x005D_` | string |  |  | ☐ |
 | `ShortcutDimCode_x005B_7_x005D_` | string |  |  | ☐ |
 | `ShortcutDimCode_x005B_8_x005D_` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2024-11-28 |  | ☐ |
-| `Outstanding_Quantity` | int | 42 |  | ☐ |
+| `Shipment_Date` | date | 2024-11-28 |  | ☐ |
+| `Outstanding_Quantity` | float | 42 |  | ☐ |

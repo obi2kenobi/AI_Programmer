@@ -13,13 +13,13 @@
 | `ABI` | string | 03069 |  | ☐ |
 | `Address` | string |  |  | ☐ |
 | `Address_2` | string |  |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
 | `Automatic_Stmt_Import_Enabled` | bool | False |  | ☐ |
 | `Balance` | float | 20343.89 |  | ☐ |
 | `Balance_LCY` | float | 20343.89 |  | ☐ |
 | `Balance_at_Date` | float | 20343.89 |  | ☐ |
 | `Balance_at_Date_LCY` | float | 20343.89 |  | ☐ |
-| `Balance_Last_Statement` | int | 0 |  | ☐ |
+| `Balance_Last_Statement` | float | 0 |  | ☐ |
 | `Bank_Acc_Posting_Group` | string | AMAZON |  | ☐ |
 | `Bank_Account_No` | string | 100000000752 |  | ☐ |
 | `Bank_Branch_No` | string |  |  | ☐ |
@@ -40,7 +40,7 @@
 | `County` | string |  |  | ☐ |
 | `Credit_Amount` | float | 195631.15 |  | ☐ |
 | `Credit_Amount_LCY` | float | 195631.15 |  | ☐ |
-| `Credit_Limit` | int | 0 |  | ☐ |
+| `Credit_Limit` | float | 0 |  | ☐ |
 | `Credit_Transfer_Msg_Nos` | string |  |  | ☐ |
 | `Creditor_No` | string |  |  | ☐ |
 | `CUC` | string |  |  | ☐ |
@@ -56,12 +56,12 @@
 | `IBAN` | string | IT23T0306970884100000000752 |  | ☐ |
 | `Language_Code` | string |  |  | ☐ |
 | `Last_Check_No` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 2024-07-01 |  | ☐ |
+| `Last_Date_Modified` | date | 2024-07-01 |  | ☐ |
 | `Last_Payment_Statement_No` | string | 0 |  | ☐ |
 | `Last_Statement_No` | string |  |  | ☐ |
 | `Match_Tolerance_Type` | string | Percentage |  | ☐ |
-| `Match_Tolerance_Value` | int | 0 |  | ☐ |
-| `Min_Balance` | int | 0 |  | ☐ |
+| `Match_Tolerance_Value` | float | 0 |  | ☐ |
+| `Min_Balance` | float | 0 |  | ☐ |
 | `Mobile_Phone_No` | string |  |  | ☐ |
 | `Name` | string | Amazon |  | ☐ |
 | `Name_2` | string |  |  | ☐ |
@@ -80,7 +80,7 @@
 | `Telex_Answer_Back` | string |  |  | ☐ |
 | `Telex_No` | string |  |  | ☐ |
 | `Territory_Code` | string |  |  | ☐ |
-| `Total_on_Checks` | int | 0 |  | ☐ |
+| `Total_on_Checks` | float | 0 |  | ☐ |
 | `Transaction_Import_Timespan` | int | 0 |  | ☐ |
 | `Transit_No` | string |  |  | ☐ |
 | `Global_Dimension_1_Filter` | string |  |  | ☐ |

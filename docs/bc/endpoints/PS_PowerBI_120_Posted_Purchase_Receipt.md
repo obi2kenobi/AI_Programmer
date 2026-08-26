@@ -31,12 +31,12 @@
 | `Comment` | bool | False |  | ☐ |
 | `Correction` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
-| `Document_Date` | string | 2024-01-08 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2024-01-08 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `Inbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Invoice_Disc_Code` | string | 0000656 |  | ☐ |
@@ -46,10 +46,10 @@
 | `No_Printed` | int | 0 |  | ☐ |
 | `No_Series` | string | A-RIC |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-01-08 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-01-08 |  | ☐ |
 | `Operation_Type` | string | FT-ACQ-IT+ |  | ☐ |
 | `Order_Address_Code` | string |  |  | ☐ |
-| `Order_Date` | string | 2024-01-08 |  | ☐ |
+| `Order_Date` | date | 2024-01-08 |  | ☐ |
 | `Order_No` | string | 24ODA-0000061 |  | ☐ |
 | `Order_No_Series` | string | A-ORD |  | ☐ |
 | `Pay_to_Address` | string | Via Marco Polo 131/A |  | ☐ |
@@ -63,18 +63,18 @@
 | `Pay_to_Name_2` | string |  |  | ☐ |
 | `Pay_to_Post_Code` | string | 56031 |  | ☐ |
 | `Pay_to_Vendor_No` | string | 0000656 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Terms_Code` | string | 60FM15 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2024-01-08 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2024-01-08 |  | ☐ |
 | `Posting_Description` | string | Ordine 24ODA-0000061 |  | ☐ |
-| `Promised_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Purchaser_Code` | string |  |  | ☐ |
 | `Quote_No` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
-| `Requested_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Requested_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Sell_to_Customer_No` | string |  |  | ☐ |
 | `Ship_to_Address` | string | Via della Repubblica, 340 |  | ☐ |
@@ -97,7 +97,7 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `User_ID` | string | MATTEO.TOTI |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 00847840501 |  | ☐ |

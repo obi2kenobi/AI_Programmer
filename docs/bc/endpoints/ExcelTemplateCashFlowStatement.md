@@ -12,7 +12,7 @@
 | `@odata.etag` | string | W/"JzIwOzE2NjU5NjI2ODg4NTA2MDQ3NDQ4MT... |  | ☐ |
 | `lineNumber` | int | 10000 |  | ☐ |
 | `display` | string | Attività operative |  | ☐ |
-| `netChange` | int | 0 |  | ☐ |
+| `netChange` | float | 0 |  | ☐ |
 | `lineType` | string | header |  | ☐ |
 | `indentation` | int | 0 |  | ☐ |
-| `dateFilter` | string | 2026-08-26 |  | ☐ |
+| `dateFilter` | date | 2026-08-26 |  | ☐ |

@@ -13,10 +13,10 @@
 | `Item_No` | string | COMP-000650 |  | ☐ |
 | `Item_Ledger_Entry_No` | int | 1 |  | ☐ |
 | `Item_Ledger_Entry_Type` | string | Positive Adjmt. |  | ☐ |
-| `Item_Ledger_Entry_Quantity` | int | 219 |  | ☐ |
-| `Posting_Date` | string | 2023-12-27 |  | ☐ |
-| `Valuation_Date` | string | 2023-12-27 |  | ☐ |
-| `Document_Date` | string | 2023-12-27 |  | ☐ |
+| `Item_Ledger_Entry_Quantity` | float | 219 |  | ☐ |
+| `Posting_Date` | date | 2023-12-27 |  | ☐ |
+| `Valuation_Date` | date | 2023-12-27 |  | ☐ |
+| `Document_Date` | date | 2023-12-27 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | INV |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |
@@ -27,17 +27,17 @@
 | `Job_No` | string |  |  | ☐ |
 | `Job_Task_No` | string |  |  | ☐ |
 | `Job_Ledger_Entry_No` | int | 0 |  | ☐ |
-| `Valued_Quantity` | int | 219 |  | ☐ |
-| `Invoiced_Quantity` | int | 219 |  | ☐ |
+| `Valued_Quantity` | float | 219 |  | ☐ |
+| `Invoiced_Quantity` | float | 219 |  | ☐ |
 | `Cost_per_Unit` | float | 0.901 |  | ☐ |
-| `Cost_Posted_to_G_L` | int | 0 |  | ☐ |
+| `Cost_Posted_to_G_L` | float | 0 |  | ☐ |
 | `Expected_Cost` | bool | False |  | ☐ |
 | `Cost_Amount_Actual` | float | 197.24 |  | ☐ |
-| `Cost_Amount_Expected` | int | 0 |  | ☐ |
-| `Cost_Amount_Non_Invtbl` | int | 0 |  | ☐ |
-| `Sales_Amount_Actual` | int | 0 |  | ☐ |
-| `Sales_Amount_Expected` | int | 0 |  | ☐ |
-| `Purchase_Amount_Actual` | int | 0 |  | ☐ |
-| `Purchase_Amount_Expected` | int | 0 |  | ☐ |
+| `Cost_Amount_Expected` | float | 0 |  | ☐ |
+| `Cost_Amount_Non_Invtbl` | float | 0 |  | ☐ |
+| `Sales_Amount_Actual` | float | 0 |  | ☐ |
+| `Sales_Amount_Expected` | float | 0 |  | ☐ |
+| `Purchase_Amount_Actual` | float | 0 |  | ☐ |
+| `Purchase_Amount_Expected` | float | 0 |  | ☐ |
 | `Dimension_Set_ID` | int | 4 |  | ☐ |
 | `Item_Description` | string | Tav imballaggio Smussate 22x100x1140 |  | ☐ |

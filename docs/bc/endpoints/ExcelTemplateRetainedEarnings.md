@@ -12,7 +12,7 @@
 | `@odata.etag` | string | W/"JzIwOzE2NjM3MDYzODk0OTE5NjYxMDQzMT... |  | ☐ |
 | `lineNumber` | int | 10000 |  | ☐ |
 | `display` | string | Utili non distribuiti, inizio periodo |  | ☐ |
-| `netChange` | int | 0 |  | ☐ |
+| `netChange` | float | 0 |  | ☐ |
 | `lineType` | string | detail |  | ☐ |
 | `indentation` | int | 0 |  | ☐ |
-| `dateFilter` | string | 2026-08-26 |  | ☐ |
+| `dateFilter` | date | 2026-08-26 |  | ☐ |

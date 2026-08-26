@@ -11,11 +11,11 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzcyMTQwNzgxMzIxMzU3ODYzMTUxOz... |  | ☐ |
 | `number` | string | 0100000000 |  | ☐ |
-| `accountId` | string | da4d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `accountId` | guid | da4d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
 | `accountType` | string | Heading |  | ☐ |
 | `display` | string | STATO PATRIMONIALE |  | ☐ |
 | `totalDebit` | string |  |  | ☐ |
 | `totalCredit` | string |  |  | ☐ |
 | `balanceAtDateDebit` | string |  |  | ☐ |
 | `balanceAtDateCredit` | string |  |  | ☐ |
-| `dateFilter` | string | 2026-08-26 |  | ☐ |
+| `dateFilter` | date | 2026-08-26 |  | ☐ |

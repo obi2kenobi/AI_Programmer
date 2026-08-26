@@ -11,12 +11,12 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozc2MjE1ODEzMTM5MzQzMjIxODgxOz... |  | ☐ |
 | `Primary_Key` | string |  |  | ☐ |
-| `Allow_Posting_From` | string | 2025-01-01 |  | ☐ |
-| `Allow_Posting_To` | string | 2026-12-31 |  | ☐ |
+| `Allow_Posting_From` | date | 2025-01-01 |  | ☐ |
+| `Allow_Posting_To` | date | 2026-12-31 |  | ☐ |
 | `Allow_Posting_From_DateFormula` | string |  |  | ☐ |
 | `Allow_Posting_To_DateFormula` | string |  |  | ☐ |
-| `Allow_Deferral_Posting_From` | string | 2025-01-01 |  | ☐ |
-| `Allow_Deferral_Posting_To` | string | 2025-12-31 |  | ☐ |
+| `Allow_Deferral_Posting_From` | date | 2025-01-01 |  | ☐ |
+| `Allow_Deferral_Posting_To` | date | 2025-12-31 |  | ☐ |
 | `VAT_Reporting_Date_Usage` | string | Enabled |  | ☐ |
 | `Default_VAT_Reporting_Date` | string | Posting Date |  | ☐ |
 | `Register_Time` | bool | True |  | ☐ |
@@ -29,7 +29,7 @@
 | `AmountDecimalPlaces` | string | 2:2 |  | ☐ |
 | `UnitAmountRoundingPrecision` | float | 0.001 |  | ☐ |
 | `UnitAmountDecimalPlaces` | string | 2:5 |  | ☐ |
-| `Allow_G_L_Acc_Deletion_Before` | string | 2001-01-01 |  | ☐ |
+| `Allow_G_L_Acc_Deletion_Before` | date | 2001-01-01 |  | ☐ |
 | `Block_Deletion_of_G_L_Accounts` | bool | True |  | ☐ |
 | `Check_G_L_Account_Usage` | bool | True |  | ☐ |
 | `CashVATPrdGrp` | string |  |  | ☐ |
@@ -41,7 +41,7 @@
 | `Unrealized_VAT` | bool | False |  | ☐ |
 | `Prepayment_Unrealized_VAT` | bool | False |  | ☐ |
 | `Max_VAT_Difference_Allowed` | float | 0.01 |  | ☐ |
-| `Tax_Invoice_Renaming_Threshold` | int | 0 |  | ☐ |
+| `Tax_Invoice_Renaming_Threshold` | float | 0 |  | ☐ |
 | `VAT_Rounding_Type` | string | Nearest |  | ☐ |
 | `Control_VAT_Period` | string | Block posting within closed and warn ... |  | ☐ |
 | `Bank_Account_Nos` | string | BANCA |  | ☐ |
@@ -101,21 +101,21 @@
 | `Fin_Rep_Neg_Amount_Format` | string | Minus Sign |  | ☐ |
 | `Fin_Rep_Company_Logo_Pos` | string | No Logo |  | ☐ |
 | `DefaultFinancialReportStatus` | string |  |  | ☐ |
-| `Appln_Rounding_Precision` | int | 0 |  | ☐ |
+| `Appln_Rounding_Precision` | float | 0 |  | ☐ |
 | `Pmt_Disc_Tolerance_Warning` | bool | False |  | ☐ |
 | `Pmt_Disc_Tolerance_Posting` | string | Payment Tolerance Accounts |  | ☐ |
 | `Payment_Discount_Grace_Period` | string |  |  | ☐ |
 | `Payment_Tolerance_Warning` | bool | False |  | ☐ |
 | `Payment_Tolerance_Posting` | string | Payment Tolerance Accounts |  | ☐ |
-| `Payment_Tolerance_Percent` | int | 0 |  | ☐ |
-| `Max_Payment_Tolerance_Amount` | int | 0 |  | ☐ |
+| `Payment_Tolerance_Percent` | float | 0 |  | ☐ |
+| `Max_Payment_Tolerance_Amount` | float | 0 |  | ☐ |
 | `Skip_Apply_Date_Check` | bool | True |  | ☐ |
 | `App_Dimension_Posting` | string | Source Entry Dimensions |  | ☐ |
 | `VAT_Rounding_Type2` | string | Nearest |  | ☐ |
 | `Settlement_Round_Factor` | float | 0.01 |  | ☐ |
-| `Minimum_VAT_Payable` | int | 0 |  | ☐ |
-| `Last_Settlement_Date` | string | 2026-07-31 |  | ☐ |
-| `Last_Gen_Jour_Printing_Date` | string | 2024-12-31 |  | ☐ |
+| `Minimum_VAT_Payable` | float | 0 |  | ☐ |
+| `Last_Settlement_Date` | date | 2026-07-31 |  | ☐ |
+| `Last_Gen_Jour_Printing_Date` | date | 2024-12-31 |  | ☐ |
 | `Last_General_Journal_No` | int | 46464 |  | ☐ |
 | `Last_Printed_G_L_Book_Page` | int | 1195 |  | ☐ |
 | `Official_Debit_Amount` | float | 218065538.6 |  | ☐ |

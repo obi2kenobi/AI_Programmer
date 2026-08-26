@@ -15,5 +15,5 @@
 | `AccName` | string | PROFITTI E PERDITE      |  | ☐ |
 | `Descr` | string | Risconti Passivi |  | ☐ |
 | `Amt` | float | -1513.35 |  | ☐ |
-| `DebAmt` | int | 0 |  | ☐ |
+| `DebAmt` | float | 0 |  | ☐ |
 | `CredAmt` | float | 1513.35 |  | ☐ |

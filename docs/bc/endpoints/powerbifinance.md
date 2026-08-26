@@ -11,18 +11,18 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE2MjU5ODg2ODg5Mzk2NzU1NTgzMT... |  | ☐ |
 | `No` | int | 1 |  | ☐ |
-| `Date` | string | 2023-01-01 |  | ☐ |
+| `Date` | date | 2023-01-01 |  | ☐ |
 | `Closed_Period` | bool | True |  | ☐ |
 | `Account_Schedule_Name` | string | I_BIVERMIN |  | ☐ |
 | `KPI_Code` | string | 10 |  | ☐ |
 | `KPI_Name` | string | Totale ricavi |  | ☐ |
-| `Net_Change_Actual` | int | 0 |  | ☐ |
-| `Balance_at_Date_Actual` | int | 0 |  | ☐ |
-| `Net_Change_Budget` | int | 0 |  | ☐ |
-| `Balance_at_Date_Budget` | int | 0 |  | ☐ |
-| `Net_Change_Actual_Last_Year` | int | 0 |  | ☐ |
-| `Balance_at_Date_Actual_Last_Year` | int | 0 |  | ☐ |
-| `Net_Change_Budget_Last_Year` | int | 0 |  | ☐ |
-| `Balance_at_Date_Budget_Last_Year` | int | 0 |  | ☐ |
-| `Net_Change_Forecast` | int | 0 |  | ☐ |
-| `Balance_at_Date_Forecast` | int | 0 |  | ☐ |
+| `Net_Change_Actual` | float | 0 |  | ☐ |
+| `Balance_at_Date_Actual` | float | 0 |  | ☐ |
+| `Net_Change_Budget` | float | 0 |  | ☐ |
+| `Balance_at_Date_Budget` | float | 0 |  | ☐ |
+| `Net_Change_Actual_Last_Year` | float | 0 |  | ☐ |
+| `Balance_at_Date_Actual_Last_Year` | float | 0 |  | ☐ |
+| `Net_Change_Budget_Last_Year` | float | 0 |  | ☐ |
+| `Balance_at_Date_Budget_Last_Year` | float | 0 |  | ☐ |
+| `Net_Change_Forecast` | float | 0 |  | ☐ |
+| `Balance_at_Date_Forecast` | float | 0 |  | ☐ |

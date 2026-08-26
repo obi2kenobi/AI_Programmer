@@ -37,82 +37,82 @@
 | `Bin_Code` | string |  |  | ☐ |
 | `Sust_Account_No` | string |  |  | ☐ |
 | `Energy_Source_Code` | string |  |  | ☐ |
-| `Quantity` | int | 324000 |  | ☐ |
+| `Quantity` | float | 324000 |  | ☐ |
 | `Competence_Type_ANW` | string |   |  | ☐ |
 | `Periods_Competence_ANW` | int | 0 |  | ☐ |
-| `Starting_Date_Competence_ANW` | string | 0001-01-01 |  | ☐ |
-| `Ending_Date_Competence_ANW` | string | 0001-01-01 |  | ☐ |
+| `Starting_Date_Competence_ANW` | date | 0001-01-01 |  | ☐ |
+| `Ending_Date_Competence_ANW` | date | 0001-01-01 |  | ☐ |
 | `GC_Package_Qty` | int | 1 |  | ☐ |
-| `Reserved_Quantity` | int | 0 |  | ☐ |
-| `Job_Remaining_Qty` | int | 0 |  | ☐ |
+| `Reserved_Quantity` | float | 0 |  | ☐ |
+| `Job_Remaining_Qty` | float | 0 |  | ☐ |
 | `Unit_of_Measure_Code` | string | ML |  | ☐ |
 | `Unit_of_Measure` | string | Metri Lineari |  | ☐ |
 | `Direct_Unit_Cost` | float | 0.00439 |  | ☐ |
-| `Indirect_Cost_Percent` | int | 0 |  | ☐ |
+| `Indirect_Cost_Percent` | float | 0 |  | ☐ |
 | `Unit_Cost_LCY` | float | 0.004 |  | ☐ |
-| `Unit_Price_LCY` | int | 0 |  | ☐ |
+| `Unit_Price_LCY` | float | 0 |  | ☐ |
 | `Tax_Liable` | bool | False |  | ☐ |
 | `Tax_Area_Code` | string |  |  | ☐ |
 | `Tax_Group_Code` | string |  |  | ☐ |
 | `Use_Tax` | bool | False |  | ☐ |
-| `Line_Discount_Percent` | int | 0 |  | ☐ |
+| `Line_Discount_Percent` | float | 0 |  | ☐ |
 | `Line_Amount` | float | 1422.36 |  | ☐ |
-| `Line_Discount_Amount` | int | 0 |  | ☐ |
-| `NonDeductibleVATBase` | int | 0 |  | ☐ |
-| `NonDeductibleVATAmount` | int | 0 |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
-| `Prepmt_Line_Amount` | int | 0 |  | ☐ |
-| `Prepmt_Amt_Inv` | int | 0 |  | ☐ |
+| `Line_Discount_Amount` | float | 0 |  | ☐ |
+| `NonDeductibleVATBase` | float | 0 |  | ☐ |
+| `NonDeductibleVATAmount` | float | 0 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
+| `Prepmt_Line_Amount` | float | 0 |  | ☐ |
+| `Prepmt_Amt_Inv` | float | 0 |  | ☐ |
 | `Allow_Invoice_Disc` | bool | True |  | ☐ |
-| `Inv_Discount_Amount` | int | 0 |  | ☐ |
-| `Inv_Disc_Amount_to_Invoice` | int | 0 |  | ☐ |
-| `Qty_to_Receive` | int | 0 |  | ☐ |
-| `Quantity_Received` | int | 324000 |  | ☐ |
-| `Qty_to_Invoice` | int | 0 |  | ☐ |
-| `Quantity_Invoiced` | int | 324000 |  | ☐ |
+| `Inv_Discount_Amount` | float | 0 |  | ☐ |
+| `Inv_Disc_Amount_to_Invoice` | float | 0 |  | ☐ |
+| `Qty_to_Receive` | float | 0 |  | ☐ |
+| `Quantity_Received` | float | 324000 |  | ☐ |
+| `Qty_to_Invoice` | float | 0 |  | ☐ |
+| `Quantity_Invoiced` | float | 324000 |  | ☐ |
 | `Unit_for_Sust_Formulas` | string |  |  | ☐ |
-| `Fuel_Electricity` | int | 0 |  | ☐ |
-| `Distance` | int | 0 |  | ☐ |
-| `Custom_Amount` | int | 0 |  | ☐ |
-| `Installation_Multiplier` | int | 0 |  | ☐ |
-| `Time_Factor` | int | 0 |  | ☐ |
+| `Fuel_Electricity` | float | 0 |  | ☐ |
+| `Distance` | float | 0 |  | ☐ |
+| `Custom_Amount` | float | 0 |  | ☐ |
+| `Installation_Multiplier` | float | 0 |  | ☐ |
+| `Time_Factor` | float | 0 |  | ☐ |
 | `Renewable_Energy` | bool | False |  | ☐ |
-| `Emission_CO2` | int | 0 |  | ☐ |
-| `Emission_CH4` | int | 0 |  | ☐ |
-| `Emission_N2O` | int | 0 |  | ☐ |
-| `Energy_Consumption` | int | 0 |  | ☐ |
+| `Emission_CO2` | float | 0 |  | ☐ |
+| `Emission_CH4` | float | 0 |  | ☐ |
+| `Emission_N2O` | float | 0 |  | ☐ |
+| `Energy_Consumption` | float | 0 |  | ☐ |
 | `Source_of_Emission_Data` | string |   |  | ☐ |
 | `Emission_Verified` | bool | False |  | ☐ |
 | `CBAM_Compliance` | bool | False |  | ☐ |
-| `Total_Emission_Cost` | int | 0 |  | ☐ |
+| `Total_Emission_Cost` | float | 0 |  | ☐ |
 | `Matched_Inv_Cr_Memo_Lines` | int | 0 |  | ☐ |
-| `Prepmt_Amt_to_Deduct` | int | 0 |  | ☐ |
-| `Prepmt_Amt_Deducted` | int | 0 |  | ☐ |
+| `Prepmt_Amt_to_Deduct` | float | 0 |  | ☐ |
+| `Prepmt_Amt_Deducted` | float | 0 |  | ☐ |
 | `Allow_Item_Charge_Assignment` | bool | True |  | ☐ |
-| `Qty_to_Assign` | int | 0 |  | ☐ |
+| `Qty_to_Assign` | float | 0 |  | ☐ |
 | `Service_Transaction_Type_Code` | string |  |  | ☐ |
 | `Applicable_For_Serv_Decl` | bool | False |  | ☐ |
-| `Item_Charge_Qty_to_Handle` | int | 0 |  | ☐ |
-| `Qty_Assigned` | int | 0 |  | ☐ |
+| `Item_Charge_Qty_to_Handle` | float | 0 |  | ☐ |
+| `Qty_Assigned` | float | 0 |  | ☐ |
 | `Allocation_Account_No` | string |  |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
 | `Job_Task_No` | string |  |  | ☐ |
 | `Job_Planning_Line_No` | int | 0 |  | ☐ |
 | `Job_Line_Type` | string |   |  | ☐ |
-| `Job_Unit_Price` | int | 0 |  | ☐ |
-| `Job_Line_Amount` | int | 0 |  | ☐ |
-| `Job_Line_Discount_Amount` | int | 0 |  | ☐ |
-| `Job_Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Job_Total_Price` | int | 0 |  | ☐ |
-| `Job_Unit_Price_LCY` | int | 0 |  | ☐ |
-| `Job_Total_Price_LCY` | int | 0 |  | ☐ |
-| `Job_Line_Amount_LCY` | int | 0 |  | ☐ |
-| `Job_Line_Disc_Amount_LCY` | int | 0 |  | ☐ |
-| `Requested_Receipt_Date` | string | 0001-01-01 |  | ☐ |
-| `Promised_Receipt_Date` | string | 0001-01-01 |  | ☐ |
-| `Planned_Receipt_Date` | string | 2024-01-28 |  | ☐ |
-| `Expected_Receipt_Date` | string | 2024-01-28 |  | ☐ |
-| `Order_Date` | string | 2024-01-08 |  | ☐ |
+| `Job_Unit_Price` | float | 0 |  | ☐ |
+| `Job_Line_Amount` | float | 0 |  | ☐ |
+| `Job_Line_Discount_Amount` | float | 0 |  | ☐ |
+| `Job_Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Job_Total_Price` | float | 0 |  | ☐ |
+| `Job_Unit_Price_LCY` | float | 0 |  | ☐ |
+| `Job_Total_Price_LCY` | float | 0 |  | ☐ |
+| `Job_Line_Amount_LCY` | float | 0 |  | ☐ |
+| `Job_Line_Disc_Amount_LCY` | float | 0 |  | ☐ |
+| `Requested_Receipt_Date` | date | 0001-01-01 |  | ☐ |
+| `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
+| `Planned_Receipt_Date` | date | 2024-01-28 |  | ☐ |
+| `Expected_Receipt_Date` | date | 2024-01-28 |  | ☐ |
+| `Order_Date` | date | 2024-01-08 |  | ☐ |
 | `Lead_Time_Calculation` | string | 20D |  | ☐ |
 | `Planning_Flexibility` | string | Unlimited |  | ☐ |
 | `Prod_Order_No` | string |  |  | ☐ |
@@ -120,7 +120,7 @@
 | `Operation_No` | string |  |  | ☐ |
 | `Work_Center_No` | string |  |  | ☐ |
 | `Finished` | bool | False |  | ☐ |
-| `Whse_Outstanding_Qty_Base` | int | 0 |  | ☐ |
+| `Whse_Outstanding_Qty_Base` | float | 0 |  | ☐ |
 | `Inbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Blanket_Order_No` | string |  |  | ☐ |
 | `Blanket_Order_Line_No` | int | 0 |  | ☐ |
@@ -134,13 +134,13 @@
 | `ShortcutDimCode6` | string |  |  | ☐ |
 | `ShortcutDimCode7` | string |  |  | ☐ |
 | `ShortcutDimCode8` | string |  |  | ☐ |
-| `Over_Receipt_Quantity` | int | 0 |  | ☐ |
+| `Over_Receipt_Quantity` | float | 0 |  | ☐ |
 | `Over_Receipt_Code` | string |  |  | ☐ |
-| `Gross_Weight` | int | 0 |  | ☐ |
-| `Net_Weight` | int | 0 |  | ☐ |
-| `Unit_Volume` | int | 0 |  | ☐ |
-| `Units_per_Parcel` | int | 0 |  | ☐ |
-| `FA_Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `Gross_Weight` | float | 0 |  | ☐ |
+| `Net_Weight` | float | 0 |  | ☐ |
+| `Unit_Volume` | float | 0 |  | ☐ |
+| `Units_per_Parcel` | float | 0 |  | ☐ |
+| `FA_Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `No_of_Fixed_Asset_Cards` | int | 0 |  | ☐ |
 | `Attached_to_Line_No` | int | 0 |  | ☐ |
 | `Attached_Lines_Count` | int | 0 |  | ☐ |
@@ -150,9 +150,9 @@
 | `PRJ_Res_Prod_Order_No` | string |  |  | ☐ |
 | `PRJ_Res_Prod_Order_Line_No` | int | 0 |  | ☐ |
 | `PRJ_ResProdOrderComp_Line_No` | int | 0 |  | ☐ |
-| `AmountBeforeDiscount` | int | 0 |  | ☐ |
-| `Invoice_Discount_Amount` | int | 0 |  | ☐ |
-| `Invoice_Disc_Pct` | int | 0 |  | ☐ |
-| `Total_Amount_Excl_VAT` | int | 0 |  | ☐ |
-| `Total_VAT_Amount` | int | 0 |  | ☐ |
-| `Total_Amount_Incl_VAT` | int | 0 |  | ☐ |
+| `AmountBeforeDiscount` | float | 0 |  | ☐ |
+| `Invoice_Discount_Amount` | float | 0 |  | ☐ |
+| `Invoice_Disc_Pct` | float | 0 |  | ☐ |
+| `Total_Amount_Excl_VAT` | float | 0 |  | ☐ |
+| `Total_VAT_Amount` | float | 0 |  | ☐ |
+| `Total_Amount_Incl_VAT` | float | 0 |  | ☐ |
