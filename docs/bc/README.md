@@ -10,12 +10,12 @@ python3 tools/bc_index.py                                  # rigenera questo ind
 ```
 Poi: compilare la colonna *Significato* e spuntare *Verificato* dopo il riscontro.
 
-## Avanzamento — 187 mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive nel repo cliente)
+## Avanzamento — 203 mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive nel repo cliente)
 Anomalie (403/404/vuoti): `CORREZIONI.md`.
 
 ## Salute del censimento
-- Endpoint con almeno un campo verificato: 0 su 187
-- File con data di aggiornamento: 99 su 187 (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)
+- Endpoint con almeno un campo verificato: 0 su 203
+- File con data di aggiornamento: 115 su 203 (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)
 - Refresh: `python3 tools/bc_map.py <NomeServizio>` rigenera UN endpoint preservando Significato/Verificato compilati
 - Su Luca's Mac: `python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in blocco TUTTI i mancanti (salta i già fatti, credenziali locali)
 - Catalogo servizi OData: 258 · mancanti al censimento: 71
@@ -63,6 +63,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `PS_PowerBI_123_Posted_Purchase_Inv_Subform` | 114 | ☐ |
 | `PS_PowerBI_110_Posted_Sales_Shipments` | 111 | ☐ |
 | `PS_PowerBI_125_Posted_Purchase_Cr_Memo_Subform` | 110 | ☐ |
+| `Registrazioni_COGE_Excel` | 107 | ☐ |
 | `Fattura_acquisto_reg__Excel` | 105 | ☐ |
 | `PS_PowerBI_120_Posted_Purchase_Receipt` | 96 | ☐ |
 | `PS_PowerBI_113_Posted_Sales_Invoice_Subform` | 96 | ☐ |
@@ -88,6 +89,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `PS_PowerBI_5802_Value_Entries` | 70 | ☐ |
 | `DDT_Acquisto` | 70 | ☐ |
 | `PS_PowerBI_T5407_Prod_Order_Component` | 65 | ☐ |
+| `Prospetti_pianificazione_Excel` | 64 | ☐ |
 | `Movimenti_C_G_Excel` | 63 | ☐ |
 | `PS_PowerBI_T5409_PORL` | 63 | ☐ |
 | `Items` | 62 | ☐ |
@@ -100,6 +102,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Componenti_ordine_produzione_Excel` | 50 | ☐ |
 | `PS_PowerBI_T5405_PO` | 48 | ☐ |
 | `AccountantPortalFinanceCues` | 46 | ☐ |
+| `Piano_dei_conti` | 45 | ☐ |
 | `AccountantPortalActivityCues` | 43 | ☐ |
 | `Setup_registrazioni_COGE_Excel` | 42 | ☐ |
 | `PS_PowerBI_T271_BALE` | 40 | ☐ |
@@ -128,7 +131,9 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `PostedSalesCreditMemoLines` | 26 | ☐ |
 | `PostedSalesInvoiceLines` | 26 | ☐ |
 | `Righe_fattura_vendita_reg__Excel` | 26 | ☐ |
+| `Page_99000788_Excel` | 26 | ☐ |
 | `VendorLedgerEntries` | 26 | ☐ |
+| `Page_99000789_Excel` | 25 | ☐ |
 | `Ordine_produzione_pianificato_Excel` | 23 | ☐ |
 | `ItemSalesAndProfit` | 23 | ☐ |
 | `Metodi_Pagamento` | 23 | ☐ |
@@ -161,17 +166,21 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Setup_registrazione_magazzino_Excel` | 14 | ☐ |
 | `SalesOrdersBySalesPerson` | 14 | ☐ |
 | `PS_PowerBI_T171_SSL` | 13 | ☐ |
+| `Power_BI_Purchase_List` | 13 | ☐ |
 | `UserTaskSetComplete` | 13 | ☐ |
 | `ExcelTemplateAgedAccountsReceivable` | 12 | ☐ |
 | `PS_PowerBI_12171_Posted_Payment_Lines` | 12 | ☐ |
 | `Riferimenti_articolo` | 12 | ☐ |
 | `Cespiti` | 12 | ☐ |
+| `Power_BI_Sales_List` | 12 | ☐ |
 | `ExcelTemplateAgedAccountsPayable` | 12 | ☐ |
 | `PS_PowerBI_T480_Dimension_Set_Entry` | 11 | ☐ |
 | `TopCustomerOverview` | 11 | ☐ |
 | `PS_PowerBI_352_Default_Dimension` | 11 | ☐ |
+| `Power_BI_Customer_List` | 10 | ☐ |
 | `PS_PowerBI_T2000000006_Company` | 10 | ☐ |
 | `ItemSalesByCustomer` | 10 | ☐ |
+| `Power_BI_Vendor_List` | 10 | ☐ |
 | `ExcelTemplateTrialBalance` | 10 | ☐ |
 | `PS_PoswerBI_348_Dimension` | 10 | ☐ |
 | `Utenti_Camarlinghi` | 10 | ☐ |
@@ -188,22 +197,29 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Cliente_Esenzione_Conai` | 8 | ☐ |
 | `PS_PowerBI_T5722_IC` | 8 | ☐ |
 | `ExcelTemplateBalanceSheet` | 7 | ☐ |
+| `Power_BI_GL_BudgetedAmount` | 7 | ☐ |
 | `Attributi_Articolo_1` | 7 | ☐ |
+| `Power_BI_GL_Amount_List` | 7 | ☐ |
 | `ExcelTemplateIncomeStatement` | 7 | ☐ |
 | `ExcelTemplateCashFlowStatement` | 7 | ☐ |
 | `ExcelTemplateRetainedEarnings` | 7 | ☐ |
 | `Cicli` | 7 | ☐ |
+| `Power_BI_Aged_Inventory_Chart` | 6 | ☐ |
 | `Movimenti_set_di_dimensioni_Excel` | 6 | ☐ |
 | `CONAI_IMB` | 6 | ☐ |
+| `Power_BI_Sales_Pipeline` | 6 | ☐ |
 | `DimensionSetEntries` | 6 | ☐ |
+| `Power_BI_Item_Purchase_List` | 5 | ☐ |
 | `Identificativi_articolo` | 5 | ☐ |
 | `Valori_attributo_articolo_Excel` | 5 | ☐ |
 | `Impiegati_warehouse_Excel` | 5 | ☐ |
 | `Cal_gr_Lavoro` | 5 | ☐ |
 | `Attribuzione_Articolo_Attributo` | 5 | ☐ |
+| `Power_BI_Item_Sales_List` | 5 | ☐ |
 | `CONAI_MATERIE_PRIME` | 4 | ☐ |
 | `PianiUtente_Camarlinghi` | 4 | ☐ |
 | `ExcelTemplateViewCompanyInformation` | 4 | ☐ |
+| `Power_BI_Vendor_Ledger_Entries` | 4 | ☐ |
 | `PS_PowerBI_T170_SSC` | 4 | ☐ |
 | `traduzioni_attributi` | 4 | ☐ |
 | `Dichiarazioni_Servizio` | 4 | ☐ |
