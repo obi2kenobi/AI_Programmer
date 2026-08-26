@@ -10,8 +10,15 @@ python3 tools/bc_index.py                                  # rigenera questo ind
 ```
 Poi: compilare la colonna *Significato* e spuntare *Verificato* dopo il riscontro.
 
-## Avanzamento — 88 / 108 mappati
-Lista completa: `CATALOGO_ENDPOINT_BC.md`. Anomalie (403/404/vuoti): `CORREZIONI.md`.
+## Avanzamento — 88 mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive nel repo cliente)
+Anomalie (403/404/vuoti): `CORREZIONI.md`.
+
+## Salute del censimento
+- Endpoint con almeno un campo verificato: 0 su 88
+- File con data di aggiornamento: 0 su 88 (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)
+- Refresh: `python3 tools/bc_map.py <NomeServizio>` rigenera UN endpoint preservando Significato/Verificato compilati
+- Su Luca's Mac: `python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in blocco TUTTI i mancanti (salta i già fatti, credenziali locali)
+- Catalogo servizi OData: 258 · mancanti al censimento: 170
 
 | Endpoint | Campi | Verificato |
 |---|---|---|

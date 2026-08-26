@@ -14,6 +14,7 @@ TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/docs/bc/endpoints"
 cp "$HERE"/docs/bc/endpoints/*.md "$TMP/docs/bc/endpoints/"
+cp "$HERE"/docs/bc/CATALOGO_ENDPOINT_BC.md "$TMP/docs/bc/" 2>/dev/null || true
 N_FILE=$(ls "$TMP/docs/bc/endpoints"/*.md | wc -l | tr -d ' ')
 
 OUT=$(cd "$TMP" && python3 "$HERE/tools/bc_index.py" 2>&1); RC=$?
@@ -25,9 +26,15 @@ N_RIGHE=$(grep -c '^| `' "$TMP/docs/bc/README.md" 2>/dev/null || echo 0)
 [ "$N_RIGHE" -eq "$N_FILE" ] && ok "una riga per ogni endpoint copiato ($N_FILE)" \
   || ko "righe=$N_RIGHE, file=$N_FILE — endpoint persi o duplicati"
 
-grep -q "Avanzamento — $N_FILE / 108 mappati" "$TMP/docs/bc/README.md" \
-  && ok "l'avanzamento riporta il conteggio reale ($N_FILE/108)" \
+grep -q "Avanzamento — $N_FILE mappati" "$TMP/docs/bc/README.md" \
+  && ok "l'avanzamento riporta il conteggio reale ($N_FILE, senza il /108 cablato: il catalogo vive nel repo cliente)" \
   || ko "avanzamento sbagliato: $(grep Avanzamento "$TMP/docs/bc/README.md")"
+grep -q "Catalogo servizi OData" "$TMP/docs/bc/README.md" \
+  && ok "l'indice riporta il catalogo e i mancanti al censimento (oggi 258/170 reali)" \
+  || ko "manca il conteggio catalogo/mancanti"
+grep -q "Salute del censimento" "$TMP/docs/bc/README.md" \
+  && ok "l'indice riporta la SALUTE (verificati, data refresh) — il censimento invecchia in modo visibile" \
+  || ko "manca la sezione salute del censimento"
 
 # le righe devono essere ordinate per campi DECRESCENTI (bc_index.py: rows.sort(key=lambda r: -r[1]))
 python3 - "$TMP/docs/bc/README.md" <<'PY'
