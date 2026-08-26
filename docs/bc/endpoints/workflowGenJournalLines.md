@@ -9,27 +9,27 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE3MzU1MzQ5MjA3NTIyMTAzNzM0MT... |  | ☐ |
-| `id` | string | 2ea3fa2c-346e-f111-ab09-0022489fd2eb |  | ☐ |
+| `id` | guid | 2ea3fa2c-346e-f111-ab09-0022489fd2eb |  | ☐ |
 | `journalTemplateName` | string | ATTIVITÀ |  | ☐ |
 | `lineNumber` | int | 10000 |  | ☐ |
 | `accountType` | string | G/L Account |  | ☐ |
 | `accountNumber` | string | 1000010000 |  | ☐ |
-| `postingDate` | string | 2026-05-31 |  | ☐ |
+| `postingDate` | date | 2026-05-31 |  | ☐ |
 | `documentType` | string |   |  | ☐ |
 | `documentNumber` | string | AMM_31_05_27 |  | ☐ |
 | `description` | string | 02CE-000001 Capannone Orentano |  | ☐ |
-| `vatPercent` | int | 0 |  | ☐ |
+| `vatPercent` | float | 0 |  | ☐ |
 | `balAccountNumber` | string |  |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
-| `amount` | int | 0 |  | ☐ |
-| `debitAmount` | int | 0 |  | ☐ |
-| `creditAmount` | int | 0 |  | ☐ |
-| `amountLcy` | int | 0 |  | ☐ |
-| `balanceLcy` | int | 0 |  | ☐ |
-| `currencyFactor` | int | 0 |  | ☐ |
-| `salesPurchLcy` | int | 0 |  | ☐ |
-| `profitLcy` | int | 0 |  | ☐ |
-| `invDiscountLcy` | int | 0 |  | ☐ |
+| `amount` | float | 0 |  | ☐ |
+| `debitAmount` | float | 0 |  | ☐ |
+| `creditAmount` | float | 0 |  | ☐ |
+| `amountLcy` | float | 0 |  | ☐ |
+| `balanceLcy` | float | 0 |  | ☐ |
+| `currencyFactor` | float | 0 |  | ☐ |
+| `salesPurchLcy` | float | 0 |  | ☐ |
+| `profitLcy` | float | 0 |  | ☐ |
+| `invDiscountLcy` | float | 0 |  | ☐ |
 | `billToPayToNumber` | string |  |  | ☐ |
 | `postingGroup` | string |  |  | ☐ |
 | `shortcutDimension1Code` | string |  |  | ☐ |
@@ -40,12 +40,12 @@
 | `onHold` | string |  |  | ☐ |
 | `appliesToDocType` | string |   |  | ☐ |
 | `appliesToDocNumber` | string |  |  | ☐ |
-| `dueDate` | string | 0001-01-01 |  | ☐ |
-| `pmtDiscountDate` | string | 0001-01-01 |  | ☐ |
-| `paymentDiscountPercent` | int | 0 |  | ☐ |
+| `dueDate` | date | 0001-01-01 |  | ☐ |
+| `pmtDiscountDate` | date | 0001-01-01 |  | ☐ |
+| `paymentDiscountPercent` | float | 0 |  | ☐ |
 | `jobNumber` | string |  |  | ☐ |
-| `quantity` | int | 0 |  | ☐ |
-| `vatAmount` | int | 0 |  | ☐ |
+| `quantity` | float | 0 |  | ☐ |
+| `vatAmount` | float | 0 |  | ☐ |
 | `vatPosting` | string | Automatic VAT Entry |  | ☐ |
 | `paymentTermsCode` | string |  |  | ☐ |
 | `appliesToId` | string |  |  | ☐ |
@@ -53,9 +53,9 @@
 | `journalBatchName` | string | DEFAULT |  | ☐ |
 | `reasonCode` | string |  |  | ☐ |
 | `recurringMethod` | string |   |  | ☐ |
-| `expirationDate` | string | 0001-01-01 |  | ☐ |
+| `expirationDate` | date | 0001-01-01 |  | ☐ |
 | `recurringFrequency` | string |  |  | ☐ |
-| `allocatedAmtLcy` | int | 0 |  | ☐ |
+| `allocatedAmtLcy` | float | 0 |  | ☐ |
 | `genPostingType` | string |   |  | ☐ |
 | `genBusPostingGroup` | string |  |  | ☐ |
 | `genProdPostingGroup` | string |  |  | ☐ |
@@ -67,14 +67,14 @@
 | `balGenBusPostingGroup` | string |  |  | ☐ |
 | `balGenProdPostingGroup` | string |  |  | ☐ |
 | `balVatCalculationType` | string | Normal VAT |  | ☐ |
-| `balVatPercent` | int | 0 |  | ☐ |
-| `balVatAmount` | int | 0 |  | ☐ |
+| `balVatPercent` | float | 0 |  | ☐ |
+| `balVatAmount` | float | 0 |  | ☐ |
 | `bankPaymentType` | string |   |  | ☐ |
-| `vatBaseAmount` | int | 0 |  | ☐ |
-| `balVatBaseAmount` | int | 0 |  | ☐ |
+| `vatBaseAmount` | float | 0 |  | ☐ |
+| `balVatBaseAmount` | float | 0 |  | ☐ |
 | `correction` | bool | False |  | ☐ |
 | `checkPrinted` | bool | False |  | ☐ |
-| `documentDate` | string | 2026-05-31 |  | ☐ |
+| `documentDate` | date | 2026-05-31 |  | ☐ |
 | `externalDocumentNumber` | string | 02CE-000001 |  | ☐ |
 | `sourceType` | string |   |  | ☐ |
 | `sourceNumber` | string |  |  | ☐ |
@@ -92,21 +92,21 @@
 | `balVatBusPostingGroup` | string |  |  | ☐ |
 | `balVatProdPostingGroup` | string |  |  | ☐ |
 | `additionalCurrencyPosting` | string | None |  | ☐ |
-| `faAddCurrencyFactor` | int | 0 |  | ☐ |
+| `faAddCurrencyFactor` | float | 0 |  | ☐ |
 | `sourceCurrencyCode` | string |  |  | ☐ |
-| `sourceCurrencyAmount` | int | 0 |  | ☐ |
-| `sourceCurrVatBaseAmount` | int | 0 |  | ☐ |
-| `sourceCurrVatAmount` | int | 0 |  | ☐ |
-| `vatBaseDiscountPercent` | int | 0 |  | ☐ |
-| `vatAmountLcy` | int | 0 |  | ☐ |
-| `vatBaseAmountLcy` | int | 0 |  | ☐ |
-| `balVatAmountLcy` | int | 0 |  | ☐ |
-| `balVatBaseAmountLcy` | int | 0 |  | ☐ |
+| `sourceCurrencyAmount` | float | 0 |  | ☐ |
+| `sourceCurrVatBaseAmount` | float | 0 |  | ☐ |
+| `sourceCurrVatAmount` | float | 0 |  | ☐ |
+| `vatBaseDiscountPercent` | float | 0 |  | ☐ |
+| `vatAmountLcy` | float | 0 |  | ☐ |
+| `vatBaseAmountLcy` | float | 0 |  | ☐ |
+| `balVatAmountLcy` | float | 0 |  | ☐ |
+| `balVatBaseAmountLcy` | float | 0 |  | ☐ |
 | `reversingEntry` | bool | False |  | ☐ |
 | `allowZeroAmountPosting` | bool | False |  | ☐ |
 | `shipToOrderAddressCode` | string |  |  | ☐ |
-| `vatDifference` | int | 0 |  | ☐ |
-| `balVatDifference` | int | 0 |  | ☐ |
+| `vatDifference` | float | 0 |  | ☐ |
+| `balVatDifference` | float | 0 |  | ☐ |
 | `icPartnerCode` | string |  |  | ☐ |
 | `icDirection` | string | Outgoing |  | ☐ |
 | `icPartnerTransactionNumber` | int | 0 |  | ☐ |
@@ -128,26 +128,26 @@
 | `hasPaymentExportError` | bool | False |  | ☐ |
 | `dimensionSetId` | int | 0 |  | ☐ |
 | `jobTaskNumber` | string |  |  | ☐ |
-| `jobUnitPriceLcy` | int | 0 |  | ☐ |
-| `jobTotalPriceLcy` | int | 0 |  | ☐ |
-| `jobQuantity` | int | 0 |  | ☐ |
-| `jobUnitCostLcy` | int | 0 |  | ☐ |
-| `jobLineDiscountPercent` | int | 0 |  | ☐ |
-| `jobLineDiscAmountLcy` | int | 0 |  | ☐ |
+| `jobUnitPriceLcy` | float | 0 |  | ☐ |
+| `jobTotalPriceLcy` | float | 0 |  | ☐ |
+| `jobQuantity` | float | 0 |  | ☐ |
+| `jobUnitCostLcy` | float | 0 |  | ☐ |
+| `jobLineDiscountPercent` | float | 0 |  | ☐ |
+| `jobLineDiscAmountLcy` | float | 0 |  | ☐ |
 | `jobUnitOfMeasureCode` | string |  |  | ☐ |
 | `jobLineType` | string |   |  | ☐ |
-| `jobUnitPrice` | int | 0 |  | ☐ |
-| `jobTotalPrice` | int | 0 |  | ☐ |
-| `jobUnitCost` | int | 0 |  | ☐ |
-| `jobTotalCost` | int | 0 |  | ☐ |
-| `jobLineDiscountAmount` | int | 0 |  | ☐ |
-| `jobLineAmount` | int | 0 |  | ☐ |
-| `jobTotalCostLcy` | int | 0 |  | ☐ |
-| `jobLineAmountLcy` | int | 0 |  | ☐ |
-| `jobCurrencyFactor` | int | 0 |  | ☐ |
+| `jobUnitPrice` | float | 0 |  | ☐ |
+| `jobTotalPrice` | float | 0 |  | ☐ |
+| `jobUnitCost` | float | 0 |  | ☐ |
+| `jobTotalCost` | float | 0 |  | ☐ |
+| `jobLineDiscountAmount` | float | 0 |  | ☐ |
+| `jobLineAmount` | float | 0 |  | ☐ |
+| `jobTotalCostLcy` | float | 0 |  | ☐ |
+| `jobLineAmountLcy` | float | 0 |  | ☐ |
+| `jobCurrencyFactor` | float | 0 |  | ☐ |
 | `jobCurrencyCode` | string |  |  | ☐ |
 | `jobPlanningLineNumber` | int | 0 |  | ☐ |
-| `jobRemainingQty` | int | 0 |  | ☐ |
+| `jobRemainingQty` | float | 0 |  | ☐ |
 | `directDebitMandateId` | string |  |  | ☐ |
 | `dataExchEntryNumber` | int | 0 |  | ☐ |
 | `payerInformation` | string |  |  | ☐ |
@@ -158,10 +158,10 @@
 | `deferralLineNumber` | int | 0 |  | ☐ |
 | `campaignNumber` | string |  |  | ☐ |
 | `prodOrderNumber` | string |  |  | ☐ |
-| `faPostingDate` | string | 0001-01-01 |  | ☐ |
+| `faPostingDate` | date | 0001-01-01 |  | ☐ |
 | `faPostingType` | string |   |  | ☐ |
 | `depreciationBookCode` | string |  |  | ☐ |
-| `salvageValue` | int | 0 |  | ☐ |
+| `salvageValue` | float | 0 |  | ☐ |
 | `numberOfDepreciationDays` | int | 0 |  | ☐ |
 | `deprUntilFaPostingDate` | bool | False |  | ☐ |
 | `deprAcquisitionCost` | bool | False |  | ☐ |
@@ -177,9 +177,9 @@
 | `comment` | string |  |  | ☐ |
 | `checkExported` | bool | False |  | ☐ |
 | `checkTransmitted` | bool | False |  | ☐ |
-| `accountId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
-| `customerId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
-| `appliesToInvoiceId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `accountId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `customerId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `appliesToInvoiceId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `contactGraphId` | string |  |  | ☐ |
-| `lastModifiedDatetime` | string | 0001-01-01T00:00:00Z |  | ☐ |
-| `journalBatchId` | string | b29e8244-241b-ee11-8f6e-000d3aba081a |  | ☐ |
+| `lastModifiedDatetime` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
+| `journalBatchId` | guid | b29e8244-241b-ee11-8f6e-000d3aba081a |  | ☐ |

@@ -18,16 +18,16 @@
 | `Source_No` | string | FRON25PEDASP134XX36 |  | ☐ |
 | `Variant_Code` | string |  |  | ☐ |
 | `Search_Description` | string | FRON. CAS. PROF.BLK. 25 MM PEDAGOGICA SP |  | ☐ |
-| `Quantity` | int | 59 |  | ☐ |
-| `Due_Date` | string | 2025-07-08 |  | ☐ |
+| `Quantity` | float | 59 |  | ☐ |
+| `Due_Date` | date | 2025-07-08 |  | ☐ |
 | `Assigned_User_ID` | string |  |  | ☐ |
 | `Sync_in_NetPro` | bool | False |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |
-| `Last_Date_Modified` | string | 2025-11-05 |  | ☐ |
+| `Last_Date_Modified` | date | 2025-11-05 |  | ☐ |
 | `Reopened` | bool | False |  | ☐ |
 | `Manual_Scheduling` | bool | False |  | ☐ |
-| `Starting_Date_Time` | string | 2025-07-08T07:00:00Z |  | ☐ |
-| `Ending_Date_Time` | string | 2025-07-08T16:00:00Z |  | ☐ |
+| `Starting_Date_Time` | datetime | 2025-07-08T07:00:00Z |  | ☐ |
+| `Ending_Date_Time` | datetime | 2025-07-08T16:00:00Z |  | ☐ |
 | `Inventory_Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |

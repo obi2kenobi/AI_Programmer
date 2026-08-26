@@ -18,8 +18,8 @@
 | `Description` | string | Attributi articolo TIPOLOGIA COSTRUTT... |  | ☐ |
 | `SEOTitle` | string | Casetta 3x2 Formentera Naturale \| Le... |  | ☐ |
 | `SEODescription` | string | Cerchi una casina in legno funzionale... |  | ☐ |
-| `CreatedAt` | string | 2026-07-26T17:26:48Z |  | ☐ |
-| `UpdatedAt` | string | 2026-08-10T09:06:42Z |  | ☐ |
+| `CreatedAt` | datetime | 2026-07-26T17:26:48Z |  | ☐ |
+| `UpdatedAt` | datetime | 2026-08-10T09:06:42Z |  | ☐ |
 | `ProductType` | string | PRODOTTI FINITI |  | ☐ |
 | `Vendor` | string |  |  | ☐ |
 | `Url` | string |  |  | ☐ |

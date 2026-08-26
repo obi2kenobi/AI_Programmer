@@ -28,13 +28,13 @@
 | `ShortcutDimCode_x005B_8_x005D_` | string |  |  | ☐ |
 | `Routing_Link_Code` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Quantity_per` | int | 12 |  | ☐ |
-| `Expected_Quantity` | int | 708 |  | ☐ |
-| `Remaining_Quantity` | int | 708 |  | ☐ |
-| `Qty_on_Transfer_Order_Base` | int | 0 |  | ☐ |
-| `Qty_in_Transit_Base` | int | 0 |  | ☐ |
-| `Qty_transf_to_Subcontractor` | int | 0 |  | ☐ |
-| `Due_Date` | string | 2025-07-08 |  | ☐ |
+| `Quantity_per` | float | 12 |  | ☐ |
+| `Expected_Quantity` | float | 708 |  | ☐ |
+| `Remaining_Quantity` | float | 708 |  | ☐ |
+| `Qty_on_Transfer_Order_Base` | float | 0 |  | ☐ |
+| `Qty_in_Transit_Base` | float | 0 |  | ☐ |
+| `Qty_transf_to_Subcontractor` | float | 0 |  | ☐ |
+| `Due_Date` | date | 2025-07-08 |  | ☐ |
 | `Unit_Cost` | float | 0.926 |  | ☐ |
 | `Cost_Amount` | float | 655.61 |  | ☐ |
 | `Position` | string |  |  | ☐ |

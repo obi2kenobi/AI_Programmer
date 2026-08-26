@@ -19,18 +19,18 @@
 | `Description` | string | VITI 3,5X35 TSP TROP. 1/2 FILETTO |  | ☐ |
 | `Description_2` | string |  |  | ☐ |
 | `Calculation_Formula` | string |   |  | ☐ |
-| `Length` | int | 0 |  | ☐ |
-| `Width` | int | 0 |  | ☐ |
-| `Depth` | int | 0 |  | ☐ |
-| `Weight` | int | 0 |  | ☐ |
-| `Quantity_per` | int | 364 |  | ☐ |
+| `Length` | float | 0 |  | ☐ |
+| `Width` | float | 0 |  | ☐ |
+| `Depth` | float | 0 |  | ☐ |
+| `Weight` | float | 0 |  | ☐ |
+| `Quantity_per` | float | 364 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
-| `Scrap_Percent` | int | 0 |  | ☐ |
+| `Scrap_Percent` | float | 0 |  | ☐ |
 | `Routing_Link_Code` | string |  |  | ☐ |
-| `CO2e_per_Unit` | int | 0 |  | ☐ |
+| `CO2e_per_Unit` | float | 0 |  | ☐ |
 | `Position` | string |  |  | ☐ |
 | `Position_2` | string |  |  | ☐ |
 | `Position_3` | string |  |  | ☐ |
 | `Lead_Time_Offset` | string |  |  | ☐ |
-| `Starting_Date` | string | 2023-10-11 |  | ☐ |
-| `Ending_Date` | string | 0001-01-01 |  | ☐ |
+| `Starting_Date` | date | 2023-10-11 |  | ☐ |
+| `Ending_Date` | date | 0001-01-01 |  | ☐ |

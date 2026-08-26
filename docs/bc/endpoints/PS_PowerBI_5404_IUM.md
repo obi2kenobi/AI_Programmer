@@ -11,9 +11,9 @@
 | `@odata.etag` | string | W/"JzIwOzExODIwMDA3NzMxODY5Mjg3Nzk1MT... |  | ☐ |
 | `Item_No` | string | A0000000000000000001 |  | ☐ |
 | `Code` | string | PZ |  | ☐ |
-| `Cubage` | int | 0 |  | ☐ |
-| `Height` | int | 0 |  | ☐ |
-| `Length` | int | 0 |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 1 |  | ☐ |
-| `Weight` | int | 0 |  | ☐ |
-| `Width` | int | 0 |  | ☐ |
+| `Cubage` | float | 0 |  | ☐ |
+| `Height` | float | 0 |  | ☐ |
+| `Length` | float | 0 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 1 |  | ☐ |
+| `Weight` | float | 0 |  | ☐ |
+| `Width` | float | 0 |  | ☐ |

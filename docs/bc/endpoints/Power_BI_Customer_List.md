@@ -11,11 +11,11 @@
 |---|---|---|---|---|
 | `Customer_Name` | string | SIMBULA SERGIO |  | ☐ |
 | `Customer_No` | string | 000000000000001 |  | ☐ |
-| `Credit_Limit` | int | 0 |  | ☐ |
-| `Balance_Due` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `Credit_Limit` | float | 0 |  | ☐ |
+| `Balance_Due` | float | 0 |  | ☐ |
+| `Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `Cust_Ledger_Entry_No` | int | 0 |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Amount_LCY` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Amount_LCY` | float | 0 |  | ☐ |
 | `Transaction_No` | int | 0 |  | ☐ |
 | `Entry_No` | int | 0 |  | ☐ |

@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzMxMjgwNjMyMjUxMzAzOTY3MDUxOz... |  | ☐ |
 | `No` | int | 1 |  | ☐ |
-| `Creation_Date` | string | 2024-01-02 |  | ☐ |
+| `Creation_Date` | date | 2024-01-02 |  | ☐ |
 | `Creation_Time` | string | 11:33:04.063 |  | ☐ |
 | `From_Entry_No` | int | 1 |  | ☐ |
 | `From_VAT_Entry_No` | int | 1 |  | ☐ |
@@ -20,7 +20,7 @@
 | `To_VAT_Entry_No` | int | 0 |  | ☐ |
 | `User_ID` | string | USER_EEB83BD8DDC34A4B92AB0B7EB961D38D |  | ☐ |
 | `Reversed` | bool | False |  | ☐ |
-| `SystemCreatedAt` | string | 2024-01-02T10:33:04.54Z |  | ☐ |
-| `SystemCreatedBy` | string | 8ef7fc8d-a7fe-483f-8f89-8c2ab44ffbe2 |  | ☐ |
-| `SystemModifiedAt` | string | 2024-01-02T10:33:06.863Z |  | ☐ |
-| `SystemModifiedBy` | string | 8ef7fc8d-a7fe-483f-8f89-8c2ab44ffbe2 |  | ☐ |
+| `SystemCreatedAt` | datetime | 2024-01-02T10:33:04.54Z |  | ☐ |
+| `SystemCreatedBy` | guid | 8ef7fc8d-a7fe-483f-8f89-8c2ab44ffbe2 |  | ☐ |
+| `SystemModifiedAt` | datetime | 2024-01-02T10:33:06.863Z |  | ☐ |
+| `SystemModifiedBy` | guid | 8ef7fc8d-a7fe-483f-8f89-8c2ab44ffbe2 |  | ☐ |

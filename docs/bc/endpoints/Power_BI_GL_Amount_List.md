@@ -13,6 +13,6 @@
 | `Name` | string | PROFITTI E PERDITE      |  | ☐ |
 | `Account_Type` | string | Posting |  | ☐ |
 | `Debit_Credit` | string | Both |  | ☐ |
-| `Posting_Date` | string | 2024-01-02 |  | ☐ |
+| `Posting_Date` | date | 2024-01-02 |  | ☐ |
 | `Amount` | float | -1513.35 |  | ☐ |
 | `Entry_No` | int | 14626 |  | ☐ |

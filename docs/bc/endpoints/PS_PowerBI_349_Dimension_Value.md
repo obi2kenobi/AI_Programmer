@@ -15,7 +15,7 @@
 | `Dimension_Value_ID` | int | 109 |  | ☐ |
 | `Dimension_Value_Type` | string | Standard |  | ☐ |
 | `Global_Dimension_No` | int | 5 |  | ☐ |
-| `Last_Modified_Date_Time` | string | 2024-02-05T16:18:06.187Z |  | ☐ |
+| `Last_Modified_Date_Time` | datetime | 2024-02-05T16:18:06.187Z |  | ☐ |
 | `Map_to_IC_Dimension_Code` | string |  |  | ☐ |
 | `Map_to_IC_Dimension_Value_Code` | string |  |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |

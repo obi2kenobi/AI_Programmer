@@ -12,12 +12,12 @@
 | `Primary_Key` | string |  |  | ☐ |
 | `Additional_Reporting_Currency` | string |  |  | ☐ |
 | `Adjust_for_Payment_Disc` | bool | False |  | ☐ |
-| `Allow_G_L_Acc_Deletion_Before` | string | 2001-01-01 |  | ☐ |
-| `Allow_Posting_From` | string | 2025-01-01 |  | ☐ |
-| `Allow_Posting_To` | string | 2026-12-31 |  | ☐ |
+| `Allow_G_L_Acc_Deletion_Before` | date | 2001-01-01 |  | ☐ |
+| `Allow_Posting_From` | date | 2025-01-01 |  | ☐ |
+| `Allow_Posting_To` | date | 2026-12-31 |  | ☐ |
 | `Amount_Decimal_Places` | string | 2:2 |  | ☐ |
 | `Amount_Rounding_Precision` | float | 0.01 |  | ☐ |
-| `Appln_Rounding_Precision` | int | 0 |  | ☐ |
+| `Appln_Rounding_Precision` | float | 0 |  | ☐ |
 | `Bank_Account_Nos` | string | BANCA |  | ☐ |
 | `Bill_to_Sell_to_VAT_Calc` | string | Bill-to/Pay-to No. |  | ☐ |
 | `CashVAT_Product_Posting_Group` | string |  |  | ☐ |
@@ -35,25 +35,25 @@
 | `Job_Q_Prio_for_Post__x0026__Print` | int | 1000 |  | ☐ |
 | `Job_Queue_Category_Code` | string | JRNLPOST |  | ☐ |
 | `Job_Queue_Priority_for_Post` | int | 1000 |  | ☐ |
-| `Last_Gen_Jour_Printing_Date` | string | 2024-12-31 |  | ☐ |
+| `Last_Gen_Jour_Printing_Date` | date | 2024-12-31 |  | ☐ |
 | `Last_General_Journal_No` | int | 46464 |  | ☐ |
 | `Last_IC_Transaction_No` | int | 0 |  | ☐ |
 | `Last_Printed_G_L_Book_Page` | int | 1195 |  | ☐ |
-| `Last_Settlement_Date` | string | 2026-05-31 |  | ☐ |
+| `Last_Settlement_Date` | date | 2026-05-31 |  | ☐ |
 | `LCY_Code` | string | EUR |  | ☐ |
 | `Local_Address_Format` | string | City+County+Post Code |  | ☐ |
 | `Local_Cont_Addr_Format` | string | After Company Name |  | ☐ |
 | `Local_Currency_Description` | string | Euro |  | ☐ |
 | `Local_Currency_Symbol` | string | € |  | ☐ |
 | `Mark_Cr_Memos_as_Corrections` | bool | False |  | ☐ |
-| `Max_Payment_Tolerance_Amount` | int | 0 |  | ☐ |
+| `Max_Payment_Tolerance_Amount` | float | 0 |  | ☐ |
 | `Max_VAT_Difference_Allowed` | float | 0.01 |  | ☐ |
-| `Minimum_VAT_Payable` | int | 0 |  | ☐ |
+| `Minimum_VAT_Payable` | float | 0 |  | ☐ |
 | `Notify_On_Success` | bool | False |  | ☐ |
 | `Official_Credit_Amount` | float | 218065538.6 |  | ☐ |
 | `Official_Debit_Amount` | float | 218065538.6 |  | ☐ |
 | `Payment_Discount_Grace_Period` | string |  |  | ☐ |
-| `Payment_Tolerance_Percent` | int | 0 |  | ☐ |
+| `Payment_Tolerance_Percent` | float | 0 |  | ☐ |
 | `Payment_Tolerance_Posting` | string | Payment Tolerance Accounts |  | ☐ |
 | `Payment_Tolerance_Warning` | bool | False |  | ☐ |
 | `Payroll_Trans_Import_Format` | string |  |  | ☐ |
@@ -79,7 +79,7 @@
 | `Shortcut_Dimension_8_Code` | string |  |  | ☐ |
 | `Show_Amounts` | string | All Amounts |  | ☐ |
 | `Summarize_G_L_Entries` | bool | False |  | ☐ |
-| `Tax_Invoice_Renaming_Threshold` | int | 0 |  | ☐ |
+| `Tax_Invoice_Renaming_Threshold` | float | 0 |  | ☐ |
 | `Unit_Amount_Decimal_Places` | string | 2:5 |  | ☐ |
 | `Unit_Amount_Rounding_Precision` | float | 0.001 |  | ☐ |
 | `Unrealized_VAT` | bool | False |  | ☐ |
@@ -89,9 +89,9 @@
 | `VAT_Exchange_Rate_Adjustment` | string | No Adjustment |  | ☐ |
 | `VAT_Rounding_Type` | string | Nearest |  | ☐ |
 | `VAT_Settlement_Period` | string | Month |  | ☐ |
-| `VAT_Tolerance_Percent` | int | 0 |  | ☐ |
+| `VAT_Tolerance_Percent` | float | 0 |  | ☐ |
 | `Vendor_Balances_Due` | float | 1287426.71 |  | ☐ |
-| `SystemCreatedAt` | string | 2023-07-05T11:07:33.877Z |  | ☐ |
-| `SystemCreatedBy` | string | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
-| `SystemModifiedAt` | string | 2026-06-09T14:13:14.457Z |  | ☐ |
-| `SystemModifiedBy` | string | 8e571a18-588a-4ac6-b5c3-60dbf0bbc24c |  | ☐ |
+| `SystemCreatedAt` | datetime | 2023-07-05T11:07:33.877Z |  | ☐ |
+| `SystemCreatedBy` | guid | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
+| `SystemModifiedAt` | datetime | 2026-06-09T14:13:14.457Z |  | ☐ |
+| `SystemModifiedBy` | guid | 8e571a18-588a-4ac6-b5c3-60dbf0bbc24c |  | ☐ |

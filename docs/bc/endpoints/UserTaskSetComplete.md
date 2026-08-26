@@ -11,13 +11,13 @@
 | `@odata.etag` | string | W/"JzE5Ozc2NTg2MDA5NDU5ODY1ODU4NDYxOz... |  | ☐ |
 | `ID` | int | 1 |  | ☐ |
 | `Title` | string |  |  | ☐ |
-| `Due_DateTime` | string | 2025-09-24T22:00:00Z |  | ☐ |
+| `Due_DateTime` | datetime | 2025-09-24T22:00:00Z |  | ☐ |
 | `Priority` | string | 0 |  | ☐ |
 | `Percent_Complete` | int | 100 |  | ☐ |
 | `Assigned_To_User_Name` | string | LAVINIA.CASELLI |  | ☐ |
 | `User_Task_Group_Assigned_To` | string |  |  | ☐ |
-| `Created_DateTime` | string | 2025-09-25T14:36:04.557Z |  | ☐ |
-| `Completed_DateTime` | string | 2025-09-25T22:00:00Z |  | ☐ |
-| `Start_DateTime` | string | 2025-09-25T22:00:00Z |  | ☐ |
+| `Created_DateTime` | datetime | 2025-09-25T14:36:04.557Z |  | ☐ |
+| `Completed_DateTime` | datetime | 2025-09-25T22:00:00Z |  | ☐ |
+| `Start_DateTime` | datetime | 2025-09-25T22:00:00Z |  | ☐ |
 | `Created_By_User_Name` | string | LAVINIA.CASELLI |  | ☐ |
 | `Completed_By_User_Name` | string | LAVINIA.CASELLI |  | ☐ |

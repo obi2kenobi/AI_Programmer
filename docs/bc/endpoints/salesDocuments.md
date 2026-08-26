@@ -9,7 +9,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozk0NzUwOTczNTU0MDU3ODg2NjgxOz... |  | ☐ |
-| `id` | string | cab8c060-9f8b-ef11-ac23-000d3a660f74 |  | ☐ |
+| `id` | guid | cab8c060-9f8b-ef11-ac23-000d3a660f74 |  | ☐ |
 | `documentType` | string | Order |  | ☐ |
 | `sellToCustomerNumber` | string | 0009541 |  | ☐ |
 | `number` | string | 24OV-002637 |  | ☐ |
@@ -28,21 +28,21 @@
 | `shipToAddress2` | string |  |  | ☐ |
 | `shipToCity` | string | MANTOVA |  | ☐ |
 | `shipToContact` | string |  |  | ☐ |
-| `orderDate` | string | 2024-10-15 |  | ☐ |
-| `postingDate` | string | 2024-11-25 |  | ☐ |
-| `shipmentDate` | string | 2024-11-28 |  | ☐ |
+| `orderDate` | date | 2024-10-15 |  | ☐ |
+| `postingDate` | date | 2024-11-25 |  | ☐ |
+| `shipmentDate` | date | 2024-11-28 |  | ☐ |
 | `postingDescription` | string | LEROY MERLIN ITALIA S.r.l. |  | ☐ |
 | `paymentTermsCode` | string | 120FM10 |  | ☐ |
-| `dueDate` | string | 0001-01-01 |  | ☐ |
-| `paymentDiscountPercent` | int | 0 |  | ☐ |
-| `pmtDiscountDate` | string | 0001-01-01 |  | ☐ |
+| `dueDate` | date | 0001-01-01 |  | ☐ |
+| `paymentDiscountPercent` | float | 0 |  | ☐ |
+| `pmtDiscountDate` | date | 0001-01-01 |  | ☐ |
 | `shipmentMethodCode` | string | PFLM |  | ☐ |
 | `locationCode` | string | PRINCIPALE |  | ☐ |
 | `shortcutDimension1Code` | string | ARRG |  | ☐ |
 | `shortcutDimension2Code` | string |  |  | ☐ |
 | `customerPostingGroup` | string | GDS |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
-| `currencyFactor` | int | 0 |  | ☐ |
+| `currencyFactor` | float | 0 |  | ☐ |
 | `customerPriceGroup` | string | LMI |  | ☐ |
 | `pricesIncludingVat` | bool | False |  | ☐ |
 | `invoiceDiscCode` | string | 0009541 |  | ☐ |
@@ -97,7 +97,7 @@
 | `balAccountType` | string | G/L Account |  | ☐ |
 | `exitPoint` | string | PFO |  | ☐ |
 | `correction` | bool | False |  | ☐ |
-| `documentDate` | string | 2024-11-25 |  | ☐ |
+| `documentDate` | date | 2024-11-25 |  | ☐ |
 | `externalDocumentNumber` | string |  |  | ☐ |
 | `area` | string |  |  | ☐ |
 | `transactionSpecification` | string |  |  | ☐ |
@@ -112,38 +112,38 @@
 | `vatBusPostingGroup` | string | CLI_NAZ |  | ☐ |
 | `reserve` | string | Optional |  | ☐ |
 | `appliesToId` | string |  |  | ☐ |
-| `vatBaseDiscountPercent` | int | 0 |  | ☐ |
+| `vatBaseDiscountPercent` | float | 0 |  | ☐ |
 | `status` | string | Released |  | ☐ |
 | `invoiceDiscountCalculation` | string | None |  | ☐ |
-| `invoiceDiscountValue` | int | 0 |  | ☐ |
+| `invoiceDiscountValue` | float | 0 |  | ☐ |
 | `sendIcDocument` | bool | False |  | ☐ |
 | `icStatus` | string | New |  | ☐ |
 | `sellToIcPartnerCode` | string |  |  | ☐ |
 | `billToIcPartnerCode` | string |  |  | ☐ |
 | `icDirection` | string | Outgoing |  | ☐ |
-| `prepaymentPercent` | int | 0 |  | ☐ |
+| `prepaymentPercent` | float | 0 |  | ☐ |
 | `prepaymentNumberSeries` | string | FT-VEN-IT+ |  | ☐ |
 | `compressPrepayment` | bool | True |  | ☐ |
-| `prepaymentDueDate` | string | 2025-04-10 |  | ☐ |
+| `prepaymentDueDate` | date | 2025-04-10 |  | ☐ |
 | `prepmtCrMemoNumberSeries` | string | FT-VEN-IT+ |  | ☐ |
 | `prepmtPostingDescription` | string |  |  | ☐ |
-| `prepmtPmtDiscountDate` | string | 2024-11-25 |  | ☐ |
+| `prepmtPmtDiscountDate` | date | 2024-11-25 |  | ☐ |
 | `prepmtPaymentTermsCode` | string | 120FM10 |  | ☐ |
-| `prepmtPaymentDiscountPercent` | int | 0 |  | ☐ |
+| `prepmtPaymentDiscountPercent` | float | 0 |  | ☐ |
 | `quoteNumber` | string |  |  | ☐ |
-| `quoteValidUntilDate` | string | 0001-01-01 |  | ☐ |
-| `quoteSentToCustomer` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `quoteValidUntilDate` | date | 0001-01-01 |  | ☐ |
+| `quoteSentToCustomer` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
 | `quoteAccepted` | bool | False |  | ☐ |
-| `quoteAcceptedDate` | string | 0001-01-01 |  | ☐ |
+| `quoteAcceptedDate` | date | 0001-01-01 |  | ☐ |
 | `jobQueueStatus` | string |   |  | ☐ |
-| `jobQueueEntryId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `jobQueueEntryId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `incomingDocumentEntryNumber` | int | 0 |  | ☐ |
-| `amountShippedNotInvoicedInclVat` | int | 0 |  | ☐ |
-| `amountShippedNotInvoiced` | int | 0 |  | ☐ |
+| `amountShippedNotInvoicedInclVat` | float | 0 |  | ☐ |
+| `amountShippedNotInvoiced` | float | 0 |  | ☐ |
 | `dimensionSetId` | int | 1 |  | ☐ |
 | `paymentServiceSetId` | int | 0 |  | ☐ |
 | `directDebitMandateId` | string |  |  | ☐ |
-| `invoiceDiscountAmount` | int | 0 |  | ☐ |
+| `invoiceDiscountAmount` | float | 0 |  | ☐ |
 | `numberOfArchivedVersions` | int | 1 |  | ☐ |
 | `docNumberOccurrence` | int | 1 |  | ☐ |
 | `campaignNumber` | string |  |  | ☐ |
@@ -157,8 +157,8 @@
 | `postingFromWhseRef` | int | 0 |  | ☐ |
 | `locationFilter` | string |  |  | ☐ |
 | `shipped` | bool | False |  | ☐ |
-| `requestedDeliveryDate` | string | 2024-10-29 |  | ☐ |
-| `promisedDeliveryDate` | string | 0001-01-01 |  | ☐ |
+| `requestedDeliveryDate` | date | 2024-10-29 |  | ☐ |
+| `promisedDeliveryDate` | date | 0001-01-01 |  | ☐ |
 | `shippingTime` | string |  |  | ☐ |
 | `outboundWhseHandlingTime` | string |  |  | ☐ |
 | `shippingAgentServiceCode` | string |  |  | ☐ |

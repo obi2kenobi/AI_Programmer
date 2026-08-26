@@ -16,7 +16,7 @@
 | `Allow_Invoice_Disc` | bool | True |  | ☐ |
 | `Allow_Line_Disc` | bool | True |  | ☐ |
 | `Amount` | float | 1253.28 |  | ☐ |
-| `Amount_Including_VAT` | int | 1529 |  | ☐ |
+| `Amount_Including_VAT` | float | 1529 |  | ☐ |
 | `Appl_from_Item_Entry` | int | 0 |  | ☐ |
 | `Appl_to_Item_Entry` | int | 0 |  | ☐ |
 | `Area` | string |  |  | ☐ |
@@ -28,7 +28,7 @@
 | `Blanket_Order_No` | string |  |  | ☐ |
 | `Customer_Disc_Group` | string |  |  | ☐ |
 | `Customer_Price_Group` | string | LCDL |  | ☐ |
-| `Deductible_Percent` | int | 100 |  | ☐ |
+| `Deductible_Percent` | float | 100 |  | ☐ |
 | `Deferral_Code` | string |  |  | ☐ |
 | `Depr_until_FA_Posting_Date` | bool | False |  | ☐ |
 | `Depreciation_Book_Code` | string |  |  | ☐ |
@@ -38,42 +38,42 @@
 | `Drop_Shipment` | bool | False |  | ☐ |
 | `Duplicate_in_Depreciation_Book` | string |  |  | ☐ |
 | `Exit_Point` | string | EXW |  | ☐ |
-| `FA_Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `FA_Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
-| `Gross_Weight` | int | 400 |  | ☐ |
+| `Gross_Weight` | float | 400 |  | ☐ |
 | `IC_Partner_Code` | string |  |  | ☐ |
 | `IC_Partner_Ref_Type` | string |   |  | ☐ |
 | `IC_Partner_Reference` | string |  |  | ☐ |
 | `Include_in_VAT_Transac_Rep` | bool | False |  | ☐ |
-| `Inv_Discount_Amount` | int | 0 |  | ☐ |
+| `Inv_Discount_Amount` | float | 0 |  | ☐ |
 | `Item_Category_Code` | string | PF |  | ☐ |
 | `Job_Contract_Entry_No` | int | 0 |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
 | `Job_Task_No` | string |  |  | ☐ |
 | `Line_Amount` | float | 1253.28 |  | ☐ |
-| `Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Line_Discount_Amount` | int | 0 |  | ☐ |
+| `Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Line_Discount_Amount` | float | 0 |  | ☐ |
 | `Line_Discount_Calculation` | string | None |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Net_Weight` | int | 395 |  | ☐ |
+| `Net_Weight` | float | 395 |  | ☐ |
 | `Nonstock` | bool | False |  | ☐ |
 | `Order_Line_No` | int | 10000 |  | ☐ |
 | `Order_No` | string | 25OV-001586 |  | ☐ |
-| `Pmt_Discount_Amount` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 2025-07-22 |  | ☐ |
+| `Pmt_Discount_Amount` | float | 0 |  | ☐ |
+| `Posting_Date` | date | 2025-07-22 |  | ☐ |
 | `Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
 | `Prepayment_Line` | bool | False |  | ☐ |
 | `Price_description` | string |  |  | ☐ |
 | `Purchasing_Code` | string |  |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 1 |  | ☐ |
-| `Quantity` | int | 1 |  | ☐ |
-| `Quantity_Base` | int | 1 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 1 |  | ☐ |
+| `Quantity` | float | 1 |  | ☐ |
+| `Quantity_Base` | float | 1 |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Return_Reason_Code` | string |  |  | ☐ |
 | `Sell_to_Customer_No` | string | 501733 |  | ☐ |
 | `Service_Tariff_No` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2025-07-22 |  | ☐ |
+| `Shipment_Date` | date | 2025-07-22 |  | ☐ |
 | `Shipment_Line_No` | int | 0 |  | ☐ |
 | `Shipment_No` | string |  |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
@@ -87,20 +87,20 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `Type` | string | Item |  | ☐ |
-| `Unit_Cost` | int | 0 |  | ☐ |
-| `Unit_Cost_LCY` | int | 0 |  | ☐ |
+| `Unit_Cost` | float | 0 |  | ☐ |
+| `Unit_Cost_LCY` | float | 0 |  | ☐ |
 | `Unit_Price` | float | 1253.28 |  | ☐ |
 | `Unit_Volume` | float | 2.047 |  | ☐ |
 | `Unit_of_Measure` | string | Pezzo |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
-| `Units_per_Parcel` | int | 1 |  | ☐ |
+| `Units_per_Parcel` | float | 1 |  | ☐ |
 | `Use_Duplication_List` | bool | False |  | ☐ |
-| `VAT_Percent` | int | 22 |  | ☐ |
+| `VAT_Percent` | float | 22 |  | ☐ |
 | `VAT_Base_Amount` | float | 1253.28 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Calculation_Type` | string | Normal VAT |  | ☐ |
 | `VAT_Clause_Code` | string |  |  | ☐ |
-| `VAT_Difference` | int | 0 |  | ☐ |
+| `VAT_Difference` | float | 0 |  | ☐ |
 | `VAT_Identifier` | string | 220 |  | ☐ |
 | `VAT_Prod_Posting_Group` | string | 220 |  | ☐ |
 | `Variant_Code` | string |  |  | ☐ |

@@ -28,10 +28,10 @@
 | `BuyFromContactPhoneNo` | string |  |  | ☐ |
 | `BuyFromContactMobilePhoneNo` | string |  |  | ☐ |
 | `BuyFromContactEmail` | string |  |  | ☐ |
-| `Posting_Date` | string | 2024-01-04 |  | ☐ |
-| `VAT_Reporting_Date` | string | 2024-01-04 |  | ☐ |
-| `Order_Date` | string | 2024-01-04 |  | ☐ |
-| `Document_Date` | string | 2024-01-04 |  | ☐ |
+| `Posting_Date` | date | 2024-01-04 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2024-01-04 |  | ☐ |
+| `Order_Date` | date | 2024-01-04 |  | ☐ |
+| `Document_Date` | date | 2024-01-04 |  | ☐ |
 | `Vendor_Order_No` | string | 538 |  | ☐ |
 | `Vendor_Shipment_No` | string |  |  | ☐ |
 | `Vendor_Invoice_No` | string |  |  | ☐ |
@@ -56,8 +56,8 @@
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Payment_Terms_Code` | string | DF |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
@@ -77,9 +77,9 @@
 | `Inbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Shipment_Method_Code` | string | PFO |  | ☐ |
 | `Lead_Time_Calculation` | string |  |  | ☐ |
-| `Requested_Receipt_Date` | string | 0001-01-01 |  | ☐ |
-| `Promised_Receipt_Date` | string | 0001-01-01 |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Requested_Receipt_Date` | date | 0001-01-01 |  | ☐ |
+| `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Sell_to_Customer_No` | string |  |  | ☐ |
 | `Ship_to_Code` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
@@ -89,6 +89,6 @@
 | `Entry_Point` | string |  |  | ☐ |
 | `Area` | string |  |  | ☐ |
 | `Archived_By` | string | FRANCESCA.RUSSO |  | ☐ |
-| `Date_Archived` | string | 2024-01-04 |  | ☐ |
+| `Date_Archived` | date | 2024-01-04 |  | ☐ |
 | `Time_Archived` | string | 09:46:56.783 |  | ☐ |
 | `Interaction_Exist` | bool | False |  | ☐ |

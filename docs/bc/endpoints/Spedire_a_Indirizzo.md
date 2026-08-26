@@ -37,5 +37,5 @@
 | `Service_Zone_Code` | string |  |  | ☐ |
 | `e_Invoice_Destination_Cod` | string |  |  | ☐ |
 | `FEAdministrativeRef` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 2023-12-22 |  | ☐ |
+| `Last_Date_Modified` | date | 2023-12-22 |  | ☐ |
 | `PRJ_Shipping_Add_Price_Group` | string | COOP |  | ☐ |

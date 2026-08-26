@@ -25,9 +25,9 @@
 | `BuyFromContactMobilePhoneNo` | string |  |  | ☐ |
 | `BuyFromContactEmail` | string |  |  | ☐ |
 | `Buy_from_Contact` | string |  |  | ☐ |
-| `Posting_Date` | string | 2024-01-31 |  | ☐ |
-| `VAT_Reporting_Date` | string | 2024-01-31 |  | ☐ |
-| `Document_Date` | string | 2024-01-14 |  | ☐ |
+| `Posting_Date` | date | 2024-01-31 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2024-01-31 |  | ☐ |
+| `Document_Date` | date | 2024-01-14 |  | ☐ |
 | `Quote_No` | string |  |  | ☐ |
 | `Order_No` | string | 24ODA-0000106 |  | ☐ |
 | `Vendor_Invoice_No` | string | 2/2024 |  | ☐ |
@@ -51,9 +51,9 @@
 | `Resident` | string | Resident |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Fiscal_Code` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Payment_Terms_Code` | string | DF |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
@@ -105,12 +105,12 @@
 | `e_Doc_Format` | string | B2B Invoice |  | ☐ |
 | `e_Doc_Data_Type` | string | Contract |  | ☐ |
 | `Purch_Order_No` | string |  |  | ☐ |
-| `Purch_Order_Date` | string | 0001-01-01 |  | ☐ |
+| `Purch_Order_Date` | date | 0001-01-01 |  | ☐ |
 | `Purch_Order_Line_No` | string |  |  | ☐ |
 | `ADI_Barcode_Printed` | bool | True |  | ☐ |
 | `ADI_Barcode` | string | 24FAE-000001 |  | ☐ |
-| `ADI_Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `ADI_Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `PRJ_Document_Type_EI` | string | TD19 |  | ☐ |
 | `PRJ_Action_Approved_By` | string |  |  | ☐ |
 | `PRJ_Action_Reason_Code` | string |  |  | ☐ |
-| `PRJ_Action_Approve_Date` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `PRJ_Action_Approve_Date` | datetime | 0001-01-01T00:00:00Z |  | ☐ |

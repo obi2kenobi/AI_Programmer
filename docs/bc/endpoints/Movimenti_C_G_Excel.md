@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozk1MTE3NTA4OTkwNzA2MjE4NzQxOz... |  | ☐ |
 | `Entry_No` | int | 140393 |  | ☐ |
-| `Posting_Date` | string | 2026-02-12 |  | ☐ |
+| `Posting_Date` | date | 2026-02-12 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | RETTIFICA |  | ☐ |
 | `G_L_Account_No` | string | ZZZ |  | ☐ |
@@ -26,22 +26,22 @@
 | `Gen_Prod_Posting_Group` | string |  |  | ☐ |
 | `VAT_Bus_Posting_Group` | string |  |  | ☐ |
 | `VAT_Prod_Posting_Group` | string |  |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
 | `Amount` | float | -8.23 |  | ☐ |
 | `Source_Currency_Code` | string |  |  | ☐ |
 | `Source_Currency_Amount` | float | -8.23 |  | ☐ |
-| `Source_Currency_VAT_Amount` | int | 0 |  | ☐ |
-| `Src_Curr_Non_Ded_VAT_Amount` | int | 0 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
+| `Source_Currency_VAT_Amount` | float | 0 |  | ☐ |
+| `Src_Curr_Non_Ded_VAT_Amount` | float | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
 | `Credit_Amount` | float | 8.23 |  | ☐ |
-| `RunningBalance` | int | 0 |  | ☐ |
-| `Additional_Currency_Amount` | int | 0 |  | ☐ |
-| `RunningBalanceACY` | int | 0 |  | ☐ |
-| `VAT_Amount` | int | 0 |  | ☐ |
-| `NonDeductibleVATAmount` | int | 0 |  | ☐ |
+| `RunningBalance` | float | 0 |  | ☐ |
+| `Additional_Currency_Amount` | float | 0 |  | ☐ |
+| `RunningBalanceACY` | float | 0 |  | ☐ |
+| `VAT_Amount` | float | 0 |  | ☐ |
+| `NonDeductibleVATAmount` | float | 0 |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
 | `Bal_Account_No` | string |  |  | ☐ |
-| `VAT_Reporting_Date` | string | 2026-02-12 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2026-02-12 |  | ☐ |
 | `User_ID` | string | LUCA |  | ☐ |
 | `Source_Code` | string | COGE |  | ☐ |
 | `Source_Type` | string |   |  | ☐ |
@@ -63,12 +63,12 @@
 | `Shortcut_Dimension_7_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_8_Code` | string |  |  | ☐ |
 | `Periods_Competence_ANW` | int | 0 |  | ☐ |
-| `Starting_Date_Competence_ANW` | string | 0001-01-01 |  | ☐ |
-| `Ending_Date_Competence_ANW` | string | 0001-01-01 |  | ☐ |
+| `Starting_Date_Competence_ANW` | date | 0001-01-01 |  | ☐ |
+| `Ending_Date_Competence_ANW` | date | 0001-01-01 |  | ☐ |
 | `Competence_Type_ANW` | string |   |  | ☐ |
 | `Comp_Posting_Type_ANW` | string |   |  | ☐ |
 | `Chiusura_Apertura` | bool | False |  | ☐ |
 | `FTNCCarichiSpedizioniResi` | bool | False |  | ☐ |
 | `Codice_univoco_chiusura_IMC` | string |  |  | ☐ |
-| `Data_chiusura_IMC` | string | 0001-01-01 |  | ☐ |
+| `Data_chiusura_IMC` | date | 0001-01-01 |  | ☐ |
 | `DescriptionDocFin` | string |  |  | ☐ |

@@ -21,7 +21,7 @@
 | `Additional_Notes` | string |  |  | ☐ |
 | `Allow_Line_Disc` | bool | True |  | ☐ |
 | `Amount` | float | 654.92 |  | ☐ |
-| `Amount_Including_VAT` | int | 799 |  | ☐ |
+| `Amount_Including_VAT` | float | 799 |  | ☐ |
 | `Applies_to_Doc_No` | string |  |  | ☐ |
 | `Applies_to_Doc_Type` | string |   |  | ☐ |
 | `Applies_to_ID` | string |  |  | ☐ |
@@ -52,14 +52,14 @@
 | `Correction` | bool | False |  | ☐ |
 | `Cumulative_Bank_Receipts` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
 | `Cust_Item_Disc_Gr` | string |  |  | ☐ |
 | `Customer_Posting_Group` | string | PRIV |  | ☐ |
-| `Date_Archived` | string | 2024-06-18 |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_Archived` | date | 2024-06-18 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 1 |  | ☐ |
-| `Document_Date` | string | 2024-03-18 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2024-03-18 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
 | `Exit_Point` | string | EXW |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
@@ -74,7 +74,7 @@
 | `Invoice` | bool | False |  | ☐ |
 | `Invoice_Disc_Code` | string | 500207 |  | ☐ |
 | `Invoice_Discount_Calculation` | string | None |  | ☐ |
-| `Invoice_Discount_Value` | int | 0 |  | ☐ |
+| `Invoice_Discount_Value` | float | 0 |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
 | `Last_Posting_No` | string |  |  | ☐ |
@@ -88,47 +88,47 @@
 | `No_Series` | string | V-OFFER |  | ☐ |
 | `No_of_Archived_Versions` | int | 2 |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-03-18 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-03-18 |  | ☐ |
 | `Operation_Type` | string | FT-VEN-IT+ |  | ☐ |
 | `Opportunity_No` | string |  |  | ☐ |
 | `Order_Class` | string |  |  | ☐ |
-| `Order_Date` | string | 2024-03-18 |  | ☐ |
+| `Order_Date` | date | 2024-03-18 |  | ☐ |
 | `Outbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Package_Tracking_No` | string |  |  | ☐ |
-| `Payment_Percent` | int | 0 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Percent` | float | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Terms_Code` | string | ORDINE |  | ☐ |
 | `Place_of_Birth` | string |  |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `Posting_Description` | string | Offerta 24OFFV-000001 |  | ☐ |
 | `Posting_No` | string |  |  | ☐ |
 | `Posting_No_Series` | string | FT-VEN-IT+ |  | ☐ |
 | `Posting_from_Whse_Ref` | int | 0 |  | ☐ |
-| `Prepayment_Percent` | int | 100 |  | ☐ |
-| `Prepayment_Due_Date` | string | 2024-03-31 |  | ☐ |
+| `Prepayment_Percent` | float | 100 |  | ☐ |
+| `Prepayment_Due_Date` | date | 2024-03-31 |  | ☐ |
 | `Prepayment_No` | string |  |  | ☐ |
 | `Prepayment_No_Series` | string | FT-VEN-IT+ |  | ☐ |
 | `Prepmt_CM_Refers_to_Period` | string |   |  | ☐ |
 | `Prepmt_Cr_Memo_No` | string |  |  | ☐ |
 | `Prepmt_Cr_Memo_No_Series` | string | FT-VEN-IT+ |  | ☐ |
-| `Prepmt_Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Prepmt_Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Prepmt_Payment_Terms_Code` | string | ORDINE |  | ☐ |
-| `Prepmt_Pmt_Discount_Date` | string | 2024-03-18 |  | ☐ |
+| `Prepmt_Pmt_Discount_Date` | date | 2024-03-18 |  | ☐ |
 | `Prepmt_Posting_Description` | string |  |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |
 | `Price_Group_Code` | string | LCDL |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
-| `Promised_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Promised_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `Quote_Accepted` | bool | False |  | ☐ |
-| `Quote_Accepted_Date` | string | 0001-01-01 |  | ☐ |
-| `Quote_Sent_to_Customer` | string | 0001-01-01T00:00:00Z |  | ☐ |
-| `Quote_Valid_Until_Date` | string | 0001-01-01 |  | ☐ |
+| `Quote_Accepted_Date` | date | 0001-01-01 |  | ☐ |
+| `Quote_Sent_to_Customer` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
+| `Quote_Valid_Until_Date` | date | 0001-01-01 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Receive` | bool | False |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
-| `Requested_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Requested_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `Reserve` | string | Optional |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
@@ -164,7 +164,7 @@
 | `Ship_to_Name` | string | Antonio Lipari |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string | 6000 KOPER |  | ☐ |
-| `Shipment_Date` | string | 2024-03-18 |  | ☐ |
+| `Shipment_Date` | date | 2024-03-18 |  | ☐ |
 | `Shipment_Method_Code` | string | EXW |  | ☐ |
 | `Shipping_Advice` | string | Partial |  | ☐ |
 | `Shipping_Agent_Code` | string |  |  | ☐ |
@@ -184,7 +184,7 @@
 | `Transaction_Specification` | string |  |  | ☐ |
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | SI |  | ☐ |
 | `VAT_Registration_No` | string | SI46883304 |  | ☐ |

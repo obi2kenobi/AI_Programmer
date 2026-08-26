@@ -11,10 +11,10 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzEwNTIxMjU3MzkzNzM1MzU0NDAxOz... |  | ☐ |
 | `Entry_No` | int | 168275 |  | ☐ |
-| `Posting_Date` | string | 2026-08-26 |  | ☐ |
-| `Document_Date` | string | 2026-08-10 |  | ☐ |
-| `Invoice_Received_Date` | string | 0001-01-01 |  | ☐ |
-| `SCF_Payment_Date` | string | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2026-08-26 |  | ☐ |
+| `Document_Date` | date | 2026-08-10 |  | ☐ |
+| `Invoice_Received_Date` | date | 0001-01-01 |  | ☐ |
+| `SCF_Payment_Date` | date | 0001-01-01 |  | ☐ |
 | `Document_Type` | string | Invoice |  | ☐ |
 | `Document_No` | string | 26FAR-000024 |  | ☐ |
 | `External_Document_No` | string | IT60040WKTGONI |  | ☐ |
@@ -35,23 +35,23 @@
 | `Original_Amt_LCY` | float | -14.75 |  | ☐ |
 | `Amount` | float | -14.75 |  | ☐ |
 | `Amount_LCY` | float | -14.75 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
-| `Debit_Amount_LCY` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
+| `Debit_Amount_LCY` | float | 0 |  | ☐ |
 | `Credit_Amount` | float | 14.75 |  | ☐ |
 | `Credit_Amount_LCY` | float | 14.75 |  | ☐ |
-| `RunningBalanceLCY` | int | 0 |  | ☐ |
+| `RunningBalanceLCY` | float | 0 |  | ☐ |
 | `Remaining_Amount` | float | -14.75 |  | ☐ |
 | `Remaining_Amt_LCY` | float | -14.75 |  | ☐ |
-| `Int_Arrears_Amount_to_Pay` | int | 0 |  | ☐ |
-| `Paid_Int_Arrears_Amount` | int | 0 |  | ☐ |
+| `Int_Arrears_Amount_to_Pay` | float | 0 |  | ☐ |
+| `Paid_Int_Arrears_Amount` | float | 0 |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
 | `Bal_Account_No` | string | B014 |  | ☐ |
-| `Due_Date` | string | 2026-08-10 |  | ☐ |
-| `Pmt_Discount_Date` | string | 2026-08-10 |  | ☐ |
-| `Pmt_Disc_Tolerance_Date` | string | 2026-08-10 |  | ☐ |
-| `Original_Pmt_Disc_Possible` | int | 0 |  | ☐ |
-| `Remaining_Pmt_Disc_Possible` | int | 0 |  | ☐ |
-| `Max_Payment_Tolerance` | int | 0 |  | ☐ |
+| `Due_Date` | date | 2026-08-10 |  | ☐ |
+| `Pmt_Discount_Date` | date | 2026-08-10 |  | ☐ |
+| `Pmt_Disc_Tolerance_Date` | date | 2026-08-10 |  | ☐ |
+| `Original_Pmt_Disc_Possible` | float | 0 |  | ☐ |
+| `Remaining_Pmt_Disc_Possible` | float | 0 |  | ☐ |
+| `Max_Payment_Tolerance` | float | 0 |  | ☐ |
 | `Open` | bool | True |  | ☐ |
 | `Dispute_Status` | string |  |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
@@ -77,7 +77,7 @@
 | `Shortcut_Dimension_6_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_7_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_8_Code` | string |  |  | ☐ |
-| `Closed_at_Date` | string | 0001-01-01 |  | ☐ |
+| `Closed_at_Date` | date | 0001-01-01 |  | ☐ |
 | `Remit_to_Code` | string |  |  | ☐ |
 | `Recurring_Billing` | bool | False |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |

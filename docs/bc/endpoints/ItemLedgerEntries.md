@@ -14,27 +14,27 @@
 | `Item_Reference_No` | string |  |  | ☐ |
 | `Lot_No` | string | LOTTO 31122023 |  | ☐ |
 | `Item_Category_Code` | string | COMP |  | ☐ |
-| `Posting_Date` | string | 2023-12-27 |  | ☐ |
-| `Expiration_Date` | string | 0001-01-01 |  | ☐ |
-| `Warranty_Date` | string | 0001-01-01 |  | ☐ |
-| `Document_Date` | string | 2023-12-27 |  | ☐ |
+| `Posting_Date` | date | 2023-12-27 |  | ☐ |
+| `Expiration_Date` | date | 0001-01-01 |  | ☐ |
+| `Warranty_Date` | date | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2023-12-27 |  | ☐ |
 | `Document_No` | string | INV |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
 | `Job_Task_No` | string |  |  | ☐ |
 | `Open` | bool | False |  | ☐ |
-| `Quantity` | int | 219 |  | ☐ |
+| `Quantity` | float | 219 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 1 |  | ☐ |
-| `Remaining_Quantity` | int | 0 |  | ☐ |
-| `Invoiced_Quantity` | int | 219 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 1 |  | ☐ |
+| `Remaining_Quantity` | float | 0 |  | ☐ |
+| `Invoiced_Quantity` | float | 219 |  | ☐ |
 | `Dimension_Set_ID` | int | 4 |  | ☐ |
-| `Cost_Amount_Expected` | int | 0 |  | ☐ |
+| `Cost_Amount_Expected` | float | 0 |  | ☐ |
 | `Cost_Amount_Actual` | float | 197.24 |  | ☐ |
-| `Cost_Amount_Non_Invtbl` | int | 0 |  | ☐ |
-| `Purchase_Amount_Expected` | int | 0 |  | ☐ |
-| `Purchase_Amount_Actual` | int | 0 |  | ☐ |
-| `Sales_Amount_Expected` | int | 0 |  | ☐ |
-| `Sales_Amount_Actual` | int | 0 |  | ☐ |
+| `Cost_Amount_Non_Invtbl` | float | 0 |  | ☐ |
+| `Purchase_Amount_Expected` | float | 0 |  | ☐ |
+| `Purchase_Amount_Actual` | float | 0 |  | ☐ |
+| `Sales_Amount_Expected` | float | 0 |  | ☐ |
+| `Sales_Amount_Actual` | float | 0 |  | ☐ |
 | `Item_Description` | string | Tav imballaggio Smussate 22x100x1140 |  | ☐ |

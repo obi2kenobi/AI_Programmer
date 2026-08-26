@@ -13,13 +13,13 @@
 | `No` | string | 23OFFA-0000001 |  | ☐ |
 | `_x0033_rd_Party_Loader_No` | string |  |  | ☐ |
 | `_x0033_rd_Party_Loader_Type` | string |   |  | ☐ |
-| `A_Rcd_Not_Inv_Ex_VAT_LCY` | int | 0 |  | ☐ |
+| `A_Rcd_Not_Inv_Ex_VAT_LCY` | float | 0 |  | ☐ |
 | `Additional_Information` | string |  |  | ☐ |
 | `Additional_Instructions` | string |  |  | ☐ |
 | `Additional_Notes` | string |  |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Amount_Including_VAT` | int | 0 |  | ☐ |
-| `Amt_Rcd_Not_Invoiced_LCY` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Amount_Including_VAT` | float | 0 |  | ☐ |
+| `Amt_Rcd_Not_Invoiced_LCY` | float | 0 |  | ☐ |
 | `Applies_to_Doc_No` | string |  |  | ☐ |
 | `Applies_to_Doc_Type` | string |   |  | ☐ |
 | `Applies_to_ID` | string |  |  | ☐ |
@@ -43,22 +43,22 @@
 | `Buy_from_Vendor_Name_2` | string |  |  | ☐ |
 | `Buy_from_Vendor_No` | string | 0000166 |  | ☐ |
 | `Campaign_No` | string |  |  | ☐ |
-| `Check_Total` | int | 0 |  | ☐ |
+| `Check_Total` | float | 0 |  | ☐ |
 | `Comment` | bool | False |  | ☐ |
 | `Completely_Received` | bool | False |  | ☐ |
 | `Compress_Prepayment` | bool | True |  | ☐ |
 | `Correction` | bool | False |  | ☐ |
 | `Creditor_No` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
 | `Doc_No_Occurrence` | int | 1 |  | ☐ |
-| `Document_Date` | string | 2023-12-28 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2023-12-28 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Fiscal_Code` | string | 04228360485 |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
@@ -69,10 +69,10 @@
 | `Individual_Person` | bool | False |  | ☐ |
 | `Invoice` | bool | False |  | ☐ |
 | `Invoice_Disc_Code` | string | 0000166 |  | ☐ |
-| `Invoice_Discount_Amount` | int | 0 |  | ☐ |
+| `Invoice_Discount_Amount` | float | 0 |  | ☐ |
 | `Invoice_Discount_Calculation` | string | None |  | ☐ |
-| `Invoice_Discount_Value` | int | 0 |  | ☐ |
-| `Job_Queue_Entry_ID` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `Invoice_Discount_Value` | float | 0 |  | ☐ |
+| `Job_Queue_Entry_ID` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `Job_Queue_Status` | string |   |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
@@ -88,11 +88,11 @@
 | `No_Series` | string | A-OFFER |  | ☐ |
 | `No_of_Archived_Versions` | int | 0 |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2023-12-28 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2023-12-28 |  | ☐ |
 | `Operation_Type` | string | FT-ACQ-IT+ |  | ☐ |
 | `Order_Address_Code` | string |  |  | ☐ |
 | `Order_Class` | string |  |  | ☐ |
-| `Order_Date` | string | 2023-12-28 |  | ☐ |
+| `Order_Date` | date | 2023-12-28 |  | ☐ |
 | `Partially_Invoiced` | bool | False |  | ☐ |
 | `Pay_to_Address` | string | Via Ayrton Senna 15-17-19 |  | ☐ |
 | `Pay_to_Address_2` | string |  |  | ☐ |
@@ -106,32 +106,32 @@
 | `Pay_to_Name_2` | string |  |  | ☐ |
 | `Pay_to_Post_Code` | string | 56028 |  | ☐ |
 | `Pay_to_Vendor_No` | string | 0000166 |  | ☐ |
-| `Payment_Percent` | int | 100 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Percent` | float | 100 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | RIBA |  | ☐ |
 | `Payment_Reference` | string |  |  | ☐ |
 | `Payment_Terms_Code` | string | 120FM15 |  | ☐ |
 | `Pending_Approvals` | int | 0 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `Posting_Description` | string | Offerta 23OFFA-0000001 |  | ☐ |
 | `Posting_No` | string |  |  | ☐ |
 | `Posting_No_Series` | string | FT-ACQ-IT+ |  | ☐ |
 | `Posting_from_Whse_Ref` | int | 0 |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
-| `Prepayment_Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
+| `Prepayment_Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Prepayment_No` | string |  |  | ☐ |
 | `Prepayment_No_Series` | string | FT-ACQ-IT+ |  | ☐ |
 | `Prepmt_CM_Refers_to_Period` | string |   |  | ☐ |
 | `Prepmt_Cr_Memo_No` | string |  |  | ☐ |
 | `Prepmt_Cr_Memo_No_Series` | string | FT-ACQ-IT+ |  | ☐ |
-| `Prepmt_Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Prepmt_Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Prepmt_Payment_Terms_Code` | string |  |  | ☐ |
-| `Prepmt_Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
+| `Prepmt_Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
 | `Prepmt_Posting_Description` | string |  |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
 | `Print_Posted_Documents` | bool | False |  | ☐ |
-| `Promised_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Purchaser_Code` | string |  |  | ☐ |
 | `Quote_No` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
@@ -141,7 +141,7 @@
 | `Receiving_No_Series` | string | A-RIC |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
-| `Requested_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Requested_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Return_Shipment_No` | string |  |  | ☐ |
@@ -177,7 +177,7 @@
 | `Transaction_Specification` | string |  |  | ☐ |
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 04228360485 |  | ☐ |

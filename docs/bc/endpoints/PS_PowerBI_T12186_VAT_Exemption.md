@@ -11,14 +11,14 @@
 | `@odata.etag` | string | W/"JzE5OzEyNjg5MDE0MzA0MzU4ODgzMjIxOz... |  | ☐ |
 | `Type` | string | Customer |  | ☐ |
 | `No` | string | 0006486 |  | ☐ |
-| `VAT_Exempt_Starting_Date` | string | 2024-01-01 |  | ☐ |
-| `VAT_Exempt_Ending_Date` | string | 2024-12-31 |  | ☐ |
+| `VAT_Exempt_Starting_Date` | date | 2024-01-01 |  | ☐ |
+| `VAT_Exempt_Ending_Date` | date | 2024-12-31 |  | ☐ |
 | `VAT_Exempt_No` | string | 23121908425161410 |  | ☐ |
 | `Consecutive_VAT_Exempt_No` | string | 000001 |  | ☐ |
-| `Declared_Operations_Up_To_Amt` | int | 750000 |  | ☐ |
+| `Declared_Operations_Up_To_Amt` | float | 750000 |  | ☐ |
 | `No_Series` | string | INTENTO |  | ☐ |
-| `VAT_Exempt_Date` | string | 2023-12-19 |  | ☐ |
-| `VAT_Exempt_Int_Registry_Date` | string | 0001-01-01 |  | ☐ |
+| `VAT_Exempt_Date` | date | 2023-12-19 |  | ☐ |
+| `VAT_Exempt_Int_Registry_Date` | date | 0001-01-01 |  | ☐ |
 | `VAT_Exempt_Int_Registry_No` | string | INT23-000001 |  | ☐ |
 | `VAT_Exempt_Office` | string |  |  | ☐ |
 | `Printed` | bool | False |  | ☐ |

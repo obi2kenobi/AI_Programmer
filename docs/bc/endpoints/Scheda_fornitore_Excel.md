@@ -14,12 +14,12 @@
 | `Name_2` | string |  |  | ☐ |
 | `Blocked` | string |   |  | ☐ |
 | `Privacy_Blocked` | bool | False |  | ☐ |
-| `Last_Date_Modified` | string | 2024-03-14 |  | ☐ |
+| `Last_Date_Modified` | date | 2024-03-14 |  | ☐ |
 | `Fiscal_Code` | string | 02385110461 |  | ☐ |
 | `Special_Category` | string |   |  | ☐ |
-| `Balance_LCY` | int | 0 |  | ☐ |
-| `BalanceAsCustomer` | int | 0 |  | ☐ |
-| `Balance_Due_LCY` | int | 0 |  | ☐ |
+| `Balance_LCY` | float | 0 |  | ☐ |
+| `BalanceAsCustomer` | float | 0 |  | ☐ |
+| `Balance_Due_LCY` | float | 0 |  | ☐ |
 | `Document_Sending_Profile` | string |  |  | ☐ |
 | `Search_Name` | string | JACER - CZ, A.S. |  | ☐ |
 | `IC_Partner_Code` | string |  |  | ☐ |
@@ -79,7 +79,7 @@
 | `First_Name` | string |  |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
 | `Residence_County` | string |  |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Birth_Post_Code` | string |  |  | ☐ |
 | `Birth_City` | string |  |  | ☐ |
 | `Birth_County` | string |  |  | ☐ |
@@ -87,16 +87,16 @@
 | `Individual_Person` | bool | False |  | ☐ |
 | `Withholding_Tax_Code` | string |  |  | ☐ |
 | `Social_Security_Code` | string |  |  | ☐ |
-| `Soc_Sec_Company_Base` | int | 0 |  | ☐ |
-| `Soc_Sec_3_Parties_Base` | int | 0 |  | ☐ |
+| `Soc_Sec_Company_Base` | float | 0 |  | ☐ |
+| `Soc_Sec_3_Parties_Base` | float | 0 |  | ☐ |
 | `Country_of_Fiscal_Domicile` | string |  |  | ☐ |
 | `Contribution_Fiscal_Code` | string |  |  | ☐ |
 | `INAIL_Code` | string |  |  | ☐ |
-| `INAIL_Company_Base` | int | 0 |  | ☐ |
-| `INAIL_3_Parties_Base` | int | 0 |  | ☐ |
+| `INAIL_Company_Base` | float | 0 |  | ☐ |
+| `INAIL_3_Parties_Base` | float | 0 |  | ☐ |
 | `First_Name2` | string |  |  | ☐ |
 | `Last_Name2` | string |  |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
 | `Application_Method` | string | Manual |  | ☐ |
 | `Payment_Terms_Code` | string | 60DF |  | ☐ |
 | `Prepmt_Payment_Terms_Code` | string |  |  | ☐ |
@@ -132,7 +132,7 @@
 | `With_Cross_Ref` | bool | False |  | ☐ |
 | `With_Price` | bool | False |  | ☐ |
 | `With_Qty` | bool | False |  | ☐ |
-| `Standard_Price_Deviation` | int | 0 |  | ☐ |
+| `Standard_Price_Deviation` | float | 0 |  | ☐ |
 | `G_L_Account` | string |  |  | ☐ |
 | `Default_area_code` | string |  |  | ☐ |
 | `Default_Transaction_Specification` | string |  |  | ☐ |

@@ -11,36 +11,36 @@
 | `@odata.etag` | string | W/"JzE5OzIxMTY3OTgxNjQ3MTcxNjUwNjYxOz... |  | ☐ |
 | `Status` | string | Simulated |  | ☐ |
 | `No` | string | 24OS-00001 |  | ☐ |
-| `Actual_Time_Used` | int | 0 |  | ☐ |
-| `Allocated_Capacity_Need` | int | 0 |  | ☐ |
+| `Actual_Time_Used` | float | 0 |  | ☐ |
+| `Allocated_Capacity_Need` | float | 0 |  | ☐ |
 | `Assigned_User_ID` | string |  |  | ☐ |
 | `Bin_Code` | string |  |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |
 | `Comment` | bool | False |  | ☐ |
 | `Completely_Picked` | bool | False |  | ☐ |
-| `Cost_Amount` | int | 0 |  | ☐ |
-| `Creation_Date` | string | 2024-05-20 |  | ☐ |
+| `Cost_Amount` | float | 0 |  | ☐ |
+| `Creation_Date` | date | 2024-05-20 |  | ☐ |
 | `Description` | string | FRON. CAS. PROF.BLK. 25 MM PEDAGOGICA SP |  | ☐ |
 | `Description_2` | string |  |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
-| `Due_Date` | string | 2024-05-20 |  | ☐ |
-| `Ending_Date_Time` | string | 2024-05-20T16:00:00Z |  | ☐ |
-| `Expected_Capacity_Need` | int | 0 |  | ☐ |
-| `Expected_Capacity_Ovhd_Cost` | int | 0 |  | ☐ |
-| `Expected_Component_Cost_Amt` | int | 0 |  | ☐ |
-| `Expected_Material_Ovhd_Cost` | int | 0 |  | ☐ |
-| `Expected_Operation_Cost_Amt` | int | 0 |  | ☐ |
-| `Finished_Date` | string | 0001-01-01 |  | ☐ |
+| `Due_Date` | date | 2024-05-20 |  | ☐ |
+| `Ending_Date_Time` | datetime | 2024-05-20T16:00:00Z |  | ☐ |
+| `Expected_Capacity_Need` | float | 0 |  | ☐ |
+| `Expected_Capacity_Ovhd_Cost` | float | 0 |  | ☐ |
+| `Expected_Component_Cost_Amt` | float | 0 |  | ☐ |
+| `Expected_Material_Ovhd_Cost` | float | 0 |  | ☐ |
+| `Expected_Operation_Cost_Amt` | float | 0 |  | ☐ |
+| `Finished_Date` | date | 0001-01-01 |  | ☐ |
 | `Firm_Planned_Order_No` | string |  |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
 | `Inventory_Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
-| `Last_Date_Modified` | string | 0001-01-01 |  | ☐ |
+| `Last_Date_Modified` | date | 0001-01-01 |  | ☐ |
 | `Location_Code` | string | RF_ESP |  | ☐ |
 | `Low_Level_Code` | int | 0 |  | ☐ |
 | `No_Series` | string | OP-SIM |  | ☐ |
 | `Planned_Order_No` | string |  |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
 | `Replan_Ref_No` | string | 24OS-00001 |  | ☐ |
 | `Replan_Ref_Status` | string | Simulated |  | ☐ |
 | `Routing_No` | string |  |  | ☐ |
@@ -50,8 +50,8 @@
 | `Simulated_Order_No` | string |  |  | ☐ |
 | `Source_No` | string | FRON25PEDASP134XX36 |  | ☐ |
 | `Source_Type` | string | Item |  | ☐ |
-| `Starting_Date_Time` | string | 2024-05-20T07:00:00Z |  | ☐ |
-| `Unit_Cost` | int | 0 |  | ☐ |
+| `Starting_Date_Time` | datetime | 2024-05-20T07:00:00Z |  | ☐ |
+| `Unit_Cost` | float | 0 |  | ☐ |
 | `Capacity_Type_Filter` | string |  |  | ☐ |
 | `Capacity_No_Filter` | string |  |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |

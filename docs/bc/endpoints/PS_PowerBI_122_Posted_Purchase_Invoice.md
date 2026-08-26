@@ -39,29 +39,29 @@
 | `Corrective` | bool | False |  | ☐ |
 | `Creditor_No` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
-| `Document_Date` | string | 2024-01-14 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2024-01-14 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Fiscal_Code` | string |  |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | FOR_EXUE |  | ☐ |
 | `Individual_Person` | bool | False |  | ☐ |
 | `Invoice_Disc_Code` | string | 600012 |  | ☐ |
-| `Invoice_Discount_Amount` | int | 0 |  | ☐ |
+| `Invoice_Discount_Amount` | float | 0 |  | ☐ |
 | `Language_Code` | string |  |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
 | `Location_Code` | string | SD |  | ☐ |
 | `No_Printed` | int | 0 |  | ☐ |
 | `No_Series` | string | FT-ACQ-EXUE+ |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-01-31 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-01-31 |  | ☐ |
 | `Operation_Type` | string | FT-ACQ-EXUE+ |  | ☐ |
 | `Order_Address_Code` | string |  |  | ☐ |
-| `Order_Date` | string | 2024-01-11 |  | ☐ |
+| `Order_Date` | date | 2024-01-11 |  | ☐ |
 | `Order_No` | string | 24ODA-0000106 |  | ☐ |
 | `Order_No_Series` | string | A-ORD |  | ☐ |
 | `Pay_to_Address` | string | Hasan bega Biscevica br.32 |  | ☐ |
@@ -75,12 +75,12 @@
 | `Pay_to_Name_2` | string |  |  | ☐ |
 | `Pay_to_Post_Code` | string | 77101 |  | ☐ |
 | `Pay_to_Vendor_No` | string | 600012 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Reference` | string |  |  | ☐ |
 | `Payment_Terms_Code` | string | DF |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2024-01-31 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2024-01-31 |  | ☐ |
 | `Posting_Description` | string | Ordine 24ODA-0000106 |  | ☐ |
 | `Pre_Assigned_No` | string |  |  | ☐ |
 | `Pre_Assigned_No_Series` | string |  |  | ☐ |
@@ -92,7 +92,7 @@
 | `Quote_No` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
-| `Remaining_Amount` | int | 0 |  | ☐ |
+| `Remaining_Amount` | float | 0 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Sell_to_Customer_No` | string | 0004608 |  | ☐ |
@@ -117,7 +117,7 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `User_ID` | string | FRANCESCA.RUSSO |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_EXUE |  | ☐ |
 | `VAT_Country_Region_Code` | string | BA |  | ☐ |
 | `VAT_Registration_No` | string | 4263845830008 |  | ☐ |
@@ -127,6 +127,6 @@
 | `Vendor_Posting_Group` | string | FOR_EXUE |  | ☐ |
 | `Your_Reference` | string | 1006016606 |  | ☐ |
 | `Activity_Code` | string |  |  | ☐ |
-| `Document_Remaining_Amount` | int | 0 |  | ☐ |
-| `Draft_Invoice_SystemId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `Document_Remaining_Amount` | float | 0 |  | ☐ |
+| `Draft_Invoice_SystemId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |

@@ -11,11 +11,11 @@
 | `@odata.etag` | string | W/"JzIwOzE1NzgyNzg3MDA0ODE4MTM2OTg3MT... |  | ☐ |
 | `Standard_Sales_Code` | string | CERTIFICAT |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
-| `Amount_Excl_VAT` | int | 0 |  | ☐ |
+| `Amount_Excl_VAT` | float | 0 |  | ☐ |
 | `Description` | string | 100% CERTIFICATO PEFC SGSCH-PEFC-COC-... |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
 | `No` | string | CONSEGNA CON SPONDA |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Type` | string |   |  | ☐ |

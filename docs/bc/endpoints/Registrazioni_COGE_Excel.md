@@ -15,13 +15,13 @@
 | `Line_No` | int | 10000 |  | ☐ |
 | `CurrentJnlBatchName` | string |  |  | ☐ |
 | `_x003C_Document_No_Simple_Page_x003E_` | string |  |  | ☐ |
-| `_x003C_CurrentPostingDate_x003E_` | string | 0001-01-01 |  | ☐ |
+| `_x003C_CurrentPostingDate_x003E_` | date | 0001-01-01 |  | ☐ |
 | `_x003C_CurrentCurrencyCode_x003E_` | string |  |  | ☐ |
 | `GenJnlBatchApprovalStatus` | string |  |  | ☐ |
-| `Posting_Date` | string | 2026-06-30 |  | ☐ |
-| `VAT_Reporting_Date` | string | 2026-06-30 |  | ☐ |
-| `Operation_Occurred_Date` | string | 2026-06-30 |  | ☐ |
-| `Document_Date` | string | 2026-06-30 |  | ☐ |
+| `Posting_Date` | date | 2026-06-30 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2026-06-30 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2026-06-30 |  | ☐ |
+| `Document_Date` | date | 2026-06-30 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | AMM_30_06_27 |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
@@ -49,29 +49,29 @@
 | `Resident` | string | Resident |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Place_of_Birth` | string |  |  | ☐ |
 | `Fiscal_Code` | string |  |  | ☐ |
 | `Country_Region_Code` | string |  |  | ☐ |
 | `VAT_Registration_No` | string |  |  | ☐ |
 | `VAT_Prod_Posting_Group` | string |  |  | ☐ |
 | `Posting_Group` | string |  |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Amount_LCY` | int | 0 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
-| `VAT_Amount` | int | 0 |  | ☐ |
-| `VAT_Difference` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Amount_LCY` | float | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
+| `VAT_Amount` | float | 0 |  | ☐ |
+| `VAT_Difference` | float | 0 |  | ☐ |
 | `Include_in_VAT_Transac_Rep` | bool | False |  | ☐ |
-| `Bal_VAT_Amount` | int | 0 |  | ☐ |
-| `Bal_VAT_Difference` | int | 0 |  | ☐ |
+| `Bal_VAT_Amount` | float | 0 |  | ☐ |
+| `Bal_VAT_Difference` | float | 0 |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
 | `Bal_Account_No` | string |  |  | ☐ |
 | `Sust_Account_No` | string |  |  | ☐ |
-| `Total_Emission_CO2` | int | 0 |  | ☐ |
-| `Total_Emission_CH4` | int | 0 |  | ☐ |
-| `Total_Emission_N2O` | int | 0 |  | ☐ |
+| `Total_Emission_CO2` | float | 0 |  | ☐ |
+| `Total_Emission_CH4` | float | 0 |  | ☐ |
+| `Total_Emission_N2O` | float | 0 |  | ☐ |
 | `Bal_Gen_Posting_Type` | string |   |  | ☐ |
 | `Bal_Gen_Bus_Posting_Group` | string |  |  | ☐ |
 | `Bal_Gen_Prod_Posting_Group` | string |  |  | ☐ |
@@ -105,14 +105,14 @@
 | `ShortcutDimCode8` | string |  |  | ☐ |
 | `Competence_Type_ANW` | string |   |  | ☐ |
 | `Periods_Competence_ANW` | int | 0 |  | ☐ |
-| `Starting_Date_Competence_ANW` | string | 0001-01-01 |  | ☐ |
-| `Ending_Date_Competence_ANW` | string | 0001-01-01 |  | ☐ |
+| `Starting_Date_Competence_ANW` | date | 0001-01-01 |  | ☐ |
+| `Ending_Date_Competence_ANW` | date | 0001-01-01 |  | ☐ |
 | `Comp_Posting_Type_ANW` | string |   |  | ☐ |
 | `CodiceRF` | string |  |  | ☐ |
 | `NumberOfJournalRecords` | int | 0 |  | ☐ |
 | `AccName` | string | Fondo Amm. Fabbricati Industriali |  | ☐ |
 | `BalAccName` | string |  |  | ☐ |
-| `DisplayTotalDebit` | int | 0 |  | ☐ |
-| `DisplayTotalCredit` | int | 0 |  | ☐ |
-| `Balance` | int | 0 |  | ☐ |
-| `TotalBalance` | int | 0 |  | ☐ |
+| `DisplayTotalDebit` | float | 0 |  | ☐ |
+| `DisplayTotalCredit` | float | 0 |  | ☐ |
+| `Balance` | float | 0 |  | ☐ |
+| `TotalBalance` | float | 0 |  | ☐ |

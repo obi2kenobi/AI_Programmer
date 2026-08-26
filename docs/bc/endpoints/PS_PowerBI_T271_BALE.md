@@ -17,16 +17,16 @@
 | `Bank_Acc_Posting_Group` | string | DEUTSCHE BANK C/C |  | ☐ |
 | `Bank_Account_No` | string | B004 |  | ☐ |
 | `Check_Ledger_Entries` | int | 0 |  | ☐ |
-| `Closed_at_Date` | string | 0001-01-01 |  | ☐ |
+| `Closed_at_Date` | date | 0001-01-01 |  | ☐ |
 | `Closed_by_Entry_No` | int | 0 |  | ☐ |
 | `Credit_Amount` | float | 1801.22 |  | ☐ |
 | `Credit_Amount_LCY` | float | 1801.22 |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
-| `Debit_Amount_LCY` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
+| `Debit_Amount_LCY` | float | 0 |  | ☐ |
 | `Description` | string | RataLeasing    |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
-| `Document_Date` | string | 2024-01-02 |  | ☐ |
+| `Document_Date` | date | 2024-01-02 |  | ☐ |
 | `Document_No` | string | 24DF-0000002 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
@@ -36,7 +36,7 @@
 | `Open` | bool | True |  | ☐ |
 | `Our_Contact_Code` | string |  |  | ☐ |
 | `Positive` | bool | False |  | ☐ |
-| `Posting_Date` | string | 2024-01-02 |  | ☐ |
+| `Posting_Date` | date | 2024-01-02 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Remaining_Amount` | float | -1801.22 |  | ☐ |
 | `Reversed` | bool | False |  | ☐ |

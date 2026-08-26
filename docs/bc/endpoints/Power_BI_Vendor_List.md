@@ -11,11 +11,11 @@
 |---|---|---|---|---|
 | `Vendor_No` | string | 000000000000004 |  | ☐ |
 | `Vendor_Name` | string | JACER - CZ, a.s. |  | ☐ |
-| `Balance_Due` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `Balance_Due` | float | 0 |  | ☐ |
+| `Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `Applied_Vend_Ledger_Entry_No` | int | 0 |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Amount_LCY` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Amount_LCY` | float | 0 |  | ☐ |
 | `Transaction_No` | int | 0 |  | ☐ |
 | `Entry_No` | int | 0 |  | ☐ |
-| `Remaining_Pmt_Disc_Possible` | int | 0 |  | ☐ |
+| `Remaining_Pmt_Disc_Possible` | float | 0 |  | ☐ |

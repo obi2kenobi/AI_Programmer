@@ -14,7 +14,7 @@
 | `Description` | string | ANUBE BRONZATE |  | ☐ |
 | `Description_2` | string |  |  | ☐ |
 | `Type` | string | Inventory |  | ☐ |
-| `InventoryField` | int | 6245 |  | ☐ |
+| `InventoryField` | float | 6245 |  | ☐ |
 | `Sync_in_NetPro` | bool | True |  | ☐ |
 | `Inserted_in_NetPro` | bool | True |  | ☐ |
 | `Updated_in_NetPro` | bool | True |  | ☐ |
@@ -32,8 +32,8 @@
 | `Unit_Cost` | float | 0.23 |  | ☐ |
 | `Last_Direct_Cost` | float | 0.23 |  | ☐ |
 | `Price_Profit_Calculation` | string | Profit=Price-Cost |  | ☐ |
-| `Profit_Percent` | int | 0 |  | ☐ |
-| `Unit_Price` | int | 0 |  | ☐ |
+| `Profit_Percent` | float | 0 |  | ☐ |
+| `Unit_Price` | float | 0 |  | ☐ |
 | `Inventory_Posting_Group` | string | MP-ARRG-ACCESSORI |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | MP-ARRG-ACCESSORI |  | ☐ |
 | `VAT_Prod_Posting_Group` | string | 220 |  | ☐ |
@@ -45,11 +45,11 @@
 | `Alternative_Item_No` | string |  |  | ☐ |
 | `Tariff_No` | string | 94017100 |  | ☐ |
 | `Search_Description` | string | ANUBE BRONZATE |  | ☐ |
-| `Overhead_Rate` | int | 0 |  | ☐ |
-| `Indirect_Cost_Percent` | int | 0 |  | ☐ |
+| `Overhead_Rate` | float | 0 |  | ☐ |
+| `Indirect_Cost_Percent` | float | 0 |  | ☐ |
 | `Item_Category_Code` | string | MP |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |
-| `Last_Date_Modified` | string | 2026-06-09 |  | ☐ |
+| `Last_Date_Modified` | date | 2026-06-09 |  | ☐ |
 | `Sales_Unit_of_Measure` | string | PZ |  | ☐ |
 | `Replenishment_System` | string | Purchase |  | ☐ |
 | `Purch_Unit_of_Measure` | string | PZ |  | ☐ |

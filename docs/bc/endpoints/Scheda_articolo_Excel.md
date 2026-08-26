@@ -15,7 +15,7 @@
 | `Blocked` | bool | False |  | ☐ |
 | `Type` | string | Inventory |  | ☐ |
 | `Base_Unit_of_Measure` | string | PZ |  | ☐ |
-| `Last_Date_Modified` | string | 2026-06-09 |  | ☐ |
+| `Last_Date_Modified` | date | 2026-06-09 |  | ☐ |
 | `GTIN` | string |  |  | ☐ |
 | `Item_Category_Code` | string | MP |  | ☐ |
 | `Family` | string |  |  | ☐ |
@@ -39,35 +39,35 @@
 | `Lifo_Category` | string |  |  | ☐ |
 | `Inventory_Valuation` | string | Weighted Average |  | ☐ |
 | `Search_Description` | string | ANUBE BRONZATE |  | ☐ |
-| `Inventory` | int | 6537 |  | ☐ |
-| `InventoryNonFoundation` | int | 6537 |  | ☐ |
-| `Qty_on_Purch_Order` | int | 9 |  | ☐ |
-| `Qty_on_Prod_Order` | int | 0 |  | ☐ |
-| `Qty_on_Component_Lines` | int | 1477 |  | ☐ |
-| `Qty_on_Sales_Order` | int | 0 |  | ☐ |
-| `Qty_on_Service_Order` | int | 0 |  | ☐ |
-| `Qty_on_Job_Order` | int | 0 |  | ☐ |
-| `Qty_on_Assembly_Order` | int | 0 |  | ☐ |
-| `Qty_on_Asm_Component` | int | 0 |  | ☐ |
-| `Qty_on_Blanket_Sales_Order` | int | 0 |  | ☐ |
-| `Qty_on_Blanket_Purch_Order` | int | 0 |  | ☐ |
+| `Inventory` | float | 6537 |  | ☐ |
+| `InventoryNonFoundation` | float | 6537 |  | ☐ |
+| `Qty_on_Purch_Order` | float | 9 |  | ☐ |
+| `Qty_on_Prod_Order` | float | 0 |  | ☐ |
+| `Qty_on_Component_Lines` | float | 1477 |  | ☐ |
+| `Qty_on_Sales_Order` | float | 0 |  | ☐ |
+| `Qty_on_Service_Order` | float | 0 |  | ☐ |
+| `Qty_on_Job_Order` | float | 0 |  | ☐ |
+| `Qty_on_Assembly_Order` | float | 0 |  | ☐ |
+| `Qty_on_Asm_Component` | float | 0 |  | ☐ |
+| `Qty_on_Blanket_Sales_Order` | float | 0 |  | ☐ |
+| `Qty_on_Blanket_Purch_Order` | float | 0 |  | ☐ |
 | `StockoutWarningDefaultYes` | string | No |  | ☐ |
 | `StockoutWarningDefaultNo` | string | No |  | ☐ |
 | `PreventNegInventoryDefaultYes` | string | No |  | ☐ |
 | `PreventNegInventoryDefaultNo` | string | No |  | ☐ |
-| `Net_Weight` | int | 10 |  | ☐ |
-| `Gross_Weight` | int | 0 |  | ☐ |
-| `Unit_Volume` | int | 0 |  | ☐ |
+| `Net_Weight` | float | 10 |  | ☐ |
+| `Gross_Weight` | float | 0 |  | ☐ |
+| `Unit_Volume` | float | 0 |  | ☐ |
 | `Over_Receipt_Code` | string |  |  | ☐ |
-| `Trans_Ord_Receipt_Qty` | int | 0 |  | ☐ |
-| `Trans_Ord_Shipment_Qty` | int | 0 |  | ☐ |
-| `Qty_in_Transit` | int | 0 |  | ☐ |
+| `Trans_Ord_Receipt_Qty` | float | 0 |  | ☐ |
+| `Trans_Ord_Shipment_Qty` | float | 0 |  | ☐ |
+| `Qty_in_Transit` | float | 0 |  | ☐ |
 | `Costing_Method` | string | FIFO |  | ☐ |
 | `Standard_Cost` | float | 0.19976390134529146 |  | ☐ |
 | `Unit_Cost` | float | 0.23 |  | ☐ |
-| `Indirect_Cost_Percent` | int | 0 |  | ☐ |
+| `Indirect_Cost_Percent` | float | 0 |  | ☐ |
 | `Last_Direct_Cost` | float | 0.23 |  | ☐ |
-| `Net_Invoiced_Qty` | int | 6537 |  | ☐ |
+| `Net_Invoiced_Qty` | float | 6537 |  | ☐ |
 | `Cost_is_Adjusted` | bool | True |  | ☐ |
 | `Excluded_from_Cost_Adjustment` | bool | False |  | ☐ |
 | `Cost_is_Posted_to_G_L` | bool | False |  | ☐ |
@@ -83,11 +83,11 @@
 | `Country_Region_of_Origin_Code` | string |  |  | ☐ |
 | `Exclude_from_Intrastat_Report` | bool | False |  | ☐ |
 | `Supplementary_Unit_of_Measure` | string |  |  | ☐ |
-| `Unit_Price` | int | 0 |  | ☐ |
-| `CalcUnitPriceExclVAT` | int | 0 |  | ☐ |
+| `Unit_Price` | float | 0 |  | ☐ |
+| `CalcUnitPriceExclVAT` | float | 0 |  | ☐ |
 | `Price_Includes_VAT` | bool | False |  | ☐ |
 | `Price_Profit_Calculation` | string | Profit=Price-Cost |  | ☐ |
-| `Profit_Percent` | int | 0 |  | ☐ |
+| `Profit_Percent` | float | 0 |  | ☐ |
 | `SpecialSalesPriceListTxt` | string | Create New... |  | ☐ |
 | `SpecialPricesAndDiscountsTxt` | string | Create New... |  | ☐ |
 | `Allow_Invoice_Disc` | bool | True |  | ☐ |
@@ -109,11 +109,11 @@
 | `Manufacturing_Policy` | string | Make-to-Stock |  | ☐ |
 | `Routing_No` | string |  |  | ☐ |
 | `Production_BOM_No` | string |  |  | ☐ |
-| `Rounding_Precision` | int | 1 |  | ☐ |
+| `Rounding_Precision` | float | 1 |  | ☐ |
 | `Flushing_Method` | string | Backward |  | ☐ |
-| `Overhead_Rate` | int | 0 |  | ☐ |
-| `Scrap_Percent` | int | 0 |  | ☐ |
-| `Lot_Size` | int | 0 |  | ☐ |
+| `Overhead_Rate` | float | 0 |  | ☐ |
+| `Scrap_Percent` | float | 0 |  | ☐ |
+| `Lot_Size` | float | 0 |  | ☐ |
 | `Allow_Whse_Overpick` | bool | False |  | ☐ |
 | `Production_Blocked` | string |   |  | ☐ |
 | `Assembly_Policy` | string | Assemble-to-Stock |  | ☐ |
@@ -123,21 +123,21 @@
 | `Order_Tracking_Policy` | string | Tracking Only |  | ☐ |
 | `Stockkeeping_Unit_Exists` | bool | False |  | ☐ |
 | `Dampener_Period` | string |  |  | ☐ |
-| `Dampener_Quantity` | int | 0 |  | ☐ |
+| `Dampener_Quantity` | float | 0 |  | ☐ |
 | `Critical` | bool | False |  | ☐ |
 | `Safety_Lead_Time` | string |  |  | ☐ |
-| `Safety_Stock_Quantity` | int | 0 |  | ☐ |
+| `Safety_Stock_Quantity` | float | 0 |  | ☐ |
 | `Include_Inventory` | bool | True |  | ☐ |
 | `Lot_Accumulation_Period` | string | 15D |  | ☐ |
 | `Rescheduling_Period` | string |  |  | ☐ |
-| `Reorder_Point` | int | 0 |  | ☐ |
-| `Reorder_Quantity` | int | 0 |  | ☐ |
-| `Maximum_Inventory` | int | 0 |  | ☐ |
-| `Overflow_Level` | int | 0 |  | ☐ |
+| `Reorder_Point` | float | 0 |  | ☐ |
+| `Reorder_Quantity` | float | 0 |  | ☐ |
+| `Maximum_Inventory` | float | 0 |  | ☐ |
+| `Overflow_Level` | float | 0 |  | ☐ |
 | `Time_Bucket` | string |  |  | ☐ |
-| `Minimum_Order_Quantity` | int | 0 |  | ☐ |
-| `Maximum_Order_Quantity` | int | 0 |  | ☐ |
-| `Order_Multiple` | int | 0 |  | ☐ |
+| `Minimum_Order_Quantity` | float | 0 |  | ☐ |
+| `Maximum_Order_Quantity` | float | 0 |  | ☐ |
+| `Order_Multiple` | float | 0 |  | ☐ |
 | `Item_Tracking_Code` | string | COLLO |  | ☐ |
 | `Serial_Nos` | string |  |  | ☐ |
 | `Lot_Nos` | string |  |  | ☐ |
@@ -150,23 +150,23 @@
 | `Put_away_Template_Code` | string |  |  | ☐ |
 | `Put_away_Unit_of_Measure_Code` | string |  |  | ☐ |
 | `Phys_Invt_Counting_Period_Code` | string |  |  | ☐ |
-| `Last_Phys_Invt_Date` | string | 0001-01-01 |  | ☐ |
-| `Last_Counting_Period_Update` | string | 0001-01-01 |  | ☐ |
-| `Next_Counting_Start_Date` | string | 0001-01-01 |  | ☐ |
-| `Next_Counting_End_Date` | string | 0001-01-01 |  | ☐ |
+| `Last_Phys_Invt_Date` | date | 0001-01-01 |  | ☐ |
+| `Last_Counting_Period_Update` | date | 0001-01-01 |  | ☐ |
+| `Next_Counting_Start_Date` | date | 0001-01-01 |  | ☐ |
+| `Next_Counting_End_Date` | date | 0001-01-01 |  | ☐ |
 | `Identifier_Code` | string |  |  | ☐ |
 | `Use_Cross_Docking` | bool | True |  | ☐ |
 | `GHG_Credit` | bool | False |  | ☐ |
-| `Carbon_Credit_Per_UOM` | int | 0 |  | ☐ |
+| `Carbon_Credit_Per_UOM` | float | 0 |  | ☐ |
 | `Sust_Cert_No` | string |  |  | ☐ |
 | `Sust_Cert_Name` | string |  |  | ☐ |
 | `Default_Sust_Account` | string |  |  | ☐ |
-| `Default_CO2_Emission` | int | 0 |  | ☐ |
-| `Default_CH4_Emission` | int | 0 |  | ☐ |
-| `Default_N2O_Emission` | int | 0 |  | ☐ |
-| `CO2e_per_Unit` | int | 0 |  | ☐ |
+| `Default_CO2_Emission` | float | 0 |  | ☐ |
+| `Default_CH4_Emission` | float | 0 |  | ☐ |
+| `Default_N2O_Emission` | float | 0 |  | ☐ |
+| `CO2e_per_Unit` | float | 0 |  | ☐ |
 | `Item_of_Concern` | bool | False |  | ☐ |
-| `Recyclability_Percentage` | int | 0 |  | ☐ |
+| `Recyclability_Percentage` | float | 0 |  | ☐ |
 | `Energy_Efficiency_Rating` | string |  |  | ☐ |
 | `End_of_Life_Information` | string |  |  | ☐ |
 | `Source_of_Emission_Data` | string |   |  | ☐ |
@@ -174,8 +174,8 @@
 | `CBAM_Compliance` | bool | False |  | ☐ |
 | `EPR_Category` | string |   |  | ☐ |
 | `Material_Composition_No` | string |  |  | ☐ |
-| `Total_EPR_Weight` | int | 0 |  | ☐ |
-| `EPR_Fees_Per_Unit` | int | 0 |  | ☐ |
+| `Total_EPR_Weight` | float | 0 |  | ☐ |
+| `EPR_Fees_Per_Unit` | float | 0 |  | ☐ |
 | `End_of_Life_Disposal_Req` | string |  |  | ☐ |
 | `Carbon_Tracking_Method` | string | Average |  | ☐ |
 | `Product_Classification_Type` | string |   |  | ☐ |

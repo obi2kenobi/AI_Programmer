@@ -37,13 +37,13 @@
 | `Comment` | bool | False |  | ☐ |
 | `Correction` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
 | `Customer_Disc_Group` | string |  |  | ☐ |
 | `Customer_Posting_Group` | string | PRIV |  | ☐ |
 | `Customer_Price_Group` | string | LCDL |  | ☐ |
 | `Dimension_Set_ID` | int | 1 |  | ☐ |
-| `Document_Date` | string | 2025-07-22 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2025-07-22 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
 | `Exit_Point` | string | EXW |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
@@ -54,25 +54,25 @@
 | `No_Printed` | int | 1 |  | ☐ |
 | `No_Series` | string | V-SPED |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2025-07-22 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2025-07-22 |  | ☐ |
 | `Operation_Type` | string | FT-VEN-IT+ |  | ☐ |
 | `Opportunity_No` | string |  |  | ☐ |
-| `Order_Date` | string | 2025-07-10 |  | ☐ |
+| `Order_Date` | date | 2025-07-10 |  | ☐ |
 | `Order_No` | string | 25OV-001586 |  | ☐ |
 | `Order_No_Series` | string | V-ORD |  | ☐ |
 | `Outbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Package_Tracking_No` | string |  |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Terms_Code` | string | ORDINE |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2025-07-22 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2025-07-22 |  | ☐ |
 | `Posting_Description` | string | Ordine 25OV-001586 |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
-| `Promised_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Promised_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `Quote_No` | string | 25OFFV-000448 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
-| `Requested_Delivery_Date` | string | 2025-07-27 |  | ☐ |
+| `Requested_Delivery_Date` | date | 2025-07-27 |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Salesperson_Code` | string | REGGIO |  | ☐ |
 | `Sell_to_Address` | string | Via Mazzalasino, 33 |  | ☐ |
@@ -98,7 +98,7 @@
 | `Ship_to_Name` | string | Matteo Manghi |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string | 42019 |  | ☐ |
-| `Shipment_Date` | string | 2025-07-22 |  | ☐ |
+| `Shipment_Date` | date | 2025-07-22 |  | ☐ |
 | `Shipment_Method_Code` | string | EXW |  | ☐ |
 | `Shipping_Agent_Code` | string | DTE |  | ☐ |
 | `Shipping_Agent_Service_Code` | string |  |  | ☐ |
@@ -113,7 +113,7 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `User_ID` | string | MATTEO.PALETTA |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 05602710963 |  | ☐ |

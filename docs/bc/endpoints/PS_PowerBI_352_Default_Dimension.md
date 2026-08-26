@@ -17,6 +17,6 @@
 | `Multi_Selection_Action` | string |   |  | ☐ |
 | `Table_Caption` | string | G/L Account |  | ☐ |
 | `Value_Posting` | string | Same Code |  | ☐ |
-| `DimensionId` | string | add8c2d9-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
-| `DimensionValueId` | string | b19f2239-ec40-ee11-bdf5-0022489f1000 |  | ☐ |
-| `ParentId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `DimensionId` | guid | add8c2d9-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `DimensionValueId` | guid | b19f2239-ec40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `ParentId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |

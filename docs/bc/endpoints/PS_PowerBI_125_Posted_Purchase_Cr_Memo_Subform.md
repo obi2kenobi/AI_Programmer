@@ -23,7 +23,7 @@
 | `Blanket_Order_No` | string |  |  | ☐ |
 | `Budgeted_FA_No` | string |  |  | ☐ |
 | `Buy_from_Vendor_No` | string | 600009 |  | ☐ |
-| `Deductible_Percent` | int | 100 |  | ☐ |
+| `Deductible_Percent` | float | 100 |  | ☐ |
 | `Deferral_Code` | string |  |  | ☐ |
 | `Depr_Acquisition_Cost` | bool | False |  | ☐ |
 | `Depr_until_FA_Posting_Date` | bool | False |  | ☐ |
@@ -34,62 +34,62 @@
 | `Direct_Unit_Cost` | float | 4.69 |  | ☐ |
 | `Duplicate_in_Depreciation_Book` | string |  |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 2024-01-08 |  | ☐ |
-| `FA_Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 2024-01-08 |  | ☐ |
+| `FA_Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `FA_Posting_Type` | string |   |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | CONTO C/G |  | ☐ |
-| `Gross_Weight` | int | 0 |  | ☐ |
+| `Gross_Weight` | float | 0 |  | ☐ |
 | `IC_Partner_Code` | string |  |  | ☐ |
 | `IC_Partner_Ref_Type` | string |   |  | ☐ |
 | `IC_Partner_Reference` | string |  |  | ☐ |
 | `Include_in_VAT_Transac_Rep` | bool | False |  | ☐ |
-| `Indirect_Cost_Percent` | int | 0 |  | ☐ |
+| `Indirect_Cost_Percent` | float | 0 |  | ☐ |
 | `Insurance_No` | string |  |  | ☐ |
-| `Inv_Discount_Amount` | int | 0 |  | ☐ |
+| `Inv_Discount_Amount` | float | 0 |  | ☐ |
 | `Item_Category_Code` | string |  |  | ☐ |
 | `Job_Currency_Code` | string |  |  | ☐ |
-| `Job_Currency_Factor` | int | 0 |  | ☐ |
-| `Job_Line_Amount` | int | 0 |  | ☐ |
-| `Job_Line_Amount_LCY` | int | 0 |  | ☐ |
-| `Job_Line_Disc_Amount_LCY` | int | 0 |  | ☐ |
-| `Job_Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Job_Line_Discount_Amount` | int | 0 |  | ☐ |
+| `Job_Currency_Factor` | float | 0 |  | ☐ |
+| `Job_Line_Amount` | float | 0 |  | ☐ |
+| `Job_Line_Amount_LCY` | float | 0 |  | ☐ |
+| `Job_Line_Disc_Amount_LCY` | float | 0 |  | ☐ |
+| `Job_Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Job_Line_Discount_Amount` | float | 0 |  | ☐ |
 | `Job_Line_Type` | string |   |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
 | `Job_Task_No` | string |  |  | ☐ |
-| `Job_Total_Price` | int | 0 |  | ☐ |
-| `Job_Total_Price_LCY` | int | 0 |  | ☐ |
-| `Job_Unit_Price` | int | 0 |  | ☐ |
-| `Job_Unit_Price_LCY` | int | 0 |  | ☐ |
+| `Job_Total_Price` | float | 0 |  | ☐ |
+| `Job_Total_Price_LCY` | float | 0 |  | ☐ |
+| `Job_Unit_Price` | float | 0 |  | ☐ |
+| `Job_Unit_Price_LCY` | float | 0 |  | ☐ |
 | `Line_Amount` | float | 4.69 |  | ☐ |
-| `Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Line_Discount_Amount` | int | 0 |  | ☐ |
+| `Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Line_Discount_Amount` | float | 0 |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `Maintenance_Code` | string |  |  | ☐ |
-| `Net_Weight` | int | 0 |  | ☐ |
+| `Net_Weight` | float | 0 |  | ☐ |
 | `No` | string | 7658000004 |  | ☐ |
 | `Nonstock` | bool | False |  | ☐ |
 | `Order_Line_No` | int | 0 |  | ☐ |
 | `Order_No` | string |  |  | ☐ |
 | `Pay_to_Vendor_No` | string | 600009 |  | ☐ |
-| `Pmt_Discount_Amount` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 2024-01-09 |  | ☐ |
+| `Pmt_Discount_Amount` | float | 0 |  | ☐ |
+| `Posting_Date` | date | 2024-01-09 |  | ☐ |
 | `Posting_Group` | string |  |  | ☐ |
 | `Prepayment_Line` | bool | False |  | ☐ |
 | `Prepmt_CM_Refers_to_Period` | string |   |  | ☐ |
 | `Prod_Order_No` | string |  |  | ☐ |
 | `Purchasing_Code` | string |  |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 1 |  | ☐ |
-| `Quantity` | int | 1 |  | ☐ |
-| `Quantity_Base` | int | 1 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 1 |  | ☐ |
+| `Quantity` | float | 1 |  | ☐ |
+| `Quantity_Base` | float | 1 |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Return_Reason_Code` | string |  |  | ☐ |
 | `Return_Shipment_Line_No` | int | 0 |  | ☐ |
 | `Return_Shipment_No` | string |  |  | ☐ |
-| `Salvage_Value` | int | 0 |  | ☐ |
+| `Salvage_Value` | float | 0 |  | ☐ |
 | `Service_Tariff_No` | string |  |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string | AMM |  | ☐ |
@@ -103,18 +103,18 @@
 | `Type` | string | G/L Account |  | ☐ |
 | `Unit_Cost` | float | 4.69 |  | ☐ |
 | `Unit_Cost_LCY` | float | 4.69 |  | ☐ |
-| `Unit_Price_LCY` | int | 0 |  | ☐ |
-| `Unit_Volume` | int | 0 |  | ☐ |
+| `Unit_Price_LCY` | float | 0 |  | ☐ |
+| `Unit_Volume` | float | 0 |  | ☐ |
 | `Unit_of_Measure` | string |  |  | ☐ |
 | `Unit_of_Measure_Code` | string |  |  | ☐ |
-| `Units_per_Parcel` | int | 0 |  | ☐ |
+| `Units_per_Parcel` | float | 0 |  | ☐ |
 | `Use_Duplication_List` | bool | False |  | ☐ |
 | `Use_Tax` | bool | False |  | ☐ |
-| `VAT_Percent` | int | 10 |  | ☐ |
+| `VAT_Percent` | float | 10 |  | ☐ |
 | `VAT_Base_Amount` | float | 4.69 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `VAT_Calculation_Type` | string | Normal VAT |  | ☐ |
-| `VAT_Difference` | int | 0 |  | ☐ |
+| `VAT_Difference` | float | 0 |  | ☐ |
 | `VAT_Identifier` | string | 10 |  | ☐ |
 | `VAT_Prod_Posting_Group` | string | 10 |  | ☐ |
 | `Variant_Code` | string |  |  | ☐ |

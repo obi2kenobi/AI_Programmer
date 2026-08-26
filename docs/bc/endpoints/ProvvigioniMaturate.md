@@ -11,16 +11,16 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozk4NzQ4MTQwMjk0MTc4NzE2NjAxOz... |  | ☐ |
 | `Entry_No` | int | 1 |  | ☐ |
-| `Posting_Date` | string | 2024-01-16 |  | ☐ |
+| `Posting_Date` | date | 2024-01-16 |  | ☐ |
 | `Document_Type` | string | Invoice |  | ☐ |
 | `Document_No` | string | 24FVI-000062 |  | ☐ |
 | `Doc_Line_No` | int | 10000 |  | ☐ |
-| `Document_Date` | string | 2024-01-04 |  | ☐ |
+| `Document_Date` | date | 2024-01-04 |  | ☐ |
 | `Sell_to_Customer_No` | string | 0004608 |  | ☐ |
 | `Bill_to_Customer_No` | string | 0004608 |  | ☐ |
 | `Salesperson_Code` | string | REGGIO |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
-| `Due_Date` | string | 2024-03-31 |  | ☐ |
+| `Due_Date` | date | 2024-03-31 |  | ☐ |
 | `Cust_Ledger_Entry_No` | int | 1361 |  | ☐ |
 | `User_ID` | string | LAVINIA.CASELLI |  | ☐ |
 | `Source_Code` | string | VENDITE |  | ☐ |
@@ -32,10 +32,10 @@
 | `Global_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Global_Dimension_2_Code` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 1 |  | ☐ |
+| `Currency_Factor` | float | 1 |  | ☐ |
 | `Occurrence_Line_Amount` | float | 1046.88 |  | ☐ |
 | `Occurrence_Line_Amount_LCY` | float | 1046.88 |  | ☐ |
-| `Salesperson_Commission_Percent` | int | 3 |  | ☐ |
+| `Salesperson_Commission_Percent` | float | 3 |  | ☐ |
 | `Commission_Amount` | float | 31.41 |  | ☐ |
 | `Commission_Amount_LCY` | float | 31.41 |  | ☐ |
 | `Mat_Commission_Amount` | float | 31.41 |  | ☐ |
@@ -45,4 +45,4 @@
 | `Salesp_Commis_Posting_Group` | string | REGGIO |  | ☐ |
 | `Cust_Commission_Posting_Group` | string | GDS |  | ☐ |
 | `Prod_Commission_Posting_Group` | string | ARRG |  | ☐ |
-| `Creation_Datetime` | string | 2024-02-08T16:55:38.98Z |  | ☐ |
+| `Creation_Datetime` | datetime | 2024-02-08T16:55:38.98Z |  | ☐ |

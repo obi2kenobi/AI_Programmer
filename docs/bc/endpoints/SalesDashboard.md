@@ -11,14 +11,14 @@
 |---|---|---|---|---|
 | `Entry_No` | int | 1596 |  | ☐ |
 | `Document_No` | string | 24SVR-000001 |  | ☐ |
-| `Posting_Date` | string | 2024-01-03 |  | ☐ |
+| `Posting_Date` | date | 2024-01-03 |  | ☐ |
 | `Entry_Type` | string | Sale |  | ☐ |
-| `Quantity` | int | -504 |  | ☐ |
+| `Quantity` | float | -504 |  | ☐ |
 | `Dimension_Set_ID` | int | 10 |  | ☐ |
 | `Sales_Amount_Actual` | float | 2565.36 |  | ☐ |
-| `Sales_Amount_Expected` | int | 0 |  | ☐ |
+| `Sales_Amount_Expected` | float | 0 |  | ☐ |
 | `Cost_Amount_Actual` | float | -1965.1 |  | ☐ |
-| `Cost_Amount_Expected` | int | 0 |  | ☐ |
+| `Cost_Amount_Expected` | float | 0 |  | ☐ |
 | `CountryRegionName` | string | ITALY |  | ☐ |
 | `CustomerName` | string | BRICO IO S.P.A. |  | ☐ |
 | `Customer_Posting_Group` | string | GDS |  | ☐ |

@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzEzMjc2NjQwMDcwOTgyNzM0OTY4MT... |  | ☐ |
-| `App_ID` | string | 8fd4c758-3584-4684-a6ba-0176f95cff01 |  | ☐ |
+| `App_ID` | guid | 8fd4c758-3584-4684-a6ba-0176f95cff01 |  | ☐ |
 | `AppId` | string | 8fd4c758-3584-4684-a6ba-0176f95cff01 |  | ☐ |
 | `AppName` | string | Edit Pages ADI |  | ☐ |
 | `AppVersion` | string | 1.0.0.134 |  | ☐ |

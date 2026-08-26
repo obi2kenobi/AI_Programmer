@@ -13,21 +13,21 @@
 | `Gen_Prod_Posting_Group` | string | MP-ARRG-ACCESSORI |  | ☐ |
 | `Item_Disc_Group` | string |  |  | ☐ |
 | `Item_Tracking_Code` | string | COLLO |  | ☐ |
-| `Profit` | int | 0 |  | ☐ |
-| `Scrap` | int | 0 |  | ☐ |
+| `Profit` | float | 0 |  | ☐ |
+| `Scrap` | float | 0 |  | ☐ |
 | `Sales_Unit_of_Measure` | string | PZ |  | ☐ |
 | `Standard_Cost` | float | 0.19976390134529146 |  | ☐ |
 | `Unit_Cost` | float | 0.23 |  | ☐ |
-| `Unit_Price` | int | 0 |  | ☐ |
-| `Unit_Volume` | int | 0 |  | ☐ |
+| `Unit_Price` | float | 0 |  | ☐ |
+| `Unit_Volume` | float | 0 |  | ☐ |
 | `Vendor_No` | string |  |  | ☐ |
 | `Purch_Unit_of_Measure` | string | PZ |  | ☐ |
 | `COGS_LCY` | float | 10.63 |  | ☐ |
-| `Inventory` | int | 6537 |  | ☐ |
-| `Net_Change` | int | 6537 |  | ☐ |
-| `Net_Invoiced_Qty` | int | 6537 |  | ☐ |
+| `Inventory` | float | 6537 |  | ☐ |
+| `Net_Change` | float | 6537 |  | ☐ |
+| `Net_Invoiced_Qty` | float | 6537 |  | ☐ |
 | `Purchases_LCY` | float | 6828.93 |  | ☐ |
-| `Purchases_Qty` | int | 29991 |  | ☐ |
-| `Sales_LCY` | int | 0 |  | ☐ |
-| `Sales_Qty` | int | 48 |  | ☐ |
+| `Purchases_Qty` | float | 29991 |  | ☐ |
+| `Sales_LCY` | float | 0 |  | ☐ |
+| `Sales_Qty` | float | 48 |  | ☐ |
 | `VendorName` | string |  |  | ☐ |

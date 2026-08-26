@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzEzNjU3OTU3MjYzNTA2MDUwMzY4MT... |  | ☐ |
-| `customerId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `customerId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
 | `customerNumber` | string | 500283 |  | ☐ |
 | `name` | string | Total |  | ☐ |
 | `currencyCode` | string | EUR |  | ☐ |
@@ -19,5 +19,5 @@
 | `period1Amount` | float | 15278.62 |  | ☐ |
 | `period2Amount` | float | 2972.11 |  | ☐ |
 | `period3Amount` | float | 404265.24 |  | ☐ |
-| `agedAsOfDate` | string | 2026-08-26 |  | ☐ |
+| `agedAsOfDate` | date | 2026-08-26 |  | ☐ |
 | `periodLengthFilter` | string | 30D |  | ☐ |

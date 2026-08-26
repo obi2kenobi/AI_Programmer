@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzExNzMzNTQ4NTEzODgzMzg4MjY3MT... |  | ☐ |
 | `Entry_No` | int | 1 |  | ☐ |
-| `FA_Posting_Date` | string | 2019-01-01 |  | ☐ |
+| `FA_Posting_Date` | date | 2019-01-01 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | PA CESP |  | ☐ |
 | `FA_No` | string | 19CE-000001 |  | ☐ |
@@ -22,11 +22,11 @@
 | `Description` | string | MUTUO BPM 2019 |  | ☐ |
 | `Global_Dimension_1_Code` | string |  |  | ☐ |
 | `Global_Dimension_2_Code` | string |  |  | ☐ |
-| `Amount` | int | 2125 |  | ☐ |
-| `Total_CO2e` | int | 0 |  | ☐ |
-| `Debit_Amount` | int | 2125 |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
-| `RunningBalance` | int | 0 |  | ☐ |
+| `Amount` | float | 2125 |  | ☐ |
+| `Total_CO2e` | float | 0 |  | ☐ |
+| `Debit_Amount` | float | 2125 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
+| `RunningBalance` | float | 0 |  | ☐ |
 | `Reclassification_Entry` | bool | False |  | ☐ |
 | `Index_Entry` | bool | False |  | ☐ |
 | `No_of_Depreciation_Days` | int | 0 |  | ☐ |
@@ -38,7 +38,7 @@
 | `Reversed` | bool | False |  | ☐ |
 | `Reversed_by_Entry_No` | int | 0 |  | ☐ |
 | `Reversed_Entry_No` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 2023-12-31 |  | ☐ |
+| `Posting_Date` | date | 2023-12-31 |  | ☐ |
 | `G_L_Entry_No` | int | 3048 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
 | `Shortcut_Dimension_3_Code` | string |  |  | ☐ |

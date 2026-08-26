@@ -20,12 +20,12 @@
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Quantity` | int | 19 |  | ☐ |
+| `Quantity` | float | 19 |  | ☐ |
 | `Unit_of_Measure_Code` | string | ORA |  | ☐ |
 | `Unit_of_Measure` | string | Ora |  | ☐ |
 | `Appl_to_Item_Entry` | int | 0 |  | ☐ |
 | `Order_No` | string | 24ODA-0000061 |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
 | `Prod_Order_No` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 2024-01-08 |  | ☐ |
-| `Quantity_Invoiced` | int | 19 |  | ☐ |
+| `Expected_Receipt_Date` | date | 2024-01-08 |  | ☐ |
+| `Quantity_Invoiced` | float | 19 |  | ☐ |

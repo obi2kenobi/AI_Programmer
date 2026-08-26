@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzUwMTc2NDU5OTg4MDMxMDgwMTIxOz... |  | ☐ |
 | `Entry_No` | int | 168271 |  | ☐ |
-| `Posting_Date` | string | 2026-08-26 |  | ☐ |
+| `Posting_Date` | date | 2026-08-26 |  | ☐ |
 | `Document_Type` | string | Payment |  | ☐ |
 | `Document_No` | string | 26FVI-001308 |  | ☐ |
 | `Bank_Account_No` | string | B032 |  | ☐ |
@@ -22,12 +22,12 @@
 | `Currency_Code` | string |  |  | ☐ |
 | `Amount` | float | 1462.05 |  | ☐ |
 | `Debit_Amount` | float | 1462.05 |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
-| `RunningBalance` | int | 0 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
+| `RunningBalance` | float | 0 |  | ☐ |
 | `Amount_LCY` | float | 1462.05 |  | ☐ |
 | `Debit_Amount_LCY` | float | 1462.05 |  | ☐ |
-| `Credit_Amount_LCY` | int | 0 |  | ☐ |
-| `RunningBalanceLCY` | int | 0 |  | ☐ |
+| `Credit_Amount_LCY` | float | 0 |  | ☐ |
+| `RunningBalanceLCY` | float | 0 |  | ☐ |
 | `Remaining_Amount` | float | 1462.05 |  | ☐ |
 | `Bal_Account_Type` | string | Customer |  | ☐ |
 | `Bal_Account_No` | string | 502767 |  | ☐ |

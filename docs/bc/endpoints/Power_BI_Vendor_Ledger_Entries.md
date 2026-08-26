@@ -10,6 +10,6 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `Entry_No` | int | 116 |  | ☐ |
-| `Due_Date` | string | 2024-01-01 |  | ☐ |
+| `Due_Date` | date | 2024-01-01 |  | ☐ |
 | `Open` | bool | False |  | ☐ |
-| `Remaining_Amt_LCY` | int | 0 |  | ☐ |
+| `Remaining_Amt_LCY` | float | 0 |  | ☐ |

@@ -13,8 +13,8 @@
 | `Business_Profile_Id` | string |  |  | ☐ |
 | `Display_Name` | string | GC Test 06.05.2025 |  | ☐ |
 | `Evaluation_Company` | bool | True |  | ☐ |
-| `Id` | string | 6ea478b3-7c00-ee11-8f73-6045bdc8c0d6 |  | ☐ |
-| `SystemCreatedAt` | string | 2023-06-01T13:03:31.967Z |  | ☐ |
-| `SystemCreatedBy` | string | 00000000-0000-0000-0000-000000000001 |  | ☐ |
-| `SystemModifiedAt` | string | 2023-06-01T13:03:31.967Z |  | ☐ |
-| `SystemModifiedBy` | string | 00000000-0000-0000-0000-000000000001 |  | ☐ |
+| `Id` | guid | 6ea478b3-7c00-ee11-8f73-6045bdc8c0d6 |  | ☐ |
+| `SystemCreatedAt` | datetime | 2023-06-01T13:03:31.967Z |  | ☐ |
+| `SystemCreatedBy` | guid | 00000000-0000-0000-0000-000000000001 |  | ☐ |
+| `SystemModifiedAt` | datetime | 2023-06-01T13:03:31.967Z |  | ☐ |
+| `SystemModifiedBy` | guid | 00000000-0000-0000-0000-000000000001 |  | ☐ |

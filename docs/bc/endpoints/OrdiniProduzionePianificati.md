@@ -16,15 +16,15 @@
 | `Description_2` | string |  |  | ☐ |
 | `Source_No` | string |  |  | ☐ |
 | `Routing_No` | string |  |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Location_Code` | string |  |  | ☐ |
-| `Starting_Date_Time` | string | 2026-01-26T08:00:00Z |  | ☐ |
-| `Ending_Date_Time` | string | 2026-01-26T17:00:00Z |  | ☐ |
-| `Due_Date` | string | 2026-01-26 |  | ☐ |
+| `Starting_Date_Time` | datetime | 2026-01-26T08:00:00Z |  | ☐ |
+| `Ending_Date_Time` | datetime | 2026-01-26T17:00:00Z |  | ☐ |
+| `Due_Date` | date | 2026-01-26 |  | ☐ |
 | `Assigned_User_ID` | string |  |  | ☐ |
-| `Finished_Date` | string | 0001-01-01 |  | ☐ |
+| `Finished_Date` | date | 0001-01-01 |  | ☐ |
 | `Search_Description` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 0001-01-01 |  | ☐ |
+| `Last_Date_Modified` | date | 0001-01-01 |  | ☐ |
 | `Bin_Code` | string |  |  | ☐ |

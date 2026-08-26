@@ -10,12 +10,12 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `Document_No` | string | 23OFFA-0000001 |  | ☐ |
-| `Order_Date` | string | 2023-12-28 |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
+| `Order_Date` | date | 2023-12-28 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
 | `Item_No` | string |  |  | ☐ |
 | `Description` | string |  |  | ☐ |
 | `AuxiliaryIndex1` | string | Quote |  | ☐ |

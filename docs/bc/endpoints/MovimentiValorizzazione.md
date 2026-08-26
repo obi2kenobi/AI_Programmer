@@ -10,8 +10,8 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzMzMDE1NDE0Njg1ODcyMTYwNzIxOz... |  | ☐ |
 | `Entry_No` | int | 418967 |  | ☐ |
-| `Posting_Date` | string | 2026-06-23 |  | ☐ |
-| `Valuation_Date` | string | 2026-06-23 |  | ☐ |
+| `Posting_Date` | date | 2026-06-23 |  | ☐ |
+| `Valuation_Date` | date | 2026-06-23 |  | ☐ |
 | `Item_Ledger_Entry_Type` | string | Consumption |  | ☐ |
 | `Entry_Type` | string | Direct Cost |  | ☐ |
 | `Variance_Type` | string |   |  | ☐ |
@@ -22,28 +22,28 @@
 | `Item_Charge_No` | string |  |  | ☐ |
 | `Description` | string | Tav imballaggio 17x95x1010 |  | ☐ |
 | `Return_Reason_Code` | string |  |  | ☐ |
-| `Sales_Amount_Expected` | int | 0 |  | ☐ |
-| `Sales_Amount_Actual` | int | 0 |  | ☐ |
-| `Cost_Amount_Expected` | int | 0 |  | ☐ |
+| `Sales_Amount_Expected` | float | 0 |  | ☐ |
+| `Sales_Amount_Actual` | float | 0 |  | ☐ |
+| `Cost_Amount_Expected` | float | 0 |  | ☐ |
 | `Cost_Amount_Actual` | float | 0.01 |  | ☐ |
-| `Cost_Amount_Non_Invtbl` | int | 0 |  | ☐ |
-| `Cost_Posted_to_G_L` | int | 0 |  | ☐ |
-| `Expected_Cost_Posted_to_G_L` | int | 0 |  | ☐ |
-| `Cost_Amount_Expected_ACY` | int | 0 |  | ☐ |
-| `Cost_Amount_Actual_ACY` | int | 0 |  | ☐ |
-| `Cost_Amount_Non_Invtbl_ACY` | int | 0 |  | ☐ |
-| `Cost_Posted_to_G_L_ACY` | int | 0 |  | ☐ |
-| `Item_Ledger_Entry_Quantity` | int | 0 |  | ☐ |
-| `Valued_Quantity` | int | -1914 |  | ☐ |
-| `Invoiced_Quantity` | int | 0 |  | ☐ |
-| `Cost_per_Unit` | int | 0 |  | ☐ |
-| `Cost_per_Unit_ACY` | int | 0 |  | ☐ |
+| `Cost_Amount_Non_Invtbl` | float | 0 |  | ☐ |
+| `Cost_Posted_to_G_L` | float | 0 |  | ☐ |
+| `Expected_Cost_Posted_to_G_L` | float | 0 |  | ☐ |
+| `Cost_Amount_Expected_ACY` | float | 0 |  | ☐ |
+| `Cost_Amount_Actual_ACY` | float | 0 |  | ☐ |
+| `Cost_Amount_Non_Invtbl_ACY` | float | 0 |  | ☐ |
+| `Cost_Posted_to_G_L_ACY` | float | 0 |  | ☐ |
+| `Item_Ledger_Entry_Quantity` | float | 0 |  | ☐ |
+| `Valued_Quantity` | float | -1914 |  | ☐ |
+| `Invoiced_Quantity` | float | 0 |  | ☐ |
+| `Cost_per_Unit` | float | 0 |  | ☐ |
+| `Cost_per_Unit_ACY` | float | 0 |  | ☐ |
 | `Item_No` | string | COMP-000743 |  | ☐ |
 | `Item_Description` | string | Tav imballaggio 17x95x1010 |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `Type` | string |   |  | ☐ |
 | `No` | string |  |  | ☐ |
-| `Discount_Amount` | int | 0 |  | ☐ |
+| `Discount_Amount` | float | 0 |  | ☐ |
 | `Salespers_Purch_Code` | string |  |  | ☐ |
 | `User_ID` | string | MATTEO.PALETTA |  | ☐ |
 | `Source_Posting_Group` | string |  |  | ☐ |
@@ -56,7 +56,7 @@
 | `Source_No` | string | COMP-000646 |  | ☐ |
 | `Source_Description` | string | Tav imballaggio 17x95x1140 |  | ☐ |
 | `Source_Order_No` | string |  |  | ☐ |
-| `Document_Date` | string | 2026-06-23 |  | ☐ |
+| `Document_Date` | date | 2026-06-23 |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
 | `Order_Type` | string | Production |  | ☐ |
 | `Applicable_For_Serv_Decl` | bool | False |  | ☐ |
@@ -77,9 +77,9 @@
 | `Shortcut_Dimension_8_Code` | string |  |  | ☐ |
 | `PRJ_Action_Approved_By` | string |  |  | ☐ |
 | `PRJ_Action_Reason_Code` | string |  |  | ☐ |
-| `PRJ_Action_Approve_Date` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `PRJ_Action_Approve_Date` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
 | `PRJ_Serial_no_Info` | string |  |  | ☐ |
-| `PRJ_Action_Date` | string | 0001-01-01T00:00:00Z |  | ☐ |
+| `PRJ_Action_Date` | datetime | 0001-01-01T00:00:00Z |  | ☐ |
 | `PRJ_Custom_Vendor_No` | string |  |  | ☐ |
 | `PRJ_Custom_Location_Code` | string |  |  | ☐ |
 | `PRJ_ResProdOrderComp_Line_No` | int | 0 |  | ☐ |

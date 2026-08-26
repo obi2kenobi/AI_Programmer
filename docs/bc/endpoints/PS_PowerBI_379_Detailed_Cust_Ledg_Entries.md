@@ -16,8 +16,8 @@
 | `Applied_Cust_Ledger_Entry_No` | int | 0 |  | ☐ |
 | `Bank_Receipt` | bool | False |  | ☐ |
 | `Bank_Receipt_Issued` | bool | False |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
-| `Credit_Amount_LCY` | int | 0 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
+| `Credit_Amount_LCY` | float | 0 |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `Cust_Ledger_Entry_No` | int | 2 |  | ☐ |
 | `Customer_No` | string | 0002952 |  | ☐ |
@@ -29,15 +29,15 @@
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |
 | `Gen_Prod_Posting_Group` | string |  |  | ☐ |
 | `Initial_Document_Type` | string | Invoice |  | ☐ |
-| `Initial_Entry_Due_Date` | string | 2021-01-01 |  | ☐ |
+| `Initial_Entry_Due_Date` | date | 2021-01-01 |  | ☐ |
 | `Initial_Entry_Global_Dim_1` | string |  |  | ☐ |
 | `Initial_Entry_Global_Dim_2` | string |  |  | ☐ |
 | `Journal_Batch_Name` | string | OPBAL |  | ☐ |
 | `Ledger_Entry_Amount` | bool | True |  | ☐ |
-| `Max_Payment_Tolerance` | int | 0 |  | ☐ |
-| `Posting_Date` | string | 2023-12-31 |  | ☐ |
+| `Max_Payment_Tolerance` | float | 0 |  | ☐ |
+| `Posting_Date` | date | 2023-12-31 |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
-| `Remaining_Pmt_Disc_Possible` | int | 0 |  | ☐ |
+| `Remaining_Pmt_Disc_Possible` | float | 0 |  | ☐ |
 | `Source_Code` | string |  |  | ☐ |
 | `Tax_Jurisdiction_Code` | string |  |  | ☐ |
 | `Transaction_No` | int | 1 |  | ☐ |

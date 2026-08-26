@@ -10,9 +10,9 @@
 |---|---|---|---|---|
 | `Entry_No` | int | 2397 |  | ☐ |
 | `Document_No` | string | 24FVI-000006 |  | ☐ |
-| `Posting_Date` | string | 2024-01-08 |  | ☐ |
+| `Posting_Date` | date | 2024-01-08 |  | ☐ |
 | `Item_No` | string | CAS25DALISP310X310 |  | ☐ |
-| `Item_Ledger_Entry_Quantity` | int | 0 |  | ☐ |
+| `Item_Ledger_Entry_Quantity` | float | 0 |  | ☐ |
 | `Dimension_Set_ID` | int | 1 |  | ☐ |
 | `CustomerNo` | string | 500036 |  | ☐ |
 | `Name` | string | Alberto Calderara |  | ☐ |

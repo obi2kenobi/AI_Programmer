@@ -15,8 +15,8 @@
 | `Line_Type` | string | Cost Object |  | ☐ |
 | `Totaling` | string |  |  | ☐ |
 | `Sorting_Order` | string |  |  | ☐ |
-| `Balance_at_Date` | int | 0 |  | ☐ |
-| `Net_Change` | int | 0 |  | ☐ |
+| `Balance_at_Date` | float | 0 |  | ☐ |
+| `Net_Change` | float | 0 |  | ☐ |
 | `Comment` | string |  |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |
 | `New_Page` | bool | False |  | ☐ |

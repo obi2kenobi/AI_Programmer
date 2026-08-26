@@ -17,25 +17,25 @@
 | `number` | string | CAS16BAIASP198X145 |  | ☐ |
 | `locationCode` | string | PRINCIPALE |  | ☐ |
 | `postingGroup` | string | PF-ARREDO GIARDINO |  | ☐ |
-| `shipmentDate` | string | 2024-11-28 |  | ☐ |
+| `shipmentDate` | date | 2024-11-28 |  | ☐ |
 | `description` | string | CASETTA BAIA 16MM 216X163 CM |  | ☐ |
 | `description2` | string |  |  | ☐ |
 | `unitOfMeasure` | string | Pezzo |  | ☐ |
-| `quantity` | int | 42 |  | ☐ |
-| `outstandingQuantity` | int | 42 |  | ☐ |
-| `qtyToInvoice` | int | 0 |  | ☐ |
-| `qtyToShip` | int | 0 |  | ☐ |
+| `quantity` | float | 42 |  | ☐ |
+| `outstandingQuantity` | float | 42 |  | ☐ |
+| `qtyToInvoice` | float | 0 |  | ☐ |
+| `qtyToShip` | float | 0 |  | ☐ |
 | `unitPrice` | float | 426.68 |  | ☐ |
 | `unitCostLcy` | float | 407.753722222222 |  | ☐ |
-| `vatPercent` | int | 22 |  | ☐ |
-| `lineDiscountPercent` | int | 0 |  | ☐ |
-| `lineDiscountAmount` | int | 0 |  | ☐ |
+| `vatPercent` | float | 22 |  | ☐ |
+| `lineDiscountPercent` | float | 0 |  | ☐ |
+| `lineDiscountAmount` | float | 0 |  | ☐ |
 | `amount` | float | 17920.56 |  | ☐ |
 | `amountIncludingVat` | float | 21863.08 |  | ☐ |
 | `allowInvoiceDisc` | bool | True |  | ☐ |
-| `grossWeight` | int | 160 |  | ☐ |
-| `netWeight` | int | 150 |  | ☐ |
-| `unitsPerParcel` | int | 1 |  | ☐ |
+| `grossWeight` | float | 160 |  | ☐ |
+| `netWeight` | float | 150 |  | ☐ |
+| `unitsPerParcel` | float | 1 |  | ☐ |
 | `unitVolume` | float | 0.8602 |  | ☐ |
 | `applToItemEntry` | int | 0 |  | ☐ |
 | `shortcutDimension1Code` | string | ARRG |  | ☐ |
@@ -45,15 +45,15 @@
 | `workTypeCode` | string |  |  | ☐ |
 | `recalculateInvoiceDisc` | bool | False |  | ☐ |
 | `outstandingAmount` | float | 21863.08 |  | ☐ |
-| `qtyShippedNotInvoiced` | int | 0 |  | ☐ |
-| `shippedNotInvoiced` | int | 0 |  | ☐ |
-| `quantityShipped` | int | 0 |  | ☐ |
-| `quantityInvoiced` | int | 0 |  | ☐ |
+| `qtyShippedNotInvoiced` | float | 0 |  | ☐ |
+| `shippedNotInvoiced` | float | 0 |  | ☐ |
+| `quantityShipped` | float | 0 |  | ☐ |
+| `quantityInvoiced` | float | 0 |  | ☐ |
 | `shipmentNumber` | string |  |  | ☐ |
 | `shipmentLineNumber` | int | 0 |  | ☐ |
-| `profitPercent` | int | 0 |  | ☐ |
+| `profitPercent` | float | 0 |  | ☐ |
 | `billToCustomerNumber` | string | 0009541 |  | ☐ |
-| `invDiscountAmount` | int | 0 |  | ☐ |
+| `invDiscountAmount` | float | 0 |  | ☐ |
 | `purchaseOrderNumber` | string |  |  | ☐ |
 | `purchOrderLineNumber` | int | 0 |  | ☐ |
 | `dropShipment` | bool | False |  | ☐ |
@@ -75,9 +75,9 @@
 | `vatProdPostingGroup` | string | 220 |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
 | `outstandingAmountLcy` | float | 21863.08 |  | ☐ |
-| `shippedNotInvoicedLcy` | int | 0 |  | ☐ |
-| `shippedNotInvLcyNoVat` | int | 0 |  | ☐ |
-| `reservedQuantity` | int | 0 |  | ☐ |
+| `shippedNotInvoicedLcy` | float | 0 |  | ☐ |
+| `shippedNotInvLcyNoVat` | float | 0 |  | ☐ |
+| `reservedQuantity` | float | 0 |  | ☐ |
 | `reserve` | string | Optional |  | ☐ |
 | `blanketOrderNumber` | string |  |  | ☐ |
 | `blanketOrderLineNumber` | int | 0 |  | ☐ |
@@ -85,57 +85,57 @@
 | `unitCost` | float | 407.753722222222 |  | ☐ |
 | `systemCreatedEntry` | bool | False |  | ☐ |
 | `lineAmount` | float | 17920.56 |  | ☐ |
-| `vatDifference` | int | 0 |  | ☐ |
-| `invDiscAmountToInvoice` | int | 0 |  | ☐ |
+| `vatDifference` | float | 0 |  | ☐ |
+| `invDiscAmountToInvoice` | float | 0 |  | ☐ |
 | `vatIdentifier` | string | 220 |  | ☐ |
 | `icPartnerRefType` | string |   |  | ☐ |
 | `icPartnerReference` | string |  |  | ☐ |
-| `prepaymentPercent` | int | 0 |  | ☐ |
-| `prepmtLineAmount` | int | 0 |  | ☐ |
-| `prepmtAmtInv` | int | 0 |  | ☐ |
-| `prepmtAmtInclVat` | int | 0 |  | ☐ |
-| `prepaymentAmount` | int | 0 |  | ☐ |
-| `prepmtVatBaseAmt` | int | 0 |  | ☐ |
-| `prepaymentVatPercent` | int | 0 |  | ☐ |
+| `prepaymentPercent` | float | 0 |  | ☐ |
+| `prepmtLineAmount` | float | 0 |  | ☐ |
+| `prepmtAmtInv` | float | 0 |  | ☐ |
+| `prepmtAmtInclVat` | float | 0 |  | ☐ |
+| `prepaymentAmount` | float | 0 |  | ☐ |
+| `prepmtVatBaseAmt` | float | 0 |  | ☐ |
+| `prepaymentVatPercent` | float | 0 |  | ☐ |
 | `prepmtVatCalcType` | string | Normal VAT |  | ☐ |
 | `prepaymentVatIdentifier` | string |  |  | ☐ |
 | `prepaymentTaxAreaCode` | string |  |  | ☐ |
 | `prepaymentTaxLiable` | bool | False |  | ☐ |
 | `prepaymentTaxGroupCode` | string |  |  | ☐ |
-| `prepmtAmtToDeduct` | int | 0 |  | ☐ |
-| `prepmtAmtDeducted` | int | 0 |  | ☐ |
+| `prepmtAmtToDeduct` | float | 0 |  | ☐ |
+| `prepmtAmtDeducted` | float | 0 |  | ☐ |
 | `prepaymentLine` | bool | False |  | ☐ |
-| `prepmtAmountInvInclVat` | int | 0 |  | ☐ |
-| `prepmtAmountInvLcy` | int | 0 |  | ☐ |
+| `prepmtAmountInvInclVat` | float | 0 |  | ☐ |
+| `prepmtAmountInvLcy` | float | 0 |  | ☐ |
 | `icPartnerCode` | string |  |  | ☐ |
-| `prepmtVatAmountInvLcy` | int | 0 |  | ☐ |
-| `prepaymentVatDifference` | int | 0 |  | ☐ |
-| `prepmtVatDiffToDeduct` | int | 0 |  | ☐ |
-| `prepmtVatDiffDeducted` | int | 0 |  | ☐ |
+| `prepmtVatAmountInvLcy` | float | 0 |  | ☐ |
+| `prepaymentVatDifference` | float | 0 |  | ☐ |
+| `prepmtVatDiffToDeduct` | float | 0 |  | ☐ |
+| `prepmtVatDiffDeducted` | float | 0 |  | ☐ |
 | `dimensionSetId` | int | 1 |  | ☐ |
-| `qtyToAssembleToOrder` | int | 0 |  | ☐ |
-| `qtyToAsmToOrderBase` | int | 0 |  | ☐ |
-| `atoWhseOutstandingQty` | int | 0 |  | ☐ |
-| `atoWhseOutstdQtyBase` | int | 0 |  | ☐ |
+| `qtyToAssembleToOrder` | float | 0 |  | ☐ |
+| `qtyToAsmToOrderBase` | float | 0 |  | ☐ |
+| `atoWhseOutstandingQty` | float | 0 |  | ☐ |
+| `atoWhseOutstdQtyBase` | float | 0 |  | ☐ |
 | `jobTaskNumber` | string |  |  | ☐ |
 | `jobContractEntryNumber` | int | 0 |  | ☐ |
-| `postingDate` | string | 2024-11-25 |  | ☐ |
+| `postingDate` | date | 2024-11-25 |  | ☐ |
 | `deferralCode` | string |  |  | ☐ |
-| `returnsDeferralStartDate` | string | 0001-01-01 |  | ☐ |
+| `returnsDeferralStartDate` | date | 0001-01-01 |  | ☐ |
 | `variantCode` | string |  |  | ☐ |
 | `binCode` | string |  |  | ☐ |
-| `qtyPerUnitOfMeasure` | int | 1 |  | ☐ |
+| `qtyPerUnitOfMeasure` | float | 1 |  | ☐ |
 | `planned` | bool | False |  | ☐ |
 | `unitOfMeasureCode` | string | PZ |  | ☐ |
-| `quantityBase` | int | 42 |  | ☐ |
-| `outstandingQtyBase` | int | 42 |  | ☐ |
-| `qtyToInvoiceBase` | int | 0 |  | ☐ |
-| `qtyToShipBase` | int | 0 |  | ☐ |
-| `qtyShippedNotInvdBase` | int | 0 |  | ☐ |
-| `qtyShippedBase` | int | 0 |  | ☐ |
-| `qtyInvoicedBase` | int | 0 |  | ☐ |
-| `reservedQtyBase` | int | 0 |  | ☐ |
-| `faPostingDate` | string | 0001-01-01 |  | ☐ |
+| `quantityBase` | float | 42 |  | ☐ |
+| `outstandingQtyBase` | float | 42 |  | ☐ |
+| `qtyToInvoiceBase` | float | 0 |  | ☐ |
+| `qtyToShipBase` | float | 0 |  | ☐ |
+| `qtyShippedNotInvdBase` | float | 0 |  | ☐ |
+| `qtyShippedBase` | float | 0 |  | ☐ |
+| `qtyInvoicedBase` | float | 0 |  | ☐ |
+| `reservedQtyBase` | float | 0 |  | ☐ |
+| `faPostingDate` | date | 0001-01-01 |  | ☐ |
 | `depreciationBookCode` | string |  |  | ☐ |
 | `deprUntilFaPostingDate` | bool | False |  | ☐ |
 | `duplicateInDepreciationBook` | string |  |  | ☐ |
@@ -155,28 +155,28 @@
 | `specialOrder` | bool | False |  | ☐ |
 | `specialOrderPurchaseNumber` | string |  |  | ☐ |
 | `specialOrderPurchLineNumber` | int | 0 |  | ☐ |
-| `whseOutstandingQty` | int | 0 |  | ☐ |
-| `whseOutstandingQtyBase` | int | 0 |  | ☐ |
+| `whseOutstandingQty` | float | 0 |  | ☐ |
+| `whseOutstandingQtyBase` | float | 0 |  | ☐ |
 | `completelyShipped` | bool | False |  | ☐ |
-| `requestedDeliveryDate` | string | 2024-10-29 |  | ☐ |
-| `promisedDeliveryDate` | string | 0001-01-01 |  | ☐ |
+| `requestedDeliveryDate` | date | 2024-10-29 |  | ☐ |
+| `promisedDeliveryDate` | date | 0001-01-01 |  | ☐ |
 | `shippingTime` | string |  |  | ☐ |
 | `outboundWhseHandlingTime` | string |  |  | ☐ |
-| `plannedDeliveryDate` | string | 2024-10-24 |  | ☐ |
-| `plannedShipmentDate` | string | 2024-10-24 |  | ☐ |
+| `plannedDeliveryDate` | date | 2024-10-24 |  | ☐ |
+| `plannedShipmentDate` | date | 2024-10-24 |  | ☐ |
 | `shippingAgentCode` | string |  |  | ☐ |
 | `shippingAgentServiceCode` | string |  |  | ☐ |
 | `allowItemChargeAssignment` | bool | True |  | ☐ |
-| `qtyToAssign` | int | 0 |  | ☐ |
-| `qtyAssigned` | int | 0 |  | ☐ |
-| `returnQtyToReceive` | int | 0 |  | ☐ |
-| `returnQtyToReceiveBase` | int | 0 |  | ☐ |
-| `returnQtyRcdNotInvd` | int | 0 |  | ☐ |
-| `retQtyRcdNotInvdBase` | int | 0 |  | ☐ |
-| `returnRcdNotInvd` | int | 0 |  | ☐ |
-| `returnRcdNotInvdLcy` | int | 0 |  | ☐ |
-| `returnQtyReceived` | int | 0 |  | ☐ |
-| `returnQtyReceivedBase` | int | 0 |  | ☐ |
+| `qtyToAssign` | float | 0 |  | ☐ |
+| `qtyAssigned` | float | 0 |  | ☐ |
+| `returnQtyToReceive` | float | 0 |  | ☐ |
+| `returnQtyToReceiveBase` | float | 0 |  | ☐ |
+| `returnQtyRcdNotInvd` | float | 0 |  | ☐ |
+| `retQtyRcdNotInvdBase` | float | 0 |  | ☐ |
+| `returnRcdNotInvd` | float | 0 |  | ☐ |
+| `returnRcdNotInvdLcy` | float | 0 |  | ☐ |
+| `returnQtyReceived` | float | 0 |  | ☐ |
+| `returnQtyReceivedBase` | float | 0 |  | ☐ |
 | `applFromItemEntry` | int | 0 |  | ☐ |
 | `bomItemNumber` | string |  |  | ☐ |
 | `returnReceiptNumber` | string |  |  | ☐ |

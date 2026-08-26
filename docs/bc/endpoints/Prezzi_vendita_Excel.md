@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozg5MjUzMzQzNjAxMjYxOTU4ODIxOz... |  | ☐ |
-| `SystemId` | string | 6aefc7bb-a9ab-ee11-be36-0022489e8135 |  | ☐ |
+| `SystemId` | guid | 6aefc7bb-a9ab-ee11-be36-0022489e8135 |  | ☐ |
 | `SalesTypeFilter` | string | Customer |  | ☐ |
 | `SalesCodeFilterCtrl` | string |  |  | ☐ |
 | `ItemNoFilterCtrl` | string |  |  | ☐ |
@@ -23,10 +23,10 @@
 | `Variant_Code` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
-| `Minimum_Quantity` | int | 0 |  | ☐ |
-| `Unit_Price` | int | 50 |  | ☐ |
-| `Starting_Date` | string | 2024-01-01 |  | ☐ |
-| `Ending_Date` | string | 0001-01-01 |  | ☐ |
+| `Minimum_Quantity` | float | 0 |  | ☐ |
+| `Unit_Price` | float | 50 |  | ☐ |
+| `Starting_Date` | date | 2024-01-01 |  | ☐ |
+| `Ending_Date` | date | 0001-01-01 |  | ☐ |
 | `Price_Includes_VAT` | bool | False |  | ☐ |
 | `Allow_Line_Disc` | bool | True |  | ☐ |
 | `Allow_Invoice_Disc` | bool | True |  | ☐ |

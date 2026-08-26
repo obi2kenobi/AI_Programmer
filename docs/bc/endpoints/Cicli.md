@@ -14,4 +14,4 @@
 | `Type` | string | Serial |  | ☐ |
 | `Status` | string | Certified |  | ☐ |
 | `Version_Nos` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 2026-05-12 |  | ☐ |
+| `Last_Date_Modified` | date | 2026-05-12 |  | ☐ |

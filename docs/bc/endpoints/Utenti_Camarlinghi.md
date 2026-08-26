@@ -9,7 +9,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzQ0NDI4NjE3Nzk0NzQ4NjgzNzcxOz... |  | ☐ |
-| `User_Security_ID` | string | bdd7c872-e081-444e-b9c1-7f8e1309ac95 |  | ☐ |
+| `User_Security_ID` | guid | bdd7c872-e081-444e-b9c1-7f8e1309ac95 |  | ☐ |
 | `User_Name` | string | ADMIN |  | ☐ |
 | `Full_Name` | string | Luca Camarlinghi |  | ☐ |
 | `State` | string | Enabled |  | ☐ |

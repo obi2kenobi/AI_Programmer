@@ -19,7 +19,7 @@
 | `Allow_Line_Disc` | bool | True |  | ☐ |
 | `Allow_Quantity_Disc` | bool | True |  | ☐ |
 | `Amount` | float | 654.92 |  | ☐ |
-| `Amount_Including_VAT` | int | 799 |  | ☐ |
+| `Amount_Including_VAT` | float | 799 |  | ☐ |
 | `Appl_from_Item_Entry` | int | 0 |  | ☐ |
 | `Appl_to_Item_Entry` | int | 0 |  | ☐ |
 | `Appl_to_Service_Entry` | int | 0 |  | ☐ |
@@ -35,9 +35,9 @@
 | `Cross_Reference_Type` | string |   |  | ☐ |
 | `Cross_Reference_Type_No` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Cust_Item_Disc_Percent` | int | 0 |  | ☐ |
+| `Cust_Item_Disc_Percent` | float | 0 |  | ☐ |
 | `Customer_Disc_Group` | string |  |  | ☐ |
-| `Deductible_Percent` | int | 100 |  | ☐ |
+| `Deductible_Percent` | float | 100 |  | ☐ |
 | `Deferral_Code` | string |  |  | ☐ |
 | `Depr_until_FA_Posting_Date` | bool | False |  | ☐ |
 | `Depreciation_Book_Code` | string |  |  | ☐ |
@@ -47,17 +47,17 @@
 | `Drop_Shipment` | bool | False |  | ☐ |
 | `Duplicate_in_Depreciation_Book` | string |  |  | ☐ |
 | `Exit_Point` | string | EXW |  | ☐ |
-| `FA_Posting_Date` | string | 0001-01-01 |  | ☐ |
+| `FA_Posting_Date` | date | 0001-01-01 |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
-| `Gross_Weight` | int | 0 |  | ☐ |
+| `Gross_Weight` | float | 0 |  | ☐ |
 | `IC_Item_Reference_No` | string |  |  | ☐ |
 | `IC_Partner_Code` | string |  |  | ☐ |
 | `IC_Partner_Ref_Type` | string |   |  | ☐ |
 | `IC_Partner_Reference` | string |  |  | ☐ |
 | `Include_in_VAT_Transac_Rep` | bool | False |  | ☐ |
-| `Inv_Disc_Amount_to_Invoice` | int | 0 |  | ☐ |
-| `Inv_Discount_Amount` | int | 0 |  | ☐ |
+| `Inv_Disc_Amount_to_Invoice` | float | 0 |  | ☐ |
+| `Inv_Discount_Amount` | float | 0 |  | ☐ |
 | `Item_Category_Code` | string | PF |  | ☐ |
 | `Item_Reference_No` | string |  |  | ☐ |
 | `Item_Reference_Type` | string |   |  | ☐ |
@@ -67,81 +67,81 @@
 | `Job_No` | string |  |  | ☐ |
 | `Job_Task_No` | string |  |  | ☐ |
 | `Line_Amount` | float | 654.92 |  | ☐ |
-| `Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Line_Discount_Amount` | int | 0 |  | ☐ |
+| `Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Line_Discount_Amount` | float | 0 |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Net_Weight` | int | 500 |  | ☐ |
+| `Net_Weight` | float | 500 |  | ☐ |
 | `No` | string | CAS20OLBISP200X194 |  | ☐ |
 | `Nonstock` | bool | False |  | ☐ |
 | `Originally_Ordered_No` | string |  |  | ☐ |
 | `Originally_Ordered_Var_Code` | string |  |  | ☐ |
 | `Out_of_Stock_Substitution` | bool | False |  | ☐ |
 | `Outbound_Whse_Handling_Time` | string |  |  | ☐ |
-| `Outstanding_Amount` | int | 799 |  | ☐ |
-| `Outstanding_Amount_LCY` | int | 799 |  | ☐ |
-| `Outstanding_Qty_Base` | int | 1 |  | ☐ |
-| `Outstanding_Quantity` | int | 1 |  | ☐ |
+| `Outstanding_Amount` | float | 799 |  | ☐ |
+| `Outstanding_Amount_LCY` | float | 799 |  | ☐ |
+| `Outstanding_Qty_Base` | float | 1 |  | ☐ |
+| `Outstanding_Quantity` | float | 1 |  | ☐ |
 | `Planned` | bool | False |  | ☐ |
-| `Planned_Delivery_Date` | string | 2024-03-18 |  | ☐ |
-| `Planned_Shipment_Date` | string | 2024-03-18 |  | ☐ |
-| `Pmt_Discount_Amount` | int | 0 |  | ☐ |
+| `Planned_Delivery_Date` | date | 2024-03-18 |  | ☐ |
+| `Planned_Shipment_Date` | date | 2024-03-18 |  | ☐ |
+| `Pmt_Discount_Amount` | float | 0 |  | ☐ |
 | `Posting_Group` | string | PF-ARREDO GIARDINO |  | ☐ |
-| `Prepayment_Percent` | int | 100 |  | ☐ |
-| `Prepayment_Amount` | int | 0 |  | ☐ |
-| `Prepayment_Deductible_Percent` | int | 100 |  | ☐ |
+| `Prepayment_Percent` | float | 100 |  | ☐ |
+| `Prepayment_Amount` | float | 0 |  | ☐ |
+| `Prepayment_Deductible_Percent` | float | 100 |  | ☐ |
 | `Prepayment_Line` | bool | False |  | ☐ |
 | `Prepayment_Tax_Area_Code` | string |  |  | ☐ |
 | `Prepayment_Tax_Group_Code` | string |  |  | ☐ |
 | `Prepayment_Tax_Liable` | bool | False |  | ☐ |
-| `Prepayment_VAT_Percent` | int | 22 |  | ☐ |
+| `Prepayment_VAT_Percent` | float | 22 |  | ☐ |
 | `Prepayment_VAT_Identifier` | string | 220 |  | ☐ |
-| `Prepmt_Amt_Deducted` | int | 0 |  | ☐ |
-| `Prepmt_Amt_to_Deduct` | int | 0 |  | ☐ |
-| `Prepmt_Amount_Inv_Incl_VAT` | int | 0 |  | ☐ |
-| `Prepmt_Amt_Incl_VAT` | int | 0 |  | ☐ |
-| `Prepmt_Amt_Inv` | int | 0 |  | ☐ |
+| `Prepmt_Amt_Deducted` | float | 0 |  | ☐ |
+| `Prepmt_Amt_to_Deduct` | float | 0 |  | ☐ |
+| `Prepmt_Amount_Inv_Incl_VAT` | float | 0 |  | ☐ |
+| `Prepmt_Amt_Incl_VAT` | float | 0 |  | ☐ |
+| `Prepmt_Amt_Inv` | float | 0 |  | ☐ |
 | `Prepmt_CM_Refers_to_Period` | string | Current |  | ☐ |
 | `Prepmt_Line_Amount` | float | 654.92 |  | ☐ |
-| `Prepmt_VAT_Base_Amt` | int | 0 |  | ☐ |
+| `Prepmt_VAT_Base_Amt` | float | 0 |  | ☐ |
 | `Prepmt_VAT_Calc_Type` | string | Normal VAT |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |
 | `Price_Group_Code` | string | LCDL |  | ☐ |
-| `Profit_Percent` | int | 0 |  | ☐ |
-| `Promised_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Profit_Percent` | float | 0 |  | ☐ |
+| `Promised_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `Purch_Order_Line_No` | int | 0 |  | ☐ |
 | `Purchase_Order_No` | string |  |  | ☐ |
 | `Purchasing_Code` | string |  |  | ☐ |
-| `Qty_Invoiced_Base` | int | 0 |  | ☐ |
-| `Qty_Shipped_Base` | int | 0 |  | ☐ |
-| `Qty_Shipped_Not_Invd_Base` | int | 0 |  | ☐ |
-| `Qty_Shipped_Not_Invoiced` | int | 0 |  | ☐ |
-| `Qty_per_Unit_of_Measure` | int | 1 |  | ☐ |
-| `Qty_to_Invoice` | int | 0 |  | ☐ |
-| `Qty_to_Invoice_Base` | int | 0 |  | ☐ |
-| `Qty_to_Ship` | int | 0 |  | ☐ |
-| `Qty_to_Ship_Base` | int | 0 |  | ☐ |
-| `Quantity` | int | 1 |  | ☐ |
-| `Quantity_Base` | int | 1 |  | ☐ |
-| `Quantity_Disc_Percent` | int | 0 |  | ☐ |
+| `Qty_Invoiced_Base` | float | 0 |  | ☐ |
+| `Qty_Shipped_Base` | float | 0 |  | ☐ |
+| `Qty_Shipped_Not_Invd_Base` | float | 0 |  | ☐ |
+| `Qty_Shipped_Not_Invoiced` | float | 0 |  | ☐ |
+| `Qty_per_Unit_of_Measure` | float | 1 |  | ☐ |
+| `Qty_to_Invoice` | float | 0 |  | ☐ |
+| `Qty_to_Invoice_Base` | float | 0 |  | ☐ |
+| `Qty_to_Ship` | float | 0 |  | ☐ |
+| `Qty_to_Ship_Base` | float | 0 |  | ☐ |
+| `Quantity` | float | 1 |  | ☐ |
+| `Quantity_Base` | float | 1 |  | ☐ |
+| `Quantity_Disc_Percent` | float | 0 |  | ☐ |
 | `Quantity_Disc_Code` | string |  |  | ☐ |
-| `Quantity_Invoiced` | int | 0 |  | ☐ |
-| `Quantity_Shipped` | int | 0 |  | ☐ |
+| `Quantity_Invoiced` | float | 0 |  | ☐ |
+| `Quantity_Shipped` | float | 0 |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
-| `Requested_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Requested_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `Reserve` | string | Optional |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
-| `Ret_Amt_Rcd_Not_Invd_LCY` | int | 0 |  | ☐ |
-| `Ret_Qty_Rcd_Not_Invd_Base` | int | 0 |  | ☐ |
-| `Return_Amt_Rcd_Not_Invd` | int | 0 |  | ☐ |
-| `Return_Qty_Rcd_Not_Invd` | int | 0 |  | ☐ |
-| `Return_Qty_Received` | int | 0 |  | ☐ |
-| `Return_Qty_Received_Base` | int | 0 |  | ☐ |
-| `Return_Qty_to_Receive` | int | 0 |  | ☐ |
-| `Return_Qty_to_Receive_Base` | int | 0 |  | ☐ |
+| `Ret_Amt_Rcd_Not_Invd_LCY` | float | 0 |  | ☐ |
+| `Ret_Qty_Rcd_Not_Invd_Base` | float | 0 |  | ☐ |
+| `Return_Amt_Rcd_Not_Invd` | float | 0 |  | ☐ |
+| `Return_Qty_Rcd_Not_Invd` | float | 0 |  | ☐ |
+| `Return_Qty_Received` | float | 0 |  | ☐ |
+| `Return_Qty_Received_Base` | float | 0 |  | ☐ |
+| `Return_Qty_to_Receive` | float | 0 |  | ☐ |
+| `Return_Qty_to_Receive_Base` | float | 0 |  | ☐ |
 | `Return_Reason_Code` | string |  |  | ☐ |
 | `Return_Receipt_Line_No` | int | 0 |  | ☐ |
 | `Return_Receipt_No` | string |  |  | ☐ |
-| `Returns_Deferral_Start_Date` | string | 0001-01-01 |  | ☐ |
+| `Returns_Deferral_Start_Date` | date | 0001-01-01 |  | ☐ |
 | `Sell_to_Customer_No` | string | 500207 |  | ☐ |
 | `Serv_Price_Adjmt_Gr_Code` | string |  |  | ☐ |
 | `Service_Contract_No` | string |  |  | ☐ |
@@ -149,11 +149,11 @@
 | `Service_Item_No` | string |  |  | ☐ |
 | `Service_Order_No` | string |  |  | ☐ |
 | `Service_Tariff_No` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2024-03-18 |  | ☐ |
+| `Shipment_Date` | date | 2024-03-18 |  | ☐ |
 | `Shipment_Line_No` | int | 0 |  | ☐ |
 | `Shipment_No` | string |  |  | ☐ |
-| `Shipped_Not_Invoiced` | int | 0 |  | ☐ |
-| `Shipped_Not_Invoiced_LCY` | int | 0 |  | ☐ |
+| `Shipped_Not_Invoiced` | float | 0 |  | ☐ |
+| `Shipped_Not_Invoiced_LCY` | float | 0 |  | ☐ |
 | `Shipping_Agent_Code` | string |  |  | ☐ |
 | `Shipping_Agent_Service_Code` | string |  |  | ☐ |
 | `Shipping_Time` | string |  |  | ☐ |
@@ -171,21 +171,21 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `Type` | string | Item |  | ☐ |
-| `Unit_Cost` | int | 0 |  | ☐ |
-| `Unit_Cost_LCY` | int | 0 |  | ☐ |
+| `Unit_Cost` | float | 0 |  | ☐ |
+| `Unit_Cost_LCY` | float | 0 |  | ☐ |
 | `Unit_Price` | float | 654.92 |  | ☐ |
-| `Unit_Volume` | int | 0 |  | ☐ |
+| `Unit_Volume` | float | 0 |  | ☐ |
 | `Unit_of_Measure` | string | Pezzo |  | ☐ |
 | `Unit_of_Measure_Cross_Ref` | string |  |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
-| `Units_per_Parcel` | int | 1 |  | ☐ |
+| `Units_per_Parcel` | float | 1 |  | ☐ |
 | `Use_Duplication_List` | bool | False |  | ☐ |
-| `VAT_Percent` | int | 22 |  | ☐ |
+| `VAT_Percent` | float | 22 |  | ☐ |
 | `VAT_Base_Amount` | float | 654.92 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Calculation_Type` | string | Normal VAT |  | ☐ |
 | `VAT_Clause_Code` | string |  |  | ☐ |
-| `VAT_Difference` | int | 0 |  | ☐ |
+| `VAT_Difference` | float | 0 |  | ☐ |
 | `VAT_Identifier` | string | 220 |  | ☐ |
 | `VAT_Prod_Posting_Group` | string | 220 |  | ☐ |
 | `Variant_Code` | string |  |  | ☐ |

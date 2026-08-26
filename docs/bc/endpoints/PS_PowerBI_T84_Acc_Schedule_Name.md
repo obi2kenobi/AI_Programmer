@@ -12,7 +12,7 @@
 | `Name` | string | 4DIRETTIVA |  | ☐ |
 | `Analysis_View_Name` | string |  |  | ☐ |
 | `Description` | string | Bilancio di Esercizio |  | ☐ |
-| `SystemCreatedAt` | string | 2024-03-28T10:53:47.41Z |  | ☐ |
-| `SystemCreatedBy` | string | 7bd2cd65-cef6-480e-a7f4-f590f9238068 |  | ☐ |
-| `SystemModifiedAt` | string | 2024-03-28T10:54:03.197Z |  | ☐ |
-| `SystemModifiedBy` | string | 7bd2cd65-cef6-480e-a7f4-f590f9238068 |  | ☐ |
+| `SystemCreatedAt` | datetime | 2024-03-28T10:53:47.41Z |  | ☐ |
+| `SystemCreatedBy` | guid | 7bd2cd65-cef6-480e-a7f4-f590f9238068 |  | ☐ |
+| `SystemModifiedAt` | datetime | 2024-03-28T10:54:03.197Z |  | ☐ |
+| `SystemModifiedBy` | guid | 7bd2cd65-cef6-480e-a7f4-f590f9238068 |  | ☐ |
