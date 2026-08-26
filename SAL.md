@@ -104,6 +104,7 @@
 - [2026-08-26 — il report dei tagli: il canone ha retto, e cresce di cinque pezzi](#2026-08-26-il-report-dei-tagli-il-canone-ha-retto-e-cresce-di-cinque-pezzi)
 - [2026-08-26 (3) — «standard non opzione»: il metodo diventa meccanico](#2026-08-26-3-standard-non-opzione-il-metodo-diventa-meccanico)
 - [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-gi-chiuso-due-novit)
+- [2026-08-26 (4) — il censimento BC diventa aggiornabile (e confessa: 0 verificati su 88)](#2026-08-26-4-il-censimento-bc-diventa-aggiornabile-e-confessa-0-verificati-su-88)
 
 
 ## Stato
@@ -3115,3 +3116,29 @@ promemoria serve anche alle sessioni ben intenzionate; (2) il bug del plug IVA
 a segno invertito, trovato leggendo ed eseguendo query vere: entra nel canone
 come conferma di campo della regola dei segni (domini-gestionali §3) — lo
 stesso difetto in una sede nuova.
+
+### 2026-08-26 (4) — il censimento BC diventa aggiornabile (e confessa: 0 verificati su 88)
+
+Mandato di Luca: «sistemiamo questa parte e impariamo a renderlo funzionante e
+aggiornabile». Verificato eseguendo: il canone punta a docs/bc/endpoints (3
+luoghi + hook dalla #54), l'indice funziona — MA il refresh aveva l'assassino
+dell'aggiornabilità dentro: bc_map rigenerava il file dell'endpoint e si
+portava via le colonne compilate a mano (Significato, Verificato). Un
+censimento che cancella la cura quando lo aggiorni non viene mai aggiornato:
+88 file senza data, nessuno mai rinnovato.
+
+Fatto: (1) write_md ora fa MERGE — legge le colonne curate del file esistente
+e le preserva per campo (test: significato tenuto, verificato tenuto, campo
+NUOVO aggiunto, data stampata); (2) ogni refresh stampa «Ultimo aggiornamento:
+YYYY-MM-DD (merge: colonne preservate)»; (3) l'indice guadagna la sezione
+«Salute del censimento»: quanti endpoint hanno campi verificati, quanti file
+hanno data di refresh, come si rinnova — il censimento invecchia in modo
+VISIBILE; (4) tolto il «/108» cablato (il catalogo vive nel repo cliente:
+l'avanzamento ora conta il reale e dichiara dove sta il totale).
+
+E la salute ha confessato la verità: **0 endpoint verificati su 88** — tutto
+«mappato», niente mai confermato col riscontro (interfaccia BC / totali
+noti). Non è un difetto dello strumento: è lo stato reale che l'indice ora
+mostra. Il passo «funzionante» vero è il riscontro, campo per campo, dove i
+progetti lo usano — e la pozza di Luca (108 nel catalogo del cliente) serve
+proprio a chiudere 88→108 col vivo sotto.

@@ -66,15 +66,35 @@ def collect_fields(rows):
     return fields
 
 
+def leggi_curati(path):
+    """Le colonne compilate a mano (Significato, Verificato) del file esistente,
+    per campo: un refresh che le cancellasse renderebbe il censimento
+    non-aggiornabile (nessuno ricompilerebbe 88 file per aggiornarne la forma)."""
+    curati = {}
+    try:
+        for riga in open(path, encoding="utf-8"):
+            parti = riga.strip().strip("|").split("|")
+            if len(parti) >= 5 and parti[0].strip().startswith("`"):
+                nome = parti[0].strip().strip("`")
+                curati[nome] = (parti[3].strip(), parti[4].strip())
+    except OSError:
+        pass
+    return curati
+
+
 def write_md(endpoint, base_url, rows, fields):
+    import datetime
     os.makedirs(OUT_DIR, exist_ok=True)
     path = os.path.join(OUT_DIR, f"{endpoint}.md")
+    curati = leggi_curati(path)
+    oggi = datetime.date.today().isoformat()
     lines = [
         f"# Endpoint: `{endpoint}`",
         "",
         f"- URL: `{base_url}/{endpoint}`",
         f"- Righe campione lette: {len(rows)}",
         f"- Campi trovati: {len(fields)}",
+        f"- Ultimo aggiornamento: {oggi} (merge: le colonne compilate a mano sono preservate)",
         "",
         "> Stato: **mappato** (da verificare con riscontro: interfaccia BC / gestionale / totali noti).",
         "",
@@ -85,7 +105,10 @@ def write_md(endpoint, base_url, rows, fields):
         sample = str(info["sample"]).replace("|", "\\|")
         if len(sample) > 40:
             sample = sample[:37] + "..."
-        lines.append(f"| `{name}` | {info['type']} | {sample} |  | ☐ |")
+        sig, ver = curati.get(name, ("", "☐"))
+        if not ver:
+            ver = "☐"
+        lines.append(f"| `{name}` | {info['type']} | {sample} | {sig} | {ver} |")
     lines.append("")
     with open(path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))

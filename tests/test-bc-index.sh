@@ -25,9 +25,12 @@ N_RIGHE=$(grep -c '^| `' "$TMP/docs/bc/README.md" 2>/dev/null || echo 0)
 [ "$N_RIGHE" -eq "$N_FILE" ] && ok "una riga per ogni endpoint copiato ($N_FILE)" \
   || ko "righe=$N_RIGHE, file=$N_FILE — endpoint persi o duplicati"
 
-grep -q "Avanzamento — $N_FILE / 108 mappati" "$TMP/docs/bc/README.md" \
-  && ok "l'avanzamento riporta il conteggio reale ($N_FILE/108)" \
+grep -q "Avanzamento — $N_FILE mappati" "$TMP/docs/bc/README.md" \
+  && ok "l'avanzamento riporta il conteggio reale ($N_FILE, senza il /108 cablato: il catalogo vive nel repo cliente)" \
   || ko "avanzamento sbagliato: $(grep Avanzamento "$TMP/docs/bc/README.md")"
+grep -q "Salute del censimento" "$TMP/docs/bc/README.md" \
+  && ok "l'indice riporta la SALUTE (verificati, data refresh) — il censimento invecchia in modo visibile" \
+  || ko "manca la sezione salute del censimento"
 
 # le righe devono essere ordinate per campi DECRESCENTI (bc_index.py: rows.sort(key=lambda r: -r[1]))
 python3 - "$TMP/docs/bc/README.md" <<'PY'
