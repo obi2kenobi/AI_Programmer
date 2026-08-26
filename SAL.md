@@ -106,6 +106,7 @@
 - [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-gi-chiuso-due-novit)
 - [2026-08-26 (4) — il censimento BC diventa aggiornabile (e confessa: 0 verificati su 88)](#2026-08-26-4-il-censimento-bc-diventa-aggiornabile-e-confessa-0-verificati-su-88)
 - [2026-08-26 (5) — la pozza entra: il catalogo vive nell'hub, i mancanti sono 170](#2026-08-26-5-la-pozza-entra-il-catalogo-vive-nell-hub-i-mancanti-sono-170)
+- [2026-08-26 (6) — censimento BC completato al vivo: 203/258, anomalie registrate](#2026-08-26-6-censimento-bc-completato-al-vivo-203-258-anomalie-registrate)
 
 
 ## Stato
@@ -3163,3 +3164,13 @@ Il flusso aggiornabile, completo: sul Mac di Luca (credenziali locali)
 `python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in
 blocco tutti i 170 saltando i fatti, ognuno col merge che preserva le colonne
 curate; `bc_index.py` riconta; la Salute mostra il debito che scende.
+
+### 2026-08-26 (6) — censimento BC completato al vivo: 203/258, anomalie registrate
+
+Tre giri sul vivo (Luca al terminale): 88 → 187 → 203. Il secondo giro ha
+recuperato 16 con il fix del segmento underscore; il resto è la verità del
+campo, registrata in CORREZIONI.md: 28 VUOTE legittime (moduli inutilizzati —
+da dichiarare vuoto, non zero), 2×403 permessi, 3×400, 22×404 (nomi con
+punti/slash non esposti come segmenti OData + PRJ_*). Il censimento endpoint
+è ora: completo nei fatti, aggiornabile per costruzione (merge che preserva,
+catalogo col segmento, indice che conta), e onesto sulle anomalie.
