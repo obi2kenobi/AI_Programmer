@@ -16,7 +16,11 @@
    una colonna e le righe vengono da un altro filtro, «il documento non somma
    ciò che mostra».)
 3. **Dare/avere e segno**: i movimenti di produzione da BC arrivano NEGATIVI —
-   «un segno invertito non dà errore: dà un costo che sembra un ricavo».
+   «un segno invertito non dà errore: dà un costo che sembra un ricavo». Conferma
+   di campo (REPO-G, 2026-08-26): un plug IVA a segno invertito è stato trovato
+   LEGGENDO il codice ed eseguendo query reali sul vivo, non assumendo — lo
+   stesso difetto in una sede nuova: il plug che quadra può quadrate per il
+   verso sbagliato.
 4. **Le due date**: documento vs registrazione — la conta del 31/01
    registrata il 01/02 finisce nel mese sbagliato.
 5. **I ribaltamenti**: la somma dei ribaltati deve fare ESATTAMENTE l'importo
