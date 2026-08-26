@@ -120,8 +120,14 @@ def parse_catalog(path):
     text = open(path, encoding="utf-8").read()
     # due formati: export "Servizi Web" 2026-08-26 (| Pagina | id | nome | `Servizio` | ...)
     # e il vecchio formato del repo cliente (| Pagina|Query | id | `Nome` |)
-    names = re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `([^`]+)`", text)
-    names += re.findall(r"\| (?:Pagina|Query)\| \d+ \| `([^`]+)`", text)
+    # formato 2026-08-26: | Pagina | id | nome | `servizio` | `segmento` | — conta il SEGMENTO
+    # (BC espone "Job List" come Job_List: le 404 del primo giro nascevano dal nome visualizzato)
+    with_seg = re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `[^`]+` \| `([^`]+)` \|", text)
+    if with_seg:
+        names = with_seg
+    else:
+        names = re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `([^`]+)`", text)
+        names += re.findall(r"\| (?:Pagina|Query)\| \d+ \| `([^`]+)`", text)
     seen, out = set(), []
     for n in names:
         if n not in seen:
