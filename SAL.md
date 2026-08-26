@@ -102,6 +102,7 @@
 - [2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi](#2026-08-24-9-7-ciclo-set-3-3-il-hub-impara-a-giudicare-i-banchi)
 - [2026-08-24 (10) — il report dal campo su REPO-G: verificato,processato, chiuso](#2026-08-24-10-il-report-dal-campo-su-repo-g-verificato-processato-chiuso)
 - [2026-08-26 — il report dei tagli: il canone ha retto, e cresce di cinque pezzi](#2026-08-26-il-report-dei-tagli-il-canone-ha-retto-e-cresce-di-cinque-pezzi)
+- [2026-08-26 (3) — «standard non opzione»: il metodo diventa meccanico](#2026-08-26-3-standard-non-opzione-il-metodo-diventa-meccanico)
 - [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-gi-chiuso-due-novit)
 
 
@@ -3068,6 +3069,36 @@ assistito.
 Guardia: test-gas-sviluppo-sistema passa da 16 a 22 controlli (le aggiunte
 non escono dal canone in silenzio). Specchio OpenCode risincronizzato.
 
+### 2026-08-26 (3) — «standard non opzione»: il metodo diventa meccanico
+
+Problema portato da Luca: «invoco AI_Programmer all'inizio e spesso non viene
+utilizzato, o solo in parte». La diagnosi è nel SAL da tempo («contenuto che
+esiste solo se qualcuno se ne ricorda al momento giusto» — il filo comune di
+TUTTI i gap trovati dal 5° ciclo): finché il metodo dipende da un'invocazione
+iniziale, dipende dalla memoria della sessione, e la memoria della sessione è
+esattamente il punto debole che il metodo esiste a compensare.
+
+Tre pezzi, tutti meccanici:
+
+1. **`tools/metodo-reminder-hook.sh`** + registrazione in settings.json:
+   SessionStart inietta la porta d'ingresso all'apertura («non serve
+   invocarlo, vale da sé»), UserPromptSubmit ri-inietta un promemorio compatto
+   a OGNI prompt (con aggancio dinamico: il prompt che parla di calcoli punta
+   agli oracoli; quello che parla di correzioni, al banco e alla domanda di
+   dominio). Costo: poche righe di contesto per prompt. È la risposta diretta
+   al «invocato all'inizio e poi dimenticato»: ora non serve invocarlo.
+2. **Gli hook VIAGGIANO**: bootstrap copia settings.json + i due hook;
+   onboard li porta con merge prudente (non tocca hook proprietari). Finora
+   skill e agenti propagavano, il rinforzo meccanico no — lo standard
+   viaggiava a metà.
+3. **`sync-repo.sh --standard`**: UN comando porta il sistema intero in una
+   repo (CLAUDE.md, skills, agenti, hook, specchi OpenCode) e apre la PR.
+   METHOD.md guadagna §"Lo standard" con la checklist fisica (un pezzo che
+   manca = il metodo che manca) e AGENTS.md lo dichiara all'agente in arrivo.
+
+Guardia: `tests/test-standard-non-opzione.sh` (8 controlli). Limite onesto:
+gli hook sono la meccanica di Claude Code; per la notte OpenCode l'aggancio
+equivalente (se esiste) resta da mappare — dichiarato, non Presunto.
 ### 2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità
 
 Ricevuta la seconda stesura del report sul campo REPO-G (stessa sessione, sei

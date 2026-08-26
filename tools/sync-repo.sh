@@ -16,9 +16,11 @@ HUB_CLAUDE="$HERE/CLAUDE.md"
 REPO=""
 LOCAL_DIR=""
 CON_PR=0
+STANDARD=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --pr) CON_PR=1 ;;
+    --standard) STANDARD=1 ;;
     --from-local) LOCAL_DIR="$2"; shift ;;
     *) REPO="$1" ;;
   esac
@@ -48,6 +50,35 @@ DIFF_LINES=$(diff "$TMP/CLAUDE.md" "$HUB_CLAUDE.md" | grep -c '^[<>]')
 echo "sync-repo: DIVERGENTE — CLAUDE.md ${REPO:-locale} dista $DIFF_LINES righe da quello dell'hub (l'hub è la fonte: regole ereditate)"
 echo "  (l'hub ha sezioni che il progetto non riceve mai dall'onboarding in poi — F2 del report sul campo)"
 diff "$TMP/CLAUDE.md" "$HUB_CLAUDE.md" | head -20 | sed 's/^/  /'
+
+# --standard: il sistema intero, non solo CLAUDE.md — lo standard non è un'opzione
+# che si dichiara, è un insieme di file che devono esserci (METHOD.md §"Lo standard")
+if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
+  gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
+  cd "$TMP/work"
+  COPIATI=0
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent; do
+    [ -e "$HERE/$ITEM" ] || continue
+    mkdir -p "$(dirname "$ITEM")"
+    cp -r "$HERE/$ITEM" "$ITEM"
+    git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
+  done
+  mkdir -p tools
+  for H in metodo-reminder-hook.sh pattern-reminder-hook.sh; do
+    cp "$HERE/tools/$H" "tools/$H" && git add "tools/$H"
+  done
+  if git diff --cached --quiet; then
+    echo "sync-repo --standard: GIÀ A STANDARD — $REPO ha tutto (CLAUDE.md, skills, agenti, hook)"
+    exit 0
+  fi
+  BR="claude/standard-$(date +%Y%m%d)"
+  git checkout -q -b "$BR"
+  git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard"
+  git push -q -u origin "$BR" 2>/dev/null || { echo "sync-repo: push fallito"; exit 1; }
+  gh pr create --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1
+  echo "sync-repo --standard: PR aperta su $BR ($COPIATI gruppi di file aggiornati)"
+  exit 0
+fi
 
 if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   BR="claude/sync-claude-md-$(date +%Y%m%d)"
