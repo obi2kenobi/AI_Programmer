@@ -26,16 +26,16 @@
 | `Bin_Code` | string |  |  | ☐ |
 | `Action_Message` | string | New |  | ☐ |
 | `Accept_Action_Message` | bool | True |  | ☐ |
-| `Original_Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Order_Date` | string | 2024-02-23 |  | ☐ |
-| `Due_Date` | string | 2024-02-23 |  | ☐ |
-| `Transfer_Shipment_Date` | string | 0001-01-01 |  | ☐ |
-| `Starting_Date_Time` | string | 2024-02-23T08:00:00Z |  | ☐ |
+| `Original_Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Order_Date` | date | 2024-02-23 |  | ☐ |
+| `Due_Date` | date | 2024-02-23 |  | ☐ |
+| `Transfer_Shipment_Date` | date | 0001-01-01 |  | ☐ |
+| `Starting_Date_Time` | datetime | 2024-02-23T08:00:00Z |  | ☐ |
 | `Starting_Time` | string | 09:00:00 |  | ☐ |
-| `Starting_Date` | string | 2024-02-23 |  | ☐ |
-| `Ending_Date_Time` | string | 2024-02-23T17:00:00Z |  | ☐ |
+| `Starting_Date` | date | 2024-02-23 |  | ☐ |
+| `Ending_Date_Time` | datetime | 2024-02-23T17:00:00Z |  | ☐ |
 | `Ending_Time` | string | 18:00:00 |  | ☐ |
-| `Ending_Date` | string | 2024-02-23 |  | ☐ |
+| `Ending_Date` | date | 2024-02-23 |  | ☐ |
 | `Low_Level_Code` | int | 2 |  | ☐ |
 | `Description` | string | KIT VITI CASETTE VERMONT |  | ☐ |
 | `Description_2` | string |  |  | ☐ |
@@ -53,9 +53,9 @@
 | `ShortcutDimCode_x005B_8_x005D_` | string |  |  | ☐ |
 | `Transfer_from_Code` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Original_Quantity` | int | 0 |  | ☐ |
+| `Original_Quantity` | float | 0 |  | ☐ |
 | `MPS_Order` | bool | False |  | ☐ |
-| `Quantity` | int | 8 |  | ☐ |
+| `Quantity` | float | 8 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
 | `Replenishment_System` | string | Prod. Order |  | ☐ |
 | `Supply_From` | string |  |  | ☐ |
@@ -65,11 +65,11 @@
 | `Ref_Line_No` | int | 0 |  | ☐ |
 | `Planning_Flexibility` | string | Unlimited |  | ☐ |
 | `Blanket_Purch_Order_Exists` | bool | False |  | ☐ |
-| `Reserved_Quantity` | int | 0 |  | ☐ |
+| `Reserved_Quantity` | float | 0 |  | ☐ |
 | `Gen_Prod_Posting_Group` | string | MP-ARRG-ACCESSORI |  | ☐ |
-| `Unit_Cost` | int | 0 |  | ☐ |
+| `Unit_Cost` | float | 0 |  | ☐ |
 | `Gen_Business_Posting_Group` | string |  |  | ☐ |
-| `Cost_Amount` | int | 0 |  | ☐ |
+| `Cost_Amount` | float | 0 |  | ☐ |
 | `Vendor_No` | string |  |  | ☐ |
 | `ItemDescription` | string | KIT VITI CASETTE VERMONT |  | ☐ |
 | `RoutingDescription` | string |  |  | ☐ |

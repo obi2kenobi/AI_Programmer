@@ -18,13 +18,13 @@
 | `Source_No` | string |  |  | ☐ |
 | `Variant_Code` | string |  |  | ☐ |
 | `Search_Description` | string |  |  | ☐ |
-| `Quantity` | int | 0 |  | ☐ |
-| `Due_Date` | string | 2026-01-26 |  | ☐ |
+| `Quantity` | float | 0 |  | ☐ |
+| `Due_Date` | date | 2026-01-26 |  | ☐ |
 | `Assigned_User_ID` | string |  |  | ☐ |
-| `Last_Date_Modified` | string | 0001-01-01 |  | ☐ |
+| `Last_Date_Modified` | date | 0001-01-01 |  | ☐ |
 | `Manual_Scheduling` | bool | False |  | ☐ |
-| `Starting_Date_Time` | string | 2026-01-26T08:00:00Z |  | ☐ |
-| `Ending_Date_Time` | string | 2026-01-26T17:00:00Z |  | ☐ |
+| `Starting_Date_Time` | datetime | 2026-01-26T08:00:00Z |  | ☐ |
+| `Ending_Date_Time` | datetime | 2026-01-26T17:00:00Z |  | ☐ |
 | `Inventory_Posting_Group` | string |  |  | ☐ |
 | `Gen_Prod_Posting_Group` | string |  |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |

@@ -9,7 +9,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE1NTEzNTIxODQ4NTE0MDY0NzU1MT... |  | ☐ |
-| `id` | string | fbc60005-d240-ee11-bdf5-0022489f1000 |  | ☐ |
+| `id` | guid | fbc60005-d240-ee11-bdf5-0022489f1000 |  | ☐ |
 | `journalTemplateName` | string | ACQUISTI |  | ☐ |
 | `name` | string | DEFAULT |  | ☐ |
 | `description` | string | Registrazioni di default |  | ☐ |
@@ -25,4 +25,4 @@
 | `templateType` | string | Purchases |  | ☐ |
 | `recurring` | bool | False |  | ☐ |
 | `suggestBalancingAmount` | bool | False |  | ☐ |
-| `lastModifiedDatetime` | string | 2023-08-22T12:43:27.72Z |  | ☐ |
+| `lastModifiedDatetime` | datetime | 2023-08-22T12:43:27.72Z |  | ☐ |

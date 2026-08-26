@@ -11,8 +11,8 @@
 | `Entry_No` | int | 543 |  | ☐ |
 | `Transaction_No` | int | 272 |  | ☐ |
 | `Bank_Account_No` | string | B004 |  | ☐ |
-| `Posting_Date` | string | 2024-01-02 |  | ☐ |
-| `Document_Date` | string | 2024-01-02 |  | ☐ |
+| `Posting_Date` | date | 2024-01-02 |  | ☐ |
+| `Document_Date` | date | 2024-01-02 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | 24DF-0000002 |  | ☐ |
 | `Source_Code` | string |  |  | ☐ |
@@ -20,11 +20,11 @@
 | `Open` | bool | True |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `Amount` | float | -1801.22 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
 | `Credit_Amount` | float | 1801.22 |  | ☐ |
 | `Remaining_Amount` | float | -1801.22 |  | ☐ |
 | `Amount_LCY` | float | -1801.22 |  | ☐ |
-| `Debit_Amount_LCY` | int | 0 |  | ☐ |
+| `Debit_Amount_LCY` | float | 0 |  | ☐ |
 | `Credit_Amount_LCY` | float | 1801.22 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
 | `Bank_Account_Name` | string | Deutsche Bank c/c |  | ☐ |

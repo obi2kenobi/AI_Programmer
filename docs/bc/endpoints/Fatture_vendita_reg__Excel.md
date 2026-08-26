@@ -27,11 +27,11 @@
 | `SellToEmail` | string |  |  | ☐ |
 | `Sell_to_Contact` | string |  |  | ☐ |
 | `Your_Reference` | string | 7237 |  | ☐ |
-| `Document_Date` | string | 2025-07-22 |  | ☐ |
-| `Posting_Date` | string | 2025-07-22 |  | ☐ |
-| `VAT_Reporting_Date` | string | 2025-07-22 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Promised_Pay_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2025-07-22 |  | ☐ |
+| `Posting_Date` | date | 2025-07-22 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2025-07-22 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Promised_Pay_Date` | date | 0001-01-01 |  | ☐ |
 | `Document_Exchange_Status` | string | Not Sent |  | ☐ |
 | `Quote_No` | string | 25OFFV-000448 |  | ☐ |
 | `Order_No` | string | 25OV-001586 |  | ☐ |
@@ -48,13 +48,13 @@
 | `Dispute_Status` | string |  |  | ☐ |
 | `GetWorkDescription` | string |  |  | ☐ |
 | `PRJ_CONAI_Category` | string | User |  | ☐ |
-| `PRJ_CONAI_Total_Amount` | int | 0 |  | ☐ |
+| `PRJ_CONAI_Total_Amount` | float | 0 |  | ☐ |
 | `PRJ_Document_Type_EI` | string | TD01 |  | ☐ |
 | `ScontrinoStampato` | bool | False |  | ☐ |
 | `CodiceRF` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `Company_Bank_Account_Code` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2025-07-22 |  | ☐ |
+| `Shipment_Date` | date | 2025-07-22 |  | ☐ |
 | `Payment_Terms_Code` | string | ORDINE |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `PRJ_Our_Bank_Account` | string | B023 |  | ☐ |
@@ -62,8 +62,8 @@
 | `SelectedPayments` | string | No payment service is made available. |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
 | `Direct_Debit_Mandate_ID` | string |  |  | ☐ |
 | `Customer_Posting_Group` | string | PRIV |  | ☐ |
 | `Tax_Liable` | bool | False |  | ☐ |
@@ -116,7 +116,7 @@
 | `Resident` | string | Resident |  | ☐ |
 | `First_Name` | string | Matteo |  | ☐ |
 | `Last_Name` | string | Manghi |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Fiscal_Code` | string | MNGMTT80R09H223E |  | ☐ |
 | `Transaction_Specification` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
@@ -128,7 +128,7 @@
 | `e_Doc_FileName` | string | IT00958760506_18671.xml |  | ☐ |
 | `e_Doc_Data_Type` | string | Contract |  | ☐ |
 | `Purch_Order_No` | string |  |  | ☐ |
-| `Purch_Order_Date` | string | 0001-01-01 |  | ☐ |
+| `Purch_Order_Date` | date | 0001-01-01 |  | ☐ |
 | `Purch_Order_Line_No` | string |  |  | ☐ |
 | `CIG_Cod` | string |  |  | ☐ |
 | `CUP_Cod` | string |  |  | ☐ |
@@ -137,7 +137,7 @@
 | `ADI_Status` | string | Consegnata con imp. di recapito |  | ☐ |
 | `Add_Stamp_in_eInvoice` | bool | False |  | ☐ |
 | `Other_Management_Data` | string |  |  | ☐ |
-| `Contract_Date` | string | 0001-01-01 |  | ☐ |
+| `Contract_Date` | date | 0001-01-01 |  | ☐ |
 | `data_type` | string |  |  | ☐ |
 | `Administrative_Ref` | string |  |  | ☐ |
 | `PEC_Email` | string | bricoio@pec.bricoio.it |  | ☐ |

@@ -11,6 +11,6 @@
 |---|---|---|---|---|
 | `Item_No` | string | A0000000000000000001 |  | ☐ |
 | `Search_Description` | string | ANUBE BRONZATE |  | ☐ |
-| `Purchase_Post_Date` | string | 2024-01-04 |  | ☐ |
-| `Purchased_Quantity` | int | 1500 |  | ☐ |
+| `Purchase_Post_Date` | date | 2024-01-04 |  | ☐ |
+| `Purchased_Quantity` | float | 1500 |  | ☐ |
 | `Purchase_Entry_No` | int | 9636 |  | ☐ |

@@ -36,26 +36,26 @@
 | `Correction` | bool | False |  | ☐ |
 | `Corrective` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
-| `Document_Date` | string | 2024-01-05 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2024-01-05 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
-| `Expected_Receipt_Date` | string | 0001-01-01 |  | ☐ |
+| `Expected_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Fiscal_Code` | string | 04960370262 |  | ☐ |
 | `Gen_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `Individual_Person` | bool | False |  | ☐ |
 | `Invoice_Disc_Code` | string | 600009 |  | ☐ |
-| `Invoice_Discount_Amount` | int | 0 |  | ☐ |
+| `Invoice_Discount_Amount` | float | 0 |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `No_Printed` | int | 0 |  | ☐ |
 | `No_Series` | string | FT-ACQ-IT+ |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-01-09 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-01-09 |  | ☐ |
 | `Operation_Type` | string | FT-ACQ-IT+ |  | ☐ |
 | `Order_Address_Code` | string |  |  | ☐ |
 | `Paid` | bool | True |  | ☐ |
@@ -70,11 +70,11 @@
 | `Pay_to_Name_2` | string |  |  | ☐ |
 | `Pay_to_Post_Code` | string | 50053 |  | ☐ |
 | `Pay_to_Vendor_No` | string | 600009 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Terms_Code` | string | DF |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2024-01-09 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2024-01-09 |  | ☐ |
 | `Posting_Description` | string | Acque SpA NC 6024011000014075 |  | ☐ |
 | `Pre_Assigned_No` | string | 24FAP-0000023 |  | ☐ |
 | `Pre_Assigned_No_Series` | string |  |  | ☐ |
@@ -87,7 +87,7 @@
 | `Reason_Code` | string |  |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
 | `Related_Entry_No` | int | 0 |  | ☐ |
-| `Remaining_Amount` | int | 0 |  | ☐ |
+| `Remaining_Amount` | float | 0 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Return_Order_No` | string |  |  | ☐ |
@@ -114,7 +114,7 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `User_ID` | string | FRANCESCA.RUSSO |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 05175700482 |  | ☐ |
@@ -123,5 +123,5 @@
 | `Vendor_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `Your_Reference` | string |  |  | ☐ |
 | `Activity_Code` | string |  |  | ☐ |
-| `Document_Remaining_Amount` | int | 0 |  | ☐ |
+| `Document_Remaining_Amount` | float | 0 |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |

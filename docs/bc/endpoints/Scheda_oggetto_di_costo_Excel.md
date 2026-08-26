@@ -14,7 +14,7 @@
 | `Line_Type` | string | Cost Object |  | ☐ |
 | `Totaling` | string |  |  | ☐ |
 | `Comment` | string |  |  | ☐ |
-| `Net_Change` | int | 0 |  | ☐ |
+| `Net_Change` | float | 0 |  | ☐ |
 | `Sorting_Order` | string |  |  | ☐ |
 | `Blank_Line` | bool | False |  | ☐ |
 | `New_Page` | bool | False |  | ☐ |
@@ -22,6 +22,6 @@
 | `Dimension_Code` | string | BU |  | ☐ |
 | `Valore_Dimensione_BU` | string | ARRG |  | ☐ |
 | `Cliente` | string | 500226 |  | ☐ |
-| `Fatturato` | int | 0 |  | ☐ |
+| `Fatturato` | float | 0 |  | ☐ |
 | `Cost_Type_Filter` | string |  |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |

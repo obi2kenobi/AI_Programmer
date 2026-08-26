@@ -9,7 +9,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE0MTUyODA5MTczNzIyOTA4MTQ0MT... |  | ☐ |
-| `id` | string | 46ffd18d-d4a0-ee11-be36-000d3a696397 |  | ☐ |
+| `id` | guid | 46ffd18d-d4a0-ee11-be36-000d3a696397 |  | ☐ |
 | `number` | string | 000000000000001 |  | ☐ |
 | `name` | string | SIMBULA SERGIO |  | ☐ |
 | `searchName` | string | SIMBULA SERGIO |  | ☐ |
@@ -26,8 +26,8 @@
 | `globalDimension1Code` | string | ARRG |  | ☐ |
 | `globalDimension2Code` | string |  |  | ☐ |
 | `chainName` | string |  |  | ☐ |
-| `budgetedAmount` | int | 0 |  | ☐ |
-| `creditLimitLcy` | int | 0 |  | ☐ |
+| `budgetedAmount` | float | 0 |  | ☐ |
+| `creditLimitLcy` | float | 0 |  | ☐ |
 | `customerPostingGroup` | string | PRIV |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
 | `customerPriceGroup` | string | AMAZON |  | ☐ |
@@ -43,7 +43,7 @@
 | `customerDiscGroup` | string |  |  | ☐ |
 | `countryRegionCode` | string | IT |  | ☐ |
 | `collectionMethod` | string |  |  | ☐ |
-| `amount` | int | 0 |  | ☐ |
+| `amount` | float | 0 |  | ☐ |
 | `comment` | bool | False |  | ☐ |
 | `blocked` | string |   |  | ☐ |
 | `invoiceCopies` | int | 0 |  | ☐ |
@@ -52,31 +52,31 @@
 | `billToCustomerNumber` | string |  |  | ☐ |
 | `priority` | int | 0 |  | ☐ |
 | `paymentMethodCode` | string | CARTA |  | ☐ |
-| `lastModifiedDateTime` | string | 2026-03-10T09:07:47.913Z |  | ☐ |
-| `lastDateModified` | string | 2026-03-10 |  | ☐ |
+| `lastModifiedDateTime` | datetime | 2026-03-10T09:07:47.913Z |  | ☐ |
+| `lastDateModified` | date | 2026-03-10 |  | ☐ |
 | `dateFilter` | string |  |  | ☐ |
 | `globalDimension1Filter` | string |  |  | ☐ |
 | `globalDimension2Filter` | string |  |  | ☐ |
-| `balance` | int | 0 |  | ☐ |
-| `balanceLcy` | int | 0 |  | ☐ |
-| `netChange` | int | 0 |  | ☐ |
-| `netChangeLcy` | int | 0 |  | ☐ |
-| `salesLcy` | int | 0 |  | ☐ |
-| `profitLcy` | int | 0 |  | ☐ |
-| `invDiscountsLcy` | int | 0 |  | ☐ |
-| `pmtDiscountsLcy` | int | 0 |  | ☐ |
-| `balanceDue` | int | 0 |  | ☐ |
-| `balanceDueLcy` | int | 0 |  | ☐ |
-| `payments` | int | 0 |  | ☐ |
-| `invoiceAmounts` | int | 0 |  | ☐ |
-| `crMemoAmounts` | int | 0 |  | ☐ |
-| `financeChargeMemoAmounts` | int | 0 |  | ☐ |
-| `paymentsLcy` | int | 0 |  | ☐ |
-| `invAmountsLcy` | int | 0 |  | ☐ |
-| `crMemoAmountsLcy` | int | 0 |  | ☐ |
-| `finChargeMemoAmountsLcy` | int | 0 |  | ☐ |
-| `outstandingOrders` | int | 0 |  | ☐ |
-| `shippedNotInvoiced` | int | 0 |  | ☐ |
+| `balance` | float | 0 |  | ☐ |
+| `balanceLcy` | float | 0 |  | ☐ |
+| `netChange` | float | 0 |  | ☐ |
+| `netChangeLcy` | float | 0 |  | ☐ |
+| `salesLcy` | float | 0 |  | ☐ |
+| `profitLcy` | float | 0 |  | ☐ |
+| `invDiscountsLcy` | float | 0 |  | ☐ |
+| `pmtDiscountsLcy` | float | 0 |  | ☐ |
+| `balanceDue` | float | 0 |  | ☐ |
+| `balanceDueLcy` | float | 0 |  | ☐ |
+| `payments` | float | 0 |  | ☐ |
+| `invoiceAmounts` | float | 0 |  | ☐ |
+| `crMemoAmounts` | float | 0 |  | ☐ |
+| `financeChargeMemoAmounts` | float | 0 |  | ☐ |
+| `paymentsLcy` | float | 0 |  | ☐ |
+| `invAmountsLcy` | float | 0 |  | ☐ |
+| `crMemoAmountsLcy` | float | 0 |  | ☐ |
+| `finChargeMemoAmountsLcy` | float | 0 |  | ☐ |
+| `outstandingOrders` | float | 0 |  | ☐ |
+| `shippedNotInvoiced` | float | 0 |  | ☐ |
 | `applicationMethod` | string | Manual |  | ☐ |
 | `pricesIncludingVat` | bool | False |  | ☐ |
 | `locationCode` | string |  |  | ☐ |
@@ -88,34 +88,34 @@
 | `gln` | string |  |  | ☐ |
 | `postCode` | string | 08020 |  | ☐ |
 | `county` | string | OT |  | ☐ |
-| `debitAmount` | int | 0 |  | ☐ |
-| `creditAmount` | int | 0 |  | ☐ |
-| `debitAmountLcy` | int | 0 |  | ☐ |
-| `creditAmountLcy` | int | 0 |  | ☐ |
+| `debitAmount` | float | 0 |  | ☐ |
+| `creditAmount` | float | 0 |  | ☐ |
+| `debitAmountLcy` | float | 0 |  | ☐ |
+| `creditAmountLcy` | float | 0 |  | ☐ |
 | `eMail` | string | segliu@tiscali.it |  | ☐ |
 | `homePage` | string |  |  | ☐ |
 | `reminderTermsCode` | string |  |  | ☐ |
-| `reminderAmounts` | int | 0 |  | ☐ |
-| `reminderAmountsLcy` | int | 0 |  | ☐ |
+| `reminderAmounts` | float | 0 |  | ☐ |
+| `reminderAmountsLcy` | float | 0 |  | ☐ |
 | `numberSeries` | string |  |  | ☐ |
 | `taxAreaCode` | string |  |  | ☐ |
 | `taxLiable` | bool | False |  | ☐ |
 | `vatBusPostingGroup` | string | CLI_NAZ |  | ☐ |
 | `currencyFilter` | string |  |  | ☐ |
-| `outstandingOrdersLcy` | int | 0 |  | ☐ |
-| `shippedNotInvoicedLcy` | int | 0 |  | ☐ |
+| `outstandingOrdersLcy` | float | 0 |  | ☐ |
+| `shippedNotInvoicedLcy` | float | 0 |  | ☐ |
 | `reserve` | string | Optional |  | ☐ |
 | `blockPaymentTolerance` | bool | False |  | ☐ |
-| `pmtDiscToleranceLcy` | int | 0 |  | ☐ |
-| `pmtToleranceLcy` | int | 0 |  | ☐ |
+| `pmtDiscToleranceLcy` | float | 0 |  | ☐ |
+| `pmtToleranceLcy` | float | 0 |  | ☐ |
 | `icPartnerCode` | string |  |  | ☐ |
-| `refunds` | int | 0 |  | ☐ |
-| `refundsLcy` | int | 0 |  | ☐ |
-| `otherAmounts` | int | 0 |  | ☐ |
-| `otherAmountsLcy` | int | 0 |  | ☐ |
-| `prepaymentPercent` | int | 0 |  | ☐ |
-| `outstandingInvoicesLcy` | int | 0 |  | ☐ |
-| `outstandingInvoices` | int | 0 |  | ☐ |
+| `refunds` | float | 0 |  | ☐ |
+| `refundsLcy` | float | 0 |  | ☐ |
+| `otherAmounts` | float | 0 |  | ☐ |
+| `otherAmountsLcy` | float | 0 |  | ☐ |
+| `prepaymentPercent` | float | 0 |  | ☐ |
+| `outstandingInvoicesLcy` | float | 0 |  | ☐ |
+| `outstandingInvoices` | float | 0 |  | ☐ |
 | `billToNumberOfArchivedDoc` | int | 7 |  | ☐ |
 | `sellToNumberOfArchivedDoc` | int | 7 |  | ☐ |
 | `partnerType` | string |   |  | ☐ |
@@ -128,11 +128,11 @@
 | `shippingTime` | string |  |  | ☐ |
 | `shippingAgentServiceCode` | string |  |  | ☐ |
 | `serviceZoneCode` | string |  |  | ☐ |
-| `contractGainLossAmount` | int | 0 |  | ☐ |
+| `contractGainLossAmount` | float | 0 |  | ☐ |
 | `shipToFilter` | string |  |  | ☐ |
-| `outstandingServOrdersLcy` | int | 0 |  | ☐ |
-| `servShippedNotInvoicedLcy` | int | 0 |  | ☐ |
-| `outstandingServInvoicesLcy` | int | 0 |  | ☐ |
+| `outstandingServOrdersLcy` | float | 0 |  | ☐ |
+| `servShippedNotInvoicedLcy` | float | 0 |  | ☐ |
+| `outstandingServInvoicesLcy` | float | 0 |  | ☐ |
 | `allowLineDisc` | bool | True |  | ☐ |
 | `numberOfQuotes` | int | 0 |  | ☐ |
 | `numberOfBlanketOrders` | int | 0 |  | ☐ |
@@ -158,9 +158,9 @@
 | `baseCalendarCode` | string |  |  | ☐ |
 | `copySellToAddrToQteFrom` | string | Company |  | ☐ |
 | `validateEuVatRegNumber` | bool | False |  | ☐ |
-| `currencyId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
-| `paymentTermsId` | string | 114d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
-| `shipmentMethodId` | string | d84d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
-| `paymentMethodId` | string | 229b8244-241b-ee11-8f6e-000d3aba081a |  | ☐ |
-| `taxAreaId` | string | 64d8c2d9-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
-| `contactId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `currencyId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `paymentTermsId` | guid | 114d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `shipmentMethodId` | guid | d84d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `paymentMethodId` | guid | 229b8244-241b-ee11-8f6e-000d3aba081a |  | ☐ |
+| `taxAreaId` | guid | 64d8c2d9-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `contactId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |

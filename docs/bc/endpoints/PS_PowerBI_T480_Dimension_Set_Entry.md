@@ -15,7 +15,7 @@
 | `Dimension_Value_Code` | string | ARRG |  | ☐ |
 | `Dimension_Value_ID` | int | 12 |  | ☐ |
 | `Dimension_Value_Name` | string | Arredo Giardino |  | ☐ |
-| `SystemCreatedAt` | string | 2023-12-27T07:14:13.62Z |  | ☐ |
-| `SystemCreatedBy` | string | b84e4d30-a0ec-495d-9ea5-fc143b5716ab |  | ☐ |
-| `SystemModifiedAt` | string | 2023-12-27T07:14:13.62Z |  | ☐ |
-| `SystemModifiedBy` | string | b84e4d30-a0ec-495d-9ea5-fc143b5716ab |  | ☐ |
+| `SystemCreatedAt` | datetime | 2023-12-27T07:14:13.62Z |  | ☐ |
+| `SystemCreatedBy` | guid | b84e4d30-a0ec-495d-9ea5-fc143b5716ab |  | ☐ |
+| `SystemModifiedAt` | datetime | 2023-12-27T07:14:13.62Z |  | ☐ |
+| `SystemModifiedBy` | guid | b84e4d30-a0ec-495d-9ea5-fc143b5716ab |  | ☐ |

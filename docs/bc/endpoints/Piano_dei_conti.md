@@ -12,8 +12,8 @@
 | `@odata.etag` | string | W/"JzIwOzE0MDU0OTc1MTAxOTY0NDMwMjgzMT... |  | ☐ |
 | `No` | string | 0100000000 |  | ☐ |
 | `Name` | string | STATO PATRIMONIALE |  | ☐ |
-| `Net_Change` | int | 0 |  | ☐ |
-| `Balance` | int | 0 |  | ☐ |
+| `Net_Change` | float | 0 |  | ☐ |
+| `Balance` | float | 0 |  | ☐ |
 | `Income_Balance` | string | Balance Sheet |  | ☐ |
 | `Account_Category` | string |   |  | ☐ |
 | `Account_Subcategory_Descript` | string |  |  | ☐ |
@@ -25,28 +25,28 @@
 | `Gen_Prod_Posting_Group` | string |  |  | ☐ |
 | `VAT_Bus_Posting_Group` | string |  |  | ☐ |
 | `VAT_Prod_Posting_Group` | string |  |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
-| `Balance_at_Date` | int | 0 |  | ☐ |
-| `Additional_Currency_Net_Change` | int | 0 |  | ☐ |
-| `Add_Currency_Balance_at_Date` | int | 0 |  | ☐ |
-| `Additional_Currency_Balance` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
+| `Balance_at_Date` | float | 0 |  | ☐ |
+| `Additional_Currency_Net_Change` | float | 0 |  | ☐ |
+| `Add_Currency_Balance_at_Date` | float | 0 |  | ☐ |
+| `Additional_Currency_Balance` | float | 0 |  | ☐ |
 | `Consol_Debit_Acc` | string |  |  | ☐ |
 | `Consol_Credit_Acc` | string |  |  | ☐ |
 | `Source_Currency_Posting` | string |   |  | ☐ |
 | `Source_Currency_Code` | string |  |  | ☐ |
-| `Source_Currency_Balance` | int | 0 |  | ☐ |
-| `Source_Curr_Balance_at_Date` | int | 0 |  | ☐ |
+| `Source_Currency_Balance` | float | 0 |  | ☐ |
+| `Source_Curr_Balance_at_Date` | float | 0 |  | ☐ |
 | `Cost_Type_No` | string |  |  | ☐ |
 | `Consol_Translation_Method` | string | Average Rate (Manual) |  | ☐ |
 | `Default_IC_Partner_G_L_Acc_No` | string |  |  | ☐ |
 | `Default_Deferral_Template_Code` | string |  |  | ☐ |
 | `No_2` | string |  |  | ☐ |
-| `ExtraG_L_Balance_to_Date_ANW` | int | 0 |  | ☐ |
-| `ExtraG_L_Period_Balance_ANW` | int | 0 |  | ☐ |
-| `ExtraG_L_Balance_ANW` | int | 0 |  | ☐ |
-| `ExtraG_L_Debit_Amount_ANW` | int | 0 |  | ☐ |
-| `ExtraG_L_Credit_Amount_ANW` | int | 0 |  | ☐ |
+| `ExtraG_L_Balance_to_Date_ANW` | float | 0 |  | ☐ |
+| `ExtraG_L_Period_Balance_ANW` | float | 0 |  | ☐ |
+| `ExtraG_L_Balance_ANW` | float | 0 |  | ☐ |
+| `ExtraG_L_Debit_Amount_ANW` | float | 0 |  | ☐ |
+| `ExtraG_L_Credit_Amount_ANW` | float | 0 |  | ☐ |
 | `Competence_Mandatory_ANW` | bool | False |  | ☐ |
 | `Business_Unit_Filter` | string |  |  | ☐ |
 | `Global_Dimension_1_Filter` | string |  |  | ☐ |

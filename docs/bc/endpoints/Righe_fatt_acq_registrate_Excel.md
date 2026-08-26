@@ -22,19 +22,19 @@
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `FA_Posting_Type` | string |   |  | ☐ |
 | `Depreciation_Book_Code` | string |  |  | ☐ |
-| `Quantity` | int | 2430 |  | ☐ |
+| `Quantity` | float | 2430 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
 | `Unit_of_Measure` | string | Pezzo |  | ☐ |
 | `Direct_Unit_Cost` | float | 2.97 |  | ☐ |
-| `Indirect_Cost_Percent` | int | 0 |  | ☐ |
+| `Indirect_Cost_Percent` | float | 0 |  | ☐ |
 | `Unit_Cost_LCY` | float | 2.97 |  | ☐ |
-| `Unit_Price_LCY` | int | 0 |  | ☐ |
+| `Unit_Price_LCY` | float | 0 |  | ☐ |
 | `Amount` | float | 7217.1 |  | ☐ |
 | `Amount_Including_VAT` | float | 7217.1 |  | ☐ |
-| `Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Line_Discount_Amount` | int | 0 |  | ☐ |
+| `Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Line_Discount_Amount` | float | 0 |  | ☐ |
 | `Allow_Invoice_Disc` | bool | True |  | ☐ |
-| `Inv_Discount_Amount` | int | 0 |  | ☐ |
+| `Inv_Discount_Amount` | float | 0 |  | ☐ |
 | `Appl_to_Item_Entry` | int | 0 |  | ☐ |
 | `Order_No` | string | 24ODA-0000106 |  | ☐ |
 | `Job_No` | string |  |  | ☐ |

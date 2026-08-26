@@ -13,6 +13,6 @@
 | `Name` | string | PROFITTI E PERDITE      |  | ☐ |
 | `Account_Type` | string | Posting |  | ☐ |
 | `Debit_Credit` | string | Both |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Date` | string | 0001-01-01 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Date` | date | 0001-01-01 |  | ☐ |
 | `AuxiliaryIndex1` | int | 0 |  | ☐ |

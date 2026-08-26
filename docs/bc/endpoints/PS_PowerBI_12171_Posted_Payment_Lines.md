@@ -14,10 +14,10 @@
 | `Type` | string | Invoice |  | ☐ |
 | `Code` | string | 20FVI-000001 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
-| `Amount` | int | 0 |  | ☐ |
-| `Discount_Percent` | int | 0 |  | ☐ |
+| `Amount` | float | 0 |  | ☐ |
+| `Discount_Percent` | float | 0 |  | ☐ |
 | `Discount_Date_Calculation` | string | 0D |  | ☐ |
-| `Due_Date` | string | 2025-07-22 |  | ☐ |
+| `Due_Date` | date | 2025-07-22 |  | ☐ |
 | `Due_Date_Calculation` | string | 0D |  | ☐ |
-| `Payment_Percent` | int | 100 |  | ☐ |
-| `Pmt_Discount_Date` | string | 2025-07-22 |  | ☐ |
+| `Payment_Percent` | float | 100 |  | ☐ |
+| `Pmt_Discount_Date` | date | 2025-07-22 |  | ☐ |

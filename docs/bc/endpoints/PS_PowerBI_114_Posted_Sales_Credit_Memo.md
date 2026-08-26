@@ -12,7 +12,7 @@
 | `@odata.etag` | string | W/"JzE5OzI5MDc5OTkwODg5NjQ5OTg1NzcxOz... |  | ☐ |
 | `No` | string | 20FVI-000011 |  | ☐ |
 | `Allow_Line_Disc` | bool | True |  | ☐ |
-| `Amount` | int | 958 |  | ☐ |
+| `Amount` | float | 958 |  | ☐ |
 | `Amount_Including_VAT` | float | 1168.76 |  | ☐ |
 | `Applies_to_Doc_No` | string |  |  | ☐ |
 | `Applies_to_Doc_Type` | string |   |  | ☐ |
@@ -36,24 +36,24 @@
 | `Correction` | bool | False |  | ☐ |
 | `Corrective` | bool | False |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
-| `Currency_Factor` | int | 0 |  | ☐ |
+| `Currency_Factor` | float | 0 |  | ☐ |
 | `Cust_Ledger_Entry_No` | int | 100568 |  | ☐ |
 | `Customer_Disc_Group` | string |  |  | ☐ |
 | `Customer_Posting_Group` | string | GDS |  | ☐ |
 | `Customer_Price_Group` | string | LMS |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Dimension_Set_ID` | int | 1 |  | ☐ |
 | `Doc_Exch_Original_Identifier` | string |  |  | ☐ |
-| `Document_Date` | string | 2025-07-22 |  | ☐ |
+| `Document_Date` | date | 2025-07-22 |  | ☐ |
 | `Document_Exchange_Identifier` | string |  |  | ☐ |
 | `Document_Exchange_Status` | string | Not Sent |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
 | `Exit_Point` | string |  |  | ☐ |
 | `External_Document_No` | string | 82996870 |  | ☐ |
 | `Fattura_Project_Code` | string |  |  | ☐ |
 | `Fattura_Stamp` | bool | False |  | ☐ |
-| `Fattura_Stamp_Amount` | int | 0 |  | ☐ |
+| `Fattura_Stamp_Amount` | float | 0 |  | ☐ |
 | `Fattura_Tender_Code` | string |  |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Fiscal_Code` | string | 05602670969 |  | ☐ |
@@ -61,23 +61,23 @@
 | `Get_Return_Receipt_Used` | bool | False |  | ☐ |
 | `Individual_Person` | bool | False |  | ☐ |
 | `Invoice_Disc_Code` | string | 0004608 |  | ☐ |
-| `Invoice_Discount_Amount` | int | 0 |  | ☐ |
+| `Invoice_Discount_Amount` | float | 0 |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
 | `No_Printed` | int | 0 |  | ☐ |
 | `No_Series` | string | FT-VEN-IT+ |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
-| `Operation_Occurred_date` | string | 2025-07-22 |  | ☐ |
+| `Operation_Occurred_date` | date | 2025-07-22 |  | ☐ |
 | `Operation_Type` | string | FT-VEN-IT+ |  | ☐ |
 | `Opportunity_No` | string |  |  | ☐ |
 | `Paid` | bool | True |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
 | `Payment_Terms_Code` | string | 60FM |  | ☐ |
 | `Place_of_Birth` | string |  |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Posting_Date` | string | 2025-07-22 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2025-07-22 |  | ☐ |
 | `Posting_Description` | string | Nota credito 25NCVP-000083 |  | ☐ |
 | `Pre_Assigned_No` | string | 25NCVP-000083 |  | ☐ |
 | `Pre_Assigned_No_Series` | string | V-NC |  | ☐ |
@@ -88,7 +88,7 @@
 | `Prices_Including_VAT` | bool | False |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Refers_to_Period` | string |   |  | ☐ |
-| `Remaining_Amount` | int | 0 |  | ☐ |
+| `Remaining_Amount` | float | 0 |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `Responsibility_Center` | string |  |  | ☐ |
 | `Return_Order_No` | string | 24ORV-000016 |  | ☐ |
@@ -118,7 +118,7 @@
 | `Ship_to_Name` | string | Gruppo Camarlinghi S.p.A (MAGAZZINO) |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string | 56022 |  | ☐ |
-| `Shipment_Date` | string | 0001-01-01 |  | ☐ |
+| `Shipment_Date` | date | 0001-01-01 |  | ☐ |
 | `Shipment_Method_Code` | string | PFO |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
@@ -129,14 +129,14 @@
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
 | `User_ID` | string | VANESSA.PROCOPIO |  | ☐ |
-| `VAT_Base_Discount_Percent` | int | 0 |  | ☐ |
+| `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | CLI_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |
 | `VAT_Registration_No` | string | 05602670969 |  | ☐ |
 | `Your_Reference` | string | 1007156935 |  | ☐ |
 | `Activity_Code` | string |  |  | ☐ |
-| `Document_Remaining_Amount` | int | 0 |  | ☐ |
-| `Draft_Cr_Memo_SystemId` | string | 28526994-e266-f011-8eee-6045bde0d4e1 |  | ☐ |
+| `Document_Remaining_Amount` | float | 0 |  | ☐ |
+| `Draft_Cr_Memo_SystemId` | guid | 28526994-e266-f011-8eee-6045bde0d4e1 |  | ☐ |
 | `Fattura_Document_Type` | string | TD04 |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |
 | `Work_Description@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |

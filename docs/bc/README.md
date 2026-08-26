@@ -10,15 +10,15 @@ python3 tools/bc_index.py                                  # rigenera questo ind
 ```
 Poi: compilare la colonna *Significato* e spuntare *Verificato* dopo il riscontro.
 
-## Avanzamento — 203 mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive nel repo cliente)
+## Avanzamento — 231 mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive nel repo cliente)
 Anomalie (403/404/vuoti): `CORREZIONI.md`.
 
 ## Salute del censimento
-- Endpoint con almeno un campo verificato: 0 su 203
-- File con data di aggiornamento: 115 su 203 (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)
+- Endpoint con almeno un campo verificato: 0 su 231
+- File con data di aggiornamento: 143 su 231 (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)
 - Refresh: `python3 tools/bc_map.py <NomeServizio>` rigenera UN endpoint preservando Significato/Verificato compilati
 - Su Luca's Mac: `python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in blocco TUTTI i mancanti (salta i già fatti, credenziali locali)
-- Catalogo servizi OData: 258 · mancanti al censimento: 71
+- Catalogo servizi OData: 258 · mancanti al censimento: 49
 
 | Endpoint | Campi | Verificato |
 |---|---|---|
@@ -225,3 +225,31 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Dichiarazioni_Servizio` | 4 | ☐ |
 | `PS_PowerBI_253_GL_Entry_VAT_Entry_Link` | 3 | ☐ |
 | `Collegamenti_tra_ciclo_e_distinta_base_Excel` | 3 | ☐ |
+| `PS_PowerBI_T96_GL_Budget_Entry` | 0 | ☐ |
+| `PS_PowerBI_T169_Job_Ledger_Entry` | 0 | ☐ |
+| `Power_BI_Jobs_List` | 0 | ☐ |
+| `JobLedgerEntries` | 0 | ☐ |
+| `SalesOpportunities` | 0 | ☐ |
+| `PS_PowerBI_T173_SPC` | 0 | ☐ |
+| `AccountantPortalUserTasks` | 0 | ☐ |
+| `workflowWebhookSubscriptions` | 0 | ☐ |
+| `valore_Filtro_attributp` | 0 | ☐ |
+| `Attributi_categorie_articolo` | 0 | ☐ |
+| `Job_Planning_Lines` | 0 | ☐ |
+| `Job_List` | 0 | ☐ |
+| `PS_PowerBI_T175_SVPC` | 0 | ☐ |
+| `PS_PowerBI_T90_BC` | 0 | ☐ |
+| `PS_PowerBI_T156_Resource` | 0 | ☐ |
+| `Ord_produzione_confermato_Excel` | 0 | ☐ |
+| `SegmentLines` | 0 | ☐ |
+| `PS_PowerBI_T167_Job` | 0 | ☐ |
+| `PS_PowerBI_T174_SPL` | 0 | ☐ |
+| `Prezzi_Acquisto` | 0 | ☐ |
+| `PS_PowerBI_T1001_Job_Task` | 0 | ☐ |
+| `PS_PowerBI_T203_Res_Ledger_Entry` | 0 | ☐ |
+| `Power_BI_Top_5_Opportunities` | 0 | ☐ |
+| `db_assemblaggi` | 0 | ☐ |
+| `Power_BI_Job_Profitability` | 0 | ☐ |
+| `vvalori_attributo_articolo` | 0 | ☐ |
+| `Job_Task_Lines` | 0 | ☐ |
+| `Attributi_Articolo_2` | 0 | ☐ |

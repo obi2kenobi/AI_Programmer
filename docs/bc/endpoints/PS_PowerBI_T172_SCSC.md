@@ -21,5 +21,5 @@
 | `Insert_Rec_Lines_On_Quotes` | string | Manual |  | ☐ |
 | `Payment_Method_Code` | string |  |  | ☐ |
 | `Payment_Terms_Code` | string |  |  | ☐ |
-| `Valid_From_Date` | string | 0001-01-01 |  | ☐ |
-| `Valid_To_date` | string | 0001-01-01 |  | ☐ |
+| `Valid_From_Date` | date | 0001-01-01 |  | ☐ |
+| `Valid_To_date` | date | 0001-01-01 |  | ☐ |

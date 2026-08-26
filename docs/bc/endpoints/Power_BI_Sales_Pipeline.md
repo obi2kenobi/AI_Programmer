@@ -12,6 +12,6 @@
 | `@odata.etag` | string | W/"JzE5Ozk3NTczODAzNTcwMTgyNDk3ODYxOz... |  | ☐ |
 | `ID` | int | 1 |  | ☐ |
 | `Row_No` | string | 1 |  | ☐ |
-| `Value` | int | 0 |  | ☐ |
+| `Value` | float | 0 |  | ☐ |
 | `Measure_Name` | string | Iniziale |  | ☐ |
 | `Measure_No` | string | ESISTENTE |  | ☐ |

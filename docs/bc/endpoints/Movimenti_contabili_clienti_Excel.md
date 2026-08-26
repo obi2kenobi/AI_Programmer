@@ -11,8 +11,8 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzEyNTkyMTQ1NjA4NDM4OTc1ODIxMT... |  | ☐ |
 | `Entry_No` | int | 168270 |  | ☐ |
-| `Posting_Date` | string | 2026-08-26 |  | ☐ |
-| `Document_Date` | string | 2026-08-26 |  | ☐ |
+| `Posting_Date` | date | 2026-08-26 |  | ☐ |
+| `Document_Date` | date | 2026-08-26 |  | ☐ |
 | `Document_Type` | string | Payment |  | ☐ |
 | `Document_No` | string | 26FVI-001308 |  | ☐ |
 | `Customer_No` | string | 502767 |  | ☐ |
@@ -28,31 +28,31 @@
 | `Original_Amt_LCY` | float | -1462.05 |  | ☐ |
 | `Amount` | float | -1462.05 |  | ☐ |
 | `Amount_LCY` | float | -1462.05 |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
-| `Debit_Amount_LCY` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
+| `Debit_Amount_LCY` | float | 0 |  | ☐ |
 | `Credit_Amount` | float | 1462.05 |  | ☐ |
 | `Credit_Amount_LCY` | float | 1462.05 |  | ☐ |
-| `RunningBalanceLCY` | int | 0 |  | ☐ |
-| `Remaining_Amount` | int | 0 |  | ☐ |
-| `Remaining_Amt_LCY` | int | 0 |  | ☐ |
-| `Int_Arrears_Amount_to_Pay` | int | 0 |  | ☐ |
-| `Paid_Int_Arrears_Amount` | int | 0 |  | ☐ |
-| `Sales_LCY` | int | 0 |  | ☐ |
+| `RunningBalanceLCY` | float | 0 |  | ☐ |
+| `Remaining_Amount` | float | 0 |  | ☐ |
+| `Remaining_Amt_LCY` | float | 0 |  | ☐ |
+| `Int_Arrears_Amount_to_Pay` | float | 0 |  | ☐ |
+| `Paid_Int_Arrears_Amount` | float | 0 |  | ☐ |
+| `Sales_LCY` | float | 0 |  | ☐ |
 | `Bal_Account_Type` | string | Bank Account |  | ☐ |
 | `Bal_Account_No` | string | B032 |  | ☐ |
-| `Due_Date` | string | 2026-08-26 |  | ☐ |
+| `Due_Date` | date | 2026-08-26 |  | ☐ |
 | `Payment_Prediction` | string |   |  | ☐ |
 | `Prediction_Confidence` | string |   |  | ☐ |
-| `Prediction_Confidence_Percent` | int | 0 |  | ☐ |
-| `Promised_Pay_Date` | string | 0001-01-01 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
-| `Pmt_Disc_Tolerance_Date` | string | 0001-01-01 |  | ☐ |
-| `Original_Pmt_Disc_Possible` | int | 0 |  | ☐ |
-| `Remaining_Pmt_Disc_Possible` | int | 0 |  | ☐ |
-| `Max_Payment_Tolerance` | int | 0 |  | ☐ |
+| `Prediction_Confidence_Percent` | float | 0 |  | ☐ |
+| `Promised_Pay_Date` | date | 0001-01-01 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
+| `Pmt_Disc_Tolerance_Date` | date | 0001-01-01 |  | ☐ |
+| `Original_Pmt_Disc_Possible` | float | 0 |  | ☐ |
+| `Remaining_Pmt_Disc_Possible` | float | 0 |  | ☐ |
+| `Max_Payment_Tolerance` | float | 0 |  | ☐ |
 | `Payment_Method_Code` | string | SHOPIFYPAY |  | ☐ |
 | `Open` | bool | False |  | ☐ |
-| `Closed_at_Date` | string | 2026-08-26 |  | ☐ |
+| `Closed_at_Date` | date | 2026-08-26 |  | ☐ |
 | `Dispute_Status` | string |  |  | ☐ |
 | `On_Hold` | string |  |  | ☐ |
 | `User_ID` | string | GIANCARLO.CACCIAPUOTI |  | ☐ |

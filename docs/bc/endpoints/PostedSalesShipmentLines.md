@@ -22,10 +22,10 @@
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Quantity` | int | 1 |  | ☐ |
+| `Quantity` | float | 1 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
 | `Unit_of_Measure` | string | Pezzo |  | ☐ |
 | `Appl_to_Item_Entry` | int | 0 |  | ☐ |
 | `Job_No` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2025-07-22 |  | ☐ |
-| `Quantity_Invoiced` | int | 1 |  | ☐ |
+| `Shipment_Date` | date | 2025-07-22 |  | ☐ |
+| `Quantity_Invoiced` | float | 1 |  | ☐ |

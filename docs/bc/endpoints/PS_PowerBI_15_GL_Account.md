@@ -15,26 +15,26 @@
 | `Account_Subcategory_Descript` | string |  |  | ☐ |
 | `Account_Subcategory_Entry_No` | int | 0 |  | ☐ |
 | `Account_Type` | string | Heading |  | ☐ |
-| `Add_Currency_Balance_at_Date` | int | 0 |  | ☐ |
-| `Add_Currency_Credit_Amount` | int | 0 |  | ☐ |
-| `Add_Currency_Debit_Amount` | int | 0 |  | ☐ |
-| `Additional_Currency_Balance` | int | 0 |  | ☐ |
-| `Additional_Currency_Net_Change` | int | 0 |  | ☐ |
+| `Add_Currency_Balance_at_Date` | float | 0 |  | ☐ |
+| `Add_Currency_Credit_Amount` | float | 0 |  | ☐ |
+| `Add_Currency_Debit_Amount` | float | 0 |  | ☐ |
+| `Additional_Currency_Balance` | float | 0 |  | ☐ |
+| `Additional_Currency_Net_Change` | float | 0 |  | ☐ |
 | `Automatic_Ext_Texts` | bool | False |  | ☐ |
-| `Balance_at_Date` | int | 0 |  | ☐ |
-| `Budget_at_Date` | int | 0 |  | ☐ |
+| `Balance_at_Date` | float | 0 |  | ☐ |
+| `Budget_at_Date` | float | 0 |  | ☐ |
 | `Budget_Filter` | string |  |  | ☐ |
-| `Budgeted_Amount` | int | 0 |  | ☐ |
-| `Budgeted_Credit_Amount` | int | 0 |  | ☐ |
-| `Budgeted_Debit_Amount` | int | 0 |  | ☐ |
+| `Budgeted_Amount` | float | 0 |  | ☐ |
+| `Budgeted_Credit_Amount` | float | 0 |  | ☐ |
+| `Budgeted_Debit_Amount` | float | 0 |  | ☐ |
 | `Business_Unit_Filter` | string |  |  | ☐ |
 | `Consol_Credit_Acc` | string |  |  | ☐ |
 | `Consol_Debit_Acc` | string |  |  | ☐ |
 | `Consol_Translation_Method` | string | Average Rate (Manual) |  | ☐ |
 | `Cost_Type_No` | string |  |  | ☐ |
-| `Credit_Amount` | int | 0 |  | ☐ |
+| `Credit_Amount` | float | 0 |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |
-| `Debit_Amount` | int | 0 |  | ☐ |
+| `Debit_Amount` | float | 0 |  | ☐ |
 | `Debit_Credit` | string | Both |  | ☐ |
 | `Default_Deferral_Template_Code` | string |  |  | ☐ |
 | `Default_IC_Partner_G_L_Acc_No` | string |  |  | ☐ |
@@ -49,7 +49,7 @@
 | `Global_Dimension_2_Code` | string |  |  | ☐ |
 | `Global_Dimension_2_Filter` | string |  |  | ☐ |
 | `Income_Balance` | string | Balance Sheet |  | ☐ |
-| `Net_Change` | int | 0 |  | ☐ |
+| `Net_Change` | float | 0 |  | ☐ |
 | `New_Page` | bool | False |  | ☐ |
 | `No_2` | string |  |  | ☐ |
 | `No_of_Blank_Lines` | int | 5 |  | ☐ |
@@ -59,10 +59,10 @@
 | `Tax_Area_Code` | string |  |  | ☐ |
 | `Tax_Group_Code` | string |  |  | ☐ |
 | `Tax_Liable` | bool | False |  | ☐ |
-| `VAT_Amt` | int | 0 |  | ☐ |
+| `VAT_Amt` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string |  |  | ☐ |
 | `VAT_Prod_Posting_Group` | string |  |  | ☐ |
-| `Balance` | int | 0 |  | ☐ |
+| `Balance` | float | 0 |  | ☐ |
 | `Blocked` | bool | False |  | ☐ |
 | `Comment` | bool | False |  | ☐ |
 | `Indentation` | int | 0 |  | ☐ |

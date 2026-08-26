@@ -17,6 +17,6 @@
 | `Reference_No` | string | E001181402 |  | ☐ |
 | `Description` | string | CERNIERA 14 BRO S/SEGNO |  | ☐ |
 | `TipoDispositivoMedico` | string |   |  | ☐ |
-| `Starting_Date` | string | 2026-05-19 |  | ☐ |
-| `Ending_Date` | string | 0001-01-01 |  | ☐ |
+| `Starting_Date` | date | 2026-05-19 |  | ☐ |
+| `Ending_Date` | date | 0001-01-01 |  | ☐ |
 | `Description_2` | string |  |  | ☐ |

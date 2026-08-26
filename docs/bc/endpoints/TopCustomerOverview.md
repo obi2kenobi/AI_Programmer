@@ -16,7 +16,7 @@
 | `Global_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Global_Dimension_2_Code` | string |  |  | ☐ |
 | `Salesperson_Code` | string |  |  | ☐ |
-| `Sales_LCY` | int | 0 |  | ☐ |
-| `Profit_LCY` | int | 0 |  | ☐ |
+| `Sales_LCY` | float | 0 |  | ☐ |
+| `Profit_LCY` | float | 0 |  | ☐ |
 | `SalesPersonName` | string |  |  | ☐ |
 | `CountryRegionName` | string | ITALY |  | ☐ |

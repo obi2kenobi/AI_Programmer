@@ -28,12 +28,12 @@
 | `SellToPhoneNo` | string |  |  | ☐ |
 | `SellToMobilePhoneNo` | string |  |  | ☐ |
 | `SellToEmail` | string |  |  | ☐ |
-| `Posting_Date` | string | 2024-01-31 |  | ☐ |
-| `VAT_Reporting_Date` | string | 2024-01-31 |  | ☐ |
-| `Order_Date` | string | 2024-01-02 |  | ☐ |
-| `Document_Date` | string | 2024-01-02 |  | ☐ |
-| `Requested_Delivery_Date` | string | 2024-02-22 |  | ☐ |
-| `Promised_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2024-01-31 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2024-01-31 |  | ☐ |
+| `Order_Date` | date | 2024-01-02 |  | ☐ |
+| `Document_Date` | date | 2024-01-02 |  | ☐ |
+| `Requested_Delivery_Date` | date | 2024-02-22 |  | ☐ |
+| `Promised_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
 | `Salesperson_Code` | string |  |  | ☐ |
 | `Campaign_No` | string |  |  | ☐ |
@@ -57,9 +57,9 @@
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Payment_Terms_Code` | string | ORDINE |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Payment_Discount_Percent` | int | 0 |  | ☐ |
-| `Pmt_Discount_Date` | string | 0001-01-01 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Payment_Discount_Percent` | float | 0 |  | ☐ |
+| `Pmt_Discount_Date` | date | 0001-01-01 |  | ☐ |
 | `Payment_Method_Code` | string | CARTA |  | ☐ |
 | `Prices_Including_VAT` | bool | False |  | ☐ |
 | `Tax_Liable` | bool | False |  | ☐ |
@@ -83,7 +83,7 @@
 | `Shipping_Time` | string |  |  | ☐ |
 | `Late_Order_Shipping` | bool | True |  | ☐ |
 | `Package_Tracking_No` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2024-01-31 |  | ☐ |
+| `Shipment_Date` | date | 2024-01-31 |  | ☐ |
 | `Shipping_Advice` | string | Partial |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
@@ -93,7 +93,7 @@
 | `Exit_Point` | string | EXW |  | ☐ |
 | `Area` | string |  |  | ☐ |
 | `Archived_By` | string | MAGAZZINO01 |  | ☐ |
-| `Date_Archived` | string | 2024-01-31 |  | ☐ |
+| `Date_Archived` | date | 2024-01-31 |  | ☐ |
 | `Time_Archived` | string | 07:47:07.54 |  | ☐ |
 | `Interaction_Exist` | bool | False |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |

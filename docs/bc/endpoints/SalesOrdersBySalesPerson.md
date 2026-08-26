@@ -15,7 +15,7 @@
 | `Amount` | float | 17920.56 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
 | `Dimension_Set_ID` | int | 1 |  | ☐ |
-| `Posting_Date` | string | 2024-11-25 |  | ☐ |
+| `Posting_Date` | date | 2024-11-25 |  | ☐ |
 | `CurrenyDescription` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `SalesPersonCode` | string |  |  | ☐ |

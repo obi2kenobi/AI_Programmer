@@ -14,6 +14,6 @@
 | `Raw_Materials_Code` | string | CL |  | ☐ |
 | `Packaging_Type_Code` | string | PALLET |  | ☐ |
 | `Packaging_Type_Description` | string | Conai Legno Pallet |  | ☐ |
-| `Application_Percent` | int | 84 |  | ☐ |
-| `Valid_from_Date` | string | 2026-02-28 |  | ☐ |
-| `Valid_until_Date` | string | 2100-12-31 |  | ☐ |
+| `Application_Percent` | float | 84 |  | ☐ |
+| `Valid_from_Date` | date | 2026-02-28 |  | ☐ |
+| `Valid_until_Date` | date | 2100-12-31 |  | ☐ |

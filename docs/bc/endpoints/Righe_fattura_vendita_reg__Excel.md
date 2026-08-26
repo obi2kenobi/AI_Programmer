@@ -20,17 +20,17 @@
 | `Description_2` | string |  |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
-| `Quantity` | int | 1 |  | ☐ |
+| `Quantity` | float | 1 |  | ☐ |
 | `Unit_of_Measure_Code` | string | PZ |  | ☐ |
 | `Unit_of_Measure` | string | Pezzo |  | ☐ |
 | `Unit_Price` | float | 1253.28 |  | ☐ |
-| `Unit_Cost_LCY` | int | 0 |  | ☐ |
+| `Unit_Cost_LCY` | float | 0 |  | ☐ |
 | `Amount` | float | 1253.28 |  | ☐ |
-| `Amount_Including_VAT` | int | 1529 |  | ☐ |
-| `Line_Discount_Percent` | int | 0 |  | ☐ |
-| `Line_Discount_Amount` | int | 0 |  | ☐ |
+| `Amount_Including_VAT` | float | 1529 |  | ☐ |
+| `Line_Discount_Percent` | float | 0 |  | ☐ |
+| `Line_Discount_Amount` | float | 0 |  | ☐ |
 | `Allow_Invoice_Disc` | bool | True |  | ☐ |
-| `Inv_Discount_Amount` | int | 0 |  | ☐ |
+| `Inv_Discount_Amount` | float | 0 |  | ☐ |
 | `Appl_to_Item_Entry` | int | 0 |  | ☐ |
 | `Order_No` | string | 25OV-001586 |  | ☐ |
 | `Job_No` | string |  |  | ☐ |

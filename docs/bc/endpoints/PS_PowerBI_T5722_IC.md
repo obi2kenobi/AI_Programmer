@@ -13,6 +13,6 @@
 | `Description` | string | Abete 24 |  | ☐ |
 | `Has_Children` | bool | True |  | ☐ |
 | `Indentation` | int | 2 |  | ☐ |
-| `Last_Modified_Date_Time` | string | 2023-12-22T23:28:15.667Z |  | ☐ |
+| `Last_Modified_Date_Time` | datetime | 2023-12-22T23:28:15.667Z |  | ☐ |
 | `Parent_Category` | string | ESSENZA |  | ☐ |
 | `Presentation_Order` | int | 90000 |  | ☐ |

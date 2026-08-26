@@ -16,7 +16,7 @@
 | `Currency_Identifier` | string |  |  | ☐ |
 | `Amounts_in_Add_Currency` | bool | False |  | ☐ |
 | `Reported` | bool | True |  | ☐ |
-| `Export_Date` | string | 2024-02-22 |  | ☐ |
+| `Export_Date` | date | 2024-02-22 |  | ☐ |
 | `Export_Time` | string | 16:27:34.727 |  | ☐ |
 | `Periodicity` | string | Month |  | ☐ |
 | `Type` | string | Purchases |  | ☐ |

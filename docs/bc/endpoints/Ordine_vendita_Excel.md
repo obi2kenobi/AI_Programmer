@@ -29,14 +29,14 @@
 | `Sell_to_E_Mail` | string | saveriopetrilli@yahoo.it |  | ☐ |
 | `Sell_to_Contact` | string |  |  | ☐ |
 | `No_of_Archived_Versions` | int | 1 |  | ☐ |
-| `Document_Date` | string | 2024-11-25 |  | ☐ |
-| `Operation_Occurred_Date` | string | 2024-11-25 |  | ☐ |
-| `Posting_Date` | string | 2024-11-25 |  | ☐ |
-| `VAT_Reporting_Date` | string | 2024-11-25 |  | ☐ |
-| `Order_Date` | string | 2024-10-15 |  | ☐ |
-| `Due_Date` | string | 0001-01-01 |  | ☐ |
-| `Requested_Delivery_Date` | string | 2024-10-29 |  | ☐ |
-| `Promised_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Document_Date` | date | 2024-11-25 |  | ☐ |
+| `Operation_Occurred_Date` | date | 2024-11-25 |  | ☐ |
+| `Posting_Date` | date | 2024-11-25 |  | ☐ |
+| `VAT_Reporting_Date` | date | 2024-11-25 |  | ☐ |
+| `Order_Date` | date | 2024-10-15 |  | ☐ |
+| `Due_Date` | date | 0001-01-01 |  | ☐ |
+| `Requested_Delivery_Date` | date | 2024-10-29 |  | ☐ |
+| `Promised_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
 | `Your_Reference` | string | 199965 |  | ☐ |
 | `ShpfyOrderNo` | string |  |  | ☐ |
@@ -53,16 +53,16 @@
 | `Reason_Code` | string |  |  | ☐ |
 | `WorkDescription` | string |  |  | ☐ |
 | `PRJ_CONAI_Category` | string | User |  | ☐ |
-| `PRJ_CONAI_Total_Amount` | int | 0 |  | ☐ |
+| `PRJ_CONAI_Total_Amount` | float | 0 |  | ☐ |
 | `PRJ_Document_Type_EI` | string | TD01 |  | ☐ |
 | `Ready_To_Ship` | bool | False |  | ☐ |
 | `PRJ_Web_Order` | bool | False |  | ☐ |
-| `PRJ_Total_Amount_VAT_Web_Order` | int | 0 |  | ☐ |
+| `PRJ_Total_Amount_VAT_Web_Order` | float | 0 |  | ☐ |
 | `Good_Appearance` | string | INCOLLI |  | ☐ |
-| `Nr_Parcels` | int | 0 |  | ☐ |
-| `Volume` | int | 0 |  | ☐ |
-| `PRJ_Gross_Weight` | int | 0 |  | ☐ |
-| `PRJ_Net_Weight` | int | 0 |  | ☐ |
+| `Nr_Parcels` | float | 0 |  | ☐ |
+| `Volume` | float | 0 |  | ☐ |
+| `PRJ_Gross_Weight` | float | 0 |  | ☐ |
+| `PRJ_Net_Weight` | float | 0 |  | ☐ |
 | `CodiceRF` | string |  |  | ☐ |
 | `Currency_Code` | string |  |  | ☐ |
 | `Company_Bank_Account_Code` | string | B009 |  | ☐ |
@@ -82,7 +82,7 @@
 | `Fattura_Tender_Code` | string |  |  | ☐ |
 | `Fattura_Document_Type` | string | TD01 |  | ☐ |
 | `Fattura_Stamp` | bool | False |  | ☐ |
-| `Fattura_Stamp_Amount` | int | 0 |  | ☐ |
+| `Fattura_Stamp_Amount` | float | 0 |  | ☐ |
 | `SelectedPayments` | string | No payment service is made available. |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
@@ -127,7 +127,7 @@
 | `BillToContactMobilePhoneNo` | string |  |  | ☐ |
 | `BillToContactEmail` | string |  |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |
-| `Shipment_Date` | string | 2024-11-28 |  | ☐ |
+| `Shipment_Date` | date | 2024-11-28 |  | ☐ |
 | `Shipping_Advice` | string | Partial |  | ☐ |
 | `Outbound_Whse_Handling_Time` | string |  |  | ☐ |
 | `Shipping_Time` | string |  |  | ☐ |
@@ -153,18 +153,18 @@
 | `Service_Tariff_No` | string |  |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |
 | `Format_Region` | string | it-IT |  | ☐ |
-| `Prepayment_Percent` | int | 0 |  | ☐ |
+| `Prepayment_Percent` | float | 0 |  | ☐ |
 | `Compress_Prepayment` | bool | True |  | ☐ |
 | `Prepmt_Payment_Terms_Code` | string | 120FM10 |  | ☐ |
-| `Prepayment_Due_Date` | string | 2025-04-10 |  | ☐ |
-| `Prepmt_Payment_Discount_Percent` | int | 0 |  | ☐ |
-| `Prepmt_Pmt_Discount_Date` | string | 2024-11-25 |  | ☐ |
+| `Prepayment_Due_Date` | date | 2025-04-10 |  | ☐ |
+| `Prepmt_Payment_Discount_Percent` | float | 0 |  | ☐ |
+| `Prepmt_Pmt_Discount_Date` | date | 2024-11-25 |  | ☐ |
 | `Prepmt_CM_Refers_to_Period` | string |   |  | ☐ |
 | `Individual_Person` | bool | False |  | ☐ |
 | `Resident` | string | Resident |  | ☐ |
 | `First_Name` | string |  |  | ☐ |
 | `Last_Name` | string |  |  | ☐ |
-| `Date_of_Birth` | string | 0001-01-01 |  | ☐ |
+| `Date_of_Birth` | date | 0001-01-01 |  | ☐ |
 | `Fiscal_Code` | string | 05602710963 |  | ☐ |
 | `e_Invoice_Destination_Cod` | string | NML228P |  | ☐ |
 | `e_Doc_Format` | string | B2B Invoice |  | ☐ |
@@ -175,7 +175,7 @@
 | `PRJ_Business_Area_Code` | string |  |  | ☐ |
 | `PRJ_Manual_Commission` | bool | False |  | ☐ |
 | `PRJ_Salesperson_Code_2` | string | LMI |  | ☐ |
-| `PRJ_Salesperson_Commission_Percent` | int | 0 |  | ☐ |
-| `PRJ_Salesperson_Commission2_Percent` | int | 0 |  | ☐ |
+| `PRJ_Salesperson_Commission_Percent` | float | 0 |  | ☐ |
+| `PRJ_Salesperson_Commission2_Percent` | float | 0 |  | ☐ |
 | `Date_Filter` | string | ''..08/26/26 |  | ☐ |
 | `Location_Filter` | string |  |  | ☐ |

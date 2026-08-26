@@ -13,13 +13,13 @@
 | `FA_No` | string | 19CE-000001 |  | ☐ |
 | `FA_Class_Code` | string | IMM |  | ☐ |
 | `FA_Subclass_Code` | string | QUAL |  | ☐ |
-| `FA_Posting_Date` | string | 2019-01-01 |  | ☐ |
+| `FA_Posting_Date` | date | 2019-01-01 |  | ☐ |
 | `FA_Posting_Category` | string |   |  | ☐ |
 | `FA_Posting_Type` | string | Acquisition Cost |  | ☐ |
 | `FA_Location_Code` | string |  |  | ☐ |
 | `Depreciation_Book_Code` | string | CIVILISTIC |  | ☐ |
-| `Posting_Date` | string | 2023-12-31 |  | ☐ |
-| `Document_Date` | string | 2023-12-31 |  | ☐ |
+| `Posting_Date` | date | 2023-12-31 |  | ☐ |
+| `Document_Date` | date | 2023-12-31 |  | ☐ |
 | `Document_Type` | string |   |  | ☐ |
 | `Document_No` | string | PA CESP |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |
@@ -27,6 +27,6 @@
 | `Location_Code` | string |  |  | ☐ |
 | `Source_Code` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
-| `Amount_LCY` | int | 2125 |  | ☐ |
+| `Amount_LCY` | float | 2125 |  | ☐ |
 | `Dimension_Set_ID` | int | 0 |  | ☐ |
 | `FA_Description` | string | MUTUO BPM 2019 |  | ☐ |

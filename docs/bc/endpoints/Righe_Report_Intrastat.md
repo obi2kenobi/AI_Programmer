@@ -12,7 +12,7 @@
 | `Intrastat_No` | string | INTRA00010 |  | ☐ |
 | `Line_No` | int | 10000 |  | ☐ |
 | `Type` | string | Receipt |  | ☐ |
-| `Date` | string | 2024-01-16 |  | ☐ |
+| `Date` | date | 2024-01-16 |  | ☐ |
 | `Document_No` | string | 24FAU-000001 |  | ☐ |
 | `Item_No` | string | AIMHX22X120X3500 |  | ☐ |
 | `Name` | string | ABE.IMBHT.X22X120X3500 |  | ☐ |
@@ -30,12 +30,12 @@
 | `Quantity` | float | 4500.00007 |  | ☐ |
 | `Net_Weight` | float | 4.62 |  | ☐ |
 | `Total_Weight` | float | 20790.00032 |  | ☐ |
-| `Amount` | int | 8316 |  | ☐ |
-| `Statistical_Value` | int | 8316 |  | ☐ |
+| `Amount` | float | 8316 |  | ☐ |
+| `Statistical_Value` | float | 8316 |  | ☐ |
 | `Source_Type` | string | Item Entry |  | ☐ |
 | `Source_Entry_No` | int | 2547 |  | ☐ |
-| `Cost_Regulation_Percent` | int | 0 |  | ☐ |
-| `Indirect_Cost` | int | 0 |  | ☐ |
+| `Cost_Regulation_Percent` | float | 0 |  | ☐ |
+| `Indirect_Cost` | float | 0 |  | ☐ |
 | `Internal_Ref_No` | string | 2401001010 |  | ☐ |
 | `Shpt_Method_Code` | string | PFO |  | ☐ |
 | `Location_Code` | string | PRINCIPALE |  | ☐ |

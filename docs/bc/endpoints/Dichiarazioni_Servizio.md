@@ -11,5 +11,5 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5Ozg4NDI0NDgyNjI4MDIwMjA3ODgxOz... |  | ☐ |
 | `No` | string | SERVDECL00002 |  | ☐ |
-| `Starting_Date` | string | 2024-01-01 |  | ☐ |
-| `Ending_Date` | string | 2024-01-31 |  | ☐ |
+| `Starting_Date` | date | 2024-01-01 |  | ☐ |
+| `Ending_Date` | date | 2024-01-31 |  | ☐ |

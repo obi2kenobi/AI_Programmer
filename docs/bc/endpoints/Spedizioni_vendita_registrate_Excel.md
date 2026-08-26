@@ -26,10 +26,10 @@
 | `Sell_to_E_Mail` | string | manmat910@yahoo.it |  | ☐ |
 | `Sell_to_Contact` | string |  |  | ☐ |
 | `No_Printed` | int | 1 |  | ☐ |
-| `Posting_Date` | string | 2025-07-22 |  | ☐ |
-| `Document_Date` | string | 2025-07-22 |  | ☐ |
-| `Requested_Delivery_Date` | string | 2025-07-27 |  | ☐ |
-| `Promised_Delivery_Date` | string | 0001-01-01 |  | ☐ |
+| `Posting_Date` | date | 2025-07-22 |  | ☐ |
+| `Document_Date` | date | 2025-07-22 |  | ☐ |
+| `Requested_Delivery_Date` | date | 2025-07-27 |  | ☐ |
+| `Promised_Delivery_Date` | date | 0001-01-01 |  | ☐ |
 | `Quote_No` | string | 25OFFV-000448 |  | ☐ |
 | `Order_No` | string | 25OV-001586 |  | ☐ |
 | `External_Document_No` | string |  |  | ☐ |
@@ -62,7 +62,7 @@
 | `Shipping_Agent_Code` | string | DTE |  | ☐ |
 | `Shipping_Agent_Service_Code` | string |  |  | ☐ |
 | `Package_Tracking_No` | string |  |  | ☐ |
-| `Shipment_Date` | string | 2025-07-22 |  | ☐ |
+| `Shipment_Date` | date | 2025-07-22 |  | ☐ |
 | `_x0033_rd_Party_Loader_Type` | string |   |  | ☐ |
 | `_x0033_rd_Party_Loader_No` | string |  |  | ☐ |
 | `Riferimento_Logistico` | string |   |  | ☐ |
@@ -91,8 +91,8 @@
 | `Shortcut_Dimension_1_Code` | string | ARRG |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
 | `Good_Appearance` | string |  |  | ☐ |
-| `Nr_Parcels` | int | 0 |  | ☐ |
-| `Volume` | int | 0 |  | ☐ |
-| `PRJ_Net_Weight` | int | 395 |  | ☐ |
-| `PRJ_Gross_Weight` | int | 400 |  | ☐ |
+| `Nr_Parcels` | float | 0 |  | ☐ |
+| `Volume` | float | 0 |  | ☐ |
+| `PRJ_Net_Weight` | float | 395 |  | ☐ |
+| `PRJ_Gross_Weight` | float | 400 |  | ☐ |
 | `PRJ_Goods_Dimensions` | string |  |  | ☐ |

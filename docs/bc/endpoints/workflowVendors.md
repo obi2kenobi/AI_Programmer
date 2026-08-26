@@ -9,7 +9,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzMxNzM4MzgzNjE1NjcwNDE4NzQxOz... |  | ☐ |
-| `id` | string | 32257bc7-e5a0-ee11-be36-000d3a696397 |  | ☐ |
+| `id` | guid | 32257bc7-e5a0-ee11-be36-000d3a696397 |  | ☐ |
 | `number` | string | 000000000000004 |  | ☐ |
 | `name` | string | JACER - CZ, a.s. |  | ☐ |
 | `searchName` | string | JACER - CZ, A.S. |  | ☐ |
@@ -24,7 +24,7 @@
 | `territoryCode` | string |  |  | ☐ |
 | `globalDimension1Code` | string |  |  | ☐ |
 | `globalDimension2Code` | string |  |  | ☐ |
-| `budgetedAmount` | int | 0 |  | ☐ |
+| `budgetedAmount` | float | 0 |  | ☐ |
 | `vendorPostingGroup` | string | FOR_UE |  | ☐ |
 | `currencyCode` | string |  |  | ☐ |
 | `languageCode` | string | HRV |  | ☐ |
@@ -41,30 +41,30 @@
 | `payToVendorNumber` | string |  |  | ☐ |
 | `priority` | int | 0 |  | ☐ |
 | `paymentMethodCode` | string | BNKINTCONV |  | ☐ |
-| `lastModifiedDateTime` | string | 2024-03-14T10:05:51.017Z |  | ☐ |
-| `lastDateModified` | string | 2024-03-14 |  | ☐ |
+| `lastModifiedDateTime` | datetime | 2024-03-14T10:05:51.017Z |  | ☐ |
+| `lastDateModified` | date | 2024-03-14 |  | ☐ |
 | `dateFilter` | string |  |  | ☐ |
 | `globalDimension1Filter` | string |  |  | ☐ |
 | `globalDimension2Filter` | string |  |  | ☐ |
-| `balance` | int | 0 |  | ☐ |
-| `balanceLcy` | int | 0 |  | ☐ |
-| `netChange` | int | 0 |  | ☐ |
-| `netChangeLcy` | int | 0 |  | ☐ |
-| `purchasesLcy` | int | 0 |  | ☐ |
-| `invDiscountsLcy` | int | 0 |  | ☐ |
-| `pmtDiscountsLcy` | int | 0 |  | ☐ |
-| `balanceDue` | int | 0 |  | ☐ |
-| `balanceDueLcy` | int | 0 |  | ☐ |
-| `payments` | int | 0 |  | ☐ |
-| `invoiceAmounts` | int | 0 |  | ☐ |
-| `crMemoAmounts` | int | 0 |  | ☐ |
-| `financeChargeMemoAmounts` | int | 0 |  | ☐ |
-| `paymentsLcy` | int | 0 |  | ☐ |
-| `invAmountsLcy` | int | 0 |  | ☐ |
-| `crMemoAmountsLcy` | int | 0 |  | ☐ |
-| `finChargeMemoAmountsLcy` | int | 0 |  | ☐ |
-| `outstandingOrders` | int | 0 |  | ☐ |
-| `amtRcdNotInvoiced` | int | 0 |  | ☐ |
+| `balance` | float | 0 |  | ☐ |
+| `balanceLcy` | float | 0 |  | ☐ |
+| `netChange` | float | 0 |  | ☐ |
+| `netChangeLcy` | float | 0 |  | ☐ |
+| `purchasesLcy` | float | 0 |  | ☐ |
+| `invDiscountsLcy` | float | 0 |  | ☐ |
+| `pmtDiscountsLcy` | float | 0 |  | ☐ |
+| `balanceDue` | float | 0 |  | ☐ |
+| `balanceDueLcy` | float | 0 |  | ☐ |
+| `payments` | float | 0 |  | ☐ |
+| `invoiceAmounts` | float | 0 |  | ☐ |
+| `crMemoAmounts` | float | 0 |  | ☐ |
+| `financeChargeMemoAmounts` | float | 0 |  | ☐ |
+| `paymentsLcy` | float | 0 |  | ☐ |
+| `invAmountsLcy` | float | 0 |  | ☐ |
+| `crMemoAmountsLcy` | float | 0 |  | ☐ |
+| `finChargeMemoAmountsLcy` | float | 0 |  | ☐ |
+| `outstandingOrders` | float | 0 |  | ☐ |
+| `amtRcdNotInvoiced` | float | 0 |  | ☐ |
 | `applicationMethod` | string | Manual |  | ☐ |
 | `pricesIncludingVat` | bool | False |  | ☐ |
 | `faxNumber` | string |  |  | ☐ |
@@ -74,32 +74,32 @@
 | `gln` | string |  |  | ☐ |
 | `postCode` | string | 00000 |  | ☐ |
 | `county` | string | LU |  | ☐ |
-| `debitAmount` | int | 0 |  | ☐ |
-| `creditAmount` | int | 0 |  | ☐ |
-| `debitAmountLcy` | int | 0 |  | ☐ |
-| `creditAmountLcy` | int | 0 |  | ☐ |
+| `debitAmount` | float | 0 |  | ☐ |
+| `creditAmount` | float | 0 |  | ☐ |
+| `debitAmountLcy` | float | 0 |  | ☐ |
+| `creditAmountLcy` | float | 0 |  | ☐ |
 | `eMail` | string | info@jacer.cz |  | ☐ |
 | `homePage` | string | https://www.vetreriadimontagnana.it/ |  | ☐ |
-| `reminderAmounts` | int | 0 |  | ☐ |
-| `reminderAmountsLcy` | int | 0 |  | ☐ |
+| `reminderAmounts` | float | 0 |  | ☐ |
+| `reminderAmountsLcy` | float | 0 |  | ☐ |
 | `numberSeries` | string |  |  | ☐ |
 | `taxAreaCode` | string |  |  | ☐ |
 | `taxLiable` | bool | False |  | ☐ |
 | `vatBusPostingGroup` | string | FOR_UE |  | ☐ |
 | `currencyFilter` | string |  |  | ☐ |
-| `outstandingOrdersLcy` | int | 0 |  | ☐ |
-| `amtRcdNotInvoicedLcy` | int | 0 |  | ☐ |
+| `outstandingOrdersLcy` | float | 0 |  | ☐ |
+| `amtRcdNotInvoicedLcy` | float | 0 |  | ☐ |
 | `blockPaymentTolerance` | bool | False |  | ☐ |
-| `pmtDiscToleranceLcy` | int | 0 |  | ☐ |
-| `pmtToleranceLcy` | int | 0 |  | ☐ |
+| `pmtDiscToleranceLcy` | float | 0 |  | ☐ |
+| `pmtToleranceLcy` | float | 0 |  | ☐ |
 | `icPartnerCode` | string |  |  | ☐ |
-| `refunds` | int | 0 |  | ☐ |
-| `refundsLcy` | int | 0 |  | ☐ |
-| `otherAmounts` | int | 0 |  | ☐ |
-| `otherAmountsLcy` | int | 0 |  | ☐ |
-| `prepaymentPercent` | int | 0 |  | ☐ |
-| `outstandingInvoices` | int | 0 |  | ☐ |
-| `outstandingInvoicesLcy` | int | 0 |  | ☐ |
+| `refunds` | float | 0 |  | ☐ |
+| `refundsLcy` | float | 0 |  | ☐ |
+| `otherAmounts` | float | 0 |  | ☐ |
+| `otherAmountsLcy` | float | 0 |  | ☐ |
+| `prepaymentPercent` | float | 0 |  | ☐ |
+| `outstandingInvoices` | float | 0 |  | ☐ |
+| `outstandingInvoicesLcy` | float | 0 |  | ☐ |
 | `payToNumberOfArchivedDoc` | int | 1 |  | ☐ |
 | `buyFromNumberOfArchivedDoc` | int | 1 |  | ☐ |
 | `partnerType` | string |   |  | ☐ |
@@ -136,6 +136,6 @@
 | `documentSendingProfile` | string |  |  | ☐ |
 | `validateEuVatRegNumber` | bool | False |  | ☐ |
 | `copyBuyFromAddToQteFrom` | string | Company |  | ☐ |
-| `currencyId` | string | 00000000-0000-0000-0000-000000000000 |  | ☐ |
-| `paymentTermsId` | string | 074d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
-| `paymentMethodId` | string | 219b8244-241b-ee11-8f6e-000d3aba081a |  | ☐ |
+| `currencyId` | guid | 00000000-0000-0000-0000-000000000000 |  | ☐ |
+| `paymentTermsId` | guid | 074d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
+| `paymentMethodId` | guid | 219b8244-241b-ee11-8f6e-000d3aba081a |  | ☐ |
