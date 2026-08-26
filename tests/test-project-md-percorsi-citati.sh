@@ -25,9 +25,12 @@ done < <(grep -noE '`[A-Za-z0-9_./-]+\.(md|sh|py|js|json|csv)`' "$PM" | sed 's/:
   && ok "ogni percorso citato in PROJECT.md esiste o dichiara di vivere altrove" \
   || ko "$MANCANTI percorso/i citato/i senza presidio in PROJECT.md"
 
-grep -q "CATALOGO_ENDPOINT_BC.md" "$PM" && grep -qi "vive nel REPO DEL CLIENTE" "$PM" \
-  && ok "il catalogo endpoint dichiara dove vive (era il vicolo cieco del report)" \
-  || ko "il riferimento al catalogo non dichiara la sua sede"
+[ -f "$HERE/docs/bc/CATALOGO_ENDPOINT_BC.md" ] \
+  && ok "il catalogo endpoint vive ORA nell'hub (F4 chiuso davvero: il riferimento risolve)" \
+  || ko "il catalogo è tornato assente dall'hub"
+grep -q "CATALOGO_ENDPOINT_BC.md" "$PM" \
+  && ok "PROJECT.md cita il catalogo col percorso hub" \
+  || ko "il riferimento al catalogo è sparito da PROJECT.md"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

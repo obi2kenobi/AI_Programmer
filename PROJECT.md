@@ -39,7 +39,7 @@ indovina. Distinta dal censimento campi qui sotto: quello è "che dati esistono"
 
 ### Censimento campi prima dell'analisi (vincolante)
 Prima di qualsiasi report/analisi, costruisci un quadro **completo e definitivo** dei dati:
-- **Testa ogni endpoint** di `CATALOGO_ENDPOINT_BC.md` (il file NON vive in questo hub: sta nel repo del cliente — vedi sotto) e **testa ogni campo** che restituisce.
+- **Testa ogni endpoint** di `docs/bc/CATALOGO_ENDPOINT_BC.md` (il catalogo vive in questo hub, export 2026-08-26) e **testa ogni campo** che restituisce.
 - Mappa **tutti** i campi, non solo quelli che sembrano utili ora: prima o poi servono tutti, non scartarne nessuno.
 - È completezza di _conoscenza/mappatura_, non codice speculativo — quindi non viola la regola _"Only what is asked"_.
 
@@ -58,7 +58,7 @@ Istanzia _"Keep living documentation"_. 108 endpoint → un file per endpoint, p
 - **`docs/bc/CORREZIONI.md`** — errori di mappatura trovati e correzioni applicate.
 
 ### Stack / accesso
-- Endpoint: **108** catalogati in `CATALOGO_ENDPOINT_BC.md` (OData V4) — il catalogo vive nel REPO DEL CLIENTE, non in questo hub (pattern citazione-non-presidio: il riferimento dichiara dove sta).
+- Endpoint: **258** servizi OData nel catalogo `docs/bc/CATALOGO_ENDPOINT_BC.md` (vive in questo hub; l'indice `bc_index.py` conta i mancanti al censimento: oggi 170).
 - Auth: OAuth2 `client_credentials` (Azure AD), scope `.default`. Tenant/client/secret in **`credenziali BC.rtf`** (confermato 2026-06-23; il `Config.gs` del catalogo è la copia del backend GAS).
 - Strumento: **`tools/bc_map.py`** (Python stdlib, nessuna dipendenza) — legge le credenziali a runtime, prende il token, interroga l'endpoint e genera `docs/bc/endpoints/<Nome>.md`. Per un test al volo: `curl`.
 - Regola segreti: credenziali usabili per autenticarsi, mai riprodurne i _valori_ in output, commit o documenti (regola _"Never expose secrets"_).

@@ -37,6 +37,12 @@ OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"calcolami il margine
 echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -q "tocca un calcolo" \
   && ok "prompt che parla di calcoli: aggancio agli oracoli" || ko "aggancio calcoli mancante"
 
+# 4bis. l'aggancio agli endpoint BC (il buco trovato rivedendo l'uso di docs/bc)
+OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"prendi i dati di BC per le fatture"}' | bash "$HOOK" 2>/dev/null)
+echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -q "docs/bc/endpoints" \
+  && ok "prompt che parla di BC/dati: aggancio al censimento endpoint (non si presume, si legge)" \
+  || ko "aggancio BC mancante nel promemorio"
+
 # 5. bootstrap porta gli hook
 grep -q 'cp "$HERE/.claude/settings.json" .claude/settings.json' "$HERE/tools/bootstrap-app.sh" \
   && ok "bootstrap-app.sh propaga settings.json (gli hook viaggiano)" \
