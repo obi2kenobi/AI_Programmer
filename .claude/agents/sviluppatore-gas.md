@@ -62,6 +62,10 @@ tua aggiunta è il giudizio su QUESTO progetto, non la riscrittura del canone.
   (il parco conta 55 progetti su 80 con test che non possono fallire: non
   essere il novantunesimo; tre helper di quattro righe + UN throw finale).
 5. Una voce di SAL dice da dove nasce la formula e cosa ha insegnato il giro.
+6. I CASI VERIFICATI della sessione (input reale, atteso, comando — anche
+   quelli provati con uno script al volo) sono salvati nel progetto prima di
+   chiudere: sono il registro da cui il banco vero nascerà, non si perdono a
+   fine sessione (lezione dal campo, 2026-08-26).
 
 ## Confini
 

@@ -76,6 +76,26 @@ grep -q "CONSULENZA" "$SKILL" && grep -q "CONSEGNA" "$SKILL" \
   && ok "le due modalità consulenza/consegna distinte in testa alla skill" \
   || ko "modalità non distinte"
 
+# 7bis. le aggiunte dal report tagli (2026-08-26): chi entra nel canone non ne esce in silenzio
+grep -qi "formattazione fantasma" "$FAMIGLIE" \
+  && ok "famiglie: FORMATTAZIONE FANTASMA presente (la famiglia nuova del report)" \
+  || ko "famiglie: formattazione fantasma mancante"
+grep -q "148.186" "$METODO" \
+  && ok "metodo: stima la scala PRIMA di generare, con la misura vera citata" \
+  || ko "metodo: la regola della scala mancante"
+grep -qi "SISTEMI ESTERNI" "$METODO" \
+  && ok "metodo: le scritture su sistemi esterni sono categoria di rischio dedicata" \
+  || ko "metodo: la regola dei sistemi esterni mancante"
+grep -qi "banco scritto al volo NON si butta" "$METODO" \
+  && ok "metodo: i casi verificati si salvano, non si perdono a fine sessione" \
+  || ko "metodo: la regola dei casi salvati mancante"
+grep -qi "casi verificati" "$DEV" \
+  && ok "sviluppatore-gas: la verifica include il salvataggio dei casi" \
+  || ko "sviluppatore-gas: casi salvati mancanti nella verifica"
+grep -qi "DUE rischi distinti" "$CONSEGNA" \
+  && ok "consegna: i due rischi del divieto clasp sono nominati separati (regola resta intera)" \
+  || ko "consegna: la separazione dei rischi mancante"
+
 # 7. privacy: nessun nome cliente nei file nuovi (i progetti REPO-E si citano come categoria)
 if grep -rEq 'Brico|Hasslach|Egger|MaxiD|Golilla|Fibris|Teotto|Giovannini' "$HERE/.claude/skills/gas-sviluppo/" "$DEV" "$REV"; then
   ko "nomi di clienti nei file dell'hub (privacy: Public repo, private work)"

@@ -93,3 +93,9 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-24 | REPO-G non è mai stato onboardato (nessun .claude/, nessun .night-verify; CLAUDE.md/PROJECT.md caricati a mano) — le skill/agenti del hub non erano fisicamente disponibili nella sessione che ci ha lavorato, che ha dovuto rifare a mano ciò che il metodo sistematizza | l'onboarding porta la repo nel turno notturno (repos.conf) e la repo contiene credenziali BC nel repo stesso (SAL di REPO-G, voce D6): onboardarla è una decisione di esposizione, non una dimenticanza da correggere in silenzio | decisione di Luca: (a) onboarding completo, (b) onboarding parziale senza repos.conf (solo skill/agenti via sync-repo.sh), o (c) esclusione deliberata documentata in docs/system.md — oggi "sembra una dimenticanza, non una decisione" |
+
+## Deploy assistito: separare i due rischi del divieto clasp (2026-08-26, report tagli)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-26 | Il report dal campo misura il costo del cancello umano (~20 cicli manuali a sessione) e osserva che il rischio VERO è maneggiare le credenziali, non eseguire il deploy: con credenziali fuori portata dall'agente, un deploy assistito ridurrebbe il costo senza perdere la protezione che conta | allentare un divieto di sicurezza su una repo pubblica con produzione vera è decisione del proprietario: il canone separa ora i due rischi (consegna.md), la regola resta intera | decisione di Luca: mantenere il cancello com'è, o definire il rituale del deploy assistito (credenziali dove, comando chi lo lancia, cosa vede l'agente, log) e scriverlo nel canone |
