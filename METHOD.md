@@ -32,6 +32,25 @@ TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul camp
 | Registro chiamate (giorno) | `llm/usage-summary.sh` | `~/.ai-programmer-usage.log` (4° ciclo, set 3, giro 5, 2026-08-23: il log esisteva dal ciclo precedente, il riepilogo no) |
 | Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 5° ciclo, set 2 giro 3, 2026-08-23: primo loop reale eseguito, `loops/` non più vuota) |
 
+## Lo standard (2026-08-26 — «non un'opzione»)
+
+Il metodo non si invoca: si TROVA già in opera. Una repo che lavora col metodo
+AI_Programmer ha, fisicamente:
+
+1. **CLAUDE.md dell'hub** (regole caricate automaticamente a ogni sessione);
+2. **`.claude/skills/` + `.claude/agents/`** (e gli specchi `.opencode/agent/`
+   per la notte);
+3. **`.claude/settings.json` con gli HOOK** — la parte che non dipende dalla
+   memoria della sessione: SessionStart inietta il metodo all'apertura,
+   UserPromptSubmit lo ri-inietta a ogni prompt (il problema era «invocato
+   all'inizio e poi dimenticato»: ora non serve invocarlo);
+4. **`.night-verify`** dichiarato.
+
+Un solo comando porta tutto: `tools/sync-repo.sh <owner/repo> --standard`
+(apre la PR). `tools/sync-repo.sh <owner/repo>` senza flag verifica e riporta
+il drift. Lo standard NON è dichiarato dai documenti soltanto: se manca un
+pezzo, manca il metodo.
+
 ## Le regole che contano (le altre stanno nelle fonti)
 
 1. **Esegui, non leggere** — ogni affermazione porta il comando che la dimostra

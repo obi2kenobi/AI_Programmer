@@ -81,6 +81,11 @@ cp -r "$HERE/.claude/agents/." .claude/agents/
 # stessa famiglia di gap già pagata per skills/agents/patterns
 mkdir -p .opencode/agent
 cp -r "$HERE/.opencode/agent/." .opencode/agent/
+# 2026-08-26, «standard non opzione»: anche gli HOOK viaggiano — il metodo che
+# dipende dalla memoria della sessione resta opt-in, quello nell'hook no
+cp "$HERE/.claude/settings.json" .claude/settings.json
+cp "$HERE/tools/metodo-reminder-hook.sh" tools/metodo-reminder-hook.sh 2>/dev/null || true
+cp "$HERE/tools/pattern-reminder-hook.sh" tools/pattern-reminder-hook.sh 2>/dev/null || true
 
 # gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
 # viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA
