@@ -6,6 +6,20 @@
 > per deduzione. Ora dichiara le cinque cose che ogni agente deve sapere per
 > lavorare qui senza rompere il metodo.
 
+## 0. Lo standard (non serve invocarlo)
+
+Questo repo lavora col metodo attivo PER MECCANISMO: all'apertura di una
+sessione e a OGNI prompt, un hook inietta il promemorio del metodo
+({
+  "hookSpecificOutput": {
+    "hookEventName": "UserPromptSubmit",
+    "additionalContext": " metodo attivo: esegui-non-dedurre · oracolo prima della formula · banco prima della correzione · SAL prima del passo successivo"
+  }
+}). Se sei un agente e leggi questo file, il
+metodo è già in opera intorno a te: METHOD.md §"Lo standard" dice cosa deve
+esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
+.night-verify) e  lo porta tutto.
+
 ## 1. Le regole vincolanti e la mappa
 
 - `CLAUDE.md` — le regole (Karpathy §1-6 + §7 delega): valgono per ogni agente, non

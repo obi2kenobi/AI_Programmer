@@ -126,6 +126,16 @@ AGENTS_AGGIUNTI=0
 # 6° ciclo, set 3 (2026-08-24): stesso merge prudente per gli specchi OpenCode
 # (.opencode/agent/) — la notte usa quelli; mai sovrascrivere una personalizzazione
 # locale, solo aggiungere i mancanti
+# 2026-08-26, «standard non opzione»: gli HOOK arrivano solo se il progetto non
+# ne ha di propri (merge prudente, stesso criterio degli agenti)
+if [ ! -f "$WORK/.claude/settings.json" ]; then
+  cp "$HERE/.claude/settings.json" "$WORK/.claude/settings.json"
+  git -C "$WORK" add ".claude/settings.json"
+  mkdir -p "$WORK/tools"
+  cp "$HERE/tools/metodo-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
+  cp "$HERE/tools/pattern-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
+  git -C "$WORK" add tools/metodo-reminder-hook.sh tools/pattern-reminder-hook.sh 2>/dev/null || true
+fi
 mkdir -p "$WORK/.opencode/agent"
 for agent_file in "$HERE"/.opencode/agent/*.md; do
   agent_name="$(basename "$agent_file")"
