@@ -53,6 +53,13 @@ grep -q '\-\-standard' "$HERE/tools/sync-repo.sh" \
   && ok "sync-repo.sh --standard: un comando per tutto lo standard" \
   || ko "sync-repo senza modalità standard"
 
+grep -q "## 0. Lo standard" "$HERE/AGENTS.md" \
+  && ok "AGENTS.md §0 dichiara lo standard all'ingresso (mutazione colta)" \
+  || ko "AGENTS.md §0 assente — la mutazione passerebbe (giro 12 dei 20)"
+grep -q "merge=union" "$HERE/.gitattributes" \
+  && ok ".gitattributes union sui diari presidiato" \
+  || ko "union driver assente: il distribuito perde la cura anti-collisione"
+
 # 7. METHOD.md dichiara lo standard
 grep -q "## Lo standard" "$HERE/METHOD.md" && grep -q "non si invoca: si TROVA" "$HERE/METHOD.md" \
   && ok "METHOD.md: lo standard dichiarato (checklist + comando unico)" \

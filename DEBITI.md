@@ -127,3 +127,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-27 | `.opencode/skills/` contiene solo graphify: le 9 skill dell'hub (gas-sviluppo, selezione-contesto, design-doc…) non hanno equivalente notturno — il turno notturno ha gli AGENTI (specchiati) ma non le SKILL: la notte può invocare revisore-gas, non legge il canone progressivo | il formato skill OpenCode va verificato (non presumere che SKILL.md sia identico); è un porting vero, non una copia | quando la notte deve consultare il canone: portare le skill (o la sola gas-sviluppo) nel formato OpenCode, con guardia anti-drift come gli agenti |
+
+## Privacy nei VALORI DI CAMPIONE del censimento BC (giro 14 dei 20, 2026-08-27)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-27 | I campioni d'esempio dei file endpoint portano dati di business veri (nomi fornitori trovati in 2 file: il grep dei nomi reali li ha ripresi). La census li contiene PER COSTRUZIONE (bc_map legge il vivo) — mascherarli tutti toglierebbe utilità al census | è un trade-off tra utilità del census e privacy della controparte commerciale in una repo pubblica: decisione del proprietario, non dell'agente | decisione di Luca: (a) accettare (i fornitori sono già pubblici nel catalogo prodotti), (b) mascherare la sola colonna Esempio nei file sensibili, (c) mascherarli tutti |
