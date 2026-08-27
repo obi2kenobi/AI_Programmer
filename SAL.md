@@ -111,6 +111,7 @@
 - [2026-08-27 (2) — distribuito chiuso: l'esperimento che non si presume](#2026-08-27-2-distribuito-chiuso-l-esperimento-che-non-si-presume)
 - [2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato](#2026-08-27-4-venti-giri-lenti-nuove-mutazione-dei-guardiani-e-ci-che-ha-rivelato)
 - [2026-08-27 (5) — venti giri, terza serie: la vetrina pubblica era ferma a tre giorni fa](#2026-08-27-5-venti-giri-terza-serie-la-vetrina-pubblica-era-ferma-a-tre-giorni-fa)
+- [2026-08-27 (6) — terzo report REPO-G: la riverifica indipendente chiude il loop](#2026-08-27-6-terzo-report-repo-g-la-riverifica-indipendente-chiude-il-loop)
 
 
 ## Stato
@@ -3246,3 +3247,20 @@ standard/sync-repo/campo/rilevatori — aggiornata con lo stato reale),
 determinismo (test stabili a run ripetute), tabelle ben formate, bonifica
 privacy che tiene (0 residui). Corretta l'aritmetica di CORREZIONI (le 28 vuote
 hanno stub: non sono residue senza file). Suite 87/87.
+
+### 2026-08-27 (6) — terzo report REPO-G: la riverifica indipendente chiude il loop
+
+Il reporter ha rifatto il nostro lavoro di verifica: clone aggiornato, sei
+finding del primo report ricontrollati COMANDO PER COMANDO — tutti e cinque i
+azionabili chiusi con test dedicato che cita il finding d'origine. È il primo
+loop completo: segnalazione → azione → riverifica indipendente. Il registro dei
+suoi sei giri porta cinque bug reali (D49: residuo silenzioso di 982.693,50 €
+in documento già inviato alle banche — ora ancora nel canone dei totali) e il
+primo giro a zero (D51). La SUA proposta adottata: l'esito del giro si dichiara
+— zero bug su superficie ampia è informazione di convergenza, non giro sprecato
+(stessa famiglia dell'assente-dichiarato; un campione non dichiara stabilità,
+ma il silenzio sull'esito non è ammesso) — in metodo.md. E la nota D48 sul
+REPARTO (costo che sparisce a totRicavi=0) entra nel punto APERTO del nostro
+oracolo bilancio: chi lo chiuderà ha l'ancora di campo. F1 resta aperto per
+decisione di Luca — e il costo che il reporter dichiara di pagarlo (sei giri
+fatti a mano, zero riuso hub) è l'argomento più concreto finora per decidere.
