@@ -167,3 +167,16 @@ non lo è, e quello costa il giro intero.
    un idea li viola, la verifica FUORI dal repo (strumenti in directory esterna, mai
    committati) vale come prova equivalente a un test committato (REPO-I: Playwright
    fuori dal repo, 16 asserzioni in Chromium headless, invariante «zero dipendenze» intatto).
+
+
+## Due aggiunte dal campo REPO-H (2026-08-27, 12 PR)
+
+1. **Workaround vm per i binding lessicali**: `let X` di primo livello non diventa
+   proprieta del contesto — ma DOPO aver eseguito il sorgente, una seconda
+   `vm.runInContext("X = valoreStub;", ctx)` con assegnazione semplice (non
+   dichiarazione) risolve al binding lessicale gia creato. (Il limite era canone;
+   la tecnica per aggirarlo senza contesto nuovo man era nuova.)
+2. **Un test sul confine irraggiungibile non e un test**: prima di scrivere il
+   caso limite, verifica che quel valore sia RAGGIUNGIBILE attraverso la pipeline
+   reale (REPO-I: 0.005 post-round2 non esiste come input del filtro — un test li
+   sarebbe eseguibile e privo di significato). Si testa il percorso, non la firma.

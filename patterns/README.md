@@ -39,3 +39,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [estrazione-per-testabilita](estrazione-per-testabilita.md) | REPO-I: quasi ogni fix del ciclo 2026-08-27 | 2026-08-27 |
 | [guardia-nel-ponte-non-nella-condivisa](guardia-nel-ponte-non-nella-condivisa.md) | REPO-F: AccessoWeb.gs (incidente 2026-08-15) | 2026-08-27 |
 | [soglia-con-default-guardato](soglia-con-default-guardato.md) | REPO-I: soglie di legge indici di crisi | 2026-08-27 |
+| [riga-in-coda-non-interposta](riga-in-coda-non-interposta.md) | REPO-H: Main.gs generateCopertina_ | 2026-08-27 |
+| [dipendenza-tra-rami-paralleli](dipendenza-tra-rami-paralleli.md) | REPO-H: 2 occorrenze auto-corrette | 2026-08-27 |

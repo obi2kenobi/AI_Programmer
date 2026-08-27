@@ -149,6 +149,7 @@
 - [2026-08-27 (10) — trenta giri n.2: il collegamento rotto ero io](#2026-08-27-10-trenta-giri-n-2-il-collegamento-rotto-ero-io)
 - [2026-08-27 (11) — quinto report: 50 agenti su REPO-F, due rifiuti che sono il metodo](#2026-08-27-11-quinto-report-50-agenti-su-repo-f-due-rifiuti-che-sono-il-metodo)
 - [2026-08-27 (12) — report REPO-I fase 2: catalogo esaurito, quattro regole nuove](#2026-08-27-12-report-repo-i-fase-2-catalogo-esaurito-quattro-regole-nuove)
+- [2026-08-27 (13) — sesto report (REPO-H, 12 PR): pattern 23-24 e il workaround vm](#2026-08-27-13-sesto-report-repo-h-12-pr-pattern-23-24-e-il-workaround-vm)
 
 
 ## Stato
@@ -3394,3 +3395,18 @@ domanda; la seconda resta non-ancora-matura, non «esclusa»), e I VINCOLI
 VIVONO ANCHE NEI FILE DI CONFIGURAZIONE (commenti CI/workflow letti prima di
 proporre; la verifica fuori-repo come prova equivalente quando un invariante
 lo impone). Suite 87/87.
+
+### 2026-08-27 (13) — sesto report (REPO-H, 12 PR): pattern 23-24 e il workaround vm
+
+12 batch = 12 PR indipendenti, runAllTests eseguito davvero per ognuna (con
+stub per le funzioni impure: esegui-non-leggere esteso oltre l'harness puro).
+Integrati: pattern 23 RIGA-IN-CODA-NON-INTERPOSTA (lo stato attaccato alla
+posizione: famiglia formattazione-fantasma, con l'errore auto-corretto dal
+banco prima del commit come ancora) e pattern 24 DIPENDENZA-TRA-RAMI-
+PARALLELI (il branch parallelo è autosufficiente o dichiara la dipendenza —
+il complemento autoriale della regola di composizione del corpus). In
+metodo.md: il workaround vm per i binding lessicali (seconda runInContext ad
+assegnazione semplice — il limite era canone, la tecnica mancava) e la regola
+del confine irraggiungibile (0.005 post-round2 non esiste: un test lì sarebbe
+eseguibile e senza significato — si testa il percorso, non la firma).
+Suite 87/87.
