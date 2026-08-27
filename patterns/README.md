@@ -36,3 +36,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [copertura-dal-glob](copertura-dal-glob.md) | questo hub: tests/test-skills-structure.sh, .night-verify | 2026-08-23 |
 
 | [somma-diversa-da-zero-non-e-presenza](somma-diversa-da-zero-non-e-presenza.md) | REPO-H: ProcessData.gs findDisposals (report: docs/campo/2026-08-27-revisione-cespiti-gas-bc.md) | 2026-08-27 |
+| [estrazione-per-testabilita](estrazione-per-testabilita.md) | REPO-I: quasi ogni fix del ciclo 2026-08-27 | 2026-08-27 |
