@@ -24,3 +24,12 @@ Distinto dal giro di bug: cerca cosa MANCA, non cosa è rotto. Struttura:
 4. **Critica di completezza**: cosa nessuna lente ha toccato (nel caso: governo dell'accesso nel tempo) + i PREREQUISITI NASCOSTI (una proposta che è prerequisito di altre due si fa per prima: risolve per costruzione, non con tre patch).
 5. **Le 3 a miglior rapporto valore/costo per l'uso di oggi** — non un backlog: la scelta resta al proprietario.
 Filtro d'ingresso che ha funzionato: vietare le "feature da manuale SaaS" senza riscontro concreto nel codice.
+
+## La consolidazione delle lenti È zero-waste (dal campo REPO-G, 2026-08-27)
+
+Cinquanta giri richiesti, consolidati in 14 lenti realmente distinte: evitare
+passate quasi-duplicate è la stessa disciplina zero-waste del metodo applicata
+al processo di revisione stesso. Il criterio: due lenti che rileggono gli
+stessi file con la stessa domanda sono UNA lente; due che li leggono con
+domande diverse (bug vs prodotto vs prevenzione) restano due. E ogni proposta
+ancorata a file:riga letto davvero — mai principio da manuale.

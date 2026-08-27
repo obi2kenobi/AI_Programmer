@@ -1,0 +1,768 @@
+<title>Quattordici Lenti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#eef1ec;
+  --surface:#ffffff;
+  --surface-2:#e4e9e2;
+  --ink:#182420;
+  --ink-soft:#42524a;
+  --ink-faint:#6c7d72;
+  --line:#c9d2c5;
+  --accent:#14532d;
+  --accent-soft:#e3ede4;
+  --accent-ink:#0d3a1f;
+  --high:#9a3324;
+  --high-soft:#f4e2dd;
+  --med:#8a5a12;
+  --med-soft:#f2e6d1;
+  --low:#3d6b52;
+  --low-soft:#e3ede6;
+  --shadow:0 1px 2px rgba(20,40,25,0.06), 0 6px 20px rgba(20,40,25,0.05);
+  --font-display:'Fraunces', 'Iowan Old Style', 'Palatino Linotype', serif;
+  --font-body:'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121712;
+    --surface:#181f19;
+    --surface-2:#212a22;
+    --ink:#e7ece6;
+    --ink-soft:#b6c2b8;
+    --ink-faint:#8a9a8d;
+    --line:#2c362d;
+    --accent:#5fae7d;
+    --accent-soft:#1c2d21;
+    --accent-ink:#a9dcbc;
+    --high:#e2897a;
+    --high-soft:#332019;
+    --med:#d3a75c;
+    --med-soft:#2f2718;
+    --low:#7fb79a;
+    --low-soft:#1b2a22;
+    --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121712;
+  --surface:#181f19;
+  --surface-2:#212a22;
+  --ink:#e7ece6;
+  --ink-soft:#b6c2b8;
+  --ink-faint:#8a9a8d;
+  --line:#2c362d;
+  --accent:#5fae7d;
+  --accent-soft:#1c2d21;
+  --accent-ink:#a9dcbc;
+  --high:#e2897a;
+  --high-soft:#332019;
+  --med:#d3a75c;
+  --med-soft:#2f2718;
+  --low:#7fb79a;
+  --low-soft:#1b2a22;
+  --shadow:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent-ink);}
+::selection{background:var(--accent-soft);}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 clamp(16px,4vw,40px) 96px;
+}
+
+/* ---------- Masthead ---------- */
+.masthead{
+  padding:clamp(40px,7vw,72px) 0 40px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:40px;
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent-ink);
+  background:var(--accent-soft);
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:3px;
+  margin-bottom:18px;
+}
+h1{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(2.6rem,6vw,4.4rem);
+  line-height:.98;
+  letter-spacing:-.01em;
+  margin:0 0 18px;
+  text-wrap:balance;
+  color:var(--ink);
+}
+.dek{
+  max-width:62ch;
+  font-size:1.15rem;
+  color:var(--ink-soft);
+  margin:0 0 22px;
+}
+.dek strong{color:var(--ink);font-weight:600;}
+.meta-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 22px;
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  color:var(--ink-faint);
+}
+.meta-row b{color:var(--ink-soft);font-weight:500;}
+
+/* ---------- Layout: sidebar + content ---------- */
+.layout{
+  display:grid;
+  grid-template-columns:240px minmax(0,1fr);
+  gap:48px;
+  align-items:start;
+}
+@media (max-width:880px){
+  .layout{grid-template-columns:1fr;}
+}
+nav.toc{
+  position:sticky;
+  top:24px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  font-size:13.5px;
+}
+nav.toc .toc-label{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin-bottom:10px;
+}
+nav.toc a{
+  color:var(--ink-soft);
+  text-decoration:none;
+  padding:6px 10px;
+  border-radius:5px;
+  border-left:2px solid transparent;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+}
+nav.toc a:hover{background:var(--surface-2);color:var(--ink);}
+nav.toc a.high{border-left-color:var(--high);}
+nav.toc .count{
+  font-family:var(--font-mono);
+  color:var(--ink-faint);
+  font-size:11.5px;
+  font-variant-numeric:tabular-nums;
+}
+@media (max-width:880px){
+  nav.toc{
+    position:static;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+    gap:4px;
+    padding:14px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    margin-bottom:8px;
+  }
+}
+
+main{min-width:0;}
+
+/* ---------- Sections ---------- */
+section.lens{
+  padding:44px 0;
+  border-bottom:1px solid var(--line);
+  scroll-margin-top:20px;
+}
+section.lens:last-child{border-bottom:none;}
+.lens-head{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+}
+.lens-num{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--ink-faint);
+}
+h2{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(1.5rem,3vw,2rem);
+  margin:0;
+  color:var(--ink);
+}
+.lens-intro{
+  max-width:70ch;
+  color:var(--ink-soft);
+  margin:0 0 26px;
+  font-size:1.02rem;
+}
+.lens-intro code, p code, li code{
+  font-family:var(--font-mono);
+  font-size:.88em;
+  background:var(--surface-2);
+  padding:.1em .35em;
+  border-radius:3px;
+}
+
+/* priority banner for section 1 */
+.high-banner{
+  background:var(--high-soft);
+  border:1px solid color-mix(in srgb, var(--high) 35%, transparent);
+  border-radius:10px;
+  padding:16px 20px;
+  margin-bottom:26px;
+  color:var(--ink);
+  font-size:.98rem;
+}
+.high-banner b{color:var(--high);}
+
+/* ---------- Proposal cards ---------- */
+.cards{
+  display:grid;
+  gap:14px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:18px 20px;
+  box-shadow:var(--shadow);
+}
+.card-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:6px;
+}
+.card h3{
+  font-family:var(--font-body);
+  font-weight:600;
+  font-size:1.02rem;
+  margin:0;
+  color:var(--ink);
+  line-height:1.35;
+}
+.chips{display:flex;gap:6px;flex-shrink:0;}
+.chip{
+  font-family:var(--font-mono);
+  font-size:10.5px;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  padding:3px 8px;
+  border-radius:99px;
+  white-space:nowrap;
+  font-weight:500;
+}
+.chip.sforzo-piccolo{background:var(--low-soft);color:var(--low);}
+.chip.sforzo-medio{background:var(--med-soft);color:var(--med);}
+.chip.sforzo-grande{background:var(--high-soft);color:var(--high);}
+.card p{margin:0 0 8px;color:var(--ink-soft);font-size:.95rem;}
+.card p:last-of-type{margin-bottom:0;}
+.ref{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--ink-faint);
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px dashed var(--line);
+}
+.ref b{color:var(--ink-soft);font-weight:500;}
+
+/* stripe for the priority section cards */
+.card.stripe-high{border-left:3px solid var(--high);}
+
+.evidence{
+  font-family:var(--font-mono);
+  font-size:.85rem;
+  background:var(--surface-2);
+  border-radius:8px;
+  padding:10px 14px;
+  color:var(--ink-soft);
+  margin:10px 0;
+  overflow-x:auto;
+  white-space:pre;
+}
+
+footer{
+  margin-top:60px;
+  padding-top:28px;
+  border-top:1px solid var(--line);
+  color:var(--ink-faint);
+  font-size:13px;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+footer .foot-mark{font-family:var(--font-display);color:var(--ink-soft);}
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <span class="eyebrow">Bilancio_periodico — revisione indipendente</span>
+    <h1>Quattordici lenti</h1>
+    <p class="dek">Non bug, non errori — <strong>cosa manca, cosa aggiungere, come rendere il sistema più efficace, più facile, più parlante</strong>. Cinquanta giri richiesti; consolidati in 14 lenti realmente distinte (evitare 50 passate quasi-duplicate è coerente con la disciplina "zero waste" già applicata in questo progetto). Ogni proposta è ancorata a codice letto per davvero, non a un principio generico da manuale.</p>
+    <div class="meta-row">
+      <span><b>62</b> proposte</span>
+      <span><b>14</b> agenti indipendenti, in parallelo</span>
+      <span><b>0</b> righe di codice toccate — solo lettura</span>
+      <span>metodo: AI_Programmer (esegui non leggere · regola provata non assunta)</span>
+      <span>27 agosto 2026</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Indice">
+      <span class="toc-label">Sezioni</span>
+      <a href="#sicurezza" class="high">Sicurezza &amp; governance <span class="count">4</span></a>
+      <a href="#comunicativita">Documento per le banche <span class="count">6</span></a>
+      <a href="#prevenzione">Prevenire, non scoprire dopo <span class="count">6</span></a>
+      <a href="#gestione">Controllo di gestione <span class="count">7</span></a>
+      <a href="#ux">Dashboard interna <span class="count">7</span></a>
+      <a href="#collaborazione">Collaborazione &amp; audit <span class="count">4</span></a>
+      <a href="#architettura">Architettura <span class="count">4</span></a>
+      <a href="#performance">Performance <span class="count">5</span></a>
+      <a href="#test">Test &amp; CI <span class="count">4</span></a>
+      <a href="#documentazione">Documentazione <span class="count">6</span></a>
+      <a href="#accessibilita">Stampa &amp; accessibilità <span class="count">5</span></a>
+      <a href="#metodo">Metodo AI_Programmer <span class="count">5</span></a>
+    </nav>
+
+    <main>
+
+      <section class="lens" id="sicurezza">
+        <div class="lens-head"><span class="lens-num">01</span><h2>Sicurezza &amp; governance</h2></div>
+        <p class="lens-intro">L'unica sezione che non è "miglioramento" ma rischio reale — messa in cima perché a differenza di tutto il resto non è una scelta di priorità discrezionale.</p>
+        <div class="high-banner"><b>Trovato durante questo giro:</b> il client secret OAuth di Business Central è scritto in chiaro in <code>gas/Config.js</code>, file tracciato da git e presente in più commit della storia. Il repo è privato (verificato), quindi non è esposto a internet — ma chiunque abbia accesso in lettura al repo (collaboratori, ex-collaboratori non rimossi, un fork per errore) ottiene client_id/secret/tenant di produzione BC senza dover violare nulla.</div>
+        <div class="cards">
+          <div class="card stripe-high">
+            <div class="card-top"><h3>Spostare il secret BC fuori dal codice tracciato</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Solo istruzioni/placeholder in <code>Config.js</code>, valore reale inserito a mano nelle Script Properties via console Apps Script; <code>credenziali BC.rtf</code> in <code>.gitignore</code>. La rotazione del secret dopo la rimozione resta necessaria — rimarrà comunque nella storia git.</p>
+            <div class="ref"><b>File:</b> gas/Config.js, credenziali BC.rtf</div>
+          </div>
+          <div class="card stripe-high">
+            <div class="card-top"><h3><code>doGet()</code> non ha nessuna autenticazione</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Manifest con <code>access:"ANYONE"</code>. La differenza fra vista banche di sola lettura e dashboard interna completa (scrivibile — <code>saveDashboardChanges</code> non verifica chi chiama) è solo un parametro nell'URL. Chiunque ottenga il link della dashboard interna può leggere E modificare attribuzioni/rettifiche di un'azienda reale.</p>
+            <div class="ref"><b>File:</b> gas/Webapp.js:doGet, appsscript.json</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nessun controllo lega <code>clasp push</code> ai test</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Il deploy è manuale, dal Mac del cliente, fuori da qualunque sessione. Si può pushare codice mai testato. Minimo: uno script/istruzione <code>npm test &amp;&amp; clasp push</code> — non un cancello tecnico, ma riduce l'errore per convenzione a costo quasi zero.</p>
+            <div class="ref"><b>File:</b> PROJECT.md (workflow di deploy)</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nessuna rotazione/scadenza delle credenziali BC</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Stesso secret in uso da mesi (creato 2026-05-28). Non tecnico da solo — serve una procedura concordata col cliente su quando/come rigenerarlo su BC/Entra ID.</p>
+            <div class="ref"><b>File:</b> gas/Auth.js (setupCredentials)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="comunicativita">
+        <div class="lens-head"><span class="lens-num">02</span><h2>Il documento per le banche: farlo parlare da solo</h2></div>
+        <p class="lens-intro">Chi legge il documento pubblicato è un banchiere che non conosce il gergo interno (BU, REPARTO, "plug", "quadratura"). Oggi il documento non spiega mai sé stesso.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Bonificare il testo dell'avviso di quadratura</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Il messaggio dell'<code>avviso</code> di Sp.js cita nomi di costanti del codice ("verificare SP_PLUG_CREDITI/SP_PLUG_DEBITI") e finisce, alla lettera, nel bilancio pubblicato se lo squilibrio anomalo si presenta. Serve un testo tecnico per uso interno e uno in linguaggio corrente per la vista banche.</p>
+            <div class="ref"><b>File:</b> gas/Sp.js (avviso), dashboard.html:quadraturaEsitoHtml_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nascondere o spiegare i badge FISSO/PESI/PROP nelle righe</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Ogni riga-conto porta badge di attribuzione BU anche in vista banche, dove le colonne per BU non sono mostrate: il lettore esterno vede sigle di allocazione interna senza significato per lui.</p>
+            <div class="ref"><b>File:</b> dashboard.html:buildLeafTr</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nota per le voci "cestone" dello Stato Patrimoniale</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p><code>SP_BUCKET</code> raggruppa sotto didascalie generiche ("Altri crediti e attività correnti"...) i conti non coperti dallo schema civilistico (33 conti scoperti, −3,1 mln). In tabella sono indistinguibili da una voce di schema vera e propria — serve un segno che le identifichi come aggregato residuale.</p>
+            <div class="ref"><b>File:</b> gas/Sp.js:SP_BUCKET, righeSp_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nota metodologica introduttiva</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>La più importante. Nessun punto del documento spiega che lo SP è costruito per quadrare <em>sempre</em> — uno squilibrio viene ripianato automaticamente su IVA/crediti/debiti. Il segno ✓ "Quadratura verificata" può leggersi come conferma naturale della contabilità mentre è l'esito atteso di una riconciliazione. Serve una nota breve vicino all'intestazione del documento.</p>
+            <div class="ref"><b>File:</b> dashboard.html (intestazione documento banche)</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Segnalare in tabella le righe effettivamente rettificate</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Il flag <code>rettificato</code> esiste già nel modello dati ma non è mai usato nel rendering SP banche: nessun segno distingue un saldo "puro" da uno che ha assorbito quota dello squilibrio di allineamento.</p>
+            <div class="ref"><b>File:</b> gas/Sp.js (rettificato), dashboard.html:spTableHtml_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Segnalare i cambi di metodologia fra pubblicazioni</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>Se le regole di calcolo cambiano da una pubblicazione all'altra (è già successo: correzione IVA del 2026-08-24), il confronto anno su anno non lo segnala in alcun modo — il lettore confronta due numeri costruiti con regole diverse credendole identiche.</p>
+            <div class="ref"><b>File:</b> dashboard.html:spTableHtml_ + versionamento (v. sezione 03)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="prevenzione">
+        <div class="lens-head"><span class="lens-num">03</span><h2>Prevenire, non scoprire dopo</h2></div>
+        <p class="lens-intro">Oggi ogni controllo (avviso SP, quadratura CE) è <em>reattivo</em>: ogni problema reale trovato finora (D45, D49, D52) è stato scoperto aprendo il documento già pubblicato, mai bloccato prima. <code>pubblicaBanche</code> sovrascrive un unico file Drive: nessuno storico, nessun confronto con la pubblicazione precedente.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Riepilogo dei controlli prima di premere "Pubblica"</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo/medio</span></div></div>
+            <p>Gli avvisi (<code>avviso</code> di Sp.js, <code>ceQuadraturaAvviso_</code>, <code>ribaltamentoAvviso</code>) sono già calcolati ma non mostrati all'operatore in fase di pubblicazione — solo, in parte, nella vista già pubblicata. Il caso D49 (squilibrio da 982.693,50 €) è arrivato alle banche prima di essere notato: un riepilogo pre-pubblicazione lo avrebbe bloccato.</p>
+            <div class="ref"><b>File:</b> dashboard.html:pubblicaBanche (il confirm() oggi mostra solo mese/anno)</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Check di plausibilità sui segni</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Scansionare le righe SP prima di pubblicare e segnalare quando una voce di segno atteso (fornitori, crediti, IVA) risulta invertita — esattamente il pattern di D52 (fornitori a −1.198.822,57 €) e D45.</p>
+            <div class="ref"><b>File:</b> gas/Sp.js:statoPatrimonialeRettificato_, nuovo campo accanto ad avviso</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Storico delle pubblicazioni, non un solo file sovrascritto</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Ogni pubblicazione come file distinto in una cartella Drive dedicata (timestamp nel nome), con un puntatore all'ultima per <code>?v=banche</code>. Prerequisito per tutto il resto di questa sezione: oggi non si può nemmeno rispondere "cosa avevamo pubblicato il giorno X" — rilevante perché D49 lo richiede esplicitamente e non è mai stato possibile farlo.</p>
+            <div class="ref"><b>File:</b> gas/Webapp.js:pubblicaBanche</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Confronto automatico con la pubblicazione precedente</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Riga per riga (per descrizione), scarto fra vecchia e nuova pubblicazione, con segnalazione delle variazioni anomale o dei cambi di segno — intercetta bug di calcolo che spostano valori fra voci senza intaccare i totali (invisibili alla sola quadratura Attivo=Passivo).</p>
+            <div class="ref"><b>File:</b> Webapp.js:pubblicaBanche, richiede lo storico sopra</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Numero di versione + autore visibile</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Un contatore incrementale e <code>Session.getActiveUser()</code> nello snapshot, mostrati accanto a <code>publishedAt</code>: un audit minimo di chi e quando, e un segnale immediato per una banca che riapre lo stesso URL di "questo è diverso da quello che avevi salvato".</p>
+            <div class="ref"><b>File:</b> dashboard.html:pubblicaConSp_, gas/Webapp.js</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Soglie di allarme configurabili, non hardcoded</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p><code>SP_IVA_QUOTA_RESIDUA</code>, la soglia di 1€ per l'avviso, la soglia 0,01 di <code>ceQuadraturaAvviso_</code> — oggi cambiarle richiede una modifica di codice e un clasp push. Spostarle in un foglio Google, stesso pattern già usato per <code>BookOverride</code>.</p>
+            <div class="ref"><b>File:</b> gas/Sp.js, dashboard.html:ceQuadraturaAvviso_</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="gestione">
+        <div class="lens-head"><span class="lens-num">04</span><h2>Controllo di gestione</h2></div>
+        <p class="lens-intro">Lo strumento calcola bene CE e SP, ma il confronto è sempre e solo "oggi vs anno scorso". Manca ogni forma di obiettivo interno, di trend più lungo di un periodo, e diversi calcoli utili esistono già ma restano isolati in script eseguibili solo a mano dall'editor.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Budget/preventivo per BU, a fianco dell'anno precedente</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>Nessuna occorrenza di "budget" in tutto il codice: l'unico confronto è sempre anno su anno. Un anno scorso disastroso rende "meglio del precedente" falsamente rassicurante. Un foglio Google "Budget per BU" (stesso pattern di NoBuConfig/Rect) alimenterebbe una terza colonna nel bridge e nel cruscotto KPI.</p>
+            <div class="ref"><b>File:</b> nuovo Budget.js, dashboard.html (bridge), gas/Analisi.js</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Cruscotto KPI sempre visibile, non solo dentro la relazione AI</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Ricavi, risultato, margine per BU, Δ anno su anno esistono già (<code>secKpi_</code>) ma solo dentro <code>Analisi.js</code>, calcolati e mostrati solo premendo "Genera analisi AI" — una chiamata a pagamento con tempi di attesa. Andrebbero visibili aprendo la dashboard, senza invocare l'AI.</p>
+            <div class="ref"><b>File:</b> gas/Analisi.js:secKpi_ → portare lato client</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Grafico storico multi-periodo nella dashboard principale</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>I grafici SVG (andamento mensile, margine per BU) esistono solo dentro la relazione AI e non sono richiamabili da soli. <code>buildSerieMensile_</code> scarica già tutto il necessario — manca solo esporlo come vista indipendente, senza passare da Claude.</p>
+            <div class="ref"><b>File:</b> gas/Analisi.js:buildSerieMensile_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Soglie di allarme automatiche per margine di BU</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Un trigger mensile che richiama la proiezione AI e notifica solo su scostamento oltre soglia dal trend/budget, invece di dover ricordarsi di aprire la dashboard. Oggi nessun <code>ScriptApp.newTrigger</code> esiste in tutto il repo.</p>
+            <div class="ref"><b>File:</b> nuovo trigger in Analisi.js</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Margine per prodotto/cliente: i dati esistono già, isolati</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p><code>investigateSalesByBu()</code> in <code>Bom.js</code> incrocia vendite BC e BOM per margine potenziale per articolo, ma è una funzione da eseguire manualmente dall'editor con output solo su <code>Logger.log</code> — non alimenta la dashboard. Esporla come drill-down (click su una BU → tabella articoli) userebbe codice già scritto.</p>
+            <div class="ref"><b>File:</b> gas/Bom.js:investigateSalesByBu</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Flusso di cassa/liquidità mai implementato</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>Gli schemi BC <code>FLUSSOCASS</code>/<code>FLUSCASS-M</code> sono catalogati "per referenza" ma mai usati (SAL.md §5.2). Per un'azienda multi-BU con margini spesso risicati, la cassa è spesso più critica del CE — oggi non esiste nessun cruscotto di liquidità/scadenzario.</p>
+            <div class="ref"><b>File:</b> nuovo modulo sul modello di gas/Sp.js</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Indici di bilancio come calcolo stabile, non delegati all'LLM</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo/medio</span></div></div>
+            <p>Lo schema <code>INDICIBILA</code> è catalogato ma mai interrogato: gli unici indici mostrati sono quelli che Claude sceglie di calcolare dentro la relazione — non riproducibili, non garantiti identici da un run all'altro.</p>
+            <div class="ref"><b>File:</b> nuova funzione server accanto a shapeEntry_</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="ux">
+        <div class="lens-head"><span class="lens-num">05</span><h2>Usabilità della dashboard interna</h2></div>
+        <p class="lens-intro">Non bug — frizione. Ogni punto nasce da un percorso reale che un utente farebbe aprendo la dashboard per calcolare, attribuire, pubblicare.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Nessun calcolo automatico all'apertura</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p><code>init()</code> inizializza i selettori ma non chiama mai <code>loadData()</code>: chi apre la dashboard vede una tabella vuota e deve sempre premere "Calcola" — l'operazione più comune del progetto, oggi sempre manuale.</p>
+            <div class="ref"><b>File:</b> dashboard.html:init</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Icona "modifica conto" invisibile finché non si passa il mouse</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Nessun segnale visivo permanente distingue una riga-conto cliccabile (attribuzione BU) da una riga di solo totale — un utente nuovo deve scoprirlo passando il mouse riga per riga.</p>
+            <div class="ref"><b>File:</b> dashboard.html CSS .conto-click</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>"Pubblica per banche" ha lo stesso stile di "Esporta CSV"</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>L'unica azione che produce un documento visto da terzi non ha una gerarchia visiva diversa dalle azioni di sola visualizzazione — riduce il rischio di click distratto, il <code>confirm()</code> arriva solo dopo.</p>
+            <div class="ref"><b>File:</b> dashboard.html:btnPubblica</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Guardie con <code>alert()</code> invece di pulsanti disabilitati</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Pubblica/Analisi/Export sono sempre cliccabili anche prima di "Calcola", con un alert nativo bloccante invece di uno stato disattivato prevedibile — rompe il flusso di un utente che clicca in ordine naturale.</p>
+            <div class="ref"><b>File:</b> dashboard.html:pubblicaBanche, openRimBilancio, runAnalisi, exportCSV</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nessuna conferma visibile dopo il salvataggio di una rettifica</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p><code>saveAttr()</code> chiude il modale e ricalcola in silenzio: l'unico segnale è un badge piccolo, forse fuori schermo — per l'operazione più delicata del progetto (cambia il CE per BU), un feedback vicino al punto di click è mancante.</p>
+            <div class="ref"><b>File:</b> dashboard.html:saveAttr</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Periodo di lavoro non memorizzato fra sessioni</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Anno/mese default hardcoded: ogni apertura riparte dagli stessi valori invece dell'ultimo periodo realmente lavorato — chi avanza il mese ogni fine mese rifà la stessa selezione ogni volta.</p>
+            <div class="ref"><b>File:</b> dashboard.html:init → localStorage</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Analisi AI: nessun segnale di avanzamento su un'attesa di un minuto</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Solo un testo statico "Analisi in corso…" per l'intera durata, modale non chiudibile: l'unica funzione della dashboard con un tempo di risposta paragonabile a un minuto sembra bloccata, senza modo di annullare.</p>
+            <div class="ref"><b>File:</b> dashboard.html:runAnalisi</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="collaborazione">
+        <div class="lens-head"><span class="lens-num">06</span><h2>Collaborazione &amp; audit</h2></div>
+        <p class="lens-intro">Con un solo utente oggi l'assenza di tracciabilità non si nota. Ma se un commercialista o un secondo analista inizia a toccare la stessa dashboard, nessuna delle domande "chi ha attribuito questo conto" o "chi ha inserito questa rettifica e perché" è oggi rispondibile.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Autore e timestamp su ogni riga scritta</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Nessuna colonna utente/data in nessuno dei tre fogli di configurazione (attribuzioni, rettifiche, override); <code>Session.getActiveUser()</code> non compare mai in tutto <code>gas/</code>. Prerequisito di tutto il resto di questa sezione.</p>
+            <div class="ref"><b>File:</b> gas/Sheets.js, gas/NoBuConfig.js, gas/Rect.js</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nota libera sulle rettifiche realmente utilizzabile</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p><code>replaceContoRect_</code> ignora oggi qualunque nota utente e scrive sempre la stringa fissa "da dashboard" — la colonna nota esiste ma è morta in pratica per le rettifiche.</p>
+            <div class="ref"><b>File:</b> gas/Rect.js:replaceContoRect_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Log di audit append-only</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Un foglio dedicato (timestamp · utente · funzione · prima · dopo) scritto prima di ogni salvataggio — risponde a "chi ha cambiato la BU del conto X e quando", oggi impossibile da ricostruire perché il salvataggio è sempre "clear + rewrite".</p>
+            <div class="ref"><b>File:</b> nuova logAudit_() richiamata da saveDashboardChanges</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Storico versioni dei fogli di configurazione</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>Prima di svuotare il foglio, accodare lo stato uscente in un tab "Storico" — una rettifica sbagliata di mesi fa diventa ricostruibile riga per riga, non solo a livello di log testuale. Va tenuto sotto lo stesso lock del salvataggio.</p>
+            <div class="ref"><b>File:</b> replaceNoBuConfig, replaceContoRect_, saveBookOverride</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="architettura">
+        <div class="lens-head"><span class="lens-num">07</span><h2>Architettura ed estendibilità</h2></div>
+        <p class="lens-intro">Aggiungere una quinta BU oggi tocca circa 10 file e 20 punti sparsi — non per complessità del dominio, ma perché non esiste un'unica fonte della verità per l'elenco BU.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>BU_LIST come unica fonte, iterata invece di sommata per nome</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Somme scritte a mano (<code>a.ARRG+a.BIOC+a.EDIL+a.IMB+a._NO_BU_</code>) in almeno 5 punti, più due costanti indipendenti (<code>BU_CODES</code> server, <code>BU_LIST</code> client) da tenere sincronizzate a mano. Dimenticare un punto non dà errore — dà un bug silenzioso di quadratura: l'importo della nuova BU sparisce da <code>_TOT_</code>.</p>
+            <div class="ref"><b>File:</b> gas/Bu.js:BU_CODES, dashboard.html:BU_LIST, recalcTot, attrRowAmounts</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Estrarre il motore di calcolo dal file HTML monolitico</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p><code>computePeriod</code>/<code>buildTree</code>/<code>distributeNoBu</code> vivono in un file da 2070 righe insieme a CSS, markup e stato globale mutabile (var globali non incapsulate). I test devono estrarre le funzioni per nome con un parser di graffe fatto a mano — fragile per ammissione dello stesso commento nel codice.</p>
+            <div class="ref"><b>File:</b> dashboard.html → file .js separato, incluso via include()</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Un nuovo schema BC richiede oggi una pipeline duplicata</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p><code>fetchSchemaRedditoM_</code> e <code>fetchSchemaBilancio_</code> sono due funzioni quasi identiche con lo Schedule_Name hardcoded, ciascuna con una pipeline di calcolo separata e non riusabile. Un terzo schema significherebbe scriverne una terza.</p>
+            <div class="ref"><b>File:</b> gas/Bc.js:fetchSchemaRedditoM_, gas/Sp.js:fetchSchemaBilancio_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Il calcolo gira nel browser, non sul server</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>Conseguenza di sicurezza (il salvataggio non ricalcola/valida le somme lato server) e di testabilità (nessun <code>require()</code> diretto possibile). Cambio grande e rischioso — da fare solo con i banchi esistenti verdi e un confronto client/server in parallelo prima del taglio.</p>
+            <div class="ref"><b>File:</b> dashboard.html → gas/Bu.js (motore di calcolo)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="performance">
+        <div class="lens-head"><span class="lens-num">08</span><h2>Performance ed efficienza</h2></div>
+        <p class="lens-intro">Un caricamento completo della dashboard fa almeno 15 catene di chiamate HTTP distinte verso Business Central. Nessun dato di business è mai cachato lato Apps Script (solo il token OAuth lo è).</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Query senza limite inferiore, che crescono ogni anno</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p><code>saldiPatrimoniali_</code> interroga TUTTI i G/L Entries patrimoniali dall'inizio della contabilità a oggi — già ≈115.000 movimenti, 6 pagine (commento nel codice). Non filtrata per anno: cresce ogni anno che passa, anche guardando sempre solo l'ultimo periodo.</p>
+            <div class="ref"><b>File:</b> gas/Sp.js:saldiPatrimoniali_, saldoContiEconomici_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3><code>computeStockPrefatturato_</code> scansiona dal 2000</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p><code>periodStart</code> fisso a <code>'2000-01-01'</code>: ogni caricamento fa 4 scansioni integrali della tabella fatture dall'inizio della contabilità, invece di una finestra recente (es. 18 mesi — da validare col cliente il ritardo massimo di spedizione plausibile).</p>
+            <div class="ref"><b>File:</b> gas/Anticipato.js:computeStockPrefatturato_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nessun caching lato Apps Script per i dati di business</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p><code>CacheService</code> è usato solo per il token OAuth: refresh ravvicinati o più utenti sullo stesso periodo rifanno sempre tutte le 15 catene da zero.</p>
+            <div class="ref"><b>File:</b> gas/Webapp.js:getReportData</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3><code>fetchGlPeriod_</code> senza <code>$select</code> minimale</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Scarica tutti i campi di ogni riga G/L del periodo, mentre altre funzioni (<code>saldiPatrimoniali_</code>, <code>fetchGlAccountsUpTo_</code>) già limitano le colonne — incoerenza facile da chiudere.</p>
+            <div class="ref"><b>File:</b> gas/Bc.js:fetchGlPeriod_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nessuna gestione esplicita dei limiti di esecuzione Apps Script</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>Nessuna gestione del tetto di 6 minuti (account consumer) o della quota giornaliera UrlFetchApp: con 15+ catene per richiesta e query che si allargano nel tempo, il rischio di timeout è strutturale, non ipotetico, man mano che la contabilità accumula anni.</p>
+            <div class="ref"><b>File:</b> gas/Bc.js:fetchAll_, gas/Webapp.js:getReportData</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="test">
+        <div class="lens-head"><span class="lens-num">09</span><h2>Test &amp; integrazione continua</h2></div>
+        <p class="lens-intro">4 banchi di test Node zero-dipendenze esistono e sono ben scritti (già pronti per l'automazione), ma vanno lanciati a mano, uno per uno, e nessun meccanismo verifica che lo siano prima di un push.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3><code>package.json</code> con uno script <code>test</code> unico</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Un solo comando lancia tutti e 4 i banchi in sequenza — riduce l'errore di rilanciarne solo alcuni "per regressione" dopo aver toccato un file condiviso, già capitato in questo stesso ciclo di lavoro.</p>
+            <div class="ref"><b>File:</b> nuovo package.json</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Hook <code>pre-commit</code> locale</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Blocca il commit su gas/*.js/dashboard.html se un test fallisce. Limite: gli hook in <code>.git/hooks</code> non sono versionati di default — vanno installati a mano su ogni macchina, o con <code>core.hooksPath</code> puntato a una cartella tracciata.</p>
+            <div class="ref"><b>File:</b> .git/hooks/pre-commit o core.hooksPath</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>GitHub Action su push/PR</h3><div class="chips"><span class="chip sforzo-medio">medio, da verificare</span></div></div>
+            <p>Check visibile su ogni PR, con branch protection che blocca il merge se rosso — rende impossibile ignorare in silenzio una PR (è già successo, PR rimasta aperta 3 settimane senza commenti). Richiede Actions abilitate sul piano dell'org: da confermare con l'utente prima di attivarlo.</p>
+            <div class="ref"><b>File:</b> nuovo .github/workflows/</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Un banco opzionale contro un ambiente BC di prova</h3><div class="chips"><span class="chip sforzo-grande">grande</span></div></div>
+            <p>I banchi usano solo fixture sintetici scritti a mano — D49 mostra che possono non coprire una particolarità reale (IVA lato ATTIVO). Mitigazione più economica nel frattempo: aggiungere ai sintetici un caso per ogni "sorpresa" reale già scoperta — pratica già seguita, da rendere esplicita come regola in PROJECT.md.</p>
+            <div class="ref"><b>File:</b> nuovo tools/test-bc-live.js (opzionale, richiede ambiente sandbox)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="documentazione">
+        <div class="lens-head"><span class="lens-num">10</span><h2>Documentazione e orientamento</h2></div>
+        <p class="lens-intro"><code>PROJECT.md</code> è un buon punto di ingresso per l'architettura statica, ma le decisioni più recenti e delicate vivono solo nel log cronologico di <code>SAL.md</code>, ormai 484 righe/77 voci senza indice per componente.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Manca un README.md di primo livello</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Nessun punto di ingresso dichiarato per chi apre il repo su GitHub senza contesto — 15+ file/cartelle in radice senza gerarchia.</p>
+            <div class="ref"><b>File:</b> nuovo README.md</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>La tabella "Decisioni prese" non riflette più lo stato attuale</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Le decisioni D45-D52 esistono solo nel log, non nella tabella riassuntiva di SAL.md §3 — un dev che cerca "qual è la logica attuale sulla quadratura IVA" deve leggere tutto il log fino in fondo.</p>
+            <div class="ref"><b>File:</b> SAL.md §3</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>L'intestazione di SAL.md è stale di oltre un mese</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>"Ultimo aggiornamento: 2026-07-23" in testa al file, ma 30+ voci successive fino a oggi — chi legge solo l'intestazione si forma un'idea sbagliata dello stato del progetto.</p>
+            <div class="ref"><b>File:</b> SAL.md riga 4</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>PROJECT.md disallineato di alcuni giorni</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p><code>tools/test-ce-banca.js</code> (16 asserzioni) non è mai citato in PROJECT.md — chi legge solo quel file per sapere come verificare una modifica al CE non lo troverebbe.</p>
+            <div class="ref"><b>File:</b> PROJECT.md</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3><code>Bom.js</code> (16 KB) assente dal roster dei file</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Il file che implementa la validazione BOM (feature ampiamente descritta in SAL.md) non compare in "Ruolo dei file gas/" — stesso per Main.js e Sheets.js.</p>
+            <div class="ref"><b>File:</b> PROJECT.md</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Il pattern "banco sintetico via vm" non ha una guida riusabile</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Spiegato solo in prosa sparsa su 4+ voci del log — chi deve testare una modifica a un quinto file deve dedurre la tecnica leggendo un test esistente per intero.</p>
+            <div class="ref"><b>File:</b> nuovo tools/README.md (v. anche sezione 12)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="accessibilita">
+        <div class="lens-head"><span class="lens-num">11</span><h2>Stampa e accessibilità</h2></div>
+        <p class="lens-intro">Il documento pubblicato è pensato anche per stampa/PDF. L'HTML scaricato è genuinamente autonomo (CSS inlineato, logo come data URI, nessuna dipendenza esterna) — ma la resa in stampa ha punti deboli concreti.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Il contenitore tabella taglia il documento in stampa</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo, critico</span></div></div>
+            <p><code>.tbl-wrap</code> ha <code>overflow:auto; max-height</code> mai sovrascritto in <code>@media print</code> né nell'HTML scaricato — una tabella lunga rischia di essere tagliata alla porzione visibile a schermo invece di scorrere su più pagine. Per un documento verso le banche non è estetico, è un difetto grave.</p>
+            <div class="ref"><b>File:</b> dashboard.html:.tbl-wrap, scaricaDocHtml_</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Nessuna gestione delle interruzioni di pagina</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Nessuna regola <code>break-inside</code>/<code>page-break</code> in tutto il file: righe di sezione o totali possono finire separate dal loro contenuto a cavallo di una pagina stampata.</p>
+            <div class="ref"><b>File:</b> dashboard.html @media print</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Tabelle senza markup semantico per screen reader</h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Nessun <code>scope="col"</code> sulle intestazioni a due livelli, nessun <code>th scope="row"</code> sulle celle descrizione: chi naviga con screen reader su una cella numerica non sente a quale voce appartiene.</p>
+            <div class="ref"><b>File:</b> dashboard.html:buildThead, buildLeafTr</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Rosso/verde per delta e profitto/perdita</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>La coppia critica per il daltonismo rosso-verde è usata per <code>.profit</code>/<code>.loss</code>; il segno testuale già presente attenua ma non elimina il rischio — rendere i delta in grassetto quanto profit/loss rafforzerebbe il segnale non-cromatico.</p>
+            <div class="ref"><b>File:</b> dashboard.html CSS .profit/.loss/.delta-*</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Contrasto insufficiente sulle celle a zero</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p><code>td.zero{color:#ccc}</code> su sfondo bianco ha contrasto ~1.6:1, sotto la soglia WCAG AA — il trattino "—" resta leggibile solo per forma, non per colore.</p>
+            <div class="ref"><b>File:</b> dashboard.html CSS .zero</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lens" id="metodo">
+        <div class="lens-head"><span class="lens-num">12</span><h2>Applicare meglio il metodo AI_Programmer</h2></div>
+        <p class="lens-intro">Bilancio_periodico è il progetto che l'hub AI_Programmer chiama in codice anonimo "REPO-G" — l'ancora del pattern <code>banco-sintetico-per-calcoli-critici.md</code> cita testualmente <code>tools/test-sp.js</code>. La disciplina è già applicata qui de facto, ma non è mai formalizzata IN questo repo.</p>
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><h3>Skill <code>controllo-gestione</code> + i 3 subagent collegati</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Match diretto: Bilancio_periodico calcola CE/SP/magazzino/competenza con soldi reali. Il principio "trova la formula in un oracolo reale, mai indovinarla" vive oggi solo nella memoria di sessione e in SAL.md sparso.</p>
+            <div class="ref"><b>Dipendenza:</b> nessuna — file statici, zero credenziali coinvolte</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Pattern <code>banco-sintetico-per-calcoli-critici</code>, formalizzato qui</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>La tecnica è già usata (4 banchi in tools/) ma non è scritta da nessuna parte COME e PERCHÉ — inclusa l'insidia nota su oggetti costruiti fuori dalla realm <code>vm</code>. Formalizzarla eviterebbe di riscoprirla da zero per il prossimo file da testare.</p>
+            <div class="ref"><b>Dipendenza:</b> nessuna</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Lente <code>dev-critic</code> per calcoli già scritti</h3><div class="chips"><span class="chip sforzo-piccolo">piccolo</span></div></div>
+            <p>Applicabile direttamente a Sp.js/BookOverride.js/Anticipato.js ogni volta che si tocca logica di attribuzione o plug — è la stessa famiglia di bug già trovata due volte in questo repo.</p>
+            <div class="ref"><b>Dipendenza:</b> nessuna</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Struttura standard hub (skill+agenti+hook) via <code>sync-repo.sh</code></h3><div class="chips"><span class="chip sforzo-medio">medio</span></div></div>
+            <p>Oggi CLAUDE.md/PROJECT.md sono letti a mano a ogni sessione; con gli hook di sessione il metodo si ri-inietterebbe da solo invece di dipendere dalla memoria della singola sessione.</p>
+            <div class="ref"><b>Dipendenza:</b> decisione su cosa includere</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><h3>Onboarding completo (turno notturno) — bloccato da una decisione aperta</h3><div class="chips"><span class="chip sforzo-grande">grande, non tecnico</span></div></div>
+            <p>La voce "Onboarding di REPO-G" in DEBITI.md dell'hub è aperta: onboarding completo, parziale (solo skill/agenti, senza turno notturno), o esclusione documentata — il repo contiene credenziali BC nel proprio albero, quindi è una decisione di esposizione, non una dimenticanza. I 4 punti sopra NON dipendono da questa scelta e sono percorribili subito.</p>
+            <div class="ref"><b>Rif.:</b> DEBITI.md — "Onboarding di REPO-G"</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span>62 proposte · 0 bug · 0 righe di codice modificate in questo giro</span>
+    <span class="foot-mark">Bilancio_periodico</span>
+  </footer>
+
+</div>
