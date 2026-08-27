@@ -13,7 +13,7 @@ path = sys.argv[1]
 with io.open(path, encoding="utf-8") as f:
     sal = f.read()
 
-voci = re.findall(r'^### (.{1,90})$', sal, flags=re.M)
+voci = re.findall(r'^### (.{1,130})$', sal, flags=re.M)
 if not voci:
     print("nessuna voce ### trovata"); sys.exit(0)
 
