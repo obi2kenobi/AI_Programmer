@@ -32,3 +32,6 @@ per il lavoro grande. Mai il silenzio: "nessuna proposta" è un'informazione.
 I report si triano come i tre del 2026-08: verificati eseguendo, le proposte
 entrano nel canone/DEBITI, le discrepanze vengono corrette. Un report non
 processato è visibile (la cartella cresce, il SAL non lo cita).
+
+
+**Terza casella, dal campo (2026-08-27, REPO-H)**: accanto a "usato" e "non c'era" esiste NON RAGGIUNGIBILE — sessione bound a un repo esterno senza il metodo a standard. Dichiara la mancata adozione: pesa quanto un bug trovato, ed è il segnale che spinge la repo verso lo standard.

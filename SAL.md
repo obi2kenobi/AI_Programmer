@@ -3264,3 +3264,21 @@ REPARTO (costo che sparisce a totRicavi=0) entra nel punto APERTO del nostro
 oracolo bilancio: chi lo chiuderà ha l'ancora di campo. F1 resta aperto per
 decisione di Luca — e il costo che il reporter dichiara di pagarlo (sei giri
 fatti a mano, zero riuso hub) è l'argomento più concreto finora per decidere.
+
+### 2026-08-27 (7) — primo report dal campo nel formato nuovo: pattern 19, REPO-H, quattro proposte adottate
+
+Sessione esterna su REPO-H (cespiti GAS+BC, prima segnalazione): 17/17 file
+letti, 13 rilievi (1 critico), 12 fix, banco Node vm 19/19 dopo ogni fix, 3
+revisioni indipendenti in parallelo. Il formato docs/campo ha funzionato al
+primo uso reale. Adottate tutte e quattro le proposte: (1) il catalogo
+docs/bc/endpoints è oracolo indipendente DICHIARATO per ogni revisione GAS+BC
+— ha smentito la documentazione del progetto e evitato un fix sbagliato
+(secondo caso reale nel pattern); (2) nuovo pattern 19:
+somma-diversa-da-zero-non-e-presenza (un accumulatore che si annulla per
+compensazione legittima non è un test di presenza: cespite già ammortizzato
+spariva dal report delle cessioni — il caso PIÙ comune, non un edge; il fix è
+il flag all'origine, mai aritmetica derivata); (3) estensione a
+scarto-mai-silenzioso: il segnale PARZIALE è peggio del silenzio (falsa
+copertura); (4) formato campo: terza casella NON RAGGIUNGIBILE. REPO-H
+registrata nell'indice. Il report conferma di nuovo il costo di F1: il metodo
+non raggiunge chi lavora su repo esterne senza standard.
