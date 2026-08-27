@@ -180,3 +180,12 @@ non lo è, e quello costa il giro intero.
    caso limite, verifica che quel valore sia RAGGIUNGIBILE attraverso la pipeline
    reale (REPO-I: 0.005 post-round2 non esiste come input del filtro — un test li
    sarebbe eseguibile e privo di significato). Si testa il percorso, non la firma.
+
+
+## Correggere e un giro di audit (dal test REPO-E, 2026-08-27)
+
+1. **Il banco gira a OGNI commit della correzione**: nel test ha fermato IN ITINERE
+   una regressione sul caso zero-ordini che il banco finale avrebbe mostrato tardi.
+2. **Correggere genera rilievi nuovi** (3 nel test: trigger che chiama una funzione
+   inesistente e fallisce in silenzio; contatore di test matematicamente sempre-0;
+   security codes come probe): il censimento si aggiorna IN CORSA.
