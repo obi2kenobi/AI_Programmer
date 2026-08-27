@@ -208,3 +208,10 @@
 - «La regola del produttore batte la maggioranza dei consumatori.»
 - «Chi guarda i `.rej` non vede niente: patch pulita e zero `.rej` può
   significare che una correzione ne ha spenta un'altra.»
+
+- **TEST MANUALE che scrive su produzione senza foglio di scratch** (dal campo
+  REPO-F, 2026-08-27): quando isolare la risorsa non e un opzione a basso costo,
+  la cura e il parametro opt-in DEFAULT-SAFE (`scriviSuProduzione=false` di
+  default): l'editor Apps Script chiama SEMPRE a zero argomenti, quindi il default
+  blocca l'esecuzione accidentale del bottone Esegui senza impedire l'uso
+  deliberato (true da un'altra funzione o dalla console).
