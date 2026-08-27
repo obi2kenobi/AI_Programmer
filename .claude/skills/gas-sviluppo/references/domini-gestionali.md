@@ -28,7 +28,10 @@
 6. **Le rettifiche**: una rettifica che riapre un periodo comunicato è un
    problema contabile, non tecnico.
 
-Vincoli: **il TOTALE è l'ultima cosa da asserire** (un doppio conteggio
+Conferma di campo più pesante (REPO-G, giro D49, 2026-08-24): un residuo
+silenzioso di 982.693,50 € in un documento di quadratura GIÀ INVIATO ALLE
+BANCHE — trovato verificando il totale sul documento reale, non leggendo il
+codice. Vincoli: **il TOTALE è l'ultima cosa da asserire** (un doppio conteggio
 simmetrico dà totale identico e ogni riga sbagliata); la fixture di quadratura
 vuote quote diverse, importi diversi e almeno un SEGNO OPPOSTO o non misura
 niente (casi simmetrici: scarto 0; asimmetrico: 32.000 EUR); la risposta di

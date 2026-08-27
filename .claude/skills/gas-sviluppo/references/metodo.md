@@ -23,6 +23,12 @@ entra in Business Central e ci resta.
   la raggiunge il bottone «Esegui», e con una webapp la raggiunge
   `google.script.run`.
 - **I difetti ASSENTI si dichiarano col COMANDO che li cerca**, non con esempi
+  (misurato: due «assenti» dichiarati ad esempio erano falsi). E L'ESITO DEL GIRO
+  SI DICHIARA: uno sweep ampio che torna a ZERO bug reali sulla stessa superficie
+  è informazione di CONVERGENZA, non un giro sprecato — vale una riga esplicita
+  quanto un bug trovato (report dal campo REPO-G 2026-08-27: sei giri, cinque bug,
+  poi dieci sotto-round a zero — la prima volta; un solo campione NON basta a
+  dichiarare stabile la convergenza, ma il silenzio sull'esito non è ammesso)
   (misurato: due «assenti» dichiarati ad esempio erano falsi). «Assente» vale
   quanto un rilievo — ma provato.
 - Troppo grande per leggerlo tutto? Dillo e dichiara quanta parte hai letto:

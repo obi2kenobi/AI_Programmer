@@ -66,6 +66,7 @@ def main():
         print(f"NOBU (movimenti non attribuiti a BU): ricavi {v['ricavi']:.2f} · costi {v['costi']:.2f} — visibile, non perso")
     print("APERTO: il ribaltamento dei costi indiretti per BU (regola REPARTO) non è provato dal codice REPO-E letto —")
     print("l'oracolo produce margine DIRETTO; la quota ribaltata va chiesta al proprietario, non indovinata.")
+    print("Nota di campo (REPO-G, D48): REPARTO limite osservato — a totRicavi=0 un costo sparisce silenziosamente.")
     return 0
 
 
