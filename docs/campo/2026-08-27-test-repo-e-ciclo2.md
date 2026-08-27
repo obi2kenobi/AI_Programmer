@@ -1,0 +1,12 @@
+# 2026-08-27 — test REPO-E, ciclo 2 (secondo strato)
+**Autore**: sessione ZCode su mandato Luca · 42 giri di audit (6 progetti nuovi) + correzioni = >50 giri.
+
+**Audit**: 40 rilievi veri su 6 progetti (Griglie 9, Brico_Portale 11, webapp-bom 6, Analisi-NC 7, Analisi_vendite 7, TEST_DASH = laboratorio dichiarato a gravità ridotta). Falsi positivi del rilevatore chiusi con la domanda discriminante.
+
+**Correzioni**: 6 PR (#375-379 + #376-377 già del 2B), 27 commit totali, 26 rilievi corretti. Highlights: trigger di produzione rotto chiuso SENZA inventare (grep 113 progetti = funzioni assenti); ombra CAS_CFG chiusa col giudizio giusto (rinominata la versione povera, non la ricca: deviazione dal mandato documentata e corretta); XSS provato con bypass node prima/dopo; 51+161 globali privatizzate col grep HTML preliminare; AI.js non tace più mai; secret BC fuori dal codice ×3 progetti.
+
+**Cosa ha retto**: il canone end-to-end in autonomia; il banco a ogni commit (ha fermato una regressione in itinere); il pattern guardia-nel-ponte; le domande di dominio sempre aperte (16 totali), mai indovinate.
+
+**Cosa ho improvvisato**: worktree isolati quando il checkout condiviso è diventato conteso (2 agenti in parallelo) — e un incidente dichiarato: un agente ha scambiato branch sotto l'altro, recuperato con cherry-pick e reset. Leva per il canone: correttori paralleli sullo STESSO repo = worktree obbligatori dal primo commit, non dopo il primo incidente.
+
+**Proposta al canone**: (1) correttori paralleli: worktree dal via (lezione incidente); (2) il rilevatore: 4 falsi nuovi censiti (segreto BC in chiaro, password nei test, test* gonfiati dove il banco esiste, «e altri N» nasconde l'ultimo) — i primi 2 già corretti su main, i restanti da fare; (3) conferma: correggere È audit (6 rilievi nuovi trovati correggendo nel ciclo).
