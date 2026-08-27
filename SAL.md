@@ -107,6 +107,7 @@
 - [2026-08-26 (4) — il censimento BC diventa aggiornabile (e confessa: 0 verificati su 88)](#2026-08-26-4-il-censimento-bc-diventa-aggiornabile-e-confessa-0-verificati-su-88)
 - [2026-08-26 (5) — la pozza entra: il catalogo vive nell'hub, i mancanti sono 170](#2026-08-26-5-la-pozza-entra-il-catalogo-vive-nell-hub-i-mancanti-sono-170)
 - [2026-08-26 (6) — censimento BC completato al vivo: 203/258, anomalie registrate](#2026-08-26-6-censimento-bc-completato-al-vivo-203-258-anomalie-registrate)
+- [2026-08-27 — il report dal campo diventa sistematico (proposta di Luca)](#2026-08-27-il-report-dal-campo-diventa-sistematico-proposta-di-luca)
 
 
 ## Stato
@@ -3174,3 +3175,16 @@ da dichiarare vuoto, non zero), 2×403 permessi, 3×400, 22×404 (nomi con
 punti/slash non esposti come segmenti OData + PRJ_*). Il censimento endpoint
 è ora: completo nei fatti, aggiornabile per costruzione (merge che preserva,
 catalogo col segmento, indice che conta), e onesto sulle anomalie.
+
+### 2026-08-27 — il report dal campo diventa sistematico (proposta di Luca)
+
+I tre report manuali del 2026-08 hanno prodotto più correzioni vere di ogni
+revisione a tavolo — ma arrivavano per caso. Luca chiede: a ogni uso, un report
+di come il sistema si è comportato. Costruito con le tre condizioni che evitano
+la cerimonia: formato che forza i FATTI (usato/improvvisato/retto-ostacolato/
+proposta, mai il silenzio — «nessuna proposta» dichiarata conta); trigger
+MECCANICO (hook Stop: a fine sessione senza report di oggi, promemoria; tace
+se c'è); PROPORZIONATO (tre righe per la terza corsia, formato intero per il
+lavoro grande — la lezione di F6). Il parere registrato: un report libero
+sarebbe autocelebrazione («chi giudica non è chi ha scritto»); il valore sta
+nel comando che dimostra, non nell'opinione.
