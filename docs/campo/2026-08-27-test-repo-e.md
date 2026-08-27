@@ -6,3 +6,5 @@
 **Cosa ho improvvisato**: worktree separati per PR parallele (pattern dipendenza-tra-rami applicato d'ufficio); gate pre-commit auto-montati dal correttore sul repo di lavoro.
 **Proposta al canone**: (1) il rilevatore migliorato DAL CAMPO: ombre solo top-level (65/65 FP chiusi) + clearContent() incluso (falsa negativa peggiore) — GIÀ su main; (2) difetti del rilevatore restanti: paginazione mal-ancorata, security-codes nel sorgente non visti; (3) pattern candidato "il banco ferma in itinere" (regressione colta durante la correzione, non dopo); (4) i difetti trovati CORREGGENDO (funzione chiamata inesistente da un trigger, contatore test sempre-0) confermano: correggere È un giro di audit.
 **11 domande di dominio aperte per Luca** (4 LE + 7 gruppo 1) — nelle PR.
+
+**Postilla (Luca, stesso giorno)**: il processo serve SOLO a migliorare la procedura di AI_Programmer e AI_Develop — le 4 PR sono state CHIUSE come artefatti di test (branch conservati), i rilievi e le correzioni vivono nei report (copiati in AI_Develop/docs/campo-audit). Leva per il canone: chi corregge PER TEST dichiara test-only nella PR fin dall apertura, non lascia merge in attesa.
