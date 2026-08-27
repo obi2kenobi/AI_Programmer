@@ -150,6 +150,7 @@
 - [2026-08-27 (11) — quinto report: 50 agenti su REPO-F, due rifiuti che sono il metodo](#2026-08-27-11-quinto-report-50-agenti-su-repo-f-due-rifiuti-che-sono-il-metodo)
 - [2026-08-27 (12) — report REPO-I fase 2: catalogo esaurito, quattro regole nuove](#2026-08-27-12-report-repo-i-fase-2-catalogo-esaurito-quattro-regole-nuove)
 - [2026-08-27 (13) — sesto report (REPO-H, 12 PR): pattern 23-24 e il workaround vm](#2026-08-27-13-sesto-report-repo-h-12-pr-pattern-23-24-e-il-workaround-vm)
+- [2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo](#2026-08-27-14-quattordici-lenti-su-repo-g-il-metodo-chiede-adottare-il-metodo)
 
 
 ## Stato
@@ -3410,3 +3411,18 @@ assegnazione semplice — il limite era canone, la tecnica mancava) e la regola
 del confine irraggiungibile (0.005 post-round2 non esiste: un test lì sarebbe
 eseguibile e senza significato — si testa il percorso, non la firma).
 Suite 87/87.
+
+### 2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo
+
+Il terzo giro di prodotto (62 proposte, 14 agenti, HTML保存 in docs/campo) fa
+due cose notevoli: (1) consolida 50 giri richiesti in 14 lenti realmente
+distinte — la lezione zero-waste applicata al processo di revisione, ora in
+ngiri-paralleli.md; (2) la sezione 12 è il sistema che CHIEDE di adottare il
+sistema: 5 proposte per portare skill controllo-gestione, i subagent, il
+pattern banco-sintetico formalizzato e lo standard sync-repo DENTRO REPO-G —
+con l'onestà di dichiarare che i 4 punti leggeri NON dipendono dalla decisione
+DEBITI (onboarding notturno, bloccata dalle credenziali nel repo) e si possono
+fare subito. Quinta conferma indipendente del collo di bottiglia. Trovato
+anche: secret BC in chiaro in Config.js tracciato da git (repo privato: non
+esposto, ma la bonifica va fatta), doGet senza auth, e il caso D49 citato come
+ancora della proposta "riepilogo controlli pre-pubblicazione".
