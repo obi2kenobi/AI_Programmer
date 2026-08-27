@@ -189,3 +189,14 @@ non lo è, e quello costa il giro intero.
 2. **Correggere genera rilievi nuovi** (3 nel test: trigger che chiama una funzione
    inesistente e fallisce in silenzio; contatore di test matematicamente sempre-0;
    security codes come probe): il censimento si aggiorna IN CORSA.
+
+
+## Convergenza cieca (dal campo REPO-G, 2026-08-27)
+
+Quando due misurazioni INDIPENDENTI trovano lo stesso dato senza che una
+sapesse dell'altra — un agente misura il payload CacheService sul parco REPO-E
+(100KB), un altro lo misura su REPO-G senza leggere il canone — la conferma
+vale PIU di una citazione: è il riscontro che non dipende dalla fonte. Stesso
+principio dei temi trasversali del giro di prodotto (≥3 aree non coordinate),
+applicato ai DATI invece che ai rilievi. Quando succede, va scritto: è la prova
+più forte che un numero non è un caso.

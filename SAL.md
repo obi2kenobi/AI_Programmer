@@ -154,6 +154,7 @@
 - [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ci-che-i-cicli-hanno-scoperto-nel-canone)
 - [2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area](#2026-08-27-16-cinquanta-giri-su-repo-i-le-cinque-lenti-per-area)
 - [2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata](#2026-08-27-17-quarto-report-repo-g-eseguite-le-62-proposte-due-pattern-nuovi-un-obiezione-superata)
+- [2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM](#2026-08-27-18-il-tesoro-sigillato-convergenza-cieca-obiezioni-che-invecchiano-gerarchia-dom)
 
 
 ## Stato
@@ -3474,3 +3475,18 @@ tracciato di REPO-G — l'obiezione com'era scritta non è più vera, la decisio
 resta di Luca ma ora è solo aperta, non bloccata da un fatto superato.
 Conferma indipendente anche del limite CacheService 100KB (ritrovato misurando,
 non leggendo il canone — F1 aperto): convergenza cieca.
+
+### 2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM
+
+Consolidazione finale di TUTTO ciò che i cicli hanno prodotto, verificata per
+essaere DENTRO e non solo dichiarata. Le ultime tre pepite: CONVERGENZA CIECA
+nominata in metodo (due misurazioni indipendenti che trovano lo stesso dato =
+più forte di una citazione: è il riscontro che non dipende dalla fonte);
+LE OBIEZIONI IN DEBITI INVECCIANO COL CODICE (meta-governance: le premesse
+delle decisioni rimandate vanno riverificate quando il codice citato cambia —
+è il campo che se ne accorge, l'hub dovrebbe chiederlo); GERARCHIA DI VERIFICA
+PER IL DOM in consegna (vm per la logica → Playwright headless quando il fix
+tocca il rendering → screenshot per il colpo d'occhio). Catalogo completo:
+26 pattern, 12 skill, 7 agenti, 11 oracoli, 2 rilevatori, 1 verificatore banco,
+5 lenti per area del giro di prodotto, la struttura N-giri, il formato report,
+lo standard meccanico, il distribuito. Suite 87/87.
