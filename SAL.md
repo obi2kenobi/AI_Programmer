@@ -153,6 +153,7 @@
 - [2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo](#2026-08-27-14-quattordici-lenti-su-repo-g-il-metodo-chiede-adottare-il-metodo)
 - [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ci-che-i-cicli-hanno-scoperto-nel-canone)
 - [2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area](#2026-08-27-16-cinquanta-giri-su-repo-i-le-cinque-lenti-per-area)
+- [2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata](#2026-08-27-17-quarto-report-repo-g-eseguite-le-62-proposte-due-pattern-nuovi-un-obiezione-superata)
 
 
 ## Stato
@@ -3456,3 +3457,20 @@ consolidazione anti-rumore. I temi trasversali in testa meritano attenzione
 di dominio: follow-up che non persiste, funzioni orfane senza porta
 d'ingresso, verde che nasconde dati mai arrivati. Report completo in
 docs/campo/2026-08-27-repo-i-cinquanta-giri.md.
+
+### 2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata
+
+Il quarto report dal campo REPO-G copre l'ESECUZIONE delle 62 proposte di
+Quattordici Lenti (11 batch, PR #36, 704 righe, 20 file, banco a ogni commit,
+Playwright per il DOM, AskUserQuestion una sola volta per l'inversione di una
+decisione precedente del cliente). Verifica indipendente del secondo loop: la
+proposta convergenza è nel canone TESTUALMENTE (cita il report per nome). Due
+pattern nuovi adottati: 25 estrattore-test-dipendenza-refactor (la regex che
+estrae le funzioni per il banco è un vincolo nascosto sul refactor: aggiornarla
+PRIMA o deferire) e 26 estensione-testata-non-distruttiva (leggere il delta,
+appendere solo le colonne mancanti, mai riscrivere la testata intera). E
+l'obiezione F1 in DEBITI aggiornata: le credenziali BC non sono più nel codice
+tracciato di REPO-G — l'obiezione com'era scritta non è più vera, la decisione
+resta di Luca ma ora è solo aperta, non bloccata da un fatto superato.
+Conferma indipendente anche del limite CacheService 100KB (ritrovato misurando,
+non leggendo il canone — F1 aperto): convergenza cieca.
