@@ -20,6 +20,7 @@ import os
 import re
 import sys
 
+FUN_TOP_RE = re.compile(r"^(?:function\s+([A-Za-z_$][\w$]*)|(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:function|\())", re.M)
 FUN_RE = re.compile(r"^\s*(?:function\s+([A-Za-z_$][\w$]*)|(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:function|\())", re.M)
 
 
@@ -34,7 +35,7 @@ def leggi_file(path):
 def function_bodies(testo):
     """Nome → corpo normalizzato (brace matching approssimato per funzioni top-level)."""
     out = {}
-    for m in FUN_RE.finditer(testo):
+    for m in FUN_TOP_RE.finditer(testo):
         nome = m.group(1) or m.group(2)
         aperta = testo.find("{", m.end())
         if aperta < 0:
@@ -132,7 +133,7 @@ def main():
     siti = []
     for f, t in testi.items():
         for nome, corpo in function_bodies(t).items():
-            if "clearContents()" in corpo and "setValues(" in corpo:
+            if ("clearContents()" in corpo or "clearContent()" in corpo) and "setValues(" in corpo:
                 siti.append(f"{f}:{nome}")
     famiglie.append(("clearContents + setValues nella stessa funzione",
                      "il lock protegge dalla concorrenza, non dall'interruzione a metà: la cura è UNA setValues sola (intestazione+dati+residuo letto prima)",
