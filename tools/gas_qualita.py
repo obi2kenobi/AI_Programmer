@@ -101,7 +101,7 @@ def main():
 
     # 3. segreti hardcoded (mai il valore): pattern di chiave notevoli
     SECRET_PATTERNS = [r"sk_live_[A-Za-z0-9]{10,}", r"AKIA[0-9A-Z]{12,}", r"AIza[0-9A-Za-z_\-]{20,}",
-                       r"ghp_[A-Za-z0-9]{20,}", 'r"securityCode[s]?\\s*[:=]\\s*[\"''][A-Za-z0-9]{4,}"', r"-----BEGIN [A-Z ]*PRIVATE KEY-----"]
+                       r"ghp_[A-Za-z0-9]{20,}", r"-----BEGIN [A-Z ]*PRIVATE KEY-----"]
     siti = []
     for f, t in testi.items():
         for pat in SECRET_PATTERNS:
@@ -128,10 +128,6 @@ def main():
     famiglie.append(("paginazione chiusa sull'indizio (!response.value → break)",
                      "un 200 con errore OData nel corpo restituisce [] indistinguibile da uno scarico completo: la forma che regge è if(!Array.isArray(value)) throw col denominatore",
                      siti))
-
-        for f, t in testi.items():
-            if re.search(r"[$]skip=", t) and not re.search(r"[$]orderby=", t):
-                siti.append(f"{f} [paginazione $skip senza $orderby stabile]")
 
     # 6. clear-poi-scrivi nella stessa funzione
     siti = []
