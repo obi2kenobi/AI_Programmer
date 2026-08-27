@@ -73,7 +73,7 @@ pezzo, manca il metodo.
 per ora nelle sue voci datate) · `DEBITI.md` (i "poi" che non devono diventare "mai").
 
 <!-- CORREZIONE (set 2 "capacità di progettare", giro 4/10, 2026-08-22): questa riga citava
-`docs/stato-2026-08-22.md` come parte della mappa — il file non esiste mai stato scritto,
+voce SAL del 2026-08-22 come parte della mappa — il file non esiste mai stato scritto,
 verificato con una ricerca sul repo. La riga in SAL.md ("Stato completo del progetto:
 docs/stato-2026-08-22.md") molto probabilmente si riferiva al repo onboardato di cui parlava
 quella voce (issue #12), non al hub — ma qui, nella mappa DEL HUB, era una citazione senza

@@ -3203,3 +3203,17 @@ adottato per le commesse e la centralizzazione notturna confermata come
 disegno, le tre lacune del distribuito sono chiuse. «Perfetto» resta fuori
 vocabolario: la parola giusta è verificato — e la prima settimana a due mani
 dirà il resto, col report dal campo.
+
+### 2026-08-27 (3) — dieci giri di coerenza: il sistema è collegato, tre rotture trovate e chiuse
+
+Verifica meccanica su dieci assi (riferimenti, indici, canone-strumenti,
+pipeline, propagazione, hook, pesi morti, specchi, ingresso, numeri). Verdi:
+indici correnti (SAL 102 voci, BC 231), tutti gli eventi hook rispondono,
+pipeline dichiarata = reale in METHOD e AGENTS, propagazione completa della
+checklist standard nei tre strumenti, nessuna skill orfana, 11 oracoli
+dichiarati = 11 esistenti. CHIUSE in corsa: riferimento rotto in METHOD
+(docs/stato-2026-08-22.md), il canone gas-sviluppo non citava i cinque
+strumenti dell'hub (ora §"strumenti che questo canone presuppode"), AGENTS.md
+senza catalogo/bc_tipi/sync-repo. APERTA (DEBITI): le 9 skill non hanno
+equivalente OpenCode — la notte ha gli agenti ma non il canone progressivo.
+Suite 87/87.
