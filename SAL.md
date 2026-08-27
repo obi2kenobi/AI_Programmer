@@ -148,6 +148,7 @@
 - [2026-08-27 (9) — trenta giri anti-collo-di-bottiglia: quattro eliminati, tre gated](#2026-08-27-9-trenta-giri-anti-collo-di-bottiglia-quattro-eliminati-tre-gated)
 - [2026-08-27 (10) — trenta giri n.2: il collegamento rotto ero io](#2026-08-27-10-trenta-giri-n-2-il-collegamento-rotto-ero-io)
 - [2026-08-27 (11) — quinto report: 50 agenti su REPO-F, due rifiuti che sono il metodo](#2026-08-27-11-quinto-report-50-agenti-su-repo-f-due-rifiuti-che-sono-il-metodo)
+- [2026-08-27 (12) — report REPO-I fase 2: catalogo esaurito, quattro regole nuove](#2026-08-27-12-report-repo-i-fase-2-catalogo-esaurito-quattro-regole-nuove)
 
 
 ## Stato
@@ -3379,3 +3380,17 @@ progetto); famiglia nuova «test manuale su produzione» con la cura default-saf
 tutti-in-sessione) è GIÀ risolta dal regime batch-autorizzato adottato col
 report REPO-I: la deviazione era legittima perché autorizzata dal proprietario
 — il puntatore va nel report processato, la regola non cambia.
+
+### 2026-08-27 (12) — report REPO-I fase 2: catalogo esaurito, quattro regole nuove
+
+44/44 idee a stato terminale, 1057/1057 test, zero rollback: anche il non
+implementato porta il motivo. Integrate le quattro proposte della fase 2:
+pattern 22 SOGLIA-CON-DEFAULT-GUARDATO (la terza via fra hardcoded e
+decisione: default validato + override dichiarato con avviso accanto al
+valore); e le tre regole in metodo.md: VERIFICA-PRIMA-DI-COSTRUIRE (il test
+di applicabilità batte il codice nuovo — due trend erano già prodotti gratis
+dal cruscotto), PARAMETRO≠SPECULAZIONE (solo la prima si chiude con una
+domanda; la seconda resta non-ancora-matura, non «esclusa»), e I VINCOLI
+VIVONO ANCHE NEI FILE DI CONFIGURAZIONE (commenti CI/workflow letti prima di
+proporre; la verifica fuori-repo come prova equivalente quando un invariante
+lo impone). Suite 87/87.
