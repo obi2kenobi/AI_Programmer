@@ -8,6 +8,8 @@
 
 ```
 # <data> — <slug del lavoro>
+**Autore**: Luca / Lavinia / <sessione> — chi legge sa chi chiedere; a due mani,
+l'attribuzione è la prima cosa che il distribuito richiede
 
 ## Cosa ho usato
 <skill/agenti/oracoli/hook effettivamente invocati — e cosa ho voluto usare e NON c'era>
