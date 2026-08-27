@@ -101,7 +101,7 @@ def main():
 
     # 3. segreti hardcoded (mai il valore): pattern di chiave notevoli
     SECRET_PATTERNS = [r"sk_live_[A-Za-z0-9]{10,}", r"AKIA[0-9A-Z]{12,}", r"AIza[0-9A-Za-z_\-]{20,}",
-                       r"ghp_[A-Za-z0-9]{20,}", 'r"securityCode[s]?\s*[:=]\s*["''][A-Za-z0-9]{4,}"', r"-----BEGIN [A-Z ]*PRIVATE KEY-----"]
+                       r"ghp_[A-Za-z0-9]{20,}", 'r"securityCode(?:Prefix)?[s]?\s*[:=]\s*["''][A-Za-z0-9]{4,}"', r"-----BEGIN [A-Z ]*PRIVATE KEY-----"]
     siti = []
     for f, t in testi.items():
         for pat in SECRET_PATTERNS:
