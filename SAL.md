@@ -146,6 +146,7 @@
 - [2026-08-27 (7) — primo report dal campo nel formato nuovo: pattern 19, REPO-H, quattro proposte adottate](#2026-08-27-7-primo-report-dal-campo-nel-formato-nuovo-pattern-19-repo-h-quattro-proposte-adottate)
 - [2026-08-27 (8) — quarto report: 30 agenti su REPO-I, cinque proposte, quattro adottate](#2026-08-27-8-quarto-report-30-agenti-su-repo-i-cinque-proposte-quattro-adottate)
 - [2026-08-27 (9) — trenta giri anti-collo-di-bottiglia: quattro eliminati, tre gated](#2026-08-27-9-trenta-giri-anti-collo-di-bottiglia-quattro-eliminati-tre-gated)
+- [2026-08-27 (10) — trenta giri n.2: il collegamento rotto ero io](#2026-08-27-10-trenta-giri-n-2-il-collegamento-rotto-ero-io)
 
 
 ## Stato
@@ -3344,3 +3345,17 @@ chiave), convergenza del modello notturno (hardware, quadro prezzi in DEBITI),
 significati/verificati del census (lavoro di dominio). Rilevata e subito
 risolta un'anomalia di conteggio segmenti (regex troppo larga nel giro 13, non
 un difetto del catalogo: i test dedicati passano). Suite 87/87.
+
+### 2026-08-27 (10) — trenta giri n.2: il collegamento rotto ero io
+
+Il giro più importante di questa serie ha trovato il difetto nel lavoro di
+IERI sera: l'hook Stop in Claude Code scatta a OGNI FINE TURNO, non a fine
+sessione — la mia pulizia dei contatori su Stop azzerava il promemoria SAL a
+ogni risposta (il promemorio non avrebbe mai raggiunto il 5° edit), e il
+ricordo del report di campo avrebbe suonato a ogni turno. Corretto: la pulizia
+va su SessionStart (una volta), il promemoria Stop è strozzato a una volta
+l'ora (timestamp gitignored). Lezione che il corpus già insegnava e che ho
+ripagato di persona: «avevo dato una convenzione per chiudere una famiglia e
+non l'ha chiusa» — ogni fix va provato CONTRO il suo contesto reale di
+esecuzione. Resto della serie: 16/16 py compilano, 111 shell sintatticamente
+sane, guardie verdi, nulla di nuovo da segnalare. Suite 87/87.
