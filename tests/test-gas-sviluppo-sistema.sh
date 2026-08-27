@@ -96,6 +96,9 @@ grep -qi "DUE rischi distinti" "$CONSEGNA" \
   && ok "consegna: i due rischi del divieto clasp sono nominati separati (regola resta intera)" \
   || ko "consegna: la separazione dei rischi mancante"
 
+[ -f "$HERE/.opencode/skills/gas-sviluppo/SKILL.md" ] \
+  && ok "il canone viaggia anche in OpenCode (.opencode/skills)" \
+  || ko "skill OpenCode assenti: la notte resta senza canone"
 # 7. privacy: nessun nome cliente nei file nuovi (i progetti REPO-E si citano come categoria)
 if grep -rEq 'Fornitore-N|Fornitore-N|Fornitore-N|MaxiD|Fornitore-N|Fornitore-N|Fornitore-N|DATO-RIMOSSO' "$HERE/.claude/skills/gas-sviluppo/" "$DEV" "$REV"; then
   ko "nomi di clienti nei file dell'hub (privacy: Public repo, private work)"

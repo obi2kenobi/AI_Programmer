@@ -24,6 +24,7 @@ if [ "$EVENT" = "Stop" ]; then
     jq -n --arg ctx "Chiudi la sessione col report dal campo: docs/campo/${OGGI}-<slug>.md (formato in docs/campo/README.md — tre righe bastano, 'nessuna proposta' dichiarata conta). È il segnale che migliora il sistema a ogni uso: senza, il giro non insegna niente a chi viene dopo." \
       '{hookSpecificOutput:{hookEventName:"Stop",additionalContext:$ctx}}'
   fi
+  rm -f /tmp/ai-programmer-sal-counter.* 2>/dev/null
   exit 0
 fi
 

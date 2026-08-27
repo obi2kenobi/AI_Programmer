@@ -15,7 +15,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CRED_FILE = "credenziali BC.rtf"
+CRED_FILE = os.environ.get("BC_CRED_FILE", "credenziali BC.rtf")
 OUT_DIR = "docs/bc/endpoints"
 
 
