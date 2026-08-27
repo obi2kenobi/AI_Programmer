@@ -155,6 +155,7 @@
 - [2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area](#2026-08-27-16-cinquanta-giri-su-repo-i-le-cinque-lenti-per-area)
 - [2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata](#2026-08-27-17-quarto-report-repo-g-eseguite-le-62-proposte-due-pattern-nuovi-un-obiezione-superata)
 - [2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM](#2026-08-27-18-il-tesoro-sigillato-convergenza-cieca-obiezioni-che-invecchiano-gerarchia-dom)
+- [2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap](#2026-08-27-19-magazzino-72-commit-20-bug-55-proposte-e-il-handoff-gap)
 
 
 ## Stato
@@ -3490,3 +3491,16 @@ tocca il rendering → screenshot per il colpo d'occhio). Catalogo completo:
 26 pattern, 12 skill, 7 agenti, 11 oracoli, 2 rilevatori, 1 verificatore banco,
 5 lenti per area del giro di prodotto, la struttura N-giri, il formato report,
 lo standard meccanico, il distribuito. Suite 87/87.
+
+### 2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap
+
+Il report più grande del campo: Sistema_Gestione_Magazzino, 72 commit in una PR,
+20/20 bug corretti (incluso XSS persistente non autenticato e il motore di
+valorizzazione senza asserzioni), 55/57 proposte di prodotto implementate,
+bancos a ogni commit, Playwright per il DOM. Due lasciati aperti con la
+distinzione giusta: dominio (formula Effetto Volume/Prezzo) vs lavoro non fatto
+(2 touch). Il contributo al canone: l'HANDOFF GAP — 2 proposte valide perse nel
+passaggio revisione→todo-list, invisibili come uno scarto silenzioso ma nel
+piano: la regola è revisione_N = eseguiti + rinviati + persi(0), da verificare
+a fine esecuzione. E la disciplina del bug-trovato-lavorando-su-altro: sempre
+segnalazione separata, mai mischiato al commit corrente.
