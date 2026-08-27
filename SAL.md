@@ -108,6 +108,7 @@
 - [2026-08-26 (5) — la pozza entra: il catalogo vive nell'hub, i mancanti sono 170](#2026-08-26-5-la-pozza-entra-il-catalogo-vive-nell-hub-i-mancanti-sono-170)
 - [2026-08-26 (6) — censimento BC completato al vivo: 203/258, anomalie registrate](#2026-08-26-6-censimento-bc-completato-al-vivo-203-258-anomalie-registrate)
 - [2026-08-27 — il report dal campo diventa sistematico (proposta di Luca)](#2026-08-27-il-report-dal-campo-diventa-sistematico-proposta-di-luca)
+- [2026-08-27 (2) — distribuito chiuso: l'esperimento che non si presume](#2026-08-27-2-distribuito-chiuso-l-esperimento-che-non-si-presume)
 
 
 ## Stato
@@ -3188,3 +3189,17 @@ se c'è); PROPORZIONATO (tre righe per la terza corsia, formato intero per il
 lavoro grande — la lezione di F6). Il parere registrato: un report libero
 sarebbe autocelebrazione («chi giudica non è chi ha scritto»); il valore sta
 nel comando che dimostra, non nell'opinione.
+
+### 2026-08-27 (2) — distribuito chiuso: l'esperimento che non si presume
+
+La lacuna SAL-collisione chiusa col metodo: prima l'ESPERIMENTO (repo finta,
+due branch che appendono lo stesso giorno → conflitto certo, come sospettato
+ma non presunto), poi la cura meccanica: `.gitattributes` col merge driver
+`union` su SAL.md e docs/campo/*.md — diari append-only dove tenere ENTRAMBE
+le voci è SEMPRE la risposta giusta (verificato: merge pulito, zero markers).
+Limiti dichiarati nel punto stesso: union vale solo per diari, mai per codice
+(concatena senza review). Con l'autore nei report di campo, l'assignee GitHub
+adottato per le commesse e la centralizzazione notturna confermata come
+disegno, le tre lacune del distribuito sono chiuse. «Perfetto» resta fuori
+vocabolario: la parola giusta è verificato — e la prima settimana a due mani
+dirà il resto, col report dal campo.
