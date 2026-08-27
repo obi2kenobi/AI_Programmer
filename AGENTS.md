@@ -20,6 +20,23 @@ metodo è già in opera intorno a te: METHOD.md §"Lo standard" dice cosa deve
 esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 .night-verify) e  lo porta tutto.
 
+## 0bis. Lavoro distribuito (a due o più mani — Luca, Lavinia, sessioni)
+
+- **Chi ha in carico cosa**: le commesse sono issue GitHub — usa l'`assignee`
+  (`gh issue edit N --add-assignee @utente`): è adozione di ciò che GitHub già
+  dà, non un sistema parallelo da inventare.
+- **I diari append-only non confliggono**: `SAL.md` e `docs/campo/*.md` usano il
+  merge driver `union` (`.gitattributes`): due append simultanee si fondono
+  tenendo ENTRAMBE le voci, senza markers — VERIFICATO con esperimento reale
+  (2026-08-27: senza driver è conflitto certo; con union, merge pulito). Il
+  driver vale SOLO per diari: mai per codice (union non fa review, concatena).
+- **Il turno notturno resta centralizzato** sul Mac del proprietario
+  (`repos.conf`/`repos.key` locali, per disegno): il lavoro diurno è distribuito
+  sulle stesse repo onboardate; notte e giudizio del mattino no. Cambiarlo è
+  decisione di architettura, non una configurazione.
+- **Prima regola di ogni PR**: le stesse verifiche dichiarate e lo stesso gate
+  valgono per chiunque apra il branch (`claude/*`, `night/*`, `glm/*`).
+
 ## 1. Le regole vincolanti e la mappa
 
 - `CLAUDE.md` — le regole (Karpathy §1-6 + §7 delega): valgono per ogni agente, non
