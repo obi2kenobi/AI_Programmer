@@ -145,6 +145,7 @@
 - [2026-08-27 (6) — terzo report REPO-G: la riverifica indipendente chiude il loop](#2026-08-27-6-terzo-report-repo-g-la-riverifica-indipendente-chiude-il-loop)
 - [2026-08-27 (7) — primo report dal campo nel formato nuovo: pattern 19, REPO-H, quattro proposte adottate](#2026-08-27-7-primo-report-dal-campo-nel-formato-nuovo-pattern-19-repo-h-quattro-proposte-adottate)
 - [2026-08-27 (8) — quarto report: 30 agenti su REPO-I, cinque proposte, quattro adottate](#2026-08-27-8-quarto-report-30-agenti-su-repo-i-cinque-proposte-quattro-adottate)
+- [2026-08-27 (9) — trenta giri anti-collo-di-bottiglia: quattro eliminati, tre gated](#2026-08-27-9-trenta-giri-anti-collo-di-bottiglia-quattro-eliminati-tre-gated)
 
 
 ## Stato
@@ -3330,3 +3331,16 @@ workflow N-GIRI PARALLELI documentato (docs/ngiri-paralleli.md: aree × 2 lettur
 fan-out, sintesi con soglia ≥3 aree indipendenti). La prima proposta (skill
 installabili) è GIÀ lo standard sync-repo --standard del 2026-08-26: il report
 lavorava su una repo senza — quarta conferma che F1 è il collo di bottiglia.
+
+### 2026-08-27 (9) — trenta giri anti-collo-di-bottiglia: quattro eliminati, tre gated
+
+ELIMINATI: il canone viaggia anche di NOTTE (le 9 skill copiate in
+.opencode/skills con guardia — la lacuna del giro 8 della prima serie chiusa);
+l'indice SAL sale a 130 caratteri (le 31 voci storiche rientrano); BC_CRED_FILE
+configurabile (niente più copia del file credenziali nella cwd); l'hook Stop
+pulisce i propri contatori di sessione. GATED (non eliminabili da qui): F1
+adozione standard (4 report indipendenti lo citano — la decisione REPO-G è la
+chiave), convergenza del modello notturno (hardware, quadro prezzi in DEBITI),
+significati/verificati del census (lavoro di dominio). Rilevata e subito
+risolta un'anomalia di conteggio segmenti (regex troppo larga nel giro 13, non
+un difetto del catalogo: i test dedicati passano). Suite 87/87.
