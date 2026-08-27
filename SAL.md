@@ -109,6 +109,7 @@
 - [2026-08-26 (6) — censimento BC completato al vivo: 203/258, anomalie registrate](#2026-08-26-6-censimento-bc-completato-al-vivo-203-258-anomalie-registrate)
 - [2026-08-27 — il report dal campo diventa sistematico (proposta di Luca)](#2026-08-27-il-report-dal-campo-diventa-sistematico-proposta-di-luca)
 - [2026-08-27 (2) — distribuito chiuso: l'esperimento che non si presume](#2026-08-27-2-distribuito-chiuso-l-esperimento-che-non-si-presume)
+- [2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato](#2026-08-27-4-venti-giri-lenti-nuove-mutazione-dei-guardiani-e-ci-che-ha-rivelato)
 
 
 ## Stato
@@ -3217,3 +3218,20 @@ strumenti dell'hub (ora §"strumenti che questo canone presuppode"), AGENTS.md
 senza catalogo/bc_tipi/sync-repo. APERTA (DEBITI): le 9 skill non hanno
 equivalente OpenCode — la notte ha gli agenti ma non il canone progressivo.
 Suite 87/87.
+
+### 2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato
+
+Profondità nuova rispetto ai dieci: MUTAZIONE controllata (rompo, guardo se il
+guardiano cade, ripristino). Risultati: tre guardiani veri (canone, mappa,
+standard-METHOD), UNO CIECO — la mutazione su AGENTS.md §0 passava: la guardia
+guardava METHOD, non AGENTS. Chiuso (controlli nuovi: AGENTS §0 + .gitattributes
+union, prima senza alcuna presidia). Altri rilievi: 143/231 endpoint datati (i
+99 del mass-mapping girarono col parser vecchio: la data arriva al prossimo
+refresh, non è un difetto); 31 voci SAL storiche oltre i 90 caratteri non sono
+nell'indice (cronaca che resta leggibile nel corpo — accettato, non rotto);
+17 contatori d'hook in /tmp (auto-pulenti per età, monitorati); py 15/16 con
+usage (bc_map si usa via argomenti: ok). La scoperta più delicata — PRIVACY
+nei VALORI DI CAMPIONE del census: i campioni dei file endpoint portano dati
+di business veri (nomi fornitori, il grep li ha ripresi in 2 file): è nella
+natura del census (legge il vivo) ed è DECISIONE del proprietario (DEBITI:
+accettare / mascherare i sensibili / mascherare tutti). Suite 87/87.
