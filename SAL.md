@@ -151,6 +151,7 @@
 - [2026-08-27 (12) — report REPO-I fase 2: catalogo esaurito, quattro regole nuove](#2026-08-27-12-report-repo-i-fase-2-catalogo-esaurito-quattro-regole-nuove)
 - [2026-08-27 (13) — sesto report (REPO-H, 12 PR): pattern 23-24 e il workaround vm](#2026-08-27-13-sesto-report-repo-h-12-pr-pattern-23-24-e-il-workaround-vm)
 - [2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo](#2026-08-27-14-quattordici-lenti-su-repo-g-il-metodo-chiede-adottare-il-metodo)
+- [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ci-che-i-cicli-hanno-scoperto-nel-canone)
 
 
 ## Stato
@@ -3426,3 +3427,18 @@ fare subito. Quinta conferma indipendente del collo di bottiglia. Trovato
 anche: secret BC in chiaro in Config.js tracciato da git (repo privato: non
 esposto, ma la bonifica va fatta), doGet senza auth, e il caso D49 citato come
 ancora della proposta "riepilogo controlli pre-pubblicazione".
+
+### 2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone
+
+Ripasso finale di tutto ciò che i due cicli REPO-E e i sei report dal campo hanno
+prodotto, verificando che sia DENTRO e non solo dichiarato. Pattern: 24 voci
+(19 pre-cicli + 19-24 nuovi). Canone gas-sviluppo: metodo arricchito (esito-del-
+giro, correggere-è-audit, banco a ogni commit, grep frontend, stima scala,
+sistemi esterni, casi salvati, confine irraggiungibile, workarounds vm, due
+regimi di conferma, terzo stato, worktree-dal-primo-commit); famiglie arricchite
+(formattazione fantasma, test default-safe, grep frontend, securityCode);
+consegna (worktree, regimi, terzo stato); ngiri (giro di prodotto, consolidazione
+lenti). Rilevatore: 4 falsi corretti (ombre top-level, clearContent, $skip senza
+$orderby, securityCode+Prefix) — gli ultimi due rifatti con calma dopo la rottura
+precedente: UN fix alla volta, test in mezzo, verifica su progetto vero.
+Docs/campo: 9 report processati. Suite 87/87.
