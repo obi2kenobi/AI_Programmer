@@ -8,3 +8,5 @@
 **11 domande di dominio aperte per Luca** (4 LE + 7 gruppo 1) — nelle PR.
 
 **Postilla (Luca, stesso giorno)**: il processo serve SOLO a migliorare la procedura di AI_Programmer e AI_Develop — le 4 PR sono state CHIUSE come artefatti di test (branch conservati), i rilievi e le correzioni vivono nei report (copiati in AI_Develop/docs/campo-audit). Leva per il canone: chi corregge PER TEST dichiara test-only nella PR fin dall apertura, non lascia merge in attesa.
+
+**Chiusura (Luca)**: AI_Develop è SCOLLEGATO dai veri script (specchio, non sorgente del vivo) — le correzioni mergiate non toccano produzione. Il ciclo di test si chiude qui: procedura migliorata (rilevatore corretto dal campo, regola test-only, canone), parco-specchio migliorato senza rischio, 11 domande di dominio registrate nei report per quando il vivo verrà toccato davvero.
