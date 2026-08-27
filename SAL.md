@@ -147,6 +147,7 @@
 - [2026-08-27 (8) — quarto report: 30 agenti su REPO-I, cinque proposte, quattro adottate](#2026-08-27-8-quarto-report-30-agenti-su-repo-i-cinque-proposte-quattro-adottate)
 - [2026-08-27 (9) — trenta giri anti-collo-di-bottiglia: quattro eliminati, tre gated](#2026-08-27-9-trenta-giri-anti-collo-di-bottiglia-quattro-eliminati-tre-gated)
 - [2026-08-27 (10) — trenta giri n.2: il collegamento rotto ero io](#2026-08-27-10-trenta-giri-n-2-il-collegamento-rotto-ero-io)
+- [2026-08-27 (11) — quinto report: 50 agenti su REPO-F, due rifiuti che sono il metodo](#2026-08-27-11-quinto-report-50-agenti-su-repo-f-due-rifiuti-che-sono-il-metodo)
 
 
 ## Stato
@@ -3359,3 +3360,22 @@ ripagato di persona: «avevo dato una convenzione per chiudere una famiglia e
 non l'ha chiusa» — ogni fix va provato CONTRO il suo contesto reale di
 esecuzione. Resto della serie: 16/16 py compilano, 111 shell sintatticamente
 sane, guardie verdi, nulla di nuovo da segnalare. Suite 87/87.
+
+### 2026-08-27 (11) — quinto report: 50 agenti su REPO-F, due rifiuti che sono il metodo
+
+REPO-F: 22 rilievi, 20 corretti, 2 RIFIUTATI sotto pressione esplicita
+dell'utente («non fermarti») — uno perché la correzione ovvia era già stata
+revertata sui dati veri (banco rosso dichiarato dal commit), l'altro perché
+serve una scelta di metodo contabile: chiedere invece di indovinare, tenuto
+anche a pressione. Validazioni pesanti: il byte NUL trovato due volte da lati
+non comunicanti (grep/ripgrep ciechi — già canone); il falso positivo di
+gas_qualita (ombra «key») scartato CON la domanda discriminante («è davvero
+globale?»): il rilevatore usato come lead, mai verdetto — esattamente come si
+dichiarava. Integrazioni: pattern 21 guardia-nel-ponte (con l'ancora REPO-F e
+la lezione nuova: il progetto LO DICHIARAVA in un commento e fu quasi violato
+— prima di applicare un pattern imparato altrove, si GREPPA il vincolo nel
+progetto); famiglia nuova «test manuale su produzione» con la cura default-safe
+(lo editor chiama a zero argomenti). La sua domanda aperta (un-giro-un-fix vs
+tutti-in-sessione) è GIÀ risolta dal regime batch-autorizzato adottato col
+report REPO-I: la deviazione era legittima perché autorizzata dal proprietario
+— il puntatore va nel report processato, la regola non cambia.
