@@ -23,6 +23,7 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-E | Repo esterno con progetti Google Apps Script reali (cartella `gas-src/`, coincidenza di nome con REPO-A — repo diverso, confermato da Luca) — oracolo per la skill `controllo-gestione` (4° ciclo, set 1, 2026-08-23; 5° ciclo, set 1 giro 4, 2026-08-23): scostamento standard/effettivo, riconciliazione magazzino, roll-forward cespiti, indici di crisi, scadenzario aging clienti/fornitori | `.claude/skills/controllo-gestione/SKILL.md` |
 | REPO-F | Progetto GAS/BC reale con una dashboard web (`Dashboard.html`) e un flusso di consegne — caso di campo del 2026-08-24: bug reale (una funzione di backfill mai attivata da un trigger) trovato per indagine diretta, non da una skill invocata | `SAL.md`, voce del 2026-08-24 |
 | REPO-G | repo del bilancio periodico (CE per BU, SP, quadrature) | attiva, MAI onboardata — onboarding o esclusione = decisione aperta (DEBITI 2026-08-24); bonificata nei file 2026-08-24, storia git da purgare o accettare (DEBITI) |
+| REPO-H | repo cespiti GAS+BC standalone (FA Ledger + G/L da BC, report mensile) | prima segnalazione 2026-08-27: 13 rilievi, 12 fix, banco Node 19/19 | docs/campo/2026-08-27-revisione-cespiti-gas-bc.md |
 
 ## Come usarlo
 
