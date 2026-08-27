@@ -133,3 +133,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-27 | I campioni d'esempio dei file endpoint portano dati di business veri (nomi fornitori trovati in 2 file: il grep dei nomi reali li ha ripresi). La census li contiene PER COSTRUZIONE (bc_map legge il vivo) — mascherarli tutti toglierebbe utilità al census | è un trade-off tra utilità del census e privacy della controparte commerciale in una repo pubblica: decisione del proprietario, non dell'agente | decisione di Luca: (a) accettare (i fornitori sono già pubblici nel catalogo prodotti), (b) mascherare la sola colonna Esempio nei file sensibili, (c) mascherarli tutti |
+
+## Le obiezioni in DEBITI invecchiano col codice (dal campo REPO-G, 2026-08-27)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-27 | Le voci di DEBITI motivano decisioni rimandate con FATTI («il repo contiene credenziali BC») — ma il codice CAMBIA, e un fatto che era vero quando la voce è stata scritta può non esserlo più (REPO-G: le credenziali sono state spostate via in PR #36, l'obiezione è restata com'era per giorni). Lasciarla scrivere a una cosa non più vera fa sembrare bloccata una decisione che è solo aperta | è il campo che deve accorgersene e dirlo (come è successo), non l'hub che lo vede da solo — chi processa i report dovrebbe riverificare le premesse delle voci DEBITI che il report tocca | a ogni report dal campo che tocca codice citato in DEBITI: riverificare la premessa, aggiornare la voce se il fatto è cambiato |
