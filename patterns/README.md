@@ -38,3 +38,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [somma-diversa-da-zero-non-e-presenza](somma-diversa-da-zero-non-e-presenza.md) | REPO-H: ProcessData.gs findDisposals (report: docs/campo/2026-08-27-revisione-cespiti-gas-bc.md) | 2026-08-27 |
 | [estrazione-per-testabilita](estrazione-per-testabilita.md) | REPO-I: quasi ogni fix del ciclo 2026-08-27 | 2026-08-27 |
 | [guardia-nel-ponte-non-nella-condivisa](guardia-nel-ponte-non-nella-condivisa.md) | REPO-F: AccessoWeb.gs (incidente 2026-08-15) | 2026-08-27 |
+| [soglia-con-default-guardato](soglia-con-default-guardato.md) | REPO-I: soglie di legge indici di crisi | 2026-08-27 |

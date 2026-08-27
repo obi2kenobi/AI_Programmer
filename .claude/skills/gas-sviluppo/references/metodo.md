@@ -150,3 +150,20 @@ non lo è, e quello costa il giro intero.
   applicare: il diff si passa con `-i`).
 - **Tre prodotti, non uno**: difetti trovati · migliorie progettate ·
   funzionalità nuove progettate. Chi porta solo difetti ha fatto un terzo.
+
+
+## Le tre regole della fase 2 (dal campo REPO-I, 2026-08-27 — catalogo 44 idee esaurito)
+
+1. **VERIFICA-PRIMA-DI-COSTRUIRE**: prima di implementare un idea, controlla se un
+   meccanismo generico gia costruito la copre — e VERIFICACLO con un test, non a
+   occhio (due trend «da scrivere» erano gia prodotti gratis dal cruscotto: il lavoro
+   giusto era il test di applicabilita, non il codice nuovo).
+2. **Parametro ≠ speculazione**: «idea in attesa di un parametro del proprietario» si
+   chiude con una domanda; «idea architetturalmente speculativa senza un caso reale
+   che la chieda oggi» resta NON ANCORA MATURA — implementarla comunque inventa una
+   classificazione che nessuno ha chiesto (over-engineering mascherato da fondo).
+3. **I vincoli vivono anche nei file di configurazione**: prima di proporre un idea,
+   leggi i commenti in CI/workflow/lockfile del progetto, non solo SAL/CLAUDE — e se
+   un idea li viola, la verifica FUORI dal repo (strumenti in directory esterna, mai
+   committati) vale come prova equivalente a un test committato (REPO-I: Playwright
+   fuori dal repo, 16 asserzioni in Chromium headless, invariante «zero dipendenze» intatto).
