@@ -3,6 +3,13 @@
 > Si legge SOLO quando il lavoro è una consegna: un diff destinato alla
 > produzione. Per una consulenza basta il metodo.
 
+## Correttori paralleli: worktree DAL PRIMO COMMIT (lezione dell'incidente 2026-08-27)
+
+Due agenti che correggono sullo stesso repo si contendono il checkout: uno scambia
+branch sotto l'altro (successo davvero, recuperato con cherry-pick). Il worktree
+isolato non e un opzione quando serve: e la CONDIZIONE DI PARTENZA — ogni
+correttore nasce in git worktree add proprio, dal primo commit.
+
 ## Regola d'oro dell'isolamento
 
 **Un task · un worktree · un ramo · una PR.** Mai due agenti sullo stesso
