@@ -20,15 +20,17 @@ PROMPT="$(echo "$INPUT" | jq -r '.prompt // empty' 2>/dev/null)"
 if [ "$EVENT" = "Stop" ]; then
   # fine sessione: il report dal campo va scritto (o dichiarato "nessuna proposta")
   OGGI=$(date +%F)
-  if ! ls "$PWD"/docs/campo/"${OGGI}"-*.md >/dev/null 2>&1; then
+  ST="$PWD/.campo-rem"; ULT=$(cat "$ST" 2>/dev/null || echo 0); ORA=$(date +%s)
+  if [ $((ORA - ULT)) -lt 3600 ]; then exit 0; fi
+  if ! ls "$PWD"/docs/campo/"${OGGI}"-*.md >/dev/null 2>&1; then echo "$ORA" > "$ST" 2>/dev/null
     jq -n --arg ctx "Chiudi la sessione col report dal campo: docs/campo/${OGGI}-<slug>.md (formato in docs/campo/README.md — tre righe bastano, 'nessuna proposta' dichiarata conta). È il segnale che migliora il sistema a ogni uso: senza, il giro non insegna niente a chi viene dopo." \
       '{hookSpecificOutput:{hookEventName:"Stop",additionalContext:$ctx}}'
   fi
-  rm -f /tmp/ai-programmer-sal-counter.* 2>/dev/null
   exit 0
 fi
 
 if [ "$EVENT" = "SessionStart" ]; then
+  rm -f /tmp/ai-programmer-sal-counter.* 2>/dev/null
   jq -n --arg ctx "STANDARD DI SVILUPPO ATTIVO (AI_Programmer — non serve invocarlo, vale da sé):
 1) Esegui, non dedurre: ogni ipotesi meccanica si prova eseguendo, col comando riportato.
 2) Prima di una formula di business: oracolo in tools/*.py o formula minata file:riga — MAI indovinata (docs/mappa-dominio-gas-src.md).
