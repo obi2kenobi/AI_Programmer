@@ -215,3 +215,11 @@
   default): l'editor Apps Script chiama SEMPRE a zero argomenti, quindi il default
   blocca l'esecuzione accidentale del bottone Esegui senza impedire l'uso
   deliberato (true da un'altra funzione o dalla console).
+
+- **Prima di privatizzare con l'underscore finale, GREP DEL FRONTEND**: il
+frontend chiama in genere solo i ponti, ma a volte chiama proprio la funzione
+che l'audit vorrebbe privatizzare (dal campo: 4 funzioni salvate dal grep). La
+rinomina giusta e monotona restrittiva SOLO dopo il grep dell'HTML.
+- **Security codes hardcoded nel sorgente**: pattern securityCode/securityCodePrefix
+ seguito da un valore alfanumerico — il rilevatore li cerca ma la forma varia
+da progetto a progetto: aprirli a mano quando la sicurezza e in gioco.
