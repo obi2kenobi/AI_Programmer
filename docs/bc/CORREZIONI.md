@@ -28,7 +28,7 @@ senza dati non si possono inferire i campi):
 
 ## Censimento di massa 2026-08-26 (due giri al vivo, output di Luca)
 
-**203 mappati su 258 del catalogo.** Le 55 anomalie residue, categorizzate:
+**231 file su 258 servizi del catalogo** (203 mappati + 28 stub VUOTO con file proprio). Le anomalie: 28 vuote (hanno stub), 27 SENZA file (403/400/404 sotto), categorizzate:
 
 - **VUOTE (28) — legittime, non errori**: entità esistenti senza righe (moduli inutilizzati:
   Jobs, provvigioni T17x, attributi, workflow). Da dichiarare «vuoto», non «zero»:

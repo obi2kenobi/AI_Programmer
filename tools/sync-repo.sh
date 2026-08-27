@@ -57,7 +57,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
   cd "$TMP/work"
   COPIATI=0
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent; do
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent docs/campo; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
     cp -r "$HERE/$ITEM" "$ITEM"

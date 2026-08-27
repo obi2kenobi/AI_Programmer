@@ -31,3 +31,23 @@ filesystem, e li fa scattare in due modi diversi.
 Per aggiungerne uno nuovo o capire come sono scritti: skill `skill-creator`
 (builtin di Claude Code) per le skill; `.claude/agents/*.md` esistenti come modello
 per gli agenti.
+
+
+## Lo stato di oggi (2026-08-27, dopo i cicli 6°-8°)
+
+- **Standard, non opzione**: SessionStart e UserPromptSubmit iniettano il metodo
+  meccanicamente; `tools/sync-repo.sh <repo> --standard` porta il sistema intero
+  (CLAUDE.md, skill, agenti, hook, formato report) in qualsiasi repo.
+- **Censimento Business Central**: 231 endpoint su 258 del catalogo
+  (`docs/bc/CATALOGO_ENDPOINT_BC.md`), tipi dallo schema `$metadata`
+  (`tools/bc_tipi_metadata.py`), indice con salute visibile (`tools/bc_index.py`).
+- **11 oracoli** contabili minati dal parco REPO-E (`docs/mappa-dominio-gas-src.md`)
+  e due rilevatori meccanici: `tools/gas_qualita.py` (famiglie di difetti misurate)
+  e `tools/verifica_banco.py` (riga-verdetto dei banchi).
+- **Canone GAS**: skill `gas-sviluppo` (corpus REPO-E distillato) + 6 agenti
+  (specchiati OpenCode con anti-drift).
+- **Lavoro distribuito**: diari append-only con merge `union` (verificato),
+  assignee GitHub per le commesse, `AGENTS.md` §0bis.
+- **Ogni uso lascia il segno**: report dal campo a fine sessione
+  (hook Stop + `docs/campo/`).
+- Suite: 87/87 (`bash .night-verify`).
