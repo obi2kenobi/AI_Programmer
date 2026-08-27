@@ -41,3 +41,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [soglia-con-default-guardato](soglia-con-default-guardato.md) | REPO-I: soglie di legge indici di crisi | 2026-08-27 |
 | [riga-in-coda-non-interposta](riga-in-coda-non-interposta.md) | REPO-H: Main.gs generateCopertina_ | 2026-08-27 |
 | [dipendenza-tra-rami-paralleli](dipendenza-tra-rami-paralleli.md) | REPO-H: 2 occorrenze auto-corrette | 2026-08-27 |
+| [estrattore-test-dipendenza-refactor](estrattore-test-dipendenza-refactor.md) | REPO-G: test-computeperiod.js estraiFunzioneRigaSingola | 2026-08-27 |
+| [estensione-testata-non-distruttiva](estensione-testata-non-distruttiva.md) | REPO-G: Sheets.js estendiHeaderSeManca_ | 2026-08-27 |
