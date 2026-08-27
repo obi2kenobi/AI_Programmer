@@ -115,3 +115,9 @@ interattivo, è la voce che PESA MENO per noi; conta la capacità e la qualità)
 - M5 Ultra 256GB (~€12-20k configurata): ci sta comodo ma il video lo boccia come valore (€20k ≈ 4 Spark = 2 PFLOP) — per noi overkill
 - ATTESA: Spark 2 (~1,5 anni), Xiaomi AI Cube (prezzo/specifiche ignoti), e Ollama deve ancora supportare l'architettura n-gram — chi compra ora paga la prima ondata
 Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; qualsiasi hardware è capex puro per il gap di convergenza, che il routing giorno già compensa |
+
+## Lavoro distribuito a due mani (Luca + Lavinia) — 2026-08-27, valutazione su evidenza
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-27 | Cosa manca al distribuito: (1) assegnazione esplicita delle commesse (le issue GitHub ce l'hanno nativo: usare assignee — è adozione, non codice); (2) regola di merge per SAL.md quando due sessioni appendono lo stesso giorno (git unisce append su code diverse: da VERIFICARE alla prima collisione vera, non presumere); (3) repos.conf/repos.key restano locali al Mac di Luca: il turno notturno resta CENTRALIZZATO per disegno — Lavinia lavora di giorno sulle stesse repo onboardate | il nucleo distribuito già c'è ed è collaudato: PR+branch convenuti (claude/*, night/*, glm/*) presidiati dal gate per chiunque, commesse=issue, SAL append-only, canone con le lezioni del multi-agente parallelo (13-17 agenti: l'estremo del lavoro distribuito), sync-repo --standard porta il metodo identico a entrambi | alla prima settimana reale di lavoro a due: il report dal campo dirà cosa rompe (è nato apposta) |
