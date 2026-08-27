@@ -200,3 +200,17 @@ vale PIU di una citazione: è il riscontro che non dipende dalla fonte. Stesso
 principio dei temi trasversali del giro di prodotto (≥3 aree non coordinate),
 applicato ai DATI invece che ai rilievi. Quando succede, va scritto: è la prova
 più forte che un numero non è un caso.
+
+
+## Il handoff gap: revisione→esecuzione (dal campo REPO-G/magazzino, 2026-08-27)
+
+72 commit, 20 bug + 55 proposte eseguite: ma VERIFICANDO A POSTERIORI la lista
+delle proposte confermate, 2 su 57 valide non erano mai finite nella todo-list
+operativa — non scartate, non rinviate: PERSE nel passaggio. Il difetto è
+strutturale: chi traduce la revisione in task puo perdere voci senza che nessun
+meccanismo se ne accorga (la perdita è invisibile come uno scarto silenzioso,
+ma avviene nel PIANO, non nei dati). La regola: a fine esecuzione, CONTARE le
+voci della revisione contro i task completati + quelli dichiarati non-fatti:
+revisione_N = eseguiti_N + rinviati_N + persi_0. Se persi > 0, dichiararli.
+E: un bug trovato lavorando su ALTRO si segnala separato, non si mischia al
+commit corrente (stesso principio un-commit-per-rilievo, applicato in anticipo).
