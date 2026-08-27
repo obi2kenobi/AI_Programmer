@@ -104,3 +104,18 @@ scritto (un agente che rivede il proprio lavoro tende a confermarlo).
 Le leve PRIMA del modello: progressive disclosure, non rileggere, raggruppare
 task omogenei (il contesto si paga per lotto), ordine di lavoro preciso (un
 agente che deve SCOPRIRE cosa fare costa molte volte uno a cui è DETTO).
+
+
+## I due regimi di conferma (dal campo REPO-I, 2026-08-27)
+
+Le regole passo-per-passo valgono PER INTERO su analisi, decisioni di dominio,
+logica nuova, ambiguita reale. Su un batch di fix GIA diagnosticati con precisione
+(file, riga, causa) da unanalisi precedente, il proprietario puo dare unautorizzazione
+unica a procedere in sequenza: comprimere le conferme li e legittimo, non indisciplina.
+
+## Da verificare dal vivo (il terzo stato, dal campo REPO-I)
+
+Fra "difetto" e "confermato" esiste lo stato che una sessione non puo chiudere da sola:
+testato in isolamento, NON ancora visto girare nel vivo (Gmail/Drive/BC reali). Il corpo
+PR porta una sezione "## Da verificare dal vivo" con le caselle di cio che resta: e il
+livello 3 dei cinque (verita terrena ritardata) reso tracciabile, non reinventato per PR.

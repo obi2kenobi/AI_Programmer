@@ -112,6 +112,7 @@
 - [2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato](#2026-08-27-4-venti-giri-lenti-nuove-mutazione-dei-guardiani-e-ci-che-ha-rivelato)
 - [2026-08-27 (5) — venti giri, terza serie: la vetrina pubblica era ferma a tre giorni fa](#2026-08-27-5-venti-giri-terza-serie-la-vetrina-pubblica-era-ferma-a-tre-giorni-fa)
 - [2026-08-27 (6) — terzo report REPO-G: la riverifica indipendente chiude il loop](#2026-08-27-6-terzo-report-repo-g-la-riverifica-indipendente-chiude-il-loop)
+- [2026-08-27 (8) — quarto report: 30 agenti su REPO-I, cinque proposte, quattro adottate](#2026-08-27-8-quarto-report-30-agenti-su-repo-i-cinque-proposte-quattro-adottate)
 
 
 ## Stato
@@ -3282,3 +3283,18 @@ scarto-mai-silenzioso: il segnale PARZIALE è peggio del silenzio (falsa
 copertura); (4) formato campo: terza casella NON RAGGIUNGIBILE. REPO-H
 registrata nell'indice. Il report conferma di nuovo il costo di F1: il metodo
 non raggiunge chi lavora su repo esterne senza standard.
+
+### 2026-08-27 (8) — quarto report: 30 agenti su REPO-I, cinque proposte, quattro adottate
+
+REPO-I (controlli trimestrali GAS+BC): 19/19 findings ALTA corretti con test
+PRIMA/DOPO, 915/915, zero regressioni, 8 temi trasversali emersi da agenti NON
+coordinati (la convergenza indipendente come segnale di qualità — misurato).
+Adottate: pattern 20 estrazione-per-testabilità (la quinta lente, occorsa quanto
+le quattro storiche); i DUE REGIMI DI CONFERMA in consegna.md (passo-per-passo
+su analisi e dominio, batch autorizzato su fix già diagnosticati — l'attrito
+l'aveva risolto il proprietario da solo, ora è regola); il terzo stato DA
+VERIFICARE DAL VIVO nel protocollo PR (il livello 3 reso tracciabile); il
+workflow N-GIRI PARALLELI documentato (docs/ngiri-paralleli.md: aree × 2 letture,
+fan-out, sintesi con soglia ≥3 aree indipendenti). La prima proposta (skill
+installabili) è GIÀ lo standard sync-repo --standard del 2026-08-26: il report
+lavorava su una repo senza — quarta conferma che F1 è il collo di bottiglia.
