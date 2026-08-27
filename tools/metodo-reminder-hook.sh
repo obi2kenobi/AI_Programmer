@@ -17,6 +17,16 @@ INPUT="$(cat)"
 EVENT="$(echo "$INPUT" | jq -r '.hook_event_name // empty' 2>/dev/null)"
 PROMPT="$(echo "$INPUT" | jq -r '.prompt // empty' 2>/dev/null)"
 
+if [ "$EVENT" = "Stop" ]; then
+  # fine sessione: il report dal campo va scritto (o dichiarato "nessuna proposta")
+  OGGI=$(date +%F)
+  if ! ls "$PWD"/docs/campo/"${OGGI}"-*.md >/dev/null 2>&1; then
+    jq -n --arg ctx "Chiudi la sessione col report dal campo: docs/campo/${OGGI}-<slug>.md (formato in docs/campo/README.md — tre righe bastano, 'nessuna proposta' dichiarata conta). È il segnale che migliora il sistema a ogni uso: senza, il giro non insegna niente a chi viene dopo." \
+      '{hookSpecificOutput:{hookEventName:"Stop",additionalContext:$ctx}}'
+  fi
+  exit 0
+fi
+
 if [ "$EVENT" = "SessionStart" ]; then
   jq -n --arg ctx "STANDARD DI SVILUPPO ATTIVO (AI_Programmer — non serve invocarlo, vale da sé):
 1) Esegui, non dedurre: ogni ipotesi meccanica si prova eseguendo, col comando riportato.
