@@ -110,6 +110,7 @@
 - [2026-08-27 — il report dal campo diventa sistematico (proposta di Luca)](#2026-08-27-il-report-dal-campo-diventa-sistematico-proposta-di-luca)
 - [2026-08-27 (2) — distribuito chiuso: l'esperimento che non si presume](#2026-08-27-2-distribuito-chiuso-l-esperimento-che-non-si-presume)
 - [2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato](#2026-08-27-4-venti-giri-lenti-nuove-mutazione-dei-guardiani-e-ci-che-ha-rivelato)
+- [2026-08-27 (5) — venti giri, terza serie: la vetrina pubblica era ferma a tre giorni fa](#2026-08-27-5-venti-giri-terza-serie-la-vetrina-pubblica-era-ferma-a-tre-giorni-fa)
 
 
 ## Stato
@@ -3235,3 +3236,13 @@ nei VALORI DI CAMPIONE del census: i campioni dei file endpoint portano dati
 di business veri (nomi fornitori, il grep li ha ripresi in 2 file): è nella
 natura del census (legge il vivo) ed è DECISIONE del proprietario (DEBITI:
 accettare / mascherare i sensibili / mascherare tutti). Suite 87/87.
+
+### 2026-08-27 (5) — venti giri, terza serie: la vetrina pubblica era ferma a tre giorni fa
+
+Lenti nuove: aritmetica del census (231+27=258 ✓, segmenti 258 unici ✓, nessun
+file fuori catalogo ✓), propagazione del formato report (NO: ora lo standard
+porta anche docs/campo), home page pubblica (FERMA al 24/8: non citava
+standard/sync-repo/campo/rilevatori — aggiornata con lo stato reale),
+determinismo (test stabili a run ripetute), tabelle ben formate, bonifica
+privacy che tiene (0 residui). Corretta l'aritmetica di CORREZIONI (le 28 vuote
+hanno stub: non sono residue senza file). Suite 87/87.
