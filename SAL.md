@@ -152,6 +152,7 @@
 - [2026-08-27 (13) — sesto report (REPO-H, 12 PR): pattern 23-24 e il workaround vm](#2026-08-27-13-sesto-report-repo-h-12-pr-pattern-23-24-e-il-workaround-vm)
 - [2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo](#2026-08-27-14-quattordici-lenti-su-repo-g-il-metodo-chiede-adottare-il-metodo)
 - [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ci-che-i-cicli-hanno-scoperto-nel-canone)
+- [2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area](#2026-08-27-16-cinquanta-giri-su-repo-i-le-cinque-lenti-per-area)
 
 
 ## Stato
@@ -3442,3 +3443,16 @@ lenti). Rilevatore: 4 falsi corretti (ombre top-level, clearContent, $skip senza
 $orderby, securityCode+Prefix) — gli ultimi due rifatti con calma dopo la rottura
 precedente: UN fix alla volta, test in mezzo, verifica su progetto vero.
 Docs/campo: 9 report processati. Suite 87/87.
+
+### 2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area
+
+Il quarto report di prodotto (50 letture, 10 aree × 5 lenti, ~100 proposte,
+12 temi trasversali da agenti non coordinati, 29 pagine PDF) porta la struttura
+più matura del giro di prodotto: le CINQUE LENTI PER AREA (buco-nel-processo,
+parlantezza, fatica-residua, continuità-e-sostituibilità, coerenza-fra-gemelle)
+— ora in ngiri-paralleli.md. Istruzione potente replicata: ogni agente aveva
+l'ELENCO di cosa esiste già (PR #97/#98) e il divieto di riproporlo —
+consolidazione anti-rumore. I temi trasversali in testa meritano attenzione
+di dominio: follow-up che non persiste, funzioni orfane senza porta
+d'ingresso, verde che nasconde dati mai arrivati. Report completo in
+docs/campo/2026-08-27-repo-i-cinquanta-giri.md.

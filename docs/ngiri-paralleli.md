@@ -33,3 +33,27 @@ al processo di revisione stesso. Il criterio: due lenti che rileggono gli
 stessi file con la stessa domanda sono UNA lente; due che li leggono con
 domande diverse (bug vs prodotto vs prevenzione) restano due. E ogni proposta
 ancorata a file:riga letto davvero — mai principio da manuale.
+
+
+## Le cinque lenti per area del giro di prodotto (dal campo REPO-I, 2026-08-27)
+
+Ogni area del progetto si legge con le stesse cinque domande — strutturate
+così che nessuna fugga:
+
+1. **Buco nel processo**: quale test di revisione/controllo un professionista
+   farebbe SEMPRE e che qui non esiste? (cut-off, subsequent events, completezza)
+2. **Parlantezza**: cosa nel report parlerebbe a chi non ha scritto il codice?
+   (codici grezzi, sigle non sciolte, soglie senza criterio, segni senza spiegazione)
+3. **Fatica residua dopo il verde**: cosa deve ancora fare l'umano che il sistema
+   potrebbe fare da solo? (copia-incolla, click ripetuti, uscite dal prodotto)
+4. **Continuità e sostituibilità**: se chi mantiene il sistema domani cambia,
+   cosa si perde? (decisioni nella memoria di sessione, mappature senza casa,
+   soglie senza motivazione, contratti d'interfaccia non documentati)
+5. **Coerenza fra aree gemelle**: Clienti/Fornitori, Ferie/TFR, Banche/Cespiti —
+   cosa uno dei due ha che l'altro non ha, senza una ragione scritta?
+
+I TEMI TRASVERSALI (≥3 aree indipendenti che li trovano da sole) sono il segnale
+più forte: emersi senza coordinamento, sono la prova che non sono opinioni.
+Il campo REPO-I ne ha trovati 12 — in testa: «segnalato una volta, mai richiuso»
+(il follow-up che non persiste), «funzioni scritte senza porta d'ingresso»,
+«il verde che nasconde un dato mai arrivato».
