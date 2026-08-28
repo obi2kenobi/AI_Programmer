@@ -148,6 +148,13 @@ conta). È il canale con cui il campo insegna al canone: senza report, il giro n
 insegna niente a chi viene dopo (il promemoria alla chiusura è già strutturale
 nell'hook Stop — questa regola ne è la fonte scritta).
 
+### L'errore si mette a regime
+Quando scopri un TUO errore (fix che rompe, test che mentiva, metrica che misurava
+un'altra cosa, ripristino che non ha ripristinato): skill `post-mortem` — sette campi,
+famiglia di ragionamento R1-R6, e una GUARDIA che devi vedere diventare rossa sul tuo
+errore prima di chiudere la voce. Il registro: `docs/errori/REGISTRO.md` (append, mai
+riscrivere). La lente `tests/test-errori.sh` pretende che ogni guardia citata esista.
+
 ### Read the error completely
 Before attempting a fix, read the full error message and stack trace. Understand the root cause.
 

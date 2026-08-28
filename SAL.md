@@ -45,6 +45,7 @@
 - [2026-08-28 (5) — I 100 giri AVVERSARI: attaccare il sistema per conto terzi](#2026-08-28-5-i-100-giri-avversari-attaccare-il-sistema-per-conto-terzi)
 - [2026-08-28 (6) — I 100 giri sui TEST: i quattro teatri verdi, il banco di fine passaggio, e il test fantasma](#2026-08-28-6-i-100-giri-sui-test-i-quattro-teatri-verdi-il-banco-di-fine-passaggio-e-il-test-fantasma)
 - [2026-08-28 (7) — I 100 giri di CHIAREZZA: i commenti come verifica del pensiero](#2026-08-28-7-i-100-giri-di-chiarezza-i-commenti-come-verifica-del-pensiero)
+- [2026-08-28 (8) — I 100 giri sui FALLIMENTI: l'errore a regime](#2026-08-28-8-i-100-giri-sui-fallimenti-l-errore-a-regime)
 
 
 ## Stato
@@ -825,3 +826,45 @@ con NOOPEN=1 (il test non apre browser).
 Suite 114/114 · banco PASSAGGIO CHIUSO · chiarezza 3/3. Le regole della
 chiarezza d'ora in poi sono presidiare: la lente arrossisce al primo file che
 tace sulla propria intenzione.
+
+### 2026-08-28 (8) — I 100 giri sui FALLIMENTI: l'errore a regime
+
+Su richiesta di Luca: quando vediamo che abbiamo sbagliato, mettere l'errore a regime —
+capirne i motivi, come migliorare, come non farlo risuccedere, come aggirarlo, come
+migliorare il ragionamento. Tre pezzi consegnati:
+
+**1. La skill post-mortem** (.claude/skills/post-mortem/, specchiata in .opencode):
+sette campi obbligatori — sintomo, causa prossima, CAUSA DEL RAGIONAMENTO (la parte
+che migliora chi sbaglia), perché non ci ha fermati, guardia, VERIFICA della guardia
+(si chiude solo dopo averla vista rossa sul proprio errore), aggiramento. E sei
+famiglie di ragionamento, gli errori COGNITIVI ricorrenti: R1 assunzione non
+verificata · R2 verde senza dati · R3 precondizione non chiesta · R4 autoriferimento ·
+R5 memoria contro realtà · R6 effetto collaterale ignorato.
+
+**2. Il registro** (docs/errori/REGISTRO.md): 13 errori VERI backfillati, tutti
+fatti e documentati in queste sessioni — dal canone svuotato dal write anticipato
+(E-001) ai falsi SIGPIPE (E-002), dal test che confrontava vuoto con vuoto (E-003)
+all'harness che attaccava l'albero sporco cancellando i propri fix (E-004), dalla
+metrica che misurava un'altra cosa due volte (E-006) all'header fossile (E-012).
+Ogni voce con la sua guardia citata PER FILE.
+
+**3. La lente** (tests/test-errori.sh): ogni voce ha i sette campi, la famiglia
+canonica, e — la parte che conta — la guardia citata ESISTE: una promessa senza
+file è il parente della promessa fossile. 43 controlli verdi.
+
+**E-013 si è scritto da solo**: mentre compilavo il registro, la lente S1 ha
+beccato altri due glifi alieni nel testo che stavo scrivendo («in阳台»,
+«driftato人工») — terza volta nello stesso giorno. Registrato come ricorrenza:
+la guardia funzionava già, il punto è che senza lente tre testi pubblici
+sarebbero usciti sporchi. Il sistema si è applicato a se stesso nel momento
+stesso in cui veniva costruito.
+
+**E il battito ha pagato**: il banco 6 (un giro del ciclo) è uscito rosso per una
+regressione VERA introdotta dal mio irrigidimento avversario di ieri — la lente
+copertura "match esatto" rompeva la copertura legittima (bc_map presidiato da
+test-bc-map-leggi-curati.sh). Corretta a prefisso ancorato: il caso avversario
+C2 resta preso, quello legittimo torna accettato. Prima guardia del registro che
+viene messa alla prova dal sistema che l'ha generata.
+
+Regola vincolante in CLAUDE.md §5: errore trovato → skill post-mortem, registro,
+guardia vista rossa prima di chiudere. Suite 115/115.

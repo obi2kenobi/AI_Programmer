@@ -123,10 +123,13 @@ if [ "$LIVELLO" -ge 4 ]; then
   # 4c. copertura: ogni tool .py ha un test con nome equivalente (trattini bassi = trattini)
   for t in "$HERE"/tools/*.py; do
     b=$(basename "$t" .py | tr '_' '-')
-    # giri avversari 2026-08-28 (C2): grep -q "$b" fa passare tools/test.py per
-    # coincidenza di prefisso. Si chiede il file ESATTO test-<nome>.sh
-    ls "$HERE"/tests/ | tr '_' '-' | grep -qx "test-$b.sh" || \
-      FINDINGS+=("ARCH: tool $(basename "$t") senza test (cerco test-$b.sh esatto)")
+    # giri avversari 2026-08-28 (C2): grep -q "$b" faceva passare tools/test.py
+    # per coincidenza di sottostringa. Match di PREFISSO ANCORATO: accetta i test
+    # dedicati al tool anche con suffisso descrittivo (test-bc-map-leggi-curati.sh
+    # presidia bc_map.py) ma non i match casuali — la versione "esatta" del giorno
+    # dopo era troppo stretta e rompeva la copertura legittima (il battito l'ha vista).
+    ls "$HERE"/tests/ | tr '_' '-' | grep -q "^test-$b" || \
+      FINDINGS+=("ARCH: tool $(basename "$t") senza un test dedicato (cerco test-$b*)")
   done
   # 4d. indice pattern: ogni file sta nel registro patterns/README.md e viceversa
   for p in "$HERE"/patterns/*.md; do
