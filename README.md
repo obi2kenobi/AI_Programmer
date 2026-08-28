@@ -4,7 +4,8 @@ Hub di metodo per lo sviluppo assistito da AI di Gruppo Camarlinghi: regole vinc
 (`CLAUDE.md`), contesto per progetto (`PROJECT.md`), turno notturno (`night-shift/`),
 wrapper per i modelli (`llm/`). Mappa completa dell'architettura: `docs/system.md`.
 Il metodo in una pagina: `METHOD.md`. Come si usa ogni giorno: `docs/MANUALE-OPERATIVO.md`.
-Se collabori per la prima volta: `docs/benvenuto-collaboratori.md` (3 frasi, 5 regole).
+Se collabori per la prima volta: `docs/benvenuto-collaboratori.md` (3 frasi, 5 regole). Il diario del perché:
+`SAL.md` (le voci attive) e `SAL-ARCHIVIO.md` (la memoria ruotata).
 
 ## Come funzionano le skill e gli agenti (per chi arriva nuovo)
 

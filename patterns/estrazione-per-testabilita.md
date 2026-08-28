@@ -15,4 +15,4 @@ frequenza delle quattro lenti storiche nel ciclo REPO-I: quinta lente a pieno ti
 parte del fix").
 
 
-**Vedi anche**: `banco-sintetico-per-calcoli-critici`
+**Vedi anche**: `banco-sintetico-per-calcoli-critici` · `estrattore-test-dipendenza-refactor` · `estensione-testata-non-distruttiva`

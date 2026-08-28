@@ -15,4 +15,4 @@ prima di scrivere: prima di applicare un pattern imparato altrove, grep del
 vincolo nel progetto attuale (chi lo ha scritto ha gia pagato).
 
 
-**Vedi anche**: `segreto-come-impronta` · `lock-per-risorsa`
+**Vedi anche**: `segreto-come-impronta` · `lock-per-risorsa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta`

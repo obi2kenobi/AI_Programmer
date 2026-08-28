@@ -9,3 +9,5 @@ PRIMA che il motore JS legga il codice. Quindi entity-encodare l'apice come
 vero e la stringa JS si rompe comunque. Servono DUE funzioni distinte:
 backslash-escape per il livello JS, entity-escape per il livello HTML.
 La cura ovvia e quella sbagliata: facile da ripetere perche sembra gia risolto.
+
+**Vedi anche**: `guardia-nel-ponte-non-nella-condivisa` · `estensione-testata-non-distruttiva`

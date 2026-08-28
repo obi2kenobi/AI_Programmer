@@ -8,3 +8,5 @@ Una funzione che scarta, azzera o clampa un valore in base a una regola (range p
 Un conteggio senza importo, unanomalia per record senza riga aggregata nei totali:
 il segnale parziale dà falsa copertura — chi legge smette di cercare. Lo scarto
 si dichiara COMPLETO (importo E conteggio), o non è dichiarato.
+
+**Vedi anche**: `verdetto-sempre-visibile` · `somma-diversa-da-zero-non-e-presenza` · `stato-vuoto-dalla-pipeline`
