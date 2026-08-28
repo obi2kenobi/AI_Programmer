@@ -77,7 +77,16 @@ def aggrega_totali(righe):
 
 def main():
     righe = []
-    for r in csv.DictReader(sys.stdin):
+    reader = csv.DictReader(sys.stdin)
+    # le colonne attese si DICHIARANO prima di usarle: un header sbagliato o mancante
+    # deve dire cosa manca, non morire di KeyError nudo (giri ignoranti 2026-08-28:
+    # header `a,b` produceva traceback invece di istruzioni)
+    mancanti = [c for c in ("giorni", "tipo", "importo") if c not in (reader.fieldnames or [])]
+    if mancanti:
+        print(f"uso: scadenzario_aging.py < scadenzario.csv — colonne attese: giorni,tipo,importo"
+              f" (mancano: {', '.join(mancanti)})", file=sys.stderr)
+        return 1
+    for r in reader:
         giorni = r["giorni"].strip() if r["giorni"].strip() != "" else None
         tipo = r["tipo"]
         importo_bc = float(r["importo"])
@@ -106,4 +115,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

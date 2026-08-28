@@ -60,6 +60,12 @@ def calcola_roll_forward(fa, cespiti_categoria):
 
 
 def main():
+    import json as _json
+    try:
+        dati = _json.load(sys.stdin)
+    except (ValueError, EOFError):
+        print("uso: rollforward_cespiti.py < cespiti.json (categoria, cespiti[] con costi, ammortamenti, dismissioni, rivalutazioni)", file=sys.stderr)
+        return 1
     dati = json.load(sys.stdin)
     r = calcola_roll_forward(dati["categoria"], dati["cespiti"])
     for chiave, valore in r.items():
@@ -67,4 +73,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

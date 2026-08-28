@@ -504,7 +504,7 @@ le commesse corrette.
 **Il dato di sistema che conta**: il tasso di difetti delle commesse scritte a mano era 75%.
 La difesa in profondità ora è: template (Design + Forma dei dati obbligatori) → audit serale
 → notte. L'audit ha pagato il biglietto al primo giro, trovando con esecuzione (non lettura)
-ciò che l'autore non vedeva. Regola aggiunta alla自身的 pratica: chi scrive commesse verifica
+ciò che l'autore non vedeva. Regola aggiunta alla propria pratica: chi scrive commesse verifica
 le affermazioni del SAL contro il codice — un diario che dice il passato come presente è
 peggiore di un diario mancante (rettifica scritta anche nel SAL di PEFC).
 

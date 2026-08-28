@@ -5,8 +5,10 @@
 # (4 aggiunte in un solo ciclo). Questo strumento chiude il buco nella forma
 # minima richiesta dal report: "un diff + copia basta per iniziare".
 #
-# Uso: tools/sync-repo.sh <owner/repo>            → verifica e riporta il drift
-#      tools/sync-repo.sh <owner/repo> --pr       → apre una PR di solo CLAUDE.md
+# Uso: tools/sync-repo.sh <owner/repo>                 → verifica e riporta il drift
+#      tools/sync-repo.sh <owner/repo> --pr            → apre una PR di solo CLAUDE.md
+#      tools/sync-repo.sh <owner/repo> --standard      → PR col sistema intero (skill, agenti, hook, formati)
+#                                                          — è il comando insegnato in docs/benvenuto-collaboratori.md
 #      tools/sync-repo.sh --from-local <dir>      → stesso confronto su una copia locale (per i test)
 # Esiti: 0 allineato · 1 divergente (o errore) · il verdetto è sempre sulla riga finale.
 set -uo pipefail

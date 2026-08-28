@@ -98,13 +98,13 @@ il drift di CLAUDE.md.
 
 ### Il catalogo pattern
 
-`patterns/` contiene 39 pattern, ciascuno nato da un errore vero con ancore
+`patterns/` contiene il catalogo dei pattern (registro: `patterns/README.md`), ciascuno nato da un errore vero con ancore
 a file:riga del progetto che l'ha pagato. Indice: `patterns/README.md`.
 Consulta prima di reinventare; dopo averne pagato uno nuovo, scrivilo.
 
 ## 5. La verifica: come esco da qui
 
-`bash .night-verify` — suite completa (fail-fast, ~75 test) + shellcheck +
+`bash .night-verify` — suite completa (fail-fast) + shellcheck +
 privacy-check + indice SAL. Se touchi `SAL.md`, rigenera l'indice
 (`bash tools/sal-indice.sh`) e porta le modifiche in un commit/giro prima che il
 gate giri. Privacy: REPO-E è il codice con cui riferirsi al repo esterno, MAI il

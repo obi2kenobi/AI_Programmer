@@ -38,6 +38,10 @@
 - [2026-08-28 (14) — REPO-N giornata completa: 159 giri, 26 difetti corretti, 5 suite](#2026-08-28-14-repo-n-giornata-completa-159-giri-26-difetti-corretti-5-suite)
 - [2026-08-28 — 60 giri di revisione completa: privacy bonificata, pattern collegati](#2026-08-28-60-giri-di-revisione-completa-privacy-bonificata-pattern-collegati)
 - [Giro 1/30 ciclo ABC: 9 finding corretti (6 agenti pattern, 3 skill collegate)](#giro-1-30-ciclo-abc-9-finding-corretti-6-agenti-pattern-3-skill-collegate)
+- [2026-08-28 — Il falso positivo strutturale del ciclo-vivo (pipefail + grep -q) e il canone svuotato che nessuno notava](#2026-08-28-il-falso-positivo-strutturale-del-ciclo-vivo-pipefail-grep--q-e-il-canone-svuotato-che-nessuno-notava)
+- [2026-08-28 (2) — Altri 100 giri: il ciclo che misurava se stesso, e il test anti-drift che non testava](#2026-08-28-2-altri-100-giri-il-ciclo-che-misurava-se-stesso-e-il-test-anti-drift-che-non-testava)
+- [2026-08-28 (3) — Altri 100 giri col battito + la tecnica estesa a TUTTO il repo](#2026-08-28-3-altri-100-giri-col-battito-la-tecnica-estesa-a-tutto-il-repo)
+- [2026-08-28 (4) — I 100 giri IGNORANTI: le sonde scortesi che trovano ciò che le lenti educate non vedono](#2026-08-28-4-i-100-giri-ignoranti-le-sonde-scortesi-che-trovano-ciò-che-le-lenti-educate-non-vedono)
 
 
 ## Stato
@@ -655,3 +659,33 @@ Nota onesta: la spazzata repo-wide ha trovato quasi tutto già coerente — perc
 già quelle zone. Il valore delle lenti non è l'audit una tantum ma la CONTINUITÀ: il ciclo continua
 a guardare fra un run di test e l'altro, quando i file cambiano. Cammino post-estensione verificato:
 15 giri, 1→2→3→4→5→CUORE→1, zero finding. Suite 106/106.
+
+### 2026-08-28 (4) — I 100 giri IGNORANTI: le sonde scortesi che trovano ciò che le lenti educate non vedono
+
+Su richiesta di Luca: «giri un po' ignoranti, insoliti, inusuali per scovare ogni genere di
+inesattezza, incongruenza, errore, ostacolo». Circa 70 sonde praticate a mano + 6 consolidate
+nella batteria permanente `tools/giri-ignoranti.sh`. Catture:
+
+1. **Carattere CJK in SAL-ARCHIVIO** («alla自身的 pratica») — la classe di corruzione che
+   avevo introdotto io stesso ieri in un pattern: era già successa ed era rimasta. S1 ora la
+   cerca ovunque.
+2. **Numeri claims marciti**: AGENTS.md diceva «~75 test» (realtà 106) e «39 pattern» (41).
+   Numeri tolti o resi non-fragili: un conteggio in un doc è una promessa che marcisce a ogni
+   commit. S2 confronta ogni «N test/pattern/agenti» nei doc di testa con i file veri.
+3. **Oracoli che muoiono di Traceback nudo** su input assente: indici_crisi e rollforward_cespiti
+   ora dicono «uso:» ed escono 1; scadenzario_aging con header spazzatura dichiara le colonne
+   attese invece del KeyError. S3 li prova tutti con /dev/null e header `a,b`.
+4. **La porta d'ingresso non portava da nessuna parte**: MANUALE-OPERATIVO.md e
+   benvenuto-collaboratori.md erano linkati da ZERO file — il manuale per l'uso quotidiano e
+   il benvenuto per i collaboratori, invisibili a chi arriva. Linkati dal README. S4 caccia
+   i doc orfani.
+5. **sync-repo.sh implementava --standard ma l'uso non lo documentava**: il benvenuto
+   insegnava un comando che lo script stesso non dichiarava. S5 verifica che ogni flag
+   implementato stia nell'intestazione d'uso.
+
+Nota di metodo: la sonda S4 mi ha beccato lo stesso giorno — `grep -v -c .` conta le righe VUOTE
+(non quelle piene): risultato sempre 0, tutto sembrava orfano. È il pattern confronto-non-vuoto
+al contrario: un conteggio che non può che dare 0 non misura niente. Le sonde vanno verificate
+col caso noto (system.md È citato) prima di fidarsi del loro verdetto.
+
+Batteria finale: 6 sonde, 0 finding. Suite 106/106.

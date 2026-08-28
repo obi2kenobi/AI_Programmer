@@ -62,7 +62,11 @@ def crisi_presunta(pn, indici):
 
 
 def main():
-    a = json.load(sys.stdin)
+    try:
+        a = json.load(sys.stdin)
+    except (json.JSONDecodeError, EOFError):
+        print("uso: indici_crisi.py < bilancio.json (pn, ricavi, patrimonio netto, debiti tributari, perdite esercizi precedenti)", file=sys.stderr)
+        return 1
     indici = valuta_indici_crisi(a)
     for i in indici:
         marcatore = "🔴" if i["allarme"] else "🟢"
@@ -72,4 +76,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
