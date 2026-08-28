@@ -12,7 +12,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 TMP=$(mktemp -d)
 mkdir -p "$TMP/tools" "$TMP/night-shift"
 cp "$HERE/tools/privacy-check.sh" "$TMP/tools/"
-printf '# chiave di test\nREPO-T=finto/test\nPERSONA=IlPagoDelleCose\nTERMINI=SuperSegretoAziendale\n' > "$TMP/night-shift/repos.key"
+printf '# chiave di test\nREPO-T=finto/prova\nPERSONA=IlPagoDelleCose\nTERMINI=SuperSegretoAziendale\n' > "$TMP/night-shift/repos.key"
 git -C "$TMP" init -q && git -C "$TMP" add tools/ && git -C "$TMP" -c user.email=t@t -c user.name=t commit -qm tools
 
 # 1) pulito: passa
@@ -20,9 +20,9 @@ OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 [ $RC -eq 0 ] && ok "pulito: exit 0" || ko "pulito rc=$RC: $OUT"
 
 # 2) leak di REPO nel file versionato → deve fallire
-echo "guarda finto/test" > "$TMP/docs.md" && git -C "$TMP" add docs.md
+echo "guarda finto/prova" > "$TMP/docs.md" && git -C "$TMP" add docs.md
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
-[ $RC -eq 1 ] && grep -q "finto/test\|NOME PRIVATO" <<<"$OUT" && ok "leak repo: FAIL con il nome citato" || ko "leak repo rc=$RC"
+[ $RC -eq 1 ] && grep -q "finto/prova\|NOME PRIVATO" <<<"$OUT" && ok "leak repo: FAIL con il nome citato" || ko "leak repo rc=$RC"
 rm "$TMP/docs.md" && git -C "$TMP" add -A 2>/dev/null || git -C "$TMP" rm -q --cached docs.md
 
 # 3) leak di PERSONA → deve fallire (nuovo in v2)
@@ -51,7 +51,7 @@ OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 # 7) bug reale (revisione 14 lenti, 2026-08-28): repos.key SENZA newline finale — `while
 # read` salta silenziosamente l'ultima riga, un nome sensibile su quella riga passava
 # "pulito" per errore. printf senza \n finale riproduce esattamente il caso.
-printf '# chiave di test\nREPO-T=finto/test\nREPO-U=ultimo/senzanewline' > "$TMP/night-shift/repos.key"
+printf '# chiave di test\nREPO-T=finto/prova\nREPO-U=ultimo/senzanewline' > "$TMP/night-shift/repos.key"
 echo "guarda ultimo/senzanewline" > "$TMP/leak-ultima-riga.md" && git -C "$TMP" add leak-ultima-riga.md
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 [ $RC -eq 1 ] && grep -q "ultimo/senzanewline" <<<"$OUT" \

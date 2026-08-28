@@ -34,6 +34,12 @@ def categorizza(righe):
         qty_bc = float(r["qty_bc"])
         costo_finale = float(r["costo_finale"])
         qty_fisica = float(qty_fisica_raw)
+        # giri avversari 2026-08-28: nan/inf nel CSV devono dirsi, non produrre
+        # delta "nan" silenziosi nell'output del magazzino
+        import math
+        if not (math.isfinite(qty_bc) and math.isfinite(costo_finale) and math.isfinite(qty_fisica)):
+            print(f"ERRORE: valore non finito (nan/inf) per {codice}: rifiutato", file=sys.stderr)
+            return 1
         delta = qty_fisica - qty_bc
         delta_valore = delta * costo_finale
         riga = {"codice": codice, "delta": delta, "delta_valore": delta_valore}

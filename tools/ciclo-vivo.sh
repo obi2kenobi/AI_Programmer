@@ -114,8 +114,10 @@ if [ "$LIVELLO" -ge 4 ]; then
   # 4c. copertura: ogni tool .py ha un test con nome equivalente (trattini bassi = trattini)
   for t in "$HERE"/tools/*.py; do
     b=$(basename "$t" .py | tr '_' '-')
-    ls "$HERE"/tests/test-*.sh 2>/dev/null | tr '_' '-' | grep -q "$b" || \
-      FINDINGS+=("ARCH: tool $(basename "$t") senza test")
+    # giri avversari 2026-08-28 (C2): grep -q "$b" fa passare tools/test.py per
+    # coincidenza di prefisso. Si chiede il file ESATTO test-<nome>.sh
+    ls "$HERE"/tests/ | tr '_' '-' | grep -qx "test-$b.sh" || \
+      FINDINGS+=("ARCH: tool $(basename "$t") senza test (cerco test-$b.sh esatto)")
   done
   # 4d. indice pattern: ogni file sta nel registro patterns/README.md e viceversa
   for p in "$HERE"/patterns/*.md; do
@@ -144,7 +146,9 @@ if [ "$LIVELLO" -ge 4 ]; then
     FINDINGS+=("ARCH: endpoints $N_EP file vs $N_IX nell'indice docs/bc/README.md")
   # 4h. DEBITI: i riferimenti interni a file del repo esistono davvero
   while IFS= read -r ref; do
-    [ -e "$HERE/$ref" ] || FINDINGS+=("ARCH: DEBITI.md cita $ref che non esiste")
+    # giri avversari 2026-08-28 (C3): -e accettava le directory (`tools/`) come
+    # riferimento valido. Un debito punta a un FILE, non a un continente.
+    [ -f "$HERE/$ref" ] || FINDINGS+=("ARCH: DEBITI.md cita $ref che non è un file")
   done < <(grep -o '`\(tools\|patterns\|tests\|docs\|night-shift\|llm\)/[A-Za-z0-9_./-]*`' "$HERE/DEBITI.md" | tr -d '`')
 fi
 

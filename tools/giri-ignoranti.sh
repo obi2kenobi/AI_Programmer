@@ -39,6 +39,8 @@ check_numero "$HERE/README.md" "test" "$N_TEST" \
   && check_numero "$HERE/README.md" "agenti\?" "$N_AG" \
   && check_numero "$HERE/AGENTS.md" "test" "$N_TEST" \
   && check_numero "$HERE/AGENTS.md" "pattern" "$N_PAT" \
+  && check_numero "$HERE/METHOD.md" "test" "$N_TEST" \
+  && check_numero "$HERE/METHOD.md" "pattern" "$N_PAT" \
   && sonda 0 "S2 numeri claims coerenti (test=$N_TEST pattern=$N_PAT agenti=$N_AG)" \
   || sonda 1 "S2 numero claim marcio (reale: test=$N_TEST pattern=$N_PAT agenti=$N_AG)"
 
@@ -83,8 +85,33 @@ done
 ROTTO=""
 while IFS= read -r ref; do
   [ -e "$HERE/$ref" ] || ROTTO="$ROTTO $ref"
-done < <(grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' "$HERE/README.md" | tr -d '`' | sort -u)
-[ -z "$ROTTO" ] && sonda 0 "S6 tutti i path citati nel README esistono" || sonda 1 "S6 path citati nel README inesistenti:$ROTTO"
+# GRAMMATICA_DOMINIO_TEMPLATE.md cita il file che ordina di CREARE: escluso
+done < <(cat "$HERE/README.md" $(ls "$HERE"/docs/*.md | grep -v GRAMMATICA_DOMINIO_TEMPLATE) 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' | tr -d '`' | sort -u)
+[ -z "$ROTTO" ] && sonda 0 "S6 tutti i path citati in README e docs di radice esistono" || sonda 1 "S6 path citati inesistenti:$ROTTO"
+
+# S7 — il registro pattern è bidirezionale (A4: cancellare un file di pattern non
+#   faceva diventare rosso NIENTE — il README continuava a linkarlo)
+REG_ROTTO=""
+while IFS= read -r nome; do
+  [ -f "$HERE/patterns/$nome.md" ] || REG_ROTTO="$REG_ROTTO $nome"
+done < <(grep -oE '\]\([a-z0-9-]+\.md\)' "$HERE/patterns/README.md" | sed 's/^](//; s/\.md)$//')
+[ -z "$REG_ROTTO" ] && sonda 0 "S7 ogni voce del registro pattern ha il suo file" || sonda 1 "S7 voci del registro senza file:$REG_ROTTO"
+
+# S8 — i file promessi da AGENTS.md esistono (G17: .night-verify poteva sparire)
+#      e il pavimento delle skill regge (A18: una skill cancellata da entrambi i
+#      lati era invisibile a ogni test di propagazione)
+PROMESSE=""
+for f in .night-verify .gitattributes DEBITI.md METHOD.md; do
+  [ -e "$HERE/$f" ] || PROMESSE="$PROMESSE $f"
+done
+NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
+[ "$NSK" -ge 8 ] || PROMESSE="$PROMESSE (skill sottosoglia: $NSK < 8)"
+[ -z "$PROMESSE" ] && sonda 0 "S8 file promessi esistono e skill >= 8 ($NSK)" || sonda 1 "S8 promesse mancate:$PROMESSE"
+
+# S9 — repos-index: i codici sono REPO-[A-N] e basta (G7: un codice fuori schema aggiunto in
+#   silenzio non faceva diventare rosso niente)
+IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-[A-N]$" | sort -u | tr '\n' ' ')
+[ -z "$IDX_ROTTO" ] && sonda 0 "S9 repos-index usa solo codici REPO-[A-N]" || sonda 1 "S9 codici fuori schema:$IDX_ROTTO"
 
 echo ""
 echo "VERDETTO: $FINDINGS finding"

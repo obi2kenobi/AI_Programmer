@@ -90,6 +90,12 @@ def main():
         giorni = r["giorni"].strip() if r["giorni"].strip() != "" else None
         tipo = r["tipo"]
         importo_bc = float(r["importo"])
+        # giri avversari 2026-08-28 (D5/D6): nan/inf passavano e producevano totali
+        # "+nan€" in silenzio. Un importo non finito è dato marcio: si dichiara.
+        import math
+        if not math.isfinite(importo_bc):
+            print(f"ERRORE: importo non finito (nan/inf) alla riga tipo={r['tipo']}", file=sys.stderr)
+            return 1
         # bug reale (revisione 14 lenti, 2026-08-28): importo_fornitore() era definita ma
         # mai chiamata — ogni riga fornitore finiva col segno grezzo di BC (positivo),
         # quindi in "entrate" invece che in "uscite". "tipo" porta sia la controparte

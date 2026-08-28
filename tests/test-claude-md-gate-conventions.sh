@@ -28,6 +28,16 @@ grep -q 'cp "\$HERE/CLAUDE.md" CLAUDE.md' "$HERE/tools/bootstrap-app.sh" \
   && ok "CLAUDE.md (con le nuove convenzioni) viene copiato nei progetti bootstrappati" \
   || ko "bootstrap-app.sh non copia più CLAUDE.md — la documentazione non arriverebbe"
 
+# giri avversari 2026-08-28 (A15): togliere la regola clasp da CLAUDE.md non
+# faceva diventare rosso nessun test — la regola del deploy è presidiata qui
+grep -qi "clasp" "$HERE/CLAUDE.md" && ok "CLAUDE.md presidia la regola clasp (deploy dell'umano)" \
+  || ko "CLAUDE.md ha perso la regola clasp"
+
+# (A17) il union merge driver per i file append-only è dichiarato
+grep -q "SAL.md merge=union" "$HERE/.gitattributes" && grep -q "docs/campo/\*.md merge=union" "$HERE/.gitattributes" \
+  && ok ".gitattributes presidia il union merge per SAL e campo" \
+  || ko ".gitattributes ha perso il union merge driver"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
