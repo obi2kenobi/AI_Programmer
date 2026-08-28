@@ -62,7 +62,11 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
   cd "$TMP/work"
   COPIATI=0
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent docs/campo; do
+  # bug reale (revisione 14 lenti, 2026-08-28): mancavano .opencode/skills (root cause
+  # della divergenza trovata da 3 lenti indipendenti — le 9 skill "viaggiavano" solo
+  # all'onboarding iniziale, mai più dopo) e patterns/ (stesso gap: un pattern nuovo
+  # aggiunto dopo l'onboarding non raggiungeva più le repo già onboardate).
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
     cp -r "$HERE/$ITEM" "$ITEM"
