@@ -158,6 +158,7 @@
 - [2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap](#2026-08-27-19-magazzino-72-commit-20-bug-55-proposte-e-il-handoff-gap)
 - [2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI](#2026-08-28-dossier-sd-dashboard-86-rilievi-71-dichiarati-non-verificati)
 - [2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi](#2026-08-28-repo-i-fase-3-chiude-il-ciclo-245-idee-7-proposte-due-pattern-nuovi)
+- [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-sano-una-guardia-nuova-per-la-prosa)
 
 
 ## Stato
@@ -3541,3 +3542,21 @@ DELLE TRE RICOMPARSE (la stessa lacuna alla terza volta = matura per
 l'investimento, non più rinviata); in metodo: L'ISOLAMENTO DEL BANCO (un'eccezione
 in un test = un fallimento in più, non un abort — e il conteggio atteso si
 dichiara). Suite 87/87.
+
+### 2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa
+
+Indagine meccanica su 30 assi (inventario completo, riferimenti incrociati,
+àncore pattern, oracoli/test, SAL/indice, hook, privacy, specchi, rilevatori,
+verifica_banco, bc_index, DEBITI, git, sync-repo, AGENTS/campo/benvenuto/mappa,
+pipeline METHOD, regole CLAUDE, descrizioni skill, settings hook, TODO/FIXME).
+Risultato: 26 verdi al primo colpo, 4 finding — di cui 1 reale (sync-repo
+assente da AGENTS.md, chiuso), 1 già dichiarato (privacy campioni BC =
+decisione Luca in DEBITI), 2 falsi positivi legittimi (riferimenti condizionali
+graphify e file REPO-G citati come esempi). Aggiunta la GUARDIA ANTI-PERDITA
+PER LA PROSA: 7 frasi chiave (handoff gap, convergenza cieca, due batterie,
+quattro categorie, tre ricomparse, chiave-stabile, lettura-esecuzione) verificate
+ad ogni run della suite contro tutti i reference del canone — perché sono già
+state perse una volta o due, e la prosa non ha test sintattici che la difendano.
+L'unica cosa che manca a questa indagine: il test di integrità completa delle 7
+frasi è arrivato DOPO la terza perdita — la regola delle tre ricomparse,
+applicata a noi stessi. Suite 87/87.
