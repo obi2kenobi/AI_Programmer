@@ -81,3 +81,11 @@ Ogni idea del catalogo finisce in UNA di queste (mai una quinta necessaria):
 Quando la stessa lacuna infrastrutturale interrompe o restringe il lavoro per
 la TERZA volta in progetti diversi, non e piu «rinviata»: e MATURA PER
 L'INVESTIMENTO — il costo di continuarci intorno ha superato il costo di colmarla.
+
+
+## La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)
+
+Cinquanta giri richiesti, consolidati in 14 lenti realmente distinte: evitare
+passate quasi-duplicate e la stessa disciplina zero-waste applicata al processo
+di revisione stesso. Due lenti che leggono gli stessi file con la stessa domanda
+sono UNA lente; due che li leggono con domande diverse restano due.
