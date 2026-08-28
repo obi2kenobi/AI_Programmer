@@ -145,3 +145,8 @@ in `docs/system.md` §"Limiti dichiarati" #6.
 Delegare a uno di questi non sostituisce il metodo di questo file: l'agente eredita
 la stessa disciplina (oracolo prima del codice, mai indovinare), cambia solo chi
 esegue il passo.
+
+
+## Vedi anche
+
+skill `brainstorming` (il passo prima) · skill `design-doc` (il passo dopo)

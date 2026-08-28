@@ -140,3 +140,8 @@ Un report strutturato nell'ordine: bug → sicurezza → gap di processo → deb
 nuove idee. Riferimenti file:riga verificabili in ogni punto. Se l'utente deve passarlo ad altri
 (umano o altro LLM), scrivilo come file autosufficiente — leggibile senza il contesto di questa
 conversazione — non solo come testo in chat.
+
+
+## Vedi anche
+
+skill `brainstorming` (il passo prima) · skill `design-doc` (il passo dopo)
