@@ -600,3 +600,31 @@ Due difetti scoperti insieme, uno causa dell'altro:
 
 Fatto dopo: indice rapido dei pattern per tema in fondo a metodo.md (tutti i 40 pattern citati dal
 canone), pattern `pipefail-grep-sigpipe` nel catalogo, ciclo verificato deterministico.
+
+### 2026-08-28 (2) — Altri 100 giri: il ciclo che misurava se stesso, e il test anti-drift che non testava
+
+Eseguiti 100 giri con memoria pulita. Dati: giro 13 livello 3 pulito → 4; giri 14-16 livello 4 a zero finding
+(il livello era VUOTO: nessuna lente, tre passes gratis); dal 17 al 112 livello 5 in OSCILLAZIONE PERFETTA
+0,1,0,1 — 48 META finding su 97 giri. Due difetti strutturali:
+
+1. **Meta-lente degenere**: `CURRENT >= PREV` con entrambi a zero è VERA → steady-state perfetto
+   segnalato come "il ciclo non migliora". Fissata: regressione = finding in AUMENTO (`>`). Lo zero
+   stabile è successo, non stallo.
+
+2. **Livello 4 (architettura) senza lenti**: costruite quattro invarianti reali — specchio skills
+   (bidirezionale, graphify esclusa), specchio agenti per contratto di corpo (con asserzione NON-VUOTO),
+   copertura tool.py→test (normalizzando - e _), registro patterns/README.md ↔ file.
+
+E mentre si costruiva la lente specchi, la scoperta più grossa: **test-opencode-agent-sync.sh non ha mai
+testato niente**. `corpo()` usava due `sed '1,/^---$/d'` concatenate: la prima consuma ENTRAMBE le
+recinzioni del frontmatter, la seconda non trova più `---` e cancella fino a EOF → corpo sempre vuoto →
+`diff vuoto vuoto` verde per sempre. Gli specchi erano driftati DAVVERO (5 agenti su 6 senza la sezione
+Graphify) sotto il test verde. Fisso: una sola sed + asserzione di non-vuoto prima del diff + conteggio
+righe confrontate nell'output. Specchi risincronizzati. Pattern: `confronto-non-vuoto`.
+
+Il ciclo ora ha un CUORE: dopo 3 giri puliti al livello 5 torna al livello 1 (dente di sega 1→5→1),
+perché fermo al 5 verificherebbe solo il 5 mentre le fondamenta invecchiano. Le guardie per finding
+ricorrenti (3+) ora vengono ACCODATE su file (.ciclo/guardie/da-generare-*.txt), prima venivano solo
+stampate. Copertura completata: test per leasing_amministrativo (aritmetica a mano: residuo 14000 =
+23000×14/23, adeguamento trimestrale 0.875→0.88) e bc_tipi_metadata (contratto offline: mappa EDM,
+fallimento senza rete via credenziali avvelenate su 127.0.0.1:1). Suite 106/106.

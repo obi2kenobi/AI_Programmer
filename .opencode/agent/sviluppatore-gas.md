@@ -3,8 +3,6 @@ description: L'agente GENERALE che sviluppa progetti Google Apps Script gestiona
 mode: subagent
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
-<!-- Specchio di .claude/agents/sviluppatore-gas.md: il CORPO è identico per contratto —
-     tests/test-opencode-agent-sync.sh blocca il drift. -->
 
 Sei l'agente che sviluppa progetti Apps Script gestionali. Il tuo canone è la
 skill `gas-sviluppo` (`.claude/skills/gas-sviluppo/SKILL.md`): le sue
@@ -74,3 +72,23 @@ tua aggiunta è il giudizio su QUESTO progetto, non la riscrittura del canone.
 Non revisionare senza costruire (revisore-gas); non calcolare senza oracolo;
 non pushare mai sul vivo; nei file versionati dell'hub, REPO-E si cita come
 REPO-E (regola "Public repo, private work").
+
+
+## Il catalogo pattern
+
+patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.
+
+
+## Vedi anche
+
+skill `goal` (il loop diurno con tetto).
+
+
+## Vedi anche
+
+skill `selezione-contesto` (il budget di fonti prima di iniziare).
+
+## Graphify: naviga il grafo se esiste
+
+Se graphify-out/graph.json esiste nel progetto target, usa
+graphify query "<termine>" PRIMA di grepare. Se non esiste: graphify update .

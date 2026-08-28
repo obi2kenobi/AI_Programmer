@@ -21,8 +21,15 @@ OPEN=("$HERE"/.opencode/agent/*.md)
   && ok "agenti OpenCode specchiati: ${#OPEN[@]} = ${#CLAUDE[@]}" \
   || ko "sfasamento: ${#OPEN[@]} OpenCode vs ${#CLAUDE[@]} Claude"
 
-corpo() { # corpo = tutto ciò che segue la chiusura del frontmatter, senza la nota specchio
-  sed '1,/^---$/d' "$1" | sed '1,/^---$/d' | grep -v '^<!--' | grep -v '^     ' | sed '/^-->$/d'
+corpo() { # corpo = tutto ciò che segue la chiusura del frontmatter, senza la nota specchio.
+  # UNA sola sed '1,/^---$/d': il range parte dalla riga 1 e si chiude al SECONDO ---
+  # (la chiusura del frontmatter), lasciando il corpo. La versione con DUE sed concatenate
+  # cancellava tutto: la prima consumava già entrambe le recinzioni, la seconda non trovava
+  # più --- e, per semantica sed, cancellava fino a EOF. corpo() restituiva SEMPRE vuoto,
+  # diff vuoto==vuoto passava sempre: il test diceva "no drift" senza aver mai confrontato
+  # niente (scoperto 2026-08-28 con gli specchi già driftati su 5 agenti su 6).
+  # La nota specchio si riconosce dal commento HTML che la contiene.
+  sed '1,/^---$/d' "$1" | grep -v '^<!-- Specchio' | grep -v '^     ' | sed '/^-->$/d'
 }
 
 for c in "${CLAUDE[@]}"; do
@@ -33,8 +40,14 @@ for c in "${CLAUDE[@]}"; do
   grep -q "^mode: subagent" "$o" \
     && ok "$nome: frontmatter OpenCode con mode subagent" \
     || ko "$nome: frontmatter senza mode: subagent"
-  if diff <(corpo "$c") <(corpo "$o") >/dev/null 2>&1; then
-    ok "$nome: corpo identico fra Claude e OpenCode (no drift)"
+  # il corpo estratto NON può essere vuoto: un confronto vuoto==vuoto passa sempre
+  # e verificherebbe niente (la lezione del 2026-08-28). Prima si dichiara non vuoto,
+  # poi si confronta.
+  NC=$(corpo "$c" | wc -l | tr -d ' '); NO=$(corpo "$o" | wc -l | tr -d ' ')
+  [ "$NC" -gt 0 ] || ko "$nome: estrazione corpo Claude VUOTA — il confronto non varrebbe niente"
+  [ "$NO" -gt 0 ] || ko "$nome: estrazione corpo OpenCode VUOTA — il confronto non varrebbe niente"
+  if [ "$NC" -gt 0 ] && [ "$NO" -gt 0 ] && diff <(corpo "$c") <(corpo "$o") >/dev/null 2>&1; then
+    ok "$nome: corpo identico fra Claude e OpenCode (no drift, $NC righe confrontate)"
   else
     ko "$nome: il corpo DIVERGE fra .claude/agents e .opencode/agent — due agenti diversi che si credono lo stesso"
   fi
