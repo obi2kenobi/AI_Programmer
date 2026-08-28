@@ -31,6 +31,7 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-K | dashboard web GAS+BC per gestione ordini multi-categoria (SD) | dossier 86 rilievi + 25 idee, TUTTI implementati in sessione continua 2026-08-28 | docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md |
 | REPO-L | Unicredit_Factoring (cessione fatture, GAS+BC, file fixed-width TXT per banca) | audit 30 agenti 2026-08-28: 54 rilievi, 9 confermati, 45 NON VERIFICATI, 0 smentiti · SECRET in git history (da ruotare) | docs/campo/2026-08-28-unicredit-factoring-30-agenti.md |
 | REPO-M | Associazione-Energikal (bilancino trimestrale, GAS+BC, 27 file .gs) | revisione 15+20 rilievi 2026-08-28: CRITICA credenziali Azure in git history + conto C/G non corrispondente CSV + backlog completo | docs/campo/2026-08-28-energikal-analisi-revisione.md |
+| REPO-N | gestionale parrocchie (Flask+SQLite, privato) | 50 passate 2026-08-28: 13 difetti banco, 10 commit, scadenze 10/10 | docs/campo/2026-08-28-parrocchie-fase1.md |
 
 ## Come usarlo
 

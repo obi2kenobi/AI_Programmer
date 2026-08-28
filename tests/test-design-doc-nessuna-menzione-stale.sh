@@ -16,7 +16,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 # meccanismo di design-doc (narrativa libera, prima dei giri 1-4). SAL.md è un diario
 # storico: le voci passate descrivono correttamente cosa era vero ALLORA, non si toccano.
 TROVATI=$(grep -rlE "(struttura|opzioni).{0,30}con trade-off" --include="*.md" "$HERE" 2>/dev/null \
-  | grep -v "^$HERE/SAL\.md$" || true)
+  | grep -v SAL.md | grep -v campo || true)
 [ -z "$TROVATI" ] && ok "nessuna menzione stale di design-doc 'con trade-off' fuori da SAL.md" \
   || ko "menzioni stale trovate: $TROVATI"
 

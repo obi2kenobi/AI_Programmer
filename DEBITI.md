@@ -151,3 +151,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-28 | Client_secret BC committato in config.gs dal 16/02/2026, pushato su GitHub. Da ruotare su Azure AD + ripristinare placeholder. Eventuale pulizia history = filter-repo (distruttivo, coordinato). | rotazione: da fare su Azure AD dal proprietario | decisione Luca: ruotare secret, pulire codice, eventuale pulizia history |
+
+## Privacy fuori casa (REPO-N 2026-08-28)
+
+| Data | Scorciatoia | Perché | Quando |
+|---|---|---|---|
+| 2026-08-28 | repos.key locale: sessioni esterne sempre cieche sul privacy-check | soluzione da decidere con Luca | lavoro regolare su esterni |
