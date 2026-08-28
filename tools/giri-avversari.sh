@@ -16,13 +16,33 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
+
+# Un attacco si fa solo su ALBERO PULITO: i checkout di ripristino altrimenti
+# cancellano lavoro non committato ( successo davvero il 2026-08-28: due fix
+# persi e riapplicati a mano prima di capirlo).
+if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null || [ -n "$(git ls-files --others --exclude-standard | head -1)" ]; then
+  echo "⛔ albero sporco: committa (o stash) prima di attaccare" >&2
+  exit 2
+fi
+restore_tutto() {
+  git checkout -- . 2>/dev/null
+  chmod +x tools/*.sh 2>/dev/null
+  rm -f .campo-rem tools/_sleep_malvagio.py /tmp/avv-*.md /tmp/avv-*.py /tmp/avv-*.sh /tmp/avv-*.json /tmp/avv-*.csv /tmp/avv-*.txt /tmp/avv-*.bak /tmp/avv-lib.bak 2>/dev/null
+  rm -rf .ciclo 2>/dev/null
+}
+trap restore_tutto EXIT
+
 TENGONO=0; AGGIRATI=0; ACK=0; ATT=0
 
 ack() { ACK=$((ACK+1)); echo "ACK  #$ATT $1"; }
 tiene() { TENGONO=$((TENGONO+1)); echo "TIENE #$ATT $1"; }
 aggirato() { AGGIRATI=$((AGGIRATI+1)); echo "AGGIRA #$ATT $1"; }
 att() { ATT=$((ATT+1)); }
-difesa_test() { bash "$1" >/dev/null 2>&1 && aggirato "$2" || tiene "$2"; }
+difesa_test() {
+  bash "$1" >/dev/null 2>&1 && aggirato "$2" || tiene "$2"
+  git checkout -- . 2>/dev/null   # ogni attacco parte dall'albero integro: i verdetti non a cascata
+  chmod +x tools/*.sh 2>/dev/null
+}
 rev() { git checkout -- "$1" 2>/dev/null; true; }
 
 echo "=== CAT A — mutazioni che i test DEVONO prendere ==="
