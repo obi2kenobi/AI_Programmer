@@ -214,3 +214,16 @@ voci della revisione contro i task completati + quelli dichiarati non-fatti:
 revisione_N = eseguiti_N + rinviati_N + persi_0. Se persi > 0, dichiararli.
 E: un bug trovato lavorando su ALTRO si segnala separato, non si mischia al
 commit corrente (stesso principio un-commit-per-rilievo, applicato in anticipo).
+
+
+## L'onore del NON VERIFICATO (dal dossier SD, 2026-08-28)
+
+86 rilievi trovati, ma la verifica avversariale (secondo giudice che cerca
+di confutare) ha completato solo 2 aree su 12 prima di esaurire il budget:
+71 rilievi sono dichiarati NON VERIFICATI, non nascosti né spacciati per
+confermati. La regola: quando la verifica non finisce, lo STATO di ogni
+rilievo si dichiara — CONFERMATO / POSSIBILE / NON VERIFICATO — e chi legge
+può filtrare. Un rilievo non verificato non è un rilievo falso: è un rilievo
+che onestamente dice «leggi riga-per-riga, citato con precisione, ma non ha
+ancora subito il secondo occhio». Meglio 86 dichiarati con fiducia nota che
+14 confermati e 72 tacitamente promossi allo stesso livello.
