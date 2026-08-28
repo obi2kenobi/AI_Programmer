@@ -852,9 +852,7 @@ Ogni voce con la sua guardia citata PER FILE.
 canonica, e — la parte che conta — la guardia citata ESISTE: una promessa senza
 file è il parente della promessa fossile. 43 controlli verdi.
 
-**E-013 si è scritto da solo**: mentre compilavo il registro, la lente S1 ha
-beccato altri due glifi alieni nel testo che stavo scrivendo («in阳台»,
-«driftato人工») — terza volta nello stesso giorno. Registrato come ricorrenza:
+beccato altri due glifi alieni nel testo che stavo scrivendo (evidenza in registro, E-013) — terza volta nello stesso giorno. Registrato come ricorrenza:
 la guardia funzionava già, il punto è che senza lente tre testi pubblici
 sarebbero usciti sporchi. Il sistema si è applicato a se stesso nel momento
 stesso in cui veniva costruito.

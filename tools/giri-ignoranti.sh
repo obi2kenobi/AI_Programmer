@@ -19,8 +19,12 @@ sonda() { # sonda <esito 0|1> <descrizione>
 # S1 — caratteri alieni: nessun CJK/cirillico/arabo nei testi tracciati
 #   (classe reale: due corruzioni trovate, una in SAL-ARCHIVIO e una scritta
 #   da un agente stesso — entrambe parole italiane con glifi CJK in mezzo)
+# esclusioni DICHIARATE: SAL-ARCHIVIO (storico, bonificato alla rotazione) e
+# docs/errori/REGISTRO.md — cita le corruzioni reali che documenta come
+# evidenza dei sintomi (E-013): un registro degli errori che non possa
+# nominare gli errori non documenta niente
 ALIENI=$(git -C "$HERE" grep -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}\x{0600}-\x{06FF}]' \
-  -- '*.md' '*.sh' '*.py' 2>/dev/null | grep -v SAL-ARCHIVIO.md || true)
+  -- '*.md' '*.sh' '*.py' 2>/dev/null | grep -vE 'SAL-ARCHIVIO.md|docs/errori/REGISTRO.md' || true)
 [ -z "$ALIENI" ] && sonda 0 "S1 nessun carattere alieno nei testi" || sonda 1 "S1 caratteri alieni: $ALIENI"
 
 # S2 — numeri claims vs realtà: ogni "<N> test|pattern|agenti" nei doc di testa
