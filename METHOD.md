@@ -1,14 +1,15 @@
 # METHOD.md — il metodo in una pagina
 
 > Il sistema ha molte stanze; questa è la porta. Ogni elemento rimanda alla sua fonte
-> di verità. Ultima revisione: 2026-08-23 (4° ciclo, set 1 "agenti/sistema contabile",
-> giro 1/10).
+> di verità. Ultima revisione: 2026-08-28 (revisione 14 lenti — data corretta: il
+> contenuto conteneva già "terza corsia" del 7° ciclo 2026-08-24 e "Lo standard" del
+> 2026-08-26, la data qui sopra era rimasta al 4° ciclo, 2026-08-23).
 
 ## Il ciclo
 
 ```
 /selezione-contesto → /brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
-                                               → territorio grande: commessa → /audit-commesse → notte
+                                               → territorio grande: commessa → /audit-commessa → notte
                                                  → gate → review di Luca
 TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
   chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
@@ -23,9 +24,9 @@ TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul camp
 | Brainstorming (socratico + divergenza: riformulazioni del problema prima di convergere) | `/brainstorming` | `.claude/skills/brainstorming/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 6° ciclo set 2: divergenza + contesto preventivo) |
 | Design (vincoli di squalifica PRIMA, poi opzioni confrontate su criteri espliciti, effetti di secondo ordine, spike se un criterio è ignoto — NON implementa) | `/design-doc` | `.claude/skills/design-doc/SKILL.md` (6° ciclo set 2: squalifiche/secondo-ordine/spike) |
 | GAS sviluppo/revisione generici (canone del parco REPO-E: quattro verbi, famiglie misurate, parità) | `gas-sviluppo` + agenti `sviluppatore-gas`/`revisore-gas` | `.claude/skills/gas-sviluppo/` (6° ciclo, addendum: il parco come corpus) |
-| Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione`, o delega a un subagent (`contabilita-analitica`/`costruttore-calcoli-gestionali`/`revisore-calcoli-critici` più, dal 6° ciclo, `censitore-forma-dati` e `sviluppatore-gas`) — invocabilità dipende da un refresh del roster degli agenti, non garantita nella sessione/turno in cui i file vengono scritti (set 1 giro 8, poi confermata funzionante) | `.claude/skills/controllo-gestione/SKILL.md`; `.claude/agents/` (5 agenti — nota in docs/system.md §"Limiti dichiarati" #6); la copertura per dominio: `docs/mappa-dominio-gas-src.md` (6° ciclo, set 1: 8 oracoli Python minati da REPO-E) |
+| Controllo di gestione (formula ancorata a un oracolo reale, non inventata) — quando la commessa è un calcolo contabile/gestionale, non una decisione software | `/controllo-gestione`, o delega a un subagent (`contabilita-analitica`/`costruttore-calcoli-gestionali`/`revisore-calcoli-critici` più, dal 6° ciclo, `censitore-forma-dati` e `sviluppatore-gas`) — invocabilità dipende da un refresh del roster degli agenti, non garantita nella sessione/turno in cui i file vengono scritti (set 1 giro 8, poi confermata funzionante) | `.claude/skills/controllo-gestione/SKILL.md`; `.claude/agents/` (6 agenti, incluso `revisore-gas` — bug reale corretto: revisione 14 lenti, 2026-08-28, il conteggio era rimasto a 5); la copertura per dominio: `docs/mappa-dominio-gas-src.md` (6° ciclo, set 1: 8 oracoli Python minati da REPO-E) |
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
-| Audit serale (verifica le assunzioni sul codice) | `/audit-commesse` | idem |
+| Audit serale (verifica le assunzioni sul codice) | `/audit-commessa` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
 | Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
 | Registro esiti (notte) | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |

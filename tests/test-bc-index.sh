@@ -27,11 +27,30 @@ N_RIGHE=$(grep -c '^| `' "$TMP/docs/bc/README.md" 2>/dev/null || echo 0)
   || ko "righe=$N_RIGHE, file=$N_FILE — endpoint persi o duplicati"
 
 grep -q "Avanzamento — $N_FILE mappati" "$TMP/docs/bc/README.md" \
-  && ok "l'avanzamento riporta il conteggio reale ($N_FILE, senza il /108 cablato: il catalogo vive nel repo cliente)" \
+  && ok "l'avanzamento riporta il conteggio reale ($N_FILE, senza il /108 cablato: il catalogo vive in questo hub)" \
   || ko "avanzamento sbagliato: $(grep Avanzamento "$TMP/docs/bc/README.md")"
 grep -q "Catalogo servizi OData" "$TMP/docs/bc/README.md" \
-  && ok "l'indice riporta il catalogo e i mancanti al censimento (oggi 258/170 reali)" \
+  && ok "l'indice riporta il catalogo e i mancanti al censimento" \
   || ko "manca il conteggio catalogo/mancanti"
+
+# bug reale (revisione 14 lenti, 2026-08-28): ogni riga della tabella del catalogo ha DUE
+# valori fra backtick (nome visualizzato con spazi, nome tecnico con underscore) — la
+# regex catturava il PRIMO (visualizzato), che non corrisponde mai a un nome di file
+# reale. "mancanti" risultava gonfiato di 22 unità fantasma (258-231=27 atteso, il codice
+# dava 49 prima del fix). Verifica diretta sulla funzione vera, sul catalogo reale.
+RISULTATO=$(cd "$HERE" && python3 - <<'PY'
+import sys, os, glob
+sys.path.insert(0, "tools")
+import bc_index
+n_cat, mancanti = bc_index.catalogo_mancanti()
+n_esistenti = len(glob.glob(os.path.join(bc_index.ENDPOINTS_DIR, "*.md")))
+atteso = n_cat - n_esistenti
+print("OK" if len(mancanti) == atteso else f"KO (mancanti={len(mancanti)} atteso={atteso})")
+PY
+)
+[ "$RISULTATO" = "OK" ] \
+  && ok "catalogo_mancanti(): cattura il nome tecnico, l'aritmetica torna semplice (catalogo - esistenti)" \
+  || ko "catalogo_mancanti(): ancora gonfiato da nomi visualizzati fantasma — $RISULTATO"
 grep -q "Salute del censimento" "$TMP/docs/bc/README.md" \
   && ok "l'indice riporta la SALUTE (verificati, data refresh) — il censimento invecchia in modo visibile" \
   || ko "manca la sezione salute del censimento"

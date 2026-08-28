@@ -60,8 +60,11 @@ grep -q "SAL" "$MG" \
   || ko "morning-gate: nessun riferimento al SAL"
 
 # 8. AGENTS.md dichiara la catena intera all'agente che atterra
+# bug reale (revisione 14 lenti, 2026-08-28): questo test cercava "audit-commesse" — lo
+# stesso typo (comando inesistente, la skill vera è /audit-commessa) che METHOD.md e
+# AGENTS.md portavano — un test nato per verificare la pipeline ne certificava l'errore.
 grep -q "selezione-contesto" "$AG" && grep -q "brainstorming" "$AG" && grep -q "design-doc" "$AG" \
-  && grep -q "audit-commesse" "$AG" && grep -q "gate" "$AG" \
+  && grep -q "audit-commessa" "$AG" && grep -q "gate" "$AG" \
   && ok "AGENTS.md: la pipeline completa è dichiarata all'agente in arrivo" \
   || ko "AGENTS.md: la pipeline dichiarata è incompleta"
 
