@@ -46,6 +46,7 @@
 - [2026-08-28 (6) — I 100 giri sui TEST: i quattro teatri verdi, il banco di fine passaggio, e il test fantasma](#2026-08-28-6-i-100-giri-sui-test-i-quattro-teatri-verdi-il-banco-di-fine-passaggio-e-il-test-fantasma)
 - [2026-08-28 (7) — I 100 giri di CHIAREZZA: i commenti come verifica del pensiero](#2026-08-28-7-i-100-giri-di-chiarezza-i-commenti-come-verifica-del-pensiero)
 - [2026-08-28 (8) — I 100 giri sui FALLIMENTI: l'errore a regime](#2026-08-28-8-i-100-giri-sui-fallimenti-l-errore-a-regime)
+- [2026-08-29 — I 100 giri sulla COMPRENSIONE: polilivello, le domande di senso, il brainstorming generativo](#2026-08-29-i-100-giri-sulla-comprensione-polilivello-le-domande-di-senso-il-brainstorming-generativo)
 
 
 ## Stato
@@ -866,3 +867,39 @@ viene messa alla prova dal sistema che l'ha generata.
 
 Regola vincolante in CLAUDE.md §5: errore trovato → skill post-mortem, registro,
 guardia vista rossa prima di chiudere. Suite 115/115.
+
+### 2026-08-29 — I 100 giri sulla COMPRENSIONE: polilivello, le domande di senso, il brainstorming generativo
+
+Su richiesta di Luca: comprensione del progetto di destinazione attraverso analisi
+polilivello, domande di senso (cosa fa? come lo fa? come potrebbe farlo meglio?),
+potenziare lo studio e il brainstorming. Tre pezzi:
+
+**1. La skill polilivello** (specchiata opencode): sei livelli in ordine dal grosso
+al fine — L1 identità (UNA riga guadagnata: se non la sai scrivere, non hai capito,
+hai solo letto), L2 struttura, L3 comportamento (COSA FA: per entrypoint
+trigger→input→output), L4 meccanica (COME: formule citate file:riga, assunzioni
+implicite), L5 storia (le cicatrici non si sistemano senza sapere cosa hanno guarito),
+L6 critica — che APRE il brainstorming. Regola dura: la critica senza le prime due
+domande è vietata.
+
+**2. Il brainstorming potenziato** (§4 della skill): dieci provocazioni P1-P10 in
+tre famiglie — sul COSA (test del vuoto, next-question, il vicino), sul COME (scala
+×10, ribaltamento, costo zero), sul CHI (domanda di dominio, l'ostacolo, il debito
+visibile, la fusione). Le provocazioni senza comprensione sono modelli, non idee.
+
+**3. tools/polilivello.sh**: lo scaffold meccanico di L2/L4/L5 (entrypoint, ID,
+dipendenze, formule candidate, costanti magiche, date, debito). Il campo l'ha
+corretto subito: i progetti GAS nominano gli entrypoint con VERBI DI DOMINIO
+italiani (analizza, calcola, genera...) — il grep doGet/main li mancava TUTTI;
+gli ID stanno in const in testa, non in letterali. Due iterazioni sul primo
+bersaglio vero.
+
+**La demo completa** (docs/campo/2026-08-29-polilivello-demo-rating.md): analisi
+L1→L6 del progetto Rating Clienti del parco. La fase critica ha prodotto sei idee
+in un passaggio: l'anno CABLATO nella regex dei codici documento (25OV-… non
+matcherà più dal 2026: bomba orologio), l'oracolo hub che la regex giusta l'ha
+già scritta (il fix a costo zero è copiare la lezione già pagata), il
+primo-file-trovato nella folder, e LA domanda di dominio che nessun codice può
+rispondere: il DSO col factoring misura il cliente o la banca? Validato anche sul
+progetto più grande del parco (26.190 righe: 12 entrypoint colti, trigger
+programmatici, config BC). Suite 117/117.
