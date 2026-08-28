@@ -250,3 +250,12 @@ una meta del problema). La regola: prima di dichiarare un rilievo chiuso,
 RILEGGERE lo scenario di fallimento ORIGINALE — non la propria descrizione
 del fix gia scritta — e verificare che non si riproduca piu sul codice
 attuale. E un banco per il processo di correzione, non solo per il codice.
+
+
+## Misura la deriva prima di assumerne la portata (dal campo REPO-J, 2026-08-28)
+
+Quando il live e cambiato e un sessione di fix non e ancora deployata: il passo 0
+e MISURARE, non eseguire il mandato alla lettera. Diff contro la BASELINE pre-fix
+(non contro HEAD che include i fix), whitespace-insensitive (clasp normalizza).
+REPO-J: 11 file sembravano divergenti, 3 lo erano davvero — il resto era rumore
+di formattazione. Misurare prima ha evitato di rifare 25 fix gia solidi.
