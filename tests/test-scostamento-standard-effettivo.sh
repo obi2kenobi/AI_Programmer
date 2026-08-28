@@ -79,12 +79,12 @@ grep -q "REPO-E" "$HERE/tools/scostamento_standard_effettivo.py" \
 # bug reale (revisione 14 lenti, 2026-08-28): costo_standard non passato da riga di
 # comando diventava silenziosamente 0, indistinguibile da uno scostamento vero nullo.
 # L'argomento mancante deve fallire con un errore, non un "nessuno scostamento" muto.
-if printf 'costo_eff_unitario,qta_prodotta\n10,5\n' | python3 "$HERE/tools/scostamento_standard_effettivo.py" >/tmp/scost_out 2>&1; then
+if printf 'costo_eff_unitario,qta_prodotta\n10,5\n' | python3 "$HERE/tools/scostamento_standard_effettivo.py" >$(mktemp -d)/scost_out 2>&1; then
   ko "argomento costo_standard mancante: doveva fallire (exit != 0), è uscito con successo"
 else
   ok "argomento costo_standard mancante: fallisce con errore (non più 'nessuno scostamento' silenzioso)"
 fi
-rm -f /tmp/scost_out
+rm -f $(mktemp -d)/scost_out
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
