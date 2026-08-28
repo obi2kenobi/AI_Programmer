@@ -81,3 +81,8 @@ esistono più strade plausibili, o direttamente a `/nuova-commessa` se la strada
 il territorio è piccolo e noto. Il brainstorming stesso non produce un documento
 permanente — è `/design-doc` (o la sezione `## Design` della commessa) a farlo, citando
 cosa è emerso qui in una frase, non riportando la conversazione intera.
+
+
+## Vedi anche
+
+skill `design-doc` (il passo dopo)

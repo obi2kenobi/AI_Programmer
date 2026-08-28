@@ -173,3 +173,8 @@ esegue e con quale disciplina di verifica, non se il design è stato fatto.
   una raccomandazione implicita — la scelta resta di chi possiede il progetto.
 - Se la richiesta è ambigua su COSA deve essere vero dopo, fermati e chiedi — non
   indovinare il criterio di successo per poi progettare la risposta sbagliata.
+
+
+## Vedi anche
+
+skill `brainstorming` (il passo prima)

@@ -117,3 +117,8 @@ commessa:
 Un body di issue aggiornato con `## Forma dei dati (verificata sul codice)`, e un riepilogo
 finale: quante commesse auditate, quante correzioni, quante erano già giuste — lo stesso
 formato del primo giro (REPO-B, 2026-08-21: 3/4 difettose).
+
+
+## Vedi anche
+
+skill `dev-critic` (gap di progetto) · skill `controllo-gestione` (cifre)

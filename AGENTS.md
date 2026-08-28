@@ -96,6 +96,12 @@ calcolo contabile NON delegare l'invenzione della formula: cerca l'oracolo.
 (CLAUDE.md, skill, agenti, hook, formato report). Senza flag: verifica e riporta
 il drift di CLAUDE.md.
 
+### Il catalogo pattern
+
+`patterns/` contiene 39 pattern, ciascuno nato da un errore vero con ancore
+a file:riga del progetto che l'ha pagato. Indice: `patterns/README.md`.
+Consulta prima di reinventare; dopo averne pagato uno nuovo, scrivilo.
+
 ## 5. La verifica: come esco da qui
 
 `bash .night-verify` — suite completa (fail-fast, ~75 test) + shellcheck +

@@ -76,3 +76,8 @@ Se il giro di selezione trova il problema già risolto, già deciso o già pagat
 (una voce SAL, un oracolo, un pattern che lo copre), il compito non è progettare:
 è riportare il riferimento e fermarsi. Il contesto più efficace è quello che
 soprassiede al lavoro, non quello che lo prepara.
+
+
+## Vedi anche
+
+skill `brainstorming` (il passo prima) · skill `design-doc` (il passo dopo)
