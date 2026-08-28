@@ -12,3 +12,6 @@ rompere silenziosamente l'ESTRAZIONE, non la logica. Prima di un refactor che
 cambia la forma di una funzione gia coperta da un estrattore fragile: aggiornare
 l'estrattore PRIMA, mai contestualmente — o deferire esplicitamente citando
 l'estrattore fra le cause.
+
+
+**Vedi anche**: `banco-sintetico-per-calcoli-critici` · `regola-provata-non-assunta`

@@ -10,3 +10,6 @@ aperto» oppure «questo era chiuso ed e ricomparso», invece di trattare ogni
 esecuzione come se fosse la prima. E il gemello dei dati di
 estrazione-per-testabilita: quello estrae per POTER testare la logica, questo
 rilegge per POTER distinguere nuovo/persistente/ricomparso.
+
+
+**Vedi anche**: `stato-vuoto-dalla-pipeline` · `scarto-mai-silenzioso`

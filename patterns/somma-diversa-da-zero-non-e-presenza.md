@@ -32,3 +32,6 @@ un segnale impostato esplicitamente quando il componente viene osservato.
 problema è una regola di validazione che scarta un valore senza dirlo; qui il valore
 non viene scartato da nessuna regola, è il TEST DI ESISTENZA stesso a essere costruito
 sul dato sbagliato (un'aritmetica che può cancellarsi) invece che su un segnale diretto.
+
+
+**Vedi anche**: `stato-vuoto-dalla-pipeline`
