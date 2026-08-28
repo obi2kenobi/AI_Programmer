@@ -287,3 +287,9 @@ anche per le PROSSIME osservazioni fatte durante la correzione stessa. Caso real
 un fix che faceva fallire il caricamento se un segreto era assente sarebbe stato
 dannoso (la funzione di setup DEVE poter girare prima che i segreti esistano) —
 scoperto solo verificando l'assunzione implicita, non leggendo il rilievo.
+
+
+## Le fixture degradano con i rilanci; le guardie si provano col caso reale (dal campo REPO-N, 2026-08-28)
+
+1. Ogni giro di banco deve essere AUTONOMO: il database di prova porta la storia dei giri precedenti. Reset dichiarato a inizio giro.
+2. Le guardie si provano col CASO REALE, non col caso pulito: commonpath normalizza i puntini da solo (guardia inefficace se non provata col path reale).
