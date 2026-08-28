@@ -20,7 +20,7 @@ bash -n "$MUTA" && ok "sintassi" || ko "sintassi rotta"
 # del banco, e in suite costa quanto due test lenti — accettato)
 if git -C "$HERE" diff --quiet 2>/dev/null && git -C "$HERE" diff --cached --quiet 2>/dev/null; then
   OUT=$(bash "$MUTA" 2>&1); RC=$?
-  [ $RC -eq 0 ] && echo "$OUT" | grep -qE "[0-9]+ test reagiscono, 0 teatri" \
+  [ $RC -eq 0 ] && echo "$OUT" | grep -qE "[0-9]+ test reagiscono alla mutazione, 0 teatri verdi" \
     && ok "run completo: tutti i test reagiscono, nessun teatro" \
     || { echo "$OUT" | tail -3 | sed 's/^/    /'; ko "run completo non pulito (rc=$RC)"; }
 else
