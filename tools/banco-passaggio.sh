@@ -20,11 +20,32 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
-VELOCE=0
+VELOCE=0; SOLO=0
 [ "${1:-}" = "--veloce" ] && VELOCE=1
+[ "${1:-}" = "--solo-copertura" ] && SOLO=1
 FALLITI=0
 
 step() { echo ""; echo "== $1 =="; }
+
+if [ "$SOLO" -eq 1 ]; then
+  # solo il banco 7: per il test di se stesso e per i controlli rapidi a metà giro
+  CAMBIATI=$(git status --porcelain 2>/dev/null | awk '{print $2}' | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
+  if [ -z "$CAMBIATI" ]; then
+    CAMBIATI=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
+  fi
+  SCOPERTI=0
+  while IFS= read -r f; do
+    [ -z "$f" ] && continue
+    grep -qF "$f" tools/banco-passaggio.esclusioni 2>/dev/null && continue
+    b=$(basename "$f")
+    grep -rqlF "$b" tests/ 2>/dev/null || { echo "SCOPERTO: $f — nessun test lo cita"; SCOPERTI=$((SCOPERTI+1)); }
+  done <<< "$CAMBIATI"
+  N_CAM=$(echo "$CAMBIATI" | grep -c . || true)
+  [ "$SCOPERTI" -eq 0 ] && echo "copertura: $N_CAM file di codice cambiati, tutti presidiati"
+  echo "VERDETTO: $([ "$SCOPERTI" -eq 0 ] && echo OK || echo "$SCOPERTI scoperti")"
+  [ "$SCOPERTI" -eq 0 ]
+  exit $?
+fi
 
 step "1/7 suite completa"
 P=0; F=0
@@ -81,8 +102,13 @@ step "7/7 copertura delle modifiche (il codice appena scritto)"
 # i file di CODICE cambiati rispetto a origin/main; SAL, DEBITI, docs e report
 # sono documentazione, non code: esclusi per contratto (le giustificazioni
 # aggiuntive stanno in tools/banco-passaggio.esclusioni, una per riga: path # perché)
-CAMBIATI=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(tools/|night-shift/|llm/)\.(sh|py|js)$|^(tools|night-shift|llm)/[a-zA-Z0-9_-]+\.(sh|py|js)$|hooks' || true)
-[ -z "$CAMBIATI" ] && CAMBIATI=$(git diff --name-only HEAD 2>/dev/null | grep -E '\.(sh|py|js)$' || true)
+# git diff NON vede i file non tracciati — che sono il codice appena scritto
+# per antonomasi (provato a mano: un tools/nuovo.py non compariva). Si usa
+# status --porcelain: modificati + nuovi, tutto in una lista.
+CAMBIATI=$(git status --porcelain 2>/dev/null | awk '{print $2}' | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
+if [ -z "$CAMBIATI" ]; then
+  CAMBIATI=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
+fi
 SCOPERTI=0
 while IFS= read -r f; do
   [ -z "$f" ] && continue
