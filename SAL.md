@@ -162,6 +162,7 @@
 - [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualit-non-solo-presenza)
 - [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3-batteria-lenti-di-evoluzione-e-cambiamento)
 - [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
+- [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
 
 
 ## Stato
@@ -3613,3 +3614,19 @@ split ingenuo spezza il segmento). 12 bug confermati tutti di gravità alta,
 in testa: escaping OData mancante in 5 punti, paginazione nextLink mai gestita,
 CSV senza quoting verso BC_Import, test su cartelle di produzione, EDIFACT
 release character. Report completo in docs/campo/.
+
+### 2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua
+
+La sessione che ha prodotto il dossier SD (86 rilievi) è tornata e ha CORRETTO
+tutti i rilievi + implementato le 25 idee in una sessione continua, senza
+leggere il canone durante il lavoro (solo dopo, per scrivere il report). Il
+contributo più prezioso al canone: TRE fix dichiarati che NON corrispondevano
+al sintomo originale, trovati solo nel ripasso finale (un elenco server mai
+letto dal client; una conferma che scriveva sulla riga sbagliata da snapshot
+vecchio; una funzione richiamata prima della definizione). Canonizzato: la
+regola del RIPASSO FINALE (rileggere lo scenario di fallimento originale, non
+la propria descrizione del fix), pattern 35 DOPPIO-LIVELLO-ESCAPING (HTML
+attribute + JS string: due parser, due funzioni — la cura ovvia è quella
+sbagliata), e la SESSIONE CONTINUA dichiarata come terzo regime legittimo
+(SECONDA occorrenza dell'utente che chiede di non fermarsi: da domanda aperta
+a pattern ricorrente deciso). REPO-K registrata nell'indice. Pattern totale: 35.

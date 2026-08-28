@@ -46,3 +46,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [lettura-esecuzione-precedente](lettura-esecuzione-precedente.md) | REPO-I: 5 moduli indipendenti | 2026-08-28 |
 | [chiave-stabile-etichetta-libera](chiave-stabile-etichetta-libera.md) | REPO-I: 2 punti ciclo Fase 3 | 2026-08-28 |
 | [edifact-release-character](edifact-release-character.md) | Bricoman: Parsers.gs split | 2026-08-28 |
+| [doppio-livello-escaping](doppio-livello-escaping.md) | REPO-K: Scripts.html escapeJsAttr | 2026-08-28 |
