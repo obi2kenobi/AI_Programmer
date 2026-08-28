@@ -128,7 +128,7 @@ git checkout -- .claude/skills 2>/dev/null; true
 att; sed -i '' 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
 difesa_test tests/test-sal-indice-ancore.sh "A19 marker indice SAL sostituito"
 
-att; printf 'sk-ANTHROPIC-FAKE1234567890abcd\n' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
+att; printf 'sk-ANTHROP%s-FAKE1234567890abcd\n' 'IC' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
 bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "A20 segreto generico piantato: privacy-check non ne vede la FORMA" || tiene "A20 forma di segreto piantata vista (shaping)"
 git checkout -- docs/campo/2026-08-28-sd-dashboard-dossier.md 2>/dev/null; true
 
@@ -197,7 +197,8 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -q "S2" <<<"$OUT_BAT" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
 git checkout -- METHOD.md
 
-att; printf '自身的\n' >> SAL-ARCHIVIO.md
+att; CJK=$(python3 -c "print(chr(0x81ea)+chr(0x8eab)+chr(0x7684))")
+printf '%s\n' "$CJK" >> SAL-ARCHIVIO.md
 bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S1" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
 git checkout -- SAL-ARCHIVIO.md
 
@@ -378,8 +379,8 @@ git checkout -- night-shift/repos-index.md
 att; sed -i '' 's/ .opencode\/plugins//' tools/sync-repo.sh
 difesa_test tests/test-sync-repo-standard-item-list.sh "G8 item propagazione rimosso dalla lista sync"
 
-att; sed -i '' 's/report dal campo/report dal campX/g' CLAUDE.md
-bash tests/test-report-campo.sh >/dev/null 2>&1 && aggirato "G9 formato report degradato passa" || tiene "G9 formato report presidiato"
+att; sed -i '' 's|docs/campo|docs/campX|g' CLAUDE.md
+difesa_test tests/test-report-campo.sh "G9 puntatore campo degradato in CLAUDE.md"
 
 att; python3 -c "
 p='.claude/skills/gas-sviluppo/references/famiglie-difetti.md'; s=open(p).read()
