@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Uso: python3 bilancio_bu.py < input (vedi docstring per formato)
 """Conto economico per Business Unit dalla contabilità generale (G/L).
 
 Oracolo (7° ciclo, set 1, 2026-08-24). Convenzione REALE minata dal progetto
