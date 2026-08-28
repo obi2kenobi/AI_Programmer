@@ -576,3 +576,27 @@ coerente, specchi sincronizzati, test deterministici. Dichiarato: SAL 275KB rota
 24/27 campo senza nome in SAL, 6 tool senza test giustificati.
 
 ### Giro 1/30 ciclo ABC: 9 finding corretti (6 agenti pattern, 3 skill collegate)
+
+### 2026-08-28 — Il falso positivo strutturale del ciclo-vivo (pipefail + grep -q) e il canone svuotato che nessuno notava
+
+Due difetti scoperti insieme, uno causa dell'altro:
+
+1. **La lente 2 del ciclo-vivo produceva falsi COLLEGAMENTO.** `echo "$CANONE" | grep -q "$base"` con
+   `set -o pipefail`: quando il pattern è trovato presto, grep -q esce, echo riceve SIGPIPE (141), la
+   pipeline "fallisce" e il pattern CITATO viene segnalato come mancante. Visibile solo con canone oltre
+   i 64KB di buffer pipe. L'analisi dei 100 giri ("34 pattern mai citati") mescolava 33 gap veri e falsi
+   positivi: il numero cambiava fra run identici (34, 36, 39) — la non-deterministicità era l'indizio.
+   Fisso: grep -qF diretto sui file, niente pipe. Pattern: `pipefail-grep-sigpipe`.
+
+2. **Il canone è stato svuotato per un'ora e la suite rimasta 103/103.** Un `open(path,'w')` python
+   eseguito prima di un NameError ha troncato metodo.md a 0 byte; la riscrittura successiva ci ha
+   messo sopra solo l'indice (314 righe → 9). Nessun test guardava il CONTENUTO del canone. Fisso:
+   `tests/test-canone-integrita.sh` (sezioni portanti + soglia 10KB + indice che punta solo a file
+   esistenti) + write atomico via file temporaneo e os.replace.
+
+3. **La lente 3 aveva la logica invertita** (segnalava "sezione nel metodo non implementata" proprio
+   quando la sezione NON era nel metodo) e cercava il backing dentro references/ (circolare). Fissata:
+   salta le sezioni assenti, cerca backing in tools/ + agents/ + SKILL.md.
+
+Fatto dopo: indice rapido dei pattern per tema in fondo a metodo.md (tutti i 40 pattern citati dal
+canone), pattern `pipefail-grep-sigpipe` nel catalogo, ciclo verificato deterministico.
