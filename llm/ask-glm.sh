@@ -38,7 +38,17 @@ fi
 # pattern qui). Timeout 5s: sufficiente per un file già scritto piped via `cat`, non
 # per uno stream che arriva lentamente (limite noto, non un uso previsto dal contratto).
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null || true)
+if [ ! -t 0 ]; then
+  # bug reale (revisione 14 lenti, 2026-08-28): allo scadere dei 5s lo stream veniva
+  # troncato SENZA alcun avviso — più grave del "si blocca" documentato sopra: qui il
+  # contenuto è silenziosamente CORROTTO (il prompt parte come se fosse completo).
+  # Verificato dal vivo: stream lento (1 riga/2s) troncato a metà entro i 5s.
+  set +e
+  STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null)
+  STDIN_RC=$?
+  set -e
+  [ "$STDIN_RC" -eq 124 ] && echo "ask-glm: ATTENZIONE — lo stdin non è arrivato tutto entro 5s, il contesto potrebbe essere TRONCATO (non solo ritardato)" >&2
+fi
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---
@@ -62,8 +72,21 @@ print(json.dumps({
 PY
 )
 
+# bug reale (revisione 14 lenti, 2026-08-28): questa command substitution non era protetta
+# come la sua analoga in ask-opus.sh (stesso "tranello" già documentato là) — se curl
+# fallisce (rete assente, endpoint giù: esattamente il caso che il parser Python sotto
+# dice di gestire), `set -e` fa uscire lo script SUBITO qui, prima di raggiungere il
+# parsing che produce "ERRORE glm: ...". Verificato dal vivo: rc=7, zero output su
+# stderr, nessuna diagnosi. set +e locale per leggere l'exit code senza farlo esplodere.
+set +e
 RESP=$(curl -s --max-time "$TIMEOUT" "$BASE/chat/completions" \
   -H "Authorization: Bearer $ZHIPUAI_API_KEY" -H "Content-Type: application/json" -d "$PAYLOAD")
+CURL_RC=$?
+set -e
+if [ "$CURL_RC" -ne 0 ]; then
+  echo "ERRORE glm: curl fallito (rc=$CURL_RC) — rete assente o endpoint irraggiungibile ($BASE)" >&2
+  exit 1
+fi
 
 # bug reale (set 1 "armonizza gli agenti"): un corpo vuoto/non-JSON (curl senza
 # rete, endpoint giù, HTML d'errore) faceva esplodere json.load con un traceback

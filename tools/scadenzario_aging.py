@@ -79,9 +79,21 @@ def main():
     righe = []
     for r in csv.DictReader(sys.stdin):
         giorni = r["giorni"].strip() if r["giorni"].strip() != "" else None
+        tipo = r["tipo"]
+        importo_bc = float(r["importo"])
+        # bug reale (revisione 14 lenti, 2026-08-28): importo_fornitore() era definita ma
+        # mai chiamata — ogni riga fornitore finiva col segno grezzo di BC (positivo),
+        # quindi in "entrate" invece che in "uscite". "tipo" porta sia la controparte
+        # (Cliente/Fornitore) sia il tipo documento (es. "Fornitore Fattura"); solo le
+        # righe Fornitore applicano la convenzione dell'uscita di cassa.
+        if tipo.startswith("Fornitore"):
+            doc_type = tipo[len("Fornitore"):].strip()
+            importo = importo_fornitore(importo_bc, doc_type)
+        else:
+            importo = importo_bc
         righe.append({
-            "tipo": r["tipo"],
-            "importo": float(r["importo"]),
+            "tipo": tipo,
+            "importo": importo,
             "fascia": fascia_dettaglio(giorni),
         })
     r = aggrega_totali(righe)

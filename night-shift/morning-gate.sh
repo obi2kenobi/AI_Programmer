@@ -86,6 +86,21 @@ for REPO in "${REPO_LIST[@]}"; do
     echo "**Diff:**" >> "$REPORT"
     git -C "$DIR" diff --stat "origin/$DB...$BRANCH" >> "$REPORT" 2>/dev/null
 
+    # bug reale, GRAVISSIMO (revisione 14 lenti, 2026-08-28): fino a qui il working tree di
+    # $DIR non viene mai toccato (diff/show sopra usano ref espliciti) — ma le verifiche
+    # dichiarate e il banco avversariale SOTTO girano con `cd "$DIR" && ...`: senza un
+    # checkout esplicito del branch della PR, eseguivano sul contenuto lasciato lì
+    # dall'ultima operazione (tipicamente il branch di default), MAI sul codice reale della
+    # PR. Riprodotto dal vivo: un branch con un bug reale iniettato (marker rilevato da
+    # .night-verify) dava comunque "verifiche-ok". Da qui in poi il gate ha davvero bisogno
+    # del branch giusto nel working tree.
+    if ! git -C "$DIR" checkout -q -B "$BRANCH" "origin/$BRANCH" 2>/dev/null; then
+      echo "⛔ **Checkout di \`$BRANCH\` fallito — verifiche e banco avversariale NON eseguiti per questa PR.**" >> "$REPORT"
+      echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$ISSUE_NUM,checkout-fallito,—," >> "$HUB_METRICS"
+      FAIL=$((FAIL+1))
+      continue
+    fi
+
     # 1. Verifiche dichiarate — lette da origin/main: la dichiarazione è della REPO,
     #    non del branch della PR (che può essere nato prima della dichiarazione)
     VERDICT="—"
@@ -228,6 +243,8 @@ ${DIFF_TXT}"
       echo "\`\`\`" >> "$REPORT"
     fi
   done < <(jq -c '.' /tmp/gate-prs.json)
+  # lascia $DIR sul branch di default prima di passare alla repo successiva (o al prossimo giro)
+  git -C "$DIR" checkout -q "$DB" 2>/dev/null || true
   echo "" >> "$REPORT"
 done
 

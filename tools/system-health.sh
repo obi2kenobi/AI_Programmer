@@ -50,7 +50,18 @@ fi
 
 # 6. Config locale
 CONF="$(cd "$(dirname "$0")/.." && pwd)/night-shift/repos.conf"
-N_REPO=$(grep -cvE '^\s*#|^\s*$' "$CONF" 2>/dev/null || echo 0)
+# bug reale (revisione 14 lenti, 2026-08-28): `grep -c` STAMPA sempre un conteggio (anche
+# "0"), ma esce con status 1 quando il conteggio è zero — con solo commenti/righe vuote in
+# repos.conf (coda vuota, uno stato normalissimo) il "|| echo 0" scattava COMUNQUE,
+# appendendo un secondo "0": N_REPO diventava la stringa a due righe "0\n0", e
+# `[ "$N_REPO" -gt 0 ]` generava un errore di shell ("integer expression expected") invece
+# di valutare la coda vuota. Il fallback serve solo per il file ASSENTE, non per zero match.
+if [ -f "$CONF" ]; then
+  N_REPO=$(grep -cvE '^\s*#|^\s*$' "$CONF" 2>/dev/null)
+  N_REPO="${N_REPO:-0}"
+else
+  N_REPO=0
+fi
 [ "$N_REPO" -gt 0 ] && ok "coda: $N_REPO repo in repos.conf" || warn "repos.conf vuoto o assente"
 KEY="$(dirname "$CONF")/repos.key"
 [ -f "$KEY" ] && ok "privacy key presente (locale)" || warn "repos.key assente (privacy-check degradato)"

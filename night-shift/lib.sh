@@ -9,8 +9,14 @@ default_branch() {
     echo "${ref#refs/remotes/origin/}"; return 0
   }
   local ghb
+  # bug reale (revisione 14 lenti, 2026-08-28): la query jq leggeva `.name` invece di
+  # `.defaultBranchRef.name` — con `--json defaultBranchRef` l'oggetto è
+  # {"defaultBranchRef":{"name":...}}, quindi `.name` valeva sempre "null" (comando gh
+  # riuscito, solo la query sbagliata) e il chiamante non vedeva MAI l'avviso di fallback,
+  # perché "&&" scattava comunque con la stringa letterale "null". Verificato con jq sullo
+  # stesso schema prima e dopo il fix.
   ghb=$(gh repo view -R "$(git -C "$dir" remote get-url origin 2>/dev/null | sed 's|.*github.com[:/]||; s|\.git$||')" \
-    --json defaultBranchRef -q .name 2>/dev/null) && { echo "$ghb"; return 0; }
+    --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null) && [ -n "$ghb" ] && [ "$ghb" != "null" ] && { echo "$ghb"; return 0; }
   echo "main" # fallback finale: CHIAMANTE deve avvisare che è un'assunzione
   return 1
 }
@@ -78,6 +84,16 @@ gate_allowlist_ok() {
   python3 - "$1" <<'PY'
 import sys, re
 cmd = sys.argv[1]
+# bug reale, ALTA (revisione 14 lenti, 2026-08-28): il controllo guardava solo il PRIMO
+# TOKEN di ogni segmento — non riconosceva una sostituzione di comando ANNIDATA dentro un
+# segmento già ammesso. `echo $(python3 -c "...")` superava l'allowlist (primo token=echo,
+# ammesso) ma la sostituzione faceva comunque girare python3 -c con codice arbitrario dentro
+# la sandbox seatbelt (che nega solo rete/scritture, non la lettura). Riprodotto dal vivo.
+# Rifiuto conservativo: qualunque sostituzione di comando o processo, ovunque compaia nella
+# stringa (anche dentro virgolette singole — non vale la pena distinguere, è un banco
+# avversariale, non un interprete shell general-purpose).
+if "$(" in cmd or "`" in cmd or "<(" in cmd or ">(" in cmd:
+    sys.exit(1)
 # split consapevole delle virgolette: gli operatori DENTRO stringhe citate non separano
 # (chiude anche il falso positivo documentato in DEBITI: grep -c "a;b" file)
 def split_operators(c):

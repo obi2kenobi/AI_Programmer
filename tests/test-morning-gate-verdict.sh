@@ -37,7 +37,14 @@ verdetto_per() {
 
 mkrepo() {
   local tmp="$1" contenuto="$2"
-  git -C "$tmp" init -q
+  # bug reale (revisione 14 lenti, 2026-08-28): `git init` senza `-b` usa il default
+  # dell'AMBIENTE (init.defaultBranch) — su questa macchina crea "master", non "main".
+  # Questi repo sintetici non hanno un remote origin, quindi default_branch() (in
+  # lib.sh) cade sempre sul fallback finale "main" (nessun modo di rilevarlo altrimenti)
+  # — un git init implicito su "master" faceva collassare OGNI caso su "non-dichiarate"
+  # senza che nulla di reale nel gate fosse rotto. -b main rende il repo sintetico
+  # deterministico, indipendente dalla config git dell'ambiente che lo esegue.
+  git -C "$tmp" init -q -b main
   printf '%s' "$contenuto" > "$tmp/.night-verify"
   git -C "$tmp" add .night-verify
   git -C "$tmp" -c user.email=t@t -c user.name=t commit -q -m init

@@ -98,6 +98,27 @@ else
   echo "skill del hub già tutte presenti, intoccate"
 fi
 
+# bug reale (revisione 14 lenti, 2026-08-28): stesso schema per lo specchio OpenCode
+# (.opencode/skills/) — mai propagato, root cause della divergenza trovata da 3 lenti
+# indipendenti (le 9 skill "viaggiavano" solo una tantum, mai risincronizzate).
+OPENCODE_SKILLS_AGGIUNTE=0
+mkdir -p "$WORK/.opencode/skills"
+for skill_dir in "$HERE"/.opencode/skills/*/; do
+  skill_name="$(basename "$skill_dir")"
+  if [ ! -d "$WORK/.opencode/skills/$skill_name" ]; then
+    cp -r "$skill_dir" "$WORK/.opencode/skills/$skill_name"
+    git -C "$WORK" add ".opencode/skills/$skill_name"
+    OPENCODE_SKILLS_AGGIUNTE=$((OPENCODE_SKILLS_AGGIUNTE+1))
+  fi
+done
+if [ "$OPENCODE_SKILLS_AGGIUNTE" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $OPENCODE_SKILLS_AGGIUNTE skill OpenCode del hub propagate (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$OPENCODE_SKILLS_AGGIUNTE skill OpenCode del hub aggiunte e spinte"
+else
+  echo "skill OpenCode del hub già tutte presenti, intoccate"
+fi
+
 # gap reale (set 3 "flusso delle idee"): stesso ragionamento per patterns/ (CLAUDE.md §7,
 # "prima di scrivere infrastruttura, controlla patterns/") — merge per-file, mai sovrascrive
 # un pattern che il progetto avesse già con lo stesso nome.
@@ -132,8 +153,13 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
   cp "$HERE/.claude/settings.json" "$WORK/.claude/settings.json"
   git -C "$WORK" add ".claude/settings.json"
   mkdir -p "$WORK/tools"
-  cp "$HERE/tools/metodo-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
-  cp "$HERE/tools/pattern-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
+  # bug reale (revisione 14 lenti, 2026-08-28): questi due cp non avevano il controllo
+  # [ ! -f ... ] che OGNI altro merge di questo script ha (skill, pattern, agenti) —
+  # contraddiceva il commento due righe sopra ("mai sovrascrivere una personalizzazione
+  # locale, solo aggiungere i mancanti"). Un progetto che avesse già i propri hook
+  # personalizzati (ma non ancora .claude/settings.json) li vedeva sovrascritti in silenzio.
+  [ -f "$WORK/tools/metodo-reminder-hook.sh" ] || cp "$HERE/tools/metodo-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
+  [ -f "$WORK/tools/pattern-reminder-hook.sh" ] || cp "$HERE/tools/pattern-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
   git -C "$WORK" add tools/metodo-reminder-hook.sh tools/pattern-reminder-hook.sh 2>/dev/null || true
 fi
 mkdir -p "$WORK/.opencode/agent"

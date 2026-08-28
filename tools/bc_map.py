@@ -73,7 +73,14 @@ def leggi_curati(path):
     curati = {}
     try:
         for riga in open(path, encoding="utf-8"):
-            parti = riga.strip().strip("|").split("|")
+            # bug reale (revisione 14 lenti, 2026-08-28): split("|") naive non conosce
+            # l'escape "\|" che write_md() usa per i pipe letterali nella colonna Esempio
+            # — un valore campione come "Sedie|Tavoli" sfasava le colonne successive
+            # (Significato/Verificato), corrompendo silenziosamente il censimento
+            # compilato a mano al refresh successivo. Il lookbehind negativo tratta "\|"
+            # come letterale, non come separatore.
+            riga_strip = riga.strip().strip("|")
+            parti = [p.replace("\\|", "|") for p in re.split(r"(?<!\\)\|", riga_strip)]
             if len(parti) >= 5 and parti[0].strip().startswith("`"):
                 nome = parti[0].strip().strip("`")
                 curati[nome] = (parti[3].strip(), parti[4].strip())
