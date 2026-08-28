@@ -97,7 +97,8 @@ fi
 if [ -f "$MEMORIA/findings_storico.txt" ]; then
   while IFS= read -r f; do
     KEY=$(echo "$f" | cut -d: -f1)
-    COUNT=$(grep -c "^$KEY" "$MEMORIA/findings_storico.txt" 2>/dev/null || echo 0)
+    COUNT=$(grep -c "^$KEY" "$MEMORIA/findings_storico.txt" 2>/dev/null | tr -d "[:space:]"; true)
+    [ -z "$COUNT" ] && COUNT=0
     if [ "$COUNT" -ge 3 ]; then
       echo "⚠ RICORRENTE ($COUNT volte): $KEY — dovrebbe avere una guardia automatica"
     fi
