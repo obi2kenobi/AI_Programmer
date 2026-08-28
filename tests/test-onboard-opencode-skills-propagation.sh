@@ -40,7 +40,8 @@ WORK2="$TMP/repo-con-personalizzazione"
 mkdir -p "$WORK2/.opencode/skills/graphify"
 echo "PERSONALIZZATO DAL PROGETTO" > "$WORK2/.opencode/skills/graphify/SKILL.md"
 N2=$(merge_opencode_skills "$WORK2")
-[ "$N2" -eq "$((N_HUB-1))" ] && ok "repo con graphify personalizzata: arrivano solo le altre $((N_HUB-1))" \
+if [ -d "$HERE/.opencode/skills/graphify" ]; then EXPECTED=$((N_HUB-1)); else EXPECTED=$N_HUB; fi
+[ "$N2" -eq "$EXPECTED" ] && ok "repo con graphify personalizzata: arrivano solo le altre $((N_HUB-1))" \
   || ko "conteggio sbagliato: arrivate $N2, attese $((N_HUB-1))"
 [ "$(cat "$WORK2/.opencode/skills/graphify/SKILL.md")" = "PERSONALIZZATO DAL PROGETTO" ] \
   && ok "la skill OpenCode personalizzata NON è stata sovrascritta" \

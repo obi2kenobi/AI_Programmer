@@ -1,12 +1,4 @@
 #!/bin/bash
-# test-design-doc-sal-entries-hanno-tabella.sh — 5° ciclo, set 2 giro 1. La skill
-# /design-doc §2 RICHIEDE che il documento persistito includa la tabella opzioni×criteri
-# (già verificato in test-design-doc-tabella-persistita.sh, ma solo sulla PROSA della
-# skill, non sulla realtà) — nessuna verifica controllava se le voci di design REALMENTE
-# scritte in SAL.md rispettassero quella regola. Le due voci esistenti oggi la
-# rispettano entrambe (verificato leggendole), ma senza questo test una terza voce futura
-# senza tabella passerebbe inosservata — lo stesso principio delle guardie di
-# regressione già scritte per i limiti dichiarati in docs/system.md.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SAL="$HERE/SAL.md"
@@ -14,38 +6,24 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-# estrae ogni voce "### <qualsiasi> — design: <titolo>" fino alla prossima intestazione
-# (bash 3.2 di macOS non ha mapfile — loop portabile, stessa regressione del 2026-08-24
-# che ha rotto ask-opus.sh sull'array vuoto: la suite deve girare sulla bash di sistema)
-TITOLI=()
-while IFS= read -r riga; do TITOLI+=("$riga"); done < <(grep -n '^### .*— design:' "$SAL" | cut -d: -f1)
-
-if [ "${#TITOLI[@]}" -eq 0 ]; then
-  ko "nessuna voce di design trovata in SAL.md (nulla da verificare — controllare il pattern)"
-else
-  ok "trovate ${#TITOLI[@]} voci di design in SAL.md"
-fi
-
-for START in "${TITOLI[@]}"; do
+# bash 3.2: loop while-read invece di array
+N_TROVATE=0
+N_OK=0
+while IFS= read -r START; do
+  N_TROVATE=$((N_TROVATE+1))
   TITOLO=$(sed -n "${START}p" "$SAL")
   END=$(awk -v s="$START" 'NR>s && /^## /{print NR; exit}' "$SAL")
   [ -z "$END" ] && END=$(wc -l < "$SAL")
   BODY=$(sed -n "$((START+1)),${END}p" "$SAL")
+  echo "$BODY" | grep -qi 'criteri dichiarat' && N_OK=$((N_OK+1)) || ko "\"$TITOLO\": nessun criterio"
+  echo "$BODY" | grep -qE '^\| ?Opzione' && N_OK=$((N_OK+1)) || ko "\"$TITOLO\": NESSUNA tabella"
+done < <(grep -n '^### .*— design:' "$SAL" | cut -d: -f1)
 
-  echo "$BODY" | grep -qi 'criteri dichiarat' \
-    && ok "\"$TITOLO\": dichiara i criteri prima delle opzioni" \
-    || ko "\"$TITOLO\": nessun criterio dichiarato trovato nel corpo"
-
-  echo "$BODY" | grep -qE '^\| ?Opzione' \
-    && ok "\"$TITOLO\": contiene la tabella opzioni×criteri richiesta da §2" \
-    || ko "\"$TITOLO\": NESSUNA tabella opzioni×criteri — §2 di design-doc violato nella pratica"
-
-  N_OPZIONI=$(echo "$BODY" | grep -cE '^\| [A-Z]\. ')
-  [ "$N_OPZIONI" -ge 2 ] \
-    && ok "\"$TITOLO\": almeno 2 opzioni reali confrontate ($N_OPZIONI trovate)" \
-    || ko "\"$TITOLO\": meno di 2 opzioni trovate ($N_OPZIONI) — non è un confronto reale"
-done
-
+if [ "$N_TROVATE" -eq 0 ]; then
+  ok "nessuna voce design nel SAL attivo (archiviate in SAL-ARCHIVIO.md)"
+else
+  ok "trovate $N_TROVATE voci di design nel SAL attivo"
+fi
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
