@@ -126,3 +126,16 @@ Fra "difetto" e "confermato" esiste lo stato che una sessione non puo chiudere d
 testato in isolamento, NON ancora visto girare nel vivo (Gmail/Drive/BC reali). Il corpo
 PR porta una sezione "## Da verificare dal vivo" con le caselle di cio che resta: e il
 livello 3 dei cinque (verita terrena ritardata) reso tracciabile, non reinventato per PR.
+
+
+## Gerarchia di verifica per il DOM (dal campo REPO-G, 2026-08-27)
+
+Quando un fix tocca HTML/JS che gira nel BROWSER (non solo la logica
+server-side), il banco vm non basta: estrae e prova la logica, ma non vede
+il rendering, gli event handler, il CSS. Gerarchia:
+1. banco vm (logica pura) — sempre, per ogni fix
+2. **Playwright headless** — quando il fix tocca il DOM: apre l'HTML reale
+   in Chromium, aspetta i selettori, verifica che i bottoni rispondano e i
+   dati siano visibili. Costo: minimo (nessuna dipendenza nel progetto,
+   eseguito da directory esterna, pattern fuori-repo già canone).
+3. screenshot — quando serve il colpo d'occhio (già coperto da verifica-visiva)

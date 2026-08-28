@@ -9,3 +9,6 @@ ogni volta che il foglio di configurazione NON lo sovrascrive — che PUO fare �
 con l'avviso esplicito scritto accanto al valore («non toccare senza conferma
 del revisore»). Né tutto fisso né tutto nelle mani di chi apre il foglio:
 default guardato, override dichiarato, ragione scritta accanto al numero.
+
+
+**Vedi anche**: `soglia-con-provenienza`

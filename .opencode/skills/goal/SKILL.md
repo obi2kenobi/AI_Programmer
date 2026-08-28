@@ -75,3 +75,13 @@ altri: registralo e continua (se il tetto non è esaurito) o fermati e dillo (se
   (`docs/system.md`).
 - Non sostituisce il banco avversariale del gate — quello giudica una PR già pronta;
   questo itera PRIMA di aprirla.
+
+
+## Vedi anche
+
+Quando il design richiede opzioni confrontate: skill `design-doc`.
+
+
+## Vedi anche
+
+Quando l'obiettivo è ancora vago: skill `brainstorming`.

@@ -13,3 +13,6 @@ qui porta lan cora REPO-F e la lezione nuova: IL PROGETTO LO DICHIARAVA GIA IN
 UN COMMENTO, e resta stato quasi violato. Leggere non basta se non si CERCA
 prima di scrivere: prima di applicare un pattern imparato altrove, grep del
 vincolo nel progetto attuale (chi lo ha scritto ha gia pagato).
+
+
+**Vedi anche**: `segreto-come-impronta` · `lock-per-risorsa`

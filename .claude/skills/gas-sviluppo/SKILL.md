@@ -35,8 +35,8 @@ riverifica là.
 2. **Se si tocca codice esistente**: `.claude/skills/gas-sviluppo/references/famiglie-difetti.md` — le
    famiglie misurate del parco con le popolazioni e la domanda discriminante
    di ciascuna: la lente con cui si guarda PRIMA di rilevare.
-3. **Se il lavoro è una consegna**: `.claude/skills/gas-sviluppo/references/consegna.md` — worktree,
-   baseline, prova di parità a 3 livelli, protocollo PR, `clasp` mai.
+3. **Se il lavoro è una consegna**: `.claude/skills/gas-sviluppo/references/consegna.md` — worktree (copia di lavoro isolata dello stesso repository),
+   baseline, prova di parità a 3 livelli, protocollo PR, `clasp` (lo strumento Google per il deploy Apps Script) mai.
 4. **Se il lavoro calcola cifre di dominio**: `.claude/skills/gas-sviluppo/references/domini-gestionali.md`
    — le domande della contabilità, del controllo di gestione, della
    produzione, dello sviluppo business (con gli oracoli dell'hub quando il
@@ -50,6 +50,11 @@ scrive PRIMA della correzione: PARITÀ + CORREZIONE) → CORREGGE (nella copia d
 lavoro, poi sabota la correzione stessa) → PROGETTA (dieci righe: cosa resta,
 cosa serve, le domande di dominio da fare a una persona).
 
+## Il catalogo pattern (33 voci)
+
+patterns/ contiene 33 pattern minati dal campo: cerca prima di reinventare.
+Indice: patterns/README.md
+
 ## Le tre regole che non negoziano
 
 1. **Esegui, non dedurre** (misurato sul parco: 60 comandi di lettura su 61,
@@ -57,3 +62,13 @@ cosa serve, le domande di dominio da fare a una persona).
 2. **`clasp push` mai** — il deploy sul vivo lo fa una persona dal suo Mac.
 3. **Mai il valore di una credenziale**, e mai proporre di ruotarla: si
    prosegue e si dichiara.
+
+
+## Vedi anche
+
+Per calcoli contabili specifici: skill `controllo-gestione` con i suoi 11 oracoli.
+
+
+## Vedi anche
+
+Dopo il deploy, la verifica visiva: skill `verifica-visiva`.

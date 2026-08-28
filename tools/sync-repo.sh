@@ -65,7 +65,9 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # bug reale (revisione 14 lenti, 2026-08-28): mancavano .opencode/skills (root cause
   # della divergenza trovata da 3 lenti indipendenti — le 9 skill "viaggiavano" solo
   # all'onboarding iniziale, mai più dopo) e patterns/ (stesso gap: un pattern nuovo
-  # aggiunto dopo l'onboarding non raggiungeva più le repo già onboardate).
+  # aggiunto dopo l'onboarding non raggiungeva più le repo già onboardate). Corretto in
+  # due filoni indipendenti concorrenti; unificato: patterns/ (in entrambi) + .opencode/skills
+  # (solo in questo filone, mancava ancora sull'altro).
   for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
