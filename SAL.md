@@ -159,14 +159,15 @@
 - [2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap](#2026-08-27-19-magazzino-72-commit-20-bug-55-proposte-e-il-handoff-gap)
 - [2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI](#2026-08-28-dossier-sd-dashboard-86-rilievi-71-dichiarati-non-verificati)
 - [2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi](#2026-08-28-repo-i-fase-3-chiude-il-ciclo-245-idee-7-proposte-due-pattern-nuovi)
-- [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-sano-una-guardia-nuova-per-la-prosa)
-- [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualit-non-solo-presenza)
-- [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3-batteria-lenti-di-evoluzione-e-cambiamento)
+- [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-è-sano-una-guardia-nuova-per-la-prosa)
+- [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualità-non-solo-presenza)
+- [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3ª-batteria-lenti-di-evoluzione-e-cambiamento)
 - [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
 - [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
 - [2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding](#2026-08-28-6-l-hub-allo-specchio-revisione-indipendente-60-finding)
 - [2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati](#2026-08-28-7-8-proposte-dell-audit-implementate-15-report-campo-triati)
 - [2026-08-28 (8) — REPO-J live drift: 3 divergenze reali, 25 fix confermati, primo deploy](#2026-08-28-8-repo-j-live-drift-3-divergenze-reali-25-fix-confermati-primo-deploy)
+- [2026-08-28 (9) — REPO-L (Unicredit_Factoring): 9 confermati, SECRET in history, la buona notizia provata](#2026-08-28-9-repo-l-unicredit_factoring-9-confermati-secret-in-history-la-buona-notizia-provata)
 
 
 ## Stato
@@ -3734,3 +3735,17 @@ uno stato live irraggiungibile: branch sul repo GitHub, non file incollato).
 Il primo deploy REALE di tutti i 28 punti insieme è avvenuto dopo la
 riconciliazione: 13/13 file, clasp status verificato prima del push. Pattern
 totale: 37.
+
+### 2026-08-28 (9) — REPO-L (Unicredit_Factoring): 9 confermati, SECRET in history, la buona notizia provata
+
+Audit 30 agenti (21 scoperta + 9 avversariale): 54 rilievi, 9 confermati con
+esecuzione indipendente, 45 NON VERIFICATI dichiarati, 0 smentiti, 73 assenze
+verificate. Il dato CRITICO: il client_secret BC è doppiamente in chiaro nella
+storia git (7 commit su main, rimossi dal working tree ma recuperabili con
+git show) — ROTAZIONE NECESSARIA su Azure AD, indipendente dalla pulizia
+(dichiarato in DEBITI, decisione Luca). Il dato POSITIVO: GeneraTXT.gs
+riproduce byte-per-byte le righe reali verificate con UniCredit — provato
+con node, non assunto: la buona notizia con la stessa dignità del bug. Nuova
+regola in metodo: la correttezza presente si prova come il difetto assente.
+Domanda di dominio aperta: NDC vs P03 per le note di credito (spec vs codice).
+REPO-L registrata. Pattern totale: 37.

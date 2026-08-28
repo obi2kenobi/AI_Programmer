@@ -29,6 +29,7 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-K | Dashboard web GAS+BC per gestione ordini multi-categoria (foglio "aperti" e foglio storico paralleli, sync automatico) — già citato informalmente come "dossier SD" in `famiglie-difetti.md` e in `SAL.md` (voce 2026-08-28) prima che questo codice esistesse | dossier 86 rilievi/25 idee (`docs/campo/2026-08-28-sd-dashboard-dossier.md`), tutti implementati in sessione continua — report `docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md` |
 | REPO-J | Gestione-ordini-Bricoman (ordini EDI fornitori, GAS+BC, 12 file) | audit 50 agenti 2026-08-28: 153 rilievi, 13 confermati, 2 smentiti (`docs/campo/2026-08-28-bricoman-50-agenti.md`) — 25 fix applicati in sessione continua, verificati con node prima di ogni commit | docs/campo/2026-08-28-bricoman-dal-audit-ai-fix.md |
 | REPO-K | dashboard web GAS+BC per gestione ordini multi-categoria (SD) | dossier 86 rilievi + 25 idee, TUTTI implementati in sessione continua 2026-08-28 | docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md |
+| REPO-L | Unicredit_Factoring (cessione fatture, GAS+BC, file fixed-width TXT per banca) | audit 30 agenti 2026-08-28: 54 rilievi, 9 confermati, 45 NON VERIFICATI, 0 smentiti · SECRET in git history (da ruotare) | docs/campo/2026-08-28-unicredit-factoring-30-agenti.md |
 
 ## Come usarlo
 

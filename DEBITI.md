@@ -139,3 +139,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-27 | Le voci di DEBITI motivano decisioni rimandate con FATTI («il repo contiene credenziali BC») — ma il codice CAMBIA, e un fatto che era vero quando la voce è stata scritta può non esserlo più (REPO-G: le credenziali sono state spostate via in PR #36, l'obiezione è restata com'era per giorni). Lasciarla scrivere a una cosa non più vera fa sembrare bloccata una decisione che è solo aperta | è il campo che deve accorgersene e dirlo (come è successo), non l'hub che lo vede da solo — chi processa i report dovrebbe riverificare le premesse delle voci DEBITI che il report tocca | a ogni report dal campo che tocca codice citato in DEBITI: riverificare la premessa, aggiornare la voce se il fatto è cambiato |
+
+## REPO-L: secret BC in git history (2026-08-28, audit 30 agenti)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-28 | Client_secret BC presente in 7 commit su main di Unicredit_Factoring (TestConnessioneBC.js/.gs, rimossi dal working tree ma recuperabili con git show). Rotazione necessaria INDIPENDENTEMENTE dalla pulizia. Pulizia history = filter-repo + force-push (distruttivo, coordinato) | rotazione: va fatta su Azure AD/BC dal proprietario. Pulizia: operazione distruttiva su repo condivisa | decisione Luca: (1) ruotare il secret su Azure, (2) pulire la history (filter-repo), (3) o entrambe |

@@ -259,3 +259,12 @@ e MISURARE, non eseguire il mandato alla lettera. Diff contro la BASELINE pre-fi
 (non contro HEAD che include i fix), whitespace-insensitive (clasp normalizza).
 REPO-J: 11 file sembravano divergenti, 3 lo erano davvero — il resto era rumore
 di formattazione. Misurare prima ha evitato di rifare 25 fix gia solidi.
+
+
+## La buona notizia si dichiara con la stessa prova del bug (dal campo REPO-L, 2026-08-28)
+
+Il revisore ha VERIFICATO con node che GeneraTXT.gs riproduce byte-per-byte le righe
+reali verificate con UniCredit: questa e una buona notizia con la stessa dignita
+di un bug confermato — va dichiarata con la prova, non assunta. E il complemento
+dell'assente-dichiarato-col-comando: cosi come un difetto assente si prova, anche
+una correttezza presente si prova. Entrambe contano quanto un rilievo.
