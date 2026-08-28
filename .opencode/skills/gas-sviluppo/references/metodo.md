@@ -150,3 +150,42 @@ non lo è, e quello costa il giro intero.
   applicare: il diff si passa con `-i`).
 - **Tre prodotti, non uno**: difetti trovati · migliorie progettate ·
   funzionalità nuove progettate. Chi porta solo difetti ha fatto un terzo.
+
+
+## Le tre regole della fase 2 (dal campo REPO-I, 2026-08-27 — catalogo 44 idee esaurito)
+
+1. **VERIFICA-PRIMA-DI-COSTRUIRE**: prima di implementare un idea, controlla se un
+   meccanismo generico gia costruito la copre — e VERIFICACLO con un test, non a
+   occhio (due trend «da scrivere» erano gia prodotti gratis dal cruscotto: il lavoro
+   giusto era il test di applicabilita, non il codice nuovo).
+2. **Parametro ≠ speculazione**: «idea in attesa di un parametro del proprietario» si
+   chiude con una domanda; «idea architetturalmente speculativa senza un caso reale
+   che la chieda oggi» resta NON ANCORA MATURA — implementarla comunque inventa una
+   classificazione che nessuno ha chiesto (over-engineering mascherato da fondo).
+3. **I vincoli vivono anche nei file di configurazione**: prima di proporre un idea,
+   leggi i commenti in CI/workflow/lockfile del progetto, non solo SAL/CLAUDE — e se
+   un idea li viola, la verifica FUORI dal repo (strumenti in directory esterna, mai
+   committati) vale come prova equivalente a un test committato (REPO-I: Playwright
+   fuori dal repo, 16 asserzioni in Chromium headless, invariante «zero dipendenze» intatto).
+
+
+## Due aggiunte dal campo REPO-H (2026-08-27, 12 PR)
+
+1. **Workaround vm per i binding lessicali**: `let X` di primo livello non diventa
+   proprieta del contesto — ma DOPO aver eseguito il sorgente, una seconda
+   `vm.runInContext("X = valoreStub;", ctx)` con assegnazione semplice (non
+   dichiarazione) risolve al binding lessicale gia creato. (Il limite era canone;
+   la tecnica per aggirarlo senza contesto nuovo man era nuova.)
+2. **Un test sul confine irraggiungibile non e un test**: prima di scrivere il
+   caso limite, verifica che quel valore sia RAGGIUNGIBILE attraverso la pipeline
+   reale (REPO-I: 0.005 post-round2 non esiste come input del filtro — un test li
+   sarebbe eseguibile e privo di significato). Si testa il percorso, non la firma.
+
+
+## Correggere e un giro di audit (dal test REPO-E, 2026-08-27)
+
+1. **Il banco gira a OGNI commit della correzione**: nel test ha fermato IN ITINERE
+   una regressione sul caso zero-ordini che il banco finale avrebbe mostrato tardi.
+2. **Correggere genera rilievi nuovi** (3 nel test: trigger che chiama una funzione
+   inesistente e fallisce in silenzio; contatore di test matematicamente sempre-0;
+   security codes come probe): il censimento si aggiorna IN CORSA.

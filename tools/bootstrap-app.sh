@@ -61,6 +61,11 @@ cp "$HERE/docs/GRAMMATICA_DOMINIO_TEMPLATE.md" docs/GRAMMATICA_DOMINIO.md
 # nuovo. Una sessione di giorno sul progetto appena creato non aveva accesso a nessuna skill.
 mkdir -p .claude/skills
 cp -r "$HERE/.claude/skills/." .claude/skills/
+# bug reale (revisione 14 lenti, 2026-08-28): lo specchio OpenCode (.opencode/skills/)
+# non veniva mai creato per un progetto nuovo — stesso schema già corretto sopra per
+# .claude/skills/, mai applicato a questa cartella.
+mkdir -p .opencode/skills
+cp -r "$HERE/.opencode/skills/." .opencode/skills/
 
 # gap reale (set 3 "flusso delle idee"): patterns/ (trucchi provati, ancorati al codice
 # che li usa) non lasciava mai il hub — CLAUDE.md §7 dice "prima di scrivere
