@@ -77,3 +77,13 @@ REPO-E (regola "Public repo, private work").
 ## Il catalogo pattern
 
 patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.
+
+
+## Vedi anche
+
+skill `goal` (il loop diurno con tetto).
+
+
+## Vedi anche
+
+skill `selezione-contesto` (il budget di fonti prima di iniziare).

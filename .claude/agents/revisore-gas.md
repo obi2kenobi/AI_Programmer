@@ -87,3 +87,8 @@ Se graphify-out/graph.json esiste nel progetto target, usa
 `graphify query "<termine>"` per trovare dove vive un componente PRIMA
 di grepare. Il grafo è stato costruito per questo: consultazione veloce,
 economica, precisa. Se non esiste, falllo creare: `graphify update .`
+
+
+## Vedi anche
+
+skill `verifica-visiva` (lo screenshot dopo il deploy).

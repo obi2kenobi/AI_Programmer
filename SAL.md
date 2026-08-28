@@ -37,6 +37,7 @@
 - [2026-08-28 (13) — Energikal: chiusura sessione (5 decisioni di dominio prese, PR #55 aperta)](#2026-08-28-13-energikal-chiusura-sessione-5-decisioni-di-dominio-prese-pr-55-aperta)
 - [2026-08-28 (14) — REPO-N giornata completa: 159 giri, 26 difetti corretti, 5 suite](#2026-08-28-14-repo-n-giornata-completa-159-giri-26-difetti-corretti-5-suite)
 - [2026-08-28 — 60 giri di revisione completa: privacy bonificata, pattern collegati](#2026-08-28-60-giri-di-revisione-completa-privacy-bonificata-pattern-collegati)
+- [Giro 1/30 ciclo ABC: 9 finding corretti (6 agenti pattern, 3 skill collegate)](#giro-1-30-ciclo-abc-9-finding-corretti-6-agenti-pattern-3-skill-collegate)
 
 
 ## Stato
@@ -573,3 +574,5 @@ ngiri), PATTERN IRRAGGIUNGIBILI (riferimento al catalogo aggiunto a metodo + 4 a
 limiti (4 tool arricchiti). Verificato pulito: suite 101/101, nessun segreto, SAL
 coerente, specchi sincronizzati, test deterministici. Dichiarato: SAL 275KB rotation,
 24/27 campo senza nome in SAL, 6 tool senza test giustificati.
+
+### Giro 1/30 ciclo ABC: 9 finding corretti (6 agenti pattern, 3 skill collegate)
