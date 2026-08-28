@@ -383,9 +383,14 @@ bash tests/test-report-campo.sh >/dev/null 2>&1 && aggirato "G9 formato report d
 
 att; python3 -c "
 p='.claude/skills/gas-sviluppo/references/famiglie-difetti.md'; s=open(p).read()
-lines = [l for l in s.split('\n') if 'test finti' not in l.lower()]
-open(p,'w').write('\n'.join(lines))"
-difesa_test tests/test-canone-integrita.sh "G10 famiglia difetti cancellata dal catalogo"
+lines = s.split('\n')
+tenute, tolte = [], 0
+for l in lines:
+    if l.startswith('- **') and tolte < 4:
+        tolte += 1; continue
+    tenute.append(l)
+open(p,'w').write('\n'.join(tenute))"
+difesa_test tests/test-canone-integrita.sh "G10 quattro famiglie cancellate dal catalogo"
 
 att; python3 -c "
 p='tools/bc_index.py'; s=open(p).read()

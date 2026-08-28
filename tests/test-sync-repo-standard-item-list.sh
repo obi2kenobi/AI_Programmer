@@ -20,6 +20,12 @@ for item in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .openc
     || ko "ITEM list di sync-repo.sh --standard NON include: $item"
 done
 
+# giri avversari 2026-08-28 (A14): --standard deve essere un FLAG REALE (case),
+# non solo un nome citato nei commenti — il benvenuto insegna quel comando
+grep -qE '^[[:space:]]*--standard\)' "$HERE/tools/sync-repo.sh" \
+  && ok "sync-repo implementa --standard come flag reale" \
+  || ko "sync-repo ha perso il flag --standard (restava solo nei commenti)"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

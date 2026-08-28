@@ -28,6 +28,13 @@ mkdir -p "$TMP/docs/campo"; touch "$TMP/docs/campo/$(date +%F)-x.md"
 OUT=$(cd "$TMP" && echo '{"hook_event_name":"Stop"}' | bash "$HOOK")
 [ -z "$OUT" ] && ok "report di oggi presente: il promemoria TACE (non rompe chi ha fatto)" \
   || ko "promemoria anche col report presente: $OUT"
+# giri avversari 2026-08-28 (G9): il puntatore di CLAUDE.md a docs/campo poteva
+# degradare senza rosso — il format vive nel README di campo, ma il canone deve
+# continuare a DIRIGERE lì chi chiude la sessione
+grep -q "docs/campo" "$HERE/CLAUDE.md" \
+  && ok "CLAUDE.md dirige i report in docs/campo/" \
+  || ko "CLAUDE.md ha perso il puntatore a docs/campo/"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

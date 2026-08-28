@@ -72,25 +72,35 @@ fi
 
 [ -z "$FILE_PATH" ] && exit 0
 
-# promemoria SAL (F5): piggy-back sul canale additionalContext, anche su file non sensibili
+# giri avversari 2026-08-28 (B1): il promemorio SAL scattava PRIMA del ramo
+# sensibile e con l'exit 0 SOPPROMEVA il richiamo dei pattern — ogni quinto edit
+# su un file di credenziali perdeva il contesto di sicurezza. Priorità invertita
+# di documentazione contro sicurezza. Ora: il sensibile viene PRIMA, e il
+# promemorio SAL gli si ACCODA (mai sostituisce).
+
+CTX_SENS=""
+if echo "$FILE_PATH" | grep -qiE 'auth|secret|credential|credenzial|token|login|password|segret'; then
+  HITS=""
+  if [ -f "$REGISTRO" ]; then
+    HITS="$(grep -E '^\| \[' "$REGISTRO" | grep -iE 'segreto|credenzial|token' | head -5)"
+  fi
+  if [ -n "$HITS" ]; then
+    CTX_SENS="File sensibile ($FILE_PATH) — pattern pertinenti in patterns/README.md prima di procedere:
+$HITS"
+  else
+    CTX_SENS="File sensibile ($FILE_PATH) — nessun pattern specifico trovato nel registro patterns/README.md, ma vale comunque CLAUDE.md \"Never expose secrets\" / \"Mask, don't omit\" / \"One-shot secret handoff\"."
+  fi
+fi
+
+CTX_SAL=""
 if sal_promemoria; then
   CTX_SAL="Hai fatto $(( $(cat "/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")" 2>/dev/null || echo 0) )) edit e SAL.md non è tra questi — se in questo giro c'è una scoperta o una correzione, va scritta in SAL.md PRIMA del passo successivo (CLAUDE.md 'keep living documentation' + PROJECT.md del progetto). Un promemoria, non un blocco."
-  jq -n --arg ctx "$CTX_SAL" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",additionalContext:$ctx}}'
-  exit 0
 fi
 
-echo "$FILE_PATH" | grep -qiE 'auth|secret|credential|credenzial|token|login|password|segret' || exit 0
-
-HITS=""
-if [ -f "$REGISTRO" ]; then
-  HITS="$(grep -E '^\| \[' "$REGISTRO" | grep -iE 'segreto|credenzial|token' | head -5)"
-fi
-
-if [ -n "$HITS" ]; then
-  CTX="File sensibile ($FILE_PATH) — pattern pertinenti in patterns/README.md prima di procedere:
-$HITS"
-else
-  CTX="File sensibile ($FILE_PATH) — nessun pattern specifico trovato nel registro patterns/README.md, ma vale comunque CLAUDE.md \"Never expose secrets\" / \"Mask, don't omit\" / \"One-shot secret handoff\"."
-fi
+[ -z "$CTX_SENS" ] && [ -z "$CTX_SAL" ] && exit 0
+CTX="$CTX_SENS
+$CTX_SAL"
+[ "$CTX" = "
+" ] && exit 0
 
 jq -n --arg ctx "$CTX" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",additionalContext:$ctx}}'
