@@ -62,3 +62,13 @@ Indice: patterns/README.md
 2. **`clasp push` mai** — il deploy sul vivo lo fa una persona dal suo Mac.
 3. **Mai il valore di una credenziale**, e mai proporre di ruotarla: si
    prosegue e si dichiara.
+
+
+## Vedi anche
+
+Per calcoli contabili specifici: skill `controllo-gestione` con i suoi 11 oracoli.
+
+
+## Vedi anche
+
+Dopo il deploy, la verifica visiva: skill `verifica-visiva`.

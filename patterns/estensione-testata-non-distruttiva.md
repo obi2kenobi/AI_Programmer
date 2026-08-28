@@ -12,3 +12,6 @@ intestazione. Evita sia il passo di migrazione manuale al cliente sia il
 disallineamento silenzioso delle colonne esistenti rispetto ai dati sotto.
 Imparentato con FORMATTAZIONE FANTASMA (famiglie-difetti) ma sul CONTENUTO
 della testata invece che sul formato della cella.
+
+
+**Vedi anche**: `verdetto-sempre-visibile` · `copertura-dal-glob`

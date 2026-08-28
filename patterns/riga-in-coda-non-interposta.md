@@ -10,3 +10,6 @@ interporla sposta silenziosamente ogni riferimento successivo. E quando serve
 una riga nuova, meglio il calcolo dinamico (15 + N + 2) di un altro numero
 fisso. Famiglia della formattazione-fantasma: lo stato attaccato alla
 POSIZIONE, non alla logica.
+
+
+**Vedi anche**: `copertura-dal-glob`

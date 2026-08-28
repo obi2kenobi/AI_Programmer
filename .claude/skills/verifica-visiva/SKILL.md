@@ -49,3 +49,13 @@ Non eseguibile da una sessione senza clasp/OAuth locale (es. questa sessione clo
 momento della sua scrittura, 2026-08-21): verificato che il meccanismo Playwright/Chromium
 funziona nell'ambiente (screenshot di una pagina locale), non verificato contro un vero
 deploy Apps Script — richiede il Mac con la sessione Google autenticata.
+
+
+## Vedi anche
+
+Per il metodo completo di sviluppo GAS: skill `gas-sviluppo`.
+
+
+## Vedi anche
+
+La formula da verificare segue la skill `controllo-gestione`.

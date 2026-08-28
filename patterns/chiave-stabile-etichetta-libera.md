@@ -11,3 +11,6 @@ il passato resta orfano. L'etichetta piu leggibile si aggiunge ACCANTO, mai
 AL POSTO. E la generalizzazione precisa del «rename rischioso»: il rischio
 specifico e la rottura silenziosa della continuita storica, non quella
 funzionale immediata.
+
+
+**Vedi anche**: `citazione-non-presidio` · `versione-sugli-artefatti`
