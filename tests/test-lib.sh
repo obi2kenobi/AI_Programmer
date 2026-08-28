@@ -120,8 +120,14 @@ rotate_log_if_big "$LOGTMP/big.log" 1
 [ -f "$LOGTMP/big.log" ] && [ ! -s "$LOGTMP/big.log" ] && ok "rotate_log_if_big: nuovo log vuoto pronto" \
   || ko "rotate_log_if_big: il nuovo log non è vuoto"
 
-rotate_log_if_big "$LOGTMP/assente.log" 1
-ok "rotate_log_if_big: file assente, no-op senza errore"
+# bug reale (revisione 14 lenti, 2026-08-28): ok() era chiamata incondizionatamente qui
+# — nessun controllo di $? né verifica che non fosse stato creato un file spurio.
+# Verificato dal vivo iniettando una regressione (errore su stderr, .1 spurio, exit 3)
+# in rotate_log_if_big: la suite continuava a dire "OK", l'asserzione non provava nulla.
+rotate_log_if_big "$LOGTMP/assente.log" 1; RC_ASSENTE=$?
+[ "$RC_ASSENTE" -eq 0 ] && [ ! -e "$LOGTMP/assente.log" ] && [ ! -e "$LOGTMP/assente.log.1" ] \
+  && ok "rotate_log_if_big: file assente, no-op senza errore (exit 0, nessun file creato)" \
+  || ko "rotate_log_if_big: file assente non gestito pulito (rc=$RC_ASSENTE)"
 rm -rf "$LOGTMP"
 
 echo ""

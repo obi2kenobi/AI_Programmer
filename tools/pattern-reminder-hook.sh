@@ -15,6 +15,22 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 REGISTRO="$HERE/patterns/README.md"
 
+# bug reale (revisione 14 lenti, 2026-08-28): `md5` non esiste su Linux (solo md5sum) —
+# `printf '%s' "$PWD" | md5 | head -c 12` falliva silenziosamente, l'hash collassava a
+# stringa vuota, e OGNI directory di lavoro finiva sullo stesso file di contatore
+# ("/tmp/ai-programmer-sal-counter." — mai ripulito, vive fuori da qualunque scratch di
+# test). Verificato dal vivo: la suite intera in ordine falliva a metà (39/87), il test
+# da solo passava sempre — il verdetto dipendeva dallo stato residuo di ALTRE esecuzioni.
+sal_hash() {
+  if command -v md5 >/dev/null 2>&1; then
+    printf '%s' "$1" | md5 | head -c 12
+  elif command -v md5sum >/dev/null 2>&1; then
+    printf '%s' "$1" | md5sum | head -c 12
+  else
+    printf '%s' "$1" | cksum | tr -d ' \t\n'
+  fi
+}
+
 INPUT="$(cat)"
 FILE_PATH="$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)"
 COMMAND="$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
@@ -25,7 +41,7 @@ COMMAND="$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
 # sessione diurna che edita molto senza toccare SAL.md. Contatore per directory di
 # lavoro: dopo 5 edit senza SAL.md, il promemoria entra nel contesto (mai un blocco).
 sal_promemoria() {
-  local stato="/tmp/ai-programmer-sal-counter.$(printf '%s' "$PWD" | md5 | head -c 12)"
+  local stato="/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")"
   case "$FILE_PATH" in
     */SAL.md|SAL.md) : > "$stato" 2>/dev/null; return 1 ;;
   esac
@@ -56,7 +72,7 @@ fi
 
 # promemoria SAL (F5): piggy-back sul canale additionalContext, anche su file non sensibili
 if sal_promemoria; then
-  CTX_SAL="Hai fatto $(( $(cat "/tmp/ai-programmer-sal-counter.$(printf '%s' "$PWD" | md5 | head -c 12)" 2>/dev/null || echo 0) )) edit e SAL.md non è tra questi — se in questo giro c'è una scoperta o una correzione, va scritta in SAL.md PRIMA del passo successivo (CLAUDE.md 'keep living documentation' + PROJECT.md del progetto). Un promemoria, non un blocco."
+  CTX_SAL="Hai fatto $(( $(cat "/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")" 2>/dev/null || echo 0) )) edit e SAL.md non è tra questi — se in questo giro c'è una scoperta o una correzione, va scritta in SAL.md PRIMA del passo successivo (CLAUDE.md 'keep living documentation' + PROJECT.md del progetto). Un promemoria, non un blocco."
   jq -n --arg ctx "$CTX_SAL" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",additionalContext:$ctx}}'
   exit 0
 fi
