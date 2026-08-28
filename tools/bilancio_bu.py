@@ -34,6 +34,11 @@ import sys
 
 
 def main():
+    """Un CSV bu,amount per stdin → tabella per BU con margine diretto e
+    quadratura. Convenzione G/L dichiarata nell'header del report: amount<0
+    è ricavo. Il ribaltamento dei costi indiretti NON è provato dal codice
+    REPO-E: l'oracolo produce margine DIRETTO e lo dichiara.
+    """
     righe = list(csv.DictReader(sys.stdin))
     bu_tot = {}
     amounts = []  # righe valide, per la quadratura indipendente sotto

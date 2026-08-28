@@ -5,6 +5,11 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$HOME/ai-programmer-status.html"
 
+# I quattro blocchi della pagina sono le quattro domande del mattino: come sta
+# il sistema (health), cosa dice l'ultimo gate (summary), quando ha girato
+# l'ultimo turno notturno, quando l'ultimo gate mattutino. Se un blocco è
+# "mai eseguito" la pagina lo dice invece di nasconderlo: l'assenza di dato
+# è un dato.
 HEALTH=$(bash "$HERE/tools/system-health.sh" 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g' | head -30)
 SUMMARY=$(bash "$HERE/night-shift/gate-summary.sh" 1 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g' | head -20)
 ULTIMO_TURNO=$(grep -aE "TURNO FINITO" ~/night-shift.log 2>/dev/null | tail -1 | sed 's/&/\&amp;/g' || echo "mai eseguito")
@@ -29,4 +34,6 @@ a{color:#8be9fd}
 <h2>Metriche</h2><pre>$SUMMARY</pre>
 </body></html>
 HTML
-open "$OUT" 2>/dev/null || echo "pagina generata: $OUT"
+# NOOPEN=1 (test): genera la pagina senza aprire il browser
+if [ "${NOOPEN:-0}" = "1" ]; then echo "pagina generata (no browser): $OUT"
+else open "$OUT" 2>/dev/null || echo "pagina generata: $OUT"; fi

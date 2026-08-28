@@ -44,6 +44,10 @@ def normalizza(t):
 
 
 def main():
+    """Movimenti CSV in stdin → DSO medio per cliente. Il matching è quello
+    del progetto reale (regola 1-2 del docstring); i clienti senza fatture
+    pagate restano «n.d.»: la forma del numero dichiara cosa contiene.
+    """
     righe = list(csv.DictReader(sys.stdin))
     fatture, pagamenti = [], []
     for r in righe:

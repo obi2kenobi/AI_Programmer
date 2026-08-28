@@ -84,6 +84,11 @@ def risolvi_costo(codice, gruppo, categoria, costo_base, cfg):
 
 
 def valorizza(righe, cfg):
+    """Il cuore dell'oracolo: per riga — location esclusa? riportata a parte.
+    Senza costo? anomalia, NON zero. Altrimenti costo risolto (catena
+    override), valore=qty×costo; le negative entrano nel totale ESDO
+    flaggate (regole 3-5 del docstring).
+    """
     costi_base = costo_base_per_codice(righe)
     escluse = set(cfg.get("location_escluse") or [])
     totale = 0.0
@@ -117,6 +122,11 @@ def valorizza(righe, cfg):
 
 
 def main():
+    """Report: totale SOLO delle location considerate, dettaglio ordinato per
+    valore, anomalie nominate, escluse col loro valore, costi generali
+    dichiarati-non-applicati (regola 6: il punto di applicazione non è
+    provato, si chiede al proprietario del dominio).
+    """
     if len(sys.argv) != 2:
         print("uso: valorizzazione_magazzino.py config.json < righe.csv", file=sys.stderr)
         return 1

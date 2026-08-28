@@ -1,4 +1,10 @@
 #!/bin/bash
+# campo-triage.sh — il conto dei report dal campo e dei NON processati.
+# Il contratto di "processato": il basename del report (senza estensione)
+# compare CONTIGUO in SAL.md — è lì che le lezioni del campo finiscono. Un
+# report che nessuno ha lavorato non svanisce: viene NOMINATO e il gate esce
+# rosso, perché un report ignorato è il giro che non insegna niente.
+# README.md non è un report (è la porta del formato): escluso dal conteggio.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 TOTAL=$(ls "$HERE"/docs/campo/*.md "$HERE"/docs/campo/*.html 2>/dev/null | grep -v "/README" | wc -l | tr -d ' ')

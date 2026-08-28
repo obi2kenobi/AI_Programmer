@@ -27,6 +27,9 @@ def cred(key, raw):
 
 
 def get_token(c):
+    """OAuth2 client-credentials verso BC: il token vive in memoria per il
+    processo, mai su disco (pattern segreto-come-impronta). Muore loud se le
+    credenziali non ci sono: meglio l'errore visibile che il silenzio."""
     data = urllib.parse.urlencode({
         "grant_type": "client_credentials",
         "client_id": c["client_id"],
@@ -39,6 +42,8 @@ def get_token(c):
 
 
 def fetch(base_url, endpoint, token, top):
+    """GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi,
+    chi non segue il nextLink conta metà entità e non lo sa."""
     url = f"{base_url}/{urllib.parse.quote(endpoint)}?$top={top}"
     req = urllib.request.Request(url, headers={
         "Authorization": f"Bearer {token}",
@@ -90,6 +95,9 @@ def leggi_curati(path):
 
 
 def write_md(endpoint, base_url, rows, fields):
+    """Scrive il censimento endpoint in Markdown: una sezione per campo con
+    il tipo DAL CAMPIONE (che può mentire quando il campione è tutto zero —
+    per la correzione tipi esiste bc_tipi_metadata.py, fonte $metadata)."""
     import datetime
     os.makedirs(OUT_DIR, exist_ok=True)
     path = os.path.join(OUT_DIR, f"{endpoint}.md")
@@ -159,6 +167,7 @@ def map_one(c, token, endpoint, top):
 
 
 def main():
+    """Un servizio per volta: fetch, riduzione, scrittura censimento."""
     if len(sys.argv) < 2:
         sys.exit("Uso: python3 tools/bc_map.py <NomeServizio> [top] | --catalog <catalogo.md>")
 

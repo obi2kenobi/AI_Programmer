@@ -45,6 +45,11 @@ def leggi_csv(path):
 
 
 def main():
+    """Accoppia vendite↔acquisti per riferimento documento, calcola margine
+    per documento e percentuale SUI RICAVI (non ricarico). Le regole 1-7 del
+    docstring vivono qui: vendite senza acquisto = errore dichiarato, note
+    credito a parte, BU diverse = avviso non scarto.
+    """
     if len(sys.argv) not in (3, 4):
         print("uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv]", file=sys.stderr)
         return 1

@@ -18,6 +18,11 @@ import sys
 
 
 def categorizza(righe):
+    """Il cuore della riconciliazione (formula REPO-E): delta = fisica − BC,
+    deltaValore = delta × costoFinale. «Non contato» resta DISTINTO da
+    «contato a zero» (regola di business del sorgente): confonderli
+    trasformerebbe un'assenza di verifica in una verifica riuscita.
+    """
     non_contato, senza_discrepanza, con_rettifica = [], [], []
     for r in righe:
         codice = r["codice"]
@@ -52,6 +57,9 @@ def categorizza(righe):
 
 
 def main():
+    """CSV in stdin → conteggi per categoria, rettifiche ordinate per impatto
+    economico (il più costoso in cima: è l'ordine in cui si interviene).
+    """
     righe = list(csv.DictReader(sys.stdin))
     non_contato, senza_discrepanza, con_rettifica = categorizza(righe)
     print(f"Non contati: {len(non_contato)}")

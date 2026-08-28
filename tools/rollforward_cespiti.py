@@ -31,6 +31,11 @@ import sys
 
 
 def calcola_roll_forward(fa, cespiti_categoria):
+    """Roll-forward per categoria: iniziale + acquisizioni − dismissioni ±
+    rivalutazioni = finale; ogni voce che non torna a quadrare viene
+    dichiarata, non aggiustata (la quadratura forzata nasconderebbe il
+    difetto che il roll-forward esiste per trovare).
+    """
     disposti = [
         c for c in cespiti_categoria
         if c.get("isDisposed") and c.get("yearCessioni", 0) != 0
@@ -60,6 +65,8 @@ def calcola_roll_forward(fa, cespiti_categoria):
 
 
 def main():
+    """Cespiti JSON in stdin → righe roll-forward. Input non-parsabile: uso.
+    """
     import json as _json
     try:
         dati = _json.load(sys.stdin)

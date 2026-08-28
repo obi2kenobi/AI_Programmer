@@ -35,6 +35,8 @@ def calcola_scostamento(costo_standard, media_eff):
 
 
 def calcola_trend(righe_ordinate):
+    """Trend mese per mese: effetto−standard con segno — il segno dice se si è
+    speso più o meno del previsto, la serie dice se è caso o direzione."""
     if len(righe_ordinate) < 4:
         return "DATI_INSUFFICIENTI"
     meta = len(righe_ordinate) // 2
@@ -54,6 +56,11 @@ def calcola_trend(righe_ordinate):
 
 
 def valuta_alert(costo_standard, num_odp, scost_perc, soglia=10):
+    """La soglia scatta su valore ASSOLUTO: scostamento −12% e +12% valgono lo
+    stesso allarme, segni opposti (si è speso molto meno o molto più).
+    Soglia senza provenienza = allarme che nessuno sa da dove viene: la
+    percentuale arriva dal chiamante e va dichiarata nell'output.
+    """
     if costo_standard == 0 or num_odp < 2 or abs(scost_perc) <= soglia:
         return None
     return {
@@ -63,6 +70,10 @@ def valuta_alert(costo_standard, num_odp, scost_perc, soglia=10):
 
 
 def main():
+    """Legge costo_standard da argv, i consumi da stdin, stampa confronto,
+    trend e alert. Il costo standard è del dominio: non si indovina né si
+    mette un default silenzioso.
+    """
     righe = [
         {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
         for r in csv.DictReader(sys.stdin)

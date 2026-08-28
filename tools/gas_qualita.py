@@ -25,6 +25,9 @@ FUN_RE = re.compile(r"^\s*(?:function\s+([A-Za-z_$][\w$]*)|(?:const|let|var)\s+(
 
 
 def leggi_file(path):
+    """Lettura tollerante (encoding/errori): un file illeggibile è un rilevo,
+    non un crash del rilevatore.
+    """
     try:
         with open(path, encoding="utf-8", errors="replace") as f:
             return f.read()
@@ -58,6 +61,11 @@ def riga_di(testo, idx):
 
 
 def main():
+    """Il rilevatore: per ogni famiglia misurata, cerca nel progetto GAS i
+    segni che la famiglia esiste (test finti, nomi in ombra, fusi,
+    paginazione-indizio...). Ogni rilevo porta file:riga: un rilevo senza
+    posizione non è controllabile.
+    """
     if len(sys.argv) != 2:
         print("uso: gas_qualita.py <cartella-progetto>", file=sys.stderr)
         return 1

@@ -1,12 +1,21 @@
 #!/bin/bash
-# ciclo-vivo.sh — il ciclo A-B-C che diventa più intelligente a ogni giro.
-# Non un loop meccanico: un loop che RICORDA cosa ha trovato, GENERA guardie
-# per i finding ricorrenti, PRIORITA dove guardare in base a cosa ha prodotto
-# più miglioramenti, e SA quando un livello è esaurito e deve salire.
+# ciclo-vivo.sh — il ciclo che si ripete a livelli di profondità crescente.
+# (Nato come «ciclo A-B-C» con memoria in stato.json e prioritizzazione dei punti
+# d'inspezione: di quel progetto iniziale è sopravvissuto meno del previsto, e
+# l'header continuava a descrivere l'aspirazione del primo giorno invece del
+# codice — il caso da manuale di incongruenza pensato/scritto, corretto il
+# 2026-08-28 nei 100 giri di chiarezza.)
 #
-# Memoria: .ciclo/stato.json — il cervello del ciclo, persiste fra i giri.
-# Guardie: ogni finding ricorrente (3+ volte) genera un test automatico.
-# Livelli: tool → collegamenti → flussi → architettura → metodo stesso.
+# COSA È DAVVERO: un giro = un set di lenti sul repo, al livello corrente.
+#   Livelli: 1 tool → 2 collegamenti → 3 flussi → 4 architettura → 5 meta.
+#   Sale dopo 3 giri puliti; al 5, dopo 3 giri puliti, torna all'1 (CUORE):
+#   fermo al massimo verificherebbe solo il massimo, le fondamenta invecchiano.
+# Memoria: FILE PIATTI in .ciclo/ (giro, livello, zero_streak,
+#   findings_giro_precedente, findings_storico.txt, trend.csv) — niente JSON:
+#   ogni variabile è un file leggibile con cat.
+# Guardie: un finding ricorrente (3+ volte) viene ACCODATO in
+#   .ciclo/guardie/da-generare-*.txt perché diventi un test. La GENERAZIONE
+#   automatica resta promessa, non implementata: la coda è il contratto attuale.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 MEMORIA="$HERE/.ciclo"
