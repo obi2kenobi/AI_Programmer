@@ -170,6 +170,7 @@
 - [2026-08-28 (9) — REPO-L (Unicredit_Factoring): 9 confermati, SECRET in history, la buona notizia provata](#2026-08-28-9-repo-l-unicredit_factoring-9-confermati-secret-in-history-la-buona-notizia-provata)
 - [2026-08-28 (10) — REPO-M (Energikal): backlog di 15+20 voci, 5 domande di dominio](#2026-08-28-10-repo-m-energikal-backlog-di-15-20-voci-5-domande-di-dominio)
 - [2026-08-28 (11) — REPO-L (Unicredit_Factoring): 30 agenti + 14 fix, terza sessione continua](#2026-08-28-11-repo-l-unicredit_factoring-30-agenti-14-fix-terza-sessione-continua)
+- [2026-08-28 (12) — REPO-N (parrocchie): il metodo su Flask/SQLite, 13 difetti al banco](#2026-08-28-12-repo-n-parrocchie-il-metodo-su-flask-sqlite-13-difetti-al-banco)
 
 
 ## Stato
@@ -3779,3 +3780,13 @@ quando è tua (il fix che rendeva impossibile il primo setup, scoperto solo
 verificando l'assunzione, non leggendo il rilievo). Canonizzata la regola
 generalizzata in metodo. sync-repo.sh ora distingue "gh assente" da "repo
 privata". Quarta occorrenza del regime sessione-continua (REPO-F, K, J, L).
+
+### 2026-08-28 (12) — REPO-N (parrocchie): il metodo su Flask/SQLite, 13 difetti al banco
+
+Il metodo applicato per la prima volta su un progetto NON-Apps-Script: 50
+passate, 13 difetti dimostrati al banco, 10 commit, generatore scadenze 10/10.
+Le famiglie GENERALIZZANO fra linguaggi (le stesse forme: Number('')=0 →
+120.0 vs '120', sentinelle, lock assente). Canonizzati: pattern 38
+BANCO-PROGETTO-LOCALE e 39 AMBIENTE-CENSIMENTO-DICHIARATO. In metodo: passo-0
+= sync-repo --standard, riga di esito diurna. In DEBITI: privacy fuori casa.
+REPO-N registrata. Pattern totale: 39.

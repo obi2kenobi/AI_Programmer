@@ -49,3 +49,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [doppio-livello-escaping](doppio-livello-escaping.md) | REPO-K: Scripts.html escapeJsAttr | 2026-08-28 |
 | [misura-la-deriva-prima-di-assumerla](misura-la-deriva-prima-di-assumerla.md) | REPO-J: diff baseline vs HEAD | 2026-08-28 |
 | [ponte-branch-usa-e-getta](ponte-branch-usa-e-getta.md) | REPO-J: live-snapshot via GitHub | 2026-08-28 |
+| [banco-progetto-locale](banco-progetto-locale.md) | REPO-N | 2026-08-28 |
+| [ambiente-censimento-dichiarato](ambiente-censimento-dichiarato.md) | REPO-N | 2026-08-28 |
