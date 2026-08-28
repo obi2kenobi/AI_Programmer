@@ -165,6 +165,48 @@ check_qwen_response "HTML non-JSON"     "<html>errore</html>"    "ERRORE ollama"
 check_qwen_response "JSON forma errata" '{"unexpected": true}'   "ERRORE ollama"
 rm -rf "$QWENRESPTMP"
 
+# --- revisione 14 lenti, 2026-08-28: curl che fallisce interamente (rete assente) non
+# deve far uscire lo script sotto `set -e` senza alcuna diagnosi ---
+CURLFAILTMP=$(mktemp -d)
+cat > "$CURLFAILTMP/curl" <<'EOF'
+#!/bin/bash
+echo "curl: (7) Failed to connect" >&2
+exit 7
+EOF
+chmod +x "$CURLFAILTMP/curl"
+OUT_GLM_CF=$(PATH="$CURLFAILTMP:$PATH" ZHIPUAI_API_KEY=x bash "$HERE/llm/ask-glm.sh" "test" </dev/null 2>&1); RC_GLM_CF=$?
+[ "$RC_GLM_CF" -eq 1 ] && grep -q "ERRORE glm: curl fallito" <<<"$OUT_GLM_CF" \
+  && ok "ask-glm: curl fallito (rete assente) dà una diagnosi, non un'uscita muta" \
+  || ko "ask-glm: curl fallito non diagnosticato — rc=$RC_GLM_CF out=$OUT_GLM_CF"
+
+cat > "$CURLFAILTMP/curl" <<'EOF'
+#!/bin/bash
+[[ "$*" == *"api/version"* ]] && exit 0
+echo "curl: (7) Failed to connect" >&2
+exit 7
+EOF
+chmod +x "$CURLFAILTMP/curl"
+OUT_QWEN_CF=$(PATH="$CURLFAILTMP:$PATH" bash "$HERE/llm/ask-qwen.sh" "test" </dev/null 2>&1); RC_QWEN_CF=$?
+[ "$RC_QWEN_CF" -eq 1 ] && grep -q "ERRORE qwen: curl fallito" <<<"$OUT_QWEN_CF" \
+  && ok "ask-qwen: curl fallito (rete assente) dà una diagnosi, non un'uscita muta" \
+  || ko "ask-qwen: curl fallito non diagnosticato — rc=$RC_QWEN_CF out=$OUT_QWEN_CF"
+rm -rf "$CURLFAILTMP"
+
+# --- revisione 14 lenti, 2026-08-28: uno stdin lento (troncato dal timeout di 5s) deve
+# avvisare, non corrompere il contesto in silenzio ---
+STDINTMP=$(mktemp -d)
+cat > "$STDINTMP/curl" <<'EOF'
+#!/bin/bash
+printf '{"choices":[{"message":{"content":"ok"}}]}'
+EOF
+chmod +x "$STDINTMP/curl"
+OUT_STDIN=$( { for i in 1 2 3; do echo "riga$i"; sleep 2; done; } \
+  | PATH="$STDINTMP:$PATH" ZHIPUAI_API_KEY=x bash "$HERE/llm/ask-glm.sh" "test" 2>&1 )
+grep -q "ATTENZIONE.*TRONCATO" <<<"$OUT_STDIN" \
+  && ok "ask-glm: stdin lento avvisa del troncamento invece di corrompere in silenzio" \
+  || ko "ask-glm: stdin lento senza avviso — output: $OUT_STDIN"
+rm -rf "$STDINTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

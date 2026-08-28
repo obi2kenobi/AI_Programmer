@@ -41,6 +41,23 @@ grep -q "^ai_timeout()" "$HERE/llm/_timeout.sh" \
   && ok "ai_timeout dichiarata in llm/_timeout.sh" \
   || ko "ai_timeout non trovata in llm/_timeout.sh"
 
+# 6. bug reale (revisione 14 lenti, 2026-08-28): tutti i casi sopra forzano il ramo perl
+# (AI_TIMEOUT_FORCE_PERL=1) — il ramo PRIMARIO (GNU timeout/gtimeout, il caso normale su
+# coreutils presenti) non era mai esercitato su un comando che ignora SIGTERM. Senza "-k",
+# GNU timeout manda TERM e poi ASPETTA che il comando termini da solo — un comando con
+# trap '' TERM non veniva mai forzato a chiudere. Questo caso NON forza il ramo perl.
+if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; then
+  T2=$(date +%s)
+  ai_timeout 2 bash -c 'trap "" TERM; sleep 20'
+  RC6=$?
+  T3=$(date +%s); DUR6=$((T3-T2))
+  [ "$DUR6" -le 10 ] \
+    && ok "ramo primario (GNU timeout): comando che ignora TERM ucciso entro ${DUR6}s, non atteso per 20s (rc=$RC6)" \
+    || ko "ramo primario: comando che ignora TERM NON forzato — durata=${DUR6}s (atteso <=10s)"
+else
+  echo "SKIP: né timeout né gtimeout disponibili in questo ambiente, ramo primario non esercitabile"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

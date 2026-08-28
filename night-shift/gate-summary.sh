@@ -9,6 +9,12 @@ set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 CSV="$HERE/../metrics/gate.csv"
+# nota (revisione 14 lenti, 2026-08-28): metrics/gate.csv ha uno schema STORICO
+# disomogeneo — le righe più vecchie hanno 6 campi (manca del tutto la colonna/virgola
+# "esito", aggiunta in un secondo momento), le righe recenti ne hanno 7. Il
+# csv.DictReader usato sotto imposta None sui campi mancanti su righe corte, quindi non
+# crasha — ma nessun file lo dichiarava esplicitamente: un lettore futuro più ingenuo
+# (split fisso a 7 campi, `cut -f7`) romperebbe silenziosamente su una riga storica.
 AGING="${1:-1}"
 
 [ -f "$CSV" ] || { echo "nessun dato: $CSV inesistente" >&2; exit 1; }
