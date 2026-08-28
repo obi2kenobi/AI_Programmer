@@ -29,6 +29,22 @@ const SEGNALI_ERRORE = [
 ];
 const SOGLIA_TESTO_VUOTO = 40; // caratteri di testo visibile sotto cui la pagina è "vuota"
 
+// estrazione-per-testabilità: isolata dalla logica di dominio (Chromium, exit code) per
+// poterla provare con dati sintetici (pattern estrazione-per-testabilita.md).
+function estraiTesto(dom) {
+  // bug reale (revisione 14 lenti, 2026-08-28): la sola rimozione dei tag lasciava intatto
+  // il CONTENUTO di <script>/<style> — il codice JS di una pagina normale contiene quasi
+  // sempre la stringa "undefined" (es. `typeof x === "undefined"`), facendo scattare un
+  // falso "segnale d'errore" su pagine perfettamente sane. Rimuovere i blocchi script/style
+  // per intero PRIMA di spogliare i tag rimanenti.
+  return dom
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function main() {
   const url = process.argv[2];
   const out = process.argv[3];
@@ -45,7 +61,7 @@ function main() {
     console.error(`✗ impossibile aprire ${url}: ${e.message.split("\n")[0]}`);
     process.exit(2);
   }
-  const testo = dom.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const testo = estraiTesto(dom);
 
   try {
     execFileSync(CHROME, [...FLAGS_COMUNI, `--screenshot=${out}`, "--window-size=1400,1000", url],
@@ -70,4 +86,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { SEGNALI_ERRORE, SOGLIA_TESTO_VUOTO };
+module.exports = { SEGNALI_ERRORE, SOGLIA_TESTO_VUOTO, estraiTesto };

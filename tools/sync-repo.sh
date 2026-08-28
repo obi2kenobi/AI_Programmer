@@ -46,10 +46,15 @@ if diff -q "$HUB_CLAUDE" "$TMP/CLAUDE.md" >/dev/null 2>&1; then
   exit 0
 fi
 
-DIFF_LINES=$(diff "$TMP/CLAUDE.md" "$HUB_CLAUDE.md" | grep -c '^[<>]')
+# bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
+# (già .../CLAUDE.md) — cercava CLAUDE.md.md, inesistente: entrambi i diff sotto
+# fallivano silenziosamente su stderr, DIFF_LINES restava sempre 0 e il blocco di
+# dettaglio vuoto — la funzione principale dello strumento (mostrare il drift) non
+# funzionava mai, pur restando l'exit code corretto per caso.
+DIFF_LINES=$(diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | grep -c '^[<>]')
 echo "sync-repo: DIVERGENTE — CLAUDE.md ${REPO:-locale} dista $DIFF_LINES righe da quello dell'hub (l'hub è la fonte: regole ereditate)"
 echo "  (l'hub ha sezioni che il progetto non riceve mai dall'onboarding in poi — F2 del report sul campo)"
-diff "$TMP/CLAUDE.md" "$HUB_CLAUDE.md" | head -20 | sed 's/^/  /'
+diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | head -20 | sed 's/^/  /'
 
 # --standard: il sistema intero, non solo CLAUDE.md — lo standard non è un'opzione
 # che si dichiara, è un insieme di file che devono esserci (METHOD.md §"Lo standard")

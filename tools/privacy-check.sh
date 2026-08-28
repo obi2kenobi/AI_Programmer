@@ -36,7 +36,12 @@ scan_termine() {
   fi
 }
 
-while IFS='=' read -r code name; do
+# bug reale (revisione 14 lenti, 2026-08-28): `while read ... done < file` salta
+# silenziosamente l'ultima riga se il file non termina con newline (comunissimo con
+# editor che non lo aggiungono) — un nome sensibile su quella riga passava "pulito" per
+# errore. La condizione `|| [ -n "$code" ]` cattura anche l'ultima riga senza newline
+# (read fallisce a EOF ma ha comunque popolato le variabili).
+while IFS='=' read -r code name || [ -n "$code" ]; do
   case "$code" in \#*|"") continue ;; esac
   base="${name##*/}"
   scan_termine "$base" "NOME PRIVATO"
@@ -45,7 +50,7 @@ done < "$KEY"
 
 # v2 (giro 4/10 del ciclo precedente): anche PERSONE e TERMINI riservati — chiavi
 # PERSONA=x / TERMINI=a,b,c nella stessa repos.key. La privacy non è solo il nome delle repo.
-while IFS='=' read -r chiave valore; do
+while IFS='=' read -r chiave valore || [ -n "$chiave" ]; do
   case "$chiave" in PERSONA|TERMINI) ;; *) continue ;; esac
   IFS=',' read -ra TERMINI_ARR <<<"$valore"
   for t in "${TERMINI_ARR[@]}"; do

@@ -19,7 +19,12 @@ if not voci:
 
 indice = ["<!-- SAL-INDICE: generato da tools/sal-indice.sh — non editare a mano -->", "## Indice del diario", ""]
 for v in voci:
-    anchor = re.sub(r'[^a-z0-9]+', '-', v.lower()).strip('-')
+    # bug reale (revisione 14 lenti, 2026-08-28): [^a-z0-9]+ non traslittera — colpisce
+    # (e scarta) anche le lettere accentate italiane ("città" -> "citt", manca la "a"),
+    # generando link che non corrispondono all'ancora reale che GitHub assegna allo stesso
+    # heading (che le lettere accentate le preserva). \w con Unicode (default per str in
+    # Python 3) le mantiene, colpendo solo la punteggiatura vera.
+    anchor = re.sub(r'[^\w-]+', '-', v.lower(), flags=re.UNICODE).strip('-')
     indice.append(f"- [{v}](#{anchor})")
 indice.append("")
 
