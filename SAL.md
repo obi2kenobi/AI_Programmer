@@ -157,6 +157,7 @@
 - [2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM](#2026-08-27-18-il-tesoro-sigillato-convergenza-cieca-obiezioni-che-invecchiano-gerarchia-dom)
 - [2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap](#2026-08-27-19-magazzino-72-commit-20-bug-55-proposte-e-il-handoff-gap)
 - [2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI](#2026-08-28-dossier-sd-dashboard-86-rilievi-71-dichiarati-non-verificati)
+- [2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi](#2026-08-28-repo-i-fase-3-chiude-il-ciclo-245-idee-7-proposte-due-pattern-nuovi)
 
 
 ## Stato
@@ -3520,3 +3521,23 @@ nuove in famiglie-difetti: CSV/Formula Injection (export CSV senza neutralizzare
 =+-@), libreria GAS in developmentMode:true (HEAD non pubblicata in produzione),
 cache stale che riscrive intere righe (bulkConfirm da snapshot di 3 minuti prima).
 Suite 87/87.
+
+### 2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi
+
+Il ciclo completo di REPO-I si chiude con la terza fase: 50 agenti × 10 aree ×
+5 lenti ORTOGONALI alle 4 di Fase 1 (correttezza vs processo/manutenibilità —
+il metodo ora dichiara DUE BATTERIE con obiettivi diversi), 245 idee tutte a
+stato terminale, 1241/1241 test, zero regressioni (una introdotta e catturata
+dal proprio test prima del commit — la rete di sicurezza che prende anche
+l'errore di chi la costruisce). Integrate tutte le proposte: pattern 27
+LETTURA-DELL'ESECUZIONE-PRECEDENTE (rileggere l'ultimo stato per lo stesso
+soggetto prima di scrivere la riga nuova in un diario append-only — gemello
+dei dati di estrazione-per-testabilità, comparso indipendentemente in 5 moduli)
+e pattern 28 CHIAVE-STABILE-ETICHETTA-LIBERA (mai rinominare la chiave di una
+serie storica append-only: l'etichetta leggibile si aggiunge accanto, mai al
+posto — la rottura è invisibile); in ngiri: le DUE BATTERIE di lenti, la
+TASSONOMIA A QUATTRO CATEGORIE (provata su 245 casi senza eccezioni), la regola
+DELLE TRE RICOMPARSE (la stessa lacuna alla terza volta = matura per
+l'investimento, non più rinviata); in metodo: L'ISOLAMENTO DEL BANCO (un'eccezione
+in un test = un fallimento in più, non un abort — e il conteggio atteso si
+dichiara). Suite 87/87.

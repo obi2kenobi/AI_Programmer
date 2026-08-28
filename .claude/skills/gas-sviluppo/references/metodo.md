@@ -227,3 +227,14 @@ può filtrare. Un rilievo non verificato non è un rilievo falso: è un rilievo
 che onestamente dice «leggi riga-per-riga, citato con precisione, ma non ha
 ancora subito il secondo occhio». Meglio 86 dichiarati con fiducia nota che
 14 confermati e 72 tacitamente promossi allo stesso livello.
+
+
+## L'isolamento del banco: un'eccezione NON abortisce la suite (dal campo REPO-I, 2026-08-28)
+
+Un'eccezione non gestita in UN test ha interrotto TUTTA la suite dopo 90
+asserzioni su 1241 attese — e il riepilogo «90 ok, 2 falliti» sembrava un run
+normale e piccolo, non un'esecuzione ABORTITA. La regola: ogni funzione di
+test vive in un try/catch proprio; l'eccezione diventa UN fallimento in piu,
+non un'interruzione; il conteggio finale resta sempre confrontabile con
+l'atteso. E il conteggio ATTESO si dichiara: se N attese su M dichiarate,
+rosso comunque — la stessa regola del banco.
