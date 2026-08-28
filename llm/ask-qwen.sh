@@ -31,17 +31,31 @@ CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"
 API="http://localhost:11434"
 
-if ! curl -sf "$API/api/version" >/dev/null 2>&1; then
+# rischio segnalato (revisione 14 lenti, 2026-08-28): senza --max-time, se il server
+# accetta la connessione TCP ma non risponde subito (avvio "a metà"), una singola
+# iterazione del poll può bloccarsi oltre il budget implicito di ~30s del loop, prima
+# ancora di arrivare alla chiamata principale (quella sì protetta da ai_timeout).
+if ! curl -sf --max-time 2 "$API/api/version" >/dev/null 2>&1; then
   OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH="$CTX" \
     /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
-  for _ in $(seq 1 30); do curl -sf "$API/api/version" >/dev/null 2>&1 && break; sleep 1; done
+  for _ in $(seq 1 30); do curl -sf --max-time 2 "$API/api/version" >/dev/null 2>&1 && break; sleep 1; done
 fi
 
 # stesso bug reale di ask-opus.sh/ask-glm.sh: `[ ! -t 0 ] && $(cat)` senza limite
 # può bloccarsi a tempo indefinito quando stdin non è un terminale ma non emette
 # EOF subito. Timeout 5s (vedi ask-opus.sh per la riproduzione dal vivo).
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null || true)
+if [ ! -t 0 ]; then
+  # bug reale (revisione 14 lenti, 2026-08-28): allo scadere dei 5s lo stream veniva
+  # troncato SENZA alcun avviso — più grave del "blocca" documentato sopra: qui il
+  # contenuto è silenziosamente CORROTTO (il prompt parte come se fosse completo).
+  # Verificato dal vivo: stream lento (1 riga/2s) troncato a metà entro i 5s.
+  set +e
+  STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null)
+  STDIN_RC=$?
+  set -e
+  [ "$STDIN_RC" -eq 124 ] && echo "ask-qwen: ATTENZIONE — lo stdin non è arrivato tutto entro 5s, il contesto potrebbe essere TRONCATO (non solo ritardato)" >&2
+fi
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---
@@ -65,7 +79,18 @@ PY
 # passato a curl con ASK_TIMEOUT impostato: restava sempre 1800).
 TIMEOUT="${ASK_TIMEOUT:-1800}"
 START=$(date +%s)
+# bug reale (revisione 14 lenti, 2026-08-28): non protetta come ask-opus.sh — se curl
+# fallisce (server caduto durante la generazione, rete assente), `set -e` esce subito
+# qui, prima di qualunque diagnosi. set +e locale per leggere l'exit code senza farlo
+# esplodere (stesso fix di ask-glm.sh).
+set +e
 RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" -d "$PAYLOAD")
+CURL_RC=$?
+set -e
+if [ "$CURL_RC" -ne 0 ]; then
+  echo "ERRORE qwen: curl fallito (rc=$CURL_RC) — server Ollama irraggiungibile ($API)" >&2
+  exit 1
+fi
 END=$(date +%s)
 
 # stesso bug reale del giro 7 in ask-glm.sh: un corpo vuoto/non-JSON (Ollama giù
