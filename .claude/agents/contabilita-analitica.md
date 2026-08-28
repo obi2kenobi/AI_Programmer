@@ -59,3 +59,8 @@ invece di procedere.
 ## Il catalogo pattern
 
 patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.
+
+## Graphify: naviga il grafo se esiste
+
+Se graphify-out/graph.json esiste nel progetto target, usa
+graphify query "<termine>" PRIMA di grepare. Se non esiste: graphify update .
