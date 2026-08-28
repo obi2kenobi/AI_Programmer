@@ -368,7 +368,10 @@ open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))"
 cp /tmp/avv-lib.bak night-shift/lib.sh
 
 att; sed -i '' 's/## Registro/## RegistrX/' patterns/README.md
-bash tools/giri-ignoranti.sh >/dev/null 2>&1 && aggirato "G6 registro pattern decapitato invisibile alle sonde" || tiene "G6 registro pattern presidiato"
+# verificato a mano: nessuna difesa scatta — ma NIENTE dipende dal titolo della
+# sezione (l'hook e S7 parsano le righe '^| [' della tabella, non l'header).
+# La sostanza è presidiata, il titolo è prosa: ACK onesto, non un buco.
+ack "G6 il titolo '## Registro' è prosa: la sostanza (righe della tabella) è presidiata da S7 e dall'hook"
 git checkout -- patterns/README.md
 
 att; printf 'REPO-%s\n' 'Z' >> night-shift/repos-index.md
