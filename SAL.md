@@ -169,6 +169,7 @@
 - [2026-08-28 (8) — REPO-J live drift: 3 divergenze reali, 25 fix confermati, primo deploy](#2026-08-28-8-repo-j-live-drift-3-divergenze-reali-25-fix-confermati-primo-deploy)
 - [2026-08-28 (9) — REPO-L (Unicredit_Factoring): 9 confermati, SECRET in history, la buona notizia provata](#2026-08-28-9-repo-l-unicredit_factoring-9-confermati-secret-in-history-la-buona-notizia-provata)
 - [2026-08-28 (10) — REPO-M (Energikal): backlog di 15+20 voci, 5 domande di dominio](#2026-08-28-10-repo-m-energikal-backlog-di-15-20-voci-5-domande-di-dominio)
+- [2026-08-28 (11) — REPO-L (Unicredit_Factoring): 30 agenti + 14 fix, terza sessione continua](#2026-08-28-11-repo-l-unicredit_factoring-30-agenti-14-fix-terza-sessione-continua)
 
 
 ## Stato
@@ -3764,3 +3765,17 @@ per volta, test coi dati reali del CSV, un commit per voce), il passo 0
 bloccante (rotazione del secret) separato dal resto. Canonizzata la regola:
 il backlog ben scritto comincia con le domande, poi le azioni meccaniche.
 REPO-M registrata.
+
+### 2026-08-28 (11) — REPO-L (Unicredit_Factoring): 30 agenti + 14 fix, terza sessione continua
+
+Terzo report dal campo su REPO-L: dopo l'audit (30 agenti, 9 confermati, 45
+NON VERIFICATI), la sessione continua ha corretto 14 rilievo/cluster con banco
+verde prima E dopo per ognuno. Conferme importanti: l'onore del non-verificato
+FUNZIONA in fase di fix (molti dei 45 corretti con evidenza già eseguibile,
+nessuno rivelatosi falso); verificare l'esempio del committente PRIMA di
+lanciare il workflow risparmia budget (fatto assodato dichiarato nei prompt,
+non ri-verificato 21 volte); l'assunzione implicita si verifica SEMPRE, anche
+quando è tua (il fix che rendeva impossibile il primo setup, scoperto solo
+verificando l'assunzione, non leggendo il rilievo). Canonizzata la regola
+generalizzata in metodo. sync-repo.sh ora distingue "gh assente" da "repo
+privata". Quarta occorrenza del regime sessione-continua (REPO-F, K, J, L).
