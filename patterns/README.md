@@ -47,3 +47,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [chiave-stabile-etichetta-libera](chiave-stabile-etichetta-libera.md) | REPO-I: 2 punti ciclo Fase 3 | 2026-08-28 |
 | [edifact-release-character](edifact-release-character.md) | Bricoman: Parsers.gs split | 2026-08-28 |
 | [doppio-livello-escaping](doppio-livello-escaping.md) | REPO-K: Scripts.html escapeJsAttr | 2026-08-28 |
+| [misura-la-deriva-prima-di-assumerla](misura-la-deriva-prima-di-assumerla.md) | REPO-J: diff baseline vs HEAD | 2026-08-28 |
+| [ponte-branch-usa-e-getta](ponte-branch-usa-e-getta.md) | REPO-J: live-snapshot via GitHub | 2026-08-28 |

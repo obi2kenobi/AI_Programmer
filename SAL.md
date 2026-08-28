@@ -165,6 +165,7 @@
 - [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
 - [2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding](#2026-08-28-6-l-hub-allo-specchio-revisione-indipendente-60-finding)
 - [2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati](#2026-08-28-7-8-proposte-dell-audit-implementate-15-report-campo-triati)
+- [2026-08-28 (8) — REPO-J live drift: 3 divergenze reali, 25 fix confermati, primo deploy](#2026-08-28-8-repo-j-live-drift-3-divergenze-reali-25-fix-confermati-primo-deploy)
 
 
 ## Stato
@@ -3664,3 +3665,18 @@ quarto pezzo mancante (skill). CAMPO TRIAGE: 17 report totali, 15 segnati
 canone (il tool cerca il nome file nel SAL, che non sempre li cita col nome
 esatto): il finding vero è che il collegamento report→SAL non è meccanico.
 Suite 89/89.
+
+### 2026-08-28 (8) — REPO-J live drift: 3 divergenze reali, 25 fix confermati, primo deploy
+
+La sessione Bricoman ha misurato la deriva git↔live prima di assumerne la
+portata: contro la BASELINE pre-fix (non HEAD), whitespace-insensitive (il
+round-trip clasp normalizza): 11 file sembravano divergenti, 3 lo erano davvero
+(correzioni valide fatte a mano in produzione, aree diverse dai 25 fix). NESSUNO
+dei 25 fix è stato rifatto — la misurazione li ha confermati tutti validi.
+Canonizzati: pattern 36 MISURA-LA-DERIVA-PRIMA-DI-ASSUMERLA (diff baseline,
+non HEAD; whitespace-insensitive; proposta scalata alla deriva reale, non al
+mandato letterale) e pattern 37 PONTE-BRANCH-USA-E-GETTA (il canale per leggere
+uno stato live irraggiungibile: branch sul repo GitHub, non file incollato).
+Il primo deploy REALE di tutti i 28 punti insieme è avvenuto dopo la
+riconciliazione: 13/13 file, clasp status verificato prima del push. Pattern
+totale: 37.
