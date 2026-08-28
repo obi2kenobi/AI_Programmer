@@ -57,3 +57,27 @@ più forte: emersi senza coordinamento, sono la prova che non sono opinioni.
 Il campo REPO-I ne ha trovati 12 — in testa: «segnalato una volta, mai richiuso»
 (il follow-up che non persiste), «funzioni scritte senza porta d'ingresso»,
 «il verde che nasconde un dato mai arrivato».
+
+
+## Le due batterie di lenti (dal campo REPO-I Fase 3, 2026-08-28)
+
+Le 4 lenti storiche (scarto-mai-silenzioso ecc.) sono tarate su CORRETTEZZA:
+un verde plausibile e sbagliato. Le 5 lenti del giro di prodotto sono tarate su
+PROCESSO e MANUTENIBILITA: un modulo che funziona ma e incoerente col gemello,
+una funzione senza porta d'ingresso, un follow-up che non persiste. Non sono
+sostituibili: sono ORTOGONALI. Il metodo riconosce due batterie con obiettivi
+dichiarati diversi — usare quelle giuste per il tipo di problema cercato.
+
+## La tassonomia a quattro categorie (provata su 245 casi senza eccezioni)
+
+Ogni idea del catalogo finisce in UNA di queste (mai una quinta necessaria):
+1. **Implementata** — fatta, collaudata
+2. **Esclusa** — serve una decisione di dominio o un dato non disponibile
+3. **Rinviata** — sproporzionata, o bloccata da un vincolo tecnico/organizzativo
+4. **Gia coperta** — verificata come non-gap: un altro modulo o tooltip la risolveva
+
+## La regola delle tre ricomparse (dal campo, stessa fonte)
+
+Quando la stessa lacuna infrastrutturale interrompe o restringe il lavoro per
+la TERZA volta in progetti diversi, non e piu «rinviata»: e MATURA PER
+L'INVESTIMENTO — il costo di continuarci intorno ha superato il costo di colmarla.
