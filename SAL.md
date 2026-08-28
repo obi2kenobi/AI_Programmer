@@ -171,6 +171,7 @@
 - [2026-08-28 (10) — REPO-M (Energikal): backlog di 15+20 voci, 5 domande di dominio](#2026-08-28-10-repo-m-energikal-backlog-di-15-20-voci-5-domande-di-dominio)
 - [2026-08-28 (11) — REPO-L (Unicredit_Factoring): 30 agenti + 14 fix, terza sessione continua](#2026-08-28-11-repo-l-unicredit_factoring-30-agenti-14-fix-terza-sessione-continua)
 - [2026-08-28 (12) — REPO-N (parrocchie): il metodo su Flask/SQLite, 13 difetti al banco](#2026-08-28-12-repo-n-parrocchie-il-metodo-su-flask-sqlite-13-difetti-al-banco)
+- [2026-08-28 (13) — Energikal: chiusura sessione (5 decisioni di dominio prese, PR #55 aperta)](#2026-08-28-13-energikal-chiusura-sessione-5-decisioni-di-dominio-prese-pr-55-aperta)
 
 
 ## Stato
@@ -3790,3 +3791,16 @@ Le famiglie GENERALIZZANO fra linguaggi (le stesse forme: Number('')=0 →
 BANCO-PROGETTO-LOCALE e 39 AMBIENTE-CENSIMENTO-DICHIARATO. In metodo: passo-0
 = sync-repo --standard, riga di esito diurna. In DEBITI: privacy fuori casa.
 REPO-N registrata. Pattern totale: 39.
+
+### 2026-08-28 (13) — Energikal: chiusura sessione (5 decisioni di dominio prese, PR #55 aperta)
+
+Il report di handoff di Energikal chiude il ciclo su REPO-M: 12 agenti → piano
+di lavoro → 39 voci eseguite (Fasi 1-4) + 2 funzioni spezzate (Fase 5). LE
+5 DOMANDE DI DOMINIO sono state TUTTE RISPOSTE in sessione (piano conti
+rinumerato; filtro capacità esteso; GDO trimestrale con fix NC; NC tutte-
+locations intenzionale; Euribor esclusivi). Il golden test CSV 2024 produce
+gli stessi numeri. Il SECRET Azure resta da ruotare (azione fuori dal codice).
+PR #55 (~50 commit) aperta: i test BC live (test*Q1_2025) vanno rieseguiti
+dall'editor GAS con connessione reale prima del merge — nessun CI automatico
+esiste sul repo. Il report di handoff è il formato giusto per chi prende in
+mano il lavoro dopo: cosa fatto, cosa resta, come proseguire, in una pagina.
