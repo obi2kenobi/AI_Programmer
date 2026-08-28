@@ -4,24 +4,31 @@ Concrete, project-specific instructions. The universal behavioral rules live in 
 
 ---
 
-## Motore (`app/engine`) — porting del legacy
+## Motore (app/engine) — porting del legacy
+
+> **Questa intera sezione vive nel repo cliente, non in questo hub** (progetto separato
+> dall'analisi BC sotto) — nessuno dei percorsi che nomina (app/engine, docs/47, docs/48,
+> tools/motore-test/, last_dump.txt) esiste in questo hub (obi2kenobi/AI_Programmer). Annotato per lo
+> stesso motivo per cui la sezione Business Central sotto dichiara dove vive il proprio
+> catalogo (revisione 14 lenti, 2026-08-28). Percorsi lasciati senza backtick da qui in
+> giù apposta: sono riferimenti al repo cliente, non citazioni verificabili in questo hub.
 
 ### Circuito di validazione → scoperte sempre persistite (deciso con Luca 2026-05-31)
-Costruire il **motore nuovo** (`app/engine`) significa riprodurre il **motore legacy reale** al millimetro
-(banco `tools/motore-test/`). In questo processo emergono scoperte e si trovano errori — di **due tipi distinti**:
-- **bug del vecchio** (es. MC-*) → si correggono nel vecchio e diventano *requisito* del nuovo (`docs/47`, `docs/48`);
+Costruire il **motore nuovo** (app/engine) significa riprodurre il **motore legacy reale** al millimetro
+(banco tools/motore-test/). In questo processo emergono scoperte e si trovano errori — di **due tipi distinti**:
+- **bug del vecchio** (es. MC-*) → si correggono nel vecchio e diventano *requisito* del nuovo (docs/47, docs/48);
 - **errori nei nostri appunti/oracoli** (dati trascritti male) → si correggono e si annotano **come tali**, non come MC-*.
 
 Istanzia la regola universale _"Keep living documentation, not just commits"_ — ogni scoperta/correzione va scritta nei luoghi giusti PRIMA dello step successivo. Mappatura dei tre tipi di documento:
 - **`SAL.md`** — _decisioni e idee_ + diario vivo (stato + §8 log cronologico).
-- **`docs/48`** — _come funziona_: "oro del motore", formule/regole validate come requisiti del nuovo.
-- **`docs/47`** — _correzioni_ applicate (separando bug del vecchio da errori-dato nostri).
+- **docs/48** — _come funziona_: "oro del motore", formule/regole validate come requisiti del nuovo.
+- **docs/47** — _correzioni_ applicate (separando bug del vecchio da errori-dato nostri).
 
-La _validation artifact_ del progetto (regola universale _"Done means proven"_) è `last_dump.txt`.
+La _validation artifact_ del progetto (regola universale _"Done means proven"_) è last_dump.txt.
 
-### Stack / comandi
-- Test motore: `pnpm --filter @myhouse/engine test` · Lint/format: `pnpm exec biome check engine/src` (da `app/`).
-- Banco legacy headless: `php tools/motore-test/harness.php tools/motore-test/fixtures/<id>.php` → `last_dump.txt`.
+### Stack / comandi (vive nel repo cliente)
+- Test motore: `pnpm --filter @myhouse/engine test` · Lint/format: `pnpm exec biome check engine/src` (da app/).
+- Banco legacy headless: `php tools/motore-test/harness.php tools/motore-test/fixtures/<id>.php` → last_dump.txt.
 
 ---
 
@@ -51,14 +58,14 @@ Processo a due fasi, in quest'ordine:
 Un risultato è corretto (regola _"Done means proven and confirmed"_) **solo dopo il riscontro**, mai dopo la sola estrazione.
 
 ### Persistenza della conoscenza (struttura `docs/bc/`)
-Istanzia _"Keep living documentation"_. 108 endpoint → un file per endpoint, più un indice:
-- **`docs/bc/README.md`** — indice + avanzamento: tabella endpoint → stato (da mappare / mappato / verificato), X su 108.
+Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file per endpoint censito, più un indice:
+- **`docs/bc/README.md`** — indice + avanzamento (rigenerato da `tools/bc_index.py`, mai a mano): tabella endpoint → stato (da mappare / mappato / verificato), X su 258 — il numero aggiornato vive lì, non qui (evita la stessa staleness già trovata una volta: revisione 14 lenti, 2026-08-28).
 - **`docs/bc/endpoints/<NomeServizio>.md`** — 1 file = 1 endpoint: URL, tabella BC, **elenco completo dei campi** (nome, tipo, significato, stato verifica, note di riscontro).
 - **`docs/bc/SAL.md`** — diario vivo + decisioni: **sempre aggiornato**.
 - **`docs/bc/CORREZIONI.md`** — errori di mappatura trovati e correzioni applicate.
 
 ### Stack / accesso
-- Endpoint: **258** servizi OData nel catalogo `docs/bc/CATALOGO_ENDPOINT_BC.md` (vive in questo hub; l'indice `bc_index.py` conta i mancanti al censimento: oggi 170).
+- Endpoint: **258** servizi OData nel catalogo `docs/bc/CATALOGO_ENDPOINT_BC.md` (vive in questo hub; l'indice `tools/bc_index.py` conta i mancanti al censimento — il numero aggiornato è in `docs/bc/README.md`, non ripetuto qui apposta).
 - Auth: OAuth2 `client_credentials` (Azure AD), scope `.default`. Tenant/client/secret in **`credenziali BC.rtf`** (confermato 2026-06-23; il `Config.gs` del catalogo è la copia del backend GAS).
 - Strumento: **`tools/bc_map.py`** (Python stdlib, nessuna dipendenza) — legge le credenziali a runtime, prende il token, interroga l'endpoint e genera `docs/bc/endpoints/<Nome>.md`. Per un test al volo: `curl`.
 - Regola segreti: credenziali usabili per autenticarsi, mai riprodurne i _valori_ in output, commit o documenti (regola _"Never expose secrets"_).

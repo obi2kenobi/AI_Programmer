@@ -51,7 +51,11 @@ esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 
 ```
 /selezione-contesto → /brainstorming ⇄ /design-doc → /goal (piccolo) | commessa (grande)
-                                                              → /audit-commesse → notte → gate → review
+                                                              → /audit-commessa → notte → gate → review
+TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
+  chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
+  ma SENZA pipeline (dettaglio: METHOD.md) — bug reale corretto: revisione 14 lenti,
+  2026-08-28, questa copia del diagramma era rimasta indietro di due giri.
 ```
 
 Ogni fase consuma l'artefatto della precedente CITANDO il percorso, mai
@@ -82,6 +86,7 @@ calcolo contabile NON delegare l'invenzione della formula: cerca l'oracolo.
 - **Agenti** (`.claude/agents/` per il giorno, specchiati in `.opencode/agent/`
   per la notte): censitore-forma-dati · contabilita-analitica (applica) ·
   costruttore-calcoli-gestionali (costruisce) · revisore-calcoli-critici (dubita) ·
+  revisore-gas (censimento+banco+sabotaggio su un progetto Apps Script intero) ·
   sviluppatore-gas (progetti Apps Script interi). I corpi sono identici fra le due
   cartelle per contratto (`tests/test-opencode-agent-sync.sh`).
 
