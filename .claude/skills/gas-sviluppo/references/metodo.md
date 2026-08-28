@@ -277,3 +277,13 @@ vanno APOSTE IN CIMA al backlog stesso, NON sepolte in fondo: sono le uniche che
 un umano deve risolvere prima che qualunque sessione possa procedere. Un backlog
 ben scritto comincia con le domande, poi le azioni meccaniche. E ogni voce porta
 il rimando al report completo (file:riga) — il backlog e un indice, non un riassunto.
+
+
+## Le assunzioni implicite si verificano SEMPRE, anche quando sono tue (dal campo REPO-L, 2026-08-28)
+
+La regola gia scritta (REPO-J) diceva: verifica le assunzioni implicite di un
+rilievo ALTRUI prima di implementare il fix suggerito. REPO-L la estende: vale
+anche per le PROSSIME osservazioni fatte durante la correzione stessa. Caso reale:
+un fix che faceva fallire il caricamento se un segreto era assente sarebbe stato
+dannoso (la funzione di setup DEVE poter girare prima che i segreti esistano) —
+scoperto solo verificando l'assunzione implicita, non leggendo il rilievo.
