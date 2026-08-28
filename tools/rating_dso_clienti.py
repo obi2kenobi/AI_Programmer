@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Uso: python3 rating_dso_clienti.py < input (vedi docstring per formato)
 """Rating clienti: DSO medio per cliente con matching pagamenti↔fatture e factoring.
 
 Oracolo (7° ciclo, set 1, 2026-08-24). Formula REALE minata dal progetto rating
