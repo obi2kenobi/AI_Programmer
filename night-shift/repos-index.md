@@ -30,6 +30,7 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-J | Gestione-ordini-Bricoman (ordini EDI fornitori, GAS+BC, 12 file) | audit 50 agenti 2026-08-28: 153 rilievi, 13 confermati, 2 smentiti (`docs/campo/2026-08-28-bricoman-50-agenti.md`) — 25 fix applicati in sessione continua, verificati con node prima di ogni commit | docs/campo/2026-08-28-bricoman-dal-audit-ai-fix.md |
 | REPO-K | dashboard web GAS+BC per gestione ordini multi-categoria (SD) | dossier 86 rilievi + 25 idee, TUTTI implementati in sessione continua 2026-08-28 | docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md |
 | REPO-L | Unicredit_Factoring (cessione fatture, GAS+BC, file fixed-width TXT per banca) | audit 30 agenti 2026-08-28: 54 rilievi, 9 confermati, 45 NON VERIFICATI, 0 smentiti · SECRET in git history (da ruotare) | docs/campo/2026-08-28-unicredit-factoring-30-agenti.md |
+| REPO-M | Associazione-Energikal (bilancino trimestrale, GAS+BC, 27 file .gs) | revisione 15+20 rilievi 2026-08-28: CRITICA credenziali Azure in git history + conto C/G non corrispondente CSV + backlog completo | docs/campo/2026-08-28-energikal-analisi-revisione.md |
 
 ## Come usarlo
 

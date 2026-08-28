@@ -268,3 +268,12 @@ reali verificate con UniCredit: questa e una buona notizia con la stessa dignita
 di un bug confermato — va dichiarata con la prova, non assunta. E il complemento
 dell'assente-dichiarato-col-comando: cosi come un difetto assente si prova, anche
 una correttezza presente si prova. Entrambe contano quanto un rilievo.
+
+
+## Il backlog-ordinato con le domande di dominio in cima (dal campo REPO-M, 2026-08-28)
+
+Quando un audit produce un backlog di correzione, le voci [RICHIEDE CONFERMA DOMINIO]
+vanno APOSTE IN CIMA al backlog stesso, NON sepolte in fondo: sono le uniche che
+un umano deve risolvere prima che qualunque sessione possa procedere. Un backlog
+ben scritto comincia con le domande, poi le azioni meccaniche. E ogni voce porta
+il rimando al report completo (file:riga) — il backlog e un indice, non un riassunto.

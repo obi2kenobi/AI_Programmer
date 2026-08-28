@@ -168,6 +168,7 @@
 - [2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati](#2026-08-28-7-8-proposte-dell-audit-implementate-15-report-campo-triati)
 - [2026-08-28 (8) — REPO-J live drift: 3 divergenze reali, 25 fix confermati, primo deploy](#2026-08-28-8-repo-j-live-drift-3-divergenze-reali-25-fix-confermati-primo-deploy)
 - [2026-08-28 (9) — REPO-L (Unicredit_Factoring): 9 confermati, SECRET in history, la buona notizia provata](#2026-08-28-9-repo-l-unicredit_factoring-9-confermati-secret-in-history-la-buona-notizia-provata)
+- [2026-08-28 (10) — REPO-M (Energikal): backlog di 15+20 voci, 5 domande di dominio](#2026-08-28-10-repo-m-energikal-backlog-di-15-20-voci-5-domande-di-dominio)
 
 
 ## Stato
@@ -3749,3 +3750,17 @@ con node, non assunto: la buona notizia con la stessa dignità del bug. Nuova
 regola in metodo: la correttezza presente si prova come il difetto assente.
 Domanda di dominio aperta: NDC vs P03 per le note di credito (spec vs codice).
 REPO-L registrata. Pattern totale: 37.
+
+### 2026-08-28 (10) — REPO-M (Energikal): backlog di 15+20 voci, 5 domande di dominio
+
+Audit completo su Associazione-Energikal (27 file .gs, bilancino trimestrale
+GAS+BC): credenziali Azure AD in git history dal 16/02 (CRITICA — da ruotare,
+DEBITI), conti C/G hardcoded non corrispondenti al CSV 2024 (CRITICA — se il
+piano non è stato rinumerato è un bug attivo che produce saldo zero ovunque),
+riconciliazione senza verifica importo (falsa quadratura), 12+ altri rilievi.
+Il BACKLOG è il contributo più interessante: 15 voci ordinate per gravità con
+le 5 DOMANDE DI DOMINIO marcate e in cima, le regole vincolanti (un problema
+per volta, test coi dati reali del CSV, un commit per voce), il passo 0
+bloccante (rotazione del secret) separato dal resto. Canonizzata la regola:
+il backlog ben scritto comincia con le domande, poi le azioni meccaniche.
+REPO-M registrata.
