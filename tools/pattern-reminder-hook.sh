@@ -12,6 +12,8 @@
 # reminder, non un cancello; l'estensione a UserPromptSubmit (confronto compito↔skill)
 # resta decisione di Luca, come dichiarato nel SAL.
 set -uo pipefail
+# fallback jq: se assente, gli hook degradano al silenzio senza rompere la sessione
+if ! command -v jq >/dev/null 2>&1; then exit 0; fi
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 REGISTRO="$HERE/patterns/README.md"
 
