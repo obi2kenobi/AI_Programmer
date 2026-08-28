@@ -159,6 +159,7 @@
 - [2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI](#2026-08-28-dossier-sd-dashboard-86-rilievi-71-dichiarati-non-verificati)
 - [2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi](#2026-08-28-repo-i-fase-3-chiude-il-ciclo-245-idee-7-proposte-due-pattern-nuovi)
 - [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-sano-una-guardia-nuova-per-la-prosa)
+- [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualit-non-solo-presenza)
 
 
 ## Stato
@@ -3560,3 +3561,20 @@ state perse una volta o due, e la prosa non ha test sintattici che la difendano.
 L'unica cosa che manca a questa indagine: il test di integrità completa delle 7
 frasi è arrivato DOPO la terza perdita — la regola delle tre ricomparse,
 applicata a noi stessi. Suite 87/87.
+
+### 2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza
+
+Le lenti di prima (30 giri) guardavano la PRESENZA: c'è o non c'è. Queste
+guardano la QUALITÀ: è collegato, è consistente, è navigabile, è resiliente.
+Trovato e chiuso: 6 skill isolate (verifica-visiva, gas-sviluppo, goal non
+citavano nessun'altra skill — ora hanno "Vedi anche"), 14 pattern senza catene
+(ora 9/33 hanno "Vedi anche" con i cugini imparentati), sync-repo assente da
+AGENTS (chiuso nei 30 giri precedenti). Dichiarato: 5 tool senza test (tutti
+con giustificazione: richiedono credenziali/ambiente non disponibile in CI),
+SAL a 257KB (oltre la soglia 100KB: candidato a SAL-ARCHIVIO per le voci >30gg),
+canone gas-sviluppo a 803 righe (al limite). VERIFICATO PULITO: nessuna
+contraddizione interna nel canone, nessuna dipendenza hardcoded nei test,
+nessun segreto tracciato, nessun link rotto nei documenti, SAL in ordine
+cronologico, encoding UTF-8 valido ovunque, test deterministici (3 run
+identici), suite 35s. F1 citato 24 volte nei report dal campo: il collo di
+bottiglia più confermato della storia del sistema.
