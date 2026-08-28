@@ -50,6 +50,11 @@ scrive PRIMA della correzione: PARITÀ + CORREZIONE) → CORREGGE (nella copia d
 lavoro, poi sabota la correzione stessa) → PROGETTA (dieci righe: cosa resta,
 cosa serve, le domande di dominio da fare a una persona).
 
+## Il catalogo pattern (33 voci)
+
+patterns/ contiene 33 pattern minati dal campo: cerca prima di reinventare.
+Indice: patterns/README.md
+
 ## Le tre regole che non negoziano
 
 1. **Esegui, non dedurre** (misurato sul parco: 60 comandi di lettura su 61,
