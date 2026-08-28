@@ -16,6 +16,7 @@ FAMIGLIE="$HERE/.claude/skills/gas-sviluppo/references/famiglie-difetti.md"
 CONSEGNA="$HERE/.claude/skills/gas-sviluppo/references/consegna.md"
 DOMINI="$HERE/.claude/skills/gas-sviluppo/references/domini-gestionali.md"
 DEV="$HERE/.claude/agents/sviluppatore-gas.md"
+NGIRI="$HERE/docs/ngiri-paralleli.md"
 REV="$HERE/.claude/agents/revisore-gas.md"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
@@ -109,3 +110,14 @@ fi
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
+
+# guardia anti-perdita (2026-08-28): tre lezioni gia scomparse due volte
+grep -qi "esito del giro" "$METODO" \
+  && ok "metodo: esito-del-giro presente (perso 2 volte, ora presidiato)" \
+  || ko "metodo: esito-del-giro SCOMPARSO di nuovo"
+grep -qi "consolidamento" "$NGIRI" 2>/dev/null || grep -qi "consolidamento" "$HERE/docs/ngiri-paralleli.md" \
+  && ok "ngiri: consolidamento-lenti presente" \
+  || ko "ngiri: consolidamento-lenti SCOMPARSO"
+grep -q "patterns/" "$SKILL" \
+  && ok "SKILL: catalogo pattern agganciato" \
+  || ko "SKILL: catalogo pattern SCOMPARSO"
