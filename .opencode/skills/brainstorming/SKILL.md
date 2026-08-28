@@ -83,6 +83,50 @@ permanente — è `/design-doc` (o la sezione `## Design` della commessa) a farl
 cosa è emerso qui in una frase, non riportando la conversazione intera.
 
 
+## 4. La fase GENERATIVA — le dieci provocazioni (potenziata 2026-08-29)
+
+La parte socratica raffina una richiesta che c'è già. Ma quando l'obiettivo è
+GENERARE — nuove idee, suggestioni, «come lo potrebbe fare meglio» su un
+progetto studiato — servono provocazioni, non domande. Dieci, in tre famiglie;
+si usano DOPO un'analisi polilivello (skill `polilivello`): le provocazioni
+senza comprensione sono modelli, non idee.
+
+**Sul COSA (il progetto stesso):**
+- **P1 Il test del vuoto**: cosa sparirebbe domani senza che nessuno se ne
+  accorgesse? (ciò che nessuno noterebbe è il primo candidato all'archivio —
+  e il secondo è il sospetto che nessuno lo usi davvero)
+- **P2 La next-question**: se il progetto sparisse stasera, cosa ricreeremmo
+  uguale e cosa faremmo diverso? La seconda lista è la roadmap.
+- **P3 Il vicino**: un altro progetto del parco ha già risolto la stessa
+  cosa? (la mappa di dominio esiste per questo: prima di inventare, conta)
+
+**Sul COME (il funzionamento):**
+- **P4 La scala**: ×10 dati, ×10 utenti, 1/10 della frequenza — cosa si
+  rompe per primo? Il primo a rompersi è il collo di bottiglia vero.
+- **P5 Il ribaltamento**: se l'output fosse l'input? se il batch fosse
+  interattivo, e l'interattivo batch? se il controllo venisse PRIMA invece
+  che dopo?
+- **P6 Il costo zero**: quale miglioramento non tocca produzione? (un
+  oracolo, un banco, un report in più: i miglioramenti sicuri si fanno prima)
+
+**Sul CHI (le persone intorno):**
+- **P7 La domanda di dominio**: cosa sa il proprietario che il codice non sa?
+  (scadenze contrattuali, convenzioni, eccezioni vissute — regola già del
+  metodo, qui diventa generativa: ogni risposta è un oracolo da minare)
+- **P8 L'ostacolo**: quale parte l'utente evita? quale foglio nessuno apre?
+  Ciò che si evita è dove sta il valore non consegnato.
+- **P9 Il debito visibile**: TODO, «si potrebbe», «andrebbe» nei commenti —
+  il codice ha già confessato i suoi desideri: raccogli la lista.
+- **P10 La fusione**: due progetti che fanno metà della stessa cosa? (nel
+  parco è successo: due rating clienti nati separati, una cessione factoring
+  fatta tre volte) — la fusione è l'idea più grande e la più politica.
+
+Regola di raccolta: ogni idea che nasce dalle provocazioni finisce in una
+LISTA numerata con la provocazione che l'ha generata (P4: ...) — poi si
+attraversa la lista con i criteri del dominio (valore, costo, rischio), non
+con l'entusiasmo. Il passaggio a commessa/design-doc resta lo stesso del §3.
+
 ## Vedi anche
 
-skill `design-doc` (il passo dopo)
+skill `design-doc` (il passo dopo) · skill `polilivello` (lo studio che dà alle
+provocazioni il terreno vero: Cosa fa? Come lo fa? Come lo potrebbe fare meglio?)
