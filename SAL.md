@@ -160,6 +160,7 @@
 - [2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi](#2026-08-28-repo-i-fase-3-chiude-il-ciclo-245-idee-7-proposte-due-pattern-nuovi)
 - [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-sano-una-guardia-nuova-per-la-prosa)
 - [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualit-non-solo-presenza)
+- [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3-batteria-lenti-di-evoluzione-e-cambiamento)
 
 
 ## Stato
@@ -3578,3 +3579,19 @@ nessun segreto tracciato, nessun link rotto nei documenti, SAL in ordine
 cronologico, encoding UTF-8 valido ovunque, test deterministici (3 run
 identici), suite 35s. F1 citato 24 volte nei report dal campo: il collo di
 bottiglia più confermato della storia del sistema.
+
+### 2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento
+
+Terza batteria dopo presenza (30) e qualità (50): come il sistema CAMBIA,
+cosa lo stressa, dove le cuciture si aprirebbero. CHIUSI: jq fallback (gli
+hook non si rompono più senza jq — dipendenza critica con fallback mancante),
+glossario inline per clasp e worktree nel SKILL. VERIFICATO: crescita 38
+commit/giorno (picco ieri), hotspot SAL.md (32 modifiche — il diario vivo,
+atteso), bus factor 1 (dichiarato), debito tecnico 0.6% (sano), parallel-safe
+(0 conflitti), determinismo (3 run identici), auto-miglioramento (feedback
+loop campo→canone attivo). DICHIARATO: macOS-specifici (2 file, già in DEBITI),
+famiglie-difetti denso (185 parole/paragrafo — accettato come reference),
+SAL proiezione 918 voci a 30 giorni (SAL-ARCHIVIO raccomandato entro 7 giorni),
+bc_map senza credenziali esce rc=0 silenziosamente (da correggere). Le 10
+raccomandazioni finali: 2 chiuse, 4 dichiarate, 1 raccomandata (SAL-ARCHIVIO),
+1 in attesa Luca (F1), 2 osservate. Suite 87/87.
