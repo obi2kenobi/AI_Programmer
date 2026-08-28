@@ -45,20 +45,32 @@ if [ "$LIVELLO" -le 2 ]; then
 fi
 
 # Lente 2: collegamenti mancanti (chi non cita chi)
+# NIENTE `echo "$CANONE" | grep -q`: con pipefail attivo, se grep -q trova la corrispondenza
+# presto esce subito ed echo riceve SIGPIPE → la pipeline fallisce (141) e un pattern
+# CITATO viene segnalato come mancante. Falso positivo scoperto il 2026-08-28: il giro
+# segnalava 34-39 pattern non citati quando quelli veri erano 33. Si greppe direttamente
+# i file: niente pipe, niente truncation, esito deterministico.
 if [ "$LIVELLO" -ge 2 ]; then
-  CANONE=$(cat "$HERE"/.claude/skills/gas-sviluppo/references/*.md "$HERE"/.claude/agents/*.md 2>/dev/null | head -c 100000)
+  CANONE_FILES=("$HERE"/.claude/skills/gas-sviluppo/references/*.md "$HERE"/.claude/agents/*.md)
   for pat in "$HERE"/patterns/*.md; do
     base=$(basename "$pat" .md)
     [ "$base" = "README" ] && continue
-    echo "$CANONE" | grep -q "$base" || FINDINGS+=("COLLEGAMENTO: pattern $base mai citato dal canone")
+    grep -qF "$base" ${CANONE_FILES[@]+"${CANONE_FILES[@]}"} 2>/dev/null || \
+      FINDINGS+=("COLLEGAMENTO: pattern $base mai citato dal canone")
   done
 fi
 
 # Lente 3: flussi spezzati (il metodo dice X ma il tool fa Y)
+# Logica corretta: una sezione PRESENTE nel metodo deve avere un tool o skill che la
+# implementa. Se la sezione non è nel metodo non c'è niente da verificare — la versione
+# precedente segnalava proprio in quel caso, con il messaggio opposto a ciò che faceva.
+# La ricerca del backing NON include references/ (il metodo stesso): cercare lì rende
+# la lente circolare — ogni sezione troverebbe sempre se stessa.
 if [ "$LIVELLO" -ge 3 ]; then
   # verifica che ogni sezione del metodo abbia un tool o skill che la implementa
   for sezione in "graphify" "handoff gap" "convergenza cieca" "fixture degradano"; do
-    grep -rq "$sezione" "$HERE"/.claude/skills/gas-sviluppo/references/metodo.md || \
+    grep -rq "$sezione" "$HERE"/.claude/skills/gas-sviluppo/references/metodo.md || continue
+    grep -rql "$sezione" "$HERE"/tools "$HERE"/.claude/agents "$HERE"/.claude/skills/*/SKILL.md 2>/dev/null || \
       FINDINGS+=("FLUSSO: '$sezione' nel metodo ma non implementato da nessun tool")
   done
 fi

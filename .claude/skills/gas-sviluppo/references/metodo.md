@@ -316,3 +316,16 @@ per mantenere il grafo corrente (AST-only, nessun costo LLM).
 L'installazione: `graphify install --platform opencode` nel progetto target
 (o `--platform claude` per Claude Code). Lo standard ora propaga anche
 .opencode/plugins/ che contiene il reminder automatico.
+
+
+## Indice rapido dei pattern (per tema)
+
+Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
+
+**Esecuzione e verifica**: `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
+**Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato`
+**Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento`
+**Concorrenza e risorse**: `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
+**Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
+**Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping`
+**Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe`
