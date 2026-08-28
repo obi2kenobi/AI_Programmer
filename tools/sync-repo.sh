@@ -68,7 +68,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # aggiunto dopo l'onboarding non raggiungeva più le repo già onboardate). Corretto in
   # due filoni indipendenti concorrenti; unificato: patterns/ (in entrambi) + .opencode/skills
   # (solo in questo filone, mancava ancora sull'altro).
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo; do
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
     cp -r "$HERE/$ITEM" "$ITEM"

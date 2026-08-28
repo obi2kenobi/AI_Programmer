@@ -302,3 +302,17 @@ l'indice di 39 pattern, ciascuno nato da un errore vero. I pattern
 più citati dal canone: scarto-mai-silenzioso · esegui-non-leggere ·
 oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
+
+
+## Graphify: il grafo del progetto TARGET, non dell'hub (2026-08-28)
+
+Quando il metodo lavora su un progetto esterno, graphify censisce QUEL progetto:
+`cd <target> && graphify update .` crea graphify-out/graph.json nel target.
+Da lì, `graphify query "<domanda>"` trova dove vive un componente senza
+leggere file per file — navigazione veloce, economica, precisa, immediata.
+Se il grafo esiste già nel target, USALO prima di fare grep: il grafo sa dove
+guardare, grep cerca alla cieca. Dopo modifiche al codice: `graphify update .`
+per mantenere il grafo corrente (AST-only, nessun costo LLM).
+L'installazione: `graphify install --platform opencode` nel progetto target
+(o `--platform claude` per Claude Code). Lo standard ora propaga anche
+.opencode/plugins/ che contiene il reminder automatico.

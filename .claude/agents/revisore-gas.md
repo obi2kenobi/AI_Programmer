@@ -79,3 +79,11 @@ REPO-E: mai nomi di clienti o progetti.
 ## Il catalogo pattern
 
 patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.
+
+
+## Graphify: naviga il grafo se esiste
+
+Se graphify-out/graph.json esiste nel progetto target, usa
+`graphify query "<termine>"` per trovare dove vive un componente PRIMA
+di grepare. Il grafo è stato costruito per questo: consultazione veloce,
+economica, precisa. Se non esiste, falllo creare: `graphify update .`
