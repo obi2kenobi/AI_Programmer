@@ -90,6 +90,24 @@ echo "$OUT2" | grep -q "Accuratezza: 100.0%" && echo "$OUT2" | grep -q "Obiettiv
   && ok "caso conforme: 100.0% e obiettivo RAGGIUNTO (il verde dev'essere raggiungibile)" \
   || ko "caso conforme: $OUT2"
 
+# 8. bug reale (revisione 14 lenti, 2026-08-28): ordine con importo <= 0 non deve passare
+# "valida" a prescindere dall'importo fatturato — va segnalato come categoria a sé.
+cat > "$TMP/f3.csv" <<'EOF'
+nr,fornitore,ordine_nr,importo
+H1,FORN-A,OZERO,5000
+EOF
+cat > "$TMP/o3.csv" <<'EOF'
+nr,importo
+OZERO,0
+EOF
+OUT3=$(python3 "$HERE/tools/accuratezza_fatture_acquisto.py" "$TMP/config.json" "$TMP/f3.csv" "$TMP/o3.csv")
+echo "$OUT3" | grep -q "Ordine con importo <= 0 (dato anomalo, percentuale non definita): 1 — H1→OZERO" \
+  && ok "ordine a 0€ con fattura 5000€: segnalato come dato anomalo, non 'valida'" \
+  || ko "ordine a 0€ non segnalato: $OUT3"
+echo "$OUT3" | grep -q "Errori reali: 1" \
+  && ok "ordine a 0€: contato negli errori reali" \
+  || ko "errori reali attesi 1: $OUT3"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

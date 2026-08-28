@@ -85,6 +85,22 @@ echo "$TOT" | grep -qv "2800\|3000" \
   && ok "i documenti non accoppiati/annullati non gonfiano i totali ($TOT)" \
   || ko "totali gonfiati: $TOT"
 
+# 9. bug reale (revisione 14 lenti, 2026-08-28): vendita a importo 0 con acquisto pieno
+# accoppiato — la percentuale non è definita a denominatore nullo, non deve leggersi come
+# "+0.0%" (margine nullo fuorviante): l'euro del margine resta corretto (-200.00).
+cat > "$TMP/vendite_zero.csv" <<'EOF'
+rif,data,bu,ubicazione,importo
+RF-ZERO,2026-01-01,ARRG,MAG1,0
+EOF
+cat > "$TMP/acquisti_zero.csv" <<'EOF'
+rif,data,bu,fornitore,importo
+RF-ZERO,2026-01-01,ARRG,F1,200
+EOF
+OUT_ZERO=$(python3 "$HERE/tools/margine_documento.py" "$TMP/vendite_zero.csv" "$TMP/acquisti_zero.csv")
+echo "$OUT_ZERO" | grep -q "RF-ZERO: vendita=0.00 acquisto=200.00 margine=-200.00 (n.d. (vendita a zero) sui ricavi)" \
+  && ok "vendita a zero: margine -200.00 corretto, percentuale 'n.d.' non '+0.0%' fuorviante" \
+  || ko "vendita a zero: $(echo "$OUT_ZERO" | grep 'RF-ZERO:')"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
