@@ -12,7 +12,9 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 LINEA=$(grep -n '^  for ITEM in' "$HERE/tools/sync-repo.sh" | head -1)
 
-for item in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo; do
+# giri avversari 2026-08-28 (A14/G8): la lista era DRIFTATA da tools/sync-repo.sh
+# (mancava .opencode/plugins) e non presidiava il flag --standard
+for item in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo .opencode/plugins; do
   echo "$LINEA" | grep -qF "$item" \
     && ok "ITEM list di sync-repo.sh --standard include: $item" \
     || ko "ITEM list di sync-repo.sh --standard NON include: $item"

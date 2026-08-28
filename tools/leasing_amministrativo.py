@@ -70,6 +70,12 @@ def main():
         return 1
     inizio = date.fromisoformat(c["data_inizio"])
     fine = date.fromisoformat(c["data_fine"])
+    # giri avversari 2026-08-28 (D7): data_fine < data_inizio produceva mesi negativi
+    # accettati in silenzio (durata -12). Un contratto che finisce prima di iniziare
+    # è un dato marcio, non un caso limite.
+    if fine < inizio:
+        print("ERRORE: data_fine precedente a data_inizio", file=sys.stderr)
+        return 1
     riferimento = date.fromisoformat(c.get("data_riferimento") or date.today().isoformat())
     spread = float(c["spread"])
     euribor_stipula = float(c["euribor_stipula"])

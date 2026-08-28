@@ -19,7 +19,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 SEZIONI=("Cosa sei" "I quattro verbi" "L'ordine (ogni riga da una volta invertita)" \
   "Vincoli trasversali" "L'onore del NON VERIFICATO" "Il ripasso finale" \
   "Misura la deriva" "Le assunzioni implicite si verificano" \
-  "Il catalogo pattern è parte del canone" "Indice rapido dei pattern")
+  "Il catalogo pattern è parte del canone" "Indice rapido dei pattern" \
+  "Graphify")
+# giri avversari 2026-08-28 (G1): la sezione Graphify poteva sparire dal canone
+# senza che nessun test diventasse rosso
 for s in "${SEZIONI[@]}"; do
   grep -q "$s" "$METODO" && ok "sezione presente: $s" || ko "sezione MANCANTE: $s"
 done
@@ -37,6 +40,13 @@ grep -o '`[a-z0-9-]*`' "$METODO" | tr -d '`' | sort -u | while read -r p; do
   esac
   [ -f "$HERE/patterns/$p.md" ] || echo "INDICE-ROTTO: $p"
 done | grep -q "INDICE-ROTTO" && ko "l'indice cita pattern senza file" || ok "tutti i pattern dell'indice esistono"
+
+# le famiglie di difetti misurate restano popolate (G10: cancellare famiglie
+# intere non faceva diventare rosso niente — il catalogo è presidiato dal numero)
+FAM="$HERE/.claude/skills/gas-sviluppo/references/famiglie-difetti.md"
+NFAM=$(grep -c '^- \*\*' "$FAM" 2>/dev/null || echo 0)
+[ "$NFAM" -ge 20 ] && ok "famiglie di difetti popolate: $NFAM voci" \
+  || ko "famiglie di difetti degradate: $NFAM voci (attese >= 20)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

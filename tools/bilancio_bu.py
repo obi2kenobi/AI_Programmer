@@ -48,6 +48,11 @@ def main():
         # viene ora SCARTATA e CONTATA, non azzerata in silenzio.
         try:
             amount = float(amount_raw)
+            # giri avversari 2026-08-28 (D20): 1e999 produceva margine -inf in silenzio
+            import math as _m
+            if not _m.isfinite(amount):
+                print(f"ERRORE: amount non finito (nan/inf) per BU {r.get('bu', '?')}: rifiutato, non sommato", file=sys.stderr)
+                return 1
         except ValueError:
             righe_scartate += 1
             continue

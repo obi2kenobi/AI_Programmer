@@ -666,7 +666,7 @@ Su richiesta di Luca: «giri un po' ignoranti, insoliti, inusuali per scovare og
 inesattezza, incongruenza, errore, ostacolo». Circa 70 sonde praticate a mano + 6 consolidate
 nella batteria permanente `tools/giri-ignoranti.sh`. Catture:
 
-1. **Carattere CJK in SAL-ARCHIVIO** («alla自身的 pratica») — la classe di corruzione che
+1. **Carattere CJK in SAL-ARCHIVIO** (glifi cinesi dentro una parola italiana) — la classe di corruzione che
    avevo introdotto io stesso ieri in un pattern: era già successa ed era rimasta. S1 ora la
    cerca ovunque.
 2. **Numeri claims marciti**: AGENTS.md diceva «~75 test» (realtà 106) e «39 pattern» (41).
