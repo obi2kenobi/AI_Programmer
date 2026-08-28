@@ -32,6 +32,8 @@ RIGA_RE = re.compile(r"attese eseguite:\s*(\d+)\s*/\s*(\d+)\s*·\s*fallite:\s*(\
 
 
 def main():
+    """I cinque controlli del docstring, in ordine di severità: forma prima del
+    contenuto (una riga-verdetto ambigua non è giudicabile), poi i conti."""
     if len(sys.argv) != 2:
         print("uso: verifica_banco.py <file-uscita-banco>", file=sys.stderr)
         return 2

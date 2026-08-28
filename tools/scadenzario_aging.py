@@ -35,6 +35,10 @@ FASCE_ORDINE = FASCE_SCADUTO + ("BREVE", "MEDIO", "LUNGO")
 
 
 def fascia_dettaglio(giorni):
+    """Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo):
+    la fascia è la domanda di dominio («quanto è vecchio il credito?»), non
+    una scelta tecnica — le stesse fasce del progetto REPO-E.
+    """
     if giorni is None or giorni == "":
         return "LUNGO"
     g = int(giorni)
@@ -57,6 +61,11 @@ def importo_fornitore(importo_bc, doc_type):
 
 
 def aggrega_totali(righe):
+    """Somme per fascia e saldo netto. Le righe fornitore passano da
+    importo_fornitore (convenzione uscita di cassa): sommarle col segno
+    grezzo di BC metterebbe uscite tra le entrate (bug reale revisione 14
+    lenti, fix presidiato dal test).
+    """
     tot = {f: 0.0 for f in FASCE_ORDINE}
     entrate = uscite = 0.0
     for r in righe:
@@ -76,6 +85,10 @@ def aggrega_totali(righe):
 
 
 def main():
+    """Scadenzario CSV (giorni,tipo,importo) → aging con fasce e totali.
+    Header incompleto o importo non finito: uso/errore esplicito, mai nan
+    silenzioso (giri avversari D5/D6).
+    """
     righe = []
     reader = csv.DictReader(sys.stdin)
     # le colonne attese si DICHIARANO prima di usarle: un header sbagliato o mancante

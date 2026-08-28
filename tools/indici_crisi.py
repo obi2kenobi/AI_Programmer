@@ -40,6 +40,11 @@ def pct(n, d):
 
 
 def valuta_indici_crisi(a):
+    """Sei indici con soglie del codice REPO-E (non leggi italiane: la
+    presunzione di crisi è dell'algoritmo originario, soglie incluse). Ogni
+    indice porta la sua soglia e il verso (> o <) nell'output: un allarme
+    senza soglia visibile non è controllabile da chi legge.
+    """
     numeratori_denominatori = {
         "oneriFinRicavi": (a["oneriFin"], a["ricavi"]),
         "pnDebiti": (a["pn"], a["passivoTot"]),
@@ -62,6 +67,9 @@ def crisi_presunta(pn, indici):
 
 
 def main():
+    """Bilancio JSON in stdin → verdetti per indice + presunzione finale.
+    Input non-parsabile: uso, non traceback.
+    """
     try:
         a = json.load(sys.stdin)
     except (json.JSONDecodeError, EOFError):

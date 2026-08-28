@@ -13,6 +13,9 @@ README = "docs/bc/README.md"
 
 
 def parse(path):
+    """Riduce una riga di censimento endpoint ai campi dell'indice: nome,
+    servizi OData, salute. Il censimento è lungo; l'indice è la porta.
+    """
     txt = open(path, encoding="utf-8").read()
     name = re.search(r"# Endpoint: `([^`]+)`", txt).group(1)
     n = re.search(r"Campi trovati: (\d+)", txt)
@@ -43,6 +46,9 @@ def catalogo_mancanti():
 
 
 def main():
+    """Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si
+    edita a mano (la prossima rigenerazione lo cancellerebbe).
+    """
     rows = [parse(p) for p in glob.glob(os.path.join(ENDPOINTS_DIR, "*.md"))]
     n_cat, mancanti = catalogo_mancanti()
     rows.sort(key=lambda r: -r[1])

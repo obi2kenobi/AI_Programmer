@@ -46,6 +46,11 @@ def mesi_tra(d1, d2):
 
 
 def capitale_residuo(canone_base, inizio, fine, riferimento):
+    """Ammortamento UNIFORME (semplificazione DICHIARATA nel sorgente REPO-E,
+    non un piano reale): iniziale stimato = canone×mesi; residuo = quota dei
+    mesi rimanenti. La quota interessi usa il 2,5% STIMATO del sorgente: il
+    tasso vero sta nel contratto, che qui non c'è.
+    """
     durata = mesi_tra(inizio, fine)
     trascorsi = max(0, mesi_tra(inizio, riferimento))
     rimanenti = max(0, durata - trascorsi)
@@ -59,6 +64,11 @@ def capitale_residuo(canone_base, inizio, fine, riferimento):
 
 
 def main():
+    """Un contratto JSON → importo previsto col canone + adeguamento Euribor
+    trimestrale ARRETRATO (regola 4 del docstring: a ottobre arriva l'adeguamento
+    del trimestre precedente). Euribor corrente assente = NESSUN adeguamento,
+    dichiarato, non zero in silenzio.
+    """
     if len(sys.argv) != 2:
         print("uso: leasing_amministrativo.py contratto.json", file=sys.stderr)
         return 1

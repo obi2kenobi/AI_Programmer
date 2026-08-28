@@ -44,6 +44,7 @@
 - [2026-08-28 (4) — I 100 giri IGNORANTI: le sonde scortesi che trovano ciò che le lenti educate non vedono](#2026-08-28-4-i-100-giri-ignoranti-le-sonde-scortesi-che-trovano-ciò-che-le-lenti-educate-non-vedono)
 - [2026-08-28 (5) — I 100 giri AVVERSARI: attaccare il sistema per conto terzi](#2026-08-28-5-i-100-giri-avversari-attaccare-il-sistema-per-conto-terzi)
 - [2026-08-28 (6) — I 100 giri sui TEST: i quattro teatri verdi, il banco di fine passaggio, e il test fantasma](#2026-08-28-6-i-100-giri-sui-test-i-quattro-teatri-verdi-il-banco-di-fine-passaggio-e-il-test-fantasma)
+- [2026-08-28 (7) — I 100 giri di CHIAREZZA: i commenti come verifica del pensiero](#2026-08-28-7-i-100-giri-di-chiarezza-i-commenti-come-verifica-del-pensiero)
 
 
 ## Stato
@@ -775,3 +776,52 @@ prova citato dal test stesso risultava «coperto»; nome del probe unico a runti
 Suite 110/110 · mutazioni 26/26 reagiscono · ignoranti 0 · avversari 0 aggirati · VERDETTO:
 PASSAGGIO CHIUSO. `bash tools/banco-passaggio.sh` da qui in poi è la porta di chiusura di ogni
 loop e ogni goal: se non dice CHIUSO, non si chiude.
+
+### 2026-08-28 (7) — I 100 giri di CHIAREZZA: i commenti come verifica del pensiero
+
+Su richiesta di Luca: codice sempre commentato perché la seconda lettura ne capisca
+l'intenzione oltre le formule, e aiuti a scovare incongruenze fra il pensato e lo
+scritto — o il pensato male. Tre mosure: censimento, riletture claim-per-claim,
+lente permanente.
+
+**Il censimento mentiva (due volte).** La prima metrica (# commenti) dichiarò
+«nudi» i file .py migliori del repo: contava i #, non le docstring — chiamò
+sparuto il più documentato. Rifacta con docstring contate: davvero scarsi erano
+solo 4 file. Lezione: prima di misurare la chiarezza, verifica che la metrica
+misuri la chiarezza (confronto-non-vuoto, ancora).
+
+**La caccia alle discordanze (claim↔codice), il cuore della richiesta.** Ogni
+affermazione comportamentale letta e verificata contro il codice: valorizzazione
+6/6, verifica_banco 5/5 (il giudice dei banchi: cinque controlli dichiarati,
+cinque implementati), lib.sh 2/2 (i fix descritti nelle note sono il codice
+sotto le note), rating 4/4 contro il Codice.js VERO (≤7 giorni, <1 EUR, guardia
+0-365, data cessione 2000+aa). **Una discordanza trovata, ed era quella giusta**:
+l'header di ciclo-vivo descriveva il progetto del primo giorno — «ciclo A-B-C»,
+«memoria in .ciclo/stato.json», «genera un test automatico», «prioritizza dove
+guardare» — NESSUNA di queste cose esisteva: la memoria sono sei file piatti, le
+guardie si accodano, la prioritizzazione non c'è mai stata. L'header era il
+fossile del pensiero iniziale: chi l'avesse creduto avrebbe cercato stato.json.
+Riscritto su cosa È, con la storia dichiarata (nato come A-B-C, sopravvissuto
+meno del previsto).
+
+**Venticinque funzioni opache ora dichiarano l'intenzione**: bc_map (il client
+BC: token in memoria, paginazione nextLink, tipi da campione che bc_tipi
+corregge), gli oracoli (il cuore di riconciliazione con «non contato ≠ contato
+a zero», le fasce di aging, il roll-forward che non forza la quadratura, il
+main di bilancio col confine del margine DIRETTO), sal-archivia (perché il
+taglio viene DOPO l'indice, perché solo le voci datate, perché append-only).
+
+**La lente permanente**: tests/test-chiarezza.sh in suite — S1 intent in testa
+ovunque, S2 densità (docstring incluse) ≥15% con UN'esenzione dichiarata
+(l'harness avversario si autodescrive nei verdetti-echo), S3 nessuna def opaca.
+Trovata rossa la prima volta: 4 file scarsi, 25 funzioni senza docstring.
+
+**E il banco 7 si applicò all'autore**: le modifiche di chiarezza stesse
+(ciclo-vivo, sal-archivia, status-page) sono emerse SCOPERTE — cambiate senza
+test. Risposta: tre test veri, uno per tool, incluso sal-archivia reso
+sandbox-abile (path overridabili: il test NON ruota il SAL vero) e status-page
+con NOOPEN=1 (il test non apre browser).
+
+Suite 114/114 · banco PASSAGGIO CHIUSO · chiarezza 3/3. Le regole della
+chiarezza d'ora in poi sono presidiare: la lente arrossisce al primo file che
+tace sulla propria intenzione.

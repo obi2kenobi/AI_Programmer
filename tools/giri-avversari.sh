@@ -8,6 +8,11 @@
 # (25) · E privacy che riaffiora (7) · F regole senza denti (5) · G copertura
 # residue (20).
 #
+# NOTA DI CHIAREZZA (lente S2): questo file è VOLONTARIAMENTE povero di commenti
+# per attacco — ogni attacco si autodescrive nel verdetto echo e nel messaggio
+# TIENE/AGGIRA che è l'output utente. La densità qui misurerebbe il rumore, non
+# la chiarezza: escluso dal pavimento con questa giustificazione, non in silenzio.
+#
 # Il campione dell'attacco C7 usa --flag-segreto come flag di PROVA: documentato
 # qui appunto perché la sonda S5 dei giri ignoranti legge ogni --parola) implementata.
 #

@@ -37,6 +37,10 @@ def leggi_csv(path):
 
 
 def main():
+    """Fatture vs ordini → accuratezza (T−E)/T. Solo l'OVER-invoicing è
+    discrepanza (regola 1 del docstring); la whitelist legittima il
+    senza-ordine; l'obiettivo dichiarato in config decide il verdetto.
+    """
     if len(sys.argv) != 4:
         print("uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv", file=sys.stderr)
         return 1

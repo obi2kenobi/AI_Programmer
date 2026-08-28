@@ -29,6 +29,11 @@ EDM = {"Edm.Decimal": "float", "Edm.Double": "float", "Edm.Single": "float",
 
 
 def main():
+    """Scarica $metadata (schema VERO, non campioni), mappa EntitySet→
+    EntityType→Property/Type e corregge la colonna Tipo dei censimenti con
+        merge che PRESERVA Significato/Verificato (stesso contratto di bc_map).
+    Credenziali irraggiungibili: morte loud, non traceback nudo.
+    """
     raw = open(bcm.CRED_FILE, encoding="utf-8", errors="ignore").read()
     c = {k: bcm.cred(k, raw) for k in ("client_id", "client_secret", "scope", "token_url", "base_url")}
     token = bcm.get_token(c)
