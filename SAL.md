@@ -47,6 +47,7 @@
 - [2026-08-28 (7) — I 100 giri di CHIAREZZA: i commenti come verifica del pensiero](#2026-08-28-7-i-100-giri-di-chiarezza-i-commenti-come-verifica-del-pensiero)
 - [2026-08-28 (8) — I 100 giri sui FALLIMENTI: l'errore a regime](#2026-08-28-8-i-100-giri-sui-fallimenti-l-errore-a-regime)
 - [2026-08-29 — I 100 giri sulla COMPRENSIONE: polilivello, le domande di senso, il brainstorming generativo](#2026-08-29-i-100-giri-sulla-comprensione-polilivello-le-domande-di-senso-il-brainstorming-generativo)
+- [2026-08-29 (2) — I 200 giri del COLLEGAMENTO TOTALE: censito, collegato, funzionante, affinato](#2026-08-29-2-i-200-giri-del-collegamento-totale-censito-collegato-funzionante-affinato)
 
 
 ## Stato
@@ -903,3 +904,36 @@ primo-file-trovato nella folder, e LA domanda di dominio che nessun codice può
 rispondere: il DSO col factoring misura il cliente o la banca? Validato anche sul
 progetto più grande del parco (26.190 righe: 12 entrypoint colti, trigger
 programmatici, config BC). Suite 117/117.
+
+### 2026-08-29 (2) — I 200 giri del COLLEGAMENTO TOTALE: censito, collegato, funzionante, affinato
+
+Su richiesta di Luca: assicurarsi che tutto il repo sia collegato, funzioni, sia censito,
+sviluppato e affinato. Quattro fasi, una per parola.
+
+**CENSITO** — 554 file tracciati, mappati per zona ed estensione. La matrice di
+connessione (ogni oggetto citato da almeno un altro) è quasi perfetta: skill, agenti,
+pattern, tool, documenti — TUTTI raggiunti; i 30 «orfani» sono test, by-design (si
+scoprono via glob). Un falso allarme istruttivo: il «file col nome tra virgolette» era
+git che escapea la à di capacità (core.quotepath) — la metrica ancora, contro la realtà.
+
+**COLLEGATO** — 19 link pendenti trovati e triati: 12 oracoli citati nudi in
+mappa-dominio (prefisso tools/), i file-del-target dichiarati per contratto (il
+CATALOGO_ENDPOINT nel progetto, la GRAMMATICA che il template ordina di creare).
+README ora linka SAL.md e SAL-ARCHIVIO.md — l'archivio era ORFANO dalla porta
+d'ingresso. E il grafo dei pattern è diventato CONNESSO: da 21 isole a ZERO, ogni
+pattern citato da almeno un altro via Vedi-anche, con parent naturali e non a caso.
+La trappola del conteggio: il primo batch scriveva nomi senza backtick e il riconteggio
+li cercava coi backtick — formato incoerente, famiglia E-006 (la metrica misura ciò
+che dice?), normalizzato.
+
+**FUNZIONA** — eseguiti in safe-mode i tool mai eseguiti: system-health (Ollama e
+Wayfinder attivi), gate-summary (metriche a schema), status-page NOOPEN, sync-repo
+--from-local (ALLINEATO), morning-digest (no-op educato senza email). DEBITI triati:
+i chiudibili erano già saldati, le restanti sono decisioni di Luca (privacy dei campioni
+BC, rotazione secret REPO-L) — nessuna chiusura forzata.
+
+**AFFINATO** — due sonde permanenti nuove in giri-ignoranti: S10 (link pendenti nel
+canone, con le esclusioni-per-contratto imparate oggi) e S11 (grafo pattern connesso).
+Undici sonde totali, 0 finding. Suite 117/117 (nel messaggio di commit ho scritto 118:
+numero sbagliato, già pushato — lo dichiaro qui invece di lasciarlo correre), banco
+completo PASSAGGIO CHIUSO.
