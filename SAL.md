@@ -15,7 +15,7 @@
 - [2026-08-21, pomeriggio tardi — ponytail e superpowers: il delta, non il catechismo](#2026-08-21-pomeriggio-tardi-ponytail-e-superpowers-il-delta-non-il-catechismo)
 - [2026-08-21, sera — la review di Opus applicata: ogni punto verificato sul codice, poi corretto](#2026-08-21-sera-la-review-di-opus-applicata-ogni-punto-verificato-sul-codice-poi-corretto)
 - [2026-08-21, notte — dev-critic: il critico costruttivo diventa un comando, non un'abitudine](#2026-08-21-notte-dev-critic-il-critico-costruttivo-diventa-un-comando-non-un-abitudine)
-- [2026-08-21, notte — dev-critic verifica la review Opus: un fix confermato solo a metà](#2026-08-21-notte-dev-critic-verifica-la-review-opus-un-fix-confermato-solo-a-met)
+- [2026-08-21, notte — dev-critic verifica la review Opus: un fix confermato solo a metà](#2026-08-21-notte-dev-critic-verifica-la-review-opus-un-fix-confermato-solo-a-metà)
 - [2026-08-21, notte (2) — il bypass dell'allowlist chiuso con l'opzione (c) di Luca](#2026-08-21-notte-2-il-bypass-dell-allowlist-chiuso-con-l-opzione-c-di-luca)
 - [2026-08-21, notte (3) — gate-summary: i dati promessi diventano leggibili](#2026-08-21-notte-3-gate-summary-i-dati-promessi-diventano-leggibili)
 - [2026-08-21, sera — il test che contava: sviluppare una feature NUOVA](#2026-08-21-sera-il-test-che-contava-sviluppare-una-feature-nuova)
@@ -37,7 +37,7 @@
 - [2026-08-21, notte (14) — Giro 9: gate-esito.sh su dati VERI, non su un test giocattolo](#2026-08-21-notte-14-giro-9-gate-esito-sh-su-dati-veri-non-su-un-test-giocattolo)
 - [2026-08-21, notte (15) — Giro 10: Closes multiplo e prima commessa chore, entrambi puliti](#2026-08-21-notte-15-giro-10-closes-multiplo-e-prima-commessa-chore-entrambi-puliti)
 - [2026-08-21, notte (16) — Giri 11/12: la propria citazione non verificata, trovata verificandola](#2026-08-21-notte-16-giri-11-12-la-propria-citazione-non-verificata-trovata-verificandola)
-- [2026-08-21, notte (17) — le due correzioni in sospeso, eseguite col sì di Luca](#2026-08-21-notte-17-le-due-correzioni-in-sospeso-eseguite-col-s-di-luca)
+- [2026-08-21, notte (17) — le due correzioni in sospeso, eseguite col sì di Luca](#2026-08-21-notte-17-le-due-correzioni-in-sospeso-eseguite-col-sì-di-luca)
 - [2026-08-21, notte (18) — un bug reale su un progetto vero apre una lente mancante nel roster](#2026-08-21-notte-18-un-bug-reale-su-un-progetto-vero-apre-una-lente-mancante-nel-roster)
 - [2026-08-21 — nuova regola: qui solo metodo, mai il nome dei progetti onboardati](#2026-08-21-nuova-regola-qui-solo-metodo-mai-il-nome-dei-progetti-onboardati)
 - [2026-08-21 — Giro 1 di 5 su un progetto onboardato: due bug della stessa famiglia di (18), un secondo pattern nuovo](#2026-08-21-giro-1-di-5-su-un-progetto-onboardato-due-bug-della-stessa-famiglia-di-18-un-secondo-pattern-nuovo)
@@ -53,14 +53,14 @@
 - [2026-08-22, notte (3) — 10 giri di FEATURE: cosa mancava davvero](#2026-08-22-notte-3-10-giri-di-feature-cosa-mancava-davvero)
 - [2026-08-22, notte (4) — le decisioni di dominio prese (mandato di Luca: "decidi da solo")](#2026-08-22-notte-4-le-decisioni-di-dominio-prese-mandato-di-luca-decidi-da-solo)
 - [2026-08-22, notte (5) — terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo](#2026-08-22-notte-5-terzo-ciclo-di-10-giri-bug-reali-trovati-eseguendo-non-leggendo)
-- [2026-08-22, notte (6) — correzione: la diagnosi "claude -p lento" era sbagliata](#2026-08-22-notte-6-correzione-la-diagnosi-claude-p-lento-era-sbagliata)
+- [2026-08-22, notte (6) — correzione: la diagnosi "claude -p lento" era sbagliata](#2026-08-22-notte-6-correzione-la-diagnosi-claude--p-lento-era-sbagliata)
 - [2026-08-22, notte (7) — Set 1/3: agenti giorno+notte armonizzati, 8 bug reali](#2026-08-22-notte-7-set-1-3-agenti-giorno-notte-armonizzati-8-bug-reali)
-- [2026-08-22, notte (8) — Set 2/3: capacità di progettare, 3 skill mai esistite + bug ad alta severità](#2026-08-22-notte-8-set-2-3-capacit-di-progettare-3-skill-mai-esistite-bug-ad-alta-severit)
+- [2026-08-22, notte (8) — Set 2/3: capacità di progettare, 3 skill mai esistite + bug ad alta severità](#2026-08-22-notte-8-set-2-3-capacità-di-progettare-3-skill-mai-esistite-bug-ad-alta-severità)
 - [2026-08-22, notte (9) — Set 3/3: flusso delle idee, tutte le interazioni](#2026-08-22-notte-9-set-3-3-flusso-delle-idee-tutte-le-interazioni)
 - [2026-08-23 — 4° ciclo, Set 1/3 giro 1: agenti per problemi matematico-contabili, ancorati a dati reali](#2026-08-23-4-ciclo-set-1-3-giro-1-agenti-per-problemi-matematico-contabili-ancorati-a-dati-reali)
 - [2026-08-23 (2) — Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo](#2026-08-23-2-set-1-3-giri-2-3-la-skill-raggiunge-la-commessa-poi-il-progetto-nuovo)
 - [2026-08-23 (3) — Set 1/3 giro 4: il gate non applicava a se stesso la propria regola](#2026-08-23-3-set-1-3-giro-4-il-gate-non-applicava-a-se-stesso-la-propria-regola)
-- [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacit)
+- [2026-08-23 (4) — Set 1/3 giro 5: la mappa completa non conosceva la nuova capacità](#2026-08-23-4-set-1-3-giro-5-la-mappa-completa-non-conosceva-la-nuova-capacità)
 - [2026-08-23 (5) — Set 1/3 giro 6: secondo caso, dominio diverso — il metodo generalizza](#2026-08-23-5-set-1-3-giro-6-secondo-caso-dominio-diverso-il-metodo-generalizza)
 - [2026-08-23 (6) — Set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano](#2026-08-23-6-set-1-3-giro-7-due-lenti-sullo-stesso-dominio-non-si-conoscevano)
 - [2026-08-23 (7) — Set 1/3 giro 8: terzo caso, dominio cespiti — il segno del fondo](#2026-08-23-7-set-1-3-giro-8-terzo-caso-dominio-cespiti-il-segno-del-fondo)
@@ -76,33 +76,33 @@
 - [2026-08-23 (16) — Set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato](#2026-08-23-16-set-2-3-giro-8-la-stessa-staleness-un-terzo-posto-mai-controllato)
 - [2026-08-23 (17) — Set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo](#2026-08-23-17-set-2-3-giro-9-le-idee-di-dev-critic-non-avevano-un-passo-successivo)
 - [2026-08-23 (18) — Set 2/3 giro 10 (chiude il set): design-doc apriva solo la porta della notte](#2026-08-23-18-set-2-3-giro-10-chiude-il-set-design-doc-apriva-solo-la-porta-della-notte)
-- [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacit-contabile)
+- [2026-08-23 (19) — Set 3/3 giro 1: PROJECT.md non conosceva la nuova capacità contabile](#2026-08-23-19-set-3-3-giro-1-project-md-non-conosceva-la-nuova-capacità-contabile)
 - [2026-08-23 (20) — Set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva](#2026-08-23-20-set-3-3-giro-2-la-traccia-dei-cervelli-di-giorno-entrava-e-non-usciva)
 - [2026-08-23 (21) — Set 3/3 giro 3: i codici anonimi non avevano un indice](#2026-08-23-21-set-3-3-giro-3-i-codici-anonimi-non-avevano-un-indice)
 - [2026-08-23 — design: quale modello ha giudicato ogni riga del banco avversariale?](#2026-08-23-design-quale-modello-ha-giudicato-ogni-riga-del-banco-avversariale)
 - [2026-08-23 (22) — Set 3/3 giro 5: METHOD.md non conosceva il registro del giorno, e citava male due percorsi](#2026-08-23-22-set-3-3-giro-5-method-md-non-conosceva-il-registro-del-giorno-e-citava-male-due-percorsi)
 - [2026-08-23 (23) — Set 3/3 giro 6: "in testa al file" era in fondo](#2026-08-23-23-set-3-3-giro-6-in-testa-al-file-era-in-fondo)
 - [2026-08-23 (24) — Set 3/3 giro 7: lo stesso gap, mai propagato al file gemello](#2026-08-23-24-set-3-3-giro-7-lo-stesso-gap-mai-propagato-al-file-gemello)
-- [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-met-del-limite-condiviso)
+- [2026-08-23 (25) — Set 3/3 giro 8: la mappa citava solo metà del limite condiviso](#2026-08-23-25-set-3-3-giro-8-la-mappa-citava-solo-metà-del-limite-condiviso)
 - [2026-08-23 (26) — Set 3/3 giro 9: tenere d'occhio la crescita della suite](#2026-08-23-26-set-3-3-giro-9-tenere-d-occhio-la-crescita-della-suite)
 - [2026-08-23 (27) — Set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate](#2026-08-23-27-set-3-3-giro-10-chiude-il-set-verifica-end-to-end-di-tutto-il-gate)
 - [2026-08-23 — Set 1 giro 1: nessun sistema di subagent, solo skill](#2026-08-23-set-1-giro-1-nessun-sistema-di-subagent-solo-skill)
 - [2026-08-23 — Set 1 giro 2: un secondo agente, non un duplicato](#2026-08-23-set-1-giro-2-un-secondo-agente-non-un-duplicato)
 - [2026-08-23 — Set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti](#2026-08-23-set-1-giro-3-il-terzo-ruolo-dogfoodato-per-davvero-sui-4-tool-esistenti)
 - [2026-08-23 — Set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging](#2026-08-23-set-1-giro-4-quinto-caso-reale-minato-da-gas-src-scadenzario-aging)
-- [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-gi-trovato-due-volte-mai-chiuso-per-gli-agenti)
+- [2026-08-23 — Set 1 giro 5: stesso gap già trovato due volte, mai chiuso per gli agenti](#2026-08-23-set-1-giro-5-stesso-gap-già-trovato-due-volte-mai-chiuso-per-gli-agenti)
 - [2026-08-23 — Set 1 giro 6: il sistema di agenti non si conosceva da solo](#2026-08-23-set-1-giro-6-il-sistema-di-agenti-non-si-conosceva-da-solo)
 - [2026-08-23 — Set 1 giro 7: un limite reale non ancora dichiarato](#2026-08-23-set-1-giro-7-un-limite-reale-non-ancora-dichiarato)
 - [2026-08-23 — Set 1 giro 8: dogfooding reale sui propri agenti — non sono invocabili qui](#2026-08-23-set-1-giro-8-dogfooding-reale-sui-propri-agenti-non-sono-invocabili-qui)
 - [2026-08-23 — Set 1 giro 9: la scoperta del giro 8 entra in DEBITI.md](#2026-08-23-set-1-giro-9-la-scoperta-del-giro-8-entra-in-debiti-md)
-- [2026-08-23 — Set 1 giro 10 (chiude il set): un bug reale trovato rieseguendo la suite più volte](#2026-08-23-set-1-giro-10-chiude-il-set-un-bug-reale-trovato-rieseguendo-la-suite-pi-volte)
-- [2026-08-23 — Set 2 giro 1: la regola "tabella persistita" era verificata solo nella prosa, non nella realtà](#2026-08-23-set-2-giro-1-la-regola-tabella-persistita-era-verificata-solo-nella-prosa-non-nella-realt)
+- [2026-08-23 — Set 1 giro 10 (chiude il set): un bug reale trovato rieseguendo la suite più volte](#2026-08-23-set-1-giro-10-chiude-il-set-un-bug-reale-trovato-rieseguendo-la-suite-più-volte)
+- [2026-08-23 — Set 2 giro 1: la regola "tabella persistita" era verificata solo nella prosa, non nella realtà](#2026-08-23-set-2-giro-1-la-regola-tabella-persistita-era-verificata-solo-nella-prosa-non-nella-realtà)
 - [2026-08-23 — Set 2 giro 2: selezione del contesto — nessun percorso senza graphify](#2026-08-23-set-2-giro-2-selezione-del-contesto-nessun-percorso-senza-graphify)
 - [2026-08-23 — Set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale](#2026-08-23-set-2-giro-3-goal-costruito-e-mai-eseguito-chiuso-col-primo-loop-reale)
 - [2026-08-23 — Set 2 giro 4: il wizard chiedeva "come" verificare, non "quale livello"](#2026-08-23-set-2-giro-4-il-wizard-chiedeva-come-verificare-non-quale-livello)
 - [2026-08-23 — Set 2 giro 5: il gate meccanico verifica che un riferimento SOMIGLI a](#2026-08-23-set-2-giro-5-il-gate-meccanico-verifica-che-un-riferimento-somigli-a)
 - [2026-08-23 — Set 2 giro 6: "scelta delle migliori idee" al plurale — nessuna riga lo diceva](#2026-08-23-set-2-giro-6-scelta-delle-migliori-idee-al-plurale-nessuna-riga-lo-diceva)
-- [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-buona)
+- [2026-08-23 — Set 2 giro 7: cosa fare quando NESSUNA opzione è buona](#2026-08-23-set-2-giro-7-cosa-fare-quando-nessuna-opzione-è-buona)
 - [2026-08-23 — Set 2 giro 8: lo stesso bug (nomi hardcoded, non un glob) trovato una terza volta](#2026-08-23-set-2-giro-8-lo-stesso-bug-nomi-hardcoded-non-un-glob-trovato-una-terza-volta)
 - [2026-08-23 — Set 2 giro 9: lo stesso bug, una quarta e una quinta volta (una scritta da me in questo stesso ciclo)](#2026-08-23-set-2-giro-9-lo-stesso-bug-una-quarta-e-una-quinta-volta-una-scritta-da-me-in-questo-stesso-ciclo)
 - [2026-08-23 — Set 2 giro 10 (chiude il set): verifica end-to-end di tutta la pipeline di progettazione](#2026-08-23-set-2-giro-10-chiude-il-set-verifica-end-to-end-di-tutta-la-pipeline-di-progettazione)
@@ -120,27 +120,27 @@
 - [2026-08-24 — feedback di un utente esterno reale: 5 gap di processo, non di codice](#2026-08-24-feedback-di-un-utente-esterno-reale-5-gap-di-processo-non-di-codice)
 - [2026-08-24 — punti 2-4: tre nuove regole vincolanti in CLAUDE.md](#2026-08-24-punti-2-4-tre-nuove-regole-vincolanti-in-claude-md)
 - [2026-08-24 — punto 5: patterns/ auto-consultato via hook PreToolUse (mai fatto prima in questo repo)](#2026-08-24-punto-5-patterns-auto-consultato-via-hook-pretooluse-mai-fatto-prima-in-questo-repo)
-- [2026-08-24 — feedback dal campo (REPO-F, BC/GAS): il matching per description non è affidabile quanto presunto](#2026-08-24-feedback-dal-campo-repo-f-bc-gas-il-matching-per-description-non-affidabile-quanto-presunto)
-- [2026-08-24 — 6° ciclo, giro 0: baseline verde, tre bug di portabilità macOS](#2026-08-24-6-ciclo-giro-0-baseline-verde-tre-bug-di-portabilit-macos)
+- [2026-08-24 — feedback dal campo (REPO-F, BC/GAS): il matching per description non è affidabile quanto presunto](#2026-08-24-feedback-dal-campo-repo-f-bc-gas-il-matching-per-description-non-è-affidabile-quanto-presunto)
+- [2026-08-24 — 6° ciclo, giro 0: baseline verde, tre bug di portabilità macOS](#2026-08-24-6-ciclo-giro-0-baseline-verde-tre-bug-di-portabilità-macos)
 - [2026-08-24 (2) — 6° ciclo, Set 1/3: mappa del dominio, 2 agenti e 3 oracoli](#2026-08-24-2-6-ciclo-set-1-3-mappa-del-dominio-2-agenti-e-3-oracoli)
 - [2026-08-24 (3) — 6° ciclo, Set 2/3: divergenza, contesto col budget, squalifiche e spike](#2026-08-24-3-6-ciclo-set-2-3-divergenza-contesto-col-budget-squalifiche-e-spike)
 - [2026-08-24 (4) — design: i costi generali % nella valorizzazione di magazzino](#2026-08-24-4-design-i-costi-generali-nella-valorizzazione-di-magazzino)
 - [2026-08-24 (5) — 6° ciclo, Set 3/3: flusso=contratto, notte=agenti, gate=memoria](#2026-08-24-5-6-ciclo-set-3-3-flusso-contratto-notte-agenti-gate-memoria)
-- [2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava](#2026-08-24-6-la-rotta-corretta-il-parco-il-corpus-non-la-cava)
+- [2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava](#2026-08-24-6-la-rotta-corretta-il-parco-è-il-corpus-non-la-cava)
 - [2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico](#2026-08-24-7-7-ciclo-set-1-3-tre-oracoli-residui-e-il-rilevatore-meccanico)
 - [2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero](#2026-08-24-8-7-ciclo-set-2-3-il-flusso-di-progettazione-dogfooddato-su-un-caso-vero)
 - [2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi](#2026-08-24-9-7-ciclo-set-3-3-il-hub-impara-a-giudicare-i-banchi)
 - [2026-08-24 (10) — il report dal campo su REPO-G: verificato,processato, chiuso](#2026-08-24-10-il-report-dal-campo-su-repo-g-verificato-processato-chiuso)
 - [2026-08-26 — il report dei tagli: il canone ha retto, e cresce di cinque pezzi](#2026-08-26-il-report-dei-tagli-il-canone-ha-retto-e-cresce-di-cinque-pezzi)
 - [2026-08-26 (3) — «standard non opzione»: il metodo diventa meccanico](#2026-08-26-3-standard-non-opzione-il-metodo-diventa-meccanico)
-- [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-gi-chiuso-due-novit)
+- [2026-08-26 (2) — report REPO-G versione aggiornata: tutto già chiuso, due novità](#2026-08-26-2-report-repo-g-versione-aggiornata-tutto-già-chiuso-due-novità)
 - [2026-08-26 (4) — il censimento BC diventa aggiornabile (e confessa: 0 verificati su 88)](#2026-08-26-4-il-censimento-bc-diventa-aggiornabile-e-confessa-0-verificati-su-88)
 - [2026-08-26 (5) — la pozza entra: il catalogo vive nell'hub, i mancanti sono 170](#2026-08-26-5-la-pozza-entra-il-catalogo-vive-nell-hub-i-mancanti-sono-170)
 - [2026-08-26 (6) — censimento BC completato al vivo: 203/258, anomalie registrate](#2026-08-26-6-censimento-bc-completato-al-vivo-203-258-anomalie-registrate)
 - [2026-08-27 — il report dal campo diventa sistematico (proposta di Luca)](#2026-08-27-il-report-dal-campo-diventa-sistematico-proposta-di-luca)
 - [2026-08-27 (2) — distribuito chiuso: l'esperimento che non si presume](#2026-08-27-2-distribuito-chiuso-l-esperimento-che-non-si-presume)
-- [2026-08-27 (3) — dieci giri di coerenza: il sistema è collegato, tre rotture trovate e chiuse](#2026-08-27-3-dieci-giri-di-coerenza-il-sistema-collegato-tre-rotture-trovate-e-chiuse)
-- [2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato](#2026-08-27-4-venti-giri-lenti-nuove-mutazione-dei-guardiani-e-ci-che-ha-rivelato)
+- [2026-08-27 (3) — dieci giri di coerenza: il sistema è collegato, tre rotture trovate e chiuse](#2026-08-27-3-dieci-giri-di-coerenza-il-sistema-è-collegato-tre-rotture-trovate-e-chiuse)
+- [2026-08-27 (4) — venti giri, lenti nuove: mutazione dei guardiani e ciò che ha rivelato](#2026-08-27-4-venti-giri-lenti-nuove-mutazione-dei-guardiani-e-ciò-che-ha-rivelato)
 - [2026-08-27 (5) — venti giri, terza serie: la vetrina pubblica era ferma a tre giorni fa](#2026-08-27-5-venti-giri-terza-serie-la-vetrina-pubblica-era-ferma-a-tre-giorni-fa)
 - [2026-08-27 (6) — terzo report REPO-G: la riverifica indipendente chiude il loop](#2026-08-27-6-terzo-report-repo-g-la-riverifica-indipendente-chiude-il-loop)
 - [2026-08-27 (7) — primo report dal campo nel formato nuovo: pattern 19, REPO-H, quattro proposte adottate](#2026-08-27-7-primo-report-dal-campo-nel-formato-nuovo-pattern-19-repo-h-quattro-proposte-adottate)
@@ -151,8 +151,9 @@
 - [2026-08-27 (12) — report REPO-I fase 2: catalogo esaurito, quattro regole nuove](#2026-08-27-12-report-repo-i-fase-2-catalogo-esaurito-quattro-regole-nuove)
 - [2026-08-27 (13) — sesto report (REPO-H, 12 PR): pattern 23-24 e il workaround vm](#2026-08-27-13-sesto-report-repo-h-12-pr-pattern-23-24-e-il-workaround-vm)
 - [2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo](#2026-08-27-14-quattordici-lenti-su-repo-g-il-metodo-chiede-adottare-il-metodo)
-- [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ci-che-i-cicli-hanno-scoperto-nel-canone)
+- [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ciò-che-i-cicli-hanno-scoperto-è-nel-canone)
 - [2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area](#2026-08-27-16-cinquanta-giri-su-repo-i-le-cinque-lenti-per-area)
+- [2026-08-28 (1) — L'Hub Allo Specchio: 14 lenti indipendenti sull'hub stesso, 9 batch di fix](#2026-08-28-1-l-hub-allo-specchio-14-lenti-indipendenti-sull-hub-stesso-9-batch-di-fix)
 
 
 ## Stato
@@ -3456,3 +3457,57 @@ consolidazione anti-rumore. I temi trasversali in testa meritano attenzione
 di dominio: follow-up che non persiste, funzioni orfane senza porta
 d'ingresso, verde che nasconde dati mai arrivati. Report completo in
 docs/campo/2026-08-27-repo-i-cinquanta-giri.md.
+
+### 2026-08-28 (1) — L'Hub Allo Specchio: 14 lenti indipendenti sull'hub stesso, 9 batch di fix
+
+Nato dal ciclo precedente: dopo la revisione "Quattordici Lenti" su REPO-G (14/8,
+docs/campo/2026-08-27-repo-g-quattordici-lenti.html) e il report dal campo che ne
+riportava l'esecuzione, la stessa disciplina — 14 lenti indipendenti, zero-waste,
+"esegui non leggere" — applicata all'HUB stesso, non a un progetto cliente. Prima la
+revisione (14 agenti paralleli, oltre 60 problemi reali confermati, pubblicata come
+artefatto "L'Hub Allo Specchio"), poi 9 batch di correzione, uno alla volta, ognuno
+verificato dal vivo prima/dopo e con banco di regressione esteso o creato.
+
+**Trovato e corretto** (evidenza completa nei commit del branch
+`fix/revisione-14-lenti`): pipeline night-shift (il gate del mattino non faceva mai
+checkout del branch della PR — le verifiche giravano sul codice sbagliato; lock non
+atomico; bypass della sandbox del banco avversariale via sostituzione di comando
+annidata; "main" hardcoded); 7 bug nei tool di calcolo di dominio (scadenzario
+fornitori mai applicato, pagamenti scartati che sparivano dal conteggio, crash su
+riga non contata, quadratura strutturalmente tautologica in bilancio_bu.py, ordine a
+0€ che nascondeva una discrepanza, argomento mancante letto come zero, percentuale
+fuorviante su vendita a zero); 9 bug negli script operativi (fra cui un rilevatore di
+segreti spento da un bug di raw-string in gas_qualita.py, un test di verifica dei
+percorsi in PROJECT.md che non ha MAI funzionato dalla sua creazione — sed rimuoveva
+il separatore di cui awk aveva bisogno — e un secondo bug reale, indipendente, in
+bc_index.py: la regex del censimento BC catturava il nome visualizzato invece del
+nome tecnico, gonfiando i "mancanti" di 22 unità fantasma); 5 bug in llm/ (timeout
+che non forzava mai la terminazione sul ramo primario, due curl falliti senza
+diagnosi, stdin troncato senza avviso); la guardia anti-drift fra `.claude/skills` e
+`.opencode/skills` — dichiarata chiusa "con guardia" il 27/8, la guardia non esisteva
+mai, 3 file erano già divergenti (trovato da 3 lenti indipendenti: convergenza
+forte); documenti di governance disallineati (comando `/audit-commesse` mai esistito
+in 4 punti, conteggio agenti fermo a 5, data di revisione di METHOD.md stale);
+DEBITI.md con 2 voci risolte mai marcate; 3 bug nell'audit interno dei test stessi
+(un'asserzione che non verificava nulla, un contatore di promemoria condiviso fra
+ogni sessione per un `md5` assente su Linux, un test rosso per un'assunzione di
+default branch non portabile — quest'ultimo era l'unico guasto preesistente rimasto
+per 7 batch, chiuso nell'ottavo: 99/99 test verdi, zero eccezioni); la skill
+`verifica-visiva` descriveva un tool (Playwright, attesa di un selettore) che non è
+mai esistito nel codice reale.
+
+**Non toccato, dichiarato invece di indovinato**: `indici_crisi.py` (denominatore
+sospetto, ma la semantica esatta dipende da un mapping in REPO-E non disponibile qui
+— segnalato, non corretto); il debito su "verifica-visiva/dev-critic non si attivano
+da sole" (richiede una decisione di design sul meccanismo di attivazione, non un fix
+isolato — lasciato aperto in DEBITI.md); "password nei test" (nessuna correzione mai
+esistita, annotato nel report che affermava il contrario, non inventata qui).
+
+**Metodo**: ogni fix riprodotto dal vivo PRIMA (bug confermato) e DOPO (fix
+verificato), non dedotto dalla lettura del codice sorgente. Diversi fix hanno
+richiesto un'indagine più profonda del finding originale della revisione — il caso
+più netto è bc_index.py, dove il finding iniziale ("l'aritmetica è sbagliata") si è
+rivelato un'assunzione errata del reviewer (la logica a insiemi era corretta), ma
+l'indagine ha comunque trovato il vero bug (la regex di estrazione), un livello più
+sotto. Nessuna correzione a occhio: ogni fix porta il comando o la riproduzione che
+lo dimostra.
