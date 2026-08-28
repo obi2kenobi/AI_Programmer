@@ -164,6 +164,7 @@
 - [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
 - [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
 - [2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding](#2026-08-28-6-l-hub-allo-specchio-revisione-indipendente-60-finding)
+- [2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati](#2026-08-28-7-8-proposte-dell-audit-implementate-15-report-campo-triati)
 
 
 ## Stato
@@ -3648,3 +3649,18 @@ rilevanti da processare: il default branch hardcoded, il rilevatore segreti
 con raw-string bug, i conteggi endpoint con 3 valori diversi, il gate del
 mattino senza trigger automatico, sync-repo.sh che non propaga patterns/.
 Suite 88/88 (nuovo test incluso).
+
+### 2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati
+
+Implementate tutte le 8 proposte dell'audit indipendente: (1) gate del mattino
+con plist per trigger automatico alle 7:30; (2) sync-repo porta anche patterns/;
+(3) meta-audit della suite (ogni test deve avere una via di uscita con
+fallimento); (4) campo-triage.sh conta i report non processati; (5) sal-archivia.sh
+per la rotazione delle voci >30 giorni; (6) sync-repo --from-local confronta
+l'intero standard; (7) debiti-check integrato nel meta-audit. L'ottava (manifest
+unico per specchi) è risolta dal test-opencode-skill-sync che copre ora il
+quarto pezzo mancante (skill). CAMPO TRIAGE: 17 report totali, 15 segnati
+"non processati" dal tool — in realtà TUTTI processati con le lezioni nel
+canone (il tool cerca il nome file nel SAL, che non sempre li cita col nome
+esatto): il finding vero è che il collegamento report→SAL non è meccanico.
+Suite 89/89.
