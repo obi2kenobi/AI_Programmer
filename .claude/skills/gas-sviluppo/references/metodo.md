@@ -293,3 +293,12 @@ scoperto solo verificando l'assunzione implicita, non leggendo il rilievo.
 
 1. Ogni giro di banco deve essere AUTONOMO: il database di prova porta la storia dei giri precedenti. Reset dichiarato a inizio giro.
 2. Le guardie si provano col CASO REALE, non col caso pulito: commonpath normalizza i puntini da solo (guardia inefficace se non provata col path reale).
+
+
+## Il catalogo pattern è parte del canone (fix G03, 2026-08-28)
+
+Prima di reinventare una soluzione, consulta `patterns/README.md`:
+l'indice di 39 pattern, ciascuno nato da un errore vero. I pattern
+più citati dal canone: scarto-mai-silenzioso · esegui-non-leggere ·
+oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
+Dopo averne pagato uno nuovo, scrivilo.

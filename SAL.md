@@ -162,7 +162,7 @@
 - [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-è-sano-una-guardia-nuova-per-la-prosa)
 - [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualità-non-solo-presenza)
 - [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3ª-batteria-lenti-di-evoluzione-e-cambiamento)
-- [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
+- [2026-08-28 (4) — REPO-J 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-repo-j-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
 - [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
 - [2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding](#2026-08-28-6-l-hub-allo-specchio-revisione-indipendente-60-finding)
 - [2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati](#2026-08-28-7-8-proposte-dell-audit-implementate-15-report-campo-triati)
@@ -173,6 +173,7 @@
 - [2026-08-28 (12) — REPO-N (parrocchie): il metodo su Flask/SQLite, 13 difetti al banco](#2026-08-28-12-repo-n-parrocchie-il-metodo-su-flask-sqlite-13-difetti-al-banco)
 - [2026-08-28 (13) — Energikal: chiusura sessione (5 decisioni di dominio prese, PR #55 aperta)](#2026-08-28-13-energikal-chiusura-sessione-5-decisioni-di-dominio-prese-pr-55-aperta)
 - [2026-08-28 (14) — REPO-N giornata completa: 159 giri, 26 difetti corretti, 5 suite](#2026-08-28-14-repo-n-giornata-completa-159-giri-26-difetti-corretti-5-suite)
+- [2026-08-28 — 60 giri di revisione completa: privacy bonificata, pattern collegati](#2026-08-28-60-giri-di-revisione-completa-privacy-bonificata-pattern-collegati)
 
 
 ## Stato
@@ -3661,7 +3662,7 @@ bc_map senza credenziali esce rc=0 silenziosamente (da correggere). Le 10
 raccomandazioni finali: 2 chiuse, 4 dichiarate, 1 raccomandata (SAL-ARCHIVIO),
 1 in attesa Luca (F1), 2 osservate. Suite 87/87.
 
-### 2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona
+### 2026-08-28 (4) — REPO-J 50 agenti: 13 confermati, 2 smentiti, l'onore funziona
 
 Il report più metodologicamente maturo del campo: 50 agenti in DUE FASI (35
 scoperta + 15 verifica avversariale), 153 rilievi grezzi → 59 bug/sicurezza →
@@ -3728,7 +3729,7 @@ Suite 89/89.
 
 ### 2026-08-28 (8) — REPO-J live drift: 3 divergenze reali, 25 fix confermati, primo deploy
 
-La sessione Bricoman ha misurato la deriva git↔live prima di assumerne la
+La sessione REPO-J ha misurato la deriva git↔live prima di assumerne la
 portata: contro la BASELINE pre-fix (non HEAD), whitespace-insensitive (il
 round-trip clasp normalizza): 11 file sembravano divergenti, 3 lo erano davvero
 (correzioni valide fatte a mano in produzione, aree diverse dai 25 fix). NESSUNO
@@ -3812,3 +3813,18 @@ La giornata completa su REPO-N: 50 revisione + 77 controlli + 30 CRM = 159
 giri, 26 difetti corretti, 5 suite verdi (89/89), schema v6→v7, generatore
 scadenzario + scheda Persona. Il banco è la memoria eseguibile del progetto.
 Canonizzate: fixture-degradano (reset per giro) e guardie-caso-reale.
+
+
+> Nota: 27 report dal campo in docs/campo/ — il collegamento nome-file→SAL
+> non è meccanico (dichiarato da campo-triage.sh): le lezioni sono nel canone,
+> il nome del file di origine non sempre è citato. Da migliorare.
+
+### 2026-08-28 — 60 giri di revisione completa: privacy bonificata, pattern collegati
+
+Sei batterie di lenti sulla settimana intera. I finding piu gravi corretti: PRIVACY
+(7 file con nomi reali bonificati: HASSLACHER/Bricoman/Golilla nei pattern, indice,
+ngiri), PATTERN IRRAGGIUNGIBILI (riferimento al catalogo aggiunto a metodo + 4 agenti
++ gas-sviluppo SKILL), VEDI-ANCHE (24 pattern collegati ai cugini), ORACOLI senza
+limiti (4 tool arricchiti). Verificato pulito: suite 101/101, nessun segreto, SAL
+coerente, specchi sincronizzati, test deterministici. Dichiarato: SAL 275KB rotation,
+24/27 campo senza nome in SAL, 6 tool senza test giustificati.

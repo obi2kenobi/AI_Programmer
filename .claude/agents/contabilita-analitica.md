@@ -54,3 +54,8 @@ come ispirazione vaga):
 Se il problema portato non rientra in nessuno di questi casi ed è ancora
 vago su cosa deve risultare vero dopo il calcolo, rimanda a `/brainstorming`
 invece di procedere.
+
+
+## Il catalogo pattern
+
+patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.

@@ -50,6 +50,10 @@ scrive PRIMA della correzione: PARITÀ + CORREZIONE) → CORREGGE (nella copia d
 lavoro, poi sabota la correzione stessa) → PROGETTA (dieci righe: cosa resta,
 cosa serve, le domande di dominio da fare a una persona).
 
+## Gli oracoli e i tool dell'hub
+
+tools/ contiene 16 tool Python: 11 oracoli contabili, 2 rilevatori (gas_qualita, verifica_banco), indice BC e correttore tipi.
+
 ## Il catalogo pattern (33 voci)
 
 patterns/ contiene 33 pattern minati dal campo: cerca prima di reinventare.

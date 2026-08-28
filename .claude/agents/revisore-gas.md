@@ -74,3 +74,8 @@ Le formule contabili pure negli oracoli dell'hub sono territorio di
 `revisore-calcoli-critici`; il censimento della forma dei dati per lavoro
 nuovo è di `censitore-forma-dati`. Nei file dell'hub, il repo esterno è
 REPO-E: mai nomi di clienti o progetti.
+
+
+## Il catalogo pattern
+
+patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.

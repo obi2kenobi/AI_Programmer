@@ -41,3 +41,8 @@ repo, private work".
 Quando il calcolo è pronto e verificato, il tuo lavoro finisce: la revisione
 periodica di un calcolo già scritto (segni invertiti, plug che nasconde un
 residuo) è compito dell'agente `revisore-calcoli-critici`, non tuo.
+
+
+## Il catalogo pattern
+
+patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.

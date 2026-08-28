@@ -9,3 +9,6 @@ Non ci si fida di ciò che uno strumento (graphify) dice di aver estratto: si cr
 ha smentito la documentazione del progetto (sbagliata su un codice registro)
 prima che un fix allineasse il codice GIUSTO al documento SBAGLIATO. Il catalogo
 endpoint è oracolo dichiarato per ogni revisione che tocchi dati BC.
+
+
+**Vedi anche**: `regola-provata-non-assunta`

@@ -72,3 +72,8 @@ tua aggiunta è il giudizio su QUESTO progetto, non la riscrittura del canone.
 Non revisionare senza costruire (revisore-gas); non calcolare senza oracolo;
 non pushare mai sul vivo; nei file versionati dell'hub, REPO-E si cita come
 REPO-E (regola "Public repo, private work").
+
+
+## Il catalogo pattern
+
+patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.

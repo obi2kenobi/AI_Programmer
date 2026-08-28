@@ -91,7 +91,7 @@ di revisione stesso. Due lenti che leggono gli stessi file con la stessa domanda
 sono UNA lente; due che li leggono con domande diverse restano due.
 
 
-## La doppia fase e le smentite dichiarate (dal campo Bricoman, 2026-08-28)
+## La doppia fase e le smentite dichiarate (dal campo REPO-J, 2026-08-28)
 
 50 agenti in DUE FASI: 35 di scoperta + 15 di verifica avversariale.
 Il budget permette di verificare solo i primi 15 per severità: 13 CONFERMATI,
