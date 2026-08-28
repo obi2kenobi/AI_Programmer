@@ -163,6 +163,7 @@
 - [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3-batteria-lenti-di-evoluzione-e-cambiamento)
 - [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
 - [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
+- [2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding](#2026-08-28-6-l-hub-allo-specchio-revisione-indipendente-60-finding)
 
 
 ## Stato
@@ -3630,3 +3631,20 @@ attribute + JS string: due parser, due funzioni — la cura ovvia è quella
 sbagliata), e la SESSIONE CONTINUA dichiarata come terzo regime legittimo
 (SECONDA occorrenza dell'utente che chiede di non fermarsi: da domanda aperta
 a pattern ricorrente deciso). REPO-K registrata nell'indice. Pattern totale: 35.
+
+### 2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding
+
+Una revisione indipendente di AI_Programmer su AI_Programmer stesso (14 lenti,
+60+ problemi confermati, 6 temi trasversali, 8 proposte di miglioria) — il
+sistema applicato a se stesso con la stessa disciplina che chiede ai clienti.
+La cosa più scomoda trovata: la guardia anti-drift delle skill .opencode era
+DICHIARATA in SAL.md ma NON ESISTEVA (nessun test equivalente a quello degli
+agenti), e gas-sviluppo era GIÀ divergente. CORRETTI in questo giro: guardia
+creta (test-opencode-skill-sync.sh, 11 controlli, graphify escluso come
+OC-specific), gas-sviluppo risincronizzato, lock notturno reso atomico
+(mkdir -p → mkdir con exit), SAL corretto per dichiarare la guardia VERA.
+Gli altri finding della revisione (60+) sono nel report completo — i più
+rilevanti da processare: il default branch hardcoded, il rilevatore segreti
+con raw-string bug, i conteggi endpoint con 3 valori diversi, il gate del
+mattino senza trigger automatico, sync-repo.sh che non propaga patterns/.
+Suite 88/88 (nuovo test incluso).
