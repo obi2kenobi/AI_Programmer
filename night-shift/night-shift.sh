@@ -116,7 +116,7 @@ shift_repo() {
     log "REPO $REPO: lock attivo di un altro turno, salto"
     return 0
   fi
-  mkdir -p "$LOCK"
+  mkdir "$LOCK" 2>/dev/null || { log "LOCK occupato: turno già in corso"; exit 0; }
   trap 'rmdir "$LOCK" 2>/dev/null' RETURN
 
   local DIR="$WORK/${REPO##*/}"
