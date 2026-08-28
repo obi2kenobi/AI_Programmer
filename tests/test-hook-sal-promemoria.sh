@@ -44,6 +44,13 @@ for i in 1 2 3 4 5 6; do edit_ns "x$i.js" >/dev/null 2>&1; done
 OUT=$(edit_ns "x7.js" 2>/dev/null)
 [ -z "$OUT" ] && ok "senza SAL.md nel progetto: mai promemoria" || ko "promemoria senza SAL.md: $OUT"
 
+# giri avversari 2026-08-28 (G14): il percorso docs/campo/ nel promemoria
+# dell'hook poteva rompersi senza rosso — senza percorso giusto il promemoria
+# manda chi chiude la sessione in una cartella che non esiste
+grep -q "docs/campo/" "$HERE/tools/metodo-reminder-hook.sh" \
+  && ok "l'hook cita docs/campo/ nel promemoria di chiusura" \
+  || ko "l'hook ha perso il percorso docs/campo/"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

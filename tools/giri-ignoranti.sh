@@ -105,8 +105,8 @@ for f in .night-verify .gitattributes DEBITI.md METHOD.md; do
   [ -e "$HERE/$f" ] || PROMESSE="$PROMESSE $f"
 done
 NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
-[ "$NSK" -ge 8 ] || PROMESSE="$PROMESSE (skill sottosoglia: $NSK < 8)"
-[ -z "$PROMESSE" ] && sonda 0 "S8 file promessi esistono e skill >= 8 ($NSK)" || sonda 1 "S8 promesse mancate:$PROMESSE"
+[ "$NSK" -ge 9 ] || PROMESSE="$PROMESSE (skill sottosoglia: $NSK < 9)"
+[ -z "$PROMESSE" ] && sonda 0 "S8 file promessi esistono e skill >= 9 ($NSK)" || sonda 1 "S8 promesse mancate:$PROMESSE"
 
 # S9 — repos-index: i codici sono REPO-[A-N] e basta (G7: un codice fuori schema aggiunto in
 #   silenzio non faceva diventare rosso niente)
