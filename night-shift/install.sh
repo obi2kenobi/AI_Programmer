@@ -6,7 +6,10 @@ set -uo pipefail
 
 HUB="$(cd "$(dirname "$0")/.." && pwd)"
 USER_NAME="$(id -un)"
-HOME_DIR="$(eval echo ~$USER_NAME)"
+# mutation-testing 2026-08-28: prima risolveva con `eval echo ~user`, IGNORANDO
+# $HOME — nei test scriveva nella home VERA dell'utente e negli ambienti con HOME
+# non standard installava nel posto sbagliato. $HOME è la fonte di verità.
+HOME_DIR="${HOME:-$(eval echo ~$USER_NAME)}"
 BIN="$HOME_DIR/.local/bin"
 AGENTS="$HOME_DIR/Library/LaunchAgents"
 MISSING=0

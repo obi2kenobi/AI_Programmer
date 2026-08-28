@@ -4,6 +4,11 @@
 # restare bloccati per sempre — chi tocca la funzione senza volerlo li rivede cadere qui.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# mutation-testing 2026-08-28: un lib.sh neutralizzato (`exit 0`) faceva passare
+# il test PER VUOTEZZA — il source eseguiva exit 0 DENTRO il test, che moriva
+# verde. La funzione deve esistere nel sorgente PRIMA di caricarlo.
+grep -q 'gate_allowlist_ok()' "$HERE/night-shift/lib.sh" \
+  || { echo "FAIL lib.sh non definisce gate_allowlist_ok"; exit 1; }
 source "$HERE/night-shift/lib.sh"
 PASS=0; FAIL=0
 ok()   { PASS=$((PASS+1)); echo "OK   $1"; }
