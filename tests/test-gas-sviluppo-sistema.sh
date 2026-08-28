@@ -107,6 +107,21 @@ else
   ok "nessun nome cliente nei file del corpus (privacy)"
 fi
 
+
+# guardia anti-perdita per le lezioni di prosa (30 giri, 2026-08-28): ciò che non è
+# codice non ha test sintattici — l'unica difesa è verificare che le FRASI chiave
+# restino nei file dove sono state messe. Ogni frase qui è già stata persa almeno
+# una volta: questa guardia impedisce la terza.
+for FRASE in "handoff gap" "convergenza cieca" "due batterie" "quattro categorie" "tre ricomparse" "chiave-stabile" "lettura-esecuzione"; do
+  TROVATA=0
+  for REF in "$METODO" "$CONSEGNA" "$FAMIGLIE" "$HERE/docs/ngiri-paralleli.md"; do
+    [ -f "$REF" ] && grep -qi "$FRASE" "$REF" && TROVATA=1 && break
+  done
+  [ $TROVATA -eq 1 ] \
+    && ok "lezione '$FRASE' presente nel canone" \
+    || ko "lezione '$FRASE' SCOMPARSA da tutti i reference — recuperarla"
+done
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
