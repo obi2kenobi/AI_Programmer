@@ -38,10 +38,15 @@ scan_lente() {
   fi
 }
 
-# Lente 1: tool che non compilano o non girano
+# Lente 1: tool che non compilano o non girano. Dal 2026-08-28 copre ANCHE gli
+# script shell (bash -n): un .sh che non compila si scopre solo all'uso — la
+# classe d'errore del zsh parse error capitata davvero durante un fix.
 if [ "$LIVELLO" -le 2 ]; then
   for f in "$HERE"/tools/*.py; do
     python3 -c "import ast; ast.parse(open('$f').read())" 2>/dev/null || FINDINGS+=("ROTT py: $f non compila")
+  done
+  for f in "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/llm/*.sh; do
+    bash -n "$f" 2>/dev/null || FINDINGS+=("ROTT sh: $f non compila (bash -n)")
   done
 fi
 
@@ -118,6 +123,29 @@ if [ "$LIVELLO" -ge 4 ]; then
     grep -q "($b.md)" "$HERE"/patterns/README.md || \
       FINDINGS+=("ARCH: pattern $b assente dal registro patterns/README.md")
   done
+  # 4e. hook: ogni comando in .claude/settings.json punta a uno script esistente
+  #     (un hook che punta nel vuoto tace per sempre — e nessuno se ne accorge)
+  if [ -f "$HERE/.claude/settings.json" ]; then
+    while IFS= read -r cmd; do
+      [ -n "$cmd" ] || continue
+      scr=$(echo "$cmd" | grep -o '[A-Za-z0-9_./-]*\.\(sh\|py\)' | head -1)
+      [ -n "$scr" ] || continue
+      [ -f "$HERE/$scr" ] || FINDINGS+=("ARCH: hook '$cmd' punta a $scr che non esiste")
+    done < <(grep -o '"command": "[^"]*"' "$HERE/.claude/settings.json" | sed 's/"command": "//;s/"//')
+  fi
+  # 4f. campo: nessun report di campo non processato (campo-triage esce != 0 se ce ne sono)
+  bash "$HERE/tools/campo-triage.sh" >/dev/null 2>&1 || \
+    FINDINGS+=("ARCH: report in docs/campo/ non processati in SAL (campo-triage)")
+  # 4g. bc: il numero di file endpoint coincide con l'indice rigenerato
+  N_EP=$(ls "$HERE"/docs/bc/endpoints/*.md 2>/dev/null | wc -l | tr -d ' ')
+  N_IX=$(grep -c '^| ' "$HERE/docs/bc/README.md" 2>/dev/null || echo 0)
+  N_IX=$((N_IX - 1))   # riga di intestazione della tabella
+  [ "$N_EP" -eq "$N_IX" ] 2>/dev/null || \
+    FINDINGS+=("ARCH: endpoints $N_EP file vs $N_IX nell'indice docs/bc/README.md")
+  # 4h. DEBITI: i riferimenti interni a file del repo esistono davvero
+  while IFS= read -r ref; do
+    [ -e "$HERE/$ref" ] || FINDINGS+=("ARCH: DEBITI.md cita $ref che non esiste")
+  done < <(grep -o '`\(tools\|patterns\|tests\|docs\|night-shift\|llm\)/[A-Za-z0-9_./-]*`' "$HERE/DEBITI.md" | tr -d '`')
 fi
 
 # Lente 5: meta — il ciclo stesso sta migliorando?
