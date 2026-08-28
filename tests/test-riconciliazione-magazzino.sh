@@ -40,6 +40,17 @@ checks.append(("ordinamento per |deltaValore| decrescente: 22.50 prima di 1.00",
 
 for nome, esito in checks:
     print(f"{'OK' if esito else 'KO'}\t{nome}")
+
+# bug reale (revisione 14 lenti, 2026-08-28): qty_bc/costo_finale venivano convertiti con
+# float() PRIMA del controllo "non contato" — una riga "Non Contato" con costo_finale
+# vuoto (plausibile: articolo non ancora valorizzato) faceva crashare l'intero script.
+riga_crash = [{"codice": "ART-005", "qty_bc": "10", "costo_finale": "", "qty_fisica": "", "stato": "Non Contato"}]
+try:
+    nc, _, _ = categorizza(riga_crash)
+    ok_crash = len(nc) == 1 and nc[0]["codice"] == "ART-005"
+except Exception as e:
+    ok_crash = False
+print(f"{'OK' if ok_crash else 'KO'}\tNon Contato con costo_finale vuoto: nessun crash, categorizzato correttamente")
 PY
 )
 while IFS=$'\t' read -r stato nome; do

@@ -78,12 +78,17 @@ def main():
             continue
         importo_a = float(a["importo"])
         margine = importo_v - importo_a
-        perc = margine / importo_v if importo_v else 0.0
+        # bug reale (revisione 14 lenti, 2026-08-28): con vendita a importo 0 la percentuale
+        # era forzata a 0.0 — l'euro del margine resta corretto, ma "+0.0%" si legge come
+        # "margine nullo", fuorviante proprio quando (vendita 0, acquisto pieno) il margine
+        # in euro è negativo: la percentuale sui ricavi non è definita a denominatore nullo.
+        perc = margine / importo_v if importo_v else None
         totale_ricavi += importo_v
         totale_margine += margine
         avviso = " ⚠️ BU DIVERSA" if (v.get("bu") or "") != (a.get("bu") or "") else ""
+        perc_txt = f"{perc:+.1%}" if perc is not None else "n.d. (vendita a zero)"
         print(f"  {rif}: vendita={importo_v:.2f} acquisto={importo_a:.2f}"
-              f" margine={margine:+.2f} ({perc:+.1%} sui ricavi){avviso}")
+              f" margine={margine:+.2f} ({perc_txt} sui ricavi){avviso}")
 
     perc_tot = totale_margine / totale_ricavi if totale_ricavi else 0.0
     print(f"Totale ricavi accoppiati: {totale_ricavi:.2f} EUR")

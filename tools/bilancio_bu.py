@@ -35,9 +35,22 @@ import sys
 def main():
     righe = list(csv.DictReader(sys.stdin))
     bu_tot = {}
+    amounts = []  # righe valide, per la quadratura indipendente sotto
+    righe_scartate = 0
     for r in righe:
         bu = (r.get("bu") or "NOBU").strip().upper() or "NOBU"
-        amount = float(r["amount"] or 0)
+        amount_raw = (r.get("amount") or "").strip()
+        # bug reale (revisione 14 lenti, 2026-08-28): un campo amount vuoto/mancante
+        # diventava silenziosamente un costo zero (float(r["amount"] or 0)), senza
+        # traccia né conteggio — in contraddizione con la filosofia dichiarata nel resto
+        # del file (NOBU visibile, non perso). Una riga con importo mancante/non numerico
+        # viene ora SCARTATA e CONTATA, non azzerata in silenzio.
+        try:
+            amount = float(amount_raw)
+        except ValueError:
+            righe_scartate += 1
+            continue
+        amounts.append(amount)
         ricavo = -amount if amount < 0 else 0.0
         costo = amount if amount >= 0 else 0.0
         t = bu_tot.setdefault(bu, {"ricavi": 0.0, "costi": 0.0})
@@ -49,6 +62,8 @@ def main():
     risultato_totale = round(tot_r - tot_c, 2)
 
     print("CONVENZIONE G/L: amount < 0 = ricavo (come −amount) · amount >= 0 = costo")
+    if righe_scartate:
+        print(f"ATTENZIONE: {righe_scartate} riga/e scartata/e per amount vuoto o non numerico (non contate come costo zero)")
     print(f"{'BU':<10} {'ricavi':>12} {'costi':>12} {'margine dir.':>12}")
     for bu in sorted(bu_tot, key=lambda b: -(bu_tot[b]["ricavi"] - bu_tot[b]["costi"])):
         v = bu_tot[bu]
@@ -56,10 +71,20 @@ def main():
     print(f"{'TOTALE':<10} {tot_r:>12.2f} {tot_c:>12.2f} {risultato_totale:>12.2f}")
 
     somma_margini = round(sum(v["ricavi"] - v["costi"] for v in bu_tot.values()), 2)
-    if abs(somma_margini - risultato_totale) <= 0.01:
-        print(f"QUADRATURA: somma margini BU ({somma_margini:.2f}) = risultato totale — nessun doppio conteggio")
+    # bug reale (revisione 14 lenti, 2026-08-28): il confronto precedente (somma_margini
+    # vs risultato_totale) era un falso positivo strutturale — entrambi derivano
+    # algebricamente dallo stesso bu_tot popolato dallo stesso loop, quindi matematicamente
+    # sempre uguali; un vero doppio conteggio nell'aggregazione per BU avrebbe contaminato
+    # entrambi i lati del confronto allo stesso modo e sarebbe comunque risultato "quadrato".
+    # Quadratura VERA (pattern oracolo-indipendente): un secondo calcolo, mai passato da
+    # bu_tot, direttamente sulla lista piatta delle righe valide — per costruzione il
+    # contributo di ogni riga al margine è sempre -amount (ricavo-costo = -amount sia per
+    # amount<0 che per amount>=0), quindi il totale indipendente è -sum(amounts).
+    risultato_indipendente = round(-sum(amounts), 2)
+    if abs(somma_margini - risultato_totale) <= 0.01 and abs(risultato_totale - risultato_indipendente) <= 0.01:
+        print(f"QUADRATURA: somma margini BU ({somma_margini:.2f}) = risultato totale = calcolo indipendente sulle righe grezze ({risultato_indipendente:.2f}) — nessun doppio conteggio")
     else:
-        print(f"QUADRATURA ROTTA: somma margini {somma_margini:.2f} ≠ totale {risultato_totale:.2f} — cercare il doppio conteggio")
+        print(f"QUADRATURA ROTTA: somma margini {somma_margini:.2f} · totale {risultato_totale:.2f} · calcolo indipendente {risultato_indipendente:.2f} — cercare il doppio conteggio nell'aggregazione per BU")
 
     if "NOBU" in bu_tot:
         v = bu_tot["NOBU"]

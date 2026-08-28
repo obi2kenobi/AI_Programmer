@@ -51,6 +51,7 @@ def main():
 
     validi, discrepanze, inesistenti = [], [], []
     legittime_senza_ordine, anomale_senza_ordine = [], []
+    ordine_importo_non_valido = []
     for f in fatture:
         nr = f["nr"]
         fornitore = (f.get("fornitore") or "").strip()
@@ -63,15 +64,25 @@ def main():
             inesistenti.append({"fattura": nr, "ordine": onr})
             continue
         importo_ordine = ordini[onr]
+        # bug reale (revisione 14 lenti, 2026-08-28): un ordine con importo <= 0 (dato
+        # anomalo a monte, plausibile: es. ordine registrato a 0€ per errore) forzava pct
+        # a 0.0 e la fattura passava "valida" a prescindere dall'importo fatturato — una
+        # fattura di 5000€ contro un ordine da 0€ passava inosservata invece di essere
+        # segnalata come caso limite/dato anomalo. Categoria a sé, non silenziosamente
+        # "valida": la percentuale di over-invoicing non è nemmeno definita a denominatore
+        # nullo, non ha senso dichiarare "nessuna discrepanza" su un calcolo che non regge.
+        if importo_ordine <= 0:
+            ordine_importo_non_valido.append({"fattura": nr, "ordine": onr, "importo_ordine": importo_ordine, "importo_fattura": importo})
+            continue
         eccedenza = importo - importo_ordine
-        pct = eccedenza / importo_ordine * 100 if importo_ordine > 0 else 0.0
-        if importo_ordine > 0 and pct > soglia:
+        pct = eccedenza / importo_ordine * 100
+        if pct > soglia:
             discrepanze.append({"fattura": nr, "ordine": onr, "eccedenza": eccedenza, "pct": pct})
         else:
             validi.append(nr)  # include fatturazione parziale: NON è discrepanza
 
     totale = len(fatture)
-    errori_reali = len(anomale_senza_ordine) + len(inesistenti) + len(discrepanze)
+    errori_reali = len(anomale_senza_ordine) + len(inesistenti) + len(discrepanze) + len(ordine_importo_non_valido)
     accuratezza = (totale - errori_reali) / totale * 100 if totale else 0.0
     margine_errore = errori_reali / totale * 100 if totale else 0.0
 
@@ -83,6 +94,9 @@ def main():
           + (f" — {', '.join(anomale_senza_ordine)}" if anomale_senza_ordine else ""))
     print(f" Ordine inesistente: {len(inesistenti)}"
           + (f" — {', '.join(x['fattura'] + '→' + x['ordine'] for x in inesistenti)}" if inesistenti else ""))
+    oinv_desc = [f"{x['fattura']}→{x['ordine']} (fattura {x['importo_fattura']:.2f}€ vs ordine {x['importo_ordine']:.2f}€)" for x in ordine_importo_non_valido]
+    print(f" Ordine con importo <= 0 (dato anomalo, percentuale non definita): {len(ordine_importo_non_valido)}"
+          + (f" — {', '.join(oinv_desc)}" if oinv_desc else ""))
     print(f" Discrepanze over-invoicing (>{soglia:g}%): {len(discrepanze)}")
     for d in discrepanze:
         print(f"  {d['fattura']}→{d['ordine']}: fattura oltre ordine di {d['eccedenza']:+.2f} EUR ({d['pct']:+.1f}%)")
