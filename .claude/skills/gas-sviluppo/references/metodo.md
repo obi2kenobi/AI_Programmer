@@ -238,3 +238,15 @@ test vive in un try/catch proprio; l'eccezione diventa UN fallimento in piu,
 non un'interruzione; il conteggio finale resta sempre confrontabile con
 l'atteso. E il conteggio ATTESO si dichiara: se N attese su M dichiarate,
 rosso comunque — la stessa regola del banco.
+
+
+## Il ripasso finale: il fix dichiarato contro lo scenario originale (dal campo REPO-K, 2026-08-28)
+
+In una sessione lunga con molti batch, il rischio piu subdolo non e il bug
+ma il FIX DICHIARATO CHE NON CORRISPONDE AL SINTOMO: una todo-list interna
+dice "completed" ma lo scenario di fallimento descritto nel rilievo originale
+si riproduce ancora (meta fix, fix sulla riga sbagliata, fix che protegge
+una meta del problema). La regola: prima di dichiarare un rilievo chiuso,
+RILEGGERE lo scenario di fallimento ORIGINALE — non la propria descrizione
+del fix gia scritta — e verificare che non si riproduca piu sul codice
+attuale. E un banco per il processo di correzione, non solo per il codice.
