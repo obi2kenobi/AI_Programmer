@@ -77,3 +77,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# Limiti dichiarati: formula minata da REPO-E. Dato assente diverso da zero.

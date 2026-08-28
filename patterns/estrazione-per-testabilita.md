@@ -13,3 +13,6 @@ l'estrazione onesta prova la logica e DICHIARA il confine. Occorso con la stessa
 frequenza delle quattro lenti storiche nel ciclo REPO-I: quinta lente a pieno titolo
 (gia presente in nuce in consegna.md Livello 1: "l'estrazione della logica pura E
 parte del fix").
+
+
+**Vedi anche**: `banco-sintetico-per-calcoli-critici`

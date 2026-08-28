@@ -9,3 +9,6 @@ MARCATA come prova (mai dati veri); esercita rotte/CLI del progetto vero
 (non una copia); asserisci e fallisci rumorosamente. Il banco resta nel repo
 e diventa il .night-verify eseguibile. La regola dell'aspettativa-derivata-a-mano
 vale anche per il codice del banco stesso.
+
+
+**Vedi anche**: `banco-sintetico-per-calcoli-critici`
