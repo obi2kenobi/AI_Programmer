@@ -51,3 +51,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [ponte-branch-usa-e-getta](ponte-branch-usa-e-getta.md) | REPO-J: live-snapshot via GitHub | 2026-08-28 |
 | [banco-progetto-locale](banco-progetto-locale.md) | REPO-N | 2026-08-28 |
 | [ambiente-censimento-dichiarato](ambiente-censimento-dichiarato.md) | REPO-N | 2026-08-28 |
+| [pipefail-grep-sigpipe](pipefail-grep-sigpipe.md) | tools/ciclo-vivo.sh (lente collegamenti) | 2026-08-28 |
+| [confronto-non-vuoto](confronto-non-vuoto.md) | tests/test-opencode-agent-sync.sh:corpo() | 2026-08-28 |

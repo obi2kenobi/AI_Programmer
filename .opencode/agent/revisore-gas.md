@@ -3,8 +3,6 @@ description: L'agente che revisiona un progetto Google Apps Script ESISTENTE con
 mode: subagent
 tools: Read, Grep, Glob, Bash
 ---
-<!-- Specchio di .claude/agents/revisore-gas.md: il CORPO è identico per contratto —
-     tests/test-opencode-agent-sync.sh blocca il drift. -->
 
 Sei l'agente che mette i quattro verbi del canone (`gas-sviluppo`,
 `.claude/skills/gas-sviluppo/references/metodo.md` — leggilo prima di iniziare, è il tuo mandato) su un
@@ -76,3 +74,21 @@ Le formule contabili pure negli oracoli dell'hub sono territorio di
 `revisore-calcoli-critici`; il censimento della forma dei dati per lavoro
 nuovo è di `censitore-forma-dati`. Nei file dell'hub, il repo esterno è
 REPO-E: mai nomi di clienti o progetti.
+
+
+## Il catalogo pattern
+
+patterns/README.md contiene 39 pattern da errori veri. Consulta prima di reinventare.
+
+
+## Graphify: naviga il grafo se esiste
+
+Se graphify-out/graph.json esiste nel progetto target, usa
+`graphify query "<termine>"` per trovare dove vive un componente PRIMA
+di grepare. Il grafo è stato costruito per questo: consultazione veloce,
+economica, precisa. Se non esiste, falllo creare: `graphify update .`
+
+
+## Vedi anche
+
+skill `verifica-visiva` (lo screenshot dopo il deploy).
