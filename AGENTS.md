@@ -85,6 +85,12 @@ calcolo contabile NON delegare l'invenzione della formula: cerca l'oracolo.
   sviluppatore-gas (progetti Apps Script interi). I corpi sono identici fra le due
   cartelle per contratto (`tests/test-opencode-agent-sync.sh`).
 
+### Portare il metodo in una repo
+
+`python3 tools/sync-repo.py <owner/repo> --standard` — una PR con tutto il sistema
+(CLAUDE.md, skill, agenti, hook, formato report). Senza flag: verifica e riporta
+il drift di CLAUDE.md.
+
 ## 5. La verifica: come esco da qui
 
 `bash .night-verify` — suite completa (fail-fast, ~75 test) + shellcheck +
