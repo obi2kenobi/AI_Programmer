@@ -8,6 +8,7 @@
 # comunque. Riprodotto qui isolando la stessa struttura di controllo, non l'intero
 # script (che richiede gh/gitleaks autenticati, non disponibili in sandbox).
 set -uo pipefail
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
@@ -66,6 +67,15 @@ OUT_SANA=$(bash -c "$(declare -f run_nuova_sana); run_nuova_sana" 2>&1)
 grep -q "git-commit-ok" <<<"$OUT_SANA" && grep -q "script-arrivato-alla-fine" <<<"$OUT_SANA" \
   && ok "caso sano: add e commit eseguiti, script completa normalmente" \
   || ko "caso sano rotto: $OUT_SANA"
+
+# mutation-testing 2026-08-28: il test riproduce la struttura IN ISOLAMENTO
+# (dichiarato: il tool vero richiede gh autenticato) ma nulla lo legava al file
+# reale — il fix poteva sparire da bootstrap-app.sh senza rosso. Si presidia la
+# struttura portante: comandi separati, non la catena &&/|| che non si fermava.
+grep -q 'git add -A' "$HERE/tools/bootstrap-app.sh" \
+  && ! grep -vE '^[[:space:]]*#' "$HERE/tools/bootstrap-app.sh" | grep -qE 'git add -A *&&' \
+  && ok "bootstrap-app.sh: git add e commit separati (la catena fatale non è tornata)" \
+  || ko "bootstrap-app.sh: struttura git add/commit degradata (torna la catena che non si ferma?)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

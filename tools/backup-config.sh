@@ -4,6 +4,10 @@
 # Backup: gist privato (GitHub, già autenticato) — nessuna dipendenza nuova.
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# mutation-testing 2026-08-28: senza gh lo script moriva 127 in SILENZIO (set -e
+# uccideva al primo comando mancante, nessun messaggio). Il contratto dichiarato
+# dal suo test era "errore pulito": ora lo è davvero.
+command -v gh >/dev/null 2>&1 || { echo "backup-config: serve gh (CLI GitHub autenticata) — non trovato nel PATH" >&2; exit 1; }
 GIST_DESC="AI_Programmer config backup $(date '+%Y-%m-%d %H:%M')"
 GIST_ID_FILE="$HERE/.gist-backup-id"
 
