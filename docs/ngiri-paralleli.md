@@ -107,3 +107,13 @@ debito tecnico invece di funzionalita speculative — coerente con la regola:
 un'idea speculativa senza un caso reale resta non-ancora-matura. Quando la
 lente business trova solo difetti, e il segnale che il codice non e pronto
 per crescere: prima si ripara, poi si costruisce.
+
+
+## La sessione continua come pattern ricorrente (dal campo REPO-K, 2026-08-28)
+
+SECONDA volta (REPO-F, poi REPO-K) che la stessa tensione si presenta con lo
+stesso esito: l'utente chiede esplicitamente di non fermarsi, e l'istruzione
+esplicita vince sulla cautela di default. Ormai non e una domanda aperta isolata
+ma un PATTERN RICORRENTE: dichiararlo nel canone come terzo regime legittimo
+(oltre passo-per-passo e batch-autorizzato): la sessione continua su richiesta
+esplicita dell'utente, col vincolo che il ripasso finale resta obbligatorio.
