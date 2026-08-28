@@ -42,6 +42,7 @@
 - [2026-08-28 (2) — Altri 100 giri: il ciclo che misurava se stesso, e il test anti-drift che non testava](#2026-08-28-2-altri-100-giri-il-ciclo-che-misurava-se-stesso-e-il-test-anti-drift-che-non-testava)
 - [2026-08-28 (3) — Altri 100 giri col battito + la tecnica estesa a TUTTO il repo](#2026-08-28-3-altri-100-giri-col-battito-la-tecnica-estesa-a-tutto-il-repo)
 - [2026-08-28 (4) — I 100 giri IGNORANTI: le sonde scortesi che trovano ciò che le lenti educate non vedono](#2026-08-28-4-i-100-giri-ignoranti-le-sonde-scortesi-che-trovano-ciò-che-le-lenti-educate-non-vedono)
+- [2026-08-28 (5) — I 100 giri AVVERSARI: attaccare il sistema per conto terzi](#2026-08-28-5-i-100-giri-avversari-attaccare-il-sistema-per-conto-terzi)
 
 
 ## Stato
@@ -689,3 +690,49 @@ al contrario: un conteggio che non può che dare 0 non misura niente. Le sonde v
 col caso noto (system.md È citato) prima di fidarsi del loro verdetto.
 
 Batteria finale: 6 sonde, 0 finding. Suite 106/106.
+
+### 2026-08-28 (5) — I 100 giri AVVERSARI: attaccare il sistema per conto terzi
+
+Su richiesta di Luca: giri che «provano a contestare il sistema, forzandolo, andando
+contro le regole, aggirandole». Costruito tools/giri-avversari.sh: 95 attacchi in 7
+categorie (mutazioni da prendere, bypass hook, gaming lenti, input ostili, privacy,
+regole senza denti, copertura), ognuno mutazione → difesa → verdetto → ripristino.
+Percorso: 54 tengono → 70 → 83 → **87 tengono, 0 aggirati, 8 limiti dichiarati**.
+
+**I buchi veri trovati e chiusi:**
+1. **Il dente mancante**: «clasp push MAI» era SOLO un promemorio — zero deny in tutto
+   il sistema. Ora tools/clasp-block-hook.sh NEGA clasp push/deploy (permissionDecision
+   deny) e avvisa sui comandi che toccano credenziali. La prima regola con enforcement
+   tecnico, non memoria dell'agente.
+2. **La sicurezza che perdeva contro la documentazione** (B1): nel pattern-reminder-hook
+   il promemoria SAL scattava PRIMA del ramo sensibile e con exit 0 lo SOPPROMEVA — ogni
+   quinto edit su un file di credenziali perdeva il contesto dei pattern. Priorità
+   invertita; ora il sensibile viene prima e il SAL si accoda.
+3. **Oracoli che mandavano giù nan/inf in silenzio** (D5/D6/D20): scadenzario metteva nan
+   nel bucket LUNGO, bilancio stampava margine -inf. Guardia isfinite che dichiara il dato
+   marcio; leasing rifiuta le date invertite (D7).
+4. **La difesa rotta dal proprio pattern** (A3): il controllo INDICE-ROTTO del test di
+   integrità finiva `done | grep -q` sotto pipefail — SIGPIPE, 141, il ramo `|| ok` scattava
+   SEMPRE. Il test che difendeva l'indice non ha mai difeso niente: il pattern
+   pipefail-grep-sigpipe, scoperto due giorni fa, era dentro il mio stesso test. Riscritto
+   senza pipe sul verdetto.
+5. **SHAPES che non potevano funzionare** (G4): `\{20\}` in ERE matcha le parentesi graffe
+   LETTERALI, non il quantificatore — i pattern ghp_/AKIA del privacy-check non hanno mai
+   potuto catturare nulla.
+6. **La regola campo mai scritta** (G9): il puntatore a docs/campo NON ESISTEVA in CLAUDE.md
+   (solo nell'hook). Ora è regola scritta in §5, con presidio.
+7. Pavimenti alzati al reale (famiglie 45/48, skill 9/9), marker SAL presidiato, lista
+   standard allineata (manca .opencode/plugins), flag --standard nel case.
+
+**Lezioni di metodo (le più care):**
+- **Attaccare un albero sporco è auto-sabotaggio**: i checkout di ripristino
+  dell'harness hanno CANCELLATO i miei fix non committati, e i verdetti diventavano
+  rumore a cascata. L'harness ora esige albero pulito (e la guardia ha fermato pure me).
+- **`batteria | grep -q && tiene || aggirato` sotto pipefail inverte il verdetto**: la
+  batteria esce 1 PER DESIGN quando trova qualcosa. Stessa famiglia del SIGPIPE: le
+  difese catturano l'output prima di giudicarlo.
+- **L'arnese che porta i propri attacchi in letterale si auto-segnala**: payload costruiti
+  a runtime (CJK, segreti finti) o l'attrezzo finisce nel mirino delle proprie sonde.
+
+Suite 107/107. Batteria ignoranti 0 finding. La batteria avversaria esce 0: rifacibile
+a ogni giro (`bash tools/giri-avversari.sh`), esce 1 al primo aggirato non dichiarato.
