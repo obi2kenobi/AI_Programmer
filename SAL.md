@@ -43,6 +43,7 @@
 - [2026-08-28 (3) — Altri 100 giri col battito + la tecnica estesa a TUTTO il repo](#2026-08-28-3-altri-100-giri-col-battito-la-tecnica-estesa-a-tutto-il-repo)
 - [2026-08-28 (4) — I 100 giri IGNORANTI: le sonde scortesi che trovano ciò che le lenti educate non vedono](#2026-08-28-4-i-100-giri-ignoranti-le-sonde-scortesi-che-trovano-ciò-che-le-lenti-educate-non-vedono)
 - [2026-08-28 (5) — I 100 giri AVVERSARI: attaccare il sistema per conto terzi](#2026-08-28-5-i-100-giri-avversari-attaccare-il-sistema-per-conto-terzi)
+- [2026-08-28 (6) — I 100 giri sui TEST: i quattro teatri verdi, il banco di fine passaggio, e il test fantasma](#2026-08-28-6-i-100-giri-sui-test-i-quattro-teatri-verdi-il-banco-di-fine-passaggio-e-il-test-fantasma)
 
 
 ## Stato
@@ -736,3 +737,41 @@ Percorso: 54 tengono → 70 → 83 → **87 tengono, 0 aggirati, 8 limiti dichia
 
 Suite 107/107. Batteria ignoranti 0 finding. La batteria avversaria esce 0: rifacibile
 a ogni giro (`bash tools/giri-avversari.sh`), esce 1 al primo aggirato non dichiarato.
+
+### 2026-08-28 (6) — I 100 giri sui TEST: i quattro teatri verdi, il banco di fine passaggio, e il test fantasma
+
+Su richiesta di Luca: concentrarsi sui test, sulla verifica del codice appena scritto, su banchi
+efficaci a fine loop o a goal raggiunto. Circa 100 azioni di verifica (5 batterie di mutazione
+complete da 23-26 tool, una dozzina di cicli fix-e-verifica, 4 run del banco intero, 6 run di
+suite). Il goal lo dichiara il banco stesso: «PASSAGGIO CHIUSO — tutto tiene».
+
+**Il metodo nuovo: mutation-testing dei TEST.** tools/mutation-tests.sh neutralizza ogni tool
+(exit 0) e il suo test DEVE arrossire. Un test che passa col soggetto neutralizzato è un
+TEATRO VERDE: verifica l'idea del codice, non il codice. Ne ha trovati quattro:
+1. test-backup-config: con gh installato si saltava da solo (3 OK di nulla) — e il tool,
+   scoperto a seguire, moriva 127 IN SILENZIO senza gh: contratto mai soddisfatto, mai provato.
+2. test-install: asserzione ok||ok — un install che non fa NIENTE passava. Resa load-bearing,
+   ha trovato un bug VERO: install.sh risolveva la home con `eval echo ~user` ignorando $HOME
+   — i test scrivevano symlink nella home VERA dell'utente.
+3. test-lib: il source di un lib.sh neutralizzato esegue exit 0 DENTRO il test, che moriva
+   verde. Guardia pre-source: la funzione deve esistere nel sorgente prima di caricarlo.
+4. test-bootstrap-app: testava le proprie copie delle funzioni, nulla lo legava al file reale.
+   Agganciato alla struttura portante (solo codice, non i commenti che la documentano).
+
+**Il test fantasma.** test-campo-triage.sh non era MAI STATO COMMITTATO: girava nella suite da
+sempre, invisibile a git. Un esperimento l'ha sovrascritto, il checkout di ripristino falliva
+in silenzio (non tracciato), e la versione banale è finita committata per errore MIO. Il banco
+l'ha scoperta in due banchi indipendenti (suite rossa via mutation-tests + teatro dichiarato).
+Ricostruito in sandbox dal contratto del tool: teatro-proof e indipendente dallo stato del giorno.
+
+**Il banco di fine passaggio.** tools/banco-passaggio.sh: sette banchi con verdetto su una riga
+(suite, ignoranti, avversari, mutazioni, privacy, ciclo, copertura). Il banco 7 è la risposta a
+«verifica del codice appena scritto»: ogni file di codice cambiato o NUOVO (status --porcelain:
+git diff non vedeva i non tracciati — il caso tipico!) deve essere citato da un test o dichiarato
+con giustificazione. Il banco se l'è applicato da solo: SCOPERTO tools/banco-passaggio.sh —
+ora ha il suo test. E il self-test del banco ha trovato l'auto-copertura circolare: il probe di
+prova citato dal test stesso risultava «coperto»; nome del probe unico a runtime ($$).
+
+Suite 110/110 · mutazioni 26/26 reagiscono · ignoranti 0 · avversari 0 aggirati · VERDETTO:
+PASSAGGIO CHIUSO. `bash tools/banco-passaggio.sh` da qui in poi è la porta di chiusura di ogni
+loop e ogni goal: se non dice CHIUSO, non si chiude.
