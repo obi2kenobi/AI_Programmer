@@ -172,6 +172,7 @@
 - [2026-08-28 (11) — REPO-L (Unicredit_Factoring): 30 agenti + 14 fix, terza sessione continua](#2026-08-28-11-repo-l-unicredit_factoring-30-agenti-14-fix-terza-sessione-continua)
 - [2026-08-28 (12) — REPO-N (parrocchie): il metodo su Flask/SQLite, 13 difetti al banco](#2026-08-28-12-repo-n-parrocchie-il-metodo-su-flask-sqlite-13-difetti-al-banco)
 - [2026-08-28 (13) — Energikal: chiusura sessione (5 decisioni di dominio prese, PR #55 aperta)](#2026-08-28-13-energikal-chiusura-sessione-5-decisioni-di-dominio-prese-pr-55-aperta)
+- [2026-08-28 (14) — REPO-N giornata completa: 159 giri, 26 difetti corretti, 5 suite](#2026-08-28-14-repo-n-giornata-completa-159-giri-26-difetti-corretti-5-suite)
 
 
 ## Stato
@@ -3804,3 +3805,10 @@ PR #55 (~50 commit) aperta: i test BC live (test*Q1_2025) vanno rieseguiti
 dall'editor GAS con connessione reale prima del merge — nessun CI automatico
 esiste sul repo. Il report di handoff è il formato giusto per chi prende in
 mano il lavoro dopo: cosa fatto, cosa resta, come proseguire, in una pagina.
+
+### 2026-08-28 (14) — REPO-N giornata completa: 159 giri, 26 difetti corretti, 5 suite
+
+La giornata completa su REPO-N: 50 revisione + 77 controlli + 30 CRM = 159
+giri, 26 difetti corretti, 5 suite verdi (89/89), schema v6→v7, generatore
+scadenzario + scheda Persona. Il banco è la memoria eseguibile del progetto.
+Canonizzate: fixture-degradano (reset per giro) e guardie-caso-reale.
