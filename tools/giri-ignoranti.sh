@@ -117,6 +117,50 @@ NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
 IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-[A-N]$" | sort -u | tr '\n' ' ')
 [ -z "$IDX_ROTTO" ] && sonda 0 "S9 repos-index usa solo codici REPO-[A-N]" || sonda 1 "S9 codici fuori schema:$IDX_ROTTO"
 
+# S10 — link pendenti: ogni path in backtick nel canone, nelle skill e nei doc
+#   di radice deve esistere (200 giri di collegamento: 19 pendenti trovati, di
+#   cui gli oracoli citati nudi in mappa-dominio). Esclusi per contratto: i
+#   file del PROGETTO TARGET (CATALOGO_ENDPOINT nel progetto, GRAMMATICA_DOMINIO
+#   che il template ordina di creare) e i file REPO-* esterni citati con
+#   provenienza nel testo attorno.
+python3 - "$HERE" <<'EOF' && sonda 0 "S10 nessun link pendente nel canone" || sonda 1 "S10 path citati inesistenti (vedi sopra)"
+import re, os, glob, sys
+here = sys.argv[1]
+zone = (glob.glob(f'{here}/.claude/skills/*/SKILL.md') + glob.glob(f'{here}/.claude/skills/*/references/*.md')
+        + glob.glob(f'{here}/.claude/agents/*.md') + glob.glob(f'{here}/docs/*.md')
+        + [f'{here}/README.md', f'{here}/METHOD.md', f'{here}/CLAUDE.md', f'{here}/AGENTS.md'])
+ESCLUSE = {'CATALOGO_ENDPOINT_BC.md', 'docs/GRAMMATICA_DOMINIO.md', 'Test.js', 'appsscript.json',
+           'ValuationConfig.js', 'gas/Sp.js', 'tools/test-sp.js'}
+pendenti = []
+for f in zone:
+    for m in re.findall(r'`([A-Za-z0-9_./-]+\.(?:md|sh|py|js|csv|json|toml))`', open(f, errors='ignore').read()):
+        if m in ESCLUSE: continue
+        if not (os.path.exists(f'{here}/{m}') or os.path.exists(os.path.join(os.path.dirname(f), m))):
+            pendenti.append(f"{f.split('/')[-1]}: {m}")
+for p in pendenti[:8]: print(f"     pendente: {p}")
+sys.exit(1 if pendenti else 0)
+EOF
+
+# S11 — il grafo dei pattern è CONNESSO: ogni pattern è citato da almeno un
+#   altro pattern (Vedi anche, backtick). Il catalogo non ha isole: un pattern
+#   che nessuno cita è una lezione che nessuno ritrova (200 giri: 21 isole
+#   all'inizio, zero alla fine — e il conteggio aveva una trappola di formato:
+#   nomi nudi vs backtick, vedi registro errori)
+python3 - "$HERE" <<'EOF' && sonda 0 "S11 grafo pattern connesso (nessuna isola)" || sonda 1 "S11 pattern isole nel catalogo (vedi sopra)"
+import re, glob, sys
+here = sys.argv[1]
+grafo = {}
+for f in glob.glob(f'{here}/patterns/*.md'):
+    if 'README' in f: continue
+    m = re.findall(r'\*\*Vedi anche\*\*:\s*(.+)', open(f, errors='ignore').read())
+    nomi = re.findall(r'`([a-z0-9-]+)`', m[0]) if m else []
+    grafo[f.split('/')[-1][:-3]] = nomi
+citati = {v for vs in grafo.values() for v in vs}
+isole = sorted(p for p in grafo if p not in citati)
+for p in isole: print(f"     isola: {p}")
+sys.exit(1 if isole else 0)
+EOF
+
 echo ""
 echo "VERDETTO: $FINDINGS finding"
 [ "$FINDINGS" -eq 0 ]

@@ -21,14 +21,14 @@ agente in `.claude/agents/`, o VUOTO con piano).
 
 | Categoria | Progetti | Oracolo in `tools/` | Agente | Stato |
 |---|---|---|---|---|
-| Ciclo attivo (ordini clienti, portali, sconti, conferme carico, credito) | ~20 | `margine_documento.py` | trio calcoli + `sviluppatore-gas` | PARZIALE: margine per documento sì (giro 4); i flussi ordini/sconti/portali restano da coprire |
-| Ciclo passivo (fatture acquisto, DTE, leasing, controllo fornitori) | ~10 | `accuratezza_fatture_acquisto.py`, `leasing_amministrativo.py` | trio calcoli + `sviluppatore-gas` | PARZIALE: accuratezza e leasing sì; DTE resta |
-| Magazzino e logistica (inventario, valorizzazione, CMR, riordino, BOM) | ~10 | `riconciliazione_magazzino.py`, `valorizzazione_magazzino.py` | trio calcoli + `sviluppatore-gas` | **COPERTO** per i calcoli (riconciliazione + valorizzazione con override, giro 3); i flussi CMR/BOM restano |
-| Controllo di gestione, margini, vendite, rating, dashboard produzione | ~12 | `scostamento_standard_effettivo.py` | trio calcoli | PARZIALE: scostamento sì, **margine per documento** e budget no |
-| Bilancio e contabilità generale (bilancio periodico, registri, intrastat, factoring) | ~6 | `indici_crisi.py`, `bilancio_bu.py` | trio calcoli | PARZIALE: indici e CE per BU (convenzione segni G/L) sì; ribaltamento REPARTO dichiarato APERTO; intrastat resta |
-| Crediti e debiti (scadenzario, aging, rating clienti, factoring) | ~3 | `scadenzario_aging.py`, `rating_dso_clienti.py` | trio calcoli | **COPERTO** |
-| Cespiti | ~1 | `rollforward_cespiti.py` | trio calcoli | **COPERTO** |
-| Produzione industriale (costi diretti, manutenzione) | ~3 | `scostamento_standard_effettivo.py` | trio calcoli | PARZIALE |
+| Ciclo attivo (ordini clienti, portali, sconti, conferme carico, credito) | ~20 | `tools/margine_documento.py` | trio calcoli + `sviluppatore-gas` | PARZIALE: margine per documento sì (giro 4); i flussi ordini/sconti/portali restano da coprire |
+| Ciclo passivo (fatture acquisto, DTE, leasing, controllo fornitori) | ~10 | `tools/accuratezza_fatture_acquisto.py`, `tools/leasing_amministrativo.py` | trio calcoli + `sviluppatore-gas` | PARZIALE: accuratezza e leasing sì; DTE resta |
+| Magazzino e logistica (inventario, valorizzazione, CMR, riordino, BOM) | ~10 | `tools/riconciliazione_magazzino.py`, `tools/valorizzazione_magazzino.py` | trio calcoli + `sviluppatore-gas` | **COPERTO** per i calcoli (riconciliazione + valorizzazione con override, giro 3); i flussi CMR/BOM restano |
+| Controllo di gestione, margini, vendite, rating, dashboard produzione | ~12 | `tools/scostamento_standard_effettivo.py` | trio calcoli | PARZIALE: scostamento sì, **margine per documento** e budget no |
+| Bilancio e contabilità generale (bilancio periodico, registri, intrastat, factoring) | ~6 | `tools/indici_crisi.py`, `tools/bilancio_bu.py` | trio calcoli | PARZIALE: indici e CE per BU (convenzione segni G/L) sì; ribaltamento REPARTO dichiarato APERTO; intrastat resta |
+| Crediti e debiti (scadenzario, aging, rating clienti, factoring) | ~3 | `tools/scadenzario_aging.py`, `tools/rating_dso_clienti.py` | trio calcoli | **COPERTO** |
+| Cespiti | ~1 | `tools/rollforward_cespiti.py` | trio calcoli | **COPERTO** |
+| Produzione industriale (costi diretti, manutenzione) | ~3 | `tools/scostamento_standard_effettivo.py` | trio calcoli | PARZIALE |
 | HR e collaboratori (presenze, valutazioni, controlli automatici) | ~6 | — | — | VUOTO (calcolo puro scarso: per lo più flussi, non formule critiche) |
 | Post-vendita e cassa (scontrini, catalogazione, mobile) | ~4 | — | — | VUOTO (idem: flussi) |
 | Integrazioni/BI/middleware (BC hub, database SD, BI agent, e-commerce) | ~10 | — | — | VUOTO come FORMULE (l'integrazione è il contesto, non il calcolo) |
