@@ -92,7 +92,7 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-24 | REPO-G non è mai stato onboardato (nessun .claude/, nessun .night-verify; CLAUDE.md/PROJECT.md caricati a mano) — le skill/agenti del hub non erano fisicamente disponibili nella sessione che ci ha lavorato, che ha dovuto rifare a mano ciò che il metodo sistematizza | l'onboarding porta la repo nel turno notturno (repos.conf) e la repo contiene credenziali BC nel repo stesso (SAL di REPO-G, voce D6): onboardarla è una decisione di esposizione, non una dimenticanza da correggere in silenzio | decisione di Luca: (a) onboarding completo, (b) onboarding parziale senza repos.conf (solo skill/agenti via sync-repo.sh), o (c) esclusione deliberata documentata in docs/system.md — oggi "sembra una dimenticanza, non una decisione" |
+| 2026-08-24 | REPO-G non è mai stato onboardato (nessun .claude/, nessun .night-verify; CLAUDE.md/PROJECT.md caricati a mano) — le skill/agenti del hub non erano fisicamente disponibili nella sessione che ci ha lavorato, che ha dovuto rifare a mano ciò che il metodo sistematizza | l'onboarding porta la repo nel turno notturno (repos.conf) e ~~la repo contiene credenziali BC nel repo stesso~~ AGGIORNATO 2026-08-27 sera: le credenziali sono state spostate fuori dal codice tracciato in REPO-G stesso (PR #36 batch 2, SAL D53) — l'obiezione COM'ERA SCRITTA non è più vera; restano le tre opzioni, la decisione è di Luca (SAL di REPO-G, voce D6): onboardarla è una decisione di esposizione, non una dimenticanza da correggere in silenzio | decisione di Luca: (a) onboarding completo, (b) onboarding parziale senza repos.conf (solo skill/agenti via sync-repo.sh), o (c) esclusione deliberata documentata in docs/system.md — oggi "sembra una dimenticanza, non una decisione" |
 
 ## Deploy assistito: separare i due rischi del divieto clasp (2026-08-26, report tagli)
 
@@ -133,3 +133,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-27 | I campioni d'esempio dei file endpoint portano dati di business veri (nomi fornitori trovati in 2 file: il grep dei nomi reali li ha ripresi). La census li contiene PER COSTRUZIONE (bc_map legge il vivo) — mascherarli tutti toglierebbe utilità al census | è un trade-off tra utilità del census e privacy della controparte commerciale in una repo pubblica: decisione del proprietario, non dell'agente | decisione di Luca: (a) accettare (i fornitori sono già pubblici nel catalogo prodotti), (b) mascherare la sola colonna Esempio nei file sensibili, (c) mascherarli tutti |
+
+## Le obiezioni in DEBITI invecchiano col codice (dal campo REPO-G, 2026-08-27)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-27 | Le voci di DEBITI motivano decisioni rimandate con FATTI («il repo contiene credenziali BC») — ma il codice CAMBIA, e un fatto che era vero quando la voce è stata scritta può non esserlo più (REPO-G: le credenziali sono state spostate via in PR #36, l'obiezione è restata com'era per giorni). Lasciarla scrivere a una cosa non più vera fa sembrare bloccata una decisione che è solo aperta | è il campo che deve accorgersene e dirlo (come è successo), non l'hub che lo vede da solo — chi processa i report dovrebbe riverificare le premesse delle voci DEBITI che il report tocca | a ogni report dal campo che tocca codice citato in DEBITI: riverificare la premessa, aggiornare la voce se il fatto è cambiato |

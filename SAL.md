@@ -154,6 +154,18 @@
 - [2026-08-27 (15) — consolidazione: tutto ciò che i cicli hanno scoperto è nel canone](#2026-08-27-15-consolidazione-tutto-ciò-che-i-cicli-hanno-scoperto-è-nel-canone)
 - [2026-08-27 (16) — cinquanta giri su REPO-I: le cinque lenti per area](#2026-08-27-16-cinquanta-giri-su-repo-i-le-cinque-lenti-per-area)
 - [2026-08-28 (1) — L'Hub Allo Specchio: 14 lenti indipendenti sull'hub stesso, 9 batch di fix](#2026-08-28-1-l-hub-allo-specchio-14-lenti-indipendenti-sull-hub-stesso-9-batch-di-fix)
+- [2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata](#2026-08-27-17-quarto-report-repo-g-eseguite-le-62-proposte-due-pattern-nuovi-un-obiezione-superata)
+- [2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM](#2026-08-27-18-il-tesoro-sigillato-convergenza-cieca-obiezioni-che-invecchiano-gerarchia-dom)
+- [2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap](#2026-08-27-19-magazzino-72-commit-20-bug-55-proposte-e-il-handoff-gap)
+- [2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI](#2026-08-28-dossier-sd-dashboard-86-rilievi-71-dichiarati-non-verificati)
+- [2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi](#2026-08-28-repo-i-fase-3-chiude-il-ciclo-245-idee-7-proposte-due-pattern-nuovi)
+- [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-sano-una-guardia-nuova-per-la-prosa)
+- [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualit-non-solo-presenza)
+- [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3-batteria-lenti-di-evoluzione-e-cambiamento)
+- [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
+- [2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua](#2026-08-28-5-repo-k-dal-dossier-ai-fix-86-25-in-sessione-continua)
+- [2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding](#2026-08-28-6-l-hub-allo-specchio-revisione-indipendente-60-finding)
+- [2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati](#2026-08-28-7-8-proposte-dell-audit-implementate-15-report-campo-triati)
 
 
 ## Stato
@@ -3511,3 +3523,198 @@ rivelato un'assunzione errata del reviewer (la logica a insiemi era corretta), m
 l'indagine ha comunque trovato il vero bug (la regex di estrazione), un livello più
 sotto. Nessuna correzione a occhio: ogni fix porta il comando o la riproduzione che
 lo dimostra.
+### 2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata
+
+Il quarto report dal campo REPO-G copre l'ESECUZIONE delle 62 proposte di
+Quattordici Lenti (11 batch, PR #36, 704 righe, 20 file, banco a ogni commit,
+Playwright per il DOM, AskUserQuestion una sola volta per l'inversione di una
+decisione precedente del cliente). Verifica indipendente del secondo loop: la
+proposta convergenza è nel canone TESTUALMENTE (cita il report per nome). Due
+pattern nuovi adottati: 25 estrattore-test-dipendenza-refactor (la regex che
+estrae le funzioni per il banco è un vincolo nascosto sul refactor: aggiornarla
+PRIMA o deferire) e 26 estensione-testata-non-distruttiva (leggere il delta,
+appendere solo le colonne mancanti, mai riscrivere la testata intera). E
+l'obiezione F1 in DEBITI aggiornata: le credenziali BC non sono più nel codice
+tracciato di REPO-G — l'obiezione com'era scritta non è più vera, la decisione
+resta di Luca ma ora è solo aperta, non bloccata da un fatto superato.
+Conferma indipendente anche del limite CacheService 100KB (ritrovato misurando,
+non leggendo il canone — F1 aperto): convergenza cieca.
+
+### 2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM
+
+Consolidazione finale di TUTTO ciò che i cicli hanno prodotto, verificata per
+essaere DENTRO e non solo dichiarata. Le ultime tre pepite: CONVERGENZA CIECA
+nominata in metodo (due misurazioni indipendenti che trovano lo stesso dato =
+più forte di una citazione: è il riscontro che non dipende dalla fonte);
+LE OBIEZIONI IN DEBITI INVECCIANO COL CODICE (meta-governance: le premesse
+delle decisioni rimandate vanno riverificate quando il codice citato cambia —
+è il campo che se ne accorge, l'hub dovrebbe chiederlo); GERARCHIA DI VERIFICA
+PER IL DOM in consegna (vm per la logica → Playwright headless quando il fix
+tocca il rendering → screenshot per il colpo d'occhio). Catalogo completo:
+26 pattern, 12 skill, 7 agenti, 11 oracoli, 2 rilevatori, 1 verificatore banco,
+5 lenti per area del giro di prodotto, la struttura N-giri, il formato report,
+lo standard meccanico, il distribuito. Suite 87/87.
+
+### 2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap
+
+Il report più grande del campo: Sistema_Gestione_Magazzino, 72 commit in una PR,
+20/20 bug corretti (incluso XSS persistente non autenticato e il motore di
+valorizzazione senza asserzioni), 55/57 proposte di prodotto implementate,
+bancos a ogni commit, Playwright per il DOM. Due lasciati aperti con la
+distinzione giusta: dominio (formula Effetto Volume/Prezzo) vs lavoro non fatto
+(2 touch). Il contributo al canone: l'HANDOFF GAP — 2 proposte valide perse nel
+passaggio revisione→todo-list, invisibili come uno scarto silenzioso ma nel
+piano: la regola è revisione_N = eseguiti + rinviati + persi(0), da verificare
+a fine esecuzione. E la disciplina del bug-trovato-lavorando-su-altro: sempre
+segnalazione separata, mai mischiato al commit corrente.
+
+### 2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI
+
+Il dossier più grande per numero (86 problemi su 12 aree, 5 critici in testa:
+security codes in chiaro, funzioni admin senza auth, conferma in blocco da
+cache stale, sync che svuota prima di sapere se ci sono righe, annullamento
+bypass). Ma il contributo al canone NON è il numero — è l'ONESTÀ del processo:
+la verifica avversariale ha finito il budget dopo 2 aree su 12, e invece di
+nasconderlo o fingere che tutti i rilievi fossero uguali, 71 sono dichiarati
+NON VERIFICATI con un sistema a due assi (gravità × confidenza). Il lettore
+può filtrare per partire dai confermati. Canonizzato in metodo.md. Tre famiglie
+nuove in famiglie-difetti: CSV/Formula Injection (export CSV senza neutralizzare
+=+-@), libreria GAS in developmentMode:true (HEAD non pubblicata in produzione),
+cache stale che riscrive intere righe (bulkConfirm da snapshot di 3 minuti prima).
+Suite 87/87.
+
+### 2026-08-28 — REPO-I fase 3 chiude il ciclo: 245 idee, 7 proposte, due pattern nuovi
+
+Il ciclo completo di REPO-I si chiude con la terza fase: 50 agenti × 10 aree ×
+5 lenti ORTOGONALI alle 4 di Fase 1 (correttezza vs processo/manutenibilità —
+il metodo ora dichiara DUE BATTERIE con obiettivi diversi), 245 idee tutte a
+stato terminale, 1241/1241 test, zero regressioni (una introdotta e catturata
+dal proprio test prima del commit — la rete di sicurezza che prende anche
+l'errore di chi la costruisce). Integrate tutte le proposte: pattern 27
+LETTURA-DELL'ESECUZIONE-PRECEDENTE (rileggere l'ultimo stato per lo stesso
+soggetto prima di scrivere la riga nuova in un diario append-only — gemello
+dei dati di estrazione-per-testabilità, comparso indipendentemente in 5 moduli)
+e pattern 28 CHIAVE-STABILE-ETICHETTA-LIBERA (mai rinominare la chiave di una
+serie storica append-only: l'etichetta leggibile si aggiunge accanto, mai al
+posto — la rottura è invisibile); in ngiri: le DUE BATTERIE di lenti, la
+TASSONOMIA A QUATTRO CATEGORIE (provata su 245 casi senza eccezioni), la regola
+DELLE TRE RICOMPARSE (la stessa lacuna alla terza volta = matura per
+l'investimento, non più rinviata); in metodo: L'ISOLAMENTO DEL BANCO (un'eccezione
+in un test = un fallimento in più, non un abort — e il conteggio atteso si
+dichiara). Suite 87/87.
+
+### 2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa
+
+Indagine meccanica su 30 assi (inventario completo, riferimenti incrociati,
+àncore pattern, oracoli/test, SAL/indice, hook, privacy, specchi, rilevatori,
+verifica_banco, bc_index, DEBITI, git, sync-repo, AGENTS/campo/benvenuto/mappa,
+pipeline METHOD, regole CLAUDE, descrizioni skill, settings hook, TODO/FIXME).
+Risultato: 26 verdi al primo colpo, 4 finding — di cui 1 reale (sync-repo
+assente da AGENTS.md, chiuso), 1 già dichiarato (privacy campioni BC =
+decisione Luca in DEBITI), 2 falsi positivi legittimi (riferimenti condizionali
+graphify e file REPO-G citati come esempi). Aggiunta la GUARDIA ANTI-PERDITA
+PER LA PROSA: 7 frasi chiave (handoff gap, convergenza cieca, due batterie,
+quattro categorie, tre ricomparse, chiave-stabile, lettura-esecuzione) verificate
+ad ogni run della suite contro tutti i reference del canone — perché sono già
+state perse una volta o due, e la prosa non ha test sintattici che la difendano.
+L'unica cosa che manca a questa indagine: il test di integrità completa delle 7
+frasi è arrivato DOPO la terza perdita — la regola delle tre ricomparse,
+applicata a noi stessi. Suite 87/87.
+
+### 2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza
+
+Le lenti di prima (30 giri) guardavano la PRESENZA: c'è o non c'è. Queste
+guardano la QUALITÀ: è collegato, è consistente, è navigabile, è resiliente.
+Trovato e chiuso: 6 skill isolate (verifica-visiva, gas-sviluppo, goal non
+citavano nessun'altra skill — ora hanno "Vedi anche"), 14 pattern senza catene
+(ora 9/33 hanno "Vedi anche" con i cugini imparentati), sync-repo assente da
+AGENTS (chiuso nei 30 giri precedenti). Dichiarato: 5 tool senza test (tutti
+con giustificazione: richiedono credenziali/ambiente non disponibile in CI),
+SAL a 257KB (oltre la soglia 100KB: candidato a SAL-ARCHIVIO per le voci >30gg),
+canone gas-sviluppo a 803 righe (al limite). VERIFICATO PULITO: nessuna
+contraddizione interna nel canone, nessuna dipendenza hardcoded nei test,
+nessun segreto tracciato, nessun link rotto nei documenti, SAL in ordine
+cronologico, encoding UTF-8 valido ovunque, test deterministici (3 run
+identici), suite 35s. F1 citato 24 volte nei report dal campo: il collo di
+bottiglia più confermato della storia del sistema.
+
+### 2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento
+
+Terza batteria dopo presenza (30) e qualità (50): come il sistema CAMBIA,
+cosa lo stressa, dove le cuciture si aprirebbero. CHIUSI: jq fallback (gli
+hook non si rompono più senza jq — dipendenza critica con fallback mancante),
+glossario inline per clasp e worktree nel SKILL. VERIFICATO: crescita 38
+commit/giorno (picco ieri), hotspot SAL.md (32 modifiche — il diario vivo,
+atteso), bus factor 1 (dichiarato), debito tecnico 0.6% (sano), parallel-safe
+(0 conflitti), determinismo (3 run identici), auto-miglioramento (feedback
+loop campo→canone attivo). DICHIARATO: macOS-specifici (2 file, già in DEBITI),
+famiglie-difetti denso (185 parole/paragrafo — accettato come reference),
+SAL proiezione 918 voci a 30 giorni (SAL-ARCHIVIO raccomandato entro 7 giorni),
+bc_map senza credenziali esce rc=0 silenziosamente (da correggere). Le 10
+raccomandazioni finali: 2 chiuse, 4 dichiarate, 1 raccomandata (SAL-ARCHIVIO),
+1 in attesa Luca (F1), 2 osservate. Suite 87/87.
+
+### 2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona
+
+Il report più metodologicamente maturo del campo: 50 agenti in DUE FASI (35
+scoperta + 15 verifica avversariale), 153 rilievi grezzi → 59 bug/sicurezza →
+15 verificati per severità → 13 CONFERMATI con node da giudice indipendente,
+2 SMENTITI dichiarati (la verifica non è cosmetica: un agente ha dimostrato
+che sommare zero non cambia il totale, un altro che l'ambiguità era a monte),
+44 NON VERIFICATI dichiarati per budget. Canonizzati in ngiri: la DOPPIA FASE
+(scoperta + avversariale con budget dichiarato), le SMENTITE come prova che
+il processo lavora, e la lente sviluppo-business che trova BUG invece di
+feature (quando succede, il codice non è pronto per crescere). Pattern 34:
+EDIFACT-RELEASE-CHARACTER (lo standard prevede ?' per l'apice nei dati: uno
+split ingenuo spezza il segmento). 12 bug confermati tutti di gravità alta,
+in testa: escaping OData mancante in 5 punti, paginazione nextLink mai gestita,
+CSV senza quoting verso BC_Import, test su cartelle di produzione, EDIFACT
+release character. Report completo in docs/campo/.
+
+### 2026-08-28 (5) — REPO-K: dal dossier ai fix, 86+25 in sessione continua
+
+La sessione che ha prodotto il dossier SD (86 rilievi) è tornata e ha CORRETTO
+tutti i rilievi + implementato le 25 idee in una sessione continua, senza
+leggere il canone durante il lavoro (solo dopo, per scrivere il report). Il
+contributo più prezioso al canone: TRE fix dichiarati che NON corrispondevano
+al sintomo originale, trovati solo nel ripasso finale (un elenco server mai
+letto dal client; una conferma che scriveva sulla riga sbagliata da snapshot
+vecchio; una funzione richiamata prima della definizione). Canonizzato: la
+regola del RIPASSO FINALE (rileggere lo scenario di fallimento originale, non
+la propria descrizione del fix), pattern 35 DOPPIO-LIVELLO-ESCAPING (HTML
+attribute + JS string: due parser, due funzioni — la cura ovvia è quella
+sbagliata), e la SESSIONE CONTINUA dichiarata come terzo regime legittimo
+(SECONDA occorrenza dell'utente che chiede di non fermarsi: da domanda aperta
+a pattern ricorrente deciso). REPO-K registrata nell'indice. Pattern totale: 35.
+
+### 2026-08-28 (6) — l'hub allo specchio: revisione indipendente, 60+ finding
+
+Una revisione indipendente di AI_Programmer su AI_Programmer stesso (14 lenti,
+60+ problemi confermati, 6 temi trasversali, 8 proposte di miglioria) — il
+sistema applicato a se stesso con la stessa disciplina che chiede ai clienti.
+La cosa più scomoda trovata: la guardia anti-drift delle skill .opencode era
+DICHIARATA in SAL.md ma NON ESISTEVA (nessun test equivalente a quello degli
+agenti), e gas-sviluppo era GIÀ divergente. CORRETTI in questo giro: guardia
+creta (test-opencode-skill-sync.sh, 11 controlli, graphify escluso come
+OC-specific), gas-sviluppo risincronizzato, lock notturno reso atomico
+(mkdir -p → mkdir con exit), SAL corretto per dichiarare la guardia VERA.
+Gli altri finding della revisione (60+) sono nel report completo — i più
+rilevanti da processare: il default branch hardcoded, il rilevatore segreti
+con raw-string bug, i conteggi endpoint con 3 valori diversi, il gate del
+mattino senza trigger automatico, sync-repo.sh che non propaga patterns/.
+Suite 88/88 (nuovo test incluso).
+
+### 2026-08-28 (7) — 8 proposte dell'audit implementate + 15 report campo triati
+
+Implementate tutte le 8 proposte dell'audit indipendente: (1) gate del mattino
+con plist per trigger automatico alle 7:30; (2) sync-repo porta anche patterns/;
+(3) meta-audit della suite (ogni test deve avere una via di uscita con
+fallimento); (4) campo-triage.sh conta i report non processati; (5) sal-archivia.sh
+per la rotazione delle voci >30 giorni; (6) sync-repo --from-local confronta
+l'intero standard; (7) debiti-check integrato nel meta-audit. L'ottava (manifest
+unico per specchi) è risolta dal test-opencode-skill-sync che copre ora il
+quarto pezzo mancante (skill). CAMPO TRIAGE: 17 report totali, 15 segnati
+"non processati" dal tool — in realtà TUTTI processati con le lezioni nel
+canone (il tool cerca il nome file nel SAL, che non sempre li cita col nome
+esatto): il finding vero è che il collegamento report→SAL non è meccanico.
+Suite 89/89.

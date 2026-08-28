@@ -12,6 +12,8 @@
 # Costo: 3-6 righe di contesto per prompt. Non blocca mai (non può: questi
 # eventi non hanno permissionDecision — possono solo aggiungere contesto).
 set -uo pipefail
+# fallback jq: se assente, gli hook degradano al silenzio senza rompere la sessione
+if ! command -v jq >/dev/null 2>&1; then exit 0; fi
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 INPUT="$(cat)"
 EVENT="$(echo "$INPUT" | jq -r '.hook_event_name // empty' 2>/dev/null)"

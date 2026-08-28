@@ -41,3 +41,9 @@ documenti (DEBITI: da valutare se vale i token).
 | [soglia-con-default-guardato](soglia-con-default-guardato.md) | REPO-I: soglie di legge indici di crisi | 2026-08-27 |
 | [riga-in-coda-non-interposta](riga-in-coda-non-interposta.md) | REPO-H: Main.gs generateCopertina_ | 2026-08-27 |
 | [dipendenza-tra-rami-paralleli](dipendenza-tra-rami-paralleli.md) | REPO-H: 2 occorrenze auto-corrette | 2026-08-27 |
+| [estrattore-test-dipendenza-refactor](estrattore-test-dipendenza-refactor.md) | REPO-G: test-computeperiod.js estraiFunzioneRigaSingola | 2026-08-27 |
+| [estensione-testata-non-distruttiva](estensione-testata-non-distruttiva.md) | REPO-G: Sheets.js estendiHeaderSeManca_ | 2026-08-27 |
+| [lettura-esecuzione-precedente](lettura-esecuzione-precedente.md) | REPO-I: 5 moduli indipendenti | 2026-08-28 |
+| [chiave-stabile-etichetta-libera](chiave-stabile-etichetta-libera.md) | REPO-I: 2 punti ciclo Fase 3 | 2026-08-28 |
+| [edifact-release-character](edifact-release-character.md) | Bricoman: Parsers.gs split | 2026-08-28 |
+| [doppio-livello-escaping](doppio-livello-escaping.md) | REPO-K: Scripts.html escapeJsAttr | 2026-08-28 |

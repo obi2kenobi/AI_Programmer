@@ -57,3 +57,63 @@ più forte: emersi senza coordinamento, sono la prova che non sono opinioni.
 Il campo REPO-I ne ha trovati 12 — in testa: «segnalato una volta, mai richiuso»
 (il follow-up che non persiste), «funzioni scritte senza porta d'ingresso»,
 «il verde che nasconde un dato mai arrivato».
+
+
+## Le due batterie di lenti (dal campo REPO-I Fase 3, 2026-08-28)
+
+Le 4 lenti storiche (scarto-mai-silenzioso ecc.) sono tarate su CORRETTEZZA:
+un verde plausibile e sbagliato. Le 5 lenti del giro di prodotto sono tarate su
+PROCESSO e MANUTENIBILITA: un modulo che funziona ma e incoerente col gemello,
+una funzione senza porta d'ingresso, un follow-up che non persiste. Non sono
+sostituibili: sono ORTOGONALI. Il metodo riconosce due batterie con obiettivi
+dichiarati diversi — usare quelle giuste per il tipo di problema cercato.
+
+## La tassonomia a quattro categorie (provata su 245 casi senza eccezioni)
+
+Ogni idea del catalogo finisce in UNA di queste (mai una quinta necessaria):
+1. **Implementata** — fatta, collaudata
+2. **Esclusa** — serve una decisione di dominio o un dato non disponibile
+3. **Rinviata** — sproporzionata, o bloccata da un vincolo tecnico/organizzativo
+4. **Gia coperta** — verificata come non-gap: un altro modulo o tooltip la risolveva
+
+## La regola delle tre ricomparse (dal campo, stessa fonte)
+
+Quando la stessa lacuna infrastrutturale interrompe o restringe il lavoro per
+la TERZA volta in progetti diversi, non e piu «rinviata»: e MATURA PER
+L'INVESTIMENTO — il costo di continuarci intorno ha superato il costo di colmarla.
+
+
+## La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)
+
+Cinquanta giri richiesti, consolidati in 14 lenti realmente distinte: evitare
+passate quasi-duplicate e la stessa disciplina zero-waste applicata al processo
+di revisione stesso. Due lenti che leggono gli stessi file con la stessa domanda
+sono UNA lente; due che li leggono con domande diverse restano due.
+
+
+## La doppia fase e le smentite dichiarate (dal campo Bricoman, 2026-08-28)
+
+50 agenti in DUE FASI: 35 di scoperta + 15 di verifica avversariale.
+Il budget permette di verificare solo i primi 15 per severità: 13 CONFERMATI,
+2 SMENTITI. Le smentite sono la prova che la verifica non e cosmetica:
+l'agente che cerca di confutare a volte CI RIESCE — e il rilievo iniziale
+muore li, dichiarato. (Totale: 153 rilievi grezzi → 59 bug/sicurezza →
+15 verificati → 13 confermati + 2 smentiti + 44 NON VERIFICATI dichiarati.)
+
+## La lente sviluppo-business trova bug, non feature (stesso campo)
+
+Le 3 analisi dedicate a nuove idee hanno convergentemente prodotto BUG e
+debito tecnico invece di funzionalita speculative — coerente con la regola:
+un'idea speculativa senza un caso reale resta non-ancora-matura. Quando la
+lente business trova solo difetti, e il segnale che il codice non e pronto
+per crescere: prima si ripara, poi si costruisce.
+
+
+## La sessione continua come pattern ricorrente (dal campo REPO-K, 2026-08-28)
+
+SECONDA volta (REPO-F, poi REPO-K) che la stessa tensione si presenta con lo
+stesso esito: l'utente chiede esplicitamente di non fermarsi, e l'istruzione
+esplicita vince sulla cautela di default. Ormai non e una domanda aperta isolata
+ma un PATTERN RICORRENTE: dichiararlo nel canone come terzo regime legittimo
+(oltre passo-per-passo e batch-autorizzato): la sessione continua su richiesta
+esplicita dell'utente, col vincolo che il ripasso finale resta obbligatorio.

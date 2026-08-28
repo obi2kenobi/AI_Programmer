@@ -25,6 +25,10 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-G | repo del bilancio periodico (CE per BU, SP, quadrature) | attiva, MAI onboardata — onboarding o esclusione = decisione aperta (DEBITI 2026-08-24); bonificata nei file 2026-08-24, storia git da purgare o accettare (DEBITI) |
 | REPO-H | repo cespiti GAS+BC standalone (FA Ledger + G/L da BC, report mensile) | prima segnalazione 2026-08-27: 13 rilievi, 12 fix, banco Node 19/19 | docs/campo/2026-08-27-revisione-cespiti-gas-bc.md |
 | REPO-I | controlli trimestrali di bilancio GAS+BC (97 file, ~850 asserzioni preesistenti) | ciclo 2026-08-27: 30 agenti, 19 findings ALTA corretti, 915/915 test, PR #97 — report docs/campo/2026-08-27-controlli-trimestrali.md | docs/campo/2026-08-27-controlli-trimestrali.md |
+| REPO-J | Gestione-ordini-Bricoman (ordini EDI fornitori, GAS+BC, 12 file) | audit 50 agenti 2026-08-28: 153 rilievi, 13 confermati, 2 smentiti | docs/campo/2026-08-28-bricoman-50-agenti.md |
+| REPO-K | Dashboard web GAS+BC per gestione ordini multi-categoria (foglio "aperti" e foglio storico paralleli, sync automatico) — già citato informalmente come "dossier SD" in `famiglie-difetti.md` e in `SAL.md` (voce 2026-08-28) prima che questo codice esistesse | dossier 86 rilievi/25 idee (`docs/campo/2026-08-28-sd-dashboard-dossier.md`), tutti implementati in sessione continua — report `docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md` |
+| REPO-J | Gestione-ordini-Bricoman (ordini EDI fornitori, GAS+BC, 12 file) | audit 50 agenti 2026-08-28: 153 rilievi, 13 confermati, 2 smentiti (`docs/campo/2026-08-28-bricoman-50-agenti.md`) — 25 fix applicati in sessione continua, verificati con node prima di ogni commit | docs/campo/2026-08-28-bricoman-dal-audit-ai-fix.md |
+| REPO-K | dashboard web GAS+BC per gestione ordini multi-categoria (SD) | dossier 86 rilievi + 25 idee, TUTTI implementati in sessione continua 2026-08-28 | docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md |
 
 ## Come usarlo
 

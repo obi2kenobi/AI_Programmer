@@ -11,3 +11,6 @@ ancora). Completamento autoriale della regola di composizione del corpus
 (la compatibilita fra consegne si PROVA eseguendo sull albero composto):
 chi scrive branch paralleli li scrive gia autosufficienti, e dichiara le
 dipendenze vere (la #30 dopo la #29) nel piano.
+
+
+**Vedi anche**: `lock-per-risorsa`
