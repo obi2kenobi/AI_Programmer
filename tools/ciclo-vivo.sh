@@ -66,17 +66,17 @@ fi
 # Lente 4: meta — il ciclo stesso sta migliorando?
 if [ "$LIVELLO" -ge 5 ]; then
   PREV=$(cat "$MEMORIA/findings_giro_precedente" 2>/dev/null || echo 999)
-  CURRENT=${#FINDINGS[@]}
+  CURRENT=${#FINDINGS[@]:-0}
   if [ "$CURRENT" -ge "$PREV" ] && [ "$GIRO" -gt 5 ]; then
     FINDINGS+=("META: finding non diminuiscono ($CURRENT >= $PREV) — il ciclo non sta migliorando")
   fi
 fi
 
 # ===== RISULTATO =====
-N=${#FINDINGS[@]}
+N=${#FINDINGS[@]:-0}
 echo ""
 echo "Finding questo giro: $N"
-for f in "${FINDINGS[@]}"; do echo "  · $f"; done
+for f in "${FINDINGS[@]:-}"; do echo "  · $f"; done
 
 # Aggiorna memoria
 echo "$N" > "$MEMORIA/findings_giro_precedente"
@@ -101,11 +101,11 @@ if [ -f "$MEMORIA/findings_storico.txt" ]; then
     if [ "$COUNT" -ge 3 ]; then
       echo "⚠ RICORRENTE ($COUNT volte): $KEY — dovrebbe avere una guardia automatica"
     fi
-  done < <(printf '%s\n' "${FINDINGS[@]}" | sort -u)
+  done < <(printf '%s\n' "${FINDINGS[@]:-}" | sort -u)
 fi
 
 # Salva finding storico
-printf '%s\n' "${FINDINGS[@]}" >> "$MEMORIA/findings_storico.txt" 2>/dev/null || true
+printf '%s\n' "${FINDINGS[@]:-}" >> "$MEMORIA/findings_storico.txt" 2>/dev/null || true
 
 # ===== TREND =====
 echo ""
