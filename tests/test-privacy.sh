@@ -48,6 +48,17 @@ OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
   && ok "chiave assente: exit 1 con GATE DEGRADATO dichiarato (non 'pulito')" \
   || ko "chiave assente: rc=$RC — il gate cieco si spaccia ancora per pulito: $OUT"
 
+# 7) bug reale (revisione 14 lenti, 2026-08-28): repos.key SENZA newline finale — `while
+# read` salta silenziosamente l'ultima riga, un nome sensibile su quella riga passava
+# "pulito" per errore. printf senza \n finale riproduce esattamente il caso.
+printf '# chiave di test\nREPO-T=finto/test\nREPO-U=ultimo/senzanewline' > "$TMP/night-shift/repos.key"
+echo "guarda ultimo/senzanewline" > "$TMP/leak-ultima-riga.md" && git -C "$TMP" add leak-ultima-riga.md
+OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -q "ultimo/senzanewline" <<<"$OUT" \
+  && ok "repos.key senza newline finale: ultima riga letta comunque, leak rilevato" \
+  || ko "ultima riga di repos.key ignorata silenziosamente: rc=$RC — $OUT"
+rm "$TMP/leak-ultima-riga.md" && git -C "$TMP" add -A 2>/dev/null || git -C "$TMP" rm -q --cached leak-ultima-riga.md
+
 rm -rf "$TMP"
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -132,8 +132,13 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
   cp "$HERE/.claude/settings.json" "$WORK/.claude/settings.json"
   git -C "$WORK" add ".claude/settings.json"
   mkdir -p "$WORK/tools"
-  cp "$HERE/tools/metodo-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
-  cp "$HERE/tools/pattern-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
+  # bug reale (revisione 14 lenti, 2026-08-28): questi due cp non avevano il controllo
+  # [ ! -f ... ] che OGNI altro merge di questo script ha (skill, pattern, agenti) —
+  # contraddiceva il commento due righe sopra ("mai sovrascrivere una personalizzazione
+  # locale, solo aggiungere i mancanti"). Un progetto che avesse già i propri hook
+  # personalizzati (ma non ancora .claude/settings.json) li vedeva sovrascritti in silenzio.
+  [ -f "$WORK/tools/metodo-reminder-hook.sh" ] || cp "$HERE/tools/metodo-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
+  [ -f "$WORK/tools/pattern-reminder-hook.sh" ] || cp "$HERE/tools/pattern-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
   git -C "$WORK" add tools/metodo-reminder-hook.sh tools/pattern-reminder-hook.sh 2>/dev/null || true
 fi
 mkdir -p "$WORK/.opencode/agent"

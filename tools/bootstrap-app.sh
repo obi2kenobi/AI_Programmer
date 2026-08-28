@@ -84,6 +84,12 @@ cp -r "$HERE/.opencode/agent/." .opencode/agent/
 # 2026-08-26, «standard non opzione»: anche gli HOOK viaggiano — il metodo che
 # dipende dalla memoria della sessione resta opt-in, quello nell'hook no
 cp "$HERE/.claude/settings.json" .claude/settings.json
+# bug reale (revisione 14 lenti, 2026-08-28): mancava "mkdir -p tools" prima di questi due
+# cp (a differenza di onboard-repo.sh, che la crea prima dello stesso cp) — su un progetto
+# bootstrappato da zero senza cartella tools/ preesistente, il cp falliva e il "|| true"
+# inghiottiva l'errore: gli hook non venivano MAI installati, e lo script terminava
+# comunque con "Fatto" senza alcun avviso — vanificando l'intento dichiarato sopra.
+mkdir -p tools
 cp "$HERE/tools/metodo-reminder-hook.sh" tools/metodo-reminder-hook.sh 2>/dev/null || true
 cp "$HERE/tools/pattern-reminder-hook.sh" tools/pattern-reminder-hook.sh 2>/dev/null || true
 
