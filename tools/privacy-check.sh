@@ -23,7 +23,7 @@ RC=0
 # ne conosca il nome. Le FORME generiche (prefissi di token AWS/GitHub/Anthropic/Slack,
 # chiavi private PEM) si cercano sempre, su tutti i file tracciati. I file di TEST e
 # l'archivio SAL citano queste forme per parlarne: esclusi per costruzione.
-SHAPES='sk-ANTHROPIC|sk-proj-|ghp_[A-Za-z0-9]\{20\}|gho_[A-Za-z0-9]\{20\}|github_pat_|AKIA[0-9A-Z]\{12\}|xoxb-|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY'
+SHAPES='sk-ANTHROPIC|sk-proj-|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_|AKIA[0-9A-Z]{12}|xoxb-|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY'
 SHAPE_HIT=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -lE "$SHAPES" 2>/dev/null)   | grep -vE '^tests/|SAL-ARCHIVIO\.md|repos\.key|tools/privacy-check\.sh|tools/giri-avversari\.sh' || true)
 if [ -n "$SHAPE_HIT" ]; then
   echo "⛔ privacy-check: FORMA DI SEGRETO generica in:" >&2

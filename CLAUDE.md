@@ -141,6 +141,13 @@ proprio questo ciclo, non un'ipotesi:
 
 ## 5. Error Handling
 
+### Il report dal campo chiude il lavoro
+Ogni sessione che usa o tocca il metodo chiude con un report in `docs/campo/`
+(formato: `docs/campo/README.md` — tre righe bastano, "nessuna proposta" dichiarata
+conta). È il canale con cui il campo insegna al canone: senza report, il giro non
+insegna niente a chi viene dopo (il promemoria alla chiusura è già strutturale
+nell'hook Stop — questa regola ne è la fonte scritta).
+
 ### Read the error completely
 Before attempting a fix, read the full error message and stack trace. Understand the root cause.
 
