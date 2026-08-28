@@ -64,7 +64,8 @@ open(p,'w').write(s + '\n**Meta**: ' + bt + 'pippo-rosso-finto' + bt + '\n')"
 difesa_test tests/test-canone-integrita.sh "A3 indice che cita pattern inesistente"
 
 att; mv patterns/watchdog-guardato.md /tmp/avv-pattern.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S7" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -q "S7" <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
 mv /tmp/avv-pattern.md patterns/watchdog-guardato.md
 
 att; sed -i '' 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
@@ -102,7 +103,7 @@ assert old in s; open(p, 'w').write(s.replace(old, 'if False and tipo.startswith
 EOF
 difesa_test tests/test-scadenzario-aging.sh "A13 fix segno fornitore disattivato"
 
-att; sed -i '' 's/--standard) STANDARD=1/--standard-nope) STANDARD=1/' tools/sync-repo.sh
+att; sed -i '' 's/--standard) STANDARD=1/--tutto) STANDARD=1/' tools/sync-repo.sh
 difesa_test tests/test-sync-repo-standard-item-list.sh "A14 --standard rimosso da sync-repo"
 
 att; python3 -c "
@@ -120,13 +121,14 @@ difesa_test tests/test-claude-md-gate-conventions.sh "A17 union merge driver rim
 mv /tmp/avv-ga .gitattributes
 
 att; rm -rf .claude/skills/design-doc
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S8" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -q "S8" <<<"$OUT_BAT" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
 git checkout -- .claude/skills 2>/dev/null; true
 
 att; sed -i '' 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
 difesa_test tests/test-sal-indice-ancore.sh "A19 marker indice SAL sostituito"
 
-att; printf 'sk-ANTHRO-FAKE1234567890abcd\n' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
+att; printf 'sk-ANTHROPIC-FAKE1234567890abcd\n' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
 bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "A20 segreto generico piantato: privacy-check non ne vede la FORMA" || tiene "A20 forma di segreto piantata vista (shaping)"
 git checkout -- docs/campo/2026-08-28-sd-dashboard-dossier.md 2>/dev/null; true
 
@@ -156,10 +158,10 @@ OUT=$(echo '{"hook_event_name":"Stop"}' | bash tools/metodo-reminder-hook.sh)
 [ -z "$OUT" ] && ack "B7 .campo-rem sopprime il promemoria campo per 1h (anti-spam by design: dopo ri-suona)" || tiene "B7 soppressione campo limitata"
 rm -f .campo-rem
 
-att; python3 -c "
-import json
-s = json.load(open('.claude/settings.json'))
-print(json.dumps(s).count('\"deny\"'))" | grep -q "^[1-9]" && tiene "B8 esiste un deny reale (clasp push è NEGATO)" || aggirato "B8 NESSUN permissionDecision deny: tutte le regole sono advisory"
+att; OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"clasp push"}}' | bash tools/clasp-block-hook.sh)
+echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
+  && tiene "B8 un deny reale esiste e funziona (clasp push NEGATO)" \
+  || aggirato "B8 NESSUN deny funzionante: tutte le regole sono advisory"
 
 echo ""
 echo "=== CAT C — gaming di lenti e sonde ==="
@@ -191,7 +193,8 @@ echo "$OUT" | grep -q "non processato" && tiene "C4 report finto con nome-parola
 rm docs/campo/2026-08-28-attacco-gate.md
 
 att; printf 'Il sistema ha 999 test e 999 pattern.\n' >> METHOD.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S2" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -q "S2" <<<"$OUT_BAT" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
 git checkout -- METHOD.md
 
 att; printf '自身的\n' >> SAL-ARCHIVIO.md
@@ -315,7 +318,7 @@ att; grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-[
 
 att; git ls-files | grep -qE '\.(env|key|pem)$|id_rsa|^\.env' && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
 
-att; grep -rnE 'sk-ANTHROPIC|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN [A-Z ]*PRIVATE KEY' llm/ tools/ 2>/dev/null | grep -v "privacy-check.sh" | head -1 | grep -q . && aggirato "E6 letterale segreto negli script" || tiene "E6 nessun letterale segreto negli script"
+att; grep -rnE 'sk-ANTHROPIC|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN [A-Z ]*PRIVATE KEY' llm/ tools/ 2>/dev/null | grep -vE "privacy-check.sh|giri-avversari.sh" | head -1 | grep -q . && aggirato "E6 letterale segreto negli script" || tiene "E6 nessun letterale segreto negli script"
 
 att; git log --all --oneline | wc -l | tr -d ' ' | grep -q "^0$" && aggirato "E7 storia git assente?" || tiene "E7 storia git presente (privacy-check la presidia con pickaxe)"
 
@@ -368,7 +371,8 @@ bash tools/giri-ignoranti.sh >/dev/null 2>&1 && aggirato "G6 registro pattern de
 git checkout -- patterns/README.md
 
 att; printf 'REPO-%s\n' 'Z' >> night-shift/repos-index.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S9" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -q "S9" <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
 git checkout -- night-shift/repos-index.md
 
 att; sed -i '' 's/ .opencode\/plugins//' tools/sync-repo.sh
@@ -409,17 +413,20 @@ bash tools/campo-triage.sh >/dev/null 2>&1; RC=$?
 git checkout -- tools/campo-triage.sh
 
 att; rm .night-verify
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S8" && tiene "G17 .night-verify cancellato visto da S8" || aggirato "G17 .night-verify senza presidio"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -q "S8" <<<"$OUT_BAT" && tiene "G17 .night-verify cancellato visto da S8" || aggirato "G17 .night-verify senza presidio"
 git checkout -- .night-verify 2>/dev/null; true
 
 att; ack "G18 il PROSA di AGENTS.md non ha guardia riga-per-rigola: presidiati i numeri (S2), i file promessi (S8) e le convenzioni gate — la prosa vive di revisione"
 
 att; rm docs/MANUALE-OPERATIVO.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S4\|S6" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -qE "S4|S6" <<<"$OUT_BAT" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
 git checkout -- docs/MANUALE-OPERATIVO.md
 
 att; sed -i '' 's/sync-repo.sh/sync-repX.sh/g' docs/benvenuto-collaboratori.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S6" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -q "S6" <<<"$OUT_BAT" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
 git checkout -- docs/benvenuto-collaboratori.md
 
 echo ""

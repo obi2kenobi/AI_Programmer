@@ -32,21 +32,29 @@ SIZE=$(wc -c < "$METODO" | tr -d ' ')
 [ "$SIZE" -ge 10000 ] && ok "dimensione $SIZE bytes (sopra soglia 10000)" \
   || ko "dimensione $SIZE bytes: sotto soglia, canone svuotato?"
 
-# Ogni pattern citato nell'indice deve esistere come file: un indice che punta
-# nel vuoto è peggio di nessun indice
-grep -o '`[a-z0-9-]*`' "$METODO" | tr -d '`' | sort -u | while read -r p; do
-  case "$p" in
-    gas-sviluppo|patterns) continue ;;
-  esac
-  [ -f "$HERE/patterns/$p.md" ] || echo "INDICE-ROTTO: $p"
-done | grep -q "INDICE-ROTTO" && ko "l'indice cita pattern senza file" || ok "tutti i pattern dell'indice esistono"
+# Ogni pattern citato nell'INDICE deve esistere come file: un indice che punta
+# nel vuoto è peggio di nessun indice. (giri avversari 2026-08-28, A3: la versione
+# precedente finiva con `done | grep -q` sotto pipefail — grep -q usciva alla prima
+# corrispondenza, il while prendeva SIGPIPE, la pipeline dava 141 e il ramo `|| ok`
+# scattava SEMPRE: il controllo non ha mai controllato. È il pattern
+# pipefail-grep-sigpipe applicato al mio stesso test. Inoltre si greppa SOLO la
+# sezione indice: il resto del canone contiene token di codice in backtick —
+# `--`, `node`, `vm` — che non sono pattern.)
+SEZ_INDICE=$(sed -n '/## Indice rapido dei pattern/,$p' "$METODO")
+RE_TOKEN='`[a-z0-9-]*`'
+ROTTI=$(grep -o "$RE_TOKEN" <<<"$SEZ_INDICE" | tr -d '`' | sort -u | while read -r p; do
+  [ -z "$p" ] && continue
+  [ "$p" = "gas-sviluppo" ] || [ "$p" = "patterns" ] && continue
+  [ -f "$HERE/patterns/$p.md" ] || echo "$p"
+done)
+[ -z "$ROTTI" ] && ok "tutti i pattern dell'indice esistono" || ko "l'indice cita pattern senza file: $ROTTI"
 
 # le famiglie di difetti misurate restano popolate (G10: cancellare famiglie
 # intere non faceva diventare rosso niente — il catalogo è presidiato dal numero)
 FAM="$HERE/.claude/skills/gas-sviluppo/references/famiglie-difetti.md"
 NFAM=$(grep -c '^- \*\*' "$FAM" 2>/dev/null || echo 0)
-[ "$NFAM" -ge 20 ] && ok "famiglie di difetti popolate: $NFAM voci" \
-  || ko "famiglie di difetti degradate: $NFAM voci (attese >= 20)"
+[ "$NFAM" -ge 45 ] && ok "famiglie di difetti popolate: $NFAM voci" \
+  || ko "famiglie di difetti degradate: $NFAM voci (attese >= 45)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

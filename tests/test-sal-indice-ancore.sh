@@ -30,6 +30,14 @@ grep -q '\[Perché è così\](#perché-è-così)' "$TMP/SAL.md" \
   && ok "ancora con 'é'/'è'/'ì' preservate" \
   || ko "ancora con più accenti rotta — riga: $(grep 'Perché' "$TMP/SAL.md")"
 
+# giri avversari 2026-08-28 (A19): il marker del SAL VERO poteva essere
+# sostituito senza che nessun test diventasse rosso (questo test prova solo
+# fixture). Il marker è il contratto con sal-indice.sh: senza, la rigenerazione
+# duplica l'indice invece di sostituirlo.
+grep -q "<!-- SAL-INDICE: generato da tools/sal-indice.sh" "$HERE/SAL.md" \
+  && ok "il SAL vero porta il marker dell'indice" \
+  || ko "il SAL vero ha perso il marker SAL-INDICE (sal-indice duplicherebbe)"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
