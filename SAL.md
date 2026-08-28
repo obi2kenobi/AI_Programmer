@@ -628,3 +628,30 @@ ricorrenti (3+) ora vengono ACCODATE su file (.ciclo/guardie/da-generare-*.txt),
 stampate. Copertura completata: test per leasing_amministrativo (aritmetica a mano: residuo 14000 =
 23000×14/23, adeguamento trimestrale 0.875→0.88) e bc_tipi_metadata (contratto offline: mappa EDM,
 fallimento senza rete via credenziali avvelenate su 127.0.0.1:1). Suite 106/106.
+
+### 2026-08-28 (3) — Altri 100 giri col battito + la tecnica estesa a TUTTO il repo
+
+**I 100 giri (19-118)**: distribuzione del dente di sega perfettamente regolare — L1:18, L2:20,
+L3:21, L4:21, L5:20, sei CUORE, zero finding. Il ciclo non si impantana più al livello 5: ogni
+livello viene ri-verificato a ogni battito.
+
+**La tecnica (lenti di invarianti deterministici) estesa alle zone non coperte.** Il ciclo guardava
+.claude/.opencode/patterns/tools-py; non guardava docs/ (269 file), night-shift/, llm/, i 30 script
+shell, gli hook, DEBITI, il conteggio campo. Spazzata diretta su tutto:
+
+- 54 script shell compilano (bash -n) · tutti eseguibili · hook di settings.json puntano a file
+  esistenti · DEBITI senza ref pendenti · night-shift/lib.sh esiste · bc: 231 file endpoint = 231
+  nell'indice rigenerato · docs cross-riferiti coerenti (i ref "mancanti" erano esterni REPO-* o
+  nomi nudi di tool: falsi positivi della mia spazzata, non del repo).
+- UN fix vero: campo-triage contava README.md come report di campo (27 vs 26 veri) e la sua
+  verifica passava per coincidenza (grep "README" matcha SAL ovunque). Escluso dal conteggio.
+
+**Le spazzate sono diventate lenti permanenti**: L1 ora fa bash -n su tutti gli .sh (la classe
+d'errore del parse error capitata davvero); L4 ha quattro lenti nuove — hook vivi, campo-triage a
+zero non processati, file BC = indice BC, ref DEBITI esistenti. Verificate pulite sul vivo e col
+caso negativo ciascuna (hook monco → finding; script rotto → finding).
+
+Nota onesta: la spazzata repo-wide ha trovato quasi tutto già coerente — perché 106 test coprono
+già quelle zone. Il valore delle lenti non è l'audit una tantum ma la CONTINUITÀ: il ciclo continua
+a guardare fra un run di test e l'altro, quando i file cambiano. Cammino post-estensione verificato:
+15 giri, 1→2→3→4→5→CUORE→1, zero finding. Suite 106/106.
