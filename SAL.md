@@ -156,6 +156,7 @@
 - [2026-08-27 (17) — quarto report REPO-G: eseguite le 62 proposte, due pattern nuovi, un'obiezione superata](#2026-08-27-17-quarto-report-repo-g-eseguite-le-62-proposte-due-pattern-nuovi-un-obiezione-superata)
 - [2026-08-27 (18) — il tesoro sigillato: convergenza cieca, obiezioni che invecchiano, gerarchia DOM](#2026-08-27-18-il-tesoro-sigillato-convergenza-cieca-obiezioni-che-invecchiano-gerarchia-dom)
 - [2026-08-27 (19) — magazzino: 72 commit (20 bug + 55 proposte) e il handoff gap](#2026-08-27-19-magazzino-72-commit-20-bug-55-proposte-e-il-handoff-gap)
+- [2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI](#2026-08-28-dossier-sd-dashboard-86-rilievi-71-dichiarati-non-verificati)
 
 
 ## Stato
@@ -3504,3 +3505,18 @@ passaggio revisione→todo-list, invisibili come uno scarto silenzioso ma nel
 piano: la regola è revisione_N = eseguiti + rinviati + persi(0), da verificare
 a fine esecuzione. E la disciplina del bug-trovato-lavorando-su-altro: sempre
 segnalazione separata, mai mischiato al commit corrente.
+
+### 2026-08-28 — dossier SD Dashboard: 86 rilievi, 71 dichiarati NON VERIFICATI
+
+Il dossier più grande per numero (86 problemi su 12 aree, 5 critici in testa:
+security codes in chiaro, funzioni admin senza auth, conferma in blocco da
+cache stale, sync che svuota prima di sapere se ci sono righe, annullamento
+bypass). Ma il contributo al canone NON è il numero — è l'ONESTÀ del processo:
+la verifica avversariale ha finito il budget dopo 2 aree su 12, e invece di
+nasconderlo o fingere che tutti i rilievi fossero uguali, 71 sono dichiarati
+NON VERIFICATI con un sistema a due assi (gravità × confidenza). Il lettore
+può filtrare per partire dai confermati. Canonizzato in metodo.md. Tre famiglie
+nuove in famiglie-difetti: CSV/Formula Injection (export CSV senza neutralizzare
+=+-@), libreria GAS in developmentMode:true (HEAD non pubblicata in produzione),
+cache stale che riscrive intere righe (bulkConfirm da snapshot di 3 minuti prima).
+Suite 87/87.

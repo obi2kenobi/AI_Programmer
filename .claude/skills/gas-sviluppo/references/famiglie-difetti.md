@@ -223,3 +223,16 @@ rinomina giusta e monotona restrittiva SOLO dopo il grep dell'HTML.
 - **Security codes hardcoded nel sorgente**: pattern securityCode/securityCodePrefix
  seguito da un valore alfanumerico — il rilevatore li cerca ma la forma varia
 da progetto a progetto: aprirli a mano quando la sicurezza e in gioco.
+
+- **CSV/FORMULA INJECTION** (dal dossier SD, 2026-08-28): l'export CSV che
+racchiude i valori tra virgolette senza neutralizzare =, +, -, @ espone a
+injection quando il file viene aperto in Excel/Sheets: una cella malvagia
+diventa formula. Cura: prefissare un apostrofo o raddoppiare le virgolette.
+- **LIBRERIA in developmentMode: true in produzione** (dal dossier SD): lo
+script esegue sempre la versione HEAD non pubblicata della libreria invece
+di una versione fissata — un cambiamento a monte della libreria cambia il
+comportamento di produzione senza deploy.
+- **CACHE STALE CHE RISCRIVE INTERE RIGHE** (dal dossier SD): bulkConfirm
+riusa uno snapshot di 3 minuti prima per riscrivere TUTTE le colonne: ogni
+modifica concorrente fatta nel frattempo viene silenziosamente annullata.
+Cura: riscrivere SOLO le colonne modificate, mai l'intera riga dalla cache.
