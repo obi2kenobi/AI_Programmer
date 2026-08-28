@@ -48,3 +48,11 @@ Una sezione "## Forma dei dati (verificata)" pronta per una commessa o un design
 una tabella campo-per-campo (nome, tipo, formato, quando manca, provenienza file:riga)
 più l'elenco delle ipotesi rimaste aperte. Il tuo lavoro finisce lì: la decisione su
 cosa costruire su quei dati è di chi ti ha chiamato.
+
+
+## Graphify: naviga il grafo se esiste
+
+Se graphify-out/graph.json esiste nel progetto target, usa
+`graphify query "<termine>"` per trovare dove vive un componente PRIMA
+di grepare. Il grafo è stato costruito per questo: consultazione veloce,
+economica, precisa. Se non esiste, falllo creare: `graphify update .`

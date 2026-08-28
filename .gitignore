@@ -1,12 +1,10 @@
-# Config locale del turno notturno: contiene i nomi delle repo private.
-night-shift/repos.conf
-
 # Cache Python degli strumenti BC
-__pycache__/
-*.pyc
-
+# Config locale del turno notturno: contiene i nomi delle repo private.
 # grafo graphify: artefatto locale
-graphify-out/
-night-shift/repos.key
-credenziali BC.rtf
+*.pyc
 .campo-rem
+__pycache__/
+credenziali BC.rtf
+graphify-out/
+night-shift/repos.conf
+night-shift/repos.key
