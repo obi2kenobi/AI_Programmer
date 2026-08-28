@@ -14,8 +14,15 @@ ai_timeout() {
   # per esercitare IL ramo perl spedito (su un Mac con coreutils installato
   # resterebbe altrimenti mai provato — un bug nel fallback passerebbe verde).
   if [ -z "${AI_TIMEOUT_FORCE_PERL:-}" ]; then
-    if command -v timeout >/dev/null 2>&1; then command timeout "$secs" "$@"; return; fi
-    if command -v gtimeout >/dev/null 2>&1; then command gtimeout "$secs" "$@"; return; fi
+    # bug reale (revisione 14 lenti, 2026-08-28): senza "-k", GNU timeout manda SIGTERM
+    # allo scadere e poi ASPETTA che il comando termini da solo — se il comando lo
+    # ignora/blocca (trap '' TERM), timeout non forza mai la terminazione, esattamente sul
+    # ramo più comune (coreutils presenti). Verificato dal vivo: un comando con
+    # trap '' TERM sotto `timeout 2` tornava dopo l'intera durata del comando, non a 2s.
+    # "-k 5": se il comando è ancora vivo 5s dopo il TERM, SIGKILL — stessa garanzia del
+    # fallback perl sotto (kill di gruppo), non solo sul ramo di emergenza.
+    if command -v timeout >/dev/null 2>&1; then command timeout -k 5 "$secs" "$@"; return; fi
+    if command -v gtimeout >/dev/null 2>&1; then command gtimeout -k 5 "$secs" "$@"; return; fi
   fi
   command perl -e '
     my $s = shift; my $pid = 0;

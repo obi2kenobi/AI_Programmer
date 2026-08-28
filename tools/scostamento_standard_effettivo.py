@@ -67,7 +67,16 @@ def main():
         {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
         for r in csv.DictReader(sys.stdin)
     ]
-    costo_standard = float(sys.argv[1]) if len(sys.argv) > 1 else 0
+    # bug reale (revisione 14 lenti, 2026-08-28): un costo standard non passato da riga di
+    # comando (dimenticanza in uno script chiamante) diventava silenziosamente 0 — che
+    # calcola_scostamento() interpreta come "nessuno scostamento" (ramo costo_standard<=0,
+    # comportamento REALE e voluto quando il costo standard non è definito nel dominio),
+    # indistinguibile da un costo standard 0 legittimamente fornito. L'argomento mancante è
+    # un errore di invocazione, non un dato di dominio: va segnalato, non assunto a zero.
+    if len(sys.argv) <= 1:
+        print("uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv", file=sys.stderr)
+        return 1
+    costo_standard = float(sys.argv[1])
     media_eff = media_pesata(righe)
     scost_perc = calcola_scostamento(costo_standard, media_eff)
     trend = calcola_trend(righe)
@@ -79,7 +88,8 @@ def main():
         print(f"ALERT: {alert['gravita']} ({alert['direzione']} soglia)")
     else:
         print("Nessun alert")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

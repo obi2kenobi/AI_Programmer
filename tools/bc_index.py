@@ -10,7 +10,6 @@ import re
 
 ENDPOINTS_DIR = "docs/bc/endpoints"
 README = "docs/bc/README.md"
-TOTAL_CATALOG = 108
 
 
 def parse(path):
@@ -29,7 +28,16 @@ def catalogo_mancanti():
         return None, []
     import re as _re
     text = open(cat, encoding="utf-8").read()
-    servizi = set(_re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `([^`]+)`", text))
+    # bug reale (revisione 14 lenti, 2026-08-28): ogni riga della tabella ha DUE valori fra
+    # backtick — il nome visualizzato (con spazi, es. `Job List`) e il nome tecnico/nome
+    # file (con underscore, es. `Job_List`) — la regex catturava il PRIMO, cioè quello
+    # visualizzato, che non corrisponde mai al nome di un file endpoint reale. Risultato:
+    # 22 file censiti con nome tecnico (Job_List, Piano_dei_conti, ecc.) risultavano "non
+    # nel catalogo" e il conteggio dei "mancanti" era gonfiato per lo stesso numero di
+    # entrate fantasma (nomi con spazio che nessun file avrà mai). Cattura ora il SECONDO
+    # gruppo fra backtick (il nome tecnico, verificato: tutte le 258 righe ne hanno
+    # esattamente due).
+    servizi = set(_re.findall(r"\| (?:Pagina|Query) \| \d+ \| [^|]*\| `[^`]+` \| `([^`]+)`", text))
     esistenti = {os.path.basename(p)[:-3] for p in glob.glob(os.path.join(ENDPOINTS_DIR, "*.md"))}
     return len(servizi), sorted(servizi - esistenti)
 
@@ -51,7 +59,7 @@ def main():
         "```",
         "Poi: compilare la colonna *Significato* e spuntare *Verificato* dopo il riscontro.",
         "",
-        f"## Avanzamento — {len(rows)} mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive nel repo cliente)",
+        f"## Avanzamento — {len(rows)} mappati (catalogo completo: `CATALOGO_ENDPOINT_BC.md`, vive in questo hub)",
         f"Anomalie (403/404/vuoti): `CORREZIONI.md`.",
         "",
         "## Salute del censimento",

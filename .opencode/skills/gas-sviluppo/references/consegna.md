@@ -3,6 +3,13 @@
 > Si legge SOLO quando il lavoro è una consegna: un diff destinato alla
 > produzione. Per una consulenza basta il metodo.
 
+## Correttori paralleli: worktree DAL PRIMO COMMIT (lezione dell'incidente 2026-08-27)
+
+Due agenti che correggono sullo stesso repo si contendono il checkout: uno scambia
+branch sotto l'altro (successo davvero, recuperato con cherry-pick). Il worktree
+isolato non e un opzione quando serve: e la CONDIZIONE DI PARTENZA — ogni
+correttore nasce in git worktree add proprio, dal primo commit.
+
 ## Regola d'oro dell'isolamento
 
 **Un task · un worktree · un ramo · una PR.** Mai due agenti sullo stesso
@@ -119,3 +126,16 @@ Fra "difetto" e "confermato" esiste lo stato che una sessione non puo chiudere d
 testato in isolamento, NON ancora visto girare nel vivo (Gmail/Drive/BC reali). Il corpo
 PR porta una sezione "## Da verificare dal vivo" con le caselle di cio che resta: e il
 livello 3 dei cinque (verita terrena ritardata) reso tracciabile, non reinventato per PR.
+
+
+## Gerarchia di verifica per il DOM (dal campo REPO-G, 2026-08-27)
+
+Quando un fix tocca HTML/JS che gira nel BROWSER (non solo la logica
+server-side), il banco vm non basta: estrae e prova la logica, ma non vede
+il rendering, gli event handler, il CSS. Gerarchia:
+1. banco vm (logica pura) — sempre, per ogni fix
+2. **Playwright headless** — quando il fix tocca il DOM: apre l'HTML reale
+   in Chromium, aspetta i selettori, verifica che i bottoni rispondano e i
+   dati siano visibili. Costo: minimo (nessuna dipendenza nel progetto,
+   eseguito da directory esterna, pattern fuori-repo già canone).
+3. screenshot — quando serve il colpo d'occhio (già coperto da verifica-visiva)

@@ -21,13 +21,18 @@ def categorizza(righe):
     non_contato, senza_discrepanza, con_rettifica = [], [], []
     for r in righe:
         codice = r["codice"]
-        qty_bc = float(r["qty_bc"])
-        costo_finale = float(r["costo_finale"])
         stato = (r.get("stato") or "").strip()
         qty_fisica_raw = (r.get("qty_fisica") or "").strip()
+        # bug reale (revisione 14 lenti, 2026-08-28): qty_bc/costo_finale venivano
+        # convertiti con float() PRIMA del controllo "non contato" — una riga "Non Contato"
+        # con costo_finale vuoto (plausibile: articolo non ancora valorizzato) faceva
+        # crashare l'intero script con ValueError, perdendo anche l'output delle righe
+        # valide già lette. Il controllo va fatto PRIMA di provare a convertire nulla.
         if stato.lower() == "non contato" or qty_fisica_raw == "":
             non_contato.append({"codice": codice, "delta": "", "delta_valore": ""})
             continue
+        qty_bc = float(r["qty_bc"])
+        costo_finale = float(r["costo_finale"])
         qty_fisica = float(qty_fisica_raw)
         delta = qty_fisica - qty_bc
         delta_valore = delta * costo_finale

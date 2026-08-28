@@ -28,6 +28,19 @@ echo "$OUT" | grep -qE "dista [0-9]+ righe" \
   && ok "il verdetto porta il conteggio delle righe di distanza" \
   || ko "conteggio righe mancante"
 
+# bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
+# faceva fallire silenziosamente entrambi i diff — DIFF_LINES restava sempre "dista 0
+# righe" (che il check sopra, con una regex troppo permissiva, non distingueva da un
+# conteggio vero) e il blocco di dettaglio sotto restava vuoto. Verifica esplicita che il
+# conteggio sia REALMENTE positivo e che il blocco di dettaglio non sia vuoto.
+echo "$OUT" | grep -qE "dista [1-9][0-9]* righe" \
+  && ok "il conteggio delle righe è realmente positivo, non sempre 0" \
+  || ko "conteggio righe fermo a 0 nonostante una divergenza vera — output: $OUT"
+DETTAGLIO=$(echo "$OUT" | grep -c '^  [<>]')
+[ "$DETTAGLIO" -gt 0 ] \
+  && ok "il blocco di dettaglio diff mostra righe reali ($DETTAGLIO)" \
+  || ko "blocco di dettaglio diff vuoto — output: $OUT"
+
 # CLAUDE.md assente → errore esplicito
 mkdir -p "$TMP/vuota"
 bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/vuota" >/dev/null 2>&1

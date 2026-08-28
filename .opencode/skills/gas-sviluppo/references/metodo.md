@@ -150,3 +150,103 @@ non lo è, e quello costa il giro intero.
   applicare: il diff si passa con `-i`).
 - **Tre prodotti, non uno**: difetti trovati · migliorie progettate ·
   funzionalità nuove progettate. Chi porta solo difetti ha fatto un terzo.
+
+
+## Le tre regole della fase 2 (dal campo REPO-I, 2026-08-27 — catalogo 44 idee esaurito)
+
+1. **VERIFICA-PRIMA-DI-COSTRUIRE**: prima di implementare un idea, controlla se un
+   meccanismo generico gia costruito la copre — e VERIFICACLO con un test, non a
+   occhio (due trend «da scrivere» erano gia prodotti gratis dal cruscotto: il lavoro
+   giusto era il test di applicabilita, non il codice nuovo).
+2. **Parametro ≠ speculazione**: «idea in attesa di un parametro del proprietario» si
+   chiude con una domanda; «idea architetturalmente speculativa senza un caso reale
+   che la chieda oggi» resta NON ANCORA MATURA — implementarla comunque inventa una
+   classificazione che nessuno ha chiesto (over-engineering mascherato da fondo).
+3. **I vincoli vivono anche nei file di configurazione**: prima di proporre un idea,
+   leggi i commenti in CI/workflow/lockfile del progetto, non solo SAL/CLAUDE — e se
+   un idea li viola, la verifica FUORI dal repo (strumenti in directory esterna, mai
+   committati) vale come prova equivalente a un test committato (REPO-I: Playwright
+   fuori dal repo, 16 asserzioni in Chromium headless, invariante «zero dipendenze» intatto).
+
+
+## Due aggiunte dal campo REPO-H (2026-08-27, 12 PR)
+
+1. **Workaround vm per i binding lessicali**: `let X` di primo livello non diventa
+   proprieta del contesto — ma DOPO aver eseguito il sorgente, una seconda
+   `vm.runInContext("X = valoreStub;", ctx)` con assegnazione semplice (non
+   dichiarazione) risolve al binding lessicale gia creato. (Il limite era canone;
+   la tecnica per aggirarlo senza contesto nuovo man era nuova.)
+2. **Un test sul confine irraggiungibile non e un test**: prima di scrivere il
+   caso limite, verifica che quel valore sia RAGGIUNGIBILE attraverso la pipeline
+   reale (REPO-I: 0.005 post-round2 non esiste come input del filtro — un test li
+   sarebbe eseguibile e privo di significato). Si testa il percorso, non la firma.
+
+
+## Correggere e un giro di audit (dal test REPO-E, 2026-08-27)
+
+1. **Il banco gira a OGNI commit della correzione**: nel test ha fermato IN ITINERE
+   una regressione sul caso zero-ordini che il banco finale avrebbe mostrato tardi.
+2. **Correggere genera rilievi nuovi** (3 nel test: trigger che chiama una funzione
+   inesistente e fallisce in silenzio; contatore di test matematicamente sempre-0;
+   security codes come probe): il censimento si aggiorna IN CORSA.
+
+
+## Convergenza cieca (dal campo REPO-G, 2026-08-27)
+
+Quando due misurazioni INDIPENDENTI trovano lo stesso dato senza che una
+sapesse dell'altra — un agente misura il payload CacheService sul parco REPO-E
+(100KB), un altro lo misura su REPO-G senza leggere il canone — la conferma
+vale PIU di una citazione: è il riscontro che non dipende dalla fonte. Stesso
+principio dei temi trasversali del giro di prodotto (≥3 aree non coordinate),
+applicato ai DATI invece che ai rilievi. Quando succede, va scritto: è la prova
+più forte che un numero non è un caso.
+
+
+## Il handoff gap: revisione→esecuzione (dal campo REPO-G/magazzino, 2026-08-27)
+
+72 commit, 20 bug + 55 proposte eseguite: ma VERIFICANDO A POSTERIORI la lista
+delle proposte confermate, 2 su 57 valide non erano mai finite nella todo-list
+operativa — non scartate, non rinviate: PERSE nel passaggio. Il difetto è
+strutturale: chi traduce la revisione in task puo perdere voci senza che nessun
+meccanismo se ne accorga (la perdita è invisibile come uno scarto silenzioso,
+ma avviene nel PIANO, non nei dati). La regola: a fine esecuzione, CONTARE le
+voci della revisione contro i task completati + quelli dichiarati non-fatti:
+revisione_N = eseguiti_N + rinviati_N + persi_0. Se persi > 0, dichiararli.
+E: un bug trovato lavorando su ALTRO si segnala separato, non si mischia al
+commit corrente (stesso principio un-commit-per-rilievo, applicato in anticipo).
+
+
+## L'onore del NON VERIFICATO (dal dossier SD, 2026-08-28)
+
+86 rilievi trovati, ma la verifica avversariale (secondo giudice che cerca
+di confutare) ha completato solo 2 aree su 12 prima di esaurire il budget:
+71 rilievi sono dichiarati NON VERIFICATI, non nascosti né spacciati per
+confermati. La regola: quando la verifica non finisce, lo STATO di ogni
+rilievo si dichiara — CONFERMATO / POSSIBILE / NON VERIFICATO — e chi legge
+può filtrare. Un rilievo non verificato non è un rilievo falso: è un rilievo
+che onestamente dice «leggi riga-per-riga, citato con precisione, ma non ha
+ancora subito il secondo occhio». Meglio 86 dichiarati con fiducia nota che
+14 confermati e 72 tacitamente promossi allo stesso livello.
+
+
+## L'isolamento del banco: un'eccezione NON abortisce la suite (dal campo REPO-I, 2026-08-28)
+
+Un'eccezione non gestita in UN test ha interrotto TUTTA la suite dopo 90
+asserzioni su 1241 attese — e il riepilogo «90 ok, 2 falliti» sembrava un run
+normale e piccolo, non un'esecuzione ABORTITA. La regola: ogni funzione di
+test vive in un try/catch proprio; l'eccezione diventa UN fallimento in piu,
+non un'interruzione; il conteggio finale resta sempre confrontabile con
+l'atteso. E il conteggio ATTESO si dichiara: se N attese su M dichiarate,
+rosso comunque — la stessa regola del banco.
+
+
+## Il ripasso finale: il fix dichiarato contro lo scenario originale (dal campo REPO-K, 2026-08-28)
+
+In una sessione lunga con molti batch, il rischio piu subdolo non e il bug
+ma il FIX DICHIARATO CHE NON CORRISPONDE AL SINTOMO: una todo-list interna
+dice "completed" ma lo scenario di fallimento descritto nel rilievo originale
+si riproduce ancora (meta fix, fix sulla riga sbagliata, fix che protegge
+una meta del problema). La regola: prima di dichiarare un rilievo chiuso,
+RILEGGERE lo scenario di fallimento ORIGINALE — non la propria descrizione
+del fix gia scritta — e verificare che non si riproduca piu sul codice
+attuale. E un banco per il processo di correzione, non solo per il codice.

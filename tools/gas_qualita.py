@@ -100,10 +100,21 @@ def main():
                      siti))
 
     # 3. segreti hardcoded (mai il valore): pattern di chiave notevoli
-    SECRET_PATTERNS = [r"sk_live_[A-Za-z0-9]{10,}", r"AKIA[0-9A-Z]{12,}",
-                   r"AIza[0-9A-Za-z_-]{20,}", r"ghp_[A-Za-z0-9]{20,}",
-                   "securityCode(?:Prefix)?[\\s]*[:=][\\s]*[\x22\x27][A-Za-z0-9_]{4,}[\x22\x27]",
-                   r"-----BEGIN [A-Z ]*PRIVATE KEY-----"]
+    # bug reale (revisione 14 lenti, 2026-08-28): il pattern securityCode era scritto come
+    # stringa NORMALE ('r"...') invece che raw-string (r'...') — i due caratteri iniziali
+    # r" finivano nel VALORE runtime del pattern come testo letterale da cercare, cosa che
+    # codice JS/GS reale non contiene mai davanti a "securityCode". Il rilevatore era di
+    # fatto morto dalla sua prima introduzione (commit "fix B esteso: securityCodePrefix
+    # riconosciuto") — non ha mai riconosciuto nulla. Corretto due volte in due filoni
+    # indipendenti concorrenti con regex diverse; unificato qui prendendo il meglio di
+    # entrambe: "s" finale opzionale (semantica originale, filone locale) + valore con
+    # underscore ammesso + virgoletta di chiusura richiesta (riduce i falsi positivi su
+    # stringhe non terminate, filone su main). Verificato dal vivo con 5 casi (match e
+    # non-match attesi) prima di scriverlo qui.
+    SECRET_PATTERNS = [r"sk_live_[A-Za-z0-9]{10,}", r"AKIA[0-9A-Z]{12,}", r"AIza[0-9A-Za-z_\-]{20,}",
+                       r"ghp_[A-Za-z0-9]{20,}",
+                       r"""securityCode(?:Prefix)?s?\s*[:=]\s*["'][A-Za-z0-9_]{4,}["']""",
+                       r"-----BEGIN [A-Z ]*PRIVATE KEY-----"]
     siti = []
     for f, t in testi.items():
         for pat in SECRET_PATTERNS:

@@ -112,11 +112,22 @@ shift_repo() {
   # Lock per repo (finding #5, 2026-08-21): il turno manuale e quello delle 23:00 non si
   # pestano i piedi. Lock a directory con età: un lock più vecchio di 12h è Considerato morto.
   local LOCK="$WORK/.lock-${REPO//\//_}"
-  if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) )) -lt 43200 ]; then
-    log "REPO $REPO: lock attivo di un altro turno, salto"
-    return 0
+  # bug reale (revisione 14 lenti, 2026-08-28): `mkdir -p` non fallisce mai se la directory
+  # esiste già — il vecchio controllo "-d && età" sopra era comunque non atomico (finestra
+  # fra il test e la creazione), ma la vera falla era qui: due processi in corsa passavano
+  # entrambi il controllo ed entrambi "acquisivano" il lock. Riprodotto dal vivo. `mkdir`
+  # semplice (senza -p) è l'idioma standard per un lock atomico a directory: fallisce con
+  # EEXIST se un altro processo l'ha già creata un istante prima.
+  if ! mkdir "$LOCK" 2>/dev/null; then
+    if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) )) -ge 43200 ]; then
+      log "REPO $REPO: lock scaduto (>12h), rimosso"
+      rmdir "$LOCK" 2>/dev/null
+      mkdir "$LOCK" 2>/dev/null || { log "REPO $REPO: lock attivo di un altro turno, salto"; return 0; }
+    else
+      log "REPO $REPO: lock attivo di un altro turno, salto"
+      return 0
+    fi
   fi
-  mkdir "$LOCK" 2>/dev/null || { log "LOCK occupato: turno già in corso"; exit 0; }
   trap 'rmdir "$LOCK" 2>/dev/null' RETURN
 
   local DIR="$WORK/${REPO##*/}"
@@ -288,7 +299,11 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
     gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte completato: PR bozza pronta per il gate del mattino → $PR_URL" >/dev/null 2>&1
     log "Issue #$NUM: PR creata → $PR_URL"
     PR_CREATED=$((PR_CREATED+1))
-    git -C "$DIR" checkout main -q
+    # bug reale (revisione 14 lenti, 2026-08-28): "main" hardcoded nonostante SAL.md
+    # dichiarasse chiuso il refactor "§2.2 main hardcoded in 6 punti" — restava questo
+    # settimo punto. Su un repo con default branch diverso da "main" falliva silenziosamente
+    # (nessun ||, niente -e) e lasciava $DIR checked-out sull'ultimo branch night/issue-N.
+    git -C "$DIR" checkout "$DB" -q
   done
 
   # bug reale (dogfooding, nuovo ciclo 10 giri): PR_CREATED/FAILED sono `local` a

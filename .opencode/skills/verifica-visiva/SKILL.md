@@ -18,9 +18,13 @@ Google già autenticata nel browser che lo strumento controlla. Senza questo:
 
 ## 1. Metodo
 
-1. `node tools/verifica-visiva.js <url> <percorso-output.png> [selettore-attesa]` — apre l'URL
-   con Chromium (Playwright), aspetta il selettore indicato (default: `body`) o un timeout,
-   salva lo screenshot a schermo intero.
+1. `node tools/verifica-visiva.js <url> <percorso-output.png>` — apre l'URL con Chromium
+   headless via CLI (`--dump-dom` + `--screenshot`, **zero dipendenze nuove**: NON
+   Playwright, assente in questo repo), aspetta un timeout fisso di 8s
+   (`--virtual-time-budget=8000`, nessuna attesa di un selettore — bug reale corretto:
+   revisione 14 lenti, 2026-08-28, questa riga descriveva un comportamento che il tool
+   non ha mai avuto: un terzo argomento verrebbe silenziosamente ignorato), salva lo
+   screenshot a schermo intero.
 2. **Guardia contro il falso verde**: lo strumento controlla anche il testo della pagina per
    segnali di errore comuni di Apps Script ("Autorizzazione richiesta", "Errore di script",
    "exception", pagina vuota sotto una soglia di caratteri) — se ne trova uno, lo script esce
@@ -49,3 +53,13 @@ Non eseguibile da una sessione senza clasp/OAuth locale (es. questa sessione clo
 momento della sua scrittura, 2026-08-21): verificato che il meccanismo Playwright/Chromium
 funziona nell'ambiente (screenshot di una pagina locale), non verificato contro un vero
 deploy Apps Script — richiede il Mac con la sessione Google autenticata.
+
+
+## Vedi anche
+
+Per il metodo completo di sviluppo GAS: skill `gas-sviluppo`.
+
+
+## Vedi anche
+
+La formula da verificare segue la skill `controllo-gestione`.

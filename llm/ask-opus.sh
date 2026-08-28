@@ -31,7 +31,17 @@ trap 'log_ask_usage ask-opus "${#PROMPT}"' EXIT
 # in pipe" da "non c'è nulla ma non è un terminale". Annotato come errore della
 # nota precedente, non un nuovo difetto del sistema — SAL.md ne porta la traccia.
 STDIN_DATA=""
-[ ! -t 0 ] && STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null || true)
+if [ ! -t 0 ]; then
+  # bug reale (revisione 14 lenti, 2026-08-28): allo scadere dei 5s lo stream veniva
+  # troncato SENZA alcun avviso — più grave del "blocca" documentato sopra: qui il
+  # contenuto è silenziosamente CORROTTO (il prompt parte come se fosse completo).
+  # Verificato dal vivo: stream lento (1 riga/2s) troncato a metà entro i 5s.
+  set +e
+  STDIN_DATA=$(ai_timeout 5 cat 2>/dev/null)
+  STDIN_RC=$?
+  set -e
+  [ "$STDIN_RC" -eq 124 ] && echo "ask-opus: ATTENZIONE — lo stdin non è arrivato tutto entro 5s, il contesto potrebbe essere TRONCATO (non solo ritardato)" >&2
+fi
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---

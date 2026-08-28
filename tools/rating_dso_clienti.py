@@ -78,6 +78,12 @@ def main():
             continue
         giorni = (p["data"] - match["data"]).days
         if giorni < 0 or giorni > 365:
+            # bug reale (revisione 14 lenti, 2026-08-28): un pagamento scartato da questa
+            # guardia spariva del tutto — non contato come non-matchato (nonostante il
+            # docstring dichiari "scarto mai silenzioso"), né l'importo né il conteggio
+            # "Non matchati" lo riflettevano. Ora entra in non_matchati come ogni altro
+            # scarto, non solo quelli senza alcun candidato di match.
+            non_matchati.append(p)
             continue  # guardia del codice reale contro i falsi matching
         match["matched"] = True
         c = clienti.setdefault(match["cliente"], {"pagate": 0, "somma_giorni": 0, "non_pagate": 0})

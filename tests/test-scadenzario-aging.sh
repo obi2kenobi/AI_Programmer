@@ -79,6 +79,15 @@ echo "$CLI_OUT" | grep -q "Entrate: +1500.00€" \
   && ok "CLI: entrate = 1500.00€ su due righe cliente" \
   || ko "CLI: entrate inattese — output: $CLI_OUT"
 
+# bug reale (revisione 14 lenti, 2026-08-28): importo_fornitore() era definita e testata
+# in isolamento (sopra) ma MAI chiamata da main() — una riga fornitore attraversava la CLI
+# col segno grezzo di BC, finendo in "entrate" invece che in "uscite". Il test CLI sopra
+# non lo prendeva: usava solo righe cliente. Questo caso esercita il percorso vero.
+CLI_OUT_FORN=$(printf 'tipo,importo,giorni\nFornitore Fattura,1000,10\n' | python3 "$HERE/tools/scadenzario_aging.py")
+echo "$CLI_OUT_FORN" | grep -q "Uscite: -1000.00€" \
+  && ok "CLI: fattura fornitore = uscita -1000.00€ (non entrata)" \
+  || ko "CLI: segno fornitore non applicato — output: $CLI_OUT_FORN"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

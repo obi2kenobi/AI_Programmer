@@ -208,3 +208,31 @@
 - «La regola del produttore batte la maggioranza dei consumatori.»
 - «Chi guarda i `.rej` non vede niente: patch pulita e zero `.rej` può
   significare che una correzione ne ha spenta un'altra.»
+
+- **TEST MANUALE che scrive su produzione senza foglio di scratch** (dal campo
+  REPO-F, 2026-08-27): quando isolare la risorsa non e un opzione a basso costo,
+  la cura e il parametro opt-in DEFAULT-SAFE (`scriviSuProduzione=false` di
+  default): l'editor Apps Script chiama SEMPRE a zero argomenti, quindi il default
+  blocca l'esecuzione accidentale del bottone Esegui senza impedire l'uso
+  deliberato (true da un'altra funzione o dalla console).
+
+- **Prima di privatizzare con l'underscore finale, GREP DEL FRONTEND**: il
+frontend chiama in genere solo i ponti, ma a volte chiama proprio la funzione
+che l'audit vorrebbe privatizzare (dal campo: 4 funzioni salvate dal grep). La
+rinomina giusta e monotona restrittiva SOLO dopo il grep dell'HTML.
+- **Security codes hardcoded nel sorgente**: pattern securityCode/securityCodePrefix
+ seguito da un valore alfanumerico — il rilevatore li cerca ma la forma varia
+da progetto a progetto: aprirli a mano quando la sicurezza e in gioco.
+
+- **CSV/FORMULA INJECTION** (dal dossier SD, 2026-08-28): l'export CSV che
+racchiude i valori tra virgolette senza neutralizzare =, +, -, @ espone a
+injection quando il file viene aperto in Excel/Sheets: una cella malvagia
+diventa formula. Cura: prefissare un apostrofo o raddoppiare le virgolette.
+- **LIBRERIA in developmentMode: true in produzione** (dal dossier SD): lo
+script esegue sempre la versione HEAD non pubblicata della libreria invece
+di una versione fissata — un cambiamento a monte della libreria cambia il
+comportamento di produzione senza deploy.
+- **CACHE STALE CHE RISCRIVE INTERE RIGHE** (dal dossier SD): bulkConfirm
+riusa uno snapshot di 3 minuti prima per riscrivere TUTTE le colonne: ogni
+modifica concorrente fatta nel frattempo viene silenziosamente annullata.
+Cura: riscrivere SOLO le colonne modificate, mai l'intera riga dalla cache.
