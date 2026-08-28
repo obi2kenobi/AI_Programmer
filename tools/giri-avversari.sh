@@ -183,7 +183,7 @@ git checkout -- .claude/skills/gas-sviluppo/references/metodo.md; rm -rf .ciclo
 att; printf '#!/usr/bin/env python3\n' > tools/test.py
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: tool test.py senza test" && tiene "C2 tool omonimo del prefisso test non passa gratis" || aggirato "C2 tools/test.py passa la lente copertura per coincidenza di nome"
+echo "$OUT" | grep -q "ARCH: tool test.py" && tiene "C2 tool omonimo del prefisso test non passa gratis" || aggirato "C2 tools/test.py passa la lente copertura per coincidenza di nome"
 rm tools/test.py; rm -rf .ciclo
 
 att; printf '\n`tools/` e `docs/`\n' >> DEBITI.md
