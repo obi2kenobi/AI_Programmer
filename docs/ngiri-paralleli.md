@@ -89,3 +89,21 @@ Cinquanta giri richiesti, consolidati in 14 lenti realmente distinte: evitare
 passate quasi-duplicate e la stessa disciplina zero-waste applicata al processo
 di revisione stesso. Due lenti che leggono gli stessi file con la stessa domanda
 sono UNA lente; due che li leggono con domande diverse restano due.
+
+
+## La doppia fase e le smentite dichiarate (dal campo Bricoman, 2026-08-28)
+
+50 agenti in DUE FASI: 35 di scoperta + 15 di verifica avversariale.
+Il budget permette di verificare solo i primi 15 per severità: 13 CONFERMATI,
+2 SMENTITI. Le smentite sono la prova che la verifica non e cosmetica:
+l'agente che cerca di confutare a volte CI RIESCE — e il rilievo iniziale
+muore li, dichiarato. (Totale: 153 rilievi grezzi → 59 bug/sicurezza →
+15 verificati → 13 confermati + 2 smentiti + 44 NON VERIFICATI dichiarati.)
+
+## La lente sviluppo-business trova bug, non feature (stesso campo)
+
+Le 3 analisi dedicate a nuove idee hanno convergentemente prodotto BUG e
+debito tecnico invece di funzionalita speculative — coerente con la regola:
+un'idea speculativa senza un caso reale resta non-ancora-matura. Quando la
+lente business trova solo difetti, e il segnale che il codice non e pronto
+per crescere: prima si ripara, poi si costruisce.

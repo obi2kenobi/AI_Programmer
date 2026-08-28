@@ -161,6 +161,7 @@
 - [2026-08-28 — trenta giri di indagine completa: il repo è sano, una guardia nuova per la prosa](#2026-08-28-trenta-giri-di-indagine-completa-il-repo-sano-una-guardia-nuova-per-la-prosa)
 - [2026-08-28 (2) — cinquanta giri nuove lenti: qualità, non solo presenza](#2026-08-28-2-cinquanta-giri-nuove-lenti-qualit-non-solo-presenza)
 - [2026-08-28 (3) — 50 giri 3ª batteria: lenti di evoluzione e cambiamento](#2026-08-28-3-50-giri-3-batteria-lenti-di-evoluzione-e-cambiamento)
+- [2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona](#2026-08-28-4-bricoman-50-agenti-13-confermati-2-smentiti-l-onore-funziona)
 
 
 ## Stato
@@ -3595,3 +3596,20 @@ SAL proiezione 918 voci a 30 giorni (SAL-ARCHIVIO raccomandato entro 7 giorni),
 bc_map senza credenziali esce rc=0 silenziosamente (da correggere). Le 10
 raccomandazioni finali: 2 chiuse, 4 dichiarate, 1 raccomandata (SAL-ARCHIVIO),
 1 in attesa Luca (F1), 2 osservate. Suite 87/87.
+
+### 2026-08-28 (4) — Bricoman 50 agenti: 13 confermati, 2 smentiti, l'onore funziona
+
+Il report più metodologicamente maturo del campo: 50 agenti in DUE FASI (35
+scoperta + 15 verifica avversariale), 153 rilievi grezzi → 59 bug/sicurezza →
+15 verificati per severità → 13 CONFERMATI con node da giudice indipendente,
+2 SMENTITI dichiarati (la verifica non è cosmetica: un agente ha dimostrato
+che sommare zero non cambia il totale, un altro che l'ambiguità era a monte),
+44 NON VERIFICATI dichiarati per budget. Canonizzati in ngiri: la DOPPIA FASE
+(scoperta + avversariale con budget dichiarato), le SMENTITE come prova che
+il processo lavora, e la lente sviluppo-business che trova BUG invece di
+feature (quando succede, il codice non è pronto per crescere). Pattern 34:
+EDIFACT-RELEASE-CHARACTER (lo standard prevede ?' per l'apice nei dati: uno
+split ingenuo spezza il segmento). 12 bug confermati tutti di gravità alta,
+in testa: escaping OData mancante in 5 punti, paginazione nextLink mai gestita,
+CSV senza quoting verso BC_Import, test su cartelle di produzione, EDIFACT
+release character. Report completo in docs/campo/.
