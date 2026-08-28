@@ -87,3 +87,8 @@ skill `goal` (il loop diurno con tetto).
 ## Vedi anche
 
 skill `selezione-contesto` (il budget di fonti prima di iniziare).
+
+## Graphify: naviga il grafo se esiste
+
+Se graphify-out/graph.json esiste nel progetto target, usa
+graphify query "<termine>" PRIMA di grepare. Se non esiste: graphify update .
