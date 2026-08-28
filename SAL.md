@@ -3416,7 +3416,7 @@ Suite 87/87.
 
 ### 2026-08-27 (14) — quattordici lenti su REPO-G: il metodo chiede adottare il metodo
 
-Il terzo giro di prodotto (62 proposte, 14 agenti, HTML保存 in docs/campo) fa
+Il terzo giro di prodotto (62 proposte, 14 agenti, HTML salvato in docs/campo) fa
 due cose notevoli: (1) consolida 50 giri richiesti in 14 lenti realmente
 distinte — la lezione zero-waste applicata al processo di revisione, ora in
 ngiri-paralleli.md; (2) la sezione 12 è il sistema che CHIEDE di adottare il
