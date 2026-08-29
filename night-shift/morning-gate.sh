@@ -43,7 +43,15 @@ echo "# Morning Gate — $(date '+%Y-%m-%d %H:%M')" > "$REPORT"
 echo "" >> "$REPORT"
 TOTAL=0 PASS=0 FAIL=0
 
-for REPO in "${REPO_LIST[@]}"; do
+# 2026-08-29 (E-015): con conf vuoto (o solo commenti) "${REPO_LIST[@]}" sotto
+# set -u su bash 3.2 CRASHA "unbound variable" invece di dirlo — il gate del
+# mattino mancato dal 25/8 per questo. Lista vuota = messaggio pulito, non crash.
+if [ "${#REPO_LIST[@]}" -eq 0 ]; then
+  echo "il gate non ha repo da giudicare: repos.conf vuoto (o solo commenti) e nessun argomento." >&2
+  echo "riempi $CONF (una riga per repo: owner/repo [tipo]) oppure passa le repo come argomenti." >&2
+  exit 1
+fi
+for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
   DIR="$WORK/${REPO##*/}"
   gh pr list -R "$REPO" --state open --json number,headRefName,title,mergeable --limit 50 2>/dev/null \
     | jq -c '.[] | select(.headRefName | test("^night/|^claude/|^glm/"))' > /tmp/gate-prs.json
