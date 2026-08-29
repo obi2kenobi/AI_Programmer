@@ -22,6 +22,9 @@ esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 
 ## 0bis. Lavoro distribuito (a due o più mani — Luca, Lavinia, sessioni)
 
+- **Chi sta toccando cosa ADESSO**: `bash tools/presidio.sh lista` e dichiara la tua
+  zona (`claim`): presenza visibile, non lock — la contesa si risolve parlandosi.
+  Skill completa: `lavoro-condiviso`.
 - **Chi ha in carico cosa**: le commesse sono issue GitHub — usa l'`assignee`
   (`gh issue edit N --add-assignee @utente`): è adozione di ciò che GitHub già
   dà, non un sistema parallelo da inventare.
