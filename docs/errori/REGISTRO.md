@@ -257,3 +257,19 @@
 - Verifica guardia: test-presidio 9/9 dopo la riscrittura; le celle vecchie
   della suite non usano più `cmd | grep -q` su verdetto.
 - Aggiramento: quando serve proprio la pipa: `set +o pipefail` locale al check.
+
+## E-015 Il gate del mattino che crasciava in silenzio sul conf vuoto
+- Data / sessione: 2026-08-29 (domanda di Luca: «come è andato il lavoro notturno?»)
+- Famiglia: R3 (precondizione non chiesta) + R2
+- Sintomo: nessun gate dal 25/8; lanciato a mano: `REPO_LIST[@]: unbound variable`.
+- Causa prossima: lista vuota (conf solo commenti) + `"${REPO_LIST[@]}"` sotto
+  set -u su bash 3.2 = unbound, non lista vuota.
+- Causa del ragionamento: il gate era sempre stato chiamato CON argomenti o da
+  conf pieno: il caso vuoto mai provato. Il silenzio di 4 giorni è sembrato
+  «niente da giudicare», non «il giudice non partiva».
+- Perché non ci ha fermati: il morning-gate logga il proprio completamento:
+  l'assenza di log nuova non alertava nessuno.
+- Guardia: night-shift/morning-gate.sh (messaggio pulito + exit 1 su lista
+  vuota; ${arr[@]+...} per bash 3.2).
+- Verifica guardia: lanciato senza args/conf → messaggio e rc=1 (provato).
+- Aggiramento: chiamare il gate con le repo esplicite (come fatto fino al 25).
