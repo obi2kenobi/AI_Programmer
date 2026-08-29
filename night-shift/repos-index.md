@@ -46,3 +46,13 @@ reale resta solo in `night-shift/repos.key`.
 Codice per il repo pubblico github.com/obi2kenobi/Centrale_Rischi (adempimento Banca
 d'Italia, GAS). Usato come banco di prova del metodo 2026-08-29. Il prefisso REPO-CR
 nei pattern dichiara l'ancora ESTERNA all'hub senza anonimizzare una repo pubblica.
+## REPO-O — gestionale parrocchie (PRIVATA, frazu2003-lab)
+Gestionale parrocchiale (patrimonio, scadenzario, schede persona): schema v7, 22 commit,
+26 difetti corretti al banco, 5 suite verdi (89 controlli) come .night-verify di fatto.
+Report: docs/campo/2026-08-29-repo-o-standard-adoption.md. Onboarding richiesto ed eseguito.
+
+## REPO-P — rendiconto parrocchie (progetto NUOVO, non ancora su GitHub)
+Utilità autonoma per il rendiconto annuale (estratto conto → schema del destinatario):
+passi 0-2 fatti e provati, fermata al passo 3 di proposito (mancano gli estratti veri,
+lista materiali in DEBITI del progetto). Nasce da specifica v5 con documenti vivi PRIMA
+del codice. Onboarding quando arriva su GitHub.
