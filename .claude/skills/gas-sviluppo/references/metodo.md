@@ -304,6 +304,16 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Il segreto in sessione cloud: variabile d'ambiente del proprietor (dal campo Centrale_Rischi, 2026-08-28)
+
+La regola «mai segreti in chiaro» copre codice e commit; il caso scoperto sul campo è
+la sessione CLOUD (Claude Code Remote) senza filesystem condiviso: lì «scrivi il
+segreto in un file e dammi il percorso» NON è eseguibile. L'unico canale pulito è una
+variabile d'ambiente dell'environment, impostata dal proprietor FUORI dalla
+conversazione. Le alternative sporche (segreto incollato in chat, mai) restano vietate:
+se l'ambiente non permette nemmeno la env var, il lavoro che richiede il segreto si
+FERMA e si dichiara — non si trova un «modo veloce».
+
 ## Prima mossa sui progetti multi-copia: l'allineamento (dal campo, 2026-08-29)
 
 Il fallimento ricorrente: si lavora sulla propria copia (spesso la più vecchia),

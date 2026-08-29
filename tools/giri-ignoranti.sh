@@ -114,7 +114,9 @@ NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
 
 # S9 — repos-index: i codici sono REPO-[A-N] e basta (G7: un codice fuori schema aggiunto in
 #   silenzio non faceva diventare rosso niente)
-IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-[A-N]$" | sort -u | tr '\n' ' ')
+# schema: REPO-[A-N] = repo private anonimizzate; REPO-CR = repo PUBBLICA di Luca
+# (Centrale_Rischi) citabile per nome — dichiarata nel repos-index (2026-08-29)
+IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-([A-N]|CR)$" | sort -u | tr '\n' ' ')
 [ -z "$IDX_ROTTO" ] && sonda 0 "S9 repos-index usa solo codici REPO-[A-N]" || sonda 1 "S9 codici fuori schema:$IDX_ROTTO"
 
 # S10 — link pendenti: ogni path in backtick nel canone, nelle skill e nei doc

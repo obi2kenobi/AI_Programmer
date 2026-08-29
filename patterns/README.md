@@ -54,3 +54,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [pipefail-grep-sigpipe](pipefail-grep-sigpipe.md) | tools/ciclo-vivo.sh (lente collegamenti) | 2026-08-28 |
 | [confronto-non-vuoto](confronto-non-vuoto.md) | tests/test-opencode-agent-sync.sh:corpo() | 2026-08-28 |
 | [gas-vivo-definitivo](gas-vivo-definitivo.md) | skills/allineamento-fork (regola 1) | 2026-08-29 |
+| [estrazione-llm-spezzata](estrazione-llm-spezzata.md) | Centrale_Rischi loops/2026-08-28 (spike misurato) | 2026-08-29 |
