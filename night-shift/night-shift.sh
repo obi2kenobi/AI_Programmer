@@ -23,6 +23,15 @@ source "$HERE/lib.sh"
 CONF="$HERE/repos.conf"
 LOG="$HOME/night-shift.log"
 rotate_log_if_big "$LOG"
+
+# 2026-08-29 (dal campo): la copia operativa era 5 commit indietro e la notte ha
+# girato col metodo stantio. Il turno si aggiorna DA SOLO prima di partire:
+# l'hub è un repo git, pull --ff-only (mai merge automatici nel turno).
+if git -C "$HERE" pull -q --ff-only >/dev/null 2>&1; then
+  log "Hub aggiornato all'ultimo metodo prima del turno"
+else
+  log "ATTENZIONE: hub non aggiornabile (pull --ff-only fallito) — il turno gira col metodo che c'e'"
+fi
 WORK="$HOME/night-shift-work"
 MODEL_TAG="qwen3.8:27b-mtp-q4_K_M"
 OCPROVIDER="ollama/$MODEL_TAG"
@@ -252,7 +261,7 @@ shift_repo() {
       MIRROR_LIST=$(grep -vE '^\s*#|^\s*$' "$DIR/.night-mirror" | tr '\n' ',' | sed 's/,$//')
       [ -n "$MIRROR_LIST" ] && MIRROR_NOTE=" Cartelle specchio/sola lettura DICHIARATE da questa repo (.night-mirror), non scriverci MAI: $MIRROR_LIST."
     fi
-    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
+    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. ANTI-LOOP (lezione dalla notte 2026-08-28): se ti accorgi che stai riformulando lo stesso piano senza avere ancora scritto niente, SMETTI di rileggere e scrivi ORA la modifica più piccola che fa avanzare; un piano già chiaro non si rilegge, si esegue. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
 
 Issue #$NUM: $TITLE
 
@@ -260,6 +269,18 @@ $BODY"
 
     # NESSUN LIMITE DI TEMPO (decisione 2026-08-21). cd nel subshell: dentro la repo.
     ( cd "$DIR" && opencode run --model "$OCPROVIDER" "$PROMPT" ) >> "$LOG" 2>&1
+
+    # Rilevatore di loop-di-riletture (notte 2026-08-28: piano identico ripetuto
+    # 5+ volte, zero modifiche, turno bruciato): dopo l'esecuzione si guarda la
+    # coda del log — N righe consecutive identiche e non vuote = loop dichiarato.
+    local CODA
+    CODA=$(tail -40 "$LOG" | grep -vE '^[[:space:]]*$' | uniq -c | sort -rn | head -1)
+    local NREP
+    NREP=$(echo "$CODA" | awk '{print $1}')
+    if [ "${NREP:-0}" -ge 3 ]; then
+      log "⚠ issue #$NUM: LOOP DI RIPLETTURA rilevato ($NREP ripetizioni consecutive senza esecuzione) — issue lasciata aperta; il piano già scritto nel log è il punto di ripartenza, non un punto da rifare"
+      echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$NUM,loop-rilettura,—," >> "${HUB_METRICS:-/dev/null}" 2>/dev/null || true
+    fi
     local OP_RC=$?
     pkill -f "opencode run" 2>/dev/null
 
