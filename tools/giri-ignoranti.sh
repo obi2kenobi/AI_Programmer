@@ -116,7 +116,9 @@ NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
 #   silenzio non faceva diventare rosso niente)
 # schema: REPO-[A-N] = repo private anonimizzate; REPO-CR = repo PUBBLICA di Luca
 # (Centrale_Rischi) citabile per nome — dichiarata nel repos-index (2026-08-29)
-IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-([A-N]|CR)$" | sort -u | tr '\n' ' ')
+# schema: REPO-[A-N] private, REPO-CR pubblica di Luca, REPO-O/P assegnate 2026-08-29
+# (la tabella dei codici cresce: quando superano l'alfabeto, si dichiarano qui)
+IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-([A-NP]|CR)$" | sort -u | tr '\n' ' ')
 [ -z "$IDX_ROTTO" ] && sonda 0 "S9 repos-index usa solo codici REPO-[A-N]" || sonda 1 "S9 codici fuori schema:$IDX_ROTTO"
 
 # S10 — link pendenti: ogni path in backtick nel canone, nelle skill e nei doc
