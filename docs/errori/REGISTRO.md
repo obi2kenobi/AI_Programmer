@@ -235,3 +235,25 @@
   attacco C6 degli avversari).
 - Aggiramento: rilettura umana dei diff per i testi in prosa; la lente per
   tutto il resto.
+
+## E-014 La trappola pipefail-grep-q che rinasce in ogni test nuovo
+- Data / sessione: 2026-08-29 (test-presidio, terza ricorrenza in due giorni)
+- Famiglia: R5 (memoria contro realtà) + R2
+- Sintomo: il test nuovo falliva proprio quando lo strumento funzionava (la
+  CONTESA urlata non vista, il rilascio riuscito dichiarato fallito).
+- Causa prossima: `cmd | grep -q X` con cmd multi-riga sotto pipefail: grep -q
+  esce al primo match, cmd prende SIGPIPE, la pipeline dà 141 → il ramo `|| ko`
+  scatta. Variante inedita scoperta insieme: `grep -c X file | grep -q "^0$"`
+  — grep -c esce 1 quando conta ZERO, la pipeline fallisce quando è VERO.
+- Causa del ragionamento: so scrivere la pipa prima di ricordare che sotto
+  pipefail il verdetto è della pipeline intera, non dell'ultimo comando. È la
+  terza volta CHE LA SCRIVO NUOVA sapendola — la conoscenza di un pattern non
+  immunizza dal riscriverlo: solo la forma catturata-prima lo fa.
+- Perché non ci ha fermati: i test fallivano in direzione «male» plausibile.
+- Guardia: tests/test-presidio.sh (la forma catturata-prima, con il commento
+  che spiega perché la pipa è vietata) + questa voce come memoria viva. La
+  regola portatile: nei test, `OUT=$(cmd || true)` prima di greppare; per i
+  conteggi-zero `! grep -q`, mai `grep -c | grep -q`.
+- Verifica guardia: test-presidio 9/9 dopo la riscrittura; le celle vecchie
+  della suite non usano più `cmd | grep -q` su verdetto.
+- Aggiramento: quando serve proprio la pipa: `set +o pipefail` locale al check.

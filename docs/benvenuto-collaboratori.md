@@ -13,6 +13,15 @@
 3. **Alla chiusura**: «Scrivi il report dal campo in docs/campo/ di oggi
    (tre righe bastano; "nessuna proposta" dichiarata conta).»
 
+## Se lavoriamo in due sullo stesso repo nello stesso momento
+
+Prima mossa: `bash tools/presidio.sh lista` — chi c'è adesso e su quale zona.
+Poi dichiara la tua: `bash tools/presidio.sh claim <zona> <nota>` (scade da solo
+dopo 4 ore, pusha presto: la presenza visibile è quella che arriva all'altro).
+I diari (SAL, report di campo, PRESIDI.md) sono append-only col merge union: due
+mani insieme non perdono niente. Il codice va su rami separati, una mano un ramo
+una PR. Skill completa: `lavoro-condiviso`.
+
 ## Se il progetto esiste in più copie (repo, fork, GAS vivo)
 
 Prima mossa OBBLIGATORIA: skill `allineamento-fork` — si decide la base di

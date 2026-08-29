@@ -50,6 +50,7 @@
 - [2026-08-29 (2) — I 200 giri del COLLEGAMENTO TOTALE: censito, collegato, funzionante, affinato](#2026-08-29-2-i-200-giri-del-collegamento-totale-censito-collegato-funzionante-affinato)
 - [2026-08-29 (3) — I 100 giri ASSURDI: probe improbabili, pensiero disallineato, e due trucchetti](#2026-08-29-3-i-100-giri-assurdi-probe-improbabili-pensiero-disallineato-e-due-trucchetti)
 - [2026-08-29 (4) — I 100 giri sull'ALLINEAMENTO FORK: la prima mossa decisa prima delle modifiche](#2026-08-29-4-i-100-giri-sull-allineamento-fork-la-prima-mossa-decisa-prima-delle-modifiche)
+- [2026-08-29 (5) — I 100 giri di MULTIUTENZA: il presidio, la presenza che si fonde da sola](#2026-08-29-5-i-100-giri-di-multiutenza-il-presidio-la-presenza-che-si-fonde-da-sola)
 
 
 ## Stato
@@ -1004,3 +1005,35 @@ regola vincolante in CLAUDE.md §1 e sezione nel metodo, benvenuto-collaboratori
 Il sistema ha preteso il pedaggio alla consegna: S10 dichiarava pendente FORK-STATO.md
 (file-del-target: esclusione imparata), S11 dava il pattern nuovo come isola (agganciato),
 skills-structure idem con le backtick di gas-src. Suite 120/120.
+
+### 2026-08-29 (5) — I 100 giri di MULTIUTENZA: il presidio, la presenza che si fonde da sola
+
+Su richiesta di Luca: due o più utenti con AI_Programmer sullo stesso repo nello stesso
+momento — sistemi per il lavoro condiviso e distribuito.
+
+**La fondazione c'era già ed è VERIFICATA SUL CAMPO oggi**: il merge union su SAL e
+report di campo — due cloni, due append, merge → ENTRAMBE le righe sopravvivono, zero
+conflitti (esperimento ripetuto, non presunto). L'assignee GitHub per le commesse, la
+notte centralizzata per disegno.
+
+**Il pezzo che mancava: la presenza in tempo reale.** tools/presidio.sh — il registro
+dei presidii («sto toccando gli oracoli fino alle 14:30, note»): claim/lista/rilascia,
+scadenza 4h con potatura DICHIARATA, contesa urlata quando due CHI distinti dichiarano
+la stessa zona. PRESIDI.md è append-only col driver union: i presidii di due cloni si
+fondono da soli al merge. Identità: PRESIDIO_USER esplicito vince sul git config (due
+utenti possono provare sullo stesso clone). NESSUN LOCK: visibilità, non permesso — la
+contesa si risolve parlandosi, un lock distribuito fingerebbe il contrario.
+
+**La skill lavoro-condiviso**: le tre classi di file (append-only: due mani SICURE;
+codice: una mano un ramo una PR; stato locale: ogni clone il suo ciclo), la disciplina
+del push (pull --rebase prima, mai force su condivisi, i diari si pushano spesso),
+la contesa come allerta non divieto. AGENTS §0bis esteso, benvenuto collaboratori
+aggiornato, verbo nel menu.
+
+**E la lezione che si è data da sola (E-014 nel registro)**: il test nuovo del
+presidio è caduto DUE VOLTE nella trappola pipefail-grep-q — `cmd | grep -q` sotto
+pipefail inverte il verdetto proprio quando funziona (SIGPIPE, 141) — TERZA ricorrenza
+in due giorni, stavolta scritta NUOVA da chi il pattern l'aveva catalogato. Con
+variante inedita: `grep -c | grep -q "^0$"` fallisce quando conta zero (grep -c esce
+1). La regola ormai è forma, non sapere: nei test si cattura l'output prima. Suite
+121/121.
