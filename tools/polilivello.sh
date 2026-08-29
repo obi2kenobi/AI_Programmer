@@ -42,7 +42,9 @@ echo ""
 echo "### Dipendenze esterne"
 grep -rlE "UrlFetchApp" "$DIR" --include='*.js' --include='*.gs' 2>/dev/null | head -3 | sed 's/^/  UrlFetch: /'
 grep -rhoE "ODataV4|Business Central|graph\.microsoft|api\.businesscentral" "$DIR" --include='*.js' --include='*.gs' 2>/dev/null | sort -u | head -3 | sed 's/^/  BC: /'
-grep -rlE "PropertiesService" "$DIR" --include='*.js' --include='*.gs' 2>/dev/null | head -3 | semi=$(cat) && echo "$semi" | sed 's/^/  Properties: /'
+# (riga riparata 2026-08-29 al PRIMO uso esterno — Centrale_Rischi: un avanzo
+# di scrittura `| semi=$(cat)` mandava unbound-variable alla riga Properties)
+grep -rlE "PropertiesService" "$DIR" --include='*.js' --include='*.gs' 2>/dev/null | head -3 | sed 's/^/  Properties: /' || true
 echo ""
 
 # --- L4: semi di meccanica ---

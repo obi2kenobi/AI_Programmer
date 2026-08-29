@@ -51,6 +51,7 @@
 - [2026-08-29 (3) — I 100 giri ASSURDI: probe improbabili, pensiero disallineato, e due trucchetti](#2026-08-29-3-i-100-giri-assurdi-probe-improbabili-pensiero-disallineato-e-due-trucchetti)
 - [2026-08-29 (4) — I 100 giri sull'ALLINEAMENTO FORK: la prima mossa decisa prima delle modifiche](#2026-08-29-4-i-100-giri-sull-allineamento-fork-la-prima-mossa-decisa-prima-delle-modifiche)
 - [2026-08-29 (5) — I 100 giri di MULTIUTENZA: il presidio, la presenza che si fonde da sola](#2026-08-29-5-i-100-giri-di-multiutenza-il-presidio-la-presenza-che-si-fonde-da-sola)
+- [2026-08-29 (6) — Banco di prova su Centrale_Rischi: il metodo tiene dallo studio alla PR](#2026-08-29-6-banco-di-prova-su-centrale_rischi-il-metodo-tiene-dallo-studio-alla-pr)
 
 
 ## Stato
@@ -1037,3 +1038,29 @@ in due giorni, stavolta scritta NUOVA da chi il pattern l'aveva catalogato. Con
 variante inedita: `grep -c | grep -q "^0$"` fallisce quando conta zero (grep -c esce
 1). La regola ormai è forma, non sapere: nei test si cattura l'output prima. Suite
 121/121.
+
+### 2026-08-29 (6) — Banco di prova su Centrale_Rischi: il metodo tiene dallo studio alla PR
+
+200 giri di autonomia su un progetto VERO (iniziato ieri come test del metodo):
+issue #2 ferma alla regola «tre tentativi poi architettura» per la latenza reale
+misurata in produzione. Consegnata l'architettura: PIPELINE A RIPRESA (Pipeline.gs)
+— OCR una volta, pagine in tab nascosto, chunk ≤8 pagine o 4,5 min, checkpoint,
+trigger che rigenera se stesso, retry≤2 poi dichiarata fallita, abort umano che non
+cancella i fatti compiuti. Banco test-pipeline.js: 7 attese, HA TROVATO PRIMA DEL
+DEPLOY il bug del cursore (le pagine fallite restavano dietro il cursore: il retry
+non sarebbe mai scattato in produzione). PR #7 aperta, deploy all'umano per regola.
+
+**Il processo giudicato dal campo**: (1) il banco-prima-del-deploy non è cerimonia —
+il bug era invisibile a occhio; (2) polilivello regge sul bersaglio esterno e il SUO
+bug è emerso al primo uso vero (riga Properties con avanzo di scrittura: riparata
+con la provenienza nella riga); (3) il loop di ieri CHIEDEVA due portate al hub e
+oggi sono arrivate: pattern estrazione-llm-spezzata (anti-pattern monolitico
+MISURATO + la forma a ripresa) e la lezione del segreto in sessione cloud (env var
+del proprietor, mai incollata in chat) nel metodo.
+
+**Migliorie proposte dal campo** (nel report): sonda PROJECT.md-stale per i repo
+target; stub GAS riutilizzabile per i banco node-vm (Stato+Trigger); checklist
+post-deploy templata nelle PR. Nuovo codice REPO-CR nel repos-index (repo pubblica:
+citanile per nome — S9 estesa CON dichiarazione, non in silenzio).
+
+Report: docs/campo/2026-08-29-centrale-rischi-banco-di-prova.md. Suite 121/121.
