@@ -35,6 +35,8 @@ for cmd in llm/ask-qwen.sh llm/ask-opus.sh llm/ask-glm.sh night-shift/night-shif
   ln -sf "$HUB/$cmd" "$BIN/$name"
 done
 echo "  comandi: ask-qwen ask-opus ask-glm night-shift morning-gate"
+# il pre-commit dell'hub (controlli rapidi: glifi, CRLF, link pendenti)
+git -C "$HUB" config core.hooksPath .githooks 2>/dev/null && echo "  pre-commit attivo (core.hooksPath)"
 
 # --- Config locale della coda --------------------------------------------------
 step "repos.conf (coda locale, gitignored)"

@@ -141,6 +141,12 @@ for p in pendenti[:8]: print(f"     pendente: {p}")
 sys.exit(1 if pendenti else 0)
 EOF
 
+# S10bis — file CRLF: un tool editato su Windows passa bash -n e MUORE
+#   all'esecuzione con "\r: command not found" (proba assurda D: bash -n
+#   silenzioso, il danno appare solo a runtime). Il byte \r nei .sh si dichiara.
+CRLF=$(grep -rlP '\r$' "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/tests/*.sh 2>/dev/null | head -3)
+[ -z "$CRLF" ] && sonda 0 "S10bis nessuno script con fine-riga CRLF" || sonda 1 "S10bis script CRLF (muoiono a runtime): $CRLF"
+
 # S11 — il grafo dei pattern è CONNESSO: ogni pattern è citato da almeno un
 #   altro pattern (Vedi anche, backtick). Il catalogo non ha isole: un pattern
 #   che nessuno cita è una lezione che nessuno ritrova (200 giri: 21 isole
@@ -155,7 +161,9 @@ for f in glob.glob(f'{here}/patterns/*.md'):
     m = re.findall(r'\*\*Vedi anche\*\*:\s*(.+)', open(f, errors='ignore').read())
     nomi = re.findall(r'`([a-z0-9-]+)`', m[0]) if m else []
     grafo[f.split('/')[-1][:-3]] = nomi
-citati = {v for vs in grafo.values() for v in vs}
+# l'AUTOCITAZIONE non è una connessione (proba assurda: un pattern che si
+# cita solo da sé risultava «collegato» — il narcisismo non conta)
+citati = {v for p, vs in grafo.items() for v in vs if v != p}
 isole = sorted(p for p in grafo if p not in citati)
 for p in isole: print(f"     isola: {p}")
 sys.exit(1 if isole else 0)

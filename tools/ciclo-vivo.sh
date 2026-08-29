@@ -21,6 +21,18 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 MEMORIA="$HERE/.ciclo"
 mkdir -p "$MEMORIA"
 
+# PROBA ASSURDA 2026-08-29 (due giri in simultanea): entrambi leggevano giro=N,
+# entrambi scrivevano N+1 — un giro PERSO. La memoria del ciclo è una risorsa
+# condivisa: il lock è mkdir (atomico), chi lo trova occupato aspetta e riparte.
+# È il pattern lock-per-risorsa, applicato dall'autore del pattern a se stesso.
+LOCK="$MEMORIA/lock"
+I=0
+until mkdir "$LOCK" 2>/dev/null; do
+  I=$((I+1)); [ $I -gt 50 ] && { echo "ciclo-vivo: lock occupato da troppi giri — esco senza toccare la memoria" >&2; exit 1; }
+  sleep 0.2
+done
+trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+
 GIRO=$(cat "$MEMORIA/giro" 2>/dev/null || echo 0)
 GIRO=$((GIRO + 1))
 echo "$GIRO" > "$MEMORIA/giro"
