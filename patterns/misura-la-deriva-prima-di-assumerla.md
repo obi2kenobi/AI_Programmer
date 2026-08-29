@@ -12,4 +12,4 @@ che include i fix stessi), e con diff whitespace-insensitive (il round-trip
 di clasp normalizza: 11 file byte-diversi, 3 semanticamente diversi). Solo
 dopo aver misurato si torna con una proposta scalata alla deriva REALE.
 
-**Vedi anche**: `regola-provata-non-assunta` · `chiave-stabile-etichetta-libera`
+**Vedi anche**: `regola-provata-non-assunta` · `chiave-stabile-etichetta-libera` · `gas-vivo-definitivo`

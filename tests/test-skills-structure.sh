@@ -37,7 +37,9 @@ check_referenced_paths() {
       # falsi positivi, mai visti prima perché audit-commessa/dev-critic non erano mai
       # stati controllati): "se esiste X nel progetto" è una condizionale su un
       # progetto ONBOARDATO, non un'affermazione che X esista in questo hub.
-      docs/GRAMMATICA_DOMINIO.md|CATALOGO_ENDPOINT_BC.md) continue ;;
+      # file-del-target: unica fonte in tools/.file-del-target (dal 2026-08-29
+      # anche questo test la legge, non la duplica)
+      *) grep -qxF "$ref" "$HERE/tools/.file-del-target" 2>/dev/null && continue ;;
       # gas/Sp.js e tools/test-sp.js appartengono al debito privacy già tracciato in
       # DEBITI.md (4° ciclo, Set 1 giro 7: nomi di repo esterni pre-esistenti, fuori
       # scope finché Luca non chiede una bonifica) — non toccarli qui, non farli

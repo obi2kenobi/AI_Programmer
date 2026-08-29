@@ -49,6 +49,7 @@
 - [2026-08-29 — I 100 giri sulla COMPRENSIONE: polilivello, le domande di senso, il brainstorming generativo](#2026-08-29-i-100-giri-sulla-comprensione-polilivello-le-domande-di-senso-il-brainstorming-generativo)
 - [2026-08-29 (2) — I 200 giri del COLLEGAMENTO TOTALE: censito, collegato, funzionante, affinato](#2026-08-29-2-i-200-giri-del-collegamento-totale-censito-collegato-funzionante-affinato)
 - [2026-08-29 (3) — I 100 giri ASSURDI: probe improbabili, pensiero disallineato, e due trucchetti](#2026-08-29-3-i-100-giri-assurdi-probe-improbabili-pensiero-disallineato-e-due-trucchetti)
+- [2026-08-29 (4) — I 100 giri sull'ALLINEAMENTO FORK: la prima mossa decisa prima delle modifiche](#2026-08-29-4-i-100-giri-sull-allineamento-fork-la-prima-mossa-decisa-prima-delle-modifiche)
 
 
 ## Stato
@@ -973,3 +974,33 @@ caratteri (già presidiato dal ciclo lens 4d), git quotepath (l'escape della à)
 La batteria ignorante ora conta 12 sonde (S10bis CRLF nuova). Suite 119/119,
 banco PASSAGGIO CHIUSO. E la copertura ha preteso i test dei due trucchetti
 stessi: il sistema chiede a chiunque, anche a chi gli sta costruendo il negozio.
+
+### 2026-08-29 (4) — I 100 giri sull'ALLINEAMENTO FORK: la prima mossa decisa prima delle modifiche
+
+Problema di Luca, detto con precisione: si lavora sul nostro repo (magari il più vecchio),
+si fanno modifiche, POI ci si accorge del fork — e qualunque cosa si faccia a quel punto
+è confusione e disallineamento. E per i GAS: il vivo è SEMPRE l'elemento definitivo, in
+produzione, mai un'ipotesi.
+
+**La skill allineamento-fork** (specchiata opencode): cinque mosse in ordine vincolato —
+enumera le copie (anche quelle dimenticate), LEGGI IL VIVO (clasp clone fresco; illeggibile
+= DEGRADATO dichiarato, non silenzioso), misura la deriva, decidi con la TABELLA M4, scrivi
+FORK-STATO.md. La tabella è il «da farsi sin da subito»: vivo avanti → il vivo è la base e
+prima si allinea la copia; fork avanti → si lavora lì SAPENDO che le sue modifiche non
+deployate sono ipotesi; la tua copia indietro su tutti → NON si tocca niente finché non
+si allinea. Tre regole non negoziabili, la prima in maiuscolo: IL GAS VIVO È DEFINITIVO —
+si legge, non si immagina; «dovrebbe essere così» è la frase vietata.
+
+**tools/fork-stato.sh**: la misura (N copie → file, righe, impronta NORMALIZZATA —
+formattazione non conta come deriva — matrice, verdetto con la regola del vivo e l'ordine
+di scrivere lo stato). Scoperto sul campo: bash 3.2 di macOS non ha declare -A (gli array
+indicizzati bastavano). Test in sandbox: 8 contratti incluse la formattazione-non-deriva
+e la copia inesistente.
+
+**Pattern gas-vivo-definitivo** nel catalogo (42 voci, agganciato da misura-la-deriva),
+regola vincolante in CLAUDE.md §1 e sezione nel metodo, benvenuto-collaboratori aggiornato
+(chi arriva per la prima volta legge la regola della prima mossa), verbo in help.sh.
+
+Il sistema ha preteso il pedaggio alla consegna: S10 dichiarava pendente FORK-STATO.md
+(file-del-target: esclusione imparata), S11 dava il pattern nuovo come isola (agganciato),
+skills-structure idem con le backtick di gas-src. Suite 120/120.
