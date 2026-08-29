@@ -53,7 +53,7 @@
 - [2026-08-29 (5) — I 100 giri di MULTIUTENZA: il presidio, la presenza che si fonde da sola](#2026-08-29-5-i-100-giri-di-multiutenza-il-presidio-la-presenza-che-si-fonde-da-sola)
 - [2026-08-29 (6) — Banco di prova su Centrale_Rischi: il metodo tiene dallo studio alla PR](#2026-08-29-6-banco-di-prova-su-centrale_rischi-il-metodo-tiene-dallo-studio-alla-pr)
 - [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
-- [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate)
+- [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate-report-2026-08-29-repo-o-standard-adoption)
 
 
 ## Stato
@@ -1089,7 +1089,7 @@ probe→banco-passaggio, albero-sporco→avversari, fossile→ciclo-test, regola
 report-campo: **11/11 vive**, suite 121/121. Le lezioni non sono ricordi: sono
 file che arrossiscono.
 
-### 2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate
+### 2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)
 
 Arrivato il report di due progetti nuovi (gestionale parrocchiale schema v7 + rendiconto
 annuale nato dai documenti vivi): 26 difetti corretti TUTTI dimostrati al banco, 5 suite
