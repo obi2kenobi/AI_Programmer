@@ -271,5 +271,6 @@
   l'assenza di log nuova non alertava nessuno.
 - Guardia: night-shift/morning-gate.sh (messaggio pulito + exit 1 su lista
   vuota; ${arr[@]+...} per bash 3.2).
-- Verifica guardia: lanciato senza args/conf → messaggio e rc=1 (provato).
+- Verifica guardia: lanciato senza args/conf → messaggio e rc=1 (provato);
+  tests/test-morning-digest.sh presidia il battito (GIUDICE FERMO se gate non completa).
 - Aggiramento: chiamare il gate con le repo esplicite (come fatto fino al 25).
