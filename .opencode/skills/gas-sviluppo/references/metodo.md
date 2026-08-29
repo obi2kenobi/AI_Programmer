@@ -304,6 +304,16 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Prima mossa sui progetti multi-copia: l'allineamento (dal campo, 2026-08-29)
+
+Il fallimento ricorrente: si lavora sulla propria copia (spesso la più vecchia),
+si modifica, POI si scopre il fork disallineato — e qualunque riconciliazione a
+cose fatte è confusione. La regola: PRIMA si decide la base (skill `allineamento-fork`,
+tabella M4), POI si tocca un file. E per i GAS: **IL VIVO È DEFINITIVO, IN PRODUZIONE,
+MAI UN'IPOTESI** — si legge (clasp clone fresco), non si immagina; se non si può
+leggere, DEGRADATO dichiarato. La deriva si misura: `tools/fork-stato.sh <copie>`,
+e lo stato si scrive (FORK-STATO.md), non si ricorda. Pattern: `gas-vivo-definitivo`.
+
 ## Graphify: il grafo del progetto TARGET, non dell'hub (2026-08-28)
 
 Quando il metodo lavora su un progetto esterno, graphify censisce QUEL progetto:
@@ -328,4 +338,5 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 **Concorrenza e risorse**: `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
 **Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
 **Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping`
+**Architettura GAS**: `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa)
 **Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto`

@@ -1,0 +1,12 @@
+# File-del-target: citati nell'hub ma creati NEI PROGETTI DI DESTINAZIONE
+# (il metodo li ordina, non li contiene). Unica fonte: la leggono
+# giri-ignoranti S10, tests/test-skills-structure e tools/pre-commit.
+# Nati ognuno da un falso positivo beccato sul campo.
+CATALOGO_ENDPOINT_BC.md
+docs/GRAMMATICA_DOMINIO.md
+FORK-STATO.md
+Test.js
+appsscript.json
+ValuationConfig.js
+gas/Sp.js
+tools/test-sp.js

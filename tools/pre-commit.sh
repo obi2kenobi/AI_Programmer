@@ -29,9 +29,11 @@ CRLF=$(git diff --cached --name-only 2>/dev/null | grep -E '\.(sh|py)$' | xargs 
 #    prima di dichiararlo pendente — altrimenti l'hook blocca la convenzione
 #    invece del difetto (successo alla prima: il commit di chi scriveva l'hook).
 PEND=""
+TARGET=$(grep -vE '^#|^$' "$HERE/tools/.file-del-target" 2>/dev/null || true)
 while IFS= read -r f; do
   [ -f "$f" ] || continue
   while IFS= read -r m; do
+    echo "$TARGET" | grep -qxF "$m" && continue          # file-del-target: nel progetto, non qui
     [ -e "$m" ] || [ -e "tools/$m" ] || [ -e "docs/campo/$m" ] || PEND="$PEND $f: $m"
   done < <(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$f" | tr -d '`')
 done < <(git diff --cached --name-only 2>/dev/null | grep '\.md$')

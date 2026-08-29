@@ -53,3 +53,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [ambiente-censimento-dichiarato](ambiente-censimento-dichiarato.md) | REPO-N | 2026-08-28 |
 | [pipefail-grep-sigpipe](pipefail-grep-sigpipe.md) | tools/ciclo-vivo.sh (lente collegamenti) | 2026-08-28 |
 | [confronto-non-vuoto](confronto-non-vuoto.md) | tests/test-opencode-agent-sync.sh:corpo() | 2026-08-28 |
+| [gas-vivo-definitivo](gas-vivo-definitivo.md) | skills/allineamento-fork (regola 1) | 2026-08-29 |

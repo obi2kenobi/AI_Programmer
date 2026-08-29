@@ -50,6 +50,13 @@ The project's knowledge lives in versioned `.md` documents kept current as you w
 
 ---
 
+### Prima mossa su un progetto multi-copia: l'allineamento
+Se il progetto esiste in più copie (repo, fork, mirror gas-src, GAS vivo): la base
+di lavoro si decide PRIMA delle modifiche (skill `allineamento-fork`). Per i GAS:
+**il vivo è definitivo, in produzione, mai un'ipotesi** — si legge con clasp, non si
+immagina; illeggibile = DEGRADATO dichiarato. La deriva si misura (`tools/fork-stato.sh`)
+e lo stato si scrive (FORK-STATO.md).
+
 ## 2. Code Rules
 
 ### Only what is asked

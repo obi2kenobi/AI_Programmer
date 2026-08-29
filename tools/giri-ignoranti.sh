@@ -129,8 +129,10 @@ here = sys.argv[1]
 zone = (glob.glob(f'{here}/.claude/skills/*/SKILL.md') + glob.glob(f'{here}/.claude/skills/*/references/*.md')
         + glob.glob(f'{here}/.claude/agents/*.md') + glob.glob(f'{here}/docs/*.md')
         + [f'{here}/README.md', f'{here}/METHOD.md', f'{here}/CLAUDE.md', f'{here}/AGENTS.md'])
-ESCLUSE = {'CATALOGO_ENDPOINT_BC.md', 'docs/GRAMMATICA_DOMINIO.md', 'Test.js', 'appsscript.json',
-           'ValuationConfig.js', 'gas/Sp.js', 'tools/test-sp.js'}
+# la lista è UNA per tutto l'hub: tools/.file-del-target (la leggono anche
+# pre-commit e test-skills-structure — tre liste separate hanno beccato
+# l'autore tre volte, ognuna insegnando la stessa lezione a un checker diverso)
+ESCLUSE = set(l.strip() for l in open(f'{here}/tools/.file-del-target') if l.strip() and not l.startswith('#'))
 pendenti = []
 for f in zone:
     for m in re.findall(r'`([A-Za-z0-9_./-]+\.(?:md|sh|py|js|csv|json|toml))`', open(f, errors='ignore').read()):

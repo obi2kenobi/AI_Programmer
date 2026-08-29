@@ -29,6 +29,7 @@ LE BATTERIE (le tre pair di occhi del sistema)
 
 LO STUDIO (prima di toccare un progetto di destinazione)
   polilivello.sh <dir>        scaffold a 6 livelli: cosa fa / come / come meglio
+  fork-stato.sh <copie...>    la deriva fra repo/fork/GAS-vivo e la base di lavoro giusta
   privacy-check.sh            nessun nome privato nei file né nella storia git
 
 IL DIARIO E LA MEMORIA
