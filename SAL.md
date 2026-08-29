@@ -53,6 +53,7 @@
 - [2026-08-29 (5) — I 100 giri di MULTIUTENZA: il presidio, la presenza che si fonde da sola](#2026-08-29-5-i-100-giri-di-multiutenza-il-presidio-la-presenza-che-si-fonde-da-sola)
 - [2026-08-29 (6) — Banco di prova su Centrale_Rischi: il metodo tiene dallo studio alla PR](#2026-08-29-6-banco-di-prova-su-centrale_rischi-il-metodo-tiene-dallo-studio-alla-pr)
 - [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
+- [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate)
 
 
 ## Stato
@@ -1087,3 +1088,23 @@ campo-triage-sandbox, install-HOME→test-install, metrica-mentde→chiarezza,
 probe→banco-passaggio, albero-sporco→avversari, fossile→ciclo-test, regola-campo→
 report-campo: **11/11 vive**, suite 121/121. Le lezioni non sono ricordi: sono
 file che arrossiscono.
+
+### 2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate
+
+Arrivato il report di due progetti nuovi (gestionale parrocchiale schema v7 + rendiconto
+annuale nato dai documenti vivi): 26 difetti corretti TUTTI dimostrati al banco, 5 suite
+verdi (89 controlli) che sono il .night-verify di fatto. Le richieste eseguite:
+- **Onboarding REPO-O**: sync-repo --standard → ramo claude/standard-20260829 (9 gruppi);
+  gh ha abortito la creazione della PR lasciando il ramo orfano — PR #1 aperta a mano
+  dopo. Registrato in repos.conf del turno: la notte lavora sui banchi già verdi.
+- **REPO-P** (rendiconto): non ancora su GitHub — onboarding rinviato al suo arrivo;
+  i codici REPO-O/REPO-P nel repos-index.
+- **Lezione NUOVA incassata nel catalogo famiglie**: le famiglie di difetti misurate su
+  GAS sono ricomparse IDENTICHE in Python/SQLite — le famiglie sono del pensiero
+  sbagliato, non del linguaggio: su uno stack nuovo si cercano PRIMA le famiglie già
+  pagate altrove.
+- Le altre quattro lezioni confermate già vive nel metodo (banco=memoria eseguibile,
+  fixture che degradano, guardie col caso reale, charter come decisioni vive).
+- Oracolo del rendiconto: servono i materiali dell'utente (schema ufficiale della
+  controparte) — censitore-forma-dati e controllo-gestione pronti, nessuno strumento
+  nuovo. Confine gestionale↔rendiconto: decisione di charter (P10).

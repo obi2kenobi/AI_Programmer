@@ -1,3 +1,8 @@
+- **LE FAMIGLIE GENERALIZZANO FRA LINGUAGGI (dal campo REPO-O, 2026-08-29)**: le famiglie
+  misurate qui su GAS sono ricomparse IDENTICHE in Python/SQLite dello stesso progetto —
+  normalizzazione int/testo, «non letto» vs «vuoto», guardiano cieco, scritture multi-fase
+  senza lock. Le famiglie sono del PENSIERO sbagliato, non del linguaggio: quando arrivi
+  su uno stack nuovo, la prima cosa da cercare sono le famiglie GIÀ pagate altrove.
 # Le famiglie di difetti misurate sul parco (fonte: gas-agent REPO-E, misure 2026-08, ~90 progetti)
 
 > Ogni famiglia porta la POPOLAZIONE misurata e la DOMANDA DISCRIMINANTE —
