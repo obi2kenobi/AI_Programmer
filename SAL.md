@@ -52,6 +52,7 @@
 - [2026-08-29 (4) — I 100 giri sull'ALLINEAMENTO FORK: la prima mossa decisa prima delle modifiche](#2026-08-29-4-i-100-giri-sull-allineamento-fork-la-prima-mossa-decisa-prima-delle-modifiche)
 - [2026-08-29 (5) — I 100 giri di MULTIUTENZA: il presidio, la presenza che si fonde da sola](#2026-08-29-5-i-100-giri-di-multiutenza-il-presidio-la-presenza-che-si-fonde-da-sola)
 - [2026-08-29 (6) — Banco di prova su Centrale_Rischi: il metodo tiene dallo studio alla PR](#2026-08-29-6-banco-di-prova-su-centrale_rischi-il-metodo-tiene-dallo-studio-alla-pr)
+- [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
 
 
 ## Stato
@@ -1064,3 +1065,25 @@ post-deploy templata nelle PR. Nuovo codice REPO-CR nel repos-index (repo pubbli
 citanile per nome — S9 estesa CON dichiarazione, non in silenzio).
 
 Report: docs/campo/2026-08-29-centrale-rischi-banco-di-prova.md. Suite 121/121.
+
+### 2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive
+
+**Stanotte incassata, tutta.** (1) Il LOOP DI RIPLETTURE: piano perfetto ripetuto 5+
+volte senza eseguire — prompt anti-loop nel turno («SMETTI di rileggere, scrivi ORA la
+modifica più piccola») + rilevatore post-run (3+ righe consecutive identiche nella coda
+del log = loop dichiarato in log e metriche). (2) Il GATE CHE NON GIUDICAVA: causa
+radice NON il fetch mancante ma il clone --single-branch (refspec solo main): si fetcha
+il branch singolo via FETCH_HEAD — verificate le 6 PR prima invisibili, ora il gate
+esegue le verifiche vere (2005 asserzioni, banco avversariale che scarta grep non
+allowlistate). (3) La COPIA OPERATIVA STANTIA (5 commit indietro): il turno ora fa
+self-pull --ff-only all'avvio. (4) Il BATTITO del gate (GIUDICE FERMO nel digest):
+tentato e REVERTITO dopo due trappole set -e fixate e una terza nascosta — a DEBITI con
+sessione dedicata e test sui tre casi. E-015 nel registro, lente errori estesa a
+night-shift/ come luogo di guardia.
+
+**Ieri riverificato, tutto.** Mappa lezioni→guardia: SIGPIPE→lente2+pattern,
+vuoto==vuoto→sync-test+pattern, canone→integrità, teatri→mutation-tests, fantasma→
+campo-triage-sandbox, install-HOME→test-install, metrica-mentde→chiarezza,
+probe→banco-passaggio, albero-sporco→avversari, fossile→ciclo-test, regola-campo→
+report-campo: **11/11 vive**, suite 121/121. Le lezioni non sono ricordi: sono
+file che arrossiscono.

@@ -32,7 +32,7 @@ while IFS= read -r voce; do
   FAM=$(echo "$BLOCCO" | grep "^- Famiglia:" | grep -coE "R[1-6]")
   [ "${FAM:-0}" -ge 1 ] && ok "$ID: famiglia canonica" || ko "$ID: famiglia fuori canone R1-R6"
   # la guardia citata esiste davvero (il file che nomina deve stare nel repo)
-  GUARDIA=$(echo "$BLOCCO" | grep "^- Guardia:" | grep -oE '(tests/[a-z0-9-]+\.sh|tools/[a-z0-9-]+\.(sh|py)|patterns/[a-z0-9-]+\.md)' | head -1)
+  GUARDIA=$(echo "$BLOCCO" | grep "^- Guardia:" | grep -oE '(tests/[a-z0-9-]+\.sh|tools/[a-z0-9-]+\.(sh|py)|patterns/[a-z0-9-]+\.md|night-shift/[a-z0-9-]+\.sh)' | head -1)
   if [ -n "$GUARDIA" ]; then
     [ -e "$HERE/$GUARDIA" ] && ok "$ID: guardia esiste ($GUARDIA)" || ko "$ID: guardia inesistente: $GUARDIA (promessa fossile)"
   else
