@@ -4,6 +4,18 @@
 # Destinatario: ScriptProperty DIGEST_EMAIL (vuoto = no-op educato, come il digest notturno).
 set -euo pipefail
 
+# 2026-08-29 (dal campo): il gate poteva essere ROTTO da giorni e il silenzio
+# sembrava «niente da giudicare» (E-015: crash dal 25/8 scoperto il 29). Il
+# digest controlla il BATTITO del gate: nessun «Gate completato» nelle ultime
+# 26 ore = GIUDICE FERMO urlato in testa alla mail, non sepolto.
+ULTIMO_GATE=$(grep -a "Gate completato" "$HOME/morning-gate.log" 2>/dev/null | tail -1 | grep -oE '^[0-9-]+ [0-9:]+')
+if [ -n "$ULTIMO_GATE" ]; then
+  EPOCA=$(date -j -f '%Y-%m-%d %H:%M:%S' "$ULTIMO_GATE" +%s 2>/dev/null || date -j -f '%Y-%m-%d %H:%M' "$ULTIMO_GATE" +%s 2>/dev/null || echo 0)
+  ADESSO=$(date +%s)
+  ETA=$(( (ADESSO - EPOCA) / 3600 ))
+  [ "$ETA" -gt 26 ] && echo "⛔ GIUDICE FERMO: l'ultimo gate completato è di $ETA ore fa ($ULTIMO_GATE) — il silenzio NON è 'niente da giudicare'" >&2
+fi
+
 # il destinatario vive in night-shift/repos.key (locale, gitignored): DIGEST_EMAIL=...
 KEY="$(cd "$(dirname "$0")" && pwd)/repos.key"
 DEST=""

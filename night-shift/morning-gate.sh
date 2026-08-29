@@ -102,6 +102,11 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
     # PR. Riprodotto dal vivo: un branch con un bug reale iniettato (marker rilevato da
     # .night-verify) dava comunque "verifiche-ok". Da qui in poi il gate ha davvero bisogno
     # del branch giusto nel working tree.
+    # 2026-08-29 (dal campo): il clone di lavoro nasce una volta e non vedeva MAI
+    # i branch PR nati dopo — checkout fallito su TUTTE le 6 PR del mattino.
+    # Si fetcha prima di cercare il branch: costo secondi, senza questo il gate
+    # non giudica niente di nuovo.
+    git -C "$DIR" fetch -q origin 2>/dev/null || true
     if ! git -C "$DIR" checkout -q -B "$BRANCH" "origin/$BRANCH" 2>/dev/null; then
       echo "⛔ **Checkout di \`$BRANCH\` fallito — verifiche e banco avversariale NON eseguiti per questa PR.**" >> "$REPORT"
       echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$ISSUE_NUM,checkout-fallito,—," >> "$HUB_METRICS"
