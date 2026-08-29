@@ -48,6 +48,7 @@
 - [2026-08-28 (8) — I 100 giri sui FALLIMENTI: l'errore a regime](#2026-08-28-8-i-100-giri-sui-fallimenti-l-errore-a-regime)
 - [2026-08-29 — I 100 giri sulla COMPRENSIONE: polilivello, le domande di senso, il brainstorming generativo](#2026-08-29-i-100-giri-sulla-comprensione-polilivello-le-domande-di-senso-il-brainstorming-generativo)
 - [2026-08-29 (2) — I 200 giri del COLLEGAMENTO TOTALE: censito, collegato, funzionante, affinato](#2026-08-29-2-i-200-giri-del-collegamento-totale-censito-collegato-funzionante-affinato)
+- [2026-08-29 (3) — I 100 giri ASSURDI: probe improbabili, pensiero disallineato, e due trucchetti](#2026-08-29-3-i-100-giri-assurdi-probe-improbabili-pensiero-disallineato-e-due-trucchetti)
 
 
 ## Stato
@@ -937,3 +938,38 @@ canone, con le esclusioni-per-contratto imparate oggi) e S11 (grafo pattern conn
 Undici sonde totali, 0 finding. Suite 117/117 (nel messaggio di commit ho scritto 118:
 numero sbagliato, già pushato — lo dichiaro qui invece di lasciarlo correre), banco
 completo PASSAGGIO CHIUSO.
+
+### 2026-08-29 (3) — I 100 giri ASSURDI: probe improbabili, pensiero disallineato, e due trucchetti
+
+Su richiesta di Luca: tutto quello che non abbiamo pensato prima, pensiero disallineato,
+probe assurde, situazioni improbabili — e trucchi che migliorano il sistema.
+
+**Le probe assurde (dieci eseguite, quattro hanno morso):**
+1. **DUE cicli in simultanea**: entrambi leggevano giro=N, entrambi scrivevano N+1 —
+   GIRO PERSO. La memoria del ciclo è una risorsa condivisa senza lock: l'AUTORE del
+   pattern lock-per-risorsa non lo usava. Fix: lock mkdir atomico in ciclo-vivo, con
+   attesa e uscita pulita dopo 50 tentativi. Riverificato: due simultanei → giro=2.
+2. **Il pattern narcisista**: un pattern che si cita solo da sé nell'S11 risultava
+   «collegato» — l'autocitazione contava come connessione. Fix: citati esclude v==p.
+3. **CRLF**: uno script editato su Windows passa bash -n e MUORE a runtime. Nuova
+   sonde S10bis (byte \r negli script tracciati).
+4. **L'hook pre-commit ha mentito alla prima prova**: il mio trucco nuovo diceva OK
+   con un glifo staged — il grep BSD di macOS non ha -P e moriva nel 2>/dev/null.
+   Falso verde trovato verificando l'hook COL SUO METODO (il tool si prova quando
+   DEVE fallire). Fix: git grep -P, e il caso avverso ora è il test stesso.
+
+Innocue (verificate e archiviate): esecuzione da directory diverse (HERE tiene),
+LC_ALL=C (determinismo confermato), 29 febbraio nella rotazione, nome file di 200
+caratteri (già presidiato dal ciclo lens 4d), git quotepath (l'escape della à).
+
+**I due trucchetti:**
+- **tools/pre-commit.sh + .githooks/**: i controlli rapidi (2-3 secondi) alla
+  frontiera di ogni commit — glifi alieni nei file staged, CRLF, link pendenti nei
+  .md, e il numero-test del messaggio confrontato coi file veri (sarebbe bastato
+  ieri per il mio 118-fantasma). Attivato su questa copia e via install.sh.
+- **tools/help.sh**: il menu dei verbi, organizzato per MOMENTO D'USO (chiusura,
+  batterie, studio, diario, propagazione) — ogni comando citato esiste, testato.
+
+La batteria ignorante ora conta 12 sonde (S10bis CRLF nuova). Suite 119/119,
+banco PASSAGGIO CHIUSO. E la copertura ha preteso i test dei due trucchetti
+stessi: il sistema chiede a chiunque, anche a chi gli sta costruendo il negozio.
