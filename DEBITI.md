@@ -163,3 +163,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-31 | La decisione «nessun limite di tempo sulle issue» (Luca, 2026-08-21, eccezione dichiarata in patterns/watchdog-guardato.md) ha un costo ora MISURATO: il turno del 28/8 non è MAI finito (opencode in loop ~59h, 104h CPU sull'issue #12 Bilancio) e il job vivo ha BLOCCATO i turni del 29 e 30 (launchd non avvia doppioni). Tre notti perse, zero consegne. Il rilevatore anti-loop aggiunto il 29/8 non può scattare: gira DOPO il ritorno di opencode, che non tornava | è una decisione di Luca, non dell'agente: si presenta l'evidenza, non si cambia da soli | decisione di Luca: watchdog per-issue (es. 3-4h, pattern watchdog-guardato) con la review del mattino come appello — il costo del no-limit ora è noto |
+
+
+## Pattern candidato: backgrounding nativo del tool per gli handshake multi-turno (REPO-K, 2026-08-31)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-31 | Il trucco FIFO per login OAuth non-interattivo (holder + clasp login) si è rotto al SECONDO uso: nohup/disown manuali svaniscono silenziosamente fra chiamate Bash separate → fifo senza lettore → consegna di un URL VECCHIO con state sbagliato (mismatch). Risolto col backgrounding NATIVO del tool (run_in_background). Il report stesso dichiara: nessun'àncora di codice in questo hub, non si forza una voce in patterns/ senza ancora reale | un pattern del catalogo nasce da un'àncora eseguibile, non da un racconto (regola dell'àncora) | alla TERZA ricorrenza in un repo GAS onboardato: voce vera in patterns/ con l'àncora al comando reale di quella sessione |

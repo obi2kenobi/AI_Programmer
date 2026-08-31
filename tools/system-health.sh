@@ -6,8 +6,10 @@ GREEN=0; YELLOW=0; RED=0
 ok()    { GREEN=$((GREEN+1));  echo "✅ $1"; }
 warn()  { YELLOW=$((YELLOW+1)); echo "⚠️  $1"; }
 ko()    { RED=$((RED+1));      echo "⛔ $1"; }
+# il turno incastrato (2026-08-31: tre notti perse così) — visibilità, non watchdog
+bash "$(dirname "$0")/turno-vivo.sh"
 
-echo "== Sistema — $(date '+%Y-%m-%d %H:%M') =="; echo ""
+echo "== Sistema — $(date '+%Y-%m-%d %H:%M') =="
 
 # 1. Ollama (il motore notturno)
 if curl -sf --max-time 3 http://localhost:11434/api/version >/dev/null 2>&1; then
