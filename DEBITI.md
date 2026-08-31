@@ -11,7 +11,7 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-21 ✅ SALDATO (nuovo ciclo 10 giri, giro 10/10, 2026-08-22) | Rotazione log di ~/night-shift.log e ~/morning-gate.log | nessun limite raggiunto | `rotate_log_if_big()` in night-shift/lib.sh (soglia 10MB, una generazione file→file.1), richiamata da night-shift.sh e morning-gate.sh prima del primo log. Test sintetico in tests/test-lib.sh (file piccolo non ruota, file grande ruota con contenuto preservato, file assente no-op) |
+| 2026-08-21 ✅ SALDATO (nuovo ciclo 10 giri, giro 10/10, 2026-08-22) | Rotazione log di ~/night-shift.log e ~/morning-gate.log | nessun limite raggiunto | `rotate_log_if_big()` in night-shift/lib.sh (soglia 10MB, una generazione file→file.1), richiamata da night-shift/night-shift.sh e night-shift/morning-gate.sh prima del primo log. Test sintetico in tests/test-lib.sh (file piccolo non ruota, file grande ruota con contenuto preservato, file assente no-op) |
 | 2026-08-21 | Path /opt/homebrew hardcoded (ollama) — portabilità Intel/Linux | scelta "solo Mac Apple Silicon" dichiarata | se il sistema girerà altrove |
 | 2026-08-21 ✅ SALDATO (nuovo ciclo 10 giri, giro 9/10, 2026-08-22) | Test funzionali per bc_map.py / bc_index.py | bc_map.py chiama davvero l'API BC (OAuth) — non testabile in sandbox, resta manuale; bc_index.py invece è puro | tests/test-bc-index.sh: esegue bc_index.py su una COPIA reale di docs/bc/endpoints (88 file), verifica righe/conteggio/ordinamento. bc_map.py resta debito aperto (serve un ambiente con credenziali BC vere) |
 
@@ -42,13 +42,13 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-21 ✅ SALDATO (Luca ha dato il sì a "esegui le correzioni") | `morning-gate.sh:157` propone, su verifica fallita, un `gh issue create` correttivo il cui `--body` dice solo "Dettagli nel report locale del gate" — ma quel report è un file LOCALE alla macchina che ha eseguito il gate | scelta fatta: l'estratto del fallimento (`FAIL_DETAIL`, ultime righe del comando fallito o del banco smentito) entra nel body via heredoc quotato (`$(cat <<'GATE_EOF' ... GATE_EOF)`) — al riparo da backtick/`$()`/virgolette nell'output di un comando qualunque | Provato dal vivo con un `FAIL_DETAIL` avversariale (contenente `` `b` ``, `$(whoami)`, `$HOME`) passato a un `gh` finto: tutti i caratteri arrivano come testo letterale nell'argomento `--body`, nessuna espansione — `bash -n` passa; l'esecuzione END-TO-END contro un `gh` reale resta da fare al primo gate vero sul Mac (nessun `gh` autenticato in questa sessione) |
+| 2026-08-21 ✅ SALDATO (Luca ha dato il sì a "esegui le correzioni") | `night-shift/morning-gate.sh:157` propone, su verifica fallita, un `gh issue create` correttivo il cui `--body` dice solo "Dettagli nel report locale del gate" — ma quel report è un file LOCALE alla macchina che ha eseguito il gate | scelta fatta: l'estratto del fallimento (`FAIL_DETAIL`, ultime righe del comando fallito o del banco smentito) entra nel body via heredoc quotato (`$(cat <<'GATE_EOF' ... GATE_EOF)`) — al riparo da backtick/`$()`/virgolette nell'output di un comando qualunque | Provato dal vivo con un `FAIL_DETAIL` avversariale (contenente `` `b` ``, `$(whoami)`, `$HOME`) passato a un `gh` finto: tutti i caratteri arrivano come testo letterale nell'argomento `--body`, nessuna espansione — `bash -n` passa; l'esecuzione END-TO-END contro un `gh` reale resta da fare al primo gate vero sul Mac (nessun `gh` autenticato in questa sessione) |
 
 ## Dal Giro 8 dei "10 giri extra" (2026-08-21, notte)
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-21 | `morning-gate.sh` ora chiede `mergeable` a `gh pr list` e segnala `⛔ Non mergeable` nel report (fix applicato per il buco trovato al Giro 8: due PR gemelle in conflitto reale, il gate non lo diceva mai). Il campo è quello documentato nello schema `gh pr list --json` (MERGEABLE/CONFLICTING/UNKNOWN), non inventato, e `bash -n` passa — ma non eseguito dal vivo contro un `gh` autenticato, perché questa sessione non ne ha uno | nessun `gh` CLI autenticato disponibile in questa sessione cloud | primo giro reale del morning-gate sul Mac dopo questa PR — verificare che la riga compaia per una PR davvero in conflitto |
+| 2026-08-21 | `night-shift/morning-gate.sh` ora chiede `mergeable` a `gh pr list` e segnala `⛔ Non mergeable` nel report (fix applicato per il buco trovato al Giro 8: due PR gemelle in conflitto reale, il gate non lo diceva mai). Il campo è quello documentato nello schema `gh pr list --json` (MERGEABLE/CONFLICTING/UNKNOWN), non inventato, e `bash -n` passa — ma non eseguito dal vivo contro un `gh` autenticato, perché questa sessione non ne ha uno | nessun `gh` CLI autenticato disponibile in questa sessione cloud | primo giro reale del morning-gate sul Mac dopo questa PR — verificare che la riga compaia per una PR davvero in conflitto |
 
 ## Dal Giro 9 dei "10 giri extra" (2026-08-21, notte) — BUG REALE, non teorico
 
@@ -126,7 +126,7 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-27 | `.opencode/skills/` contiene solo graphify: le 9 skill dell'hub (gas-sviluppo, selezione-contesto, design-doc…) non hanno equivalente notturno — il turno notturno ha gli AGENTI (specchiati) ma non le SKILL: la notte può invocare revisore-gas, non legge il canone progressivo | il formato skill OpenCode va verificato (non presumere che SKILL.md sia identico); è un porting vero, non una copia | ✅ SALDATA 2026-08-28 (revisione 14 lenti — chiusura vera, non presunta): le 9 skill erano già state copiate lo stesso 2026-08-27 (commit citato in SAL.md come "con guardia"), ma la guardia NON esisteva — 3 file di `gas-sviluppo/references/` erano già divergenti ore dopo (trovato da 3 lenti indipendenti). Risincronizzati i 3 file; creata `tests/test-opencode-skills-sync.sh` (sul modello di `test-opencode-agent-sync.sh`, provata a fallire davvero reintroducendo una divergenza); propagazione chiusa in tutti e 3 i punti (`sync-repo.sh --standard`, `onboard-repo.sh`, `bootstrap-app.sh`) |
+| 2026-08-27 | `.opencode/skills/` contiene solo graphify: le 9 skill dell'hub (gas-sviluppo, selezione-contesto, design-doc…) non hanno equivalente notturno — il turno notturno ha gli AGENTI (specchiati) ma non le SKILL: la notte può invocare revisore-gas, non legge il canone progressivo | il formato skill OpenCode va verificato (non presumere che SKILL.md sia identico); è un porting vero, non una copia | ✅ SALDATA 2026-08-28 (revisione 14 lenti — chiusura vera, non presunta): le 9 skill erano già state copiate lo stesso 2026-08-27 (commit citato in SAL.md come "con guardia"), ma la guardia NON esisteva — 3 file di `gas-sviluppo/references/` erano già divergenti ore dopo (trovato da 3 lenti indipendenti). Risincronizzati i 3 file; creata `tests/test-opencode-skills-sync.sh` (sul modello di `tests/test-opencode-agent-sync.sh`, provata a fallire davvero reintroducendo una divergenza); propagazione chiusa in tutti e 3 i punti (`sync-repo.sh --standard`, `onboard-repo.sh`, `bootstrap-app.sh`) |
 
 ## Privacy nei VALORI DI CAMPIONE del censimento BC (giro 14 dei 20, 2026-08-27)
 
@@ -157,3 +157,9 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 | Data | Scorciatoia | Perché | Quando |
 |---|---|---|---|
 | 2026-08-28 | repos.key locale: sessioni esterne sempre cieche sul privacy-check | soluzione da decidere con Luca | lavoro regolare su esterni |
+
+
+## Il turno senza limite ha bruciato 3 notti (evidenza misurata, 2026-08-31)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-08-31 | La decisione «nessun limite di tempo sulle issue» (Luca, 2026-08-21, eccezione dichiarata in patterns/watchdog-guardato.md) ha un costo ora MISURATO: il turno del 28/8 non è MAI finito (opencode in loop ~59h, 104h CPU sull'issue #12 Bilancio) e il job vivo ha BLOCCATO i turni del 29 e 30 (launchd non avvia doppioni). Tre notti perse, zero consegne. Il rilevatore anti-loop aggiunto il 29/8 non può scattare: gira DOPO il ritorno di opencode, che non tornava | è una decisione di Luca, non dell'agente: si presenta l'evidenza, non si cambia da soli | decisione di Luca: watchdog per-issue (es. 3-4h, pattern watchdog-guardato) con la review del mattino come appello — il costo del no-limit ora è noto |

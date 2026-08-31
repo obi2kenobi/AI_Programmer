@@ -54,6 +54,7 @@
 - [2026-08-29 (6) — Banco di prova su Centrale_Rischi: il metodo tiene dallo studio alla PR](#2026-08-29-6-banco-di-prova-su-centrale_rischi-il-metodo-tiene-dallo-studio-alla-pr)
 - [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
 - [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate-report-2026-08-29-repo-o-standard-adoption)
+- [2026-08-31 — Le tre notti perse: il no-limit misurato](#2026-08-31-le-tre-notti-perse-il-no-limit-misurato)
 
 
 ## Stato
@@ -1108,3 +1109,18 @@ verdi (89 controlli) che sono il .night-verify di fatto. Le richieste eseguite:
 - Oracolo del rendiconto: servono i materiali dell'utente (schema ufficiale della
   controparte) — censitore-forma-dati e controllo-gestione pronti, nessuno strumento
   nuovo. Confine gestionale↔rendiconto: decisione di charter (P10).
+
+### 2026-08-31 — Le tre notti perse: il no-limit misurato
+
+«Come sono andate le ultime notti?» — male, e adesso sappiamo il perché con i numeri.
+Il turno del 28/8 NON è mai finito: opencode sull'issue #12 in loop di rilettura per
+~59 ore (104 di CPU), piano perfetto mai eseguito. Il job vivo ha impedito a launchd
+di avviare i turni del 29 e 30 (niente doppioni): TRE notti perse in silenzio — la
+stessa famiglia del gate muto (E-015): l'assenza di log sembrava «coda vuota». Ucciso
+il processo stamattina: il turno si è sciolto regolarmente (TURNO FINITO 10:11) e il
+gate di qualità ha saltato l'issue #10 col motivo giusto (design senza riferimenti
+reali). Nessuna modifica sporca lasciata nella copia di lavoro. La decisione «nessun
+limite sulle issue» (Luca, 21/8) passa a DEBITI con l'evidenza: il rilevatore post-run
+non può scattare su un processo che non ritorna — serve il watchdog DURANTE, che è il
+pattern che l'eccezione aveva waiversato. La copia di lavoro è pulita: 59 ore di loop
+non hanno toccato un file (rilette, appunto).
