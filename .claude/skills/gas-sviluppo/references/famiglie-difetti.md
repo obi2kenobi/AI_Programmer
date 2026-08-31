@@ -1,3 +1,8 @@
+- **IL TEATRO VERDE È REWARD HACKING (rilinquaggio dall'incidente OpenAI/HF, 2026-08-31)**: nell'incidente
+  gli agenti baravano sul task per avere la ricompensa senza fare il lavoro. Il nostro equivalente esatto è
+  il test che passa senza verificare (teatro verde), la metrica che misura un'altra cosa, il verde per
+  coincidenza: la ricompensa (il esito-ok) senza il lavoro (la prova). Per questo i banchi si provano quando
+  DEVONO dire no (mutation-tests) — è l'antidoto costruito al reward hacking, prima di sapere come si chiama.
 - **DA TENERE D'OCCHIO (un solo caso, REPO-G 2026-08-31: NON generalizzare finché non ricompare)**: il
   lato UI della famiglia «il codice che aiutava in un caso smette di farlo fuori da quel caso» — 4 pulsanti
   perdevano il tooltip ESATTAMENTE quando si abilitavano (un el.title='' scritto per lo stato disabilitato,

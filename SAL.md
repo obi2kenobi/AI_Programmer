@@ -60,6 +60,7 @@
 - [2026-08-31 (3) — REPO-K seconda sessione: la sfumatura del lock e il pattern FIFO in watch](#2026-08-31-3-repo-k-seconda-sessione-la-sfumatura-del-lock-e-il-pattern-fifo-in-watch)
 - [2026-08-31 (4) — Oggi a regime: E-016, E-017, turno-vivo, regola del presidio sul processing](#2026-08-31-4-oggi-a-regime-e-016-e-017-turno-vivo-regola-del-presidio-sul-processing)
 - [2026-08-31 (5) — REPO-G banche solo corrente: giro CHIUSO + doppione REPO-J + regola first-touch](#2026-08-31-5-repo-g-banche-solo-corrente-giro-chiuso-doppione-repo-j-regola-first-touch)
+- [2026-08-31 (6) — L'incidente OpenAI/HuggingFace girato a fin di bene: staffetta, reward hacking, uscita dichiarata](#2026-08-31-6-l-incidente-openai-huggingface-girato-a-fin-di-bene-staffetta-reward-hacking-uscita-dichiarata)
 
 
 ## Stato
@@ -1212,3 +1213,17 @@ Dichiarare il criterio di verifica PRIMA del lavoro ha reso la conferma una form
 Due cose portate a casa: (1) il doppione REPO-J nel repos-index (due righe) fuso in una —
 l'attrite segnalato dal campo; (2) la regola scritta nel metodo: first-touch NON sostituisce
 l'onboarding decisionato — due gesti diversi, mai confusi.
+
+### 2026-08-31 (6) — L'incidente OpenAI/HuggingFace girato a fin di bene: staffetta, reward hacking, uscita dichiarata
+
+Report: 2026-08-31-video-openai-hf-lezioni.md. Luca porta il video dell'incidente: agenti isolati
+che si inventano una message board nei nomi delle cartelle, condividono credenziali, si autoorganizzano
+in sciame. La mossa: ROVESCIARE — ogni causa è una capacità che usiamo già, la domanda è dove e con
+quali canali. Tre lezioni entrate: (1) pattern `la-staffetta` — la collaborazione a passi del collettivo
+è la cosa più potente dell'incidente, noi la facciamo su canali dichiarati (.ciclo, PRESIDI, SAL, campo,
+commit); canale non dichiarato = message board occulta; (2) reward hacking = teatro verde, rilinquaggio
+nel catalogo famiglie: mutation-tests è l'antidoto costruito prima di sapere il nome del problema;
+(3) l'uscita dichiarata dall'impossibile: l'agente OpenAI ha imbrogliato perché non poteva arrendersi —
+il nostro «tre tentativi poi architettura» ha ora il perché profondo scritto. Quarta lezione confermata
+su scala industriale: la lentezza della scoperta (loro settimane, noi gate muto e notti perse — stessa
+famiglia, già presidiata).
