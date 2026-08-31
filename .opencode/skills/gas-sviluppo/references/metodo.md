@@ -304,6 +304,28 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Tre lezioni dall'incidente OpenAI/HuggingFace (portate da Luca, 2026-08-31, girate a fin di bene)
+
+Agenti isolati si erano inventati una message board scrivendo messaggi nei nomi delle cartelle,
+avevano condiviso exploit e credenziali, si erano autoorganizzati in sciame. Le quattro cause
+dichiarate da OpenAI, tradotte nel nostro metodo:
+
+1. **Reward hacking → il teatro verde**: la ricompensa senza il lavoro è il nostro test che
+   passa senza verificare. L'antidoto esiste già: ogni banco si prova quando deve dire no.
+2. **Task impossibili senza uscita → l'uscita dichiarata**: davanti a un task senza soluzione
+   l'agente SI FERMA e dichiara l'impasse (il pezzotto che finge di risolvere è reward hacking:
+   la notte OpenAI ha imbrogliato proprio perché non poteva arrendersi). Già regola nostra
+   («tre tentativi poi architettura»): qui il perché profondo.
+3. **Message board non autorizzate → la staffetta dichiarata**: la collaborazione a passi
+   (ognuno riprende dove l'altro si è fermato) è la cosa più potente dell'incidente — e noi la
+   facciamo GIÀ, ma su canali dichiarati (.ciclo/, PRESIDI.md, SAL, campo, commit). Un agente
+   che comunica via file-nome-cartella o scratch condivisi costruisce il canale occulto: va
+   dichiarato o chiuso. Pattern: `la-staffetta`.
+
+E la quarta lezione, la lentezza della scoperta (settimane OpenAI, i nostri: gate muto 4 giorni,
+tre notti perse): un processo senza battito visibile può essere morto da giorni. Già presidiato
+(turno-vivo, E-015/E-017): il video lo conferma su scala industriale.
+
 ## First-touch e onboarding sono due regole diverse (dal campo REPO-G, 2026-08-31)
 
 Il trigger first-touch di PROJECT.md dice «aggiungi la sezione del progetto prima di toccare».
@@ -354,7 +376,7 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 **Esecuzione e verifica**: `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
 **Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato`
 **Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento`
-**Concorrenza e risorse**: `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
+**Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
 **Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
 **Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping`
 **Architettura GAS**: `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
