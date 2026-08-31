@@ -17,6 +17,14 @@ revisore-gas», «SAL»). Il presidio si COMMITTA E SI PUSHA presto: la presenza
 visibile è quella che arriva all'altro clone. Presidio scaduto = potato e
 dichiarato da `lista`, mai in silenzio.
 
+## 1bis. Processare un report dal campo È un lavoro su zona
+
+Il caso E-016: due sessioni hanno processato lo STESSO report in parallelo senza
+presidio — spreco di un'ora, scoperto solo al push rifiutato. La convenzione dei nomi
+(date-slug) rende la collisione benigna (stesso file, nessuna divergenza), MA il
+lavoro duplicato è spreco evitabile: `presidio.sh claim campo-<slug>` prima di
+iniziare il processing, `rilascia` a fine commit.
+
 ## 2. Le tre classi di file (chi confligge e chi no)
 
 | Classe | File | Due mani insieme |

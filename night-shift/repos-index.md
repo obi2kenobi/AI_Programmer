@@ -22,11 +22,11 @@ reale resta solo in `night-shift/repos.key`.
 | REPO-D | Repo del ciclo "5 giri" (mandato: tutto da un solo operatore in loop) e del ciclo 2 successivo, incentrato sulla progettazione | `SAL.md`, voci del 2026-08-22 |
 | REPO-E | Repo esterno con progetti Google Apps Script reali (cartella `gas-src/`, coincidenza di nome con REPO-A — repo diverso, confermato da Luca) — oracolo per la skill `controllo-gestione` (4° ciclo, set 1, 2026-08-23; 5° ciclo, set 1 giro 4, 2026-08-23): scostamento standard/effettivo, riconciliazione magazzino, roll-forward cespiti, indici di crisi, scadenzario aging clienti/fornitori | `.claude/skills/controllo-gestione/SKILL.md` |
 | REPO-F | Progetto GAS/BC reale con una dashboard web (`Dashboard.html`) e un flusso di consegne — caso di campo del 2026-08-24: bug reale (una funzione di backfill mai attivata da un trigger) trovato per indagine diretta, non da una skill invocata | `SAL.md`, voce del 2026-08-24 |
-| REPO-G | repo del bilancio periodico (CE per BU, SP, quadrature) | attiva, MAI onboardata — onboarding o esclusione = decisione aperta (DEBITI 2026-08-24); bonificata nei file 2026-08-24, storia git da purgare o accettare (DEBITI) |
+| REPO-G | repo del bilancio periodico (CE per BU, SP, quadrature) | attiva, MAI onboardata (decisione aperta invariata, DEBITI 2026-08-24); revisione robustezza+grafica 2026-08-31: 16 lenti, 12 batch, PR #37 mergiata, confermata funzionante dal cliente | docs/campo/2026-08-31-repo-g-robustezza-grafica-16-lenti.md |
 | REPO-H | repo cespiti GAS+BC standalone (FA Ledger + G/L da BC, report mensile) | prima segnalazione 2026-08-27: 13 rilievi, 12 fix, banco Node 19/19 | docs/campo/2026-08-27-revisione-cespiti-gas-bc.md |
 | REPO-I | controlli trimestrali di bilancio GAS+BC (97 file, ~850 asserzioni preesistenti) | ciclo 2026-08-27: 30 agenti, 19 findings ALTA corretti, 915/915 test, PR #97 — report docs/campo/2026-08-27-controlli-trimestrali.md | docs/campo/2026-08-27-controlli-trimestrali.md |
 | REPO-J | Gestione-ordini-REPO-J (ordini EDI fornitori, GAS+BC, 12 file) | audit 50 agenti 2026-08-28: 153 rilievi, 13 confermati, 2 smentiti | docs/campo/2026-08-28-bricoman-50-agenti.md |
-| REPO-K | Dashboard web GAS+BC per gestione ordini multi-categoria (foglio "aperti" e foglio storico paralleli, sync automatico) — già citato informalmente come "dossier SD" in `.claude/skills/gas-sviluppo/references/famiglie-difetti.md` e in `SAL.md` (voce 2026-08-28) prima che questo codice esistesse | dossier 86 rilievi/25 idee (`docs/campo/2026-08-28-sd-dashboard-dossier.md`), tutti implementati in sessione continua — report `docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md` |
+| REPO-K | Dashboard web GAS+BC per gestione ordini multi-categoria (foglio "aperti" e foglio storico paralleli, sync automatico) — già citato informalmente come "dossier SD" in `.claude/skills/gas-sviluppo/references/famiglie-difetti.md` e in `SAL.md` (voce 2026-08-28) prima che questo codice esistesse | dossier 86 rilievi/25 idee (`docs/campo/2026-08-28-sd-dashboard-dossier.md`), tutti implementati in sessione continua — report `docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md`; seconda sessione 2026-08-31 (`docs/campo/2026-08-31-repo-k-robustezza-grafica-feature.md`): 5 bug veri, 4 feature su mandato, deploy in produzione |
 | REPO-J | Gestione-ordini-REPO-J (ordini EDI fornitori, GAS+BC, 12 file) | audit 50 agenti 2026-08-28: 153 rilievi, 13 confermati, 2 smentiti (`docs/campo/2026-08-28-bricoman-50-agenti.md`) — 25 fix applicati in sessione continua, verificati con node prima di ogni commit | docs/campo/2026-08-28-bricoman-dal-audit-ai-fix.md |
 | REPO-K | dashboard web GAS+BC per gestione ordini multi-categoria (SD) | dossier 86 rilievi + 25 idee, TUTTI implementati in sessione continua 2026-08-28; seconda sessione 2026-08-31 (5 bug per lente + tooltip + 4 feature, PR mergiata, clasp in produzione) | docs/campo/2026-08-28-repo-k-dal-dossier-a-tutti-i-fix.md, docs/campo/2026-08-31-repo-k-robustezza-grafica-nuove-feature.md |
 | REPO-L | Unicredit_Factoring (cessione fatture, GAS+BC, file fixed-width TXT per banca) | audit 30 agenti 2026-08-28: 54 rilievi, 9 confermati, 45 NON VERIFICATI, 0 smentiti · SECRET in git history (da ruotare) | docs/campo/2026-08-28-unicredit-factoring-30-agenti.md |
@@ -46,13 +46,5 @@ reale resta solo in `night-shift/repos.key`.
 Codice per il repo pubblico github.com/obi2kenobi/Centrale_Rischi (adempimento Banca
 d'Italia, GAS). Usato come banco di prova del metodo 2026-08-29. Il prefisso REPO-CR
 nei pattern dichiara l'ancora ESTERNA all'hub senza anonimizzare una repo pubblica.
-## REPO-O — gestionale parrocchie (PRIVATA, frazu2003-lab)
-Gestionale parrocchiale (patrimonio, scadenzario, schede persona): schema v7, 22 commit,
-26 difetti corretti al banco, 5 suite verdi (89 controlli) come .night-verify di fatto.
-Report: docs/campo/2026-08-29-repo-o-standard-adoption.md. Onboarding richiesto ed eseguito.
-
-## REPO-P — rendiconto parrocchie (progetto NUOVO, non ancora su GitHub)
-Utilità autonoma per il rendiconto annuale (estratto conto → schema del destinatario):
-passi 0-2 fatti e provati, fermata al passo 3 di proposito (mancano gli estratti veri,
-lista materiali in DEBITI del progetto). Nasce da specifica v5 con documenti vivi PRIMA
-del codice. Onboarding quando arriva su GitHub.
+| REPO-O | gestionale parrocchie (PRIVATA, frazu2003-lab): schema v7, 26 difetti al banco, 5 suite verdi (89 controlli); onboarding PR #1 2026-08-29 | adozione standard in corso | docs/campo/2026-08-29-repo-o-standard-adoption.md |
+| REPO-P | rendiconto parrocchie (nuovo, non ancora su GitHub): passi 0-2 provati, fermo al 3 di proposito (mancano estratti veri) | attesa materiali | docs/campo/2026-08-29-repo-o-standard-adoption.md |

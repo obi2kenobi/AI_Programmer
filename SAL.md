@@ -55,6 +55,9 @@
 - [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
 - [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate-report-2026-08-29-repo-o-standard-adoption)
 - [2026-08-31 — Le tre notti perse: il no-limit misurato](#2026-08-31-le-tre-notti-perse-il-no-limit-misurato)
+- [2026-08-31 (2) — Dal campo REPO-G: 16 lenti, 12 batch, 3 falsi positivi onorati](#2026-08-31-2-dal-campo-repo-g-16-lenti-12-batch-3-falsi-positivi-onorati)
+- [2026-08-31 (3) — REPO-K seconda sessione: la sfumatura del lock e il pattern FIFO in watch](#2026-08-31-3-repo-k-seconda-sessione-la-sfumatura-del-lock-e-il-pattern-fifo-in-watch)
+- [2026-08-31 (4) — Oggi a regime: E-016, E-017, turno-vivo, regola del presidio sul processing](#2026-08-31-4-oggi-a-regime-e-016-e-017-turno-vivo-regola-del-presidio-sul-processing)
 
 
 ## Stato
@@ -1156,3 +1159,44 @@ codice in questo hub (REPO-K non è onboardata): dichiarato in
 candidato, non promosso a `patterns/` finché non si ripete su un repo onboardato.
 
 Report: docs/campo/2026-08-31-repo-k-robustezza-grafica-nuove-feature.md.
+### 2026-08-31 (2) — Dal campo REPO-G: 16 lenti, 12 batch, 3 falsi positivi onorati
+
+Report: 2026-08-31-repo-g-robustezza-grafica-16-lenti.md. Robustezza+grafica su Bilancio_periodico:
+12 batch di fix (PR #37 mergiata), 9 file di test nuovi, npm test verde a ogni batch. Rilievi da
+canone: l'arrotondamento per gruppo che poteva rompere SILENTAMENTE la quadratura SP sotto soglia;
+accountMatches_ che catturava conti per prefisso; LockService assente su pubblicaBanche/
+saveBookOverride ma presente su saveDashboardChanges (la famiglia scritture-multi-fale conferma la
+lezione cross-linguaggio); OData per concatenazione su webapp ad accesso pubblico con errori che
+mostravano il corpo grezzo BC. E la conferma del metodo: 3 falsi positivi VERIFICATI e non corretti,
+ognuno documentato — la lente che iniettava sintetici bypassando la funzione vera è la stessa trappola
+del metro-che-non-contiene-il-campione. La lezione UI (tooltip perso sull'abilitazione) entra nelle
+famiglie come watch note da UN caso: il report stesso chiede di non generalizzare prima del secondo.
+
+### 2026-08-31 (3) — REPO-K seconda sessione: la sfumatura del lock e il pattern FIFO in watch
+
+Report: 2026-08-31-repo-k-robustezza-grafica-feature.md. 5 lenti → 5 bug veri, zero falsi positivi;
+le due fonti di verità disallineate (validation.allowedNoteValues vs STATUS_BADGE_CLASSES) sono la
+SECONDA conferma della famiglia in un secondo punto del codice. Due decisionsi da canone: (1) addendum
+misurato a lock-per-risorsa — il lock è per-script: attorno a operazioni lunghe blocca tutto; se c'è
+concorrenza ottimistica documentata il lock non si estende, si usa solo per il check-and-set atomico
+del flag; (2) il pattern FIFO/backgrounding (nohup+disown svaniscono fra chiamate → URL vecchio con
+state sbagliato) a DEBITI come watch: alla TERZA ricorrenza voce vera con àncora reale, come chiede
+il report — il catalogo non nasce da racconti. E la regola del metodo confermata: bulkChangeDate per
+DELEGAZIONE (chiama changeDate esistente in loop), non duplicazione della logica di business.
+
+### 2026-08-31 (4) — Oggi a regime: E-016, E-017, turno-vivo, regola del presidio sul processing
+
+Tutto ciò che il giorno ha insegnato, messo in forma istituzionale:
+- **E-016** (il report processato due volte in parallelo): la convenzione date-slug ha reso la
+  collisione benigna PER COSTRUZIONE (stesso file, nessuna divergenza) — ma lo spreco era evitabile:
+  regola 1bis nella skill lavoro-condiviso («processare un report È un lavoro su zona: presidio claim
+  prima, rilascia a fine commit»).
+- **E-017** (le tre notti perse): registrato con la causa doppia (loop mai tornato + launchd senza
+  doppioni + silenzio che sembrava coda vuota). Guardia nuova: **tools/turno-vivo.sh** — il detector
+  del processo notturno oltre soglia, nel polso di system-health. Non uccide: VISIBILITÀ, coerente
+  con la decisione di Luca (la guardia è la review del mattino — che ora ha qualcosa da guardare).
+  Il watchdog vero resta la sua decisione in DEBITI, con l'evidenza dei numeri.
+- La lezione REPO-K (lock per-script) e la watch note UI REPO-G: già committate stamattina.
+L'errore del giorno fatto dall'autore mentre istituzionalizzava: l'innesto in system-health finito
+dentro un echo esistente (quoting spezzato, due passaggi per ripulire) — stesso gesto che E-012
+racconta: la fretta sull'ovvio. Notato qui perché il registro vive anche di questo.
