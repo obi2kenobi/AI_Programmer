@@ -304,6 +304,15 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## First-touch e onboarding sono due regole diverse (dal campo REPO-G, 2026-08-31)
+
+Il trigger first-touch di PROJECT.md dice «aggiungi la sezione del progetto prima di toccare».
+L'onboarding a questo hub è una decisione DEL PROPRIETARIO, dichiarata nell'indice dei codici —
+e può essere APERTA (REPO-G: decisione aperta dichiarata). Le due regole non confliggono: la
+sezione first-touch documenta il progetto NEL SUO repo; l'onboarding lo porta NEL NOSTRO canale
+notturno. Un agente futuro può lavorare su un repo non onboardato (report dal campo sì, sezione
+first-touch sì) senza che questo equivalga a un'onboarding implicito. Mai confondere i due gesti.
+
 ## Il segreto in sessione cloud: variabile d'ambiente del proprietor (dal campo Centrale_Rischi, 2026-08-28)
 
 La regola «mai segreti in chiaro» copre codice e commit; il caso scoperto sul campo è
