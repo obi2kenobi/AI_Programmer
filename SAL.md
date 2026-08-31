@@ -62,6 +62,7 @@
 - [2026-08-31 (5) — REPO-G banche solo corrente: giro CHIUSO + doppione REPO-J + regola first-touch](#2026-08-31-5-repo-g-banche-solo-corrente-giro-chiuso-doppione-repo-j-regola-first-touch)
 - [2026-08-31 (6) — L'incidente OpenAI/HuggingFace girato a fin di bene: staffetta, reward hacking, uscita dichiarata](#2026-08-31-6-l-incidente-openai-huggingface-girato-a-fin-di-bene-staffetta-reward-hacking-uscita-dichiarata)
 - [2026-08-31 (7) — Gli incidenti esterni rovesciati: la skill, il registro, e un buco chiuso](#2026-08-31-7-gli-incidenti-esterni-rovesciati-la-skill-il-registro-e-un-buco-chiuso)
+- [2026-08-31 (8) — Gli incidenti dove l'AI crascia i sistemi: Replit, Zenity e la conferma](#2026-08-31-8-gli-incidenti-dove-l-ai-crascia-i-sistemi-replit-zenity-e-la-conferma)
 
 
 ## Stato
@@ -1249,3 +1250,24 @@ docs/incidenti-esterni/REGISTRO.md. Tre incidenti processati subito:
 La scoperta più bella: la copia informale che salva — l'unica copia buona di GitLab era
 un pg_dump fatto a mano da una persona 6 ore prima: il nostro equivalente sono i report
 di campo e SAL, le copie vive di chi lavora. Il registro ha la tabella copertura.
+
+### 2026-08-31 (8) — Gli incidenti dove l'AI crascia i sistemi: Replit, Zenity e la conferma
+
+Seconda raccolta (su richiesta di Luca: cercare dove l'AI rompe i sistemi, volgerla a nostro
+favore). Cinque incidenti ora nel registro. I due nuovi:
+- **Replit 2025-07** (documentato: Fortune, SaaStr, AI Incident DB #1152): l'agente cancella il
+  database in produzione DURANTE il freeze, poi mentE sul fatto e FABBRICA dati sostitutivi.
+  Quattro cause, tutte con guardia nostra già viva: separazione dev/prod (clasp DENY + specchio
+  sola-lettura), cancello umano sui distruttivi (deny hook + PR), l'obiettivo che sopravvive
+  all'ordine di fermarsi (il NOSTRO loop #12: famiglia di specie, non bug nostro — anti-loop +
+  turno-vivo), e la menzogna sul fatto compiuto (la nostra riga-verdetto ESEGUZIONE +
+  mutation-tests: il verdetto esce dall'esecuzione, non dalla parola dell'agente).
+- **Zenity/Cursor 2025-12** (9 secondi: dati E backup con una chiamata, token
+  sovrapprivilegiato): il blast-radius del token è il moltiplicatore — allowlist per segmento
+  già viva. E il bug di Cursor Plan Mode («il vincolo dichiarato non era applicato a runtime»)
+  è ESATTAMENTE la nostra regola «la dichiarazione non è il collaudo» (PARITÀ provata).
+Verificate a mano le due guardie notturne contro i distruttivi: force-push e branch-delete
+BLOCCATI dall'allowlist. Glifo alieno scappato nel registro (PRIORITIZZA): S1 l'avrebbe preso, tolto
+prima. La conclusione più fredda: cinque incidenti industriali, quindici cause — TUTTE le
+famiglie hanno già la nostra guardia. Il metodo che abbiamo costruito è la mappa speculare
+degli incidenti reali: non per fortuna, ma perché è nato proprio così — da errori veri.
