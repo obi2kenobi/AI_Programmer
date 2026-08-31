@@ -63,6 +63,7 @@
 - [2026-08-31 (6) — L'incidente OpenAI/HuggingFace girato a fin di bene: staffetta, reward hacking, uscita dichiarata](#2026-08-31-6-l-incidente-openai-huggingface-girato-a-fin-di-bene-staffetta-reward-hacking-uscita-dichiarata)
 - [2026-08-31 (7) — Gli incidenti esterni rovesciati: la skill, il registro, e un buco chiuso](#2026-08-31-7-gli-incidenti-esterni-rovesciati-la-skill-il-registro-e-un-buco-chiuso)
 - [2026-08-31 (8) — Gli incidenti dove l'AI crascia i sistemi: Replit, Zenity e la conferma](#2026-08-31-8-gli-incidenti-dove-l-ai-crascia-i-sistemi-replit-zenity-e-la-conferma)
+- [2026-08-31 (9) — REPO-M chiude la sessione estesa: 14 feature, deploy live, e il metodo tutto intero](#2026-08-31-9-repo-m-chiude-la-sessione-estesa-14-feature-deploy-live-e-il-metodo-tutto-intero)
 
 
 ## Stato
@@ -1271,3 +1272,21 @@ BLOCCATI dall'allowlist. Glifo alieno scappato nel registro (PRIORITIZZA): S1 l'
 prima. La conclusione più fredda: cinque incidenti industriali, quindici cause — TUTTE le
 famiglie hanno già la nostra guardia. Il metodo che abbiamo costruito è la mappa speculare
 degli incidenti reali: non per fortuna, ma perché è nato proprio così — da errori veri.
+
+### 2026-08-31 (9) — REPO-M chiude la sessione estesa: 14 feature, deploy live, e il metodo tutto intero
+
+Report: 2026-08-31-repo-m-chiusura-sessione-estesa.md. Associazione-Energikal in una sessione
+su più turni: 12 agenti paralleli → piano di 39 voci eseguito una alla volta; 100 giri di
+robustezza con verifica dei finding (R4: il falso positivo CONFERMATO non-bug documentato con
+commento, non corretto — la disciplina dell'onore del NON VERIFICATO applicata al contrario:
+l'onore di dichiarare che il comportamento originale era giusto); coerenza grafica; 14 feature
+proposte su mandato esplicito e sviluppate una per volta con test dedicato (F11: suite offline
+node come la nostra — il pattern banco-sintetico che viaggia; F14: backup Drive PRIMA di ogni
+scrittura; F5: solo promemoria, MAI esecuzione automatica — decisione di dominio esplicita).
+Deploy clasp: 40 file, credenziali verificate assenti. Tre cose da notare per il canone:
+(1) il report di handoff è il MODELLO: stato PR, cronologia per fasi, decisioni di dominio
+numerate, azioni manuali una-tantum elencate, cosa resta in ordine di priorità, come proseguire;
+(2) la rotazione del secret Azure resta aperta — GIA' in DEBITI del hub dal 2026-08-28, il
+campo la conferma: la decisione è di chi ha accesso ad Azure AD; (3) le azioni manuali
+(idempotenti, una tantum) sono dichiarate con i NOMI delle funzioni da eseguire: il deploy
+dell'umano con l'istruzione precisa, non generica.
