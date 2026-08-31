@@ -53,8 +53,10 @@ done)
 # intere non faceva diventare rosso niente — il catalogo è presidiato dal numero)
 FAM="$HERE/.claude/skills/gas-sviluppo/references/famiglie-difetti.md"
 NFAM=$(grep -c '^- \*\*' "$FAM" 2>/dev/null || echo 0)
-[ "$NFAM" -ge 45 ] && ok "famiglie di difetti popolate: $NFAM voci" \
-  || ko "famiglie di difetti degradate: $NFAM voci (attese >= 45)"
+# il pavimento SEGUE il catalogo reale: 50 voci al 2026-08-31, pavimento 47
+# (togliere 4 famiglie deve arrossire — scoperto che con 50 il vecchio 45 non prendeva)
+[ "$NFAM" -ge 47 ] && ok "famiglie di difetti popolate: $NFAM voci" \
+  || ko "famiglie di difetti degradate: $NFAM voci (attese >= 47)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
