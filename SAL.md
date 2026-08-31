@@ -56,6 +56,7 @@
 - [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate-report-2026-08-29-repo-o-standard-adoption)
 - [2026-08-31 — Le tre notti perse: il no-limit misurato](#2026-08-31-le-tre-notti-perse-il-no-limit-misurato)
 - [2026-08-31 (2) — Dal campo REPO-G: 16 lenti, 12 batch, 3 falsi positivi onorati](#2026-08-31-2-dal-campo-repo-g-16-lenti-12-batch-3-falsi-positivi-onorati)
+- [2026-08-31 (3) — REPO-K seconda sessione: la sfumatura del lock e il pattern FIFO in watch](#2026-08-31-3-repo-k-seconda-sessione-la-sfumatura-del-lock-e-il-pattern-fifo-in-watch)
 
 
 ## Stato
@@ -1138,3 +1139,15 @@ mostravano il corpo grezzo BC. E la conferma del metodo: 3 falsi positivi VERIFI
 ognuno documentato — la lente che iniettava sintetici bypassando la funzione vera è la stessa trappola
 del metro-che-non-contiene-il-campione. La lezione UI (tooltip perso sull'abilitazione) entra nelle
 famiglie come watch note da UN caso: il report stesso chiede di non generalizzare prima del secondo.
+
+### 2026-08-31 (3) — REPO-K seconda sessione: la sfumatura del lock e il pattern FIFO in watch
+
+Report: 2026-08-31-repo-k-robustezza-grafica-feature.md. 5 lenti → 5 bug veri, zero falsi positivi;
+le due fonti di verità disallineate (validation.allowedNoteValues vs STATUS_BADGE_CLASSES) sono la
+SECONDA conferma della famiglia in un secondo punto del codice. Due decisionsi da canone: (1) addendum
+misurato a lock-per-risorsa — il lock è per-script: attorno a operazioni lunghe blocca tutto; se c'è
+concorrenza ottimistica documentata il lock non si estende, si usa solo per il check-and-set atomico
+del flag; (2) il pattern FIFO/backgrounding (nohup+disown svaniscono fra chiamate → URL vecchio con
+state sbagliato) a DEBITI come watch: alla TERZA ricorrenza voce vera con àncora reale, come chiede
+il report — il catalogo non nasce da racconti. E la regola del metodo confermata: bulkChangeDate per
+DELEGAZIONE (chiama changeDate esistente in loop), non duplicazione della logica di business.
