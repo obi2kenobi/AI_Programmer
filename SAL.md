@@ -55,6 +55,7 @@
 - [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
 - [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate-report-2026-08-29-repo-o-standard-adoption)
 - [2026-08-31 — Le tre notti perse: il no-limit misurato](#2026-08-31-le-tre-notti-perse-il-no-limit-misurato)
+- [2026-08-31 (2) — Dal campo REPO-G: 16 lenti, 12 batch, 3 falsi positivi onorati](#2026-08-31-2-dal-campo-repo-g-16-lenti-12-batch-3-falsi-positivi-onorati)
 
 
 ## Stato
@@ -1124,3 +1125,16 @@ limite sulle issue» (Luca, 21/8) passa a DEBITI con l'evidenza: il rilevatore p
 non può scattare su un processo che non ritorna — serve il watchdog DURANTE, che è il
 pattern che l'eccezione aveva waiversato. La copia di lavoro è pulita: 59 ore di loop
 non hanno toccato un file (rilette, appunto).
+
+### 2026-08-31 (2) — Dal campo REPO-G: 16 lenti, 12 batch, 3 falsi positivi onorati
+
+Report: 2026-08-31-repo-g-robustezza-grafica-16-lenti.md. Robustezza+grafica su Bilancio_periodico:
+12 batch di fix (PR #37 mergiata), 9 file di test nuovi, npm test verde a ogni batch. Rilievi da
+canone: l'arrotondamento per gruppo che poteva rompere SILENTAMENTE la quadratura SP sotto soglia;
+accountMatches_ che catturava conti per prefisso; LockService assente su pubblicaBanche/
+saveBookOverride ma presente su saveDashboardChanges (la famiglia scritture-multi-fale conferma la
+lezione cross-linguaggio); OData per concatenazione su webapp ad accesso pubblico con errori che
+mostravano il corpo grezzo BC. E la conferma del metodo: 3 falsi positivi VERIFICATI e non corretti,
+ognuno documentato — la lente che iniettava sintetici bypassando la funzione vera è la stessa trappola
+del metro-che-non-contiene-il-campione. La lezione UI (tooltip perso sull'abilitazione) entra nelle
+famiglie come watch note da UN caso: il report stesso chiede di non generalizzare prima del secondo.

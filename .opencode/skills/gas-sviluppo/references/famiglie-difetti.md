@@ -1,3 +1,7 @@
+- **DA TENERE D'OCCHIO (un solo caso, REPO-G 2026-08-31: NON generalizzare finché non ricompare)**: il
+  lato UI della famiglia «il codice che aiutava in un caso smette di farlo fuori da quel caso» — 4 pulsanti
+  perdevano il tooltip ESATTAMENTE quando si abilitavano (un el.title='' scritto per lo stato disabilitato,
+  mai aggiornato per l'abilitato). Stessa forma dei bug di censimento, lato interfaccia.
 - **LE FAMIGLIE GENERALIZZANO FRA LINGUAGGI (dal campo REPO-O, 2026-08-29)**: le famiglie
   misurate qui su GAS sono ricomparse IDENTICHE in Python/SQLite dello stesso progetto —
   normalizzazione int/testo, «non letto» vs «vuoto», guardiano cieco, scritture multi-fase
