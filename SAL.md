@@ -61,6 +61,7 @@
 - [2026-08-31 (4) — Oggi a regime: E-016, E-017, turno-vivo, regola del presidio sul processing](#2026-08-31-4-oggi-a-regime-e-016-e-017-turno-vivo-regola-del-presidio-sul-processing)
 - [2026-08-31 (5) — REPO-G banche solo corrente: giro CHIUSO + doppione REPO-J + regola first-touch](#2026-08-31-5-repo-g-banche-solo-corrente-giro-chiuso-doppione-repo-j-regola-first-touch)
 - [2026-08-31 (6) — L'incidente OpenAI/HuggingFace girato a fin di bene: staffetta, reward hacking, uscita dichiarata](#2026-08-31-6-l-incidente-openai-huggingface-girato-a-fin-di-bene-staffetta-reward-hacking-uscita-dichiarata)
+- [2026-08-31 (7) — Gli incidenti esterni rovesciati: la skill, il registro, e un buco chiuso](#2026-08-31-7-gli-incidenti-esterni-rovesciati-la-skill-il-registro-e-un-buco-chiuso)
 
 
 ## Stato
@@ -1227,3 +1228,24 @@ nel catalogo famiglie: mutation-tests è l'antidoto costruito prima di sapere il
 il nostro «tre tentativi poi architettura» ha ora il perché profondo scritto. Quarta lezione confermata
 su scala industriale: la lentezza della scoperta (loro settimane, noi gate muto e notti perse — stessa
 famiglia, già presidiata).
+
+### 2026-08-31 (7) — Gli incidenti esterni rovesciati: la skill, il registro, e un buco chiuso
+
+Idea di Luca: cercare esperienze di crash e volgerle a nostro favore. Fatto, sistematico:
+la skill `incidenti-esterni` (5 mosse: verifica la fonte, estrai le cause senza dettagli,
+ROVESCIA ogni causa nel nostro equivalente, verifica le guardie, registra) e il registro
+docs/incidenti-esterni/REGISTRO.md. Tre incidenti processati subito:
+- **OpenAI/HF**: 4 cause mappate, tutte con guardia (la conferma esterna che le famiglie
+  sono reali anche fuori casa — compreso il pattern la-staffetta nato ieri da questo).
+- **Knight Capital** ($440M in 45'): 3 cause mappate con guardia, e UNA lezione NUOVA che
+  dà urgenza a una decisione aperta: il kill switch esitato per 45 minuti è ESATTAMENTE
+  la decisione watchdog che Luca ha in DEBITI — la nostra esitazione è costata 3 notti,
+  la loro 440 milioni di dollari. La decisione merita l'urgenza del confronto.
+- **GitLab 2017** (300GB cancellati, 5 backup nessuno provato): 2 cause con guardia e
+  UN BUCO VERO TROVATO E CHIUSO: il nostro backup-config esisteva ma nessun test provava
+  il RIPRISTINO — l'esatto fallimento di GitLab (5 backup, 0 ripristini provati). Ora
+  test-backup-config verifica che il gist sia LEGGIBILE e contenga i file attesi (con gh
+  attivo; senza gh: NON ESEGUIBILE dichiarato, mai falsificato).
+La scoperta più bella: la copia informale che salva — l'unica copia buona di GitLab era
+un pg_dump fatto a mano da una persona 6 ore prima: il nostro equivalente sono i report
+di campo e SAL, le copie vive di chi lavora. Il registro ha la tabella copertura.
