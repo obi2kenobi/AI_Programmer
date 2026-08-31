@@ -274,3 +274,36 @@
 - Verifica guardia: lanciato senza args/conf → messaggio e rc=1 (provato);
   tests/test-morning-digest.sh presidia il battito (GIUDICE FERMO se gate non completa).
 - Aggiramento: chiamare il gate con le repo esplicite (come fatto fino al 25).
+
+## E-016 Il medesimo report processato due volte in parallelo
+- Data / sessione: 2026-08-31 (REPO-G, due sessioni, ~1h di distanza)
+- Famiglia: R3 (precondizione non chiesta) + R4
+- Sintomo: push rifiutato; il remoto conteneva il report già processato da un'altra sessione.
+- Causa prossima: nessuna delle due sessioni ha dichiarato il presidio prima di iniziare.
+- Causa del ragionamento: il presidio esiste dalla vigilia ma «processare un report» non
+  è stato riconosciuto come LAVORO SU UNA ZONA (sembra lettura, è scrittura).
+- Perché non ci ha fermati: la collisione è stata BENIGNA per costruzione (convenzione
+  date-slug: stesso report → stesso file → nessuna divergenza) — il danno è stato solo
+  lavoro duplicato, e il verde finale ha nascosto lo spreco.
+- Guardia: tools/presidio.sh (claim prima di processare) + la regola scritta nella
+  skill lavoro-condiviso §1bis: il processing di un report dal campo È un lavoro su zona.
+- Verifica guardia: il claim contesa avvisato nelle prove del turno stesso (9/9 test).
+- Aggiramento: la convenzione dei nomi rende comunque idempotente l'esito: tenuta.
+
+## E-017 Tre notti perse: il turno incastrato invisibile
+- Data / sessione: 2026-08-31 (scoperta alla domanda «come sono andate le ultime notti?»)
+- Famiglia: R2 (verde/silenzio senza dati) + R1
+- Sintomo: nessun TURNO FINITO dal 28/8; nessun turno avviato il 29 e 30; silenzio totale.
+- Causa prossima: opencode in loop di rilettura MAI tornato (~59h, 104h CPU); il job
+  vivo ha impedito a launchd di avviare i turni seguenti (niente doppioni).
+- Causa del ragionamento: la decisione «nessun limite di tempo» (Luca, 21/8) presupponeva
+  «la guardia è la review del mattino» — ma la review non aveva NIENTE da guardare: il
+  gate era rotto (E-015) e nessuno strumento mostrava un processo vivo da 59 ore.
+- Perché non ci ha fermati: l'assenza di log sembrava coda vuota (stessa famiglia del
+  gate muto).
+- Guardia: tools/turno-vivo.sh (detector del processo oltre soglia, in system-health;
+  non uccide: VISIBILITÀ, la scelta del rimedio resta della review del mattino) +
+  DEBITI «il turno senza limite ha bruciato 3 notti» per la decisione del watchdog.
+- Verifica guardia: girato oggi: nessun processo attivo → rc 0 (caso sano provato;
+  il caso rotto è il documento stesso di oggi: 59h reali).
+- Aggiramento: pkill -f "opencode run" (pulizia consolidata), il turno si scioglie.
