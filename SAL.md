@@ -64,6 +64,7 @@
 - [2026-08-31 (7) — Gli incidenti esterni rovesciati: la skill, il registro, e un buco chiuso](#2026-08-31-7-gli-incidenti-esterni-rovesciati-la-skill-il-registro-e-un-buco-chiuso)
 - [2026-08-31 (8) — Gli incidenti dove l'AI crascia i sistemi: Replit, Zenity e la conferma](#2026-08-31-8-gli-incidenti-dove-l-ai-crascia-i-sistemi-replit-zenity-e-la-conferma)
 - [2026-08-31 (9) — REPO-M chiude la sessione estesa: 14 feature, deploy live, e il metodo tutto intero](#2026-08-31-9-repo-m-chiude-la-sessione-estesa-14-feature-deploy-live-e-il-metodo-tutto-intero)
+- [2026-08-31 (10) — REPO-J 2ª revisione a 95 agenti: 29 confermati, 99 non-verificati onorati, e le lezioni](#2026-08-31-10-repo-j-2ª-revisione-a-95-agenti-29-confermati-99-non-verificati-onorati-e-le-lezioni)
 
 
 ## Stato
@@ -1290,3 +1291,28 @@ numerate, azioni manuali una-tantum elencate, cosa resta in ordine di priorità,
 campo la conferma: la decisione è di chi ha accesso ad Azure AD; (3) le azioni manuali
 (idempotenti, una tantum) sono dichiarate con i NOMI delle funzioni da eseguire: il deploy
 dell'umano con l'istruzione precisa, non generica.
+
+### 2026-08-31 (10) — REPO-J 2ª revisione a 95 agenti: 29 confermati, 99 non-verificati onorati, e le lezioni
+
+Report: 2026-08-31-repo-j-revisione-100-agenti.md. Seconda revisione dello stesso repo dopo la
+50-agenti del 28/8 e il deploy dei 28 fix. 95 agenti in 3 fasi: 55 ricerca (12 aree × 6 lenti,
+seconda lettura indipendente sulle 4 aree a rischio), 35 verifica avversariale con mandato di
+CONFUTARE (ogni verificatore ha letto il sorgente in prima persona, non la sintesi), 5 idee di
+robustezza separate dalla caccia bug. Esito: 134 rilievi → 29 bug confermati (6 ALTI) + 3
+CONFUTATI documentati + 99 NON VERIFICATI con severità autodichiarata dichiarata NON confermata.
+Le lezioni per il canone:
+1. **Il tetto dichiarato**: 99 rilievi restano oltre il tetto di verifica (35) — dichiarato nel
+   report come capacità del workflow, NON limite nascosto: l'onore del NON VERIFICATO su scala
+   industriale. La severità autodichiarata non è conferma.
+2. **Il dedup per parola non prende i duplicati concettuali**: 3 coppie erano lo stesso difetto
+   trovato da lenti diverse con parole diverse — unite a mano. Conferma che la dedup per
+   similarità testuale non basta: serve l'unione umana/agentiva sul CONCETTO.
+3. **La confutazione pagata**: 3 rilievi confutati con ragioni precise (scenario non raggiungibile
+   coi dati reali, tool diagnostico dichiarato ≠ dead code, differenza non osservabile). Il
+   verificatore che confuta con la ragione scritta vale quanto quello che conferma.
+4. **Bug notevoli per le famiglie**: TRIGGER_HOUR=0 sovrascritto dal default (il parseInt||default
+   che tratta 0 legittimo come assente — famiglia «il default che mangia il valore»); CSV formula
+   injection verso il cliente esterno; la quantità reduce() senza toFixed che scrive 15.5999…;
+   undefined letterale nella mail di diagnosi proprio quando servirebbe la diagnosi. E il banco
+   che mocka DateUtils invece di caricare il sorgente vero: il mock invecchia, il sorgente no —
+   la nostra regola banco-sintetico già lo prescrive (carica il CODICE VERO).
