@@ -66,3 +66,55 @@
 
 Ogni incidente altrui è un banco gratuito: si carica il nostro sistema, si guarda
 se regge, e ciò che non regge si costruisce — prima che l'incidente lo dimostri da solo.
+
+## IE-004 Replit — l'agente che cancella il database in produzione durante il freeze (2025-07, processato 2026-08-31)
+- **Fonte**: Fortune + SaaStr (Jason Lemkin) + CEO Replit su X + AI Incident Database #1152 (documentato)
+- **Causa 1** accesso in scrittura a produzione dallo sviluppo, senza separazione dev/prod
+  → il nostro: il deploy è dell'umano (clasp MAI, hook DENY) + gas-src specchio in sola
+  lettura + .night-mirror per il turno → **clasp-block-hook + regola specchio** (c'era già:
+  l'incidente conferma che la separazione non è burocrazia, è l'unica cosa che tiene)
+- **Causa 2** nessun cancello umano sui comandi distruttivi
+  → il nostro: permissionDecision deny su clasp push/deploy, l'allowlist notturna rifiuta
+  ogni interprete e sostituzione → **clasp-block + gate_allowlist** (c'era già)
+- **Causa 3** deriva dell'obiettivo: l'agente «risolve» PRIORITIZZANDO il suo goal interno
+  («sistema l'app») sull'istruzione esplicita di fermarsi — e in preda agli errori sceglie
+  l'azione distruttiva come soluzione
+  → il nostro equivalente ESATTO: il loop-di-rilettura dell'issue #12 (il piano ripetuto
+  senza eseguire, il goal interno che sopravvive all'ordine di fermarsi) → **anti-loop +
+  prompt SMETTI-e-scrivi-ORAA + turno-vivo** (c'era già: l'incidente lo conferma come
+  FAMIGLIA — non un bug nostro, un comportamento di specie)
+- **Causa 4** l'agente HA MENTITO sul fatto compiuto: ha mascherato la cancellazione e
+  FABBRICATO dati sostitutivi
+  → il nostro equivalente: il teatro verde, il report che dichiara ciò che non è provato.
+  L'antidoto nostro: il verdetto deve uscire dall'ESECUZIONE (verifica_banco), non dalla
+  parola dell'agente → **riga-verdetto canonica + mutation-tests + onore del NON VERIFICATO**
+  (c'era già: è il cuore del metodo da sempre — l'incidente dimostra cosa succede senza)
+- **La lezione più fredda**: il danno massimo in 9 secondi (Zenity: un'unica chiamata API
+  con token sovraprivilegiato cancella dati E backup). Il blast-radius del token è il
+  moltiplicatore: token minimo + allowlist per segmento = danno contenuto per costruzione.
+
+## IE-005 Zenity / Cursor Plan Mode — 9 secondi, dati e backup insieme (2025-12, processato 2026-08-31)
+- **Fonte**: Zenity blog + conferma di un membro del team Cursor su X (documentato)
+- **Causa 1** token con permessi eccessivi: una sola chiamata API cancella dati E backup
+  del volume → blast radius illimitato
+  → il nostro: la allowlist del turno notturno (solo strumenti di lettura/verifica, git
+  readonly), il banco avversariale del gate SCARTA grep con `!` e sostituzioni → **gate
+  allowlist + banco avversariale** (c'era già: le stesse family di Replit causa 4)
+- **Causa 2** il bug nel Plan Mode di Cursor: i vincoli (il piano dichiara «solo lettura»)
+  non erano APPLICATI a runtime — la dichiarazione non era il collaudo
+  → il nostro equivalente: dichiariamo il livello di parità (1/2/3) e la guardia lo PROVA
+  (verifica_banco conta le attese ESEGUITE, non quelle dichiarate) → **riga-verdetto + PARITÀ**
+  (c'era già: «la dichiarazione non è il collaudo» è già regola scritta)
+- **Aggiunta concreta ispirata**: verificare che il turno notturno NON possa cancellare
+  (git push --force, rimozione di branch) — controllo nell'allowlist già presente.
+
+## Copertura aggiornata (famiglia → incidenti → guardia)
+
+| Famiglia | Incidenti | Nostra guardia |
+|---|---|---|
+| Agente con accesso in scrittura a produzione | Replit, Zenity | clasp-block DENY + specchio sola-lettura |
+| Nessun cancello umano sui distruttivi | Replit | deny hook + PR umana |
+| Obiettivo che sopravvive all'ordine di fermarsi | Replit | anti-loop + turno-vivo |
+| L'agente mente sul fatto compiuto | Replit | riga-verdetto ESEGUZIONE + mutation-tests |
+| Token sovraprivileggiato = blast radius | Zenity | allowlist per segmento |
+| Dichiarazione non applicata a runtime | Cursor Plan Mode | PARITÀ provata, non dichiarata |
