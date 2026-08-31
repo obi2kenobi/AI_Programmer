@@ -55,9 +55,11 @@
 - [2026-08-29 (7) — Le lezioni di stanotte a casa + la riverifica di ieri: 11/11 guardie vive](#2026-08-29-7-le-lezioni-di-stanotte-a-casa-la-riverifica-di-ieri-11-11-guardie-vive)
 - [2026-08-29 (8) — Dal campo REPO-O/REPO-P: onboarding sanzionato, lezioni incassate (report: 2026-08-29-repo-o-standard-adoption)](#2026-08-29-8-dal-campo-repo-o-repo-p-onboarding-sanzionato-lezioni-incassate-report-2026-08-29-repo-o-standard-adoption)
 - [2026-08-31 — Le tre notti perse: il no-limit misurato](#2026-08-31-le-tre-notti-perse-il-no-limit-misurato)
+- [2026-08-31 (2) — REPO-K, seconda sessione: 5 bug reali per lente, tooltip da zero, 4 feature proposte e costruite](#2026-08-31-2-repo-k-seconda-sessione-5-bug-reali-per-lente-tooltip-da-zero-4-feature-proposte-e-costruite)
 - [2026-08-31 (2) — Dal campo REPO-G: 16 lenti, 12 batch, 3 falsi positivi onorati](#2026-08-31-2-dal-campo-repo-g-16-lenti-12-batch-3-falsi-positivi-onorati)
 - [2026-08-31 (3) — REPO-K seconda sessione: la sfumatura del lock e il pattern FIFO in watch](#2026-08-31-3-repo-k-seconda-sessione-la-sfumatura-del-lock-e-il-pattern-fifo-in-watch)
 - [2026-08-31 (4) — Oggi a regime: E-016, E-017, turno-vivo, regola del presidio sul processing](#2026-08-31-4-oggi-a-regime-e-016-e-017-turno-vivo-regola-del-presidio-sul-processing)
+- [2026-08-31 (5) — REPO-G banche solo corrente: giro CHIUSO + doppione REPO-J + regola first-touch](#2026-08-31-5-repo-g-banche-solo-corrente-giro-chiuso-doppione-repo-j-regola-first-touch)
 
 
 ## Stato
@@ -1200,3 +1202,13 @@ Tutto ciò che il giorno ha insegnato, messo in forma istituzionale:
 L'errore del giorno fatto dall'autore mentre istituzionalizzava: l'innesto in system-health finito
 dentro un echo esistente (quoting spezzato, due passaggi per ripulire) — stesso gesto che E-012
 racconta: la fretta sull'ovvio. Notato qui perché il registro vive anche di questo.
+
+### 2026-08-31 (5) — REPO-G banche solo corrente: giro CHIUSO + doppione REPO-J + regola first-touch
+
+Report: 2026-08-31-repo-g-banche-solo-periodo-corrente.md. Giro chiuso: 7 banchi verdi, prova di
+rendering con funzioni vere via vm, clasp push, conferma del dominio («perfetto tutto ha funzionato»).
+Il codice aveva già prev opzionale nel percorso null — una riga di chiamata, zero nuovo codice.
+Dichiarare il criterio di verifica PRIMA del lavoro ha reso la conferma una formalità.
+Due cose portate a casa: (1) il doppione REPO-J nel repos-index (due righe) fuso in una —
+l'attrite segnalato dal campo; (2) la regola scritta nel metodo: first-touch NON sostituisce
+l'onboarding decisionato — due gesti diversi, mai confusi.
