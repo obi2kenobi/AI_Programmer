@@ -1124,3 +1124,35 @@ limite sulle issue» (Luca, 21/8) passa a DEBITI con l'evidenza: il rilevatore p
 non può scattare su un processo che non ritorna — serve il watchdog DURANTE, che è il
 pattern che l'eccezione aveva waiversato. La copia di lavoro è pulita: 59 ore di loop
 non hanno toccato un file (rilette, appunto).
+
+### 2026-08-31 (2) — REPO-K, seconda sessione: 5 bug reali per lente, tooltip da zero, 4 feature proposte e costruite
+
+Continuazione diretta della sessione REPO-K del 28/8, stesso repo: richiesta utente
+"100 giri robustezza + 100 giri grafica con tooltip ovunque", negoziata con
+`AskUserQuestion` (repo target, metodo a batch progressivi) invece di eseguita alla
+lettera. 5 lenti di robustezza sequenziali hanno trovato 5 bug VERI (zero rumore):
+due race condition (scritture concorrenti Database.gs non protette, sync BC
+duplicabile da due esecuzioni sovrapposte), una lista di stati ammessi disallineata
+dal codice reale (`Config.gs` vs `STATUS_BADGE_CLASSES` in Scripts.html — due fonti
+di verità divergenti, trovate solo perché la lente ha fatto leggere entrambe nello
+stesso giro), un bug multi-riga EDIL/Legna ricomparso in una quarta funzione dopo
+essere già stato corretto in tre. La lente grafica ha scoperto che `data-tooltip`
+esisteva già su 12 elementi dal dossier precedente ma SENZA CSS/JS — un motore
+tooltip mai completato, non mai iniziato. 4 nuove feature proposte con
+`AskUserQuestion` (multiSelect, tutte scelte) PRIMA di scrivere codice, come da
+istruzione esplicita dell'utente: pannello errori, storico modifiche in UI,
+indicatore sync BC, modifica data in blocco (quest'ultima per DELEGA a `changeDate`
+esistente, zero logica duplicata). PR aperta, mergiata, `clasp push` in produzione.
+
+**Lezione di processo, non di codice**: il trucco FIFO per `clasp login`
+non-interattivo si è rotto al secondo uso — `nohup ... & disown` manuale non
+sopravvive in modo affidabile tra chiamate separate dello strumento di esecuzione
+comandi (i processi backgrounded a mano possono sparire silenziosamente), causando
+una race fra un vecchio tentativo di login bloccato e un nuovo tentativo, con
+`Authorization rejected: state parameter mismatch`. Risolto usando il backgrounding
+NATIVO dello strumento invece del backgrounding manuale in shell. Nessuna àncora di
+codice in questo hub (REPO-K non è onboardata): dichiarato in
+`docs/campo/2026-08-31-repo-k-robustezza-grafica-nuove-feature.md` come pattern
+candidato, non promosso a `patterns/` finché non si ripete su un repo onboardato.
+
+Report: docs/campo/2026-08-31-repo-k-robustezza-grafica-nuove-feature.md.
