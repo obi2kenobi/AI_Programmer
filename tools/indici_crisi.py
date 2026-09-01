@@ -75,6 +75,14 @@ def main():
     except (json.JSONDecodeError, EOFError):
         print("uso: indici_crisi.py < bilancio.json (pn, ricavi, patrimonio netto, debiti tributari, perdite esercizi precedenti)", file=sys.stderr)
         return 1
+    # i campi mancanti si DICHIARANO, non si muore di KeyError (giri di accuratezza
+    # 2026-09-01: input senza oneriFin produceva traceback nudo)
+    CAMPI = ("pn", "ricavi", "oneriFin", "passivoTot", "debPrev", "debTrib",
+             "cashFlow", "attivo", "attCorrenti", "passCorrenti")
+    mancanti = [c for c in CAMPI if c not in a]
+    if mancanti:
+        print(f"uso: indici_crisi.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
     indici = valuta_indici_crisi(a)
     for i in indici:
         marcatore = "🔴" if i["allarme"] else "🟢"
