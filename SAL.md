@@ -71,6 +71,7 @@
 - [2026-09-01 (3) — REPO-M Fase 6: 26 fix con 4 bug reali — e la verifica che non fa rumore](#2026-09-01-3-repo-m-fase-6-26-fix-con-4-bug-reali-e-la-verifica-che-non-fa-rumore)
 - [2026-09-01 (4) — Il 3° giro REPO-I: 16 bug, il deploy dal vivo, e le 6 proposte tutte adottate](#2026-09-01-4-il-3-giro-repo-i-16-bug-il-deploy-dal-vivo-e-le-6-proposte-tutte-adottate)
 - [2026-09-01 (5) — REPO-E chiude in giornata: standard→audit→fix→deploy, e 3 proposte applicate subito](#2026-09-01-5-repo-e-chiude-in-giornata-standard-audit-fix-deploy-e-3-proposte-applicate-subito)
+- [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
 
 
 ## Stato
@@ -1435,3 +1436,14 @@ E il dettaglio che il metodo conferma: la richiesta "200 giri" fermata e tradott
 di ieri, applicata dal campo il giorno dopo — la regola scritta FUNZIONA quando arriva il
 caso vero), e il deploy come fase del metodo (la proposta REPO-I di stamattina, applicata
 qui lo stesso pomeriggio).
+
+### 2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero
+
+Report: 2026-09-01-repo-q-audit-tutto-il-repo-53-voci.md. Audit su un repo MAI onboardato:
+6 agenti in sola lettura, principi portati a mano. Il numero richiesto era 200, il numero
+vero trovato 53 — non gonfiato. E la scoperta più grave NON era nell'audit: lo scrub di un
+secret leakato aveva corrotto un nome di funzione in produzione — trovata leggendo un file
+per intero invece di fidarsi del grep (esegui-non-leggere applicato all'AUDIT). Due proposte
+adottate: (1) il repo non onboardato si dichiara ALL'INIZIO (come NON RAGGIUNGIBILE), non
+a fine sessione quando è tardi; (2) territorio grande dichiarato dall'utente = variante
+del metodo (audit per area in sola lettura → backlog a tier → rimandi motivati per iscritto).
