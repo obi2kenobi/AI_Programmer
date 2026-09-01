@@ -72,6 +72,7 @@
 - [2026-09-01 (4) — Il 3° giro REPO-I: 16 bug, il deploy dal vivo, e le 6 proposte tutte adottate](#2026-09-01-4-il-3-giro-repo-i-16-bug-il-deploy-dal-vivo-e-le-6-proposte-tutte-adottate)
 - [2026-09-01 (5) — REPO-E chiude in giornata: standard→audit→fix→deploy, e 3 proposte applicate subito](#2026-09-01-5-repo-e-chiude-in-giornata-standard-audit-fix-deploy-e-3-proposte-applicate-subito)
 - [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
+- [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
 
 
 ## Stato
@@ -1447,3 +1448,17 @@ per intero invece di fidarsi del grep (esegui-non-leggere applicato all'AUDIT). 
 adottate: (1) il repo non onboardato si dichiara ALL'INIZIO (come NON RAGGIUNGIBILE), non
 a fine sessione quando è tardi; (2) territorio grande dichiarato dall'utente = variante
 del metodo (audit per area in sola lettura → backlog a tier → rimandi motivati per iscritto).
+
+### 2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern
+
+Report: 2026-09-01-centrale-rischi-cruscotto-v2-e-giri.md (già in campo). Due sessioni di fila:
+cruscotto v2 consegnato con 4 PR, giro di prova su 10 prospetti reali, 10 giri di miglioramento
+(59→67 attese). Poi la produzione: l'utente trova a MANO 3 difetti che 40+ attese verdi non
+vedevano (Sheets che converte «ottobre 2025» in data; le pagine guida ingurgitate come dati —
+prima lettura mia SBAGLIATA, corretta dall'utente, chiusa verificando sul testo del PDF; il
+PDF A4 troncato a 9 colonne). La lezione centrale: il canale di presentazione è un canale di
+verifica a parte — la verifica-visiva e il «stampalo e guardalo» non sono cerimonia. E la
+correzione del dominio vince quando è VERIFICATA sul documento invece che discussa a parole.
+Cinque proposte tutte adottate: 2 pattern nuovi (manifest-webapp-nel-repo, link-assoluti-e-
+decodifica-robusta) + 3 regole nel metodo (mai toLocaleString, il cruscotto risponde a una
+domanda, stampa = vincolo di larghezza nel design-doc).
