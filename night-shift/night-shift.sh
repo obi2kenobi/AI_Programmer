@@ -10,7 +10,7 @@
 #   - loop delle issue su array (lo stdin del while read veniva mangiato)
 #   - bash 3.2 (niente mapfile) e cd nel subshell (l'agente lavorava nella directory sbagliata)
 #   - idempotenza completa (PR aperta → skip; PR fusa → chiude l'issue rimasta aperta)
-#   - NESSUN LIMITE DI TEMPO (deciso da Luca 2026-08-21): finché non ha finito.
+#   - WATCHDOG per-issue (Luca, 2026-08-31): TIMEOUT_MINUTI default 240, override con NIGHT_SHIFT_TIMEOUT. Il no-limit è costato 3 notti.
 #     Guardia anti-loop: pkill -f "opencode run" libera il Mac.
 #   - keyword inglese "Closes #N" (l'italiana non auto-chiude le issue al merge)
 #   - git clean per issue (un fallimento non lascia rifiuti al commit successivo)
@@ -267,8 +267,23 @@ Issue #$NUM: $TITLE
 
 $BODY"
 
-    # NESSUN LIMITE DI TEMPO (decisione 2026-08-21). cd nel subshell: dentro la repo.
-    ( cd "$DIR" && opencode run --model "$OCPROVIDER" "$PROMPT" ) >> "$LOG" 2>&1
+    # WATCHDOG PER-ISSUE (decisione di Luca, 2026-08-31 — DEBITI saldato). Il no-limit
+    # (2026-08-21) è costato 3 notti (28-30/8: loop da 59h, job vivo che blocca launchd)
+    # e oggi sta bruciando ancora. Il watchdog è il pattern watchdog-guardato applicato
+    # al turno stesso: l'agente ha TIMEOUT_MINUTI (default 240 = 4h), la review del
+    # mattino resta l'appello. NON è un limite alla qualità: è il limite al loop.
+    TIMEOUT_MINUTI="${NIGHT_SHIFT_TIMEOUT:-240}"
+    ( cd "$DIR" && opencode run --model "$OCPROVIDER" "$PROMPT" ) >> "$LOG" 2>&1 &
+    AGENTE_PID=$!
+    ( sleep $((TIMEOUT_MINUTI * 60)); kill $AGENTE_PID 2>/dev/null && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — ucciso, il piano nel log resta la ripartenza" ) &
+    WATCHDOG_PID=$!
+    wait $AGENTE_PID 2>/dev/null
+    RC=$?
+    kill $WATCHDOG_PID 2>/dev/null || true
+    if [ $RC -ne 0 ] && ! kill -0 $AGENTE_PID 2>/dev/null; then
+      # il watchdog l'ha ucciso (o è morto da sé): si passa alla issue successiva, il turno NON si blocca
+      log "⚠ issue #$NUM: agente terminato (rc=$RC) — si passa oltre, il piano è nel log"
+    fi
 
     # Rilevatore di loop-di-riletture (notte 2026-08-28: piano identico ripetuto
     # 5+ volte, zero modifiche, turno bruciato): dopo l'esecuzione si guarda la

@@ -66,6 +66,7 @@
 - [2026-08-31 (9) — REPO-M chiude la sessione estesa: 14 feature, deploy live, e il metodo tutto intero](#2026-08-31-9-repo-m-chiude-la-sessione-estesa-14-feature-deploy-live-e-il-metodo-tutto-intero)
 - [2026-08-31 (10) — REPO-J 2ª revisione a 95 agenti: 29 confermati, 99 non-verificati onorati, e le lezioni](#2026-08-31-10-repo-j-2ª-revisione-a-95-agenti-29-confermati-99-non-verificati-onorati-e-le-lezioni)
 - [2026-08-31 (11) — Amanuensis valutato: 5 pilastri su 5 già nostri, 3 idee nuove adottate](#2026-08-31-11-amanuensis-valutato-5-pilastri-su-5-già-nostri-3-idee-nuove-adottate)
+- [2026-09-01 — Il watchdog deliberato: la decisione presa con l'evidenza sul tavolo](#2026-09-01-il-watchdog-deliberato-la-decisione-presa-con-l-evidenza-sul-tavolo)
 
 
 ## Stato
@@ -1333,3 +1334,22 @@ fix senza banco), l'evidenza porta il commit SHA (il vero di ieri può essere st
 la scartato-con-ragione come patrimonio (i confutati documentati sono confine di conoscenza).
 NON adottato l'MCP server stesso (beta, dipendenza esterna: il hub è metodologia, adottiamo il
 metodo non il software — l'autore stesso dichiara il valore a lungo termine non provato).
+
+### 2026-09-01 — Il watchdog deliberato: la decisione presa con l'evidenza sul tavolo
+
+«Affrontiamo la decisione del watchdog» — la decisione che era nel DEBITI dal 31/8, presa.
+Il no-limit (Luca, 21/8) era costato 3 notti e stava bruciando ANCHE stanotte (10 ore sullo
+stesso issue #12, di nuovo). SALDATO:
+- **Watchdog per-issue in night-shift.sh**: l'agente gira in background con un killer che
+  scatta a NIGHT_SHIFT_TIMEOUT=240 minuti (4h, override via env). Ucciso il processo, il
+  turno REGISTRA («il piano nel log resta la ripartenza») e PASSA ALLA ISSUE SUCCESSIVA:
+  mai più un job vivo che blocca i turni seguenti per giorni.
+- **Il pattern watchdog-guardato aggiornato**: l'eccezione dichiarata («il turno non lo usa»)
+  è RITRATTA con la ragione — la review del mattino resta l'appello, ma la review non può
+  guardare ciò che non vede: un processo in loop da 59 ore non produce un log da leggere.
+- **La copia operativa aggiornata E il processo incastrato di stanotte fermato**: il turno si
+  è sciolto regolarmente (TURNO FINITO alle 09:49), ha saltato l'issue #10 col motivo giusto
+  (design senza riferimenti reali), e ha lavorato sul nuovo REPO-O (0 issue in coda: buonanotte).
+La forma del watchdog è quella del pattern che c'era da sempre: killer in subprocess, il PID
+atteso, il watchdog stesso ucciso se l'agente torna. La differenza dal 21/8: ora sappiamo il
+costo del non usarlo, con i numeri.
