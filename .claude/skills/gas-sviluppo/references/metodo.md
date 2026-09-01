@@ -304,6 +304,21 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Due proposte dal campo REPO-Q (2026-09-01): il repo non onboardato e il territorio grande
+
+1. **IL REPO NON ONBOARDATO SI DICHIARA ALL'INIZIO**, non a fine sessione. Quando scopri di
+   lavorare su un repo senza il nostro standard (niente hook, niente skill, niente .night-verify):
+   dichiaralo ALL'APERTURA («repo NON onboardato: principi a mano, promemoria strutturali
+   assenti — l'hook Stop non c'è, quindi il report dal campo va scritto PER RICORDO PROPRIO»).
+   Come REPO-H dichiara «NON RAGGIUNGIBILE»: la condizione si dice quando cambia il metodo,
+   non quando è tardi per correggerlo.
+2. **TERRITORIO GRANDE DICHIARATO DALL'UTENTE** (tutto il repo, multi-progetto): è una
+   variante del metodo distinta da commessa e turno notturno. La forma provata: audit
+   paralleli di SOLO LETTURA per area → backlog a livelli di priorità (bug → rischio → debito
+   → idea) → esecuzione livello per livello → ciò che si rimanda ha la MOTIVAZIONE SCRITTA,
+   non l'omissione silenziosa. Il numero richiesto («200 giri») non si gonfia: si dichiara
+   il numero vero trovato.
+
 ## Sei proposte dal 3° giro REPO-I (2026-09-01): il ciclo completo, dal candidato al vivo
 
 1. **TERZO ESITO del bug-hunt: DA VERIFICARE SUL SISTEMA REALE.** Distinto da confermato e
