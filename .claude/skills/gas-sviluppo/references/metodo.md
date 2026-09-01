@@ -304,6 +304,20 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Cinque proposte dal campo REPO-E: diagnosi deploy (2026-09-02)
+
+Tre strati sovrapposti con lo stesso sintomo. Le proposte, tutte adottate:
+1. **Pattern `diagnosi-differenziale-webapp-gas`**: la matrice (anonimo/loggato × versione ×
+   tempi doGet) per curare lo strato giusto.
+2. **Il numero @N del deploy come smoke-test**: un deploy nuovo che NON è @N+1 della
+   produzione = stai deployando un ALTRO progetto (successo davvero: gemello @3 invece di @74).
+3. **Verifica pre-deploy meccanizzabile**: estrarre le funzioni chiamate via
+   google.script.run dai .html e check che esistano pubbliche nei .gs.
+4. **LogLib flush soft**: il logging NON può stare sul percorso critico con waitLock(30s)
+   e ri-lancio — attesa breve, a timeout scartare (o buffer CacheService).
+5. **Datare l'identità anonima**: l'epoch-ms nel /a/<dominio>:<epoch>:1 dice se la sessione
+   del browser è stantia — prima di inseguire cause nel codice.
+
 ## Cinque proposte dal campo REPO-CR/centrale-rischi (2026-09-01): il canale di presentazione
 
 Il cruscotto v2 aveva 40+ attese verdi e l'utente ha trovato a mano tre difetti che nessun
@@ -461,5 +475,5 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
 **Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
 **Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping`
-**Architettura GAS**: `manifest-webapp-nel-repo` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
+**Architettura GAS**: `manifest-webapp-nel-repo` · `diagnosi-differenziale-webapp-gas` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
 **Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto`
