@@ -304,6 +304,22 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Cinque proposte dal campo REPO-CR/centrale-rischi (2026-09-01): il canale di presentazione
+
+Il cruscotto v2 aveva 40+ attese verdi e l'utente ha trovato a mano tre difetti che nessun
+banco vedeva: il canale di presentazione (browser, stampa, sandbox) è un canale di verifica
+A PARTE, non colmabile in CI. Le proposte:
+1. **Pattern `manifest-webapp-nel-repo`**: la sezione webapp in appsscript.json dal primo giorno.
+2. **Pattern `link-assoluti-e-decodifica-robusta`**: URL assoluti dal server + decodifica finché-stabilizza nei doGet.
+3. **Formattazione presentazione esplicita, MAI toLocaleString**: dipende dall'ICU dell'ambiente
+   (i negativi in Node senza separatore) — il banco non è un oracolo se la formula cambia
+   risultato fra banco e runtime.
+4. **Il cruscotto risponde a una DOMANDA**: ogni pannello si testa contro la domanda
+   dell'utente scritta in testa al design-doc. Il muro di 348 righe passava tutti i vincoli
+   e non serviva a nessuna domanda.
+5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
+   in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
+
 ## Due proposte dal campo REPO-Q (2026-09-01): il repo non onboardato e il territorio grande
 
 1. **IL REPO NON ONBOARDATO SI DICHIARA ALL'INIZIO**, non a fine sessione. Quando scopri di
@@ -445,5 +461,5 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
 **Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
 **Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping`
-**Architettura GAS**: `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
+**Architettura GAS**: `manifest-webapp-nel-repo` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
 **Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto`

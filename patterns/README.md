@@ -57,3 +57,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [estrazione-llm-spezzata](estrazione-llm-spezzata.md) | Centrale_Rischi loops/2026-08-28 (spike misurato) | 2026-08-29 |
 | [la-staffetta](la-staffetta.md) | .ciclo/findings_storico + PRESIDI.md | 2026-08-31 |
 | [lo-stub-che-mente-al-rovescio](lo-stub-che-mente-al-rovescio.md) | Controlli-trimestrali PR #103 | 2026-09-01 |
+| [manifest-webapp-nel-repo](manifest-webapp-nel-repo.md) | REPO-CR appsscript.json | 2026-09-01 |
+| [link-assoluti-e-decodifica-robusta](link-assoluti-e-decodifica-robusta.md) | REPO-CR doGet | 2026-09-01 |
