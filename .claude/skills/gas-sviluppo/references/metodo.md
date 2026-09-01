@@ -304,6 +304,33 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## Sei proposte dal 3° giro REPO-I (2026-09-01): il ciclo completo, dal candidato al vivo
+
+1. **TERZO ESITO del bug-hunt: DA VERIFICARE SUL SISTEMA REALE.** Distinto da confermato e
+   da falso-positivo: è il candidato che una sessione senza credenziali esterne NON PUÒ
+   risolvere (non "non ho fatto in tempo"): prova che vive sul sistema vero. Allinea col
+   stato «incerto» degli stati epistemici — ma merita nome suo perché ricorre ogni volta
+   che le credenziali stanno fuori dal repo (come dovrebbe essere).
+2. **La cifra letterale SI TRADUCE, non si esegue**: «200 giri» = «esaustivo secondo il
+   metodo», non 200 iterazioni letterali. È già nostra pratica consolidata (ngiri-paralleli):
+   ora è REGOLA scritta.
+3. **Indice delle batterie di lenti per progetto**: «ho fatto un giro» non basta — quale
+   batteria (correttezza/prodotto/avversariale), quando. Un progetto pulito su una batteria
+   non lo è su un'altra (provato: 16 bug dopo un giro già «completo»).
+4. **chiave-stabile-etichetta-libera ≡ riga-in-coda-non-interposta**: stessa idea a due
+   livelli (dati vs schema) — il testo umano non entra MAI nella chiave, né in riga né in colonna.
+5. **LO STUB PUÒ MENTIRE NELLA DIREZIONE OPPOSTA**: non solo «il reale è più severo dello
+   stub» — anche «il reale è PIÙ PERMISSIVO dello stub» (il test assumeva che DriveApp
+   lanciasse sempre: vero nello stub, falso dal vivo → il test falliva sul SUCCESSO e ha
+   scritto una riga di prova nel registro di produzione ISA 230). La lente per i test che
+   toccano servizi esterni: «se la dipendenza reale riesce dove lo stub fallisce, il test
+   resta corretto? e se scrive davvero, si pulisce da solo?»
+6. **LA PRIMA ESECUZIONE DAL VIVO È UNA FASE DEL METODO**, non una nota a piè di pagina:
+   per i progetti GAS+servizi reali è il punto in cui gli stub possono mentire al rovescio.
+   Il ciclo completo è: PR → merge → deploy vivo → PRIMA ESECUZIONE → (se servono fix:
+   seconda PR, ed è NORMALE, non un fallimento). Strutturalmente fuori portata della
+   sessione cloud: richiede la macchina e l'account del proprietario.
+
 ## I cinque stati epistemici del finding (da Amanuensis, valutato e adottato 2026-08-31)
 
 https://github.com/nfeldman/amanuensis — «give your agents a memory they have to earn». La sua
@@ -397,7 +424,7 @@ L'installazione: `graphify install --platform opencode` nel progetto target
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
 
-**Esecuzione e verifica**: `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
+**Esecuzione e verifica**: `lo-stub-che-menta-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
 **Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato`
 **Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento`
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`

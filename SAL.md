@@ -69,6 +69,7 @@
 - [2026-09-01 — Il watchdog deliberato: la decisione presa con l'evidenza sul tavolo](#2026-09-01-il-watchdog-deliberato-la-decisione-presa-con-l-evidenza-sul-tavolo)
 - [2026-09-01 (2) — Perché va in loop: la diagnosi dal log, e il doppio rimedio](#2026-09-01-2-perché-va-in-loop-la-diagnosi-dal-log-e-il-doppio-rimedio)
 - [2026-09-01 (3) — REPO-M Fase 6: 26 fix con 4 bug reali — e la verifica che non fa rumore](#2026-09-01-3-repo-m-fase-6-26-fix-con-4-bug-reali-e-la-verifica-che-non-fa-rumore)
+- [2026-09-01 (4) — Il 3° giro REPO-I: 16 bug, il deploy dal vivo, e le 6 proposte tutte adottate](#2026-09-01-4-il-3-giro-repo-i-16-bug-il-deploy-dal-vivo-e-le-6-proposte-tutte-adottate)
 
 
 ## Stato
@@ -1398,3 +1399,21 @@ disambiguatore), ~30 finding → 26 fix uno alla volta con test dedicato. I 4 bu
 E il dettaglio metodologico: i 3 fix Python (V23-V25) verificati con output IDENTICO su
 dati reali prima/dopo — PARITÀ applicata come si deve, non dichiarata. Suite del progetto
 da 12 a 19 gruppi di test.
+
+### 2026-09-01 (4) — Il 3° giro REPO-I: 16 bug, il deploy dal vivo, e le 6 proposte tutte adottate
+
+Report: 2026-09-01-repo-i-giro-correttezza-16-bug.md. Giro di correttezza pura (10 agenti,
+lenti tutte del canone) su un progetto già passato per due giri → 16 bug NUOVI (nessun
+duplicato coi giri precedenti: le batterie di lenti sono ORTOGONALI, provato di nuovo).
+Tema trasversale trovato indipendentemente da 4 agenti: «Open» letto come stato di oggi
+invece che alla data di riferimento (il correttivo esisteva in un quinto punto, mai
+generalizzato). Tutti 16 provati con test prima/dopo. Due questioni non risolvibili in
+codice → dichiarate e CHIUSE con decisioni di Luca. Poi il pezzo più istruttivo: il PRIMO
+DEPLOY DAL VIVO ha scoperto che 2 asserzioni del banco erano vere SOLO negli stub —
+assumevano che DriveApp lanciasse sempre (vero nello stub, falso dal vivo con autorizzazione
+completa) → il test falliva sul successo imprevisto e ha scritto una riga di prova nel
+registro di PRODUZIONE (ISA 230). SEI PROPOSTE ADOTTATE TUTTE: (1) terzo esito del bug-hunt
+«da verificare sul sistema reale»; (2) la cifra letterale si traduce, non si esegue (regola
+scritta); (3) indice delle batterie di lenti per progetto; (4) chiave-stabile ≡ riga-in-coda
+(stessa idea a due livelli, detto); (5) pattern NUOVO lo-stub-che-menta-al-rovescio (il
+reale più permissivo dello stub); (6) la prima esecuzione dal vivo è una FASE del metodo.
