@@ -74,6 +74,7 @@
 - [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
 - [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
+- [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
 
 
 ## Stato
@@ -1476,3 +1477,18 @@ robustezza: NESSUN .py con traceback su invocazione vuota (tutti dichiarano uso)
 **DIFETTO 2**: verifica_banco.py dichiarava l'uso ma usciva rc=0 (un errore d'uso che
 sembra successo) — FIX: exit 2. Giri 21-25: privacy vede i token shape, concorrenza OK,
 lock ciclo confermato. Giri 26-30: banco completo PASSAGGIO CHIUSO.
+
+### 2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale
+
+Report: 2026-09-02-repo-e-diagnosi-tre-strati.md. Partiti da «non mi fa fare il deploy», finiti
+dentro TRE problemi che si mascheravano a vicenda con lo stesso sintomo («Caricamento in corso…»):
+(1) deployment/produzione — risolto col deploy v74 nuovo; (2) sessione Google loggata di Luca —
+diagnosticata, cura a carico del proprietario; (3) LOCK di LogLib nei job lunghi — doGet da 3s a
+32s misurato col cronometro via curl. E il ritrovamento a mezzo: il trigger mensile puntato al
+nome pre-rinomina, che sarebbe morto il 1° ottobre. Le improvvisazioni da canone: il numero @N
+del deploy come smoke-test (ha smascherato il gemello in un minuto), la matrice a tre assi
+(anonimo/loggato × versione × tempi), l'epoch-ms nell'identità anonima come datazione della
+sessione. Cinque proposte TUTTE adottate: pattern nuovo diagnosi-differenziale-webapp-gas +
+4 regole nel metodo (smoke-test @N+1, verifica pre-deploy meccanizzabile, LogLib flush soft,
+datare l'identità). E la lezione trasversale: inseguire un «failed: undefined» fino in fondo
+ha scoperchiato tre strati invece del primo trovato.
