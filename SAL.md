@@ -75,6 +75,7 @@
 - [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
+- [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra onesti, e clasp push ≠ produzione](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-onesti-e-clasp-push-produzione)
 
 
 ## Stato
@@ -1492,3 +1493,16 @@ sessione. Cinque proposte TUTTE adottate: pattern nuovo diagnosi-differenziale-w
 4 regole nel metodo (smoke-test @N+1, verifica pre-deploy meccanizzabile, LogLib flush soft,
 datare l'identità). E la lezione trasversale: inseguire un «failed: undefined» fino in fondo
 ha scoperchiato tre strati invece del primo trovato.
+
+### 2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra onesti, e clasp push ≠ produzione
+
+Report: 2026-09-01-repo-k-terza-sessione-3-giri-extra-deploy.md. Tre cicli su richiesta esplicita,
+ciascuno con PR propria e riepilogo onesto: i rilievi calano di numero e gravità ciclo dopo ciclo
+(dal bug funzionale vero del primo alla pulizia di codice morto dell'ultimo) — dichiarato così
+invece di manifatturare per sembrare produttivi. LA SCOPERTA: clasp push aggiorna SOLO i sorgenti
+— non l'URL di produzione se punta a un deployment versionato. Nessun segnale d'errore: il push
+riuscito lascia gli utenti sulla versione vecchia. Verificato col fetch che cercava marcatori
+specifici del codice nuovo. Pattern adottato: clasp-push-non-e-produzione (verifica con fetch
+mirato, non presunzione). E il pattern FIFO/run_in_background per clasp login ha avuto la sua
+SECONDA conferma (due usi lisci in questa sessione): alla terza, voce vera nel catalogo.
+Doppioni REPO-K nel repos-index fusi in una riga sola.
