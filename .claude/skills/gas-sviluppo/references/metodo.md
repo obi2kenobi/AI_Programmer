@@ -424,7 +424,7 @@ L'installazione: `graphify install --platform opencode` nel progetto target
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
 
-**Esecuzione e verifica**: `lo-stub-che-menta-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
+**Esecuzione e verifica**: `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
 **Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato`
 **Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento`
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
