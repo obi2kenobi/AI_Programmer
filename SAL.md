@@ -65,6 +65,7 @@
 - [2026-08-31 (8) — Gli incidenti dove l'AI crascia i sistemi: Replit, Zenity e la conferma](#2026-08-31-8-gli-incidenti-dove-l-ai-crascia-i-sistemi-replit-zenity-e-la-conferma)
 - [2026-08-31 (9) — REPO-M chiude la sessione estesa: 14 feature, deploy live, e il metodo tutto intero](#2026-08-31-9-repo-m-chiude-la-sessione-estesa-14-feature-deploy-live-e-il-metodo-tutto-intero)
 - [2026-08-31 (10) — REPO-J 2ª revisione a 95 agenti: 29 confermati, 99 non-verificati onorati, e le lezioni](#2026-08-31-10-repo-j-2ª-revisione-a-95-agenti-29-confermati-99-non-verificati-onorati-e-le-lezioni)
+- [2026-08-31 (11) — Amanuensis valutato: 5 pilastri su 5 già nostri, 3 idee nuove adottate](#2026-08-31-11-amanuensis-valutato-5-pilastri-su-5-già-nostri-3-idee-nuove-adottate)
 
 
 ## Stato
@@ -1316,3 +1317,19 @@ Le lezioni per il canone:
    undefined letterale nella mail di diagnosi proprio quando servirebbe la diagnosi. E il banco
    che mocka DateUtils invece di caricare il sorgente vero: il mock invecchia, il sorgente no —
    la nostra regola banco-sintetico già lo prescrive (carica il CODICE VERO).
+
+### 2026-08-31 (11) — Amanuensis valutato: 5 pilastri su 5 già nostri, 3 idee nuove adottate
+
+Report: 2026-08-31-amanuensis-valutazione.md. La domanda di Luca: includere la metodologia di
+Amanuensis (github.com/nfeldman/amanuensis, «give your agents a memory they have to earn»)?
+La mappa pilastro-per-pilastro: read-before-judging→esegui-non-leggere (nostro più forte:
+noi eseguiamo); prove-it-or-qualify-it→NON VERIFICATO; attack-the-finding→giri-avversari+
+mutation-tests; remember-the-result→i registri; a-claim-cannot-outrun-its-evidence→la formula
+non si indovina. Cinque su cinque già presenti: la valutazione esterna più lusinghiera ricevuta
+dal metodo, perché indipendente e convergente. Adottate le tre idee genuinely nuove (sezione
+nuova nel metodo «I cinque stati epistemici del finding»): stati formali (confermato/incerto/
+stantio/riparato≠riparato-verificato/scartato-con-ragione — mai promuovere silenziosamente un
+fix senza banco), l'evidenza porta il commit SHA (il vero di ieri può essere stantio oggi), e
+la scartato-con-ragione come patrimonio (i confutati documentati sono confine di conoscenza).
+NON adottato l'MCP server stesso (beta, dipendenza esterna: il hub è metodologia, adottiamo il
+metodo non il software — l'autore stesso dichiara il valore a lungo termine non provato).

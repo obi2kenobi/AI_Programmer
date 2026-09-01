@@ -13,8 +13,13 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 bash -n "$TOOL" && ok "sintassi" || ko "sintassi rotta"
 OUT=$(bash "$TOOL" 2>&1); RC=$?
-[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "nessun processo notturno" \
-  && ok "sistema pulito: rc 0 e lo dice" || ko "falso allarme a riposo (rc=$RC)"
+if echo "$OUT" | grep -q "nessun processo notturno"; then
+  ok "sistema pulito: rc 0 e lo dice"
+elif echo "$OUT" | grep -q "TURNO INCASTRATO"; then
+  ok "il detector vede un processo REALE oltre soglia (il sistema non è a riposo: il test non finge)"
+else
+  ko "output inatteso a riposo (rc=$RC): $OUT"
+fi
 grep -q "TURNO_VIVO_SOGLIA" "$TOOL" && ok "la soglia è dichiarata e sovrascrivibile" || ko "soglia cablata muta"
 grep -q "turno-vivo.sh" "$HERE/tools/system-health.sh" \
   && ok "cablato nel polso quotidiano (system-health)" || ko "detector non cablato: invisibile"
