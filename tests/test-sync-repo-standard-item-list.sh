@@ -10,7 +10,7 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-LINEA=$(grep -n '^  for ITEM in' "$HERE/tools/sync-repo.sh" | head -1)
+LINEA=$(grep -n 'for ITEM in' "$HERE/tools/sync-repo.sh" | head -1)
 
 # giri avversari 2026-08-28 (A14/G8): la lista era DRIFTATA da tools/sync-repo.sh
 # (mancava .opencode/plugins) e non presidiava il flag --standard
