@@ -70,6 +70,8 @@
 - [2026-09-01 (2) — Perché va in loop: la diagnosi dal log, e il doppio rimedio](#2026-09-01-2-perché-va-in-loop-la-diagnosi-dal-log-e-il-doppio-rimedio)
 - [2026-09-01 (3) — REPO-M Fase 6: 26 fix con 4 bug reali — e la verifica che non fa rumore](#2026-09-01-3-repo-m-fase-6-26-fix-con-4-bug-reali-e-la-verifica-che-non-fa-rumore)
 - [2026-09-01 (4) — Il 3° giro REPO-I: 16 bug, il deploy dal vivo, e le 6 proposte tutte adottate](#2026-09-01-4-il-3-giro-repo-i-16-bug-il-deploy-dal-vivo-e-le-6-proposte-tutte-adottate)
+- [2026-09-01 (5) — REPO-E chiude in giornata: standard→audit→fix→deploy, e 3 proposte applicate subito](#2026-09-01-5-repo-e-chiude-in-giornata-standard-audit-fix-deploy-e-3-proposte-applicate-subito)
+- [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
 
 
 ## Stato
@@ -1417,3 +1419,31 @@ registro di PRODUZIONE (ISA 230). SEI PROPOSTE ADOTTATE TUTTE: (1) terzo esito d
 scritta); (3) indice delle batterie di lenti per progetto; (4) chiave-stabile ≡ riga-in-coda
 (stessa idea a due livelli, detto); (5) pattern NUOVO lo-stub-che-menta-al-rovescio (il
 reale più permissivo dello stub); (6) la prima esecuzione dal vivo è una FASE del metodo.
+
+### 2026-09-01 (5) — REPO-E chiude in giornata: standard→audit→fix→deploy, e 3 proposte applicate subito
+
+Report: docs/campo/2026-09-01-repo-e-standard-audit-deploy.md. Il ciclo COMPLETO in una
+giornata: adozione standard, audit dev-critic 7 lenti, fix (inclusi un bug radice trovato
+DIETRO il piano e 9 endpoint vulnerabili trovati APRENDO un file per altro), banco 23/23,
+deploy dal Mac di Luca lo stesso giorno. Le 3 proposte del campo, APPLICATE SUBITO:
+1. clasp-block-hook: il grep ora matcha solo invocazioni REALI (inizio comando o dopo
+   separatore shell) — il falso positivo che negava git commit col testo "clasp push"
+   nel messaggio è morto (verificato: menzione passa silenzio, invocazione resta deny);
+2. sync-repo --standard: docs/campo/ copia SOLO il README (mai le voci storiche di altri
+   clienti — privacy), e genera .night-verify minimo se assente (il vuoto dichiarato);
+3. (il terzo era lo .night-verify: incluso sopra).
+E il dettaglio che il metodo conferma: la richiesta "200 giri" fermata e tradotta (la regola
+di ieri, applicata dal campo il giorno dopo — la regola scritta FUNZIONA quando arriva il
+caso vero), e il deploy come fase del metodo (la proposta REPO-I di stamattina, applicata
+qui lo stesso pomeriggio).
+
+### 2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero
+
+Report: 2026-09-01-repo-q-audit-tutto-il-repo-53-voci.md. Audit su un repo MAI onboardato:
+6 agenti in sola lettura, principi portati a mano. Il numero richiesto era 200, il numero
+vero trovato 53 — non gonfiato. E la scoperta più grave NON era nell'audit: lo scrub di un
+secret leakato aveva corrotto un nome di funzione in produzione — trovata leggendo un file
+per intero invece di fidarsi del grep (esegui-non-leggere applicato all'AUDIT). Due proposte
+adottate: (1) il repo non onboardato si dichiara ALL'INIZIO (come NON RAGGIUNGIBILE), non
+a fine sessione quando è tardi; (2) territorio grande dichiarato dall'utente = variante
+del metodo (audit per area in sola lettura → backlog a tier → rimandi motivati per iscritto).
