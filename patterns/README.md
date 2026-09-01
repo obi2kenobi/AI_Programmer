@@ -56,4 +56,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [gas-vivo-definitivo](gas-vivo-definitivo.md) | skills/allineamento-fork (regola 1) | 2026-08-29 |
 | [estrazione-llm-spezzata](estrazione-llm-spezzata.md) | Centrale_Rischi loops/2026-08-28 (spike misurato) | 2026-08-29 |
 | [la-staffetta](la-staffetta.md) | .ciclo/findings_storico + PRESIDI.md | 2026-08-31 |
-| [lo-stub-che-menta-al-rovescio](lo-stub-che-menta-al-rovescio.md) | Controlli-trimestrali PR #103 | 2026-09-01 |
+| [lo-stub-che-mente-al-rovescio](lo-stub-che-mente-al-rovescio.md) | Controlli-trimestrali PR #103 | 2026-09-01 |
