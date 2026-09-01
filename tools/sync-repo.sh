@@ -70,7 +70,9 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # aggiunto dopo l'onboarding non raggiungeva più le repo già onboardate). Corretto in
   # due filoni indipendenti concorrenti; unificato: patterns/ (in entrambi) + .opencode/skills
   # (solo in questo filone, mancava ancora sull'altro).
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo .opencode/plugins; do
+  # (dal campo REPO-E 2026-09-01: docs/campo/ dell'hub contiene voci storiche di ALTRI
+# clienti — si copia SOLO il README come formato, mai le voci: privacy)
+for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
     cp -r "$HERE/$ITEM" "$ITEM"
@@ -81,6 +83,14 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
     cp "$HERE/tools/$H" "tools/$H" && git add "tools/$H"
   done
   if git diff --cached --quiet; then
+    # .night-verify minimo per il repo di destinazione (dal campo REPO-E: chi adotta
+# lo standard resta senza, e l'assenza non è segnalata da nessuna parte)
+if [ ! -f "$DEST/.night-verify" ]; then
+  echo "# Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate)." > "$DEST/.night-verify"
+  echo "# VUOTO = il gate lo dice. Dichiara i comandi appena puoi." >> "$DEST/.night-verify"
+  git -C "$DEST" add .night-verify 2>/dev/null || true
+fi
+
     echo "sync-repo --standard: GIÀ A STANDARD — $REPO ha tutto (CLAUDE.md, skills, agenti, hook)"
     exit 0
   fi

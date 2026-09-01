@@ -19,7 +19,10 @@ TOOL="$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)"
 [ "$TOOL" = "Bash" ] || exit 0
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
-if echo "$CMD" | grep -qE 'clasp[[:space:]]+(push|deploy)'; then
+# (dal campo REPO-E 2026-09-01: il grep libero negava git commit il cui MESSAGGIO
+# citava "clasp push" — falso positivo 2 volte in una sessione. Ora si matcha solo
+# se il comando È un'invocazione clasp: a inizio stringa o dopo un separatore shell)
+if echo "$CMD" | grep -qE '(^|[;&|][[:space:]]*)clasp[[:space:]]+(push|deploy)'; then
   jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). Se il push è davvero giusto, lo fa Luca a mano." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
