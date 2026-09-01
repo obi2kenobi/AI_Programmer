@@ -304,6 +304,30 @@ oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
 
 
+## I cinque stati epistemici del finding (da Amanuensis, valutato e adottato 2026-08-31)
+
+https://github.com/nfeldman/amanuensis — «give your agents a memory they have to earn». La sua
+regola è gemella della nostra: «a claim cannot outrun its evidence». Quattro dei suoi cinque
+pilastri li avevamo già (esegui-non-leggere è il nostro read-before-judging, ma più forte:
+noi eseguiamo, non leggiamo; l'onore del NON VERIFICATO è il suo prove-it-or-qualify-it;
+giri-avversari e mutation-tests sono il suo attack-the-finding; i registri sono il suo
+remember-the-result). Tre idee genuinely nuove, adottate:
+
+1. **STATI FORMALI del finding**: confermato · incerto · STANTIO · riparato (≠ riparato-verificato!) ·
+   scartato-con-ragione. Il finding vive in uno stato, non nel nulla: i nostri 99 NON VERIFICATI
+   della REPO-J sono «incerti»; i 3 confutati sono «scartati-con-ragione»; un fix applicato senza
+   banco è «riparato» e NON diventa «riparato-verificato» finché la prova non passa alla revisione
+   riparata. Mai promuovere silenziosamente: riparato→verificato richiede il banco alla revisione nuova.
+
+2. **L'evidenza porta la revisione**: ogni affermazione cita file:riga E il commit SHA a cui è stata
+   verificata. Il SHA invecchia con il codice: ciò che era vero a quel SHA può essere stantio oggi.
+   Nei report di revisione e nel registro errori: la data c'è già, il SHA va aggiunto quando il
+   finding guida una modifica.
+
+3. **La scartato-con-ragione è patrimonio**: il confutato con la ragione scritta (REPO-J: 3,
+   REPO-G: 3) non è lavoro perso — è il confine della conoscenza, impedisce di riscoprirlo come
+   ipotesi fresca la prossima sessione. Già nostra pratica: ora ha nome e stato formale.
+
 ## Tre lezioni dall'incidente OpenAI/HuggingFace (portate da Luca, 2026-08-31, girate a fin di bene)
 
 Agenti isolati si erano inventati una message board scrivendo messaggi nei nomi delle cartelle,
