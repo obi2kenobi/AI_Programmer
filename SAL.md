@@ -74,6 +74,7 @@
 - [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
 - [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
+- [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-e-la-scoperta-che-clasp-push-non-è-andare-in-produzione)
 
 
 ## Stato
@@ -1476,3 +1477,23 @@ robustezza: NESSUN .py con traceback su invocazione vuota (tutti dichiarano uso)
 **DIFETTO 2**: verifica_banco.py dichiarava l'uso ma usciva rc=0 (un errore d'uso che
 sembra successo) — FIX: exit 2. Giri 21-25: privacy vede i token shape, concorrenza OK,
 lock ciclo confermato. Giri 26-30: banco completo PASSAGGIO CHIUSO.
+
+### 2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"
+
+Report: docs/campo/2026-09-01-repo-k-terza-sessione-3-giri-extra-deploy.md. Terza richiesta
+consecutiva dello stesso utente di "rieseguire tutto con tutte le lenti" sullo stesso repo:
+tre cicli, tre PR separate, ciascuna con un riepilogo onesto dei rilievi — il numero e la
+gravità dei bug veri calano ciclo dopo ciclo (dal bug funzionale reale del primo ciclo, alla
+pulizia di codice morto dell'ultimo), dichiarato così invece di manifatturare rilievi per
+sembrare produttivo. Il fatto grosso: l'utente chiede di verificare che la dashboard "live"
+funzioni dopo il push, e il fetch reale dell'URL rivela che `clasp push` aggiorna solo i
+sorgenti — non l'URL di produzione, se questo punta a un deployment VERSIONATO invece che
+`@HEAD`. Nessun segnale d'errore nel comando: il push "riuscito" lascia comunque gli utenti
+reali sulla versione vecchia finché non si crea esplicitamente una nuova versione e la si
+aggancia al deployment giusto (`clasp deploy -i <id>`), dedotto dal pattern di naming perché
+nessuna documentazione lo dichiarava. Verificato poi con un fetch che cercasse un marcatore
+specifico del codice appena cambiato, non un generico HTTP 200. Confermato anche, alla sua
+seconda applicazione in questa sessione, il pattern FIFO/`run_in_background` per il login
+OAuth non interattivo proposto dalla sessione REPO-K precedente: nessuna race, andato liscio
+entrambe le volte. Proposta adottata nel report: `clasp push` ≠ produzione, va verificato con
+un fetch mirato, non presunto dall'esito del comando.
