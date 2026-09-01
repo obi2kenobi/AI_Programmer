@@ -70,4 +70,6 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    rc = main()
+    # main() può ritornare None (successo): l'uso-error deve uscire 2, non 0
+    sys.exit(rc if rc is not None else 0)

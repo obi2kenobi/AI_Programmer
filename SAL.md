@@ -73,6 +73,7 @@
 - [2026-09-01 (5) — REPO-E chiude in giornata: standard→audit→fix→deploy, e 3 proposte applicate subito](#2026-09-01-5-repo-e-chiude-in-giornata-standard-audit-fix-deploy-e-3-proposte-applicate-subito)
 - [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
 - [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
+- [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
 
 
 ## Stato
@@ -1462,3 +1463,16 @@ correzione del dominio vince quando è VERIFICATA sul documento invece che discu
 Cinque proposte tutte adottate: 2 pattern nuovi (manifest-webapp-nel-repo, link-assoluti-e-
 decodifica-robusta) + 3 regole nel metodo (mai toLocaleString, il cruscotto risponde a una
 domanda, stampa = vincolo di larghezza nel design-doc).
+
+### 2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi
+
+Giri 1-5 baseline (122/122, 0 finding). Giri 6-10 oracoli: valorizzazione verificata a mano
+(TOTALE 44: il calcolo del GIRO era sbagliato, l'oracolo GIUSTO — la prova che gli oracoli
+servono anche a chi li scrive); margine 300/30% corretto; **DIFETTO 1**: indici_crisi moriva di
+KeyError nudo su input incompleto (campo mancante non dichiarato) — FIX: elenca i campi
+mancanti prima di partire (verificato: incompleto → uso+rc1; completo → verdetti corretti).
+Giri 11-15 strumenti: fork-stato su vuoto OK, pre-commit OK, copertura OK. Giri 16-20
+robustezza: NESSUN .py con traceback su invocazione vuota (tutti dichiarano uso);
+**DIFETTO 2**: verifica_banco.py dichiarava l'uso ma usciva rc=0 (un errore d'uso che
+sembra successo) — FIX: exit 2. Giri 21-25: privacy vede i token shape, concorrenza OK,
+lock ciclo confermato. Giri 26-30: banco completo PASSAGGIO CHIUSO.
