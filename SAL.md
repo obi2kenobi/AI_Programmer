@@ -76,6 +76,7 @@
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
 - [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra onesti, e clasp push ≠ produzione](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-onesti-e-clasp-push-produzione)
+- [2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
 
 
 ## Stato
@@ -1506,3 +1507,19 @@ specifici del codice nuovo. Pattern adottato: clasp-push-non-e-produzione (verif
 mirato, non presunzione). E il pattern FIFO/run_in_background per clasp login ha avuto la sua
 SECONDA conferma (due usi lisci in questa sessione): alla terza, voce vera nel catalogo.
 Doppioni REPO-K nel repos-index fusi in una riga sola.
+
+### 2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»
+
+Report: 2026-09-01-golilla-doppia-campagna-audit-decidi-tu.md. Sei agenti revisore-gas paralleli
+hanno trovato INDIPENDENTEMENTE lo stesso pattern sistemico (webapp che si fida del payload
+client) su ~9 endpoint in 6 domini: la lente famiglie-difetti generalizza bene anche senza
+cross-talk. L'INCIDENTE: un apostrofo non escaped in un literal JS dentro l'HTML ha invalidato
+l'INTERO script inline — la Dashboard in produzione ferma subito dopo il deploy, e NESSUNA
+verifica l'aveva preso (l'avversariale leggeva il diff per la logica, non eseguiva il JS).
+Post-mortem completo in Golilla SAL §91, guardia verificata (node --check riproduce il crash).
+Tre proposte TUTTE adottate: (1) famiglia nuova + regola: controllo sintattico ESEGUITO per ogni
+consegna che tocca .html con script inline — un umano legge il senso della frase, non conta gli
+apici; (2) agente revisore-gas: descrizione allineata ai tool (riporta in prosa, il diff lo
+applica chi orchestra); (3) «decidi tu su tutto» nel brainstorming col triage: implementa se
+difesa-in-profondità / bloccato-sui-dati se manca il valore / rifiuta se richiede indovinare
+una formula.
