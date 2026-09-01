@@ -68,6 +68,7 @@
 - [2026-08-31 (11) — Amanuensis valutato: 5 pilastri su 5 già nostri, 3 idee nuove adottate](#2026-08-31-11-amanuensis-valutato-5-pilastri-su-5-già-nostri-3-idee-nuove-adottate)
 - [2026-09-01 — Il watchdog deliberato: la decisione presa con l'evidenza sul tavolo](#2026-09-01-il-watchdog-deliberato-la-decisione-presa-con-l-evidenza-sul-tavolo)
 - [2026-09-01 (2) — Perché va in loop: la diagnosi dal log, e il doppio rimedio](#2026-09-01-2-perché-va-in-loop-la-diagnosi-dal-log-e-il-doppio-rimedio)
+- [2026-09-01 (3) — REPO-M Fase 6: 26 fix con 4 bug reali — e la verifica che non fa rumore](#2026-09-01-3-repo-m-fase-6-26-fix-con-4-bug-reali-e-la-verifica-che-non-fa-rumore)
 
 
 ## Stato
@@ -1380,3 +1381,20 @@ come dire a chi sogna di accorgersi che sta sognando: serve il lucido, non l'int
    esito loop-dichiarato» — meglio una riga che dieci ore.
 2. **Rilevatore a DOPPIA FIRMA**: oltre alle righe consecutive identiche, ora conta le
    finestre Read ripetute (oltre 10 = loop): la firma reale misurata stanotte.
+
+### 2026-09-01 (3) — REPO-M Fase 6: 26 fix con 4 bug reali — e la verifica che non fa rumore
+
+Report: 2026-09-01-repo-m-sessione-estesa-fase6.md (sostituisce il precedente: PR #57 ora
+mergiata, Fase 6 V1-V26 aggiunta, deploy live con TUTTO). Il giro: 10 agenti paralleli con
+istruzione di NON risegnalare ciò che è già risolto/intenzionale (citando commit come
+disambiguatore), ~30 finding → 26 fix uno alla volta con test dedicato. I 4 bug REALI:
+- V5: l'override parziale delle rimanenze azzerava col || 0 il campo NON fornito (il default
+  che mangia il valore — la famiglia confermata su terzo progetto);
+- V11: i protocolli risultavano consumati PRIMA che il report fosse completato (scritti
+  troppo presto nel flusso);
+- V15: race reale sulla prima esecuzione (due fogli DB duplicati se due chiamate concorrenti);
+- V16: la riga «verificabile» controllava le colonne sbagliate (A e D valorizzate anche
+  nelle tabelle non previste).
+E il dettaglio metodologico: i 3 fix Python (V23-V25) verificati con output IDENTICO su
+dati reali prima/dopo — PARITÀ applicata come si deve, non dichiarata. Suite del progetto
+da 12 a 19 gruppi di test.
