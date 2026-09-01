@@ -261,7 +261,17 @@ shift_repo() {
       MIRROR_LIST=$(grep -vE '^\s*#|^\s*$' "$DIR/.night-mirror" | tr '\n' ',' | sed 's/,$//')
       [ -n "$MIRROR_LIST" ] && MIRROR_NOTE=" Cartelle specchio/sola lettura DICHIARATE da questa repo (.night-mirror), non scriverci MAI: $MIRROR_LIST."
     fi
-    local PROMPT="Risolvi questa GitHub issue. Lavora in modo autonomo e convergi: leggi i file rilevanti UNA volta sola, se un file necessario non esiste CREALLO subito (non cercarlo ripetutamente), scrivi le modifiche, esegui i test se presenti, poi termina. ANTI-LOOP (lezione dalla notte 2026-08-28): se ti accorgi che stai riformulando lo stesso piano senza avere ancora scritto niente, SMETTI di rileggere e scrivi ORA la modifica più piccola che fa avanzare; un piano già chiaro non si rilegge, si esegue. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
+    local PROMPT="Risolvi questa GitHub issue in MODO INCREMENTALE. REGOLA ANTI-LOOP (4 notti perse così — NON ignorarla):
+
+1. NON rileggere un file che hai già letto in questa sessione. Se hai la lista delle funzioni, lavori da quella.
+2. Dopo al massimo TRE letture di file, SMETTI di leggere e INIZIA A SCRIVERE. Anche sbagliato: si corregge dopo, ma si scrive.
+3. Il piano NON si riscrive: se l'hai già formulato una volta, vai al passo di scrittura successivo.
+4. Se dopo 5 minuti non hai scritto NESSUNA riga di codice, qualcosa è rotto: scrivi la modifica più piccola possibile (anche una riga) per sbloccarti, poi continua da lì.
+5. NON rieseguire grep che hai già fatto. Se hai trovato le funzioni, usale.
+
+Se ti accorgi di essere in loop (stesso pensiero, stessa lettura, nessuna scrittura): FERMA TUTTO, scrivi UNA riga di commento nel file target che dice cosa stavi per fare, e termina con esito 'loop-dichiarato'. Meglio una riga scritta che dieci ore di lettura.
+
+Lavora in modo autonomo e convergi. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
 
 Issue #$NUM: $TITLE
 
@@ -285,14 +295,16 @@ $BODY"
       log "⚠ issue #$NUM: agente terminato (rc=$RC) — si passa oltre, il piano è nel log"
     fi
 
-    # Rilevatore di loop-di-riletture (notte 2026-08-28: piano identico ripetuto
-    # 5+ volte, zero modifiche, turno bruciato): dopo l'esecuzione si guarda la
-    # coda del log — N righe consecutive identiche e non vuote = loop dichiarato.
-    local CODA
+    # Rilevatore di loop-di-riletture (notti 28/8 e 31/8: il prompt anti-loop da solo
+    # NON basta — il modello lo ignora e rilegge le stesse finestre per ore).
+    # DUE firme post-run: (a) righe consecutive identiche, (b) la stessa finestra
+    # di Read ripetuta più di 10 volte (la firma reale del 31/8: offset=655 ripetuto 21 volte).
+    local CODA NREP WINS
     CODA=$(tail -40 "$LOG" | grep -vE '^[[:space:]]*$' | uniq -c | sort -rn | head -1)
-    local NREP
     NREP=$(echo "$CODA" | awk '{print $1}')
-    if [ "${NREP:-0}" -ge 3 ]; then
+    # firma (b): la stessa finestra Read ripetuta oltre 10 volte in tutta la sessione
+    WINS=$(grep -a "Read " "$LOG" | grep -oE "offset=[0-9]+, limit=[0-9]+" | sort | uniq -c | sort -rn | head -1 | awk '{print $1}')
+    if [ "${NREP:-0}" -ge 3 ] || [ "${WINS:-0}" -gt 10 ]; then
       log "⚠ issue #$NUM: LOOP DI RIPLETTURA rilevato ($NREP ripetizioni consecutive senza esecuzione) — issue lasciata aperta; il piano già scritto nel log è il punto di ripartenza, non un punto da rifare"
       echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$NUM,loop-rilettura,—," >> "${HUB_METRICS:-/dev/null}" 2>/dev/null || true
     fi

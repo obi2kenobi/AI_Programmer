@@ -67,6 +67,7 @@
 - [2026-08-31 (10) — REPO-J 2ª revisione a 95 agenti: 29 confermati, 99 non-verificati onorati, e le lezioni](#2026-08-31-10-repo-j-2ª-revisione-a-95-agenti-29-confermati-99-non-verificati-onorati-e-le-lezioni)
 - [2026-08-31 (11) — Amanuensis valutato: 5 pilastri su 5 già nostri, 3 idee nuove adottate](#2026-08-31-11-amanuensis-valutato-5-pilastri-su-5-già-nostri-3-idee-nuove-adottate)
 - [2026-09-01 — Il watchdog deliberato: la decisione presa con l'evidenza sul tavolo](#2026-09-01-il-watchdog-deliberato-la-decisione-presa-con-l-evidenza-sul-tavolo)
+- [2026-09-01 (2) — Perché va in loop: la diagnosi dal log, e il doppio rimedio](#2026-09-01-2-perché-va-in-loop-la-diagnosi-dal-log-e-il-doppio-rimedio)
 
 
 ## Stato
@@ -1353,3 +1354,29 @@ stesso issue #12, di nuovo). SALDATO:
 La forma del watchdog è quella del pattern che c'era da sempre: killer in subprocess, il PID
 atteso, il watchdog stesso ucciso se l'agente torna. La differenza dal 21/8: ora sappiamo il
 costo del non usarlo, con i numeri.
+
+### 2026-09-01 (2) — Perché va in loop: la diagnosi dal log, e il doppio rimedio
+
+La domanda di Luca: «perché va in loop, possiamo migliorare?» — Diagnosi dal log reale (10.5
+ore, 491 «Continue if you have next steps», 228 Read dello stesso file):
+
+**LA FIRMA DEL LOOP**: l'agente rilegge le STESSE finestre del file. Le statistiche: offset=655
+limit=70 letto 21 volte; offset=655 limit=60 letto 19 volte; offset=660 limit=60 letto 14 volte;
+offset=640 limit=90 letto 10 volte. Non sta esplorando: sta OSCILLANDO sulle stesse righe. E
+ogni oscillazione finisce col piano riscritto identico («Continue if you have next steps»),
+poi ricomincia. È la firma del modello locale (Qwen 27B) che perde il thread del contesto:
+quando il contesto cresce, dimentica di aver già letto quella finestra, la rilegge, la trova
+identica (perché non ha scritto niente!), riformula lo stesso piano, e ricomincia.
+
+**PERCHÉ IL PROMPT ANTI-LOOP NON BASTA**: il prompt diceva «SMETTI di rileggere» — ma il
+modello in loop NON SI ACCORGE di essere in loop (perde la memoria di averlo già fatto). È
+come dire a chi sogna di accorgersi che sta sognando: serve il lucido, non l'intenzione.
+
+**IL DOPPIO RIMEDIO**:
+1. **Prompt riscritto in comportamentale**: non «smetti di rileggere» (richiede auto-coscienza
+   che il modello non ha) ma regole MECCANICHE: «dopo TRE letture smetti e scrivi», «non
+   rieseguire grep già fatti», «se dopo 5 minuti non hai scritto niente, scrivi UNA riga». E
+   l'uscita di emergenza dichiarata: «FERMA TUTTO, scrivi una riga di commento, termina con
+   esito loop-dichiarato» — meglio una riga che dieci ore.
+2. **Rilevatore a DOPPIA FIRMA**: oltre alle righe consecutive identiche, ora conta le
+   finestre Read ripetute (oltre 10 = loop): la firma reale misurata stanotte.
