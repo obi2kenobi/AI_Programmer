@@ -1,3 +1,22 @@
+- **DIPENDENZA DA LIBRERIA NEL MANIFEST ROMPE google.script.run PER LE SESSIONI AUTENTICATE
+  (dal campo REPO-E, 2026-09-02, popolazione 2/2)**: doGet servito (HTTP 200), il POST verso /callback
+  risponde 404, NESSUNA traccia nel log delle esecuzioni (le RPC non raggiungono il server), da anonimo
+  tutto funziona, da loggato no, su TUTTE le versioni. Domanda discriminante: *il manifest dichiara una
+  libreria? Prima di incolpare il browser, prova il progetto senza quella dipendenza.* COROLLARIO ATOMICO:
+  manifest e punti di chiamata sono UN SOLO CAMBIAMENTO — rimuovere la dipendenza e lasciare le chiamate
+  uccide tutti i trigger (ReferenceError al primo firing); rimuovere le chiamate e lasciare la dipendenza
+  lascia la webapp rotta da loggati.
+- **IL TRIGGER CONSERVA IL NOME CON CUI È STATO CREATO (REPO-E, 2026-09-02, 4/4 handler)**: una rinomina
+  (es. l'underscore finale di un audit) orfana il trigger che fallisce a ogni attivazione senza che nulla
+  lo dica. La data della rinomina taglia in due il pannello Attivatori (prima: 0% errori; dopo: 100%).
+  Le rimozioni e la diagnostica vanno alimentate da un ELENCO UNICO di nomi con alias pre-rinomina, o la
+  correzione entra in una copia e non nelle altre (successo davvero: funzioni di rimozione che confrontavano
+  solo il nome nuovo, rimossi: 0 stampato mentre cinque trigger orfani erano installati).
+- **L'UNDERSCORE FINALE NASCONDE ANCHE ALL'EDITOR (REPO-E, 2026-09-02, 34 funzioni)**: non solo a
+  google.script.run — la nasconde anche al menu a tendina dell'editor, che non la elenca e non la lascia
+  eseguire. Un audit che rende privato un toolkit operativo senza lasciare WRAPPER GUARDATI costringe
+  chi opera a smontare la sicurezza per lavorare — esito peggiore di entrambe le alternative. Il rimedio:
+  implementazione privata + wrapper pubblico con guardia di sessione che passa quando l'identità c'è davvero.
 - **SINTASSI ROTTA IN STRINGA LITERALE dentro script inline HTML (dal campo Golilla, 2026-09-01)**: un
   solo apostrofo non escaped in un literal JS a apici singoli dentro un file .html invalida l'INTERO
   script inline della pagina — non solo la riga. Invisibile alla lettura del diff (un umano legge il

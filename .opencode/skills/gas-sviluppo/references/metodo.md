@@ -334,6 +334,31 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## Quindici lezioni dalla giornata GAS più costosa (REPO-E, 2026-09-02)
+
+Tre famiglie nuove (nel catalogo), e le regole che valgono per tutto il parco:
+
+1. **DIAGNOSI DIFFERENZIALE A QUATTRO STRATI** per «webapp GAS che non carica»: dialogo OAuth /
+   callback 404 da loggati su TUTTE le versioni → dipendenza nel manifest (NON la sessione);
+   doGet > 20s e RPC morte per tutti → lock conteso; una sola versione rotta → deployment
+   stantio; RPC orfana singola → ponte staccato da una rinomina.
+2. **La regola dell'AMBIENTE**: prima di attribuire un sintomo a browser/cookie/account serve
+   un confronto che vari SOLO la causa sospetta. Metà esperimento non è una diagnosi.
+3. **N/M CON PROVENIENZA DIMOSTRABILE**: ogni riga-verdetto deve dimostrare il denominatore
+   (occorrenze grezze == giudicate + residuo dichiarato). Un 20/20 verde è indistinguibile da
+   un 29/29 per chi legge.
+4. **exit=$? DOPO UNA PIPE MISURA LA PIPE**: nelle batterie di sabotaggio, uscita catturata
+   senza pipe o via PIPESTATUS. Sei «GUARDIA ROSSA COME ATTESO» stampati, due erano muti.
+5. **CONSEGNA DI COMANDI A UN UMANO È UN'INTERFACCIA**: zero commenti in linea (zsh non li
+   tratta come tali), zero segnaposto, versione dello strumento stabilita PRIMA dei flag,
+   codice riconciliato con lo stato appena misurato. Costo di non farlo: 4 giri persi.
+6. **OSSERVABILITÀ MAI SUL PERCORSO CRITICO**: un logging che attende un lock e ri-lancia
+   trasforma ogni job lungo in un fermo totale (doGet da 3s a 32s).
+7. **BYTE DI CONTROLLO NEI SORGENTI: GATE, non cura caso per caso**: tab e newline i soli
+   ammessi. Costo storico della sua assenza: due sessioni perse.
+8. **L'allarme proporzionato**: un rischio va dichiarato col suo perimetro verificato, non
+   col peggiore immaginabile. Un allarme sbagliato costa credibilità a quelli giusti.
+
 ## Le TRE identità di esecuzione GAS (dal campo REPO-K email, 2026-09-02)
 
 Quando un problema di permessi (email, Drive, Sheets) appare in un progetto GAS, la

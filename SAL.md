@@ -79,6 +79,7 @@
 - [2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
 - [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 - [2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa](#2026-09-02-4-repo-k-email-il-modello-a-tre-identità-e-la-diagnosi-completa)
+- [2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni](#2026-09-02-5-la-giornata-gas-più-costosa-3-famiglie-nuove-10-errori-miei-15-lezioni)
 
 
 ## Stato
@@ -1559,3 +1560,14 @@ l'identità di chi li ha installati. Adottato nel metodo. Quattro punti aperti p
 verifica deployer (5.1), verifica trigger (5.2), l'hardcoded a :682 (5.3, una riga),
 e la web app anonima (5.4, da valutare). E la lezione della quota: i CC contano come
 destinatari (ogni notifica consuma 2 unità, non 1).
+
+### 2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni
+
+Report: docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md (sostituisce il parziale). Una
+giornata che vale un mese: 3 famiglie GAS nuove (dipendenza-libreria-manifest che rompe
+google.script.run per i loggati col corollario atomico; il trigger che conserva il nome
+pre-rinomina; l'underscore che nasconde anche all'editor), 6 difetti trovati nei miei
+strumenti DAL SABOTAGGIO prima del commit (4 invisibili al giro verde), 10 errori miei
+(4 pagati in giri persi — il più costoso: correlazione al posto della causa, che aveva
+curato il browser quando il problema era il manifest). E la diagnosi differenziale sale a
+QUATTRO strati. Gate del progetto: 2→5 passi, 68→93 attese. 3 deploy in produzione.
