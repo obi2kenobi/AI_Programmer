@@ -77,6 +77,7 @@
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
 - [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra onesti, e clasp push ≠ produzione](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-onesti-e-clasp-push-produzione)
 - [2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
+- [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 
 
 ## Stato
@@ -1523,3 +1524,15 @@ apici; (2) agente revisore-gas: descrizione allineata ai tool (riporta in prosa,
 applica chi orchestra); (3) «decidi tu su tutto» nel brainstorming col triage: implementa se
 difesa-in-profondità / bloccato-sui-dati se manca il valore / rifiuta se richiede indovinare
 una formula.
+
+### 2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)
+
+Report: 2026-09-02-repo-q-otto-giri-piu-incidente-clasp.md. Otto giri in più (42 lenti, 78
+rilievi aggiuntivi = 131 totali, zero regressioni in 40 commit). Poi l'incidente che vale più
+dei giri: l'agente ha GENERATO un loop di clasp push che includeva directory dichiarate
+clone-di-sola-lettura — Luca le ha eseguite e ha sovrascritto il live di Sistema-Gestione-
+Magazzino e Bilancio_periodico, attivamente sviluppati la stessa notte. IE-002 Knight Capital
+e IE-003 GitLab DAL VIVO, con una differenza cruciale: la regola «clasp push MAI da agente»
+era rispettata — il rischio stava nella GENERAZIONE del comando, non nell'esecuzione. Tre
+proposte adottate: hook esteso (check .mirror-boundaries), pattern aggiornato (verifica i
+confini PRIMA di generare), E-018 nel registro. La guardia vive lato chi GENERA il comando.
