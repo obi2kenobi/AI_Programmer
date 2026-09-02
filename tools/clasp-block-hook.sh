@@ -28,6 +28,19 @@ if echo "$CMD" | grep -qE '(^|[;&|][[:space:]]*)clasp[[:space:]]+(push|deploy)';
   exit 0
 fi
 
+# (dal campo REPO-Q 2026-09-02: l'agente ha GENERATO un loop di clasp push
+# che includeva directory dichiarate clone-di-sola-lettura nel CLAUDE.md del
+# repo — Luca l'ha eseguito e ha sovrascritto 2 progetti sviluppati altrove.
+# La guardia ora verifica anche il caso GENERAZIONE)
+if echo "$CMD" | grep -qE '(^|[;&|][[:space:]]*)clasp[[:space:]]+(push|deploy)'; then
+  MB="$PWD/.mirror-boundaries"
+  if [ -f "$MB" ]; then
+    jq -n --arg c "ATTENZIONE: questa directory ha .mirror-boundaries (cloni di sola lettura). Un clasp push qui sovrascriverebbe progetti sviluppati altrove. Verifica PRIMA di eseguire." \
+      '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$c}}'
+    exit 0
+  fi
+fi
+
 # ADVISORY: comandi che leggono/passano credenziali — possibili e a volte
 # legittimi, ma chi li lancia deve sapere cosa sta toccando
 if echo "$CMD" | grep -qE 'clasp\.json|credenziali|\.env|printenv|secret|token[_ =]|refresh_token'; then
