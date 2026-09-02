@@ -80,6 +80,7 @@
 - [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 - [2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa](#2026-09-02-4-repo-k-email-il-modello-a-tre-identità-e-la-diagnosi-completa)
 - [2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni](#2026-09-02-5-la-giornata-gas-più-costosa-3-famiglie-nuove-10-errori-miei-15-lezioni)
+- [2026-09-02 (6) — REPO-Q: la collisione nel namespace GAS, lo split per anno, e la cadenza che salva](#2026-09-02-6-repo-q-la-collisione-nel-namespace-gas-lo-split-per-anno-e-la-cadenza-che-salva)
 
 
 ## Stato
@@ -1571,3 +1572,18 @@ strumenti DAL SABOTAGGIO prima del commit (4 invisibili al giro verde), 10 error
 (4 pagati in giri persi — il più costoso: correlazione al posto della causa, che aveva
 curato il browser quando il problema era il manifest). E la diagnosi differenziale sale a
 QUATTRO strati. Gate del progetto: 2→5 passi, 68→93 attese. 3 deploy in produzione.
+
+### 2026-09-02 (6) — REPO-Q: la collisione nel namespace GAS, lo split per anno, e la cadenza che salva
+
+Report: 2026-09-02-repo-q-split-produzione-collisione.md. Dal crash notturno (10M celle) allo
+split per anno, 7 PR + 1 aperta. L'INCIDENTE: una funzione con lo stesso nome di un'altra in
+un file diverso — in GAS il namespace è globale, il duplicato vince SILENZIOSAMENTE, chi chiama
+gira quella sbagliata. Nessun errore, nessun segnale (solo log con stringhe non scritte da me).
+La radice: non la collisione ma la RICERCA INSUFFICIENTE DEL PRECEDENTE — il codice esistente
+portava un vincolo pagato (batch 50 + pausa 500ms per la quota banda) che la reimplementazione
+pulita non conosceva. Quattro pattern nuovi: collisione-namespace-globale-gas, il-precedente-
+porta-il-vincolo-pagato, migrazione-con-interruttore, due-verifiche-due-domande. E la regola
+della giornata: FORMA DEI DATI VERIFICATA sui dati veri — l'82% delle righe aveva Posting_Date
+vuoto, nessuna lettura di codice l'avrebbe trovato, solo contare sul dato. Se avessi implementato
+il piano approvato, l'82% dei dati sarebbe finito nell'anno sbagliato. La cadenza che ha
+funzionato 4 volte: diagnostica di sola lettura → conferma sui numeri veri → poi la modifica.

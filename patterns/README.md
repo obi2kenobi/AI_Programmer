@@ -61,3 +61,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [link-assoluti-e-decodifica-robusta](link-assoluti-e-decodifica-robusta.md) | REPO-CR doGet | 2026-09-01 |
 | [diagnosi-differenziale-webapp-gas](diagnosi-differenziale-webapp-gas.md) | REPO-E deploy v74 | 2026-09-02 |
 | [clasp-push-non-e-produzione](clasp-push-non-e-produzione.md) | REPO-K 3ª sessione (deployment versionato) | 2026-09-01 |
+| [collisione-namespace-globale-gas](collisione-namespace-globale-gas.md) | REPO-Q 2026-09-02 | 2026-09-02 |
+| [il-precedente-porta-il-vincolo-pagato](il-precedente-porta-il-vincolo-pagato.md) | REPO-Q 2026-09-02 | 2026-09-02 |
+| [migrazione-con-interruttore](migrazione-con-interruttore.md) | REPO-Q split 2026-09-02 | 2026-09-02 |
+| [due-verifiche-due-domande](due-verifiche-due-domande.md) | REPO-Q banco 2026-09-02 | 2026-09-02 |
