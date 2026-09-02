@@ -96,26 +96,12 @@ solo di pushare.
 
 ## Proposta al canone
 
-Un pattern nuovo, con l'àncora nella sessione REPO-K di oggi (non un file di
-questo hub, per lo stesso motivo della sessione precedente: repo non
-onboardato):
-
-> **`clasp push` non è "andare in produzione" — verificalo, non presumerlo.**
-> Per qualunque progetto Apps Script servito come web app, `clasp push`
-> aggiorna solo i sorgenti dello script; l'URL pubblico usato dagli utenti
-> reali dipende da QUALE deployment è collegato a quell'URL. Se esiste un
-> deployment versionato con un nome che segue una numerazione progressiva
-> (segno che qualcuno lo aggiorna deliberatamente ad ogni rilascio, a
-> differenza di `@HEAD` o di un deployment senza nome), quello è
-> probabilmente la produzione reale e va aggiornato esplicitamente con
-> `clasp deploy -i <deploymentId>` dopo ogni `push` che deve raggiungere gli
-> utenti. La verifica corretta di "è live" non è "il comando è tornato con
-> successo" ma un fetch reale dell'URL `/exec` che cerchi un marcatore
-> specifico del codice appena cambiato (un id introdotto, una stringa
-> rimossa) — non un fetch generico che si accontenta di un HTTP 200.
-
-Se questo pattern si ripete in un repo GAS onboardato a questo hub, merita
-una voce vera in `patterns/` con l'àncora al comando reale in quella sessione
-(la stessa soglia già dichiarata dalla sessione precedente per il pattern
-FIFO/`run_in_background`, che in questa sessione ha ricevuto la sua prima
-conferma concreta oltre il caso che lo ha originato).
+**Adottata** — con l'àncora in questa sessione, un'altra sessione/il turno
+notturno l'ha già trasformata in un pattern vero mentre questo report era in
+revisione: `patterns/clasp-push-non-e-produzione.md`. Non ripropongo qui lo
+stesso testo; noto solo che il pattern ha già ricevuto un addendum reale da
+un incidente indipendente (REPO-Q, 2026-09-02): un `clasp push` lanciato da
+un clone dichiarato di sola lettura ha sovrascritto il live di due progetti
+sviluppati altrove — la stessa disattenzione ("presumere invece di
+verificare quale progetto/deployment riceve il comando"), manifestata al
+contrario. Il pattern ora copre entrambe le direzioni.

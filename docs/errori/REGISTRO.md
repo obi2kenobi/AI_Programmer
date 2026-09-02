@@ -307,3 +307,18 @@
 - Verifica guardia: girato oggi: nessun processo attivo → rc 0 (caso sano provato;
   il caso rotto è il documento stesso di oggi: 59h reali).
 - Aggiramento: pkill -f "opencode run" (pulizia consolidata), il turno si scioglie.
+
+## E-018 L'agente genera il comando, l'umano lo esegue, il confine salta
+- Data / sessione: 2026-09-02 (REPO-Q, incidente reale post-audit)
+- Famiglia: R1 (assunzione non verificata) + R3 (precondizione non chiesta)
+- Sintomo: clasp push da REPO-Q ha sovrascritto il live di 2 progetti sviluppati altrove.
+- Causa prossima: l'agente ha generato un loop di comandi che includeva directory dichiarate
+  clone-di-sola-lettura nel CLAUDE.md, senza verificarle. Luca le ha eseguite correttamente.
+- Causa del ragionamento: la regola «clasp push MAI da agente» era rispettata alla lettera —
+  ma il rischio stava nella GENERAZIONE del comando, non nell'esecuzione.
+- Perché non ci ha fermati: la guardia clasp-block-hook DENY blocca l'agente che esegue,
+  non l'agente che consiglia. Il push è arrivato da un umano su un altro repo.
+- Guardia: tools/clasp-block-hook.sh (check .mirror-boundaries) + pattern
+  clasp-push-non-e-produzione (addendum generazione).
+- Verifica guardia: il caso reale è il documento stesso; l'hook compila e i test passano.
+- Aggiramento: nei repo multi-mirror, creare .mirror-boundaries con gli scriptId vietati.

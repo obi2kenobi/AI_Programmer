@@ -59,3 +59,5 @@ documenti (DEBITI: da valutare se vale i token).
 | [lo-stub-che-mente-al-rovescio](lo-stub-che-mente-al-rovescio.md) | Controlli-trimestrali PR #103 | 2026-09-01 |
 | [manifest-webapp-nel-repo](manifest-webapp-nel-repo.md) | REPO-CR appsscript.json | 2026-09-01 |
 | [link-assoluti-e-decodifica-robusta](link-assoluti-e-decodifica-robusta.md) | REPO-CR doGet | 2026-09-01 |
+| [diagnosi-differenziale-webapp-gas](diagnosi-differenziale-webapp-gas.md) | REPO-E deploy v74 | 2026-09-02 |
+| [clasp-push-non-e-produzione](clasp-push-non-e-produzione.md) | REPO-K 3ª sessione (deployment versionato) | 2026-09-01 |
