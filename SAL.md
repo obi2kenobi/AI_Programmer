@@ -78,6 +78,7 @@
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
 - [2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
 - [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
+- [2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa](#2026-09-02-4-repo-k-email-il-modello-a-tre-identità-e-la-diagnosi-completa)
 
 
 ## Stato
@@ -1546,3 +1547,15 @@ e IE-003 GitLab DAL VIVO, con una differenza cruciale: la regola «clasp push MA
 era rispettata — il rischio stava nella GENERAZIONE del comando, non nell'esecuzione. Tre
 proposte adottate: hook esteso (check .mirror-boundaries), pattern aggiornato (verifica i
 confini PRIMA di generare), E-018 nel registro. La guardia vive lato chi GENERA il comando.
+
+### 2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa
+
+Report: docs/campo/2026-09-02-repo-k-handoff-email-sottosistema.md. Handoff completo del
+sottosistema notifiche (EmailService.gs, 28 metodi): la causa root dei fallimenti era
+l'alias NON verificato in Gmail (aggiunto e verificato). Ma la scoperta da canone è il
+modello a TRE identità: editor, deployer (executeAs: USER_DEPLOYING), e trigger-owner —
+ognuna con i suoi alias applicabili, e i trigger sono i più insidiosi perché conservano
+l'identità di chi li ha installati. Adottato nel metodo. Quattro punti aperti per Luca:
+verifica deployer (5.1), verifica trigger (5.2), l'hardcoded a :682 (5.3, una riga),
+e la web app anonima (5.4, da valutare). E la lezione della quota: i CC contano come
+destinatari (ogni notifica consuma 2 unità, non 1).
