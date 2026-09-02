@@ -75,6 +75,9 @@
 - [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
 - [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-e-la-scoperta-che-clasp-push-non-è-andare-in-produzione)
+- [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
+- [2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
+- [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 
 
 ## Stato
@@ -1496,4 +1499,50 @@ specifico del codice appena cambiato, non un generico HTTP 200. Confermato anche
 seconda applicazione in questa sessione, il pattern FIFO/`run_in_background` per il login
 OAuth non interattivo proposto dalla sessione REPO-K precedente: nessuna race, andato liscio
 entrambe le volte. Proposta adottata nel report: `clasp push` ≠ produzione, va verificato con
-un fetch mirato, non presunto dall'esito del comando.
+un fetch mirato, non presunto dall'esito del comando. Pattern promosso a `patterns/clasp-push-
+non-e-produzione.md` (che ha poi ricevuto un addendum reale da un incidente indipendente,
+REPO-Q 2026-09-02, sulla stessa disattenzione al contrario — vedi sotto). Doppioni REPO-K nel
+repos-index fusi in una riga sola.
+
+### 2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale
+
+Report: 2026-09-02-repo-e-diagnosi-tre-strati.md. Partiti da «non mi fa fare il deploy», finiti
+dentro TRE problemi che si mascheravano a vicenda con lo stesso sintomo («Caricamento in corso…»):
+(1) deployment/produzione — risolto col deploy v74 nuovo; (2) sessione Google loggata di Luca —
+diagnosticata, cura a carico del proprietario; (3) LOCK di LogLib nei job lunghi — doGet da 3s a
+32s misurato col cronometro via curl. E il ritrovamento a mezzo: il trigger mensile puntato al
+nome pre-rinomina, che sarebbe morto il 1° ottobre. Le improvvisazioni da canone: il numero @N
+del deploy come smoke-test (ha smascherato il gemello in un minuto), la matrice a tre assi
+(anonimo/loggato × versione × tempi), l'epoch-ms nell'identità anonima come datazione della
+sessione. Cinque proposte TUTTE adottate: pattern nuovo diagnosi-differenziale-webapp-gas +
+4 regole nel metodo (smoke-test @N+1, verifica pre-deploy meccanizzabile, LogLib flush soft,
+datare l'identità). E la lezione trasversale: inseguire un «failed: undefined» fino in fondo
+ha scoperchiato tre strati invece del primo trovato.
+
+### 2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»
+
+Report: 2026-09-01-golilla-doppia-campagna-audit-decidi-tu.md. Sei agenti revisore-gas paralleli
+hanno trovato INDIPENDENTEMENTE lo stesso pattern sistemico (webapp che si fida del payload
+client) su ~9 endpoint in 6 domini: la lente famiglie-difetti generalizza bene anche senza
+cross-talk. L'INCIDENTE: un apostrofo non escaped in un literal JS dentro l'HTML ha invalidato
+l'INTERO script inline — la Dashboard in produzione ferma subito dopo il deploy, e NESSUNA
+verifica l'aveva preso (l'avversariale leggeva il diff per la logica, non eseguiva il JS).
+Post-mortem completo in Golilla SAL §91, guardia verificata (node --check riproduce il crash).
+Tre proposte TUTTE adottate: (1) famiglia nuova + regola: controllo sintattico ESEGUITO per ogni
+consegna che tocca .html con script inline — un umano legge il senso della frase, non conta gli
+apici; (2) agente revisore-gas: descrizione allineata ai tool (riporta in prosa, il diff lo
+applica chi orchestra); (3) «decidi tu su tutto» nel brainstorming col triage: implementa se
+difesa-in-profondità / bloccato-sui-dati se manca il valore / rifiuta se richiede indovinare
+una formula.
+
+### 2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)
+
+Report: 2026-09-02-repo-q-otto-giri-piu-incidente-clasp.md. Otto giri in più (42 lenti, 78
+rilievi aggiuntivi = 131 totali, zero regressioni in 40 commit). Poi l'incidente che vale più
+dei giri: l'agente ha GENERATO un loop di clasp push che includeva directory dichiarate
+clone-di-sola-lettura — Luca le ha eseguite e ha sovrascritto il live di Sistema-Gestione-
+Magazzino e Bilancio_periodico, attivamente sviluppati la stessa notte. IE-002 Knight Capital
+e IE-003 GitLab DAL VIVO, con una differenza cruciale: la regola «clasp push MAI da agente»
+era rispettata — il rischio stava nella GENERAZIONE del comando, non nell'esecuzione. Tre
+proposte adottate: hook esteso (check .mirror-boundaries), pattern aggiornato (verifica i
+confini PRIMA di generare), E-018 nel registro. La guardia vive lato chi GENERA il comando.

@@ -1,3 +1,8 @@
+- **SINTASSI ROTTA IN STRINGA LITERALE dentro script inline HTML (dal campo Golilla, 2026-09-01)**: un
+  solo apostrofo non escaped in un literal JS a apici singoli dentro un file .html invalida l'INTERO
+  script inline della pagina — non solo la riga. Invisibile alla lettura del diff (un umano legge il
+  SENSO della frase italiana, non conta gli apici). L'unico presidio: controllo sintattico ESEGUITO
+  (node --check sullo script estratto) per OGNI consegna che tocca un .html con <script> inline.
 - **IL TEATRO VERDE È REWARD HACKING (rilinquaggio dall'incidente OpenAI/HF, 2026-08-31)**: nell'incidente
   gli agenti baravano sul task per avere la ricompensa senza fare il lavoro. Il nostro equivalente esatto è
   il test che passa senza verificare (teatro verde), la metrica che misura un'altra cosa, il verde per

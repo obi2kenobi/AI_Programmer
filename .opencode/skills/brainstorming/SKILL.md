@@ -126,6 +126,17 @@ LISTA numerata con la provocazione che l'ha generata (P4: ...) — poi si
 attraversa la lista con i criteri del dominio (valore, costo, rischio), non
 con l'entusiasmo. Il passaggio a commessa/design-doc resta lo stesso del §3.
 
+### Quando l'utente dice «decidi tu su tutto» (dal campo Golilla, 2026-09-01)
+
+La delega esplicita della decisione NON è un permesso di indovinare. Il triage per ogni
+questione delegata: (a) **implementa** se è difesa-in-profondità, reversibile, e non richiede
+dati inventati (es. aggiungere un gate senza cambiare il comportamento per l'utente legittimo);
+(b) **dichiara bloccato-sui-dati** se serve un valore reale che non hai (es. un codice BC):
+decidi la POLICY, dichiara il blocco sul DATO; (c) **rifiuta esplicitamente** se richiederebbe
+indovinare una formula di business o una soglia finanziaria — citando «oracolo prima della
+formula» come ragione, non come timidezza. Ogni decisione presa si dichiara nel report con
+il criterio usato.
+
 ## Vedi anche
 
 skill `design-doc` (il passo dopo) · skill `polilivello` (lo studio che dà alle

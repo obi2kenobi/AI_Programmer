@@ -17,6 +17,8 @@ if echo "$OUT" | grep -q "nessun processo notturno"; then
   ok "sistema pulito: rc 0 e lo dice"
 elif echo "$OUT" | grep -q "TURNO INCASTRATO"; then
   ok "il detector vede un processo REALE oltre soglia (il sistema non è a riposo: il test non finge)"
+elif echo "$OUT" | grep -q "nessuno oltre"; then
+  ok "processo notturno ATTIVO e sotto soglia (turno in corso: legittimo)"
 else
   ko "output inatteso a riposo (rc=$RC): $OUT"
 fi
