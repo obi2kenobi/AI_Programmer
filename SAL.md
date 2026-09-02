@@ -74,8 +74,8 @@
 - [2026-09-01 (6) — REPO-Q: il repo non onboardato, il territorio grande, e il numero vero](#2026-09-01-6-repo-q-il-repo-non-onboardato-il-territorio-grande-e-il-numero-vero)
 - [2026-09-01 (7) — REPO-CR cruscotto v2: il canale di presentazione e i 5 pattern](#2026-09-01-7-repo-cr-cruscotto-v2-il-canale-di-presentazione-e-i-5-pattern)
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
+- [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-e-la-scoperta-che-clasp-push-non-è-andare-in-produzione)
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
-- [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra onesti, e clasp push ≠ produzione](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-onesti-e-clasp-push-produzione)
 - [2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
 - [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 
@@ -1481,6 +1481,29 @@ robustezza: NESSUN .py con traceback su invocazione vuota (tutti dichiarano uso)
 sembra successo) — FIX: exit 2. Giri 21-25: privacy vede i token shape, concorrenza OK,
 lock ciclo confermato. Giri 26-30: banco completo PASSAGGIO CHIUSO.
 
+### 2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"
+
+Report: docs/campo/2026-09-01-repo-k-terza-sessione-3-giri-extra-deploy.md. Terza richiesta
+consecutiva dello stesso utente di "rieseguire tutto con tutte le lenti" sullo stesso repo:
+tre cicli, tre PR separate, ciascuna con un riepilogo onesto dei rilievi — il numero e la
+gravità dei bug veri calano ciclo dopo ciclo (dal bug funzionale reale del primo ciclo, alla
+pulizia di codice morto dell'ultimo), dichiarato così invece di manifatturare rilievi per
+sembrare produttivo. Il fatto grosso: l'utente chiede di verificare che la dashboard "live"
+funzioni dopo il push, e il fetch reale dell'URL rivela che `clasp push` aggiorna solo i
+sorgenti — non l'URL di produzione, se questo punta a un deployment VERSIONATO invece che
+`@HEAD`. Nessun segnale d'errore nel comando: il push "riuscito" lascia comunque gli utenti
+reali sulla versione vecchia finché non si crea esplicitamente una nuova versione e la si
+aggancia al deployment giusto (`clasp deploy -i <id>`), dedotto dal pattern di naming perché
+nessuna documentazione lo dichiarava. Verificato poi con un fetch che cercasse un marcatore
+specifico del codice appena cambiato, non un generico HTTP 200. Confermato anche, alla sua
+seconda applicazione in questa sessione, il pattern FIFO/`run_in_background` per il login
+OAuth non interattivo proposto dalla sessione REPO-K precedente: nessuna race, andato liscio
+entrambe le volte. Proposta adottata nel report: `clasp push` ≠ produzione, va verificato con
+un fetch mirato, non presunto dall'esito del comando. Pattern promosso a `patterns/clasp-push-
+non-e-produzione.md` (che ha poi ricevuto un addendum reale da un incidente indipendente,
+REPO-Q 2026-09-02, sulla stessa disattenzione al contrario — vedi sotto). Doppioni REPO-K nel
+repos-index fusi in una riga sola.
+
 ### 2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale
 
 Report: 2026-09-02-repo-e-diagnosi-tre-strati.md. Partiti da «non mi fa fare il deploy», finiti
@@ -1495,19 +1518,6 @@ sessione. Cinque proposte TUTTE adottate: pattern nuovo diagnosi-differenziale-w
 4 regole nel metodo (smoke-test @N+1, verifica pre-deploy meccanizzabile, LogLib flush soft,
 datare l'identità). E la lezione trasversale: inseguire un «failed: undefined» fino in fondo
 ha scoperchiato tre strati invece del primo trovato.
-
-### 2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra onesti, e clasp push ≠ produzione
-
-Report: 2026-09-01-repo-k-terza-sessione-3-giri-extra-deploy.md. Tre cicli su richiesta esplicita,
-ciascuno con PR propria e riepilogo onesto: i rilievi calano di numero e gravità ciclo dopo ciclo
-(dal bug funzionale vero del primo alla pulizia di codice morto dell'ultimo) — dichiarato così
-invece di manifatturare per sembrare produttivi. LA SCOPERTA: clasp push aggiorna SOLO i sorgenti
-— non l'URL di produzione se punta a un deployment versionato. Nessun segnale d'errore: il push
-riuscito lascia gli utenti sulla versione vecchia. Verificato col fetch che cercava marcatori
-specifici del codice nuovo. Pattern adottato: clasp-push-non-e-produzione (verifica con fetch
-mirato, non presunzione). E il pattern FIFO/run_in_background per clasp login ha avuto la sua
-SECONDA conferma (due usi lisci in questa sessione): alla terza, voce vera nel catalogo.
-Doppioni REPO-K nel repos-index fusi in una riga sola.
 
 ### 2026-09-02 (2) — Golilla: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»
 
