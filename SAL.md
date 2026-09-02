@@ -81,6 +81,7 @@
 - [2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa](#2026-09-02-4-repo-k-email-il-modello-a-tre-identità-e-la-diagnosi-completa)
 - [2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni](#2026-09-02-5-la-giornata-gas-più-costosa-3-famiglie-nuove-10-errori-miei-15-lezioni)
 - [2026-09-02 (6) — REPO-Q: la collisione nel namespace GAS, lo split per anno, e la cadenza che salva](#2026-09-02-6-repo-q-la-collisione-nel-namespace-gas-lo-split-per-anno-e-la-cadenza-che-salva)
+- [2026-09-02 (7) — L'hub verifica sé stesso: due giri completi, PR chiuse, due bypass curati](#2026-09-02-7-l-hub-verifica-sé-stesso-due-giri-completi-pr-chiuse-due-bypass-curati)
 
 
 ## Stato
@@ -1587,3 +1588,15 @@ della giornata: FORMA DEI DATI VERIFICATA sui dati veri — l'82% delle righe av
 vuoto, nessuna lettura di codice l'avrebbe trovato, solo contare sul dato. Se avessi implementato
 il piano approvato, l'82% dei dati sarebbe finito nell'anno sbagliato. La cadenza che ha
 funzionato 4 volte: diagnostica di sola lettura → conferma sui numeri veri → poi la modifica.
+
+### 2026-09-02 (7) — L'hub verifica sé stesso: due giri completi, PR chiuse, due bypass curati
+
+L'hub usato per migliorare l'hub. Le due PR aperte (#69 Golilla, #70 REPO-Q) erano
+doppioni di contenuti già processati in main: chiuse con motivazione. DUE GIRO COMPLETI
+di verifica (suite 122, sonde 14, privacy, avversari 95, mutazioni 36, ciclo, banco,
+campo, grafo, registri, specchi): il primo giro ha trovato DUE bypass nell'avversario
+(E4 schema senza Q, G10 pavimento famiglie a 47 col catalogo a 55) — curati e
+riverificati. Il secondo giro: TUTTO VERDE, nessuna differenza dal primo (dopo i fix).
+Il sistema conferma di essere in uno stato coerente e completo: 53 pattern 0 isole,
+122 test 0 falliti, 95 attacchi 0 aggirati, 36 mutazioni 0 teatri, 49 report 0
+non processati, 5 incidenti esterni tutte le guardie vive, 18 errori registrati.
