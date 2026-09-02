@@ -334,6 +334,21 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## Le TRE identità di esecuzione GAS (dal campo REPO-K email, 2026-09-02)
+
+Quando un problema di permessi (email, Drive, Sheets) appare in un progetto GAS, la
+domanda giusta è: QUALE identità sta eseguendo lo script in QUESTO contesto?
+
+| Contesto | Identità | Come verificare |
+|---|---|---|
+| Editor | chi preme Esegui | Session.getEffectiveUser() |
+| Web app executeAs: USER_DEPLOYING | chi ha fatto il deploy | Deployments nella console |
+| Trigger temporali | chi ha INSTALLATO il trigger | Attivazioni, colonna proprietario |
+
+I trigger sono i più insidiosi: conservano l'identità di chi li ha creati. Un alias
+verificato per l'editor NON garantisce che il trigger possa usarlo. La diagnostica
+dall'editor è rappresentativa della produzione SOLO se deployer = editor = trigger-owner.
+
 ## Due proposte dal campo REPO-Q (2026-09-01): il repo non onboardato e il territorio grande
 
 1. **IL REPO NON ONBOARDATO SI DICHIARA ALL'INIZIO**, non a fine sessione. Quando scopri di
