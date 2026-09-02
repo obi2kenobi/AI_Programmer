@@ -33,7 +33,7 @@ else
   log "ATTENZIONE: hub non aggiornabile (pull --ff-only fallito) — il turno gira col metodo che c'e'"
 fi
 WORK="$HOME/night-shift-work"
-MODEL_TAG="qwen3.8:27b-mtp-q4_K_M"
+MODEL_TAG="qwen2.5-coder:14b"
 OCPROVIDER="ollama/$MODEL_TAG"
 DEFAULT_TYPE="chore"
 
@@ -276,6 +276,32 @@ Lavora in modo autonomo e convergi. Modifica solo i file strettamente necessari.
 Issue #$NUM: $TITLE
 
 $BODY"
+
+    # DAL 2026-09-02: risolutore SENZA agente (risolvi-issue.sh) — 20 test: 10/10
+    # convergono col 14B coder (17s medi) contro 0/10 con opencode (loop infinito).
+    # Il problema non era il modello: era l'agente. Questo script chiama Ollama
+    # direttamente, il modello risponde col codice, lo script lo applica e verifica.
+    NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
+    if [ -f "$NIGHT_SOLVER" ]; then
+      log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
+      # scarica l'issue in un file locale per lo script
+      ISSUE_FILE="/tmp/night-issue-$NUM.md"
+      printf '%s\n' "$BODY" > "$ISSUE_FILE"
+      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
+      RC=$?
+      log "Issue #$NUM: $OUT"
+      if [ $RC -eq 0 ]; then
+        # il fix è applicato: commit e push
+        ( cd "$DIR" && git add -A && git commit -qm "$TIPO: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q origin "$BRANCH" 2>&1 | tail -1 )
+        log "Issue #$NUM: fix committato e pushato"
+        PR_URL=$(cd "$DIR" && gh pr create --fill 2>&1 | tail -1)
+        log "Issue #$NUM: PR $PR_URL"
+      else
+        log "Issue #$NUM: risolutore non ha converto (rc=$RC) — si passa oltre"
+      fi
+      rm -f "$ISSUE_FILE"
+      continue
+    fi
 
     # WATCHDOG PER-ISSUE (decisione di Luca, 2026-08-31 — DEBITI saldato). Il no-limit
     # (2026-08-21) è costato 3 notti (28-30/8: loop da 59h, job vivo che blocca launchd)
