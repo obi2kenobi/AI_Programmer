@@ -334,6 +334,25 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## Quattro proposte dal campo REPO-R (2026-09-03): chi verifica va verificato
+
+1. **Il banco che confronta strutture non usa vm.createContext** (addendum al pattern
+   banco-sintetico): deepStrictEqual confronta i prototipi, il realm di vm è diverso.
+   Regola: strutture → new Function (stesso realm); primitivi → vm va bene.
+2. **La verifica avversariale ha pagato al primo uso reale**: banco 27/27 verde, e
+   l'avversariale ha trovato una discrepanza che esiste solo in AGGREGATO (il banco
+   valida riga per riga e non poteva vederla). Un banco verde prova che i casi
+   immaginati passano, non che il codice è corretto.
+3. **Pattern `tolleranza-derivata-non-scelta`**: quando l'oracolo non torna esatto,
+   la soglia si calcola dal meccanismo (non si sceglie) e si flagga finché il dominio
+   non conferma.
+4. **«Quale sistema lo produce?»**: quando la richiesta cita «il file che il sistema
+   mi produce», la prima mossa è chiedere QUALE sistema, prima di aprire il codice.
+   È selezione di contesto nel senso più letterale: si sceglie la FONTE.
+   
+Corollario: il banco ha trovato un difetto nel banco; l'avversariale ha trovato ciò
+che il banco non vedeva. Senza un livello esterno, il verificatore non è verificato.
+
 ## Quindici lezioni dalla giornata GAS più costosa (REPO-E, 2026-09-02)
 
 Tre famiglie nuove (nel catalogo), e le regole che valgono per tutto il parco:
@@ -509,7 +528,7 @@ L'installazione: `graphify install --platform opencode` nel progetto target
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
 
-**Esecuzione e verifica**: `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
+**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
 **Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato`
 **Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento`
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`

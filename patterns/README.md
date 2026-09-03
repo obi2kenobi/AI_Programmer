@@ -65,3 +65,4 @@ documenti (DEBITI: da valutare se vale i token).
 | [il-precedente-porta-il-vincolo-pagato](il-precedente-porta-il-vincolo-pagato.md) | REPO-Q 2026-09-02 | 2026-09-02 |
 | [migrazione-con-interruttore](migrazione-con-interruttore.md) | REPO-Q split 2026-09-02 | 2026-09-02 |
 | [due-verifiche-due-domande](due-verifiche-due-domande.md) | REPO-Q banco 2026-09-02 | 2026-09-02 |
+| [tolleranza-derivata-non-scelta](tolleranza-derivata-non-scelta.md) | REPO-R ingestione 2026-09-02 | 2026-09-03 |
