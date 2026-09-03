@@ -322,3 +322,25 @@
   clasp-push-non-e-produzione (addendum generazione).
 - Verifica guardia: il caso reale è il documento stesso; l'hook compila e i test passano.
 - Aggiramento: nei repo multi-mirror, creare .mirror-boundaries con gli scriptId vietati.
+
+## E-019 Il plist su disco e il job caricato dicono due copie diverse
+- Data / sessione: 2026-09-03 (scoperta pre-notte, prima che scattasse)
+- Famiglia: R2 (silenzio: tutto sembrava installato) + R1 (assunzione non verificata)
+- Sintomo: il plist on-disk puntava alla copia workspace (con repos.conf VUOTA per privacy),
+  ma il job caricato in launchd girava ancora dalla copia night-shift-work (con la coda reale).
+  Al prossimo reboot/reload il turno sarebbe partito sulla copia sbagliata: notte di no-op
+  silenziosa, "nessuna issue night-shift, Buonanotte" — senza che nessuna repo fosse in coda.
+- Causa prossima: il 28/8 install.sh è stato rieseguito DALLA COPIA WORKSPACE: lo script fa
+  del repo dove gira la fonte di verità ("HUB") e ha riscritto il plist verso il workspace;
+  il bootstrap successivo è fallito in silenzio (2>/dev/null), lasciando vivo il vecchio job.
+- Causa del ragionamento: "idempotente: rieseguire non rompe nulla" — vero per i symlink,
+  falso per il puntamento: rieseguire DA UNA COPIA DIVERSA cambia quale copia è produzione.
+  Nessuna verifica che il job caricato corrispondesse al plist appena scritto.
+- Perché non ci ha fermati: launchctl list mostra solo etichetta e rc; il divergenza on-disk
+  vs caricato è invisibile finché non si fa launchctl print. I turni continuavano a partire.
+- Guardia: night-shift/install.sh (verifica post-bootstrap che il job caricato punti
+  davvero all'HUB appena installato + avviso se l'HUB è dentro una workspace di sviluppo).
+- Verifica guardia: eseguito oggi: allineato plist+job su night-shift-work (f8d8092, coda
+  reale 4 repo, albero pulito); preflight modello ripassato sotto PATH launchd nudo.
+- Aggiramento: rifare l'installazione SOLO dalla copia di automazione (night-shift-work),
+  mai dalla workspace di sviluppo.
