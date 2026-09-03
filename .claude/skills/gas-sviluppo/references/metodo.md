@@ -334,6 +334,20 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## Tre regole dal campo REPO-W secondo tempo (2026-09-03): pipe, interfacce, impegni
+
+1. **MAI FAR DIPENDERE UNA CATENA && DA UN COMANDO CHE FINISCE IN PIPE**: una pipe
+   restituisce l'esito dell'ultimo comando. `cmd | tail && git commit` committa anche se
+   cmd non è mai partito. `set -o pipefail` o controllo esplicito prima di procedere.
+2. **QUANDO UNA QUERY VIENE RIUSATA, LA SUA PROIEZIONE È UN'INTERFACCIA**: il $select
+   (o le colonne di una SELECT) va commentato nel punto dove vive il vincolo. Chi pulisce
+   campi apparentemente inutilizzati rompe un altro chiamante, e il sintomo è un valore
+   plausibile, non un errore.
+3. **NESSUN IMPEGNO VERSO L'ESTERNO MENTRE UNA VERIFICA PIANIFICATA È ANCORA APERTA**:
+   se una misura è già stata proposta e non ancora eseguita, una mail che conferma un
+   preventivo non parte. Il costo non lo paga chi sviluppa: lo paga il rapporto con la
+   controparte. (Qui: 8 ore confermate alle 17:45, la misura che smentiva alle 21:07.)
+
 ## Due regole dal campo REPO-W (2026-09-03): identità e sonde
 
 1. **VERIFICA L'IDENTITÀ PRIMA DI CONFIGURARLA**: prima di concedere permessi, quote o
