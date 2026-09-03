@@ -85,6 +85,7 @@
 - [2026-09-03 — REPO-R: quattro proposte col corollario «chi verifica va verificato»](#2026-09-03-repo-r-quattro-proposte-col-corollario-chi-verifica-va-verificato)
 - [2026-09-03 (2) — REPO-E chiude il ciclo: bloccante da 10.000€, 10 difetti, redesign, 8 regole](#2026-09-03-2-repo-e-chiude-il-ciclo-bloccante-da-10-000-10-difetti-redesign-8-regole)
 - [2026-09-03 (4) — REPO-S: TypeScript, la linea di frattura GAS vs metodo (via PR #71)](#2026-09-03-4-repo-s-typescript-la-linea-di-frattura-gas-vs-metodo-via-pr-71)
+- [2026-09-03 (5) — Riconciliazione finale: REPO-S, codici T/X/Z, campo-trage](#2026-09-03-5-riconciliazione-finale-repo-s-codici-t-x-z-campo-trage)
 
 
 ## Stato
@@ -1634,3 +1635,8 @@ dei siti si censise, non si presume). E cinque proposte operative tutte adottate
 Il report è arrivato via PR #71 da un'altra sessione mentre lo processavo (E-016 di nuovo).
 Il dato chiave: METODO e PATTERNS 100% su TypeScript, AGENTI 0/6 (ancorati ad Apps Script).
 Sei pattern nuovi. S9 estesa, isole collegate.
+
+### 2026-09-03 (5) — Riconciliazione finale: REPO-S, codici T/X/Z, campo-trage
+
+Il report REPO-S (via PR #71 da sessione parallela) ora citato per basename nel SAL
+(contra campo-triage). REPO-T/X/Z aggiunti all'indice come placeholder (censire da repos.key).
