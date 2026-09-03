@@ -56,7 +56,22 @@ for tpl in ollama nightshift; do
   sed -e "s|__USER__|$USER_NAME|g" -e "s|__HOME__|$HOME_DIR|g" -e "s|__HUB__|$HUB|g" "$SRC" > "$DST"
   launchctl bootout "gui/$(id -u)/com.$USER_NAME.$tpl" 2>/dev/null
   launchctl bootstrap "gui/$(id -u)" "$DST" 2>/dev/null || echo "  ⚠ $DST non caricato (già attivo con altro nome?)"
+  # E-019 (2026-09-03): bootstrap silenzioso fallito → plist on-disk e job caricato
+  # puntavano a COPIE DIVERSE del repo. Il turno sarebbe partito dalla copia sbagliata
+  # (repos.conf vuota) al primo reload. Verifica che il job caricato sia quello appena scritto.
+  sleep 1
+  if launchctl print "gui/$(id -u)/com.$USER_NAME.$tpl" 2>/dev/null | grep -q "$HUB/"; then
+    echo "  ✓ $tpl caricato e punta a $HUB"
+  else
+    echo "  ⚠⚠ $tpl: il job caricato NON punta a $HUB — plist e launchd divergono!"
+    echo "     sistema a mano: launchctl bootout gui/$(id -u)/com.$USER_NAME.$tpl && launchctl bootstrap gui/$(id -u) $DST"
+  fi
 done
+# E-019: installare DALLA workspace di sviluppo rende produzione la copia sbagliata
+# (repos.conf vuota per privacy). L'automazione vive nella sua copia dedicata.
+case "$HUB" in
+  */.zcode/workspace/*) echo "  ⚠⚠ HUB dentro una workspace di sviluppo ($HUB): sei sicuro che questa copia debba essere il turno di notte? La coda reale (repos.conf) vive di norma nella copia di automazione." ;;
+esac
 echo "  attivi: com.$USER_NAME.ollama com.$USER_NAME.nightshift"
 
 echo ""
