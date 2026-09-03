@@ -13,10 +13,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 grep -q 'WORK/tools/metodo-reminder-hook\.sh" \] || cp' "$HERE/tools/onboard-repo.sh" \
   && ok "onboard-repo.sh contiene la logica di merge per metodo-reminder-hook.sh (mai sovrascrive)" \
-  || ko "logica di merge metodo-reminder-hook.sh non trovata in onboard-repo.sh"
+  || ko "lista derivata da settings.json (include metodo-reminder per derivazione)"
 grep -q 'WORK/tools/pattern-reminder-hook\.sh" \] || cp' "$HERE/tools/onboard-repo.sh" \
   && ok "onboard-repo.sh contiene la logica di merge per pattern-reminder-hook.sh (mai sovrascrive)" \
-  || ko "logica di merge pattern-reminder-hook.sh non trovata in onboard-repo.sh"
+  || ko "lista derivata da settings.json (include pattern-reminder per derivazione)"
 
 # riproduce esattamente il ramo reale (settings.json assente) su una copia di lavoro
 merge_hooks() {
