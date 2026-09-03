@@ -334,6 +334,42 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## Tre lezioni + cinque proposte operative dal campo REPO-E (2026-09-03): chiusura del ciclo
+
+**Le tre lezioni di metodo:**
+
+1. **LA DOMANDA DI DOMINIO DECIDE IL VERSO DELLA CORREZIONE**: quando due interpretazioni
+   portano a correzioni OPPOSTE e nessuna è il default sicuro, sono SIMMETRICHE — scegliere
+   in autonomia è indovinare al 50% su codice che muove cifre contabili. Il canone dice «se
+   non è chiaro, chiedi»; qui il come riconoscere il caso: interpretazioni simmetriche =
+   domanda non rimandabile.
+2. **UN SABOTAGGIO CHE RESTA VERDE È UN BUCO NEL BANCO**: su 5 sabotaggi, 1 è rimasto verde
+   (le attese non coprivano il caso vero). Una guardia che nessuna attesa fa fallire non è
+   presidiata. Il sabotaggio serve anche a provare che IL BANCO GUARDA, non solo che il
+   codice regge.
+3. **UN FIX RIPARATO ≠ RIPARATO-VERIFICATO**: un fix può introdurre un helper e lasciare
+   4 su 10 siti ancora sulla copia ingenua — per due giorni contato come chiuso. Quando un
+   fix introduce una regola, il giro non è chiuso finché non si CENSISCE la popolazione
+   dei siti che dovrebbero usarla (grep del pattern vecchio, conteggio dichiarato).
+
+**Cinque proposte operative:**
+
+4. **node --check dentro la funzione di sabotaggio**: un sabotaggio che rompe la sintassi,
+   o un replace che non trova la stringa, non falliscono — producono un verde che sembra
+   successo.
+5. **Il debito come attesa VERDE che fotografa il limite**: invece di un'attesa rossa per
+   sempre (che smette di essere guardia) o cancellata (che rende il debito silenzioso),
+   un'attesa che descrive il comportamento attuale: il giorno in cui il limite cade, è LEI
+   a diventare rossa.
+6. **Un rilievo di un agente si verifica come si verifica il codice**: 1 su 10 non reggeva,
+   e proponeva di collegare una funzione già collegata. Costo della verifica: un grep.
+7. **Il presidio si scrive PRIMA del lavoro che potrebbe romperlo**: verifica-elementi-ui.js
+   nato prima del redesign, verde sullo stato di partenza — non per riparare, per PERMETTERE
+   di toccare.
+8. **Il bloccante di questo giro** (da registrare nelle famiglie): una cella "Qty Fisica"
+   con uno SPAZIO letta come «contato a zero» → rettifica di 10.000 € mai registrata in BC.
+   È la famiglia «non contato ≠ contato a zero» con un moltiplicatore contabile.
+
 ## Quattro proposte dal campo REPO-R (2026-09-03): chi verifica va verificato
 
 1. **Il banco che confronta strutture non usa vm.createContext** (addendum al pattern

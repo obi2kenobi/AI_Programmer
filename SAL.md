@@ -83,6 +83,7 @@
 - [2026-09-02 (6) — REPO-Q: la collisione nel namespace GAS, lo split per anno, e la cadenza che salva](#2026-09-02-6-repo-q-la-collisione-nel-namespace-gas-lo-split-per-anno-e-la-cadenza-che-salva)
 - [2026-09-02 (7) — L'hub verifica sé stesso: due giri completi, PR chiuse, due bypass curati](#2026-09-02-7-l-hub-verifica-sé-stesso-due-giri-completi-pr-chiuse-due-bypass-curati)
 - [2026-09-03 — REPO-R: quattro proposte col corollario «chi verifica va verificato»](#2026-09-03-repo-r-quattro-proposte-col-corollario-chi-verifica-va-verificato)
+- [2026-09-03 (2) — REPO-E chiude il ciclo: bloccante da 10.000€, 10 difetti, redesign, 8 regole](#2026-09-03-2-repo-e-chiude-il-ciclo-bloccante-da-10-000-10-difetti-redesign-8-regole)
 
 
 ## Stato
@@ -1615,3 +1616,14 @@ la soglia si calcola dal meccanismo, si flagga finché il dominio non conferma);
 sistema lo produce?» prima di aprire il codice. Corollario: il banco ha trovato un difetto
 nel banco, l'avversariale ha trovato ciò che il banco non vedeva — senza un livello esterno
 il verificatore non è verificato, è creduto.
+
+### 2026-09-03 (2) — REPO-E chiude il ciclo: bloccante da 10.000€, 10 difetti, redesign, 8 regole
+
+Report: docs/campo/2026-09-03-repo-e-chiusura-ciclo-redesign.md. La routine di controlli
+ha trovato il bloccante: chiudiCicloRettificheImpl_ chiudeva rettifiche mai contate (una
+cella con uno spazio letta come «contato a zero» → rettifica di 10.000€ invece di 125€,
+mai registrata in BC). 10 difetti chiusi, 11 dichiarati aperti (4 per decisione, 2 non
+decidibili senza il vivo, 5 a costo/beneficio sfavarevole). Gate 5→8 controlli, 173→227
+attese. Le tre lezioni: (1) interpretazioni simmetriche = domanda non rimandabile; (2)
+sabotaggio verde = buco nel banco; (3) fix riparato ≠ riparato-verificato (la popolazione
+dei siti si censise, non si presume). E cinque proposte operative tutte adottate nel metodo.
