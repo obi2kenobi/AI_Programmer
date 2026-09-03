@@ -94,6 +94,7 @@
 - [2026-09-03 (10) — Il turno morto in 4 secondi: launchd non vedeva ollama](#2026-09-03-10-il-turno-morto-in-4-secondi-launchd-non-vedeva-ollama)
 - [2026-09-03 (11) — REPO-W: la registrazione via API si chiude + 2 regole + installazione parziale](#2026-09-03-11-repo-w-la-registrazione-via-api-si-chiude-2-regole-installazione-parziale)
 - [2026-09-03 (12) — REPO-Q audit completo: la procedura dall'inizio alla fine (il documento dei buchi)](#2026-09-03-12-repo-q-audit-completo-la-procedura-dall-inizio-alla-fine-il-documento-dei-buchi)
+- [2026-09-03 (13) — REPO-W secondo tempo: la misura che ribalta (0,2% vs 51,3%)](#2026-09-03-13-repo-w-secondo-tempo-la-misura-che-ribalta-0-2-vs-51-3)
 
 
 ## Stato
@@ -1774,3 +1775,12 @@ voci tenuta in tre modi diversi (65/66/75 righe vs 47/52 in copertina: nessuna p
 base è ambigua); (5) due correttori morti su 429 finiti a due mani. E la regola d'oro della
 composizione: due consegne GIUSTE singolarmente che composte fanno ReferenceError (14 collisioni
 allineate a mano). Le fasi F0-F7 sono il modello di come si fa un audit col metodo.
+
+### 2026-09-03 (13) — REPO-W secondo tempo: la misura che ribalta (0,2% vs 51,3%)
+
+Report: docs/campo/2026-09-03-repo-w-misure-ribaltano-richiesta.md (via PR #73). 8 ore confermate
+a un fornitore alle 17:45, la misura che smentiva la premessa è arrivata alle 21:07: 0,2% contro
+51,3% — la soluzione acquistata era per il problema sbagliato. E la validazione più rapida mai
+vista: la regola «sonda che distingue zero da domanda sbagliata» (scritta la mattina) ha intercettato
+un bug la sera stessa. Tre regole nel metodo: mai && dopo pipe; $select condiviso = interfaccia;
+nessun impegno esterno con verifica aperta.
