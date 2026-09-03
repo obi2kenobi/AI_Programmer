@@ -82,6 +82,7 @@
 - [2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni](#2026-09-02-5-la-giornata-gas-più-costosa-3-famiglie-nuove-10-errori-miei-15-lezioni)
 - [2026-09-02 (6) — REPO-Q: la collisione nel namespace GAS, lo split per anno, e la cadenza che salva](#2026-09-02-6-repo-q-la-collisione-nel-namespace-gas-lo-split-per-anno-e-la-cadenza-che-salva)
 - [2026-09-02 (7) — L'hub verifica sé stesso: due giri completi, PR chiuse, due bypass curati](#2026-09-02-7-l-hub-verifica-sé-stesso-due-giri-completi-pr-chiuse-due-bypass-curati)
+- [2026-09-03 — REPO-R: quattro proposte col corollario «chi verifica va verificato»](#2026-09-03-repo-r-quattro-proposte-col-corollario-chi-verifica-va-verificato)
 
 
 ## Stato
@@ -1600,3 +1601,17 @@ riverificati. Il secondo giro: TUTTO VERDE, nessuna differenza dal primo (dopo i
 Il sistema conferma di essere in uno stato coerente e completo: 53 pattern 0 isole,
 122 test 0 falliti, 95 attacchi 0 aggirati, 36 mutazioni 0 teatri, 49 report 0
 non processati, 5 incidenti esterni tutte le guardie vive, 18 errori registrati.
+
+### 2026-09-03 — REPO-R: quattro proposte col corollario «chi verifica va verificato»
+
+Report: docs/campo/2026-09-03-repo-r-quattro-proposte-canone.md. Il giro completo
+(design-doc → goal → banco → avversariale → PR) con quattro lezioni: (1) il banco che
+confronta strutture non può usare vm.createContext (deepStrictEqual confronta i prototipi,
+il realm è diverso: 4 attese rosse con valori identici, tutte verdi con new Function —
+senza toccare il codice in prova); (2) la verifica avversariale ha pagato al primo uso
+reale (27/27 verde, e l'aggregato nascondeva una discrepanza che il banco riga-per-riga
+non poteva vedere); (3) pattern tolleranza-derivata-non-scelta (l'oracolo con 3 divergenze:
+la soglia si calcola dal meccanismo, si flagga finché il dominio non conferma); (4) «quale
+sistema lo produce?» prima di aprire il codice. Corollario: il banco ha trovato un difetto
+nel banco, l'avversariale ha trovato ciò che il banco non vedeva — senza un livello esterno
+il verificatore non è verificato, è creduto.
