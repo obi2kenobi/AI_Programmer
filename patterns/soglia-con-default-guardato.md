@@ -11,4 +11,4 @@ del revisore»). Né tutto fisso né tutto nelle mani di chi apre il foglio:
 default guardato, override dichiarato, ragione scritta accanto al numero.
 
 
-**Vedi anche**: `soglia-con-provenienza`
+**Vedi anche**: `soglia-con-provenienza` · `la-riga-di-default-e-il-caso-peggiore`

@@ -321,7 +321,7 @@ grep -vE "obi2kenobi/(AI_Programmer|Centrale_Rischi)" | head -1 | grep -q . && a
 
 att; head -2 metrics/gate.csv 2>/dev/null | grep -viE 'repo-[a-n]|data|giro|gate|,|^$' | grep -q . && aggirato "E3 gate.csv con contenuto fuori schema REPO-*" || tiene "E3 gate.csv a schema REPO-*"
 
-att; grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQR]|CR)$" | head -1 | grep -q . && aggirato "E4 repos-index con codici fuori schema" || tiene "E4 repos-index solo codici REPO-[A-N]"
+att; grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQRS]|CR)$" | head -1 | grep -q . && aggirato "E4 repos-index con codici fuori schema" || tiene "E4 repos-index solo codici REPO-[A-N]"
 
 att; git ls-files | grep -qE '\.(env|key|pem)$|id_rsa|^\.env' && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
 

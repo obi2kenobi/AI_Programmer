@@ -11,4 +11,4 @@ prima che un fix allineasse il codice GIUSTO al documento SBAGLIATO. Il catalogo
 endpoint è oracolo dichiarato per ogni revisione che tocchi dati BC.
 
 
-**Vedi anche**: `regola-provata-non-assunta`
+**Vedi anche**: `regola-provata-non-assunta` · `oracolo-dal-sistema-vecchio`
