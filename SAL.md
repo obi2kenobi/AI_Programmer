@@ -91,6 +91,7 @@
 - [2026-09-03 (7) — REPO-S completo: la corsia parallela formalizzata, 87 reperti con le prove](#2026-09-03-7-repo-s-completo-la-corsia-parallela-formalizzata-87-reperti-con-le-prove)
 - [2026-09-03 (8) — il cancello sul deploy era scavalcabile e non viaggiava: tre guardie, una causa](#2026-09-03-8-il-cancello-sul-deploy-era-scavalcabile-e-non-viaggiava-tre-guardie-una-causa)
 - [2026-09-03 (9) — Il garante dello standard: l'installazione diventa obbligatoria](#2026-09-03-9-il-garante-dello-standard-l-installazione-diventa-obbligatoria)
+- [2026-09-03 (10) — Il turno morto in 4 secondi: launchd non vedeva ollama](#2026-09-03-10-il-turno-morto-in-4-secondi-launchd-non-vedeva-ollama)
 
 
 ## Stato
@@ -1742,3 +1743,9 @@ INSTALLA: CLAUDE.md, settings.json, skill, agenti, patterns, hook (incluso clasp
 Se lo ha già: silenzio (zero costo). Il metodo smette di dipendere da chi se lo ricorda: diventa
 un fatto strutturale. Installazione una-tantum: bash tools/install-garante.sh. Testato end-to-end
 su repo vergine: tutti i componenti presenti dopo il primo giro, silenzio al secondo.
+
+### 2026-09-03 (10) — Il turno morto in 4 secondi: launchd non vedeva ollama
+
+Stanotte (2/9 23:00) il turno è PARTITO ed è MORTO in 4 secondi: «modello qwen2.5-coder:14b
+assente». Il modello c'era: launchd ha PATH=/usr/bin:/bin mentre ollama sta in ~/.local/bin.
+Il probe non TROVAVA il comando, non il modello. Fix: export PATH all'inizio del turno.
