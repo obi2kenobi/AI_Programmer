@@ -88,6 +88,7 @@
 - [2026-09-03 (5) — Riconciliazione finale: REPO-S, codici T/X/Z, campo-trage](#2026-09-03-5-riconciliazione-finale-repo-s-codici-t-x-z-campo-trage)
 - [2026-09-03 (5) — REPO-S TypeScript: riconciliazione post-PR #71 + T/X/Z censiti](#2026-09-03-5-repo-s-typescript-riconciliazione-post-pr-71-t-x-z-censiti)
 - [2026-09-03 (6) — REPO-E aggiornato: i numeri veri e la QUARTA lezione](#2026-09-03-6-repo-e-aggiornato-i-numeri-veri-e-la-quarta-lezione)
+- [2026-09-03 (7) — REPO-S completo: la corsia parallela formalizzata, 87 reperti con le prove](#2026-09-03-7-repo-s-completo-la-corsia-parallela-formalizzata-87-reperti-con-le-prove)
 
 
 ## Stato
@@ -1661,3 +1662,14 @@ conferma più diretta del principio del nostro sistema: i pattern senza test che
 rispettare sono raccomandazioni, non presidii. E le due proposte nuove: misurare prima
 di correggere quando il difetto è certo ma il danno no, e un elenco che conta due volte
 la stessa voce non è un elenco (lo strumento pronto non chiude la voce: chiude la risposta).
+
+### 2026-09-03 (7) — REPO-S completo: la corsia parallela formalizzata, 87 reperti con le prove
+
+Il report completo (docs/96 nel target, 541 righe) aggiunge alla versione breve già processata:
+la metodologia della CORSIA PARALLELA ora formalizzata nel metodo (7 corsie a perimetri disgiunti
+in sola lettura, contratto in tre sezioni, verifica avversariale dopo); 22 decisioni 🚩 dichiarate
+non dell'agente; la nota di merito per non gonfiare il verdetto (0 ts-ignore, strict:true, CSP senza
+unsafe-inline, CORS fail-closed — il problema non è la qualità del codice, è che nulla la impone
+prima di un merge); l'ordine di intervento suggerito ma non eseguito (prima il pannello Render
+per SEED_ON_START, poi le rotazioni, poi MOT-1 con Matteo). E l'onestà dell'avversariale: la
+MI Affermazione «CI in pausa dal 18-07, 50 commit» era FALSA (50 = profondità del clone shallow).
