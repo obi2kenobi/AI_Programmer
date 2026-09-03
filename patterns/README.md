@@ -28,6 +28,12 @@ documenti (DEBITI: da valutare se vale i token).
 | [trovare-non-e-fallire](trovare-non-e-fallire.md) | REPO-A: tools/riallinea-mirror.sh:trova | 2026-08-12 |
 | [versione-sugli-artefatti](versione-sugli-artefatti.md) | REPO-A: tools/grafo-findings.js:221 | 2026-08-08 |
 | [segreto-come-impronta](segreto-come-impronta.md) | REPO-A: tools/maschera-segreti.js:mascheraSegreti | 2026-08-11 |
+| [clone-shallow-mente-sulla-storia](clone-shallow-mente-sulla-storia.md) | REPO-S: git rev-parse --is-shallow-repository | 2026-09-03 |
+| [la-riga-di-default-e-il-caso-peggiore](la-riga-di-default-e-il-caso-peggiore.md) | REPO-S: app/web/src/Configurator.tsx:185,1201 | 2026-09-03 |
+| [oracolo-dal-sistema-vecchio](oracolo-dal-sistema-vecchio.md) | REPO-S: tools/motore-test/harness.php | 2026-09-03 |
+| [autorita-di-dominio-batte-oracolo](autorita-di-dominio-batte-oracolo.md) | REPO-S: CLAUDE.md (regola vincolante ufficio tecnico) | 2026-09-03 |
+| [test-che-certifica-il-bug](test-che-certifica-il-bug.md) | REPO-S: api/src/routes/orders.test.ts (where senza tenant) | 2026-09-03 |
+| [presidio-senza-consumatori](presidio-senza-consumatori.md) | REPO-S: engine meta.warnings (zero consumatori) | 2026-09-03 |
 | [soglia-con-provenienza](soglia-con-provenienza.md) | REPO-A: tools/soglie.js:derive | 2026-08-07 |
 | [banco-sintetico-per-calcoli-critici](banco-sintetico-per-calcoli-critici.md) | REPO-G: tools/test-sp.js · gas/Sp.js:366 | 2026-08-21 |
 | [scarto-mai-silenzioso](scarto-mai-silenzioso.md) | progetto onboardato: Extractor.gs:applicaVincoliRange_ | 2026-08-21 |
