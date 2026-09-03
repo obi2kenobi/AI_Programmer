@@ -334,6 +334,21 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## La corsia parallela (dal campo REPO-S TypeScript, 2026-09-03)
+
+Il ventaglio N-lenti-in-parallelo sullo stesso bersaglio nello stesso momento, con:
+- **perimetri DISGIUNTI** (due corsie sugli stessi file si pestano)
+- **sola lettura** obbligatoria durante la caccia
+- **contratto di chiusura** in tre sezioni obbligatorie per ogni corsia:
+  (a) cosa ho verificato PULITO (misura la copertura, non solo i difetti);
+  (b) le bandiere di dominio (🚩 ciò che non è mio decidere);
+  (c) cosa NON ho potuto verificare e perché (dice dove non guardare due volte).
+- ogni reperto porta file:riga + scenario + **il comando che lo dimostra**
+- ogni reperto è marcato: **nuovo** | **già noto (doc NN)** — non rivendere il vecchio
+- **verifica avversariale DOPO** la consegna delle corsie: i reperti chiave si ri-provano
+  personalmente, e si falsificano anche i propri (1 su 10 non reggeva: proponeva di
+  collegare una funzione già collegata).
+
 ## Tre lezioni + cinque proposte operative dal campo REPO-E (2026-09-03): chiusura del ciclo
 
 **Le tre lezioni di metodo:**
