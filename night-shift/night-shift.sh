@@ -83,6 +83,10 @@ probe() {
 }
 
 ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
+# (2026-09-03: launchd ha PATH=/usr/bin:/bin — ollama sta in ~/.local/bin o /opt/homebrew/bin.
+# Il turno partiva e moriva in 4 secondi col/modello assente" perché non LO TROVAVA, non perché
+# mancasse. PATH esteso prima di qualunque comando ollama.)
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 ollama list 2>/dev/null | grep -q "$MODEL_TAG" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
 # Finding #3 (2026-08-21): opencode orfani di ore rubano il modello e inquinano i turni.
 # Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
