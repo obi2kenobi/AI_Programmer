@@ -93,6 +93,7 @@
 - [2026-09-03 (9) — Il garante dello standard: l'installazione diventa obbligatoria](#2026-09-03-9-il-garante-dello-standard-l-installazione-diventa-obbligatoria)
 - [2026-09-03 (10) — Il turno morto in 4 secondi: launchd non vedeva ollama](#2026-09-03-10-il-turno-morto-in-4-secondi-launchd-non-vedeva-ollama)
 - [2026-09-03 (11) — REPO-W: la registrazione via API si chiude + 2 regole + installazione parziale](#2026-09-03-11-repo-w-la-registrazione-via-api-si-chiude-2-regole-installazione-parziale)
+- [2026-09-03 (12) — REPO-Q audit completo: la procedura dall'inizio alla fine (il documento dei buchi)](#2026-09-03-12-repo-q-audit-completo-la-procedura-dall-inizio-alla-fine-il-documento-dei-buchi)
 
 
 ## Stato
@@ -1760,3 +1761,16 @@ due errori della sessione sono finiti nella documentazione di progetto, che non 
 Due regole adottate: (1) verifica l'identità PRIMA di configurarla (il nome della risorsa NON è un
 dato sull'identità — costo: un'ora alla scheda sbagliata); (2) una sonda che può restituire zero
 deve distinguere zero da domanda sbagliata (senza: numero falso dall'aria vera).
+
+### 2026-09-03 (12) — REPO-Q audit completo: la procedura dall'inizio alla fine (il documento dei buchi)
+
+Report: docs/campo/2026-09-03-repo-q-audit-completo-procedura.md. Il documento più onesto
+mai ricevuto dal campo: non racconta i risultati (575/575, 31 banchi verdi, 86 commit) —
+racconta COME ci si è arrivati, le decisioni prese senza chiedere, e I DIECI BUCHI dichiarati.
+I più notevoli: (1) il metodo non era installato (buco 6.1 — il GARANTE di oggi lo chiude per
+i prossimi); (2) parità tutta livello 1 (zero staging: il limite più grande); (3) 22 domande
+di dominio che bloccano 13 voci — 7 diff pronti in diff-bloccati/; (4) la contabilità delle
+voci tenuta in tre modi diversi (65/66/75 righe vs 47/52 in copertina: nessuna persa ma la
+base è ambigua); (5) due correttori morti su 429 finiti a due mani. E la regola d'oro della
+composizione: due consegne GIUSTE singolarmente che composte fanno ReferenceError (14 collisioni
+allineate a mano). Le fasi F0-F7 sono il modello di come si fa un audit col metodo.
