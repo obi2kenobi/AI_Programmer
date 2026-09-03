@@ -84,6 +84,7 @@
 - [2026-09-02 (7) — L'hub verifica sé stesso: due giri completi, PR chiuse, due bypass curati](#2026-09-02-7-l-hub-verifica-sé-stesso-due-giri-completi-pr-chiuse-due-bypass-curati)
 - [2026-09-03 — REPO-R: quattro proposte col corollario «chi verifica va verificato»](#2026-09-03-repo-r-quattro-proposte-col-corollario-chi-verifica-va-verificato)
 - [2026-09-03 (2) — REPO-E chiude il ciclo: bloccante da 10.000€, 10 difetti, redesign, 8 regole](#2026-09-03-2-repo-e-chiude-il-ciclo-bloccante-da-10-000-10-difetti-redesign-8-regole)
+- [2026-09-03 (4) — REPO-S: TypeScript, la linea di frattura GAS vs metodo (via PR #71)](#2026-09-03-4-repo-s-typescript-la-linea-di-frattura-gas-vs-metodo-via-pr-71)
 
 
 ## Stato
@@ -1627,3 +1628,9 @@ decidibili senza il vivo, 5 a costo/beneficio sfavarevole). Gate 5→8 controlli
 attese. Le tre lezioni: (1) interpretazioni simmetriche = domanda non rimandabile; (2)
 sabotaggio verde = buco nel banco; (3) fix riparato ≠ riparato-verificato (la popolazione
 dei siti si censise, non si presume). E cinque proposte operative tutte adottate nel metodo.
+
+### 2026-09-03 (4) — REPO-S: TypeScript, la linea di frattura GAS vs metodo (via PR #71)
+
+Il report è arrivato via PR #71 da un'altra sessione mentre lo processavo (E-016 di nuovo).
+Il dato chiave: METODO e PATTERNS 100% su TypeScript, AGENTI 0/6 (ancorati ad Apps Script).
+Sei pattern nuovi. S9 estesa, isole collegate.
