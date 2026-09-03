@@ -158,9 +158,10 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
   # contraddiceva il commento due righe sopra ("mai sovrascrivere una personalizzazione
   # locale, solo aggiungere i mancanti"). Un progetto che avesse già i propri hook
   # personalizzati (ma non ancora .claude/settings.json) li vedeva sovrascritti in silenzio.
-  [ -f "$WORK/tools/metodo-reminder-hook.sh" ] || cp "$HERE/tools/metodo-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
-  [ -f "$WORK/tools/pattern-reminder-hook.sh" ] || cp "$HERE/tools/pattern-reminder-hook.sh" "$WORK/tools/" 2>/dev/null || true
-  git -C "$WORK" add tools/metodo-reminder-hook.sh tools/pattern-reminder-hook.sh 2>/dev/null || true
+  for H in $(jq -r '.hooks.PreToolUse[]?.hooks[]?.command' "$HERE/.claude/settings.json" 2>/dev/null | xargs -n1 basename 2>/dev/null | sort -u); do
+    [ -f "$WORK/tools/$H" ] || cp "$HERE/tools/$H" "$WORK/tools/" 2>/dev/null || true
+  done
+  git -C "$WORK" add tools/*hook*.sh 2>/dev/null || true
 fi
 mkdir -p "$WORK/.opencode/agent"
 for agent_file in "$HERE"/.opencode/agent/*.md; do
