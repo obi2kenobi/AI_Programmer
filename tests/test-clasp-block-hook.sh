@@ -76,8 +76,8 @@ for INNOCUO in \
   "grep -rn clasp tools/"; do
   OUT=$(jq -n --arg c "$INNOCUO" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK")
   echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
-    && ko "«$INNOCUO» negato — falso positivo, non scrive in produzione" \
-    || ok "«$INNOCUO» non negato (giusto)"
+    && ko ""\$INNOCUO" negato — falso positivo, non scrive in produzione" \
+    || ok ""\$INNOCUO" non negato (giusto)"
 done
 
 # --- LIMITE DICHIARATO (scarto mai silenzioso) ------------------------------
