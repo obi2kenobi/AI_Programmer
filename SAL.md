@@ -89,6 +89,7 @@
 - [2026-09-03 (5) — REPO-S TypeScript: riconciliazione post-PR #71 + T/X/Z censiti](#2026-09-03-5-repo-s-typescript-riconciliazione-post-pr-71-t-x-z-censiti)
 - [2026-09-03 (6) — REPO-E aggiornato: i numeri veri e la QUARTA lezione](#2026-09-03-6-repo-e-aggiornato-i-numeri-veri-e-la-quarta-lezione)
 - [2026-09-03 (7) — REPO-S completo: la corsia parallela formalizzata, 87 reperti con le prove](#2026-09-03-7-repo-s-completo-la-corsia-parallela-formalizzata-87-reperti-con-le-prove)
+- [2026-09-03 (8) — il cancello sul deploy era scavalcabile e non viaggiava: tre guardie, una causa](#2026-09-03-8-il-cancello-sul-deploy-era-scavalcabile-e-non-viaggiava-tre-guardie-una-causa)
 
 
 ## Stato
@@ -1673,3 +1674,60 @@ unsafe-inline, CORS fail-closed — il problema non è la qualità del codice, �
 prima di un merge); l'ordine di intervento suggerito ma non eseguito (prima il pannello Render
 per SEED_ON_START, poi le rotazioni, poi MOT-1 con Matteo). E l'onestà dell'avversariale: la
 MI Affermazione «CI in pausa dal 18-07, 50 commit» era FALSA (50 = profondità del clone shallow).
+
+### 2026-09-03 (8) — il cancello sul deploy era scavalcabile e non viaggiava: tre guardie, una causa
+
+Trovato installando lo standard su una repo GAS nuova (REPO-V, sessione cloud) — non da una
+revisione a tavolo: due difetti veri, entrambi sul gesto più caro del sistema, il `clasp push`.
+
+**1. Il cancello si scavalcava.** L'ancora di `tools/clasp-block-hook.sh`
+(`(^|[;&|][[:space:]]*)clasp[[:space:]]+(push|deploy)`) accetta `clasp` solo a inizio comando
+o dopo un separatore shell. `npx ` è uno spazio, non un separatore: `npx clasp push` — LA forma
+normale di invocarlo dove clasp non è installato globalmente — passava indisturbata, e con essa
+`bunx`, `pnpm dlx`, `yarn dlx`, `npx @google/clasp`, `./node_modules/.bin/clasp`. Nove forme,
+tutte verificate una per una. `tests/test-clasp-block-hook.sh` era verde su tutte le sue attese:
+nessuna copriva un runner davanti al comando. La restrizione dell'ancora era la correzione del
+falso positivo `git commit` (campo REPO-E 2026-09-01) — ha stretto più del necessario e ha
+aperto il varco. Ora: la definizione di «invocazione di clasp» sta in una variabile
+(`SEP`+`RUN`+`BIN`) usata da entrambi i rami che prima la duplicavano; le forme non coperte
+(`env FOO=1`, `sudo`, alias) sono DICHIARATE nel banco, non taciute — è un cancello contro
+l'errore, non contro un aggressore.
+
+**2. Il cancello non viaggiava.** La lista degli hook era scritta a mano in TRE posti —
+`.claude/settings.json` (chi li ESEGUE), `tools/bootstrap-app.sh` e `tools/sync-repo.sh` (chi li
+COPIA) — e i tre erano divergiti: settings.json ne dichiara tre, i due script ne copiavano due.
+Mancava `clasp-block-hook.sh`. Conseguenza: ogni repo portata a standard con
+`sync-repo.sh --standard` (il comando insegnato in `docs/benvenuto-collaboratori.md`) e ogni
+progetto nato da `bootstrap-app.sh` riceveva un `settings.json` che punta a uno script
+inesistente, e restava senza blocco sul deploy. Il `|| true` sui `cp` di bootstrap-app.sh era la
+seconda metà del problema: inghiottiva anche questo.
+
+**La causa, non il sintomo**: `tools/copia-hook.sh` (nuovo) DERIVA la lista da settings.json —
+l'unica fonte che non può divergere da sé stessa, perché è la stessa che l'agente esegue.
+Aggiungere un hook a settings.json ora basta. Un hook dichiarato e assente dall'hub fa uscire in
+ERRORE, e il fallimento FERMA `bootstrap-app.sh` invece di far nascere un progetto a metà standard.
+
+**La guardia allineata al difetto non è una guardia**: `tests/test-bootstrap-hooks-propagation.sh`
+elencava a mano gli stessi due hook degli script, quindi SPECCHIAVA il bug invece di trovarlo.
+Riscritto per derivare la lista; aggiunto `tests/test-sync-repo-hooks-propagation.sh`, che non
+esisteva (il banco di propagazione guardava solo le repo NUOVE, mai le ESISTENTI — il caso più
+frequente). Le tre guardie sono state viste ROSSE sul difetto vero prima della correzione: 9, 8 e
+7 attese fallite; dopo, 25/0, 10/0, 7/0. Suite hub 123/123 file eseguiti, i 4 rossi sono
+pre-esistenti e verificati tali col baseline (`git stash`), non regressioni: dipendono
+dall'ambiente (percorsi `$HOME`, `git grep -P`, stato del ciclo).
+
+**Due verdi che mentivano, corretti nel banco stesso**: due attese passavano perché
+`copia-hook.sh` non esisteva ancora (`bash file-inesistente` esce non-zero, e «il file c'è
+ancora» è vero se nessuno l'ha toccato). Ora sono condizionate all'esistenza dello script:
+un'attesa non verificata si dichiara, non si conta verde.
+
+**Terzo reperto, NON corretto (fuori dal mandato)**: il ramo `.mirror-boundaries` di
+clasp-block-hook.sh (dal campo REPO-Q 2026-09-02, due progetti sovrascritti) è CODICE MORTO —
+usa la stessa condizione del ramo `deny` che lo precede e che esce sempre. Verificato eseguendo:
+in una directory con `.mirror-boundaries`, un comando di push riceve `deny` e nessun avviso
+mirror. Innocuo (il deny è più forte dell'avviso), ma la lezione REPO-Q non ha una guardia
+propria e il commento promette un comportamento che non esiste. In DEBITI.
+
+**Effetto collaterale scoperto per caso**: eseguire la suite intera modifica un file TRACCIATO
+(`docs/bc/README.md`, righe riordinate) — un test con effetto collaterale sul repo. Ha fatto
+fallire una `git stash pop` durante la verifica del baseline. In DEBITI.

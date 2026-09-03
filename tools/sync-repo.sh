@@ -78,10 +78,22 @@ for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .openc
     cp -r "$HERE/$ITEM" "$ITEM"
     git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
   done
+  # bug reale dal campo (REPO-V, progetto GAS nuovo, 2026-09-03): qui la lista degli hook
+  # era scritta a mano e si era fermata a due, mentre .claude/settings.json — copiato
+  # poche righe sopra — ne dichiara tre. Mancava tools/clasp-block-hook.sh: ogni repo
+  # portata a standard con questo comando (quello insegnato in
+  # docs/benvenuto-collaboratori.md) riceveva un settings.json che punta a uno script
+  # inesistente, e restava senza l'unico cancello TECNICO del metodo, quello sul deploy
+  # in produzione. La lista ora si DERIVA da settings.json: tools/copia-hook.sh.
+  # Nota: l'esito si cattura PRIMA del ciclo. Con `while ... done < <(comando)` il codice
+  # di uscita del comando non arriva al while, e un `|| exit` attaccato al done non
+  # scatterebbe mai: sarebbe una guardia che non guarda.
   mkdir -p tools
-  for H in metodo-reminder-hook.sh pattern-reminder-hook.sh; do
-    cp "$HERE/tools/$H" "tools/$H" && git add "tools/$H"
-  done
+  HOOK_COPIATI=$(bash "$HERE/tools/copia-hook.sh" "$PWD") \
+    || { echo "sync-repo: copia degli hook fallita — lo standard NON è completo"; exit 1; }
+  while IFS= read -r H; do
+    [ -n "$H" ] && git add "$H"
+  done <<< "$HOOK_COPIATI"
   if git diff --cached --quiet; then
     # .night-verify minimo per il repo di destinazione (dal campo REPO-E: chi adotta
 # lo standard resta senza, e l'assenza non è segnalata da nessuna parte)
