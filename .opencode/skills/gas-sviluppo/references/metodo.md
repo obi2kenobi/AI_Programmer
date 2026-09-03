@@ -334,6 +334,18 @@ A PARTE, non colmabile in CI. Le proposte:
 5. **Stampa = vincolo di larghezza**: ogni vista stampabile dichiara le colonne che stanno
    in A4 (o la @page landscape) NEL design-doc, non a CSS finito.
 
+## Due regole dal campo REPO-W (2026-09-03): identità e sonde
+
+1. **VERIFICA L'IDENTITÀ PRIMA DI CONFIGURARLA**: prima di concedere permessi, quote o
+   accessi a un'utenza/applicazione, far dire al sistema stesso quale identità sta usando
+   (token, whoami, log di audit). Il NOME di una risorsa non è un dato sull'identità.
+   Costo di non farla: un'ora di permessi alla scheda sbagliata (il dato stava nel token,
+   a 10 righe di distanza).
+2. **UNA SONDA CHE PUÒ RESTITUIRE ZERO DEVE DISTINGUERE ZERO DA DOMANDA SBAGLIATA**:
+   ogni funzione diagnostica che può legittimamente non trovare nulla deve dichiarare cosa
+   HA trovato (codice di risposta, forma, chiavi presenti) prima di uscire. Una sonda
+   che esce in silenzio ha prodotto un numero falso dall'aria vera.
+
 ## La corsia parallela (dal campo REPO-S TypeScript, 2026-09-03)
 
 Il ventaglio N-lenti-in-parallelo sullo stesso bersaglio nello stesso momento, con:

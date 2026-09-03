@@ -92,6 +92,7 @@
 - [2026-09-03 (8) — il cancello sul deploy era scavalcabile e non viaggiava: tre guardie, una causa](#2026-09-03-8-il-cancello-sul-deploy-era-scavalcabile-e-non-viaggiava-tre-guardie-una-causa)
 - [2026-09-03 (9) — Il garante dello standard: l'installazione diventa obbligatoria](#2026-09-03-9-il-garante-dello-standard-l-installazione-diventa-obbligatoria)
 - [2026-09-03 (10) — Il turno morto in 4 secondi: launchd non vedeva ollama](#2026-09-03-10-il-turno-morto-in-4-secondi-launchd-non-vedeva-ollama)
+- [2026-09-03 (11) — REPO-W: la registrazione via API si chiude + 2 regole + installazione parziale](#2026-09-03-11-repo-w-la-registrazione-via-api-si-chiude-2-regole-installazione-parziale)
 
 
 ## Stato
@@ -1749,3 +1750,13 @@ su repo vergine: tutti i componenti presenti dopo il primo giro, silenzio al sec
 Stanotte (2/9 23:00) il turno è PARTITO ed è MORTO in 4 secondi: «modello qwen2.5-coder:14b
 assente». Il modello c'era: launchd ha PATH=/usr/bin:/bin mentre ollama sta in ~/.local/bin.
 Il probe non TROVAVA il comando, non il modello. Fix: export PATH all'inizio del turno.
+
+### 2026-09-03 (11) — REPO-W: la registrazione via API si chiude + 2 regole + installazione parziale
+
+Report: docs/campo/2026-09-03-repo-w-fatture-estere-fase2.md. Fase 2 fatture estere chiusa (204
+da BC, 41/41 test). Ma il dato da canone: l'installazione AI_Programmer era PARTZIALE (il
+classificatore auto rifiutava le scritture su .claude/): senza post-mortem e registro errori, i
+due errori della sessione sono finiti nella documentazione di progetto, che non ha lente automatica.
+Due regole adottate: (1) verifica l'identità PRIMA di configurarla (il nome della risorsa NON è un
+dato sull'identità — costo: un'ora alla scheda sbagliata); (2) una sonda che può restituire zero
+deve distinguere zero da domanda sbagliata (senza: numero falso dall'aria vera).
