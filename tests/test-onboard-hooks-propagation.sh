@@ -11,12 +11,10 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-grep -q 'WORK/tools/metodo-reminder-hook\.sh" \] || cp' "$HERE/tools/onboard-repo.sh" \
-  && ok "onboard-repo.sh contiene la logica di merge per metodo-reminder-hook.sh (mai sovrascrive)" \
-  || ko "lista derivata da settings.json (include metodo-reminder per derivazione)"
-grep -q 'WORK/tools/pattern-reminder-hook\.sh" \] || cp' "$HERE/tools/onboard-repo.sh" \
-  && ok "onboard-repo.sh contiene la logica di merge per pattern-reminder-hook.sh (mai sovrascrive)" \
-  || ko "lista derivata da settings.json (include pattern-reminder per derivazione)"
+grep -q 'hooks.PreToolUse.*settings.json' "$HERE/tools/onboard-repo.sh" \
+  && ok "onboard-repo.sh deriva la lista hook da settings.json (include metodo-reminder per derivazione)" \
+  || ko "onboard-repo.sh non deriva da settings.json: rischio hook dimenticato"
+# pattern-reminder incluso per derivazione (non serve cercarlo per nome)
 
 # riproduce esattamente il ramo reale (settings.json assente) su una copia di lavoro
 merge_hooks() {

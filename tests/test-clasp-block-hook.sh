@@ -59,7 +59,7 @@ for FORMA in \
   "cd progetto && npx clasp push"; do
   OUT=$(jq -n --arg c "$FORMA" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK")
   echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
-    && ok "«$FORMA» → deny" || ko "«$FORMA» NON negato — il cancello si scavalca"
+    && ok ""$FORMA" -> deny" || ko ""$FORMA" NON negato: il cancello si scavalca"
 done
 
 # --- PARITÀ della correzione ------------------------------------------------
