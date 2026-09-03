@@ -87,6 +87,7 @@
 - [2026-09-03 (4) — REPO-S: TypeScript, la linea di frattura GAS vs metodo (via PR #71)](#2026-09-03-4-repo-s-typescript-la-linea-di-frattura-gas-vs-metodo-via-pr-71)
 - [2026-09-03 (5) — Riconciliazione finale: REPO-S, codici T/X/Z, campo-trage](#2026-09-03-5-riconciliazione-finale-repo-s-codici-t-x-z-campo-trage)
 - [2026-09-03 (5) — REPO-S TypeScript: riconciliazione post-PR #71 + T/X/Z censiti](#2026-09-03-5-repo-s-typescript-riconciliazione-post-pr-71-t-x-z-censiti)
+- [2026-09-03 (6) — REPO-E aggiornato: i numeri veri e la QUARTA lezione](#2026-09-03-6-repo-e-aggiornato-i-numeri-veri-e-la-quarta-lezione)
 
 
 ## Stato
@@ -1647,3 +1648,16 @@ Il report REPO-S (via PR #71 da sessione parallela) ora citato per basename nel 
 Report: 2026-09-03-repo-s-caccia-errori-monorepo-typescript.md (arrivato via PR #71 da
 sessione parallela mentre lo processavo — E-016). Il metodo su TypeScript: PATTERNS 100%,
 AGENTI 0/6. Sei pattern nuovi. REPO-T/X/Z aggiunti come placeholder nell'indice.
+
+### 2026-09-03 (6) — REPO-E aggiornato: i numeri veri e la QUARTA lezione
+
+Il report REPO-E (chiusura ciclo controlli+redesign) è stato aggiornato con i numeri
+riverificati (9 controlli, 254 attese, 7 chiuse + 4 aperte — non 8/227/11) e una QUARTA
+lezione che vale più delle prime tre: **SCRIVERE UNA LEZIONE NON BASTA A NON RIPETERLA**.
+L'autore ha scritto la proposta sulle attese cross-realm nei banchi vm il giorno prima,
+e il giorno dopo ha rifatto lo stesso errore nello stesso repo. «Finché una lezione è solo
+scritta è folklore: diventa metodo quando ha una guardia che la fa rispettare». È la
+conferma più diretta del principio del nostro sistema: i pattern senza test che li fa
+rispettare sono raccomandazioni, non presidii. E le due proposte nuove: misurare prima
+di correggere quando il difetto è certo ma il danno no, e un elenco che conta due volte
+la stessa voce non è un elenco (lo strumento pronto non chiude la voce: chiude la risposta).

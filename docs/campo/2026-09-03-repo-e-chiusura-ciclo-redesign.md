@@ -1,4 +1,4 @@
-# 2026-09-03 — Chiusura del ciclo: due audit, un redesign, tre presidi nuovi
+# 2026-09-03 (AGGIORNATO coi numeri veri post-merge: 9 controlli, 254 attese, 7+4 backlog) — Chiusura del ciclo: due audit, un redesign, tre presidi nuovi
 
 **Autore**: sessione Claude Code (remoto), branch `claude/routine-controlli-redesign-ui-walw0b`,
 [PR #54](https://github.com/obi2kenobi/Sistema-Gestione-Magazzino/pull/54).
@@ -145,3 +145,10 @@ un round di audit.
   quanti hanno `Posting_Date` mancante, cioè quanto due dei rilievi mordessero davvero.
 - **Una review visiva sul vivo** dopo il deploy: gli screenshot del redesign sono su dati sintetici,
   e coprono la pagina principale e una modale su undici.
+
+
+## AGGIORNAMENTO (post-merge, 2026-09-03)
+- Numeri riverificati: 9 controlli (non 8), 254 attese (non 227), 7 chiuse + 4 aperte (non 11 aperte)
+- QUARTA LEZIONE: scrivere una lezione non basta a non ripeterla (la proposta cross-realm violata il giorno dopo dallo stesso autore)
+- DUE PROPOSTE NUOVE: misurare prima di correggere quando il difetto è certo ma il danno no; un elenco che conta due volte la stessa voce non è un elenco
+- RILIEVI AGENTI: 2 su 10 non reggevano (dichiarato, non nascosto)
