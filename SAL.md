@@ -86,6 +86,7 @@
 - [2026-09-03 (2) — REPO-E chiude il ciclo: bloccante da 10.000€, 10 difetti, redesign, 8 regole](#2026-09-03-2-repo-e-chiude-il-ciclo-bloccante-da-10-000-10-difetti-redesign-8-regole)
 - [2026-09-03 (4) — REPO-S: TypeScript, la linea di frattura GAS vs metodo (via PR #71)](#2026-09-03-4-repo-s-typescript-la-linea-di-frattura-gas-vs-metodo-via-pr-71)
 - [2026-09-03 (5) — Riconciliazione finale: REPO-S, codici T/X/Z, campo-trage](#2026-09-03-5-riconciliazione-finale-repo-s-codici-t-x-z-campo-trage)
+- [2026-09-03 (5) — REPO-S TypeScript: riconciliazione post-PR #71 + T/X/Z censiti](#2026-09-03-5-repo-s-typescript-riconciliazione-post-pr-71-t-x-z-censiti)
 
 
 ## Stato
@@ -1640,3 +1641,9 @@ Sei pattern nuovi. S9 estesa, isole collegate.
 
 Il report REPO-S (via PR #71 da sessione parallela) ora citato per basename nel SAL
 (contra campo-triage). REPO-T/X/Z aggiunti all'indice come placeholder (censire da repos.key).
+
+### 2026-09-03 (5) — REPO-S TypeScript: riconciliazione post-PR #71 + T/X/Z censiti
+
+Report: 2026-09-03-repo-s-caccia-errori-monorepo-typescript.md (arrivato via PR #71 da
+sessione parallela mentre lo processavo — E-016). Il metodo su TypeScript: PATTERNS 100%,
+AGENTI 0/6. Sei pattern nuovi. REPO-T/X/Z aggiunti come placeholder nell'indice.
