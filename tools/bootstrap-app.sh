@@ -94,9 +94,17 @@ cp "$HERE/.claude/settings.json" .claude/settings.json
 # bootstrappato da zero senza cartella tools/ preesistente, il cp falliva e il "|| true"
 # inghiottiva l'errore: gli hook non venivano MAI installati, e lo script terminava
 # comunque con "Fatto" senza alcun avviso — vanificando l'intento dichiarato sopra.
+# bug reale dal campo (REPO-V, progetto GAS nuovo, 2026-09-03), stessa famiglia del
+# precedente e un gradino più su: la lista degli hook era scritta a mano QUI e in
+# sync-repo.sh, mentre .claude/settings.json (copiato una riga sopra) ne dichiara tre —
+# mancava tools/clasp-block-hook.sh, l'unico cancello TECNICO del metodo. Un progetto
+# nuovo nasceva con un settings.json che punta a uno script inesistente e senza blocco
+# sul deploy in produzione. Il "|| true" qui sotto era la seconda metà del problema:
+# inghiottiva anche questo. Ora la lista si DERIVA da settings.json e un fallimento
+# della copia FERMA lo script, invece di lasciar nascere un progetto a metà standard.
 mkdir -p tools
-cp "$HERE/tools/metodo-reminder-hook.sh" tools/metodo-reminder-hook.sh 2>/dev/null || true
-cp "$HERE/tools/pattern-reminder-hook.sh" tools/pattern-reminder-hook.sh 2>/dev/null || true
+bash "$HERE/tools/copia-hook.sh" "$PWD" >/dev/null \
+  || { echo "⛔ copia degli hook fallita: il progetto nascerebbe senza il cancello sul deploy"; exit 1; }
 
 # gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
 # viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA
