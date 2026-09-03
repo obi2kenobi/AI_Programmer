@@ -90,6 +90,7 @@
 - [2026-09-03 (6) — REPO-E aggiornato: i numeri veri e la QUARTA lezione](#2026-09-03-6-repo-e-aggiornato-i-numeri-veri-e-la-quarta-lezione)
 - [2026-09-03 (7) — REPO-S completo: la corsia parallela formalizzata, 87 reperti con le prove](#2026-09-03-7-repo-s-completo-la-corsia-parallela-formalizzata-87-reperti-con-le-prove)
 - [2026-09-03 (8) — il cancello sul deploy era scavalcabile e non viaggiava: tre guardie, una causa](#2026-09-03-8-il-cancello-sul-deploy-era-scavalcabile-e-non-viaggiava-tre-guardie-una-causa)
+- [2026-09-03 (9) — Il garante dello standard: l'installazione diventa obbligatoria](#2026-09-03-9-il-garante-dello-standard-l-installazione-diventa-obbligatoria)
 
 
 ## Stato
@@ -1731,3 +1732,13 @@ propria e il commento promette un comportamento che non esiste. In DEBITI.
 **Effetto collaterale scoperto per caso**: eseguire la suite intera modifica un file TRACCIATO
 (`docs/bc/README.md`, righe riordinate) — un test con effetto collaterale sul repo. Ha fatto
 fallire una `git stash pop` durante la verifica del baseline. In DEBITI.
+
+### 2026-09-03 (9) — Il garante dello standard: l'installazione diventa obbligatoria
+
+Su richiesta di Luca («rendere obbligatoria l'installazione di ai_programmer quando invocato»):
+tools/garante-standard.sh gira come hook SessionStart a livello UTENTE (~/.claude/settings.json)
+— non a livello repo — quindi su OGNI repo, a OGNI sessione. Se il repo non ha lo standard, LO
+INSTALLA: CLAUDE.md, settings.json, skill, agenti, patterns, hook (incluso clasp-block: il dente).
+Se lo ha già: silenzio (zero costo). Il metodo smette di dipendere da chi se lo ricorda: diventa
+un fatto strutturale. Installazione una-tantum: bash tools/install-garante.sh. Testato end-to-end
+su repo vergine: tutti i componenti presenti dopo il primo giro, silenzio al secondo.
