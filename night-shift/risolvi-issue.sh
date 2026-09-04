@@ -135,6 +135,7 @@ PYEOF
       if echo "$CODE" | node --check - 2>/dev/null; then
         log "✅ Fix applicato e verificato (node --check passa)"
         rm -f "$TARGET_FILE.night-bak"
+        rm -f "$PATCH_FILE"
         echo "ESITO: APPLICATO $(basename $TARGET_FILE) $TARGET_FN ${ELAPSED}s"
         exit 0
       else
