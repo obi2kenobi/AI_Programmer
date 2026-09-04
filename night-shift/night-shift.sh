@@ -310,8 +310,11 @@ $BODY"
         # diceva comunque "committato e pushato": il log mentiva. Ora l'esito lo dice
         # il comando, non l'ottimismo.
         # push -u: il branch nasce con upstream su origin/main (checkout -B dal default)
-        # e senza -u gh non riesce a inferire l'head della PR (prova dal vivo, 2° giro)
-        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q -u origin "$BRANCH" ); then
+        # e senza -u gh non riesce a inferire l'head della PR (prova dal vivo, 2° giro).
+        # --force-with-lease: night/* sono tentativi usa-e-getta — un nuovo tentativo
+        # sostituisce il branch stantio di una prova precedente (mai main: il push
+        # punta esplicito a $BRANCH). Colto dal 3° giro: re-esecuzione senza PR aperta.
+        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q -u --force-with-lease origin "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
           # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.
           # --head e --base espliciti: niente inferenze su shallow clone e upstream strani
