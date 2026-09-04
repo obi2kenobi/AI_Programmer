@@ -21,7 +21,7 @@ step() { echo "→ $*"; }
 
 # --- Prerequisiti (li segnala, non li installa: scelta tua) --------------------
 command -v ollama >/dev/null 2>&1 || { echo "⚠ MANCA ollama (brew install --cask ollama-app)"; MISSING=1; }
-ollama list 2>/dev/null | grep -q "qwen3.8:27b-mtp-q4_K_M" || echo "⚠ modello qwen3.8:27b-mtp-q4_K_M assente (ollama pull qwen3.8:27b-mtp-q4_K_M — 17 GB)"
+LISTA_MODELLI=$(ollama list 2>/dev/null); grep -q "qwen3.8:27b-mtp-q4_K_M" <<<"$LISTA_MODELLI" || echo "⚠ modello qwen3.8:27b-mtp-q4_K_M assente (ollama pull qwen3.8:27b-mtp-q4_K_M — 17 GB)"
 command -v gh >/dev/null 2>&1 || { echo "⚠ MANCA gh (brew install gh) + gh auth login"; MISSING=1; }
 command -v opencode >/dev/null 2>&1 || { echo "⚠ MANCA opencode (brew install opencode)"; MISSING=1; }
 command -v jq >/dev/null 2>&1 || { echo "⚠ MANCA jq"; MISSING=1; }
@@ -60,7 +60,8 @@ for tpl in ollama nightshift; do
   # puntavano a COPIE DIVERSE del repo. Il turno sarebbe partito dalla copia sbagliata
   # (repos.conf vuota) al primo reload. Verifica che il job caricato sia quello appena scritto.
   sleep 1
-  if launchctl print "gui/$(id -u)/com.$USER_NAME.$tpl" 2>/dev/null | grep -q "$HUB/"; then
+  STATO_AGENTE=$(launchctl print "gui/$(id -u)/com.$USER_NAME.$tpl" 2>/dev/null)
+  if grep -q "$HUB/" <<<"$STATO_AGENTE"; then
     echo "  ✓ $tpl caricato e punta a $HUB"
   else
     echo "  ⚠⚠ $tpl: il job caricato NON punta a $HUB — plist e launchd divergono!"

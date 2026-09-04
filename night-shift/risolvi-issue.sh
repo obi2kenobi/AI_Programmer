@@ -15,7 +15,8 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
 ISSUE="${2:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
 MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}"
-API="http://localhost:11434/api/chat"
+# NIGHT_API_URL: solo per i test (server mock) — di norma non si tocca
+API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 [ -f "$ISSUE" ] || { echo "⛔ issue inesistente: $ISSUE" >&2; exit 2; }
 
@@ -32,6 +33,11 @@ log "File da leggere: $TERRitorio"
 # --- 2. legge i file e costruisce il prompt ---
 FILES_CONTENT=""
 for F in $TERRitorio; do
+  # il chiamante (night-shift.sh) NON cd-a dentro $DIR: i percorsi del Territorio
+  # vanno risolti contro $DIR, non contro la CWD di chi lancia (bug colto dal test
+  # di suite 2026-09-04: i 20 test manuali giravano da dentro la dir e non lo vedevano)
+  [ -f "$F" ] || F="$DIR/$F"
+  [ -f "$F" ] || continue
   REL_PATH=$(realpath --relative-to="$DIR" "$F" 2>/dev/null || echo "$F")
   FILES_CONTENT+="=== FILE: $REL_PATH ===\n$(cat "$F")\n\n"
 done
@@ -81,7 +87,8 @@ echo "$CODE" | node --check - 2>/dev/null
 SYNTAX_OK=$?
 if [ $SYNTAX_OK -ne 0 ]; then
   # potrebbe essere HTML misto: verifica che almeno contenga function o var
-  echo "$CODE" | grep -qE 'function |var |let |const ' || {
+  # (E-002: niente pipe in grep -q sotto pipefail — cattura prima)
+  grep -qE 'function |var |let |const ' <<<"$CODE" || {
     log "⛔ Il codice ricevuto non passa node --check né contiene codice JS riconoscibile"
     echo "$CODE" | head -5 >&2
     exit 1
@@ -97,8 +104,9 @@ log "Codice salvato in $(basename $PATCH_FILE) ($(echo "$CODE" | wc -l | tr -d '
 # --- 7. se c'è UN solo file e UN solo blocco di codice: applica direttamente ---
 N_FILES=$(echo "$TERRitorio" | wc -w | tr -d ' ')
 N_BLOCKS=$(echo "$CODE" | grep -c "^function \|^  function " || true)
-if [ "$N_FILES" -eq 1 ] && echo "$CODE" | grep -q "^function "; then
+if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
   TARGET_FILE=$(echo "$TERRitorio" | head -1)
+  [ -f "$TARGET_FILE" ] || TARGET_FILE="$DIR/$TARGET_FILE"
   TARGET_FN=$(echo "$CODE" | grep -oE '^function [a-zA-Z_]+' | head -1 | sed 's/function //')
   if [ -n "$TARGET_FN" ] && grep -q "function $TARGET_FN" "$TARGET_FILE"; then
     log "Applicando: sostituisco $TARGET_FN in $(basename $TARGET_FILE)"
