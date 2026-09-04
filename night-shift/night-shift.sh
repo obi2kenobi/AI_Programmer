@@ -22,6 +22,10 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/lib.sh"
 CONF="$HERE/repos.conf"
 LOG="$HOME/night-shift.log"
+# log() PRIMA di qualunque uso: il self-pull qui sotto la chiamava quando ancora
+# non esisteva e il messaggio finiva a /usr/bin/log di macOS ("Unknown subcommand"),
+# né console né $LOG — l'esito dell'aggiornamento dell'hub era INVISIBILE.
+log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
 rotate_log_if_big "$LOG"
 
 # 2026-08-29 (dal campo): la copia operativa era 5 commit indietro e la notte ha
@@ -36,8 +40,6 @@ WORK="$HOME/night-shift-work"
 MODEL_TAG="qwen2.5-coder:14b"
 OCPROVIDER="ollama/$MODEL_TAG"
 DEFAULT_TYPE="chore"
-
-log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
 
 # --- La lista delle repo -------------------------------------------------------
 REPO_LIST=()
@@ -77,9 +79,12 @@ ensure_server() {
   return 1
 }
 probe() {
-  curl -sf --max-time 120 http://localhost:11434/api/chat -d \
-    "{\"model\":\"$MODEL_TAG\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"stream\":false,\"think\":false,\"options\":{\"num_ctx\":2048}}" \
-    | grep -q '"content":"'
+  # E-002 (4a ricorrenza, 2026-09-04): curl | grep -q sotto pipefail — grep esce al
+  # match, curl prende SIGPIPE, la sonda boccia un server sano. Cattura prima.
+  local RISPOSTA
+  RISPOSTA=$(curl -sf --max-time 120 http://localhost:11434/api/chat -d \
+    "{\"model\":\"$MODEL_TAG\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"stream\":false,\"think\":false,\"options\":{\"num_ctx\":2048}}") \
+    && grep -q '"content":"' <<<"$RISPOSTA"
 }
 
 ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
@@ -87,7 +92,11 @@ ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
 # Il turno partiva e moriva in 4 secondi col/modello assente" perché non LO TROVAVA, non perché
 # mancasse. PATH esteso prima di qualunque comando ollama.)
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
-ollama list 2>/dev/null | grep -q "$MODEL_TAG" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
+# E-002 (4a ricorrenza, 2026-09-04): ollama list | grep -q sotto pipefail ha bocciato
+# il turno alle 23:00 del 3/9 CON il modello presente e trovato (grep -q esce al match,
+# ollama list prende SIGPIPE, rc 141, pipefail). Cattura prima, confronta poi.
+LISTA_MODELLI=$(ollama list 2>/dev/null)
+grep -q "$MODEL_TAG" <<<"$LISTA_MODELLI" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
 # Finding #3 (2026-08-21): opencode orfani di ore rubano il modello e inquinano i turni.
 # Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
 pkill -f "opencode run" 2>/dev/null && log "Puliti processi opencode orfani" && sleep 2 || true
@@ -98,7 +107,8 @@ if ! probe; then
   # avviamo uno nostro, lui resuscita e ci contende la porta: si perde la gara entrambi.
   # Strategia: se l'agente esiste, KICKSTART a lui e si aspetta la sua resurrezione;
   # solo senza agente (altre macchine) si avvia un'istanza propria.
-  if launchctl list 2>/dev/null | grep -q "ollama"; then
+  AGENTI_ATTIVI=$(launchctl list 2>/dev/null)
+  if grep -q "ollama" <<<"$AGENTI_ATTIVI"; then
     launchctl kickstart -k "gui/$(id -u)/$(launchctl list | awk '/ollama/{print $3}')" 2>/dev/null
     for _ in $(seq 1 30); do
       curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && break
@@ -200,13 +210,13 @@ shift_repo() {
     # stringa vuota) con un messaggio meno preciso ("troppo povera" invece di "assente").
     # I due commenti dedicati "manca la sezione" non sono MAI arrivati a un operatore
     # reale — verificato con simulazione. Ordine corretto: assenza prima, qualità dopo.
-    if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then
+    if ! grep -q "^## Territorio" <<<"$BODY"; then
       log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
-    if ! printf '%s' "$BODY" | grep -q "^## Design"; then
+    if ! grep -q "^## Design" <<<"$BODY"; then
       log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
@@ -225,13 +235,13 @@ shift_repo() {
     # Stesso pattern citazione-non-presidio già chiuso altrove nel repo (privacy-check.sh,
     # segreto-come-impronta): una lunghezza non è una fonte. Richiede almeno UN riferimento
     # verificabile (URL, link markdown, SAL.md, un'issue #N, o un percorso di file).
-    if ! printf '%s' "$DESIGN_RAW" | grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b'; then
+    if ! grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' <<<"$DESIGN_RAW"; then
       log "Issue #$NUM: ## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." >/dev/null 2>&1
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
     TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
-    if ! printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b'; then
+    if ! grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b' <<<"$TERR_BODY"; then
       log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
       gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." >/dev/null 2>&1
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue

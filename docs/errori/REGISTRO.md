@@ -344,3 +344,28 @@
   reale 4 repo, albero pulito); preflight modello ripassato sotto PATH launchd nudo.
 - Aggiramento: rifare l'installazione SOLO dalla copia di automazione (night-shift-work),
   mai dalla workspace di sviluppo.
+
+## E-020 La verifica è passata perché girava in un'altra shell (E-002, 4a ricorrenza)
+- Data / sessione: 2026-09-04 (notte del 3/9 persa, diagnosi mattutina)
+- Famiglia: R1 (assunzione non verificata) + R2 (verde senza dati)
+- Sintomo: turno morto alle 23:00:03 col messaggio "modello assente" — col modello
+  PRESENTE, il server attivo e la richiesta /api/tags servita con 200 (nei log GIN).
+  Terza notte persa; stessa firma delle due precedenti, causa DIVERSA.
+- Causa prossima: `ollama list | grep -q "$MODEL_TAG"` sotto `set -uo pipefail`:
+  grep -q esce al primo match, ollama list prende SIGPIPE scrivendo le righe restanti,
+  rc 141, pipefail boccia la pipeline. Dimostrato: la forma vecchia fallisce 199/200
+  oggi; la forma curata (cattura-prima) 100/100.
+- Causa del ragionamento: il preflight del 3/9 ha provato la pipeline in una bash
+  FRESCA senza `set -o pipefail` — le condizioni della verifica non erano le condizioni
+  della produzione. Un test che non riproduce l'ambiente del bug non può certificare che il
+  bug non c'è.
+- Perché non ci ha fermati: il messaggio d'errore ("modello assente") era plausibile
+  e coincideva col fallimento REALE del 2/9 (PATH) — due cause diverse, una firma sola.
+- Guardia: tests/test-risolvi-issue.sh (igiene E-002: nessuna pipeline grep -q nei
+  tool del turno + i tre esiti del solver contro un server mock) e cattura-prima in
+  night-shift/night-shift.sh, night-shift/install.sh, night-shift/risolvi-issue.sh.
+  Bonus colto dal test: il solver risolveva i percorsi del Territorio contro la CWD
+  del chiamante invece di $DIR — in produzione non avrebbe MAI applicato direttamente.
+- Verifica guardia: check modello curato 100/100 sotto pipefail; suite con il test
+  nuovo a verde; forma vecchia 199/200 fallimenti (il documento della corsa).
+- Aggiramento: nessuno voluto — la corsa SIGPIPE è il nemico, non un'opzione.

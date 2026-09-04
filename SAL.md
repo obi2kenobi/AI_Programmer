@@ -95,6 +95,7 @@
 - [2026-09-03 (11) — REPO-W: la registrazione via API si chiude + 2 regole + installazione parziale](#2026-09-03-11-repo-w-la-registrazione-via-api-si-chiude-2-regole-installazione-parziale)
 - [2026-09-03 (12) — REPO-Q audit completo: la procedura dall'inizio alla fine (il documento dei buchi)](#2026-09-03-12-repo-q-audit-completo-la-procedura-dall-inizio-alla-fine-il-documento-dei-buchi)
 - [2026-09-03 (13) — REPO-W secondo tempo: la misura che ribalta (0,2% vs 51,3%)](#2026-09-03-13-repo-w-secondo-tempo-la-misura-che-ribalta-0-2-vs-51-3)
+- [2026-09-04 (14) — la notte che la verifica in un'altra shell non poteva salvare](#2026-09-04-14-la-notte-che-la-verifica-in-un-altra-shell-non-poteva-salvare)
 
 
 ## Stato
@@ -1784,3 +1785,14 @@ a un fornitore alle 17:45, la misura che smentiva la premessa è arrivata alle 2
 vista: la regola «sonda che distingue zero da domanda sbagliata» (scritta la mattina) ha intercettato
 un bug la sera stessa. Tre regole nel metodo: mai && dopo pipe; $select condiviso = interfaccia;
 nessun impegno esterno con verifica aperta.
+
+### 2026-09-04 (14) — la notte che la verifica in un'altra shell non poteva salvare
+
+Terza notte persa, firma identica ("modello assente"), causa diversa: E-002, quarta
+ricorrenza — grep -q esce al match, ollama list prende SIGPIPE, pipefail boccia un check
+che aveva TROVATO il modello. 199/200 fallimenti nella forma vecchia, 100/100 nella curata
+(cattura-prima). La lezione scomoda: il mio preflight del 3/9 girava in una bash senza
+pipefail — le condizioni della verifica non erano quelle della produzione. Il test nuovo
+del solver (mock incluso) ha pure pescato un bug vero: i percorsi del Territorio risolti
+contro la CWD invece di $DIR — in produzione il solver non avrebbe mai applicato direttamente.
+Registra E-020; igiene E-002 su tutte le pipeline grep -q del turno.
