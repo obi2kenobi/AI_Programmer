@@ -309,12 +309,18 @@ $BODY"
         # la variabile si chiama CTYPE, non TIPO — set -u uccideva il commit E il log
         # diceva comunque "committato e pushato": il log mentiva. Ora l'esito lo dice
         # il comando, non l'ottimismo.
-        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q origin "$BRANCH" ); then
+        # push -u: il branch nasce con upstream su origin/main (checkout -B dal default)
+        # e senza -u gh non riesce a inferire l'head della PR (prova dal vivo, 2° giro)
+        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q -u origin "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
-          # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft
-          PR_URL=$(cd "$DIR" && gh pr create --fill --draft 2>&1 | tail -1)
+          # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.
+          # --head e --base espliciti: niente inferenze su shallow clone e upstream strani
+          PR_URL=$(cd "$DIR" && gh pr create --fill --draft --head "$BRANCH" --base "$DB" 2>&1 | tail -1)
           log "Issue #$NUM: PR $PR_URL"
-          PR_CREATED=$((PR_CREATED+1))
+          case "$PR_URL" in
+            https*) PR_CREATED=$((PR_CREATED+1)) ;;
+            *) log "⚠ Issue #$NUM: PR NON creata ($PR_URL)"; FAILED=$((FAILED+1)) ;;
+          esac
         else
           log "⚠ Issue #$NUM: commit/push FALLITO — fix applicato in $DIR ma non consegnato"
           FAILED=$((FAILED+1))
