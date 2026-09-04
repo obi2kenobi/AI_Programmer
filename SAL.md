@@ -96,6 +96,7 @@
 - [2026-09-03 (12) — REPO-Q audit completo: la procedura dall'inizio alla fine (il documento dei buchi)](#2026-09-03-12-repo-q-audit-completo-la-procedura-dall-inizio-alla-fine-il-documento-dei-buchi)
 - [2026-09-03 (13) — REPO-W secondo tempo: la misura che ribalta (0,2% vs 51,3%)](#2026-09-03-13-repo-w-secondo-tempo-la-misura-che-ribalta-0-2-vs-51-3)
 - [2026-09-04 (14) — la notte che la verifica in un'altra shell non poteva salvare](#2026-09-04-14-la-notte-che-la-verifica-in-un-altra-shell-non-poteva-salvare)
+- [2026-09-04 (15) — la prova dal vivo senza aspettare la notte: 6 giri, 4 difetti, 1 PR](#2026-09-04-15-la-prova-dal-vivo-senza-aspettare-la-notte-6-giri-4-difetti-1-pr)
 
 
 ## Stato
@@ -1796,3 +1797,15 @@ pipefail — le condizioni della verifica non erano quelle della produzione. Il 
 del solver (mock incluso) ha pure pescato un bug vero: i percorsi del Territorio risolti
 contro la CWD invece di $DIR — in produzione il solver non avrebbe mai applicato direttamente.
 Registra E-020; igiene E-002 su tutte le pipeline grep -q del turno.
+
+### 2026-09-04 (15) — la prova dal vivo senza aspettare la notte: 6 giri, 4 difetti, 1 PR
+
+Domanda di Luca: «possiamo testare ora il sistema senza aspettare stanotte?». Repo sandbox
+privata (night-shift-prova, poi cancellata) con un bug vero e un'issue ben formata, script
+di produzione dalla copia di automazione sotto PATH nudo di launchd. I giri 1-5 hanno pescato
+quattro difetti nella consegna (TIPO/CTYPE col commit morto, log che affermava il successo
+mai avvenuto, PR non-bozza senza head esplicito, lease nudo contro l'upstream di main). Il
+6° giro: solver 9s → fix applicato → push → PR BOZZA #3 → contatore onesto. Il 7°: skip
+idempotente. Bonus: la mia stessa Verifica nell'issue aveva un valore atteso sbagliato
+(0 invece di 0,1) e il modello aveva ragione lui — il gate del mattino avrebbe beccato me.
+Registri E-020/E-021. Stanotte il turno ha più verify di quanti ne abbia mai avuti.

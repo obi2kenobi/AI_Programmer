@@ -369,3 +369,28 @@
 - Verifica guardia: check modello curato 100/100 sotto pipefail; suite con il test
   nuovo a verde; forma vecchia 199/200 fallimenti (il documento della corsa).
 - Aggiramento: nessuno voluto — la corsa SIGPIPE è il nemico, non un'opzione.
+
+## E-021 Il log diceva "committato e pushato" mentre il commit era morto
+- Data / sessione: 2026-09-04 (prova dal vivo su repo sandbox, 6 giri)
+- Famiglia: R2 (verde/silenzio senza dati) + R1 (assunzione non verificata)
+- Sintomo: solver OK (9s, fix applicato, node --check verde) ma NESSUNA PR: set -u
+  uccideva il commit (la variabile si chiama CTYPE, il codice diceva TIPO) e la riga
+  dopo affermava comunque "fix committato e pushato". La PR poi cadeva per un push
+  mai avvenuto — con contatore a "1 PR bozza" anche quando la PR era "aborted".
+- Causa prossima: quattro difetti in cascata nella consegna: TIPO/CTYPE; esito del
+  commit non controllato (log incondizionato); PR senza --draft né --head/--base
+  espliciti; push del branch night/* con lease nudo che legge l'upstream di main
+  (ereditato dal checkout -B su clone single-branch) e rifiuta sempre "stale info".
+- Causa del ragionamento: il pezzo di consegna (commit→push→PR) non era mai stato
+  provato dal vivo END-TO-END: i 20 test del 2/9 provavano il solver, le notti vere
+  morivano prima di arrivarci. Il codice dopo il primo successo presunto non aveva denti.
+- Perché non ci ha fermati: il log affermava il successo — il contrario di un silenzio:
+  un dato falso è più difficile da sospettare di un'assenza.
+- Guardia: tests/test-risolvi-issue.sh (che presidia il solver) + la prova sandbox
+  documentata qui; il log di consegna ora riporta l'esito del COMANDO (commit/push
+  fallito = warning + contatore FAILED), PR solo --draft con --head/--base espliciti,
+  push -u con lease al valore atteso letto dal refspec esplicito.
+- Verifica guardia: 6° giro: PR bozza #3 creata (draft: true, solo il file target),
+  fix corretto (percentuale + Math.max 0), 7° giro: "PR già aperta, skip" (idempotenza).
+- Aggiramento: verrebbe voglia di --force secco sul push: il lease al valore atteso
+  protegge la stessa cosa senza aprirla a tutti.
