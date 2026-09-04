@@ -309,6 +309,9 @@ $BODY"
         # la variabile si chiama CTYPE, non TIPO — set -u uccideva il commit E il log
         # diceva comunque "committato e pushato": il log mentiva. Ora l'esito lo dice
         # il comando, non l'ottimismo.
+        # il clone è --depth=50 = single-branch: il ref remoto di night/* non c'è e
+        # --force-with-lease rifiuterebbe con "stale info" (4° giro). Lo si porta giù.
+        git -C "$DIR" fetch origin "$BRANCH" -q 2>/dev/null || true
         # push -u: il branch nasce con upstream su origin/main (checkout -B dal default)
         # e senza -u gh non riesce a inferire l'head della PR (prova dal vivo, 2° giro).
         # --force-with-lease: night/* sono tentativi usa-e-getta — un nuovo tentativo
