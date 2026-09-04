@@ -309,15 +309,19 @@ $BODY"
         # la variabile si chiama CTYPE, non TIPO — set -u uccideva il commit E il log
         # diceva comunque "committato e pushato": il log mentiva. Ora l'esito lo dice
         # il comando, non l'ottimismo.
-        # il clone è --depth=50 = single-branch: il ref remoto di night/* non c'è e
-        # --force-with-lease rifiuterebbe con "stale info" (4° giro). Lo si porta giù.
-        git -C "$DIR" fetch origin "$BRANCH" -q 2>/dev/null || true
-        # push -u: il branch nasce con upstream su origin/main (checkout -B dal default)
-        # e senza -u gh non riesce a inferire l'head della PR (prova dal vivo, 2° giro).
-        # --force-with-lease: night/* sono tentativi usa-e-getta — un nuovo tentativo
-        # sostituisce il branch stantio di una prova precedente (mai main: il push
-        # punta esplicito a $BRANCH). Colto dal 3° giro: re-esecuzione senza PR aperta.
-        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q -u --force-with-lease origin "$BRANCH" ); then
+        # night/* sono tentativi usa-e-getta: un nuovo tentativo sostituisce il branch
+        # stantio di una prova precedente (mai main: il push punta esplicito a $BRANCH).
+        # Il lease va passato COL VALORE ATTESO: il clone --depth=50 è single-branch e
+        # il branch eredita l'upstream da origin/main (checkout -B) — il lease nudo
+        # leggerebbe quello e rifiuterebbe sempre con "stale info" (giri 3-5 della
+        # prova dal vivo 2026-09-04). Refspec esplicito + lease deterministico.
+        git -C "$DIR" fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" -q 2>/dev/null || true
+        LEASE_ARGS=()
+        if EXPECTED=$(git -C "$DIR" rev-parse -q --verify "refs/remotes/origin/$BRANCH"); then
+          LEASE_ARGS=(--force-with-lease="$BRANCH:$EXPECTED")
+        fi
+        # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
+        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
           # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.
           # --head e --base espliciti: niente inferenze su shallow clone e upstream strani
