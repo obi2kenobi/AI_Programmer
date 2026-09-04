@@ -305,13 +305,23 @@ $BODY"
       RC=$?
       log "Issue #$NUM: $OUT"
       if [ $RC -eq 0 ]; then
-        # il fix è applicato: commit e push
-        ( cd "$DIR" && git add -A && git commit -qm "$TIPO: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q origin "$BRANCH" 2>&1 | tail -1 )
-        log "Issue #$NUM: fix committato e pushato"
-        PR_URL=$(cd "$DIR" && gh pr create --fill 2>&1 | tail -1)
-        log "Issue #$NUM: PR $PR_URL"
+        # il fix è applicato: commit e push. Prova dal vivo 2026-09-04 (repo sandbox):
+        # la variabile si chiama CTYPE, non TIPO — set -u uccideva il commit E il log
+        # diceva comunque "committato e pushato": il log mentiva. Ora l'esito lo dice
+        # il comando, non l'ottimismo.
+        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q origin "$BRANCH" ); then
+          log "Issue #$NUM: fix committato e pushato"
+          # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft
+          PR_URL=$(cd "$DIR" && gh pr create --fill --draft 2>&1 | tail -1)
+          log "Issue #$NUM: PR $PR_URL"
+          PR_CREATED=$((PR_CREATED+1))
+        else
+          log "⚠ Issue #$NUM: commit/push FALLITO — fix applicato in $DIR ma non consegnato"
+          FAILED=$((FAILED+1))
+        fi
       else
         log "Issue #$NUM: risolutore non ha converto (rc=$RC) — si passa oltre"
+        FAILED=$((FAILED+1))
       fi
       rm -f "$ISSUE_FILE"
       continue
