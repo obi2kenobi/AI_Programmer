@@ -100,6 +100,7 @@
 - [2026-09-05 (16) — il primo turno che finisce: e cosa ha aperto davvero](#2026-09-05-16-il-primo-turno-che-finisce-e-cosa-ha-aperto-davvero)
 - [2026-09-05 (17) — REPO-W quattordici giri: la regola-prosa violata tre volte diventa dente](#2026-09-05-17-repo-w-quattordici-giri-la-regola-prosa-violata-tre-volte-diventa-dente)
 - [2026-09-05 (18) — la versione di progetto del report: due insegnamenti che c'erano solo lì](#2026-09-05-18-la-versione-di-progetto-del-report-due-insegnamenti-che-c-erano-solo-lì)
+- [2026-09-05 (19) — AI_Develop chiuso: «è un ramo morto» (Luca)](#2026-09-05-19-ai_develop-chiuso-è-un-ramo-morto-luca)
 
 
 ## Stato
@@ -1851,3 +1852,11 @@ lettura vuota decide come se avesse guardato (Math.abs(NaN) > 0.02 è falso: l'i
 usciva REGISTRABILE). Aperte, lato progetto, per Luca: clasp push dei giri 9-14, diagnosticaGiovannini_,
 esploraNotaCreditoApiV2Test, clasp clone + diff, e quattro decisioni (fornitore ordine↔fattura,
 ingresso Hasslacher, chiave di deduplica, etichetta Gmail).
+
+### 2026-09-05 (19) — AI_Develop chiuso: «è un ramo morto» (Luca)
+
+Domanda di dominio 5, risposta secca: chiudi. Rimossa dalla coda notturna (repos.conf della copia
+di automazione), repo archiviata su GitHub (reversibile: gh repo unarchive obi2kenobi/AI_Develop).
+Prima di chiudere, le domande 1-3 erano diventate codice lì: lotti in parallelo, compressione a
+4 giorni, postilla di chiusura — tutto pushato (fino a befd237), il registro dei abbandoni conserva
+i rilievi non gestiti. La coda resta: AI_Programmer, Bilancio_di_Massa_PEFC, gestionale-parrocchie.
