@@ -38,6 +38,28 @@ OUT=$(bash "$HOOK"); RC=$?
 [ "$RC" -eq 0 ] && ok "nomi nudi risolti contro tools/ e docs/campo/ (convenzioni)"   || { echo "$OUT" | grep pendenti | head -1 | sed 's/^/    /'; ko "convenzione dei nomi nudi non risolta"; }
 git -C "$HERE" restore --staged "$PROBE2" >/dev/null 2>&1; rm -f "$PROBE2"
 
+# pipeline seguita da && (controllo 5, report REPO-W 5/9: la regola-prosa violata
+# 3 volte in una sessione) — il dente deve diventare rosso sul colpevole
+PROBE3="$HERE/tools/_probe_pipe_and.sh"
+# il colpevole si costruisce con %s: il sorgente del test NON contiene il pattern
+# (il dente morde anche chi scrive la sonda che lo prova — accaduto, 5/9)
+printf '#!/bin/bash\ncmd | tail -1 %s git commit -m x\n' '&&' > "$PROBE3"
+chmod +x "$PROBE3"
+git -C "$HERE" add "$PROBE3"
+OUT=$(bash "$HOOK"); RC=$?
+[ "$RC" -ne 0 ] && echo "$OUT" | grep -q "pipeline" && ok "pipe+&& staged: il dente morde" \
+  || ko "pipe+&& NON visto (rc=$RC) — la regola del 3/9 è ancora sola prosa"
+git -C "$HERE" restore --staged "$PROBE3" >/dev/null 2>&1; rm -f "$PROBE3"
+
+# e il benigno (|| true, pipe senza &&) non deve scattare
+PROBE4="$HERE/tools/_probe_pipe_ok.sh"
+printf '#!/bin/bash\nls | xargs grep -l foo 2>/dev/null || true\ngrep -q x file || exit 1\n' > "$PROBE4"
+git -C "$HERE" add "$PROBE4"
+OUT=$(bash "$HOOK"); RC=$?
+[ "$RC" -eq 0 ] && ok "pipe senza && : via libera (nessun falso positivo)" \
+  || { echo "$OUT" | grep pipeline | head -1 | sed 's/^/    /'; ko "falso positivo su pipe legittima"; }
+git -C "$HERE" restore --staged "$PROBE4" >/dev/null 2>&1; rm -f "$PROBE4"
+
 # caso pulito: nessun file staged → via libera
 OUT=$(bash "$HOOK"); RC=$?
 [ "$RC" -eq 0 ] && ok "niente staged: via libera" || { echo "$OUT" | tail -2 | sed 's/^/    /'; ko "rosso a vuoto"; }

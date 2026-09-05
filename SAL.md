@@ -98,6 +98,7 @@
 - [2026-09-04 (14) — la notte che la verifica in un'altra shell non poteva salvare](#2026-09-04-14-la-notte-che-la-verifica-in-un-altra-shell-non-poteva-salvare)
 - [2026-09-04 (15) — la prova dal vivo senza aspettare la notte: 6 giri, 4 difetti, 1 PR](#2026-09-04-15-la-prova-dal-vivo-senza-aspettare-la-notte-6-giri-4-difetti-1-pr)
 - [2026-09-05 (16) — il primo turno che finisce: e cosa ha aperto davvero](#2026-09-05-16-il-primo-turno-che-finisce-e-cosa-ha-aperto-davvero)
+- [2026-09-05 (17) — REPO-W quattordici giri: la regola-prosa violata tre volte diventa dente](#2026-09-05-17-repo-w-quattordici-giri-la-regola-prosa-violata-tre-volte-diventa-dente)
 
 
 ## Stato
@@ -1821,3 +1822,18 @@ Curato: exit 3 = proposta → commento nell'issue, mai PR; contatori separati; P
 proposta esportaCSV ripubblicata nell'issue #10 (il codice era buono: escape, BOM, ';',
 nome datato — manca inserimento e wiring, DEBITI). La notte adesso distingue consegnare
 dal proporre.
+
+### 2026-09-05 (17) — REPO-W quattordici giri: la regola-prosa violata tre volte diventa dente
+
+Report: docs/campo/2026-09-05-repo-w-quattordici-giri-revisione.md (repo-w-quattordici-giri-revisione).
+~35 difetti (5 gravi), 9 auto-inflitti fermati prima della produzione, 4 strumenti di verifica
+nuovi, 4 domande di dominio trasformate in codice. Il dato che vale di tutti: «mai && dopo pipe»
+era regola dal 3/9, nata in quel repo, indicizzata — violata 3 volte in una sessione. Ora è il
+controllo 5 di tools/pre-commit.sh (e quasi spedivo un falso dente: la regex negata `[^|&;]*&&`
+non funziona nel grep BSD, verificata col caso avverso — whitelist). Nove regole nel metodo
+(sicurezza = domanda diversa nel giro; attese dichiarate; sabotaggio di metà-difesa;
+meta-mutazione; doppi che registrano la traccia; tipo dal confine; domanda di dominio una alla
+volta; costante duplicata = stessa domanda?; ordine di caricamento GAS). Pattern nuovo:
+contenitore-che-riscrive (coercizione silenziosa + formula injection, àncora Foglio.gs).
+REPO-W: installazione ancora parziale (.claude/skills e DEBITI mancano — il garante-standard
+chiude le sessioni future); il vivo resta non letto da remoto in 14 giri.

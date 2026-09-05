@@ -34,7 +34,7 @@ while IFS= read -r f; do
   [ -f "$f" ] || continue
   while IFS= read -r m; do
     echo "$TARGET" | grep -qxF "$m" && continue          # file-del-target: nel progetto, non qui
-    [ -e "$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || PEND="$PEND $f: $m"
+    [ -e "$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
   done < <(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$f" | tr -d '`')
 done < <(git diff --cached --name-only 2>/dev/null | grep '\.md$')
 [ -n "$PEND" ] && { echo "⛔ path citati ma inesistenti:"; echo "$PEND"; FALLITI=1; }
@@ -47,6 +47,26 @@ if echo "$MSG" | grep -qE '[0-9]+ test'; then
   N_REAL=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
   [ "$N_CLAIM" != "$N_REAL" ] && { echo "⛔ il messaggio dice \"$N_CLAIM test\" ma i file sono $N_REAL"; FALLITI=1; }
 fi
+
+# 5. (2026-09-05, report REPO-W) pipeline a sinistra di &&: la regola «mai && dopo
+#    una pipe» era nel canone dal 3/9, nata nello stesso repo, indicizzata — e violata
+#    TRE volte in una sessione (commit dichiarato verde col banco rosso). Una regola
+#    che vive solo come frase non protegge: questo è il controllo che gira. La pipe
+#    restituisce l'exit dell'ULTIMO comando: `cmd | tail && git commit` committa
+#    anche se cmd non è mai partito.
+#    NOTA regex: la negata `[^|&;]*&&` NON funziona nel grep BSD (provato col caso
+#    avverso: falso dente silenzioso) — si usa la whitelist dei caratteri tipici
+#    fra comando e &&, verificata contro righe colpevoli e benigne.
+PIPE_AND=""
+while IFS= read -r f; do
+  [ -f "$f" ] || continue
+  # la guardia cita il pattern che sorveglia nel proprio commento: non è peccato
+  case "$f" in tools/pre-commit.sh|.githooks/pre-commit) continue;; esac
+  while IFS= read -r riga; do
+    PIPE_AND="$PIPE_AND $f: $riga"
+  done < <(grep -nE '\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' "$f" | sed 's/^\([0-9]*\):/riga \1:/' || true)
+done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.(sh|py)$')
+[ -n "$PIPE_AND" ] && { echo "⛔ pipeline seguita da && (l'esito è del solo ultimo comando — la regola del 3/9 era prose, ora è un dente):"; echo "$PIPE_AND"; FALLITI=1; }
 
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
 exit $FALLITI
