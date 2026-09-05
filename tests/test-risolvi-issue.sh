@@ -44,7 +44,7 @@ python3 "$MOCK_DIR/serve.py" "$MOCK_BODY_FILE" > "$MOCK_DIR/port" 2>/dev/null &
 MOCK_PID=$!
 for _ in $(seq 1 20); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done
 MOCK_PORT=$(cat "$MOCK_DIR/port")
-trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2"' EXIT
+trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4"' EXIT
 ok "server mock su porta $MOCK_PORT"
 
 # --- caso 1: APPLICATO — una funzione rotta, il mock la restituisce corretta
@@ -89,10 +89,36 @@ File: a.js e b.js
 node --check
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB2" "$SB2/issue.md" 2>&1); RC=$?
-if [ $RC -eq 0 ] && echo "$OUT" | grep -q "ESITO: PATCH" && [ "$(cat "$SB2/a.js")" = 'function uno() { return 1; }' ]; then
-  ok "PATCH: codice salvato, file originali intatti (N_FILES=2)"
+if [ $RC -eq 3 ] && echo "$OUT" | grep -q "ESITO: PATCH" && [ "$(cat "$SB2/a.js")" = 'function uno() { return 1; }' ]; then
+  ok "PATCH: exit 3 (proposta), file originali intatti (N_FILES=2)"
 else
   ko "PATCH: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
+fi
+
+# --- caso 4: PROPOSTA con bak da pulire — funzione presente ma indentata:
+# grep la trova, la regex di sostituzione (^function a colonna 0) no: il bak
+# creato prima del tentativo dev'essere rimosso (notte 4/9: finiva in PR)
+SB4=$(mktemp -d /tmp/risolvi-sb4.XXXXXX)
+# bersaglio con funzione NON a colonna zero: la regex ^function non la becca
+printf 'if (true) {\n  function calc(a, b) {\n    return a + b;\n  }\n}\n' > "$SB4/calc2.js"
+cat > "$SB4/issue.md" <<'ISSA'
+## Commessa
+correggi calc.
+
+## Territorio
+File: calc2.js
+
+## Verifica
+node --check
+ISSA
+cat > "$MOCK_BODY_FILE" <<'EOF'
+{"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\n```\n"}}
+EOF
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB4" "$SB4/issue.md" 2>&1); RC=$?
+if [ $RC -eq 3 ] && [ ! -f "$SB4/calc2.js.night-bak" ] && echo "$OUT" | grep -q "ESITO: PATCH"; then
+  ok "PROPOSTA: sostituzione fallita = exit 3 e NESSUN bak lasciato in giro"
+else
+  ko "PROPOSTA: rc=$RC bak=$([ -f "$SB4/calc2.js.night-bak" ] && echo presente || echo assente) out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 fi
 
 # --- caso 3: il modello non produce codice — il solver rifiuta, niente file toccati

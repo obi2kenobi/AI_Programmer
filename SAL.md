@@ -97,6 +97,7 @@
 - [2026-09-03 (13) — REPO-W secondo tempo: la misura che ribalta (0,2% vs 51,3%)](#2026-09-03-13-repo-w-secondo-tempo-la-misura-che-ribalta-0-2-vs-51-3)
 - [2026-09-04 (14) — la notte che la verifica in un'altra shell non poteva salvare](#2026-09-04-14-la-notte-che-la-verifica-in-un-altra-shell-non-poteva-salvare)
 - [2026-09-04 (15) — la prova dal vivo senza aspettare la notte: 6 giri, 4 difetti, 1 PR](#2026-09-04-15-la-prova-dal-vivo-senza-aspettare-la-notte-6-giri-4-difetti-1-pr)
+- [2026-09-05 (16) — il primo turno che finisce: e cosa ha aperto davvero](#2026-09-05-16-il-primo-turno-che-finisce-e-cosa-ha-aperto-davvero)
 
 
 ## Stato
@@ -1809,3 +1810,14 @@ mai avvenuto, PR non-bozza senza head esplicito, lease nudo contro l'upstream di
 idempotente. Bonus: la mia stessa Verifica nell'issue aveva un valore atteso sbagliato
 (0 invece di 0,1) e il modello aveva ragione lui — il gate del mattino avrebbe beccato me.
 Registri E-020/E-021. Stanotte il turno ha più verify di quanti ne abbia mai avuti.
+
+### 2026-09-05 (16) — il primo turno che finisce: e cosa ha aperto davvero
+
+Notte del 4/9: TURNO FINITO, 4 repo, 2'37". Il turno ha girato per intero per la prima
+volta (self-pull visibile, 14B trovato sotto PATH launchd, sonda verde, solver a 121s su
+App.html). Ma la PR #16 era di soli scarti: patch proposto + backup intero (+739 righe),
+zero fix applicati — PATCH valeva come successo (E-022: exit 0 ambiguo, bak non pulito).
+Curato: exit 3 = proposta → commento nell'issue, mai PR; contatori separati; PR #16 chiusa,
+proposta esportaCSV ripubblicata nell'issue #10 (il codice era buono: escape, BOM, ';',
+nome datato — manca inserimento e wiring, DEBITI). La notte adesso distingue consegnare
+dal proporre.
