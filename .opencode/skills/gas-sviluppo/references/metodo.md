@@ -657,6 +657,18 @@ tools/pre-commit.sh (controllo 5). Stessa famiglia di «la guardia esiste ma non
     da zero che non supera la soglia). E il difetto gemello arriva dal contenitore: il foglio
     che restituisce `Date` dove avevi scritto stringa.
 
+## Il semaforo dell'allineamento (domanda di dominio, Luca 2026-09-05)
+
+Il confronto repo↔specchio è un **SEGNALE DI RISCHIO, non un verdetto**. Quando una copia
+locale diverge dallo specchio del parco, il confronto basta per dire «verifica a mano prima
+di lavorarci» — il lavoro NON si ferma finché il vivo non è letto. È lo stesso patto di
+`--specchio-vecchio`: si può procedere dichiarando ciò che non si è potuto verificare.
+
+⚠️ IL CONFINE CHE NON SI TOCCA: `gas-vivo-definitivo` resta — il vivo è definitivo per le
+decisioni che contano (deploy, registrazioni, ciò che l'utente vede). Il semaforo vale per
+l'ALLINEAMENTO DI LAVORO, non per promuovere una copia a verità. Divergenza dallo specchio =
+semàforo giallo dichiarato, mai semaforo verde.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
