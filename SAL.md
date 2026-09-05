@@ -99,6 +99,7 @@
 - [2026-09-04 (15) — la prova dal vivo senza aspettare la notte: 6 giri, 4 difetti, 1 PR](#2026-09-04-15-la-prova-dal-vivo-senza-aspettare-la-notte-6-giri-4-difetti-1-pr)
 - [2026-09-05 (16) — il primo turno che finisce: e cosa ha aperto davvero](#2026-09-05-16-il-primo-turno-che-finisce-e-cosa-ha-aperto-davvero)
 - [2026-09-05 (17) — REPO-W quattordici giri: la regola-prosa violata tre volte diventa dente](#2026-09-05-17-repo-w-quattordici-giri-la-regola-prosa-violata-tre-volte-diventa-dente)
+- [2026-09-05 (18) — la versione di progetto del report: due insegnamenti che c'erano solo lì](#2026-09-05-18-la-versione-di-progetto-del-report-due-insegnamenti-che-c-erano-solo-lì)
 
 
 ## Stato
@@ -1837,3 +1838,16 @@ volta; costante duplicata = stessa domanda?; ordine di caricamento GAS). Pattern
 contenitore-che-riscrive (coercizione silenziosa + formula injection, àncora Foglio.gs).
 REPO-W: installazione ancora parziale (.claude/skills e DEBITI mancano — il garante-standard
 chiude le sessioni future); il vivo resta non letto da remoto in 14 giri.
+
+### 2026-09-05 (18) — la versione di progetto del report: due insegnamenti che c'erano solo lì
+
+Arriva anche la versione NOMI VERI del report dei 14 giri (Registrazione_Fatture_Acquisto,
+docs/campo/2026-09-05-fatture-estere-fase2-quattordici-giri.md — la sessione remota non l'aveva
+committata: esisteva solo nei Downloads). Verificata la versione hub: zero nomi veri (il gate locale
+girava con repos.key vuoto — controllo fatto a mano, grep sui nomi del report di progetto). Due
+insegnamenti aggiunti al metodo come regole 10-11: il banco non confronta con JSON.stringify
+(NaN → "null": il sabotaggio del difetto peggiore restava verde) e una lettura mancata che vale una
+lettura vuota decide come se avesse guardato (Math.abs(NaN) > 0.02 è falso: l'importo illeggibile
+usciva REGISTRABILE). Aperte, lato progetto, per Luca: clasp push dei giri 9-14, diagnosticaGiovannini_,
+esploraNotaCreditoApiV2Test, clasp clone + diff, e quattro decisioni (fornitore ordine↔fattura,
+ingresso Hasslacher, chiave di deduplica, etichetta Gmail).

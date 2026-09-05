@@ -644,6 +644,19 @@ tools/pre-commit.sh (controllo 5). Stessa famiglia di «la guardia esiste ma non
    (inizializzare in fondo al file letto) era sbagliata proprio per questo. Il
    contenitore-che-riscrive è pattern del catalogo con àncora.
 
+10. **IL BANCO NON CONFRONTA CON `JSON.stringify`**: `JSON.stringify(NaN)` vale la stringa
+    `"null"` — il sabotaggio del difetto peggiore (l'importo illeggibile che usciva
+    REGISTRABILE) restava verde. Nel confronto del banco si usa `mostra()` (o un confronto
+    tipizzato): la serializzazione che appiattisce i non-valori rende il banco cieco proprio
+    sul caso che esiste per prendere.
+11. **UNA LETTURA MANCATA CHE VALE UNA LETTURA VUOTA DECIDE COME SE AVESSE GUARDATO**: il
+    filo conduttore dei 14 giri — `[]`, `''`, `0`, `undefined`, e il caso peggiore
+    `Math.abs(NaN) > 0.02` che è FALSO, quindi l'ordine con importo illeggibile passava
+    l'ultimo controllo prima della registrazione. Ogni lettura che può fallire deve rendere
+    un valore DISTINTO dal vuoto legittimo (un NaN che il confronto tratta da non-valore, non
+    da zero che non supera la soglia). E il difetto gemello arriva dal contenitore: il foglio
+    che restituisce `Date` dove avevi scritto stringa.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
