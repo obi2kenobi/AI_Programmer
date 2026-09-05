@@ -157,3 +157,54 @@ verdetto di pulizia**: va ripassato dal gate vero prima del push, sulla macchina
 esiste. Che lo strumento dica «non ho controllato niente» invece di uscire con 0 è, di per sé, la
 cosa giusta ed è la stessa regola della sonda che distingue lo zero dalla domanda sbagliata —
 proposta nata in questo repo il 3 settembre.
+
+---
+
+## Seconda parte della stessa sessione: la fase di test
+
+Dopo i quattordici giri, sei decisioni di dominio e cinque passi, fino a una registrazione **mai
+eseguita**: la catena di controlli è arrivata in fondo su un caso vero e si è fermata su un blocco
+esterno noto (un'assegnazione che l'API del gestionale non espone). Fermarsi lì è stata una
+decisione dell'operatore, non una resa.
+
+### Cosa ha retto
+
+**«Non posso decidere» invece di un motivo plausibile.** Il campo su cui il controllo interrogava
+l'anagrafica si è rivelato **non filtrabile** — errore HTTP, non un risultato vuoto. Il sistema non
+ha detto «nessun record con quel valore», che sarebbe stato falso e perfettamente credibile: ha
+detto che non poteva decidere e si è fermato. È la regola «una lettura mancata non è un dato»
+messa alla prova da un caso che nessuno aveva previsto.
+
+**La correzione che produce la misura.** Su un disallineamento di fuso orario fra i due sistemi non
+ho dedotto: ho tolto il dato imposto *e* fatto stampare al sistema quello che decide lui. Il giro
+dopo, la misura c'era, e l'ipotesi si è chiusa con un dato invece che con un ragionamento.
+
+### Cosa ha ostacolato — tre errori, una sola famiglia
+
+1. una sonda ha guardato in **un solo perimetro** mentre il percorso che indagava li scorre tutti;
+2. una sequenza di comandi conteneva il nome di funzione preso da **un messaggio di log** scritto
+   per un altro percorso, invece che dalla descrizione della funzione;
+3. da «il campo esiste ed è valorizzato» ho dedotto **«è filtrabile»**.
+
+Tre volte ho verificato **la cosa accanto** a quella che mi serviva, e ho trattato la vicinanza
+come una prova. Ogni volta il costo è ricaduto sull'operatore umano: un artefatto consumato, una
+schermata aperta per scoprire che era quella sbagliata, un giro di lancia-e-incolla.
+
+### Proposta al canone (5-7, oltre alle quattro della prima parte)
+
+**5. Una sonda verifica UNA proprietà, e le proprietà di un campo sono almeno tre.** Esistere,
+essere valorizzato, essere interrogabile (filtrabile, ordinabile, scrivibile) sono domande
+separate e si provano separatamente. «Il campo c'è ed è pieno» non autorizza a filtrarci sopra:
+quella risposta si ottiene solo provando a filtrare. Anchor in REPO-W (§25.83, errore vero con la
+sua guardia).
+
+**6. Un doppio che non sa RIFIUTARE non protegge da una richiesta sbagliata.** Il sabotaggio che
+rimetteva la query non supportata non poteva cadere finché lo stub rispondeva 200 a qualunque
+domanda. Un doppio deve dire *no* dove il sistema vero dice no, altrimenti prova solo che il codice
+sa gestire il caso felice. Corollario già visto due volte nella stessa sessione: uno stub che
+risponde uguale a ogni domanda non può provare che la domanda fosse quella giusta.
+
+**7. Una sequenza di comandi è una previsione, non documentazione da copiare.** Il nome di una
+funzione da mettere in una sequenza si prende dalla sua **descrizione**, non da un messaggio di log
+scritto per un altro percorso. E una funzione che produce un artefatto incompleto lo deve
+**dichiarare rileggendolo**, invece di lasciare che se ne accorga chi lo aprirà.
