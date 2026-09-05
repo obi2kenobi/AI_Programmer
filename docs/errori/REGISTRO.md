@@ -394,3 +394,26 @@
   fix corretto (percentuale + Math.max 0), 7° giro: "PR già aperta, skip" (idempotenza).
 - Aggiramento: verrebbe voglia di --force secco sul push: il lease al valore atteso
   protegge la stessa cosa senza aprirla a tutti.
+
+## E-022 La proposta spedita come PR: PATCH valeva come successo
+- Data / sessione: 2026-09-05 (primo turno riuscito, notte del 4/9)
+- Famiglia: R1 (assunzione non verificata) + R2 (il contatore diceva 1 PR)
+- Sintomo: PR #16 sul Bilancio con dentro SOLO scarti: il .night-patch proposto e
+  l'App.html.night-bak intero (+739 righe). Nessun fix applicato, contatore "1 PR bozza".
+- Causa prossima: il solver esce 0 sia quando APPLICA sia quando PROPOSE (PATCH mode);
+  il turno tratta rc=0 come "fix consegnato" → git add -A committa patch e bak.
+  Il bak non veniva rimosso quando la sostituzione falliva (grep trova la funzione,
+  la regex a colonna zero no — la notte l'ha lasciato lì).
+- Causa del ragionamento: contratto d'uscita ambiguo — "0 = tutto bene" copriva due
+  esiti che meritano azioni opposte (celebrare la PR vs pubblicare una proposta).
+  Un codice d'uscita che non distingue non è un contratto.
+- Perché non ci ha fermati: il turn era finito VERDE (TURNO FINITO, 1 PR bozza) —
+  il primo mai completato. Il successo recente abbassa la guardia sul contenuto.
+- Guardia: night-shift/risolvi-issue.sh (exit 3 = proposta; bak rimosso se la
+  sostituzione fallisce) + tests/test-risolvi-issue.sh (caso PROPOSTA: exit 3 e
+  nessun bak in giro) + il turno pubblica la proposta come commento all'issue,
+  mai come PR (contatore PROPOSTE separato).
+- Verifica guardia: test 6/6 (APPLICATO / PATCH exit 3 / PROPOSTA senza bak / RIFIUTO).
+  Il caso reale: PR #16 chiusa, proposta ripubblicata nell'issue #10.
+- Aggiramento: le Feature (funzioni nuove + wiring) restano proposte fino al debito
+  DEBITI "solver: inserzione di funzioni nuove".

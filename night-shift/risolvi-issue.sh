@@ -9,7 +9,10 @@
 #
 # Uso: risolvi-issue.sh <dir-progetto> <issue-md>
 #   <issue-md> = file locale con la commessa (Design/Commessa/Verifica/Territorio)
-# Esce: 0 = fix applicato e verificato · 1 = fallito · 2 = uso errato
+# Esce: 0 = fix applicato e verificato · 1 = fallito · 2 = uso errato · 3 = proposta
+#   (3 = codice pronto ma NON applicato: funzione nuova o bersaglio assente. La notte
+#    del 4/9 l'ha trattato come successo e ha aperto una PR di soli scarti: un .js
+#    proposto + il .night-bak dell'App.html intero, +739 righe di rumore.)
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
@@ -129,7 +132,13 @@ else:
     print(f"FUNZIONE-NON-TROVATA {fn}")
     sys.exit(1)
 PYEOF
-    if [ $? -eq 0 ]; then
+    RC_PY=$?
+    if [ $RC_PY -ne 0 ]; then
+      # sostituzione fallita: il file NON è stato toccato, il backup è scarto puro
+      # (notte 4/9: il bak finiva commitato dalla PR — git add -A non perdona)
+      rm -f "$TARGET_FILE.night-bak"
+    fi
+    if [ $RC_PY -eq 0 ]; then
       # verifica: node --check sulla PATCH (il file .html/.gs contiene HTML misto,
       # node --check sull'intero fallirebbe sempre — si verifica il codice JS puro)
       if echo "$CODE" | node --check - 2>/dev/null; then
@@ -148,7 +157,9 @@ PYEOF
   fi
 fi
 
-# se non può applicare direttamente: il codice è nel patch file
-log "Codice pronto in $(basename $PATCH_FILE) (applicazione manuale o da giro successivo)"
+# se non può applicare direttamente: il codice è una PROPOSTA (funzione nuova o
+# bersaglio assente) — non un fix consegnato. Exit 3: il turno la pubblica come
+# commento all'issue, NON come PR (la notte del 4/9 ha aperto la PR #16 di scarti)
+log "Codice pronto in $(basename $PATCH_FILE) — proposta, applicazione a carico del giorno"
 echo "ESITO: PATCH $(basename $PATCH_FILE) ${ELAPSED}s"
-exit 0
+exit 3

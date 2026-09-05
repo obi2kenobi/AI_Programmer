@@ -178,7 +178,7 @@ shift_repo() {
   log "TURNO su $REPO: $COUNT issue in coda"
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
-  local PR_CREATED=0 FAILED=0 IDX=0
+  local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0
   # giro 8/10 (set 2 "capacità di progettare"): proposta mai implementata di
   # docs/test-processo-2026-08-21.md ("il turno scrive nel log l'esito-fase
   # design-linked: sì/no — il dato per misurare se il miglioramento funziona").
@@ -304,6 +304,25 @@ $BODY"
       OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
+      if [ $RC -eq 3 ]; then
+        # PROPOSTA (funzione nuova o bersaglio assente): il codice va nell'issue come
+        # commento, NON come PR — la notte del 4/9 ha aperto la PR #16 con dentro solo
+        # il file proposto e il .night-bak: +739 righe di rumore, zero fix applicati.
+        PATCH_LATEST=$(ls -t "$DIR"/.night-patch-*.js 2>/dev/null | head -1)
+        if [ -n "$PATCH_LATEST" ]; then
+          COMMENTO="/tmp/night-commento-$NUM.md"
+          { echo "🌙 Proposta notturna (NON applicata: funzione nuova o bersaglio non trovato in automatico). Il codice generato dal modello locale:"; echo '```javascript'; cat "$PATCH_LATEST"; echo '```'; echo ""; echo "Da verificare e collegare a mano (il giorno dispone): la funzione è proposta, manca l'inserimento nel file e l'attivazione (botone/menu/chiamata)."; } > "$COMMENTO"
+          if gh issue comment "$NUM" -R "$REPO" --body-file "$COMMENTO" >/dev/null 2>&1; then
+            log "Issue #$NUM: proposta pubblicata come commento (niente PR di scarto)"
+          else
+            log "⚠ Issue #$NUM: commento della proposta fallito — il codice resta in $PATCH_LATEST"
+          fi
+          rm -f "$COMMENTO"
+        fi
+        PROPOSTE=$((PROPOSTE+1))
+        rm -f "$ISSUE_FILE"
+        continue
+      fi
       if [ $RC -eq 0 ]; then
         # il fix è applicato: commit e push. Prova dal vivo 2026-09-04 (repo sandbox):
         # la variabile si chiama CTYPE, non TIPO — set -u uccideva il commit E il log
@@ -426,15 +445,17 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
   # una variabile local non esiste più fuori dalla funzione che l'ha dichiarata).
   # Si aggregano qui nei contatori globali, prima che il contesto locale sparisca.
   TOT_PR_CREATED=$((TOT_PR_CREATED+PR_CREATED))
+  TOT_PROPOSTE=$((TOT_PROPOSTE+PROPOSTE))
   TOT_FAILED=$((TOT_FAILED+FAILED))
   TOT_SKIPPED_DESIGN=$((TOT_SKIPPED_DESIGN+SKIPPED_DESIGN))
-  log "REPO $REPO FINITA: $PR_CREATED PR bozza, $FAILED fallite, $SKIPPED_DESIGN saltate per Design/Territorio"
+  log "REPO $REPO FINITA: $PR_CREATED PR bozza, $PROPOSTE proposte in issue, $FAILED fallite, $SKIPPED_DESIGN saltate per Design/Territorio"
 }
 
 # --- Esecuzione -----------------------------------------------------------------
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 GLOBAL_RC=0
 TOT_PR_CREATED=0
+TOT_PROPOSTE=0
 TOT_FAILED=0
 TOT_SKIPPED_DESIGN=0
 for ENTRY in "${REPO_LIST[@]}"; do
