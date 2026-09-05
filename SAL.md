@@ -101,6 +101,7 @@
 - [2026-09-05 (17) — REPO-W quattordici giri: la regola-prosa violata tre volte diventa dente](#2026-09-05-17-repo-w-quattordici-giri-la-regola-prosa-violata-tre-volte-diventa-dente)
 - [2026-09-05 (18) — la versione di progetto del report: due insegnamenti che c'erano solo lì](#2026-09-05-18-la-versione-di-progetto-del-report-due-insegnamenti-che-c-erano-solo-lì)
 - [2026-09-05 (19) — AI_Develop chiuso: «è un ramo morto» (Luca)](#2026-09-05-19-ai_develop-chiuso-è-un-ramo-morto-luca)
+- [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
 
 
 ## Stato
@@ -1860,3 +1861,10 @@ di automazione), repo archiviata su GitHub (reversibile: gh repo unarchive obi2k
 Prima di chiudere, le domande 1-3 erano diventate codice lì: lotti in parallelo, compressione a
 4 giorni, postilla di chiusura — tutto pushato (fino a befd237), il registro dei abbandoni conserva
 i rilievi non gestiti. La coda resta: AI_Programmer, Bilancio_di_Massa_PEFC, gestionale-parrocchie.
+
+### 2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento
+
+«Sì» al semaforo: il confronto repo↔specchio è un segnale di rischio dichiarato, non un verdetto —
+il lavoro non si ferma finché il vivo non è letto. Regola nel metodo col confine esplicito:
+gas-vivo-definitivo resta (il vivo decide deploy e registrazioni; il semaforo vale per l'allineamento
+di lavoro, mai per promuovere una copia a verità). Tutte e 5 le domande di dominio del giro sono chiuse.
