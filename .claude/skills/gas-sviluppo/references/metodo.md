@@ -601,15 +601,58 @@ L'installazione: `graphify install --platform opencode` nel progetto target
 .opencode/plugins/ che contiene il reminder automatico.
 
 
+## Nove regole dai quattordici giri REPO-W (2026-09-05): la sicurezza è una domanda diversa
+
+Report: docs/campo/2026-09-05-repo-w-quattordici-giri-revisione.md. ~35 difetti (5 gravi),
+9 auto-inflitti e tutti fermati prima della produzione. Il dato che vale di più: **«mai &&
+dopo pipe» era già regola dal 3/9, nata nello stesso repo, indicizzata — violata tre volte
+in una sessione.** Una regola che vive solo come frase non protegge: ora è un dente in
+tools/pre-commit.sh (controllo 5). Stessa famiglia di «la guardia esiste ma non gira».
+
+1. **LA LENTE DI SICUREZZA È UNA DOMANDA DIVERSA, NON UNA LENTE PIÙ FORTE — VA NEL GIRO**.
+   Quattordici passate di qualità non hanno visto che i campi OCR finiscono in appendRow e
+   che una stringa che inizia per `=` diventa una formula viva. La prima passata di
+   sicurezza sì. Chiede «chi controlla questo dato?» invece di «questo codice è giusto?»:
+   le due domande illuminano insiemi diversi e la seconda ripetuta 14 volte non converge
+   sulla prima. In ogni progetto dove un dato esterno (OCR, email, upload, scraping) arriva
+   a una scrittura, la lente di sicurezza è del giro, non un passaggio finale opzionale.
+2. **LE ATTESE SONO DICHIARATE, NON CONTAte** (`ATTESE_DICHIARATE = 45`, una costante, MAI
+   `attese.length`): contarsi da soli è una tautologia — `N/M` con M preso dall'array non
+   può accorgersi di un caso definito e mai eseguito. Guasto avuto davvero due volte: casi
+   accodati dopo la riga di riepilogo, definiti e mai eseguiti, suite che diceva «43/43».
+3. **IL SABOTAGGIO «DI CHI CONOSCE METÀ DEL PROBLEMA»**: accanto al sabotaggio che rimette
+   il difetto com'era, uno che rimette la correzione INCOMPLETA (neutralizzare solo `=`
+   dimenticando `+ - @`). Il banco deve distinguere una difesa da una MEZZA difesa, non
+   solo la difesa dall'assenza.
+4. **LA META-MUTAZIONE**: una mutazione che toglie un caso di test e pretende che la suite
+   se ne accorga. Nata da un `git checkout` che aveva buttato una guardia con la suite
+   ancora verde su un numero plausibile.
+5. **I DOPPI REGISTRANO LA TRACCIA**: le parità asseriscono il PERCORSO, non solo il
+   risultato — senza, una versione che salta un controllo resta verde.
+6. **UN BANCO CHE PASSA UN TIPO CHE LA PRODUZIONE NON PASSA NON È UN BANCO**: quando un
+   valore attraversa un confine (foglio, rete, file, processo), almeno un'attesa usa il
+   tipo che arriva DA QUEL CONFINE, non quello comodo da scrivere. Il doppio che semplifica
+   il tipo è un doppio che mente — e mente in silenzio (7 attese verdi, funzione spenta in
+   produzione: il banco passava '2026-01-31', il foglio una Date).
+7. **UNA DOMANDA DI DOMINIO ALLA VOLTA, E LA RISPOSTA DIVENTA CODICE CON LA SUA DATA**: una
+   funzione, un gruppo di attese, un sabotaggio con la regola sbagliata più probabile, un
+   commento che porta data e chi ha deciso.
+8. **STESSA COSTANTE DUE VOLTE = «SONO LA STESSA DOMANDA?», NON «LA UNIFICO?»**: due soglie
+   con lo stesso valore di oggi e ragioni per divergere domani sono due domande diverse.
+9. **IN APPS SCRIPT L'ORDINE DI CARICAMENTO DEI FILE NON È GARANTITO**: una `var` che legge
+   la `var` di un altro file può ricevere `undefined` SENZA errore — e la correzione ovvia
+   (inizializzare in fondo al file letto) era sbagliata proprio per questo. Il
+   contenitore-che-riscrive è pattern del catalogo con àncora.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
 
-**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale`
-**Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato`
-**Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento`
+**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale` · `test-che-certifica-il-bug` (il fix parte dal test che lo replica) · `due-verifiche-due-domande`
+**Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato` · `contenitore-che-riscrive` (ciò che rileggi dal contenitore è ciò che gli hai dato? coercizione e formula injection)
+**Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento` · `autorita-di-dominio-batte-oracolo` (chi decide vince su qualsiasi oracolo tecnico)
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
 **Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
-**Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping`
+**Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping` · `collisione-namespace-globale-gas` · `migrazione-con-interruttore` (si cambia senza spegnere il vecchio percorso)
 **Architettura GAS**: `clasp-push-non-e-produzione` (verifica col fetch mirato, non presunzione) · `manifest-webapp-nel-repo` · `diagnosi-differenziale-webapp-gas` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
-**Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto`
+**Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `la-riga-di-default-e-il-caso-peggiore` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore)
