@@ -49,6 +49,17 @@ grep -q 'grep -q "\^## Design"' "$NS" \
   && ok "night-shift: la issue senza ## Design viene saltata col commento (il presidio esiste)" \
   || ko "night-shift: il controllo ## Design non trovato"
 
+# 5b. la proposta notturna è IDEMPOTENTE: una per issue finché il giorno non decide
+# (notte 5/9: due commenti identici sulla stessa issue — il flusso PR aveva la guardia,
+#  il flusso proposta no)
+grep -q "gia pubblicata in un turno precedente" "$NS" \
+  && ok "night-shift: la proposta non si duplica (idempotente per issue)" \
+  || ko "night-shift: la proposta si ripete ogni notte"
+# 5c. e lo fa senza pipe in grep -q (E-002: COMMENTI=\$(...) prima, poi <<<)
+grep -q 'COMMENTI=\$(gh issue view' "$NS" \
+  && ok "night-shift: idempotenza a cattura-prima (no pipe in grep -q)" \
+  || ko "night-shift: idempotenza con pipe in grep -q (E-002 in agguato)"
+
 # 6. audit-commessa guarda il riferimento Design (il pre-flight del flusso)
 grep -q "## Design" "$AC" \
   && ok "audit-commessa: verifica il riferimento in ## Design" \
