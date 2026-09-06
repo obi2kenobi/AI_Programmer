@@ -102,6 +102,7 @@
 - [2026-09-05 (18) — la versione di progetto del report: due insegnamenti che c'erano solo lì](#2026-09-05-18-la-versione-di-progetto-del-report-due-insegnamenti-che-c-erano-solo-lì)
 - [2026-09-05 (19) — AI_Develop chiuso: «è un ramo morto» (Luca)](#2026-09-05-19-ai_develop-chiuso-è-un-ramo-morto-luca)
 - [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
+- [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
 
 
 ## Stato
@@ -1868,3 +1869,12 @@ i rilievi non gestiti. La coda resta: AI_Programmer, Bilancio_di_Massa_PEFC, ges
 il lavoro non si ferma finché il vivo non è letto. Regola nel metodo col confine esplicito:
 gas-vivo-definitivo resta (il vivo decide deploy e registrazioni; il semaforo vale per l'allineamento
 di lavoro, mai per promuovere una copia a verità). Tutte e 5 le domande di dominio del giro sono chiuse.
+
+### 2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero
+
+Notte 5/9: 3 repo (AI_Develop giustamente assente), Bilancio #10 → solver 171s → proposta non
+applicabile (funzione nuova) → exit 3 → commento nell'issue, ZERO PR di scarto, contatori onesti
+(«0 PR bozza, 1 proposte in issue»). La cura del 5/9 mattina ha retto in produzione. Difetto del
+mattino: la proposta non era idempotente (due commenti identici sulla stessa issue: il recupero
+manuale + la notte). Ora guarda i commenti esistenti e salta se la proposta c'è già — una per
+issue, il giorno dispone. Cattura-prima anche qui: E-002 non perdona nemmeno le guardie nuove.
