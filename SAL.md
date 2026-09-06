@@ -103,6 +103,7 @@
 - [2026-09-05 (19) — AI_Develop chiuso: «è un ramo morto» (Luca)](#2026-09-05-19-ai_develop-chiuso-è-un-ramo-morto-luca)
 - [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
 - [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
+- [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
 
 
 ## Stato
@@ -1878,3 +1879,17 @@ applicabile (funzione nuova) → exit 3 → commento nell'issue, ZERO PR di scar
 mattino: la proposta non era idempotente (due commenti identici sulla stessa issue: il recupero
 manuale + la notte). Ora guarda i commenti esistenti e salta se la proposta c'è già — una per
 issue, il giorno dispone. Cattura-prima anche qui: E-002 non perdona nemmeno le guardie nuove.
+
+### 2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone
+
+Report: docs/campo/2026-09-06-repo-w-emulatore-e-diciassette-domande.md (repo-w-emulatore-e-diciassette-domande),
+arrivato come PATCH della sessione remota (2 commit: appendice al 5/9 + report nuovo). Il secondo
+confliggeva sul repos-index (riga REPO-W riscritta da entrambi): riconciliato a mano — la mia
+storia + il loro aggiuntivo. Privacy verificata a mano (repos.key vuoto in locale): zero nomi veri.
+Il dato che guida tutto: su 17 domande di dominio, 9 avevano una parte che il sistema sapeva già
+dire, e 2 misure hanno smentito l'ipotesi da confermare. Dieci regole nel metodo (chiedi solo ciò
+che il sistema non sa; spacco della domanda ambigua; conteggio dichiarato ovunque; controllo
+incatenato all'azione; raccomandazione corretta; numero implausibile = sintomo; lavoro non
+sorvegliato per irreversibilità; segreto già passato; doppio compiacente + sonda una proprietà;
+sequenza = previsione). Nota di metodo: questo giro di domande con Luca (5/5 chiuse ieri) è lo
+stesso modello del report — ogni risposta codice, il banco che boccia le attese sbagliate.
