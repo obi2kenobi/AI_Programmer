@@ -339,6 +339,9 @@ A PARTE, non colmabile in CI. Le proposte:
 1. **MAI FAR DIPENDERE UNA CATENA && DA UN COMANDO CHE FINISCE IN PIPE**: una pipe
    restituisce l'esito dell'ultimo comando. `cmd | tail && git commit` committa anche se
    cmd non è mai partito. `set -o pipefail` o controllo esplicito prima di procedere.
+   *(Presidiata nell'hub: tools/pre-commit.sh controllo 5 — la regex sulla pipeline
+   seguita da `&&`, col morso provato. La prosa da sola è stata violata 3 volte in un
+   giorno: vedi report REPO-W 5/9.)*
 2. **QUANDO UNA QUERY VIENE RIUSATA, LA SUA PROIEZIONE È UN'INTERFACCIA**: il $select
    (o le colonne di una SELECT) va commentato nel punto dove vive il vincolo. Chi pulisce
    campi apparentemente inutilizzati rompe un altro chiamante, e il sintomo è un valore
