@@ -60,6 +60,17 @@ grep -q 'COMMENTI=\$(gh issue view' "$NS" \
   && ok "night-shift: idempotenza a cattura-prima (no pipe in grep -q)" \
   || ko "night-shift: idempotenza con pipe in grep -q (E-002 in agguato)"
 
+# 5d. ogni tool del turno ha una PORTA che lo nomina (giro 4/5: gate-esito era
+# raggiungibile solo trovando il file — un tool senza porta e' folklore che gira)
+NOMI_PORTA=$(cat night-shift/README.md README.md CLAUDE.md 2>/dev/null)
+ORFANI=""
+for f in night-shift/*.sh; do
+  case "$(basename "$f")" in night-shift.sh) continue;; esac
+  echo "$NOMI_PORTA" | grep -q "$(basename "$f")" || ORFANI="$ORFANI $(basename "$f")"
+done
+[ -z "$ORFANI" ] && ok "night-shift: ogni tool ha una porta che lo nomina" \
+  || ko "night-shift: tool senza porta:$ORFANI"
+
 # 6. audit-commessa guarda il riferimento Design (il pre-flight del flusso)
 grep -q "## Design" "$AC" \
   && ok "audit-commessa: verifica il riferimento in ## Design" \

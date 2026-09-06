@@ -27,7 +27,7 @@ MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale �
 | **Mai scrivere in cartelle specchio/sola lettura** | `gas-src/` in REPO-A: regola fondativa del repo ospite |
 | **Idempotenza completa** | PR aperta → skip; PR fusa → chiude l'issue dimenticata (la keyword italiana non auto-chiudeva) |
 | **Sonda di salute del server + un modello per turno** | dopo scambi di modelli a caldo, errori Metal con risposte vuote silenziose |
-| **Config reale fuori dal repo pubblico** | `repos.conf` gitignored: i nomi delle repo private non si pubblicano |
+| **Config reale fuori dal repo pubblico** | `night-shift/repos.conf` gitignored: i nomi delle repo private non si pubblicano |
 | **Loop su array, bash 3.2, `cd` nel subshell, `git clean` per issue** | i quattro difetti d'infrastruttura trovati nelle notti di test |
 
 ## I numeri che scelgono il modello (MacBook Air M5, 24 GB, misurati 2026-08-18)
@@ -52,7 +52,7 @@ Mettere in coda: issue con label `night-shift`, scritta come commessa. Il turno 
 alle 23:00 (LaunchAgent). Il Mac: alimentatore, coperchio aperto, app pesanti chiuse
 (è la differenza fra 1 e 4 tok/s).
 
-## Il gate del mattino (`morning-gate.sh`)
+## Il gate del mattino (`night-shift/morning-gate.sh`)
 
 1. **Verifiche dichiarate**: la repo dichiara i comandi in `.night-verify` (una riga per comando).
    Se non esiste: `non-dichiarate`. Se esiste ma non contiene nessun comando reale (solo
@@ -100,3 +100,23 @@ loop-engineering del sistema: `docs/system.md`.
 | 3 · verità terrena ritardata | il "riscontro" BC (Verificato ☐ che matura), esiti deploy |
 | 4 · LLM giudice | banco avversariale (variante forte: smentisce, non si autovaluta) |
 | 5 · checkpoint umano | review di Luca — chiude ogni ciclo |
+
+## Il giudizio umano della PR
+
+`gate-esito.sh <owner/repo> <n-PR> <merge|chiusura|commessa>` — registra nella colonna `esito`
+di `metrics/gate.csv` cosa ne è stato della PR giudicata dal gate del mattino. Senza questo
+passaggio il livello memoria resta vuoto (review 2026-08-21). `gate-summary.sh [giorni]` ne
+legge il riepilogo (lo usa `morning-digest`).
+
+## Gli altri comandi del turno
+
+- `night-shift.sh [owner/repo ...]` — il turno: senza argomenti legge `night-shift/repos.conf`; self-pull
+  dell'hub prima di partire; PR BOZZA mai su main; le proposte non applicabili finiscono come
+  commento nell'issue (una per issue), non come PR.
+- `risolvi-issue.sh <dir> <issue.md>` — il risolutore senza agente: chiama Ollama in locale
+  (`qwen2.5-coder:14b`), il modello scrive il codice, lo script lo applica e lo verifica
+  (`node --check`, rollback). Exit: 0 applicato · 1 fallito · 2 uso · 3 proposta non applicabile.
+- `night-shift/morning-gate.sh` / `night-shift/morning-digest.sh` — il giudizio del mattino e il riepilogo che lo legge.
+- `night-shift/install.sh` — installazione: symlink, LaunchAgent 23:00 + Ollama always-on. Verifica che il
+  job caricato punti davvero all'HUB installato (E-019).
+- `night-shift/lib.sh` — le funzioni condivise (log, rotazione, default branch).
