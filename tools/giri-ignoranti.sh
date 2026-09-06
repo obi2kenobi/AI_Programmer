@@ -176,5 +176,25 @@ sys.exit(1 if isole else 0)
 EOF
 
 echo ""
+# S15 — NUMERI DICHIARATI NEI DOCUMENTI vs CONTEGGI REALI (report REPO-E v78: «798 attese»
+#   non tornava; e SKILL.md dichiarava 33 pattern quando erano 62). I numeri che un documento
+#   dichiara su entita' contabili del repo devono tornare. Il modo onesto di scrivere un numero
+#   volatile e' accompagnarlo dal comando che lo produce.
+{
+  BAD=""
+  REAL=$(ls "$HERE"/patterns/*.md 2>/dev/null | grep -v README | wc -l | tr -d ' ')
+  while IFS= read -r riga; do
+    DOC=$(echo "$riga" | cut -d: -f1); N=$(echo "$riga" | grep -oE '[0-9]+' | head -1)
+    [ "$N" != "$REAL" ] && BAD="$BAD
+     $DOC dichiara $N pattern/voci, reali $REAL (comando: ls patterns/*.md | grep -v README | wc -l)"
+  done < <(grep -rnE '[0-9]+ (pattern|voci)' "$HERE/.claude/skills/gas-sviluppo/SKILL.md" "$HERE/README.md" 2>/dev/null || true)
+  if [ -n "$BAD" ]; then
+    echo "     numeri di testa stantiti:$BAD"
+    sonda 1 "S15 numeri dichiarati nei documenti non tornano"
+  else
+    sonda 0 "S15 numeri dichiarati nei documenti coerenti (o assenti)"
+  fi
+}
+
 echo "VERDETTO: $FINDINGS finding"
 [ "$FINDINGS" -eq 0 ]
