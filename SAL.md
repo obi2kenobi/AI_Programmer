@@ -105,6 +105,7 @@
 - [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
 - [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
 - [2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78](#2026-09-06-3-repo-e-porta-due-report-a-mano-20-lenti-7-risposte-deploy-v78)
+- [2026-09-06 (4°) — cinque giri di verifica e correzione sull'hub](#2026-09-06-4-cinque-giri-di-verifica-e-correzione-sull-hub)
 
 
 ## Stato
@@ -1908,3 +1909,20 @@ toccare» per le decisioni-di-dominio, il deploy eseguito dall'umano col cancell
 FUNZIONATO (due errori intercettati in tempo reale da chi possiede il sistema). E il dato del 47:
 il fix || → ?? di cinque giorni prima protegge 47 articoli reali a costo zero — la «miglioria
 ovvia» dell'audit li avrebbe silenziosamente rimpiazzati col costo standard.
+
+### 2026-09-06 (4°) — cinque giri di verifica e correzione sull'hub
+
+Giro 1 (numeri dichiarati): SKILL.md diceva 33 pattern, reali 62 — numero tolto dalla prosa,
+comando dichiarato al suo posto, sonde S15 col morso provato (33 iniettato → FIND). Banco integrale:
+CHIUSO. Giro 2 (regole senza dente citato): la regola &&-pipe del 3/9 ora nomina il suo presidio
+(pre-commit controllo 5); sweep verifica;azione: pulito. Giro 3 (catena notturna): la memoria del
+turno puntava a night-shift/SAL.md, MAI esistito: no-op silenzioso da sempre — ora .sal-turni.md
+gitignored (mai nella SAL del repo: l'albero sporco romperebbe il self-pull; ragione nel codice),
+contatore proposte incluso. Giro 4 (promesse vs realtà): 21/21 guardie del registro vive con
+consumatori; quattro tool del turno senza porta (gate-esito, risolvi-issue, morning-digest, install)
+→ README + test 5d. UN FALSO POSITIVO MIO fermato prima del commit: accusavo gate-esito di un path
+sbagliato che invece risolve giusto ($HERE/../metrics = radice): il dente dei path pendenti mi ha
+costretto ai percorsi pieni e il ripensamento al revert secco. Giro 5 (ogni difetto ha un dente):
+il SAL del turno era l'unico scoperto → test 5e/5f. Finale: banco integrale su albero pulito,
+PASSAGGIO CHIUSO. Il dente dei path ha morso 2 volte i miei commit, quello dei numeri 1: il sistema
+difende se stesso anche da chi lo cura.
