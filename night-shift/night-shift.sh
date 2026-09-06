@@ -474,17 +474,22 @@ for ENTRY in "${REPO_LIST[@]}"; do
 done
 log "=== TURNO FINITO ==="
 
-# Giro 9/10: il turno scrive il proprio SAL nel hub (la memoria non dipende da chi ricorda)
-HUB_SAL="$HERE/SAL.md"
-if [ -f "$HUB_SAL" ]; then
+# Giro 9/10: il turno scrive la propria memoria (non dipende da chi ricorda).
+# MAI nella SAL.md del repo: un file tracciato modificato romperebbe il self-pull
+# --ff-only della notte dopo (la SAL cambia quasi ogni giorno: conflitto garantito,
+# turno fermo sul metodo di ieri). Prima puntava a night-shift/SAL.md, che non è mai
+# esistito: no-op silenzioso colpevole di giri interi (giri 3/5, 2026-09-06).
+# File locale GITIGNORED: la memoria del turno sopravvive, il pull non si accorge.
+HUB_SAL="$HERE/.sal-turni.md"
+if true; then
   DT=$(date '+%Y-%m-%d')
   cat >> "$HUB_SAL" <<SALEOF
 
-### $DT, turno automatico — $TOT_PR_CREATED PR create, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio insufficiente
+### $DT, turno automatico — $TOT_PR_CREATED PR bozza, $TOT_PROPOSTE proposte in issue, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
 SALEOF
-  log "SAL del hub aggiornato con l'esito del turno"
+  log "memoria del turno scritta in night-shift/.sal-turni.md (locale: il mattino la porta nella SAL)"
 fi
 
 exit $GLOBAL_RC

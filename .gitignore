@@ -9,3 +9,6 @@ graphify-out/
 night-shift/repos.conf
 night-shift/repos.key
 .ciclo/
+
+# la memoria del turno di notte: locale, mai tracciata (romperebbe il self-pull)
+night-shift/.sal-turni.md
