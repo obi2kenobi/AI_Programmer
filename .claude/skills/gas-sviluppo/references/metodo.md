@@ -669,6 +669,55 @@ decisioni che contano (deploy, registrazioni, ciò che l'utente vede). Il semafo
 l'ALLINEAMENTO DI LAVORO, non per promuovere una copia a verità. Divergenza dallo specchio =
 semàforo giallo dichiarato, mai semaforo verde.
 
+## Dieci regole dall'emulatore e dalle diciassette domande REPO-W (2026-09-06)
+
+Report: docs/campo/2026-09-06-repo-w-emulatore-e-diciassette-domande.md (+ la seconda parte
+del report dei 14 giri). Il dato guida: su 17 domande di dominio, **9 avevano una parte che il
+sistema sapeva già dire** — e in 2 casi la misura ha smentito l'ipotesi che si stava per far
+confermare a voce.
+
+1. **CHIEDI SOLO CIÒ CHE IL SISTEMA NON SA.** Ogni domanda di dominio nasce con due parti
+   dichiarate: *cosa può dire il sistema* e *cosa può dire solo una persona*. Si misura la prima,
+   si chiede la seconda. La memoria di chiunque perde contro un conteggio su duemila righe — e la
+   domanda che resta è più corta, più precisa, davvero decisione e non rilevazione.
+2. **SPAcca la domanda quando la risposta è ambigua.** Una risposta netta («arrivano separati»)
+   può coprire due dimensioni indipendenti (quando arrivano i documenti ≠ quando si registra a
+   sistema). Trattarle come una cosa sola costruisce la cosa sbagliata: si apre una domanda nuova
+   invece di tirare a indovinare.
+3. **IL CONTEGGIO DICHIARATO VALE FUORI DAI BANCHI**: ogni elenco che cresce — registro, lista di
+   domande, catalogo — dichiara la propria lunghezza, e un controllo la verifica. Forma di
+   `ATTESE_DICHIARATE` generalizzata: su un documento di testo ha intercettato due errori in un'ora.
+4. **IL CONTROLLO VA INCATENATO ALL'AZIONE, NON MESSO ACCANTO.** `verifica && azione`, mai
+   `verifica ; azione`: un controllo che non può impedire l'azione che sorveglia non è un presidio,
+   è un commento. Parente stretto di «mai `&&` dopo pipe» — e nato dallo stesso difetto (verifica
+   parlata, commit partito lo stesso).
+5. **QUANDO UNA MISURA CORREGGE UNA RACCOMANDAZIONE GIÀ DATA**: si corregge in loco, si registra,
+   la si ridice a chi l'aveva ricevuta — in quest'ordine. Il numero gonfiato tre volte sosteneva
+   una raccomandazione già detta a voce: tacere la correzione sarebbe stata la seconda bugia.
+6. **UN NUMERO IMPLAUSIBILE È UN SINTOMO, NON UN DATO.** Un `100%`, uno `0`, un `sempre` sono
+   affermazioni forti: vanno guadagnate. La mediana del 100% («non è arrivato niente» su metà dei
+   casi) era assurda — e sotto c'era il difetto che gonfiava di tre volte. Quando un risultato è
+   troppo netto, si guarda la misura prima di guardare il mondo.
+7. **LAVORO NON SORVEGLIATO: IL CONFINE SI DICHIARA PRIMA, IN TERMINI DI IRREVERSIBILITÀ.**
+   Cosa posso consumare (documenti di prova in ambiente di prova), cosa posso rompere (niente in
+   produzione — per costruzione, non per disciplina), cosa resta fermo fino al mattino (le decisioni
+   di dominio, sempre). Scriverlo DOPO averlo applicato, che è quando si sa se regge.
+8. **SEGRETO GIÀ PASSATO DALLA CHAT**: si usa (rifiutare dopo il danno aggiunge costo senza togliere
+   esposizione), lo si dice UNA volta senza moralismi («è passato di qui, va ruotato»), si dichiara
+   la conseguenza concreta (non «attenzione ai segreti» ma «quel valore va sostituito e finché non
+   lo fai resta valido»), e NON si cancella per far finta: l'allegato della sessione resta, e
+   tacerlo sarebbe peggio.
+9. **IL DOPPIO COMPIACENTE.** Che un doppio possa dire di no non basta: deve sapere DOVE. Ogni
+   volta che il sistema vero rifiuta qualcosa, il doppio impara a rifiutare la stessa cosa con lo
+   stesso messaggio — azione dovuta dopo ogni errore trovato sul campo, non principio generale.
+   Uno stub che risponde 200 a tutto prova solo il caso felice. E **una sonda verifica UNA proprietà**:
+   esistere, essere valorizzato, essere filtrabile sono domande separate e si provano separatamente.
+10. **UNA SEQUENZA DI COMANDI È UNA PREVISIONE, NON DOCUMENTAZIONE.** Il nome di una funzione da
+    mettere in una sequenza si prende dalla sua descrizione, mai da un messaggio di log scritto per
+    un altro percorso; e una funzione che produce un artefatto incompleto lo dichiara RILEGGENDOlo,
+    non lascia che se ne accorga chi lo apre. Tre volte verificare la cosa accanto a quella giusta
+    costa all'operatore: artefatto consumato, schermata sbagliata, giro di lancia-e-incolla.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
