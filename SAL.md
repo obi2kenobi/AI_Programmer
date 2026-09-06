@@ -104,7 +104,8 @@
 - [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
 - [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
 - [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
-- [2026-09-06 (3°) — REPO-E: le sette risposte di dominio e il deploy — sette proposte al canone](#2026-09-06-3-repo-e-le-sette-risposte-di-dominio-e-il-deploy-sette-proposte-al-canone)
+- [2026-09-06 (4°) — REPO-E: quattro proposte che i due report portati a mano non coprivano](#2026-09-06-4-repo-e-quattro-proposte-che-i-due-report-portati-a-mano-non-coprivano)
+- [2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78](#2026-09-06-3-repo-e-porta-due-report-a-mano-20-lenti-7-risposte-deploy-v78)
 
 
 ## Stato
@@ -1895,35 +1896,54 @@ sorvegliato per irreversibilità; segreto già passato; doppio compiacente + son
 sequenza = previsione). Nota di metodo: questo giro di domande con Luca (5/5 chiuse ieri) è lo
 stesso modello del report — ogni risposta codice, il banco che boccia le attese sbagliate.
 
-### 2026-09-06 (3°) — REPO-E: le sette risposte di dominio e il deploy — sette proposte al canone
+### 2026-09-06 (4°) — REPO-E: quattro proposte che i due report portati a mano non coprivano
 
-Report: docs/campo/2026-09-06-repo-e-sette-risposte-e-deploy.md (repo-e-sette-risposte-e-deploy).
-Coda del ciclo a 20 lenti: le sette domande di dominio rimaste aperte hanno avuto risposta lo
-stesso giorno, una per volta, ognuna diventata un commit col metodo intero (banco rosso prima,
-sabotaggio dopo, gate verde). Poi il rilascio in produzione, con il proprietario al terminale.
+Complemento alla voce qui sotto: i due report REPO-E sono gia` stati portati a mano, con
+`vivo-gia-in-git` gia` nel canone. Questa PR aggiunge SOLO cio` che non c'era, dalla stessa
+sessione (report: docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md).
 
-Il dato che guida tutto: **la diagnostica consegnata per rendere decidibile una domanda ha
-risposto a una domanda diversa e migliore**. Non «va acceso questo fallback?» (no: zero cifre
-cambierebbero) ma «il fix di cinque giorni fa serviva a qualcosa?» — sì, protegge 47 articoli con
-costo zero che la forma precedente avrebbe rimpiazzato in silenzio. Da qui il pattern
-`misura-prima-di-toccare`: quando la correzione è una DECISIONE, il deliverable è lo strumento
-che la rende decidibile, e quello è consegnabile subito senza il permesso di nessuno.
+Due pattern nuovi. **`misura-prima-di-toccare`**: quando la correzione e` una DECISIONE del
+dominio e non un fix, il deliverable e` lo strumento che la rende decidibile — sola lettura,
+comportamento invariato, consegnabile subito senza il permesso di nessuno. La prova che paga e`
+il 47: la diagnostica costruita per «va acceso questo fallback?» ha risposto no (zero cifre
+cambierebbero) E a una domanda che nessuno aveva posto, «il fix di cinque giorni fa serviva a
+qualcosa?». **`numero-col-suo-comando`**: un numero dichiarato porta il comando che lo produce, a
+partire dai numeri del canone — le «798 attese» del report precedente non erano riproducibili
+nemmeno per il suo autore (ricontando: 689, e la convenzione ricostruita per tentativi).
 
-Sei proposte adottate in questa PR: 3 pattern nuovi (`vivo-gia-in-git` — prima di sovrascrivere
-un vivo la domanda non è «cosa è diverso» ma «c'è qualcosa che git non ha mai visto», misurato
-18/18; `misura-prima-di-toccare`; `numero-col-suo-comando` — le «798 attese» del report
-precedente non erano riproducibili nemmeno per il suo autore), 2 addendum (il pavimento delle
-attese si misura, non si prevede; la sequenza di attivazione in tre passi e l'errore che nomina
-l'entità sbagliata), 1 regola in CLAUDE.md §3 (ciò che consegni a un umano da eseguire è codice:
-niente commenti inline, e l'ATTESO si cita come il codice).
+Due addendum. `confronto-non-vuoto`: il pavimento delle attese si scrive DOPO aver eseguito il
+banco — ATTESE_MINIME=46 quando erano 45, e il banco e` uscito NON GIUDICABILE sul proprio
+pavimento inventato. `clasp-push-non-e-produzione`: la sequenza in tre passi con l'N+1 letto, e
+la nota che «Requested entity was not found» nomina l'entita` sbagliata — sembra il deployment,
+e` la versione, e la mossa naturale e` dubitare dell'unica cosa che era giusta.
 
-La settima è DICHIARATA e non applicata: `clasp-block-hook` blocca anche lo *scrivere* di un push
-(tre giri a vuoto in questa sessione, negato un heredoc il cui testo conteneva la stringa e un
-grep che la cercava nei documenti). Nessun falso verde, il verso che conta ha retto — ma la
-frizione è reale e la cura non è documentata. Allentare la maglia di un hook di sicurezza per
-comodità dell'agente che ne è ostacolato non è una proposta che l'agente debba fare: decide chi
-possiede il sistema.
+Una regola in CLAUDE.md §3: **cio` che consegni a un umano da eseguire e` codice**. Niente
+commenti inline (zsh senza interactive_comments li tratta come argomenti — gotcha documentato nel
+progetto su cui stavo lavorando, che avevo letto e ho rotto lo stesso), e l'ATTESO che dichiari
+si cita col suo file:riga come il codice.
 
-Onestà del giro: su cinque ostacoli, **tre erano miei** — comandi con commenti inline in zsh
-(gotcha documentato nel progetto su cui stavo lavorando, che avevo letto), un ATTESO preso dalla
-fonte sbagliata, un pavimento di attese inventato invece che misurato.
+DICHIARATA E NON APPLICATA: `clasp-block-hook` blocca anche lo SCRIVERE di un push, non solo il
+farlo (tre giri a vuoto: negato un heredoc il cui testo conteneva la stringa, e un grep che la
+cercava nei documenti). Nessun falso verde, il verso che conta ha retto — ma allentare la maglia
+di un hook di sicurezza per comodita` dell'agente che ne e` ostacolato non e` una proposta che
+l'agente debba fare: decide chi possiede il sistema.
+
+Verifiche: suite 121/125, gli stessi 4 rossi della baseline misurata PRIMA di toccare, nessuno
+nuovo. Lo specchio .opencode risincronizzato (il test lo ha colto: la guardia funziona).
+privacy-check DEGRADATO dichiarato (repos.key assente per disegno in cloud), diff verificato a
+mano. Nota per chi legge: `docs/bc/README.md` viene RISCRITTO da un test della suite quando gira
+— tenuto fuori dal commit, ma prima o poi finira` nel diff di qualcuno senza che se ne accorga.
+
+### 2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78
+
+docs/campo/2026-09-06-repo-e-audit-20-lenti.md e docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md
+(repo-e-audit-20-lenti, repo-e-sette-risposte-deploy-v78): la sessione remota non aveva lo scope
+GitHub dell'hub e l'aveva dichiarato («le proposte non entrano nel canone da sole»). Portati a
+mano, gruppo anonimizzato nel titolo della dashboard (privacy: grep a mano + gate pulito).
+Dieci regole nel metodo + pattern vivo-gia-in-git (il test binario hash-object/cat-file: 18/18,
+e il diff resta solo per i NON IN GIT). I temi forti: correggere per FAMIGLIA (census a regime),
+il verso della correzione (legge-serie / legge-oggi / scrive), la consegna «misura prima di
+toccare» per le decisioni-di-dominio, il deploy eseguito dall'umano col cancello clasp che HA
+FUNZIONATO (due errori intercettati in tempo reale da chi possiede il sistema). E il dato del 47:
+il fix || → ?? di cinque giorni prima protegge 47 articoli reali a costo zero — la «miglioria
+ovvia» dell'audit li avrebbe silenziosamente rimpiazzati col costo standard.

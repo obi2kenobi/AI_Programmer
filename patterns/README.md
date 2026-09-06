@@ -72,7 +72,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [trovare-non-e-fallire](trovare-non-e-fallire.md) | REPO-A: tools/riallinea-mirror.sh:trova | 2026-08-12 |
 | [verdetto-sempre-visibile](verdetto-sempre-visibile.md) | REPO-A: tools/banco-lib.js:verdetto | 2026-08-17 |
 | [versione-sugli-artefatti](versione-sugli-artefatti.md) | REPO-A: tools/grafo-findings.js:221 | 2026-08-08 |
-| [vivo-gia-in-git](vivo-gia-in-git.md) | REPO-E: deploy v78 (18 file su 18 gia` in git) | 2026-09-06 |
+| [vivo-gia-in-git](vivo-gia-in-git.md) | REPO-E: deploy v78, 18/18 (report: docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md) | 2026-09-06 |
 | [watchdog-guardato](watchdog-guardato.md) | night-shift/lib.sh:run_guarded | 2026-08-18 |
 | [workdir-e-proprietario](workdir-e-proprietario.md) | regola processo (SAL 2026-08-21) | 2026-08-21 |
 | [tolleranza-derivata-non-scelta](tolleranza-derivata-non-scelta.md) | REPO-R ingestione 2026-09-02 | 2026-09-03 |
