@@ -71,6 +71,17 @@ done
 [ -z "$ORFANI" ] && ok "night-shift: ogni tool ha una porta che lo nomina" \
   || ko "night-shift: tool senza porta:$ORFANI"
 
+# 5e. la memoria del turno non e' un no-op (giro 3/5: puntava a night-shift/SAL.md,
+# mai esistito — giri interi di turni senza memoria, in silenzio). Il dente: il path
+# punta al file gitignored .sal-turni.md, e la gitignore lo copre (un file tracciato
+# romperebbe il self-pull della notte dopo)
+grep -q 'HUB_SAL="$HERE/.sal-turni.md"' "$NS" \
+  && ok "night-shift: la memoria del turno vive in .sal-turni.md (mai un no-op)" \
+  || ko "night-shift: memoria del turno di nuovo a rischio no-op (path: $(grep -m1 'HUB_SAL=' "$NS"))"
+grep -q "^night-shift/.sal-turni.md$" "$HERE/.gitignore" \
+  && ok "night-shift: .sal-turni.md gitignored (il self-pull non si accorge)" \
+  || ko "night-shift: .sal-turni.md NON gitignored: albero sporco al prossimo pull"
+
 # 6. audit-commessa guarda il riferimento Design (il pre-flight del flusso)
 grep -q "## Design" "$AC" \
   && ok "audit-commessa: verifica il riferimento in ## Design" \
