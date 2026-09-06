@@ -104,6 +104,7 @@
 - [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
 - [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
 - [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
+- [2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78](#2026-09-06-3-repo-e-porta-due-report-a-mano-20-lenti-7-risposte-deploy-v78)
 
 
 ## Stato
@@ -1893,3 +1894,17 @@ incatenato all'azione; raccomandazione corretta; numero implausibile = sintomo; 
 sorvegliato per irreversibilità; segreto già passato; doppio compiacente + sonda una proprietà;
 sequenza = previsione). Nota di metodo: questo giro di domande con Luca (5/5 chiuse ieri) è lo
 stesso modello del report — ogni risposta codice, il banco che boccia le attese sbagliate.
+
+### 2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78
+
+docs/campo/2026-09-06-repo-e-audit-20-lenti.md e docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md
+(repo-e-audit-20-lenti, repo-e-sette-risposte-deploy-v78): la sessione remota non aveva lo scope
+GitHub dell'hub e l'aveva dichiarato («le proposte non entrano nel canone da sole»). Portati a
+mano, gruppo anonimizzato nel titolo della dashboard (privacy: grep a mano + gate pulito).
+Dieci regole nel metodo + pattern vivo-gia-in-git (il test binario hash-object/cat-file: 18/18,
+e il diff resta solo per i NON IN GIT). I temi forti: correggere per FAMIGLIA (census a regime),
+il verso della correzione (legge-serie / legge-oggi / scrive), la consegna «misura prima di
+toccare» per le decisioni-di-dominio, il deploy eseguito dall'umano col cancello clasp che HA
+FUNZIONATO (due errori intercettati in tempo reale da chi possiede il sistema). E il dato del 47:
+il fix || → ?? di cinque giorni prima protegge 47 articoli reali a costo zero — la «miglioria
+ovvia» dell'audit li avrebbe silenziosamente rimpiazzati col costo standard.
