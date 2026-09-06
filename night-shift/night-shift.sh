@@ -309,6 +309,17 @@ $BODY"
         # commento, NON come PR — la notte del 4/9 ha aperto la PR #16 con dentro solo
         # il file proposto e il .night-bak: +739 righe di rumore, zero fix applicati.
         PATCH_LATEST=$(ls -t "$DIR"/.night-patch-*.js 2>/dev/null | head -1)
+        # (notte 5/9: due commenti con lo stesso codice sulla stessa issue — la proposta
+        # non era idempotente. Il flusso PR ha la sua guardia, questa e' quella della
+        # proposta: una per issue finche' il giorno non decide. E-002: cattura prima,
+        # MAI pipe in grep -q sotto pipefail)
+        COMMENTI=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
+        if grep -q "Proposta notturna" <<<"$COMMENTI"; then
+          log "Issue #$NUM: proposta gia pubblicata in un turno precedente — niente duplicati, aspetta il giorno"
+          PROPOSTE=$((PROPOSTE+1))
+          rm -f "$ISSUE_FILE"
+          continue
+        fi
         if [ -n "$PATCH_LATEST" ]; then
           COMMENTO="/tmp/night-commento-$NUM.md"
           { echo "🌙 Proposta notturna (NON applicata: funzione nuova o bersaglio non trovato in automatico). Il codice generato dal modello locale:"; echo '```javascript'; cat "$PATCH_LATEST"; echo '```'; echo ""; echo "Da verificare e collegare a mano (il giorno dispone): la funzione è proposta, manca l'inserimento nel file e l'attivazione (botone/menu/chiamata)."; } > "$COMMENTO"
