@@ -52,6 +52,8 @@ documenti (DEBITI: da valutare se vale i token).
 | [manifest-webapp-nel-repo](manifest-webapp-nel-repo.md) | REPO-CR appsscript.json | 2026-09-01 |
 | [migrazione-con-interruttore](migrazione-con-interruttore.md) | REPO-Q split 2026-09-02 | 2026-09-02 |
 | [misura-la-deriva-prima-di-assumerla](misura-la-deriva-prima-di-assumerla.md) | REPO-J: diff baseline vs HEAD | 2026-08-28 |
+| [misura-prima-di-toccare](misura-prima-di-toccare.md) | REPO-E: risposte alle domande di dominio 6 e 7 | 2026-09-06 |
+| [numero-col-suo-comando](numero-col-suo-comando.md) | REPO-E: report di campo 2026-09-06 (le 798 attese non riproducibili) | 2026-09-06 |
 | [oracolo-dal-sistema-vecchio](oracolo-dal-sistema-vecchio.md) | REPO-S: tools/motore-test/harness.php | 2026-09-03 |
 | [oracolo-indipendente](oracolo-indipendente.md) | REPO-A: tools/grafo-verifica.js (assi C/D) | 2026-08-21 |
 | [pipefail-grep-sigpipe](pipefail-grep-sigpipe.md) | tools/ciclo-vivo.sh (lente collegamenti) | 2026-08-28 |
@@ -70,6 +72,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [trovare-non-e-fallire](trovare-non-e-fallire.md) | REPO-A: tools/riallinea-mirror.sh:trova | 2026-08-12 |
 | [verdetto-sempre-visibile](verdetto-sempre-visibile.md) | REPO-A: tools/banco-lib.js:verdetto | 2026-08-17 |
 | [versione-sugli-artefatti](versione-sugli-artefatti.md) | REPO-A: tools/grafo-findings.js:221 | 2026-08-08 |
+| [vivo-gia-in-git](vivo-gia-in-git.md) | REPO-E: deploy v78 (18 file su 18 gia` in git) | 2026-09-06 |
 | [watchdog-guardato](watchdog-guardato.md) | night-shift/lib.sh:run_guarded | 2026-08-18 |
 | [workdir-e-proprietario](workdir-e-proprietario.md) | regola processo (SAL 2026-08-21) | 2026-08-21 |
 | [tolleranza-derivata-non-scelta](tolleranza-derivata-non-scelta.md) | REPO-R ingestione 2026-09-02 | 2026-09-03 |

@@ -104,6 +104,7 @@
 - [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
 - [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
 - [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
+- [2026-09-06 (3°) — REPO-E: le sette risposte di dominio e il deploy — sette proposte al canone](#2026-09-06-3-repo-e-le-sette-risposte-di-dominio-e-il-deploy-sette-proposte-al-canone)
 
 
 ## Stato
@@ -1893,3 +1894,36 @@ incatenato all'azione; raccomandazione corretta; numero implausibile = sintomo; 
 sorvegliato per irreversibilità; segreto già passato; doppio compiacente + sonda una proprietà;
 sequenza = previsione). Nota di metodo: questo giro di domande con Luca (5/5 chiuse ieri) è lo
 stesso modello del report — ogni risposta codice, il banco che boccia le attese sbagliate.
+
+### 2026-09-06 (3°) — REPO-E: le sette risposte di dominio e il deploy — sette proposte al canone
+
+Report: docs/campo/2026-09-06-repo-e-sette-risposte-e-deploy.md (repo-e-sette-risposte-e-deploy).
+Coda del ciclo a 20 lenti: le sette domande di dominio rimaste aperte hanno avuto risposta lo
+stesso giorno, una per volta, ognuna diventata un commit col metodo intero (banco rosso prima,
+sabotaggio dopo, gate verde). Poi il rilascio in produzione, con il proprietario al terminale.
+
+Il dato che guida tutto: **la diagnostica consegnata per rendere decidibile una domanda ha
+risposto a una domanda diversa e migliore**. Non «va acceso questo fallback?» (no: zero cifre
+cambierebbero) ma «il fix di cinque giorni fa serviva a qualcosa?» — sì, protegge 47 articoli con
+costo zero che la forma precedente avrebbe rimpiazzato in silenzio. Da qui il pattern
+`misura-prima-di-toccare`: quando la correzione è una DECISIONE, il deliverable è lo strumento
+che la rende decidibile, e quello è consegnabile subito senza il permesso di nessuno.
+
+Sei proposte adottate in questa PR: 3 pattern nuovi (`vivo-gia-in-git` — prima di sovrascrivere
+un vivo la domanda non è «cosa è diverso» ma «c'è qualcosa che git non ha mai visto», misurato
+18/18; `misura-prima-di-toccare`; `numero-col-suo-comando` — le «798 attese» del report
+precedente non erano riproducibili nemmeno per il suo autore), 2 addendum (il pavimento delle
+attese si misura, non si prevede; la sequenza di attivazione in tre passi e l'errore che nomina
+l'entità sbagliata), 1 regola in CLAUDE.md §3 (ciò che consegni a un umano da eseguire è codice:
+niente commenti inline, e l'ATTESO si cita come il codice).
+
+La settima è DICHIARATA e non applicata: `clasp-block-hook` blocca anche lo *scrivere* di un push
+(tre giri a vuoto in questa sessione, negato un heredoc il cui testo conteneva la stringa e un
+grep che la cercava nei documenti). Nessun falso verde, il verso che conta ha retto — ma la
+frizione è reale e la cura non è documentata. Allentare la maglia di un hook di sicurezza per
+comodità dell'agente che ne è ostacolato non è una proposta che l'agente debba fare: decide chi
+possiede il sistema.
+
+Onestà del giro: su cinque ostacoli, **tre erano miei** — comandi con commenti inline in zsh
+(gotcha documentato nel progetto su cui stavo lavorando, che avevo letto), un ATTESO preso dalla
+fonte sbagliata, un pavimento di attese inventato invece che misurato.

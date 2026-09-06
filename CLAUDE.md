@@ -108,6 +108,11 @@ If something doesn't work, is ambiguous, or seems wrong — say it immediately. 
 ### Show, don't tell
 When explaining a change, show the relevant code. When reporting a result, show the output.
 
+### Ciò che consegni a un umano da eseguire è codice, e si tratta come codice (2026-09-06 — vincolante, da REPO-E)
+Un blocco di comandi che una persona incollerà nel proprio terminale non è prosa: è un artefatto che verrà **eseguito**, e ne risponde chi lo scrive. Due regole, entrambe pagate lo stesso giorno:
+1. **Nessun commento inline.** `git log --oneline -8 # devi vedere X` si rompe su zsh senza `interactive_comments`, che è il default: la shell tratta `#` come argomento e il comando fallisce. Il commento va sopra il blocco, in prosa. Corollario: se la cura del gotcha è già documentata nel progetto su cui stai lavorando, si consegna **prima** la cura (`echo 'setopt interactive_comments' >> ~/.zshrc`), non dopo che l'errore è successo — la lezione era scritta, l'ho letta, e l'ho rotta lo stesso.
+2. **L'ATTESO che dichiari è un'affermazione, e si cita come il codice.** «Aspettati questo output» va accompagnato dal `file:riga` della fonte, o non si scrive. Misurato: un atteso preso dal `<title>` dell'HTML quando la fonte vera era un `setTitle()` nel `.gs`, che vince sul tag. Esito innocuo — l'atteso vero era perfino una prova migliore — ma un atteso sbagliato insegna all'umano a diffidare dei controlli, che è il costo che un gate non può permettersi (*«il costo di un falso positivo è la fiducia»*).
+
 ---
 
 ## 4. Git Rules
