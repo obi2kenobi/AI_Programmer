@@ -54,9 +54,9 @@ cosa serve, le domande di dominio da fare a una persona).
 
 tools/ contiene 16 tool Python: 11 oracoli contabili, 2 rilevatori (gas_qualita, verifica_banco), indice BC e correttore tipi.
 
-## Il catalogo pattern (33 voci)
+## Il catalogo pattern
 
-patterns/ contiene 33 pattern minati dal campo: cerca prima di reinventare.
+patterns/ contiene i pattern minati dal campo: cerca prima di reinventare. Il conto vive nell'indice (`ls patterns/*.md | grep -v README | wc -l`), non qui: un numero in questa riga invecchia il giorno dopo.
 Indice: patterns/README.md
 
 ## Le tre regole che non negoziano
