@@ -12,3 +12,5 @@ gas/Sp.js
 tools/test-sp.js
 PRESIDI.md
 loops/2026-09-01-giri-miglioramento.md
+# REPO-E: le 30 guardie difensive non presidiate (setaccio-guardie.sh vive nel progetto, non nell'hub)
+tools/setaccio-guardie.sh

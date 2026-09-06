@@ -718,6 +718,55 @@ confermare a voce.
     non lascia che se ne accorga chi lo apre. Tre volte verificare la cosa accanto a quella giusta
     costa all'operatore: artefatto consumato, schermata sbagliata, giro di lancia-e-incolla.
 
+## Dieci regole dal ciclo REPO-E: venti lenti + sette risposte + deploy v78 (2026-09-06)
+
+Report: docs/campo/2026-09-06-repo-e-audit-20-lenti.md e docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md
+(portati a mano nell'hub: la sessione non aveva lo scope GitHub). Rafforzamento di una regola esistente:
+il census della popolazione dei siti (regola del 3/9) è ora **a regime** — metà delle attese
+dei banchi nuovi non sono comportamentali, sono censimenti che tornano rossi se la forma
+ingenua ricompare.
+
+1. **VIVO GIÀ IN GIT, PRIMA DEL DIFF** (pattern `vivo-gia-in-git`): prima di un push la domanda
+   è «il vivo contiene qualcosa che git non ha mai visto?» — binaria, sei righe di shell
+   (hash-object + cat-file -e). Il diff resta, ma SOLO sui file `NON IN GIT`. Una procedura
+   illeggibile viene saltata, e saltarla significa cancellare in silenzio il lavoro di chi
+   ha toccato l'editor. In sessione: 18/18, e il test ha assolto i 12 «diversi» del diff.
+2. **MISURA PRIMA DI TOCCARE**: quando la correzione è una DECISIONE del dominio e non un fix,
+   il deliverable è lo strumento che rende la domanda decidibile — sola lettura, comportamento
+   invariato, consegnabile subito senza il permesso di nessuno. La domanda resta del
+   proprietario; la sua decidibilità no. (E lo strumento può rispondere a una domanda PIÙ utile
+   di quella che gli era stata fatta: il 47 degli articoli a costo zero.)
+3. **LA DOMANDA AL DOMINIO NON È UN MENÙ**: non offre i rimedi che hai preparato — la risposta
+   può mostrare che il posto dove viveva il fatto (il tab) è esattamente ciò che può essere
+   svuotato, e il fatto va a vivere altrove (Script Properties). La colonna resta, ma per un
+   altro mestiere: serve a chi apre il foglio fra due anni.
+4. **IL VERSO DELLA CORREZIONE DIPENDE DA CHI LEGGE E DA CHI SCRIVE**: legge-per-SERIE →
+   salta e dichiara (un anno brutto non deve cancellare ventiquattro mesi buoni); lettura-per-
+   IL-NUMERO-DI-OGGI → fermarsi (zeri finti peggio dell'errore); SCRIVE → fermarsi sempre.
+   Nessuna delle tre è «la prudente per default».
+5. **UNA GUARDIA COMPOSTA HA BISOGNO DI N ATTESE**: quando un'attesa prova una guardia con N
+   clausole, il banco cicla sulle clausole — o dichiara accanto all'attesa quante ne copre.
+   Il sabotaggio «di chi conosce metà» è il caso minimo: la mezza difesa deve cadere.
+6. **IL GATE DICHIARA IL PROPRIO PERIMETRO**: quanti file, quante righe, quali esclusioni —
+   un gate che non dice cosa guarda non si può accusare di cieca quando manca qualcosa.
+7. **UN NUMERO DICHIARATO PORTA IL COMANDO CHE LO PRODUCE**: regola già nota per le dimensioni,
+   estesa SENZA ECCEZIONI ai numeri di testa di report e gate. «798 attese» non tornava (erano
+   689 + convenzione ricostruita a tentativi): il numero principale del report predicava il
+   comando e non lo applicava a sé stesso.
+8. **I COMANDI CONSEGNATI A UN TERMINALE UMANO NON PORTANO COMMENTI INLINE**: zsh senza
+   `interactive_comments` tratta `#` come argomento. Se la cura è documentata nel progetto,
+   si consegna PRIMA la cura, non dopo l'errore. (Quarta ripetizione di «una lezione scritta
+   non è una guardia» — su una lezione scritta nel progetto stesso, già letta.)
+9. **L'ATTESO DICHIARATO A UN UMANO È UN'AFFERMAZIONE E SI CITA COME IL CODICE**: «aspettati X»
+   va con `file:riga` della fonte, o non va scritto. Un atteso sbagliato (il `<title>` battuto
+   dal `setTitle()`) insegna a diffidare dei controlli — è esattamente ciò che un gate non può
+   permettersi. E il PAVIMENTO delle attese si scrive DOPO aver eseguito il banco, mai per
+   previsione: anche il numero che presidia le prove è una prova.
+10. **RUNBOOK DEPLOY**: `list-versions` (leggi N, non assumerlo) → `create-version` (leggi
+    l'N+1 che stampa) → `update-deployment -V <N+1> <ID>`. Saltare `create-version` fa
+    rispondere «Requested entity was not found» — un errore che NOMINA L'ENTITÀ SBAGLIATA e
+    spinge a dubitare dell'ID, cioè dell'unica cosa giusta.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
