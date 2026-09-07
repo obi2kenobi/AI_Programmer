@@ -107,6 +107,7 @@
 - [2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78](#2026-09-06-3-repo-e-porta-due-report-a-mano-20-lenti-7-risposte-deploy-v78)
 - [2026-09-06 (4°) — cinque giri di verifica e correzione sull'hub](#2026-09-06-4-cinque-giri-di-verifica-e-correzione-sull-hub)
 - [2026-09-07 — terza notte completa: le due cure di ieri hanno retto al primo colpo](#2026-09-07-terza-notte-completa-le-due-cure-di-ieri-hanno-retto-al-primo-colpo)
+- [2026-09-07 (2°) — l'arnese: 20 giri in 4 fasi (efficienza, adattività, collegamento, test)](#2026-09-07-2-l-arnese-20-giri-in-4-fasi-efficienza-adattività-collegamento-test)
 
 
 ## Stato
@@ -1944,3 +1945,24 @@ APERTO, DA DISPORRE COL GIORNO: l'issue #10 ha ormai TRE passaggi notturni senza
 diurna. La proposta è buona ed è lì dal 5/9 mattina: o si applica (inserire esportaCSV in
 App.html + bottone — il DEBITI «solver: inserzione funzioni nuove»), o si chiude l'issue.
 La notte non può fare di più: aspetta il giorno.
+
+### 2026-09-07 (2°) — l'arnese: 20 giri in 4 fasi (efficienza, adattività, collegamento, test)
+
+FASE A (efficienza, misurata): sonde 15.0→6.2s (-59%: il sonno 0.9s×16 oracoli era il costo
+intero), contesto del solver limitato a 24k caratteri per file DICHIARATO nel prompt (App.html
+41KB intera = 262s), canone a livelli (livello 0: le 10 regole che mordono, in cima). Suite
+104.8→82.8s (-21%) CON un test in più. FASE B (adattività): il solver INSERISCE funzioni nuove
+(.html prima dell'ultimo </script>, rifiuto dichiarato senza punto d'inserimento, wiring mancante
+dichiarato in ESITO e commit, verifica doppia, rollback al dubbio) — il DEBITI che teneva l'issue
+#10 ferma da tre notti; il turno esegue la ## Verifica dell'issue (denylist clasp/rm/push/deploy/
+curl/git) e l'esito va nel commit; auto-diagnosi (ASPETTA IL GIORNO); il garante avverte della
+deriva del canone installato (mai sovrascrive, 5/5). FASE C: regole nel metodo («Il turno che
+inserisce»), mutazioni 38/38, DEBITI saldato. FASE D (prove): sandbox con FIX+FEATURE, tre giri —
+1°: Verifica ROTTA-finta (timeout(1) non esiste su macOS: ora ai_timeout portabile), blocco
+multi-funzione del modello innescava la sostituzione; 2°: 2 PR ma l'inserzione applicava il PATCH
+intero verificando il CODE isolato (<script> e mostra duplicati); 3°: diff PULITO — solo
+esportaCSV isolata, wiring dichiarato nel commit, idempotenza (PR aperta→skip), Verifica onesta
+(ROTTA dichiarata su un check impossibile: colpa dell'issue, riportata non nascosta).
+La lezione dei tre giri: VERIFICATO = APPLICATO, o non è una verifica. Stanotte l'issue #10 è il
+primo caso vero: App.html ha </script>, la funzione sarà INSERITA (wiring al mattino).
+Sandbox di prova: night-shift-prova2 (privata, da cancellare).
