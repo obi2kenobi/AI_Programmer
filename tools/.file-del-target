@@ -20,3 +20,9 @@ bc_index.py
 # REPO-V: cancello e lente dei moduli citati dal report del 7/9 (vivono lì)
 tools/cancello.sh
 test-moduli-coperti.sh
+
+# file di campo citati con :riga nei report (la verifica spetta alle loro repo)
+InventoryModels.gs
+tools/cancello-prima-del-commit-hook.sh
+Dashboard.html
+WebAppDashboard.gs

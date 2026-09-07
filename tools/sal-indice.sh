@@ -1,6 +1,7 @@
 #!/bin/bash
 # sal-indice.sh — l'indice del SAL (giro 5/10): il diario cresce senza limite, chi
 # arriva deve poter NAVIGARE. Rigenera la tabella dei contenuti dopo l'header fisso.
+# ⚠ QUESTO TOOL SCRIVE: rigenera la tabella dei contenuti dentro SAL.md
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SAL="$HERE/SAL.md"

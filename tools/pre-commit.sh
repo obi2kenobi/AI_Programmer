@@ -68,5 +68,11 @@ while IFS= read -r f; do
 done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.(sh|py)$')
 [ -n "$PIPE_AND" ] && { echo "⛔ pipeline seguita da && (l'esito è del solo ultimo comando — la regola del 3/9 era prose, ora è un dente):"; echo "$PIPE_AND"; FALLITI=1; }
 
+# 6. (contromisura REPO-V 7/9) citazioni file:riga nei .md staged: la riga citata esiste
+STAGED_MD=$(git diff --cached --name-only 2>/dev/null | grep '\.md$' || true)
+if [ -n "$STAGED_MD" ]; then
+  if ! bash "$HERE/tools/cita-verifica.sh" $STAGED_MD; then FALLITI=1; fi
+fi
+
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
 exit $FALLITI
