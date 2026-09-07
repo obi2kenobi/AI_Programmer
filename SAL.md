@@ -104,6 +104,7 @@
 - [2026-09-05 (20) — domanda di dominio 4 chiusa: il semaforo dell'allineamento](#2026-09-05-20-domanda-di-dominio-4-chiusa-il-semaforo-dell-allineamento)
 - [2026-09-06 — seconda notte completa: E-022 ha funzionato sul caso vero](#2026-09-06-seconda-notte-completa-e-022-ha-funzionato-sul-caso-vero)
 - [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
+- [2026-09-06 (4°) — REPO-E: quattro proposte che i due report portati a mano non coprivano](#2026-09-06-4-repo-e-quattro-proposte-che-i-due-report-portati-a-mano-non-coprivano)
 - [2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78](#2026-09-06-3-repo-e-porta-due-report-a-mano-20-lenti-7-risposte-deploy-v78)
 - [2026-09-06 (4°) — cinque giri di verifica e correzione sull'hub](#2026-09-06-4-cinque-giri-di-verifica-e-correzione-sull-hub)
 - [2026-09-07 — terza notte completa: le due cure di ieri hanno retto al primo colpo](#2026-09-07-terza-notte-completa-le-due-cure-di-ieri-hanno-retto-al-primo-colpo)
@@ -1898,6 +1899,44 @@ incatenato all'azione; raccomandazione corretta; numero implausibile = sintomo; 
 sorvegliato per irreversibilità; segreto già passato; doppio compiacente + sonda una proprietà;
 sequenza = previsione). Nota di metodo: questo giro di domande con Luca (5/5 chiuse ieri) è lo
 stesso modello del report — ogni risposta codice, il banco che boccia le attese sbagliate.
+
+### 2026-09-06 (4°) — REPO-E: quattro proposte che i due report portati a mano non coprivano
+
+Complemento alla voce qui sotto: i due report REPO-E sono gia` stati portati a mano, con
+`vivo-gia-in-git` gia` nel canone. Questa PR aggiunge SOLO cio` che non c'era, dalla stessa
+sessione (report: docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md).
+
+Due pattern nuovi. **`misura-prima-di-toccare`**: quando la correzione e` una DECISIONE del
+dominio e non un fix, il deliverable e` lo strumento che la rende decidibile — sola lettura,
+comportamento invariato, consegnabile subito senza il permesso di nessuno. La prova che paga e`
+il 47: la diagnostica costruita per «va acceso questo fallback?» ha risposto no (zero cifre
+cambierebbero) E a una domanda che nessuno aveva posto, «il fix di cinque giorni fa serviva a
+qualcosa?». **`numero-col-suo-comando`**: un numero dichiarato porta il comando che lo produce, a
+partire dai numeri del canone — le «798 attese» del report precedente non erano riproducibili
+nemmeno per il suo autore (ricontando: 689, e la convenzione ricostruita per tentativi).
+
+Due addendum. `confronto-non-vuoto`: il pavimento delle attese si scrive DOPO aver eseguito il
+banco — ATTESE_MINIME=46 quando erano 45, e il banco e` uscito NON GIUDICABILE sul proprio
+pavimento inventato. `clasp-push-non-e-produzione`: la sequenza in tre passi con l'N+1 letto, e
+la nota che «Requested entity was not found» nomina l'entita` sbagliata — sembra il deployment,
+e` la versione, e la mossa naturale e` dubitare dell'unica cosa che era giusta.
+
+Una regola in CLAUDE.md §3: **cio` che consegni a un umano da eseguire e` codice**. Niente
+commenti inline (zsh senza interactive_comments li tratta come argomenti — gotcha documentato nel
+progetto su cui stavo lavorando, che avevo letto e ho rotto lo stesso), e l'ATTESO che dichiari
+si cita col suo file:riga come il codice.
+
+DICHIARATA E NON APPLICATA: `clasp-block-hook` blocca anche lo SCRIVERE di un push, non solo il
+farlo (tre giri a vuoto: negato un heredoc il cui testo conteneva la stringa, e un grep che la
+cercava nei documenti). Nessun falso verde, il verso che conta ha retto — ma allentare la maglia
+di un hook di sicurezza per comodita` dell'agente che ne e` ostacolato non e` una proposta che
+l'agente debba fare: decide chi possiede il sistema.
+
+Verifiche: suite 121/125, gli stessi 4 rossi della baseline misurata PRIMA di toccare, nessuno
+nuovo. Lo specchio .opencode risincronizzato (il test lo ha colto: la guardia funziona).
+privacy-check DEGRADATO dichiarato (repos.key assente per disegno in cloud), diff verificato a
+mano. Nota per chi legge: `docs/bc/README.md` viene RISCRITTO da un test della suite quando gira
+— tenuto fuori dal commit, ma prima o poi finira` nel diff di qualcuno senza che se ne accorga.
 
 ### 2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78
 
