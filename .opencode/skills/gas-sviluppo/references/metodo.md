@@ -794,6 +794,29 @@ ingenua ricompare.
     rispondere «Requested entity was not found» — un errore che NOMINA L'ENTITÀ SBAGLIATA e
     spinge a dubitare dell'ID, cioè dell'unica cosa giusta.
 
+## Il turno che inserisce (fase adattiva, 2026-09-07 — chiude il DEBITI)
+
+Il risolutore notturno sa **sostituire** funzioni esistenti e, da oggi, **inserire** funzioni
+nuove — le issue «Feature:» non degradano più a proposta (l'issue #10 del Bilancio era ferma
+tre notti per questo). Le regole, tutte nate dal campo:
+
+1. **IN UN .html SI INSERISCE PRIMA DELL'ULTIMO `</script>`** — mai dopo `</html>`: il punto
+   di inserimento è DICHIARATO dal file, non scelto dal modello. Senza `</script>` si rifiuta
+   con la ragione: nessuna inserzione alla cieca.
+2. **LA FUNZIONE INSERITA SENZA CHIAMANTE È CODICE MORTO DICHIARATO** — l'ESITO dice
+   `INSERITO (wiring mancante)`, il commit porta l'avvertenza, chi guarda il diff cerca il
+   collegamento che manca. Il silenzio trasformerebbe codice morto in lavoro finito.
+3. **VERIFICA DOPPIA**: `node --check` sul codice E la funzione presente esattamente una
+   volta. Al primo dubbio: rollback pulito, resta la proposta.
+4. **LA `## Verifica` DELL'ISSUE SI ESEGUE** (con denylist: mai `clasp|rm|push|deploy|curl|git`
+   da un issue body — input esterno), e l'esito va nel commit: un rosso dichiarato vale più
+   di un silenzio. I tempi si riportano, la struttura si ferma.
+5. **IL CONTESTO AL MODELLO È LIMITATO E DICHIARATO** (24.000 caratteri per file): mai taglio
+   silenzioso — il modello sa che non vede tutto.
+6. **IL TURNO SI AUTODIAGNOSTICA**: la memoria chiude con «ASPETTA IL GIORNO», la lista delle
+   decisioni diurne pendenti. E il garante dello standard AVVERTE quando il metodo installato
+   in una repo diverge dall'hub — mai sovrascrive: la scelta è di chi possiede la repo.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
