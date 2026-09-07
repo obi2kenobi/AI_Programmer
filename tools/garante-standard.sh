@@ -26,7 +26,17 @@ CWD="${CLAUDE_PROJECT_DIR:-$PWD}"
 
 # già installato? (settings.json con il nostro SessionStart hook)
 if [ -f "$CWD/.claude/settings.json" ]; then
-  jq -e '.hooks.SessionStart // empty | length > 0' "$CWD/.claude/settings.json" >/dev/null 2>&1 && exit 0
+  if jq -e '.hooks.SessionStart // empty | length > 0' "$CWD/.claude/settings.json" >/dev/null 2>&1; then
+    # (fase B adattiva, 2026-09-07): installazione ESISTENTE — se il canone dell'hub
+    # e' cresciuto rispetto a quello installato, si AVVERTE (mai sovrascrivere: il repo
+    # puo' aver personalizzato). Un'installazione ferma al mese scorso insegnerebbe il
+    # metodo del mese scorso: il garante che non guarda la deriva e' un garante una-tantum.
+    if ! diff -q "$HUB/.claude/skills/gas-sviluppo/references/metodo.md"                  "$CWD/.claude/skills/gas-sviluppo/references/metodo.md" >/dev/null 2>&1; then
+      echo "⚠ AI_Programmer: il metodo installato qui DIVERGE da quello dell'hub (regole nuove mancate)." >&2
+      echo "  per aggiornare: bash $HUB/tools/sync-repo.sh --standard (dall'hub, scelta consapevole)" >&2
+    fi
+    exit 0
+  fi
 fi
 
 # NON installato → INSTALLA
