@@ -304,6 +304,7 @@ $BODY"
       if grep -q "Proposta notturna" <<<"$COMMENTI_PRE"; then
         log "Issue #$NUM: proposta gia pubblicata in un turno precedente — niente duplicati, aspetta il giorno (saltata SENZA rigenerare)"
         PROPOSTE=$((PROPOSTE+1))
+        ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"
         continue
       fi
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
@@ -334,6 +335,7 @@ $BODY"
           { echo "🌙 Proposta notturna (NON applicata: funzione nuova o bersaglio non trovato in automatico). Il codice generato dal modello locale:"; echo '```javascript'; cat "$PATCH_LATEST"; echo '```'; echo ""; echo "Da verificare e collegare a mano (il giorno dispone): la funzione è proposta, manca l'inserimento nel file e l'attivazione (botone/menu/chiamata)."; } > "$COMMENTO"
           if gh issue comment "$NUM" -R "$REPO" --body-file "$COMMENTO" >/dev/null 2>&1; then
             log "Issue #$NUM: proposta pubblicata come commento (niente PR di scarto)"
+            ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"
           else
             log "⚠ Issue #$NUM: commento della proposta fallito — il codice resta in $PATCH_LATEST"
           fi
@@ -359,8 +361,28 @@ $BODY"
         if EXPECTED=$(git -C "$DIR" rev-parse -q --verify "refs/remotes/origin/$BRANCH"); then
           LEASE_ARGS=(--force-with-lease="$BRANCH:$EXPECTED")
         fi
+        # (fase B adattiva): la nota da portare nel commit — una funzione NUOVA inserita
+        # e' codice morto dichiarato: il diff reviewer cerca il collegamento che manca
+        NOTA_INS=""
+        if echo "$OUT" | grep -q "ESITO: INSERITO"; then
+          NOTA_INS="
+
+Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento (bottone/menu/chiamata) resta da fare. Verificare il diff."
+        fi
+        # (fase B adattiva): la ## Verifica dell'issue si ESEGUE, se e' un comando che
+        # sappiamo eseguire al sicuro (denylist: mai clasp/rm/push/deploy/curl/git da
+        # un issue body — input esterno). L'esito si riporta nel commit, non fa gate:
+        # un rosso dichiarato vale piu' di un silenzio.
+        VERIFICA_CMD=$(sed -n '/^## Verifica/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '^(node|npm|python3?) [a-zA-Z0-9_./ -]+' | head -1)
+        VERIFICA_OUT="non dichiarata o non eseguibile al sicuro"
+        if [ -n "$VERIFICA_CMD" ] && ! echo "$VERIFICA_CMD" | grep -qE 'clasp|rm |push|deploy|curl|git'; then
+          VERIFICA_OUT=$(cd "$DIR" && eval "timeout 60 $VERIFICA_CMD" >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
+          log "Issue #$NUM: verifica dell'issue eseguita: $VERIFICA_OUT"
+        fi
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
-        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)" && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
+        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)${NOTA_INS}
+
+Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
           # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.
           # --head e --base espliciti: niente inferenze su shallow clone e upstream strani
@@ -497,6 +519,8 @@ if true; then
 ### $DT, turno automatico — $TOT_PR_CREATED PR bozza, $TOT_PROPOSTE proposte in issue, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
+
+**ASPETTA IL GIORNO** (proposta pubblicata, decisione diurna pendente):$(echo -e "$ASPETTA_GIORNO" || true)
 SALEOF
   log "memoria del turno scritta in night-shift/.sal-turni.md (locale: il mattino la porta nella SAL)"
 fi

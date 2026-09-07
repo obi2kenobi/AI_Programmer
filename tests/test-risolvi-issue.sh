@@ -44,7 +44,7 @@ python3 "$MOCK_DIR/serve.py" "$MOCK_BODY_FILE" > "$MOCK_DIR/port" 2>/dev/null &
 MOCK_PID=$!
 for _ in $(seq 1 20); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done
 MOCK_PORT=$(cat "$MOCK_DIR/port")
-trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4"' EXIT
+trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4" "$SB5" "$SB6" "$SB7"' EXIT
 ok "server mock su porta $MOCK_PORT"
 
 # --- caso 1: APPLICATO — una funzione rotta, il mock la restituisce corretta
@@ -119,6 +119,57 @@ if [ $RC -eq 3 ] && [ ! -f "$SB4/calc2.js.night-bak" ] && echo "$OUT" | grep -q 
   ok "PROPOSTA: sostituzione fallita = exit 3 e NESSUN bak lasciato in giro"
 else
   ko "PROPOSTA: rc=$RC bak=$([ -f "$SB4/calc2.js.night-bak" ] && echo presente || echo assente) out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
+fi
+
+# --- caso 3b: FUNZIONE NUOVA in .js — la issue Feature si risolve: INSERITO, wiring dichiarato
+# (fase B adattiva: l'issue #10 era ferma da tre notti perche' le Feature degradavano a proposta)
+SB5=$(mktemp -d /tmp/risolvi-sb5.XXXXXX)
+printf 'function esistente() { return 1; }\n' > "$SB5/altro.js"
+cat > "$SB5/issue.md" <<'ISSA'
+## Commessa
+aggiungi la funzione raddoppia(x).
+
+## Territorio
+File: altro.js
+
+## Verifica
+node --check
+ISSA
+cat > "$MOCK_BODY_FILE" <<'EOF'
+{"message":{"content":"```javascript\nfunction raddoppia(x) {\n  return x * 2;\n}\n```\n"}}
+EOF
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB5" "$SB5/issue.md" 2>&1); RC=$?
+if [ $RC -eq 0 ] && grep -q "function raddoppia" "$SB5/altro.js" && echo "$OUT" | grep -q "INSERITO" && echo "$OUT" | grep -qi "wiring\|chiama"; then
+  ok "INSERITO: funzione nuova aggiunta al file, wiring mancante DICHIARATO"
+else
+  ko "INSERITO: rc=$RC out: $(echo "$OUT" | tail -3 | tr '\n' ' ')"
+fi
+
+# --- caso 3c: funzione nuova in .html — inserita PRIMA dell'ultimo </script>
+SB6=$(mktemp -d /tmp/risolvi-sb6.XXXXXX)
+printf '<html><body><script>\nfunction vecchia() { return 1; }\n</script>\n</body></html>\n' > "$SB6/pag.html"
+sed 's/altro\.js/pag.html/' "$SB5/issue.md" > "$SB6/issue.md"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB6" "$SB6/issue.md" 2>&1); RC=$?
+if [ $RC -eq 0 ] && grep -q "function raddoppia" "$SB6/pag.html"; then
+  python3 -c "
+s = open('$SB6/pag.html').read()
+ok = s.index('function raddoppia') < s.rindex('</script>') and s.rindex('function raddoppia') > s.rindex('<script>')
+print('INSERITO-HTML-OK' if ok else 'POS-SBAGLIATA')" | grep -q INSERITO-HTML-OK \
+    && ok "INSERITO-HTML: dentro l'ultimo blocco script, non dopo </html>" \
+    || ko "INSERITO-HTML: posizione sbagliata"
+else
+  ko "INSERITO-HTML: rc=$RC"
+fi
+
+# --- caso 3d: .html SENZA </script>: rifiuto dichiarato, nessuna inserzione alla cieca
+SB7=$(mktemp -d /tmp/risolvi-sb7.XXXXXX)
+printf '<html><body><p>nessuno script qui</p></body></html>\n' > "$SB7/solo.html"
+sed 's/altro\.js/solo.html/' "$SB5/issue.md" > "$SB7/issue.md"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB7" "$SB7/issue.md" 2>&1); RC=$?
+if [ $RC -eq 3 ] && ! grep -q "function raddoppia" "$SB7/solo.html" && echo "$OUT" | grep -q "ESITO: PATCH"; then
+  ok "RIFIUTO-HTML: senza punto dichiarato resta proposta (mai inserzione alla cieca)"
+else
+  ko "RIFIUTO-HTML: rc=$RC"
 fi
 
 # --- caso 3: il modello non produce codice — il solver rifiuta, niente file toccati

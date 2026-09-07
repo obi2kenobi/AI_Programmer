@@ -9,7 +9,7 @@
 #
 # Uso: risolvi-issue.sh <dir-progetto> <issue-md>
 #   <issue-md> = file locale con la commessa (Design/Commessa/Verifica/Territorio)
-# Esce: 0 = fix applicato e verificato · 1 = fallito · 2 = uso errato · 3 = proposta
+# Esce: 0 = fix applicato/verificato o funzione NUOVA inserita (wiring dichiarato mancante) · 1 = fallito · 2 = uso errato · 3 = proposta
 #   (3 = codice pronto ma NON applicato: funzione nuova o bersaglio assente. La notte
 #    del 4/9 l'ha trattato come successo e ha aperto una PR di soli scarti: un .js
 #    proposto + il .night-bak dell'App.html intero, +739 righe di rumore.)
@@ -121,6 +121,54 @@ if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
   TARGET_FILE=$(echo "$TERRitorio" | head -1)
   [ -f "$TARGET_FILE" ] || TARGET_FILE="$DIR/$TARGET_FILE"
   TARGET_FN=$(echo "$CODE" | grep -oE '^function [a-zA-Z_]+' | head -1 | sed 's/function //')
+  # (fase B adattiva, 2026-09-07 — chiude il DEBITI "inserzione funzioni nuove": le issue
+  #  "Feature:" chiedono funzioni che NON esistono ancora; degradare a proposta teneva
+  #  l'issue #10 ferma da tre notti. L'inserzione ha REGOLE dal campo: in un .html si va
+  #  PRIMA dell'ultimo </script> (mai dopo </html>); senza un punto dichiarato si rifiuta
+  #  con la ragione; e la funzione inserita senza chiamante e' CODICE MORTO DICHIARATO.)
+  if [ -n "$TARGET_FN" ] && ! grep -q "function $TARGET_FN" "$TARGET_FILE"; then
+    INS_OK=0
+    case "$TARGET_FILE" in
+      *.html)
+        if grep -q "</script>" "$TARGET_FILE"; then
+          cp "$TARGET_FILE" "$TARGET_FILE.night-bak"
+          python3 - "$TARGET_FILE" "$PATCH_FILE" <<'PYINS'
+import sys
+target, patch = sys.argv[1], sys.argv[2]
+src = open(target).read()
+fn = open(patch).read().strip()
+i = src.rfind("</script>")
+src = src[:i] + "\n" + fn + "\n" + src[i:]
+open(target, "w").write(src)
+print("FUNZIONE-INSERITA-HTML")
+PYINS
+          INS_OK=$?
+        else
+          log "⛔ $TARGET_FILE non ha </script>: nessun punto di inserimento dichiarato — proposta, non inserzione alla cieca"
+        fi
+        ;;
+      *.js|*.gs)
+        cp "$TARGET_FILE" "$TARGET_FILE.night-bak"
+        printf '\n%s\n' "$(cat "$PATCH_FILE")" >> "$TARGET_FILE"
+        INS_OK=$?
+        ;;
+    esac
+    if [ "$INS_OK" -eq 0 ] && echo "$CODE" | node --check - 2>/dev/null; then
+      # doppia verifica: la funzione adesso c'e', ed E UNA sola
+      N_FN=$(grep -c "^function $TARGET_FN" "$TARGET_FILE" || true)
+      if [ "$N_FN" -eq 1 ]; then
+        log "✅ Funzione NUOVA $TARGET_FN inserita in $(basename "$TARGET_FILE") e verificata (node --check)"
+        log "⚠ CODICE MORTO DICHIARATO: la funzione e' inserita ma nessuno la chiama — il collegamento (bottone/menu/chiamata) sta al giorno"
+        rm -f "$TARGET_FILE.night-bak"
+        rm -f "$PATCH_FILE"
+        echo "ESITO: INSERITO $(basename "$TARGET_FILE") $TARGET_FN ${ELAPSED}s (wiring mancante, dichiarato)"
+        exit 0
+      fi
+    fi
+    # inserzione fallita o non verificata: rollback pulito, si degrada a proposta
+    [ -f "$TARGET_FILE.night-bak" ] && { cp "$TARGET_FILE.night-bak" "$TARGET_FILE"; rm -f "$TARGET_FILE.night-bak"; }
+    log "⚠ inserzione non verificata: rollback, resta la proposta"
+  fi
   if [ -n "$TARGET_FN" ] && grep -q "function $TARGET_FN" "$TARGET_FILE"; then
     log "Applicando: sostituisco $TARGET_FN in $(basename $TARGET_FILE)"
     # backup
