@@ -42,7 +42,17 @@ for F in $TERRitorio; do
   [ -f "$F" ] || F="$DIR/$F"
   [ -f "$F" ] || continue
   REL_PATH=$(realpath --relative-to="$DIR" "$F" 2>/dev/null || echo "$F")
-  FILES_CONTENT+="=== FILE: $REL_PATH ===\n$(cat "$F")\n\n"
+  # (fase A efficienza, 2026-09-07): App.html intera = 41KB = 262s di inferenza.
+  #  Limite per file 24000 caratteri (~6-8K token), TRONCATO DICHIARATO nel prompt —
+  #  mai taglio silenzioso: il modello sa che non vede tutto e lavora da quello che
+  #  l'issue nomina. I file piccoli (il caso normale: 9s) non cambiano di una virgola.
+  CORPO=$(head -c 24000 "$F")
+  N_CHAR=$(wc -c < "$F" | tr -d ' ')
+  if [ "$N_CHAR" -gt 24000 ]; then
+    CORPO="$CORPO\n[... TRONCATO: mostrati i primi 24000 caratteri su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
+    log "⚠ $REL_PATH troncato a 24000/$N_CHAR caratteri (dichiarato nel prompt)"
+  fi
+  FILES_CONTENT+="=== FILE: $REL_PATH ===\n$CORPO\n\n"
 done
 
 COMMESSA=$(cat "$ISSUE")
