@@ -108,6 +108,7 @@
 - [2026-09-06 (4°) — cinque giri di verifica e correzione sull'hub](#2026-09-06-4-cinque-giri-di-verifica-e-correzione-sull-hub)
 - [2026-09-07 — terza notte completa: le due cure di ieri hanno retto al primo colpo](#2026-09-07-terza-notte-completa-le-due-cure-di-ieri-hanno-retto-al-primo-colpo)
 - [2026-09-07 (2°) — l'arnese: 20 giri in 4 fasi (efficienza, adattività, collegamento, test)](#2026-09-07-2-l-arnese-20-giri-in-4-fasi-efficienza-adattività-collegamento-test)
+- [2026-09-07 (3°) — il set di sicurezza: la lente mai usata, sul codice giovane](#2026-09-07-3-il-set-di-sicurezza-la-lente-mai-usata-sul-codice-giovane)
 
 
 ## Stato
@@ -1966,3 +1967,17 @@ esportaCSV isolata, wiring dichiarato nel commit, idempotenza (PR aperta→skip)
 La lezione dei tre giri: VERIFICATO = APPLICATO, o non è una verifica. Stanotte l'issue #10 è il
 primo caso vero: App.html ha </script>, la funzione sarà INSERITA (wiring al mattino).
 Sandbox di prova: night-shift-prova2 (privata, da cancellare).
+
+### 2026-09-07 (3°) — il set di sicurezza: la lente mai usata, sul codice giovane
+
+Cinque giri con la proposta n.1 del report REPO-W applicata a noi stessi (la sicurezza come
+domanda diversa, sulle parti nuove). G1 — BUCO VERO, provato prima della cura: un issue che
+nomina un path fuori dal progetto (/tmp/segreto-finto.py) lo faceva LEGGERE e incollare nel
+prompt al modello. Confinamento realpath-contro-realpath in lettura E scrittura, rifiuto
+dichiarato, degrado a proposta, regressione nel banco (caso S1). G1b/G2 — la Verifica non usa
+eval (charset come confine, verificato), garante e lock su input fidati: dichiarato, nessuna
+cura necessaria. G3 — il limite 24k valeva per i file e non per il corpo dell'issue: 100KB di
+body gonfiavano il prompt; troncato dichiarato, morso provato. G4 — avversari freschi: 95
+attacchi, 0 aggirati. G5 — banco CHIUSO, albero pulito, automazione a 23c79c5 prima delle 23.
+La lente ha trovato in un'ora ciò che 20 giri di qualità non avevano visto: era una domanda
+diversa, non una lente più forte. Stanotte campo libero: issue #10, primo inserimento vero.
