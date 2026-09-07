@@ -3,6 +3,30 @@
 > Ogni riga qui nasce da un difetto VERO con una data, non da prudenza. È
 > l'elenco dei modi in cui un giro può sembrare fatto e non esserlo.
 
+## Livello 0 — le regole che mordono subito (il resto si legge quando serve)
+
+Il metodo è lungo perché ogni riga nasce da un difetto VERO con la data. Chi ha dieci secondi
+legge QUESTO; chi lavora su un progetto legge la sezione che il progetto cita. Nessuna regola
+qui sotto è nuova: sono i punti d'ingresso, con l'ancora alla sezione completa.
+
+1. **Esegui, non dedurre** — nessuna affermazione senza il comando che l'ha prodotta («Cosa sei»).
+2. **Banco prima della correzione, sabotaggio accanto** — il banco vede rosso PRIMA del fix; un
+   sabotaggio che resta verde è un buco nel banco (le sezioni «Correggere e un giro di audit»,
+   «L'isolamento del banco», regole 2-3 del campo REPO-W).
+3. **Assente ≠ zero** — una lettura mancata non è un dato: `Math.abs(NaN) > 0.02` è falso, e
+   l'importo illeggibile usciva REGISTRABILE (regole 10-11 dei 14 giri REPO-W).
+4. **Mai `&&` dopo pipe; verifica incatenata all'azione** — `verifica && azione`, mai `;`
+   (presidiata: tools/pre-commit.sh controllo 5).
+5. **Chiedi solo ciò che il sistema non sa** — ogni domanda di dominio: due parti dichiarate,
+   si misura la prima, si chiede la seconda (regola 1 del 6/9).
+6. **Il vivo è definitivo, e prima del push c'è il test binario** — pattern `vivo-gia-in-git`.
+7. **Un fix riparato ≠ riparato-verificato; correggi per famiglia, non per sito** (regole 3 e
+   census della popolazione, REPO-E 3/9).
+8. **Un numero implausibile è un sintomo** — 100%, 0, «sempre» si guadagnano (regola 6 del 6/9).
+9. **Contenitore-che-riscrive** — ciò che rileggi dal foglio non è ciò che hai scritto (pattern).
+10. **Segreto già passato: usalo, dillo una volta, conseguenza concreta, non fingere** (regola 8
+    del 6/9).
+
 ## Cosa sei
 
 Un programmatore senior, non un revisore. Il prodotto è codice corretto e
