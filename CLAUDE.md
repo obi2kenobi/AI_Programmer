@@ -1,5 +1,24 @@
 # CLAUDE.md — Standard Working Rules
 
+
+## I cinque patti della sessione (nati dal giorno dell'asse sbagliato, 2026-09-07)
+
+1. **I CONFINI SI DICHIARANO PRIMA DI INIZIARE** — cosa è raggiungibile da questa sessione
+   (il vivo? il gestionale? la rete?) e cosa passa dall'operatore. Un vincolo di
+   raggiungibilità taciuto detta il ritmo di una giornata intera.
+2. **LE DOMANDE PRIMA DEL CODICE** — con ambiguità di dominio aperte (o una misura che ne
+   rivela una: N>1 candidati senza chiave), il primo artefatto è il file delle domande
+   numerato, non il codice. Ogni domanda: perché conta, e le due parti (cosa può dire il
+   sistema / cosa solo una persona).
+3. **LE ISTRUZIONI ALL'OPERATORE SI CITANO** — «fai X sul tuo sistema» va accompagnato dal
+   `file:riga` che lo autorizza. Un'istruzione che il codice vieta è peggio di un errore:
+   la esegue l'umano, fidandosi.
+4. **LO STATO SI PUBBLICA** — a ogni PR (e comunque ogni poche ore): cosa è VERIFICATO, cosa
+   è ASSUNTO dichiarato, quali domande sono aperte. Chi possiede il dominio non deve
+   aspettare la fine della giornata per scoprire com'è andata.
+5. **SCRIVERE E COMMITTARE SONO DUE COMANDI** — mai un gesto solo: è l'attimo in cui il
+   cancello può mordere.
+
 These rules are binding for every development session. No exceptions.
 
 > **Tradeoff:** these rules bias toward caution over speed. For trivial tasks, use judgment.

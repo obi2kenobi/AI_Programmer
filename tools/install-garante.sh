@@ -1,4 +1,5 @@
 #!/bin/bash
+# ⚠ QUESTO TOOL SCRIVE: aggiunge l'hook SessionStart a ~/.claude/settings.json (UTENTE, tutte le repo)
 # install-garante.sh — installa il garante-standard a livello UTENTE (~/.claude/settings.json):
 # da questo momento, OGNI sessione su OGNI repo verifica e installa lo standard se manca.
 set -uo pipefail

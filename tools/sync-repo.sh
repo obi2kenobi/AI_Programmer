@@ -1,4 +1,5 @@
 #!/bin/bash
+# ⚠ QUESTO TOOL SCRIVE: clona la repo di destinazione e committa lo standard aggiornato (PR, mai push su main)
 # sync-repo.sh — 2026-08-24, report dal campo su REPO-G (F2): onboard-repo.sh e
 # bootstrap-app.sh sono A UN COLPO SOLO — copiano al momento dell'onboarding, e
 # da lì ogni repo diverge silenziosamente mentre l'hub aggiorna CLAUDE.md
@@ -72,6 +73,11 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # (solo in questo filone, mancava ancora sull'altro).
   # (dal campo REPO-E 2026-09-01: docs/campo/ dell'hub contiene voci storiche di ALTRI
 # clienti — si copia SOLO il README come formato, mai le voci: privacy)
+# (contromisura REPO-V 7/9): le LENTI DELLO STANDARD viaggiano anche loro — fixture
+#  senza provenienza e citazioni file:riga rotte sono i due banchi-verdi-bugiardi del campo
+for LENTE in fixture-provenienza.sh cita-verifica.sh; do
+  [ -f "$HERE/tools/$LENTE" ] && { mkdir -p tools; cp "$HERE/tools/$LENTE" "tools/$LENTE"; git add "tools/$LENTE" 2>/dev/null && COPIATI=$((COPIATI+1)); }
+done
 for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"

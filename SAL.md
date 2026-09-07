@@ -111,6 +111,7 @@
 - [2026-09-07 (2°) — l'arnese: 20 giri in 4 fasi (efficienza, adattività, collegamento, test)](#2026-09-07-2-l-arnese-20-giri-in-4-fasi-efficienza-adattività-collegamento-test)
 - [2026-09-07 (3°) — il set di sicurezza: la lente mai usata, sul codice giovane](#2026-09-07-3-il-set-di-sicurezza-la-lente-mai-usata-sul-codice-giovane)
 - [2026-09-07 (4°) — REPO-V: il giorno dell'asse sbagliato (voto del dominio: 1/100)](#2026-09-07-4-repo-v-il-giorno-dell-asse-sbagliato-voto-del-dominio-1-100)
+- [2026-09-07 (5°) — le contromisure: ogni fallimento della giornata 1/100 col suo dente](#2026-09-07-5-le-contromisure-ogni-fallimento-della-giornata-1-100-col-suo-dente)
 
 
 ## Stato
@@ -2035,3 +2036,19 @@ proprietario PRIMA di costruire a valle. E' la regola che collega «esegui non d
 scegliere in silenzio», e mancava. Pattern banco-browser aggiornato col ponte finto lento che
 registra TUTTE le chiamate. Riguardo al voto 1/100: il report stesso e' l'anti-asse-sbagliato —
 misura tutto, non deduce nulla, e porta le domande al proprietario.
+
+### 2026-09-07 (5°) — le contromisure: ogni fallimento della giornata 1/100 col suo dente
+
+Mandato di Luca: «tutte le contromisure, rivedendo tutto il sistema». Mappa fatta fallimento→
+buco→dente: fixture bugiarde → nessuna provenienza richiesta → tools/fixture-provenienza.sh
+(un file di fixture senza 'prodotto da:' e' ROSSO; morso in tre versi; test 4/4). Citazioni
+file:riga sbagliate → scritte senza verificare → tools/cita-verifica.sh nel pre-commit (la
+riga citata esiste; orari HH:MM esclusi; file di campo dichiarati; auto-morso: 4 rotte nei
+nostri doc, tutte di campo). Domande-after-codice → la skill ora lo dice come PRIMO passo e il
+CLAUDE.md standard (il vettore che viaggia col sync) porta i cinque patti: confini dichiarati
+prima, domande prima del codice, istruzioni all'operatore CITATE file:riga, stato pubblicato
+a ogni PR, scrivere e committare sono due comandi. Nomi mendaci → tutti i tool dell'hub che
+scrivono dichiarano in testa COSA scrivono. Spedizione → sync-repo e garante portano le due
+lenti nelle repo (provato su installazione fresca). Suite 129/129 (due test nuovi). Resta in
+mano a Luca: sync-repo --standard su REPO-V (serve il nome vero da repos.key: l'hub non ce
+l'ha per disegno).

@@ -1,4 +1,5 @@
 #!/bin/bash
+# ⚠ QUESTO TOOL SCRIVE: copia CLAUDE.md, .claude/, .opencode/, patterns/, tools/hook dentro la repo corrente (all'installazione dello standard)
 # garante-standard.sh — rende l'installazione di AI_Programmer OBBLIGATORIA:
 # gira a OGNI sessione su QUALSIASI repo (via ~/.claude/settings.json, livello utente)
 # e se il repo non ha lo standard, LO INSTALLA senza chiedere. Il metodo diventa
@@ -65,6 +66,11 @@ cp -R "$HUB/patterns" "$CWD/patterns" 2>/dev/null || true
 for H in $(jq -r '.hooks.PreToolUse[]?.hooks[]?.command' "$HUB/.claude/settings.json" 2>/dev/null | xargs -n1 basename 2>/dev/null | sort -u); do
   mkdir -p "$CWD/tools"
   cp "$HUB/tools/$H" "$CWD/tools/$H" 2>/dev/null || true
+done
+
+# le lenti dello standard (fixture-provenienza, cita-verifica): contromisure REPO-V 7/9
+for L in fixture-provenienza.sh cita-verifica.sh; do
+  [ -f "$HUB/tools/$L" ] && cp "$HUB/tools/$L" "$CWD/tools/$L"
 done
 
 # .night-verify minimo se assente
