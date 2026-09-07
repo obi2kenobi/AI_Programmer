@@ -4,3 +4,10 @@ Una web app Google Apps Script non ha un ambiente locale eseguibile (niente `cla
 
 
 **Vedi anche**: `banco-sintetico-per-calcoli-critici` · `manifest-webapp-nel-repo` · `link-assoluti-e-decodifica-robusta`
+
+**Il ponte finto per i gesti asincroni (REPO-V, 2026-09-07 — il doppio click)**: per provare che
+un doppio click scrive una volta sola, il doppio del server deve **rispondere LENTO** (~60ms:
+senza attesa il secondo click non è nemmeno tentabile, e un `sleep` nel test sarebbe una stampa,
+non una prova) e **registrare TUTTE le chiamate in un array** — `window.ULTIMA_DATA` tiene solo
+l'ultima e non può distinguere una chiamata da due. Il ponte che risponde subito e ricorda solo
+l'ultima risposta è compiacente esattamente sul gesto che doveva provare.

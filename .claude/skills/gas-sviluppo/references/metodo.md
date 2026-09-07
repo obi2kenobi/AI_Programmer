@@ -817,6 +817,44 @@ tre notti per questo). Le regole, tutte nate dal campo:
    decisioni diurne pendenti. E il garante dello standard AVVERTE quando il metodo installato
    in una repo diverge dall'hub — mai sovrascrive: la scelta è di chi possiede la repo.
 
+## Sei regole dal giorno dell'asse sbagliato REPO-V (2026-09-07) — voto del dominio: 1/100
+
+Report: docs/campo/2026-09-07-repo-v-asse-sbagliato-fixture-che-mentono.md. Dodici errori numerati,
+tre della stessa famiglia in un giorno. Il dato più grande: **la misura che confutava il disegno
+era già in mano** (12 candidati senza chiave) e la scala è stata costruita lo stesso.
+
+1. **⭐⭐ UNA MISURA CHE RIVELA UN'AMBIGUITÀ IRRIDUCIBILE È UN PUNTO DI DECISIONE DI DOMINIO, E
+   SI PORTA AL PROPRIETARIO PRIMA DI COSTRUIRE A VALLE.** Se una misura produce N>1 candidati
+   senza chiave, fermati e chiedi: non costruire la scala di risoluzione a monte sperando che
+   riduca N — se N>1 resta, l'hai costruita per niente. È la regola che manca fra «esegui non
+   dedurre» (che misura) e «non scegliere in silenzio» (che vale per le interpretazioni):
+   la misura che dice l'ambiguità è una domanda, non un dettaglio da gestire.
+2. **⭐⭐ UNA FIXTURE NASCE DA UN'ESECUZIONE DEL CAMMINO VERO, MAI SCRITTA A MANO — E LO DICHIARA.**
+   Ogni file di fixture porta in testa il comando che l'ha prodotto. Una fixture scritta a mano
+   è un'ipotesi travestita da misura, e produce banchi verdi su software rotto — il difetto
+   peggiore che questo metodo possa produrre, perché spegne l'unico segnale che resta. (Tre
+   ricorrenze in un giorno: layout DDT, campo inesistente, righe fratelle assenti.)
+3. **⭐ QUANDO IL DOMINIO MISURA UNA CARDINALITÀ, QUELLA CARDINALITÀ È FORMA OBBLIGATORIA DI
+   FIXTURE.** «12 righe aperte sullo stesso ordine» era misurato e nessuna fixture ne aveva più
+   di una: la guardia provava una forma che in produzione non esiste. Le cardinalità misurate si
+   scrivono accanto alla regola, e il banco ne contiene una fixture.
+4. **⭐ IL PONTE FINTO PER UN GESTO ASINCRONO RISPONDE LENTO E REGISTRA TUTTE LE CHIAMATE.**
+   `window.ULTIMA_*` non può provare «il doppio click scrive una volta sola»: serve una
+   risposta che si fa aspettare (~60ms) e un ARRAY delle chiamate, non solo l'ultima.
+   (In `patterns/banco-browser-per-webapp-gas.md`.)
+5. **⚠️ UN NOME CHE MENTE È UN DIFETTO DELL'HUB.** Un tool che si chiama come un lettore e
+   riscrive file (`bc_index.py`) ha fatto scrivere una repo dichiarata in sola lettura (E-016).
+   Il nome dichiara ciò che il tool FA (o lo dichiara la prima riga), e le repo in sola lettura
+   elencano gli strumenti che NON si eseguono.
+6. **⚠️ SCRIVERE E COMMITTARE SONO DUE COMANDI, SEMPRE.** La regola viveva in un commento
+   dell'hook — il posto che si legge DOPO aver sbagliato — e un commit col cancello rosso è
+   passato tre volte. Regola di primo livello: chi scrive e committa in un gesto solo salta il
+   momento in cui il dente può mordere.
+
+E il vincolo mai dichiarato: **BC non raggiungibile dalla sessione** — ogni verifica passava
+dall'operatore, e non è stato detto a inizio sessione che quello era il ritmo di tutta la
+giornata. I vincoli di raggiungibilità si dichiarano PRIMA, come i confini di irreversibilità.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.

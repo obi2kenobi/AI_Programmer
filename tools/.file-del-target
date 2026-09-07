@@ -14,3 +14,9 @@ PRESIDI.md
 loops/2026-09-01-giri-miglioramento.md
 # REPO-E: le 30 guardie difensive non presidiate (setaccio-guardie.sh vive nel progetto, non nell'hub)
 tools/setaccio-guardie.sh
+
+# REPO-V: il tool dal nome mendace citato dalla regola 5 del 7/9 (vive lì, non qui)
+bc_index.py
+# REPO-V: cancello e lente dei moduli citati dal report del 7/9 (vivono lì)
+tools/cancello.sh
+test-moduli-coperti.sh
