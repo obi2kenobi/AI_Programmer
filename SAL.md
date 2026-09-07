@@ -110,6 +110,7 @@
 - [2026-09-07 — terza notte completa: le due cure di ieri hanno retto al primo colpo](#2026-09-07-terza-notte-completa-le-due-cure-di-ieri-hanno-retto-al-primo-colpo)
 - [2026-09-07 (2°) — l'arnese: 20 giri in 4 fasi (efficienza, adattività, collegamento, test)](#2026-09-07-2-l-arnese-20-giri-in-4-fasi-efficienza-adattività-collegamento-test)
 - [2026-09-07 (3°) — il set di sicurezza: la lente mai usata, sul codice giovane](#2026-09-07-3-il-set-di-sicurezza-la-lente-mai-usata-sul-codice-giovane)
+- [2026-09-07 (4°) — REPO-V: il giorno dell'asse sbagliato (voto del dominio: 1/100)](#2026-09-07-4-repo-v-il-giorno-dell-asse-sbagliato-voto-del-dominio-1-100)
 
 
 ## Stato
@@ -2020,3 +2021,17 @@ body gonfiavano il prompt; troncato dichiarato, morso provato. G4 — avversari 
 attacchi, 0 aggirati. G5 — banco CHIUSO, albero pulito, automazione a 23c79c5 prima delle 23.
 La lente ha trovato in un'ora ciò che 20 giri di qualità non avevano visto: era una domanda
 diversa, non una lente più forte. Stanotte campo libero: issue #10, primo inserimento vero.
+
+### 2026-09-07 (4°) — REPO-V: il giorno dell'asse sbagliato (voto del dominio: 1/100)
+
+Report: docs/campo/2026-09-07-repo-v-asse-sbagliato-fixture-che-mentono.md (repo-v-asse-sbagliato-
+fixture-che-mentono). Il report più onesto del campo: dodici errori numerati con le ricevute, tre
+della stessa famiglia (fixture che mentono) in un giorno, un commit col cancello rosso (E-017),
+un tool dal nome mendace che ha scritto in una repo sola-lettura (E-016). E il dato che brucia:
+la misura che confutava il disegno (12 candidati senza chiave) era GIA' in mano quando la scala
+sbagliata e' stata costruita. Sei regole al canone — la prima vale piu' di tutte le altre: una
+misura che rivela un'ambiguita' irriducibile e' un punto di decisione di dominio, si porta al
+proprietario PRIMA di costruire a valle. E' la regola che collega «esegui non dedurre» a «non
+scegliere in silenzio», e mancava. Pattern banco-browser aggiornato col ponte finto lento che
+registra TUTTE le chiamate. Riguardo al voto 1/100: il report stesso e' l'anti-asse-sbagliato —
+misura tutto, non deduce nulla, e porta le domande al proprietario.
