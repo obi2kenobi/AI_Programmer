@@ -52,7 +52,10 @@ check_numero "$HERE/README.md" "test" "$N_TEST" \
 #   la famiglia dice "uso:", il traceback nudo è per gli umani una sparatoria
 TB=0
 for f in "$HERE"/tools/*.py; do
-  OUT=$(python3 "$f" </dev/null 2>&1 & PID=$!; sleep 0.9; kill $PID 2>/dev/null; wait $PID 2>/dev/null)
+  # (fase A efficienza, 2026-09-07: era sleep 0.9 -> 16 oracoli = 14.4s di sonno puro.
+  #  Misurato: avvio python 0.043s, traceback di un oracolo che tracolla su stdin vuoto
+  #  visibile a 0.2s. 0.35 = margine 2x sul caso peggiore misurato. Morso provato.)
+  OUT=$(python3 "$f" </dev/null 2>&1 & PID=$!; sleep 0.35; kill $PID 2>/dev/null; wait $PID 2>/dev/null)
   echo "$OUT" | grep -q "Traceback" && { echo "     · $(basename "$f"): traceback con input assente"; TB=1; }
 done
 # caso header spazzatura per i tool CSV a stdin
