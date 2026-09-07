@@ -121,6 +121,21 @@ if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
   TARGET_FILE=$(echo "$TERRitorio" | head -1)
   [ -f "$TARGET_FILE" ] || TARGET_FILE="$DIR/$TARGET_FILE"
   TARGET_FN=$(echo "$CODE" | grep -oE '^function [a-zA-Z_]+' | head -1 | sed 's/function //')
+  # (D2 2026-09-07): se il modello restituisce PIU' funzioni (il blocco intero dello script),
+  #  la prima puo' essere una GIA' ESISTENTE e la via della sostituzione parte col piede
+  #  sbagliato. Se fra le funzioni del blocco ce n'e' una ASSENTE dal file, si isola QUELLA:
+  #  e' la funzione nuova che l'issue chiede — la sostituzione riguarderebbe codice che il
+  #  modello ha solo ricopiato.
+  for FN_CAND in $(echo "$CODE" | grep -oE '^function [a-zA-Z_]+' | sed 's/function //'); do
+    if ! grep -q "function $FN_CAND" "$TARGET_FILE"; then
+      if [ "$FN_CAND" != "$TARGET_FN" ]; then
+        log "blocco multi-funzione: isolo $FN_CAND (nuova) — le altre gia' esistono nel file"
+      fi
+      TARGET_FN="$FN_CAND"
+      CODE=$(echo "$CODE" | awk -v fn="function $FN_CAND" '$0 ~ "^"fn {p=1} p {print} p && /^}$/ {exit}')
+      break
+    fi
+  done
   # (fase B adattiva, 2026-09-07 — chiude il DEBITI "inserzione funzioni nuove": le issue
   #  "Feature:" chiedono funzioni che NON esistono ancora; degradare a proposta teneva
   #  l'issue #10 ferma da tre notti. L'inserzione ha REGOLE dal campo: in un .html si va

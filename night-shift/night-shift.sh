@@ -20,6 +20,9 @@ set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/lib.sh"
+# ai_timeout: wrapper portabile (macOS non ha timeout(1)) — vive in llm/_timeout.sh
+# shellcheck source=../../llm/_timeout.sh
+source "$HERE/../llm/_timeout.sh" 2>/dev/null || true
 CONF="$HERE/repos.conf"
 LOG="$HOME/night-shift.log"
 # log() PRIMA di qualunque uso: il self-pull qui sotto la chiamava quando ancora
@@ -178,7 +181,7 @@ shift_repo() {
   log "TURNO su $REPO: $COUNT issue in coda"
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
-  local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0
+  local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0 ASPETTA_GIORNO=""
   # giro 8/10 (set 2 "capacità di progettare"): proposta mai implementata di
   # docs/test-processo-2026-08-21.md ("il turno scrive nel log l'esito-fase
   # design-linked: sì/no — il dato per misurare se il miglioramento funziona").
@@ -376,7 +379,10 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         VERIFICA_CMD=$(sed -n '/^## Verifica/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '^(node|npm|python3?) [a-zA-Z0-9_./ -]+' | head -1)
         VERIFICA_OUT="non dichiarata o non eseguibile al sicuro"
         if [ -n "$VERIFICA_CMD" ] && ! echo "$VERIFICA_CMD" | grep -qE 'clasp|rm |push|deploy|curl|git'; then
-          VERIFICA_OUT=$(cd "$DIR" && eval "timeout 60 $VERIFICA_CMD" >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
+          # timeout(1) non esiste su macOS: ai_timeout e' il wrapper portabile dell'hub
+          # (llm/_timeout.sh, nato per questo). D2 2026-09-07: la verifica diceva ROTTA
+          # per command-not-found scambiato per esito — un finto rosso insegna a ignorare i rossi.
+          VERIFICA_OUT=$(cd "$DIR" && ai_timeout 60 $VERIFICA_CMD >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
           log "Issue #$NUM: verifica dell'issue eseguita: $VERIFICA_OUT"
         fi
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
