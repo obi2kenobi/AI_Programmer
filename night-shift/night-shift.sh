@@ -181,7 +181,7 @@ shift_repo() {
   log "TURNO su $REPO: $COUNT issue in coda"
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
-  local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0 ASPETTA_GIORNO=""
+  local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0
   # giro 8/10 (set 2 "capacità di progettare"): proposta mai implementata di
   # docs/test-processo-2026-08-21.md ("il turno scrive nel log l'esito-fase
   # design-linked: sì/no — il dato per misurare se il miglioramento funziona").
@@ -307,7 +307,7 @@ $BODY"
       if grep -q "Proposta notturna" <<<"$COMMENTI_PRE"; then
         log "Issue #$NUM: proposta gia pubblicata in un turno precedente — niente duplicati, aspetta il giorno (saltata SENZA rigenerare)"
         PROPOSTE=$((PROPOSTE+1))
-        ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"
+        ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"  # globale: la legge il SAL di fine turno
         continue
       fi
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
@@ -338,7 +338,7 @@ $BODY"
           { echo "🌙 Proposta notturna (NON applicata: funzione nuova o bersaglio non trovato in automatico). Il codice generato dal modello locale:"; echo '```javascript'; cat "$PATCH_LATEST"; echo '```'; echo ""; echo "Da verificare e collegare a mano (il giorno dispone): la funzione è proposta, manca l'inserimento nel file e l'attivazione (botone/menu/chiamata)."; } > "$COMMENTO"
           if gh issue comment "$NUM" -R "$REPO" --body-file "$COMMENTO" >/dev/null 2>&1; then
             log "Issue #$NUM: proposta pubblicata come commento (niente PR di scarto)"
-            ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"
+            ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"  # globale: la legge il SAL di fine turno
           else
             log "⚠ Issue #$NUM: commento della proposta fallito — il codice resta in $PATCH_LATEST"
           fi
@@ -505,6 +505,8 @@ GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_PROPOSTE=0
 TOT_FAILED=0
+# globale perche' l'heredoc del SAL la legge fuori da shift_repo (D2: unbound al primo giro)
+ASPETTA_GIORNO=""
 TOT_SKIPPED_DESIGN=0
 for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1

@@ -133,6 +133,11 @@ if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
       fi
       TARGET_FN="$FN_CAND"
       CODE=$(echo "$CODE" | awk -v fn="function $FN_CAND" '$0 ~ "^"fn {p=1} p {print} p && /^}$/ {exit}')
+      # il PATCH FILE e' cio' che viene APPLICATO: deve essere la funzione isolata,
+      # non il blocco intero del modello — D2 secondo giro ha inserito <script> e una
+      # copia di una funzione esistente perche' CODE (verificato) e PATCH (applicato)
+      # erano due cose diverse. Verificato = applicato, o non e' una verifica.
+      printf '%s\n' "$CODE" > "$PATCH_FILE"
       break
     fi
   done
