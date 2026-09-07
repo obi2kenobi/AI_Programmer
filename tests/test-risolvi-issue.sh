@@ -44,7 +44,7 @@ python3 "$MOCK_DIR/serve.py" "$MOCK_BODY_FILE" > "$MOCK_DIR/port" 2>/dev/null &
 MOCK_PID=$!
 for _ in $(seq 1 20); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done
 MOCK_PORT=$(cat "$MOCK_DIR/port")
-trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4" "$SB5" "$SB6" "$SB7"' EXIT
+trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4" "$SB5" "$SB6" "$SB7" "$SB8"' EXIT
 ok "server mock su porta $MOCK_PORT"
 
 # --- caso 1: APPLICATO — una funzione rotta, il mock la restituisce corretta
@@ -170,6 +170,20 @@ if [ $RC -eq 3 ] && ! grep -q "function raddoppia" "$SB7/solo.html" && echo "$OU
   ok "RIFIUTO-HTML: senza punto dichiarato resta proposta (mai inserzione alla cieca)"
 else
   ko "RIFIUTO-HTML: rc=$RC"
+fi
+
+# --- caso S1 (sicurezza, set 2026-09-07): il Territorio di un issue non legge/scrive
+# FUORI dal progetto. Attacco provato prima della cura: /tmp/segreto-finto.py veniva
+# letto e incollato nel prompt al modello. Un issue e' input esterno fino a una lettura.
+SB8=$(mktemp -d /tmp/risolvi-sb8.XXXXXX)
+printf 'function fuori() { return 1; }\n' > "$MOCK_DIR/segreto-fuori.js"   # FUORI da $SB8
+printf 'function dentro() { return 1; }\n' > "$SB8/dentro.js"
+{ echo "## Commessa"; echo "usa i file indicati."; echo ""; echo "## Territorio"; echo "File: $MOCK_DIR/segreto-fuori.js e dentro.js"; echo ""; echo "## Verifica"; echo "node --check"; } > "$SB8/issue.md"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB8" "$SB8/issue.md" 2>&1); RC=$?
+if echo "$OUT" | grep -q "FUORI dal progetto" && [ $RC -ne 2 ]; then
+  ok "sicurezza: path fuori dal progetto rifiutato e DICHIARATO (mai letto, mai scritto)"
+else
+  ko "sicurezza: file esterno non confinato (rc=$RC)"
 fi
 
 # --- caso 3: il modello non produce codice — il solver rifiuta, niente file toccati

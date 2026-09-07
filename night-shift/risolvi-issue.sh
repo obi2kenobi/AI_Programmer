@@ -34,6 +34,17 @@ fi
 log "File da leggere: $TERRitorio"
 
 # --- 2. legge i file e costruisce il prompt ---
+# (set sicurezza 2026-09-07, G1): il Territorio di un issue e' INPUT ESTERNO. Un path
+#  assoluto o con ../ faceva leggere al turno file FUORI dal progetto e mandarli al
+#  modello (provato: /tmp/segreto-finto.py letto e incollato nel prompt). Regola del
+#  canone: un dato esterno che arriva fino a una lettura va confinato. Ogni path
+#  risolto deve stare DENTRO $DIR, realpath contro realpath — niente prefissi fidati.
+dentro_il_progetto() {
+  RP_F=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null)
+  RP_D=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$2" 2>/dev/null)
+  case "$RP_F" in "$RP_D"|"$RP_D"/*) return 0;; *) return 1;; esac
+}
+
 FILES_CONTENT=""
 for F in $TERRitorio; do
   # il chiamante (night-shift.sh) NON cd-a dentro $DIR: i percorsi del Territorio
@@ -41,6 +52,10 @@ for F in $TERRitorio; do
   # di suite 2026-09-04: i 20 test manuali giravano da dentro la dir e non lo vedevano)
   [ -f "$F" ] || F="$DIR/$F"
   [ -f "$F" ] || continue
+  if ! dentro_il_progetto "$F" "$DIR"; then
+    log "⛔ $F e' FUORI dal progetto: il Territorio di un issue non legge fuori da $DIR (salto)"
+    continue
+  fi
   REL_PATH=$(realpath --relative-to="$DIR" "$F" 2>/dev/null || echo "$F")
   # (fase A efficienza, 2026-09-07): App.html intera = 41KB = 262s di inferenza.
   #  Limite per file 24000 caratteri (~6-8K token), TRONCATO DICHIARATO nel prompt —
@@ -55,7 +70,15 @@ for F in $TERRitorio; do
   FILES_CONTENT+="=== FILE: $REL_PATH ===\n$CORPO\n\n"
 done
 
-COMMESSA=$(cat "$ISSUE")
+# (set sicurezza G3, 2026-09-07): il limite da 24k valeva per i FILE, non per il corpo
+#  dell'issue: un body gigante gonfiava il prompt senza limite. Stesso patto: troncato
+#  DICHIARATO, mai taglio silenzioso.
+COMMESSA=$(head -c 24000 "$ISSUE")
+if [ "$(wc -c < "$ISSUE" | tr -d ' ')" -gt 24000 ]; then
+  log "⚠ issue troncata a 24000 caratteri (dichiarato nel prompt)"
+  COMMESSA="$COMMESSA
+[... ISSUE TRONCATA: mostrati i primi 24000 caratteri su $(wc -c < "$ISSUE" | tr -d ' ').]"
+fi
 
 PROMPT=$(cat <<EOF
 You are a coding assistant. Read the following GitHub issue and the source code. Write the EXACT code changes needed. Output ONLY the modified functions with their full body, wrapped in code blocks. Do NOT re-read files, do NOT ask questions, do NOT explain: just output the corrected code.
@@ -120,6 +143,12 @@ N_BLOCKS=$(echo "$CODE" | grep -c "^function \|^  function " || true)
 if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
   TARGET_FILE=$(echo "$TERRitorio" | head -1)
   [ -f "$TARGET_FILE" ] || TARGET_FILE="$DIR/$TARGET_FILE"
+  # stesso confine in SCRITTURA: mai sostituire/inserire fuori da $DIR
+  if ! dentro_il_progetto "$TARGET_FILE" "$DIR"; then
+    log "⛔ TARGET $TARGET_FILE fuori dal progetto: rifiuto (il Territorio di un issue non scrive fuori)"
+    TARGET_FILE=""
+  fi
+  [ -n "$TARGET_FILE" ] && [ -f "$TARGET_FILE" ] || TARGET_FILE=""
   TARGET_FN=$(echo "$CODE" | grep -oE '^function [a-zA-Z_]+' | head -1 | sed 's/function //')
   # (D2 2026-09-07): se il modello restituisce PIU' funzioni (il blocco intero dello script),
   #  la prima puo' essere una GIA' ESISTENTE e la via della sostituzione parte col piede
