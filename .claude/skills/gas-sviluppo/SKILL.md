@@ -54,6 +54,16 @@ cosa serve, le domande di dominio da fare a una persona).
 
 tools/ contiene 16 tool Python: 11 oracoli contabili, 2 rilevatori (gas_qualita, verifica_banco), indice BC e correttore tipi.
 
+## Il primo artefatto: le domande, non il codice
+
+Quando una sessione apre una repo con ambiguità di dominio aperte (o con una misura che ne
+rivela una: N>1 candidati senza chiave), il PRIMO artefatto consegnato è il **file delle
+domande numerate** — ognuna con perché conta e le due parti dichiarate (cosa può dire il
+sistema / cosa solo una persona), riga `Risposta` vuota, conteggio in testa. Il codice viene
+dopo le risposte, o dopo che le domande sono state poste. Su REPO-W questo modello ha chiuso
+17 domande in un giro; su REPO-V la domanda decisiva è arrivata a fine giornata, col pannello
+sbagliato già costruito. `tools/fixture-provenienza.sh` è il dente gemello per i banchi.
+
 ## Il catalogo pattern
 
 patterns/ contiene i pattern minati dal campo: cerca prima di reinventare. Il conto vive nell'indice (`ls patterns/*.md | grep -v README | wc -l`), non qui: un numero in questa riga invecchia il giorno dopo.
