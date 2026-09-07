@@ -106,6 +106,7 @@
 - [2026-09-06 (2°) — REPO-W: l'emulatore e le 17 domande — dieci regole al canone](#2026-09-06-2-repo-w-l-emulatore-e-le-17-domande-dieci-regole-al-canone)
 - [2026-09-06 (3°) — REPO-E porta due report a mano: 20 lenti + 7 risposte + deploy v78](#2026-09-06-3-repo-e-porta-due-report-a-mano-20-lenti-7-risposte-deploy-v78)
 - [2026-09-06 (4°) — cinque giri di verifica e correzione sull'hub](#2026-09-06-4-cinque-giri-di-verifica-e-correzione-sull-hub)
+- [2026-09-07 — terza notte completa: le due cure di ieri hanno retto al primo colpo](#2026-09-07-terza-notte-completa-le-due-cure-di-ieri-hanno-retto-al-primo-colpo)
 
 
 ## Stato
@@ -1926,3 +1927,20 @@ costretto ai percorsi pieni e il ripensamento al revert secco. Giro 5 (ogni dife
 il SAL del turno era l'unico scoperto → test 5e/5f. Finale: banco integrale su albero pulito,
 PASSAGGIO CHIUSO. Il dente dei path ha morso 2 volte i miei commit, quello dei numeri 1: il sistema
 difende se stesso anche da chi lo cura.
+
+### 2026-09-07 — terza notte completa: le due cure di ieri hanno retto al primo colpo
+
+Memoria del turno (da night-shift/.sal-turni.md, primo turno che la scrive davvero — prima era
+un no-op): 3 repo, Bilancio #10 → solver 262s → proposta non applicabile (funzione nuova) →
+«proposta già pubblicata in un turno precedente — niente duplicati, aspetta il giorno».
+L'idempotenza ha funzionato IN PRODUZIONE: zero commenti duplicati. E la memoria del turno è
+scritta e letta: questo giro di mattina la sta usando. Cura del mattino: il check di idempotenza
+girava DOPO il solver — la notte ha bruciato 262s di GPU per rigenerare una proposta che ha
+poi scartato. Ora il check (una lettura gh) sta PRIMA del solver (minuti di modello). Morso
+evitato in corsa: il mio primo inserimento faceva rm di una variabile non ancora definita —
+set -u avrebbe ucciso il turno; verificato l'ordine prima di committare.
+
+APERTO, DA DISPORRE COL GIORNO: l'issue #10 ha ormai TRE passaggi notturni senza decisione
+diurna. La proposta è buona ed è lì dal 5/9 mattina: o si applica (inserire esportaCSV in
+App.html + bottone — il DEBITI «solver: inserzione funzioni nuove»), o si chiude l'issue.
+La notte non può fare di più: aspetta il giorno.

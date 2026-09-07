@@ -297,6 +297,15 @@ $BODY"
     # direttamente, il modello risponde col codice, lo script lo applica e verifica.
     NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
     if [ -f "$NIGHT_SOLVER" ]; then
+      # idempotenza della proposta PRIMA del solver: la notte del 6/9 ha rigenerato
+      # per 262s di GPU una proposta gia' pubblicata e poi scartata. Il check costa
+      # una lettura gh; il solver costa minuti di modello locale.
+      COMMENTI_PRE=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
+      if grep -q "Proposta notturna" <<<"$COMMENTI_PRE"; then
+        log "Issue #$NUM: proposta gia pubblicata in un turno precedente — niente duplicati, aspetta il giorno (saltata SENZA rigenerare)"
+        PROPOSTE=$((PROPOSTE+1))
+        continue
+      fi
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
       # scarica l'issue in un file locale per lo script
       ISSUE_FILE="/tmp/night-issue-$NUM.md"
