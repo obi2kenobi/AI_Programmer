@@ -229,7 +229,9 @@ target, patch, fn = sys.argv[1], sys.argv[2], sys.argv[3]
 src = open(target).read()
 new_fn = open(patch).read().strip()
 # trova la funzione vecchia (dalla dichiarazione alla chiusura con indentazione coerente)
-pattern = re.compile(r'(^function ' + re.escape(fn) + r'\([^)]*\)\s*\{.*?^\})', re.M | re.S)
+# (^\s*function: il caso #10 del Bilancio — funzione a 2 spazi di indentazione,
+#  grep la trovava, la regex a colonna zero no: FUNZIONE-NON-TROVATA su codice esistente)
+pattern = re.compile(r'(^\s*function ' + re.escape(fn) + r'\([^)]*\)\s*\{.*?^\s*\})', re.M | re.S)
 match = pattern.search(src)
 if match:
     src = src[:match.start()] + new_fn + src[match.end():]

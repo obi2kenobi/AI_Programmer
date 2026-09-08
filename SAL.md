@@ -112,6 +112,7 @@
 - [2026-09-07 (3°) — il set di sicurezza: la lente mai usata, sul codice giovane](#2026-09-07-3-il-set-di-sicurezza-la-lente-mai-usata-sul-codice-giovane)
 - [2026-09-07 (4°) — REPO-V: il giorno dell'asse sbagliato (voto del dominio: 1/100)](#2026-09-07-4-repo-v-il-giorno-dell-asse-sbagliato-voto-del-dominio-1-100)
 - [2026-09-07 (5°) — le contromisure: ogni fallimento della giornata 1/100 col suo dente](#2026-09-07-5-le-contromisure-ogni-fallimento-della-giornata-1-100-col-suo-dente)
+- [2026-09-08 — la notte che inseguiva una commessa già consegnata (E-023 + chiusura #10)](#2026-09-08-la-notte-che-inseguiva-una-commessa-già-consegnata-e-023-chiusura-10)
 
 
 ## Stato
@@ -2052,3 +2053,18 @@ scrivono dichiarano in testa COSA scrivono. Spedizione → sync-repo e garante p
 lenti nelle repo (provato su installazione fresca). Suite 129/129 (due test nuovi). Resta in
 mano a Luca: sync-repo --standard su REPO-V (serve il nome vero da repos.key: l'hub non ce
 l'ha per disegno).
+
+### 2026-09-08 — la notte che inseguiva una commessa già consegnata (E-023 + chiusura #10)
+
+La notte del 7/9 è finita pulita ma non ha mai provato l'inserzione: il check pre-solver
+sulla proposta (nato per risparmiare GPU) saltava l'issue un secondo dopo averla aperta —
+presupponeva che la proposta fosse lo stato finale, e con l'inserzione non lo è più (E-023,
+check ritirato; stratificazione: PR aperta→skip, proposta di stanotte→no duplicati, il ritento
+con capacità migliore non è spam). Il recupero del mattino svela il colpo di scena: la #10 era
+GIA' IMPLEMENTATA (commit a72213d di una sessione diurna: funzione in App.html:645 E cablata,
+bottone expConfronto → consumo_teorico_vs_reale.csv). Quattro notti a proporre ciò che il
+giorno aveva già fatto: tracker e codice divergenti. Chiusa con le prove. Due denti nuovi:
+il check GIA'-FATTO (la funzione esiste ed è chiamata → il turno lo dice e aspetta il giorno,
+mai decide) e la regex della sostituzione che accetta le funzioni INDENTATE (il caso #10 era
+indentata a 2 spazi: grep la trovava, la regex a colonna zero no). Banco: 10/10 col caso
+INDENTATA. Stanotte la coda è pulita: chi vuole lavoro notturno, scriva issue vere.

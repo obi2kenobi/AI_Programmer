@@ -26,3 +26,4 @@ InventoryModels.gs
 tools/cancello-prima-del-commit-hook.sh
 Dashboard.html
 WebAppDashboard.gs
+App.html

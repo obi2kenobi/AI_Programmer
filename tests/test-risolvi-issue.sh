@@ -95,9 +95,9 @@ else
   ko "PATCH: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 fi
 
-# --- caso 4: PROPOSTA con bak da pulire — funzione presente ma indentata:
-# grep la trova, la regex di sostituzione (^function a colonna 0) no: il bak
-# creato prima del tentativo dev'essere rimosso (notte 4/9: finiva in PR)
+# --- caso 4: funzione presente ma INDENTATA (il caso #10 vero: 2 spazi) —
+# la regex ora accetta ^\s*function: SOSTITUISCE, non degrada a proposta.
+# (Prima: grep la trovava, la regex a colonna zero no, bak orfano — notte 4/9)
 SB4=$(mktemp -d /tmp/risolvi-sb4.XXXXXX)
 # bersaglio con funzione NON a colonna zero: la regex ^function non la becca
 printf 'if (true) {\n  function calc(a, b) {\n    return a + b;\n  }\n}\n' > "$SB4/calc2.js"
@@ -115,10 +115,10 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\n```\n"}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB4" "$SB4/issue.md" 2>&1); RC=$?
-if [ $RC -eq 3 ] && [ ! -f "$SB4/calc2.js.night-bak" ] && echo "$OUT" | grep -q "ESITO: PATCH"; then
-  ok "PROPOSTA: sostituzione fallita = exit 3 e NESSUN bak lasciato in giro"
+if [ $RC -eq 0 ] && grep -q "a + b \* 2" "$SB4/calc2.js" && [ ! -f "$SB4/calc2.js.night-bak" ] && echo "$OUT" | grep -q "APPLICATO"; then
+  ok "INDENTATA: la funzione a 2 spazi viene sostituita (il caso #10 vero)"
 else
-  ko "PROPOSTA: rc=$RC bak=$([ -f "$SB4/calc2.js.night-bak" ] && echo presente || echo assente) out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
+  ko "INDENTATA: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 fi
 
 # --- caso 3b: FUNZIONE NUOVA in .js — la issue Feature si risolve: INSERITO, wiring dichiarato
