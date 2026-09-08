@@ -300,6 +300,35 @@ $BODY"
     # direttamente, il modello risponde col codice, lo script lo applica e verifica.
     NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
     if [ -f "$NIGHT_SOLVER" ]; then
+      # (2026-09-08, dal caso #10): la notte inseguiva una commessa che il giorno aveva
+      # gia' consegnato (funzione presente E cablata, commit a72213d) — quattro notti a
+      # proporre cio' che esisteva. Il tracker e il codice divergono in silenzio: questo
+      # check li riavvicina PRIMA di spendere il modello. Se la funzione esiste ed e'
+      # chiamata, il turno NON decide: lo dice e aspetta il giorno.
+      FN_NOMINATA=$(sed -n '/^## Commessa/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '[a-zA-Z_][a-zA-Z0-9_]*\(' | sort -u | head -3 | tr -d '(')
+      TERR_FILE=$(sed -n '/^## Territorio/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '[a-zA-Z0-9_./-]+\.(gs|js|html|py)' | head -1)
+      if [ -n "$TERR_FILE" ] && [ -n "$FN_NOMINATA" ]; then
+        TF="$DIR/$TERR_FILE"; [ -f "$TF" ] || TF="$TERR_FILE"
+        if [ -f "$TF" ]; then
+          GIA_FATTO=""
+          for FN in $FN_NOMINATA; do
+            if grep -q "function $FN" "$TF" && grep -qE "$FN\(" "$TF"; then
+              GIA_FATTO="$FN ($(grep -n "function $FN" "$TF" | head -1 | cut -d: -f1))"
+              break
+            fi
+          done
+          if [ -n "$GIA_FATTO" ]; then
+            log "Issue #$NUM: $GIA_FATTO esiste ed e' chiamata in $TERR_FILE — GIA' IMPLEMENTATA? Il turno non decide: lo chiede al giorno"
+            CORPO_GIA="/tmp/night-giafatto-$NUM.md"
+            { echo "🌙 Il turno legge nel codice che \`$GIA_FATTO\` esiste ed è chiamata in \`$TERR_FILE\` — la commessa sembra GIA' IMPLEMENTATA (il tracker e il codice divergevano). Se manca qualcosa di specifico, riscrivi l'issue col difetto preciso; se è tutto lì, questa nota basta a chiuderla."; } > "$CORPO_GIA"
+            COMMENTI_GIA=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
+            grep -q "GIA' IMPLEMENTATA" <<<"$COMMENTI_GIA" || gh issue comment "$NUM" -R "$REPO" --body-file "$CORPO_GIA" >/dev/null 2>&1
+            rm -f "$CORPO_GIA"
+            ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: gia' implementata? (chiede il giorno)"
+            continue
+          fi
+        fi
+      fi
       # (E-023, 2026-09-08): il check pre-solver sulla proposta ESISTENTE e' RITIRATO.
       #  Nato per risparmiare GPU (la notte del 6/9 rigenerava 262s per nulla), ha bloccato
       #  la PRIMA inserzione vera: col solver che ora INSERISCE funzioni nuove, un commento
