@@ -300,16 +300,13 @@ $BODY"
     # direttamente, il modello risponde col codice, lo script lo applica e verifica.
     NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
     if [ -f "$NIGHT_SOLVER" ]; then
-      # idempotenza della proposta PRIMA del solver: la notte del 6/9 ha rigenerato
-      # per 262s di GPU una proposta gia' pubblicata e poi scartata. Il check costa
-      # una lettura gh; il solver costa minuti di modello locale.
-      COMMENTI_PRE=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
-      if grep -q "Proposta notturna" <<<"$COMMENTI_PRE"; then
-        log "Issue #$NUM: proposta gia pubblicata in un turno precedente — niente duplicati, aspetta il giorno (saltata SENZA rigenerare)"
-        PROPOSTE=$((PROPOSTE+1))
-        ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"  # globale: la legge il SAL di fine turno
-        continue
-      fi
+      # (E-023, 2026-09-08): il check pre-solver sulla proposta ESISTENTE e' RITIRATO.
+      #  Nato per risparmiare GPU (la notte del 6/9 rigenerava 262s per nulla), ha bloccato
+      #  la PRIMA inserzione vera: col solver che ora INSERISCE funzioni nuove, un commento
+      #  di proposta non e' piu' lo stato finale — e' lo stato di una CAPACITA' VECCHIA.
+      #  La stratificazione giusta: PR aperta -> skip (gia' sopra, prima di tutto); proposta
+      #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
+      #  capacita' migliore non e' spam: e' il lavoro che riparte.
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
       # scarica l'issue in un file locale per lo script
       ISSUE_FILE="/tmp/night-issue-$NUM.md"

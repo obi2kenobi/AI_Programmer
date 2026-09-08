@@ -417,3 +417,25 @@
   Il caso reale: PR #16 chiusa, proposta ripubblicata nell'issue #10.
 - Aggiramento: le Feature (funzioni nuove + wiring) restano proposte fino al debito
   DEBITI "solver: inserzione di funzioni nuove".
+
+## E-023 L'ottimizzazione che bloccava la capacità nuova
+- Data / sessione: 2026-09-08 (notte del 7/9, la prima con l'inserzione)
+- Famiglia: R1 (assunzione non verificata: "la proposta è lo stato finale")
+- Sintomo: l'issue #10 saltata "SENZA rigenerare" un secondo dopo l'apertura: la prima
+  inserzione vera del solver non è mai partita. La notte è finita verde e onesta — e non
+  ha fatto il lavoro che esisteva per fare.
+- Causa prossima: il check pre-solver sulla proposta esistente (nato il 7/9 per risparmiare
+  i 262s di GPU della rigenerazione) scattava prima che il solver potesse provare la
+  capacità nuova. Presupponeva che un commento di proposta fosse definitivo.
+- Causa del ragionamento: l'ottimizzazione è stata costruita sul mondo di ieri (proposta =
+  stato finale) senza rileggere la stratificazione dei presidî: PR aperta → skip (stava già
+  sopra, prima di tutto); proposta effettiva di stanotte → niente duplicati (check nel ramo
+  RC=3). Il check pre-solver era il terzo strato, quello che non serviva.
+- Perché non ci ha fermati: il log diceva una cosa VERA ("proposta già pubblicata") — un
+  messaggio corretto per il mondo in cui era stato scritto.
+- Guardia: night-shift/night-shift.sh (la stratificazione al posto del check: PR → skip;
+  RC=3 → commento idempotente; il ritento con capacità migliore non è spam), presidiata da
+  tests/test-flusso-artefatti.sh.
+- Verifica guardia: il turno rilanciato a mano sul Bilancio ha processato la #10 col solver
+  (vedi SAL 2026-09-08): l'inserzione ha avuto la sua battuta.
+- Aggiramento: se una proposta resta la proposta (RC=3), il check nel ramo evita i duplicati.
