@@ -438,3 +438,24 @@
 - Verifica guardia: il turno rilanciato a mano sul Bilancio ha processato la #10 col solver
   (vedi SAL 2026-09-08): l'inserzione ha avuto la sua battuta.
 - Aggiramento: se una proposta resta la proposta (RC=3), il check nel ramo evita i duplicati.
+
+## E-024 I rilevatori mentono: tre verdicti plausibili su casi falsi, in un'ora
+- Data / sessione: 2026-09-09 (dieci giri di rilettura integrale)
+- Famiglia: R1 (assunzione non verificata: il rilevatore funziona)
+- Chi l'ha trovato: la sessione stessa, applicando «verifica la cosa stessa, non quella accanto» al proprio rilevatore
+- Sintomo: 59 riferimenti pendenti inesistenti dichiarati dalle skill (erano tutti veri); poi
+  la S16 restava rossa su un indice appena rigenerato; la S17 non mordeva il proprio fixture.
+- Causa prossima: tre difetti di rilevatore in cascata — cwd di default invece del repo,
+  concatenazione '.'+path senza slash ('.SAL.md'), ricerca di una tabella dove l'indice è
+  una lista puntata.
+- Causa del ragionamento: i rilevatori vengono scritti e CREDUTI: nessuno verifica il
+  verificatore col caso noto prima di fidarsi del suo verdetto. È la stessa famiglia di
+  E-020 (verifica nelle condizioni sbagliate) portata dentro gli strumenti dell'hub.
+- Perché non ci ha fermati: i verdicti erano plausibili e locali — un elenco di falsi
+  pendenti sembra lavoro fatto, non un bug del misuratore.
+- Guardia: tools/prova-rilevatori.sh (l'antivirus: canarini in quarantena per ogni sonde
+  che conta — pianta il difetto noto, pretende quel FIND, clone pulito verde) +
+  tests/test-prova-rilevatori.sh nel banco + autoasserzioni dentro i rilevatori (S17).
+- Verifica guardia: 4/4 canarini tenuti, clone pulito verde, morso provato.
+- Aggiramento: un rilevatore nuovo senza canarino nell'antivirus — la regola del canone
+  («nasce col canarino dentro, o è un'opinione con l'uniforme da controllo») lo vieta.
