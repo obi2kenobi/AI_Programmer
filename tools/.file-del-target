@@ -27,3 +27,6 @@ tools/cancello-prima-del-commit-hook.sh
 Dashboard.html
 WebAppDashboard.gs
 App.html
+# REPO-V: pattern e lente citati dal report della settimana contata (vivono lì)
+patterns/sabotaggio-plausibile.md
+test-citazioni-vere.sh
