@@ -115,6 +115,7 @@
 - [2026-09-08 — la notte che inseguiva una commessa già consegnata (E-023 + chiusura #10)](#2026-09-08-la-notte-che-inseguiva-una-commessa-già-consegnata-e-023-chiusura-10)
 - [2026-09-09 — REPO-V porta la settimana contata: la metà mancante del metodo](#2026-09-09-repo-v-porta-la-settimana-contata-la-metà-mancante-del-metodo)
 - [2026-09-09 (2°) — dieci giri di rilettura integrale e ottimizzazione](#2026-09-09-2-dieci-giri-di-rilettura-integrale-e-ottimizzazione)
+- [2026-09-09 (3°) — il sesto patto: il codice parla (ogni passo loggato)](#2026-09-09-3-il-sesto-patto-il-codice-parla-ogni-passo-loggato)
 
 
 ## Stato
@@ -2104,3 +2105,19 @@ versione guardava una tabella: l'indice e' una lista — corretta al formato VER
 integrale CHIUSO 129/129, 65 pattern, 61+1 report. Il tema del giro: i RILEVATORI si rompono
 come il codice — tre volte il mio ha mentito (cwd, slash, tabella) e tre volte la verifica
 del rilevatore l'ha preso. Verifica il verificatore, sempre.
+
+### 2026-09-09 (3°) — il sesto patto: il codice parla (ogni passo loggato)
+
+Regola di Luca: «codice semplice, pieno di spiegazioni, pieno di log — ogni passo deve avere
+log». Fatta strutturale in quattro mosse. (1) Regola nel metodo: il silenzio non e' pulizia,
+e' invisibilita' — chi legge il log e' sempre in ritardo di un contesto; un log in piu' costa
+una riga, uno mancante costa un giro di debug. (2) Sesto patto nel CLAUDE.md: VIAGGIA col sync
+verso tutte le repo. (3) Misurata la densita' reale: i tool di cuore narrano 1:4-1:6, i silenzi
+veri erano sal-indice e gate-summary — riempiti (sal-indice ora dice cosa legge e rigenera;
+gate-summary apre dichiarando file e righe). (4) Sonde S17: pavimento 1 narrazione ogni 20
+righe eseguibili A SOFFITTO, rilevatore che conta TUTTE le forme (echo/log/printf/heredoc/print
+python — help.sh era un falso muto del rilevatore precedente) e AUTOASSERZIONE obbligatoria.
+Il morso: tre fixture sbagliate di fila prima di quella giusta (bersaglio sintetico davvero
+muto, 60 righe zero output: MORDE) — ogni volta avevo lasciato una print. La regola vale per
+i rilevatori come per il codice: il fixture che non crea la condizione che dice di creare,
+prova nulla.

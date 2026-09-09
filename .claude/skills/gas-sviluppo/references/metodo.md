@@ -896,6 +896,26 @@ codice sbagliato — non impedisce di **affermare cose sbagliate**. Le quattro f
 è il dato da cui si vede l'asimmetria — le lenti i meccanici, il dominio i giudizi. Finché
 non c'è, il registro conta gli errori e nasconde la loro forma.
 
+## Il codice parla: semplice, spiegato, e OGNI PASSO LOGGATO (regola di Luca, 2026-09-09)
+
+Il codice silenzioso non è pulito: è **invisibile**. Quando qualcosa va storto — di notte, in
+una sessione remota, tre giorni dopo — il log è l'unica narrazione che resta, e chi legge è
+sempre in ritardo di un contesto. Le tre parti della regola:
+
+1. **SEMPLICE**: il codice si legge come la prosa che lo circonda. Un blocco che serve un
+  commento per spiegare COSA fa, spesso chiede di essere diviso in passi che non lo chiedono.
+2. **SPIEGATO**: il commento dice il PERCHÉ e il vincolo, non il cosa (stile di questo repo:
+  il difetto reale che ha generato la riga, con la data).
+3. **LOGGATO OGNI PASSO**: ogni fase annunciata, ogni decisione col suo motivo, ogni salto
+  DICHIARATO (mai silenzioso — la regola più vecchia del canone, qui estesa dallo scarto al
+  passo). Un log in più costa una riga; un log mancante costa un giro di debug e spesso il
+  tempo dell'operatore. Il silenzio rallenta lo sviluppo, non lo accelera.
+
+Forma minima: all'inizio COSA sto per fare; a ogni bivio COSA ho scelto e perché; alla fine
+COSA è riuscito, cosa no, e dove stanno le tracce. Presidio: sonde S17 (densità di narrazione
+nei tool del turno e delle lenti — un rilevatore che conta ECHO, printf, heredoc e print,
+perché un rilevatore cieco su alcune forme mente con la stessa faccia di un log mancante).
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.

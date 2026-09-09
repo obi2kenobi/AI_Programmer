@@ -1,6 +1,13 @@
 # CLAUDE.md — Standard Working Rules
 
 
+## Il codice parla (sesto patto)
+
+Codice semplice, pieno di spiegazioni, e **ogni passo loggato**: all'inizio cosa sto per fare,
+a ogni bivio cosa ho scelto e perché, alla fine cosa è riuscito. Ogni salto dichiarato, mai
+silenzioso. Un log in più costa una riga; un log mancante costa un giro di debug — e chi legge
+il log è sempre in ritardo di un contesto. Il silenzio non è pulizia: è invisibilità.
+
 ## I cinque patti della sessione (nati dal giorno dell'asse sbagliato, 2026-09-07)
 
 1. **I CONFINI SI DICHIARANO PRIMA DI INIZIARE** — cosa è raggiungibile da questa sessione
