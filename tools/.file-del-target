@@ -30,3 +30,7 @@ App.html
 # REPO-V: pattern e lente citati dal report della settimana contata (vivono lì)
 patterns/sabotaggio-plausibile.md
 test-citazioni-vere.sh
+# file di campo citati dalle skill (vivono nelle repo di destinazione)
+FORK-STATO.md
+CATALOGO_ENDPOINT_BC.md
+docs/GRAMMATICA_DOMINIO.md

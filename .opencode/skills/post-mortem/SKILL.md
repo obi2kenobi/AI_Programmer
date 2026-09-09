@@ -1,6 +1,6 @@
 ---
 name: post-mortem
-description: Usa questa skill QUANDO scopri un tuo errore — un fix che ha rotto qualcos'altro, un test che mentiva, una metrica che misurava un'altra cosa, un output che non tornava. Non per i bug del dominio (quelli vanno negli oracoli): per i TUI errori di processo e di ragionamento. L'errore non si archivia: si mette A REGIME — sette campi, una guardia che deve sparare se l'errore torna, e la famiglia di ragionamento che lo ha prodotto. Il registro vive in docs/errori/REGISTRO.md e la lente test-errori.sh pretende che ogni voce sia completa e che la guardia esista davvero.
+description: Usa questa skill QUANDO scopri un tuo errore — un fix che ha rotto qualcos'altro, un test che mentiva, una metrica che misurava un'altra cosa, un output che non tornava. Non per i bug del dominio (quelli vanno negli oracoli): per i TUI errori di processo e di ragionamento. L'errore non si archivia: si mette A REGIME — otto campi, una guardia che deve sparare se l'errore torna, e la famiglia di ragionamento che lo ha prodotto. Il registro vive in docs/errori/REGISTRO.md e la lente test-errori.sh pretende che ogni voce sia completa e che la guardia esista davvero.
 ---
 
 # Post-mortem a regime — il protocollo
@@ -16,7 +16,12 @@ non ha ripristinato, la tua asserzione citava un output che non esiste.
 **Ferma il fix. Prima il post-mortem, poi si ripara** — il post-mortem freddo
 è più onesto di quello fatto dopo essersi giustificati col contesto.
 
-## I sette campi (tutti obbligatori)
+## I campi (tutti obbligatori — l'ottavo dal 2026-09-09)
+
+Dal report REPO-V «la settimana contata»: il campo **«Chi l'ha trovato» (lente / vivo / padrone
+del dominio)** è obbligatorio — è il dato che mostra l'asimmetria: le lenti prendono gli errori
+meccanici, il dominio quelli di giudizio, che sono i più costosi. Il registro senza quel campo
+conta gli errori e nasconde la loro forma.
 
 1. **Sintomo** — cosa si è VISTO per primo (il rosso, l'output strano, il file
    perso). Il sintomo, non la diagnosi.
@@ -67,6 +72,7 @@ Formato (append a `docs/errori/REGISTRO.md`, mai riscritto):
 ## E-NNN <titolo breve, il sintomo>
 - Data / sessione: YYYY-MM-DD (<dove stavi facendo cosa>)
 - Famiglia: R1…R6 (+ eventuali)
+- Chi l'ha trovato: lente / vivo / padrone del dominio (obbligatorio da E-024, 2026-09-09)
 - Sintomo: …
 - Causa prossima: …
 - Causa del ragionamento: …
