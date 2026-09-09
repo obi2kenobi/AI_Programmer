@@ -916,6 +916,14 @@ COSA è riuscito, cosa no, e dove stanno le tracce. Presidio: sonde S17 (densit�
 nei tool del turno e delle lenti — un rilevatore che conta ECHO, printf, heredoc e print,
 perché un rilevatore cieco su alcune forme mente con la stessa faccia di un log mancante).
 
+**E L'ANTIVIRUS DEI RILEVATORI** (`tools/prova-rilevatori.sh`): i rilevatori muoiono mentendo
+— verdicti plausibili su casi falsi (tre in un'ora: directory sbagliata, path senza slash,
+formato scambiato). Il rimedio non è fiducia: è il **canarino**. Ogni sonde che conta viene
+riprovata contro il suo caso noto in un clone di quarantena: si pianta il difetto, la batteria
+DEVE dare quel FIND; si pulisce, DEVE essere verde. Un rilevatore che non morde il suo canarino
+è dichiarato ROTTO anche se oggi è verde. Ogni rilevatore nuovo nasce col suo canarino dentro
+l'antivirus — o è un'opinione con l'uniforme da controllo.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.

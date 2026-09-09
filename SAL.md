@@ -116,6 +116,7 @@
 - [2026-09-09 — REPO-V porta la settimana contata: la metà mancante del metodo](#2026-09-09-repo-v-porta-la-settimana-contata-la-metà-mancante-del-metodo)
 - [2026-09-09 (2°) — dieci giri di rilettura integrale e ottimizzazione](#2026-09-09-2-dieci-giri-di-rilettura-integrale-e-ottimizzazione)
 - [2026-09-09 (3°) — il sesto patto: il codice parla (ogni passo loggato)](#2026-09-09-3-il-sesto-patto-il-codice-parla-ogni-passo-loggato)
+- [2026-09-09 (4°) — l'antivirus dei rilevatori (mandate di Luca: «mi ha traumatizzato»)](#2026-09-09-4-l-antivirus-dei-rilevatori-mandate-di-luca-mi-ha-traumatizzato)
 
 
 ## Stato
@@ -2121,3 +2122,17 @@ Il morso: tre fixture sbagliate di fila prima di quella giusta (bersaglio sintet
 muto, 60 righe zero output: MORDE) — ogni volta avevo lasciato una print. La regola vale per
 i rilevatori come per il codice: il fixture che non crea la condizione che dice di creare,
 prova nulla.
+
+### 2026-09-09 (4°) — l'antivirus dei rilevatori (mandate di Luca: «mi ha traumatizzato»)
+
+Domanda di Luca: «non sei scioccato?» — no, ed e' la risposta giusta: un rilevatore che
+menta e' il modo PREVISTO in cui i rilevatori muoiono (lo dicevano E-020, il report REPO-V
+«le lenti mentivano», la meta-mutazione). La diffidenza non puo' essere un episodio:
+tools/prova-rilevatori.sh — ogni sonde che conta viene riprovata contro il suo CANARINO in
+un clone di quarantena (difetto noto piantato → quel FIND DEVE arrivare; clone pulito →
+verde). 4/4 canarini, 0 rilevatori rotti, morso provato. Costruire l'antivirus ha beccato
+due ulteriori lezioni da solo: il clone non contiene i gitignored citati dai documenti
+(repos.conf, graph.json — falsi rossi a vuoto), e il suo stesso test documenta la catena
+del rosso. E-024 nel registro — PRIMA voce col campo «Chi l'ha trovato»: la sessione stessa,
+applicando la regola a se'. Regola nel canone: ogni rilevatore nuovo nasce col canarino
+dentro l'antivirus — «o e' un'opinione con l'uniforme da controllo».
