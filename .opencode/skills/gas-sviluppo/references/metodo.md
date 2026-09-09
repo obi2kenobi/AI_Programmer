@@ -868,11 +868,13 @@ codice sbagliato — non impedisce di **affermare cose sbagliate**. Le quattro f
    dichiarare chiuso: *per quali strade questo dato arriva a quello schermo?* La risposta si
    CONTA (grep sulle chiamate), si scrive nella voce, e ogni cammino vuole la sua attesa.
    (#228: due strade, una provata, l'altra tornava a schermo dopo il deploy.)
-2. **⭐⭐ UNA LENTE LE CUI ASSERZIONI SONO TUTTE NEGATIVE DEVE PRIMA ASERIRE CHE IL SOGGETTO
+2. **⭐⭐ UNA LENTE LE CUI ASSERZIONI SONO TUTTE NEGATIVE DEVE PRIMA DIRE CHE IL SOGGETTO
    ESISTE** — e chi ritaglia da un'ancora (grep/sed su un marcatore) LANCIA se l'ancora non
    c'è: il ritaglio sul vuoto torna stringa vuota e ogni attesa negativa è vera a vuoto.
    Proposta scritta al mattino, violata il pomeriggio dello stesso giorno: **finché non è una
-   lente che diventa rossa, la regola non esiste.**
+   lente che diventa rossa, la regola non esiste.** (E la forma del sabotaggio giusto è
+   pattern: `sabotaggio-plausibile` — la regola sbagliata più probabile, non una qualsiasi:
+   la mezza difesa, la menzione al posto dell'effetto, il valore atteso già presente.)
 3. **⭐⭐ LA TIPOGRAFIA DELLA MISURA È RISERVATA ALLE MISURE.** Tabelle, conteggi, elenchi
    puntati = qualcosa è stato eseguito, col comando citabile. Un'ipotesi si scrive in prosa,
    contiene la parola «ipotesi» e ha accanto **cosa la confermerebbe**. (La tabella vera con
@@ -898,7 +900,7 @@ non c'è, il registro conta gli errori e nasconde la loro forma.
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
 
-**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale` · `test-che-certifica-il-bug` (il fix parte dal test che lo replica) · `due-verifiche-due-domande`
+**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale` · `test-che-certifica-il-bug` (il fix parte dal test che lo replica) · `sabotaggio-plausibile` (la regola sbagliata piu’ probabile, non una qualsiasi) · `due-verifiche-due-domande`
 **Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `ambiente-censimento-dichiarato` · `contenitore-che-riscrive` (ciò che rileggi dal contenitore è ciò che gli hai dato? coercizione e formula injection)
 **Sicurezza**: `segreto-come-impronta` · `allowlist-per-segmento` · `autorita-di-dominio-batte-oracolo` (chi decide vince su qualsiasi oracolo tecnico)
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`

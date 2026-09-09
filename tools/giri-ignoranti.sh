@@ -199,5 +199,19 @@ echo ""
   fi
 }
 
+# S16 — L'INDICE DEL SAL E' FRESCO: la tabella dei contenuti (generata da sal-indice.sh)
+#   deve contenere l'ultima voce del diario. Un indice indietro e' una porta che indica
+#   stanze che non ci sono piu' (G9 2026-09-09: trovato a 107 voci rigenerate a mano).
+{
+  ULTIMA=$(grep -E "^### " "$HERE/SAL.md" | tail -1 | sed 's/^### //')
+  BLOCCO_INDICE=$(sed -n '/SAL-INDICE/,/^## [^I]/p' "$HERE/SAL.md" | head -200)
+  if grep -qF "$(echo "$ULTIMA" | cut -c1-40)" <<<"$BLOCCO_INDICE"; then
+    sonda 0 "S16 indice del SAL fresco (contiene l'ultima voce)"
+  else
+    echo "     ultima voce non in indice: $ULTIMA"
+    sonda 1 "S16 indice del SAL FERMO (lanciare: bash tools/sal-indice.sh)"
+  fi
+}
+
 echo "VERDETTO: $FINDINGS finding"
 [ "$FINDINGS" -eq 0 ]
