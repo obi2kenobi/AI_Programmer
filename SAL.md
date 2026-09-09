@@ -113,6 +113,7 @@
 - [2026-09-07 (4°) — REPO-V: il giorno dell'asse sbagliato (voto del dominio: 1/100)](#2026-09-07-4-repo-v-il-giorno-dell-asse-sbagliato-voto-del-dominio-1-100)
 - [2026-09-07 (5°) — le contromisure: ogni fallimento della giornata 1/100 col suo dente](#2026-09-07-5-le-contromisure-ogni-fallimento-della-giornata-1-100-col-suo-dente)
 - [2026-09-08 — la notte che inseguiva una commessa già consegnata (E-023 + chiusura #10)](#2026-09-08-la-notte-che-inseguiva-una-commessa-già-consegnata-e-023-chiusura-10)
+- [2026-09-09 — REPO-V porta la settimana contata: la metà mancante del metodo](#2026-09-09-repo-v-porta-la-settimana-contata-la-metà-mancante-del-metodo)
 
 
 ## Stato
@@ -2068,3 +2069,21 @@ il check GIA'-FATTO (la funzione esiste ed è chiamata → il turno lo dice e as
 mai decide) e la regex della sostituzione che accetta le funzioni INDENTATE (il caso #10 era
 indentata a 2 spazi: grep la trovava, la regex a colonna zero no). Banco: 10/10 col caso
 INDENTATA. Stanotte la coda è pulita: chi vuole lavoro notturno, scriva issue vere.
+
+### 2026-09-09 — REPO-V porta la settimana contata: la metà mancante del metodo
+
+Report: docs/campo/2026-09-09-repo-v-settimana-errori-del-programmatore.md (repo-v-settimana-
+errori-del-programmatore; anonimizzati Magazzino_Treviso→REPO-V e la sede). Il dato guida: 22 voci
+in 7 giorni, R1+R2 al 64% — «lo stesso errore in due forme: non eseguire, e non chiedere» — e
+l'asimmetria nascosta che il registro non tracciava ( ricostruita a mano): le lenti prendono i
+meccanici (15), il vivo e Luca i giudizi (7, i più costosi, dopo deploy o richieste ripetute).
+LA TESI, che vale per tutto l'hub: il metodo impedisce di consegnare codice sbagliato e li'
+funziona; NON impedisce di affermare cose sbagliate — «è chiuso», «non si può provare», «la
+causa è questa», «serve una tua misura»: nessuna guardia su nessuna delle quattro. Sei regole
+al canone (cammini contati per dire chiuso; lente negativa asserisce prima l'esistenza del
+soggetto; tipografia della misura riservata alle misure; cosa se ne farà della misura chiesta,
+mai due di fila senza strada indipendente; allargamento di permessi mai sull'assunzione; i
+numeri vivono dove si rigenerano). Registro: campo «Chi l'ha trovato» obbligatorio da E-024
+(test aggiornato, le voci storiche restano). La regola 2 e' la lezione piu' amara: la proposta
+era stata scritta LA MATTINA e violata IL POMERIGGIO dello stesso giorno — «finche' non e'
+una lente che diventa rossa, la regola non esiste».

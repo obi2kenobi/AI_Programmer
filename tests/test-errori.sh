@@ -29,6 +29,15 @@ while IFS= read -r voce; do
     echo "$BLOCCO" | grep -q "^- $c" || MANCA="$MANCA $c"
   done
   [ -z "$MANCA" ] && ok "$ID: sette campi + famiglia completi" || ko "$ID: mancanti:$MANCA"
+  # (2026-09-09, report REPO-V): dalle voci dal 24 in poi, il campo «Chi l'ha trovato:»
+  # e' obbligatorio — e' il dato che mostra l'asimmetria (lenti=i meccanici, dominio=i giudizi).
+  # Le voci storiche restano come sono: il passato non si riscrive per la regola nuova.
+  N=$(echo "$ID" | grep -oE '[0-9]+')
+  if [ "$N" -ge 24 ] 2>/dev/null; then
+    echo "$BLOCCO" | grep -q "^- Chi l'ha trovato:" \
+      && ok "$ID: chi l'ha trovato dichiarato" \
+      || ko "$ID: manca «Chi l'ha trovato:» (lente / vivo / padrone del dominio — obbligatorio da E-024)"
+  fi
   FAM=$(echo "$BLOCCO" | grep "^- Famiglia:" | grep -coE "R[1-6]")
   [ "${FAM:-0}" -ge 1 ] && ok "$ID: famiglia canonica" || ko "$ID: famiglia fuori canone R1-R6"
   # la guardia citata esiste davvero (il file che nomina deve stare nel repo)

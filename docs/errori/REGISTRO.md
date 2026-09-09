@@ -1,9 +1,8 @@
-# Registro degli errori a regime
-
-> Ogni voce è un errore VERO, fatto e documentato — con la guardia che ora
-> spara se torna. Il protocollo sta nella skill `post-mortem`; questa è la
-> memoria operativa. Le famiglie R1-R6 sono definite lì. Si appende, non si
-> riscrive: anche l'errore imbarazzante resta, perché il prossimo lo rifarebbe.
+# Registro degli errori — ogni voce con: Data/sessione, Famiglia (R1-R6), Sintomo,
+# Causa prossima, Causa del ragionamento, Perché non ci ha fermati, Guardia (+ file che esiste),
+# Verifica guardia, Aggiramento. Dal 2026-09-09 (report REPO-V, settimana contata) anche:
+# **Chi l'ha trovato** (lente / vivo / padrone del dominio) — è il dato che mostra l'asimmetria:
+# le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.
 
 ## E-001 Il canone svuotato da un write anticipato
 - Data / sessione: 2026-08-28 (100 giri del ciclo-vivo)

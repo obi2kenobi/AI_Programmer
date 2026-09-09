@@ -855,6 +855,45 @@ E il vincolo mai dichiarato: **BC non raggiungibile dalla sessione** — ogni ve
 dall'operatore, e non è stato detto a inizio sessione che quello era il ritmo di tutta la
 giornata. I vincoli di raggiungibilità si dichiarano PRIMA, come i confini di irreversibilità.
 
+## La metà mancante: le affermazioni (REPO-V, settimana contata, 2026-09-09)
+
+Report: docs/campo/2026-09-09-repo-v-settimana-errori-del-programmatore.md. 22 voci in 7 giorni;
+R1+R2 = 64% (lo stesso errore in due forme: non eseguire, e non chiedere). E il dato che il
+registro non tracciava: **le lenti prendono gli errori meccanici (15), il vivo e il padrone del
+dominio prendono quelli di giudizio (7, i più costosi)**. Il metodo impedisce di consegnare
+codice sbagliato — non impedisce di **affermare cose sbagliate**. Le quattro frasi senza guardia:
+«è chiuso», «non si può provare», «la causa è questa», «serve una tua misura».
+
+1. **⭐⭐ «CHIUSO» RICHIEDE L'ELENCO DEI CAMMINI, NON IL SINTOMO CHE SPARISCE.** Prima di
+   dichiarare chiuso: *per quali strade questo dato arriva a quello schermo?* La risposta si
+   CONTA (grep sulle chiamate), si scrive nella voce, e ogni cammino vuole la sua attesa.
+   (#228: due strade, una provata, l'altra tornava a schermo dopo il deploy.)
+2. **⭐⭐ UNA LENTE LE CUI ASSERZIONI SONO TUTTE NEGATIVE DEVE PRIMA ASERIRE CHE IL SOGGETTO
+   ESISTE** — e chi ritaglia da un'ancora (grep/sed su un marcatore) LANCIA se l'ancora non
+   c'è: il ritaglio sul vuoto torna stringa vuota e ogni attesa negativa è vera a vuoto.
+   Proposta scritta al mattino, violata il pomeriggio dello stesso giorno: **finché non è una
+   lente che diventa rossa, la regola non esiste.**
+3. **⭐⭐ LA TIPOGRAFIA DELLA MISURA È RISERVATA ALLE MISURE.** Tabelle, conteggi, elenchi
+   puntati = qualcosa è stato eseguito, col comando citabile. Un'ipotesi si scrive in prosa,
+   contiene la parola «ipotesi» e ha accanto **cosa la confermerebbe**. (La tabella vera con
+   la conclusione falsa, smentita dal log in una riga: «Completata, 4,978 s».)
+4. **⭐⭐ PRIMA DI CHIEDERE UNA MISURA AL PADRONE DEL DOMINIO, SI SCRIVE COSA SE NE FARÀ.**
+   Se la risposta è «una correzione che potrei fare comunque», si fa la correzione. Mai due
+   richieste di misura di fila sullo stesso problema senza aver provato, nel mezzo, una
+   strada che non passa da lui. Il tempo del dominio è la risorsa più scarsa: si spende solo
+   per ciò che **cambia la mossa**.
+5. **⭐ UN ALLARGAMENTO DI PERMESSI NON SI COSTRUISCE SULL'ASSUNZIONE.** Si chiede prima,
+   anche a costo di fermare il lavoro. Il segno da riconoscere è preciso: *se sto scrivendo
+   «è tua da decidere», non ho la risposta.*
+6. **UN NUMERO CHE MARCISCE IN UNA DESCRIZIONE È UN NUMERO CHE QUALCUNO CREDERÀ** (il corpo
+   della PR riscritto tre volte con conteggi invalidati dal commit dopo): i numeri vivono
+   dove si rigenerano, non nelle prose. E **un'imprecisione in un commento diventa una bugia
+   a schermo appena qualcuno la copia** — e chi la copia è quasi sempre chi l'ha scritta.
+
+**E il registro guadagna il campo «Chi l'ha trovato» (lente / vivo / padrone del dominio)**:
+è il dato da cui si vede l'asimmetria — le lenti i meccanici, il dominio i giudizi. Finché
+non c'è, il registro conta gli errori e nasconde la loro forma.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
