@@ -213,5 +213,49 @@ echo ""
   fi
 }
 
+# S17 — IL CODICE PARLA: densita' di narrazione nei tool del turno e delle lenti
+#   (regola di Luca 2026-09-09: ogni passo loggato). Il rilevatore conta TUTTE le forme
+#   di output (log/echo/printf, heredoc che stampa, print python) perche' uno cieco su
+#   alcune forma mente con la stessa faccia di un log mancante (help.sh era un falso muto).
+{
+  MUTE=$(python3 - "$HERE" <<'PYS17'
+import re, sys, os
+here = sys.argv[1]
+target = ["night-shift/night-shift.sh","night-shift/risolvi-issue.sh","night-shift/lib.sh",
+          "night-shift/morning-gate.sh","night-shift/gate-summary.sh","night-shift/sal-indice.sh",
+          "tools/sal-indice.sh","tools/pre-commit.sh","tools/banco-passaggio.sh",
+          "tools/giri-ignoranti.sh","tools/fixture-provenienza.sh","tools/cita-verifica.sh"]
+# autoasserzione del rilevatore: night-shift.sh (1 log ogni 4 righe) DEVE risultare narrato
+def densita(path):
+    lines = open(path, errors="ignore").read().split("\n")
+    execn, logs = 0, 0
+    for l in lines:
+        t = l.strip()
+        if not t or t.startswith("#"): continue
+        execn += 1
+        if re.search(r"\b(log|echo|printf)\b|cat ?<<|print\(", t): logs += 1
+    return execn, logs
+e, l = densita(os.path.join(here, "night-shift/night-shift.sh"))
+assert l >= e // 10, "rilevatore rotto: non vede la narrazione di night-shift.sh"
+muti = []
+for t in target:
+    p = os.path.join(here, t)
+    if not os.path.exists(p): continue
+    e, l = densita(p)
+    import math
+    soglia = math.ceil(e / 20)  # il patto e' forte: OGNI passo; 1 ogni 20 righe e' il pavimento
+    if e > 20 and l < soglia:
+        muti.append(f"{t} ({l} narrazioni su {e} righe eseguibili, pavimento {soglia})")
+for m in muti: print("     muto:", m)
+sys.exit(1 if muti else 0)
+PYS17
+)
+  if [ -n "$MUTE" ]; then
+    sonda 1 "S17 tool senza narrazione (regola: ogni passo loggato)"
+  else
+    sonda 0 "S17 ogni tool del turno narra i suoi passi (>=1 ogni 20 righe eseguibili (a soffitto))"
+  fi
+}
+
 echo "VERDETTO: $FINDINGS finding"
 [ "$FINDINGS" -eq 0 ]
