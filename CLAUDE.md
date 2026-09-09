@@ -1,6 +1,12 @@
 # CLAUDE.md — Standard Working Rules
 
 
+## Il debito si brucia alla riapertura (settimo patto)
+
+Alla riapertura: i debiti aperti si contano (`bash tools/debiti-riapertura.sh`); quelli di
+dominio diventano domande singole, una alla volta, col perché; quelli risolvibili si fanno
+PRIMA del lavoro nuovo. Il debito non invecchia: matura interessi.
+
 ## Il codice parla (sesto patto)
 
 Codice semplice, pieno di spiegazioni, e **ogni passo loggato**: all'inizio cosa sto per fare,

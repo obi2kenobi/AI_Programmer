@@ -924,6 +924,23 @@ DEVE dare quel FIND; si pulisce, DEVE essere verde. Un rilevatore che non morde 
 è dichiarato ROTTO anche se oggi è verde. Ogni rilevatore nuovo nasce col suo canarino dentro
 l'antivirus — o è un'opinione con l'uniforme da controllo.
 
+## Il debito si brucia alla riapertura (settimo patto — regola di Luca, 2026-09-09)
+
+Il debito non è un backlog che invecchia: è un passivo che matura interessi. Alla riapertura
+di un progetto — o alla ripresa del lavoro dopo una pausa — succede questo, in quest'ordine:
+
+1. **SI LEGGONO I DEBITI APERTI** (`bash tools/debiti-riapertura.sh` — li conta, li
+   classifica, e l'hook di SessionStart li mette nel contesto dell'apertura: mai taciti).
+2. **I DEBITI DI DOMINIO DIVENTANO DOMANDE SINGOLE**: una alla volta, col perché, al
+   proprietario — ogni risposta chiude un debito e diventa subito codice o regola datata.
+   Il modello che funziona: le 17 domande di REPO-W, una dietro l'altra.
+3. **I DEBITI RISOLVIBILI SI FANNO PRIMA DI PROCEDERE**: il lavoro nuovo parte dopo, o il
+   debito invecchia ancora e la prossima riapertura lo ritroverà più caro.
+
+Presidii: `tools/debiti-riapertura.sh` (spedito con lo standard), il riepilogo nell'hook di
+SessionStart, e il canarino del classificatore in `tests/test-debiti-riapertura.sh` — perché
+anche un classificatore di debiti è un rilevatore, e i rilevatori muoiono mentendo.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.

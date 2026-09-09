@@ -117,6 +117,7 @@
 - [2026-09-09 (2°) — dieci giri di rilettura integrale e ottimizzazione](#2026-09-09-2-dieci-giri-di-rilettura-integrale-e-ottimizzazione)
 - [2026-09-09 (3°) — il sesto patto: il codice parla (ogni passo loggato)](#2026-09-09-3-il-sesto-patto-il-codice-parla-ogni-passo-loggato)
 - [2026-09-09 (4°) — l'antivirus dei rilevatori (mandate di Luca: «mi ha traumatizzato»)](#2026-09-09-4-l-antivirus-dei-rilevatori-mandate-di-luca-mi-ha-traumatizzato)
+- [2026-09-09 (5°) — il settimo patto: il debito si brucia alla riapertura](#2026-09-09-5-il-settimo-patto-il-debito-si-brucia-alla-riapertura)
 
 
 ## Stato
@@ -2136,3 +2137,16 @@ due ulteriori lezioni da solo: il clone non contiene i gitignored citati dai doc
 del rosso. E-024 nel registro — PRIMA voce col campo «Chi l'ha trovato»: la sessione stessa,
 applicando la regola a se'. Regola nel canone: ogni rilevatore nuovo nasce col canarino
 dentro l'antivirus — «o e' un'opinione con l'uniforme da controllo».
+
+### 2026-09-09 (5°) — il settimo patto: il debito si brucia alla riapertura
+
+Regola di Luca: meno debito possibile; alla riapertura di un progetto i debiti DI DOMINIO si
+propongono come DOMANDE SINGOLE (una alla volta) e i RISOLVIBILI si fanno prima possibile.
+Fatto strutturale: tools/debiti-riapertura.sh (conta, classifica dominio/risolvibile, emette
+le domande col perché, dichiara anche il vuoto — sesto patto), agganciato all'hook di
+SessionStart (il riepilogo entra nel contesto di OGNI apertura: mai taciti), spedito con lo
+standard (sync-repo + garante), col canarino del classificatore nel banco (6/6: tre classi
+contate giuste, dominio→domanda, risolvibile→da-fare-subito, saldato escluso, senza debiti
+lo dichiara). Settimo patto nel metodo e nel CLAUDE.md vettore. In casa nostra: 15 debiti
+aperti → 8 domande di dominio pronte + 7 risolvibili — la prossima sessione che apre l'hub
+li trovera' in cima, e questo e' esattamente il punto.
