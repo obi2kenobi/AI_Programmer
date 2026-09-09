@@ -61,6 +61,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [presidio-senza-consumatori](presidio-senza-consumatori.md) | REPO-S: engine meta.warnings (zero consumatori) | 2026-09-03 |
 | [regola-provata-non-assunta](regola-provata-non-assunta.md) | REPO-A: tools/test-motore.js:eq + blocco vm | 2026-07-30 |
 | [riga-in-coda-non-interposta](riga-in-coda-non-interposta.md) | REPO-H: Main.gs generateCopertina_ | 2026-08-27 |
+| [sabotaggio-plausibile](sabotaggio-plausibile.md) | REPO-V: settimana contata (report: docs/campo/2026-09-09-repo-v-settimana-errori-del-programmatore.md) | 2026-09-09 |
 | [scarto-mai-silenzioso](scarto-mai-silenzioso.md) | progetto onboardato: Extractor.gs:applicaVincoliRange_ | 2026-08-21 |
 | [segreto-come-impronta](segreto-come-impronta.md) | REPO-A: tools/maschera-segreti.js:mascheraSegreti | 2026-08-11 |
 | [soglia-con-default-guardato](soglia-con-default-guardato.md) | REPO-I: soglie di legge indici di crisi | 2026-08-27 |
@@ -75,4 +76,3 @@ documenti (DEBITI: da valutare se vale i token).
 | [vivo-gia-in-git](vivo-gia-in-git.md) | REPO-E: deploy v78, 18/18 (report: docs/campo/2026-09-06-repo-e-sette-risposte-deploy-v78.md) | 2026-09-06 |
 | [watchdog-guardato](watchdog-guardato.md) | night-shift/lib.sh:run_guarded | 2026-08-18 |
 | [workdir-e-proprietario](workdir-e-proprietario.md) | regola processo (SAL 2026-08-21) | 2026-08-21 |
-| [tolleranza-derivata-non-scelta](tolleranza-derivata-non-scelta.md) | REPO-R ingestione 2026-09-02 | 2026-09-03 |

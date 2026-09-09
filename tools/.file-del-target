@@ -34,3 +34,4 @@ test-citazioni-vere.sh
 FORK-STATO.md
 CATALOGO_ENDPOINT_BC.md
 docs/GRAMMATICA_DOMINIO.md
+tools/grafo-findings.js
