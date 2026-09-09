@@ -114,6 +114,7 @@
 - [2026-09-07 (5°) — le contromisure: ogni fallimento della giornata 1/100 col suo dente](#2026-09-07-5-le-contromisure-ogni-fallimento-della-giornata-1-100-col-suo-dente)
 - [2026-09-08 — la notte che inseguiva una commessa già consegnata (E-023 + chiusura #10)](#2026-09-08-la-notte-che-inseguiva-una-commessa-già-consegnata-e-023-chiusura-10)
 - [2026-09-09 — REPO-V porta la settimana contata: la metà mancante del metodo](#2026-09-09-repo-v-porta-la-settimana-contata-la-metà-mancante-del-metodo)
+- [2026-09-09 (2°) — dieci giri di rilettura integrale e ottimizzazione](#2026-09-09-2-dieci-giri-di-rilettura-integrale-e-ottimizzazione)
 
 
 ## Stato
@@ -2087,3 +2088,19 @@ numeri vivono dove si rigenerano). Registro: campo «Chi l'ha trovato» obbligat
 (test aggiornato, le voci storiche restano). La regola 2 e' la lezione piu' amara: la proposta
 era stata scritta LA MATTINA e violata IL POMERIGGIO dello stesso giorno — «finche' non e'
 una lente che diventa rossa, la regola non esiste».
+
+### 2026-09-09 (2°) — dieci giri di rilettura integrale e ottimizzazione
+
+G1: docs/.DS_Store era TRACCIATO (via + gitignore). G2: llm/ riverito — pulito (pipefail
+ovunque, zero E-002, sonda risposta-non-JSON presente). G3: agents sincroni e con porte.
+G4: post-mortem portata agli OTTO campi (diceva sette mentre il registro ne chiede otto);
+sweep riferimenti skill — IL MIO RILEVATORE ERA ROTTO DUE VOLTE (cwd di default, poi '.'+path
+senza slash: '.SAL.md'): 59 falsi pendenti prima della cura; ora l'autoasserzione del rilevatore
+e' nella regola dell'arte. G5: il pattern sabotaggio-plausibile — «la cosa che ha reso di
+piu'» secondo la settimana contata — NON c'era nel catalogo: creato, collegato, citato (la
+ciclo-vivo e' scattata finche' non citato). Indice pattern riordinato. G6-G8: hooks, oracoli,
+night-shift: puliti con prove. G9: indice SAL rigenerato (fermo) + S16 col morso (prima
+versione guardava una tabella: l'indice e' una lista — corretta al formato VERO). G10: banco
+integrale CHIUSO 129/129, 65 pattern, 61+1 report. Il tema del giro: i RILEVATORI si rompono
+come il codice — tre volte il mio ha mentito (cwd, slash, tabella) e tre volte la verifica
+del rilevatore l'ha preso. Verifica il verificatore, sempre.
