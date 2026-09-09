@@ -69,7 +69,7 @@ for H in $(jq -r '.hooks.PreToolUse[]?.hooks[]?.command' "$HUB/.claude/settings.
 done
 
 # le lenti dello standard (fixture-provenienza, cita-verifica): contromisure REPO-V 7/9
-for L in fixture-provenienza.sh cita-verifica.sh; do
+for L in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do
   [ -f "$HUB/tools/$L" ] && cp "$HUB/tools/$L" "$CWD/tools/$L"
 done
 

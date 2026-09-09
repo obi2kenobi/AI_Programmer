@@ -33,12 +33,22 @@ fi
 
 if [ "$EVENT" = "SessionStart" ]; then
   rm -f /tmp/ai-programmer-sal-counter.* 2>/dev/null
+  # (settimo patto, 2026-09-09) IL DEBITO SI BRUCIA ALLA RIAPERTURA: se la repo ha
+  # DEBITI.md, il riepilogo entra nel contesto dell'apertura — i debiti di dominio come
+  # domande singole, i risolvibili da fare prima di procedere. Mai taciti.
+  DEBITI_CTX=""
+  if [ -f "$PWD/DEBITI.md" ] && [ -f "$HERE/tools/debiti-riapertura.sh" ]; then
+    DEBITI_RIEPILOGO=$(bash "$HERE/tools/debiti-riapertura.sh" "$PWD" 2>/dev/null | sed -n '2p' | head -c 300)
+    [ -n "$DEBITI_RIEPILOGO" ] && DEBITI_CTX "
+7) RIAPERTURA: $DEBITI_RIEPILOGO — domande di dominio UNA alla volta, risolvibili prima di procedere (bash tools/debiti-riapertura.sh per l'elenco)."
+  fi
   jq -n --arg ctx "STANDARD DI SVILUPPO ATTIVO (AI_Programmer — non serve invocarlo, vale da sé):
 1) Esegui, non dedurre: ogni ipotesi meccanica si prova eseguendo, col comando riportato.
 2) Prima di una formula di business: oracolo in tools/*.py o formula minata file:riga — MAI indovinata (docs/mappa-dominio-gas-src.md).
 3) Prima di correggere: il banco (PARITÀ+CORREZIONE), riga-verdetto 'attese eseguite: N/M · fallite: K' (verifica con tools/verifica_banco.py).
 4) Scarto mai silenzioso, assente≠zero, clasp MAI, segreti mai (nemmeno citati).
 5) Task da una sessione: si fa e basta col metodo; territorio grande: METHOD.md dice la strada.
+6) Il codice parla: semplice, spiegato, OGNI PASSO LOGGATO — il silenzio non è pulizia, è invisibilità.${DEBITI_CTX}
 Il metodo in una pagina: METHOD.md. Le famiglie misurate: .claude/skills/gas-sviluppo/references/famiglie-difetti.md." \
     '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:$ctx}}'
   exit 0

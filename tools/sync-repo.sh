@@ -75,7 +75,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
 # clienti — si copia SOLO il README come formato, mai le voci: privacy)
 # (contromisura REPO-V 7/9): le LENTI DELLO STANDARD viaggiano anche loro — fixture
 #  senza provenienza e citazioni file:riga rotte sono i due banchi-verdi-bugiardi del campo
-for LENTE in fixture-provenienza.sh cita-verifica.sh; do
+for LENTE in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do
   [ -f "$HERE/tools/$LENTE" ] && { mkdir -p tools; cp "$HERE/tools/$LENTE" "tools/$LENTE"; git add "tools/$LENTE" 2>/dev/null && COPIATI=$((COPIATI+1)); }
 done
 for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins; do
