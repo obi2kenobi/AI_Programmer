@@ -12,3 +12,5 @@ night-shift/repos.key
 
 # la memoria del turno di notte: locale, mai tracciata (romperebbe il self-pull)
 night-shift/.sal-turni.md
+
+.DS_Store
