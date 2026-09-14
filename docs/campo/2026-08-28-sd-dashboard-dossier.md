@@ -1,7 +1,7 @@
 DOSSIER TECNICO · REVISIONE MULTI-AGENTE
 SD Web Dashboard — Revisione del codice
 Bug, errori silenziosi e problemi di sicurezza trovati nell'app Google Apps Script di
-Gruppo Camarlinghi per la gestione ordini Pellet, Edilizia e Legna, sincronizzata con
+Gruppo [gruppo] per la gestione ordini Pellet, Edilizia e Legna, sincronizzata con
 Business Central.
 28 agosto 2026
 12 aree di codice coperte
@@ -65,7 +65,7 @@ MEDIUM
 CONFERMATO
 appsscript.json:9
 dependency-risk
-La libreria esterna HasslacherScript e' collegata con developmentMode: true in
+La libreria esterna [H-Script] e' collegata con developmentMode: true in
 produzione, quindi lo script esegue sempre la versione HEAD non pubblicata della
 libreria invece di una versione fissata.
 Scenario di fallimento ▸
@@ -280,10 +280,10 @@ HIGH
 NON VERIFICATO
 BCSetup.gs:1147
 unsafe-diagnostic-function
-forzaInvioHasslacherDaEditor() è una funzione a zero parametri che invia email REALI
-a un fornitore esterno (Hasslacher), senza conferma, dry-run o controllo TEST_MODE,
+forzaInvioFornitoreDaEditor() è una funzione a zero parametri che invia email REALI
+a un fornitore esterno ([H-Script]), senza conferma, dry-run o controllo TEST_MODE,
 ed è elencata nel menu Esegui dell'editor accanto a funzioni diagnostiche sicure (es.
-verificaLibreriaHasslacher()).
+verificaLibreria[H-Script]()).
 Scenario di fallimento ▸
 MEDIUM
 NON VERIFICATO
@@ -417,7 +417,7 @@ NON VERIFICATO
 OrderService.gs:1076
 silent-failure
 L'esito di EmailService.sendEdilNotifyEmail (mail 'Documentazione Ordine' a
-Hasslacher) non viene mai loggato in ORDER_ERROR_LOG e il fallimento è
+[H-Script]) non viene mai loggato in ORDER_ERROR_LOG e il fallimento è
 indistinguibile dal caso 'nessun allegato' nel risultato mostrato all'operatore.
 Scenario di fallimento ▸
 MEDIUM
@@ -728,7 +728,7 @@ NON VERIFICATO
 TEST_INTEGRATION_SAFE.gs:605
 test-false-safety
 testFase4_BricoIoEmail() (Test 3), nel file che si dichiara 'SAFE', invia una email VERA
-alla casella di produzione ordini.biocombustibili@gruppocamarlinghi.it quando
+alla casella di produzione ordini.biocombustibili@[gruppo].it quando
 eseguito, contraddicendo il proprio commento.
 Scenario di fallimento ▸
 HIGH
@@ -813,7 +813,7 @@ LOW
 NON VERIFICATO
 dashboard.html:504
 config-duplication
-L'indirizzo email di destinazione per l'invio forzato a Hasslacher è scritto come testo
+L'indirizzo email di destinazione per l'invio forzato a [H-Script] è scritto come testo
 statico nel modale di conferma invece di essere letto dalla configurazione condivisa,
 per cui un cambio di destinatario in Config.gs non si riflette nel testo di avviso
 t

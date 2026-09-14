@@ -941,6 +941,60 @@ Presidii: `tools/debiti-riapertura.sh` (spedito con lo standard), il riepilogo n
 SessionStart, e il canarino del classificatore in `tests/test-debiti-riapertura.sh` — perché
 anche un classificatore di debiti è un rilevatore, e i rilevatori muoiono mentendo.
 
+## Quattro regole dalla settimana dello specchio REPO-V (2026-09-14)
+
+Report: docs/campo/2026-09-14-repo-v-settimana-dello-specchio.md — 11 giri in un giorno,
+cancello 1093→1454 attese, sei PR, il censimento specchio 29/30, e la chiave misurata viva
+(`Vendor_Shipment_No`) confermata dal partner alla call: *lui ha citato il campo che noi
+avevamo già in produzione*.
+
+1. **IL VIVO È L'ULTIMA LENTE, E CONTA IL PRIMO GIRO VERO.** Una sonda nuova non si dichiara
+   finita al banco verde: le fixture minime nascondono esattamente ciò che il vivo moltiplica
+   (righe per documento, pagine, ripetizioni — qui ogni ODA stampato tre volte: merce,
+   trasporto, assicurazione, col banco verde). Nel SAL di ogni sonda, una riga di «primo giro
+   vero» col dato che il banco non aveva, PRIMA di dichiarare il giro chiuso.
+2. **IL «VAI» COMINCIA CON LA VERIFICA.** Prima di costruire la cura chiesta, si cerca se il
+   difetto è già stato trovato e curato (grep sui DEBITI + git log). Qui la cura esisteva
+   già — più forte della proposta nuova — chiusa da due giorni. Un «vai» che parte dalla
+   ricerca risparmia giri e, soprattutto, evita che una cura debole ne sovrascriva una forte.
+3. **I DOCUMENTI PER UN ESTERNO SI RILEGGONO SUL CODICE.** Ogni fatto citabile in un
+   documento di confine (nomi di entità, filtri, numeri) si ri-verifica contro il sorgente
+   prima dell'invio: qui l'elenco dichiarava due entità BC su tre — mancavano le righe
+   d'ordine, la prima cosa che il partner aveva chiesto — e citava un filtro inesistente.
+   È la citazione-non-presidio applicata dove l'errore non rompe un test: rompe una relazione.
+4. **IL DICHIARATO SEGUE IL CONTO REALE, ANCHE AL RIBASSO.** Riscrivere un'attesa non è
+   aggiungerla: il numero dichiarato si rilegge dall'esecuzione dopo ogni giro (69 dichiarati
+   su 68 reali, preso dalla lente — che lo prenda sempre l'abitudine).
+
+E due fatti di campo da ricordare come FATTI (non-proposte, dichiarate): le decisioni di
+dominio prese per misura pagano alla chiamata col partner; il collo della catena a volte è
+configurazione che aspetta un gesto umano di un minuto (l'indirizzo di test ancora attivo) —
+nessun giro di codice chiude quel cerchio, e dirlo è il modo giusto di chiuderlo.
+
+## Quattro regole dai giri di miglioramento REPO-V (2026-09-10)
+
+Report: docs/campo/2026-09-10-repo-v-giri-e-scoperte.md — #239-#247 curati, il cancello a
+ogni giro (1093 attese) che ha preso due errori dell'operatore prima che del codice.
+
+1. **DOPO IL MERGE, IL RAMO È MORTO.** Mai pushare lavoro nuovo su un ramo la cui PR è stata
+   mergiata: un commit è rimasto settimane fuori dal vivo esattamente così, e nessun cancello
+   locale può vederlo (il danno è fra repo e repo). Il lavoro nuovo parte da un ramo NUOVO
+   dal main; e se trovi commit tuoi su un ramo mergiato, li porti con un merge esplicito
+   dichiarato.
+2. **UNA LEZIONE VISSA IN UN FILE NON SI PROPAGA DA SOLE.** Se resta sepolta dove è stata
+   imparata, il file nuovo la riscrive come bug (il caso `${VAR}` davanti a un multibyte su
+   bash 3.2 con set -u — già accaduto in questo hub). Le lezioni di shell e di forma vanno
+   come REGOLA nel patto, non come graffa nel file che è capitato.
+3. **OGNI GESTO SUL REGISTRO PASSA DAL CANCELLO SUBITO.** Il registro dei debiti è un banco
+   anche lui: le sue lenti prendono la riga scritta male solo se il cancello gira DOPO la
+   scrittura, non «al prossimo giro» (due celle malformate e tre cure mai registrate, tutte
+   prese in un solo cancello a fine serata — con le ore perse in mezzo).
+4. **QUANDO CAMBIA CHI LEGGE, CAMBIA LA FORMA DI CIÒ CHE SI LEGGE.** La risposta non è «un
+   parser più robusto»: è una CASCATA A GRADINI DICHIARATI, dove ogni gradino dichiara chi
+   ha letto (`letto_da`), le risposte del modello si testano sui fatti obbligatori prima di
+   essere credute, e il ripiego è dichiarato nel record. Il gradino che tace è il gradino
+   che mente. (Conferma di E-018: quando cambia il lettore, cambia la forma.)
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.

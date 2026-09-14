@@ -1,7 +1,6 @@
-# 2026-09-10 — Magazzino_Treviso: i giri di miglioramento e le scoperte della settimana
+ # 2026-09-10 — REPO-V: i giri di miglioramento e le scoperte della settimana
 
-**Autore**: sessione `glm/treviso-giri-miglioramento` (ZCode/GLM) su Magazzino_Treviso, il
-progetto Apps Script del magazzino. Mandato di Luca: «far fare 5-6 giri di miglioramento e
+**Autore**: sessione remota (ZCode/GLM) su REPO-V (magazzino di sede). Mandato di Luca: «far fare 5-6 giri di miglioramento e
 correzione ora che abbiamo le idee chiare, e fare un report con tutte le scoperte e gli
 errori ad AI_Programmer». Il report copre la sessione intera, non solo i giri di stasera:
 la settimana ha curato #239-#247 (endpoint separati, la cella-data, il filtro della coda,

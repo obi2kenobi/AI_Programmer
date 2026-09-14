@@ -35,3 +35,27 @@ FORK-STATO.md
 CATALOGO_ENDPOINT_BC.md
 docs/GRAMMATICA_DOMINIO.md
 tools/grafo-findings.js
+
+# file di SD_Web_Dashboard citati col :riga dal dossier del 28/8 (vivono lì)
+ApiEndpoints.gs
+BCApiClient.gs
+BCLogger.gs
+BCSetup.gs
+BCSync.gs
+CacheManager.gs
+Config.gs
+Database.gs
+EmailService.gs
+ErrorHandler.gs
+HST_Parser.js
+OrderService.gs
+Scripts.html
+StoricoModifiche.gs
+Styles.html
+TEST_INTEGRATION_SAFE.gs
+Tests.gs
+Utils.gs
+Validators.gs
+WebApp.gs
+dashboard.html
+diagnosticAddress.gs

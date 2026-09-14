@@ -74,5 +74,27 @@ if [ -n "$STAGED_MD" ]; then
   if ! bash "$HERE/tools/cita-verifica.sh" $STAGED_MD; then FALLITI=1; fi
 fi
 
+# 7. (E-025, 2026-09-14) NOMI VERO-DA-CASA alla frontiera: report col partner e persone
+#    e' entrato nel repo pubblico perche' la chiave (repos.key) e' vuota su questa macchina
+#    e nessun controllo guardava i .md in commessa. La chiave dei nomi sta in ~/.privacy-nomi
+#    (HOME: sopravvive ai cloni, non entra nel repo). Assente = DEGRADATO FORTE, mai muto.
+if [ -f "$HOME/.privacy-nomi" ]; then
+  LEAK=""
+  while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    while IFS= read -r nome; do
+      [ -n "$nome" ] || continue
+      grep -qi "$nome" "$f" && LEAK="$LEAK\n  $f contiene '$nome'"
+    done < "$HOME/.privacy-nomi"
+  done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.md$' || true)
+  if [ -n "$LEAK" ]; then
+    echo "⛔ nomi veri in file in committa (repo pubblica, lavoro privato):$LEAK"
+    echo "   anonimizza (codici REPO-*, [partner], [operatore]) oppure rimuovi il nome da ~/.privacy-nomi SE e' pubblico per contratto"
+    FALLITI=1
+  fi
+else
+  echo "⚠ privacy: ~/.privacy-nomi assente — il controllo nomi e' DEGRADATO (non e' un via libera)"
+fi
+
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
 exit $FALLITI
