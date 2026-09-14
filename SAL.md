@@ -119,6 +119,7 @@
 - [2026-09-09 (4°) — l'antivirus dei rilevatori (mandate di Luca: «mi ha traumatizzato»)](#2026-09-09-4-l-antivirus-dei-rilevatori-mandate-di-luca-mi-ha-traumatizzato)
 - [2026-09-09 (5°) — il settimo patto: il debito si brucia alla riapertura](#2026-09-09-5-il-settimo-patto-il-debito-si-brucia-alla-riapertura)
 - [2026-09-14 — due report REPO-V fermi, un nome vero nell'hub, e il dente che mancava](#2026-09-14-due-report-repo-v-fermi-un-nome-vero-nell-hub-e-il-dente-che-mancava)
+- [2026-09-14 (2°) — il giro della bonifica, raccontato per intero](#2026-09-14-2-il-giro-della-bonifica-raccontato-per-intero)
 
 
 ## Stato
@@ -2175,3 +2176,17 @@ forti; i documenti per un esterno si rileggono sul codice; il dichiarato segue i
 E il dato che corona la settimana dello specchio: la chiave Vendor_Shipment_No misurata viva
 il 13/9, confermata dal partner alla call — LUI ha citato il campo che noi avevamo gia' in
 produzione.
+
+### 2026-09-14 (2°) — il giro della bonifica, raccontato per intero
+
+Il dente (controllo 7) ha morso CINQUE volte il suo stesso autore prima di chiudere: la voce
+SAL che citava i nomi per documentarli; due identificatori in voci SAL di agosto; il dossier
+SD (22 file di campo dichiarati, l'email col dominio del gruppo nella variante minuscola); e
+la scoperta che il checkout era su un RAMO della sessione parallela (i miei commit finiti
+li, il main dietro il PR #75: riconciliati col merge che fa vincere le versioni anonimizzate).
+Distinzione finale, dichiarata nel controllo: docs/bc/ documenta lo SCHEMA del tenant — i
+nomi delle entita (estensioni del gruppo) sono FATTI e rinominarli mentirebbe; la prosa nei
+report resta protetta. Morso provato nei due versi (schema passa, prosa rossa). Nei file
+vivi: ZERO nomi. LA STORIA RESTA: 6+ commit coi nomi veri nella git history pubblica —
+riscrittura force-push (rompe le clone delle altre sessioni e l'automazione va resettata) o
+lasciare (nome indicizzato): decisione di Luca, e' il debito del 24/8 arrivato al petto.
