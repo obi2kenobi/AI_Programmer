@@ -120,6 +120,7 @@
 - [2026-09-09 (5°) — il settimo patto: il debito si brucia alla riapertura](#2026-09-09-5-il-settimo-patto-il-debito-si-brucia-alla-riapertura)
 - [2026-09-14 — due report REPO-V fermi, un nome vero nell'hub, e il dente che mancava](#2026-09-14-due-report-repo-v-fermi-un-nome-vero-nell-hub-e-il-dente-che-mancava)
 - [2026-09-14 (2°) — il giro della bonifica, raccontato per intero](#2026-09-14-2-il-giro-della-bonifica-raccontato-per-intero)
+- [2026-09-14 (3°) — decisione di Luca: la storia resta così](#2026-09-14-3-decisione-di-luca-la-storia-resta-così)
 
 
 ## Stato
@@ -2190,3 +2191,9 @@ report resta protetta. Morso provato nei due versi (schema passa, prosa rossa). 
 vivi: ZERO nomi. LA STORIA RESTA: 6+ commit coi nomi veri nella git history pubblica —
 riscrittura force-push (rompe le clone delle altre sessioni e l'automazione va resettata) o
 lasciare (nome indicizzato): decisione di Luca, e' il debito del 24/8 arrivato al petto.
+
+### 2026-09-14 (3°) — decisione di Luca: la storia resta così
+
+«Lascia così per ora»: nessuna riscrittura. Registrato nel DEBITI con il percorso completo
+del giorno in cui servisse (force-push, reset delle clone e dell'automazione, termini in
+repos.key). I file vivi restano bonificati, il controllo 7 presidia la frontiera.

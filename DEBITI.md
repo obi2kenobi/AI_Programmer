@@ -84,6 +84,12 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 
 ## Privacy: la storia git (2026-08-24, dal report sul campo REPO-G)
 
+**DECISIONE di Luca, 2026-09-14: lasciare così per ora.** I nomi restano nella storia
+pubblica (6+ commit, anche nei messaggi); i file vivi sono bonificati e il controllo 7 del
+pre-commit (~/.privacy-nomi) impedisce nuove immissioni. Se un giorno si riscrive:
+force-push + reset delle clone delle altre sessioni + reset dell'automazione
+(night-shift-work) + i termini entrano in repos.key — il percorso è questo, non si improvvisa.
+
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-08-24 | La bonifica privacy ha pulito i FILE correnti (11 siti), ma la STORIA git del repo pubblico conserva i nomi in ogni commit passato: `git log --all -S"<nome>"` li ritrova per sempre. Il privacy-check (v3) li vedrebbe e fallirebbe — per questo la chiave locale di QUESA macchina parte con lista vuota | spurgo della storia = `git filter-repo` + force push su repo pubblica con altre sessioni attive: distruttivo e coordinabile solo da Luca (annuncio ai collaboratori, fork/clone da rifare) | decisione di Luca: o si purge la storia (poi i termini entrano in repos.key e il gate li presidia davvero), o si accetta che la storia pre-2026-08-24 li contenga e si presidia solo il futuro (i termini NON entrano nella chiave: il gate resterebbe rosso per sempre) |
