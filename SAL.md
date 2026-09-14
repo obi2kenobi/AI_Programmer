@@ -118,6 +118,7 @@
 - [2026-09-09 (3°) — il sesto patto: il codice parla (ogni passo loggato)](#2026-09-09-3-il-sesto-patto-il-codice-parla-ogni-passo-loggato)
 - [2026-09-09 (4°) — l'antivirus dei rilevatori (mandate di Luca: «mi ha traumatizzato»)](#2026-09-09-4-l-antivirus-dei-rilevatori-mandate-di-luca-mi-ha-traumatizzato)
 - [2026-09-09 (5°) — il settimo patto: il debito si brucia alla riapertura](#2026-09-09-5-il-settimo-patto-il-debito-si-brucia-alla-riapertura)
+- [2026-09-14 — due report REPO-V fermi, un nome vero nell'hub, e il dente che mancava](#2026-09-14-due-report-repo-v-fermi-un-nome-vero-nell-hub-e-il-dente-che-mancava)
 
 
 ## Stato
@@ -648,7 +649,7 @@ Canonizzate: fixture-degradano (reset per giro) e guardie-caso-reale.
 ### 2026-08-28 — 60 giri di revisione completa: privacy bonificata, pattern collegati
 
 Sei batterie di lenti sulla settimana intera. I finding piu gravi corretti: PRIVACY
-(7 file con nomi reali bonificati: HASSLACHER/Fornitore-Nman/Fornitore-N nei pattern, indice,
+(7 file con nomi reali bonificati: [H]/Fornitore-Nman/Fornitore-N nei pattern, indice,
 ngiri), PATTERN IRRAGGIUNGIBILI (riferimento al catalogo aggiunto a metodo + 4 agenti
 + gas-sviluppo SKILL), VEDI-ANCHE (24 pattern collegati ai cugini), ORACOLI senza
 limiti (4 tool arricchiti). Verificato pulito: suite 101/101, nessun segreto, SAL
@@ -1866,9 +1867,9 @@ girava con repos.key vuoto — controllo fatto a mano, grep sui nomi del report 
 insegnamenti aggiunti al metodo come regole 10-11: il banco non confronta con JSON.stringify
 (NaN → "null": il sabotaggio del difetto peggiore restava verde) e una lettura mancata che vale una
 lettura vuota decide come se avesse guardato (Math.abs(NaN) > 0.02 è falso: l'importo illeggibile
-usciva REGISTRABILE). Aperte, lato progetto, per Luca: clasp push dei giri 9-14, diagnosticaDATO-RIMOSSO_,
+usciva REGISTRABILE). Aperte, lato progetto, per Luca: clasp push dei giri 9-14, la diagnostica del filtro [fornitore],
 esploraNotaCreditoApiV2Test, clasp clone + diff, e quattro decisioni (fornitore ordine↔fattura,
-ingresso DATO-RIMOSSO, chiave di deduplica, etichetta Gmail).
+ingresso del [secondo fornitore], chiave di deduplica, etichetta Gmail).
 
 ### 2026-09-05 (19) — AI_Develop chiuso: «è un ramo morto» (Luca)
 
@@ -2077,7 +2078,7 @@ INDENTATA. Stanotte la coda è pulita: chi vuole lavoro notturno, scriva issue v
 ### 2026-09-09 — REPO-V porta la settimana contata: la metà mancante del metodo
 
 Report: docs/campo/2026-09-09-repo-v-settimana-errori-del-programmatore.md (repo-v-settimana-
-errori-del-programmatore; anonimizzati Magazzino_Treviso→REPO-V e la sede). Il dato guida: 22 voci
+errori-del-programmatore; anonimizzati repo→REPO-V e sede (il nome vero era finito qui mentre documentavo l'anonimizzazione: bonificato il 14/9, E-025)). Il dato guida: 22 voci
 in 7 giorni, R1+R2 al 64% — «lo stesso errore in due forme: non eseguire, e non chiedere» — e
 l'asimmetria nascosta che il registro non tracciava ( ricostruita a mano): le lenti prendono i
 meccanici (15), il vivo e Luca i giudizi (7, i più costosi, dopo deploy o richieste ripetute).
@@ -2150,3 +2151,27 @@ contate giuste, dominio→domanda, risolvibile→da-fare-subito, saldato escluso
 lo dichiara). Settimo patto nel metodo e nel CLAUDE.md vettore. In casa nostra: 15 debiti
 aperti → 8 domande di dominio pronte + 7 risolvibili — la prossima sessione che apre l'hub
 li trovera' in cima, e questo e' esattamente il punto.
+
+### 2026-09-14 — due report REPO-V fermi, un nome vero nell'hub, e il dente che mancava
+
+Arrivano (sessione parallela) i report 2026-09-10-repo-v-giri-e-scoperte.md e 2026-09-14-repo-v-settimana-dello-specchio.md
+(11-14/9, #248→#371b, 6 PR, cancello 1093→1454). ENTRAMBI col nome vero della repo dentro —
+e gia' committati: 4 commit nella storia pubblica, piu' il nome del partner (due societa') e
+due persone. E una riga MIA nel SAL del 9/9: il nome della repo scritto dentro la frase che
+documentava l'anonimizzazione. Bonifica: entrambi i report rinominati alla convenzione e
+anonimizzati (zero residui), SAL bonificato. E-025 nel registro: la privacy viveva nel banco
+(fine passaggio) e non alla FRONTIERA (commit); repos.key vuota per design e privacy-check
+degradato in silenzio. DENTE: controllo 7 del pre-commit — i .md in committa contro
+~/.privacy-nomi (chiave in HOME: sopravvive ai cloni, dominio giusto; assente = degradato
+FORTE a ogni commit, mai silenzio). Morso provato: nome del partner iniettato → rc 1.
+DECISIONE DI LUCA PENDENTE: la storia git pubblica contiene i nomi (4+2 commit) — riscrittura
+force-push (rompe le clone delle altre sessioni e l'automazione, che va resettata) o lasciare
+(e il nome resta indicizzato). E' il debito «privacy: la storia git» del 24/8, arrivato.
+Contenuto: 8 regole nuove al canone (4 dal 10/9: il ramo mergiato e' morto; la lezione sepolta
+non si propaga; il registro passa dal cancello SUBITO; la cascata a gradini dichiarati col
+suo letto_da — quando cambia chi legge cambia la forma. E 4 dal 14/9: il primo giro vero
+della sonda nel SAL; il «vai» comincia con la verifica — cure deboli che sovrascrivono cure
+forti; i documenti per un esterno si rileggono sul codice; il dichiarato segue il conto reale).
+E il dato che corona la settimana dello specchio: la chiave Vendor_Shipment_No misurata viva
+il 13/9, confermata dal partner alla call — LUI ha citato il campo che noi avevamo gia' in
+produzione.

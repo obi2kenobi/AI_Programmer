@@ -1,10 +1,10 @@
-# 2026-09-14 — Magazzino_Treviso: la settimana dello specchio — dalla regola della merce alla sonda ODA→DDT
+# 2026-09-14 — REPO-V: la settimana dello specchio — dalla regola della merce alla sonda ODA→DDT
 
-**Autore**: sessione `glm/treviso-*` (ZCode/GLM) su Magazzino_Treviso, con un lungo
-passaggio nel gemello Registrazione_Fatture_Acquisto. Mandato di Luca, cresciuto giro dopo
+**Autore**: sessione remota (ZCode/GLM) su REPO-V (magazzino di sede), con un lungo
+passaggio nel repo gemello (fatture acquisto, GAS+BC). Mandato di Luca, cresciuto giro dopo
 giro: capire come si registrano i carichi in BC («per delineare strategie»), fare la prova
 generale della comunicazione all'ufficio, predisporre la registrazione, poi — dopo la call
-col partner (Olsi/DATO-RIMOSSO) — i documenti dell'integrazione per entrambi i repo, una
+col partner di integrazione — i documenti dell'integrazione per entrambi i repo, una
 giornata di collaudo dal vivo, e il censimento specchio. Il report copre l'11–14 settembre:
 debiti **#248 → #371b**, di cui **undici giri in un solo giorno** (il 14), **6 PR** (#71–#76),
 il cancello cresciuto da 1093 a **1454 attese**.
@@ -72,8 +72,8 @@ il cancello cresciuto da 1093 a **1454 attese**.
   retrocompatibile gratis — le righe vecchie restano leggibili perché la loro etichetta fu
   scritta allora.
 - **Il trigger a identità**: il primo giorno operativo, il log delle esecuzioni ha
-  mostrato DATO-RIMOSSO autorizzata e idempotente (60/60 già presenti, zero doppioni) e il
-  secondo trigger (DATO-RIMOSSO) sì in lettura ma senza permesso sul registro — preso leggendo
+  mostrato la prima operatrice autorizzata e idempotente (60/60 già presenti, zero doppioni) e il
+  secondo trigger (la seconda operatrice) sì in lettura ma senza permesso sul registro — preso leggendo
   il log, curato condividendo il foglio.
 - **L'idempotenza per chiave** alla prima conferma vera: una conferma, due marche in
   ordine, sei secondi dal tap alla mail.
@@ -94,7 +94,7 @@ il cancello cresciuto da 1093 a **1454 attese**.
   torna solo URL CDN al sottoagente — controllo a vista fatto col modello di visione
   direttamente, dichiarato.
 - **Il collo della catena è configurazione, non codice**: la consegna confermata ieri non
-  è in BC perché `DESTINAZIONI_TREVISO` punta ancora all'indirizzo di test. Nessun giro
+  è in BC perché `DESTINAZIONI_SEDE` punta ancora all'indirizzo di test. Nessun giro
   di codice può chiudere quel cerchio: è un gesto di un minuto che aspetta l'umano.
 
 ## Proposta al canone

@@ -459,3 +459,26 @@
 - Verifica guardia: 4/4 canarini tenuti, clone pulito verde, morso provato.
 - Aggiramento: un rilevatore nuovo senza canarino nell'antivirus — la regola del canone
   («nasce col canarino dentro, o è un'opinione con l'uniforme da controllo») lo vieta.
+
+## E-025 I nomi veri sono entrati nella repo pubblica (e pure nel mio SAL)
+- Data / sessione: 2026-09-14 (report della settimana dello specchio, committuto da sessione parallela)
+- Famiglia: R2 (ho agito senza la guardia) + R1 (presupposto repos.key operativo)
+- Chi l'ha trovato: la sessione che processava il report, rileggendo il file appena arrivato
+- Sintomo: report di campo pushato sull'hub pubblico con nome della repo, nome del partner
+  (due società) e due persone. Quattro commit nella storia. E una riga del SAL (9/9) col
+  nome della repo — scritta DENTRO la frase che documentava l'anonimizzazione.
+- Causa prossima: repos.key è vuota su questa macchina per design (i termini entrano "solo
+  dopo lo spurgo della storia git", DEBITI 24/8) e privacy-check gira degradato senza
+  dire niente a nessuno che stesse committendo; nessun controllo alla frontiera del commit.
+- Causa del ragionamento: il gate della privacy viveva nel banco (che si lancia a fine
+  passaggio) e non alla frontiera (dove si committa): un report scritto di fretta da una
+  sessione nuova passa dalla frontiera, non dal banco.
+- Perché non ci ha fermati: il pre-commit controllava path, glifi, CRLF e citazioni —
+  tutto tranne il contenuto umano dei nomi.
+- Guardia: tools/pre-commit.sh controllo 7 — i .md in committa contro ~/.privacy-nomi
+  (chiave in HOME: sopravvive ai cloni, dominio di fidusta giusto); assente = DEGRADATO
+  FORTE a ogni commit, mai silenzio. Morso provato (nome del partner iniettato → rc 1).
+- Verifica guardia: bonifica dei file vivi (zero residui), morso rc=1, file rinominato
+  alla convenzione REPO-V.
+- Aggiramento: rimuovere un nome da ~/.privacy-nomi senza contratto che lo dichiara
+  pubblico — la lista è della persona, non della sessione.
