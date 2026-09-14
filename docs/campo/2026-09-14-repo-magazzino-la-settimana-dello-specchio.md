@@ -20,7 +20,7 @@ il cancello cresciuto da 1093 a **1454 attese**.
   uguali (`# attese: 79` apparteneva a due banchi diversi).
 - **Banco-prima + sabotaggio col verdetto**, su ogni giro: W49–W51 (il gesto che non si
   capiva), MA1–MA6 (le tre aree NC), W52–W53 (la casella e i grappoli), AK7–AK9 (le foto
-  NC col nome `NC_<ODA>__<viaggio>_<voce>_<n>.jpg`), AN10 (il dubbio trilingue all'ufficio),
+  NC col nome `NC_<ODA>_<viaggio>_<voce>_<n>.jpg`), AN10 (il dubbio trilingue all'ufficio),
   OC1–OC6 (la sonda specchio). I sabotaggi sono stati presi tutti, con il valore atteso.
 - **Il banco browser fuori dal cancello ma non fuori dal metodo**: il wrapper dei
   banchi browser (nel repo di progetto) dichiara il salto sul Mac di Luca (Chromium assente); io ho installato playwright-core in
@@ -41,7 +41,7 @@ il cancello cresciuto da 1093 a **1454 attese**.
 
 - **La riveduta dei documenti per un esterno, fatta sul codice**: Luca ha chiesto «tutti i
   dati corretti?» nei documenti per il partner. Riletti contro il sorgente, due errori
-  veri: l'elenco dichiarava **due** entità BC su **tre** ( mancava `purchaseDocumentLines`,
+  veri: l'elenco dichiarava **due** entità BC su **tre** (mancava `purchaseDocumentLines`,
   le righe d'ordine — la prima cosa che il partner aveva chiesto) e citava un filtro
   `Order_No eq` che non esiste (il confronto è a lettura). La lezione: chi scrive per un
   esterno ri-verifica ogni fatto citabile contro il codice, non contro la memoria — la
