@@ -82,6 +82,10 @@ if [ -f "$HOME/.privacy-nomi" ]; then
   LEAK=""
   while IFS= read -r f; do
     [ -f "$f" ] || continue
+    # eccezione DICHIARATA (2026-09-14): docs/bc/ documenta lo SCHEMA del tenant — i nomi
+    # delle entita' (es. le estensioni del gruppo) sono FATTI, rinominarli mentirebbe
+    # sulla documentazione. La prosa nei report resta protetta.
+    case "$f" in docs/bc/*) continue;; esac
     while IFS= read -r nome; do
       [ -n "$nome" ] || continue
       grep -qi "$nome" "$f" && LEAK="$LEAK\n  $f contiene '$nome'"
