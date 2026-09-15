@@ -82,6 +82,15 @@ grep -q "^night-shift/.sal-turni.md$" "$HERE/.gitignore" \
   && ok "night-shift: .sal-turni.md gitignored (il self-pull non si accorge)" \
   || ko "night-shift: .sal-turni.md NON gitignored: albero sporco al prossimo pull"
 
+# 5f. l'hub si auto-esama di notte (domanda di Luca 2026-09-15): ciclo-vivo + banco veloce,
+# i finding diventano issue IDEMPOTENTI (capture-prima, mai pipe in grep -q — E-002)
+grep -q "auto-esame notturno" "$NS" \
+  && ok "night-shift: quando la repo in coda e' l'hub, il turno si auto-esamina" \
+  || ko "night-shift: l'auto-esame dell'hub manca"
+grep -q 'ISSUE_APERTE=$(gh issue list' "$NS" \
+  && ok "night-shift: le issue di auto-esame sono idempotenti (issue aperta -> niente duplicati)" \
+  || ko "night-shift: auto-esame senza idempotenza: una issue a notte per lo stesso rilievo"
+
 # 6. audit-commessa guarda il riferimento Design (il pre-flight del flusso)
 grep -q "## Design" "$AC" \
   && ok "audit-commessa: verifica il riferimento in ## Design" \
