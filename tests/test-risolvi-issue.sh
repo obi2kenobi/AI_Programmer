@@ -26,6 +26,16 @@ MOCK_BODY_FILE="$MOCK_DIR/body.json"
 cat > "$MOCK_DIR/serve.py" <<'PYEOF'
 import http.server, json, sys, pathlib
 body_file = pathlib.Path(sys.argv[1])
+# server_bind senza getfqdn: il reverse-DNS di macOS si IMPALA a intermittenza
+# (morso 7, 2026-09-15: il mock passava alle 17:15 e moriva alle 17:27 — colpa di
+# mDNSResponder, non nostra. Un test che dipende dal DNS e' una moneta lanciata).
+class NoRev(http.server.HTTPServer):
+    def server_bind(self):
+        import socketserver
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.socket.getsockname()[:2]
+        self.server_name, self.server_port = host, port
+
 class H(http.server.BaseHTTPRequestHandler):
     def do_POST(self):
         body = body_file.read_bytes()
@@ -36,7 +46,7 @@ class H(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body)
     def log_message(self, *a):
         pass
-srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+srv = NoRev(("127.0.0.1", 0), H)
 print(srv.server_address[1], flush=True)
 srv.serve_forever()
 PYEOF
