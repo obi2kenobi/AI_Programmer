@@ -192,6 +192,62 @@ shift_repo() {
     log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
     CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
     N_FIND=$(echo "$CICLO_OUT" | grep -cE "^  · [A-Z]" || true)
+    # ── AUTO-MIGLIORAMENTO SICURO (2026-09-15, finestra 23-06) ────────────────
+    # Solo fix MECCANICI DI CATEGORIA NOTA, su BRANCH, col banco che deve restare
+    # CHIUSO: se qualcosa non torna, il branch si butta e resta l'issue. Mai main,
+    # mai decisioni: la notte corregge le forme che conosce, il giorno dispone il resto.
+    FIX_APPLICATI=0
+    if [ "$N_FIND" -gt 0 ]; then
+      BRANCH="notte/auto-$(date +%Y%m%d-%H%M)"
+      if git -C "$DIR" checkout -b "$BRANCH" -q 2>/dev/null; then
+        # fix 1: pattern mai citato dal canone → citazione nell'indice per tema del metodo
+        for PAT in $(echo "$CICLO_OUT" | grep -oE "pattern [a-z0-9-]+ mai citato" | awk '{print $2}'); do
+          MET="$DIR/.claude/skills/gas-sviluppo/references/metodo.md"
+          if [ -f "$DIR/patterns/$PAT.md" ] && ! grep -q "\`$PAT\`" "$MET"; then
+            python3 - "$MET" "$PAT" <<'PYFIX'
+import sys, re
+met, pat = sys.argv[1], sys.argv[2]
+s = open(met).read()
+riga = "**Metodo e processo**:"
+if riga in s:
+    s = s.replace(riga, riga + " · `" + pat + "`", 1)
+    open(met, "w").write(s)
+    print("citato")
+PYFIX
+            if [ "$?" -eq 0 ] && grep -q "\`$PAT\`" "$MET"; then
+              log "REPO $REPO: auto-fix — pattern '$PAT' citato nell'indice del metodo"
+              FIX_APPLICATI=$((FIX_APPLICATI+1))
+            fi
+          fi
+        done
+        # fix 2: indice del SAL fermo → rigenerato
+        if ! bash "$HERE/../tools/giri-ignoranti.sh" 2>/dev/null | grep -q "S16 .* fresco"; then
+          bash "$HERE/../tools/sal-indice.sh" >/dev/null 2>&1 && FIX_APPLICATI=$((FIX_APPLICATI+1)) \
+            && log "REPO $REPO: auto-fix — indice del SAL rigenerato (S16)"
+        fi
+        if [ "$FIX_APPLICATI" -gt 0 ]; then
+          # IL BANCO DEVE RESTARE CHIUSO: o la PR non parte e il branch si butta
+          if bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 | tail -1 | grep -q "CHIUSO"; then
+            if git -C "$DIR" add -A && git -C "$DIR" commit -qm "notte: auto-miglioramento meccanico (banco CHIUSO, PR bozza per il giorno)
+
+Fix applicati dalla finestra notturna 23-06: $FIX_APPLICATI. Solo categorie
+meccaniche note; il banco veloce e' CHIUSO su questo branch; PR bozza per la
+review del giorno." && git -C "$DIR" push -q -u origin "$BRANCH"; then
+              PR_NOTTE=$(cd "$DIR" && gh pr create --draft --head "$BRANCH" --title "notte: auto-miglioramento meccanico del $(date +%F)" --body "Generata dalla finestra notturna 23-06. Fix meccanici di categoria nota, banco CHIUSO. La notte non decide: questa PR aspetta la review del giorno." 2>&1 | tail -1)
+              log "REPO $REPO: PR bozza di auto-miglioramento → $PR_NOTTE ($FIX_APPLICATI fix, banco CHIUSO)"
+            else
+              log "⚠ REPO $REPO: push del branch notte fallito — fix nel log, albero ripristinato"
+              git -C "$DIR" reset -q --hard "origin/$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 2>/dev/null || echo main)"
+            fi
+          else
+            log "⚠ REPO $REPO: auto-fix BOCCIATI dal banco — branch scartato (resta il rilievo)"
+            git -C "$DIR" reset -q --hard HEAD
+          fi
+          git -C "$DIR" checkout -q "$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 || echo main)"
+        fi
+      fi
+    fi
+    # ── fine auto-miglioramento sicuro ────────────────────────────────────────
     if [ "$N_FIND" -gt 0 ]; then
       CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
       ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
@@ -569,6 +625,22 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
 }
 
 # --- Esecuzione -----------------------------------------------------------------
+# (2026-09-15, finestra 23-06 oraria): con cicli ogni ora, due turni possono sovrapporsi
+# (un issue-lento supera l'ora). Lock GLOBALE del turno: il secondo ciclo si accorge,
+# saluta e ritorna — il per-repo lock resta per le repliche multiple.
+TURN_LOCK="$WORK/.lock-turno"
+if ! mkdir "$TURN_LOCK" 2>/dev/null; then
+  ETA=$(( $(date +%s) - $(stat -f %m "$TURN_LOCK" 2>/dev/null || echo 0) ))
+  if [ "$ETA" -ge 10800 ]; then
+    log "lock turno globale scaduto (${ETA}s > 3h): lo rimuovo e proseseguo"
+    rmdir "$TURN_LOCK" 2>/dev/null; mkdir "$TURN_LOCK" 2>/dev/null || { log "turno precedente ancora vivo: esco"; exit 0; }
+  else
+    log "turno precedente ancora in corsa: questo ciclo saluta ed esce (finestra oraria)"
+    exit 0
+  fi
+fi
+trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
+
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 GLOBAL_RC=0
 TOT_PR_CREATED=0
