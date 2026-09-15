@@ -19,6 +19,11 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
+# (test dei 30 minuti, 2° giro — mistero n.1 RISOLTO): launchd parte con cwd=/ e i test,
+# le sonde e i glob del turno assumono la RADICE del repo come cwd ('night-shift/*.sh'
+# letterale, porte introvabili, gate rosso con 3 falsi difetti). Il turno DICHIAARA la
+# sua radice e ci si porta: tutti i processi figli la ereditano.
+cd "$HERE/.." || exit 1
 source "$HERE/lib.sh"
 # ai_timeout: wrapper portabile (macOS non ha timeout(1)) — vive in llm/_timeout.sh
 # shellcheck source=../../llm/_timeout.sh
