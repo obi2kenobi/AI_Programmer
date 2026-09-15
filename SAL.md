@@ -123,6 +123,7 @@
 - [2026-09-14 (3°) — decisione di Luca: la storia resta così](#2026-09-14-3-decisione-di-luca-la-storia-resta-così)
 - [2026-09-15 — la notte migliora l'hub: l'auto-esame notturno, provato in quattro giri](#2026-09-15-la-notte-migliora-l-hub-l-auto-esame-notturno-provato-in-quattro-giri)
 - [2026-09-15 (2°) — la notte che si migliora da sola: PR #83, dopo otto morsi](#2026-09-15-2-la-notte-che-si-migliora-da-sola-pr-83-dopo-otto-morsi)
+- [2026-09-15 (3°) — il test dei 30 minuti: PR #85, e due misteri da sorvegliare](#2026-09-15-3-il-test-dei-30-minuti-pr-85-e-due-misteri-da-sorvegliare)
 
 
 ## Stato
@@ -2237,3 +2238,18 @@ meccanico» — 4 fix, banco CHIUSO, fusa dopo verifica. Le issue #82 (curata) e
 CDG/Price-Intelligence come nomi privati, e il gate li trova in SAL e storia: la chiave
 del 22/8 e' rimasta popolata SOLO sull'automazione mentre il workspace girava a vuoto —
 due chiavi, una verità; decide Luca se quei nomi sono privati o pubblici).
+
+### 2026-09-15 (3°) — il test dei 30 minuti: PR #85, e due misteri da sorvegliare
+
+Test richiesto da Luca: finestra di 30 minuti col launchd che spara il turno ogni 3 minuti,
+con una deriva vera (pattern non piu' citato) spinta su origin. PROVATO: gli scatti partono
+(5 run), la serializzazione launchd+lock tiene (mai doppioni), la deriva viene TROVATA e
+il fix APPLICATO a ogni ciclo, le issue restano idempotenti. E col codice a fine test il
+giro completo e' andato in fondo: PR #85 «notte: auto-miglioramento meccanico» — 3 fix,
+banco CHIUSO — fusa. SECONDA PR di auto-miglioramento del sistema. MISTERI APERTI (da
+stanotte, col naming riparato): (1) sotto launchd il gate bocciava con TRE test rossi che
+non si riproducono ne' nel contesto submit ne' in env -i manuale — i nomi arriveranno col
+logging riparato alla prima finestra vera; (2) dopo le 18:30 il timer ha smesso di sparare
+(job sano, 5 run, exit 0 — da sorvegliare stanotte). E in corsa: quoting del gate-rosso
+riparata (stampava i letterali), gate deterministico (fuori i test dei cervelli esterni).
+La rete GitHub ha reset-tato due merge (ritentate a mano: MERGED).
