@@ -191,7 +191,7 @@ shift_repo() {
   if [ -n "$HUB_ORIGIN" ] && [ "$HUB_ORIGIN" = "$REPO_ORIGIN" ]; then
     log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
     CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
-    N_FIND=$(echo "$CICLO_OUT" | grep -c "^  ·" || true)
+    N_FIND=$(echo "$CICLO_OUT" | grep -cE "^  · [A-Z]" || true)
     if [ "$N_FIND" -gt 0 ]; then
       CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
       ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)

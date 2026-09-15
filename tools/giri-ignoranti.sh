@@ -91,6 +91,10 @@ done
 #   può puntare a porte inesistenti)
 ROTTO=""
 while IFS= read -r ref; do
+  # (2026-09-15, dall'auto-esame notturno): i path GITIGNORED sono ambiente-dipendenti
+  # (graphify-out/, repos.conf, repos.key) — nella cloni mancano per costruzione e
+  # non sono porte rotte. Chi li cita dichiara un'opzione locale, non una promessa.
+  git -C "$HERE" check-ignore -q "$ref" 2>/dev/null && continue
   [ -e "$HERE/$ref" ] || ROTTO="$ROTTO $ref"
 # GRAMMATICA_DOMINIO_TEMPLATE.md cita il file che ordina di CREARE: escluso
 done < <(cat "$HERE/README.md" $(ls "$HERE"/docs/*.md | grep -v GRAMMATICA_DOMINIO_TEMPLATE) 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' | tr -d '`' | sort -u)
@@ -144,6 +148,11 @@ pendenti = []
 for f in zone:
     for m in re.findall(r'`([A-Za-z0-9_./-]+\.(?:md|sh|py|js|csv|json|toml))`', open(f, errors='ignore').read()):
         if m in ESCLUSE: continue
+        # (2026-09-15, auto-esame notturno): i gitignored sono ambiente-dipendenti —
+        # mancano nelle cloni per costruzione, non sono porte rotte
+        import subprocess
+        if subprocess.run(['git','-C',here,'check-ignore','-q',m], capture_output=True).returncode == 0:
+            continue
         if not (os.path.exists(f'{here}/{m}') or os.path.exists(os.path.join(os.path.dirname(f), m))):
             pendenti.append(f"{f.split('/')[-1]}: {m}")
 for p in pendenti[:8]: print(f"     pendente: {p}")
