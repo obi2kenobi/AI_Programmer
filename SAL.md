@@ -124,6 +124,7 @@
 - [2026-09-15 — la notte migliora l'hub: l'auto-esame notturno, provato in quattro giri](#2026-09-15-la-notte-migliora-l-hub-l-auto-esame-notturno-provato-in-quattro-giri)
 - [2026-09-15 (2°) — la notte che si migliora da sola: PR #83, dopo otto morsi](#2026-09-15-2-la-notte-che-si-migliora-da-sola-pr-83-dopo-otto-morsi)
 - [2026-09-15 (3°) — il test dei 30 minuti: PR #85, e due misteri da sorvegliare](#2026-09-15-3-il-test-dei-30-minuti-pr-85-e-due-misteri-da-sorvegliare)
+- [2026-09-15 (4°) — test 2 dei 30 minuti: entrambi i misteri chiusi, PR #87](#2026-09-15-4-test-2-dei-30-minuti-entrambi-i-misteri-chiusi-pr-87)
 
 
 ## Stato
@@ -2253,3 +2254,19 @@ logging riparato alla prima finestra vera; (2) dopo le 18:30 il timer ha smesso 
 (job sano, 5 run, exit 0 — da sorvegliare stanotte). E in corsa: quoting del gate-rosso
 riparata (stampava i letterali), gate deterministico (fuori i test dei cervelli esterni).
 La rete GitHub ha reset-tato due merge (ritentate a mano: MERGED).
+
+### 2026-09-15 (4°) — test 2 dei 30 minuti: entrambi i misteri chiusi, PR #87
+
+Secondo test su richiesta di Luca (stesso schema: ogni 3 minuti, deriva vera su origin).
+MISTERO N.1 RISOLTO E PROVATO: i tre falsi rossi del gate erano il cwd=/ di launchd contro
+i percorsi relativi di test e sonde ('night-shift/*.sh' letterale: «tool senza porta»).
+Cura a radice in una riga: il TURNO DICHIARA LA SUA RADICE (cd alla radice all'avvio) e
+tutti i figli la ereditano. Prova: il ciclo delle 20:00, CONTESTO LAUNCHD VERO, e' andato
+in fondo — PR #87 (3 fix, banco CHIUSO), fusa. TERZA PR di auto-miglioramento. MISTERO
+N.2 NON RIPRODOTTO: il timer ha sparato regolare (19:51, 20:00, 20:06); lo stallo di ieri
+era il churn bootout/bootstrap a caldo del primo test. Il ciclo a vuoto delle 20:06 ha
+salutato pulito («ciclo-vivo pulito, 0 finding»). Produzione ripristinata: finestra 23-06.
+Bilancio dei due test: il sistema si e' auto-corretto TRE volte (PR #83, #85, #87) e i test
+hanno pescato cinque difetti veri (oracoli senza credenziali, locale, DNS, gate muto-sui-
+nomi, cwd) che 131 test non vedevano. La macchina che si prova, si rompe, e si ripara da
+sola — con review del giorno su ogni PR.
