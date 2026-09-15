@@ -95,6 +95,10 @@ ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
 # Il turno partiva e moriva in 4 secondi col/modello assente" perché non LO TROVAVA, non perché
 # mancasse. PATH esteso prima di qualunque comando ollama.)
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+# (2026-09-15, dall'auto-esame): senza LANG/LC_ALL, il git di Apple rifiuta \x{4E00}
+# in git grep -P («code point too large»): il controllo glifi false-verdava in tutto
+# il banco notturno. Il locale e' parte dell'ambiente di verita', non un orpello.
+export LANG="${LANG:-en_US.UTF-8}" LC_ALL="${LC_ALL:-en_US.UTF-8}"
 # E-002 (4a ricorrenza, 2026-09-04): ollama list | grep -q sotto pipefail ha bocciato
 # il turno alle 23:00 del 3/9 CON il modello presente e trovato (grep -q esce al match,
 # ollama list prende SIGPIPE, rc 141, pipefail). Cattura prima, confronta poi.

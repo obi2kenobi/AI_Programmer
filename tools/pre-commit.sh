@@ -15,7 +15,13 @@ FALLITI=0
 #    NOTA: si usa git grep -P, NON grep -P: il grep BSD di macOS non ha -P e
 #    moriva in silenzio nel 2>/dev/null — l'hook diceva OK col glifo staged
 #    (falso verde trovato verificando l'hook col caso avverso, suo stesso metodo).
-ALIENI=$(git diff --cached --name-only 2>/dev/null | sed 's/^/:/' | xargs git grep -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}]' -- 2>/dev/null | grep -vE 'docs/errori/REGISTRO.md' || true)
+# (E-024 family, 2026-09-15): git grep -P senza locale muore rc=128 e il 2>/dev/null
+# lo faceva passare per verde. Un rilevatore che muore e' ROSSO: il fallimento non
+# e' un'assenza di reperti.
+export LANG="${LANG:-en_US.UTF-8}" LC_ALL="${LC_ALL:-en_US.UTF-8}"
+ALIENI_RC=0
+ALIENI=$(git diff --cached --name-only 2>/dev/null | sed 's/^/:/' | xargs git grep -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}]' -- 2>/dev/null | grep -vE 'docs/errori/REGISTRO.md') || ALIENI_RC=$?
+[ "$ALIENI_RC" -ge 2 ] && { echo "⛔ il controllo glifi e' MORTO (git grep rc=$ALIENI_RC: locale?) — rosso, mai finto verde (rc=1 e' «nessun reperto», sano)"; FALLITI=1; }
 [ -n "$ALIENI" ] && { echo "⛔ glifi alieni nei file committati:"; echo "$ALIENI"; FALLITI=1; }
 
 # 2. CRLF negli script staged (passano bash -n, muoiono a runtime)
