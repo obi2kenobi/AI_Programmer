@@ -121,6 +121,7 @@
 - [2026-09-14 — due report REPO-V fermi, un nome vero nell'hub, e il dente che mancava](#2026-09-14-due-report-repo-v-fermi-un-nome-vero-nell-hub-e-il-dente-che-mancava)
 - [2026-09-14 (2°) — il giro della bonifica, raccontato per intero](#2026-09-14-2-il-giro-della-bonifica-raccontato-per-intero)
 - [2026-09-14 (3°) — decisione di Luca: la storia resta così](#2026-09-14-3-decisione-di-luca-la-storia-resta-così)
+- [2026-09-15 — la notte migliora l'hub: l'auto-esame notturno, provato in quattro giri](#2026-09-15-la-notte-migliora-l-hub-l-auto-esame-notturno-provato-in-quattro-giri)
 
 
 ## Stato
@@ -2197,3 +2198,19 @@ lasciare (nome indicizzato): decisione di Luca, e' il debito del 24/8 arrivato a
 «Lascia così per ora»: nessuna riscrittura. Registrato nel DEBITI con il percorso completo
 del giorno in cui servisse (force-push, reset delle clone e dell'automazione, termini in
 repos.key). I file vivi restano bonificati, il controllo 7 presidia la frontiera.
+
+### 2026-09-15 — la notte migliora l'hub: l'auto-esame notturno, provato in quattro giri
+
+Domanda di Luca: «compiti per migliorare la notte». Fatto: quando la repo in coda e' l'HUB
+stesso (clone dello stesso origin), il turno gira ciclo-vivo + banco veloce sulla copia
+self-pullata e ogni finding diventa ISSUE aperta per il giorno — idempotente (issue
+[ciclo-vivo]/[banco] gia' aperta: niente duplicati, capture-prima). Il solver ripara JS/GAS,
+non i tool shell dell'hub: la notte TROVA E SEGNALA, il giorno dispone. Quattro giri di messa
+a punto COL DIFETTO VERO NEL MEZZO: (1) il percorso 0-issue faceva return PRIMA del blocco;
+(2) il contatore contava bullet decorativi (issue #77, falso positivo chiuso); (3) il banco
+rosso sull'automazione era un DIFETTO VERO DEGLI ORACOLI: bc_tipi_metadata/bc_map tracollavano
+senza le credenziali gitignored (assente != zero violato dagli oracoli stessi!) — curato con
+bcm.leggi_credenziali() (dichiara, rc 2, mai traceback) e S6/S10 che saltano i gitignored
+(ambiente-dipendenti). Quarto giro: ciclo 0 finding vero, banco CHIUSO, zero issue nuove.
+L'auto-esame ha pagato al primo giorno: ha trovato l'oracolo che violava la regola piu'
+vecchia del canone.
