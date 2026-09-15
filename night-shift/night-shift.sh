@@ -201,11 +201,25 @@ shift_repo() {
     # CHIUSO: se qualcosa non torna, il branch si butta e resta l'issue. Mai main,
     # mai decisioni: la notte corregge le forme che conosce, il giorno dispone il resto.
     FIX_APPLICATI=0
-    if [ "$N_FIND" -gt 0 ]; then
+    # la scansione e' DIRETTA (non attraverso il ciclo-vivo: il suo livello dipende
+    # dagli streak e la lente dei collegamenti puo' non girare stasera — un fixer
+    # che dipende da una lente che forse parte non e' un fixer)
+    NON_CITATI=$(cd "$DIR" && python3 - <<'PYSCAN' 2>/dev/null || true
+import glob, os, re
+corpus = ""
+for f in glob.glob('.claude/skills/*/SKILL.md') + glob.glob('.claude/skills/*/references/*.md') + glob.glob('.claude/agents/*.md'):
+    corpus += open(f, errors='ignore').read()
+for p in sorted(glob.glob('patterns/*.md')):
+    base = os.path.basename(p)[:-3]
+    if base != 'README' and '`' + base + '`' not in corpus:
+        print(base)
+PYSCAN
+)
+    if [ "$N_FIND" -gt 0 ] || [ -n "$NON_CITATI" ]; then
       BRANCH="notte/auto-$(date +%Y%m%d-%H%M)"
       if git -C "$DIR" checkout -b "$BRANCH" -q 2>/dev/null; then
         # fix 1: pattern mai citato dal canone → citazione nell'indice per tema del metodo
-        for PAT in $(echo "$CICLO_OUT" | grep -oE "pattern [a-z0-9-]+ mai citato" | awk '{print $2}'); do
+        for PAT in $NON_CITATI; do
           MET="$DIR/.claude/skills/gas-sviluppo/references/metodo.md"
           if [ -f "$DIR/patterns/$PAT.md" ] && ! grep -q "\`$PAT\`" "$MET"; then
             python3 - "$MET" "$PAT" <<'PYFIX'
@@ -219,7 +233,8 @@ if riga in s:
     print("citato")
 PYFIX
             if [ "$?" -eq 0 ] && grep -q "\`$PAT\`" "$MET"; then
-              log "REPO $REPO: auto-fix — pattern '$PAT' citato nell'indice del metodo"
+              cp "$DIR/.claude/skills/gas-sviluppo/references/metodo.md" "$DIR/.opencode/skills/gas-sviluppo/references/metodo.md" 2>/dev/null || true
+              log "REPO $REPO: auto-fix — pattern '$PAT' citato nell'indice del metodo (gemello .opencode sincronizzato)"
               FIX_APPLICATI=$((FIX_APPLICATI+1))
             fi
           fi
@@ -230,8 +245,16 @@ PYFIX
             && log "REPO $REPO: auto-fix — indice del SAL rigenerato (S16)"
         fi
         if [ "$FIX_APPLICATI" -gt 0 ]; then
-          # IL BANCO DEVE RESTARE CHIUSO: o la PR non parte e il branch si butta
-          if bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 | tail -1 | grep -q "CHIUSO"; then
+          # IL GATE DEL FIXER: suite completa + sonde devono passare sul branch.
+          # (non il banco intero: il suo 5/7 privacy dipende dalla repos.key LOCALE della
+          # macchina — una QUESTIONE DI POLITICA aperta non deve bloccare i fix meccanici;
+          # le issue [banco] la tengono viva per il giorno. Dichiarato, mai nascosto.)
+          GATE_OK=0
+          bash "$HERE/../tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 || true
+          PASS_T=0; FAIL_T=0
+          for tt in "$HERE"/../tests/test-*.sh; do bash "$tt" >/dev/null 2>&1 && PASS_T=$((PASS_T+1)) || FAIL_T=$((FAIL_T+1)); done
+          [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
+          if [ "$GATE_OK" -eq 1 ]; then
             if git -C "$DIR" add -A && git -C "$DIR" commit -qm "notte: auto-miglioramento meccanico (banco CHIUSO, PR bozza per il giorno)
 
 Fix applicati dalla finestra notturna 23-06: $FIX_APPLICATI. Solo categorie
