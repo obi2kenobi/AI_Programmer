@@ -16,7 +16,13 @@
 # Installazione (una volta, a livello UTENTE):
 #   bash tools/install-garante.sh
 set -uo pipefail
-HUB="${AI_PROGRAMMER_HUB:-$HOME/.zcode/workspace/default/AI_Programmer}"
+# (morso 6, 2026-09-15): il percorso FISSO mentiva quando il garante gira da UNA COPIA
+# DIVERSA dell'hub (l'automazione notturna): confrontava il metodo del branch notte contro
+# il metodo della copia workspace, non aggiornata — falso DIVERGE che bocciava i fix del
+# turno. L'HUB e' la copia DA CUI il garante stesso vive: dirname $0/.. Il fisso resta
+# solo come ripiego se chi lo invoca non e' dentro un hub (SessionStart utente).
+SELF_HUB="$(cd "$(dirname "$0")/.." && pwd)"
+[ -d "$SELF_HUB/.claude/skills" ] && HUB="$SELF_HUB" || HUB="${AI_PROGRAMMER_HUB:-$HOME/.zcode/workspace/default/AI_Programmer}"
 CWD="${CLAUDE_PROJECT_DIR:-$PWD}"
 
 # l'hub deve esistere: se no, silenzio (non possiamo installare da dove non c'è)
