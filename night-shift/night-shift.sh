@@ -295,7 +295,9 @@ review del giorno." && git -C "$DIR" push -q -u origin "$BRANCH"; then
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
     if ! echo "$BANCO_OUT" | tail -1 | grep -q "CHIUSO"; then
       ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if ! echo "$ISSUE_APERTE" | grep -qF "[banco]"; then
+      if echo "$ISSUE_APERTE" | grep -qF "[banco]"; then
+        log "REPO $REPO: banco rosso MA issue [banco] gia' aperta — niente duplicati, aspetta il giorno"
+      elif true; then
         echo "$BANCO_OUT" > /tmp/night-banco-$$.md
         gh issue create -R "$REPO" -t "[banco] rosso nell'auto-esame notturno" -F /tmp/night-banco-$$.md >/dev/null 2>&1           && log "REPO $REPO: banco ROSSO — issue aperta per il giorno"           || log "⚠ REPO $REPO: banco rosso e creazione issue fallita — verdetto nel log"
         rm -f /tmp/night-banco-$$.md
