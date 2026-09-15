@@ -266,7 +266,7 @@ PYFIX
             # notturno: sotto launchd l'auth non e' affidabile e un fix MECCANICO del canone
             # non li tocca. Un gate deterministico per fix deterministici (test 30min, 2026-09-15)
             case "$(basename "$tt")" in test-ask-*|test-ai-timeout*) continue;; esac
-            if bash "$tt" >/dev/null 2>&1; then PASS_T=$((PASS_T+1)); else FAIL_T=$((FAIL_T+1)); log "REPO \$REPO: gate-rosso in \$(basename "\$tt")"; fi
+            if bash "$tt" >/dev/null 2>&1; then PASS_T=$((PASS_T+1)); else FAIL_T=$((FAIL_T+1)); log "REPO $REPO: gate-rosso in $(basename "$tt")"; fi
           done
           [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
           if [ "$GATE_OK" -eq 1 ]; then
