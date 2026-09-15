@@ -34,7 +34,7 @@ def main():
         merge che PRESERVA Significato/Verificato (stesso contratto di bc_map).
     Credenziali irraggiungibili: morte loud, non traceback nudo.
     """
-    raw = open(bcm.CRED_FILE, encoding="utf-8", errors="ignore").read()
+    raw = bcm.leggi_credenziali()  # gitignored: assente si dichiara (S3)
     c = {k: bcm.cred(k, raw) for k in ("client_id", "client_secret", "scope", "token_url", "base_url")}
     token = bcm.get_token(c)
     # $metadata sta a livello tenant, PRIMA della Company(...): base_url la porta nelle credenziali

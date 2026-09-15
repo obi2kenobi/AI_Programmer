@@ -19,6 +19,20 @@ CRED_FILE = os.environ.get("BC_CRED_FILE", "credenziali BC.rtf")
 OUT_DIR = "docs/bc/endpoints"
 
 
+def leggi_credenziali():
+    """Le credenziali sono GITIGNORED: in una clona non ci sono, e un oracolo che
+    tracolla per FileNotFoundError su un input OPZIONALE mancante viola la regola
+    di casa (assente != zero, e la sonda distingue l'input mancante dalla domanda
+    sbagliata — S3, auto-esame notturno 2026-09-15). Messaggio dignitoso, rc 2."""
+    import sys
+    try:
+        with open(CRED_FILE, encoding="utf-8", errors="ignore") as f:
+            return f.read()
+    except FileNotFoundError:
+        sys.exit(f"credenziali BC assenti ({CRED_FILE}): e' un file gitignored locale — "
+                 f"senza di lui le chiamate al vivo non partono. Dichirolto invece di tracollare.")
+
+
 def cred(key, raw):
     m = re.search(r'"%s"\s*:\s*"([^"]+)"' % re.escape(key), raw)
     if not m:
@@ -171,7 +185,7 @@ def main():
     if len(sys.argv) < 2:
         sys.exit("Uso: python3 tools/bc_map.py <NomeServizio> [top] | --catalog <catalogo.md>")
 
-    raw = open(CRED_FILE, encoding="utf-8", errors="ignore").read()
+    raw = leggi_credenziali()
     c = {k: cred(k, raw) for k in
          ("client_id", "client_secret", "scope", "token_url", "base_url")}
     token = get_token(c)
