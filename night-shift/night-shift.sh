@@ -206,8 +206,11 @@ shift_repo() {
     # che dipende da una lente che forse parte non e' un fixer)
     NON_CITATI=$(cd "$DIR" && python3 - <<'PYSCAN' 2>/dev/null || true
 import glob, os, re
+# corpus ALLINEATO al dente (ciclo-vivo lente 2): references + agents. Le SKILL.md
+# NON contano: la lente non le guarda, e un fixer che guarda piu' largo del dente
+# non vede il finding che il dente vede (morso 5, 2026-09-15).
 corpus = ""
-for f in glob.glob('.claude/skills/*/SKILL.md') + glob.glob('.claude/skills/*/references/*.md') + glob.glob('.claude/agents/*.md'):
+for f in glob.glob('.claude/skills/gas-sviluppo/references/*.md') + glob.glob('.claude/agents/*.md'):
     corpus += open(f, errors='ignore').read()
 for p in sorted(glob.glob('patterns/*.md')):
     base = os.path.basename(p)[:-3]
@@ -244,6 +247,12 @@ PYFIX
           bash "$HERE/../tools/sal-indice.sh" >/dev/null 2>&1 && FIX_APPLICATI=$((FIX_APPLICATI+1)) \
             && log "REPO $REPO: auto-fix — indice del SAL rigenerato (S16)"
         fi
+        if ! git -C "$DIR" diff --quiet 2>/dev/null || ! git -C "$DIR" diff --cached --quiet 2>/dev/null; then
+          FIX_APPLICATI=$((FIX_APPLICATI+1))  # c'e' carne vera: il commit e' legittimo
+        else
+          FIX_APPLICATI=0
+          log "REPO $REPO: auto-fix senza diff (gia' a posto?) — niente commit, niente PR"
+        fi
         if [ "$FIX_APPLICATI" -gt 0 ]; then
           # IL GATE DEL FIXER: suite completa + sonde devono passare sul branch.
           # (non il banco intero: il suo 5/7 privacy dipende dalla repos.key LOCALE della
@@ -263,7 +272,7 @@ review del giorno." && git -C "$DIR" push -q -u origin "$BRANCH"; then
               PR_NOTTE=$(cd "$DIR" && gh pr create --draft --head "$BRANCH" --title "notte: auto-miglioramento meccanico del $(date +%F)" --body "Generata dalla finestra notturna 23-06. Fix meccanici di categoria nota, banco CHIUSO. La notte non decide: questa PR aspetta la review del giorno." 2>&1 | tail -1)
               log "REPO $REPO: PR bozza di auto-miglioramento → $PR_NOTTE ($FIX_APPLICATI fix, banco CHIUSO)"
             else
-              log "⚠ REPO $REPO: push del branch notte fallito — fix nel log, albero ripristinato"
+              log "⚠ REPO $REPO: commit o push del branch notte FALLITI — albero ripristinato, il rilievo resta nell'issue"
               git -C "$DIR" reset -q --hard "origin/$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 2>/dev/null || echo main)"
             fi
           else
