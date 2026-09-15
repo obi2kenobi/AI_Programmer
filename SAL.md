@@ -122,6 +122,7 @@
 - [2026-09-14 (2°) — il giro della bonifica, raccontato per intero](#2026-09-14-2-il-giro-della-bonifica-raccontato-per-intero)
 - [2026-09-14 (3°) — decisione di Luca: la storia resta così](#2026-09-14-3-decisione-di-luca-la-storia-resta-così)
 - [2026-09-15 — la notte migliora l'hub: l'auto-esame notturno, provato in quattro giri](#2026-09-15-la-notte-migliora-l-hub-l-auto-esame-notturno-provato-in-quattro-giri)
+- [2026-09-15 (2°) — la notte che si migliora da sola: PR #83, dopo otto morsi](#2026-09-15-2-la-notte-che-si-migliora-da-sola-pr-83-dopo-otto-morsi)
 
 
 ## Stato
@@ -2214,3 +2215,25 @@ bcm.leggi_credenziali() (dichiara, rc 2, mai traceback) e S6/S10 che saltano i g
 (ambiente-dipendenti). Quarto giro: ciclo 0 finding vero, banco CHIUSO, zero issue nuove.
 L'auto-esame ha pagato al primo giorno: ha trovato l'oracolo che violava la regola piu'
 vecchia del canone.
+
+### 2026-09-15 (2°) — la notte che si migliora da sola: PR #83, dopo otto morsi
+
+Domanda di Luca: «correggerà e migliorerà, tutte le sere, dalle 23 alle 6?». Ora sì, e con
+i binari: finestra oraria 23-06 (plist a ogni ora della finestra), lock globale anti-
+sovrapposizione, e AUTO-MIGLIORAMENTO SICURO — solo fix meccanici di categoria nota (pattern
+non citato → citazione in coda nell'indice del metodo, gemello .opencode sincronizzato;
+indice SAL fermo → rigenerato), su BRANCH, col GATE (suite + sonde) che deve passare, PR
+BOZZA per il giorno. La notte non decide: corregge le forme che conosce. Otto morsi di
+messa a punto, ognuno con il suo difetto vero: blocco irraggiungibile; contatore di bullet
+decorativi; ORACOLI che tracollavano senza le credenziali gitignored (assente≠zero violato
+dagli oracoli); LOCALE mancante in launchd che disinnescava git grep -P (falso verde
+storico del controllo glifi); scansione col corpus più largo del dente; GARANTE che
+confrontava contro il workspace fisso (falso DIVERGE che bocciava i fix veri del turno);
+il reverse-DNS di macOS che si impala a intermittenza DENTRO HTTPServer.server_bind
+(faulthandler l'ha colto: un test che dipende dal DNS e' una moneta lanciata — mock NoRev);
+inserto malformato del fixer (leading ·). Esito: PR #83 «notte: auto-miglioramento
+meccanico» — 4 fix, banco CHIUSO, fusa dopo verifica. Le issue #82 (curata) e #81
+(QUESTIONE DI POLITICA per Luca: repos.key dell'automazione elenca AI_Develop/Bilancio/
+CDG/Price-Intelligence come nomi privati, e il gate li trova in SAL e storia: la chiave
+del 22/8 e' rimasta popolata SOLO sull'automazione mentre il workspace girava a vuoto —
+due chiavi, una verità; decide Luca se quei nomi sono privati o pubblici).
