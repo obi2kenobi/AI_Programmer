@@ -179,6 +179,49 @@ shift_repo() {
   COUNT=$(echo "$ISSUES" | jq 'length')
   [ "$COUNT" -ge 50 ] && log "ATTENZIONE: limite 50 issue raggiunto in $REPO — possibile troncamento silenzioso (review §5)"
   log "TURNO su $REPO: $COUNT issue in coda"
+
+  # (2026-09-15, domanda di Luca: «compiti per migliorare la notte») — SE LA REPO IN CODA
+  # E' L'HUB STESSO (clone dello stesso origin), il turno si AUTO-ESAMINA: ciclo-vivo +
+  # banco veloce girano sulla copia viva (gia' self-pullata), e ogni finding diventa una
+  # issue aperta per il giorno — IDEMPOTENTE (issue aperta con lo stesso prefisso: niente
+  # duplicate notte dopo notte). Il solver sa riparare JS/GAS, non i tool shell dell'hub:
+  # la notte TROVA E SEGNALA, il giorno dispone. Mai il contrario.
+  HUB_ORIGIN=$(git -C "$HERE" remote get-url origin 2>/dev/null || true)
+  REPO_ORIGIN=$(git -C "$DIR" remote get-url origin 2>/dev/null || true)
+  if [ -n "$HUB_ORIGIN" ] && [ "$HUB_ORIGIN" = "$REPO_ORIGIN" ]; then
+    log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
+    CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
+    N_FIND=$(echo "$CICLO_OUT" | grep -c "^  ·" || true)
+    if [ "$N_FIND" -gt 0 ]; then
+      CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
+      ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      if echo "$ISSUE_APERTE" | grep -qF "[ciclo-vivo]"; then
+        log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
+      else
+        echo "$CICLO_OUT" > /tmp/night-ciclo-$$.md
+        if gh issue create -R "$REPO" -t "$CICLO_TITOLO" -F /tmp/night-ciclo-$$.md >/dev/null 2>&1; then
+          log "REPO $REPO: aperta issue '$CICLO_TITOLO' — il giorno dispone"
+        else
+          log "⚠ REPO $REPO: creazione issue ciclo-vivo fallita — rilievo nel log"
+        fi
+        rm -f /tmp/night-ciclo-$$.md
+      fi
+    else
+      log "REPO $REPO: ciclo-vivo pulito (0 finding)"
+    fi
+    BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
+    if ! echo "$BANCO_OUT" | tail -1 | grep -q "CHIUSO"; then
+      ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      if ! echo "$ISSUE_APERTE" | grep -qF "[banco]"; then
+        echo "$BANCO_OUT" > /tmp/night-banco-$$.md
+        gh issue create -R "$REPO" -t "[banco] rosso nell'auto-esame notturno" -F /tmp/night-banco-$$.md >/dev/null 2>&1           && log "REPO $REPO: banco ROSSO — issue aperta per il giorno"           || log "⚠ REPO $REPO: banco rosso e creazione issue fallita — verdetto nel log"
+        rm -f /tmp/night-banco-$$.md
+      fi
+    else
+      log "REPO $REPO: banco veloce CHIUSO"
+    fi
+  fi
+
   [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
 
   local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0
@@ -514,48 +557,6 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
   done
 
   # bug reale (dogfooding, nuovo ciclo 10 giri): PR_CREATED/FAILED sono `local` a
-  # (2026-09-15, domanda di Luca: «compiti per migliorare la notte») — SE LA REPO IN CODA
-  # E' L'HUB STESSO (clone dello stesso origin), il turno si AUTO-ESAMINA: ciclo-vivo +
-  # banco veloce girano sulla copia viva (gia' self-pullata), e ogni finding diventa una
-  # issue aperta per il giorno — IDEMPOTENTE (issue aperta con lo stesso prefisso: niente
-  # duplicate notte dopo notte). Il solver sa riparare JS/GAS, non i tool shell dell'hub:
-  # la notte TROVA E SEGNALA, il giorno dispone. Mai il contrario.
-  HUB_ORIGIN=$(git -C "$HERE" remote get-url origin 2>/dev/null || true)
-  REPO_ORIGIN=$(git -C "$DIR" remote get-url origin 2>/dev/null || true)
-  if [ -n "$HUB_ORIGIN" ] && [ "$HUB_ORIGIN" = "$REPO_ORIGIN" ]; then
-    log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
-    CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
-    N_FIND=$(echo "$CICLO_OUT" | grep -c "^  ·" || true)
-    if [ "$N_FIND" -gt 0 ]; then
-      CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
-      ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if echo "$ISSUE_APERTE" | grep -qF "[ciclo-vivo]"; then
-        log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
-      else
-        echo "$CICLO_OUT" > /tmp/night-ciclo-$$.md
-        if gh issue create -R "$REPO" -t "$CICLO_TITOLO" -F /tmp/night-ciclo-$$.md >/dev/null 2>&1; then
-          log "REPO $REPO: aperta issue '$CICLO_TITOLO' — il giorno dispone"
-        else
-          log "⚠ REPO $REPO: creazione issue ciclo-vivo fallita — rilievo nel log"
-        fi
-        rm -f /tmp/night-ciclo-$$.md
-      fi
-    else
-      log "REPO $REPO: ciclo-vivo pulito (0 finding)"
-    fi
-    BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
-    if ! echo "$BANCO_OUT" | tail -1 | grep -q "CHIUSO"; then
-      ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if ! echo "$ISSUE_APERTE" | grep -qF "[banco]"; then
-        echo "$BANCO_OUT" > /tmp/night-banco-$$.md
-        gh issue create -R "$REPO" -t "[banco] rosso nell'auto-esame notturno" -F /tmp/night-banco-$$.md >/dev/null 2>&1           && log "REPO $REPO: banco ROSSO — issue aperta per il giorno"           || log "⚠ REPO $REPO: banco rosso e creazione issue fallita — verdetto nel log"
-        rm -f /tmp/night-banco-$$.md
-      fi
-    else
-      log "REPO $REPO: banco veloce CHIUSO"
-    fi
-  fi
-
   # questa funzione — una volta finita, spariscono. Il SAL scritto dopo il for
   # più sotto li leggeva vuoti ad OGNI turno reale (verificato con simulazione:
   # una variabile local non esiste più fuori dalla funzione che l'ha dichiarata).
