@@ -995,6 +995,25 @@ ogni giro (1093 attese) che ha preso due errori dell'operatore prima che del cod
    essere credute, e il ripiego è dichiarato nel record. Il gradino che tace è il gradino
    che mente. (Conferma di E-018: quando cambia il lettore, cambia la forma.)
 
+## Tre regole dai cinquanta giri in produzione REPO-W (2026-09-16)
+
+Report: docs/campo/2026-09-16-repo-w-cinquanta-giri-produzione.md — 50 giri su difetti
+silenziosi in un flusso che termina con una registrazione contabile irreversibile.
+**In produzione**: 55 file, cancello 11/11, rilettura post-push zero divergenze.
+
+1. **IL RITENTATIVO AUTOMATICO È CORRETTO SU UNA LETTURA, PERICOLOSO SU UNA SCRITTURA**:
+   una registrazione può essere andata a buon fine mentre la risposta si perde — e il
+   ritentamento la duplica. Solo GET e HEAD sono ripetibili; un 200 senza il campo atteso
+   solleva invece di restituire vuoto. (bc_sandbox.py: il ritentativo scriveva due volte.)
+2. **UN CENSIMENTO CHE ATTRAVERSA CARTELLE DI PROVENIENZA IGNOTA DICHIARA SEMPRE IL
+   PROPRIETARIO DEL DATO CHE RIPORTA**: `git -C <cartella> status` su una cartella che non
+   è una repository non fallisce — risale al genitore e risponde per lui. 477 modifiche
+   di un altro repo finite in un documento come misura di questo.
+3. **IL COMMIT SU UNA SUITE ESEGUITA E NON LETTA È UN COMMIT SU NIENTE**: il comando era
+   incatenato a `git commit` con `&&`, il controllo era rosso, non è stato letto. La cura
+   non è una regola di processo ma un attrezzo: `tools/gate.sh` legge, stampa una riga per
+   comando, esce 1 se uno è rosso. La regola «verifica && azione» diventa strutturale.
+
 ## Indice rapido dei pattern (per tema)
 
 Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.

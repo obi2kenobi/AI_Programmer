@@ -59,3 +59,6 @@ Validators.gs
 WebApp.gs
 dashboard.html
 diagnosticAddress.gs
+# file di REPO-W citati nei report e nel canone (vivono lì, non qui)
+tools/gate.sh
+bc_sandbox.py

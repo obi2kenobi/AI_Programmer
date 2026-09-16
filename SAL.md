@@ -127,6 +127,7 @@
 - [2026-09-15 (4°) — test 2 dei 30 minuti: entrambi i misteri chiusi, PR #87](#2026-09-15-4-test-2-dei-30-minuti-entrambi-i-misteri-chiusi-pr-87)
 - [2026-09-16 — la notte che non e' mai partita (E-026): tre strati, tre cure](#2026-09-16-la-notte-che-non-e-mai-partita-e-026-tre-strati-tre-cure)
 - [2026-09-16 (2°) — il test definitivo: PR #89 e la caduta del ultimo mistero](#2026-09-16-2-il-test-definitivo-pr-89-e-la-caduta-del-ultimo-mistero)
+- [2026-09-16 (3°) — REPO-W: cinquanta giri in produzione (report portato all'hub)](#2026-09-16-3-repo-w-cinquanta-giri-in-produzione-report-portato-all-hub)
 
 
 ## Stato
@@ -2303,3 +2304,16 @@ d'automazione ricostruita PULITA (dopo che il riclono l'aveva cancellata portand
 coda e chiave — E-027: il riclono ora salva lo stato gitignored prima del rm).
 RISULTATO: PR #89 — QUARTA PR di auto-miglioramento, banco CHIUSO, fusa. La catena gira
 per intero: deriva → fix → gate → PR → merge. Quattro PR (#83, #85, #87, #89).
+
+### 2026-09-16 (3°) — REPO-W: cinquanta giri in produzione (report portato all'hub)
+
+Report: docs/campo/2026-09-16-repo-w-cinquanta-giri-produzione.md (repo-w-cinquanta-giri-
+produzione; anonimizzati i nomi dei fornitori nel repo del progetto). Il lavoro piu' grosso
+mai consegnato dal campo: 50 giri su difetti silenziosi in un flusso che termina con una
+registrazione contabile irreversibile, 55 file spinti sul vivo col cancello 11/11, rilettura
+post-push zero divergenze. L'apparato di verifica costruito DA ZERO (prima non esisteva
+niente): 91+127+39+29+43+23 attese, 8 lenti statiche, gate.sh che legge i comandi invece
+di incatenarli. Tre regole al canone: ritentativo solo su letture (una scrittura ripetuta
+e' una doppia registrazione); censimento dichiara sempre il proprietario del dato; commit
+su suite non letta = commit su niente. Nel repo del progetto: bonificati 3 nomi di fornitori
+dal report della caccia (repo pubblica).
