@@ -301,11 +301,15 @@ PYFIX
           [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
           if [ "$GATE_OK" -eq 1 ]; then
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
-            if git -C "$DIR" add -A 2>"$ERR_NOTTE" && git -C "$DIR" commit -qm "notte: auto-miglioramento meccanico (banco CHIUSO, PR bozza per il giorno)
+            # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
+            # il commit moriva nel pre-commit hook e l'stderr andava nel vuoto)
+            if git -C "$DIR" add -A 2>"$ERR_NOTTE" \
+               && git -C "$DIR" commit -qm "notte: auto-miglioramento meccanico (banco CHIUSO, PR bozza per il giorno)
 
 Fix applicati dalla finestra notturna 23-06: $FIX_APPLICATI. Solo categorie
 meccaniche note; il banco veloce e' CHIUSO su questo branch; PR bozza per la
-review del giorno." && git -C "$DIR" push -q -u origin "$BRANCH" 2>>"$LOG"; then
+review del giorno." 2>>"$ERR_NOTTE" \
+               && git -C "$DIR" push -q -u origin "$BRANCH" 2>>"$ERR_NOTTE"; then
               PR_NOTTE=$(cd "$DIR" && gh pr create --draft --head "$BRANCH" --title "notte: auto-miglioramento meccanico del $(date +%F)" --body "Generata dalla finestra notturna 23-06. Fix meccanici di categoria nota, banco CHIUSO. La notte non decide: questa PR aspetta la review del giorno." 2>&1 | tail -1)
               log "REPO $REPO: PR bozza di auto-miglioramento → $PR_NOTTE ($FIX_APPLICATI fix, banco CHIUSO)"
             else
