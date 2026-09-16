@@ -211,6 +211,35 @@ shift_repo() {
   # la notte TROVA E SEGNALA, il giorno dispone. Mai il contrario.
   HUB_ORIGIN=$(git -C "$HERE" remote get-url origin 2>/dev/null || true)
   REPO_ORIGIN=$(git -C "$DIR" remote get-url origin 2>/dev/null || true)
+
+  # AUTO-VERIFICA ESTESA (2026-09-16): OGNI repo con .night-verify viene esaminata
+  # ogni ciclo. L'HUB fa auto-esame + auto-fix; le altre fanno girare i comandi
+  # dichiarati, e ogni rosso diventa issue per il giorno. Estende il ragionamento
+  # dell'auto-miglioramento a tutte le repo onboardate allo standard.
+  if [ -f "$DIR/.night-verify" ]; then
+    NV_ROSSI=0
+    NV_TOTALI=0
+    while IFS= read -r NV_CMD; do
+      case "$NV_CMD" in ""|\#*) continue;; esac
+      NV_TOTALI=$((NV_TOTALI+1))
+      if ! (cd "$DIR" && eval "ai_timeout 120 $NV_CMD" >/dev/null 2>&1); then
+        NV_ROSSI=$((NV_ROSSI+1))
+        log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
+      fi
+    done < "$DIR/.night-verify"
+    if [ "$NV_ROSSI" -gt 0 ]; then
+      NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      if ! echo "$NV_ISSUE" | grep -qF "[night-verify]"; then
+        gh issue create -R "$REPO" -t "[night-verify] $NV_ROSSI verifiche rosse nell'auto-esame" -b "Il turno notturno ha eseguito i comandi in .night-verify: $NV_ROSSI su $NV_TOTALI sono rossi. I dettagli sono nel log del turno." >/dev/null 2>&1 \
+          && log "REPO $REPO: issue [night-verify] aperta ($NV_ROSSI/$NV_TOTALI rossi)"
+      else
+        log "REPO $REPO: $NV_ROSSI/$NV_TOTALI rosse — issue gia' aperta"
+      fi
+    else
+      log "REPO $REPO: .night-verify $NV_TOTALI/$NV_TOTALI verdi"
+    fi
+  fi
+
   if [ -n "$HUB_ORIGIN" ] && [ "$HUB_ORIGIN" = "$REPO_ORIGIN" ]; then
     log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
     CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
