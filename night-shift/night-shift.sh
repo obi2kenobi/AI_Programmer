@@ -177,8 +177,22 @@ shift_repo() {
   DB=$(default_branch "$DIR") || log "ATTENZIONE: default branch non rilevato in $REPO, assumo main"
   if ! git -C "$DIR" checkout "$DB" -q 2>/dev/null || ! git -C "$DIR" reset --hard "origin/$DB" -q; then
     log "ERRORE: checkout/reset di $DB fallito in $DIR — riclono pulito"
+    # (E-027, 2026-09-16): il riclono HA CANCELLATO lo stato gitignored della coda
+    # (repos.conf, repos.key, .sal-turni.md) — e quando il clone e' fallito, quello
+    # stato era PERDUTO. Lo stato locale si SALVA prima del rm, si RIPRISTINA dopo.
+    mkdir -p "$WORK/.state-salvate"
+    for ST in repos.conf repos.key; do
+      [ -f "$DIR/night-shift/$ST" ] && cp "$DIR/night-shift/$ST" "$WORK/.state-salvate/$ST"         && log "stato salvato prima del riclono: $ST"
+    done
+    [ -f "$DIR/night-shift/.sal-turni.md" ] && cp "$DIR/night-shift/.sal-turni.md" "$WORK/.state-salvate/"
     rm -rf "$DIR"
     gh repo clone "$REPO" "$DIR" -- --depth=50 -q || { log "ERRORE: riclone di $REPO fallito"; return 1; }
+    # ripristino dello stato locale salvato (E-027)
+    if [ -d "$WORK/.state-salvate" ] && [ "$(basename "$REPO")" = "AI_Programmer" ]; then
+      for ST in repos.conf repos.key .sal-turni.md; do
+        [ -f "$WORK/.state-salvate/$ST" ] && cp "$WORK/.state-salvate/$ST" "$DIR/night-shift/$ST"           && log "stato ripristinato dopo il riclono: $ST"
+      done
+    fi
   fi
   git -C "$DIR" config user.name  >/dev/null 2>&1 || git -C "$DIR" config user.name  "Night Shift"
   git -C "$DIR" config user.email >/dev/null 2>&1 || git -C "$DIR" config user.email "night-shift@localhost"
