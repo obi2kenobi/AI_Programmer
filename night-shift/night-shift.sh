@@ -680,8 +680,8 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
 TURN_LOCK="$WORK/.lock-turno"
 if ! mkdir "$TURN_LOCK" 2>/dev/null; then
   ETA=$(( $(date +%s) - $(stat -f %m "$TURN_LOCK" 2>/dev/null || echo 0) ))
-  if [ "$ETA" -ge 10800 ]; then
-    log "lock turno globale scaduto (${ETA}s > 3h): lo rimuovo e proseseguo"
+  if [ "$ETA" -ge 3600 ]; then
+    log "lock turno globale scaduto (${ETA}s > 1h: un turno oltre l'ora e' anomalia da guardare, non da aspettare — E-026): lo rimuovo e proseseguo"
     rmdir "$TURN_LOCK" 2>/dev/null; mkdir "$TURN_LOCK" 2>/dev/null || { log "turno precedente ancora vivo: esco"; exit 0; }
   else
     log "turno precedente ancora in corsa: questo ciclo saluta ed esce (finestra oraria)"

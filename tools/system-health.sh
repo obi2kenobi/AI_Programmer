@@ -28,6 +28,19 @@ else
 fi
 
 # 3. LaunchAgent
+# (E-026, 2026-09-16): il job nightshift caricato deve puntare al plist DI CASA.
+# Una notte intera e' stata persa perche' una registrazione spuria (path in una
+# directory TMP) teneva il posto di quella vera, mai caricata. Il job con il
+# calendario giusto su disco non conta: conta quello CARICATO.
+NS_PATH=$(launchctl print "gui/$(id -u)/luca.nightshift" 2>/dev/null | grep -m1 '^[[:space:]]*path = ' | sed 's/^.*= //')
+if [ -n "$NS_PATH" ]; then
+  case "$NS_PATH" in
+    "$HOME/Library/LaunchAgents/"*) echo "OK   nightshift caricato dal plist di casa ($NS_PATH)";;
+    *) echo "ROSSO nightshift caricato da: $NS_PATH — REGISTRAZIONE SPURIA: bootout + bootstrap da ~/Library/LaunchAgents (E-026)";;
+  esac
+else
+  echo "ROSSO nightshift non caricato: la finestra notturna non partira'"
+fi
 for AG in luca.ollama luca.nightshift luca.wayfinder; do
   if launchctl list 2>/dev/null | grep -q "$AG"; then
     ok "launchd: $AG caricato"
