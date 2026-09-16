@@ -505,3 +505,26 @@
   a 1h (un turno che dura piu' di un'ora e' gia' un'anomalia da guardare, non da aspettare).
 - Verifica guardia: stamattina il dente dice OK col path di casa; il lock orfano rimosso a mano.
 - Aggiramento: rifare il bootstrap SENZA guardare launchctl print path = .
+
+## E-027 Il riclono pulito che mangiava lo stato locale
+- Data / sessione: 2026-09-16 (test definitivo, ciclo delle 09:53)
+- Famiglia: R2 (autodistruzione su percorso di ripristino non provato) + R1
+- Chi l'ha trovato: il test definitivo richiesto da Luca (09:30-10:00-11:00)
+- Sintomo: la copia di automazione SPARITA. Il prep del turno ha fallito checkout
+  (strascico di un'interferenza manuale), ha fatto il suo «riclono pulito» (rm -rf),
+  e il clone e' fallito a sua volta: coda, chiave privacy e memoria del turno —
+  tutto GITIGNORED, tutto CANCELLATO, nessuna copia altrove.
+- Causa prossima: il percorso di auto-riparazione distruggeva lo stato locale prima
+  di avere la sua sostituzione, e non era mai stato provato fino in fondo (falliva
+  PRIMA del rm nelle prove).
+- Causa del ragionamento: «riclono pulito» trattava la copia come usa-e-getta, ma
+  la copia porta FILES GITIGNORED che non vivono DA NESSUNA PARTE ALTRO: non e'
+  usa-e-getta. Lo stato locale e' parte del sistema.
+- Perché non ci ha fermati: il clone era sempre riuscito, il ramo rm+clone non
+  girava mai — fino alla mattina in cui la rete era ballerina.
+- Guardia: night-shift/night-shift.sh (salvataggio in .state-salvate prima del
+  rm, ripristino dopo il clone riuscito).
+- Verifica guardia: la coda e la chiave ricostruite a mano stamattina (contenuto
+  noto dalla sessione); il percorso ora provato dal caso reale.
+- Aggiramento: interferire manualmente con la copia mentre il turno gira —
+  il trigger dell'intera cascata era quello (dichiarato: colpa dell'operatore).
