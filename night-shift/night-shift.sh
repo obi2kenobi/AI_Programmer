@@ -754,4 +754,17 @@ SALEOF
   log "memoria del turno scritta in night-shift/.sal-turni.md (locale: il mattino la porta nella SAL)"
 fi
 
+# (2026-09-16, idea di Luca: «due minuti per giro — alla fine di uno avvia il prossimo»)
+# TURNO CONTINUO: se siamo ancora nella finestra notturna (23-06), riposa 5 minuti e
+# riparte. Un ciclo dietro l'altro invece di uno ogni ora: 42+ cicli per notte invece
+# di 7. La pausa di 5' evita di bruciare CPU quando non c'e' niente da fare, e il
+# lock globale resta la rete di sicurezza se qualcosa va lungo.
+ORA=$(date +%H)
+if [ "$ORA" -ge 23 ] || [ "$ORA" -lt 6 ]; then
+  log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): prossimo giro fra 5 minuti ==="
+  rmdir "$TURN_LOCK" 2>/dev/null  # libero il lock per il giro dopo
+  sleep 300
+  exec "$0" "$@"
+fi
+
 exit $GLOBAL_RC
