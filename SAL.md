@@ -125,6 +125,7 @@
 - [2026-09-15 (2°) — la notte che si migliora da sola: PR #83, dopo otto morsi](#2026-09-15-2-la-notte-che-si-migliora-da-sola-pr-83-dopo-otto-morsi)
 - [2026-09-15 (3°) — il test dei 30 minuti: PR #85, e due misteri da sorvegliare](#2026-09-15-3-il-test-dei-30-minuti-pr-85-e-due-misteri-da-sorvegliare)
 - [2026-09-15 (4°) — test 2 dei 30 minuti: entrambi i misteri chiusi, PR #87](#2026-09-15-4-test-2-dei-30-minuti-entrambi-i-misteri-chiusi-pr-87)
+- [2026-09-16 — la notte che non e' mai partita (E-026): tre strati, tre cure](#2026-09-16-la-notte-che-non-e-mai-partita-e-026-tre-strati-tre-cure)
 
 
 ## Stato
@@ -2270,3 +2271,19 @@ Bilancio dei due test: il sistema si e' auto-corretto TRE volte (PR #83, #85, #8
 hanno pescato cinque difetti veri (oracoli senza credenziali, locale, DNS, gate muto-sui-
 nomi, cwd) che 131 test non vedevano. La macchina che si prova, si rompe, e si ripara da
 sola — con review del giorno su ogni PR.
+
+### 2026-09-16 — la notte che non e' mai partita (E-026): tre strati, tre cure
+
+Punto della situazione chiesto da Luca. La finestra 23-06 del 15/9 NON HA GIRATO: zero turni.
+Tre strati scoperti scavando: (1) il bootstrap di ripristino del plist falli una volta (rc 5)
+e il ripiego lascio' attiva una REGISTRAZIONE SPURIA col path in una directory TMP — quella
+sparo' uno scettro fuori finestra (20:37) e scriveva la console altrove, mentre il plist di
+casa 23-06 resta' su disco MAI CARICATO; (2) il turno-monestrello mori' senza trap lasciando
+il LOCK ORFANO, che alle 23:00 ha fatto uscire col «turno precedente ancora in corsa» — una
+bugia su un defunto (2.4h < soglia 3h); (3) il Mac DORMI': senza caffeinate non c'e' stato
+nulla a tenerlo sveglio (110 sleep/wake nella nottata). Cure: dente in system-health (il job
+caricato deve puntare al plist DI CASA — contano le cose caricate, non quelle scritte);
+lock-stale da 3h a 1h; lock orfano rimosso; E-026 nel registro con i tre strati. La lezione
+che brucia: avevo verificato stato e calendario DEL PLIST SU DISCO, non il PATH DEL JOB
+CARICATO. Il sistema aveva pure la regola (E-019: verifica il puntamento caricato) — e l'ho
+applicata al posto sbagliato: dentro il job invece che al job.
