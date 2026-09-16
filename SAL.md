@@ -126,6 +126,7 @@
 - [2026-09-15 (3°) — il test dei 30 minuti: PR #85, e due misteri da sorvegliare](#2026-09-15-3-il-test-dei-30-minuti-pr-85-e-due-misteri-da-sorvegliare)
 - [2026-09-15 (4°) — test 2 dei 30 minuti: entrambi i misteri chiusi, PR #87](#2026-09-15-4-test-2-dei-30-minuti-entrambi-i-misteri-chiusi-pr-87)
 - [2026-09-16 — la notte che non e' mai partita (E-026): tre strati, tre cure](#2026-09-16-la-notte-che-non-e-mai-partita-e-026-tre-strati-tre-cure)
+- [2026-09-16 (2°) — il test definitivo: PR #89 e la caduta del ultimo mistero](#2026-09-16-2-il-test-definitivo-pr-89-e-la-caduta-del-ultimo-mistero)
 
 
 ## Stato
@@ -2287,3 +2288,18 @@ lock-stale da 3h a 1h; lock orfano rimosso; E-026 nel registro con i tre strati.
 che brucia: avevo verificato stato e calendario DEL PLIST SU DISCO, non il PATH DEL JOB
 CARICATO. Il sistema aveva pure la regola (E-019: verifica il puntamento caricato) — e l'ho
 applicata al posto sbagliato: dentro il job invece che al job.
+
+### 2026-09-16 (2°) — il test definitivo: PR #89 e la caduta del ultimo mistero
+
+Mandato di Luca: «continua a fare prove fino a che non funziona tutto correttamente, da
+stanotte non voglio scuse». Il test definitivo (09:30 avvio → 10:00 stop gentile → 11:00
+riavvio) ha prodotto: la finestra oraria sparava, lo stop non ha interrotto nulla (nessun
+turno in corsa), il riavvio alle 11:01 ha fatto ripartire i cicli immediatamente. Ma il
+fixer continuava a bocciare per colpa di UN GLIFO CJK ([CJK: yang tai]) lasciato in DEBITI.md da un
+mio test — il pre-commit lo rifiutava, il commit moriva, e lo stderr andava nel vuoto
+perche' catturavo solo git add. Catena delle cure: stderr da tutti e tre (add+commit+push),
+retry del gate dopo 2s (i transienti non boccano i fix veri), glifo bonificato, copia
+d'automazione ricostruita PULITA (dopo che il riclono l'aveva cancellata portandosi via
+coda e chiave — E-027: il riclono ora salva lo stato gitignored prima del rm).
+RISULTATO: PR #89 — QUARTA PR di auto-miglioramento, banco CHIUSO, fusa. La catena gira
+per intero: deriva → fix → gate → PR → merge. Quattro PR (#83, #85, #87, #89).
