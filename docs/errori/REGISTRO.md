@@ -482,3 +482,26 @@
   alla convenzione REPO-V.
 - Aggiramento: rimuovere un nome da ~/.privacy-nomi senza contratto che lo dichiara
   pubblico — la lista è della persona, non della sessione.
+
+## E-026 La notte che non è mai partita: la registrazione spuria teneva il posto
+- Data / sessione: 2026-09-16 (notte del 15/9, prima della finestra 23-06)
+- Famiglia: R2 (ho agito — ripristinato il plist — senza verificare l'effetto) + R1
+- Chi l'ha trovato: il mattino, leggendo una console ferma alle 20:37
+- Sintomo: zero turni in tutta la finestra 23-06. La console mostra un solo spettro
+  (20:37, fuori finestra) e un accesso alle 23:00 uscito col lock «turno precedente
+  ancora in corsa» — su un turno MORTO da due ore (lock orfano: morto senza trap).
+- Causa prossima: il bootstrap di ripristino del plist ha fallito (rc 5) una volta;
+  il ripiego ha lasciato attiva una registrazione il cui PATH punta a un plist in una
+  directory TMP — quella ha sparito lo scettro delle 20:37 e scritto altrove. Il plist
+  di casa (23-06) e' rimasto su disco MAI CARICATO. Il Mac ha poi dormito (senza
+  caffeinate non c'e' stato nulla a tenerlo sveglio).
+- Causa del ragionamento: dopo il bootstrap ho verificato stato e calendario DEL PLIST
+  SU DISCO, non il PATH DEL JOB CARICATO. Contano le cose caricate, non quelle scritte.
+- Perché non ci ha fermati: il controllo di E-019 verifica il puntamento dell'HUB dentro
+  il job, non QUALE plist abbia generato il job.
+- Guardia: tools/system-health.sh (il job nightshift caricato deve puntare al plist di
+  casa; registrazione spuria → ROSSO col rimedio scritto). E il lock orfano: soglia 3h
+  gia' prevista, ma alle 23:00 il lock aveva 2.4h e ha mentito — la soglia si abbassa
+  a 1h (un turno che dura piu' di un'ora e' gia' un'anomalia da guardare, non da aspettare).
+- Verifica guardia: stamattina il dente dice OK col path di casa; il lock orfano rimosso a mano.
+- Aggiramento: rifare il bootstrap SENZA guardare launchctl print path = .
