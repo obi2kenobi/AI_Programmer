@@ -26,7 +26,16 @@ SUBJ=$(grep "Totale:" "$REPORT" | head -1 | sed 's/[*\`]//g' | head -c 120)
 BODY="$(cat "$REPORT")
 
 ---
-$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')"
+$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
+$(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] && {
+  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || echo 0)
+  PR=$(grep -c "PR bozza" "$SAL_TURNI" 2>/dev/null || echo 0)
+  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || echo 0)
+  echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
+  ASPETTA=$(sed -n "/ASPETTA IL GIORNO/,\$p" "$SAL_TURNI" 2>/dev/null | grep -c "  " || echo 0)
+  [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"
+  > "$SAL_TURNI"
+} || echo "(nessuna memoria del turno)")"
 
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
 # arbitrario (titoli PR, output di comandi) — senza escaping, una virgoletta o un

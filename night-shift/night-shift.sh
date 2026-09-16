@@ -722,6 +722,18 @@ fi
 trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
+
+# PULIZIA RAMI NOTTE STANTI (2026-09-16): i rami notte/auto-* piu' vecchi di 24h
+# sul remoto sono scarti (PR fusa o mai create). Con 53 cicli a notte, i rami si
+# accumulano se nessuno li pulisce.
+STANTI=$(gh api repos/obi2kenobi/AI_Programmer/branches --jq '.[].name' 2>/dev/null | grep "^notte/auto-" | head -10 || true)
+for B in $STANTI; do
+  # la PR esiste ancora?
+  if ! gh pr list -R obi2kenobi/AI_Programmer --state all --json headRefName -q '.[].headRefName' 2>/dev/null | grep -qF "$B"; then
+    gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
+      && log "pulizia: ramo notte stante '$B' cancellato (nessuna PR collegata)"
+  fi
+done
 GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_PROPOSTE=0
@@ -761,9 +773,18 @@ fi
 # lock globale resta la rete di sicurezza se qualcosa va lungo.
 ORA=${FAKE_HOUR:-$(date +%H)}  # FAKE_HOUR per i test della finestra
 if [ "$ORA" -ge 23 ] || [ "$ORA" -lt 6 ]; then
-  log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): prossimo giro fra 5 minuti ==="
+  # SONNO ADATTIVO (2026-09-16): se il turno HA FATTO qualcosa (fix, PR, issue),
+  # riparti in 60 secondi — c'e' materiale fresco. Se non ha fatto niente, riposa
+  # 10 minuti: l'hub e' pulito, non serve correre. Prima: 5 fissi per tutti.
+  LAVORO=$((TOT_PR_CREATED + TOT_PROPOSTE + TOT_FAILED))
+  if [ "$LAVORO" -gt 0 ]; then
+    RIPOSO=60; MOTIVO="lavoro fatto ($LAVORO pezzi): riparto subito"
+  else
+    RIPOSO=600; MOTIVO="nulla da fare: riposo lungo"
+  fi
+  log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): $MOTIVO (fra ${RIPOSO}s) ==="
   rmdir "$TURN_LOCK" 2>/dev/null  # libero il lock per il giro dopo
-  sleep 300
+  sleep "$RIPOSO"
   exec "$0" "$@"
 fi
 
