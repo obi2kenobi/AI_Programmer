@@ -759,7 +759,7 @@ fi
 # riparte. Un ciclo dietro l'altro invece di uno ogni ora: 42+ cicli per notte invece
 # di 7. La pausa di 5' evita di bruciare CPU quando non c'e' niente da fare, e il
 # lock globale resta la rete di sicurezza se qualcosa va lungo.
-ORA=$(date +%H)
+ORA=${FAKE_HOUR:-$(date +%H)}  # FAKE_HOUR per i test della finestra
 if [ "$ORA" -ge 23 ] || [ "$ORA" -lt 6 ]; then
   log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): prossimo giro fra 5 minuti ==="
   rmdir "$TURN_LOCK" 2>/dev/null  # libero il lock per il giro dopo
