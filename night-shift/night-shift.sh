@@ -244,6 +244,15 @@ shift_repo() {
     log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
     CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
     N_FIND=$(echo "$CICLO_OUT" | grep -cE "^  · [A-Z]" || true)
+    # (2026-09-16): il fixer ora LEGGE il ciclo-vivo, non solo la propria scansione.
+    # I finding COLLEGAMENTO (livello 2) sono pattern non citati: stesso fix.
+    # I finding FLUSSI/ARCHITETTURA (livelli 3-4) vengono contati e dichiarati:
+    # la notte non li cura, ma non li nasconde nemmeno.
+    if [ "$N_FIND" -gt 0 ]; then
+      CICLO_LIV=$(echo "$CICLO_OUT" | grep -oP "Livello: \d+" | head -1)
+      CICLO_TIPI=$(echo "$CICLO_OUT" | grep -oE "COLLEGAMENTO|FLUSSO|ARCHITETTURA|META" | sort | uniq -c | tr '\n' ' ')
+      log "REPO $REPO: ciclo-vivo $CICLO_LIV — $CICLO_TIPI (il fixer cura i COLLEGAMENTO, gli altri vanno all'issue)"
+    fi
     # ── AUTO-MIGLIORAMENTO SICURO (2026-09-15, finestra 23-06) ────────────────
     # Solo fix MECCANICI DI CATEGORIA NOTA, su BRANCH, col banco che deve restare
     # CHIUSO: se qualcosa non torna, il branch si butta e resta l'issue. Mai main,
@@ -294,6 +303,42 @@ PYFIX
         if ! bash "$HERE/../tools/giri-ignoranti.sh" 2>/dev/null | grep -q "S16 .* fresco"; then
           bash "$HERE/../tools/sal-indice.sh" >/dev/null 2>&1 && FIX_APPLICATI=$((FIX_APPLICATI+1)) \
             && log "REPO $REPO: auto-fix — indice del SAL rigenerato (S16)"
+        fi
+        # fix 3: CRLF nei .sh → bonificati (passano bash -n, muoiono a runtime)
+        CRLF_FILES=$(grep -rlP '\r$' "$DIR"/tools/*.sh "$DIR"/night-shift/*.sh "$DIR"/tests/*.sh 2>/dev/null | head -5 || true)
+        if [ -n "$CRLF_FILES" ]; then
+          for CF in $CRLF_FILES; do
+            LC_ALL=C tr -d '\r' < "$CF" > "$CF.tmp" && mv "$CF.tmp" "$CF"
+            log "REPO $REPO: auto-fix — CRLF bonificato in $(basename "$CF")"
+            FIX_APPLICATI=$((FIX_APPLICATI+1))
+          done
+        fi
+        # fix 4: indice pattern README non alfabetico → riordinato
+        python3 - "$DIR/patterns/README.md" <<'PYIDX' 2>/dev/null
+import sys
+p = sys.argv[1]
+lines = open(p).read().split('\n')
+rows = [l for l in lines if l.startswith('| [')]
+if rows and rows != sorted(rows, key=lambda l: l.split(']')[0].lower()):
+    rows.sort(key=lambda l: l.split(']')[0].lower())
+    out = []
+    done = False
+    for l in lines:
+        if l.startswith('| [') and not done:
+            out.extend(rows); done = True
+            continue
+        if l.startswith('| ['): continue
+        out.append(l)
+    open(p, 'w').write('\n'.join(out))
+    print('INDICE-RIORDINATO')
+PYIDX
+        if [ "$?" -eq 0 ] && python3 -c "
+rows = [l for l in open('$DIR/patterns/README.md') if l.startswith('| [')]
+exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2>/dev/null; then
+          : # gia' in ordine
+        else
+          log "REPO $REPO: auto-fix — indice pattern riordinato (alfabetico)"
+          FIX_APPLICATI=$((FIX_APPLICATI+1))
         fi
         if ! git -C "$DIR" diff --quiet 2>/dev/null || ! git -C "$DIR" diff --cached --quiet 2>/dev/null; then
           FIX_APPLICATI=$((FIX_APPLICATI+1))  # c'e' carne vera: il commit e' legittimo
@@ -639,6 +684,12 @@ Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${
       else
         log "Issue #$NUM: risolutore non ha converto (rc=$RC) — si passa oltre"
         FAILED=$((FAILED+1))
+        # (2026-09-16): CATEGORIZZA il fallimento — i pattern ricorrenti diventano
+        # categorie di fix nuove. La notte non corregge qui, ma il mattino trova
+        # la statistica pronta.
+        MOTIVO_FALL=$(echo "$OUT" | grep -oE "⛔.*" | head -1 | cut -c1-80)
+        [ -n "$MOTIVO_FALL" ] && log "Issue #$NUM: motivo: $MOTIVO_FALL"
+        echo "  $REPO #$NUM: rc=$RC — $MOTIVO_FALL" >> "$HERE/.sal-turni-fallimenti.md" 2>/dev/null || true
       fi
       rm -f "$ISSUE_FILE"
       continue
