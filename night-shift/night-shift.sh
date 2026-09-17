@@ -596,6 +596,30 @@ $BODY"
       OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
+
+      # CASCATA solver → agente (2026-09-17, intuizione di Luca): se il solver non
+      # converge, l'agente multi-turno prova strade che il solver non vede.
+      # Previene 33 cicli di retry su qualcosa che non può matchare il pattern.
+      if [ "$RC" -ne 0 ] && [ "$RC" -ne 3 ] && [ -f "$HERE/agente.sh" ]; then
+        log "Issue #$NUM: solver rc=$RC — provo l'AGENTE (cascade)"
+        AGENTE_OUT=$(bash "$HERE/agente.sh" "$DIR" \
+          "Fix this GitHub issue. Read the relevant files, understand the problem, fix it.
+
+=== ISSUE ===
+$(cat "$ISSUE_FILE" | head -60)
+=== END ===
+
+Fix the code in the current directory. When done, respond with FINISH." 2>&1)
+        AGENTE_RC=$?
+        if [ "$AGENTE_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
+          log "Issue #$NUM: ✅ AGENTE ha converto (dove il solver non poteva)"
+          RC=0
+          OUT="AGENTE: completato"
+        else
+          log "Issue #$NUM: anche l'agente non ha converto (rc=$AGENTE_RC)"
+        fi
+      fi
+
       if [ $RC -eq 3 ]; then
         # PROPOSTA (funzione nuova o bersaglio assente): il codice va nell'issue come
         # commento, NON come PR — la notte del 4/9 ha aperto la PR #16 con dentro solo
