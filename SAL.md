@@ -129,6 +129,7 @@
 - [2026-09-16 (2°) — il test definitivo: PR #89 e la caduta del ultimo mistero](#2026-09-16-2-il-test-definitivo-pr-89-e-la-caduta-del-ultimo-mistero)
 - [2026-09-16 (3°) — REPO-W: cinquanta giri in produzione (report portato all'hub)](#2026-09-16-3-repo-w-cinquanta-giri-in-produzione-report-portato-all-hub)
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
+- [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
 
 
 ## Stato
@@ -2329,3 +2330,12 @@ l'URL, e chiude con PR. Poi #1: solver la risolve direttamente (sconto → perce
 Risultato: 2/2 PR, 0 fallite. La riga che conta: «✅ AGENTE ha converto (dove il solver
 non poteva)». Il solver resta la prima scelta (veloce, 5-22s); l'agente e' il secondo
 lens (multi-turno, 39s) che prende le strade che il primo non vede.
+
+### 2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona
+
+Migliorie applicate dal test precedente: (1) COOLDOWN 30min — se la caccia dichiara una
+repo pulita, non la rimonta per mezz'ora (file marker con timestamp); (2) CONTESTO FILE —
+il prompt dell'agente include la lista dei file veri con le dimensioni, non gira alla cieca.
+Risultato misurato: le cacce a vuoto su repo pulite scendono da 6 a 1 (il cooldown le
+blocca dopo la prima dichiarazione). L'issue CSS viene risolta al primo ciclo. Il sistema
+resta stabile per 47 minuti, zero errori, con il ritmo: lavoro → 60s, vuoto → 600s.
