@@ -438,22 +438,37 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # L'agente legge il codice e trova UNA cosa da migliorare. Non aspetta:
     # crea il proprio lavoro. Se anche la caccia non trova niente, ALLORA buonanotte.
     if [ -f "$HERE/agente.sh" ]; then
+      # (miglioria dal test 1h): COOLDOWN — se la caccia ha detto 'pulito' su questa
+      # repo negli ultimi 30 minuti, non rimontarla. File marker con timestamp.
+      CACCIA_MARKER="$WORK/.caccia-pulita-${REPO//\//_}"
+      if [ -f "$CACCIA_MARKER" ]; then
+        CACCIA_ETA=$(( $(date +%s) - $(stat -f %m "$CACCIA_MARKER" 2>/dev/null || echo 0) ))
+        if [ "$CACCIA_ETA" -lt 1800 ]; then
+          log "REPO $REPO: caccia in cooldown (${CACCIA_ETA}s < 30min: già dichiarata pulita)"
+          return 0
+        fi
+      fi
       log "REPO $REPO: nessuna issue — attivo la CACCIA (il lavoro se lo trova il sistema)"
       # branch dedicato alla caccia (l'agente modifica su branch, mai su main)
       CACCIA_BRANCH="night/caccia-$(date +%Y%m%d-%H%M%S)"
       git -C "$DIR" checkout -b "$CACCIA_BRANCH" -q 2>/dev/null || true
+      # (miglioria dal test 1h): dai all'agente il CONTESTO vero — i file del
+      # progetto con le loro dimensioni, così non gira alla cieca
+      CACCIA_FILE_LIST=$(cd "$DIR" && find . -name "*.js" -o -name "*.gs" -o -name "*.py" -o -name "*.json" -o -name "*.css" | grep -v node_modules | grep -v ".git" | head -15 | while read f; do echo "$(wc -c < "$f" | tr -d ' ') bytes: $f"; done)
       CACCIA_PROMPT="You are a proactive code improver. LIST ALL .js files in the project first, then READ EACH ONE. Find the worst code quality issue and FIX IT NOW.
 
-MUST check for:
-- Variables declared but NEVER used anywhere in the file (dead code)
-- URLs pointing to deprecated or example domains  
-- Functions with NO error handling that could throw
-- Magic numbers that should be named constants
-- Code that is commented out but still present
+Project files to review:
+$CACCIA_FILE_LIST
 
-DO NOT say 'nothing to improve' unless you have READ every .js file and they are ALL perfectly clean with zero dead code, zero deprecated URLs, and full error handling. Be AGGRESSIVE: find something to fix.
+MUST check each file for:
+- Variables declared but NEVER used (dead code)
+- URLs pointing to deprecated domains
+- Functions with NO error handling
+- Magic numbers that should be constants
+- Commented-out code still present
 
-Read the files. Find the issue. Write the fix. Verify with node --check. Say FINISH with what you fixed."
+Pick the WORST issue in these files and FIX IT. Read first, fix second, verify third.
+DO NOT say 'nothing to improve' without reading at least 3 files. Be AGGRESSIVE."
       CACCIA_OUT=$(bash "$HERE/agente.sh" "$DIR" "$CACCIA_PROMPT" 2>&1)
       CACCIA_RC=$?
       if [ "$CACCIA_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
@@ -473,6 +488,8 @@ Read the files. Find the issue. Write the fix. Verify with node --check. Say FIN
         fi
       elif [ "$CACCIA_RC" -eq 0 ]; then
         log "REPO $REPO: caccia: codice già pulito, nessun miglioramento da fare"
+        # marker: questa repo è stata dichiarata pulita — cooldown 30 min
+        touch "$CACCIA_MARKER"
       else
         log "REPO $REPO: caccia non ha converto (rc=$CACCIA_RC) — nessun problema, riprova al prossimo giro"
       fi
