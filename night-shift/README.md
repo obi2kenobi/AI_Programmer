@@ -120,3 +120,10 @@ legge il riepilogo (lo usa `morning-digest`).
 - `night-shift/install.sh` — installazione: symlink, LaunchAgent 23:00 + Ollama always-on. Verifica che il
   job caricato punti davvero all'HUB installato (E-019).
 - `night-shift/lib.sh` — le funzioni condivise (log, rotazione, default branch).
+
+## L'agente nostro
+
+`night-shift/agente.sh` <dir> <prompt> — il ciclo multi-turno bash ↔ Ollama che
+opencode non chiudeva. Il modello chiede azioni con JSON nel contenuto, lo script
+le esegue (read/write/run con confinamento e denylist), e rimanda il risultato.
+Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica.
