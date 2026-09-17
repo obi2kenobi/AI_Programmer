@@ -439,6 +439,9 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # crea il proprio lavoro. Se anche la caccia non trova niente, ALLORA buonanotte.
     if [ -f "$HERE/agente.sh" ]; then
       log "REPO $REPO: nessuna issue — attivo la CACCIA (il lavoro se lo trova il sistema)"
+      # branch dedicato alla caccia (l'agente modifica su branch, mai su main)
+      CACCIA_BRANCH="night/caccia-$(date +%Y%m%d-%H%M%S)"
+      git -C "$DIR" checkout -b "$CACCIA_BRANCH" -q 2>/dev/null || true
       CACCIA_PROMPT="You are a proactive code improver. LIST ALL .js files in the project first, then READ EACH ONE. Find the worst code quality issue and FIX IT NOW.
 
 MUST check for:
@@ -458,14 +461,14 @@ Read the files. Find the issue. Write the fix. Verify with node --check. Say FIN
         log "REPO $REPO: caccia: $(echo "$CACCIA_OUT" | tail -3 | head -1 | cut -c1-120)"
         # usa il flusso commit/push/PR
         local CTYPE_CACCIA="improve"
-        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE_CACCIA: $(echo "$CACCIA_OUT" | grep -oP 'FINISH.*' | head -1 | cut -c1-60 || echo 'caccia notturna') — trovato e corretto dall'agente proattivo" && git push -q -u origin "night/caccia-$(date +%s)" ); then
+        if ( cd "$DIR" && git add -A && git commit -qm "improve: caccia notturna — trovato e corretto dall'agente proattivo" && git push -q -u origin "$CACCIA_BRANCH" ); then
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --title "caccia: miglioramento trovato dall'agente notturno" --body "L'agente proattivo ha trovato e corretto un miglioramento durante la caccia notturna. Verificare il diff." 2>&1 | tail -1)
           log "REPO $REPO: PR di caccia → $PR_CACCIA"
           git -C "$DIR" checkout "$DB" -q
           PR_CREATED=$((PR_CREATED+1))
         else
           log "⚠ REPO $REPO: commit/push della caccia fallito — ripristino"
-          git -C "$DIR" reset -q --hard "origin/$DB"
+          git -C "$DIR" reset -q --hard
           git -C "$DIR" checkout "$DB" -q
         fi
       elif [ "$CACCIA_RC" -eq 0 ]; then
