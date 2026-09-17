@@ -128,6 +128,7 @@
 - [2026-09-16 — la notte che non e' mai partita (E-026): tre strati, tre cure](#2026-09-16-la-notte-che-non-e-mai-partita-e-026-tre-strati-tre-cure)
 - [2026-09-16 (2°) — il test definitivo: PR #89 e la caduta del ultimo mistero](#2026-09-16-2-il-test-definitivo-pr-89-e-la-caduta-del-ultimo-mistero)
 - [2026-09-16 (3°) — REPO-W: cinquanta giri in produzione (report portato all'hub)](#2026-09-16-3-repo-w-cinquanta-giri-in-produzione-report-portato-all-hub)
+- [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 
 
 ## Stato
@@ -2317,3 +2318,14 @@ di incatenarli. Tre regole al canone: ritentativo solo su letture (una scrittura
 e' una doppia registrazione); censimento dichiara sempre il proprietario del dato; commit
 su suite non letta = commit su niente. Nel repo del progetto: bonificati 3 nomi di fornitori
 dal report della caccia (repo pubblica).
+
+### 2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo
+
+Intuizione di Luca: «si rischia 30 giri che non trovano nulla perche' il solver e' in
+overfitting». Costruita e provata: sandbox con DUE issue — una che il solver sa risolvere
+(funzione JS da correggere), una che NON PUO' (config JSON da modificare). Il turno:
+solver prova #2 per primo, rc=1, la CASCATA passa all'agente che legge il JSON, corregge
+l'URL, e chiude con PR. Poi #1: solver la risolve direttamente (sconto → percentuale).
+Risultato: 2/2 PR, 0 fallite. La riga che conta: «✅ AGENTE ha converto (dove il solver
+non poteva)». Il solver resta la prima scelta (veloce, 5-22s); l'agente e' il secondo
+lens (multi-turno, 39s) che prende le strade che il primo non vede.
