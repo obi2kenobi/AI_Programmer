@@ -432,7 +432,55 @@ review del giorno." 2>>"$ERR_NOTTE" \
     fi
   fi
 
-  [ "$COUNT" -eq 0 ] && { log "$REPO: nessuna issue night-shift. Buonanotte."; return 0; }
+  if [ "$COUNT" -eq 0 ]; then
+    # (2026-09-17, intuizione di Luca: «il sistema deve scovare errori, migliorie,
+    # ed altro — se lo deve fare il lavoro»). Niente issue? LA CACCIA PARTE.
+    # L'agente legge il codice e trova UNA cosa da migliorare. Non aspetta:
+    # crea il proprio lavoro. Se anche la caccia non trova niente, ALLORA buonanotte.
+    if [ -f "$HERE/agente.sh" ]; then
+      log "REPO $REPO: nessuna issue — attivo la CACCIA (il lavoro se lo trova il sistema)"
+      CACCIA_PROMPT="You are a proactive code reviewer. Scan this project and find ONE concrete improvement to make right now.
+
+Look for (in priority order):
+1. Dead code: unused variables, unreachable branches, commented-out code
+2. Missing error handling: functions that can fail silently
+3. Inconsistent naming or patterns across files
+4. Missing or outdated documentation
+5. Configuration issues: wrong URLs, outdated values, missing settings
+6. Code that could be simplified without changing behavior
+
+Rules:
+- Read the files first (use the read action)
+- Pick the MOST IMPACTFUL single improvement
+- Fix it (use the write action)
+- Verify it works (use the run action with node --check or similar)
+- One improvement per hunt. Quality over quantity.
+- If the code is already clean and well-documented, say FINISH: nothing to improve."
+      CACCIA_OUT=$(bash "$HERE/agente.sh" "$DIR" "$CACCIA_PROMPT" 2>&1)
+      CACCIA_RC=$?
+      if [ "$CACCIA_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
+        log "REPO $REPO: 🎯 CACCIA ha trovato e corretto un miglioramento"
+        log "REPO $REPO: caccia: $(echo "$CACCIA_OUT" | tail -3 | head -1 | cut -c1-120)"
+        # usa il flusso commit/push/PR
+        local CTYPE_CACCIA="improve"
+        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE_CACCIA: $(echo "$CACCIA_OUT" | grep -oP 'FINISH.*' | head -1 | cut -c1-60 || echo 'caccia notturna') — trovato e corretto dall'agente proattivo" && git push -q -u origin "night/caccia-$(date +%s)" ); then
+          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --title "caccia: miglioramento trovato dall'agente notturno" --body "L'agente proattivo ha trovato e corretto un miglioramento durante la caccia notturna. Verificare il diff." 2>&1 | tail -1)
+          log "REPO $REPO: PR di caccia → $PR_CACCIA"
+          git -C "$DIR" checkout "$DB" -q
+          PR_CREATED=$((PR_CREATED+1))
+        else
+          log "⚠ REPO $REPO: commit/push della caccia fallito — ripristino"
+          git -C "$DIR" reset -q --hard "origin/$DB"
+          git -C "$DIR" checkout "$DB" -q
+        fi
+      elif [ "$CACCIA_RC" -eq 0 ]; then
+        log "REPO $REPO: caccia: codice già pulito, nessun miglioramento da fare"
+      else
+        log "REPO $REPO: caccia non ha converto (rc=$CACCIA_RC) — nessun problema, riprova al prossimo giro"
+      fi
+    fi
+    return 0
+  fi
 
   local PR_CREATED=0 PROPOSTE=0 FAILED=0 IDX=0
   # giro 8/10 (set 2 "capacità di progettare"): proposta mai implementata di
