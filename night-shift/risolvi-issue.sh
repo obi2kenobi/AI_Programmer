@@ -252,6 +252,15 @@ PYEOF
       # node --check sull'intero fallirebbe sempre — si verifica il codice JS puro)
       if echo "$CODE" | node --check - 2>/dev/null; then
         log "✅ Fix applicato e verificato (node --check passa)"
+        # AUTO-REVIEW: seconda domanda allo stesso modello (2026-09-17)
+        RV=$(auto_review "$CODE" "$(cat "$ISSUE" | head -30)")
+        log "auto-review: $RV"
+        echo "REVIEW: $RV"
+        # GENERATORE DI TEST: terza domanda (il fix arriva presidiato)
+        TG=$(genera_test "$TARGET_FN" "$CODE" "$(cat "$ISSUE" | head -30)")
+        if [ -n "$TG" ]; then
+          echo "TEST-GENERATO: $TG"
+        fi
         rm -f "$TARGET_FILE.night-bak"
         rm -f "$PATCH_FILE"
         echo "ESITO: APPLICATO $(basename $TARGET_FILE) $TARGET_FN ${ELAPSED}s"
@@ -272,3 +281,48 @@ fi
 log "Codice pronto in $(basename $PATCH_FILE) — proposta, applicazione a carico del giorno"
 echo "ESITO: PATCH $(basename $PATCH_FILE) ${ELAPSED}s"
 exit 3
+
+# --- 8. AUTO-REVIEW: il modello rivede il proprio lavoro (2026-09-17) ---
+# Una seconda chiamata con una domanda DIVERSA («e' corretto?») invece della
+# stessa («correggi»). Il patto resta: niente agent, niente tool — solo
+# prompt → verdetto. Se la review dice NO, il fix viene degradato a proposta.
+auto_review() {
+  local CODE="$1" COMMESSA="$2"
+  local PROMPT="You are a code reviewer. Given this issue and this code fix, answer with exactly one word: CORRECT or WRONG. If WRONG, add one line explaining why.
+
+=== ISSUE ===
+$COMMESSA
+=== END ISSUE ===
+
+=== CODE FIX ===
+$CODE
+=== END CODE ===
+
+Is this fix correct? Answer CORRECT or WRONG:"
+  local RESPONSE=$(curl -sf --max-time 120 http://localhost:11434/api/chat -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
+  local VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | head -1 | tr '[:upper:]' '[:lower:]')
+  case "$VERDETTO" in
+    *correct*|*giusto*|*corretto*) echo "CORRECT";;
+    *wrong*|*sbagliato*|*errore*) echo "WRONG";;
+    *) echo "UNCLEAR";;
+  esac
+}
+
+# --- 9. GENERATORE DI TEST: il fix arriva col suo test (2026-09-17) ---
+# Terza chiamata Ollama: «scrivi un test che fallisce senza questo fix».
+# Il test viene salvato e aggiunto al PR. Il patto resta lo stesso.
+genera_test() {
+  local FN="$1" CODE="$2" COMMESSA="$3"
+  local PROMPT="Write a minimal Node.js test function that verifies this fix is correct. The test should FAIL if the old buggy code is restored. Output ONLY the test function, no explanation.
+
+=== ISSUE ===
+$COMMESSA
+=== FIX ===
+$CODE
+=== END ===
+
+Write the test:"
+  local RESPONSE=$(curl -sf --max-time 120 http://localhost:11434/api/chat -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}')" 2>/dev/null)
+  local TEST=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | sed -n '/^```/,/^```/p' | sed '/^```/d')
+  [ -n "$TEST" ] && echo "$TEST" || return 1
+}

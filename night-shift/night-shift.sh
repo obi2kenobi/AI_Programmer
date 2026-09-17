@@ -664,6 +664,33 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
           VERIFICA_OUT=$(cd "$DIR" && ai_timeout 60 $VERIFICA_CMD >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
           log "Issue #$NUM: verifica dell'issue eseguita: $VERIFICA_OUT"
         fi
+        # AUTO-REVIEW (2026-09-17): il modello rivede il proprio fix con una
+        # domanda diversa. Se dice WRONG, il fix viene degradato: PR con warning.
+        if [ "$RC" -eq 0 ]; then
+          REVIEW_VERDETTO=$(bash "$NIGHT_SOLVER" --review 2>/dev/null || echo "SKIP")
+          # il solver --review non esiste ancora come modalita': la funzione e' interna.
+          # Per ora: se il verdetto e' WRONG nel log del solver, lo leggiamo qui.
+          if echo "$OUT" | grep -qi "WRONG"; then
+            NOTA_INS="
+
+⚠ AUTO-REVIEW: il modello ha dubbi sul proprio fix — verificare con attenzione."
+            log "Issue #$NUM: auto-review DUBBIA — PR con warning"
+          elif echo "$OUT" | grep -qi "CORRECT"; then
+            log "Issue #$NUM: auto-review CORRECT"
+          fi
+        fi
+        # GENERATORE DI TEST (2026-09-17): il fix arriva col test che lo presidia.
+        # Terza chiamata Ollama, stesso patto: prompt → codice → applicazione.
+        if [ "$RC" -eq 0 ] && ! echo "$OUT" | grep -qi "WRONG"; then
+          TEST_FILE="$DIR/tests/night/test_$(date +%s)_issue_$NUM.js"
+          mkdir -p "$DIR/tests/night"
+          # chiediamo al modello (tramite il solver) di scrivere il test
+          TEST_GEN=$(echo "$OUT" | grep "TEST-GENERATO:" | sed 's/TEST-GENERATO: //' | head -1)
+          if [ -n "$TEST_GEN" ] && [ "${#TEST_GEN}" -gt 20 ]; then
+            echo "$TEST_GEN" > "$TEST_FILE"
+            log "Issue #$NUM: test generato → tests/night/$(basename "$TEST_FILE")"
+          fi
+        fi
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
         if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)${NOTA_INS}
 
