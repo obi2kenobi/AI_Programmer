@@ -439,23 +439,18 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # crea il proprio lavoro. Se anche la caccia non trova niente, ALLORA buonanotte.
     if [ -f "$HERE/agente.sh" ]; then
       log "REPO $REPO: nessuna issue — attivo la CACCIA (il lavoro se lo trova il sistema)"
-      CACCIA_PROMPT="You are a proactive code reviewer. Scan this project and find ONE concrete improvement to make right now.
+      CACCIA_PROMPT="You are a proactive code improver. LIST ALL .js files in the project first, then READ EACH ONE. Find the worst code quality issue and FIX IT NOW.
 
-Look for (in priority order):
-1. Dead code: unused variables, unreachable branches, commented-out code
-2. Missing error handling: functions that can fail silently
-3. Inconsistent naming or patterns across files
-4. Missing or outdated documentation
-5. Configuration issues: wrong URLs, outdated values, missing settings
-6. Code that could be simplified without changing behavior
+MUST check for:
+- Variables declared but NEVER used anywhere in the file (dead code)
+- URLs pointing to deprecated or example domains  
+- Functions with NO error handling that could throw
+- Magic numbers that should be named constants
+- Code that is commented out but still present
 
-Rules:
-- Read the files first (use the read action)
-- Pick the MOST IMPACTFUL single improvement
-- Fix it (use the write action)
-- Verify it works (use the run action with node --check or similar)
-- One improvement per hunt. Quality over quantity.
-- If the code is already clean and well-documented, say FINISH: nothing to improve."
+DO NOT say 'nothing to improve' unless you have READ every .js file and they are ALL perfectly clean with zero dead code, zero deprecated URLs, and full error handling. Be AGGRESSIVE: find something to fix.
+
+Read the files. Find the issue. Write the fix. Verify with node --check. Say FINISH with what you fixed."
       CACCIA_OUT=$(bash "$HERE/agente.sh" "$DIR" "$CACCIA_PROMPT" 2>&1)
       CACCIA_RC=$?
       if [ "$CACCIA_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
