@@ -462,7 +462,7 @@ Read the files. Find the issue. Write the fix. Verify with node --check. Say FIN
         # usa il flusso commit/push/PR
         local CTYPE_CACCIA="improve"
         if ( cd "$DIR" && git add -A && git commit -qm "improve: caccia notturna — trovato e corretto dall'agente proattivo" && git push -q -u origin "$CACCIA_BRANCH" ); then
-          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --title "caccia: miglioramento trovato dall'agente notturno" --body "L'agente proattivo ha trovato e corretto un miglioramento durante la caccia notturna. Verificare il diff." 2>&1 | tail -1)
+          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioramento trovato dall'agente notturno" --body "L'agente proattivo ha trovato e corretto un miglioramento durante la caccia notturna. Verificare il diff." 2>&1 | tail -1)
           log "REPO $REPO: PR di caccia → $PR_CACCIA"
           git -C "$DIR" checkout "$DB" -q
           PR_CREATED=$((PR_CREATED+1))
