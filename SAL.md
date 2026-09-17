@@ -130,6 +130,7 @@
 - [2026-09-16 (3°) — REPO-W: cinquanta giri in produzione (report portato all'hub)](#2026-09-16-3-repo-w-cinquanta-giri-in-produzione-report-portato-all-hub)
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 - [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
+- [2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)](#2026-09-17-3-la-notte-soltanto-ai_programmer-decisione-di-luca)
 
 
 ## Stato
@@ -2339,3 +2340,17 @@ il prompt dell'agente include la lista dei file veri con le dimensioni, non gira
 Risultato misurato: le cacce a vuoto su repo pulite scendono da 6 a 1 (il cooldown le
 blocca dopo la prima dichiarazione). L'issue CSS viene risolta al primo ciclo. Il sistema
 resta stabile per 47 minuti, zero errori, con il ritmo: lavoro → 60s, vuoto → 600s.
+
+### 2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)
+
+«Prima di lanciare il sistema su altre repo per giorni girerei solo su ai_programmer.»
+Coda pulita: solo l'hub. Tolte Bilancio e parrocchie (torneranno quando il sistema
+avrà una settimana di dati sull'hub). Puliti tutti i test: sandbox cancellate, file
+di prova rimossi, marker e lock azzerati. Il sistema punta a una sola repo e la
+migliora per tutta la notte, ogni notte, finché i numeri dicono che è pronto per
+estendersi.
+
+Ieri notte (la prima del turno continuo): 33 cicli, 7 ore, zero errori, l'hub
+pulito ogni volta. Stanotte: la stessa macchina con cascata, caccia con cooldown,
+quattro categorie di fix, sonno adattivo, auto-verifica. Il test definitivo non
+è più un test: è la produzione.
