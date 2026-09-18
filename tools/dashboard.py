@@ -93,9 +93,12 @@ if __name__ == "__main__":
     port = 8787
     try: srv = http.server.HTTPServer(("localhost",port),H)
     except OSError:
-        # porta occupata da una dashboard vecchia: la soppianta (self-restart,
-        # cosi' un rilancio basta ad aggiornare il codice in esecuzione)
-        subprocess.run(["pkill","-f","dashboard.py"],capture_output=True); time.sleep(1)
+        # porta occupata da una dashboard vecchia: la soppianta. Si uccide CHI
+        # TIEDE LA PORTA (lsof), non chi si chiama 'dashboard': lanciata via
+        # symlink il nome del processo cambia, e pkill per nome mancava il bersaglio
+        # (o peggio si suicidava). Cosi' un rilancio basta ad aggiornare il codice.
+        subprocess.run(["bash","-c",f"lsof -ti :{port} | xargs kill 2>/dev/null"],capture_output=True)
+        time.sleep(1)
         srv = http.server.HTTPServer(("localhost",port),H)
     print(f"Dashboard su http://localhost:{port} (Ctrl+C per fermare)")
     srv.serve_forever()
