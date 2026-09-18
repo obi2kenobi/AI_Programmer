@@ -464,6 +464,27 @@ review del giorno." 2>>"$ERR_NOTTE" \
     fi
   fi
 
+  # (2026-09-18, Luca: «un agente revisore, censore, che verifica prova certifica
+  # il codice e decide se deliberarlo o no»): ogni ciclo, UNA PR bozza night/*
+  # passa dal censore — guardie deterministiche, prove sul branch, giudizio di
+  # un cervello PIU' GRANDE di chi ha scritto (qwen3.8:27b vs qwen2.5-coder:14b:
+  # chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
+  # chi crea non si giudica nello stesso respiro. Il veto resta umano.
+  if [ -f "$HERE/revisore.sh" ]; then
+    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft --limit 20 2>/dev/null \
+      | jq -r '.[] | select(.isDraft == true and (.headRefName | startswith("night/"))) | .number' 2>/dev/null | head -1)
+    if [ -n "${REVISORE_CANDIDATA:-}" ]; then
+      log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
+      REVISORE_OUT=$(bash "$HERE/revisore.sh" "$DIR" "$REVISORE_CANDIDATA" 2>&1); REVISORE_RC=$?
+      case "$REVISORE_RC" in
+        0) log "REPO $REPO: ✅ censore ha DELIBERATO il merge: PR #$REVISORE_CANDIDATA" ;;
+        1) log "REPO $REPO: ⛔ censore ha RIGETTATO la PR #$REVISORE_CANDIDATA (chiusa con motivi)" ;;
+        2) log "REPO $REPO: censore rinvia la PR #$REVISORE_CANDIDATA al giorno ($(echo "$REVISORE_OUT" | tail -1 | cut -c1-100))" ;;
+        *) log "REPO $REPO: ⚠ censore in errore sulla PR #$REVISORE_CANDIDATA (rc=$REVISORE_RC)" ;;
+      esac
+    fi
+  fi
+
   if [ "$COUNT" -eq 0 ]; then
     # (2026-09-17, intuizione di Luca: «il sistema deve scovare errori, migliorie,
     # ed altro — se lo deve fare il lavoro»). Niente issue? LA CACCIA PARTE.

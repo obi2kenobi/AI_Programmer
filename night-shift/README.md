@@ -137,6 +137,24 @@ Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica
 - `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
   lenti specializzate per file (sostituita da caccia-lente per stabilita').
 
+## Il revisore (il censore delle PR)
+
+`night-shift/revisore.sh` — chi scrive non giudica. Le miglioria le scrive
+qwen2.5-coder:14b; la PR bozza night/* in quarantena (>=20 min) passa dal
+censore: un cervello DIVERSO e piu' grande (qwen3.8:27b) con istruzioni
+avversarie — l'onere della prova e' della PR.
+
+Tre livelli, in ordine di autorita' (un solo no e' no):
+guardie deterministiche (diff <=60 righe, <=3 file, ASCII, budget <=5/giorno) →
+prove deterministiche (verifiche dichiarate + comando avversario del banco con
+allowlist) → giudizio del censore (JSON: APPROVA/RIGETTA + motivi).
+APPROVA → squash-merge con certificato in commento. RIGETTA → chiusa con i
+motivi scritti. Tutto il resto → rinvio al giorno.
+
+Patto aggiornato (dichiarato, 2026-09-18): «il si' e' sempre umano» diventa
+«il si' e' del censore, il VETO resta umano» — ogni deliberazione nel log e
+revertabile al mattino.
+
 ## La caccia che migliora (2026-09-17)
 
 - `night-shift/caccia-miglioria.sh` — la caccia che MIGLORA il codice, non lo
