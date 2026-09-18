@@ -35,12 +35,12 @@ if [ "$MODO" = "--prossimo" ]; then
   SALDATI="$STATO/saldati"; RINVIA="$STATO/rinviati"
   touch "$SALDATI" "$RINVIA"
   # tutti i siti (famiglia|file:riga), cattura-prima esclusa dai commenti gia' curati
-  { grep -rn "| grep -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null | grep -v "^[^:]*:[0-9]*: *#" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-002|\1:\2/' ; grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null | grep -v "mktemp\|/tmp" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-032|\1:\2/' ; } | grep -vFf "$SALDATI" | grep -vFf "$RINVIA" | head -1
+  { grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null | grep -v "^[^:]*:[0-9]*: *#" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-002|\1:\2/' ; grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null | grep -v "mktemp\|/tmp" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-032|\1:\2/' ; } | grep -vFf "$SALDATI" | grep -vFf "$RINVIA" | head -1
   exit 0
 fi
 
 # ── famiglia E-002: pipe in grep -q ─────────────────────────────────────────────
-E002=$(grep -rn "| grep -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
+E002=$(grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
   | grep -v "^\S*:\s*#" | grep -vc "cattura-prima" || true)
 [ -z "$E002" ] && E002=0
 
