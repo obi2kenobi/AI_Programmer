@@ -140,6 +140,18 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
       # Falso verde: verificato dal vivo con un file identico al template reale. CMD_ESEGUITI
       # distingue "ho verificato e va tutto bene" da "non ho verificato nulla".
       CMD_ESEGUITI=0
+      # (2026-09-19): FORMATO script dichiarato — il file e' un programma intero
+      # (Magazzino, 505 righe): una verifica sola, non riga-per-riga
+      if printf '%s\n' "$NIGHT_VERIFY" | head -10 | grep -q "^# FORMATO: script"; then
+        CMD_ESEGUITI=1
+        echo "- \`.night-verify\` (formato script, eseguito intero):" >> "$REPORT"
+        if OUT=$( cd "$DIR" && run_guarded 900 bash .night-verify 2>&1 </dev/null ); then
+          echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
+        else
+          echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
+          FAIL_DETAIL="$FAIL_DETAIL"$'\n- .night-verify (formato script):'$'\n'"$(echo "$OUT" | tail -8)"
+        fi
+      else
       while IFS= read -r cmd; do
         cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
         # (E-029): una riga puo' dichiarare il proprio budget con `@<sec> `
@@ -161,6 +173,7 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
           FAIL_DETAIL="$FAIL_DETAIL"$'\n'"- \`$cmd\`:"$'\n'"$(echo "$OUT" | tail -8)"
         fi
       done <<< "$NIGHT_VERIFY"
+      fi
       if [ "$CMD_ESEGUITI" -eq 0 ]; then
         echo "**Verifiche dichiarate:** \`.night-verify\` esiste ma non contiene nessun comando eseguibile (solo commenti/righe vuote) — non è lo stesso di 'tutto ok', è lo stesso di 'niente verificato'." >> "$REPORT"
         VERDICT="verifiche-vuote"
