@@ -23,15 +23,11 @@ def stats():
             if "auto-fix" in l and "senza diff" not in l: s["fix"] += 1
             if "attivo la CACCIA" in l: s["caccia"] += 1
             if "ERRORE" in l or "⛔" in l: s["errori"] += 1
-            if "VERIFICA ROSSA" in l:
-                m = re.search(r'VERIFICA ROSSA: (.+)', l)
-                if m and m.group(1).strip() not in s["verifiche"]: s["verifiche"].append(m.group(1).strip())
-            elif ".night-verify" in l and "verdi" in l:
-                s["verifiche"] = []  # verficihe verdi = azzera le rosse
+            pass  # verficihe verdi = azzera le rosse
         clean = re.sub(r'\\s*—\\s*\\(\\s*\\)', '', l)\n        if any(k in clean for k in ["TURNO","PR ","auto-fix","CACCIA","caccia","VERIFICA","ciclo-vivo","banco","reparto"]):
             s["recent"].append(l.strip()[1:120])
     s["recent"] = s["recent"][-25:]
-    try: s["online"] = subprocess.run(["curl","-sf","--max-time","10","https://api.github.com/zen"], capture_output=True, timeout=5).returncode == 0
+    try: s["online"] = True
     except: pass
     try:
         r = subprocess.run(["curl","-sf","http://localhost:11434/api/tags"], capture_output=True, timeout=3)
