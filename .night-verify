@@ -1,26 +1,30 @@
 # Verifiche dichiarate del hub (dogfooding)
+#
+# CONTRATTO (dichiarato con E-029): ogni riga non-commento e' UN COMANDO solo,
+# eseguibile da `timeout(1)` — il turno notturno esegue `eval "ai_timeout 120
+# <riga>"` per ciascuna e conta i rossi. Conseguenze: (1) niente righe composte
+# che iniziano con un'assegnazione (diventerebbe argomento del comando, E-029);
+# (2) se esegui `bash .night-verify` intero, l'rc finale riflette SOLO l'ultima
+# riga: per il verdetto conta i FALLITO nell'output, o guarda le singole righe
+# come fa il turno.
 shellcheck --severity=warning --exclude=SC2034,SC2164,SC2155,SC2010 night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
-# (E-028, 2026-09-17): la dashboard era stata committata NON compilante (due righe
-# fuse da un '\n' letterale) e passava, perche' nessun gate ESEGUIVA la sintassi
-# dei .py — le sonde li leggevano solo con regex. Da qui: ogni .py tracciato
-# deve compilare. compile() non scrive __pycache__ (a differenza di py_compile).
-PYFAIL=0; for f in $(git ls-files '*.py'); do python3 -c "import sys; compile(open(sys.argv[1]).read(), sys.argv[1], 'exec')" "$f" 2>/dev/null || { echo "⛔ python non compila: $f"; PYFAIL=1; }; done; [ $PYFAIL -eq 0 ] && echo "Sintassi python: tutti i .py compilano"
+# (E-028+E-029): ogni .py tracciato deve compilare. E-028: la dashboard era
+# committata non-compilante e passava (nessun gate eseguiva la sintassi py).
+# E-029: la prima versione di questo gate era una RIGA COMPOSTA qui dentro — ma
+# il turno antepone `ai_timeout 120` a ogni riga: una riga deve essere UN
+# COMANDO solo, o l'assegnazione iniziale diventa argomento e la riga muore di
+# unary (falso rosso notturno). Contratto: un comando per riga. Il gate vive in
+# tools/py-gate.sh, con il suo test.
+bash tools/py-gate.sh
 bash tools/privacy-check.sh
-# 4° ciclo, set 1 giro 4 (2026-08-23): questa riga elencava 4 test per nome (test-lib,
-# test-gate-tools, test-ask-wrappers, test-privacy) — gli altri 23+ file tests/test-*.sh
-# accumulati nei cicli successivi (Set 2, Set 3, questo) non erano MAI stati aggiunti:
-# il gate che impone a ogni altra repo "dichiara le tue verifiche o è verifiche-vuote"
-# non applicava a se stesso la propria regola. Un loop sostituisce l'elenco: nessun test
-# nuovo può più restare fuori dal gate per dimenticanza.
-# 4° ciclo, set 2 giro 7 (2026-08-23): il loop com'era scritto sopra funzionava
-# (eseguiva davvero tutti i file) ma il report del gate mostra solo `tail` dell'output
-# dell'ULTIMO comando eseguito nella riga — con 29+ file in un solo `for`, un successo
-# mostrava "3 OK, 0 FAIL" (il tail del solo ultimo test), facendo sembrare che fossero
-# girati 3 controlli in tutto, non l'intera suite. Trovato eseguendo per davvero questa
-# riga e guardando cosa il gate avrebbe catturato, non leggendo il loop e assumendo che
-# andasse bene. Ora il loop stampa un riepilogo esplicito (N/TOT superati) che il tail
-# del report mostra sempre, e sul fallimento indica quale file (posizione e nome) e il
-# suo output, non solo l'ultimo eseguito prima dell'exit.
-N=0; TOT=$(ls tests/test-*.sh | wc -l | tr -d ' '); for t in tests/test-*.sh; do N=$((N+1)); OUT=$(bash "$t" 2>&1) || { echo "FALLITO ($N/$TOT): $t"; echo "$OUT" | tail -10; exit 1; }; done; echo "Suite test hub: $N/$TOT file superati"
+# La suite di test (storia: 4° ciclo, set 1 giro 4, 2026-08-23 — questa riga
+# elencava 4 test per nome e gli altri 23+ accumulati mai aggiunti: il gate che
+# imponeva alle altre repo di dichiarare le verifiche non applicava a se stesso
+# la regola. Set 2 giro 7: il loop funzionava ma il report del gate mostrava
+# solo il tail — un successo diceva '3 OK' (l'ultimo test) invece di 29. Da
+# allora: loop su TUTTI i file + riepilogo N/TOT esplicito. 2026-09-18, E-029:
+# la riga composta `N=0; TOT=...` diventava argomento di `ai_timeout` — vive in
+# tools/suite.sh, cosi' .night-verify resta UN COMANDO per riga).
+bash tools/suite.sh
 bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }
