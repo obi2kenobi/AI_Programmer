@@ -415,7 +415,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
         rm -f /tmp/night-ciclo-$$.md
       fi
     else
-      log "REPO $REPO: ciclo-vivo pulito (0 finding)"
+      if [ "${NV_ROSSI:-0}" -gt 0 ]; then
+        log "REPO $REPO: ciclo-vivo pulito (0 finding) — MA $NV_ROSSI verifiche .night-verify rosse (issue gia' aperta)"
+      else
+        log "REPO $REPO: ciclo-vivo pulito (0 finding)"
+      fi
     fi
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
     if ! echo "$BANCO_OUT" | tail -1 | grep -q "CHIUSO"; then
