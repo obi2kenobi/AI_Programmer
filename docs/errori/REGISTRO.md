@@ -584,3 +584,30 @@
   rosso prima, verde dopo; il contratto controllato dalla suite a ogni giro.
 - Aggiramento: scrivere in .night-verify righe shell composte che iniziano
   con un'assegnazione — ripassa il controllo del contratto a ogni commit.
+
+## E-030 Il test che si mangiava le verifiche successive
+- Data / sessione: 2026-09-18 (pomeriggio, osservando il turno: 5/5 invece di 6/6)
+- Famiglia: E-002 (stdin condiviso tra pipe e redirect) + R1
+- Chi l'ha trovato: il turno stesso — conteggio costante 5/5 su un file da 6
+  righe, per due cicli di fila. La discrepanza era nel log, visibile a chi
+  contasse le righe dichiarate.
+- Sintomo: `.night-verify 5/5 verdi` con 6 righe dichiarate. La riga della
+  sal-indice non veniva MAI eseguita dal turno (solo a mano), da sempre.
+- Causa prossima: il loop legge il file con `< .night-verify`; il comando
+  eval'ato dentro eredita quello stdin. Un test della suite legge stdin e
+  divora le righe successive del file: il loop finisce una riga prima.
+- Causa del ragionamento: e' lo stdin condiviso di E-002 in forma di file
+  redirect. Non emergeda finche' la suite MORIVA a 120s (timeout): il test
+  divorante stava oltre i 120s. Il budget @420 della suite l'ha fatta girare
+  completa per la prima volta — e il verde silenzioso e' diventato conteggio
+  visibile. Ogni limite tolto rivela chi si nascondeva dietro.
+- Perché non ci ha fermati: 5/5 verdi sembrava successo; la riga saltata era
+  l'ultima del file e non lasciava traccia del salto (nessun rosso mancato).
+- Guardia: night-shift/night-shift.sh e night-shift/morning-gate.sh eseguono le
+  verifiche dichiarate con `</dev/null` — il comando non tocca MAI il file che
+  alimenta il loop. Dimostrato: loop con `cat` in mezzo, 2 comandi senza cura,
+  3 con.
+- Verifica guardia: riprodotto in sandbox (cat divora la riga successiva senza
+  </dev/null, non la tocca con); il turno al giro dopo conta 6/6.
+- Aggiramento: un comando in .night-verify che legga stdin — ora innocuo, ma
+  se legge input INTERATTIVO aspettera' fino al timeout (dichiarato).

@@ -230,7 +230,11 @@ shift_repo() {
         @*" "*) NV_SEC="${NV_CMD%% *}"; NV_SEC="${NV_SEC#@}"; NV_CMD="${NV_CMD#* }" ;;
       esac
       NV_TOTALI=$((NV_TOTALI+1))
-      if ! (cd "$DIR" && eval "ai_timeout $NV_SEC $NV_CMD" >/dev/null 2>&1); then
+      # (E-030): il loop legge da file redirect: il comando eval'eredita quello
+      # stdin e un test che legge stdin SI MANGIA le righe successive del file
+      # (la suite completa a 420s lo faceva: sal-indice spariva, 5/6 dichiarate).
+      # </dev/null: il comando non tocca MAI il file delle verifiche.
+      if ! (cd "$DIR" && eval "ai_timeout $NV_SEC $NV_CMD" >/dev/null 2>&1 </dev/null); then
         NV_ROSSI=$((NV_ROSSI+1))
         log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
       fi
