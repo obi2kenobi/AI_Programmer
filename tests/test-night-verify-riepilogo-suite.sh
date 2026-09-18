@@ -17,7 +17,7 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-grep -q "^bash tools/suite.sh$" "$HERE/.night-verify" \
+grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify" \
   && ok ".night-verify dichiara il runner (un comando per riga, E-029)" \
   || { ko ".night-verify non invoca piu' il runner della suite — verifiche-vuote in agguato"; echo ""; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 grep -Eq '^for t in tests/test-\*\.sh' "$HERE/tools/suite.sh" \

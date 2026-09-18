@@ -221,8 +221,16 @@ shift_repo() {
     NV_TOTALI=0
     while IFS= read -r NV_CMD; do
       case "$NV_CMD" in ""|\#*) continue;; esac
+      # (E-029, seconda lezione): ogni riga ha budget 120s di default. La riga
+      # puo' dichiararne uno suo con il prefisso `@<sec> ` — la suite completa
+      # dura ~300s e con il budget standard moriva a meta' (era ROSSA stabile:
+      # prima, da riga composta, sfuggiva al timeout per caso).
+      NV_SEC=120
+      case "$NV_CMD" in
+        @*" "*) NV_SEC="${NV_CMD%% *}"; NV_SEC="${NV_SEC#@}"; NV_CMD="${NV_CMD#* }" ;;
+      esac
       NV_TOTALI=$((NV_TOTALI+1))
-      if ! (cd "$DIR" && eval "ai_timeout 120 $NV_CMD" >/dev/null 2>&1); then
+      if ! (cd "$DIR" && eval "ai_timeout $NV_SEC $NV_CMD" >/dev/null 2>&1); then
         NV_ROSSI=$((NV_ROSSI+1))
         log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
       fi
