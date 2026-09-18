@@ -136,3 +136,11 @@ Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica
   Cinque lenti in rotazione automatica, una per ciclo.
 - `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
   lenti specializzate per file (sostituita da caccia-lente per stabilita').
+
+## La dashboard (finestra di osservazione)
+
+- `tools/dashboard.py` — pagina HTML che si aggiorna ogni 10 secondi: cicli,
+  PR, fix, cacce, errori, verifiche, attività recente. Serve su localhost:8787.
+- Avvio: `dashboard` (da qualsiasi directory) oppure `python3 tools/dashboard.py`
+- Si ferma con Ctrl+C. Se la porta è occupata, riavvia la vecchia istanza.
+- Comando globale installato in ~/.local/bin/dashboard (symlink).
