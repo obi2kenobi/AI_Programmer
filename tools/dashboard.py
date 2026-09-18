@@ -36,7 +36,7 @@ def stats():
         if r.returncode == 0: s["modello"] = json.loads(r.stdout)["models"][0]["name"]
     except: pass
     try:
-        r = subprocess.run(["pgrep","-f","night-shift.sh"], capture_output=True, timeout=3)
+        r = subprocess.run(["pgrep","-f","night-shift/night-shift.sh"], capture_output=True, timeout=3)
         s["attivo"] = len([x for x in r.stdout.decode().split("\n") if x.strip()])
     except: pass
     return s
