@@ -5,29 +5,47 @@
 # mattino, coerente con la decisione di Luca («nessun limite: la guardia è la
 # review del mattino») — la review però può guardare solo ciò che vede.
 #
+# (2026-09-18, era continua): il turno gira 24/7 e si ri-lancia con exec a ogni
+# fine ciclo — un processo VECCHIO e' BY DESIGN, e la soglia sulle ORE di eta'
+# scattava ogni notte su un sistema sano (beccato dalla lente alle 18:32:
+# «processo attivo da 7h, soglia 6h» su un turno che ciclava perfettamente).
+# Il segnale vero di incastrato nel continuo e' IL LOG CHE NON CICLA PIU':
+# un ciclo non supera i ~15 minuti, se l'ultimo TURNO INIZIATO e' piu'
+# vecchio della soglia qualcosa dentro sta hangando (l'agente in loop, il
+# solver appeso) — ed e' quello il turno da sciogliere.
+#
 # Uso: bash tools/turno-vivo.sh   (da system-health, dal digest, o a mano)
-# Esce 0 se nessun turno è incastrato · 1 se c'è un processo oltre soglia.
+# Esce 0 se il turno cicla (o non c'e') · 1 se il log e' fermo oltre soglia.
 set -uo pipefail
-SOGLIA_ORE=${TURNO_VIVO_SOGLIA:-6}
+SOGLIA_MIN=${TURNO_VIVO_SOGLIA:-30}
+LOG=${TURNO_VIVO_LOG:-$HOME/night-shift-console.log}
 
-# il turno notturno gira con caffeinate su night-shift.sh; l'esecutore è opencode run
-PS_OUT=$(ps -axo etime,command 2>/dev/null)
-STUCK=$(echo "$PS_OUT" | grep -E "opencode run|night-shift\.sh" | grep -v grep || true)
-[ -z "$STUCK" ] && { echo "turno-vivo: nessun processo notturno attivo"; exit 0; }
-
-echo "$STUCK" | while IFS= read -r riga; do
-  ET=$(echo "$riga" | awk '{print $1}')
-  # etime di ps: [[gg-]hh:]mm:ss — si normalizza in ore
-  GGI=$(echo "$ET" | grep -oE '^[0-9]+-' | tr -d '-' || echo 0)
-  ORG=$(echo "$ET" | sed 's/^[0-9]*-//' | awk -F: '{if (NF==3) print $1; else if (NF==2) print 0; else print 0}')
-  ORE=$(( GGI * 24 + ORG ))
-  CMD=$(echo "$riga" | cut -c1-90)
-  if [ "$ORE" -ge "$SOGLIA_ORE" ]; then
-    echo "⛔ TURNO INCASTRATO: processo notturno attivo da ${ORE}h (soglia ${SOGLIA_ORE}h): $CMD"
-    echo "   Tre notti perse così il 2026-08-31 (un loop vivo blocca i turni seguenti)."
-    echo "   Pulizia consolidata: pkill -f \"opencode run\" — poi il turno si scioglie da solo."
-    exit 1
-  fi
-done
-echo "turno-vivo: processi notturni presenti, nessuno oltre le ${SOGLIA_ORE}h"
+if [ ! -f "$LOG" ]; then
+  echo "turno-vivo: nessun log del turno ($LOG) — niente da giudicare"
+  exit 0
+fi
+ULTIMA=$(grep -a "TURNO INIZIATO" "$LOG" | tail -1 | awk -F'[][]' '{print $2}')
+if [ -z "$ULTIMA" ]; then
+  echo "turno-vivo: il log non contiene nessun TURNO INIZIATO — niente da giudicare"
+  exit 0
+fi
+ETA_MIN=$(python3 -c "
+from datetime import datetime
+try:
+    d = datetime.strptime('$ULTIMA'.strip(), '%Y-%m-%d %H:%M:%S')
+    print(int((datetime.now() - d).total_seconds() // 60))
+except ValueError:
+    print(-1)" 2>/dev/null || echo -1)
+if [ "${ETA_MIN:--1}" -lt 0 ]; then
+  echo "turno-vivo: timestamp dell'ultimo ciclo illeggibile ('$ULTIMA') — niente da giudicare"
+  exit 0
+fi
+if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
+  echo "⛔ TURNO INCASTRATO: ultimo ciclo iniziato ${ETA_MIN} minuti fa (soglia ${SOGLIA_MIN}min)."
+  echo "   Nel continuo un ciclo non supera i ~15 minuti: qualcosa dentro sta hangando."
+  echo "   Dove si e' fermato: l'ultima riga di $LOG."
+  echo "   Pulizia consolidata: pkill -f \"night-shift/night-shift.sh\" — launchd lo riparte da solo."
+  exit 1
+fi
+echo "turno-vivo: il turno cicla (ultimo iniziato ${ETA_MIN}min fa, soglia ${SOGLIA_MIN}min)"
 exit 0
