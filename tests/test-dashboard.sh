@@ -1,0 +1,67 @@
+#!/bin/bash
+# test-dashboard.sh — la finestra di osservazione sotto prova (E-028: era committata
+# senza compilare e senza test; il processo vivo in memoria mascherava il danno).
+# Prova la LOGICA (stats) con un log finto a casi noti: i conteggi di oggi, le
+# verifiche rosse SOLO dell'ultimo ciclo, il feed recente.
+set -uo pipefail
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
+DASH="$HERE/tools/dashboard.py"
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+PASS=0; FAIL=0
+ok() { PASS=$((PASS+1)); echo "OK   $1"; }
+ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
+
+python3 -c "compile(open('$DASH').read(),'dashboard.py','exec')" && ok "compila (E-028: prima non compilava)" || { ko "non compila"; exit 1; }
+
+OGGI=$(date '+%Y-%m-%d')
+TMP=$(mktemp -d /tmp/test-dashboard.XXXXXX); trap 'rm -rf "$TMP"' EXIT
+cat > "$TMP/finto.log" <<EOF
+[$OGGI 10:00:00] === TURNO INIZIATO (1 repo in coda) ===
+[$OGGI 10:01:00] REPO r/x: VERIFICA ROSSA: shellcheck (VECCHIA — deve sparire)
+[$OGGI 10:02:00] REPO r/x: auto-fix: indice SAL rigenerato
+[$OGGI 10:05:00] === TURNO INIZIATO (1 repo in coda) ===
+[$OGGI 10:06:00] REPO r/x: PR di caccia → https://github.com/r/x/pull/9
+[$OGGI 10:07:00] REPO r/x: VERIFICA ROSSA: suite (NUOVA — deve restare)
+[$OGGI 10:08:00] ⛔ ERRORE generico
+EOF
+
+VER=$(NIGHT_LOG="$TMP/finto.log" python3 - "$DASH" <<'PY'
+import sys, os
+sys.path.insert(0, os.path.dirname(sys.argv[1]))
+import importlib.util
+spec = importlib.util.spec_from_file_location("dash", sys.argv[1])
+dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
+s = dash.stats()
+campi = {k: s[k] for k in ("cicli","tot","pr","fix","errori")}
+print(campi["cicli"], campi["tot"], campi["pr"], campi["fix"], campi["errori"], len(s["verifiche"]), s["verifiche"])
+PY
+)
+# atteso: 2 cicli oggi, 2 turni totali, 1 PR, 1 fix, 1 errore, 1 verifica rossa
+# (solo quella DOPO l'ultimo TURNO INIZIATO; la vecchia deve sparire)
+[ "$(echo "$VER" | awk '{print $1}')" = "2" ] && ok "cicli oggi = 2" || ko "cicli oggi: $(echo "$VER" | awk '{print $1}') (atteso 2)"
+[ "$(echo "$VER" | awk '{print $2}')" = "2" ] && ok "cicli totali = 2" || ko "tot: $(echo "$VER" | awk '{print $2}')"
+[ "$(echo "$VER" | awk '{print $3}')" = "1" ] && ok "PR oggi = 1" || ko "PR: $(echo "$VER" | awk '{print $3}')"
+[ "$(echo "$VER" | awk '{print $4}')" = "1" ] && ok "fix oggi = 1" || ko "fix: $(echo "$VER" | awk '{print $4}')"
+[ "$(echo "$VER" | awk '{print $5}')" = "1" ] && ok "errori oggi = 1" || ko "errori: $(echo "$VER" | awk '{print $5}')"
+NRO=$(echo "$VER" | tail -1 | grep -o "VERIFICA ROSSA" | wc -l | tr -d ' ')
+[ "$NRO" = "1" ] && ok "solo la verifica rossa dell'ULTIMO ciclo (v3)" || ko "verifiche rosse contate: $NRO (atteso 1)"
+echo "$VER" | tail -1 | grep -q "NUOVA" && ok "restata la rossa nuova" || ko "restata la rossa sbagliata"
+echo "$VER" | tail -1 | grep -q "VECCHIA" && ko "la rossa del ciclo vecchio non sparisce" || ok "sparita la rossa del ciclo vecchio"
+
+# la pagina si costruisce con i numeri veri e cita le sezioni
+PAG=$(NIGHT_LOG="$TMP/finto.log" python3 - "$DASH" <<'PY'
+import sys, os
+sys.path.insert(0, os.path.dirname(sys.argv[1]))
+import importlib.util
+spec = importlib.util.spec_from_file_location("dash", sys.argv[1])
+dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
+print(dash.page(dash.stats()))
+PY
+)
+echo "$PAG" | grep -q "CICLI OGGI" && ok "pagina: cards presenti" || ko "pagina senza cards"
+echo "$PAG" | grep -q "Attività" && ok "pagina: feed attività" || ko "pagina senza attività"
+echo "$PAG" | grep -q "NUOVA" && ok "pagina: la rossa corrente visibile" || ko "la rossa corrente non appare in pagina"
+
+echo ""
+echo "$PASS OK, $FAIL FAIL"
+[ $FAIL -eq 0 ]

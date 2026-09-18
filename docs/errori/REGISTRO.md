@@ -528,3 +528,31 @@
   noto dalla sessione); il percorso ora provato dal caso reale.
 - Aggiramento: interferire manualmente con la copia mentre il turno gira —
   il trigger dell'intera cascata era quello (dichiarato: colpa dell'operatore).
+
+## E-028 La dashboard committata che non compilava
+- Data / sessione: 2026-09-17 (pomeriggio, mentre si costruiva la caccia-miglioria)
+- Famiglia: R1 (verde che mente) + E-002 (righe fuse da scrittura automatizzata)
+- Chi l'ha trovato: la suite (.night-verify S2 rossa su dashboard.py) durante la
+  verifica del lavoro di oggi — non un occhio umano, il gate.
+- Sintomo: tools/dashboard.py com'era committato NON compilava. Due istruzioni
+  fuse da un '\n' letterale (paste/scrittura andata storta nel commit 'dashboard
+  v3'), e la logica 'verifiche ultimo ciclo' PROMESSA da quel commit era sparita
+  (s["verifiche"] mai riempito: la pagina diceva sempre 'tutte verdi'). La
+  dashboard sullo schermo girava bene perche' il processo era partito PRIMA del
+  danno: il codice in memoria copriva il codice sul disco.
+- Causa prossima: una scrittura ha fuso due righe in una, e nessun controllo
+  verificava la sintassi dei .py prima del commit.
+- Causa del ragionamento: .night-verify compilava gli .sh (shellcheck) ma i .py
+  li guardava solo con sonde basate su regex (docstring, densita') — una riga
+  fusa passa tutte le regex. Un file che non parte non puo' passare nessun gate
+  a base di lettura: serve ESEGUIRLA, la sintassi.
+- Perché non ci ha fermati: il processo vivo mascherava tutto (la finestra di
+  Luca funzionava), e la S2 era rossa per la densita' — il sintomo visibile
+  (pochi commenti) era vero ma secondario; nessuno ando' a compilare il file.
+- Guardia: tests/test-dashboard.sh prova la logica con un log finto a casi
+  noti, e il gate .night-verify compila OGNI .py tracciato (compile() su tutti
+  i git ls-files '*.py') — un file rotto e' rosso al banco, sempre.
+- Verifica guardia: bash .night-verify verde con la dashboard riparata; il
+  compile() rosso provato sul file corrotto prima della riparazione.
+- Aggiramento: committare .py solo dopo che un processo nuovo li ha caricati
+  (il riavvio della dashboard, non il processo che gira da ore).

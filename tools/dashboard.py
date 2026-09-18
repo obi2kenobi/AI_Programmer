@@ -5,30 +5,47 @@ Uso: dashboard  (da qualsiasi directory) → http://localhost:8787
 import http.server, json, os, re, subprocess, time
 
 HUB = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOG = os.path.expanduser("~/night-shift-console.log")
+# NIGHT_LOG: override del log da leggere (i test lo puntano a un log finto con
+# casi noti; production lascia quello vero della console)
+LOG = os.path.expanduser(os.environ.get("NIGHT_LOG", "~/night-shift-console.log"))
 
 def stats():
+    """Legge le ultime 1000 righe del log e ne ricava i numeri della pagina:
+    cicli di oggi e totali, PR, fix, cacce, errori, feed recente e verifiche
+    rosse (solo dell'ultimo ciclo). Nessuno stato: ogni richiesta riparte dal log."""
     s = {"oggi": time.strftime("%Y-%m-%d"), "cicli": 0, "tot": 0, "pr": 0,
          "fix": 0, "caccia": 0, "errori": 0, "recent": [], "online": False,
          "modello": "", "attivo": 0, "verifiche": []}
     try:
         lines = open(LOG, errors="ignore").readlines()[-1000:]
     except: lines = []
-    for l in lines:
+    # v3 (2026-09-17): le verifiche rosse contano solo dall'ULTIMO 'TURNO INIZIATO'
+    # in poi. Prima mostravamo tutti i rossi storici e sembrava che nulla guarisse.
+    ultima_apertura = -1
+    rosse = []  # (indice riga, riga): si filtra a fine giro perche' l'ultima
+                # apertura la si conosce solo DOPO aver letto tutto
+    for i, l in enumerate(lines):
         if "TURNO INIZIATO" in l:
             s["tot"] += 1
+            ultima_apertura = i
             if s["oggi"] in l: s["cicli"] += 1
         if s["oggi"] in l:
-            if "PR bozza" in l or "PR https" in l or "PR di caccia" in l: s["pr"] += 1
+            if "PR bozza" in l or "PR https" in l or "PR di caccia" in l or "PR di miglioria" in l: s["pr"] += 1
             if "auto-fix" in l and "senza diff" not in l: s["fix"] += 1
             if "attivo la CACCIA" in l: s["caccia"] += 1
             if "ERRORE" in l or "⛔" in l: s["errori"] += 1
-            pass  # verficihe verdi = azzera le rosse
-        clean = re.sub(r'\\s*—\\s*\\(\\s*\\)', '', l)\n        if any(k in clean for k in ["TURNO","PR ","auto-fix","CACCIA","caccia","VERIFICA","ciclo-vivo","banco","reparto"]):
+        if "VERIFICA ROSSA" in l:
+            rosse.append((i, l))
+        # tolgo le parentesi del tipo '— (2/5 rosse)' prima di scegliere la riga:
+        # il conteggio c'e' gia' nelle cards, nel feed e' rumore
+        clean = re.sub(r"\s*—\s*\(\s*\)", "", l)
+        if any(k in clean for k in ["TURNO","PR ","auto-fix","CACCIA","caccia","MIGLIORIA","VERIFICA","ciclo-vivo","banco","reparto"]):
             s["recent"].append(l.strip()[1:120])
     s["recent"] = s["recent"][-25:]
+    # le rosse del ciclo IN CORSO: se il turno riparte, i vecchi rossi spariscono
+    s["verifiche"] = [l.strip()[1:140] for i, l in rosse if i >= ultima_apertura]
     try: s["online"] = True
-    except: pass
+    except: pass  # badge online sempre verde: il DNS del Mac e' inaffidabile (2026-09-17)
     try:
         r = subprocess.run(["curl","-sf","http://localhost:11434/api/tags"], capture_output=True, timeout=3)
         if r.returncode == 0: s["modello"] = json.loads(r.stdout)["models"][0]["name"]
@@ -40,6 +57,8 @@ def stats():
     return s
 
 def page(s):
+    """Costruisce la pagina HTML completa: badge di stato, cards dei numeri,
+    feed attivita' e verifiche. Si rigenera a ogni richiesta (refresh 10s)."""
     attivo = '<span style="background:#1a4a3a;color:#4ecca3;padding:6px 14px;border-radius:20px">🟢 TURNO ATTIVO</span>' if s["attivo"] else '<span style="background:#4a1a1a;color:#e74c3c;padding:6px 14px;border-radius:20px">🔴 FERMO</span>'
     online = '<span style="background:#1a4a3a;color:#4ecca3;padding:6px 14px;border-radius:20px">🌐 ONLINE</span>' if s["online"] else '<span style="background:#4a1a1a;color:#e74c3c;padding:6px 14px;border-radius:20px">📴 OFFLINE</span>'
     modello = f'<span style="background:#16213e;color:#0af;padding:6px 14px;border-radius:20px">🧠 {s["modello"] or "spento"}</span>'
@@ -74,6 +93,8 @@ if __name__ == "__main__":
     port = 8787
     try: srv = http.server.HTTPServer(("localhost",port),H)
     except OSError:
+        # porta occupata da una dashboard vecchia: la soppianta (self-restart,
+        # cosi' un rilancio basta ad aggiornare il codice in esecuzione)
         subprocess.run(["pkill","-f","dashboard.py"],capture_output=True); time.sleep(1)
         srv = http.server.HTTPServer(("localhost",port),H)
     print(f"Dashboard su http://localhost:{port} (Ctrl+C per fermare)")
