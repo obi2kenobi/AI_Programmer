@@ -556,3 +556,31 @@
   compile() rosso provato sul file corrotto prima della riparazione.
 - Aggiramento: committare .py solo dopo che un processo nuovo li ha caricati
   (il riavvio della dashboard, non il processo che gira da ore).
+
+## E-029 Il gate nuovo che urlava al lupo ogni notte
+- Data / sessione: 2026-09-18 (prima notte del gate py, turno delle 13:10)
+- Famiglia: R3 (contratto implicito violato) + R1
+- Chi l'ha trovato: il turno stesso — VERIFICA ROSSA ripetuta a ogni ciclo con
+  il gate py appena aggiunto, mentre lo stesso gate girava verde a mano.
+- Sintomo: la riga py di .night-verify risultava ROSSA solo quando la eseguiva
+  il turno. A mano: verde. Nel log: `(eval):[:1: unknown condition: -eq`.
+- Causa prossima: il turno esegue ogni riga di .night-verify come
+  `eval "ai_timeout 120 <riga>"` — ai_timeout esegue UN COMANDO. La riga
+  iniziava con `PYFAIL=0; for ...`: l'assegnazione diventava ARGOMENTO di
+  ai_timeout (mai assegnata), e la coda `[ $PYFAIL -eq 0 ]` moriva di unary
+  con la variabile vuota.
+- Causa del ragionamento: il contratto «una riga = un comando eseguibile da
+  timeout(1)» era IMPLICITO — mai dichiarato in .night-verify, mai provato da
+  un test. E la riga storica della suite (`N=0; TOT=...`) lo violava da
+  sempre, sopravvivendo perche' finiva per caso con un echo: il verde di
+  fortuna normalizzava il pattern rotto.
+- Perché non ci ha fermati: il turno deduplica i rossi in una issue e aspetta
+  il giorno — un falso rosso stabile non disturba nessuno finche' qualcuno
+  non legge la riga con i suoi occhi (diag: stesso comando, due esiti).
+- Guardia: tools/py-gate.sh e tools/suite.sh (un comando per riga, testati da
+  tests/test-py-gate.sh che respinge le righe composte con assegnazione) e il
+  contratto dichiarato a voce nei commenti di .night-verify.
+- Verifica guardia: il loop del turno simulato con source llm/_timeout.sh —
+  rosso prima, verde dopo; il contratto controllato dalla suite a ogni giro.
+- Aggiramento: scrivere in .night-verify righe shell composte che iniziano
+  con un'assegnazione — ripassa il controllo del contratto a ogni commit.
