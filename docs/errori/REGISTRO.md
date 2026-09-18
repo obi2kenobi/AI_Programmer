@@ -611,3 +611,29 @@
   </dev/null, non la tocca con); il turno al giro dopo conta 6/6.
 - Aggiramento: un comando in .night-verify che legga stdin — ora innocuo, ma
   se legge input INTERATTIVO aspettera' fino al timeout (dichiarato).
+
+## E-031 La caccia sana che il turno chiamava fallita
+- Data / sessione: 2026-09-18 (pomeriggio — tre 'caccia non ha converto' di fila
+  mentre integravo la caccia-miglioria)
+- Famiglia: R4 (interfaccia con contratto invertito) + R1
+- Chi l'ha trovato: il log del turno, leggendo tre rc=1 di fila come 'fallita'
+  e chiedendosi perche' la miglioria non partiva MAI nei giri buoni.
+- Sintomo: 'caccia non ha converto (rc=1)' a ogni giro sano; 'caccia pulita'
+  + cooldown quando la lente trovava PROBLEMI. La caccia-miglioria partiva
+  solo su rc=0 — cioe' solo quando c'erano problemi: la finestra sbagliata.
+- Causa prossima: caccia-lente esce 0 = problemi trovati, 1 = sana. Il turno
+  integrava rc=0 come 'trovato e corretto' e rc=1 come 'non ha converto':
+- Causa del ragionamento: il contratto degli exit code era scritto SOLO nel
+  codice della caccia, mai dichiarato al punto d'uso. Chi integra legge il
+  proprio assunto (0=bene) invece della fonte. L'ambiguita' era anche dentro
+  caccia-lente: rc=1 significa 'sana' MA anche 'strumento muto'.
+- Perché non ci ha fermati: 'non ha converto — nessun problema, riprova al
+  prossimo giro' suona innocuo: un fallimento ripetuto con tono rassicurante
+  non urta, e il sistema non moriva.
+- Guardia: night-shift/night-shift.sh dichiara il contratto rc al punto d'uso
+  (rc=0=lente segnala, rc=1=sana) e la miglioria parte nella finestra giusta
+  (SANA). Il log ora DISTINGUE: 'lente dichiara sana' vs 'LENTE SEGNALA'.
+- Verifica guardia: il log del turno dopo il fix mostra la lente sana seguita
+  dalla miglioria; i turni con rc=0 riportano il verdetto della lente.
+- Aggiramento: cambiare il contratto degli exit di caccia-lente senza
+  aggiornare il punto d'uso (e viceversa).
