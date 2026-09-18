@@ -165,6 +165,18 @@ revertabile al mattino.
   niente da migliorare lo DICE (marker 6h): inventare lavoro è peggio che non
   trovarlo. Rotazione file/categoria in .git/miglioria/, mai committata.
 
+## La caccia del registro (il censimento dei debiti)
+
+`tools/caccia-registro.sh` — la caccia che legge il REGISTRO DEGLI ERRORI e
+cerca le famiglie di bug dove davvero si nascondono (domanda di Luca
+2026-09-18: «come fa a essere sempre tutto in salute?»). Le cacce per
+categoria guardano un file alla volta; i bug veri (E-028..E-032) erano tutti
+d'integrazione: contratti, stdin condiviso, fixture nel repo vivo. Questa
+caccia censisece quel debito su TUTTO il repo ogni ciclo — deterministica,
+solo grep. Ogni «repository in salute» porta con se' il censimento: la
+salute si dichiara insieme ai debiti o non e' onesta. Il delta tra censimenti
+urla quando il debito cresce.
+
 ## La dashboard (finestra di osservazione)
 
 - `tools/dashboard.py` — pagina HTML che si aggiorna ogni 10 secondi: cicli,

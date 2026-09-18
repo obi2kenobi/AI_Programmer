@@ -545,6 +545,14 @@ review del giorno." 2>>"$ERR_NOTTE" \
         git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
       else
         log "REPO $REPO: caccia: sana e nessuna miglioria trovata — repository in salute"
+        # (2026-09-18, domanda di Luca: «come fa a essere sempre tutto in salute?»).
+        # La salute si dichiara CON i debiti o non e' onesta: ogni volta che il
+        # turno dice 'in salute', allega il censimento delle famiglie di bug del
+        # registro (dove i bug DAVVERO si nascondono: E-002 pipe, E-032 fixture).
+        if [ -f "$HERE/../tools/caccia-registro.sh" ]; then
+          CENSUS=$(bash "$HERE/../tools/caccia-registro.sh" "$DIR" 2>/dev/null | head -1)
+          [ -n "$CENSUS" ] && log "REPO $REPO: $CENSUS"
+        fi
         # marker: sana E niente da migliorare — cooldown 30 min
         touch "$CACCIA_MARKER"
         git -C "$DIR" checkout "$DB" -q 2>/dev/null || true
