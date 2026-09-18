@@ -56,27 +56,28 @@ echo "  $P passano, $F rossi"
 [ "$F" -eq 0 ] || FALLITI=$((FALLITI+1))
 
 step "2/7 batteria ignorante"
-if bash tools/giri-ignoranti.sh >/tmp/bp-ignoranti.log 2>&1; then
+BP_LOG=$(mktemp -d /tmp/bp.XXXXXX)   # path UNICI per run: due banchi sovrapposti non si calpestano le prove
+if bash tools/giri-ignoranti.sh >"$BP_LOG/ignoranti.log" 2>&1; then
   echo "  0 finding"
 else
-  echo "  FINDING:"; grep "^FIND" /tmp/bp-ignoranti.log | sed 's/^/  /'
+  echo "  FINDING:"; grep "^FIND" "$BP_LOG/ignoranti.log" | sed 's/^/  /'
   FALLITI=$((FALLITI+1))
 fi
 
 if [ "$VELOCE" -eq 0 ]; then
   step "3/7 batteria avversaria"
-  if bash tools/giri-avversari.sh >/tmp/bp-avversari.log 2>&1; then
-    echo "  0 aggirati ($(grep -c '^TIENE' /tmp/bp-avversari.log) tengono)"
+  if bash tools/giri-avversari.sh >"$BP_LOG/avversari.log" 2>&1; then
+    echo "  0 aggirati ($(grep -c '^TIENE' "$BP_LOG/avversari.log") tengono)"
   else
-    echo "  AGGIRATI:"; grep "^AGGIRA" /tmp/bp-avversari.log | sed 's/^/  /'
+    echo "  AGGIRATI:"; grep "^AGGIRA" "$BP_LOG/avversari.log" | sed 's/^/  /'
     FALLITI=$((FALLITI+1))
   fi
 
   step "4/7 banco mutazioni (i test provati contro se stessi)"
-  if bash tools/mutation-tests.sh >/tmp/bp-mutazioni.log 2>&1; then
-    echo "  $(grep -oE '[0-9]+ test reagiscono' /tmp/bp-mutazioni.log) — nessun teatro"
+  if bash tools/mutation-tests.sh >"$BP_LOG/mutazioni.log" 2>&1; then
+    echo "  $(grep -oE '[0-9]+ test reagiscono' "$BP_LOG/mutazioni.log") — nessun teatro"
   else
-    echo "  TEATRI:"; grep "^TEATRO" /tmp/bp-mutazioni.log | sed 's/^/  /'
+    echo "  TEATRI:"; grep "^TEATRO" "$BP_LOG/mutazioni.log" | sed 's/^/  /'
     FALLITI=$((FALLITI+1))
   fi
 else
@@ -84,10 +85,10 @@ else
 fi
 
 step "5/7 privacy"
-if bash tools/privacy-check.sh >/tmp/bp-privacy.log 2>&1; then
+if bash tools/privacy-check.sh >"$BP_LOG/privacy.log" 2>&1; then
   echo "  pulito"
 else
-  head -3 /tmp/bp-privacy.log | sed 's/^/  /'
+  head -3 "$BP_LOG/privacy.log" | sed 's/^/  /'
   FALLITI=$((FALLITI+1))
 fi
 
