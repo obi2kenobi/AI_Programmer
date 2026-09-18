@@ -97,7 +97,8 @@ while IFS= read -r ref; do
   git -C "$HERE" check-ignore -q "$ref" 2>/dev/null && continue
   [ -e "$HERE/$ref" ] || ROTTO="$ROTTO $ref"
 # GRAMMATICA_DOMINIO_TEMPLATE.md cita il file che ordina di CREARE: escluso
-done < <(cat "$HERE/README.md" $(ls "$HERE"/docs/*.md | grep -v GRAMMATICA_DOMINIO_TEMPLATE) 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' | tr -d '`' | sort -u)
+DOCS_MD=$(find "$HERE/docs" -maxdepth 1 -name '*.md' ! -name GRAMMATICA_DOMINIO_TEMPLATE.md)
+done < <(cat "$HERE/README.md" $DOCS_MD 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' | tr -d '`' | sort -u)
 [ -z "$ROTTO" ] && sonda 0 "S6 tutti i path citati in README e docs di radice esistono" || sonda 1 "S6 path citati inesistenti:$ROTTO"
 
 # S7 — il registro pattern è bidirezionale (A4: cancellare un file di pattern non

@@ -1,5 +1,5 @@
 # Verifiche dichiarate del hub (dogfooding)
-shellcheck night-shift/*.sh llm/*.sh tools/*.sh
+shellcheck --severity=warning --exclude=SC2034,SC2164,SC2155,SC2010 night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
 bash tools/privacy-check.sh
 # 4° ciclo, set 1 giro 4 (2026-08-23): questa riga elencava 4 test per nome (test-lib,

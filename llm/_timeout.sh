@@ -1,3 +1,4 @@
+#!/bin/bash
 # _timeout.sh — timeout portabile per i wrapper llm/ e i loro test (6° ciclo, giro 0
 # "baseline", 2026-08-24). macOS non porta GNU coreutils: `timeout` non esiste su una
 # shell stock (verificato dal vivo: `command -v timeout` vuoto su /bin/bash 3.2 di

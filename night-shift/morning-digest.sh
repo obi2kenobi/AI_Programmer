@@ -34,7 +34,7 @@ $(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] 
   echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
   ASPETTA=$(sed -n "/ASPETTA IL GIORNO/,\$p" "$SAL_TURNI" 2>/dev/null | grep -c "  " || echo 0)
   [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"
-  > "$SAL_TURNI"
+  : > "$SAL_TURNI"
 } || echo "(nessuna memoria del turno)")"
 
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
