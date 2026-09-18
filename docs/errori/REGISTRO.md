@@ -637,3 +637,33 @@
   dalla miglioria; i turni con rc=0 riportano il verdetto della lente.
 - Aggiramento: cambiare il contratto degli exit di caccia-lente senza
   aggiornare il punto d'uso (e viceversa).
+
+## E-032 Il canarico piantato nel repo vivo
+- Data / sessione: 2026-09-18 (test di un'ora, seconda ora — fantasma attivo
+  dalle 17:21)
+- Famiglia: E-002 (stato condiviso) + R1
+- Chi l'ha trovato: il banco, per un pomeriggio: FIND S1 caratteri alieni
+  DEBITI.md a intermittenza — rosso, verde, rosso — con il file PULITO a ogni
+  controllo a riposo.
+- Sintomo: FIND S1 DEBITI.md fantasma nel banco del turno, alternato a banchi
+  verdi, senza che DEBITI.md contenesse mai glifi a riposo (md5 identico alle
+  copie pulite).
+- Causa prossima: tests/test-giri-ignoranti.sh piantava il suo canarico CJK
+  NEL DEBITI.md DEL REPO VERO e lo ripristinava col checkout: per la durata
+  del test il glifo era visibile a OGNI batteria ignoranti sovrapposta (il
+  banco del turno, il banco dentro la suite). Se il ripristino sfiorava una
+  operazione git del turno, il canarico restava in campo per il giro dopo.
+- Causa del ragionamento: il canarico era un fixture senza quarantena —
+  prova-rilevatori.sh, nato due settimane prima, lavorava gia' in clone di
+  quarantena per ESATTAMENTE questo motivo. La lezione non era stata portata
+  ai test delle sonde.
+- Perché non ci ha fermati: il finding era VERO nel momento in cui la S1 lo
+  vedeva (il glifo c'era davvero!) — un falso positivo perfettamente onesto:
+  il difetto era il palcoscenico, non l'attore.
+- Guardia: tests/test-giri-ignoranti.sh pianta in clone di quarantena (git
+  clone --local + gitignored portati a mano): il repo vivo non vede MAI il
+  canarico, e non esiste ripristino che possa mancare — la quarantena si butta.
+- Verifica guardia: test 13/13; il banco del turno con per-run log e sonde
+  pulite nei giri successivi.
+- Aggiramento: piantare fixture nei file del repo vivo invece che in
+  quarantena — la suite gira dentro il sistema che prova.
