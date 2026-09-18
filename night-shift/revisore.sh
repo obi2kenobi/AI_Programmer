@@ -131,7 +131,9 @@ if [ -f .night-verify ]; then
     case "$NV_CMD" in
       @*" "*) NV_SEC="${NV_CMD%% *}"; NV_SEC="${NV_SEC#@}"; NV_CMD="${NV_CMD#* }" ;;
     esac
-    if ! (eval "ai_timeout $NV_SEC $NV_CMD" >/dev/null 2>&1 </dev/null); then
+    # (2026-09-19): bash -c come nel turno — i costrutti shell sono righe di
+    # script valide, non comandi eseguibili (16/45 rosse false sul Magazzino)
+    if ! (ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="$PROVE_ROTTE; $NV_CMD"
     fi
   done < .night-verify
