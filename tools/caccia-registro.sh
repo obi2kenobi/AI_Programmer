@@ -16,14 +16,28 @@
 #   E-002  pipe che finiscono in `grep -q` (SIGPIPE + pipefail: cattura-prima)
 #   E-032  fixture di test scritte nel repo VIVO invece che in quarantena
 #
-# Uso: caccia-registro.sh [dir]      (default: la radice del repo che lo contiene)
-# Esce: 0 sempre — stampa il censimento; il debito non e' un errore, e' un debito
+# Uso: caccia-registro.sh [dir]           → il censimento (stampa i conteggi)
+#       caccia-registro.sh --prossimo [dir] → il prossimo debito da saldare:
+#       «FAMIGLIA|file:riga|snippet» — il primo non saldato e non rinviato.
+#       (2026-09-18, Luca: il debito censito si SALDA — un sito per finestra,
+#       fix del canone, gate, PR, censore. saldati/rinviati vivono in .git.)
+# Esce: 0 sempre — il debito non e' un errore, e' un debito
 set -uo pipefail
+MODO="${1:-}"
+[ "$MODO" = "--prossimo" ] && shift
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 cd "$DIR"
 STATO="$DIR/.git/caccia-registro"
 mkdir -p "$STATO"
+
+if [ "$MODO" = "--prossimo" ]; then
+  SALDATI="$STATO/saldati"; RINVIA="$STATO/rinviati"
+  touch "$SALDATI" "$RINVIA"
+  # tutti i siti (famiglia|file:riga), cattura-prima esclusa dai commenti gia' curati
+  { grep -rn "| grep -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null | grep -v "^[^:]*:[0-9]*: *#" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-002|\1:\2/' ; grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null | grep -v "mktemp\|/tmp" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-032|\1:\2/' ; } | grep -vFf "$SALDATI" | grep -vFf "$RINVIA" | head -1
+  exit 0
+fi
 
 # ── famiglia E-002: pipe in grep -q ─────────────────────────────────────────────
 E002=$(grep -rn "| grep -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \

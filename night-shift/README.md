@@ -175,7 +175,11 @@ d'integrazione: contratti, stdin condiviso, fixture nel repo vivo. Questa
 caccia censisece quel debito su TUTTO il repo ogni ciclo — deterministica,
 solo grep. Ogni «repository in salute» porta con se' il censimento: la
 salute si dichiara insieme ai debiti o non e' onesta. Il delta tra censimenti
-urla quando il debito cresce.
+urla quando il debito cresce. E il debito si SALDA: ogni finestra di caccia
+preleva il prossimo sito (`--prossimo`), l'agente applica il fix del canone
+(cattura-prima per E-002, quarantena per E-032), il gate decide la PR — e il
+sito passa tra i saldati. Un tentativo per sito: fallire rinvia, non
+martella. Il censimento scende, il delta lo urla, il cerchio si chiude.
 
 ## La dashboard (finestra di osservazione)
 
