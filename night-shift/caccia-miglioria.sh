@@ -52,9 +52,16 @@ istruzione() {
     docs)     printf '%s' "$CAT_DOCS" ;;
     semplice) printf '%s' "$CAT_SEMPLICE" ;;
     ripetuto) printf '%s' "$CAT_RIPETUTO" ;;
+    debito)   printf '%s' "$CAT_DEBITO" ;;
     *) return 1 ;;
   esac
 }
+
+# (2026-09-18, Luca: «si'» — il debito censito si SALDA): fix meccanici per le
+# famiglie del registro. Ogni nuova famiglia che entra nel censimento entra qui.
+CAT_DEBITO_E002="TASK: convert THAT ONE pipeline site to cattura-prima (the canon fix for the E-002 family: with pipefail, a producer that writes past the first match dies of SIGPIPE and the whole pipeline lies). Steps: capture the pipeline output into a local variable FIRST, then test it with grep -q pattern <<<\"\$VAR\". Preserve EXACT behavior: same patterns, same case flags, same branches on both grep outcomes. Touch only that site, nothing else."
+CAT_DEBITO_E032="TASK: convert THAT ONE test line so its fixture lives in QUARANTENA, not in the live repo (E-032 family: a fixture planted in the real repo is visible to every concurrent check). Steps: create a scratch dir with mktemp -d and a trap cleanup, and write the fixture there; point the test assertions at the scratch. The live repo files must NOT be modified."
+CAT_DEBITO="$CAT_DEBITO_E002"
 
 # --- i file candidati: tracciati, codice, piccoli (stesso limite del solver) ----
 list_files() {
@@ -108,8 +115,24 @@ for l in sys.stdin:
 ripristina() { git reset -q --hard && git clean -qfd; }
 
 # --- scelta file + categoria (rotazione, salta i cooldown) ----------------------
+# PRIMA il debito del registro (Luca 2026-09-18): un sito per finestra, il fix
+# e' meccanico, il censimento dice dove. Saldato o rinviato: un tentativo per
+# sito, niente martellamento.
+SITO=""; FAMIGLIA=""; CAT=""
+if [ -z "${MIGLIORIA_CAT:-}" ] && [ -f "$HERE/tools/caccia-registro.sh" ]; then
+  PROSSIMO=$(bash "$HERE/tools/caccia-registro.sh" --prossimo "$DIR" 2>/dev/null | head -1)
+  if [ -n "$PROSSIMO" ]; then
+    FAMIGLIA=$(printf '%s' "$PROSSIMO" | cut -d'|' -f1)
+    SITO=$(printf '%s' "$PROSSIMO" | cut -d'|' -f2)
+    CAT="debito"
+    case "$FAMIGLIA" in
+      E-002) CAT_DEBITO="$CAT_DEBITO_E002" ;;
+      E-032) CAT_DEBITO="$CAT_DEBITO_E032" ;;
+    esac
+  fi
+fi
 CAT_IDX=$(cat "$STATE/cat-idx" 2>/dev/null || echo 0)
-CAT="${MIGLIORIA_CAT:-${CATS[$(( CAT_IDX % ${#CATS[@]} ))]}}"
+[ -n "$CAT" ] || CAT="${MIGLIORIA_CAT:-${CATS[$(( CAT_IDX % ${#CATS[@]} ))]}}"
 [ "$CAT_IDX" -eq "$CAT_IDX" ] 2>/dev/null || CAT="morto"  # indice corrotto: torna al certo
 echo $(( CAT_IDX + 1 )) > "$STATE/cat-idx"
 istruzione "$CAT" >/dev/null || { log "categoria sconosciuta: $CAT"; exit 2; }
@@ -119,6 +142,7 @@ while IFS= read -r f; do FILES+=("$f"); done < <(list_files)
 [ ${#FILES[@]} -eq 0 ] && { log "nessun file codice candidato (≤24KB)"; exit 1; }
 
 TARGET="${MIGLIORIA_FILE:-}"
+[ -n "$SITO" ] && TARGET="${SITO%:*}"   # il debito dice il file: la riga va nel prompt
 if [ -z "$TARGET" ]; then
   FIDX=$(cat "$STATE/coda-idx" 2>/dev/null || echo 0)
   [ "$FIDX" -eq "$FIDX" ] 2>/dev/null || FIDX=0
@@ -136,7 +160,10 @@ fi
 log "categoria '$CAT' su $TARGET"
 
 # --- l'agente lavora (confinato: read/write/run dentro la repo, denylist attiva) -
-PROMPT="You are improving the file '$TARGET' of this repository. Work only on this file unless a strictly required follow-up edit is needed (max $MAX_FILE files total).
+SITO_NOTA=""
+[ -n "$SITO" ] && SITO_NOTA=" The exact site is line ${SITO##*:} of this file."
+
+PROMPT="You are improving the file '$TARGET' of this repository. Work only on this file unless a strictly required follow-up edit is needed (max $MAX_FILE files total).$SITO_NOTA
 
 $(istruzione "$CAT")
 
@@ -155,6 +182,12 @@ if [ "$AGENTE_RC" -ne 0 ]; then
   exit 1
 fi
 
+# il debito e' un tentativo solo: se l'agente non lo salda, il sito e' rinviato
+# (resta nel censimento, il giorno lo vede e decide)
+if [ -n "$SITO" ]; then
+  mkdir -p "$DIR/.git/caccia-registro"
+  echo "$SITO" >> "$DIR/.git/caccia-registro/rinviati"
+fi
 if git diff --quiet 2>/dev/null; then
   log "'$CAT' su $TARGET: niente da migliorare (dichiarato pulito per ${COOLDOWN}s)"
   touch "$STATE/$(marker_name "$CAT" "$TARGET")"
@@ -165,6 +198,12 @@ if ! gate; then
   log "miglioria bocciata dal gate — ripristino (il gate protegge il mattino da noi)"
   ripristina
   exit 1
+fi
+# il gate ha passato il fix del debito: il sito e' SALDATO (esci dalla coda dei
+# rinviati ed entra nei saldati — il censimento lo riconfermera' col conteggio)
+if [ -n "$SITO" ]; then
+  sed -i '' "/^${SITO//\//\/}$/d" "$DIR/.git/caccia-registro/rinviati" 2>/dev/null || true
+  echo "$SITO" >> "$DIR/.git/caccia-registro/saldati"
 fi
 
 RIGHE=$(git diff --numstat | awk '{a+=$1+$2} END{print a+0}')

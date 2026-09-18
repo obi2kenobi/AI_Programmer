@@ -138,3 +138,42 @@ fi
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
+
+# ── il debito del registro si salda (2026-09-18, Luca: «si'») ────────────────────
+# la finestra paga un debito: il censimento indica il sito, l'agente (stub) fa
+# il fix del canone, il gate passa, il sito finisce nei SALDATI.
+SB3=$(mktemp -d /tmp/test-miglioria-debito.XXXXXX)
+mkdir -p "$SB3/tools"
+PDQ="| gre""p -q"   # esemplare a pezzi: il guardiano legge il sorgente
+printf '#!/bin/bash\nset -uo pipefail\nOUT=$(ls . %s debito && echo si)\n' "$PDQ" > "$SB3/tools/vittima.sh"
+git -C "$SB3" init -q -b main && git -C "$SB3" add -A && git -C "$SB3" -c user.name=t -c user.email=t@t commit -qm base
+# stub che salda: il prompt contiene il file e la riga — converte il tubo
+STUB_SALDA=$(mktemp /tmp/stub-salda.XXXXXX)
+cat > "$STUB_SALDA" <<'EOF'
+#!/bin/bash
+DIR="$1"; PROMPT="$2"
+FILE=$(printf '%s' "$PROMPT" | sed -n "s/.*improving the file '\([^']*\)'.*/\1/p")
+printf '#!/bin/bash\nset -uo pipefail\nOUT=$(ls .)\ngrep -q debito <<<"$OUT" && echo si\n' > "$DIR/$FILE"
+exit 0
+EOF
+chmod +x "$STUB_SALDA"
+OUT=$(MIGLIORIA_AGENT="$STUB_SALDA" bash "$CM" "$SB3" 2>/dev/null); RC=$?
+[ "$RC" -eq 0 ] && ok "debito: rc 0 — fix pronto" || ko "debito: rc $RC — $OUT"
+grep -q '<<<"\$OUT"' "$SB3/tools/vittima.sh" && ok "debito: cattura-prima applicata" || ko "debito: tubo ancora li'"
+grep -q "vittima.sh:3" "$SB3/.git/caccia-registro/saldati" 2>/dev/null && ok "debito: sito marcato SALDATO" || ko "debito: sito non marcato"
+RIGHE=$(git -C "$SB3" diff --numstat | awk '{a+=$1+$2} END{print a+0}')
+[ "$RIGHE" -le 40 ] && ok "debito: diff piccolo ($RIGHE righe)" || ko "debito: diff $RIGHE"
+rm -rf "$SB3" "$STUB_SALDA"
+
+# il tentativo fallito RINVIA il sito (un colpo solo, niente martellamento)
+SB4=$(mktemp -d /tmp/test-miglioria-rinvio.XXXXXX)
+mkdir -p "$SB4/tools"
+printf '#!/bin/bash\nset -uo pipefail\nOUT=$(ls . %s debito && echo si)\n' "$PDQ" > "$SB4/tools/vittima.sh"
+git -C "$SB4" init -q -b main && git -C "$SB4" add -A && git -C "$SB4" -c user.name=t -c user.email=t@t commit -qm base
+OUT=$(MIGLIORIA_AGENT="$STUB_MUTO" bash "$CM" "$SB4" 2>/dev/null); RC=$?
+[ "$RC" -eq 1 ] && ok "rinvio: agente muto → rc 1" || ko "rinvio: rc $RC"
+grep -q "vittima.sh:3" "$SB4/.git/caccia-registro/rinviati" 2>/dev/null && ok "rinvio: sito rinviato (un colpo solo)" || ko "rinvio: sito non rinviato"
+# e il prossimo giro NON ripropone lo stesso sito
+PROSSIMO=$(bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB4" 2>/dev/null)
+case "$PROSSIMO" in *"vittima.sh:3"*) ko "rinvio: il sito riproposto!";; *) ok "rinvio: il censimento passa oltre";; esac
+rm -rf "$SB4"
