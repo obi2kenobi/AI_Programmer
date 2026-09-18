@@ -142,9 +142,16 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
       CMD_ESEGUITI=0
       while IFS= read -r cmd; do
         cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
+        # (E-029): una riga puo' dichiarare il proprio budget con `@<sec> `
+        # (stesso contratto del turno notturno). La suite completa supera i
+        # 120s di default: senza budget dedicato sarebbe rossa anche qui.
+        GV_SEC=120
+        case "$cmd" in
+          @*" "*) GV_SEC="${cmd%% *}"; GV_SEC="${GV_SEC#@}"; cmd="${cmd#* }" ;;
+        esac
         CMD_ESEGUITI=$((CMD_ESEGUITI+1))
         echo "- \`$cmd\`:" >> "$REPORT"
-        if OUT=$( cd "$DIR" && run_guarded 120 bash -c "$cmd" 2>&1 ); then
+        if OUT=$( cd "$DIR" && run_guarded "$GV_SEC" bash -c "$cmd" 2>&1 ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
