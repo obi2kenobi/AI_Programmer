@@ -230,11 +230,16 @@ shift_repo() {
         @*" "*) NV_SEC="${NV_CMD%% *}"; NV_SEC="${NV_SEC#@}"; NV_CMD="${NV_CMD#* }" ;;
       esac
       NV_TOTALI=$((NV_TOTALI+1))
-      # (E-030): il loop legge da file redirect: il comando eval'eredita quello
+      # (E-030): il loop legge da file redirect: il comando eredita quello
       # stdin e un test che legge stdin SI MANGIA le righe successive del file
       # (la suite completa a 420s lo faceva: sal-indice spariva, 5/6 dichiarate).
       # </dev/null: il comando non tocca MAI il file delle verifiche.
-      if ! (cd "$DIR" && eval "ai_timeout $NV_SEC $NV_CMD" >/dev/null 2>&1 </dev/null); then
+      # (2026-09-19, prima notte su Sistema-Gestione-Magazzino): la riga passa
+      # a bash -c COME SCRIPT — i costrutti shell (for, prefissi d'ambiente,
+      # assegnazioni) non sono comandi eseguibili e con ai_timeout anteposto
+      # morivano tutti (16/45 rosse false). Il morning-gate faceva gia' cosi:
+      # era il turno l'asimmetria. Niente eval: la riga e' UN argomento.
+      if ! (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
         NV_ROSSI=$((NV_ROSSI+1))
         log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
       fi

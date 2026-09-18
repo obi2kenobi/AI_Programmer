@@ -1,6 +1,9 @@
 # Verifiche dichiarate del hub (dogfooding)
 #
-# CONTRATTO (dichiarato con E-029): ogni riga non-commento e' UN COMANDO solo,
+# CONTRATTO (aggiornato 2026-09-19, prima notte sul Magazzino): ogni riga
+# non-commento e' UNA RIGA DI SCRIPT eseguita con `bash -c` — costrutti shell,
+# prefissi d'ambiente e assegnazioni sono legittimi DENTRO la riga (non su
+# piu' righe). Prima era "un comando solo": 16/45 rosse false sul Magazzino.
 # eseguibile da `timeout(1)` — il turno notturno esegue `eval "ai_timeout 120
 # <riga>"` per ciascuna e conta i rossi. Conseguenze: (1) niente righe composte
 # che iniziano con un'assegnazione (diventerebbe argomento del comando, E-029);
