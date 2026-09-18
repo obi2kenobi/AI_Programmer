@@ -452,7 +452,8 @@ review del giorno." 2>>"$ERR_NOTTE" \
           return 0
         fi
       fi
-      log "REPO $REPO: nessuna issue — attivo la CACCIA (il lavoro se lo trova il sistema)"
+      local PR_CREATED=0  # serve alla caccia (che gira prima del loop issue)
+  log "REPO $REPO: nessuna issue — attivo la CACCIA (il lavoro se lo trova il sistema)"
       # branch dedicato alla caccia (l'agente modifica su branch, mai su main)
       CACCIA_BRANCH="night/caccia-$(date +%Y%m%d-%H%M%S)"
       git -C "$DIR" checkout -b "$CACCIA_BRANCH" -q 2>/dev/null || true
@@ -484,7 +485,7 @@ DO NOT say 'nothing to improve' without reading at least 3 files. Be AGGRESSIVE.
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioramento trovato dall'agente notturno" --body "L'agente proattivo ha trovato e corretto un miglioramento durante la caccia notturna. Verificare il diff." 2>&1 | tail -1)
           log "REPO $REPO: PR di caccia → $PR_CACCIA"
           git -C "$DIR" checkout "$DB" -q
-          PR_CREATED=$((PR_CREATED+1))
+          PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
         else
           log "⚠ REPO $REPO: commit/push della caccia fallito — ripristino"
           git -C "$DIR" reset -q --hard
