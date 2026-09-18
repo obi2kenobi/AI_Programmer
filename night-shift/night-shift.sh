@@ -971,18 +971,13 @@ fi
 # lock globale resta la rete di sicurezza se qualcosa va lungo.
 ORA=${FAKE_HOUR:-$(date +%H)}  # FAKE_HOUR per i test della finestra
 if [ "$ORA" -ge 23 ] || [ "$ORA" -lt 6 ]; then
-  # SONNO ADATTIVO (2026-09-16): se il turno HA FATTO qualcosa (fix, PR, issue),
-  # riparti in 60 secondi — c'e' materiale fresco. Se non ha fatto niente, riposa
-  # 10 minuti: l'hub e' pulito, non serve correre. Prima: 5 fissi per tutti.
-  LAVORO=$((TOT_PR_CREATED + TOT_PROPOSTE + TOT_FAILED))
-  if [ "$LAVORO" -gt 0 ]; then
-    RIPOSO=60; MOTIVO="lavoro fatto ($LAVORO pezzi): riparto subito"
-  else
-    RIPOSO=60; MOTIVO="nulla da fare: ricontrollo subito (1 min, decisione di Luca)"
-  fi
-  log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): $MOTIVO (fra ${RIPOSO}s) ==="
-  rmdir "$TURN_LOCK" 2>/dev/null  # libero il lock per il giro dopo
-  sleep "$RIPOSO"
+  # (2026-09-18, Luca: «fino a che non ha finito non riparte»): NESSUN sonno
+  # artificiale. Il turno lavora fino alla fine, poi riparte IMMEDIATAMENTE.
+  # Se un fix richiede 10 minuti, il prossimo giro parte dopo quei 10 minuti.
+  # Se il giro dura 30 secondi, riparte dopo 30 secondi. Il ritmo lo decide
+  # il lavoro, non un timer.
+  log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): riparto SUBITO ==="
+  rmdir "$TURN_LOCK" 2>/dev/null
   exec "$0" "$@"
 fi
 
