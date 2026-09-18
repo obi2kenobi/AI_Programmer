@@ -2,7 +2,7 @@
 # test-modelli-notturni.sh (protocollo: docs/test-modelli-notturni-protocollo.md) — il banco per scegliere il modello del turno notturno.
 # Nato dal problema reale: Qwen 27B (generale) loopa sull'issue #12 da 4 notti
 # (59h + 10h + 10h + 4h col watchdog). L'ipotesi da provare: un modello
-// SPECIALIZZATO per coding convergerebbe dove un generale loopa.
+# SPECIALIZZATO per coding convergerebbe dove un generale loopa.
 #
 # TEST: 10 esecuzioni per modello sulla STESSA mini-issue (aggiungere una colonna
 # a una tabella PDF in un file GAS). Si misura: converge (scrive codice)?

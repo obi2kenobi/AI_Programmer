@@ -69,7 +69,7 @@ $PATTERN_CHECKLIST
 
 Now analyze this file for defects:
 === FILE: $FILE_TARGET ===
-$file_CONTENT
+$# file_CONTENT non più usata
 === END ===
 
 Report:

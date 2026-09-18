@@ -113,7 +113,7 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
     run)
       CMD=$(echo "$STRIPPED" | jq -r '.command')
       case "$CMD" in
-        *clasp*|*push*|*deploy*|*curl*|*git\ push*|*rm\ -rf*|*sudo*)
+        *clasp*|*push*|*deploy*|*curl*|*rm\ -rf*|*sudo*)
           RESULT="ERROR: command not allowed"
           log "  run: RIFIUTATO: $CMD" ;;
         *)
