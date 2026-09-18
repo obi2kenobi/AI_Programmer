@@ -22,14 +22,28 @@ cd "$DIR"
 log() { echo "[agente $(date '+%H:%M:%S')] $*" >&2; }
 T_INIZIO=$(date +%s)
 
-# il system prompt: dice al modello COSA può fare e COME chiederlo
+# il system prompt: di default è il generico, ma se AGENTE_SYSTEM_FILE punta a un file
+# (agente o skill dell'hub), quel file DIVENTA l'intelligenza del turno.
+# (2026-09-18, intuizione di Luca: usiamo le lenti e gli agenti che già esistono)
+AGENTE_INTELLIGENZA=""
+if [ -n "${AGENTE_SYSTEM_FILE:-}" ] && [ -f "$AGENTE_SYSTEM_FILE" ]; then
+  AGENTE_INTELLIGENZA=$(head -c 4000 "$AGENTE_SYSTEM_FILE")
+  log "intelligenza: $(basename "$AGENTE_SYSTEM_FILE") ($(wc -c < "$AGENTE_SYSTEM_FILE" | tr -d ' ') bytes)"
+fi
+
 SYSTEM="You are a coding agent working in a project directory. You can:
 1. READ a file: respond with JSON {\"action\":\"read\",\"path\":\"filename\"}
 2. WRITE a file: respond with JSON {\"action\":\"write\",\"path\":\"filename\",\"content\":\"full file content\"}
 3. RUN a command: respond with JSON {\"action\":\"run\",\"command\":\"the command\"}
 4. FINISH: respond with your final answer as plain text (no JSON).
 
-Rules: always read a file before writing it. One action per response. When done, respond with your final answer as text."
+Rules: always read a file before writing it. One action per response. When done, respond with your final answer as text.
+
+${AGENTE_INTELLIGENZA:+
+YOUR SPECIALIST EXPERTISE (from AI_Programmer):
+$AGENTE_INTELLIGENZA
+
+Apply this expertise to the task. Cite specific patterns or rules from your specialty when relevant.}"
 
 # la conversazione: parte con system + user
 CONV=$(jq -n --arg sys "$SYSTEM" --arg p "$PROMPT" \

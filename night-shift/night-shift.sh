@@ -473,7 +473,7 @@ MUST check each file for:
 
 Pick the WORST issue in these files and FIX IT. Read first, fix second, verify third.
 DO NOT say 'nothing to improve' without reading at least 3 files. Be AGGRESSIVE."
-      CACCIA_OUT=$(bash "$HERE/agente.sh" "$DIR" "$CACCIA_PROMPT" 2>&1)
+      CACCIA_OUT=$(bash "$HERE/caccia-lente.sh" "$DIR" 2>&1)
       CACCIA_RC=$?
       if [ "$CACCIA_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
         log "REPO $REPO: 🎯 CACCIA ha trovato e corretto un miglioramento"
