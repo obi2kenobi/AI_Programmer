@@ -127,3 +127,12 @@ legge il riepilogo (lo usa `morning-digest`).
 opencode non chiudeva. Il modello chiede azioni con JSON nel contenuto, lo script
 le esegue (read/write/run con confinamento e denylist), e rimanda il risultato.
 Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica.
+
+## La caccia intelligente
+
+- `night-shift/caccia-lente.sh` — la caccia che USA gli strumenti dell'hub:
+  le sonde, il health, il banco, il ciclo-vivo e il registro girano, e il modello
+  locale INTERPRETA il loro output decidendo se ci sono problemi.
+  Cinque lenti in rotazione automatica, una per ciclo.
+- `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
+  lenti specializzate per file (sostituita da caccia-lente per stabilita').
