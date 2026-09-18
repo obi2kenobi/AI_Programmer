@@ -41,7 +41,12 @@ if [ -n "$NS_PATH" ]; then
 else
   echo "ROSSO nightshift non caricato: la finestra notturna non partira'"
 fi
-for AG in luca.ollama luca.nightshift luca.wayfinder; do
+# (2026-09-18): wayfinder tolto dal controllo — non e' piu' parte del sistema
+# (sostituito dal nostro agente.sh) e il suo warn permanente dava alla lente
+# un segnale falso: il modello della caccia lo ha riassunto come 'nightshift
+# NON caricato' mentre nightshift era caricato e girava. La lente riassume:
+# quello che le diamo dev'essere vero, o riassume rumore.
+for AG in luca.ollama luca.nightshift; do
   if launchctl list 2>/dev/null | grep -q "$AG"; then
     ok "launchd: $AG caricato"
   else
