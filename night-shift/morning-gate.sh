@@ -151,7 +151,10 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
         esac
         CMD_ESEGUITI=$((CMD_ESEGUITI+1))
         echo "- \`$cmd\`:" >> "$REPORT"
-        if OUT=$( cd "$DIR" && run_guarded "$GV_SEC" bash -c "$cmd" 2>&1 ); then
+        # (E-030): </dev/null — il comando non puo' mangiarsi la here-string
+        # che alimenta questo loop (un test che legge stdin divorava le righe
+        # successive delle verifiche dichiarate).
+        if OUT=$( cd "$DIR" && run_guarded "$GV_SEC" bash -c "$cmd" 2>&1 </dev/null ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
