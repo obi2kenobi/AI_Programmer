@@ -38,7 +38,7 @@ OUT=$(bash "$RUNNER" "$SB2" 2>&1); RC=$?
 rm -rf "$SB2"
 
 # 4. il runner e' dichiarato in .night-verify come UN COMANDO per riga
-grep -q "^bash tools/suite.sh$" "$HERE/.night-verify" && ok "dichiarato in .night-verify" \
+grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify" && ok "dichiarato in .night-verify" \
   || ko ".night-verify non invoca suite.sh"
 
 echo ""

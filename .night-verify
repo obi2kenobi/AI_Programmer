@@ -26,5 +26,8 @@ bash tools/privacy-check.sh
 # allora: loop su TUTTI i file + riepilogo N/TOT esplicito. 2026-09-18, E-029:
 # la riga composta `N=0; TOT=...` diventava argomento di `ai_timeout` — vive in
 # tools/suite.sh, cosi' .night-verify resta UN COMANDO per riga).
-bash tools/suite.sh
+# (E-029, seconda lezione: il budget di default e' 120s per riga; una riga puo'
+# dichiarare il suo con il prefisso `@<sec>`. La suite completa dura ~300s —
+# sotto il budget standard moriva a meta' e dava un rosso stabile ogni notte.)
+@420 bash tools/suite.sh
 bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }
