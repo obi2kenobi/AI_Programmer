@@ -219,6 +219,22 @@ shift_repo() {
   if [ -f "$DIR/.night-verify" ]; then
     NV_ROSSI=0
     NV_TOTALI=0
+    # (2026-09-19, prima notte sul Magazzino): due FORMATI dichiarati. Il suo
+    # .night-verify e' un PROGRAMMA di 505 righe (blocchi multi-riga, stato che
+    # attraversa le righe): riga-per-riga non puo' girare, e non si riscrive
+    # il lavoro altrui per comodita' del parser. Chi dichiara
+    # `# FORMATO: script` nelle prime righe viene eseguito INTERO (una verifica,
+    # budget 900s); senza marcatura resta riga-per-riga come sempre.
+    if head -10 "$DIR/.night-verify" 2>/dev/null | grep -q "^# FORMATO: script"; then
+      NV_TOTALI=1
+      if (cd "$DIR" && ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null); then
+        log "REPO $REPO: .night-verify (formato script): VERDE"
+      else
+        NV_ROSSI=1
+        log "REPO $REPO: VERIFICA ROSSA: .night-verify intero (formato script)"
+      fi
+    fi
+    if [ "$NV_TOTALI" -eq 0 ]; then
     while IFS= read -r NV_CMD; do
       case "$NV_CMD" in ""|\#*) continue;; esac
       # (E-029, seconda lezione): ogni riga ha budget 120s di default. La riga
@@ -239,11 +255,12 @@ shift_repo() {
       # assegnazioni) non sono comandi eseguibili e con ai_timeout anteposto
       # morivano tutti (16/45 rosse false). Il morning-gate faceva gia' cosi:
       # era il turno l'asimmetria. Niente eval: la riga e' UN argomento.
-      if ! (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
-        NV_ROSSI=$((NV_ROSSI+1))
-        log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
-      fi
-    done < "$DIR/.night-verify"
+        if ! (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
+          NV_ROSSI=$((NV_ROSSI+1))
+          log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
+        fi
+      done < "$DIR/.night-verify"
+    fi
     if [ "$NV_ROSSI" -gt 0 ]; then
       NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if ! echo "$NV_ISSUE" | grep -qF "[night-verify]"; then

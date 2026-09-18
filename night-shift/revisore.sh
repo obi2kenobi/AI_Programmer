@@ -125,6 +125,12 @@ DIFF=$(git diff "$DB"...HEAD)
 # ══ 2. PROVE (deterministiche) ══════════════════════════════════════════════════
 PROVE_VERDI=0; PROVE_ROTTE=""
 if [ -f .night-verify ]; then
+  # (2026-09-19): due formati — script intero o riga-per-riga (contratto del turno)
+  if head -10 .night-verify 2>/dev/null | grep -q "^# FORMATO: script"; then
+    if ! (ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null); then
+      PROVE_ROTTE="; .night-verify (formato script) rosso"
+    fi
+  elif true; then
   while IFS= read -r NV_CMD; do
     case "$NV_CMD" in ""|\#*) continue;; esac
     NV_SEC=120
@@ -137,6 +143,7 @@ if [ -f .night-verify ]; then
       PROVE_ROTTE="$PROVE_ROTTE; $NV_CMD"
     fi
   done < .night-verify
+  fi
 else
   PROVE_ROTTE="; .night-verify assente"
 fi
