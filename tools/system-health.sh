@@ -46,8 +46,12 @@ fi
 # un segnale falso: il modello della caccia lo ha riassunto come 'nightshift
 # NON caricato' mentre nightshift era caricato e girava. La lente riassume:
 # quello che le diamo dev'essere vero, o riassume rumore.
+# (E-002 di nuovo, stesso giorno): launchctl list | grep -q con pipefail —
+# grep -q chiude stdin al primo match, launchctl prende SIGPIPE (rc 141) e la
+# pipeline 'fallisce' anche quando il job c'e'. Cattura-prima, come da canone.
+LAUNCHD_LIST=$(launchctl list 2>/dev/null)
 for AG in luca.ollama luca.nightshift; do
-  if launchctl list 2>/dev/null | grep -q "$AG"; then
+  if grep -q "$AG" <<<"$LAUNCHD_LIST"; then
     ok "launchd: $AG caricato"
   else
     warn "launchd: $AG NON caricato"
