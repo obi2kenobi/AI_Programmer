@@ -1,6 +1,11 @@
 # Verifiche dichiarate del hub (dogfooding)
 shellcheck --severity=warning --exclude=SC2034,SC2164,SC2155,SC2010 night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
+# (E-028, 2026-09-17): la dashboard era stata committata NON compilante (due righe
+# fuse da un '\n' letterale) e passava, perche' nessun gate ESEGUIVA la sintassi
+# dei .py — le sonde li leggevano solo con regex. Da qui: ogni .py tracciato
+# deve compilare. compile() non scrive __pycache__ (a differenza di py_compile).
+PYFAIL=0; for f in $(git ls-files '*.py'); do python3 -c "import sys; compile(open(sys.argv[1]).read(), sys.argv[1], 'exec')" "$f" 2>/dev/null || { echo "⛔ python non compila: $f"; PYFAIL=1; }; done; [ $PYFAIL -eq 0 ] && echo "Sintassi python: tutti i .py compilano"
 bash tools/privacy-check.sh
 # 4° ciclo, set 1 giro 4 (2026-08-23): questa riga elencava 4 test per nome (test-lib,
 # test-gate-tools, test-ask-wrappers, test-privacy) — gli altri 23+ file tests/test-*.sh

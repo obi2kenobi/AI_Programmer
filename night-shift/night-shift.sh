@@ -473,46 +473,53 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # branch dedicato alla caccia (l'agente modifica su branch, mai su main)
       CACCIA_BRANCH="night/caccia-$(date +%Y%m%d-%H%M%S)"
       git -C "$DIR" checkout -b "$CACCIA_BRANCH" -q 2>/dev/null || true
-      # (miglioria dal test 1h): dai all'agente il CONTESTO vero — i file del
-      # progetto con le loro dimensioni, così non gira alla cieca
-      CACCIA_FILE_LIST=$(cd "$DIR" && find . -name "*.js" -o -name "*.gs" -o -name "*.py" -o -name "*.json" -o -name "*.css" | grep -v node_modules | grep -v ".git" | head -15 | while read f; do echo "$(wc -c < "$f" | tr -d ' ') bytes: $f"; done)
-      CACCIA_PROMPT="You are a proactive code improver. LIST ALL .js files in the project first, then READ EACH ONE. Find the worst code quality issue and FIX IT NOW.
-
-Project files to review:
-$CACCIA_FILE_LIST
-
-MUST check each file for:
-- Variables declared but NEVER used (dead code)
-- URLs pointing to deprecated domains
-- Functions with NO error handling
-- Magic numbers that should be constants
-- Commented-out code still present
-
-Pick the WORST issue in these files and FIX IT. Read first, fix second, verify third.
-DO NOT say 'nothing to improve' without reading at least 3 files. Be AGGRESSIVE."
       CACCIA_OUT=$(bash "$HERE/caccia-lente.sh" "$DIR" 2>&1)
       CACCIA_RC=$?
-      if [ "$CACCIA_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
-        log "REPO $REPO: 🎯 CACCIA ha trovato e corretto un miglioramento"
-        log "REPO $REPO: caccia: $(echo "$CACCIA_OUT" | tail -3 | head -1 | cut -c1-120)"
+      # (2026-09-17, domanda di Luca: «questo sistema cerca anche di migliorare il
+      # repo?» — no, e questo è il pezzo che lo aggiunge). Le lenti VERIFICANO
+      # (strumenti → 'tutto bene'); se non trovano nulla, il turno NON finisce:
+      # la caccia-miglioria MIGLIORA — un file, una categoria, gate sul diff.
+      # Sostituisce anche il vecchio prompt 'Be AGGRESSIVE' che era codice morto:
+      # definito qui e mai passato a nessuno.
+      MIGLIORIA_RC=1 MIGLIORIA_OUT=""
+      if [ "$CACCIA_RC" -eq 0 ] && git -C "$DIR" diff --quiet 2>/dev/null; then
+        MIGLIORIA_OUT=$(bash "$HERE/caccia-miglioria.sh" "$DIR" 2>&1)
+        MIGLIORIA_RC=$?
+      fi
+      ORIGINE=""
+      [ "$MIGLIORIA_RC" -eq 0 ] && ORIGINE="miglioria"
+      [ -z "$ORIGINE" ] && [ "$CACCIA_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null && ORIGINE="caccia"
+      if [ -n "$ORIGINE" ]; then
+        if [ "$ORIGINE" = "miglioria" ]; then
+          log "REPO $REPO: 🎯 MIGLIORIA pronta: $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
+          local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
+          local TIT_PR="caccia: miglioria al codice dall'agente notturno"
+        else
+          log "REPO $REPO: 🎯 CACCIA ha trovato e corretto un miglioramento"
+          log "REPO $REPO: caccia: $(echo "$CACCIA_OUT" | tail -3 | head -1 | cut -c1-120)"
+          local MSG_PR="improve: caccia notturna — trovato e corretto dall'agente proattivo"
+          local TIT_PR="caccia: miglioramento trovato dall'agente notturno"
+        fi
         # usa il flusso commit/push/PR
-        local CTYPE_CACCIA="improve"
-        if ( cd "$DIR" && git add -A && git commit -qm "improve: caccia notturna — trovato e corretto dall'agente proattivo" && git push -q -u origin "$CACCIA_BRANCH" ); then
-          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioramento trovato dall'agente notturno" --body "L'agente proattivo ha trovato e corretto un miglioramento durante la caccia notturna. Verificare il diff." 2>&1 | tail -1)
-          log "REPO $REPO: PR di caccia → $PR_CACCIA"
+        if ( cd "$DIR" && git add -A && git commit -qm "$MSG_PR" && git push -q -u origin "$CACCIA_BRANCH" ); then
+          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "$TIT_PR" --body "Prodotto dal turno notturno autonomo ($ORIGINE). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
+          log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
           git -C "$DIR" checkout "$DB" -q
           PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
         else
-          log "⚠ REPO $REPO: commit/push della caccia fallito — ripristino"
+          log "⚠ REPO $REPO: commit/push della $ORIGINE fallito — ripristino"
           git -C "$DIR" reset -q --hard
           git -C "$DIR" checkout "$DB" -q
         fi
       elif [ "$CACCIA_RC" -eq 0 ]; then
-        log "REPO $REPO: caccia: codice già pulito, nessun miglioramento da fare"
+        log "REPO $REPO: caccia pulita e nessuna miglioria trovata — repository in salute"
         # marker: questa repo è stata dichiarata pulita — cooldown 30 min
         touch "$CACCIA_MARKER"
+        git -C "$DIR" checkout "$DB" -q 2>/dev/null || true
+        git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
       else
         log "REPO $REPO: caccia non ha converto (rc=$CACCIA_RC) — nessun problema, riprova al prossimo giro"
+        git -C "$DIR" checkout "$DB" -q 2>/dev/null || true
       fi
     fi
     return 0

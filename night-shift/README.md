@@ -137,6 +137,16 @@ Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica
 - `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
   lenti specializzate per file (sostituita da caccia-lente per stabilita').
 
+## La caccia che migliora (2026-09-17)
+
+- `night-shift/caccia-miglioria.sh` — la caccia che MIGLORA il codice, non lo
+  verifica: le lenti dicono «tutto bene», qui l'agente SCRIVE una miglioria.
+  Un file, una categoria (codice morto · documentazione · semplificazione ·
+  letterali ripetuti), un prompt focused. Il GATE decide cosa merita diventare
+  PR: diff ≤ 40 righe, max 2 file, sintassi valida, solo ASCII. Se non c'è
+  niente da migliorare lo DICE (marker 6h): inventare lavoro è peggio che non
+  trovarlo. Rotazione file/categoria in .git/miglioria/, mai committata.
+
 ## La dashboard (finestra di osservazione)
 
 - `tools/dashboard.py` — pagina HTML che si aggiorna ogni 10 secondi: cicli,
