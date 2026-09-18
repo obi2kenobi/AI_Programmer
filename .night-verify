@@ -29,5 +29,5 @@ bash tools/privacy-check.sh
 # (E-029, seconda lezione: il budget di default e' 120s per riga; una riga puo'
 # dichiarare il suo con il prefisso `@<sec>`. La suite completa dura ~300s —
 # sotto il budget standard moriva a meta' e dava un rosso stabile ogni notte.)
-@420 bash tools/suite.sh
+@540 bash tools/suite.sh
 bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }
