@@ -978,7 +978,7 @@ if [ "$ORA" -ge 23 ] || [ "$ORA" -lt 6 ]; then
   if [ "$LAVORO" -gt 0 ]; then
     RIPOSO=60; MOTIVO="lavoro fatto ($LAVORO pezzi): riparto subito"
   else
-    RIPOSO=600; MOTIVO="nulla da fare: riposo lungo"
+    RIPOSO=60; MOTIVO="nulla da fare: ricontrollo subito (1 min, decisione di Luca)"
   fi
   log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): $MOTIVO (fra ${RIPOSO}s) ==="
   rmdir "$TURN_LOCK" 2>/dev/null  # libero il lock per il giro dopo
