@@ -924,8 +924,9 @@ trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 # Se GitHub non risponde, il turno non parte: girare senza rete significa
 # correggere in locale senza poter pushare — lavoro che si perde o si rifà.
 # Meglio aspettare la rete che girare a vuoto.
-if ! curl -sf --max-time 5 https://api.github.com/zen >/dev/null 2>&1; then
-  log "⛔ GitHub non raggiungibile (rete assente?) — il turno aspetta 60s e riprova"
+if ! curl -sf --max-time 15 https://api.github.com/zen >/dev/null 2>&1; then
+  log "⛔ GitHub non raggiungibile (rete o DNS?) — il turno aspetta 60s e riprova"
+  rmdir "$WORK/.lock-turno" 2>/dev/null  # libero il lock PRIMA di ripartire
   sleep 60
   exec "$0" "$@"
 fi
