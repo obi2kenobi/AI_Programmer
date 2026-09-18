@@ -219,6 +219,14 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     port = 8787
+    # se e' già attiva, la riavviamo pulita
+    import signal, sys
+    try:
+        server = http.server.HTTPServer(("localhost", port), Handler)
+    except OSError:
+        import subprocess
+        subprocess.run(["pkill", "-f", "dashboard.py"], capture_output=True)
+        time.sleep(1)
+        server = http.server.HTTPServer(("localhost", port), Handler)
     print(f"Dashboard su http://localhost:{port} (Ctrl+C per fermare)")
-    server = http.server.HTTPServer(("localhost", port), Handler)
     server.serve_forever()
