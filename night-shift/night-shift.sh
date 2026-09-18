@@ -520,6 +520,9 @@ review del giorno." 2>>"$ERR_NOTTE" \
         log "REPO $REPO: caccia: lente dichiara il sistema sano — provo a MIGLIORARE il codice"
         MIGLIORIA_OUT=$(bash "$HERE/caccia-miglioria.sh" "$DIR" 2>&1)
         MIGLIORIA_RC=$?
+        # (strumento, 2026-09-19): la riga-categoria in produzione — senza questa
+        # riga non si sa SE la finestra abbia pagato un debito o girato a rotazione
+        log "REPO $REPO: caccia-interna: $(echo "$MIGLIORIA_OUT" | grep -a "categoria" | head -1 | cut -c1-140)"
       elif [ "$CACCIA_RC" -eq 0 ]; then
         log "REPO $REPO: caccia: ⚠ LENTE SEGNALA: $(echo "$CACCIA_OUT" | grep -a -A3 '^VERDETTO' | tail -2 | head -1 | cut -c1-140)"
       fi
