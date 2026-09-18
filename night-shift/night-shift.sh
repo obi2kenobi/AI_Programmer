@@ -964,21 +964,9 @@ SALEOF
   log "memoria del turno scritta in night-shift/.sal-turni.md (locale: il mattino la porta nella SAL)"
 fi
 
-# (2026-09-16, idea di Luca: «due minuti per giro — alla fine di uno avvia il prossimo»)
-# TURNO CONTINUO: se siamo ancora nella finestra notturna (23-06), riposa 5 minuti e
-# riparte. Un ciclo dietro l'altro invece di uno ogni ora: 42+ cicli per notte invece
-# di 7. La pausa di 5' evita di bruciare CPU quando non c'e' niente da fare, e il
-# lock globale resta la rete di sicurezza se qualcosa va lungo.
-ORA=${FAKE_HOUR:-$(date +%H)}  # FAKE_HOUR per i test della finestra
-if [ "$ORA" -ge 23 ] || [ "$ORA" -lt 6 ]; then
-  # (2026-09-18, Luca: «fino a che non ha finito non riparte»): NESSUN sonno
-  # artificiale. Il turno lavora fino alla fine, poi riparte IMMEDIATAMENTE.
-  # Se un fix richiede 10 minuti, il prossimo giro parte dopo quei 10 minuti.
-  # Se il giro dura 30 secondi, riparte dopo 30 secondi. Il ritmo lo decide
-  # il lavoro, non un timer.
-  log "=== TURNO FINITO — finestra ancora aperta (ore $ORA): riparto SUBITO ==="
-  rmdir "$TURN_LOCK" 2>/dev/null
-  exec "$0" "$@"
-fi
+# NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)
+log "=== TURNO FINITO — riparto SUBITO ==="
+rmdir "$TURN_LOCK" 2>/dev/null
+exec "$0" "$@"
 
 exit $GLOBAL_RC
