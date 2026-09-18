@@ -89,15 +89,19 @@ done
 
 # S6 — i path `così` citati nel README esistono davvero (la porta d'ingresso non
 #   può puntare a porte inesistenti)
+# (2026-09-18, bug trovato nel log del banco): DOCS_MD era assegnato DENTRO il
+# corpo del loop ma usato nella sostituzione di processo del `done` — valutata
+# PRIMA che il corpo giri: 'unbound variable' silenziato dai 2>/dev/null, e i
+# docs di radice non venivano MAI controllati. L'assegnazione sta con chi usa.
 ROTTO=""
+# GRAMMATICA_DOMINIO_TEMPLATE.md cita il file che ordina di CREARE: escluso
+DOCS_MD=$(find "$HERE/docs" -maxdepth 1 -name '*.md' ! -name GRAMMATICA_DOMINIO_TEMPLATE.md)
 while IFS= read -r ref; do
   # (2026-09-15, dall'auto-esame notturno): i path GITIGNORED sono ambiente-dipendenti
   # (graphify-out/, repos.conf, repos.key) — nella cloni mancano per costruzione e
   # non sono porte rotte. Chi li cita dichiara un'opzione locale, non una promessa.
   git -C "$HERE" check-ignore -q "$ref" 2>/dev/null && continue
   [ -e "$HERE/$ref" ] || ROTTO="$ROTTO $ref"
-# GRAMMATICA_DOMINIO_TEMPLATE.md cita il file che ordina di CREARE: escluso
-DOCS_MD=$(find "$HERE/docs" -maxdepth 1 -name '*.md' ! -name GRAMMATICA_DOMINIO_TEMPLATE.md)
 done < <(cat "$HERE/README.md" $DOCS_MD 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' | tr -d '`' | sort -u)
 [ -z "$ROTTO" ] && sonda 0 "S6 tutti i path citati in README e docs di radice esistono" || sonda 1 "S6 path citati inesistenti:$ROTTO"
 
