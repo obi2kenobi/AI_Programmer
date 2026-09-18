@@ -919,6 +919,16 @@ if ! mkdir "$TURN_LOCK" 2>/dev/null; then
 fi
 trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 
+# CHECK CONNETTIVITÀ (2026-09-18, domanda di Luca: «se tolgo il wifi?»)
+# Se GitHub non risponde, il turno non parte: girare senza rete significa
+# correggere in locale senza poter pushare — lavoro che si perde o si rifà.
+# Meglio aspettare la rete che girare a vuoto.
+if ! curl -sf --max-time 5 https://api.github.com/zen >/dev/null 2>&1; then
+  log "⛔ GitHub non raggiungibile (rete assente?) — il turno aspetta 60s e riprova"
+  sleep 60
+  exec "$0" "$@"
+fi
+
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 
 # PULIZIA RAMI NOTTE STANTI (2026-09-16): i rami notte/auto-* piu' vecchi di 24h
