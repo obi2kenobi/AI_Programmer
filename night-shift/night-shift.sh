@@ -299,10 +299,26 @@ PYFIX
             fi
           fi
         done
-        # fix 2: indice del SAL fermo → rigenerato
-        if ! bash "$HERE/../tools/giri-ignoranti.sh" 2>/dev/null | grep -q "S16 .* fresco"; then
-          bash "$HERE/../tools/sal-indice.sh" >/dev/null 2>&1 && FIX_APPLICATI=$((FIX_APPLICATI+1)) \
-            && log "REPO $REPO: auto-fix — indice del SAL rigenerato (S16)"
+        # fix 2: indice del SAL fermo → rigenerato.
+        # (2026-09-18: prima lanciava giri-ignoranti.sh completo (3 minuti!) solo per
+        # leggere S16, e S16 aveva un falso positivo che lo faceva girare a vuoto
+        # OGNI ciclo. Ora il controllo è diretto: l'ultima voce ### del SAL deve
+        # essere nella tabella dell'indice — una riga python, non una batteria.)
+        if ! python3 -c "
+import re, sys
+sal = open('$DIR/SAL.md').read()
+voci = re.findall(r'^### (.+)$', sal, re.M)
+if not voci: sys.exit(1)
+ultima = voci[-1][:40]
+blocco = sal[sal.find('<!-- SAL-INDICE'):sal.find('## ', sal.find('<!-- SAL-INDICE')+100)]
+sys.exit(0 if ultima in blocco else 1)
+" 2>/dev/null; then
+          bash "$HERE/../tools/sal-indice.sh" >/dev/null 2>&1
+          # solo se ha prodotto un diff reale (niente fix fantasma)
+          if ! git -C "$DIR" diff --quiet -- SAL.md 2>/dev/null; then
+            FIX_APPLICATI=$((FIX_APPLICATI+1))
+            log "REPO $REPO: auto-fix — indice del SAL rigenerato (S16)"
+          fi
         fi
         # fix 3: CRLF nei .sh → bonificati (passano bash -n, muoiono a runtime)
         CRLF_FILES=$(grep -rlP '\r$' "$DIR"/tools/*.sh "$DIR"/night-shift/*.sh "$DIR"/tests/*.sh 2>/dev/null | head -5 || true)
