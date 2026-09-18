@@ -1,9 +1,12 @@
 #!/bin/bash
 # test-turno-vivo.sh — il detector del turno incastrato (E-017: tre notti perse
-# per un processo mai tornato che il silenzio nascondeva). Contratti: sintassi;
-# sistema senza processi notturni → rc 0 col messaggio; la soglia è dichiarata
-# e sovrascrivibile; l'aggancio a system-health resta al suo posto (la visibilità
-# che non è cablata non è visibilità).
+# per un processo mai tornato che il silenzio nascondeva). Dal 2026-09-18
+# (era continua): il contratto non e' piu' sull'eta' del processo (vecchio =
+# by design, 24/7) ma sul FRESCO DEL LOG — un ciclo non supera i ~15 minuti.
+# Contratti: log fresco -> rc 0; log fermo oltre soglia -> rc 1 TURNO INCASTRATO
+# e indica dove guardare; senza log -> rc 0 dichiarato; timestamp rotto -> rc 0
+# (mai un rosso su input illeggibile); soglia sovrascrivibile; cablato in
+# system-health; la pulizia scritta nell'avviso.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 TOOL="$HERE/tools/turno-vivo.sh"
@@ -11,21 +14,35 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-bash -n "$TOOL" && ok "sintassi" || ko "sintassi rotta"
-OUT=$(bash "$TOOL" 2>&1); RC=$?
-if echo "$OUT" | grep -q "nessun processo notturno"; then
-  ok "sistema pulito: rc 0 e lo dice"
-elif echo "$OUT" | grep -q "TURNO INCASTRATO"; then
-  ok "il detector vede un processo REALE oltre soglia (il sistema non è a riposo: il test non finge)"
-elif echo "$OUT" | grep -q "nessuno oltre"; then
-  ok "processo notturno ATTIVO e sotto soglia (turno in corso: legittimo)"
-else
-  ko "output inatteso a riposo (rc=$RC): $OUT"
-fi
-grep -q "TURNO_VIVO_SOGLIA" "$TOOL" && ok "la soglia è dichiarata e sovrascrivibile" || ko "soglia cablata muta"
+bash -n "$TOOL" && ok "sintassi" || { ko "sintassi rotta"; exit 1; }
+
+TMP=$(mktemp -d /tmp/test-turnovivo.XXXXXX); trap 'rm -rf "$TMP"' EXIT
+ADESSO=$(date '+%Y-%m-%d %H:%M:%S')
+VECCHIO=$(date -v-90M '+%Y-%m-%d %H:%M:%S')
+
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n' "$ADESSO" > "$TMP/fresco.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/fresco.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "cicla" && ok "log fresco: rc 0, il turno cicla" || ko "log fresco: rc=$RC, $OUT"
+
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n[un passo qualsiasi]\n' "$VECCHIO" > "$TMP/fermo.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && echo "$OUT" | grep -q "TURNO INCASTRATO" && ok "log fermo 90min: rc 1 INCASTRATO" || ko "log fermo: rc=$RC, $OUT"
+echo "$OUT" | grep -q "ultima riga" && ok "dice DOVE guardare (ultima riga del log)" || ko "non dice dove guardare"
+
+OUT=$(TURNO_VIVO_LOG="$TMP/inesistente.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "niente da giudicare" && ok "senza log: rc 0 dichiarato" || ko "senza log: rc=$RC, $OUT"
+
+printf '[data-fantasma] === TURNO INIZIATO ===\n' > "$TMP/rotto.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/rotto.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "timestamp illeggibile: rc 0 (non urla al lupo)" || ko "timestamp rotto: rc=$RC, $OUT"
+
+OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" TURNO_VIVO_SOGLIA=120 bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "soglia sovrascrivibile (120min: il fermo da 90min e' sano)" || ko "soglia non rispettata: rc=$RC"
+
 grep -q "turno-vivo.sh" "$HERE/tools/system-health.sh" \
   && ok "cablato nel polso quotidiano (system-health)" || ko "detector non cablato: invisibile"
-grep -q "pkill -f" "$TOOL" && ok "la pulizia consolidata è scritta nell'avviso" || ko "avviso senza la via d'uscita"
+OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" bash "$TOOL" 2>&1)
+echo "$OUT" | grep -q "pkill -f" && ok "la pulizia consolidata e' scritta nell'avviso" || ko "avviso senza la via d'uscita"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
