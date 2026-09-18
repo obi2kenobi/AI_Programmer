@@ -31,3 +31,4 @@ bash tools/privacy-check.sh
 # sotto il budget standard moriva a meta' e dava un rosso stabile ogni notte.)
 @420 bash tools/suite.sh
 bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }
+
