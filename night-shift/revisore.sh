@@ -57,13 +57,16 @@ if [ -z "$DB" ] || ! git show-ref --verify --quiet "refs/heads/$DB" 2>/dev/null;
 fi
 
 # ── i due cervelli (sostituibili per i test) ────────────────────────────────────
-chiedi() { # chiedi <modello> <prompt> → risposta (solo contenuto)
-  local modello="$1" prompt="$2"
+chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
+  # il censore (27b) non sta in GPU insieme al 14b del turno: Ollama SCAMBIA i
+  # modelli (unload + load ~1-2 min) prima di rispondere — per questo il censore
+  # ha 600s di fiato mentre l avversario (14b, gia' caldo) ne ha 300
+  local modello="$1" maxsec="$2" prompt="$3"
   if [ -n "${REVISORE_STUB:-}" ]; then
     printf '%s' "$prompt" | bash "$REVISORE_STUB" "$modello"
     return
   fi
-  curl -s --max-time 300 "$API" -d "$(jq -cn --arg m "$modello" --arg p "$prompt" \
+  curl -s --max-time "$maxsec" "$API" -d "$(jq -cn --arg m "$modello" --arg p "$prompt" \
     '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}')" \
     | jq -r '.message.content // empty' 2>/dev/null
 }
@@ -143,7 +146,7 @@ AVV_PROMPT="Sei l'avversario in una code review. Ecco il diff di una pull reques
 
 Diff:
 $DIFF"
-AVV_RISP=$(chiedi "$AUTORE_MODEL" "$AVV_PROMPT")
+AVV_RISP=$(chiedi "$AUTORE_MODEL" 300 "$AVV_PROMPT")
 AVV_CMD=$(printf '%s' "$AVV_RISP" | sed -n '/^```/,$p' | sed '1d;$d' | grep -v '^$' | head -1)
 # validazione allowlist: prima parola ammessa, no concatenatori, no sostituzioni
 AVV_VALIDA=0
@@ -188,7 +191,7 @@ Giudica:
 4. i commenti aggiunti dicono la verita' sul codice?
 
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
-CENS_RISP=$(chiedi "$GIUDICE_MODEL" "$CENS_PROMPT")
+CENS_RISP=$(chiedi "$GIUDICE_MODEL" 600 "$CENS_PROMPT")
 VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
