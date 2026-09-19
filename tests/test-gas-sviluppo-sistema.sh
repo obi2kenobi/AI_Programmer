@@ -122,17 +122,18 @@ for FRASE in "handoff gap" "convergenza cieca" "due batterie" "quattro categorie
     || ko "lezione '$FRASE' SCOMPARSA da tutti i reference — recuperarla"
 done
 
-echo ""
-echo "$PASS OK, $FAIL FAIL"
-[ $FAIL -eq 0 ]
 
 # guardia anti-perdita (2026-08-28): tre lezioni gia scomparse due volte
 grep -qi "esito del giro" "$METODO" \
   && ok "metodo: esito-del-giro presente (perso 2 volte, ora presidiato)" \
   || ko "metodo: esito-del-giro SCOMPARSO di nuovo"
-grep -qi "consolidamento" "$NGIRI" 2>/dev/null || grep -qi "consolidamento" "$HERE/docs/ngiri-paralleli.md" \
+grep -qiE "consolidament|consolidazio" "$NGIRI" 2>/dev/null || grep -qiE "consolidament|consolidazio" "$HERE/docs/ngiri-paralleli.md" \
   && ok "ngiri: consolidamento-lenti presente" \
   || ko "ngiri: consolidamento-lenti SCOMPARSO"
 grep -q "patterns/" "$SKILL" \
   && ok "SKILL: catalogo pattern agganciato" \
   || ko "SKILL: catalogo pattern SCOMPARSO"
+
+echo ""
+echo "$PASS OK, $FAIL FAIL"
+[ $FAIL -eq 0 ]

@@ -117,3 +117,14 @@ esplicita vince sulla cautela di default. Ormai non e una domanda aperta isolata
 ma un PATTERN RICORRENTE: dichiararlo nel canone come terzo regime legittimo
 (oltre passo-per-passo e batch-autorizzato): la sessione continua su richiesta
 esplicita dell'utente, col vincolo che il ripasso finale resta obbligatorio.
+
+
+## La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)
+
+Cinquanta giri richiesti, consolidati in 14 lenti realmente distinte: evitare
+passate quasi-duplicate e la stessa disciplina zero-waste applicata al processo
+di revisione stesso. Due lenti che leggono gli stessi file con la stessa domanda
+sono UNA lente; due che li leggono con domande diverse restano due.
+
+(Persa la TERZA volta e ritrovata il 2026-09-19: la guardia che la presidiava
+era zittita dal teatro del verdetto — il cancello non era l'ultima riga.)
