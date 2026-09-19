@@ -197,7 +197,7 @@ fi
 
 if ! gate; then
   N_TROPPE=$(git diff --numstat | awk '{a+=$1+$2} END{print a+0}')
-  if [ -z "$SECONDO_COLPO" ] && [ "${N_TROPPE:-0}" -gt "$MAX_RIGHE_DIFF" ]; then
+  if [ -z "${SECONDO_COLPO:-}" ] && [ "${N_TROPPE:-0}" -gt "$MAX_RIGHE_DIFF" ]; then
     # (2026-09-19, dall'inchiesta «perche' non trova nulla»): il 14b sovra-consegna
     # — chiedi un tubo da convertire e riscrive il file (516 righe). Il gate boccia,
     # il lavoro muore. Secondo colpo CHIRURGICO: stesso compito, budget duro, diff
