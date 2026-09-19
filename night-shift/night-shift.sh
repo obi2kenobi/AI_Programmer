@@ -185,13 +185,24 @@ shift_repo() {
       [ -f "$DIR/night-shift/$ST" ] && cp "$DIR/night-shift/$ST" "$WORK/.state-salvate/$ST"         && log "stato salvato prima del riclono: $ST"
     done
     [ -f "$DIR/night-shift/.sal-turni.md" ] && cp "$DIR/night-shift/.sal-turni.md" "$WORK/.state-salvate/"
-    rm -rf "$DIR"
-    gh repo clone "$REPO" "$DIR" -- --depth=50 -q || { log "ERRORE: riclone di $REPO fallito"; return 1; }
-    # ripristino dello stato locale salvato (E-027)
-    if [ -d "$WORK/.state-salvate" ] && [ "$(basename "$REPO")" = "AI_Programmer" ]; then
-      for ST in repos.conf repos.key .sal-turni.md; do
-        [ -f "$WORK/.state-salvate/$ST" ] && cp "$WORK/.state-salvate/$ST" "$DIR/night-shift/$ST"           && log "stato ripristinato dopo il riclono: $ST"
-      done
+    # (E-033, 2026-09-19): MAI rm prima di un clone verificato. Un blip di rete
+    # di 30 secondi ha fatto fallire checkout/reset E clone nello stesso istante:
+    # copia cancellata senza sostituta, processo morto sul exec (script file
+    # inesistente), turno FERMO per 40 minuti (beccato da turno-vivo). Clone in
+    # dir NUOVA, scambio solo al successo; se il clone fallisce la copia VECCHIA
+    # resta — una copia stantia batte nessuna copia, e si riprova al prossimo giro.
+    NUOVA="$DIR.nuova-$$"
+    rm -rf "$NUOVA"
+    if gh repo clone "$REPO" "$NUOVA" -- --depth=50 -q; then
+      if [ "$(basename "$REPO")" = "AI_Programmer" ] && [ -d "$WORK/.state-salvate" ]; then
+        for ST in repos.conf repos.key .sal-turni.md; do
+          [ -f "$WORK/.state-salvate/$ST" ] && cp "$WORK/.state-salvate/$ST" "$NUOVA/night-shift/$ST" 2>/dev/null && log "stato ripristinato nel riclono: $ST"
+        done
+      fi
+      rm -rf "$DIR" && mv "$NUOVA" "$DIR" && log "riclono riuscito: copia nuova al posto (scambio atomico)"
+    else
+      rm -rf "$NUOVA"
+      log "⚠ riclone di $REPO fallito — RESTO sulla copia esistente (stantia ma viva), riprovo al prossimo giro"
     fi
   fi
   git -C "$DIR" config user.name  >/dev/null 2>&1 || git -C "$DIR" config user.name  "Night Shift"

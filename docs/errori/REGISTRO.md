@@ -667,3 +667,31 @@
   pulite nei giri successivi.
 - Aggiramento: piantare fixture nei file del repo vivo invece che in
   quarantena — la suite gira dentro il sistema che prova.
+
+## E-033 Il riclono che cancella prima di verificare
+- Data / sessione: 2026-09-19, 13:26 (turno FERMO 40 minuti, beccato da turno-vivo)
+- Famiglia: R2 (autodistruzione su percorso di ripristino) + R1
+- Chi l'ha trovato: turno-vivo, il detector del log fermo («TURNO INCASTRATO:
+  ultimo ciclo 40 minuti fa») — prima cattura reale dall'aggiornamento
+  all'era continua.
+- Sintomo: il turno FERMO. exec "$0" con lo script file INESISTENTE; anche
+  .sal-turni.md irraggiungibile. La copia di lavoro CANCELLATA.
+- Causa prossima: un blip di rete di ~30 secondi ha fatto fallire
+  checkout/reset di main; il percorso di ripristino ha salvato lo stato
+  (E-027 ✓) e poi ha fatto rm -rf PRIMA del clone — e il clone e' fallito
+  nello stesso blip: cancellazione senza sostituta, processo morto al
+  riavvio successivo.
+- Causa del ragionamento: il riclono trattava il clone come scontato. La
+  lezione E-027 (salvare lo stato prima del rm) curava i FILE GITIGNORED ma
+  non l'ORDINE: rm e clone verificato devono essere un ATOMO — o nasce la
+  copia nuova, o resta la vecchia.
+- Perché non ci ha fermati: nei test il clone riusciva sempre; il caso
+  «rete che cade proprio durante il ripristino da caduta di rete» non era
+  mai stato provato (la congiunzione dei due eventi).
+- Guardia: night-shift/night-shift.sh — clone in dir NUOVA ($DIR.nuova-$$),
+  scambio rm+mv SOLO al successo; clone fallito = copia vecchia resta
+  (stantia ma viva) e si riprova al prossimo giro, a voce alta.
+- Verifica guardia: il recupero del 13:26 eseguito a mano (clone riuscito
+  appena la rete e' tornata); il percorso clone-fallito ora lascia la copia.
+- Aggiramento: far cadere la rete esattamente durante il riclono — ora
+  sopravvive con una copia stantia e una riga di log.
