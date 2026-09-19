@@ -972,3 +972,50 @@ Dal campo: `docs/campo/2026-09-19-repo-f-standard-56-giri-21-rilievi.md`. Le fam
 7. **Le famiglie vanno pesate anche su quante volte NON scattano**: una
    popolazione di soli difetti tara male il canone (qui: 18 su 38 hanno retto —
    e diverse portano in commento il perché).
+
+
+## Le regole del report REPO-I (2026-09-19: 50 giri, 21 affermazioni verificate, 7 rilievi hub)
+
+Dal campo: `docs/campo/2026-09-19-repo-i-standard-cinquanta-giri-correzioni.md`. Le famiglie che il canone eredita:
+
+1. **Il prompt avversariale ha una FORMA, non solo un numero** (P1): il compito
+   detto a chiare lettere è SMENTIRE, non confermare; le linee d'attacco elencate
+   in ordine; quattro verdetti ammessi (SMENTITO/RIDIMENSIONATO/CONFERMATO/
+   AGGRAVATO — senza RIDIMENSIONATO l'agente conferma quasi sempre: 13 su 21);
+   e «SMENTITO è un esito pienamente accettabile e prezioso». Corollario che
+   vale da solo: **i numeri del rilievo sono un bersaglio, non un dato** —
+   «ricontali» in ogni prompt (7 correzioni su 21 venivano da lì).
+
+2. **La lente che manca: gli strumenti del metodo contro ciò che dicono di sé**
+   (P2). Entrambi i rilievi ALTA sull'hub vengono da un giro che confrontava
+   documenti e codice — non da uno che leggeva il cancello. `regola-provata-
+   non-assunta` si applica al codice del cliente E ai propri hook.
+
+3. **La regola delle tre ricomparse vale anche per l'hub** (P8): l'hub la
+   applica ai progetti e non a sé. «Batch autorizzato» e «da verificare dal
+   vivo» sono a tre o più ricomparse: stati legittimi del canone.
+
+4. **Il pavimento delle attese prende la RIMOZIONE, non la mancata aggiunta**
+   (P11): un gruppo nuovo che finisce fra i saltati è rosso al primo giro, o
+   «ho scritto la prova» e «la prova gira» restano due fatti che nessuno
+   distingue.
+
+5. **L'ATTESO si sbaglia, e il banco scritto prima lo prende** (P12): scrivere
+   il banco prima non evita di sbagliare l'atteso, ma costringe a scoprirlo
+   prima di toccare il codice — che è tutta la differenza fra correggere
+   l'attesa e piegare il programma.
+
+6. **Cerca il gemello sano per PROSSIMITÀ** (P13): in 4 correzioni su 7 la
+   cura era la funzione accanto che fa la stessa cosa bene — stesso file o
+   l'adiacente. È un ordine, non un caso, e vale come lente di scoperta: due
+   funzioni gemelle, una sola con la guardia → l'altra è un rilievo.
+
+7. **Un documento si riconosce NON-oracolo dall'intestazione** (P14): «righe
+   campione lette: 3», stato «da verificare con riscontro» — un campionamento
+   non è un censimento, e la differenza decide se una correzione è una
+   traduzione o una decisione di dominio.
+
+8. **In una pipeline `$?` è l'ultimo comando** (P15): l'esito di un gate si
+   legge dal comando, mai da `cmd | tail; echo $?`. Un gate giudicato dal
+   codice di uscita di `tail` è un gate giudicato a caso — e il costo è un
+   falso positivo su un presidio, che è il costo che la fiducia non regge.
