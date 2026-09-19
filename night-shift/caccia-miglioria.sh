@@ -187,6 +187,7 @@ fi
 if [ -n "$SITO" ]; then
   mkdir -p "$DIR/.git/caccia-registro"
   echo "$SITO" >> "$DIR/.git/caccia-registro/rinviati"
+  log "debito: $SITO marcato rinviato (un colpo solo)"
 fi
 if git diff --quiet 2>/dev/null; then
   log "'$CAT' su $TARGET: niente da migliorare (dichiarato pulito per ${COOLDOWN}s)"
