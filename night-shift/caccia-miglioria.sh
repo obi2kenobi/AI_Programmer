@@ -59,7 +59,7 @@ istruzione() {
 
 # (2026-09-18, Luca: «si'» — il debito censito si SALDA): fix meccanici per le
 # famiglie del registro. Ogni nuova famiglia che entra nel censimento entra qui.
-CAT_DEBITO_E002="TASK: convert THAT ONE pipeline site to cattura-prima (the canon fix for the E-002 family: with pipefail, a producer that writes past the first match dies of SIGPIPE and the whole pipeline lies). Steps: capture the pipeline output into a local variable FIRST, then test it with grep -q pattern <<<\"\$VAR\". Preserve EXACT behavior: same patterns, same case flags, same branches on both grep outcomes. Touch only that site, nothing else."
+CAT_DEBITO_E002="TASK: convert THAT ONE pipeline site to cattura-prima (the canon fix for the E-002 family: with pipefail, a producer that writes past the first match dies of SIGPIPE and the whole pipeline lies). Steps: capture the pipeline output into a local variable FIRST, then test it with grep -q pattern <<<\"\$VAR\". Preserve EXACT behavior. HARD BUDGET: the whole change MUST stay within 10 changed lines. Change ONLY the lines of that one site: no rewritten comments, no reordering, no reformat, no new headers. If you cannot express the fix within 10 lines, finish and say so."
 CAT_DEBITO_E032="TASK: convert THAT ONE test line so its fixture lives in QUARANTENA, not in the live repo (E-032 family: a fixture planted in the real repo is visible to every concurrent check). Steps: create a scratch dir with mktemp -d and a trap cleanup, and write the fixture there; point the test assertions at the scratch. The live repo files must NOT be modified."
 CAT_DEBITO="$CAT_DEBITO_E002"
 
@@ -196,6 +196,27 @@ if git diff --quiet 2>/dev/null; then
 fi
 
 if ! gate; then
+  N_TROPPE=$(git diff --numstat | awk '{a+=$1+$2} END{print a+0}')
+  if [ -z "$SECONDO_COLPO" ] && [ "${N_TROPPE:-0}" -gt "$MAX_RIGHE_DIFF" ]; then
+    # (2026-09-19, dall'inchiesta «perche' non trova nulla»): il 14b sovra-consegna
+    # — chiedi un tubo da convertire e riscrive il file (516 righe). Il gate boccia,
+    # il lavoro muore. Secondo colpo CHIRURGICO: stesso compito, budget duro, diff
+    # bocciato come contesto. Uno solo: se serve ancora riscrivere tutto, e' un no.
+    log "gate BOCCIA ($N_TROPPE righe): l'agente ha sovra-consegnato — secondo colpo chirurgico"
+    ripristina
+    SECONDO_COLPO=1 bash "$0" "$DIR" "$PROMPT
+
+YOUR PREVIOUS ATTEMPT WAS REJECTED: it changed $N_TROPPE lines (maximum $MAX_RIGHE_DIFF). That means you rewrote the file instead of editing the one site. Try again with a SURGICAL edit: at most 10 changed lines, ONLY the lines of that one site. Keep every other line byte-identical." 2>/dev/null
+    RC2=$?
+    if [ "$RC2" -eq 0 ] && ! git diff --quiet 2>/dev/null && gate; then
+      echo "MIGLIORIA [$CAT] $TARGET — secondo colpo chirurgico riuscito"
+      log "miglioria pronta al SECONDO colpo: [$CAT] $TARGET — il chirurgo ha vinto sul riscrittore"
+      exit 0
+    fi
+    log "secondo colpo non basta — rinvio al giorno"
+    ripristina
+    exit 1
+  fi
   log "miglioria bocciata dal gate — ripristino (il gate protegge il mattino da noi)"
   ripristina
   exit 1
