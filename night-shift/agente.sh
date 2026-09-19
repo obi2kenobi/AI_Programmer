@@ -60,7 +60,28 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
     --argjson msgs "$CONV" \
     '{model:$m, messages:$msgs, stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
 
-  [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO)"; exit 1; }
+  if [ -z "$RESPONSE" ]; then
+    # (2026-09-19, Ollama wedged alle 17:29): il server a volte smette di
+    # rispondere alle GENERAZIONI pur stando su (tags/ps rispondono) — un pkill
+    # e launchd lo riportano in 15s. Prima di arrendersi: ping di generazione,
+    # rianimazione, UN secondo tentativo. Meglio un riavvio che una finestra
+    # morta che il turno registra come «nessuna miglioria trovata».
+    PING=$(curl -s --max-time 20 "$API" -d "{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":\"Say OK\"}],\"stream\":false}" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+    if [ -z "$PING" ]; then
+      log "⚠ server muto anche al ping: rianimo Ollama (kill serve — launchd lo riparte)"
+      pkill -f "ollama serve" 2>/dev/null
+      for i in 1 2 3 4 5 6 7 8; do
+        sleep 5
+        curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
+      done
+      RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
+        --arg m "$MODEL" \
+        --argjson msgs "$CONV" \
+        '{model:$m, messages:$msgs, stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+    fi
+  fi
+
+  [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
 
   CONTENT=$(echo "$RESPONSE" | jq -r '.message.content // empty')
   log "turno $TURNO (${ELAPSED}s): il modello risponde"

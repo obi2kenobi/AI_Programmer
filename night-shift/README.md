@@ -150,10 +150,14 @@ mai push su main). Il CLAUDE.md e' il canarino del drift.
 
 ## Il revisore (il censore delle PR)
 
-`night-shift/revisore.sh` — chi scrive non giudica. Le miglioria le scrive
-qwen2.5-coder:14b; la PR bozza night/* in quarantena (>=20 min) passa dal
-censore: un cervello DIVERSO e piu' grande (qwen3.8:27b) con istruzioni
-avversarie — l'onere della prova e' della PR.
+`night-shift/revisore.sh` — chi scrive non giudica... ma con UN solo
+cervello (bencina 2026-09-19: 14b 1/3 in 22s, 27b 0/3 in 442s anche in
+modalita' SOLA — il quantizzato 27b non funziona su questa macchina;
+decisione di Luca: un modello solo). Le miglioria le scrive il 14b e la
+PR bozza night/* in quarantena (>=20 min) passa al censore: stesso
+modello, PERSONA diversa (prompt avversario, onere della prova sulla PR,
+contesto fresco) — e le tre guardie deterministiche restano l'argine
+vero: diff, verifiche dichiarate, banco avversario allowlistato.
 
 Tre livelli, in ordine di autorita' (un solo no e' no):
 guardie deterministiche (diff <=60 righe, <=3 file, ASCII, budget <=5/giorno) →

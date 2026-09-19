@@ -32,7 +32,7 @@ PR="${2:?uso: revisore.sh <dir-repo> <pr>}"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git" >&2; exit 3; }
 cd "$DIR"
 
-GIUDICE_MODEL="${REVISORE_MODEL:-qwen3.8:27b-mtp-q4_K_M}"
+GIUDICE_MODEL="${REVISORE_MODEL:-qwen2.5-coder:14b}"  # (2026-09-19: bencina 14b 1/3 in 22s vs 27b 0/3 in 442s anche SOLA — un solo modello, decisione di Luca)
 AUTORE_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}"
 MAX_RIGHE=60; MAX_FILE=3; QUARANTENA_MIN=20; BUDGET_GIORNO=5
 API="http://localhost:11434/api/chat"
@@ -200,7 +200,7 @@ Giudica:
 4. i commenti aggiunti dicono la verita' sul codice?
 
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
-CENS_RISP=$(chiedi "$GIUDICE_MODEL" 600 "$CENS_PROMPT")
+CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il 14b risponde in secondi: 300 di fiato bastano
 VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
