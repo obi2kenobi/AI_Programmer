@@ -17,7 +17,7 @@
   eseguire. Un audit che rende privato un toolkit operativo senza lasciare WRAPPER GUARDATI costringe
   chi opera a smontare la sicurezza per lavorare — esito peggiore di entrambe le alternative. Il rimedio:
   implementazione privata + wrapper pubblico con guardia di sessione che passa quando l'identità c'è davvero.
-- **SINTASSI ROTTA IN STRINGA LITERALE dentro script inline HTML (dal campo Fornitore-N, 2026-09-01)**: un
+- **SINTASSI ROTTA IN STRINGA LITERALE dentro script inline HTML (dal campo di un progetto retail (categoria REPO, 2026-09-01))**: un
   solo apostrofo non escaped in un literal JS a apici singoli dentro un file .html invalida l'INTERO
   script inline della pagina — non solo la riga. Invisibile alla lettura del diff (un umano legge il
   SENSO della frase italiana, non conta gli apici). L'unico presidio: controllo sintattico ESEGUITO
