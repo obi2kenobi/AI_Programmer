@@ -77,6 +77,10 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
 #  senza provenienza e citazioni file:riga rotte sono i due banchi-verdi-bugiardi del campo
 for LENTE in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do
   [ -f "$HERE/tools/$LENTE" ] && { mkdir -p tools; cp "$HERE/tools/$LENTE" "tools/$LENTE"; git add "tools/$LENTE" 2>/dev/null && COPIATI=$((COPIATI+1)); }
+  # (report REPO-F 2026-09-19, difetto 1): la lente viaggia SENZA la sua lista di
+  # esclusione (tools/.file-del-target per cita-verifica) — 10 rossi il giorno zero,
+  # misurati. La lente senza i suoi dati non e' la lente.
+  [ -f "$HERE/tools/.file-del-target" ] && { cp "$HERE/tools/.file-del-target" "tools/.file-del-target"; git add "tools/.file-del-target" 2>/dev/null || true; }
 done
 for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
@@ -95,20 +99,26 @@ for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .openc
   # di uscita del comando non arriva al while, e un `|| exit` attaccato al done non
   # scatterebbe mai: sarebbe una guardia che non guarda.
   mkdir -p tools
+  # (report REPO-F, difetto 5): garante-standard.sh esiste e --standard non lo
+  # copiava — la domanda «questa repo e' a standard?» non ha risposta dal dentro
+  [ -f "$HERE/tools/garante-standard.sh" ] && { cp "$HERE/tools/garante-standard.sh" "tools/garante-standard.sh"; git add "tools/garante-standard.sh" 2>/dev/null || true; }
   HOOK_COPIATI=$(bash "$HERE/tools/copia-hook.sh" "$PWD") \
     || { echo "sync-repo: copia degli hook fallita — lo standard NON è completo"; exit 1; }
   while IFS= read -r H; do
     [ -n "$H" ] && git add "$H"
   done <<< "$HOOK_COPIATI"
-  if git diff --cached --quiet; then
-    # .night-verify minimo per il repo di destinazione (dal campo REPO-E: chi adotta
-# lo standard resta senza, e l'assenza non è segnalata da nessuna parte)
-if [ ! -f "$DEST/.night-verify" ]; then
-  echo "# Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate)." > "$DEST/.night-verify"
-  echo "# VUOTO = il gate lo dice. Dichiara i comandi appena puoi." >> "$DEST/.night-verify"
-  git -C "$DEST" add .night-verify 2>/dev/null || true
-fi
+  # (report REPO-F, difetto 2): il blocco .night-verify viveva DENTRO il ramo
+  # «non e' cambiato niente» (l'adozione vera non lo eseguiva MAI) e nel ramo
+  # raggiungibile scriveva in "$DEST/.night-verify" con $DEST vuoto in modalita'
+  # remota — cioe' alla radice del filesystem. La correzione era stata scritta e
+  # non aveva mai girato. Ora: SEMPRE, col percorso del clone corrente ($PWD).
+  if [ ! -f "$PWD/.night-verify" ]; then
+    echo "# Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate)." > "$PWD/.night-verify"
+    echo "# VUOTO = il gate lo dice. Dichiara i comandi appena puoi." >> "$PWD/.night-verify"
+    git add .night-verify 2>/dev/null || true
+  fi
 
+  if git diff --cached --quiet; then
     echo "sync-repo --standard: GIÀ A STANDARD — $REPO ha tutto (CLAUDE.md, skills, agenti, hook)"
     exit 0
   fi

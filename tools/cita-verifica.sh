@@ -5,6 +5,10 @@
 # con almeno NNN righe. La verifica del CONTENUTO resta umana; l'esistenza della riga no.
 # Uso (dal pre-commit, sui .md staged): cita-verifica.sh <file...>
 set -uo pipefail
+# (report REPO-F 2026-09-19, difetto 4): senza argomenti usciva 0 in silenzio —
+# «successo su risultato vuoto» dentro una lente del canone. Niente input,
+# niente verdetto.
+[ $# -eq 0 ] && { echo "cita-verifica: manca il documento (uso: cita-verifica.sh <file.md>)" >&2; exit 2; }
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
 ROSSI=0
