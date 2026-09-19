@@ -135,9 +135,6 @@ else
   echo "⊘ Ollama non attivo: sfida modello vero saltata (dichiarato, non taciuto)"
 fi
 
-echo ""
-echo "$PASS OK, $FAIL FAIL"
-[ $FAIL -eq 0 ]
 
 # ── il debito del registro si salda (2026-09-18, Luca: «si'») ────────────────────
 # la finestra paga un debito: il censimento indica il sito, l'agente (stub) fa
@@ -177,3 +174,6 @@ grep -q "vittima.sh:3" "$SB4/.git/caccia-registro/rinviati" 2>/dev/null && ok "r
 PROSSIMO=$(bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB4" 2>/dev/null)
 case "$PROSSIMO" in *"vittima.sh:3"*) ko "rinvio: il sito riproposto!";; *) ok "rinvio: il censimento passa oltre";; esac
 rm -rf "$SB4"
+echo ""
+echo "$PASS OK, $FAIL FAIL"
+[ $FAIL -eq 0 ]
