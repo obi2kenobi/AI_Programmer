@@ -929,3 +929,46 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 =======
 **Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
 >>>>>>> Stashed changes
+
+
+## Le regole del report REPO-F (2026-09-19: 56 giri, 21 rilievi, 5 difetti hub)
+
+Dal campo: `docs/campo/2026-09-19-repo-f-standard-56-giri-21-rilievi.md`. Le famiglie che il canone eredita:
+
+1. **«Non mitigabile» non vuol dire «non correggibile»** (famiglia di ragionamento):
+   quando la cura STANDARD di un rilievo è bloccata, prima di dichiararlo chiuso
+   verifica se la COSA da curare sia essa stessa opzionale. Il difetto non è
+   nell'analisi tecnica: è scambiare «la strada che conosco è chiusa» per «non
+   c'è strada». Domanda buona per il decision tree: *questa dipendenza sta
+   pagando il suo affitto?*
+
+2. **Il terzo stato: RESO VISIBILE.** Quando un rilievo è bloccato su un dato di
+   dominio, la cura non è aspettare né indovinare: è rendere l'ignoto visibile
+   invece di lasciarlo passare per noto. Uno zero che vuol dire «non lo so» non
+   si vede, perché zero è un valore legittimo: il lavoro dell'agente è togliergli
+   il travestimento, non scegliere al posto del padrone del dominio.
+
+3. **Conta le RISORSE, non i siti di chiamata.** Un rilievo di concorrenza misurato
+   sui consumatori spaventa senza informare (43 siti, 2 risorse contese, il
+   terzo foglio è creato nuovo a ogni esecuzione): porta a refactor di 43 punti
+   dove ne bastano 9.
+
+4. **Il lock rientrante è una trappola specifica di GAS**: il lock appartiene
+   all'ESECUZIONE — il `tryLock` annidato riesce e il `finally` interno rilascia
+   ciò che l'esterno crede di avere. Serve un contatore di profondità, e il lock
+   a mano preesistente va instradato dentro il contatore. E la parità va
+   preservata anche sul comportamento in contesa, non solo sul successo.
+
+5. **Due forme insidiose di banco-verde-su-codice-non-corretto**: (a) il banco che
+   non ha esercitato il percorso (pagina che carica il vero loader sopra lo stub):
+   se la tabella non ha reso nessuna riga, esci 2, non 0; (b) l'artefatto che
+   serializza mente sui valori che serializzano in qualcos'altro (`NaN`→`null`):
+   controlla proprio quelli.
+
+6. **L'ancora durevole è il commit, non il numero di riga** — e una citazione
+   morta non deve conservare la FORMA di un'ancora viva: il numero scritto come
+   ancora invita ad andarci a guardare, anche quando il bersaglio non esiste più.
+
+7. **Le famiglie vanno pesate anche su quante volte NON scattano**: una
+   popolazione di soli difetti tara male il canone (qui: 18 su 38 hanno retto —
+   e diverse portano in commento il perché).

@@ -21,7 +21,10 @@ while IFS= read -r f; do
   fi
   echo "  fixture senza provenienza: $f"
   SENZA=$((SENZA+1))
-done < <(find . -type f \( -path '*/fixtures/*' -o -path '*/fixture/*' -o -name '*.fixture.*' -o -name 'fixture-*' \) -not -path './.git/*' 2>/dev/null)
+done < <(find . -type f \( -path '*/fixtures/*' -o -path '*/fixture/*' -o -name '*.fixture.*' -o -name 'fixture-*' \) -not -path './.git/*' -not -name 'fixture-provenienza.sh' 2>/dev/null)
+# (report REPO-F, difetto 3): '-name fixture-*' catturava QUESTO tool — ogni repo
+# che adotta lo standard stampava «1 fixture su 1 senza provenienza» senza avere
+# una sola fixture. Il tool non e' una fixture: escluso per nome.
 [ "$TROVATE" -eq 0 ] && { echo "nessuna fixture trovata sotto $ROOT (se ce ne sono, la convenzione di naming non le vede: dichiara)"; exit 0; }
 if [ "$SENZA" -gt 0 ]; then
   echo "⛔ $SENZA fixture su $TROVATE non dichiarano il comando che le ha prodotte (banco verde su dati inventati)"
