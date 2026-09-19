@@ -274,6 +274,27 @@ shift_repo() {
     fi
   fi
 
+  # (2026-09-19, domanda di Luca: le installazioni di mesi fa danno problemi?):
+  # SI' — il CLAUDE.md del Magazzino distava 37 righe, e i mirror divergono in
+  # silenzio mentre l'hub aggiorna. Il turno ora MISURA il drift a ogni ciclo
+  # (la salute si dichiara coi debiti E con l'allineamento) e, se divergente,
+  # apre UNA sola PR di riallineo (--standard: mai push su main). Il CLAUDE.md
+  # e' il canarino: cambia piu' spesso, la PR porta tutto lo standard.
+  if [ -n "$HUB_ORIGIN" ] && [ "$HUB_ORIGIN" != "$REPO_ORIGIN" ] && [ -f "$HERE/../tools/sync-repo.sh" ]; then
+    if bash "$HERE/../tools/sync-repo.sh" --from-local "$DIR" >/dev/null 2>&1; then
+      log "REPO $REPO: standard: ALLINEATO all'hub"
+    else
+      log "REPO $REPO: standard: DIVERGENTE dall'hub — verifico se c'e' gia' una PR di riallineo"
+      PR_SYNC=$(gh pr list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      if printf '%s' "$PR_SYNC" | grep -qF "adotta lo standard"; then
+        log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
+      else
+        SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
+        log "REPO $REPO: PR di riallineo aperta: $SYNC_OUT"
+      fi
+    fi
+  fi
+
   if [ -n "$HUB_ORIGIN" ] && [ "$HUB_ORIGIN" = "$REPO_ORIGIN" ]; then
     log "REPO $REPO: e' l'HUB — auto-esame notturno (ciclo-vivo + banco veloce)"
     CICLO_OUT=$(bash "$HERE/../tools/ciclo-vivo.sh" 2>&1 || true)
