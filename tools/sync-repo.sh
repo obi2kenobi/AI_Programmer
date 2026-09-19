@@ -116,8 +116,13 @@ fi
   git checkout -q -b "$BR"
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard"
   git push -q -u origin "$BR" 2>/dev/null || { echo "sync-repo: push fallito"; exit 1; }
-  gh pr create --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1
-  echo "sync-repo --standard: PR aperta su $BR ($COPIATI gruppi di file aggiornati)"
+  # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
+  # la PR si VERIFICA, non si dichiara
+  URL_PR=$(gh pr create --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1)
+  case "$URL_PR" in
+    https://*) echo "sync-repo --standard: PR aperta $URL_PR ($COPIATI gruppi di file aggiornati)" ;;
+    *) echo "sync-repo --standard: RAMO $BR spinto MA la PR non e' stata creata ($URL_PR) — creala a mano"; exit 1 ;;
+  esac
   exit 0
 fi
 
