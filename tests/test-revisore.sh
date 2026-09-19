@@ -21,10 +21,14 @@ bash -n "$REV" && ok "sintassi" || { ko "sintassi"; exit 1; }
 STUB=$(mktemp /tmp/stub-revisore.XXXXXX)
 cat > "$STUB" <<'EOF'
 #!/bin/bash
+# (2026-09-20, modello unico): i due cervelli non si distinguono piu' dal NOME
+# (14b anche come censore — bencina: il 27b 0/3 in 442s anche sola). Si
+# distinguono dal RUOLO nel prompt: l'avversario SMASCHERA, il censore delibera.
 MODELLO="$1"; shift; PROMPT=$(cat)
-case "$MODELLO" in
-  *coder*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
-  *) printf '{"verdetto":"%s","rischio":"basso","motivi":["il diff fa quello che dichiara","nessun danno collaterale"]}\n' "${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
+case "$PROMPT" in
+  *SMASCHERA*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
+  *CENSORE*) printf '{"verdetto":"%s","rischio":"basso","motivi":["il diff fa quello che dichiara","nessun danno collaterale"]}\n' "${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
+  *) printf '' ;;
 esac
 EOF
 chmod +x "$STUB"

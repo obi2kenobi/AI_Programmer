@@ -601,7 +601,13 @@ review del giorno." 2>>"$ERR_NOTTE" \
         git -C "$DIR" checkout "$DB" -q 2>/dev/null || true
         git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
       else
-        log "REPO $REPO: caccia: sana e nessuna miglioria trovata — repository in salute"
+        # (2026-09-19, Ollama wedged): «nessuna trovata» e «agente morto» NON sono
+        # la stessa cosa — la finestra con lo strumento rotto va detta per quello che e'
+        if echo "$MIGLIORIA_OUT" | grep -aq "agente rc=\|NESSUN rianimamento"; then
+          log "REPO $REPO: caccia: ⚠ AGENTE FALLITO (Ollama?) — NON e' 'niente trovato': $(echo "$MIGLIORIA_OUT" | grep -a "rc=\|rianimamento" | head -1 | cut -c1-90)"
+        else
+          log "REPO $REPO: caccia: sana e nessuna miglioria trovata — repository in salute"
+        fi
         # (2026-09-18, domanda di Luca: «come fa a essere sempre tutto in salute?»).
         # La salute si dichiara CON i debiti o non e' onesta: ogni volta che il
         # turno dice 'in salute', allega il censimento delle famiglie di bug del

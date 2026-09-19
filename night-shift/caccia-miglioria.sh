@@ -176,18 +176,18 @@ Rules:
 AGENTE_RC=0
 AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-240}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
 
+# il debito e' un tentativo solo — marcato ALL'ATTEMPT, prima di ogni uscita:
+# stanotte, con Ollama wedged, l'agente moriva PRIMA della marcatura e la finestra
+# dopo riprendeva LO STESSO sito: tre volte metodo-reminder-hook, giro della morte
+if [ -n "$SITO" ]; then
+  mkdir -p "$DIR/.git/caccia-registro"
+  echo "$SITO" >> "$DIR/.git/caccia-registro/rinviati"
+  log "debito: $SITO marcato rinviato (un colpo solo, comunque vada)"
+fi
 if [ "$AGENTE_RC" -ne 0 ]; then
   log "agente rc=$AGENTE_RC — ripristino e passo oltre"
   ripristina
   exit 1
-fi
-
-# il debito e' un tentativo solo: se l'agente non lo salda, il sito e' rinviato
-# (resta nel censimento, il giorno lo vede e decide)
-if [ -n "$SITO" ]; then
-  mkdir -p "$DIR/.git/caccia-registro"
-  echo "$SITO" >> "$DIR/.git/caccia-registro/rinviati"
-  log "debito: $SITO marcato rinviato (un colpo solo)"
 fi
 if git diff --quiet 2>/dev/null; then
   log "'$CAT' su $TARGET: niente da migliorare (dichiarato pulito per ${COOLDOWN}s)"
