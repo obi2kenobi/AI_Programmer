@@ -82,7 +82,13 @@ for LENTE in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do
   # misurati. La lente senza i suoi dati non e' la lente.
   [ -f "$HERE/tools/.file-del-target" ] && { cp "$HERE/tools/.file-del-target" "tools/.file-del-target"; git add "tools/.file-del-target" 2>/dev/null || true; }
 done
-for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins; do
+# (report REPO-I 2026-09-19, H2): lo standard installava 43 citazioni su 62 che
+  # puntavano al nulla nella destinazione — CLAUDE.md cita DEBITI.md, il REGISTRO,
+  # debiti-riapertura, privacy-check, test-errori, e nessuno viaggiava. La lente che
+  # pretende che le citazioni esistano non puo' essere essa stessa una citazione
+  # assente (patterns/citazione-non-presidio). Gli strumenti citati viaggiano.
+  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh"
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins $CITATI; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
     cp -r "$HERE/$ITEM" "$ITEM"

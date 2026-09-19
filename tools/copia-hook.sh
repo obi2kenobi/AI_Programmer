@@ -45,3 +45,17 @@ while IFS= read -r H; do
 done <<< "$DICHIARATI"
 
 [ "$N" -gt 0 ] || { echo "copia-hook: zero hook copiati" >&2; exit 1; }
+
+# (report REPO-I 2026-09-19, H1): l'hook copiato ma non la riga che ne nasconde il
+# residuo — ogni repo portata a standard restava con l'albero sporco per sempre.
+# Le righe si DERIVANO dai path che gli hook scrivono ($PWD/.qualcosa nei sorgenti):
+# stessa disciplina della lista hook, estesa al residuo.
+RESIDUI=$(grep -ohE '\$PWD/\.[A-Za-z0-9_.-]+' $DICHIARATI 2>/dev/null | sed 's|^\$PWD/||' | sort -u)
+if [ -n "$RESIDUI" ]; then
+  touch "$DEST/.gitignore"
+  while IFS= read -r R; do
+    [ -n "$R" ] || continue
+    grep -qxF "$R" "$DEST/.gitignore" || echo "$R" >> "$DEST/.gitignore"
+  done <<< "$RESIDUI"
+  echo ".gitignore"
+fi

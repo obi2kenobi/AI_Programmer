@@ -92,6 +92,24 @@ done
 jq -e '.hooks.PreToolUse[] | select(.matcher == "Bash") | .hooks[] | select(.command | contains("clasp-block"))' "$SETTINGS" >/dev/null 2>&1 \
   && ok "settings.json registra l'hook su Bash" || ko "settings.json non registra clasp-block-hook"
 
+
+
+# ── H7 del report REPO-I (2026-09-19): la via documentata e i grep innocenti ──────
+SB7=$(mktemp -d /tmp/clasp-h7.XXXXXX); trap 'rm -rf "$SB7"' EXIT
+printf '{"scripts":{"push":"clasp push","deploy":"clasp push --force"}}' > "$SB7/package.json"
+cp "$HOOK" "$SB7/hook.sh"
+decide7() { D=$(echo "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"$1\"}}" | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null); [ -n "$D" ] || D=consentito; printf '%s' "$D"; }
+D=$(decide7 'npm run push')
+[ "$D" = "deny" ] && ok "H7: npm run push risolto da package.json → NEGATO" || ko "H7: npm run push passa ($D)"
+D=$(decide7 'npm run deploy')
+[ "$D" = "deny" ] && ok "H7: npm run deploy → NEGATO" || ko "H7: npm run deploy passa ($D)"
+D=$(decide7 'npm run test')
+[ "$D" = "consentito" ] && ok "H7: npm run test (script pulito) → consentito" || ko "H7: npm run test negato ($D)"
+D=$(decide7 "grep 'npx clasp push' docs | wc -l")
+[ "$D" = "consentito" ] && ok "H7: grep con la forma nei DATI → consentito (falso positivo curato)" || ko "H7: grep innocente negato ($D)"
+D=$(decide7 'npx clasp push')
+[ "$D" = "deny" ] && ok "H7: forma diretta resta NEGATA" || ko "H7: forma diretta passa ($D)"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

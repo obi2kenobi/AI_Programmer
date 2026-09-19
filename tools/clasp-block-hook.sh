@@ -39,11 +39,35 @@ RUN='((npx|bunx|npm[[:space:]]+exec|pnpm[[:space:]]+dlx|yarn[[:space:]]+dlx)[[:s
 BIN='([A-Za-z0-9_./-]*/)?(@google/)?'
 INVOCAZIONE="${SEP}${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
 
+# (report REPO-I 2026-09-19, H7 — due buchi misurati eseguendo):
+#   a) `npm run push` non contiene la stringa clasp e PASSAVA — ed e' la via che
+#      i documenti del progetto insegnano. Ora il cancello risolve gli script di
+#      package.json: se il comando risolto contiene l'invocazione, nega.
+#   b) due grep in SOLA LETTURA erano negati perche' la STRINGA DI RICERCA
+#      conteneva 'npx clasp push' — il runner dentro le virgolette combaciava con
+#      RUN. Le stringa quotate sono DATI, non invocazioni: si spogliano prima del
+#      match. (Dichiarato non coperto: `bash scripts/deploy.sh` richiederebbe
+#      leggere script arbitrari — la via lunga sta nella P6 del report.)
+CMD_STRIPPED=$(printf '%s' "$CMD" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
+
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
-if echo "$CMD" | grep -qE "$INVOCAZIONE"; then
+if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE"; then
   jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). Se il push è davvero giusto, lo fa Luca a mano." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
+fi
+
+# H7a: la via documentata — npm run push / npm run deploy — risolta da package.json
+if [ -f "$PWD/package.json" ] && printf '%s' "$CMD_STRIPPED" | grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+'; then
+  for SCR in $(printf '%s' "$CMD_STRIPPED" | grep -oE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' | awk '{print $NF}' | sort -u); do
+    RISOLTO=$(jq -r --arg s "$SCR" '.scripts[$s] // empty' "$PWD/package.json" 2>/dev/null)
+    [ -z "$RISOLTO" ] && continue
+    if printf '%s' "$RISOLTO" | grep -qE "$INVOCAZIONE"; then
+      jq -n --arg r "NEGATO (clasp-block-hook): npm run $SCR risolve in \`$RISOLTO\` — clasp push/deploy scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I, H7: la via documentata era proprio quella non presidiata)." \
+        '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
+      exit 0
+    fi
+  done
 fi
 
 # (dal campo REPO-Q 2026-09-02: l'agente ha GENERATO un loop di clasp push
