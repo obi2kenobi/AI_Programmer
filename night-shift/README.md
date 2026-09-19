@@ -137,6 +137,17 @@ Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica
 - `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
   lenti specializzate per file (sostituita da caccia-lente per stabilita').
 
+## L'allineamento dello standard (il drift si dichiara)
+
+Le repo di destinazione portano una COPIA dello standard, sincronizzata al
+momento dell'onboarding: da lì divergono in silenzio mentre l'hub aggiorna
+(domanda di Luca, 2026-09-19: «le installazioni fatte mesi fa danno
+problemi?» — sì: il CLAUDE.md del Magazzino distava 37 righe). Il turno
+misura il drift a ogni ciclo con `tools/sync-repo.sh` (modalita' verifica)
+e lo dichiara insieme a salute e debiti; se divergente e senza PR aperta,
+apre UNA PR di riallineo (`--standard`: CLAUDE.md, skill, agenti, hook —
+mai push su main). Il CLAUDE.md e' il canarino del drift.
+
 ## Il revisore (il censore delle PR)
 
 `night-shift/revisore.sh` — chi scrive non giudica. Le miglioria le scrive
