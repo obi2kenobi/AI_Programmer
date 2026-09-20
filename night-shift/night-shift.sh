@@ -592,14 +592,16 @@ review del giorno." 2>>"$ERR_NOTTE" \
       if [ -n "$ORIGINE" ]; then
         log "REPO $REPO: 🎯 MIGLIORIA pronta: $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
-        # usa il flusso commit/push/PR
-        if ( cd "$DIR" && git add -A && git commit -qm "$MSG_PR" && git push -q -u origin "$CACCIA_BRANCH" ); then
+        # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
+        # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
+        ERR_CONSEGNA=$(cd "$DIR" && git add -A 2>&1 && git commit -qm "$MSG_PR" 2>&1 && git push -u origin "$CACCIA_BRANCH" 2>&1)
+        if [ $? -eq 0 ]; then
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
           log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
           git -C "$DIR" checkout "$DB" -q
           PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
         else
-          log "⚠ REPO $REPO: commit/push della $ORIGINE fallito — ripristino"
+          log "⚠ REPO $REPO: commit/push della $ORIGINE fallito — ripristino — ERRORE: $(echo "$ERR_CONSEGNA" | tail -2 | tr '\n' ' ' | cut -c1-200)"
           git -C "$DIR" reset -q --hard
           git -C "$DIR" checkout "$DB" -q
         fi
