@@ -67,6 +67,32 @@ echo "$DIFF_RIGA" | grep -q "calc.js" \
 grep -q "verifiche-ok" "$HUB_METRICS" && ok "D8: le verifiche dichiarate girano sul ramo della PR (verifiche-ok)" \
   || ko "D8: verdetto atteso verifiche-ok, metrics: $(tail -1 "$HUB_METRICS")"
 
+# --- D40 (giro 28, 2026-09-20): il gate spogliava la riga con ${cmd%%#*} — un `#` fra virgolette
+# (grep -qv "^#" file) veniva troncato in un comando rotto: ROSSO al gate, VERDE al turno e al
+# censore che la riga la passano intera a bash -c. Tre lettori, un contratto.
+aggiorna_verify() { # $1 = contenuto di .night-verify su main
+  printf '%s\n' "$1" > "$SRC/.night-verify"
+  git -C "$SRC" -c user.name=t -c user.email=t@t commit -qam "verify" && git -C "$HOME/night-shift-work/repo-t3" fetch -q origin
+}
+aggiorna_verify 'grep -qv "^#" calc.js'
+OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
+tail -1 "$HUB_METRICS" | grep -q "verifiche-ok" \
+  && ok "D40: una riga con # fra virgolette passa intera a bash -c (verifiche-ok, come turno e censore)" \
+  || ko "D40: riga troncata al # — verdetto $(tail -1 "$HUB_METRICS" | cut -d, -f5): $(grep -A1 'grep -qv' "$REPORT" | tail -1 | cut -c1-90)"
+
+# --- D41 (giro 28): l'output di una verifica rossa finiva nel report e nella proposta di issue
+# SENZA maschera — solo il banco avversariale passava da mask_secrets («Mask, don't omit»).
+# il segreto sta nell'OUTPUT (base64 nel comando: la riga di .night-verify e' pubblica nel repo,
+# non e' lei il segreto — e il gate la stampa com'e')
+aggiorna_verify "echo $(printf 'token=SEGRETO123\n' | base64) | base64 -d; exit 1"
+OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
+if grep -q "SEGRETO123" "$REPORT"; then
+  ko "D41: il valore del token e' nel report del gate in chiaro ($(grep -c SEGRETO123 "$REPORT") volte)"
+else
+  grep -q "MASCHERATO" "$REPORT" && ok "D41: l'output della verifica rossa e' mascherato nel report e nella proposta di issue" \
+    || ko "D41: ne' il valore ne' la maschera nel report: l'output e' stato OMESSO (mask, don't omit)"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -164,7 +164,10 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
       if printf '%s\n' "$NIGHT_VERIFY" | head -10 | grep -q "^# FORMATO: script"; then
         CMD_ESEGUITI=1
         echo "- \`.night-verify\` (formato script, eseguito intero):" >> "$REPORT"
-        if OUT=$( cd "$DIR" && run_guarded 900 bash .night-verify 2>&1 </dev/null ); then
+        # (D41, giro 28 2026-09-20): l'output delle verifiche entrava nel report e nella proposta
+        # di issue SENZA maschera — solo il banco avversariale passava da mask_secrets. Un test
+        # che stampa un token lo portava in chiaro fino a GitHub («Mask, don't omit»).
+        if OUT=$( cd "$DIR" && run_guarded 900 bash .night-verify 2>&1 </dev/null | mask_secrets; exit "${PIPESTATUS[0]}" ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
@@ -172,7 +175,11 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
         fi
       else
       while IFS= read -r cmd; do
-        cmd="${cmd%%#*}"; [ -z "$(echo "$cmd" | tr -d '[:space:]')" ] && continue
+        # (D40, giro 28 2026-09-20): qui c'era `cmd="${cmd%%#*}"` — un `#` fra virgolette
+        # (grep -qv "^#" file) troncava la riga in un comando rotto: ROSSO al gate, VERDE al
+        # turno e al censore, che la passano intera a bash -c (che i commenti li ignora da se').
+        # Tre lettori, un contratto: si salta solo la riga che INIZIA con #, o vuota.
+        case "$(echo "$cmd" | tr -d '[:space:]')" in ""|\#*) continue;; esac
         # (E-029): una riga puo' dichiarare il proprio budget con `@<sec> `
         # (stesso contratto del turno notturno). La suite completa supera i
         # 120s di default: senza budget dedicato sarebbe rossa anche qui.
@@ -185,7 +192,7 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
         # (E-030): </dev/null — il comando non puo' mangiarsi la here-string
         # che alimenta questo loop (un test che legge stdin divorava le righe
         # successive delle verifiche dichiarate).
-        if OUT=$( cd "$DIR" && run_guarded "$GV_SEC" bash -c "$cmd" 2>&1 </dev/null ); then
+        if OUT=$( cd "$DIR" && run_guarded "$GV_SEC" bash -c "$cmd" 2>&1 </dev/null | mask_secrets; exit "${PIPESTATUS[0]}" ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1

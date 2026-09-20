@@ -2655,3 +2655,20 @@ il caso 3 era teatro qui. Cure: hook via `tools/copia-hook.sh` (tutti gli eventi
 avviso senza tocco, impronta con cksum, due casi nuovi (8/8); lente di portabilita' estesa al
 md5 nudo. (D39) `tests/test-suite-meta-audit.sh`: il grep leggeva stdin invece del file — zero
 asserzioni, «0 OK, 0 FAIL», verde da sempre; ora 149 asserzioni vere.
+Antivirus dei rilevatori dopo la cura di D38: 4 canarini tenuti, 0 rilevatori rotti, clone
+pulito verde.
+
+**Giro 28 — i tre lettori di .night-verify (`night-shift/night-shift.sh`,
+`night-shift/revisore.sh`, `night-shift/morning-gate.sh`).** Turno, censore e gate leggono
+lo stesso file con lo stesso contratto dichiarato (una riga = uno script per `bash -c`,
+`@<sec>` come budget, `# FORMATO: script` per il file intero, stdin da /dev/null). Letti i tre
+cicli fianco a fianco: (D40) il gate era l'unico a spogliare la riga con `${cmd%%#*}` — un `#`
+fra virgolette (`grep -qv "^#" file`) diventava un comando troncato: ROSSO al gate con proposta
+di issue correttiva, VERDE al turno e al censore che la riga la passano intera (bash i commenti
+li ignora da se'). Ora il gate salta solo la riga che inizia con `#`, come gli altri due. (D41)
+l'output delle verifiche rosse entrava nel report e nella proposta di issue SENZA maschera —
+`mask_secrets` copriva solo il banco avversariale: un test che stampa un token lo portava in
+chiaro fino a GitHub («Mask, don't omit», regola vincolante). Ora ogni output di verifica passa
+dalla maschera (formato script e riga per riga), col rc del comando preservato via PIPESTATUS.
+Banco: due casi nel gate intero con gh finto (`tests/test-morning-gate-cieco.sh`, 9/9): rossi
+prima («unexpected EOF while looking for matching» e il token 4 volte nel report), verdi dopo.
