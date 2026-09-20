@@ -720,3 +720,30 @@
   passare da lì**. E' nella suite, quindi .night-verify lo esegue a ogni giro.
 - Verifica guardia: 11/11 al primo giro completo; soak di 100 esecuzioni.
 - Aggiramento: fare debug sul live di cio' che e' riproducibile in sandbox.
+
+## E-035 Lo stub che sbaglia argomento e il tool che copia nella CWD
+- Data / sessione: 2026-09-20 (test del sistema completo, sessione Fable — prova T5)
+- Famiglia: R1 (assunzione non verificata) + R6 (effetto collaterale ignorato)
+- Chi l'ha trovato: la sessione stessa, da `git status` dell'hub dopo la prova: 100+ file
+  dello standard staged DENTRO l'hub (`.claude/skills/skills/…`, `patterns/patterns/…`).
+- Sintomo: `sync-repo.sh --standard` lanciato dall'hub con uno stub di `gh` ha copiato
+  lo standard nell'hub stesso invece che nel clone della repo di destinazione.
+- Causa prossima: lo stub `gh repo clone REPO DIR` clonava in `$3` (= REPO) invece che in
+  `$4` (= DIR): il clone «riusciva» (rc 0) senza creare la directory di lavoro; il tool
+  faceva `cd "$TMP/work"` SENZA guardia e proseguiva nella CWD, cioe' nell'hub.
+- Causa del ragionamento: ho scritto lo stub dalla memoria della firma di `gh repo clone`
+  senza rileggere la chiamata reale del tool (R1); e ho lanciato il tool dall'hub, dando
+  per scontato che scrivesse solo nel suo tmp (R6).
+- Perché non ci ha fermati: il tool controllava l'rc del clone, non l'esistenza della
+  directory; il `cd` fallito non fermava nulla; `cp -r` su directory esistenti annidava in
+  silenzio. Tre silenzi in fila. E il mio stub non aveva un test suo.
+- Guardia: `tools/sync-repo.sh` — `cd "$TMP/work" || exit 1` nei due rami, e copia del
+  CONTENUTO delle directory (`dir/.`) invece di `cp -r dir dir`; `tests/test-sync-repo.sh`
+  caso D14 (clone che «riesce» senza directory → errore detto, CWD intatta, hub senza file
+  nuovi) e caso «riallineo senza annidamento».
+- Verifica guardia: prima della cura il caso D14 era rosso (rc=0, CWD toccata); dopo, 14/14.
+  Il caso reale e' stato ripulito a mano (`git reset`, `git clean` sulle cartelle annidate)
+  e l'albero verificato PULITO prima del commit del report.
+- Aggiramento: lanciare un tool che scrive «nel suo tmp» dalla radice di un repo vivo
+  fidandosi del tmp. La regola: gli stub si provano da soli prima di provare il sistema, e
+  i tool che scrivono si lanciano da una directory sacrificabile.

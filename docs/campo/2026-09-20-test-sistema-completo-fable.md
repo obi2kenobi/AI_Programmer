@@ -242,6 +242,33 @@ sandbox con copia rotta: sono la versione «tutto il sistema» di `tests/test-ca
 Il mio stub sbagliato ha fatto scrivere `sync-repo` nell'hub (D14): dichiarato, ripulito,
 l'albero è tornato pulito prima di questo commit.
 
+## Chiusura — dieci giri sullo stesso ramo (Luca: «ripeti 10 giri di analisi e chiudi tutti gli errori»)
+
+Ogni giro: il test che riproduce il difetto (rosso), la cura, il test verde, il commit. Il
+diario dei giri e' in `SAL.md` (voce 2026-09-20 (2°)); qui la mappa difetto → cura → prova.
+
+| Giro | Difetti | Cura | Banco (prima → dopo) |
+|---|---|---|---|
+| 1 | D1-D4 | prove dal ramo di default e rinvio se la PR tocca `.night-verify`; allowlist di `night-shift/lib.sh` + rifiuto di `>` + `git clean`; quarantena fail-closed; diff vuoto = rinvio | `tests/test-revisore.sh` 13 OK 6 FAIL → 19/19; catena 11/11 |
+| 2 | D5-D6 | funzioni definite prima dell'uso e su `$API`; `ISSUE_FILE` scritto prima del check; chiamata `--review` rimossa | `tests/test-risolvi-issue.sh` 10/3 → 13/13 |
+| 3 | D7-D8 | «gate CIECO» + riga `gate-cieco`; diff dopo il checkout; `ADVERSARY=none` | nuovo `tests/test-morning-gate-cieco.sh` 3/4 → 7/7 (62 s → 1,2 s) |
+| 4 | D9-D10 | rc del rilevatore prima del filtro, niente xargs (mappa 1 e 128 sullo stesso 123), locale UTF-8 scelto fra gli installati; `.githooks/commit-msg` | `tests/test-pre-commit.sh` 9/3 → 12/12; provato sul clone: «999 test» muore, il benigno passa |
+| 5 | D11-D14 | repo vuota onboardabile; `--standard` oltre il canarino; `cd || exit`; guardiani nella lista; copia del contenuto (niente annidamento) | `tests/test-sync-repo.sh` 7/4 → 14/14 |
+| 6 | D15-D17, D23 | log «PR aperta» solo con URL; comandi rossi nel corpo dell'issue; pausa sui cicli a vuoto sotto il minuto; `bc_index.py` deterministico | nuovo `tests/test-night-shift-log-onesto.sh` 11/11; `tests/test-bc-index.sh` 9/9 |
+| 7 | D18-D20 | log intero; `--stats` reale; cancello ultimo; hook contati con `.gitignore`; `tools/ciclo-vivo.sh` senza «bad substitution» (moriva su bash 5) | `tests/test-dashboard.sh` 14/14; `tests/test-struttura-test.sh` 1/1; hooks 8/8 |
+| 8 | D21 | intestazioni di tabella saltate, cella che risponde; classificazione sul corpo intero | `tests/test-debiti-riapertura.sh` 6/3 → 9/9 |
+| 9 | D22, D24, D27 | `mtime()` portabile; `sed -i` senza forma BSD; `date -v` → python; backtick = dati nel cancello clasp; nome privato via | nuova lente `tests/test-portabilita.sh` 7/7; clasp 33/33; turno-vivo 9/9; caccia-miglioria 19/19 |
+| 10 | D26 + memoria | rotazione della memoria del turno (night-shift/.sal-turni.md, locale) a 1 MB; E-035 nel registro (il mio stub); debiti residui dichiarati; mappa della missione corretta; suite intera | vedi sotto |
+
+**Non curati, dichiarati in `DEBITI.md`**: le PR del solver senza censore (decisione di
+Luca); i 9 percorsi dell'hub citati dal CLAUDE.md installato (la cura e' nel testo, non
+nella copia); i 57 siti E-002 residui dell'hub (li salda la notte, un sito per finestra —
+i 7 di `tools/giri-avversari.sh` sono stati portati a cattura-prima perche' il dente del
+pre-commit li ha morsi alla frontiera); il turno che vive solo sul Mac.
+
+**Mio errore messo a regime**: E-035 in `docs/errori/REGISTRO.md` (lo stub di `gh` con
+l'argomento sbagliato e il `cd` non guardato che ha copiato lo standard nell'hub).
+
 ## Proposta al canone (i difetti riprodotti per primi)
 
 1. Censore: prove lette da `origin/<default>`, rifiuto di ogni PR che tocca `.night-verify`

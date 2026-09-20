@@ -34,6 +34,11 @@ def riga_data(l):
     return m.group(1) if m else None
 
 def stats():
+    """Conta dal log del turno i numeri della pagina: il funnel di oggi (finestre di
+    caccia → trasformatore → agente → gate → consegne → censore), le cadute con le righe
+    vere, le verifiche rosse del SOLO ciclo corrente, il censimento dei debiti col trend.
+    Ogni contatore nasce da una riga FIRMATA del log (la stessa stringa che il turno
+    scrive): se il turno cambia una frase, cambia qui — e il test lo dice."""
     oggi = time.strftime("%Y-%m-%d")
     lines = leggi_log()
     s = {"oggi": oggi, "now": time.strftime("%H:%M:%S"),
@@ -138,6 +143,11 @@ def barrette(trend):
             f"<div style='color:{colore};font-size:.75rem'>{etichetta} · max {mx} · min {mn}</div>")
 
 def page(s):
+    """Rende i numeri di stats() in una pagina HTML sola, senza dipendenze: le cinque
+    card in testa (turno vivo, cicli, PR, wedge di Ollama, errori), poi le sezioni
+    numerate — CONSEGNA? (il funnel), COSA BLOCCA? (push e gate bocciati con le righe
+    vere), I DEBITI (censimento e sparkline), IL CENSORE (delibere), DRIFT per repo,
+    attivita' recente e verifiche rosse del ciclo corrente. Si rinfresca ogni 10 s."""
     F = s["funnel"]
     # il funnel: ogni caduta numerata
     stadi = [("Finestre di caccia", F["finestre"], "#0af"),

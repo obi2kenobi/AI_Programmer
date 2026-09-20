@@ -23,9 +23,17 @@ sonda() { # sonda <esito 0|1> <descrizione>
 # docs/errori/REGISTRO.md — cita le corruzioni reali che documenta come
 # evidenza dei sintomi (E-013): un registro degli errori che non possa
 # nominare gli errori non documenta niente
-ALIENI=$(git -C "$HERE" grep -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}\x{0600}-\x{06FF}]' \
-  -- '*.md' '*.sh' '*.py' 2>/dev/null | grep -vE 'SAL-ARCHIVIO.md|docs/errori/REGISTRO.md' || true)
-[ -z "$ALIENI" ] && sonda 0 "S1 nessun carattere alieno nei testi" || sonda 1 "S1 caratteri alieni: $ALIENI"
+# (D9/D22, test del sistema completo 2026-09-20): `git grep -P` con code point > 255
+# MUORE (rc 128) sotto un locale non-UTF — e il `|| true` in coda lo faceva passare per
+# «nessun carattere alieno» (verde finto: il glifo piantato dal test non era visto). Il
+# locale UTF-8 si SCEGLIE fra quelli installati, e il rilevatore che muore e' ROSSO.
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+ALIENI_RAW=$(LANG="${UTF_LOCALE:-en_US.UTF-8}" LC_ALL="${UTF_LOCALE:-en_US.UTF-8}" git -C "$HERE" grep -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}\x{0600}-\x{06FF}]' \
+  -- '*.md' '*.sh' '*.py' 2>/dev/null); ALIENI_RC=$?
+ALIENI=$(printf '%s\n' "$ALIENI_RAW" | grep -vE '^$|SAL-ARCHIVIO.md|docs/errori/REGISTRO.md' || true)
+if [ "$ALIENI_RC" -ge 2 ]; then sonda 1 "S1 rilevatore glifi MORTO (git grep rc=$ALIENI_RC: locale?) — rosso, mai finto verde"
+elif [ -z "$ALIENI" ]; then sonda 0 "S1 nessun carattere alieno nei testi"
+else sonda 1 "S1 caratteri alieni: $ALIENI"; fi
 
 # S2 — numeri claims vs realtà: ogni "<N> test|pattern|agenti" nei doc di testa
 #   deve corrispondere ai file veri (i numeri nei doc marciscono in silenzio)

@@ -1133,6 +1133,10 @@ log "=== TURNO FINITO ==="
 # esistito: no-op silenzioso colpevole di giri interi (giri 3/5, 2026-09-06).
 # File locale GITIGNORED: la memoria del turno sopravvive, il pull non si accorge.
 HUB_SAL="$HERE/.sal-turni.md"
+# (D26, test del sistema completo 2026-09-20): una voce per ciclo, 24/7, e il digest la
+# svuota SOLO se DIGEST_EMAIL e' configurata — altrimenti il file cresceva per sempre.
+# Rotazione a 1 MB (una generazione, come i log): la memoria resta, il disco no.
+rotate_log_if_big "$HUB_SAL" 1
 if true; then
   DT=$(date '+%Y-%m-%d')
   cat >> "$HUB_SAL" <<SALEOF
