@@ -65,3 +65,31 @@ echo "$PAG" | grep -q "NUOVA" && ok "pagina: la rossa corrente visibile" || ko "
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
+
+# ── v4: il FUNNEL conta gli stadi dalle righe firmate ──────────────────────────
+OGGI4=$(date '+%Y-%m-%d')
+{
+  echo "[$OGGI4 10:00:00] === TURNO INIZIATO (1 repo in coda) ==="
+  echo "[$OGGI4 10:01:00] REPO r/x: nessuna issue — attivo la CACCIA"
+  echo "[$OGGI4 10:02:00] REPO r/x: debito: applicato dal TRASFORMATORE deterministico"
+  echo "[$OGGI4 10:03:00] REPO r/x: caccia: sana e nessuna miglioria trovata"
+  echo "[$OGGI4 10:04:00] REPO r/x: caccia: AGENTE FALLITO (Ollama?)"
+  echo "[$OGGI4 10:05:00] REPO r/x: gate BOCCIA: 516 righe"
+  echo "[$OGGI4 10:06:00] REPO r/x: MIGLIORIA pronta: [debito] f"
+  echo "[$OGGI4 10:07:00] REPO r/x: commit/push della miglioria fallito — ripristino"
+  echo "[$OGGI4 10:08:00] REPO r/x: DELIBERA: APPROVA PR #7"
+  echo "[$OGGI4 10:09:00] REPO r/x: DELIBERA: RIGETTA PR #8"
+  echo "[$OGGI4 10:10:00] Ollama wedged al via del turno"
+  echo "[$OGGI4 10:11:00] Ollama rianimato dal watchdog del turno"
+  echo "[$OGGI4 10:12:00] REPO Sistema-Gestione-Magazzino: standard: DIVERGENTE dall'hub"
+} > "$TMP/finto4.log"
+V4=$(NIGHT_LOG="$TMP/finto4.log" python3 "$DASH" --stats 2>/dev/null || NIGHT_LOG="$TMP/finto4.log" python3 - "$DASH" <<'PY'
+import sys, os, importlib.util
+spec = importlib.util.spec_from_file_location("d", sys.argv[1])
+d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
+s = d.stats(); f = s["funnel"]
+print(f["finestre"], f["trasformatore"], f["agente_ok"], f["agente_morto"], f["gate"], f["consegne"], f["push_fail"], f["approvate"], f["rigettate"], s["ollama_wedge"], s["ollama_revive"], s["drift"].get("Sistema-Gestione-Magazzino", "?"))
+PY
+)
+ATTESO4="1 1 1 1 1 1 1 1 1 1 1 DIVERGENTE"
+[ "$V4" = "$ATTESO4" ] && ok "v4 funnel: tutti gli stadi contati dal log firmato" || ko "v4 funnel: [$V4] atteso [$ATTESO4]"
