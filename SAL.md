@@ -2465,3 +2465,22 @@ python; il cancello clasp spoglia anche i BACKTICK (il report di campo che citav
 vietate era stato negato — D27, 3 attese nuove in `tests/test-clasp-block-hook.sh`); il nome
 di una repo privata e' uscito dal commento del turno (D24). Dopo: portabilita' 7/7,
 turno-vivo 9/9, caccia-miglioria 19/19, clasp 33/33, lib 34/34, catena 11/11.
+
+**Giro 10 — la memoria e la chiusura (D26 + registro, debiti, mappa).** il file locale night-shift/.sal-turni.md ruota
+a 1 MB (una voce per ciclo 24/7 e il digest la svuota solo con `DIGEST_EMAIL`: cresceva per
+sempre); il mio errore dello stub (argomento del clone sbagliato + `cd` non guardato → standard
+copiato nell'hub) e' a regime come E-035 nel registro, con la guardia in `tests/test-sync-repo.sh`;
+i residui dichiarati in `DEBITI.md` (PR del solver senza censore — decisione di Luca; i 9 percorsi
+dell'hub citati dal CLAUDE.md installato; i 57 siti E-002 residui, che la notte salda un sito per
+finestra; il turno che vive solo sul Mac); la mappa della missione in `docs/test-sistema-completo.md`
+corretta coi numeri ricontati (14 sonde, gate e sync provati con stub, dashboard con test che
+termina). Il report di campo ha la sezione «Chiusura» con la tabella giro → difetti → cura → banco.
+La suite intera, un test alla volta con timeout, gira in coda a questo giro: l'esito e' nella
+riga sotto.
+Esito della suite intera (145 file, uno alla volta, timeout 200 s): 142 verdi, 3 rossi, tutti
+curati nello stesso giro — `tools/dashboard.py` sotto la densita' di chiarezza del 15% e con
+`stats()`/`page()` senza docstring (S2/S3 di `tests/test-chiarezza.sh`: ora 3/3); la sonda S1 di
+`tools/giri-ignoranti.sh` moriva sul locale come il pre-commit e il `|| true` la faceva verde
+(stessa cura: locale scelto, rilevatore morto = rosso); `tools/status-page.sh` moriva in silenzio
+sotto `set -e` quando system-health o gate-summary uscivano rossi, e la pagina non nasceva
+(`|| true`: il rosso di un blocco e' un dato da mostrare — `tests/test-status-page.sh` 6/6).
