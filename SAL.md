@@ -2443,3 +2443,12 @@ In corsa: `tools/ciclo-vivo.sh` moriva su bash 5 («bad substitution» a `${#FIN
 — l'auto-esame notturno su Linux diceva «0 finding» per un crash, non per merito: forma
 portabile 3.2/5.x. Il pre-commit risolve i nomi nudi anche nella cartella del documento
 (`docs/bc/README.md` cita `docs/bc/CORREZIONI.md` col nome nudo, accanto a se').
+
+**Giro 8 — debiti-riapertura (D21, `tools/debiti-riapertura.sh`).** Banco:
+`tests/test-debiti-riapertura.sh` con una sezione a tabella e una con la parola chiave oltre i
+600 caratteri — rossi 3/3. Cure: `perche_di()` salta intestazioni e separatori di tabella e
+da una riga di tabella prende la CELLA che risponde (prima tutte le 8 domande mostravano
+«| Data | Scorciatoia | Perché rimandata |…»); la classificazione guarda il corpo intero.
+Effetto sul DEBITI vero: 15 aperti, ora 11 di dominio e 4 risolvibili (erano 8/7 — tre
+sezioni che nominano una decisione di Luca oltre la finestra passano tra le domande, dove
+stanno). Dopo: 9/9.
