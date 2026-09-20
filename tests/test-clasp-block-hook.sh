@@ -110,6 +110,18 @@ D=$(decide7 "grep 'npx clasp push' docs | wc -l")
 D=$(decide7 'npx clasp push')
 [ "$D" = "deny" ] && ok "H7: forma diretta resta NEGATA" || ko "H7: forma diretta passa ($D)"
 
+# ── D27 (test del sistema completo 2026-09-20): i backtick sono DATI ─────────────────
+# Il comando che scriveva il report di campo (un heredoc che citava le forme vietate fra
+# backtick, come fa qualunque .md del canone) e' stato negato: il cancello spogliava solo
+# le stringhe fra virgolette. Un .md che DOCUMENTA il divieto deve potersi scrivere.
+BT='`'
+D=$(decide7 "cat > docs/nota.md <<EOF\nil cancello nega ${BT}npx clasp push${BT} e ${BT}clasp deploy${BT}\nEOF")
+[ "$D" = "consentito" ] && ok "D27: forma vietata fra backtick in un heredoc → consentito (sono dati)" || ko "D27: documento che cita la forma fra backtick NEGATO ($D)"
+D=$(decide7 "echo ${BT}clasp push${BT}")
+[ "$D" = "consentito" ] && ok "D27: backtick semplici → consentito" || ko "D27: backtick semplici negati ($D)"
+D=$(decide7 'clasp push')
+[ "$D" = "deny" ] && ok "D27: la forma NUDA resta negata dopo lo spoglio dei backtick" || ko "D27: la forma nuda passa ($D)"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -43,6 +43,9 @@ ack() { ACK=$((ACK+1)); echo "ACK  #$ATT $1"; }
 tiene() { TENGONO=$((TENGONO+1)); echo "TIENE #$ATT $1"; }
 aggirato() { AGGIRATI=$((AGGIRATI+1)); echo "AGGIRA #$ATT $1"; }
 att() { ATT=$((ATT+1)); }
+# sedi: `sed -i` portabile (D22, test del sistema completo 2026-09-20): `sed -i ''` e' solo
+# BSD, su GNU legge '' come script. Il suffisso attaccato vale per entrambi; il .bak si toglie.
+sedi() { local f="${@: -1}"; sed -i.portabile-bak "$@" && rm -f "$f.portabile-bak"; }
 difesa_test() {
   bash "$1" >/dev/null 2>&1 && aggirato "$2" || tiene "$2"
   git checkout -- . 2>/dev/null   # ogni attacco parte dall'albero integro: i verdetti non a cascata
@@ -73,13 +76,13 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -q "S7" <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
 mv /tmp/avv-pattern.md patterns/watchdog-guardato.md
 
-att; sed -i '' 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
+att; sedi 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
 difesa_test tests/test-patterns-ancore-esistono.sh "A5 àncora pattern rotta"
 
-att; sed -i '' 's|^description: .*$|description: ""|' .claude/agents/revisore-gas.md
+att; sedi 's|^description: .*$|description: ""|' .claude/agents/revisore-gas.md
 difesa_test tests/test-agents-structure.sh "A6 agente senza description"
 
-att; sed -i '' '/^mode: subagent/d' .opencode/agent/revisore-gas.md
+att; sedi '/^mode: subagent/d' .opencode/agent/revisore-gas.md
 difesa_test tests/test-opencode-agent-sync.sh "A7 specchio agente senza mode"
 
 att; printf '\nRIGA AVVERSARIA DI DRIFT\n' >> .opencode/agent/revisore-gas.md
@@ -98,7 +101,7 @@ att; mv tools/margine_documento.py /tmp/avv-oracolo.py
 difesa_test tests/test-margine-documento.sh "A11 oracolo cancellato"
 mv /tmp/avv-oracolo.py tools/margine_documento.py
 
-att; sed -i '' 's/margine = importo_v - importo_a/margine = importo_v + importo_a/' tools/margine_documento.py
+att; sedi 's/margine = importo_v - importo_a/margine = importo_v + importo_a/' tools/margine_documento.py
 difesa_test tests/test-margine-documento.sh "A12 aritmetica oracolo invertita (riga vera)"
 
 att; python3 - <<'EOF'
@@ -108,7 +111,7 @@ assert old in s; open(p, 'w').write(s.replace(old, 'if False and tipo.startswith
 EOF
 difesa_test tests/test-scadenzario-aging.sh "A13 fix segno fornitore disattivato"
 
-att; sed -i '' 's/--standard) STANDARD=1/--tutto) STANDARD=1/' tools/sync-repo.sh
+att; sedi 's/--standard) STANDARD=1/--tutto) STANDARD=1/' tools/sync-repo.sh
 difesa_test tests/test-sync-repo-standard-item-list.sh "A14 --standard rimosso da sync-repo"
 
 att; python3 -c "
@@ -130,7 +133,7 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -q "S8" <<<"$OUT_BAT" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
 git checkout -- .claude/skills 2>/dev/null; true
 
-att; sed -i '' 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
+att; sedi 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
 difesa_test tests/test-sal-indice-ancore.sh "A19 marker indice SAL sostituito"
 
 att; printf 'sk-ANTHROP%s-FAKE1234567890abcd\n' 'IC' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
@@ -147,7 +150,7 @@ att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"Il mio token di 
 echo "$OUT" | grep -qi "pattern\|secret" && tiene "B2 percorso sensibile in italiano naturale" || aggirato "B2 sensibile in italiano non riconosciuto"
 
 att; OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"cat ~/.clasp.json | grep refresh"}}' | bash tools/clasp-block-hook.sh)
-echo "$OUT" | grep -q . && tiene "B3 comando bash che tocca credenziali riceve avviso" || aggirato "B3 comando con credenziali: hook muto"
+if grep -q . <<<"$OUT"; then tiene "B3 comando bash che tocca credenziali riceve avviso"; else aggirato "B3 comando con credenziali: hook muto"; fi
 
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"README.md"}}' | bash tools/pattern-reminder-hook.sh)
 [ -z "$OUT" ] && tiene "B4 path innocuo: silenzio corretto" || aggirato "B4 path innocuo produce rumore"
@@ -314,18 +317,18 @@ classifica "$OUT" "$RC" "D25 riconciliazione solo righe vuote"
 echo ""
 echo "=== CAT E — privacy: il passato che riaffiora ==="
 
-att; grep -rlP '[\x{AC00}-\x{D7AF}]' --include='*.md' docs/ 2>/dev/null | head -1 | grep -q . && aggirato "E1 caratteri hangul nei report" || tiene "E1 nessun hangul nei report"
+att; _cp=$(grep -rlP '[\x{AC00}-\x{D7AF}]' --include='*.md' docs/ 2>/dev/null | head -1); if grep -q . <<<"$_cp"; then aggirato "E1 caratteri hangul nei report"; else tiene "E1 nessun hangul nei report"; fi
 
-att; grep -oE 'github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+' night-shift/repos-index.md docs/*.md 2>/dev/null | # REPO-CR (Centrale_Rischi) e' PUBBLICA: dichiarata nel repos-index — non e' una leak
-grep -vE "obi2kenobi/(AI_Programmer|Centrale_Rischi)" | head -1 | grep -q . && aggirato "E2 URL github di repo privata fuori dal hub" || tiene "E2 nessun URL di repo privata"
+# REPO-CR (Centrale_Rischi) e' PUBBLICA: dichiarata nel repos-index — non e' una leak
+att; _cp=$(grep -oE 'github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+' night-shift/repos-index.md docs/*.md 2>/dev/null | grep -vE "obi2kenobi/(AI_Programmer|Centrale_Rischi)" | head -1); if grep -q . <<<"$_cp"; then aggirato "E2 URL github di repo privata fuori dal hub"; else tiene "E2 nessun URL di repo privata"; fi
 
-att; head -2 metrics/gate.csv 2>/dev/null | grep -viE 'repo-[a-n]|data|giro|gate|,|^$' | grep -q . && aggirato "E3 gate.csv con contenuto fuori schema REPO-*" || tiene "E3 gate.csv a schema REPO-*"
+att; _cp=$(head -2 metrics/gate.csv 2>/dev/null | grep -viE 'repo-[a-n]|data|giro|gate|,|^$'); if grep -q . <<<"$_cp"; then aggirato "E3 gate.csv con contenuto fuori schema REPO-*"; else tiene "E3 gate.csv a schema REPO-*"; fi
 
-att; grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQRSTXZVW]|CR)$" | head -1 | grep -q . && aggirato "E4 repos-index con codici fuori schema" || tiene "E4 repos-index solo codici REPO-[A-N]"
+att; _cp=$(grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQRSTXZVW]|CR)$" | head -1); if grep -q . <<<"$_cp"; then aggirato "E4 repos-index con codici fuori schema"; else tiene "E4 repos-index solo codici REPO-[A-N]"; fi
 
 att; git ls-files | grep -qE '\.(env|key|pem)$|id_rsa|^\.env' && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
 
-att; grep -rnE 'sk-ANTHROPIC|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN [A-Z ]*PRIVATE KEY' llm/ tools/ 2>/dev/null | grep -vE "privacy-check.sh|giri-avversari.sh" | head -1 | grep -q . && aggirato "E6 letterale segreto negli script" || tiene "E6 nessun letterale segreto negli script"
+att; _cp=$(grep -rnE 'sk-ANTHROPIC|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN [A-Z ]*PRIVATE KEY' llm/ tools/ 2>/dev/null | grep -vE "privacy-check.sh|giri-avversari.sh" | head -1); if grep -q . <<<"$_cp"; then aggirato "E6 letterale segreto negli script"; else tiene "E6 nessun letterale segreto negli script"; fi
 
 att; git log --all --oneline | wc -l | tr -d ' ' | grep -q "^0$" && aggirato "E7 storia git assente?" || tiene "E7 storia git presente (privacy-check la presidia con pickaxe)"
 
@@ -335,10 +338,10 @@ echo "=== CAT F — regole senza denti ==="
 att; OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"clasp push"}}' | bash tools/clasp-block-hook.sh)
 echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 && tiene "F1 clasp push NEGATO davvero (il dente esiste)" || aggirato "F1 'clasp push MAI' resta solo un promemoria"
 
-att; python3 -c "
+att; _cp=$(python3 -c "
 import json
 s = json.load(open('.claude/settings.json'))
-print(any('clasp-block' in h.get('command','') for m in s['hooks'].get('PreToolUse',[]) for h in m.get('hooks',[])))" | grep -q True && tiene "F2 il dente è registrato in settings.json" || aggirato "F2 clasp ignorato dagli hook"
+print(any('clasp-block' in h.get('command','') for m in s['hooks'].get('PreToolUse',[]) for h in m.get('hooks',[])))"); if grep -q True <<<"$_cp"; then tiene "F2 il dente è registrato in settings.json"; else aggirato "F2 clasp ignorato dagli hook"; fi
 
 att; git ls-files | grep -q "^gas-src/" && aggirato "F3 cartella gas-src tracciata nell'hub" || tiene "F3 nessuna cartella gas-src tracciata"
 
@@ -359,7 +362,7 @@ difesa_test tests/test-canone-integrita.sh "G1 sezione Graphify cancellata dal c
 att; printf 'import sys\nsys.exit(0)\n' > tools/gas_qualita.py
 difesa_test tests/test-gas-qualita-rilevatore.sh "G2 rilevatore neutralizzato (exit 0 sempre)"
 
-att; sed -i '' 's/attese eseguite/attese fatte/' tools/verifica_banco.py
+att; sedi 's/attese eseguite/attese fatte/' tools/verifica_banco.py
 difesa_test tests/test-verifica-banco.sh "G3 parser verdetto banco rotto"
 
 att; printf 'token: ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ12\n' >> llm/README.md
@@ -373,7 +376,7 @@ open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))"
 [ -f tests/test-lib.sh ] && { bash tests/test-lib.sh >/dev/null 2>&1 && aggirato "G5 lib.sh allowlist rotta passa test-lib.sh" || tiene "G5 lib.sh allowlist presidiata da test-lib.sh"; } || aggirato "G5 test-lib.sh assente"
 cp /tmp/avv-lib.bak night-shift/lib.sh
 
-att; sed -i '' 's/## Registro/## RegistrX/' patterns/README.md
+att; sedi 's/## Registro/## RegistrX/' patterns/README.md
 # verificato a mano: nessuna difesa scatta — ma NIENTE dipende dal titolo della
 # sezione (l'hook e S7 parsano le righe '^| [' della tabella, non l'header).
 # La sostanza è presidiata, il titolo è prosa: ACK onesto, non un buco.
@@ -385,10 +388,10 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -q "S9" <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
 git checkout -- night-shift/repos-index.md
 
-att; sed -i '' 's/ .opencode\/plugins//' tools/sync-repo.sh
+att; sedi 's/ .opencode\/plugins//' tools/sync-repo.sh
 difesa_test tests/test-sync-repo-standard-item-list.sh "G8 item propagazione rimosso dalla lista sync"
 
-att; sed -i '' 's|docs/campo|docs/campX|g' CLAUDE.md
+att; sedi 's|docs/campo|docs/campX|g' CLAUDE.md
 difesa_test tests/test-report-campo.sh "G9 puntatore campo degradato in CLAUDE.md"
 
 att; python3 -c "
@@ -407,7 +410,7 @@ p='tools/bc_index.py'; s=open(p).read()
 open(p,'w').write(s.replace('endpoint', 'endpooint', 5))"
 difesa_test tests/test-bc-index.sh "G11 bc_index corrotto"
 
-att; sed -i '' "s/onore del NON VERIFICATO/onore del NON VERIFICATX/" .claude/skills/gas-sviluppo/references/metodo.md
+att; sedi "s/onore del NON VERIFICATO/onore del NON VERIFICATX/" .claude/skills/gas-sviluppo/references/metodo.md
 difesa_test tests/test-canone-integrita.sh "G12 sezione onore degradata"
 
 att; ack "G13 piantare un NOME reale richiede conoscere repos.key (locale, gitignored): il gate dichiara DEGRADATO quando non può giudicare, non mente"
@@ -422,7 +425,7 @@ p='.opencode/skills/gas-sviluppo/SKILL.md'
 s=open(p).read(); open(p,'w').write(s.replace('metodo', 'metodX', 3))"
 bash tests/test-opencode-skills-sync.sh >/dev/null 2>&1 && aggirato "G15 skill opencode drift passa" || tiene "G15 specchio skill presidiato"
 
-att; sed -i '' 's/verdetto/verdettX/g' tools/campo-triage.sh
+att; sedi 's/verdetto/verdettX/g' tools/campo-triage.sh
 bash tools/campo-triage.sh >/dev/null 2>&1; RC=$?
 [ $RC -ne 0 ] && tiene "G16 campo-triage rotto fallisce" || ack "G16 campo-triage con parola cambiata esce 0: la parte che conta (contare i file) non usa quella parola"
 git checkout -- tools/campo-triage.sh
@@ -439,7 +442,7 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -qE "S4|S6" <<<"$OUT_BAT" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
 git checkout -- docs/MANUALE-OPERATIVO.md
 
-att; sed -i '' 's/sync-repo.sh/sync-repX.sh/g' docs/benvenuto-collaboratori.md
+att; sedi 's/sync-repo.sh/sync-repX.sh/g' docs/benvenuto-collaboratori.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -q "S6" <<<"$OUT_BAT" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
 git checkout -- docs/benvenuto-collaboratori.md
