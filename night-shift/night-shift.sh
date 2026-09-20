@@ -230,6 +230,7 @@ shift_repo() {
   if [ -f "$DIR/.night-verify" ]; then
     NV_ROSSI=0
     NV_TOTALI=0
+    NV_ROSSI_LISTA=""   # i comandi rossi, per il corpo dell'issue (D16)
     # (2026-09-19, prima notte sul Magazzino): due FORMATI dichiarati. Il suo
     # .night-verify e' un PROGRAMMA di 505 righe (blocchi multi-riga, stato che
     # attraversa le righe): riga-per-riga non puo' girare, e non si riscrive
@@ -242,6 +243,7 @@ shift_repo() {
         log "REPO $REPO: .night-verify (formato script): VERDE"
       else
         NV_ROSSI=1
+        NV_ROSSI_LISTA=".night-verify intero (formato script)"
         log "REPO $REPO: VERIFICA ROSSA: .night-verify intero (formato script)"
       fi
     fi
@@ -268,6 +270,8 @@ shift_repo() {
       # era il turno l'asimmetria. Niente eval: la riga e' UN argomento.
         if ! (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
           NV_ROSSI=$((NV_ROSSI+1))
+          NV_ROSSI_LISTA="${NV_ROSSI_LISTA:+$NV_ROSSI_LISTA
+}$NV_CMD"
           log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
         fi
       done < "$DIR/.night-verify"
@@ -277,12 +281,21 @@ shift_repo() {
     # difetto che il metodo combatte.
     if [ "$NV_TOTALI" -eq 0 ]; then
       NV_ROSSI=1
+      NV_ROSSI_LISTA="verifiche-vuote (.night-verify senza comandi)"
       log "REPO $REPO: VERIFICA ROSSA: verifiche-vuote (.night-verify senza comandi)"
     fi
     if [ "$NV_ROSSI" -gt 0 ]; then
       NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if ! echo "$NV_ISSUE" | grep -qF "[night-verify]"; then
-        gh issue create -R "$REPO" -t "[night-verify] $NV_ROSSI verifiche rosse nell'auto-esame" -b "Il turno notturno ha eseguito i comandi in .night-verify: $NV_ROSSI su $NV_TOTALI sono rossi. I dettagli sono nel log del turno." >/dev/null 2>&1 \
+        # (D16, test del sistema completo 2026-09-20): il corpo diceva «I dettagli sono nel
+        # log del turno» — da remoto il giorno non poteva disporre (issue #95 aperta cosi'
+        # dal 18/9). Il comando rosso va NEL corpo: e' l'unica cosa che serve per agire.
+        gh issue create -R "$REPO" -t "[night-verify] $NV_ROSSI verifiche rosse nell'auto-esame" -b "Il turno notturno ha eseguito i comandi in .night-verify: $NV_ROSSI su $NV_TOTALI sono rossi.
+
+Comandi rossi (eseguiti dalla radice della repo, budget 120s salvo prefisso @sec):
+$(printf '%s\n' "$NV_ROSSI_LISTA" | sed 's/^/- /')
+
+Riprodurre a mano, correggere il comando o il codice che verifica, chiudere l'issue quando tornano verdi." >/dev/null 2>&1 \
           && log "REPO $REPO: issue [night-verify] aperta ($NV_ROSSI/$NV_TOTALI rossi)"
       else
         log "REPO $REPO: $NV_ROSSI/$NV_TOTALI rosse — issue gia' aperta"
@@ -308,7 +321,14 @@ shift_repo() {
         log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
       else
         SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
-        log "REPO $REPO: PR di riallineo aperta: $SYNC_OUT"
+        # (D15, test del sistema completo 2026-09-20): il log diceva «PR di riallineo
+        # aperta:» seguito da QUALUNQUE ultima riga — anche «impossibile leggere
+        # CLAUDE.md». La PR e' aperta solo se sync-repo lo dice con la sua URL.
+        case "$SYNC_OUT" in
+          *"PR aperta https://"*) log "REPO $REPO: PR di riallineo aperta: $SYNC_OUT" ;;
+          *"GIÀ A STANDARD"*)     log "REPO $REPO: riallineo: $SYNC_OUT" ;;
+          *)                      log "⚠ REPO $REPO: riallineo NON riuscito (nessuna PR): $SYNC_OUT" ;;
+        esac
       fi
     fi
   fi
@@ -1058,6 +1078,7 @@ trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 
 
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
+T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 
 # (2026-09-20): il WATCHDOG di Ollama. Il server (0.32.14) si inceppa sotto
 # carico: resta su (tags risponde) ma le generazioni muoiono. L'agente si
@@ -1126,7 +1147,19 @@ SALEOF
 fi
 
 # NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)
-log "=== TURNO FINITO — riparto SUBITO ==="
+# (D17, test del sistema completo 2026-09-20): con una copia rotta o la caccia in cooldown
+# il turno ha fatto 390 cicli in 4,5 minuti (~8 chiamate gh per ciclo): il freno era il
+# rate limit di GitHub, non il sistema. Un ciclo che NON ha prodotto nulla e chiude sotto
+# il minuto dorme il resto del minuto (NIGHT_CICLO_MIN_SEC, default 60): al massimo un
+# giro a vuoto al minuto, e chi lavora riparte subito come prima.
+CICLO_SEC=$(( $(date +%s) - T_CICLO_INIZIO ))
+if [ "$TOT_PR_CREATED" -eq 0 ] && [ "$TOT_PROPOSTE" -eq 0 ] && [ "$CICLO_SEC" -lt "${NIGHT_CICLO_MIN_SEC:-60}" ]; then
+  PAUSA=$(( ${NIGHT_CICLO_MIN_SEC:-60} - CICLO_SEC ))
+  log "=== TURNO FINITO — ciclo a vuoto in ${CICLO_SEC}s: pausa ${PAUSA}s prima di ripartire (niente giri a vuoto sotto il minuto) ==="
+  sleep "$PAUSA"
+else
+  log "=== TURNO FINITO — riparto SUBITO ==="
+fi
 rmdir "$TURN_LOCK" 2>/dev/null
 exec "$0" "$@"
 
