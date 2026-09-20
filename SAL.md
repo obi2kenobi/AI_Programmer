@@ -2373,3 +2373,11 @@ e' quella per segmento di `night-shift/lib.sh` (la stessa del gate) piu' il rifi
 dopo il banco `git checkout -- . && git clean -fdq`; data illeggibile = quarantena chiusa;
 diff vuoto = rinvio. Dopo: 19/19; `tests/test-catena-viva.sh` 11/11 con la fixture
 corretta (le verifiche dichiarate vivono sul ramo di default, non sul ramo notte).
+
+**Giro 2 — il solver (D5-D6, `night-shift/risolvi-issue.sh`, `night-shift/night-shift.sh`).**
+Banco: `tests/test-risolvi-issue.sh` pretende la riga `REVIEW: CORRECT|WRONG|UNCLEAR`, nessun
+«command not found», e che il turno scriva `ISSUE_FILE` prima di leggerlo — rossi 3/3. Cure:
+`auto_review` e `genera_test` definite PRIMA dell'uso (vivevano dopo l'`exit 3`: bash non le
+aveva mai lette) e parlano allo stesso `$API` del solver (il mock le raggiunge); il turno
+scrive il file dell'issue prima del check «gia' implementata» (E-023 torna attiva) e la
+chiamata morta `risolvi-issue.sh --review` sparisce. Dopo: 13/13.

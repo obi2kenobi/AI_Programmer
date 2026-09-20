@@ -753,6 +753,12 @@ $BODY"
     # direttamente, il modello risponde col codice, lo script lo applica e verifica.
     NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
     if [ -f "$NIGHT_SOLVER" ]; then
+      # l'issue scaricata in un file locale: la leggono il check «gia' implementata» qui
+      # sotto E il solver. (D6, test del sistema completo 2026-09-20: il file veniva
+      # scritto DOPO il check, che sotto set -u leggeva una variabile vuota e non girava
+      # mai — la lezione del caso #10 era scritta e inattiva.)
+      ISSUE_FILE="/tmp/night-issue-$NUM.md"
+      printf '%s\n' "$BODY" > "$ISSUE_FILE"
       # (2026-09-08, dal caso #10): la notte inseguiva una commessa che il giorno aveva
       # gia' consegnato (funzione presente E cablata, commit a72213d) — quattro notti a
       # proporre cio' che esisteva. Il tracker e il codice divergono in silenzio: questo
@@ -778,6 +784,7 @@ $BODY"
             grep -q "GIA' IMPLEMENTATA" <<<"$COMMENTI_GIA" || gh issue comment "$NUM" -R "$REPO" --body-file "$CORPO_GIA" >/dev/null 2>&1
             rm -f "$CORPO_GIA"
             ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: gia' implementata? (chiede il giorno)"
+            rm -f "$ISSUE_FILE"
             continue
           fi
         fi
@@ -790,9 +797,6 @@ $BODY"
       #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
       #  capacita' migliore non e' spam: e' il lavoro che riparte.
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
-      # scarica l'issue in un file locale per lo script
-      ISSUE_FILE="/tmp/night-issue-$NUM.md"
-      printf '%s\n' "$BODY" > "$ISSUE_FILE"
       OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
@@ -890,10 +894,10 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         fi
         # AUTO-REVIEW (2026-09-17): il modello rivede il proprio fix con una
         # domanda diversa. Se dice WRONG, il fix viene degradato: PR con warning.
+        # Il verdetto arriva nella riga «REVIEW: ...» dell'output del solver (D5: prima
+        # qui c'era anche una chiamata `risolvi-issue.sh --review` a una modalita' mai
+        # esistita — usciva 2 «dir inesistente» a ogni fix, in silenzio).
         if [ "$RC" -eq 0 ]; then
-          REVIEW_VERDETTO=$(bash "$NIGHT_SOLVER" --review 2>/dev/null || echo "SKIP")
-          # il solver --review non esiste ancora come modalita': la funzione e' interna.
-          # Per ora: se il verdetto e' WRONG nel log del solver, lo leggiamo qui.
           if echo "$OUT" | grep -qi "WRONG"; then
             NOTA_INS="
 
