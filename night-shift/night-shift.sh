@@ -1053,6 +1053,29 @@ trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 
+# (2026-09-20): il WATCHDOG di Ollama. Il server (0.32.14) si inceppa sotto
+# carico: resta su (tags risponde) ma le generazioni muoiono. L'agente si
+# rianima da solo DENTRO le sue finestre, ma fra le finestre nessuno guardava:
+# un wedge alle 14:45 ha ucciso agenti per 18 minuti e rosso la suite. Da qui:
+# a OGNI inizio ciclo, un ping di GENERAZIONE (non tags: quello risponde anche
+# da wedged); muto = kill del serve, launchd lo riporta, si aspetta. Il turno
+# non parte mai con un cervello morto accanto.
+OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d '{"model":"qwen2.5-coder:14b","messages":[{"role":"user","content":"Say OK"}],"stream":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+if [ -z "$OLLM_PING" ]; then
+  log "⚠ Ollama wedged al via del turno (ping di generazione muto): kill e attesa rilancio"
+  pkill -f "ollama serve" 2>/dev/null
+  for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+    sleep 5
+    curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
+  done
+  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d '{"model":"qwen2.5-coder:14b","messages":[{"role":"user","content":"Say OK"}],"stream":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+  if [ -n "$OLLM_PING" ]; then
+    log "✓ Ollama rianimato dal watchdog del turno"
+  else
+    log "⚠⚠ Ollama NON risponde nemmeno dopo il rilancio: il turno gira senza cervello (le lenti dichiareranno)"
+  fi
+fi
+
 # PULIZIA RAMI NOTTE STANTI (2026-09-16): i rami notte/auto-* piu' vecchi di 24h
 # sul remoto sono scarti (PR fusa o mai create). Con 53 cicli a notte, i rami si
 # accumulano se nessuno li pulisce.
