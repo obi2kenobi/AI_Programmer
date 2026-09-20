@@ -59,9 +59,16 @@ while IFS= read -r H; do
     || ko "$H NON installato nel progetto nuovo (dichiarato in settings.json)"
 done <<< "$DICHIARATI"
 
-[ "$(echo "$COPIATI" | grep -c .)" -eq "$N_DICHIARATI" ] \
+# (2026-09-20, dalla cura H1): copia-hook ora porta anche le righe .gitignore dei
+# residui — l'output puo' contenere una riga in piu' (la .gitignore), mai una in
+# meno: gli HOOK copiati devono essere TUTTI i dichiarati
+N_HOOK_COPIATI=$(echo "$COPIATI" | grep -c '^tools/.*\.sh$')
+[ "$N_HOOK_COPIATI" -eq "$N_DICHIARATI" ] \
   && ok "copia-hook.sh riporta $N_DICHIARATI hook copiati, quanti sono i dichiarati" \
-  || ko "copia-hook.sh riporta $(echo "$COPIATI" | grep -c .) copiati contro $N_DICHIARATI dichiarati"
+  || ko "copia-hook.sh copia $N_HOOK_COPIATI hook contro $N_DICHIARATI dichiarati"
+echo "$COPIATI" | grep -q '^\.gitignore$' \
+  && ok "copia-hook.sh porta anche la .gitignore dei residui (cura H1)" \
+  || ko "la .gitignore dei residui non viaggia (H1)"
 
 # Il guardiano si prova quando deve fallire: un hook dichiarato ma ASSENTE dall'hub deve
 # far uscire copia-hook.sh in errore, non copiare il resto e tacere — è esattamente il
