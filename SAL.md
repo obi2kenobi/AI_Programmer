@@ -2415,3 +2415,17 @@ riga che ha copiato lo standard dentro l'hub durante il test); `.githooks/` e
 `tools/pre-commit.sh` viaggiano (D13). Scoperta in corsa: `cp -r dir dir` con destinazione
 esistente ANNIDA (`.claude/skills/skills`) — ogni riallineo su repo gia' onboardata avrebbe
 creato una copia dentro la copia; ora si copia il contenuto (`dir/.`). Dopo: 14/14 e 12/12.
+
+**Giro 6 — il turno (D15-D17, D23, `night-shift/night-shift.sh`, `tools/bc_index.py`).**
+Banco: `tests/test-night-shift-log-onesto.sh` (nuovo: forma delle tre cure + aritmetica
+della pausa eseguita) e `tests/test-bc-index.sh` (pari merito in ordine di nome). Cure: il
+log dice «PR di riallineo aperta» SOLO quando sync-repo restituisce la URL, altrimenti
+«riallineo NON riuscito»; l'issue `[night-verify]` porta nel corpo i comandi rossi (da remoto
+il giorno puo' disporre: l'issue #95 non lo permetteva); un ciclo che non ha prodotto PR ne'
+proposte e chiude sotto il minuto dorme il resto del minuto (`NIGHT_CICLO_MIN_SEC`, default
+60) — «riparto SUBITO» resta per i cicli che lavorano, e' il giro A VUOTO che non supera piu'
+uno al minuto (misurati 390 in 4,5 min con la copia rotta); `bc_index.py` ordina per
+(conteggio, nome): i pari merito seguivano l'ordine del filesystem e rigenerare l'indice
+su un'altra macchina dava 174 righe di diff senza un dato cambiato — l'indice vivo e'
+rigenerato una volta con l'ordine nuovo. `tests/test-install.sh` rimuove il
+`repos.conf` che crea nell'hub vivo (E-032).

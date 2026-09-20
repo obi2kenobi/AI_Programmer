@@ -51,7 +51,11 @@ def main():
     """
     rows = [parse(p) for p in glob.glob(os.path.join(ENDPOINTS_DIR, "*.md"))]
     n_cat, mancanti = catalogo_mancanti()
-    rows.sort(key=lambda r: -r[1])
+    # ordine DETERMINISTICO: per conteggio decrescente, poi per nome. Prima i pari merito
+    # seguivano l'ordine di glob (= del filesystem, diverso tra macchine): rigenerare
+    # l'indice su un'altra macchina produceva 174 righe di diff senza un dato cambiato
+    # (test del sistema completo 2026-09-20, D23) — e l'auto-fix notturno le committava.
+    rows.sort(key=lambda r: (-r[1], r[0]))
     lines = [
         "# Business Central — mappatura endpoint",
         "",

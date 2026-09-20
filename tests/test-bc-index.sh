@@ -33,6 +33,18 @@ grep -q "Catalogo servizi OData" "$TMP/docs/bc/README.md" \
   && ok "l'indice riporta il catalogo e i mancanti al censimento" \
   || ko "manca il conteggio catalogo/mancanti"
 
+# (D23, test del sistema completo 2026-09-20): ordine DETERMINISTICO. I pari merito
+# seguivano l'ordine di glob (= del filesystem): rigenerare su un'altra macchina dava 174
+# righe di diff senza un dato cambiato. Tre endpoint con lo stesso numero di campi devono
+# uscire in ordine di nome, qualunque sia l'ordine in cui il filesystem li restituisce.
+TMP2=$(mktemp -d); mkdir -p "$TMP2/docs/bc/endpoints"
+for n in zeta alfa mezzo; do printf '# Endpoint: `%s`\n\n- Campi trovati: 7\n\n| Campo | Tipo |\n|---|---|\n| a | x |\n' "$n" > "$TMP2/docs/bc/endpoints/$n.md"; done
+(cd "$TMP2" && python3 "$HERE/tools/bc_index.py" >/dev/null 2>&1)
+ORDINE=$(grep -oE '^\| `[a-z]+`' "$TMP2/docs/bc/README.md" | tr -d '`| ' | tr '\n' ' ')
+[ "$ORDINE" = "alfa mezzo zeta " ] && ok "pari merito in ordine di nome (deterministico tra macchine)" \
+  || ko "ordine dei pari merito dipende dal filesystem: '$ORDINE' (atteso 'alfa mezzo zeta')"
+rm -rf "$TMP2"
+
 # bug reale (revisione 14 lenti, 2026-08-28): ogni riga della tabella del catalogo ha DUE
 # valori fra backtick (nome visualizzato con spazi, nome tecnico con underscore) — la
 # regex catturava il PRIMO (visualizzato), che non corrisponde mai a un nome di file
