@@ -159,6 +159,19 @@ fi
 
 log "categoria '$CAT' su $TARGET"
 
+# (2026-09-20, Luca: «chiudi ora»): per la famiglia E-002 il fix e' MECCANICO —
+# cattura-prima e' una trasformazione deterministica, non un'opinione da modello.
+# Prima il trasformatore (zero LLM, riga esatta, sintassi verificata dentro),
+# l'agente resta SOLO per le forme che quello non riconosce. Dieci debiti
+# provati dal modello, zero saldati: ora si salda senza chiedere permesso a un 14b.
+TRANSFORMED=0
+if [ "$CAT" = "debito" ] && [ "$FAMIGLIA" = "E-002" ] && [ -f "$HERE/tools/salda-e002.sh" ]; then
+  if bash "$HERE/tools/salda-e002.sh" "$TARGET" "${SITO##*:}" 2>/dev/null; then
+    TRANSFORMED=1
+    log "debito: applicato dal TRASFORMATORE deterministico (nessun modello coinvolto)"
+  fi
+fi
+
 # --- l'agente lavora (confinato: read/write/run dentro la repo, denylist attiva) -
 SITO_NOTA=""
 [ -n "$SITO" ] && SITO_NOTA=" The exact site is line ${SITO##*:} of this file."
@@ -174,7 +187,9 @@ Rules:
 - After writing, read the file back and verify your edit."
 
 AGENTE_RC=0
-AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-240}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
+if [ "$TRANSFORMED" -eq 0 ]; then
+  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-240}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
+fi
 
 # il debito e' un tentativo solo — marcato ALL'ATTEMPT, prima di ogni uscita:
 # stanotte, con Ollama wedged, l'agente moriva PRIMA della marcatura e la finestra

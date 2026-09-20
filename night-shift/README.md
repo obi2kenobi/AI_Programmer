@@ -137,6 +137,16 @@ Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica
 - `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
   lenti specializzate per file (sostituita da caccia-lente per stabilita').
 
+## Il saldatore deterministico (E-002 si salda senza modello)
+
+`tools/salda-e002.sh` — il fix cattura-prima della famiglia E-002 e' una
+TRASFORMAZIONE, non un'opinione: il trasformatore riscrive la riga esatta
+(forme `if PROD | grep ...` e condizioni composte), verifica la sintassi e
+ripristina se qualcosa non torna. Nella caccia-miglioria viene PRIMA
+dell'agente: i debiti E-002 si saldano senza chiedere permesso a un modello,
+e l'agente resta per le forme non riconosciute. («Chiudi ora», 2026-09-20:
+dieci debiti provati dal 14b, zero saldati — la via meccanica li chiude.)
+
 ## L'allineamento dello standard (il drift si dichiara)
 
 Le repo di destinazione portano una COPIA dello standard, sincronizzata al
