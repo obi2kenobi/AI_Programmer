@@ -33,11 +33,12 @@ fi
 
 SYSTEM="You are a coding agent working in a project directory. You can:
 1. READ a file: respond with JSON {\"action\":\"read\",\"path\":\"filename\"}
-2. WRITE a file: respond with JSON {\"action\":\"write\",\"path\":\"filename\",\"content\":\"full file content\"}
-3. RUN a command: respond with JSON {\"action\":\"run\",\"command\":\"the command\"}
-4. FINISH: respond with your final answer as plain text (no JSON).
+2. EDIT a file (PREFERRED for any change): respond with JSON {\"action\":\"edit\",\"path\":\"filename\",\"old\":\"the EXACT current text copied byte for byte from what you read\",\"new\":\"the replacement text\"}. The edit FAILS if old is not found or appears more than once: read first, copy exactly, include surrounding lines when needed.
+3. WRITE a full file: ONLY to create a NEW file — never to modify an existing one.
+4. RUN a command: respond with JSON {\"action\":\"run\",\"command\":\"the command\"}
+5. FINISH: respond with your final answer as plain text (no JSON).
 
-Rules: always read a file before writing it. One action per response. When done, respond with your final answer as text.
+Rules: always READ before EDIT. One action per response. Minimal diffs: edit only the lines that must change, keep everything else byte-identical. When done, respond with your final answer as text.
 
 ${AGENTE_INTELLIGENZA:+
 YOUR SPECIALIST EXPERTISE (from AI_Programmer):
@@ -103,6 +104,43 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
 
   RESULT=""
   case "$ACTION" in
+    edit)
+      # (2026-09-20, «portare in fondo»): la primitive che mancava. Con solo
+      # write_file il modello RISCRIVE il file intero anche quando ha capito
+      # (516 righe per un tubo). edit = sostituzione ESATTA vecchio→nuovo:
+      # fallisce se la stringa non c'e', quindi il modello DEVE leggere prima,
+      # e il diff minimale non e' una preghiera nel prompt — e' strutturale.
+      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FOLD=$(echo "$STRIPPED" | jq -r '.old')
+      FNEW=$(echo "$STRIPPED" | jq -r '.new')
+      REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
+      REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
+      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+        if [ -f "$REAL" ]; then
+          EDIT_OUT=$(python3 -c "
+import sys
+p, old, new = sys.argv[1], sys.argv[2], sys.argv[3]
+s = open(p).read()
+if old not in s:
+    print('NOT_FOUND'); sys.exit(0)
+if s.count(old) > 1:
+    print('AMBIGUOUS'); sys.exit(0)
+open(p, 'w').write(s.replace(old, new))
+print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
+          case "$EDIT_OUT" in
+            OK) RESULT="Edit applied to $FPATH (exact replacement done)"; log "  edit: $FPATH (sostituzione esatta)" ;;
+            NOT_FOUND) RESULT="ERROR: old string not found in $FPATH — read the file first, use the EXACT current text as old"; log "  edit: $FPATH vecchio non trovato" ;;
+            AMBIGUOUS) RESULT="ERROR: old string appears more than once in $FPATH — include more surrounding lines to make it unique"; log "  edit: $FPATH ambiguo" ;;
+            *) RESULT="ERROR: edit failed"; log "  edit: $FPATH fallito" ;;
+          esac
+        else
+          RESULT="ERROR: file not found: $FPATH"
+        fi ;;
+        *)
+        RESULT="ERROR: path outside project"
+        log "  edit: $FPATH FUORI (rifiutato)" ;;
+      esac ;;
+
     read)
       FPATH=$(echo "$STRIPPED" | jq -r '.path')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
