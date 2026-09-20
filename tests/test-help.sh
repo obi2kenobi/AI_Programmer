@@ -22,6 +22,13 @@ while IFS= read -r nome; do
 done < <(echo "$OUT" | grep -oE '^[[:space:]]+[a-z_-]+\.(sh|py)' | tr -d ' ')
 [ -z "$ROTTI" ] && ok "ogni comando del menu esiste" || ko "comandi fantasma nel menu:$ROTTI"
 
+# (giro 29, 2026-09-20): il menu diceva «16 oracoli» — erano i .py totali di allora, gli
+# oracoli sono 11 (README). Due documenti vivi, un numero: devono dire lo stesso.
+N_HELP=$(echo "$OUT" | grep -oE 'oracoli \([0-9]+' | grep -oE '[0-9]+')
+N_README=$(grep -oE '\*\*[0-9]+ oracoli\*\*' "$HERE/README.md" | grep -oE '[0-9]+')
+[ -n "$N_HELP" ] && [ "$N_HELP" = "$N_README" ] && ok "il menu e il README contano gli stessi oracoli ($N_HELP)" \
+  || ko "oracoli: menu dice '$N_HELP', README dice '$N_README'"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

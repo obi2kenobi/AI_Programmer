@@ -2547,7 +2547,7 @@ cosi' non marcisce. status-page e turno-vivo curati al giro 10/9: 6/6 e 9/9.
 `tools/giri-ignoranti.sh`, `tools/giri-avversari.sh`, `llm/ask-qwen.sh`).** A cosa servono:
 il ciclo-vivo e' il giro a livelli crescenti (tool → collegamenti → flussi → architettura →
 meta) con memoria in file piatti sotto `.ciclo/`; le sonde ignoranti sono le 15 domande dello
-straniero scortese; gli attacchi sono 100 mutazioni che devono far scattare una difesa; i
+straniero scortese; gli attacchi sono 95 mutazioni che devono far scattare una difesa (avevo scritto 100: ricontato dal RESOCONTO); i
 wrapper `llm/ask-*.sh` sono il gesto unico per parlare a un cervello (stdin come contesto,
 timeout, log d'uso). Difetti trovati leggendo ed eseguendo: (14) con zero finding il ciclo
 appendeva una RIGA VUOTA allo storico a ogni giro — «finding totali» e media/giro contavano
@@ -2672,3 +2672,15 @@ chiaro fino a GitHub («Mask, don't omit», regola vincolante). Ora ogni output 
 dalla maschera (formato script e riga per riga), col rc del comando preservato via PIPESTATUS.
 Banco: due casi nel gate intero con gh finto (`tests/test-morning-gate-cieco.sh`, 9/9): rossi
 prima («unexpected EOF while looking for matching» e il token 4 volte nel report), verdi dopo.
+
+**Giro 29 — la coerenza dei documenti vivi (`README.md`, `docs/system.md`, `METHOD.md`,
+`tools/help.sh`).** I numeri ricontati contro il repo: 149 file di test, 38 tool shell, 17 python
+(11 oracoli), 14 skill, 6 agenti, 65 pattern, 3 hook, 95 attacchi, 15 sonde. Corretti: (D42)
+`docs/system.md` dichiarava ancora il Qwen3.8-27B come braccia notturne — la mappa del sistema
+contraddiceva la decisione del 19/9; (D43) `README.md` diceva «Suite: 87/87 (bash .night-verify)»
+— il numero era di agosto e il comando non e' quello (la suite e' `tools/suite.sh`, la notte la
+chiama dalla riga @540); (D44) `tools/help.sh` diceva «16 oracoli» (erano i .py totali di allora)
+e `docs/system.md` «ora 7 agenti» (mai stati piu' di 6, nessuno cancellato nella storia); il mio
+stesso paragrafo dei giri 14-17 diceva «100 mutazioni» (sono 95: ricontate dal RESOCONTO). Guardia
+nuova in `tests/test-help.sh`: menu e README devono contare gli stessi oracoli. METHOD.md e
+PROJECT.md: letti, nessun numero marcio.

@@ -51,7 +51,7 @@ GLI ALTRI
   verifica_banco.py <file>    il giudice dell'uscita di un banco GAS
   help.sh                     questo menu
 
-E gli oracoli (16, formula minata dal codice reale, mai inventata):
+E gli oracoli (11, formula minata dal codice reale, mai inventata):
   valorizzazione_magazzino · margine_documento · rating_dso_clienti · scadenzario_aging
   accuratezza_fatture_acquisto · leasing_amministrativo · bilancio_bu · rollforward_cespiti
   indici_crisi · scostamento_standard_effettivo · riconciliazione_magazzino ...

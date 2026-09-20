@@ -52,4 +52,5 @@ per gli agenti.
   assignee GitHub per le commesse, `AGENTS.md` §0bis.
 - **Ogni uso lascia il segno**: report dal campo a fine sessione
   (hook Stop + `docs/campo/`).
-- Suite: 87/87 (`bash .night-verify`).
+- Suite: `bash tools/suite.sh` (ogni `tests/test-*.sh`, riepilogo N/TOT in uscita; la notte la
+  esegue dalla riga `@540 bash tools/suite.sh` di `.night-verify`).
