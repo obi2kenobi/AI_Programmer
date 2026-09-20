@@ -2684,3 +2684,14 @@ e `docs/system.md` «ora 7 agenti» (mai stati piu' di 6, nessuno cancellato nel
 stesso paragrafo dei giri 14-17 diceva «100 mutazioni» (sono 95: ricontate dal RESOCONTO). Guardia
 nuova in `tests/test-help.sh`: menu e README devono contare gli stessi oracoli. METHOD.md e
 PROJECT.md: letti, nessun numero marcio.
+
+**Giro 30 — la chiusura (suite, mutazioni, banco di fine passaggio).** Sull'albero committato:
+`tools/suite.sh` 149/149 file verdi; `tools/mutation-tests.sh` 53 test reagiscono alla
+mutazione, 0 teatri (il primo lancio si e' rifiutato — «albero sporco» — perche' la suite stessa,
+girando in parallelo, aveva appena ripristinato `tools/bc_map.py` con `chmod +x`: il file era
+l'unico .py non eseguibile, ora e' come gli altri); `tools/banco-passaggio.sh --veloce` 6/7 — il
+rosso e' il privacy-check DEGRADATO dichiarato: `night-shift/repos.key` e' locale al Mac, da una
+sessione cloud il gate non puo' controllare niente e lo dice (debito gia' in DEBITI.md: il sistema
+vive sul Mac). Attacchi 95/0 aggirati, antivirus 4/4. Diciassette difetti nuovi (D28-D44) curati
+in venti giri, ognuno col suo test rosso prima. La PR #97 e' stata mergiata durante il lavoro: i
+giri 11-30 vanno in una PR nuova sullo stesso ramo (#98).
