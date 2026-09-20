@@ -30,6 +30,14 @@ grep -q '\[Perché è così\](#perché-è-così)' "$TMP/SAL.md" \
   && ok "ancora con 'é'/'è'/'ì' preservate" \
   || ko "ancora con più accenti rotta — riga: $(grep 'Perché' "$TMP/SAL.md")"
 
+# (giro 25, 2026-09-20 — D38): un titolo > 130 caratteri spariva dall'indice in silenzio
+LUNGO="Titolo lunghissimo $(printf 'x%.0s' $(seq 1 140))"
+printf '# T\n\nintro\n\n### %s\n\ncorpo\n' "$LUNGO" > "$TMP/SAL.md"
+OUT=$(bash "$TMP/tools/sal-indice.sh" 2>&1)
+grep -qF "[$LUNGO](" "$TMP/SAL.md" && ok "titolo di $(printf '%s' "$LUNGO" | wc -c | tr -d ' ') caratteri indicizzato (non scartato)" || ko "titolo lungo scartato dall'indice"
+grep -q "titolo lungo" <<<"$OUT" && ok "il titolo lungo e' DICHIARATO (canone <=130), non taciuto" || ko "titolo lungo indicizzato senza avviso"
+cp "$HERE/tools/sal-indice.sh" "$TMP/tools/"
+
 # giri avversari 2026-08-28 (A19): il marker del SAL VERO poteva essere
 # sostituito senza che nessun test diventasse rosso (questo test prova solo
 # fixture). Il marker è il contratto con sal-indice.sh: senza, la rigenerazione

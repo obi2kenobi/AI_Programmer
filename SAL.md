@@ -131,7 +131,9 @@
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 - [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
 - [2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)](#2026-09-17-3-la-notte-soltanto-ai_programmer-decisione-di-luca)
+- [2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)](#2026-09-20-i-tre-report-dal-campo-del-19-9-lavorati-nell-hub-registrazione-a-posteriori)
 - [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
+- [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
 
 
 ## Stato
@@ -2356,6 +2358,28 @@ pulito ogni volta. Stanotte: la stessa macchina con cascata, caccia con cooldown
 quattro categorie di fix, sonno adattivo, auto-verifica. Il test definitivo non
 è più un test: è la produzione.
 
+### 2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)
+
+Registrazione scritta il 20/9 sera (giro 25 dell'analisi profonda): `tools/campo-triage.sh`
+contava tre report NON processati perche' il loro nome non compariva nel diario, mentre il
+lavoro era stato fatto e committato nella mattina del 20/9 — senza voce SAL. Il contratto del
+triage e' il nome del report nel diario: eccoli, con il commit che li ha lavorati.
+
+- 2026-09-19-repo-f-standard-56-giri-21-rilievi → commit 44c74a9 «dal report REPO-F: 5 difetti
+  hub curati (verificati veri uno per uno) + 7 regole al canone».
+- 2026-09-19-repo-i-standard-cinquanta-giri-correzioni → commit 7892bbf «dal report REPO-I: i
+  tre rilievi ALTA dell'hub curati e provati + 8 regole al canone» (il report era arrivato con
+  09b469e e la PR #96).
+- 2026-09-19-budget-vendite-standard-cinquanta-giri → commit 6aeae73 «dal report Budget Vendite
+  (portato a mano: la sessione aveva l'hub in sola lettura): gas-gate portato e seminato, blocco
+  cloud in sync-repo, 5 regole al canone».
+- Il quarto lavoro della mattina, e298794 «dal report BusinessPlan: il carattere che zittiva il
+  settimo patto + le verifiche-vuote rosse + 6 regole», non ha un file in `docs/campo/`: il
+  report e' rimasto nella repo di origine.
+
+Lezione: il triage legge il diario, non i commit — un lavoro senza voce SAL e' invisibile
+all'anello della memoria (T7 del test del sistema completo), anche se il codice lo porta.
+
 ### 2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)
 
 Il report `docs/campo/2026-09-20-test-sistema-completo-fable.md` (PR #97) ha riprodotto 21
@@ -2485,7 +2509,7 @@ curati nello stesso giro — `tools/dashboard.py` sotto la densita' di chiarezza
 sotto `set -e` quando system-health o gate-summary uscivano rossi, e la pagina non nasceva
 (`|| true`: il rosso di un blocco e' un dato da mostrare — `tests/test-status-page.sh` 6/6).
 
-### 2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: «capendo profondamente ogni pezzo a cosa serva e come si usi, chiudi tutti gli errori che trovi in piena autonomia»)
+### 2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)
 
 **Giro 11 — l'agente nostro (`night-shift/agente.sh`).** A cosa serve: il ciclo multi-turno
 bash ↔ modello locale che opencode non chiudeva — il modello chiede read/edit/write/run con
@@ -2592,3 +2616,42 @@ scadenzario_aging ovunque: colonne controllate su `reader.fieldnames`, file aper
 campi JSON elencati. Le suite dei singoli oracoli restano verdi (18/18 il settimo ciclo). Letti
 senza rilievi: verifica_banco (i cinque controlli, rc 2 sulla forma), py-gate (compile senza
 `__pycache__`, un comando per riga di .night-verify), gas_qualita (errori dichiarati).
+
+**Giri 22-24 — censimento BC, specchi, hook di sessione (`tools/bc_map.py`,
+`tools/bc_tipi_metadata.py`, `tools/bc_index.py`, `.opencode/`, `tools/*-reminder-hook.sh`).**
+bc_map legge un endpoint OData e scrive il censimento con merge delle colonne curate a mano;
+bc_tipi corregge i tipi dal `$metadata`; bc_index rigenera il README. (D33) a rete giu' (o
+servizio token irraggiungibile) uscivano URLError nudo — il docstring di bc_tipi promette «morte
+loud, non traceback nudo»: ora host e ragione dichiarati, mai l'URL intero del token (porta il
+tenant); banco nuovo `tests/test-bc-map.sh` (bc_map non aveva nessun test col suo nome: la
+mutazione non lo vedeva) e il caso rete-giu' in quello di bc_tipi. Specchi: skill e agenti
+identici fra `.claude/` e `.opencode/` (diff -r vuoto), le tre lenti di sincronia verdi; una
+cartella `.claude/agents/agents` vuota e non tracciata era un residuo di E-035: rimossa. Hook:
+letti per intero, semantica coerente (sensibile prima del promemoria SAL, contatori in /tmp per
+directory, Stop una volta l'ora) — nessun rilievo.
+
+**Giro 25 — la memoria (`tools/campo-triage.sh`, `tools/sal-indice.sh`, `tools/sal-archivia.sh`,
+`tools/privacy-check.sh`, `tools/presidio.sh`, `tools/fork-stato.sh`, `tools/polilivello.sh`).**
+Il triage era ROSSO: tre report del 19/9 lavorati la mattina del 20/9 senza voce SAL — scritta
+sopra, a posteriori, con i commit. (D38) `tools/sal-indice.sh` scartava IN SILENZIO ogni titolo
+oltre 130 caratteri: il titolo di questa voce (188) non era nell'indice, la sonda S16 diceva
+«indice FERMO» e l'antivirus dei rilevatori (`tools/prova-rilevatori.sh`) accusava la sonda —
+che aveva ragione. Ora ogni titolo e' indicizzato e quello lungo si dichiara su stderr; il titolo
+accorciato al canone. Gli altri sei: letti ed eseguiti senza rilievi (privacy DEGRADATO
+dichiarato senza repos.key, presidio senza registro, fork-stato rc 2 senza argomenti).
+
+**Giri 26-27 — i denti del canone e il garante (`tools/cita-verifica.sh`,
+`tools/fixture-provenienza.sh`, `tools/gas-gate.sh`, `tools/garante-standard.sh`).** Denti
+verdi ed eseguiti a mano (citazione falsa → rc 1 con la riga; senza argomenti → rc 2).
+Il garante — l'hook di livello utente che installa lo standard su qualsiasi repo — aveva la
+stessa famiglia di D28 (D34: leggeva solo gli hook PreToolUse, metodo-reminder restava a terra
+in OGNI repo installata dal garante), piu' due che il suo test non poteva vedere: `cp -R` su una
+cartella esistente annida e sovrascrive il personalizzato, e un settings.json PROPRIO senza i
+nostri hook veniva sovrascritto dal cp; la copia di patterns non partiva mai (la cartella era
+appena stata creata vuota dal mkdir e risultava «gia' presente»). Il test misurava «nessuna
+modifica» con `xargs md5 | md5`: su Linux md5 non esiste, due impronte vuote, sempre uguali —
+il caso 3 era teatro qui. Cure: hook via `tools/copia-hook.sh` (tutti gli eventi, chmod,
+.gitignore dei residui), cartelle copiate solo se assenti (dichiarato), settings proprio =
+avviso senza tocco, impronta con cksum, due casi nuovi (8/8); lente di portabilita' estesa al
+md5 nudo. (D39) `tests/test-suite-meta-audit.sh`: il grep leggeva stdin invece del file — zero
+asserzioni, «0 OK, 0 FAIL», verde da sempre; ora 149 asserzioni vere.

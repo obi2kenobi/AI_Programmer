@@ -40,7 +40,14 @@ def main():
     # $metadata sta a livello tenant, PRIMA della Company(...): base_url la porta nelle credenziali
     base = c["base_url"].split("/Company(")[0].rstrip("/") + "/$metadata"
     req = urllib.request.Request(base, headers={"Authorization": f"Bearer {token}"})
-    xml = urllib.request.urlopen(req, timeout=120).read()
+    # (giro 22, 2026-09-20 — D33): il docstring prometteva «non traceback nudo» e qui usciva
+    # URLError nudo a rete giu'. Host e ragione, dichiarati.
+    try:
+        xml = urllib.request.urlopen(req, timeout=120).read()
+    except urllib.error.HTTPError as e:
+        sys.exit(f"ERRORE BC: $metadata risponde HTTP {e.code} {e.reason}")
+    except (urllib.error.URLError, OSError) as e:
+        sys.exit(f"ERRORE BC: $metadata irraggiungibile ({urllib.parse.urlparse(base).netloc}): {getattr(e, 'reason', e)}")
     root = ET.fromstring(xml)
     ns = {"edmx": "http://docs.oasis-open.org/odata/ns/edmx",
           "edm": "http://docs.oasis-open.org/odata/ns/edm"}
