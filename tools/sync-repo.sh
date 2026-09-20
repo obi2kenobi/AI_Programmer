@@ -45,31 +45,47 @@ if [ -n "$LOCAL_DIR" ]; then
   DEST="$LOCAL_DIR"
 else
   [ -n "$REPO" ] || { echo "uso: sync-repo.sh <owner/repo> [--pr] | --from-local <dir>"; exit 1; }
-  gh api "repos/$REPO/contents/CLAUDE.md" --jq .content 2>/dev/null | base64 -d > "$TMP/CLAUDE.md" \
-    || { echo "sync-repo: impossibile leggere CLAUDE.md da $REPO (repo privata senza accesso, o gh assente)"; exit 1; }
+  # (D11, test del sistema completo 2026-09-20): una repo VUOTA (mai onboardata, senza
+  # CLAUDE.md) faceva morire qui il comando insegnato in docs/benvenuto-collaboratori.md.
+  # Con --standard l'assenza e' il caso normale dell'onboarding da zero: si dichiara e si
+  # prosegue (il clone sotto fallira' comunque a voce alta se gh manca davvero).
+  if REMOTO=$(gh api "repos/$REPO/contents/CLAUDE.md" --jq .content 2>/dev/null) && [ -n "$REMOTO" ]; then
+    printf '%s' "$REMOTO" | base64 -d > "$TMP/CLAUDE.md"
+  elif [ "$STANDARD" -eq 1 ]; then
+    echo "sync-repo: CLAUDE.md ASSENTE su $REPO (o non leggibile) — repo mai onboardata: --standard la porta a standard da zero"
+    : > "$TMP/CLAUDE.md"
+  else
+    echo "sync-repo: impossibile leggere CLAUDE.md da $REPO (ASSENTE, repo privata senza accesso, o gh assente)"; exit 1
+  fi
   DEST=""
 fi
 
 if diff -q "$HUB_CLAUDE" "$TMP/CLAUDE.md" >/dev/null 2>&1; then
   echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub"
-  exit 0
+  # (D12): il CLAUDE.md e' il canarino, non lo standard. Con --standard si prosegue e si
+  # confronta il sistema intero (skill, agenti, hook): prima l'uscita qui rendeva
+  # invisibile la deriva di tutto cio' che non e' CLAUDE.md.
+  [ "$STANDARD" -eq 1 ] || exit 0
+else
+  # bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
+  # (già .../CLAUDE.md) — cercava CLAUDE.md.md, inesistente: entrambi i diff sotto
+  # fallivano silenziosamente su stderr, DIFF_LINES restava sempre 0 e il blocco di
+  # dettaglio vuoto — la funzione principale dello strumento (mostrare il drift) non
+  # funzionava mai, pur restando l'exit code corretto per caso.
+  DIFF_LINES=$(diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | grep -c '^[<>]')
+  echo "sync-repo: DIVERGENTE — CLAUDE.md ${REPO:-locale} dista $DIFF_LINES righe da quello dell'hub (l'hub è la fonte: regole ereditate)"
+  echo "  (l'hub ha sezioni che il progetto non riceve mai dall'onboarding in poi — F2 del report sul campo)"
+  diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | head -20 | sed 's/^/  /'
 fi
-
-# bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
-# (già .../CLAUDE.md) — cercava CLAUDE.md.md, inesistente: entrambi i diff sotto
-# fallivano silenziosamente su stderr, DIFF_LINES restava sempre 0 e il blocco di
-# dettaglio vuoto — la funzione principale dello strumento (mostrare il drift) non
-# funzionava mai, pur restando l'exit code corretto per caso.
-DIFF_LINES=$(diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | grep -c '^[<>]')
-echo "sync-repo: DIVERGENTE — CLAUDE.md ${REPO:-locale} dista $DIFF_LINES righe da quello dell'hub (l'hub è la fonte: regole ereditate)"
-echo "  (l'hub ha sezioni che il progetto non riceve mai dall'onboarding in poi — F2 del report sul campo)"
-diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | head -20 | sed 's/^/  /'
 
 # --standard: il sistema intero, non solo CLAUDE.md — lo standard non è un'opzione
 # che si dichiara, è un insieme di file che devono esserci (METHOD.md §"Lo standard")
 if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
-  cd "$TMP/work"
+  # (D14, test del sistema completo 2026-09-20): un `cd` non guardato — se il clone
+  # «riesce» senza creare la directory, il ciclo di copia qui sotto gira nella CWD di chi
+  # lancia (misurato: 100+ file dello standard copiati e staged DENTRO l'hub). Mai.
+  cd "$TMP/work" || { echo "sync-repo: il clone non ha creato $TMP/work — mi fermo, non copio nella directory corrente"; exit 1; }
   COPIATI=0
   # bug reale (revisione 14 lenti, 2026-08-28): mancavano .opencode/skills (root cause
   # della divergenza trovata da 3 lenti indipendenti — le 9 skill "viaggiavano" solo
@@ -96,10 +112,21 @@ done
   # (report Budget Vendite 2026-09-19): il gate di sintassi GAS viaggia — E-028
   # era stata imparata per Python e mai generalizzata al linguaggio dell'hub stesso
   CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh"
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins $CITATI; do
+  # (D13, 2026-09-20): i GUARDIANI DEL COMMIT viaggiano — .githooks (pre-commit e
+  # commit-msg) e tools/pre-commit.sh; l'attivazione resta `git config core.hooksPath .githooks`
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
     [ -e "$HERE/$ITEM" ] || continue
-    mkdir -p "$(dirname "$ITEM")"
-    cp -r "$HERE/$ITEM" "$ITEM"
+    if [ -d "$HERE/$ITEM" ]; then
+      # (2026-09-20, misurato nell'hub durante il test del sistema): `cp -r dir dir` con la
+      # destinazione GIA' esistente annida (.claude/skills/skills) — su una repo gia'
+      # onboardata ogni riallineo avrebbe creato una copia dentro la copia. Si copia il
+      # CONTENUTO nella directory, che si fonde con quello che c'e'.
+      mkdir -p "$ITEM"
+      cp -r "$HERE/$ITEM/." "$ITEM/"
+    else
+      mkdir -p "$(dirname "$ITEM")"
+      cp "$HERE/$ITEM" "$ITEM"
+    fi
     git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
   done
   # bug reale dal campo (REPO-V, progetto GAS nuovo, 2026-09-03): qui la lista degli hook
@@ -157,7 +184,7 @@ fi
 if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   BR="claude/sync-claude-md-$(date +%Y%m%d)"
   gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
-  cd "$TMP/work"
+  cd "$TMP/work" || { echo "sync-repo: il clone non ha creato $TMP/work — mi fermo"; exit 1; }
   git checkout -q -b "$BR"
   cp "$HUB_CLAUDE" CLAUDE.md
   git add CLAUDE.md

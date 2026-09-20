@@ -2403,3 +2403,15 @@ qui non esisteva — era quello a uccidere il rilevatore; il controllo del numer
 in `controlla_numero_test` chiamata dal nuovo `.githooks/commit-msg` (il pre-commit di git
 non conosce il messaggio: passava "" da sempre). Dopo: 12/12, compreso il caso «glifo staged»
 che su questa macchina era rosso dall'inizio della sessione per lo stesso locale.
+
+**Giro 5 — sync-repo (D11-D14, `tools/sync-repo.sh`).** Banco: `tests/test-sync-repo.sh` fa
+girare `--standard` end-to-end con `gh` stub su bare locali — repo VUOTA, repo con CLAUDE.md
+identico ma senza standard, riallineo su repo gia' a standard, clone che «riesce» senza
+directory — rossi 4 prima. Cure: CLAUDE.md remoto ASSENTE con `--standard` = onboarding da
+zero dichiarato, non morte; ALLINEATO sul CLAUDE.md non ferma piu' `--standard` (il canarino
+non e' lo standard: si confronta il sistema intero e il verdetto e' «GIÀ A STANDARD» solo
+se davvero non c'e' nulla da portare); `cd "$TMP/work" || exit 1` nei due rami (D14: e' la
+riga che ha copiato lo standard dentro l'hub durante il test); `.githooks/` e
+`tools/pre-commit.sh` viaggiano (D13). Scoperta in corsa: `cp -r dir dir` con destinazione
+esistente ANNIDA (`.claude/skills/skills`) — ogni riallineo su repo gia' onboardata avrebbe
+creato una copia dentro la copia; ora si copia il contenuto (`dir/.`). Dopo: 14/14 e 12/12.
