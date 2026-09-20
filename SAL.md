@@ -2484,3 +2484,19 @@ curati nello stesso giro — `tools/dashboard.py` sotto la densita' di chiarezza
 (stessa cura: locale scelto, rilevatore morto = rosso); `tools/status-page.sh` moriva in silenzio
 sotto `set -e` quando system-health o gate-summary uscivano rossi, e la pagina non nasceva
 (`|| true`: il rosso di un blocco e' un dato da mostrare — `tests/test-status-page.sh` 6/6).
+
+### 2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: «capendo profondamente ogni pezzo a cosa serva e come si usi, chiudi tutti gli errori che trovi in piena autonomia»)
+
+**Giro 11 — l'agente nostro (`night-shift/agente.sh`).** A cosa serve: il ciclo multi-turno
+bash ↔ modello locale che opencode non chiudeva — il modello chiede read/edit/write/run con
+JSON, lo script esegue confinato e rimanda il risultato; lo usano la caccia-miglioria e la
+cascata solver→agente del turno. Come si prova: `tests/test-agente.sh` saltava tutto senza
+Ollama e il banco delle mutazioni lo segnava «teatro» (l'unico rosso della suite dopo i dieci
+giri). Ora ha una parte A DETERMINISTICA con un mock a sequenza (read → edit esatto → finish;
+old assente/ambiguo → file intatto; read/write fuori dal progetto rifiutati; denylist del run;
+tetto dei turni) e una parte B col modello vero, skip dichiarato. Scoperta in corsa: il
+prompt diceva «write SOLO per file nuovi» ma nulla lo faceva rispettare — la riscrittura
+intera del file (516 righe per un tubo, misurata il 19/9) passava di li'. Ora `write` su un
+file esistente e' RIFIUTATO con l'invito all'edit: la regola e' strutturale. `NIGHT_API_URL`
+anche nell'agente (stesso contratto del solver). 13/13 in 2 s; il banco delle mutazioni
+torna a zero teatri.
