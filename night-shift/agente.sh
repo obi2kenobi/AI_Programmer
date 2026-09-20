@@ -26,6 +26,12 @@ T_INIZIO=$(date +%s)
 # (agente o skill dell'hub), quel file DIVENTA l'intelligenza del turno.
 # (2026-09-18, intuizione di Luca: usiamo le lenti e gli agenti che già esistono)
 AGENTE_INTELLIGENZA=""
+if [ -z "${AGENTE_SYSTEM_FILE:-}" ] && [ -f "$HERE/night-shift/cervello-notturno.md" ]; then
+  # (2026-09-20): ogni cervello NUOVO parte col briefing del turno notturno —
+  # chi e', di che catena e' l'ingranaggio, le regole d'onore. Non serve piu'
+  # spiegare al modello cosa fare: lo spieghiamo una volta, qui.
+  AGENTE_SYSTEM_FILE="$HERE/night-shift/cervello-notturno.md"
+fi
 if [ -n "${AGENTE_SYSTEM_FILE:-}" ] && [ -f "$AGENTE_SYSTEM_FILE" ]; then
   AGENTE_INTELLIGENZA=$(head -c 4000 "$AGENTE_SYSTEM_FILE")
   log "intelligenza: $(basename "$AGENTE_SYSTEM_FILE") ($(wc -c < "$AGENTE_SYSTEM_FILE" | tr -d ' ') bytes)"
