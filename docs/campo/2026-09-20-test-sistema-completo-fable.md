@@ -214,7 +214,7 @@ positivo di REPO-E 2026-09-01 in una forma nuova; il file è stato scritto con u
 
 ## Numeri ricontati
 
-- Mappa: «17+ sonde» → 14 identificativi distinti in `tools/giri-ignoranti.sh` (S1–S11, S15–S17);
+- Mappa: «17+ sonde» → 15 identificativi distinti in `tools/giri-ignoranti.sh` (S1–S11, S10bis, S15–S17);
   «7 banchi» → 7 (`tools/banco-passaggio.sh:6`); test: 142 file.
 - Debiti aperti: 15 (8 dominio + 7 risolvibili) — con la classificazione di R6 discutibile (D21).
 - Delibere del censore sul vivo: 0 (D25). PR notturne dell'hub: 4 fuse a mano, 1 chiusa a mano.
@@ -293,5 +293,5 @@ l'argomento sbagliato e il `cd` non guardato che ha copiato lo standard nell'hub
 10. Il nome privato in `tools/dashboard.py:71` va tolto (D24); `.night-verify` dovrebbe
     contenere una riga che pretenda l'albero pulito dopo la suite (D23).
 11. Clasp hook: spogliare anche i backtick, o riconoscere che il comando scrive un `.md` (D27).
-12. La mappa della missione va corretta: 14 sonde, dashboard NON testata a unità, censore mai
+12. La mappa della missione va corretta: 15 sonde, dashboard NON testata a unità, censore mai
     deliberato sul vivo, `--standard` non copre la repo vuota.

@@ -2500,3 +2500,21 @@ intera del file (516 righe per un tubo, misurata il 19/9) passava di li'. Ora `w
 file esistente e' RIFIUTATO con l'invito all'edit: la regola e' strutturale. `NIGHT_API_URL`
 anche nell'agente (stesso contratto del solver). 13/13 in 2 s; il banco delle mutazioni
 torna a zero teatri.
+
+**Giro 12 — il banco delle mutazioni e il banco di fine passaggio (`tools/mutation-tests.sh`,
+`tools/banco-passaggio.sh`).** A cosa servono: il primo prova I TEST (neutralizza il tool
+omonimo con `exit 0` e pretende il rosso: chi resta verde e' teatro); il secondo e' la sequenza
+dei sette banchi da chiudere prima di dichiarare finito (suite, ignoranti, avversari, mutazioni,
+privacy, ciclo-vivo, copertura del codice cambiato). Come si usano: su albero PULITO (la guardia
+si ferma se sporco — e mi ha fermato: il banco girato con lo stash del mio lavoro provava il test
+vecchio, non il nuovo; solo dopo il commit del giro 11 il verdetto e' vero). Esito: 51 test
+reagiscono alla mutazione, 0 teatri.
+
+**Giro 13 — il polso e il menu (`tools/system-health.sh`, `tools/help.sh`, `tools/status-page.sh`,
+`tools/turno-vivo.sh`).** system-health: il controllo E-026 (il job nightshift caricato dal plist
+di casa) stampava OK/ROSSO con `echo` nudo, FUORI dai contatori — un «ROSSO nightshift non
+caricato» non toccava il verdetto ne' l'exit code: un cartello, non una sonda. Ora `ok`/`ko`
+contano, e senza `launchctl` (non e' un Mac) e' un `warn` dichiarato. help.sh diceva «12 sonde»
+(sono 15: S1–S11, S10bis, S15–S17 — e il mio report ne contava 14 perche' la mia regex
+ignorava il «bis»: corretti report e mappa): il numero ora si CALCOLA dal file delle sonde,
+cosi' non marcisce. status-page e turno-vivo curati al giro 10/9: 6/6 e 9/9.

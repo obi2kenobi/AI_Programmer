@@ -33,13 +33,20 @@ fi
 # directory TMP) teneva il posto di quella vera, mai caricata. Il job con il
 # calendario giusto su disco non conta: conta quello CARICATO.
 NS_PATH=$(launchctl print "gui/$(id -u)/luca.nightshift" 2>/dev/null | grep -m1 '^[[:space:]]*path = ' | sed 's/^.*= //')
-if [ -n "$NS_PATH" ]; then
-  case "$NS_PATH" in
-    "$HOME/Library/LaunchAgents/"*) echo "OK   nightshift caricato dal plist di casa ($NS_PATH)";;
-    *) echo "ROSSO nightshift caricato da: $NS_PATH — REGISTRAZIONE SPURIA: bootout + bootstrap da ~/Library/LaunchAgents (E-026)";;
-  esac
+# (giro 13, 2026-09-20): queste tre righe stampavano OK/ROSSO con `echo` nudo — fuori dai
+# contatori GREEN/RED. Un «ROSSO nightshift non caricato» non toccava il verdetto finale
+# ne' l'exit code: il controllo E-026 era un cartello, non una sonda. Ora conta.
+if command -v launchctl >/dev/null 2>&1; then
+  if [ -n "$NS_PATH" ]; then
+    case "$NS_PATH" in
+      "$HOME/Library/LaunchAgents/"*) ok "nightshift caricato dal plist di casa ($NS_PATH)";;
+      *) ko "nightshift caricato da: $NS_PATH — REGISTRAZIONE SPURIA: bootout + bootstrap da ~/Library/LaunchAgents (E-026)";;
+    esac
+  else
+    ko "nightshift non caricato: la finestra notturna non partira'"
+  fi
 else
-  echo "ROSSO nightshift non caricato: la finestra notturna non partira'"
+  warn "launchctl assente (non e' un Mac): il caricamento del turno non e' verificabile qui"
 fi
 # (2026-09-18): wayfinder tolto dal controllo — non e' piu' parte del sistema
 # (sostituito dal nostro agente.sh) e il suo warn permanente dava alla lente
