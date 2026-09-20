@@ -2381,3 +2381,12 @@ Banco: `tests/test-risolvi-issue.sh` pretende la riga `REVIEW: CORRECT|WRONG|UNC
 aveva mai lette) e parlano allo stesso `$API` del solver (il mock le raggiunge); il turno
 scrive il file dell'issue prima del check «gia' implementata» (E-023 torna attiva) e la
 chiamata morta `risolvi-issue.sh --review` sparisce. Dopo: 13/13.
+
+**Giro 3 — il morning gate (D7-D8, `night-shift/morning-gate.sh`).** Banco nuovo:
+`tests/test-morning-gate-cieco.sh` fa girare il gate INTERO su un repo scratch con `gh` stub
+(rotto, poi che risponde), HOME e metriche in quarantena (`HUB_METRICS` sovrascrivibile) —
+rossi 4/7 prima. Cure: `gh` che non risponde = sezione «gate CIECO» nel report e riga
+`gate-cieco` nella memoria, mai «Nessuna. Il sistema ha lavorato»; il `diff --stat` sta
+DOPO il checkout del ramo (prima la sezione Diff era sempre vuota al primo passaggio);
+`ADVERSARY=none` spegne banco e minimita' dichiarandolo (il test passa da 62 s a 1,2 s: i
+60 s erano curl a vuoto verso un Ollama assente). Dopo: 7/7 e i quattro test del gate verdi.
