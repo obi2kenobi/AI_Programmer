@@ -162,6 +162,87 @@ echo 5 > "$SB/.git/revisore/mergi-$(date '+%Y-%m-%d')"
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 2 ] && ok "budget 5/5 → rc 2 (non si delibera piu' oggi)" || ko "rc $RC (atteso 2)"
 
+# --- test del sistema completo, 2026-09-20 (report Fable, D1-D4): quattro buchi che
+# DELIBERAVANO il merge. Ogni caso e' stato riprodotto in DRY prima della cura.
+
+# stub con avversario che RIESCE sempre (ls di un file che c'e'): cosi' la prova morde
+# sulle guardie, non sul banco (la prima stesura passava per il motivo sbagliato:
+# l'avversario smascherava la PR e il rinvio arrivava comunque)
+STUB_LS=$(mktemp /tmp/stub-avv-ls.XXXXXX)
+cat > "$STUB_LS" <<'EOF'
+#!/bin/bash
+MODELLO="$1"; shift; PROMPT=$(cat)
+case "$PROMPT" in
+  *SMASCHERA*) printf '```\nls .night-verify\n```\n' ;;
+  *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["x"]}\n' ;;
+esac
+EOF
+chmod +x "$STUB_LS"
+
+# 9. D1: la PR riscrive le PROPRIE prove (.night-verify a 'true') e rompe il codice.
+#    Le prove si leggono dal ramo di default e una PR che tocca .night-verify non si giudica.
+SB=$(nuova_repo)
+printf 'grep -q "function viva" utils.js\n' > "$SB/.night-verify"
+printf 'function viva(x) {\n  return x * 2;\n}\n' > "$SB/utils.js"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm base
+git -C "$SB" checkout -q -b night/test-prove-addomesticate
+printf 'true\n' > "$SB/.night-verify"; printf 'function morta() {}\n' > "$SB/utils.js"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve"
+git -C "$SB" checkout -q main
+python3 - > "$GHSTUB_JSON" <<'PY'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-prove-addomesticate",
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+  && ok "D1: PR che tocca .night-verify → rinvio, nessun merge (le prove sono del ramo di default)" \
+  || ko "D1: rc $RC — una PR che addomestica le proprie prove e' stata deliberata: $(echo "$OUT" | tail -1)"
+
+# 10. D2: il comando avversario con redirezione NON deve scrivere nel repo ne' contare come prova
+STUB_SCRIVE=$(mktemp /tmp/stub-avv-scrive.XXXXXX)
+cat > "$STUB_SCRIVE" <<'EOF'
+#!/bin/bash
+MODELLO="$1"; shift; PROMPT=$(cat)
+case "$PROMPT" in
+  *SMASCHERA*) printf '```\necho pwned > utils.js\n```\n' ;;
+  *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["x"]}\n' ;;
+esac
+EOF
+chmod +x "$STUB_SCRIVE"
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-avv-scrive
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_SCRIVE" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ok "D2: avversario con '>' → scartato, rc 2" || ko "D2: rc $RC (atteso 2): la redirezione e' passata"
+[ -z "$(git -C "$SB" status --porcelain)" ] && ok "D2: working tree pulito dopo il banco" || ko "D2: il banco ha sporcato il repo: $(git -C "$SB" status --porcelain | head -2 | tr '\n' ' ')"
+grep -q "function viva" "$SB/utils.js" && ok "D2: utils.js intatto" || ko "D2: utils.js SOVRASCRITTO dal comando avversario"
+rm -f "$STUB_SCRIVE"
+
+# 11. D3: createdAt illeggibile → la quarantena chiude, non apre (fail-closed)
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-data
+python3 - > "$GHSTUB_JSON" <<'PY'
+import json
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-data",
+  "isDraft": True, "state": "OPEN", "createdAt": "ieri"}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D3: data illeggibile → rinvio (quarantena fail-closed)" \
+  || ko "D3: rc $RC — data illeggibile e la PR e' stata deliberata"
+
+# 12. D4: diff VUOTO (ramo identico al default) → niente da giudicare, rc 2
+SB=$(nuova_repo)
+git -C "$SB" checkout -q -b night/test-vuoto && git -C "$SB" checkout -q main
+python3 - > "$GHSTUB_JSON" <<'PY'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-vuoto",
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D4: diff vuoto → rinvio, nessun merge del nulla" \
+  || ko "D4: rc $RC — un diff vuoto e' stato deliberato"
+rm -f "$STUB_LS"
+
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il 27b manca)
 if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -q "qwen3.8:27b"; then
   echo "· sfida modello vero: fatta girare a mano nel turno (il censore 27b e' lento: fuori dalla suite)"

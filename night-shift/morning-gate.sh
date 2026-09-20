@@ -18,7 +18,8 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 source "$HERE/lib.sh"
 CONF="$HERE/repos.conf"
-HUB_METRICS="$(cd "$HERE/.." && pwd)/metrics/gate.csv"
+# HUB_METRICS sovrascrivibile SOLO per i test (quarantena della metrica viva, E-032)
+HUB_METRICS="${HUB_METRICS:-$(cd "$HERE/.." && pwd)/metrics/gate.csv}"
 WORK="$HOME/night-shift-work"
 REPORT="$HOME/morning-gate-report.md"
 GATE_LOG="$HOME/morning-gate.log"
@@ -53,8 +54,23 @@ if [ "${#REPO_LIST[@]}" -eq 0 ]; then
 fi
 for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
   DIR="$WORK/${REPO##*/}"
-  gh pr list -R "$REPO" --state open --json number,headRefName,title,mergeable --limit 50 2>/dev/null \
-    | jq -c '.[] | select(.headRefName | test("^night/|^claude/|^glm/"))' > /tmp/gate-prs.json
+  # (D7, test del sistema completo 2026-09-20): con gh assente o non autenticato l'errore
+  # finiva in /dev/null, N valeva 0 e il report diceva «Nessuna. Il sistema ha lavorato o
+  # non aveva coda» — il silenzio era diventato un verdetto, proprio qui. Un gate che non
+  # vede lo DICE: verdetto `gate-cieco` nel report e nella memoria, mai una coda vuota.
+  GH_ERR=$(mktemp /tmp/gate-gh-err.XXXXXX)
+  if ! GH_PRS=$(gh pr list -R "$REPO" --state open --json number,headRefName,title,mergeable --limit 50 2>"$GH_ERR"); then
+    echo "## $REPO — gate CIECO" >> "$REPORT"
+    echo "⛔ **\`gh\` non ha risposto** ($(head -c 200 "$GH_ERR" | tr '\n' ' ')). Nessuna PR vista, nessun verdetto: NON è una coda vuota. Controllare \`gh auth status\` e rilanciare." >> "$REPORT"
+    echo "" >> "$REPORT"
+    echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),—,—,gate-cieco,—," >> "$HUB_METRICS"
+    FAIL=$((FAIL+1)); TOTAL=$((TOTAL+1))
+    log "gate CIECO su $REPO: gh non ha risposto ($(head -c 120 "$GH_ERR" | tr '\n' ' '))"
+    rm -f "$GH_ERR"
+    continue
+  fi
+  rm -f "$GH_ERR"
+  printf '%s' "$GH_PRS" | jq -c '.[] | select(.headRefName | test("^night/|^claude/|^glm/"))' > /tmp/gate-prs.json
   # -s (slurp): conta gli elementi dello stream — senza, jq conta le CHIAVI dell'oggetto
   N=$(jq -s 'length' < /tmp/gate-prs.json); N="${N:-0}"
   echo "## $REPO — $N PR notturne aperte" >> "$REPORT"
@@ -91,8 +107,6 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
     # segnalava mai, lo scopriva solo chi provava a mergere. Il silenzio non è un verdetto qui
     # come altrove in questo script: se GitHub la segna CONFLICTING, lo diciamo prima del resto.
     [ "$MERGEABLE" = "CONFLICTING" ] && echo "⛔ **Non mergeable: conflitto con \`$DB\` — risolvere prima di leggere il resto di questa sezione.**" >> "$REPORT"
-    echo "**Diff:**" >> "$REPORT"
-    git -C "$DIR" diff --stat "origin/$DB...$BRANCH" >> "$REPORT" 2>/dev/null
 
     # bug reale, GRAVISSIMO (revisione 14 lenti, 2026-08-28): fino a qui il working tree di
     # $DIR non viene mai toccato (diff/show sopra usano ref espliciti) — ma le verifiche
@@ -113,6 +127,11 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
       FAIL=$((FAIL+1))
       continue
     fi
+    # (D8, test del sistema completo 2026-09-20): il diff --stat stava PRIMA del checkout,
+    # quando il ramo della PR non esisteva ancora in locale (clone single-branch): la
+    # sezione «Diff:» del report era SEMPRE vuota al primo passaggio. Ora il ramo c'e'.
+    echo "**Diff:**" >> "$REPORT"
+    git -C "$DIR" diff --stat "origin/$DB...$BRANCH" >> "$REPORT" 2>/dev/null
 
     # 1. Verifiche dichiarate — lette da origin/main: la dichiarazione è della REPO,
     #    non del branch della PR (che può essere nato prima della dichiarazione)
@@ -198,7 +217,10 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
     # banco avversariale — solo qwen/opus erano cablati. Asimmetria diretta col mandato
     # di armonizzare notte+giorno "code e glm": ora ADVERSARY=glm è una via reale.
     [ "$ADVERSARY" = "glm" ] && ASK="$HERE/../llm/ask-glm.sh"
-    if [ -x "$ASK" ]; then
+    # ADVERSARY=none: nessun cervello (suite e macchine senza Ollama) — il banco e la
+    # minimita' si saltano DICHIARATI, non si aspettano 60s di curl a vuoto per PR
+    [ "$ADVERSARY" = "none" ] && { ASK=""; echo "**Banco avversariale:** spento (ADVERSARY=none)" >> "$REPORT"; }
+    if [ -n "$ASK" ] && [ -x "$ASK" ]; then
       DIFF_TXT=$(git -C "$DIR" diff "origin/$DB...$BRANCH" 2>/dev/null | head -300)
       if [ -n "$DIFF_TXT" ]; then
         # bug reale (dogfooding, set 3 "flusso delle idee", 2026-08-22): il prompt diceva
@@ -244,7 +266,7 @@ $DIFF_TXT"
 
     # 2-bis. Verifica di MINIMITÀ (livello 4, consultiva — da /ponytail-review, 2026-08-21):
     # delete-list proposta sul diff; informa la review, in v1 non cambia il verdetto.
-    if [ -n "${DIFF_TXT:-}" ] && [ -x "$HERE/../llm/ask-qwen.sh" ]; then
+    if [ "$ADVERSARY" != "none" ] && [ -n "${DIFF_TXT:-}" ] && [ -x "$HERE/../llm/ask-qwen.sh" ]; then
       MIN_PROMPT="Sei il revisore anti-over-engineering. Ecco il diff di una pull request. Indica SOLO le parti in eccesso rispetto a ciò che serviva: codice che si può eliminare o ridurre senza perdere funzione, dipendenze non necessarie, astrazioni superflue. Se il diff è già minimale, scrivi ESATTAMENTE: già minimale. Massimo 8 righe.
 
 ${DIFF_TXT}"

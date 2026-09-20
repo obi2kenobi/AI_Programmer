@@ -18,7 +18,9 @@ bash -n "$TOOL" && ok "sintassi" || { ko "sintassi rotta"; exit 1; }
 
 TMP=$(mktemp -d /tmp/test-turnovivo.XXXXXX); trap 'rm -rf "$TMP"' EXIT
 ADESSO=$(date '+%Y-%m-%d %H:%M:%S')
-VECCHIO=$(date -v-90M '+%Y-%m-%d %H:%M:%S')
+# (D22): `date -v` e' BSD — su Linux VECCHIO restava vuoto e tre attese cadevano per il
+# calendario, non per il tool. python3 conta i minuti uguale ovunque.
+VECCHIO=$(python3 -c "from datetime import datetime, timedelta; print((datetime.now() - timedelta(minutes=90)).strftime('%Y-%m-%d %H:%M:%S'))")
 
 printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n' "$ADESSO" > "$TMP/fresco.log"
 OUT=$(TURNO_VIVO_LOG="$TMP/fresco.log" bash "$TOOL" 2>&1); RC=$?

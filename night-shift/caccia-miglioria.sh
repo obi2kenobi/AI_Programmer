@@ -23,6 +23,10 @@
 # Override per test e debug: MIGLIORIA_CAT, MIGLIORIA_FILE, MIGLIORIA_AGENT.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# mtime(): epoch portabile (D22: `stat -f` e' solo BSD — su Linux ogni cooldown risultava
+# infinito, con il fallback 99999999999 che rendeva l'eta' negativa)
+# shellcheck source=lib.sh
+source "$HERE/night-shift/lib.sh"
 DIR="${1:?uso: caccia-miglioria.sh <dir-repo>}"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git: $DIR" >&2; exit 2; }
 cd "$DIR"
@@ -78,7 +82,8 @@ marker_name() { printf 'clean.%s.%s' "$1" "$(printf '%s' "$2" | tr '/.' '__')"; 
 in_cooldown() {
   local m="$STATE/$(marker_name "$1" "$2")"
   [ -f "$m" ] || return 1
-  local eta=$(( $(date +%s) - $(stat -f %m "$m" 2>/dev/null || echo 99999999999) ))
+  local t; t=$(mtime "$m") || return 1
+  local eta=$(( $(date +%s) - t ))
   [ "$eta" -lt "$COOLDOWN" ]
 }
 
@@ -240,7 +245,13 @@ fi
 # il gate ha passato il fix del debito: il sito e' SALDATO (esci dalla coda dei
 # rinviati ed entra nei saldati — il censimento lo riconfermera' col conteggio)
 if [ -n "$SITO" ]; then
-  sed -i '' "/^${SITO//\//\/}$/d" "$DIR/.git/caccia-registro/rinviati" 2>/dev/null || true
+  # (D22): `sed -i ''` e' BSD — su GNU sed legge '' come script e il sito restava fra i
+  # rinviati. Riscrittura via file temporaneo: uguale su entrambi.
+  RINV="$DIR/.git/caccia-registro/rinviati"
+  if [ -f "$RINV" ]; then
+    grep -vxF "$SITO" "$RINV" > "$RINV.tmp" || true
+    mv -f "$RINV.tmp" "$RINV"
+  fi
   echo "$SITO" >> "$DIR/.git/caccia-registro/saldati"
 fi
 

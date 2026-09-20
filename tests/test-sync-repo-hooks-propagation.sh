@@ -56,9 +56,19 @@ else
     || ko "la copia degli hook ha distrutto tools/ del progetto di destinazione"
 fi
 
-[ "$(grep -c . "$TMP/copiati")" -eq "$N_DICHIARATI" ] \
+# (D20, test del sistema completo 2026-09-20): dal fix H1 (REPO-I, 19/9) copia-hook.sh
+# riporta anche `.gitignore` (le righe dei residui) — questo conteggio pretendeva SOLO gli
+# hook e la suite era rossa da allora su ogni macchina. Si contano gli hook (tools/*.sh) e
+# si pretende, separatamente, la riga .gitignore quando gli hook scrivono residui.
+N_HOOK_COPIATI=$(grep -c '^tools/.*\.sh$' "$TMP/copiati")
+[ "$N_HOOK_COPIATI" -eq "$N_DICHIARATI" ] \
   && ok "$N_DICHIARATI hook dichiarati, $N_DICHIARATI riportati copiati" \
-  || ko "$(grep -c . "$TMP/copiati") copiati contro $N_DICHIARATI dichiarati"
+  || ko "$N_HOOK_COPIATI hook copiati contro $N_DICHIARATI dichiarati"
+if grep -qE '\$PWD/\.[A-Za-z0-9_.-]+' $(sed 's|^|'"$HERE"'/|' <<< "$DICHIARATI") 2>/dev/null; then
+  grep -qx '.gitignore' "$TMP/copiati" && [ -f "$TMP/repo-esistente/.gitignore" ] \
+    && ok "i residui degli hook finiscono in .gitignore, e la riga e' riportata (H1)" \
+    || ko "gli hook scrivono residui ma .gitignore non e' riportato/creato"
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -10,8 +10,12 @@ OUT="$HOME/ai-programmer-status.html"
 # l'ultimo turno notturno, quando l'ultimo gate mattutino. Se un blocco è
 # "mai eseguito" la pagina lo dice invece di nasconderlo: l'assenza di dato
 # è un dato.
-HEALTH=$(bash "$HERE/tools/system-health.sh" 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g' | head -30)
-SUMMARY=$(bash "$HERE/night-shift/gate-summary.sh" 1 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g' | head -20)
+# (test del sistema completo 2026-09-20): sotto `set -e` + pipefail un system-health o un
+# gate-summary che escono rossi UCCIDEVANO lo script qui, in silenzio, prima di scrivere
+# la pagina — su una macchina senza turno la pagina non nasceva. Il rosso di un blocco e'
+# un dato da mostrare, non un motivo per non generare la pagina.
+HEALTH=$(bash "$HERE/tools/system-health.sh" 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g' | head -30 || true)
+SUMMARY=$(bash "$HERE/night-shift/gate-summary.sh" 1 2>/dev/null | sed 's/&/\&amp;/g; s/</\&lt;/g' | head -20 || true)
 ULTIMO_TURNO=$(grep -aE "TURNO FINITO" ~/night-shift.log 2>/dev/null | tail -1 | sed 's/&/\&amp;/g' || echo "mai eseguito")
 ULTIMO_GATE=$(grep -aE "Gate completato" ~/morning-gate.log 2>/dev/null | tail -1 | sed 's/&/\&amp;/g' || echo "mai eseguito")
 NOW=$(date '+%Y-%m-%d %H:%M')

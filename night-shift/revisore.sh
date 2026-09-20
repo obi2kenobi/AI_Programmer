@@ -40,6 +40,11 @@ STATE="$DIR/.git/revisore"; mkdir -p "$STATE"
 # ai_timeout: wrapper portabile dell'hub (macOS non ha timeout(1))
 # shellcheck source=../llm/_timeout.sh
 source "$HERE/llm/_timeout.sh" 2>/dev/null || true
+# gate_allowlist_ok: la STESSA allowlist del morning gate (test del sistema completo
+# 2026-09-20, D2: qui viveva una copia piu' debole, prima parola + qualche token — una
+# redirezione `> file` o un `| tee file` passavano e SCRIVEVANO nel repo)
+# shellcheck source=lib.sh
+source "$HERE/night-shift/lib.sh"
 
 log() { echo "[revisore $(date '+%H:%M:%S')] $*" >&2; }
 
@@ -83,11 +88,17 @@ case "$BRANCH" in night/*) ;; *) log "guardia: branch $BRANCH non e' night/* —
 case "$TITLE" in caccia:*) ;; *) log "guardia: titolo non 'caccia:' — non mio"; exit 2;; esac
 [ "$IS_DRAFT" = "true" ] || { log "guardia: non e' piu' bozza — non mio"; exit 2; }
 
+# (D3, 2026-09-20): data illeggibile = quarantena CHIUSA, non aperta. Prima il fallback
+# era 999 minuti: una createdAt storpiata passava la quarantena e arrivava al merge.
 ETA_MIN=$(python3 -c "
 from datetime import datetime, timezone
 c = datetime.fromisoformat('$CREATED'.replace('Z','+00:00'))
-print(int((datetime.now(timezone.utc) - c).total_seconds() // 60))" 2>/dev/null || echo 999)
-if [ "${ETA_MIN:-999}" -lt "$QUARANTENA_MIN" ]; then
+print(int((datetime.now(timezone.utc) - c).total_seconds() // 60))" 2>/dev/null) || ETA_MIN=""
+if ! [ "${ETA_MIN:-x}" -ge 0 ] 2>/dev/null; then
+  log "guardia: createdAt illeggibile ('$CREATED') — quarantena fail-closed, al giorno"
+  exit 2
+fi
+if [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
   log "guardia: quarantena ${ETA_MIN}min < ${QUARANTENA_MIN}min — chi crea non si giudica nello stesso respiro"
   exit 2
 fi
@@ -111,6 +122,16 @@ trap ripristina EXIT
 DIFF_FILES=$(git diff --name-only "$DB"...HEAD 2>/dev/null)
 N_FILE=$(printf '%s\n' "$DIFF_FILES" | grep -c .)
 N_RIGHE=$(git diff --numstat "$DB"...HEAD 2>/dev/null | awk '{a+=$1+$2} END{print a+0}')
+# (D4, 2026-09-20): un diff VUOTO passava tutte le guardie (0 <= 60) e veniva deliberato
+# — il censore giudicava il nulla e lo mergiava. Niente diff, niente giudizio.
+[ "$N_FILE" -ge 1 ] || { log "guardia: diff vuoto ($DB...HEAD) — niente da giudicare, al giorno"; exit 2; }
+# (D1, 2026-09-20): chi scrive le prove non le passa. Una PR che tocca .night-verify
+# (anche solo per riscriverlo a `true`) non si giudica: le prove sotto sono lette dal
+# ramo di default, come fa il morning gate, e questa guardia chiude l'altra via.
+if printf '%s\n' "$DIFF_FILES" | grep -qx '.night-verify'; then
+  log "guardia: la PR tocca .night-verify — le prove non si giudicano da chi le scrive, al giorno"
+  exit 2
+fi
 [ "$N_FILE" -le "$MAX_FILE" ] || { log "guardia: $N_FILE file (max $MAX_FILE) — al giorno"; exit 2; }
 [ "$N_RIGHE" -le "$MAX_RIGHE" ] || { log "guardia: $N_RIGHE righe (max $MAX_RIGHE) — al giorno"; exit 2; }
 if ! git diff "$DB"...HEAD | python3 -c '
@@ -124,15 +145,21 @@ DIFF=$(git diff "$DB"...HEAD)
 
 # ══ 2. PROVE (deterministiche) ══════════════════════════════════════════════════
 PROVE_VERDI=0; PROVE_ROTTE=""
-if [ -f .night-verify ]; then
+# (D1, 2026-09-20): le prove sono quelle DICHIARATE DALLA REPO sul ramo di default —
+# lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
+# leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.
+NV_DICHIARATE=$(git show "$DB:.night-verify" 2>/dev/null || true)
+if [ -n "$NV_DICHIARATE" ]; then
   # (report BusinessPlan): un .night-verify senza comandi NON e' una prova superata
-  if [ "$(grep -vcE '^\s*#|^\s*$' .night-verify 2>/dev/null || echo 0)" -eq 0 ]; then
+  if [ "$(printf '%s\n' "$NV_DICHIARATE" | grep -vcE '^\s*#|^\s*$' || echo 0)" -eq 0 ]; then
     PROVE_ROTTE="; .night-verify senza comandi (verifiche-vuote)"
   # (2026-09-19): due formati — script intero o riga-per-riga (contratto del turno)
-  elif head -10 .night-verify 2>/dev/null | grep -q "^# FORMATO: script"; then
-    if ! (ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null); then
+  elif printf '%s\n' "$NV_DICHIARATE" | head -10 | grep -q "^# FORMATO: script"; then
+    NV_SCRIPT=$(mktemp /tmp/revisore-nv.XXXXXX); printf '%s\n' "$NV_DICHIARATE" > "$NV_SCRIPT"
+    if ! (ai_timeout 900 bash "$NV_SCRIPT" >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="; .night-verify (formato script) rosso"
     fi
+    rm -f "$NV_SCRIPT"
   elif true; then
   while IFS= read -r NV_CMD; do
     case "$NV_CMD" in ""|\#*) continue;; esac
@@ -145,10 +172,10 @@ if [ -f .night-verify ]; then
     if ! (ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="$PROVE_ROTTE; $NV_CMD"
     fi
-  done < .night-verify
+  done <<< "$NV_DICHIARATE"
   fi
 else
-  PROVE_ROTTE="; .night-verify assente"
+  PROVE_ROTTE="; .night-verify assente sul ramo di default ($DB)"
 fi
 [ -z "$PROVE_ROTTE" ] || { log "prove: verifiche dichiarate rosse:$PROVE_ROTTE — al giorno"; exit 2; }
 PROVE_VERDI=1
@@ -160,18 +187,18 @@ Diff:
 $DIFF"
 AVV_RISP=$(chiedi "$AUTORE_MODEL" 300 "$AVV_PROMPT")
 AVV_CMD=$(printf '%s' "$AVV_RISP" | sed -n '/^```/,$p' | sed '1d;$d' | grep -v '^$' | head -1)
-# validazione allowlist: prima parola ammessa, no concatenatori, no sostituzioni
+# validazione: la stessa allowlist per segmento del morning gate (lib.sh: ogni
+# segmento inizia con uno strumento di sola lettura, git solo readonly, nessuna
+# sostituzione di comando o processo) PIU' il rifiuto delle redirezioni in scrittura
+# — (D2, 2026-09-20): `echo pwned > tools/a.sh` passava la vecchia allowlist e
+# SOVRASCRIVEVA il file nel working tree, e la PR veniva deliberata comunque.
 AVV_VALIDA=0
-case "$AVV_CMD" in
-  grep\ *|cat\ *|diff\ *|wc\ *|head\ *|tail\ *|ls\ *|test\ *|jq\ *|echo\ *|git\ *) AVV_VALIDA=1 ;;
-esac
-case "$AVV_CMD" in
-  *";"*|*"&&"*|*"||"*|*'$('*|*'\`'*|*node*|*python*|*bash*|*rm\ *|*mv\ *|*chmod*|*push*) AVV_VALIDA=0 ;;
-esac
-case "$AVV_CMD" in
-  git\ diff*|git\ log*|git\ show*|git\ grep*|git\ status*|git\ rev-parse*|git\ ls-files*|git\ blame*) : ;;
-  git\ *) AVV_VALIDA=0 ;;
-esac
+if [ -n "$AVV_CMD" ]; then
+  case "$AVV_CMD" in
+    *">"*) AVV_VALIDA=0 ;;
+    *) gate_allowlist_ok "$AVV_CMD" && AVV_VALIDA=1 ;;
+  esac
+fi
 if [ "$AVV_VALIDA" -eq 1 ]; then
   # eval lecito: la stringa e' gia' passata dall'allowlist qui sopra; senza eval
   # le virgolette del comando resterebbero CARATTERI e grep cercherebbe '"function'
@@ -181,6 +208,8 @@ if [ "$AVV_VALIDA" -eq 1 ]; then
     log "prove: banco avversario ha smascherato la PR ($AVV_CMD)"
     BANCO_ESITO="SMASCHERATA"
   fi
+  # l'avversario non lascia tracce nella copia di lavoro (stessa disciplina del gate)
+  git checkout -q -- . 2>/dev/null; git clean -fdq 2>/dev/null
 else
   BANCO_ESITO="COMANDO INVALIDO (scartato dall'allowlist) — non conta come prova superata"
 fi

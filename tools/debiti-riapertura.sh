@@ -34,14 +34,41 @@ for s in sezioni:
     aperte.append((titolo, s))
 
 # classificazione: DI DOMINIO se la sezione chiede una decisione/contains domande/dominio/Luca;
-# RISOLVIBILE altrimenti (lavoro tecnico che la sessione può fare da sola)
+# RISOLVIBILE altrimenti (lavoro tecnico che la sessione può fare da sola).
+# (D21b, test del sistema completo 2026-09-20): si guarda il corpo INTERO — con una finestra
+# di 600 caratteri «Valutare Qwen 3.8 Flash» (decisione hardware di Luca a offset 754)
+# finiva tra i RISOLVIBILI.
 dominio, risolvibili = [], []
 for titolo, corpo in aperte:
     t = titolo.lower()
-    if re.search(r"dominio|decis|domanda|luca|valutare da|da decidere|censire", t + " " + corpo.lower()[:600]):
+    if re.search(r"dominio|decis|domanda|luca|valutare da|da decidere|censire", t + " " + corpo.lower()):
         dominio.append((titolo, corpo))
     else:
         risolvibili.append((titolo, corpo))
+
+def perche_di(corpo):
+    """La prima riga «perché» UTILE della sezione. (D21a): la regex `perch` combaciava con
+    l'intestazione della tabella («| Data | Scorciatoia | Perché rimandata | …») e tutte le
+    domande mostravano quella. Le intestazioni e i separatori di tabella si saltano; da una
+    riga di tabella si prende la cella che risponde, non la riga intera."""
+    righe = corpo.split("\n")
+    for i, l in enumerate(righe):
+        s = l.strip()
+        if not s:
+            continue
+        if s.startswith("|"):
+            if re.match(r"^\|\s*:?-{3,}", s):
+                continue  # separatore
+            if i + 1 < len(righe) and re.match(r"^\|\s*:?-{3,}", righe[i + 1].strip()):
+                continue  # intestazione: la riga sotto e' il separatore
+            celle = [c.strip() for c in s.strip("|").split("|")]
+            for c in celle:
+                if re.search(r"perch|serve|decide", c, re.I):
+                    return c
+            continue
+        if re.search(r"perch|serve|decide", s, re.I):
+            return s.strip("- #* ")
+    return ""
 
 print(f"debiti APERTI: {len(aperte)} — di DOMINIO: {len(dominio)} (domande, una alla volta) · RISOLVIBILI: {len(risolvibili)} (da fare PRIMA di procedere)")
 print()
@@ -53,8 +80,7 @@ if risolvibili:
 if dominio:
     print("DOMANDE SINGOLE PER IL PADRONE DEL DOMINIO (una alla volta, nell'ordine — ogni risposta chiude un debito):")
     for i, (t, c) in enumerate(dominio, 1):
-        # la prima riga 'perché' utile dalla sezione, se c'è
-        perche = next((l.strip("- #* ") for l in c.split("\n") if re.search(r"perch|serve|decide", l, re.I)), "")
+        perche = perche_di(c)
         print(f"  D{i}. {t}")
         if perche: print(f"      perché conta: {perche[:100]}")
     print()

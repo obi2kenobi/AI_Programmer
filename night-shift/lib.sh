@@ -21,6 +21,16 @@ default_branch() {
   return 1
 }
 
+# mtime(): l'epoch di ultima modifica di un file, portabile (test del sistema completo
+# 2026-09-20, D22): `stat -f %m` e' BSD/macOS, su Linux non esiste e il fallback `|| echo 0`
+# faceva risultare ogni lock e ogni cooldown «scaduto» (eta' = adesso - 0). Stampa 0 e
+# torna 1 se il file non c'e': il chiamante decide.
+mtime() {
+  local f="$1" t
+  t=$(stat -f %m "$f" 2>/dev/null) || t=$(stat -c %Y "$f" 2>/dev/null) || { echo 0; return 1; }
+  echo "$t"
+}
+
 # rotate_log_if_big(): ruota un log oltre soglia (default 10MB) — una sola generazione
 # (file → file.1, sovrascrivendo un .1 precedente: non serve di più per un log locale
 # di debug, non un archivio). Debito aperto dal 2026-08-21 ("nessun limite raggiunto");

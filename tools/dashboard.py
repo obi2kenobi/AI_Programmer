@@ -20,8 +20,12 @@ LOG = os.path.expanduser(os.environ.get("NIGHT_LOG", "~/night-shift-console.log"
 WORK = os.path.expanduser("~/night-shift-work")
 
 def leggi_log():
+    """Tutto il log, non le ultime 4000 righe (D18, test del sistema completo
+    2026-09-20): con 10.000 righe e 904 «attivo la CACCIA» il funnel diceva 370 e i
+    cicli 362 — sottostima silenziosa appena la giornata supera la finestra. Misurato:
+    100.000 righe si leggono e si contano in 63 ms, la finestra non serviva."""
     try:
-        return open(LOG, errors="ignore").readlines()[-4000:]
+        return open(LOG, errors="ignore").readlines()
     except Exception:
         return []
 
@@ -30,6 +34,11 @@ def riga_data(l):
     return m.group(1) if m else None
 
 def stats():
+    """Conta dal log del turno i numeri della pagina: il funnel di oggi (finestre di
+    caccia → trasformatore → agente → gate → consegne → censore), le cadute con le righe
+    vere, le verifiche rosse del SOLO ciclo corrente, il censimento dei debiti col trend.
+    Ogni contatore nasce da una riga FIRMATA del log (la stessa stringa che il turno
+    scrive): se il turno cambia una frase, cambia qui — e il test lo dice."""
     oggi = time.strftime("%Y-%m-%d")
     lines = leggi_log()
     s = {"oggi": oggi, "now": time.strftime("%H:%M:%S"),
@@ -68,7 +77,8 @@ def stats():
             if m:
                 F["approvate" if m.group(1) == "APPROVA" else "rigettate"] += 1
                 s["delibere"].append(l.strip()[1:180])
-            m = re.search(r"(AI_Programmer|Sistema-Gestione-Magazzino|[A-Za-z_-]+): standard: (ALLINEATO|DIVERGENTE)", l)
+            # il nome della repo e' qualunque (l'hub e' pubblico: nessun nome privato nel codice — D24)
+            m = re.search(r"([A-Za-z0-9_.-]+): standard: (ALLINEATO|DIVERGENTE)", l)
             if m: s["drift"][m.group(1)] = m.group(2)
             if i >= len(lines) - 400:
                 clean = re.sub(r"\s*—\s*\(\s*\)", "", l)
@@ -133,6 +143,11 @@ def barrette(trend):
             f"<div style='color:{colore};font-size:.75rem'>{etichetta} · max {mx} · min {mn}</div>")
 
 def page(s):
+    """Rende i numeri di stats() in una pagina HTML sola, senza dipendenze: le cinque
+    card in testa (turno vivo, cicli, PR, wedge di Ollama, errori), poi le sezioni
+    numerate — CONSEGNA? (il funnel), COSA BLOCCA? (push e gate bocciati con le righe
+    vere), I DEBITI (censimento e sparkline), IL CENSORE (delibere), DRIFT per repo,
+    attivita' recente e verifiche rosse del ciclo corrente. Si rinfresca ogni 10 s."""
     F = s["funnel"]
     # il funnel: ogni caduta numerata
     stadi = [("Finestre di caccia", F["finestre"], "#0af"),
@@ -207,6 +222,13 @@ class H(http.server.BaseHTTPRequestHandler):
     def log_message(self, *a): pass
 
 if __name__ == "__main__":
+    # --stats: i numeri in JSON e fine (per i test e per chi legge da terminale).
+    # (D19, test del sistema completo 2026-09-20): il test lo invocava, la modalita' non
+    # esisteva, partiva il server e il test restava appeso.
+    import sys
+    if "--stats" in sys.argv[1:]:
+        print(json.dumps(stats(), ensure_ascii=False, default=str))
+        sys.exit(0)
     port = 8787
     try: srv = http.server.HTTPServer(("localhost", port), H)
     except OSError:

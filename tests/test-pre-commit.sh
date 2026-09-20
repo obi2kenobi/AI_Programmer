@@ -60,6 +60,39 @@ OUT=$(bash "$HOOK"); RC=$?
   || { echo "$OUT" | grep pipeline | head -1 | sed 's/^/    /'; ko "falso positivo su pipe legittima"; }
 git -C "$HERE" restore --staged "$PROBE4" >/dev/null 2>&1; rm -f "$PROBE4"
 
+# (D9, test del sistema completo 2026-09-20): il rilevatore che MUORE deve essere rosso.
+# `git grep -P` sotto un locale non-UTF muore con rc 128 («code point too large»); la
+# vecchia pipeline lo passava a xargs (che mappa 1 E 128 sullo stesso 123) e poi a un
+# `grep -v` finale (che lo faceva diventare 1 = «nessun reperto»): la guardia E-024 non
+# poteva scattare MAI, e un commit in cirillico e' passato su una macchina senza
+# en_US.UTF-8. Qui il locale C forza la morte del rilevatore: il verdetto deve dirlo.
+PROBE5="$HERE/docs/_probe_morto.md"
+printf 'solo ascii qui\n' > "$PROBE5"
+git -C "$HERE" add "$PROBE5"
+OUT=$(LC_ALL=C LANG=C bash "$HOOK" 2>/dev/null); RC=$?
+if git -C "$HERE" grep -lP '[\x{4E00}]' -- :docs/_probe_morto.md >/dev/null 2>&1 || [ "$(LC_ALL=C LANG=C git -C "$HERE" grep -lP '[\x{4E00}]' -- :docs/_probe_morto.md >/dev/null 2>&1; echo $?)" -lt 2 ]; then
+  echo "· D9: su questa macchina git grep -P non muore sotto LC_ALL=C — il caso «morto» non e' forzabile qui (dichiarato)"
+else
+  [ "$RC" -ne 0 ] && echo "$OUT" | grep -q "MORTO" \
+    && ok "D9: rilevatore glifi morto (rc 128) → l'hook e' ROSSO e lo dice" \
+    || ko "D9: rilevatore morto e l'hook e' verde (rc=$RC) — falso verde: $(echo "$OUT" | tail -1)"
+fi
+git -C "$HERE" restore --staged "$PROBE5" >/dev/null 2>&1; rm -f "$PROBE5"
+
+# (D10): il numero-test nel messaggio si controlla nel gancio commit-msg (il pre-commit
+# di git non conosce il messaggio: il vecchio .githooks/pre-commit passava "" e il
+# controllo 4 non girava MAI dall'hook — «test: 999 test verdi» e' passato).
+[ -x "$HERE/.githooks/commit-msg" ] && ok "D10: il gancio commit-msg esiste ed e' eseguibile" || ko "D10: .githooks/commit-msg assente"
+MSGF=$(mktemp); printf 'test: 999 test verdi\n' > "$MSGF"
+OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
+[ "$RC" -ne 0 ] && echo "$OUT" | grep -q "999 test" \
+  && ok "D10: messaggio con numero-test sbagliato → rosso dal gancio commit-msg" \
+  || ko "D10: «999 test» passa ancora (rc=$RC): $(echo "$OUT" | tail -1)"
+printf 'docs: aggiorna il diario\n' > "$MSGF"
+OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
+[ "$RC" -eq 0 ] && ok "D10: messaggio senza numeri-test → via libera" || ko "D10: falso rosso su messaggio benigno: $OUT"
+rm -f "$MSGF"
+
 # caso pulito: nessun file staged → via libera
 OUT=$(bash "$HOOK"); RC=$?
 [ "$RC" -eq 0 ] && ok "niente staged: via libera" || { echo "$OUT" | tail -2 | sed 's/^/    /'; ko "rosso a vuoto"; }

@@ -46,6 +46,77 @@ mkdir -p "$TMP/vuota"
 bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/vuota" >/dev/null 2>&1
 [ $? -eq 1 ] && ok "CLAUDE.md assente nel progetto: errore esplicito" || ko "assenza silenziosa"
 
+# --- test del sistema completo 2026-09-20 (D11-D14): --standard end-to-end con gh stub ---
+# gh e' uno stub: `api contents/CLAUDE.md` risponde dal file $GH_CLAUDE_MD (o 404 se
+# assente), `repo clone` clona dal bare $GH_CLONE_SRC, `pr create` stampa una URL.
+mkdir -p "$TMP/bin"
+cat > "$TMP/bin/gh" <<'EOF'
+#!/bin/bash
+case "$1 $2" in
+  "api "*) [ -f "${GH_CLAUDE_MD:-}" ] && base64 < "$GH_CLAUDE_MD" || { echo "gh: HTTP 404" >&2; exit 1; } ;;
+  "repo clone") git clone -q "${GH_CLONE_SRC:?}" "$4" ;;
+  "pr create") echo "https://github.invalid/stub/pull/1" ;;
+  *) exit 0 ;;
+esac
+EOF
+chmod +x "$TMP/bin/gh"
+nuovo_bare() { # $1=nome $2=con-claude(0/1) → bare in $TMP/$1.git col seed committato
+  git init -q --bare "$TMP/$1.git" && git -C "$TMP/$1.git" symbolic-ref HEAD refs/heads/main
+  git clone -q "$TMP/$1.git" "$TMP/$1-seed" 2>/dev/null
+  printf 'function onOpen(){}\n' > "$TMP/$1-seed/Code.gs"; echo "# $1" > "$TMP/$1-seed/README.md"
+  [ "$2" = 1 ] && cp "$HERE/CLAUDE.md" "$TMP/$1-seed/CLAUDE.md"
+  git -C "$TMP/$1-seed" add -A && git -C "$TMP/$1-seed" -c user.name=t -c user.email=t@t commit -qm seed && git -C "$TMP/$1-seed" push -q origin HEAD:main 2>/dev/null
+}
+ramo_standard() { git -C "$TMP/$1.git" branch --list 'claude/standard-*' | tr -d ' *' | head -1; }
+
+# D11: repo VUOTA (senza CLAUDE.md) — il comando insegnato deve onboardarla, non morire
+nuovo_bare vuota-remota 0
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/vuota-remota.git" GH_CLAUDE_MD="" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/vuota-remota --standard 2>&1); RC=$?
+BR=$(ramo_standard vuota-remota)
+[ "$RC" -eq 0 ] && [ -n "$BR" ] && git -C "$TMP/vuota-remota.git" ls-tree --name-only "$BR" | grep -qx CLAUDE.md \
+  && ok "D11: repo senza CLAUDE.md → --standard apre il ramo con CLAUDE.md (onboarding da zero)" \
+  || ko "D11: repo vuota non onboardabile (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
+echo "$OUT" | grep -q "ASSENTE" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
+  || ko "D11: assenza non dichiarata come tale: $(echo "$OUT" | head -1)"
+
+# D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
+nuovo_bare canarino-uguale 1
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
+BR=$(ramo_standard canarino-uguale)
+[ -n "$BR" ] && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -q '^\.claude/settings.json$' \
+  && ok "D12: CLAUDE.md uguale ma standard mancante → il ramo porta lo standard (skill, hook)" \
+  || ko "D12: CLAUDE.md uguale e --standard si e' fermato ad ALLINEATO (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
+# D13: i guardiani del commit viaggiano con lo standard
+if [ -n "$BR" ]; then
+  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -qx 'tools/pre-commit.sh' \
+    && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -qx '.githooks/commit-msg' \
+    && ok "D13: tools/pre-commit.sh e .githooks/ viaggiano con --standard" \
+    || ko "D13: i guardiani del commit non viaggiano: $(git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -E 'githooks|pre-commit' | tr '\n' ' ')"
+fi
+# riallineo su repo GIA' onboardata: niente annidamento (.claude/skills/skills) e verdetto
+# «GIÀ A STANDARD» se non c'e' nulla da portare (misurato nell'hub durante il test del sistema)
+if [ -n "$BR" ]; then
+  git -C "$TMP/canarino-uguale-seed" fetch -q origin && git -C "$TMP/canarino-uguale-seed" merge -q --no-edit "origin/$BR" && git -C "$TMP/canarino-uguale-seed" push -q origin HEAD:main 2>/dev/null
+  OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
+  echo "$OUT" | grep -q "GIÀ A STANDARD" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
+    || ko "riallineo: atteso GIÀ A STANDARD, avuto (rc=$RC): $(echo "$OUT" | tail -1)"
+  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -q '\.claude/skills/skills/' \
+    && ko "riallineo: lo standard si e' ANNIDATO (.claude/skills/skills)" \
+    || ok "riallineo: nessun annidamento delle directory dello standard"
+fi
+
+# D14: il clone che «riesce» senza creare la directory NON deve far copiare nella CWD
+mkdir -p "$TMP/bin-rotto"; cp "$TMP/bin/gh" "$TMP/bin-rotto/gh"
+sed -i 's|git clone -q "${GH_CLONE_SRC:?}" "$4"|exit 0|' "$TMP/bin-rotto/gh"
+mkdir -p "$TMP/cwd-pulita"
+OUT=$(cd "$TMP/cwd-pulita" && GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin-rotto:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/fantasma --standard 2>&1); RC=$?
+[ "$RC" -ne 0 ] && [ -z "$(ls -A "$TMP/cwd-pulita")" ] \
+  && ok "D14: clone senza directory → errore detto, la CWD resta intatta" \
+  || ko "D14: rc=$RC e la CWD contiene: $(ls -A "$TMP/cwd-pulita" | tr '\n' ' ')"
+[ -z "$(git -C "$HERE" status --porcelain -- .claude patterns .opencode tools 2>/dev/null | grep '^??')" ] \
+  && ok "D14: l'hub non ha file NUOVI dopo il test (nessuna copia dello standard finita qui)" \
+  || ko "D14: l'hub ha file nuovi dopo il test: $(git -C "$HERE" status --porcelain -- .claude patterns .opencode tools | grep '^??' | head -3 | tr '\n' ' ')"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
