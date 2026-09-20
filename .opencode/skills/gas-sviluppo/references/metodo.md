@@ -913,24 +913,6 @@ silenziosi in un flusso che termina con una registrazione contabile irreversibil
    non è una regola di processo ma un attrezzo: `tools/gate.sh` legge, stampa una riga per
    comando, esce 1 se uno è rosso. La regola «verifica && azione» diventa strutturale.
 
-## Indice rapido dei pattern (per tema)
-
-Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
-
-**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale` · `test-che-certifica-il-bug` (il fix parte dal test che lo replica) · `sabotaggio-plausibile` (la regola sbagliata piu’ probabile, non una qualsiasi) · `due-verifiche-due-domande`
-**Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `contenitore-che-riscrive` (ciò che rileggi dal contenitore è ciò che gli hai dato? coercizione e formula injection)
-**Sicurezza**: `segreto-come-impronta` (chi decide vince su qualsiasi oracolo tecnico)
-**Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
-**Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
-**Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping` · `collisione-namespace-globale-gas` · `migrazione-con-interruttore` (si cambia senza spegnere il vecchio percorso)
-**Architettura GAS**: `clasp-push-non-e-produzione` (verifica col fetch mirato, non presunzione) · `manifest-webapp-nel-repo` · `diagnosi-differenziale-webapp-gas` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `vivo-gia-in-git` (prima di sovrascrivere un vivo: non «cosa è diverso» ma «c'è qualcosa che git non ha mai visto») · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
-<<<<<<< Updated upstream
-**Metodo e processo**: · `autorita-di-dominio-batte-oracolo` · `la-riga-di-default-e-il-caso-peggiore` · `ambiente-censimento-dichiarato` `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
-=======
-**Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
->>>>>>> Stashed changes
-
-
 ## Le regole del report REPO-F (2026-09-19: 56 giri, 21 rilievi, 5 difetti hub)
 
 Dal campo: `docs/campo/2026-09-19-repo-f-standard-56-giri-21-rilievi.md`. Le famiglie che il canone eredita:
@@ -1093,3 +1075,22 @@ La sessione aveva l'hub in sola lettura — le regole sono arrivate a mano.
    per giro (6) che obbliga all'ordinamento, formato Oggi/Manca/Proposta che
    impedisce il principio generico, e il modello dichiarato per blocco quando
    i giri non girano tutti sullo stesso.
+
+## Indice rapido dei pattern (per tema)
+
+Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima di scrivere la soluzione, guarda se il tuo problema è già uno di questi.
+
+**Esecuzione e verifica**: `tolleranza-derivata-non-scelta` (quando l'oracolo non torna esatto, la soglia si deriva dal meccanismo) · `lo-stub-che-mente-al-rovescio` (il reale più permissivo dello stub: se il successo scrive, il test si pulisce?) · `esegui-non-leggere` · `regola-provata-non-assunta` · `trovare-non-e-fallire` · `oracolo-indipendente` · `banco-sintetico-per-calcoli-critici` · `banco-browser-per-webapp-gas` · `banco-progetto-locale` · `test-che-certifica-il-bug` (il fix parte dal test che lo replica) · `sabotaggio-plausibile` (la regola sbagliata piu’ probabile, non una qualsiasi) · `due-verifiche-due-domande`
+**Dati e tipi**: `csv-con-python` · `jq-slurp` · `itera-su-array` · `copertura-dal-glob` · `contenitore-che-riscrive` (ciò che rileggi dal contenitore è ciò che gli hai dato? coercizione e formula injection)
+**Sicurezza**: `segreto-come-impronta` (chi decide vince su qualsiasi oracolo tecnico)
+**Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
+**Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
+**Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping` · `collisione-namespace-globale-gas` · `migrazione-con-interruttore` (si cambia senza spegnere il vecchio percorso)
+**Architettura GAS**: `clasp-push-non-e-produzione` (verifica col fetch mirato, non presunzione) · `manifest-webapp-nel-repo` · `diagnosi-differenziale-webapp-gas` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `vivo-gia-in-git` (prima di sovrascrivere un vivo: non «cosa è diverso» ma «c'è qualcosa che git non ha mai visto») · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
+<<<<<<< Updated upstream
+**Metodo e processo**: · `autorita-di-dominio-batte-oracolo` · `la-riga-di-default-e-il-caso-peggiore` · `ambiente-censimento-dichiarato` `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
+=======
+**Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
+>>>>>>> Stashed changes
+
+
