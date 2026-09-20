@@ -182,6 +182,7 @@ $(istruzione "$CAT")
 
 Rules:
 - Exactly ONE improvement. Minimal diff: no reformatting, no reindenting, no renames beyond the task.
+- Change code ONLY with the edit action (exact old→new replacement). Never rewrite a file you did not create.
 - If nothing fits honestly, change nothing and say so: inventing work is worse than finding none.
 - Any comment you write must be ASCII only (English, or Italian without accented letters).
 - After writing, read the file back and verify your edit."
