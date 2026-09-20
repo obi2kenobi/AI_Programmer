@@ -31,9 +31,20 @@ import json
 import sys
 
 
-def leggi_csv(path):
-    with open(path, encoding="utf-8-sig", newline="") as f:
-        return list(csv.DictReader(f))
+def leggi_csv(path, colonne=()):
+    """(giro 21, 2026-09-20 — D32): file inesistente o colonna mancante = traceback nudo.
+    Si dichiara cosa manca e si esce 1, come scadenzario_aging."""
+    try:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
+            if mancanti:
+                print(f"uso: accuratezza_fatture_acquisto.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+                sys.exit(1)
+            return list(reader)
+    except OSError as e:
+        print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 def main():
@@ -44,14 +55,18 @@ def main():
     if len(sys.argv) != 4:
         print("uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv", file=sys.stderr)
         return 1
-    with open(sys.argv[1], encoding="utf-8") as f:
-        cfg = json.load(f)
+    try:
+        with open(sys.argv[1], encoding="utf-8") as f:
+            cfg = json.load(f)
+    except (OSError, ValueError) as e:
+        print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — config non leggibile: {e}", file=sys.stderr)
+        return 1
     soglia = float(cfg.get("soglia_discrepanza_pct", 5))
     obiettivo_pct = float(cfg.get("obiettivo_margine_errore_pct", 0.1))
     whitelist = set(cfg.get("whitelist_fornitori") or [])
 
-    fatture = leggi_csv(sys.argv[2])
-    ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3])}
+    fatture = leggi_csv(sys.argv[2], ("nr", "importo"))
+    ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
 
     validi, discrepanze, inesistenti = [], [], []
     legittime_senza_ordine, anomale_senza_ordine = [], []

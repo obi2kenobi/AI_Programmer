@@ -2570,3 +2570,25 @@ sovrascrive il percorso, come `HUB_METRICS` nel gate. Cura: filtro su tutti gli 
 stesso di `tools/copia-hook.sh`), add per percorso esplicito, `chmod +x`, commit e push propri
 anche per gli specchi OpenCode. 10/10; il vecchio banco degli hook ora pretende il filtro su
 tutti gli eventi.
+
+**Giro 21 — gli oracoli Python, verifica_banco, py-gate (`tools/*.py`).** A cosa servono: gli
+undici oracoli sono formule di controllo di gestione minate dal codice reale di REPO-E (CSV o
+JSON in ingresso, report in uscita, mai un default inventato); verifica_banco giudica l'uscita
+di un banco GAS dalla riga canonica «attese eseguite: N/M · fallite: K»; py-gate compila ogni
+.py tracciato. Metodo: ogni oracolo lanciato con niente, con `--help`, con un file inesistente,
+con un CSV dalle colonne sbagliate, con stdin vuoto, con un JSON che non e' un oggetto. Trovati:
+(D31) `tools/rollforward_cespiti.py` leggeva stdin DUE volte — `json.load` nel try e di nuovo
+fuori: lo stream era consumato, traceback anche sull'input VALIDO; il suo test importava la
+funzione e la riga di comando non era mai partita — l'oracolo era morto come comando; (D32)
+traceback nudo in otto oracoli su undici davanti a un input sbagliato (file inesistente,
+colonna mancante, argomento non numerico, JSON non oggetto), mentre indici_crisi e
+scadenzario_aging lo dichiaravano dal 2026-08-28: la cura di quel giorno non era mai arrivata
+ai fratelli; in piu' bilancio_bu, rating_dso, riconciliazione e scostamento su stdin vuoto
+stampavano un report di zeri con rc 0 (R2, verde senza dati); riconciliazione aveva un
+`return 1` DENTRO categorizza(), che main spacchetta in tre liste: sul nan il rifiuto
+dichiarato diventava un TypeError nudo, e main() non tornava mai un exit code. Banco nuovo
+`tests/test-oracoli-uso.sh` (21 attese: rosso 0/21, verde 21/21 dopo); stesso gesto di
+scadenzario_aging ovunque: colonne controllate su `reader.fieldnames`, file aperti in try,
+campi JSON elencati. Le suite dei singoli oracoli restano verdi (18/18 il settimo ciclo). Letti
+senza rilievi: verifica_banco (i cinque controlli, rc 2 sulla forma), py-gate (compile senza
+`__pycache__`, un comando per riga di .night-verify), gas_qualita (errori dichiarati).
