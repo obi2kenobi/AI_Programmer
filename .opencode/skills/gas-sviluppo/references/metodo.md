@@ -1094,3 +1094,23 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 >>>>>>> Stashed changes
 
 
+
+## I tre vaccini della settimana del «perché ci abbiamo messo tanto» (2026-09-20)
+
+1. **Deterministico prima di intelligente.** Prima di dare un compito a un
+   modello, chiedersi se uno script può farlo. Il censimento dei debiti
+   elencava trasformazioni meccaniche e noi abbiamo passato giorni a
+   addestrare un 14b a farle — 40 righe di python le fanno in 3 secondi,
+   senza sbagliare, senza Ollama. Il modello e' per l'analisi e i giudizi;
+   la meccanica e' degli automi.
+
+2. **La firma distintiva nasce col pezzo, non dopo.** Ogni modo di fallire ha
+   la SUA riga di log dal primo giorno: «agente rotto» e «niente trovato» e
+   «gate bociato» non finiscono mai nella stessa frase. Un sintomo generico
+   costa giorni di indagine; una firma netta costa uno sguardo.
+
+3. **Il live non e' il banco.** Ogni cambiamento alla catena (caccia, censore,
+   censimento, trasformatore) passa PRIMA dalla prova deterministica in
+   sandbox — test-catena-viva e' il cancello, ed e' nella suite. Il live e'
+   per le sorprese, non per le prove: cicli lenti, contese e cooldown
+   moltiplicano ogni esperimento per mezz'ora.
