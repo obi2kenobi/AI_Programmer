@@ -32,9 +32,14 @@ case "$PROMPT" in
   *) exit 1 ;;
 esac
 # la "miglioria": elimina la riga col marker MORTO e documenta calcoloPrezzo
-sed -i '' '/MORTO/d' "$DIR/$FILE"
-grep -q '^function calcoloPrezzo' "$DIR/$FILE" && ! grep -q '^// calcola' "$DIR/$FILE" \
-  && sed -i '' 's/^function calcoloPrezzo/\/\/ calcola il prezzo scontato\nfunction calcoloPrezzo/' "$DIR/$FILE"
+python3 - "$DIR/$FILE" <<'PY'
+import sys, re
+p = sys.argv[1]; s = open(p).read()
+s = "\n".join(l for l in s.split("\n") if "MORTO" not in l)
+if re.search(r"^function calcoloPrezzo", s, re.M) and "// calcola" not in s:
+    s = s.replace("function calcoloPrezzo", "// calcola il prezzo scontato\nfunction calcoloPrezzo", 1)
+open(p, "w").write(s)
+PY
 exit 0
 EOF
 chmod +x "$STUB"

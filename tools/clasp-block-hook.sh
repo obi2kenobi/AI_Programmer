@@ -48,7 +48,10 @@ INVOCAZIONE="${SEP}${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
 #      RUN. Le stringa quotate sono DATI, non invocazioni: si spogliano prima del
 #      match. (Dichiarato non coperto: `bash scripts/deploy.sh` richiederebbe
 #      leggere script arbitrari — la via lunga sta nella P6 del report.)
-CMD_STRIPPED=$(printf '%s' "$CMD" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
+# (D27, test del sistema completo 2026-09-20): anche i BACKTICK sono dati — il comando che
+# scriveva il report di campo (heredoc con `npx clasp push` citato come forma vietata)
+# e' stato NEGATO. Stesso falso positivo di REPO-E in una forma nuova.
+CMD_STRIPPED=$(printf '%s' "$CMD" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g; s/\`[^\`]*\`//g")
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
 if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE"; then

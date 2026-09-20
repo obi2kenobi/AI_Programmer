@@ -154,7 +154,7 @@ shift_repo() {
   # semplice (senza -p) è l'idioma standard per un lock atomico a directory: fallisce con
   # EEXIST se un altro processo l'ha già creata un istante prima.
   if ! mkdir "$LOCK" 2>/dev/null; then
-    if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) )) -ge 43200 ]; then
+    if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(mtime "$LOCK") )) -ge 43200 ]; then
       log "REPO $REPO: lock scaduto (>12h), rimosso"
       rmdir "$LOCK" 2>/dev/null
       mkdir "$LOCK" 2>/dev/null || { log "REPO $REPO: lock attivo di un altro turno, salto"; return 0; }
@@ -263,7 +263,7 @@ shift_repo() {
       # stdin e un test che legge stdin SI MANGIA le righe successive del file
       # (la suite completa a 420s lo faceva: sal-indice spariva, 5/6 dichiarate).
       # </dev/null: il comando non tocca MAI il file delle verifiche.
-      # (2026-09-19, prima notte su Sistema-Gestione-Magazzino): la riga passa
+      # (2026-09-19, prima notte sulla repo del magazzino): la riga passa
       # a bash -c COME SCRIPT — i costrutti shell (for, prefissi d'ambiente,
       # assegnazioni) non sono comandi eseguibili e con ai_timeout anteposto
       # morivano tutti (16/45 rosse false). Il morning-gate faceva gia' cosi:
@@ -576,7 +576,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # repo negli ultimi 30 minuti, non rimontarla. File marker con timestamp.
       CACCIA_MARKER="$WORK/.caccia-pulita-${REPO//\//_}"
       if [ -f "$CACCIA_MARKER" ]; then
-        CACCIA_ETA=$(( $(date +%s) - $(stat -f %m "$CACCIA_MARKER" 2>/dev/null || echo 0) ))
+        CACCIA_ETA=$(( $(date +%s) - $(mtime "$CACCIA_MARKER") ))
         if [ "$CACCIA_ETA" -lt 1800 ]; then
           log "REPO $REPO: caccia in cooldown (${CACCIA_ETA}s < 30min: già dichiarata pulita)"
           return 0
@@ -1065,7 +1065,7 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
 # saluta e ritorna — il per-repo lock resta per le repliche multiple.
 TURN_LOCK="$WORK/.lock-turno"
 if ! mkdir "$TURN_LOCK" 2>/dev/null; then
-  ETA=$(( $(date +%s) - $(stat -f %m "$TURN_LOCK" 2>/dev/null || echo 0) ))
+  ETA=$(( $(date +%s) - $(mtime "$TURN_LOCK") ))
   if [ "$ETA" -ge 3600 ]; then
     log "lock turno globale scaduto (${ETA}s > 1h: un turno oltre l'ora e' anomalia da guardare, non da aspettare — E-026): lo rimuovo e proseseguo"
     rmdir "$TURN_LOCK" 2>/dev/null; mkdir "$TURN_LOCK" 2>/dev/null || { log "turno precedente ancora vivo: esco"; exit 0; }

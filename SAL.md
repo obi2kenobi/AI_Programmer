@@ -2452,3 +2452,16 @@ da una riga di tabella prende la CELLA che risponde (prima tutte le 8 domande mo
 Effetto sul DEBITI vero: 15 aperti, ora 11 di dominio e 4 risolvibili (erano 8/7 — tre
 sezioni che nominano una decisione di Luca oltre la finestra passano tra le domande, dove
 stanno). Dopo: 9/9.
+
+**Giro 9 — portabilita', privacy, cancello clasp (D22, D24, D27).** Banco: nuova lente
+`tests/test-portabilita.sh` (nessun `stat -f %m` fuori da `mtime()`, nessun `sed -i ''` nudo,
+nessun `date -v` senza alternativa, nessuna `${#ARR[@]:-0}`), piu' `tests/test-turno-vivo.sh`
+e `tests/test-caccia-miglioria.sh` che qui erano rossi per il calendario BSD e non per i tool.
+Cure: `mtime()` in `night-shift/lib.sh` (stat BSD con fallback GNU — prima su Linux ogni lock
+e cooldown risultava scaduto, e in caccia-miglioria l'eta' era negativa); i siti saldati si
+depennano dai rinviati con un file temporaneo invece di `sed -i ''`; `sedi()` in
+`tools/giri-avversari.sh` (13 sostituzioni); il test del turno-vivo calcola i 90 minuti con
+python; il cancello clasp spoglia anche i BACKTICK (il report di campo che citava le forme
+vietate era stato negato — D27, 3 attese nuove in `tests/test-clasp-block-hook.sh`); il nome
+di una repo privata e' uscito dal commento del turno (D24). Dopo: portabilita' 7/7,
+turno-vivo 9/9, caccia-miglioria 19/19, clasp 33/33, lib 34/34, catena 11/11.
