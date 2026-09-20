@@ -125,8 +125,11 @@ DIFF=$(git diff "$DB"...HEAD)
 # ══ 2. PROVE (deterministiche) ══════════════════════════════════════════════════
 PROVE_VERDI=0; PROVE_ROTTE=""
 if [ -f .night-verify ]; then
+  # (report BusinessPlan): un .night-verify senza comandi NON e' una prova superata
+  if [ "$(grep -vcE '^\s*#|^\s*$' .night-verify 2>/dev/null || echo 0)" -eq 0 ]; then
+    PROVE_ROTTE="; .night-verify senza comandi (verifiche-vuote)"
   # (2026-09-19): due formati — script intero o riga-per-riga (contratto del turno)
-  if head -10 .night-verify 2>/dev/null | grep -q "^# FORMATO: script"; then
+  elif head -10 .night-verify 2>/dev/null | grep -q "^# FORMATO: script"; then
     if ! (ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="; .night-verify (formato script) rosso"
     fi

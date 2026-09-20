@@ -186,3 +186,5 @@ dichiarato se non c'è), wiring mancante DICHIARATO in ESITO e commit, verifica 
 (node --check + presenza esattamente una volta), rollback al primo dubbio. Banco 9/9 in
 tests/test-risolvi-issue.sh; regole nel metodo («Il turno che inserisce»). La proposta
 esportaCSV dell'issue #10 è il primo caso vero in coda.
+| 2026-09-20 | CLAUDE.md va diviso: regole universali vs regole dell'hub-in-quanto-hub (la regola «repo pubblico» copiata in repo private è dannosa: 77% dei riferimenti pendenti nel cliente) | report BusinessPlan, misura riprodotta | al prossimo giro di sync-repo |
+| 2026-09-20 | `.claude/settings.json` non è installabile da una sessione agente (self-modification block): lo installa una persona — va dichiarato in docs/system.md | report BusinessPlan, limite strutturale | quando si tocca docs/system.md |
