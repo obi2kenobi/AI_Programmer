@@ -2390,3 +2390,16 @@ rossi 4/7 prima. Cure: `gh` che non risponde = sezione «gate CIECO» nel report
 DOPO il checkout del ramo (prima la sezione Diff era sempre vuota al primo passaggio);
 `ADVERSARY=none` spegne banco e minimita' dichiarandolo (il test passa da 62 s a 1,2 s: i
 60 s erano curl a vuoto verso un Ollama assente). Dopo: 7/7 e i quattro test del gate verdi.
+
+**Giro 4 — i guardiani del commit (D9-D10, `tools/pre-commit.sh`, `.githooks/`).** Banco:
+`tests/test-pre-commit.sh` con due casi nuovi — rilevatore glifi MORTO (locale C forzato)
+deve essere rosso; «test: 999 test verdi» deve morire nel gancio `commit-msg`. Scoperta
+misurando: `xargs` mappa sia l'1 («nessun reperto») sia il 128 («PCRE morto») di `git grep`
+sullo stesso 123, e il `grep -v` in coda alla pipe riportava tutto a 1 — la guardia E-024
+(«>=2 = morto») non poteva scattare in nessun caso. Cure: pathspec passati a `git grep` in
+array (niente xargs), rc catturato PRIMA del filtro; locale UTF-8 SCELTO fra quelli
+installati (`C.utf8` su un Linux minimo, `en_US.UTF-8` sul Mac) invece di un nome fisso che
+qui non esisteva — era quello a uccidere il rilevatore; il controllo del numero-test vive
+in `controlla_numero_test` chiamata dal nuovo `.githooks/commit-msg` (il pre-commit di git
+non conosce il messaggio: passava "" da sempre). Dopo: 12/12, compreso il caso «glifo staged»
+che su questa macchina era rosso dall'inizio della sessione per lo stesso locale.
