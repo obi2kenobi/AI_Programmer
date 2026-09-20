@@ -12,7 +12,8 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: agente.sh <dir> <prompt>}"
 PROMPT="${2:?uso: agente.sh <dir> <prompt>}"
 MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}"
-API="http://localhost:11434/api/chat"
+# NIGHT_API_URL: solo per i test (server mock, stesso contratto del solver) — di norma non si tocca
+API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 MAX_TURNI="${AGENTE_MAX_TURNI:-8}"
 TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-300}"
 
@@ -170,10 +171,18 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
-        mkdir -p "$(dirname "$REAL")"
-        echo "$FCONTENT" > "$REAL"
-        RESULT="OK: wrote to $FPATH"
-        log "  write: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)" ;;
+        # (giro 11, 2026-09-20): il system prompt dice «WRITE solo per file NUOVI» ma nulla
+        # lo faceva rispettare — la riscrittura intera (516 righe per un tubo) passava di qui.
+        # La regola diventa strutturale: un file che esiste si cambia SOLO con edit.
+        if [ -e "$REAL" ]; then
+          RESULT="ERROR: $FPATH already exists — use the edit action (exact old→new replacement); write is only for NEW files"
+          log "  write: $FPATH esiste — RIFIUTATO (solo edit sui file esistenti)"
+        else
+          mkdir -p "$(dirname "$REAL")"
+          echo "$FCONTENT" > "$REAL"
+          RESULT="OK: wrote to $FPATH"
+          log "  write: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
+        fi ;;
         *)
         RESULT="ERROR: path outside project"
         log "  write: $FPATH FUORI (rifiutato)" ;;
