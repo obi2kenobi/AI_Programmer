@@ -131,6 +131,7 @@
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 - [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
 - [2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)](#2026-09-17-3-la-notte-soltanto-ai_programmer-decisione-di-luca)
+- [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
 
 
 ## Stato
@@ -2354,3 +2355,21 @@ Ieri notte (la prima del turno continuo): 33 cicli, 7 ore, zero errori, l'hub
 pulito ogni volta. Stanotte: la stessa macchina con cascata, caccia con cooldown,
 quattro categorie di fix, sonno adattivo, auto-verifica. Il test definitivo non
 è più un test: è la produzione.
+
+### 2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)
+
+Il report `docs/campo/2026-09-20-test-sistema-completo-fable.md` (PR #97) ha riprodotto 21
+difetti con stub. Luca: «ripeti 10 giri di analisi e chiudi tutti gli errori». Ogni giro:
+banco PRIMA (il test che riproduce il difetto diventa rosso), poi la cura, poi il test
+verde, poi il commit. Tutto in questo diario, un paragrafo per giro.
+
+**Giro 1 — il censore (D1-D4, `night-shift/revisore.sh`).** Banco: `tests/test-revisore.sh`
+casi 9-12, rossi 6/6 prima della cura (una PR che riscrive `.night-verify` a `true` veniva
+MERGIATA; `echo pwned > utils.js` come comando avversario sovrascriveva il file e la PR
+passava; `createdAt: "ieri"` apriva la quarantena; un diff vuoto veniva deliberato). Cure:
+le prove si leggono da `git show <default>:.night-verify` ed eseguono sul working tree
+della PR (come il morning gate); una PR che tocca `.night-verify` e' rinviata; l'allowlist
+e' quella per segmento di `night-shift/lib.sh` (la stessa del gate) piu' il rifiuto di `>`;
+dopo il banco `git checkout -- . && git clean -fdq`; data illeggibile = quarantena chiusa;
+diff vuoto = rinvio. Dopo: 19/19; `tests/test-catena-viva.sh` 11/11 con la fixture
+corretta (le verifiche dichiarate vivono sul ramo di default, non sul ramo notte).

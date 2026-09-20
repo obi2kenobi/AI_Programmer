@@ -21,6 +21,10 @@ export GHDIR=$(mktemp -d) STUBC=$(mktemp)
 mkdir -p "$SB/tools"
 PDQ="| gre""p -q"   # esemplare a pezzi: il guardiano dei tubi legge il sorgente
 printf '#!/bin/bash\nset -uo pipefail\nif echo "$ORDINE" %s consegnato; then\n  echo si\nfi\n' "$PDQ" > "$SB/tools/vendite.sh"
+# le verifiche dichiarate vivono sul ramo di DEFAULT (D1, 2026-09-20): il censore le
+# legge da li', e una PR che le tocca viene rinviata — prima la fixture le metteva sul
+# ramo notte, esattamente la forma che il censore ora rifiuta
+printf '# Verifiche dichiarate\nbash -n tools/vendite.sh\n' > "$SB/.night-verify"
 git -C "$SB" init -q -b main && git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm base
 
 # ── 1. il censimento VEDE il debito ────────────────────────────────────────────
@@ -51,7 +55,6 @@ echo "$OUT" | grep -q "debito sceso" && ok "8. il delta urla: 'debito sceso'" ||
 
 # ── 5. il CENSORE delibera sul diff (guardie + prove + verdetto) ────────────────
 # la miglioria committata su un ramo night/ VERO: il censore ci fa checkout
-printf '# Verifiche dichiarate\nbash -n tools/vendite.sh\n' > "$SB/.night-verify"
 git -C "$SB" checkout -q -b night/caccia-test
 git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: test" >/dev/null
 git -C "$SB" checkout -q main
