@@ -79,7 +79,10 @@ while IFS= read -r f; do
   [ -f "$f" ] || continue
   while IFS= read -r m; do
     echo "$TARGET" | grep -qxF "$m" && continue          # file-del-target: nel progetto, non qui
-    [ -e "$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
+    # (2026-09-20): un nome nudo si risolve anche nella CARTELLA del documento che lo cita
+    # (docs/bc/README.md cita `CORREZIONI.md` che vive accanto a lui — l'indice BC generato
+    # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)
+    [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
   done < <(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$f" | tr -d '`')
 done < <(git diff --cached --name-only 2>/dev/null | grep '\.md$')
 [ -n "$PEND" ] && { echo "⛔ path citati ma inesistenti:"; echo "$PEND"; FALLITI=1; }

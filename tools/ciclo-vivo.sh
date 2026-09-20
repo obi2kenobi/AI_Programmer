@@ -190,10 +190,13 @@ if [ "$LIVELLO" -ge 5 ]; then
 fi
 
 # ===== RISULTATO =====
-N=${#FINDINGS[@]:-0}
+# (test del sistema completo 2026-09-20): `${#FINDINGS[@]:-0}` e' una «bad substitution»
+# su bash >= 4 — il ciclo moriva a riga 193 su Linux (auto-esame notturno: 0 finding e
+# «pulito» per un crash, non per merito). Forma portabile bash 3.2 / 5.x sotto set -u.
+N=${FINDINGS[@]+${#FINDINGS[@]}}; N=${N:-0}
 echo ""
 echo "Finding questo giro: $N"
-for f in "${FINDINGS[@]:-}"; do echo "  · $f"; done
+for f in ${FINDINGS[@]+"${FINDINGS[@]}"}; do echo "  · $f"; done
 
 # Aggiorna memoria
 echo "$N" > "$MEMORIA/findings_giro_precedente"
