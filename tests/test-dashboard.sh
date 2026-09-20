@@ -62,11 +62,11 @@ echo "$PAG" | grep -q "CICLI OGGI" && ok "pagina: cards presenti" || ko "pagina 
 echo "$PAG" | grep -q "Attività" && ok "pagina: feed attività" || ko "pagina senza attività"
 echo "$PAG" | grep -q "NUOVA" && ok "pagina: la rossa corrente visibile" || ko "la rossa corrente non appare in pagina"
 
-echo ""
-echo "$PASS OK, $FAIL FAIL"
-[ $FAIL -eq 0 ]
-
 # ── v4: il FUNNEL conta gli stadi dalle righe firmate ──────────────────────────
+# (D19, test del sistema completo 2026-09-20): questo blocco stava DOPO il cancello finale
+# (il verdetto del test era quello dell'ultima riga, non della somma) e chiamava un
+# `--stats` che non esisteva: partiva il server e il test restava appeso. Ora --stats
+# esiste, e il cancello e' l'ultima riga.
 OGGI4=$(date '+%Y-%m-%d')
 {
   echo "[$OGGI4 10:00:00] === TURNO INIZIATO (1 repo in coda) ==="
@@ -81,15 +81,27 @@ OGGI4=$(date '+%Y-%m-%d')
   echo "[$OGGI4 10:09:00] REPO r/x: DELIBERA: RIGETTA PR #8"
   echo "[$OGGI4 10:10:00] Ollama wedged al via del turno"
   echo "[$OGGI4 10:11:00] Ollama rianimato dal watchdog del turno"
-  echo "[$OGGI4 10:12:00] REPO Sistema-Gestione-Magazzino: standard: DIVERGENTE dall'hub"
+  echo "[$OGGI4 10:12:00] REPO repo-x: standard: DIVERGENTE dall'hub"
 } > "$TMP/finto4.log"
-V4=$(NIGHT_LOG="$TMP/finto4.log" python3 "$DASH" --stats 2>/dev/null || NIGHT_LOG="$TMP/finto4.log" python3 - "$DASH" <<'PY'
-import sys, os, importlib.util
-spec = importlib.util.spec_from_file_location("d", sys.argv[1])
-d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
-s = d.stats(); f = s["funnel"]
-print(f["finestre"], f["trasformatore"], f["agente_ok"], f["agente_morto"], f["gate"], f["consegne"], f["push_fail"], f["approvate"], f["rigettate"], s["ollama_wedge"], s["ollama_revive"], s["drift"].get("Sistema-Gestione-Magazzino", "?"))
-PY
-)
+V4=$(NIGHT_LOG="$TMP/finto4.log" timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c '
+import sys, json
+s = json.load(sys.stdin); f = s["funnel"]
+print(f["finestre"], f["trasformatore"], f["agente_ok"], f["agente_morto"], f["gate"], f["consegne"], f["push_fail"], f["approvate"], f["rigettate"], s["ollama_wedge"], s["ollama_revive"], s["drift"].get("repo-x", "?"))')
 ATTESO4="1 1 1 1 1 1 1 1 1 1 1 DIVERGENTE"
-[ "$V4" = "$ATTESO4" ] && ok "v4 funnel: tutti gli stadi contati dal log firmato" || ko "v4 funnel: [$V4] atteso [$ATTESO4]"
+[ "$V4" = "$ATTESO4" ] && ok "v4 funnel: tutti gli stadi contati dal log firmato (via --stats, che ora esiste e termina)" || ko "v4 funnel: [$V4] atteso [$ATTESO4]"
+
+# (D18): niente finestra di 4000 righe — un log lungo di OGGI si conta tutto
+python3 - "$OGGI4" > "$TMP/lungo.log" <<'PY'
+import sys
+oggi = sys.argv[1]
+print(f"[{oggi} 00:00:01] === TURNO INIZIATO (1 repo in coda) ===")
+for i in range(4500):
+    print(f"[{oggi} 01:{(i//60)%60:02d}:{i%60:02d}] REPO r/x: nessuna issue — attivo la CACCIA")
+PY
+FIN=$(NIGHT_LOG="$TMP/lungo.log" timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin)["funnel"]["finestre"])')
+[ "$FIN" = "4500" ] && ok "D18: 4500 finestre in un log di 4501 righe → 4500 contate (nessuna finestra che sottostima)" \
+  || ko "D18: finestre contate $FIN su 4500 (la dashboard legge solo una coda del log)"
+
+echo ""
+echo "$PASS OK, $FAIL FAIL"
+[ $FAIL -eq 0 ]

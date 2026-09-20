@@ -2429,3 +2429,17 @@ uno al minuto (misurati 390 in 4,5 min con la copia rotta); `bc_index.py` ordina
 su un'altra macchina dava 174 righe di diff senza un dato cambiato — l'indice vivo e'
 rigenerato una volta con l'ordine nuovo. `tests/test-install.sh` rimuove il
 `repos.conf` che crea nell'hub vivo (E-032).
+
+**Giro 7 — dashboard e suite (D18-D20, `tools/dashboard.py`, tre test).** Banco:
+`tests/test-dashboard.sh` con `--stats` vero e il caso «4500 finestre in un log di 4501 righe»;
+`tests/test-struttura-test.sh` (il cancello deve essere l'ultima riga). Cure: la dashboard legge
+TUTTO il log (la finestra di 4000 righe sottostimava in silenzio: 904 finestre → 370; misurato
+63 ms su 100.000 righe, la finestra non serviva); `--stats` esiste (JSON e fine — il test lo
+chiamava, partiva il server, il test restava appeso); il blocco v4 del test stava DOPO il
+cancello finale, ora il cancello chiude; `tests/test-sync-repo-hooks-propagation.sh` conta gli
+hook e pretende a parte la riga `.gitignore` (dal fix H1 del 19/9 la suite era rossa qui su ogni
+macchina); il nome di una repo privata e' uscito dal codice della dashboard e dal test (D24).
+In corsa: `tools/ciclo-vivo.sh` moriva su bash 5 («bad substitution» a `${#FINDINGS[@]:-0}`)
+— l'auto-esame notturno su Linux diceva «0 finding» per un crash, non per merito: forma
+portabile 3.2/5.x. Il pre-commit risolve i nomi nudi anche nella cartella del documento
+(`docs/bc/README.md` cita `docs/bc/CORREZIONI.md` col nome nudo, accanto a se').
