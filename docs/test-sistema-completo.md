@@ -15,14 +15,14 @@
 | 2 | **Il metodo diurno** | `.claude/skills/gas-sviluppo/`, METHOD.md | il canone | parzialmente (in campo) |
 | 3 | **Morning gate** | night-shift/morning-gate.sh | giudizio del mattino | sì dal 20/9 (`tests/test-morning-gate-cieco.sh`: gate intero con gh stub; sul vivo mai) |
 | 4 | **Sync/onboarding** | tools/sync-repo.sh --standard | installa lo standard, misura drift | sì dal 20/9 (`tests/test-sync-repo.sh`: --standard end-to-end con gh stub; su GitHub vero mai) |
-| 5 | **Lenti e banco** | tools/giri-*.sh e tools/banco-passaggio.sh | 14 sonde (S1-S11, S15-S17), 7 banchi | sì (mutation-tested) — ma la suite era rossa dal 19/9 (test dei hook) fino al 20/9 |
+| 5 | **Lenti e banco** | tools/giri-*.sh e tools/banco-passaggio.sh | 15 sonde (S1-S11, S10bis, S15-S17), 7 banchi | sì (mutation-tested) — ma la suite era rossa dal 19/9 (test dei hook) fino al 20/9 |
 | 6 | **Guardiani del commit** | tools/pre-commit.sh, .githooks/{pre-commit,commit-msg} e i tre hook | la frontiera | sì dal 20/9 (glifi, CRLF, file:riga, numero-test via commit-msg, clasp 33 attese) |
 | 7 | **Ciclo issue→PR** | night-shift/risolvi-issue.sh e night-shift/agente.sh | solver→agente | solver col mock (13 attese, REVIEW compresa); sul vivo: 1 PR bozza sulla sandbox, mai giudicata |
 | 8 | **Dashboard** | tools/dashboard.py | osservazione v4 | sì dal 20/9 (il test a unità si impalava su un `--stats` inesistente) |
 | 9 | **Il ciclo della memoria** | SAL.md, DEBITI.md, REGISTRO | l'anello che torna | parzialmente: chiude a mano (SAL), il registro e i debiti hanno la lente |
 
 > Numeri ricontati dal test del 20/9 (report `docs/campo/2026-09-20-test-sistema-completo-fable.md`):
-> «17+ sonde» erano 14 identificativi distinti; il censore sul vivo non ha mai deliberato;
+> «17+ sonde» erano 15 identificativi distinti; il censore sul vivo non ha mai deliberato;
 > `--standard` non copriva la repo vuota. I 21 difetti riprodotti sono curati nei dieci giri
 > del 20/9 (SAL, voce «dieci giri di chiusura»).
 

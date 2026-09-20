@@ -22,7 +22,7 @@ ALLA CHIUSURA DI UN PASSAGGIO (il banco che decide se hai finito)
   banco-passaggio.sh --solo-copertura   solo: ogni file di codice cambiato è presidiato da un test?
 
 LE BATTERIE (le tre pair di occhi del sistema)
-  giri-ignoranti.sh           12 sonde scortesi: caratteri alieni, numeri claims, teatri, orfani...
+  giri-ignoranti.sh           $(grep -oE '\bS[0-9]{1,2}(bis)?\b' "$HERE/tools/giri-ignoranti.sh" | sort -u | wc -l | tr -d ' ') sonde scortesi: caratteri alieni, numeri claims, teatri, orfani...
   giri-avversari.sh           95 attacchi: forzare le regole, aggirare le difese, imbrogliare le lenti
   mutation-tests.sh           neutralizza ogni tool: i suoi test DEVONO arrossire
   ciclo-vivo.sh               un giro a livello crescente (1→5→CUORE→1: il battito)
