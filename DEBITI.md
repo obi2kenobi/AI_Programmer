@@ -188,3 +188,4 @@ tests/test-risolvi-issue.sh; regole nel metodo («Il turno che inserisce»). La 
 esportaCSV dell'issue #10 è il primo caso vero in coda.
 | 2026-09-20 | CLAUDE.md va diviso: regole universali vs regole dell'hub-in-quanto-hub (la regola «repo pubblico» copiata in repo private è dannosa: 77% dei riferimenti pendenti nel cliente) | report BusinessPlan, misura riprodotta | al prossimo giro di sync-repo |
 | 2026-09-20 | `.claude/settings.json` non è installabile da una sessione agente (self-modification block): lo installa una persona — va dichiarato in docs/system.md | report BusinessPlan, limite strutturale | quando si tocca docs/system.md |
+| 2026-09-20 | Skill `cinquanta-giri`: il metodo esiste solo come artefatto finito (agosto) e va ricostruito a mano ogni volta — la forma completa è nel report Budget Vendite e nel canone | report Budget Vendite, proposta 6 | quando si tocca .claude/skills |
