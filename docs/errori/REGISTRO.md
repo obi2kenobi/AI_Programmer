@@ -695,3 +695,28 @@
   appena la rete e' tornata); il percorso clone-fallito ora lascia la copia.
 - Aggiramento: far cadere la rete esattamente durante il riclono — ora
   sopravvive con una copia stantia e una riga di log.
+
+## E-034 Il live come banco di prova
+- Data / sessione: 2026-09-20 (la settimana del «perché non trova nulla?»)
+- Famiglia: R6 (processo) + R1
+- Chi l'ha trovato: Luca, la domanda che chiude la settimana: «vorrei capire il
+  perche' abbiamo tardato tanto, probabilmente c'e' un errore di logica».
+- Sintomo: giorni persi. Giorni a far fare a un modello un lavoro meccanico;
+  giorni a inseguire «nessuna miglioria trovata» che era Ollama morto; ore a
+  guardare finestre live (10 min a ciclo, cooldown 30) per scoprire cio' che
+  un test deterministico di 3 secondi avrebbe detto subito.
+- Causa prossima: ogni pezzo nuovo andava in produzione e si scopriva lì.
+- Causa del ragionamento: **abbiamo osservato il sistema invece di provarlo**.
+  Il live era il banco. Ma il live ha cicli lenti, contese (Ollama), lag di
+  versione (il turno gira il codice di un giro fa), e cooldown che moltiplicano
+  ogni esperimento per trenta minuti. Il sandbox e' istantaneo, pulito e
+  ripetibile cento volte.
+- Perché non ci ha fermati: nel live qualcosa FUNZIONA sempre un po' — i sintomi
+  arrivano generici («non trova», «rosso») e ogni indagine sembra unica invece
+  di riconoscere la classe.
+- Guardia: tests/test-catena-viva.sh — la catena INTERA (censimento →
+  trasformatore → gate → saldato → censore → rinvio onesto) provata in sandbox
+  deterministica; e la regola: **nessun cambiamento alla catena sale senza
+  passare da lì**. E' nella suite, quindi .night-verify lo esegue a ogni giro.
+- Verifica guardia: 11/11 al primo giro completo; soak di 100 esecuzioni.
+- Aggiramento: fare debug sul live di cio' che e' riproducibile in sandbox.
