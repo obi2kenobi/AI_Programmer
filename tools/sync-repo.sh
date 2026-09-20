@@ -12,6 +12,12 @@
 #                                                          — è il comando insegnato in docs/benvenuto-collaboratori.md
 #      tools/sync-repo.sh --from-local <dir>      → stesso confronto su una copia locale (per i test)
 # Esiti: 0 allineato · 1 divergente (o errore) · il verdetto è sempre sulla riga finale.
+# PERCORSO CLOUD/IBRIDO (report Budget Vendite 2026-09-19, difetto 3: questo e'
+# IL COMANDO INSEGNATO in docs/benvenuto-collaboratori.md, e da una sessione cloud
+# non puo' funzionare — nessun blocco lo diceva, a differenza di onboard-repo.sh):
+# una sessione remota NON ha `gh` CLI. Da lì: replicare a mano la lista degli ITEM
+# (righe sotto) + copia-hook.sh, e usare --from-local per la verifica. Il clone e
+# la PR restano al Mac del proprietario. Un agente cloud deve DIRLO, non morire.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 HUB_CLAUDE="$HERE/CLAUDE.md"
@@ -87,7 +93,9 @@ done
   # debiti-riapertura, privacy-check, test-errori, e nessuno viaggiava. La lente che
   # pretende che le citazioni esistano non puo' essere essa stessa una citazione
   # assente (patterns/citazione-non-presidio). Gli strumenti citati viaggiano.
-  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh"
+  # (report Budget Vendite 2026-09-19): il gate di sintassi GAS viaggia — E-028
+  # era stata imparata per Python e mai generalizzata al linguaggio dell'hub stesso
+  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh"
   for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins $CITATI; do
     [ -e "$HERE/$ITEM" ] || continue
     mkdir -p "$(dirname "$ITEM")"
@@ -121,6 +129,10 @@ done
   if [ ! -f "$PWD/.night-verify" ]; then
     echo "# Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate)." > "$PWD/.night-verify"
     echo "# VUOTO = il gate lo dice. Dichiara i comandi appena puoi." >> "$PWD/.night-verify"
+    # (report Budget Vendite): il repo GAS parte col suo gate di sintassi seminato
+    if git ls-files '*.gs' '*.html' 2>/dev/null | grep -q .; then
+      echo "bash tools/gas-gate.sh" >> "$PWD/.night-verify"
+    fi
     git add .night-verify 2>/dev/null || true
   fi
 

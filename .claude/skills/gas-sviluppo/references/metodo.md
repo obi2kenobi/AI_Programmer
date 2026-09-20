@@ -1059,3 +1059,37 @@ l'ha trovata una GET. Le regole che il canone eredita:
    corretta di un difetto distruttivo è grande e cambia un contratto, la mossa
    a costo minimo è una guardia che rifiuta l'operazione pericolosa finché la
    riparazione non arriva. Non decide nulla, rende il danno impossibile.
+
+
+## Le regole del report Budget Vendite (2026-09-19: 50 giri, 9/9 temi corretti, E-001 sul campo)
+
+Dal campo: `docs/campo/2026-09-19-budget-vendite-standard-cinquanta-giri.md`.
+La sessione aveva l'hub in sola lettura — le regole sono arrivate a mano.
+
+1. **E-028 si generalizza a OGNI linguaggio tracciato**: ogni linguaggio ha il
+   suo gate di sintassi, o l'assenza è dichiarata — e il gate include il codice
+   dentro l'HTML, che in un progetto GAS è metà dell'applicazione. (Il gate
+   esisteva nel cliente e non nell'hub con la skill gas-sviluppo: portato.)
+
+2. **La convergenza di più lenti NON è una conferma.** I giri che leggono la
+   stessa fonte ereditano la stessa premessa: la loro convergenza misura
+   quanto è *convincente* l'errore, non quanto è *vero*. Il consolidamento
+   separa «segnalato da N lenti» da «verificato eseguendo», e la prima colonna
+   non promuote mai la seconda, per nessun N. La convergenza sceglie quale
+   finding portare a banco: non lo sostituisce.
+
+3. **La fixture che rappresenta la FORMA di un dato dichiara il `file:riga`
+   della funzione che quella forma la crea** — non un comando di generazione.
+   Una fixture di forma letta dal codice è l'ipotesi che doveva verificare,
+   travestita da misura. È la regola che avrebbe impedito E-001.
+
+4. **Il giro scrive il suo file PRIMA di rispondere.** Un giro il cui unico
+   prodotto è la risposta muore con l'agente — e esaurire un limite a metà di
+   50 agenti non è il caso raro, è il caso normale. Misurato: 16 su 20
+   sopravvissuti a un fallimento totale del blocco, grazie solo a questo.
+
+5. **«Nulla in questa lente» è un esito valido e dichiarato**: la motivazione
+   vale quanto un finding — dice dove la lente non morde. Con tetto di finding
+   per giro (6) che obbliga all'ordinamento, formato Oggi/Manca/Proposta che
+   impedisce il principio generico, e il modello dichiarato per blocco quando
+   i giri non girano tutti sullo stesso.
