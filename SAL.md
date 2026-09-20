@@ -2518,3 +2518,22 @@ contano, e senza `launchctl` (non e' un Mac) e' un `warn` dichiarato. help.sh di
 (sono 15: S1–S11, S10bis, S15–S17 — e il mio report ne contava 14 perche' la mia regex
 ignorava il «bis»: corretti report e mappa): il numero ora si CALCOLA dal file delle sonde,
 cosi' non marcisce. status-page e turno-vivo curati al giro 10/9: 6/6 e 9/9.
+
+**Giri 14-17 — ciclo-vivo, sonde e attacchi, cervelli (`tools/ciclo-vivo.sh`,
+`tools/giri-ignoranti.sh`, `tools/giri-avversari.sh`, `llm/ask-qwen.sh`).** A cosa servono:
+il ciclo-vivo e' il giro a livelli crescenti (tool → collegamenti → flussi → architettura →
+meta) con memoria in file piatti sotto `.ciclo/`; le sonde ignoranti sono le 15 domande dello
+straniero scortese; gli attacchi sono 100 mutazioni che devono far scattare una difesa; i
+wrapper `llm/ask-*.sh` sono il gesto unico per parlare a un cervello (stdin come contesto,
+timeout, log d'uso). Difetti trovati leggendo ed eseguendo: (14) con zero finding il ciclo
+appendeva una RIGA VUOTA allo storico a ogni giro — «finding totali» e media/giro contavano
+i giri puliti come finding: ora scrive solo se ce ne sono; (15) l'attacco E3 sul CSV delle
+metriche escludeva ogni riga con una virgola — cioe' tutte: una prova che non poteva fallire
+(R2, verde senza dati) — ora legge la colonna repo di ogni riga e pretende un codice REPO-*;
+(17) `llm/ask-qwen.sh` avviava `/opt/homebrew/bin/ollama` a percorso fisso e, dove non c'e',
+aspettava comunque 30 giri di curl: ~60 s a vuoto per chiamata (i 62 s per PR misurati nel
+gate) — ora cerca il binario sul PATH e senza Ollama esce subito dichiarandolo. Letti senza
+rilievi: i livelli e il ritorno al CUORE del ciclo, il lock a mkdir, le lenti 4a-4h; la sonda
+S3 che uccide gli oracoli a 0,35 s; la classificazione D degli attacchi (traceback = «si
+dichiara», coerente con S3 che lo boccia altrove); gate-esito/gate-summary (giro 18: l'esito
+umano si scrive sull'ULTIMA riga pendente della PR e uno stato finale non si sovrascrive).

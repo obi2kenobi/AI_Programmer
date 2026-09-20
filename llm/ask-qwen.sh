@@ -36,8 +36,18 @@ API="http://localhost:11434"
 # iterazione del poll può bloccarsi oltre il budget implicito di ~30s del loop, prima
 # ancora di arrivare alla chiamata principale (quella sì protetta da ai_timeout).
 if ! curl -sf --max-time 2 "$API/api/version" >/dev/null 2>&1; then
+  # (giro 17, 2026-09-20): il binario era fisso a /opt/homebrew/bin — dove non c'e' (Linux,
+  # Intel) il serve falliva in silenzio e si aspettavano comunque 30 giri di curl: ~60 s a
+  # vuoto per OGNI chiamata (misurati nel gate: 62 s per PR). Si cerca sul PATH; se Ollama
+  # non c'e' proprio, lo si dice subito e si esce.
+  OLLAMA_BIN=$(command -v ollama 2>/dev/null || true)
+  [ -x "${OLLAMA_BIN:-}" ] || OLLAMA_BIN=/opt/homebrew/bin/ollama
+  if [ ! -x "$OLLAMA_BIN" ]; then
+    echo "ask-qwen: Ollama non e' in esecuzione e il binario non si trova (PATH, /opt/homebrew/bin): nessun cervello locale qui" >&2
+    exit 1
+  fi
   OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH="$CTX" \
-    /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
+    "$OLLAMA_BIN" serve >> ~/ollama-server.log 2>&1 &
   for _ in $(seq 1 30); do curl -sf --max-time 2 "$API/api/version" >/dev/null 2>&1 && break; sleep 1; done
 fi
 

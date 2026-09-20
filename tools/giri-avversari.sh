@@ -322,7 +322,10 @@ att; _cp=$(grep -rlP '[\x{AC00}-\x{D7AF}]' --include='*.md' docs/ 2>/dev/null | 
 # REPO-CR (Centrale_Rischi) e' PUBBLICA: dichiarata nel repos-index — non e' una leak
 att; _cp=$(grep -oE 'github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+' night-shift/repos-index.md docs/*.md 2>/dev/null | grep -vE "obi2kenobi/(AI_Programmer|Centrale_Rischi)" | head -1); if grep -q . <<<"$_cp"; then aggirato "E2 URL github di repo privata fuori dal hub"; else tiene "E2 nessun URL di repo privata"; fi
 
-att; _cp=$(head -2 metrics/gate.csv 2>/dev/null | grep -viE 'repo-[a-n]|data|giro|gate|,|^$'); if grep -q . <<<"$_cp"; then aggirato "E3 gate.csv con contenuto fuori schema REPO-*"; else tiene "E3 gate.csv a schema REPO-*"; fi
+# (giro 15, 2026-09-20): la vecchia E3 escludeva ogni riga con una virgola — cioe' TUTTE le
+# righe di un CSV: non poteva fallire mai (verde senza dati, R2). Ora legge la colonna repo
+# di ogni riga dati e pretende un codice anonimo REPO-*.
+att; _cp=$(awk -F, 'NR>1 && $2 !~ /^REPO-[A-Za-z0-9]+$/ {print $2}' metrics/gate.csv 2>/dev/null | head -1); if grep -q . <<<"$_cp"; then aggirato "E3 gate.csv con repo fuori schema REPO-*: '$_cp'"; else tiene "E3 gate.csv a schema REPO-* (colonna repo di ogni riga)"; fi
 
 att; _cp=$(grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQRSTXZVW]|CR)$" | head -1); if grep -q . <<<"$_cp"; then aggirato "E4 repos-index con codici fuori schema"; else tiene "E4 repos-index solo codici REPO-[A-N]"; fi
 
