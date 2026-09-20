@@ -189,3 +189,15 @@ esportaCSV dell'issue #10 è il primo caso vero in coda.
 | 2026-09-20 | CLAUDE.md va diviso: regole universali vs regole dell'hub-in-quanto-hub (la regola «repo pubblico» copiata in repo private è dannosa: 77% dei riferimenti pendenti nel cliente) | report BusinessPlan, misura riprodotta | al prossimo giro di sync-repo |
 | 2026-09-20 | `.claude/settings.json` non è installabile da una sessione agente (self-modification block): lo installa una persona — va dichiarato in docs/system.md | report BusinessPlan, limite strutturale | quando si tocca docs/system.md |
 | 2026-09-20 | Skill `cinquanta-giri`: il metodo esiste solo come artefatto finito (agosto) e va ricostruito a mano ogni volta — la forma completa è nel report Budget Vendite e nel canone | report Budget Vendite, proposta 6 | quando si tocca .claude/skills |
+
+## Dal test del sistema completo (2026-09-20, sessione Fable — dieci giri di chiusura)
+
+I 21 difetti riprodotti sono curati nei dieci giri (SAL 2026-09-20 (2°)). Restano queste
+scorciatoie, dichiarate:
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-09-20 | Le PR del solver (`night/issue-N`, titolo non `caccia:`) non hanno censore: il revisore le rinvia «non mio» a ogni ciclo, il morning gate le giudica solo dal Mac | il censore e' nato per le migliorie della caccia; estenderlo alle PR delle issue e' una decisione di Luca (il patto «il si' e' del censore» vale solo per la caccia) | quando Luca decide se le PR delle issue possono essere deliberate di notte |
+| 2026-09-20 | 9 dei 15 percorsi citati nel CLAUDE.md installato non esistono nella destinazione (PROJECT.md, SAL.md, docs/system.md, llm/, night-shift/…): sono cose dell'hub, non della repo | la cura giusta e' nel CLAUDE.md (dire «nell'hub» accanto ai percorsi dell'hub), non copiare mezzo hub in ogni repo | al prossimo giro sul CLAUDE.md portabile |
+| 2026-09-20 | Censimento E-002 dell'hub: 64 siti `pipe in grep -q` (misurato con `tools/caccia-registro.sh .`) — qui curati solo i 7 di `tools/giri-avversari.sh` che il dente del pre-commit ha morso alla frontiera | e' il debito che la caccia notturna salda un sito per finestra (trasformatore deterministico); farlo a mano in blocco e' fuori mandato | la notte, un sito per finestra; il delta del censimento lo dice |
+| 2026-09-20 | Il turno gira solo con `gh` autenticato e Ollama: da una sessione cloud si prova solo con stub (i test dei giri 1-9 sono quegli stub, resi permanenti) | e' la natura del sistema: il vivo e' il Mac | dichiarato in `night-shift/README.md` quando si decide se il turno debba girare anche altrove |

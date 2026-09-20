@@ -83,6 +83,24 @@ if [ $RC -eq 0 ] && grep -q 'a + b \* 2' "$SB/calc.js" && [ ! -f "$SB/calc.js.ni
 else
   ko "APPLICATO: rc=$RC — file: $(cat "$SB/calc.js" | tr '\n' ' ') — out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 fi
+# (D5, test del sistema completo 2026-09-20): auto_review e genera_test erano definite
+# DOPO l'exit: «command not found» a ogni fix, REVIEW vuota, e questo test passava lo
+# stesso perche' non pretendeva la riga. Ora la pretende: il verdetto e' una delle tre
+# parole, mai vuoto (col mock la risposta e' codice, quindi UNCLEAR — ma detto).
+echo "$OUT" | grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' \
+  && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
+  || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
+echo "$OUT" | grep -q "command not found" \
+  && ko "funzioni chiamate prima della definizione: $(echo "$OUT" | grep 'command not found' | head -1)" \
+  || ok "nessuna funzione chiamata prima della definizione"
+# (D6): il turno legge $ISSUE_FILE per il check «gia' implementata» PRIMA di scriverlo —
+# set -u lo svuotava e il check non girava mai. La scrittura deve precedere la lettura.
+NS="$HERE/night-shift/night-shift.sh"
+R_SCRIVE=$(grep -n 'ISSUE_FILE="/tmp/night-issue-\$NUM.md"' "$NS" | head -1 | cut -d: -f1)
+R_LEGGE=$(grep -n 'FN_NOMINATA=\$(sed' "$NS" | head -1 | cut -d: -f1)
+[ -n "$R_SCRIVE" ] && [ -n "$R_LEGGE" ] && [ "$R_SCRIVE" -lt "$R_LEGGE" ] \
+  && ok "night-shift.sh: ISSUE_FILE scritto (riga $R_SCRIVE) prima del check «gia' implementata» (riga $R_LEGGE)" \
+  || ko "night-shift.sh: il check «gia' implementata» legge ISSUE_FILE (riga $R_LEGGE) prima che esista (riga $R_SCRIVE)"
 
 # --- caso 2: PATCH — territorio con due file: nessuna applicazione diretta
 SB2=$(mktemp -d /tmp/risolvi-sb2.XXXXXX); SB="$SB2"

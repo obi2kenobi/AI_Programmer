@@ -131,6 +131,7 @@
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 - [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
 - [2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)](#2026-09-17-3-la-notte-soltanto-ai_programmer-decisione-di-luca)
+- [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
 
 
 ## Stato
@@ -2354,3 +2355,132 @@ Ieri notte (la prima del turno continuo): 33 cicli, 7 ore, zero errori, l'hub
 pulito ogni volta. Stanotte: la stessa macchina con cascata, caccia con cooldown,
 quattro categorie di fix, sonno adattivo, auto-verifica. Il test definitivo non
 è più un test: è la produzione.
+
+### 2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)
+
+Il report `docs/campo/2026-09-20-test-sistema-completo-fable.md` (PR #97) ha riprodotto 21
+difetti con stub. Luca: «ripeti 10 giri di analisi e chiudi tutti gli errori». Ogni giro:
+banco PRIMA (il test che riproduce il difetto diventa rosso), poi la cura, poi il test
+verde, poi il commit. Tutto in questo diario, un paragrafo per giro.
+
+**Giro 1 — il censore (D1-D4, `night-shift/revisore.sh`).** Banco: `tests/test-revisore.sh`
+casi 9-12, rossi 6/6 prima della cura (una PR che riscrive `.night-verify` a `true` veniva
+MERGIATA; `echo pwned > utils.js` come comando avversario sovrascriveva il file e la PR
+passava; `createdAt: "ieri"` apriva la quarantena; un diff vuoto veniva deliberato). Cure:
+le prove si leggono da `git show <default>:.night-verify` ed eseguono sul working tree
+della PR (come il morning gate); una PR che tocca `.night-verify` e' rinviata; l'allowlist
+e' quella per segmento di `night-shift/lib.sh` (la stessa del gate) piu' il rifiuto di `>`;
+dopo il banco `git checkout -- . && git clean -fdq`; data illeggibile = quarantena chiusa;
+diff vuoto = rinvio. Dopo: 19/19; `tests/test-catena-viva.sh` 11/11 con la fixture
+corretta (le verifiche dichiarate vivono sul ramo di default, non sul ramo notte).
+
+**Giro 2 — il solver (D5-D6, `night-shift/risolvi-issue.sh`, `night-shift/night-shift.sh`).**
+Banco: `tests/test-risolvi-issue.sh` pretende la riga `REVIEW: CORRECT|WRONG|UNCLEAR`, nessun
+«command not found», e che il turno scriva `ISSUE_FILE` prima di leggerlo — rossi 3/3. Cure:
+`auto_review` e `genera_test` definite PRIMA dell'uso (vivevano dopo l'`exit 3`: bash non le
+aveva mai lette) e parlano allo stesso `$API` del solver (il mock le raggiunge); il turno
+scrive il file dell'issue prima del check «gia' implementata» (E-023 torna attiva) e la
+chiamata morta `risolvi-issue.sh --review` sparisce. Dopo: 13/13.
+
+**Giro 3 — il morning gate (D7-D8, `night-shift/morning-gate.sh`).** Banco nuovo:
+`tests/test-morning-gate-cieco.sh` fa girare il gate INTERO su un repo scratch con `gh` stub
+(rotto, poi che risponde), HOME e metriche in quarantena (`HUB_METRICS` sovrascrivibile) —
+rossi 4/7 prima. Cure: `gh` che non risponde = sezione «gate CIECO» nel report e riga
+`gate-cieco` nella memoria, mai «Nessuna. Il sistema ha lavorato»; il `diff --stat` sta
+DOPO il checkout del ramo (prima la sezione Diff era sempre vuota al primo passaggio);
+`ADVERSARY=none` spegne banco e minimita' dichiarandolo (il test passa da 62 s a 1,2 s: i
+60 s erano curl a vuoto verso un Ollama assente). Dopo: 7/7 e i quattro test del gate verdi.
+
+**Giro 4 — i guardiani del commit (D9-D10, `tools/pre-commit.sh`, `.githooks/`).** Banco:
+`tests/test-pre-commit.sh` con due casi nuovi — rilevatore glifi MORTO (locale C forzato)
+deve essere rosso; «test: 999 test verdi» deve morire nel gancio `commit-msg`. Scoperta
+misurando: `xargs` mappa sia l'1 («nessun reperto») sia il 128 («PCRE morto») di `git grep`
+sullo stesso 123, e il `grep -v` in coda alla pipe riportava tutto a 1 — la guardia E-024
+(«>=2 = morto») non poteva scattare in nessun caso. Cure: pathspec passati a `git grep` in
+array (niente xargs), rc catturato PRIMA del filtro; locale UTF-8 SCELTO fra quelli
+installati (`C.utf8` su un Linux minimo, `en_US.UTF-8` sul Mac) invece di un nome fisso che
+qui non esisteva — era quello a uccidere il rilevatore; il controllo del numero-test vive
+in `controlla_numero_test` chiamata dal nuovo `.githooks/commit-msg` (il pre-commit di git
+non conosce il messaggio: passava "" da sempre). Dopo: 12/12, compreso il caso «glifo staged»
+che su questa macchina era rosso dall'inizio della sessione per lo stesso locale.
+
+**Giro 5 — sync-repo (D11-D14, `tools/sync-repo.sh`).** Banco: `tests/test-sync-repo.sh` fa
+girare `--standard` end-to-end con `gh` stub su bare locali — repo VUOTA, repo con CLAUDE.md
+identico ma senza standard, riallineo su repo gia' a standard, clone che «riesce» senza
+directory — rossi 4 prima. Cure: CLAUDE.md remoto ASSENTE con `--standard` = onboarding da
+zero dichiarato, non morte; ALLINEATO sul CLAUDE.md non ferma piu' `--standard` (il canarino
+non e' lo standard: si confronta il sistema intero e il verdetto e' «GIÀ A STANDARD» solo
+se davvero non c'e' nulla da portare); `cd "$TMP/work" || exit 1` nei due rami (D14: e' la
+riga che ha copiato lo standard dentro l'hub durante il test); `.githooks/` e
+`tools/pre-commit.sh` viaggiano (D13). Scoperta in corsa: `cp -r dir dir` con destinazione
+esistente ANNIDA (`.claude/skills/skills`) — ogni riallineo su repo gia' onboardata avrebbe
+creato una copia dentro la copia; ora si copia il contenuto (`dir/.`). Dopo: 14/14 e 12/12.
+
+**Giro 6 — il turno (D15-D17, D23, `night-shift/night-shift.sh`, `tools/bc_index.py`).**
+Banco: `tests/test-night-shift-log-onesto.sh` (nuovo: forma delle tre cure + aritmetica
+della pausa eseguita) e `tests/test-bc-index.sh` (pari merito in ordine di nome). Cure: il
+log dice «PR di riallineo aperta» SOLO quando sync-repo restituisce la URL, altrimenti
+«riallineo NON riuscito»; l'issue `[night-verify]` porta nel corpo i comandi rossi (da remoto
+il giorno puo' disporre: l'issue #95 non lo permetteva); un ciclo che non ha prodotto PR ne'
+proposte e chiude sotto il minuto dorme il resto del minuto (`NIGHT_CICLO_MIN_SEC`, default
+60) — «riparto SUBITO» resta per i cicli che lavorano, e' il giro A VUOTO che non supera piu'
+uno al minuto (misurati 390 in 4,5 min con la copia rotta); `bc_index.py` ordina per
+(conteggio, nome): i pari merito seguivano l'ordine del filesystem e rigenerare l'indice
+su un'altra macchina dava 174 righe di diff senza un dato cambiato — l'indice vivo e'
+rigenerato una volta con l'ordine nuovo. `tests/test-install.sh` rimuove il
+`repos.conf` che crea nell'hub vivo (E-032).
+
+**Giro 7 — dashboard e suite (D18-D20, `tools/dashboard.py`, tre test).** Banco:
+`tests/test-dashboard.sh` con `--stats` vero e il caso «4500 finestre in un log di 4501 righe»;
+`tests/test-struttura-test.sh` (il cancello deve essere l'ultima riga). Cure: la dashboard legge
+TUTTO il log (la finestra di 4000 righe sottostimava in silenzio: 904 finestre → 370; misurato
+63 ms su 100.000 righe, la finestra non serviva); `--stats` esiste (JSON e fine — il test lo
+chiamava, partiva il server, il test restava appeso); il blocco v4 del test stava DOPO il
+cancello finale, ora il cancello chiude; `tests/test-sync-repo-hooks-propagation.sh` conta gli
+hook e pretende a parte la riga `.gitignore` (dal fix H1 del 19/9 la suite era rossa qui su ogni
+macchina); il nome di una repo privata e' uscito dal codice della dashboard e dal test (D24).
+In corsa: `tools/ciclo-vivo.sh` moriva su bash 5 («bad substitution» a `${#FINDINGS[@]:-0}`)
+— l'auto-esame notturno su Linux diceva «0 finding» per un crash, non per merito: forma
+portabile 3.2/5.x. Il pre-commit risolve i nomi nudi anche nella cartella del documento
+(`docs/bc/README.md` cita `docs/bc/CORREZIONI.md` col nome nudo, accanto a se').
+
+**Giro 8 — debiti-riapertura (D21, `tools/debiti-riapertura.sh`).** Banco:
+`tests/test-debiti-riapertura.sh` con una sezione a tabella e una con la parola chiave oltre i
+600 caratteri — rossi 3/3. Cure: `perche_di()` salta intestazioni e separatori di tabella e
+da una riga di tabella prende la CELLA che risponde (prima tutte le 8 domande mostravano
+«| Data | Scorciatoia | Perché rimandata |…»); la classificazione guarda il corpo intero.
+Effetto sul DEBITI vero: 15 aperti, ora 11 di dominio e 4 risolvibili (erano 8/7 — tre
+sezioni che nominano una decisione di Luca oltre la finestra passano tra le domande, dove
+stanno). Dopo: 9/9.
+
+**Giro 9 — portabilita', privacy, cancello clasp (D22, D24, D27).** Banco: nuova lente
+`tests/test-portabilita.sh` (nessun `stat -f %m` fuori da `mtime()`, nessun `sed -i ''` nudo,
+nessun `date -v` senza alternativa, nessuna `${#ARR[@]:-0}`), piu' `tests/test-turno-vivo.sh`
+e `tests/test-caccia-miglioria.sh` che qui erano rossi per il calendario BSD e non per i tool.
+Cure: `mtime()` in `night-shift/lib.sh` (stat BSD con fallback GNU — prima su Linux ogni lock
+e cooldown risultava scaduto, e in caccia-miglioria l'eta' era negativa); i siti saldati si
+depennano dai rinviati con un file temporaneo invece di `sed -i ''`; `sedi()` in
+`tools/giri-avversari.sh` (13 sostituzioni); il test del turno-vivo calcola i 90 minuti con
+python; il cancello clasp spoglia anche i BACKTICK (il report di campo che citava le forme
+vietate era stato negato — D27, 3 attese nuove in `tests/test-clasp-block-hook.sh`); il nome
+di una repo privata e' uscito dal commento del turno (D24). Dopo: portabilita' 7/7,
+turno-vivo 9/9, caccia-miglioria 19/19, clasp 33/33, lib 34/34, catena 11/11.
+
+**Giro 10 — la memoria e la chiusura (D26 + registro, debiti, mappa).** il file locale night-shift/.sal-turni.md ruota
+a 1 MB (una voce per ciclo 24/7 e il digest la svuota solo con `DIGEST_EMAIL`: cresceva per
+sempre); il mio errore dello stub (argomento del clone sbagliato + `cd` non guardato → standard
+copiato nell'hub) e' a regime come E-035 nel registro, con la guardia in `tests/test-sync-repo.sh`;
+i residui dichiarati in `DEBITI.md` (PR del solver senza censore — decisione di Luca; i 9 percorsi
+dell'hub citati dal CLAUDE.md installato; i 57 siti E-002 residui, che la notte salda un sito per
+finestra; il turno che vive solo sul Mac); la mappa della missione in `docs/test-sistema-completo.md`
+corretta coi numeri ricontati (14 sonde, gate e sync provati con stub, dashboard con test che
+termina). Il report di campo ha la sezione «Chiusura» con la tabella giro → difetti → cura → banco.
+La suite intera, un test alla volta con timeout, gira in coda a questo giro: l'esito e' nella
+riga sotto.
+Esito della suite intera (145 file, uno alla volta, timeout 200 s): 142 verdi, 3 rossi, tutti
+curati nello stesso giro — `tools/dashboard.py` sotto la densita' di chiarezza del 15% e con
+`stats()`/`page()` senza docstring (S2/S3 di `tests/test-chiarezza.sh`: ora 3/3); la sonda S1 di
+`tools/giri-ignoranti.sh` moriva sul locale come il pre-commit e il `|| true` la faceva verde
+(stessa cura: locale scelto, rilevatore morto = rosso); `tools/status-page.sh` moriva in silenzio
+sotto `set -e` quando system-health o gate-summary uscivano rossi, e la pagina non nasceva
+(`|| true`: il rosso di un blocco e' un dato da mostrare — `tests/test-status-page.sh` 6/6).

@@ -14,6 +14,11 @@ run_install() {
   HOME="$FAKE" bash -c 'HUB="'"$HERE"'"; cd "$HUB"; PATH="$FAKE/bin:/usr/bin:/bin" bash night-shift/install.sh' 2>&1
 }
 
+# (E-032, test del sistema completo 2026-09-20): install.sh scrive night-shift/repos.conf
+# nell'hub VIVO se manca — il test lo lasciava li' (coda "example" che il turno senza
+# argomenti avrebbe letto). Si ricorda se c'era, e a fine test si rimuove se l'ha creato lui.
+CONF_PRIMA=0; [ -f "$HERE/night-shift/repos.conf" ] && CONF_PRIMA=1
+trap '[ "$CONF_PRIMA" -eq 0 ] && rm -f "$HERE/night-shift/repos.conf"; rm -rf "$FAKE"' EXIT
 OUT1=$(run_install)
 echo "$OUT1" | grep -q "Fatto" && ok "prima esecuzione: completa" || ok "prima esecuzione gira (output parziale in HOME finta: $OUT1 | tail -1)"
 # symlinks creati? (mutation-testing 2026-08-28: prima era ok||ok — un install

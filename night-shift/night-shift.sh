@@ -154,7 +154,7 @@ shift_repo() {
   # semplice (senza -p) è l'idioma standard per un lock atomico a directory: fallisce con
   # EEXIST se un altro processo l'ha già creata un istante prima.
   if ! mkdir "$LOCK" 2>/dev/null; then
-    if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) )) -ge 43200 ]; then
+    if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(mtime "$LOCK") )) -ge 43200 ]; then
       log "REPO $REPO: lock scaduto (>12h), rimosso"
       rmdir "$LOCK" 2>/dev/null
       mkdir "$LOCK" 2>/dev/null || { log "REPO $REPO: lock attivo di un altro turno, salto"; return 0; }
@@ -230,6 +230,7 @@ shift_repo() {
   if [ -f "$DIR/.night-verify" ]; then
     NV_ROSSI=0
     NV_TOTALI=0
+    NV_ROSSI_LISTA=""   # i comandi rossi, per il corpo dell'issue (D16)
     # (2026-09-19, prima notte sul Magazzino): due FORMATI dichiarati. Il suo
     # .night-verify e' un PROGRAMMA di 505 righe (blocchi multi-riga, stato che
     # attraversa le righe): riga-per-riga non puo' girare, e non si riscrive
@@ -242,6 +243,7 @@ shift_repo() {
         log "REPO $REPO: .night-verify (formato script): VERDE"
       else
         NV_ROSSI=1
+        NV_ROSSI_LISTA=".night-verify intero (formato script)"
         log "REPO $REPO: VERIFICA ROSSA: .night-verify intero (formato script)"
       fi
     fi
@@ -261,13 +263,15 @@ shift_repo() {
       # stdin e un test che legge stdin SI MANGIA le righe successive del file
       # (la suite completa a 420s lo faceva: sal-indice spariva, 5/6 dichiarate).
       # </dev/null: il comando non tocca MAI il file delle verifiche.
-      # (2026-09-19, prima notte su Sistema-Gestione-Magazzino): la riga passa
+      # (2026-09-19, prima notte sulla repo del magazzino): la riga passa
       # a bash -c COME SCRIPT — i costrutti shell (for, prefissi d'ambiente,
       # assegnazioni) non sono comandi eseguibili e con ai_timeout anteposto
       # morivano tutti (16/45 rosse false). Il morning-gate faceva gia' cosi:
       # era il turno l'asimmetria. Niente eval: la riga e' UN argomento.
         if ! (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
           NV_ROSSI=$((NV_ROSSI+1))
+          NV_ROSSI_LISTA="${NV_ROSSI_LISTA:+$NV_ROSSI_LISTA
+}$NV_CMD"
           log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
         fi
       done < "$DIR/.night-verify"
@@ -277,12 +281,21 @@ shift_repo() {
     # difetto che il metodo combatte.
     if [ "$NV_TOTALI" -eq 0 ]; then
       NV_ROSSI=1
+      NV_ROSSI_LISTA="verifiche-vuote (.night-verify senza comandi)"
       log "REPO $REPO: VERIFICA ROSSA: verifiche-vuote (.night-verify senza comandi)"
     fi
     if [ "$NV_ROSSI" -gt 0 ]; then
       NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if ! echo "$NV_ISSUE" | grep -qF "[night-verify]"; then
-        gh issue create -R "$REPO" -t "[night-verify] $NV_ROSSI verifiche rosse nell'auto-esame" -b "Il turno notturno ha eseguito i comandi in .night-verify: $NV_ROSSI su $NV_TOTALI sono rossi. I dettagli sono nel log del turno." >/dev/null 2>&1 \
+        # (D16, test del sistema completo 2026-09-20): il corpo diceva «I dettagli sono nel
+        # log del turno» — da remoto il giorno non poteva disporre (issue #95 aperta cosi'
+        # dal 18/9). Il comando rosso va NEL corpo: e' l'unica cosa che serve per agire.
+        gh issue create -R "$REPO" -t "[night-verify] $NV_ROSSI verifiche rosse nell'auto-esame" -b "Il turno notturno ha eseguito i comandi in .night-verify: $NV_ROSSI su $NV_TOTALI sono rossi.
+
+Comandi rossi (eseguiti dalla radice della repo, budget 120s salvo prefisso @sec):
+$(printf '%s\n' "$NV_ROSSI_LISTA" | sed 's/^/- /')
+
+Riprodurre a mano, correggere il comando o il codice che verifica, chiudere l'issue quando tornano verdi." >/dev/null 2>&1 \
           && log "REPO $REPO: issue [night-verify] aperta ($NV_ROSSI/$NV_TOTALI rossi)"
       else
         log "REPO $REPO: $NV_ROSSI/$NV_TOTALI rosse — issue gia' aperta"
@@ -308,7 +321,14 @@ shift_repo() {
         log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
       else
         SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
-        log "REPO $REPO: PR di riallineo aperta: $SYNC_OUT"
+        # (D15, test del sistema completo 2026-09-20): il log diceva «PR di riallineo
+        # aperta:» seguito da QUALUNQUE ultima riga — anche «impossibile leggere
+        # CLAUDE.md». La PR e' aperta solo se sync-repo lo dice con la sua URL.
+        case "$SYNC_OUT" in
+          *"PR aperta https://"*) log "REPO $REPO: PR di riallineo aperta: $SYNC_OUT" ;;
+          *"GIÀ A STANDARD"*)     log "REPO $REPO: riallineo: $SYNC_OUT" ;;
+          *)                      log "⚠ REPO $REPO: riallineo NON riuscito (nessuna PR): $SYNC_OUT" ;;
+        esac
       fi
     fi
   fi
@@ -556,7 +576,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # repo negli ultimi 30 minuti, non rimontarla. File marker con timestamp.
       CACCIA_MARKER="$WORK/.caccia-pulita-${REPO//\//_}"
       if [ -f "$CACCIA_MARKER" ]; then
-        CACCIA_ETA=$(( $(date +%s) - $(stat -f %m "$CACCIA_MARKER" 2>/dev/null || echo 0) ))
+        CACCIA_ETA=$(( $(date +%s) - $(mtime "$CACCIA_MARKER") ))
         if [ "$CACCIA_ETA" -lt 1800 ]; then
           log "REPO $REPO: caccia in cooldown (${CACCIA_ETA}s < 30min: già dichiarata pulita)"
           return 0
@@ -753,6 +773,12 @@ $BODY"
     # direttamente, il modello risponde col codice, lo script lo applica e verifica.
     NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
     if [ -f "$NIGHT_SOLVER" ]; then
+      # l'issue scaricata in un file locale: la leggono il check «gia' implementata» qui
+      # sotto E il solver. (D6, test del sistema completo 2026-09-20: il file veniva
+      # scritto DOPO il check, che sotto set -u leggeva una variabile vuota e non girava
+      # mai — la lezione del caso #10 era scritta e inattiva.)
+      ISSUE_FILE="/tmp/night-issue-$NUM.md"
+      printf '%s\n' "$BODY" > "$ISSUE_FILE"
       # (2026-09-08, dal caso #10): la notte inseguiva una commessa che il giorno aveva
       # gia' consegnato (funzione presente E cablata, commit a72213d) — quattro notti a
       # proporre cio' che esisteva. Il tracker e il codice divergono in silenzio: questo
@@ -778,6 +804,7 @@ $BODY"
             grep -q "GIA' IMPLEMENTATA" <<<"$COMMENTI_GIA" || gh issue comment "$NUM" -R "$REPO" --body-file "$CORPO_GIA" >/dev/null 2>&1
             rm -f "$CORPO_GIA"
             ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: gia' implementata? (chiede il giorno)"
+            rm -f "$ISSUE_FILE"
             continue
           fi
         fi
@@ -790,9 +817,6 @@ $BODY"
       #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
       #  capacita' migliore non e' spam: e' il lavoro che riparte.
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
-      # scarica l'issue in un file locale per lo script
-      ISSUE_FILE="/tmp/night-issue-$NUM.md"
-      printf '%s\n' "$BODY" > "$ISSUE_FILE"
       OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
@@ -890,10 +914,10 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         fi
         # AUTO-REVIEW (2026-09-17): il modello rivede il proprio fix con una
         # domanda diversa. Se dice WRONG, il fix viene degradato: PR con warning.
+        # Il verdetto arriva nella riga «REVIEW: ...» dell'output del solver (D5: prima
+        # qui c'era anche una chiamata `risolvi-issue.sh --review` a una modalita' mai
+        # esistita — usciva 2 «dir inesistente» a ogni fix, in silenzio).
         if [ "$RC" -eq 0 ]; then
-          REVIEW_VERDETTO=$(bash "$NIGHT_SOLVER" --review 2>/dev/null || echo "SKIP")
-          # il solver --review non esiste ancora come modalita': la funzione e' interna.
-          # Per ora: se il verdetto e' WRONG nel log del solver, lo leggiamo qui.
           if echo "$OUT" | grep -qi "WRONG"; then
             NOTA_INS="
 
@@ -1041,7 +1065,7 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
 # saluta e ritorna — il per-repo lock resta per le repliche multiple.
 TURN_LOCK="$WORK/.lock-turno"
 if ! mkdir "$TURN_LOCK" 2>/dev/null; then
-  ETA=$(( $(date +%s) - $(stat -f %m "$TURN_LOCK" 2>/dev/null || echo 0) ))
+  ETA=$(( $(date +%s) - $(mtime "$TURN_LOCK") ))
   if [ "$ETA" -ge 3600 ]; then
     log "lock turno globale scaduto (${ETA}s > 1h: un turno oltre l'ora e' anomalia da guardare, non da aspettare — E-026): lo rimuovo e proseseguo"
     rmdir "$TURN_LOCK" 2>/dev/null; mkdir "$TURN_LOCK" 2>/dev/null || { log "turno precedente ancora vivo: esco"; exit 0; }
@@ -1054,6 +1078,7 @@ trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 
 
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
+T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 
 # (2026-09-20): il WATCHDOG di Ollama. Il server (0.32.14) si inceppa sotto
 # carico: resta su (tags risponde) ma le generazioni muoiono. L'agente si
@@ -1108,6 +1133,10 @@ log "=== TURNO FINITO ==="
 # esistito: no-op silenzioso colpevole di giri interi (giri 3/5, 2026-09-06).
 # File locale GITIGNORED: la memoria del turno sopravvive, il pull non si accorge.
 HUB_SAL="$HERE/.sal-turni.md"
+# (D26, test del sistema completo 2026-09-20): una voce per ciclo, 24/7, e il digest la
+# svuota SOLO se DIGEST_EMAIL e' configurata — altrimenti il file cresceva per sempre.
+# Rotazione a 1 MB (una generazione, come i log): la memoria resta, il disco no.
+rotate_log_if_big "$HUB_SAL" 1
 if true; then
   DT=$(date '+%Y-%m-%d')
   cat >> "$HUB_SAL" <<SALEOF
@@ -1122,7 +1151,19 @@ SALEOF
 fi
 
 # NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)
-log "=== TURNO FINITO — riparto SUBITO ==="
+# (D17, test del sistema completo 2026-09-20): con una copia rotta o la caccia in cooldown
+# il turno ha fatto 390 cicli in 4,5 minuti (~8 chiamate gh per ciclo): il freno era il
+# rate limit di GitHub, non il sistema. Un ciclo che NON ha prodotto nulla e chiude sotto
+# il minuto dorme il resto del minuto (NIGHT_CICLO_MIN_SEC, default 60): al massimo un
+# giro a vuoto al minuto, e chi lavora riparte subito come prima.
+CICLO_SEC=$(( $(date +%s) - T_CICLO_INIZIO ))
+if [ "$TOT_PR_CREATED" -eq 0 ] && [ "$TOT_PROPOSTE" -eq 0 ] && [ "$CICLO_SEC" -lt "${NIGHT_CICLO_MIN_SEC:-60}" ]; then
+  PAUSA=$(( ${NIGHT_CICLO_MIN_SEC:-60} - CICLO_SEC ))
+  log "=== TURNO FINITO — ciclo a vuoto in ${CICLO_SEC}s: pausa ${PAUSA}s prima di ripartire (niente giri a vuoto sotto il minuto) ==="
+  sleep "$PAUSA"
+else
+  log "=== TURNO FINITO — riparto SUBITO ==="
+fi
 rmdir "$TURN_LOCK" 2>/dev/null
 exec "$0" "$@"
 
