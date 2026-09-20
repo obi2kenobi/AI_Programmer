@@ -4,7 +4,8 @@
 # deliberarlo o no»).
 #
 # Il principio: CHI SCRIVE NON GIUDICA. Le migliorie le scrive qwen2.5-coder:14b;
-# qui giudica un cervello DIVERSO e piu' grande (qwen3.8:27b) con istruzioni
+# qui giudica lo STESSO modello (un solo modello dal 2026-09-19, riga 35: il 27b
+# faceva 0/3 in 442 s) ma in un processo separato, senza memoria, con istruzioni
 # avversarie: l'onere della prova e' della PR, non del revisore.
 #
 # La deliberazione e' a tre livelli, in ordine di autorita':

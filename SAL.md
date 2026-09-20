@@ -2537,3 +2537,36 @@ rilievi: i livelli e il ritorno al CUORE del ciclo, il lock a mkdir, le lenti 4a
 S3 che uccide gli oracoli a 0,35 s; la classificazione D degli attacchi (traceback = «si
 dichiara», coerente con S3 che lo boccia altrove); gate-esito/gate-summary (giro 18: l'esito
 umano si scrive sull'ULTIMA riga pendente della PR e uno stato finale non si sovrascrive).
+Attacchi (giro 15) rifatti sull'albero pulito dopo i commit: 95 attacchi, 88 tengono, 7 ACK con
+limite dichiarato, 0 aggirati.
+
+**Giro 19 — installazione e cervelli (`night-shift/install.sh`, `llm/ask-qwen.sh`).** A cosa
+serve install.sh: segnala i prerequisiti (non li installa), fa i symlink dei cinque comandi,
+attiva i guardiani (`core.hooksPath`), genera i plist. Difetto: controllava — e chiedeva di
+scaricare, 17 GB — il 27b generale abbandonato il 2026-09-19 (un solo modello, decisione di
+Luca, `night-shift/revisore.sh:35`); `llm/ask-qwen.sh`, il cervello che il morning-gate
+chiama per il banco avversariale, partiva ancora col 27b (quello che «0/3 in 442 s»); il test
+del censore cercava il 27b per decidere se fare la sfida vera — saltata per sempre. Banco: nuova
+lente `tests/test-un-solo-modello.sh` (ogni letterale qwen* in una riga di codice deve essere il
+MODEL_TAG del turno) — rossa su tre file, verde dopo; install.sh ora LEGGE il modello da
+night-shift.sh. Corretti anche due commenti che dicevano «cervello piu' grande» e il protocollo
+dei modelli che chiamava il 27b «attuale».
+
+**Giro 20 — onboard-repo (`tools/onboard-repo.sh`).** A cosa serve: porta una repo ESISTENTE
+nel sistema — label, .night-verify, template issue, vocabolario, skill/agenti/pattern/hook a
+merge prudente (mai sovrascrivere il personalizzato), iscrizione alla coda. Fino a oggi aveva
+solo banchi strutturali o che RIFACEVANO il merge a mano: specchio del codice. Banco nuovo
+`tests/test-onboard-repo.sh`: lo script vero con un gh finto su un origin locale (bare +
+clone), due casi. Rosso su tre difetti: (D28) il ramo «settings.json assente» leggeva solo
+`.hooks.PreToolUse` — `tools/metodo-reminder-hook.sh` (UserPromptSubmit/SessionStart/Stop) non
+arrivava mai, settings.json puntava a uno script inesistente; (D29) `git add tools/*hook*.sh`
+espanso dalla shell nella cartella di CHI LANCIA (l'hub): includeva copia-hook.sh che nella
+repo non c'e', pathspec non corrisposto, git add non aggiungeva NIENTE — nessun hook e' MAI
+arrivato a una repo onboardata da qui; e il commit di settings.json lo faceva per caso la
+sezione degli agenti: repo con gli agenti gia' presenti = niente sull'origin (stesso buco per
+gli specchi OpenCode); (D30) la prima prova ha iscritto due repo finte nella coda VERA
+dell'hub (`night-shift/repos.conf`, gitignored) — rimosse a mano; ora `NIGHT_REPOS_CONF`
+sovrascrive il percorso, come `HUB_METRICS` nel gate. Cura: filtro su tutti gli eventi (lo
+stesso di `tools/copia-hook.sh`), add per percorso esplicito, `chmod +x`, commit e push propri
+anche per gli specchi OpenCode. 10/10; il vecchio banco degli hook ora pretende il filtro su
+tutti gli eventi.

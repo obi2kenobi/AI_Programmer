@@ -243,11 +243,13 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" b
   || ko "D4: rc $RC — un diff vuoto e' stato deliberato"
 rm -f "$STUB_LS"
 
-# 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il 27b manca)
-if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -q "qwen3.8:27b"; then
-  echo "· sfida modello vero: fatta girare a mano nel turno (il censore 27b e' lento: fuori dalla suite)"
+# 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
+#    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
+CENSORE_MODEL="${REVISORE_MODEL:-qwen2.5-coder:14b}"
+if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -q "$CENSORE_MODEL"; then
+  echo "· sfida modello vero: fatta girare a mano nel turno (il censore e' lento: fuori dalla suite)"
 else
-  echo "⊘ sfida modello vero saltata (censore qwen3.8:27b non attivo — dichiarato, non taciuto)"
+  echo "⊘ sfida modello vero saltata (censore $CENSORE_MODEL non attivo — dichiarato, non taciuto)"
 fi
 
 echo ""

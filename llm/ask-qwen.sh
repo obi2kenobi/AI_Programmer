@@ -1,10 +1,10 @@
 #!/bin/bash
-# ask-qwen.sh — delega un compito al cervello LOCALE (Qwen3.8-27B via Ollama).
+# ask-qwen.sh — delega un compito al cervello LOCALE (qwen2.5-coder:14b via Ollama).
 # Contratto comune ai wrapper llm/ask-*: prompt come argomento, contesto via stdin,
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
-# Variabili: QWEN_MODEL (default qwen3.8:27b-mtp-q4_K_M, sovrascrivibile anche con
-#            ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
+# Variabili: QWEN_MODEL (default qwen2.5-coder:14b — un solo modello, decisione
+#            2026-09-19, vedi night-shift/revisore.sh:35; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
 #            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
 #            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
 set -euo pipefail
@@ -26,7 +26,10 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 
 # bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
 # override universale, qui era ignorato — solo QWEN_MODEL funzionava.
-MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8:27b-mtp-q4_K_M}}"
+# (giro 19, 2026-09-20): il default era ancora il 27b generale — il morning-gate chiama
+# questo wrapper per il banco avversariale, quindi il gate avrebbe usato il modello che
+# "0/3 in 442 s" mentre la notte usa il 14b. Un solo modello: lo stesso del turno.
+MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen2.5-coder:14b}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"
 API="http://localhost:11434"

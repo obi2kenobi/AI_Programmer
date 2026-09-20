@@ -158,19 +158,44 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
   # contraddiceva il commento due righe sopra ("mai sovrascrivere una personalizzazione
   # locale, solo aggiungere i mancanti"). Un progetto che avesse già i propri hook
   # personalizzati (ma non ancora .claude/settings.json) li vedeva sovrascritti in silenzio.
-  for H in $(jq -r '.hooks.PreToolUse[]?.hooks[]?.command' "$HERE/.claude/settings.json" 2>/dev/null | xargs -n1 basename 2>/dev/null | sort -u); do
-    [ -f "$WORK/tools/$H" ] || cp "$HERE/tools/$H" "$WORK/tools/" 2>/dev/null || true
-  done
-  git -C "$WORK" add tools/*hook*.sh 2>/dev/null || true
+  # (giro 20, 2026-09-20 — D28, D29, provati in tests/test-onboard-repo.sh): qui si leggeva
+  # SOLO .hooks.PreToolUse — settings.json dichiara tools/metodo-reminder-hook.sh su
+  # UserPromptSubmit/SessionStart/Stop, e la repo riceveva un settings.json che punta a uno
+  # script inesistente. Poi `git add tools/*hook*.sh`: il glob lo espandeva la shell nella
+  # cartella di CHI LANCIA (l'hub), includendo tools/copia-hook.sh che nella repo non c'e' —
+  # pathspec non corrisposto, git add non aggiungeva NIENTE. E il commit lo faceva, per
+  # caso, la sezione degli agenti: repo con gli agenti gia' tutti presenti = hook mai spinti.
+  # Ora: tutti gli eventi (stesso filtro di tools/copia-hook.sh), add per percorso esplicito,
+  # commit e push propri.
+  HOOK_AGGIUNTI=0
+  while IFS= read -r H; do
+    [ -n "$H" ] || continue
+    if [ ! -f "$WORK/$H" ]; then
+      mkdir -p "$WORK/$(dirname "$H")"
+      cp "$HERE/$H" "$WORK/$H" && chmod +x "$WORK/$H" && git -C "$WORK" add "$H" && HOOK_AGGIUNTI=$((HOOK_AGGIUNTI+1))
+    fi
+  done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" 2>/dev/null            | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+  git -C "$WORK" commit -q -m "chore: settings.json e $HOOK_AGGIUNTI hook del metodo (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "settings.json e $HOOK_AGGIUNTI hook aggiunti e spinti (gli hook gia' presenti nel progetto: intoccati)"
 fi
+# (giro 20, 2026-09-20 — stessa famiglia di D29): gli specchi finivano nell'indice e il commit
+# lo faceva solo la sezione degli agenti Claude, se aveva qualcosa da aggiungere. Commit proprio.
+OPENCODE_AGENTI_AGGIUNTI=0
 mkdir -p "$WORK/.opencode/agent"
 for agent_file in "$HERE"/.opencode/agent/*.md; do
   agent_name="$(basename "$agent_file")"
   if [ ! -f "$WORK/.opencode/agent/$agent_name" ]; then
     cp "$agent_file" "$WORK/.opencode/agent/$agent_name"
     git -C "$WORK" add ".opencode/agent/$agent_name"
+    OPENCODE_AGENTI_AGGIUNTI=$((OPENCODE_AGENTI_AGGIUNTI+1))
   fi
 done
+if [ "$OPENCODE_AGENTI_AGGIUNTI" -gt 0 ]; then
+  git -C "$WORK" commit -q -m "chore: $OPENCODE_AGENTI_AGGIUNTI specchio/i OpenCode del hub propagato/i (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$OPENCODE_AGENTI_AGGIUNTI specchio/i OpenCode aggiunto/i e spinto/i"
+fi
 mkdir -p "$WORK/.claude/agents"
 for agent_file in "$HERE"/.claude/agents/*.md; do
   agent_name="$(basename "$agent_file")"
@@ -188,7 +213,9 @@ else
   echo "agenti del hub già tutti presenti, intoccati"
 fi
 
-CONF="$HERE/night-shift/repos.conf"
+# NIGHT_REPOS_CONF: override per i banchi (giro 20 — la prima prova end-to-end ha iscritto due
+# repo finte nella coda VERA dell'hub; stesso gesto di HUB_METRICS nel morning-gate)
+CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
 grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }
 
