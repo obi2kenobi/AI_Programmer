@@ -11,10 +11,13 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-grep -q 'hooks.PreToolUse.*settings.json' "$HERE/tools/onboard-repo.sh" \
-  && ok "onboard-repo.sh deriva la lista hook da settings.json (include metodo-reminder per derivazione)" \
-  || ko "onboard-repo.sh non deriva da settings.json: rischio hook dimenticato"
-# pattern-reminder incluso per derivazione (non serve cercarlo per nome)
+# (giro 20, 2026-09-20 — D28): la derivazione leggeva SOLO .hooks.PreToolUse, e questo banco
+# lo accettava: metodo-reminder-hook.sh vive su UserPromptSubmit/SessionStart/Stop e non
+# arrivava mai. Ora si pretende il filtro su TUTTI gli eventi (lo stesso di tools/copia-hook.sh);
+# la prova end-to-end (gh finto, origin locale) e' tests/test-onboard-repo.sh.
+grep -qF ".hooks | to_entries[] | .value[]? | .hooks[]? | .command" "$HERE/tools/onboard-repo.sh" \
+  && ok "onboard-repo.sh deriva la lista hook da settings.json su TUTTI gli eventi, non solo PreToolUse" \
+  || ko "onboard-repo.sh non deriva gli hook da tutti gli eventi di settings.json: metodo-reminder resta a terra"
 
 # riproduce esattamente il ramo reale (settings.json assente) su una copia di lavoro
 merge_hooks() {
