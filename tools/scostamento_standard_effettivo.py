@@ -74,10 +74,6 @@ def main():
     trend e alert. Il costo standard è del dominio: non si indovina né si
     mette un default silenzioso.
     """
-    righe = [
-        {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
-        for r in csv.DictReader(sys.stdin)
-    ]
     # bug reale (revisione 14 lenti, 2026-08-28): un costo standard non passato da riga di
     # comando (dimenticanza in uno script chiamante) diventava silenziosamente 0 — che
     # calcola_scostamento() interpreta come "nessuno scostamento" (ramo costo_standard<=0,
@@ -87,7 +83,23 @@ def main():
     if len(sys.argv) <= 1:
         print("uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv", file=sys.stderr)
         return 1
-    costo_standard = float(sys.argv[1])
+    # (giro 21, 2026-09-20 — D32): argomento non numerico e colonne sbagliate = traceback nudo;
+    # stdin vuoto = «Nessun alert» verde senza dati. L'argomento si legge PRIMA di consumare
+    # stdin, e ogni mancanza si dichiara.
+    try:
+        costo_standard = float(sys.argv[1])
+    except ValueError:
+        print(f"uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv — costo standard non numerico: {sys.argv[1]!r}", file=sys.stderr)
+        return 1
+    reader = csv.DictReader(sys.stdin)
+    mancanti = [c for c in ("costo_eff_unitario", "qta_prodotta") if c not in (reader.fieldnames or [])]
+    if mancanti:
+        print(f"uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    righe = [
+        {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
+        for r in reader
+    ]
     media_eff = media_pesata(righe)
     scost_perc = calcola_scostamento(costo_standard, media_eff)
     trend = calcola_trend(righe)

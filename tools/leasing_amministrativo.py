@@ -72,8 +72,19 @@ def main():
     if len(sys.argv) != 2:
         print("uso: leasing_amministrativo.py contratto.json", file=sys.stderr)
         return 1
-    with open(sys.argv[1], encoding="utf-8") as f:
-        c = json.load(f)
+    # (giro 21, 2026-09-20 — D32): file inesistente, JSON rotto o non-oggetto, campi mancanti
+    # producevano traceback nudo: si dichiara cosa manca, come indici_crisi.
+    try:
+        with open(sys.argv[1], encoding="utf-8") as f:
+            c = json.load(f)
+    except (OSError, ValueError) as e:
+        print(f"uso: leasing_amministrativo.py contratto.json — non leggibile: {e}", file=sys.stderr)
+        return 1
+    CAMPI = ("canone_base", "data_inizio", "data_fine", "spread", "euribor_stipula")
+    mancanti = [k for k in CAMPI if not isinstance(c, dict) or k not in c]
+    if mancanti:
+        print(f"uso: leasing_amministrativo.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
     canone = float(c["canone_base"])
     if canone <= 0:
         print("ERRORE: canone base non valido", file=sys.stderr)
