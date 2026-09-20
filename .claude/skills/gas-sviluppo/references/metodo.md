@@ -1019,3 +1019,43 @@ Dal campo: `docs/campo/2026-09-19-repo-i-standard-cinquanta-giri-correzioni.md`.
    legge dal comando, mai da `cmd | tail; echo $?`. Un gate giudicato dal
    codice di uscita di `tail` è un gate giudicato a caso — e il costo è un
    falso positivo su un presidio, che è il costo che la fiducia non regge.
+
+
+## Le regole del report BusinessPlan (2026-09-19: 50 giri, 137 difetti, la lezione che li supera)
+
+Dal campo (repo privata, report in arrivo nell'hub). La lezione centrale in una
+riga: **il metodo verifica benissimo la coerenza interna e non verifica affatto
+i fatti che nessuno ha interrogato** — 36 giri di scoperta e 14 avversariali
+conclusero all'unanimità «fonte assente», e avevano torto tutti, perché
+leggevano lo stesso inventario sbagliato. La fonte era raggiungibile da sempre:
+l'ha trovata una GET. Le regole che il canone eredita:
+
+1. **Eseguire vale anche per le DOMANDE, non solo per le verifiche.** Ogni
+   rilievo chiuso con «non verificabile senza il sistema vero» produce il
+   COMANDO ESATTO, pronto da lanciare quando qualcuno avrà il mandato — non un
+   rinvio generico. Il costo di non averlo fatto: tre mesi di progetto fermo
+   e una raccomandazione sbagliata in un documento appena verificato.
+
+2. **Prima di dichiarare una questione «di dominio», chiedersi se il sistema
+   vero sappia rispondere da sé.** Verificato su cinque casi in un giorno: in
+   tutti e cinque la risposta era sì. Una questione di dominio dichiarata
+   troppo presto è più costosa di un difetto, perché non entra in nessuna
+   lista di difetti — ha già l'aria di essere stata istruita.
+
+3. **Il censimento comincia dallo SCHEMA, non dal campione.** Dove un sistema
+   espone una descrizione di sé ($metadata, uno schema, un --help, un catalogo
+   API), la si interroga per prima e la si usa come oracolo. Qui il 49% dei
+   tipi inferiti era sbagliato, e la correzione è costata una chiamata.
+
+4. **Separare «richiede una decisione di dominio» da «è grande e rischiosa».**
+   Sono due categorie; confonderle lascia sul tavolo la correzione di maggior
+   valore. La prima non si tocca mai; la seconda un agente la fa, se la prova
+   per bene.
+
+5. **Un'assenza da un campione non è un'assenza dai dati** — e distinguere
+   «misurato sul nostro artefatto» da «misurato sul sistema».
+
+6. **`rifiuta-invece-di-riparare`** (candidato pattern): quando la riparazione
+   corretta di un difetto distruttivo è grande e cambia un contratto, la mossa
+   a costo minimo è una guardia che rifiuta l'operazione pericolosa finché la
+   riparazione non arriva. Non decide nulla, rende il danno impossibile.

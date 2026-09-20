@@ -272,6 +272,13 @@ shift_repo() {
         fi
       done < "$DIR/.night-verify"
     fi
+    # (report BusinessPlan): zero comandi dichiarati NON e' verde — l'assenza di
+    # verifiche non si puo' confondere col loro successo. La forma piu' pura del
+    # difetto che il metodo combatte.
+    if [ "$NV_TOTALI" -eq 0 ]; then
+      NV_ROSSI=1
+      log "REPO $REPO: VERIFICA ROSSA: verifiche-vuote (.night-verify senza comandi)"
+    fi
     if [ "$NV_ROSSI" -gt 0 ]; then
       NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if ! echo "$NV_ISSUE" | grep -qF "[night-verify]"; then

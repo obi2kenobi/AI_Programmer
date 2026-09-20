@@ -39,7 +39,10 @@ if [ "$EVENT" = "SessionStart" ]; then
   DEBITI_CTX=""
   if [ -f "$PWD/DEBITI.md" ] && [ -f "$HERE/tools/debiti-riapertura.sh" ]; then
     DEBITI_RIEPILOGO=$(bash "$HERE/tools/debiti-riapertura.sh" "$PWD" 2>/dev/null | sed -n '2p' | head -c 300)
-    [ -n "$DEBITI_RIEPILOGO" ] && DEBITI_CTX "
+    # (report BusinessPlan 2026-09-19): era `DEBITI_CTX "` — un refuso di UN
+    # carattere eseguiva DEBITI_CTX come comando (not found), ometteva il settimo
+    # patto dal contesto e usciva 0. In silenzio, in ogni repo onboardata.
+    [ -n "$DEBITI_RIEPILOGO" ] && DEBITI_CTX="
 7) RIAPERTURA: $DEBITI_RIEPILOGO — domande di dominio UNA alla volta, risolvibili prima di procedere (bash tools/debiti-riapertura.sh per l'elenco)."
   fi
   jq -n --arg ctx "STANDARD DI SVILUPPO ATTIVO (AI_Programmer — non serve invocarlo, vale da sé):
