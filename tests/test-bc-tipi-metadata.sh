@@ -69,6 +69,12 @@ m.main()                        # deve sollevare, non tornare 0 in silenzio
 EOF
 RC=$?
 [ "$RC" -ne 0 ] && ok "metadata irraggiungibile: esce $RC, non silenzio" || ko "metadata irraggiungibile: exit 0 inaspettato"
+# (giro 22, 2026-09-20 — D33): «morte loud» non e' un traceback nudo — il tool intero, a rete giu'
+printf '{"client_id": "x", "client_secret": "x", "scope": "x", "token_url": "http://127.0.0.1:1/t", "base_url": "http://127.0.0.1:1/b"}\n' > "$TMP/cred.json"
+OUT=$(BC_CRED_FILE="$TMP/cred.json" timeout 30 python3 "$TOOL" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -q Traceback <<<"$OUT" && grep -q "irraggiungibile" <<<"$OUT" \
+  && ok "rete giu': errore DICHIARATO (host e ragione), nessun traceback" \
+  || ko "rete giu': rc $RC, traceback=$(grep -c Traceback <<<"$OUT") — $(tail -1 <<<"$OUT" | cut -c1-80)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

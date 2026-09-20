@@ -51,8 +51,17 @@ def get_token(c):
         "scope": c["scope"],
     }).encode()
     req = urllib.request.Request(c["token_url"], data=data)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)["access_token"]
+    # (giro 22, 2026-09-20 — D33): rete assente o endpoint OAuth giu' = URLError nudo, in
+    # contraddizione col docstring di bc_tipi_metadata («morte loud, non traceback nudo»).
+    # Si dichiara l'host (mai l'URL intero: il token_url porta il tenant) e la ragione.
+    host = urllib.parse.urlparse(c["token_url"]).netloc
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.load(r)["access_token"]
+    except urllib.error.HTTPError as e:
+        sys.exit(f"ERRORE BC: il servizio token ({host}) risponde HTTP {e.code} {e.reason} — credenziali o scope da controllare")
+    except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        sys.exit(f"ERRORE BC: servizio token irraggiungibile ({host}): {getattr(e, 'reason', e)}")
 
 
 def fetch(base_url, endpoint, token, top):
@@ -63,8 +72,14 @@ def fetch(base_url, endpoint, token, top):
         "Authorization": f"Bearer {token}",
         "Accept": "application/json",
     })
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.load(r).get("value", [])
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            return json.load(r).get("value", [])
+    except urllib.error.HTTPError:
+        raise  # map_one lo riporta come «ERRORE HTTP code reason» per endpoint
+    except (urllib.error.URLError, OSError) as e:
+        # (giro 22, 2026-09-20 — D33): stessa dichiarazione del token: host e ragione, mai traceback
+        raise urllib.error.URLError(f"endpoint irraggiungibile ({urllib.parse.urlparse(base_url).netloc}): {getattr(e, 'reason', e)}")
 
 
 def infer_type(v):

@@ -14,9 +14,16 @@ path = sys.argv[1]
 with io.open(path, encoding="utf-8") as f:
     sal = f.read()
 
-voci = re.findall(r'^### (.{1,130})$', sal, flags=re.M)
+# (giro 25, 2026-09-20 — D38): era `.{1,130}` — un titolo piu' lungo di 130 caratteri
+# spariva dall'indice IN SILENZIO, la sonda S16 diceva «indice FERMO» e l'antivirus dei
+# rilevatori accusava la sonda. L'indice e' una mappa: tutte le stanze; il titolo lungo
+# si segnala su stderr, non si scarta.
+voci = re.findall(r'^### (.+?)\s*$', sal, flags=re.M)
 if not voci:
     print("nessuna voce ### trovata"); sys.exit(0)
+for v in voci:
+    if len(v) > 130:
+        print(f"sal-indice: titolo lungo ({len(v)} caratteri, il canone ne vuole <=130 — indicizzato comunque): {v[:60]}...", file=sys.stderr)
 
 indice = ["<!-- SAL-INDICE: generato da tools/sal-indice.sh — non editare a mano -->", "## Indice del diario", ""]
 for v in voci:
