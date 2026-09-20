@@ -30,10 +30,11 @@ T_TOT=0; SUCCESSI=0
 
 # ── 1. CHIRURGO ─────────────────────────────────────────────────────────────
 PDQ="| gre""p -q"   # esemplare a pezzi: il guardiano dei tubi legge il sorgente
-printf '#!/bin/bash\nset -uo pipefail\nLISTA=$(ls . %s patriarca && echo si)\n' "$PDQ" > "$TMP/pipes.sh"
+RIGA=$(printf 'LISTA=$(ls . %s patriarca && echo si)' "$PDQ")
+printf '#!/bin/bash\nset -uo pipefail\n%s\n' "$RIGA" > "$TMP/pipes.sh"
 T0=$(date +%s)
 R=$(chiama "The file pipes.sh contains this line:
-LISTA=\$(ls . "$PDQ" patriarca && echo si)
+$RIGA
 Convert ONLY this line to cattura-prima: capture first, then grep the variable. HARD BUDGET: at most 4 changed lines. Reply with ONLY the new line(s), nothing else." 300)
 T1=$(date +%s); DT=$((T1-T0)); T_TOT=$((T_TOT+DT))
 OK1=0

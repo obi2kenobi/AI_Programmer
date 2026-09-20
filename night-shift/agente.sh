@@ -74,11 +74,15 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
         sleep 5
         curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
       done
-      RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
-        --arg m "$MODEL" \
-        --argjson msgs "$CONV" \
-        '{model:$m, messages:$msgs, stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
     fi
+    # (07:22 di stamattina): una generazione puo' morire ANCHE col server sano al
+    # ping — il rianimamento non basta, serve il RIENTO. Un tentativo in piu'
+    # costa secondi; la finestra morta costa mezz'ora di cooldown.
+    log "generazione vuota (ping: $([ -n "$PING" ] && echo sano || echo muto)) — ritento il turno"
+    RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
+      --arg m "$MODEL" \
+      --argjson msgs "$CONV" \
+      '{model:$m, messages:$msgs, stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
   fi
 
   [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
