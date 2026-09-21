@@ -93,7 +93,7 @@ probe() {
   # (2026-09-21, iq3s 12GB): il caricamento a freddo supera i 120s — la sonda
   # uccideva un server sano a meta' caricamento (due volte di fila: turno morto).
   RISPOSTA=$(curl -sf --max-time 240 http://localhost:11434/api/chat -d \
-    "{\"model\":\"$MODEL_TAG\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"stream\":false,\"think\":false,\"options\":{\"num_ctx\":2048}}") \
+    "{\"model\":\"$MODEL_TAG\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"stream\":false,\"think\":false,\"keep_alive\":-1,\"options\":{\"num_ctx\":2048}}") \
     && grep -q '"content":"' <<<"$RISPOSTA"
 }
 
@@ -1089,7 +1089,7 @@ T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 # a OGNI inizio ciclo, un ping di GENERAZIONE (non tags: quello risponde anche
 # da wedged); muto = kill del serve, launchd lo riporta, si aspetta. Il turno
 # non parte mai con un cervello morto accanto.
-OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false,"keep_alive":-1}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
 if [ -z "$OLLM_PING" ]; then
   log "⚠ Ollama wedged al via del turno (ping di generazione muto): kill e attesa rilancio"
   pkill -f "ollama serve" 2>/dev/null
@@ -1097,7 +1097,7 @@ if [ -z "$OLLM_PING" ]; then
     sleep 5
     curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
   done
-  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false,"keep_alive":-1}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
   if [ -n "$OLLM_PING" ]; then
     log "✓ Ollama rianimato dal watchdog del turno"
   else
