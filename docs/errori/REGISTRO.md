@@ -795,3 +795,32 @@
 - Aggiramento: aggiungere un controllo con un'opzione che non esiste sul grep di casa
   e non guardare il log. La regola: ogni nuovo controllo si prova VOLUTAMENTE rosso
   una volta (su un file colpevole) prima di fidarsi del suo verde.
+
+## E-038 Le graffe perse e il commento che ingoia il backslash
+
+- Sintomo: "A3: rifiuti loggati: 0" — stabile da giorni, scambiato per il difetto
+  del test che "dipende dalla malizia del modello". Il modello c'entrava zero:
+  i tentativi proibiti li inietta il mock, deterministicamente.
+- Causa 1 (le graffe perse): la forma `azione "{\"action\":\"read\",...}"` —
+  quote annidate con escape dentro "$(...)" — nel contesto del test spezzava
+  l'azione in frammenti sul bash 3.2 di macOS: l'agente riceveva "action":"read"
+  SENZA graffe, lo trattava come risposta finale, completava in 1 turno. I primi
+  due check del confinamento passavano VACUAMENTE (teatro): il segreto non passa
+  perche' l'azione non arriva manco a essere tentata. Il terzo check — quello dei
+  rifiuti loggati — era l'unico che diceva la verita'.
+- Causa 2 (il commento che ingoia il backslash): la prima cura ha messo un
+  commento IN MEZZO alla catena di continuazione `\` — un `#` dopo `\`-newline
+  commenta tutta la riga incluso il backslash finale: lo scenario partiva SENZA
+  corpi, "FINISH (dossier esaurito)" al primo turno. Scoperto dal dump dei file
+  del mock: vuoti.
+- Metodo: quattro dump crescenti (OUT dell'agente, i .json serviti, gli argv di
+  azione, di nuovo i .json) — ogni strato ha detto una cosa diversa finche' il
+  colpevole non e' rimasto solo. La replica manuale in isolamento PASSAVA: il
+  difetto viveva solo nel contesto completo — la lezione di E-034 al contrario.
+- Cura: pattern senza escape (apici singoli + concatenazione '"$VAR"' per le
+  variabili) e commenti SEMPRE sopra il comando continuato, mai dentro.
+- Guardia: test-agente A3 rosso prima, 15/0 dopo — con entrambe le sfide vive
+  passate dal modello nuovo (il chirurgo lavora).
+- Aggiramento: fidarsi del verdetto "vacuo-verde" di un confinamento senza il
+  check dei rifiuti LOGGATI. Il check che fallisce da solo mentre i fratelli
+  passano e' il solo che sta guardando la cosa giusta.

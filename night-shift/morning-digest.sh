@@ -37,6 +37,18 @@ $(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] 
   : > "$SAL_TURNI"
 } || echo "(nessuna memoria del turno)")"
 
+# il secondo cervello: gli sospesi compilati dal turno alla prima domanda del giorno
+# ($WORK/.cervello-<data> — deterministico, scritto da night-shift.sh). C'e' quando
+# c'e': il digest non dipende da lui, lo mostra in coda.
+# (if/fi, non [ ]&&: sotto set -e un test falso al fondo di una catena && esce 1
+# e ammazzava il digest la mattina che il marker manca)
+# (il || true e' DENTRO, prima della pipe: ls su glob senza match esce 2, e con
+# pipefail+set -e il digest moriva la mattina senza marker)
+CERVMARK=$({ ls -t "$HOME"/night-shift-work/.cervello-????-??-?? 2>/dev/null || true; } | head -1)
+if [ -n "$CERVMARK" ]; then
+  BODY="$(printf '%s\n\n---\n%s' "$BODY" "$(cat "$CERVMARK")")"
+fi
+
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
 # arbitrario (titoli PR, output di comandi) — senza escaping, una virgoletta o un
 # backslash al suo interno rompe o inietta nello script AppleScript. Stessa lezione
