@@ -45,7 +45,7 @@ else
   log "ATTENZIONE: hub non aggiornabile (pull --ff-only fallito) — il turno gira col metodo che c'e'"
 fi
 WORK="$HOME/night-shift-work"
-MODEL_TAG="qwen2.5-coder:14b"
+MODEL_TAG="qwen3.8-27b:iq3s"
 OCPROVIDER="ollama/$MODEL_TAG"
 DEFAULT_TYPE="chore"
 
@@ -817,7 +817,7 @@ $BODY"
       #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
       #  capacita' migliore non e' spam: e' il lavoro che riparte.
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
-      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
+      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
 
@@ -1087,7 +1087,7 @@ T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 # a OGNI inizio ciclo, un ping di GENERAZIONE (non tags: quello risponde anche
 # da wedged); muto = kill del serve, launchd lo riporta, si aspetta. Il turno
 # non parte mai con un cervello morto accanto.
-OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d '{"model":"qwen2.5-coder:14b","messages":[{"role":"user","content":"Say OK"}],"stream":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
 if [ -z "$OLLM_PING" ]; then
   log "⚠ Ollama wedged al via del turno (ping di generazione muto): kill e attesa rilancio"
   pkill -f "ollama serve" 2>/dev/null
@@ -1095,7 +1095,7 @@ if [ -z "$OLLM_PING" ]; then
     sleep 5
     curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
   done
-  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d '{"model":"qwen2.5-coder:14b","messages":[{"role":"user","content":"Say OK"}],"stream":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
   if [ -n "$OLLM_PING" ]; then
     log "✓ Ollama rianimato dal watchdog del turno"
   else

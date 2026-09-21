@@ -4,7 +4,7 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:-.}"
-MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}"
+MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 API="http://localhost:11434/api/chat"
 cd "$DIR" || exit 2
 log() { echo "[lente $(date '+%H:%M:%S')] $*" >&2; }
@@ -58,7 +58,7 @@ log "chiamo il modello per interpretare ($(echo "$TOOL_OUT" | wc -c | tr -d ' ')
 
 RESPONSE=$(curl -sf --max-time 60 "$API" -d "$(jq -n \
   --arg m "$MODEL" --arg p "$PROMPT" \
-  '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
+  '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
 
 if [ -z "$RESPONSE" ]; then
   log "modello non ha risposto"

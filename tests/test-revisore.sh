@@ -245,7 +245,7 @@ rm -f "$STUB_LS"
 
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
 #    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
-CENSORE_MODEL="${REVISORE_MODEL:-qwen2.5-coder:14b}"
+CENSORE_MODEL="${REVISORE_MODEL:-qwen3.8-27b:iq3s}"
 if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -q "$CENSORE_MODEL"; then
   echo "· sfida modello vero: fatta girare a mano nel turno (il censore e' lento: fuori dalla suite)"
 else
