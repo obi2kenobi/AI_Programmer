@@ -114,7 +114,7 @@ legge il riepilogo (lo usa `morning-digest`).
   dell'hub prima di partire; PR BOZZA mai su main; le proposte non applicabili finiscono come
   commento nell'issue (una per issue), non come PR.
 - `risolvi-issue.sh <dir> <issue.md>` — il risolutore senza agente: chiama Ollama in locale
-  (`qwen2.5-coder:14b`), il modello scrive il codice, lo script lo applica e lo verifica
+  (`qwen3.8-27b:iq3s`), il modello scrive il codice, lo script lo applica e lo verifica
   (`node --check`, rollback). Exit: 0 applicato · 1 fallito · 2 uso · 3 proposta non applicabile.
 - `night-shift/morning-gate.sh` / `night-shift/morning-digest.sh` — il giudizio del mattino e il riepilogo che lo legge.
 - `night-shift/install.sh` — installazione: symlink, LaunchAgent 23:00 + Ollama always-on. Verifica che il

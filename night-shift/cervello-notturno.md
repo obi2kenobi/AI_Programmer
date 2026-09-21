@@ -60,7 +60,8 @@ written where the morning human reads them.
 ## How you are measured
 
 - The bencina: three real tasks (surgical edit, bugfix, censor verdict) —
-  latency and correctness. The incumbent is qwen2.5-coder:14b: 1/3 in 22s.
+  latency and correctness. The incumbent is qwen3.8-27b:iq3s: 3/3 in 48s
+  (2026-09-21, with think:false — thinking burns 3 min/task on this Mac).
   Beat it and the seat is yours.
 - The funnel (on the dashboard): windows → transformer applied → your honest
   nothings → your dead sessions → gate → PR → censor → merge. Every drop in

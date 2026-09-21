@@ -3,7 +3,7 @@
 # revisore, censore, che verifica prova certifica il codice e decide se
 # deliberarlo o no»).
 #
-# Il principio: CHI SCRIVE NON GIUDICA. Le migliorie le scrive qwen2.5-coder:14b;
+# Il principio: CHI SCRIVE NON GIUDICA. Le migliorie le scrive qwen3.8-27b:iq3s;
 # qui giudica lo STESSO modello (un solo modello dal 2026-09-19, riga 35: il 27b
 # faceva 0/3 in 442 s) ma in un processo separato, senza memoria, con istruzioni
 # avversarie: l'onere della prova e' della PR, non del revisore.
@@ -33,8 +33,8 @@ PR="${2:?uso: revisore.sh <dir-repo> <pr>}"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git" >&2; exit 3; }
 cd "$DIR"
 
-GIUDICE_MODEL="${REVISORE_MODEL:-qwen2.5-coder:14b}"  # (2026-09-19: bencina 14b 1/3 in 22s vs 27b 0/3 in 442s anche SOLA — un solo modello, decisione di Luca)
-AUTORE_MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}"
+GIUDICE_MODEL="${REVISORE_MODEL:-qwen3.8-27b:iq3s}"  # (2026-09-19: 14b 1/3 in 22s; 2026-09-21: qwen3.8-27b:iq3s 3/3 in 48s con think:false — un solo modello, decisione di Luca)
+AUTORE_MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 MAX_RIGHE=60; MAX_FILE=3; QUARANTENA_MIN=20; BUDGET_GIORNO=5
 API="http://localhost:11434/api/chat"
 STATE="$DIR/.git/revisore"; mkdir -p "$STATE"
@@ -73,7 +73,7 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
     return
   fi
   curl -s --max-time "$maxsec" "$API" -d "$(jq -cn --arg m "$modello" --arg p "$prompt" \
-    '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}')" \
+    '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}')" \
     | jq -r '.message.content // empty' 2>/dev/null
 }
 

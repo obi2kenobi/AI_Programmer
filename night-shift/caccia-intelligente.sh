@@ -11,7 +11,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: caccia-intelligente.sh <dir>}"
 LENTE="${2:-auto}"
 FILE_TARGET="${3:-}"
-MODEL="${NIGHT_MODEL:-qwen2.5-coder:14b}"
+MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 API="http://localhost:11434/api/chat"
 
 cd "$DIR" || exit 2
@@ -84,7 +84,7 @@ log "lente: $LENTE ($LENTE_FILE) · bersaglio: $FILE_TARGET"
 
 RESPONSE=$(curl -sf --max-time 180 "$API" -d "$(jq -n \
   --arg m "$MODEL" --arg p "$PROMPT" \
-  '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+  '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
 
 [ -z "$RESPONSE" ] && { log "modello non ha risposto"; exit 3; }
 

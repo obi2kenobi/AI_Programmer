@@ -22,7 +22,7 @@ trap 'rm -rf "$TMP"' EXIT
 
 chiama() { # chiama <prompt> <max-sec> → contenuto (vuoto se muto)
   curl -s --max-time "$2" "$API" -d "$(jq -cn --arg m "$MODELLO" --arg p "$1" \
-    '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}')" \
+    '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" \
     | jq -r '.message.content // empty' 2>/dev/null
 }
 
