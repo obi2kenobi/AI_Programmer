@@ -5,6 +5,8 @@
 # verifiche rosse SOLO dell'ultimo ciclo, il feed recente.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# (21/9): timeout(1) non esiste su macOS — la suite era ROSSA sul Mac per «command not found»
+source "$HERE/llm/_timeout.sh"
 DASH="$HERE/tools/dashboard.py"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 PASS=0; FAIL=0
@@ -83,7 +85,7 @@ OGGI4=$(date '+%Y-%m-%d')
   echo "[$OGGI4 10:11:00] Ollama rianimato dal watchdog del turno"
   echo "[$OGGI4 10:12:00] REPO repo-x: standard: DIVERGENTE dall'hub"
 } > "$TMP/finto4.log"
-V4=$(NIGHT_LOG="$TMP/finto4.log" timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c '
+V4=$(NIGHT_LOG="$TMP/finto4.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c '
 import sys, json
 s = json.load(sys.stdin); f = s["funnel"]
 print(f["finestre"], f["trasformatore"], f["agente_ok"], f["agente_morto"], f["gate"], f["consegne"], f["push_fail"], f["approvate"], f["rigettate"], s["ollama_wedge"], s["ollama_revive"], s["drift"].get("repo-x", "?"))')
@@ -98,7 +100,7 @@ print(f"[{oggi} 00:00:01] === TURNO INIZIATO (1 repo in coda) ===")
 for i in range(4500):
     print(f"[{oggi} 01:{(i//60)%60:02d}:{i%60:02d}] REPO r/x: nessuna issue — attivo la CACCIA")
 PY
-FIN=$(NIGHT_LOG="$TMP/lungo.log" timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin)["funnel"]["finestre"])')
+FIN=$(NIGHT_LOG="$TMP/lungo.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin)["funnel"]["finestre"])')
 [ "$FIN" = "4500" ] && ok "D18: 4500 finestre in un log di 4501 righe → 4500 contate (nessuna finestra che sottostima)" \
   || ko "D18: finestre contate $FIN su 4500 (la dashboard legge solo una coda del log)"
 

@@ -40,6 +40,10 @@ S=$(righe_con '\$\{#[A-Za-z_]+\[@\]:-' || true)
 S=$(righe_con '(\||xargs) *md5\b' | grep -v 'md5sum' | while IFS= read -r R; do F=${R%%:*}; grep -q 'command -v md5' "$F" || echo "$R"; done)
 [ -z "$S" ] && ok "nessun md5 nudo senza fallback (Linux: solo md5sum)" || ko "md5 mac-only senza fallback (impronta vuota, confronto sempre vero):"$'\n'"$S"
 
+# timeout(1) nudo: macOS non lo ha (la suite del 21/9 era rossa sul Mac per «command not found») — si usa ai_timeout
+S=$(righe_con '(^|[ (;&|=])timeout [0-9]' | grep -v 'ai_timeout' | grep -v 'tools/test-modelli-notturni.sh:' || true)
+[ -z "$S" ] && ok "nessun timeout(1) nudo (macOS: solo ai_timeout di llm/_timeout.sh)" || ko "timeout nudo, assente su macOS:"$'\n'"$S"
+
 # la forma portabile e' eseguibile qui, su questa bash
 source "$HERE/night-shift/lib.sh"
 T=$(mktemp); M=$(mtime "$T"); rm -f "$T"
