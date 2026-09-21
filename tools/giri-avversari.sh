@@ -317,7 +317,7 @@ classifica "$OUT" "$RC" "D25 riconciliazione solo righe vuote"
 echo ""
 echo "=== CAT E — privacy: il passato che riaffiora ==="
 
-att; _cp=$(grep -rlP '[\x{AC00}-\x{D7AF}]' --include='*.md' docs/ 2>/dev/null | head -1); if grep -q . <<<"$_cp"; then aggirato "E1 caratteri hangul nei report"; else tiene "E1 nessun hangul nei report"; fi
+att; _cp=$(find docs -name '*.md' -print0 2>/dev/null | xargs -0 perl -CSD -ne 'if (/[\x{AC00}-\x{D7AF}]/) { print "$ARGV\n"; close ARGV }' 2>/dev/null | head -1); if grep -q . <<<"$_cp"; then aggirato "E1 caratteri hangul nei report"; else tiene "E1 nessun hangul nei report"; fi
 
 # REPO-CR (Centrale_Rischi) e' PUBBLICA: dichiarata nel repos-index — non e' una leak
 att; _cp=$(grep -oE 'github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+' night-shift/repos-index.md docs/*.md 2>/dev/null | grep -vE "obi2kenobi/(AI_Programmer|Centrale_Rischi)" | head -1); if grep -q . <<<"$_cp"; then aggirato "E2 URL github di repo privata fuori dal hub"; else tiene "E2 nessun URL di repo privata"; fi

@@ -344,7 +344,7 @@ Riprodurre a mano, correggere il comando o il codice che verifica, chiudere l'is
     # I finding FLUSSI/ARCHITETTURA (livelli 3-4) vengono contati e dichiarati:
     # la notte non li cura, ma non li nasconde nemmeno.
     if [ "$N_FIND" -gt 0 ]; then
-      CICLO_LIV=$(echo "$CICLO_OUT" | grep -oP "Livello: \d+" | head -1)
+      CICLO_LIV=$(echo "$CICLO_OUT" | grep -oE "Livello: [0-9]+" | head -1)
       CICLO_TIPI=$(echo "$CICLO_OUT" | grep -oE "COLLEGAMENTO|FLUSSO|ARCHITETTURA|META" | sort | uniq -c | tr '\n' ' ')
       log "REPO $REPO: ciclo-vivo $CICLO_LIV — $CICLO_TIPI (il fixer cura i COLLEGAMENTO, gli altri vanno all'issue)"
     fi
@@ -416,7 +416,7 @@ sys.exit(0 if ultima in blocco else 1)
           fi
         fi
         # fix 3: CRLF nei .sh → bonificati (passano bash -n, muoiono a runtime)
-        CRLF_FILES=$(grep -rlP '\r$' "$DIR"/tools/*.sh "$DIR"/night-shift/*.sh "$DIR"/tests/*.sh 2>/dev/null | head -5 || true)
+        CRLF_FILES=$(grep -rl $'\r' "$DIR"/tools/*.sh "$DIR"/night-shift/*.sh "$DIR"/tests/*.sh 2>/dev/null | head -5 || true)
         if [ -n "$CRLF_FILES" ]; then
           for CF in $CRLF_FILES; do
             LC_ALL=C tr -d '\r' < "$CF" > "$CF.tmp" && mv "$CF.tmp" "$CF"

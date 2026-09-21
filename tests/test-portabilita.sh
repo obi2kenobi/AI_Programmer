@@ -50,6 +50,13 @@ T=$(mktemp); M=$(mtime "$T"); rm -f "$T"
 [ "$M" -gt 1700000000 ] 2>/dev/null && ok "mtime() restituisce un epoch vero su questa macchina ($M)" || ko "mtime() rotto qui: '$M'"
 mtime /nonesiste/xyz >/dev/null 2>&1 && ko "mtime() su file assente dovrebbe tornare 1" || ok "mtime() su file assente torna 1 (il chiamante decide)"
 
+
+# grep -P: il grep di macOS (BSD) non ce l'ha — "invalid option", il controllo muore
+# zitto e il finding passa per verde (E-037: teatro di parser). \d → [0-9] con -E,
+# \r → $'\r' letterale, range unicode → perl -CSD. git grep -P e' un altro binario: lecito.
+S=$(righe_con 'grep -[a-zA-Z]*P[a-zA-Z]* ' | grep -vE 'git (grep|-C)' || true)
+[ -z "$S" ] && ok "nessun grep -P nudo (BSD: invalid option, il controllo muore zitto)" || ko "grep -P non portabile (E-037):"$'\n'"$S"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
