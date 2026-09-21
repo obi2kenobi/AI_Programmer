@@ -77,10 +77,16 @@ echo "$OUT" | grep -q "vecchio non trovato" && echo "$OUT" | grep -q "ambiguo" &
 
 # A3: confinamento — read e write FUORI dal progetto rifiutati, il segreto non passa
 SB="$SB_ROOT/a3"; mkdir -p "$SB"; printf 'SEGRETO-XYZ\n' > "$MOCK_DIR/segreto.txt"
+# (E-038, due lezioni in un colpo: le quote annidate con escape dentro "$(...)"
+# spezzavano l'azione in frammenti sul bash 3.2 di macOS — l'agente riceveva
+# "action":"read" senza graffe; e un commento in mezzo a una catena di \
+# spezza la continuazione ingoiando il backslash finale — lo scenario partiva
+# senza corpi, "dossier esaurito" al primo turno. Pattern sicuro: commento
+# SOPRA il comando, apici singoli + concatenazione per le variabili.)
 scenario a3 "$SB" "leggi" \
-  "$(azione "{\"action\":\"read\",\"path\":\"$MOCK_DIR/segreto.txt\"}")" \
-  "$(azione "{\"action\":\"write\",\"path\":\"$MOCK_DIR/fuori.txt\",\"content\":\"x\"}")" \
-  "$(azione "{\"action\":\"read\",\"path\":\"../segreto.txt\"}")" \
+  "$(azione '{"action":"read","path":"'"$MOCK_DIR"'/segreto.txt"}')" \
+  "$(azione '{"action":"write","path":"'"$MOCK_DIR"'/fuori.txt","content":"x"}')" \
+  "$(azione '{"action":"read","path":"../segreto.txt"}')" \
   "$(azione 'fine')"
 echo "$OUT" | grep -q "SEGRETO-XYZ" && ko "A3: file ESTERNO letto (confinamento rotto!)" || ok "A3: il contenuto esterno non arriva al modello"
 [ -f "$MOCK_DIR/fuori.txt" ] && ko "A3: write FUORI dal progetto eseguito" || ok "A3: write fuori dal progetto rifiutato"
