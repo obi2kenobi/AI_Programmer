@@ -778,49 +778,65 @@
   esegue il `.night-verify` dell'hub riga per riga, non solo la suite.
 
 ## E-037 grep -P: il controllo che muore zitto
-
-- Sintomo: `grep: invalid option -- P` nel log del turno (16:19, 15:05), due volte, ogni
-  ciclo — e nessuno se ne accorgeva perche' il controllo falliva "in silenzio verde".
-- Causa: quattro siti usavano `grep -P` (PCRE), ma il grep di macOS (BSD) non ce l'ha:
-  l'opzione e' invalida, grep esce 2, e il finding non si vede. Il parse del livello
-  ciclo-vivo (`grep -oP "Livello: \d+"`) restituiva vuoto, il check CRLF (`grep -rlP '\r$'`)
-  false-verdava, la sonda hangul degli avversari (E1) non ha MAI girato su questa Mac.
-- Famiglia: portabilita' (E-036) che incontra teatro (E-034): un controllo che muore
-  all'apertura e' un controllo verde che mente.
-- Cura: `\d` → `[0-9]` con `-E`; `\r$` → CR letterale con `$'\r'`; i range unicode (hangul)
-  → `perl -CSD` che legge UTF-8 e stampa il file colpevole. `git grep -P` resta lecito:
-  e' un altro binario (con LANG UTF-8, lezione del 2026-09-15).
-- Guardia: `tests/test-portabilita.sh` — regola «nessun grep -P nudo» (rossa sui quattro
-  siti prima della cura, verde dopo).
-- Aggiramento: aggiungere un controllo con un'opzione che non esiste sul grep di casa
-  e non guardare il log. La regola: ogni nuovo controllo si prova VOLUTAMENTE rosso
-  una volta (su un file colpevole) prima di fidarsi del suo verde.
+- Data / sessione: 2026-09-21 (pomeriggio del cambio modello; sessione hub di Luca)
+- Famiglia: R3 (precondizione non chiesta: grep BSD, non GNU) + R2 (verde senza dati)
+- Chi l'ha trovato: sessione hub (occhio sul log del turno) — la riga
+  `grep: invalid option -- P` ripetuta due cicli di fila, che nessuno guardava.
+- Sintomo: il parse del livello ciclo-vivo restituiva vuoto («ciclo-vivo  —  »),
+  il check CRLF false-verdava, la sonda hangul E1 degli avversari non ha MAI
+  girato su questa Mac. Tutto verde, tutto morto all'apertura.
+- Causa prossima: quattro siti con `grep -P` (PCRE): `grep -oP "Livello: \d+"` in
+  night-shift/night-shift.sh:347, `grep -rlP '\r$'` in night-shift/night-shift.sh:419 e
+  tools/giri-ignoranti.sh:178, `grep -rlP '[\x{AC00}-\x{D7AF}]'` in
+  tools/giri-avversari.sh:320. Il grep di macOS (BSD) non ha -P: esce 2 subito.
+- Causa del ragionamento: i controlli sono stati scritti come su Linux (R3) e il
+  loro fallimento all'apertura produceva silenzio verde (R2): l'assenza del
+  finding passava per assenza del problema. E-036 (stessa famiglia portabilita')
+  aveva curato stat/sed/date/timeout proprio il giorno prima — la lente cercava
+  quelle forme, non questa.
+- Perché non ci ha fermati: nessuna lente vietava grep -P; il log della console
+  mostrava l'errore ma il conteggio delle verifiche restava nel verde perche'
+  l'errore stava DENTRO una verifica che "passava".
+- Guardia: `tests/test-portabilita.sh` — regola «nessun grep -P nudo» (git grep -P
+  resta lecito: altro binario, con LANG UTF-8).
+- Verifica guardia: `bash tests/test-portabilita.sh` 9 → 10 attese; la regola era
+  rossa sui quattro siti prima della cura, verde dopo; nel log del turno la riga
+  ciclo-vivo ora porta «Livello: 4».
+- Aggiramento: aggiungere un controllo con un'opzione che non esiste sul grep di
+  casa e non leggere il log. La regola: ogni controllo nuovo si prova VOLUTAMENTE
+  rosso una volta (su un colpevole) prima di fidarsi del suo verde.
 
 ## E-038 Le graffe perse e il commento che ingoia il backslash
-
-- Sintomo: "A3: rifiuti loggati: 0" — stabile da giorni, scambiato per il difetto
-  del test che "dipende dalla malizia del modello". Il modello c'entrava zero:
-  i tentativi proibiti li inietta il mock, deterministicamente.
-- Causa 1 (le graffe perse): la forma `azione "{\"action\":\"read\",...}"` —
-  quote annidate con escape dentro "$(...)" — nel contesto del test spezzava
-  l'azione in frammenti sul bash 3.2 di macOS: l'agente riceveva "action":"read"
-  SENZA graffe, lo trattava come risposta finale, completava in 1 turno. I primi
-  due check del confinamento passavano VACUAMENTE (teatro): il segreto non passa
-  perche' l'azione non arriva manco a essere tentata. Il terzo check — quello dei
-  rifiuti loggati — era l'unico che diceva la verita'.
-- Causa 2 (il commento che ingoia il backslash): la prima cura ha messo un
-  commento IN MEZZO alla catena di continuazione `\` — un `#` dopo `\`-newline
-  commenta tutta la riga incluso il backslash finale: lo scenario partiva SENZA
-  corpi, "FINISH (dossier esaurito)" al primo turno. Scoperto dal dump dei file
-  del mock: vuoti.
-- Metodo: quattro dump crescenti (OUT dell'agente, i .json serviti, gli argv di
-  azione, di nuovo i .json) — ogni strato ha detto una cosa diversa finche' il
-  colpevole non e' rimasto solo. La replica manuale in isolamento PASSAVA: il
-  difetto viveva solo nel contesto completo — la lezione di E-034 al contrario.
-- Cura: pattern senza escape (apici singoli + concatenazione '"$VAR"' per le
-  variabili) e commenti SEMPRE sopra il comando continuato, mai dentro.
-- Guardia: test-agente A3 rosso prima, 15/0 dopo — con entrambe le sfide vive
-  passate dal modello nuovo (il chirurgo lavora).
-- Aggiramento: fidarsi del verdetto "vacuo-verde" di un confinamento senza il
-  check dei rifiuti LOGGATI. Il check che fallisce da solo mentre i fratelli
-  passano e' il solo che sta guardando la cosa giusta.
+- Data / sessione: 2026-09-21 (serata "chiudiamo tutto"; sessione hub di Luca)
+- Famiglia: R1 (assunzione non verificata) + R2 (verde senza dati: check vacui)
+- Chi l'ha trovato: sessione hub, con quattro dump crescenti (OUT dell'agente,
+  i .json serviti dal mock, gli argv di azione, di nuovo i .json) — ogni strato
+  diceva una cosa diversa finche' il colpevole non e' rimasto solo.
+- Sintomo: «A3: rifiuti loggati: 0» stabile da giorni, scambiato per un test che
+  "dipende dalla malizia del modello". Il modello non c'entrava: i tentativi
+  proibiti li inietta il mock, deterministicamente.
+- Causa prossima: (1) la forma `azione "{\"action\":\"read\",…}"` — quote
+  annidate con escape dentro "$(…)" — nel contesto del test spezzava l'azione in
+  frammenti sul bash 3.2: l'agente riceveva `"action":"read"` SENZA graffe, lo
+  trattava come risposta finale, completava in 1 turno; (2) la prima cura ha
+  messo un commento in mezzo alla catena di continuazione `\`: il `#` dopo
+  `\`-newline commenta la riga inghiottendo il backslash finale — lo scenario
+  partiva SENZA corpi, «FINISH (dossier esaurito)» al primo turno.
+- Causa del ragionamento: ho assunto che una forma di quoting che funziona in un
+  contesto funzionasse in tutti (R1 — la replica manuale in isolamento PASSAVA:
+  il difetto viveva solo nel contesto completo, E-034 al contrario); e i due
+  check di confinamento che passavano VACUAMENTE (il segreto non passa perche'
+  l'azione non arriva manco a essere tentata) erano verde senza dati (R2). Il
+  solo check che diceva la verita' era quello che falliva.
+- Perché non ci ha fermati: nessuna guardia sul contratto mock-agente verificava
+  che le azioni iniettate ARRIVASSERO intere; il test passava 13-14 su 15 e il
+  FAIL veniva letto come "capriccio del modello".
+- Guardia: `tests/test-agente.sh` stesso A3 («tre rifiuti dichiarati nel log»):
+  rosso prima della cura, 15/0 dopo — con entrambe le sfide vive passate dal
+  modello nuovo. Il check dei rifiuti LOGGATI resta obbligatorio: e' quello che
+  smaschera il confinamento vacuo.
+- Verifica guardia: `bash tests/test-agente.sh` → 15 OK, 0 FAIL (era 13-14 OK,
+  1 FAIL); suite completa verificata dopo.
+- Aggiramento: fidarsi del verdetto verde di un check i cui fratelli passano
+  vacuamente. E scrivere commenti dentro le catene di continuazione: il commento
+  sta SOPRA il comando, sempre.
