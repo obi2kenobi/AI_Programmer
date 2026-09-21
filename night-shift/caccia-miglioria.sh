@@ -194,7 +194,11 @@ Rules:
 
 AGENTE_RC=0
 if [ "$TRANSFORMED" -eq 0 ]; then
-  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-240}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
+  # (2026-09-21: 240s col 27B sotto contesa = due migliorie trovate e morte a
+  # consegna (18:53, 21:04): rc=1 a 240s in punto, col modello che pagava il
+  # ricarico in coda. Il budget e' un soffitto, non una durata: chi finisce
+  # prima finisce prima.)
+  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
 fi
 
 # il debito e' un tentativo solo — marcato ALL'ATTEMPT, prima di ogni uscita:

@@ -15,7 +15,7 @@ MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 # NIGHT_API_URL: solo per i test (server mock, stesso contratto del solver) — di norma non si tocca
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 MAX_TURNI="${AGENTE_MAX_TURNI:-8}"
-TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-300}"
+TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-600}"  # (2026-09-21: 300 non bastano al 27B quando paga un ricarico in coda)
 
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 cd "$DIR"
