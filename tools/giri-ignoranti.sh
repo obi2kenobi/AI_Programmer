@@ -175,7 +175,7 @@ EOF
 # S10bis — file CRLF: un tool editato su Windows passa bash -n e MUORE
 #   all'esecuzione con "\r: command not found" (proba assurda D: bash -n
 #   silenzioso, il danno appare solo a runtime). Il byte \r nei .sh si dichiara.
-CRLF=$(grep -rlP '\r$' "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/tests/*.sh 2>/dev/null | head -3)
+CRLF=$(grep -rl $'\r' "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/tests/*.sh 2>/dev/null | head -3)
 [ -z "$CRLF" ] && sonda 0 "S10bis nessuno script con fine-riga CRLF" || sonda 1 "S10bis script CRLF (muoiono a runtime): $CRLF"
 
 # S11 — il grafo dei pattern è CONNESSO: ogni pattern è citato da almeno un

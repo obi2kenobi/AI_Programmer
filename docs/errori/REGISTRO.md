@@ -776,3 +776,22 @@
 - Aggiramento: chiudere un passaggio con la suite verde su una macchina che non e' quella
   del turno senza eseguire le righe di `.night-verify` una per una. La regola: la chiusura
   esegue il `.night-verify` dell'hub riga per riga, non solo la suite.
+
+## E-037 grep -P: il controllo che muore zitto
+
+- Sintomo: `grep: invalid option -- P` nel log del turno (16:19, 15:05), due volte, ogni
+  ciclo — e nessuno se ne accorgeva perche' il controllo falliva "in silenzio verde".
+- Causa: quattro siti usavano `grep -P` (PCRE), ma il grep di macOS (BSD) non ce l'ha:
+  l'opzione e' invalida, grep esce 2, e il finding non si vede. Il parse del livello
+  ciclo-vivo (`grep -oP "Livello: \d+"`) restituiva vuoto, il check CRLF (`grep -rlP '\r$'`)
+  false-verdava, la sonda hangul degli avversari (E1) non ha MAI girato su questa Mac.
+- Famiglia: portabilita' (E-036) che incontra teatro (E-034): un controllo che muore
+  all'apertura e' un controllo verde che mente.
+- Cura: `\d` → `[0-9]` con `-E`; `\r$` → CR letterale con `$'\r'`; i range unicode (hangul)
+  → `perl -CSD` che legge UTF-8 e stampa il file colpevole. `git grep -P` resta lecito:
+  e' un altro binario (con LANG UTF-8, lezione del 2026-09-15).
+- Guardia: `tests/test-portabilita.sh` — regola «nessun grep -P nudo» (rossa sui quattro
+  siti prima della cura, verde dopo).
+- Aggiramento: aggiungere un controllo con un'opzione che non esiste sul grep di casa
+  e non guardare il log. La regola: ogni nuovo controllo si prova VOLUTAMENTE rosso
+  una volta (su un file colpevole) prima di fidarsi del suo verde.
