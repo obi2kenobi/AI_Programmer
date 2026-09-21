@@ -1078,6 +1078,21 @@ if ! mkdir "$TURN_LOCK" 2>/dev/null; then
 fi
 trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
 
+# il SECONDO CERVELLO (2026-09-21): una domanda al giorno, la prima del giorno.
+# Compila gli sospesi (note tipo:sospeso + PR aperte) in modo DETERMINISTICO e
+# lascia il risultato in $WORK/.cervello-<data> per il mattino. Il grafo si
+# interroga; il diario resta alla SAL. Fallita = niente marker = riprova al
+# prossimo ciclo (dichiarato nel log, non taciuto).
+CERVELLO_MARKER="$WORK/.cervello-$(date +%F)"
+if [ ! -f "$CERVELLO_MARKER" ] && [ -f "$HERE/../tools/cervello-domanda.sh" ]; then
+  if bash "$HERE/../tools/cervello-domanda.sh" in-sospeso > "$CERVELLO_MARKER.tmp" 2>/dev/null; then
+    mv "$CERVELLO_MARKER.tmp" "$CERVELLO_MARKER"
+    log "cervello: domanda del giorno fatta ($(grep -c '^  -' "$CERVELLO_MARKER" || true) voci in sospeso) — il mattino la legge in $CERVELLO_MARKER"
+  else
+    rm -f "$CERVELLO_MARKER.tmp"
+    log "cervello: domanda del giorno fallita — riprovo al prossimo ciclo"
+  fi
+fi
 
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
