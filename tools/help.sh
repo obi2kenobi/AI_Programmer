@@ -22,7 +22,7 @@ ALLA CHIUSURA DI UN PASSAGGIO (il banco che decide se hai finito)
   banco-passaggio.sh --solo-copertura   solo: ogni file di codice cambiato è presidiato da un test?
 
 LE BATTERIE (le tre pair di occhi del sistema)
-  giri-ignoranti.sh           12 sonde scortesi: caratteri alieni, numeri claims, teatri, orfani...
+  giri-ignoranti.sh           $(grep -oE '\bS[0-9]{1,2}(bis)?\b' "$HERE/tools/giri-ignoranti.sh" | sort -u | wc -l | tr -d ' ') sonde scortesi: caratteri alieni, numeri claims, teatri, orfani...
   giri-avversari.sh           95 attacchi: forzare le regole, aggirare le difese, imbrogliare le lenti
   mutation-tests.sh           neutralizza ogni tool: i suoi test DEVONO arrossire
   ciclo-vivo.sh               un giro a livello crescente (1→5→CUORE→1: il battito)
@@ -31,7 +31,7 @@ LO STUDIO (prima di toccare un progetto di destinazione)
   polilivello.sh <dir>        scaffold a 6 livelli: cosa fa / come / come meglio
   fork-stato.sh <copie...>    la deriva fra repo/fork/GAS-vivo e la base di lavoro giusta
   presidio.sh claim/lista/rilascia   chi sta toccando cosa ADESSO (multiutenza sul repo)
-  garante-standard.sh           installa lo standard su QUALSIASI repo dove manca (l'hoak gira a ogni sessione)
+  garante-standard.sh           installa lo standard su QUALSIASI repo dove manca (l'hook gira a ogni sessione)
   privacy-check.sh            nessun nome privato nei file né nella storia git
 
 IL DIARIO E LA MEMORIA
@@ -51,7 +51,7 @@ GLI ALTRI
   verifica_banco.py <file>    il giudice dell'uscita di un banco GAS
   help.sh                     questo menu
 
-E gli oracoli (16, formula minata dal codice reale, mai inventata):
+E gli oracoli (11, formula minata dal codice reale, mai inventata):
   valorizzazione_magazzino · margine_documento · rating_dso_clienti · scadenzario_aging
   accuratezza_fatture_acquisto · leasing_amministrativo · bilancio_bu · rollforward_cespiti
   indici_crisi · scostamento_standard_effettivo · riconciliazione_magazzino ...

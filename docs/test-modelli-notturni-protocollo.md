@@ -13,8 +13,8 @@ modello specializzato per coding agentico convergerebbe dove il generale loopa.
 ## I candidati (Mac 24GB RAM, 255GB disco)
 | Modello | Taglia | Specializzazione | Note |
 |---|---|---|---|
-| qwen3.8:27b (attuale) | 17GB Q4 | GENERALE | Loopa su task complessi |
-| qwen2.5-coder:14b | 9GB | CODING | Metà dimensione, specializzato |
+| qwen3.8:27b (in uso fino al 2026-09-19) | 17GB Q4 | GENERALE | Loopa su task complessi |
+| qwen2.5-coder:14b (attuale dal 2026-09-19: un solo modello) | 9GB | CODING | Metà dimensione, specializzato |
 | devstral:24b | 14GB | AGENT CODING | Progettato per agenti che scrivono codice |
 
 ## Il test

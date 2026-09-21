@@ -1,10 +1,10 @@
 #!/bin/bash
-# ask-qwen.sh — delega un compito al cervello LOCALE (Qwen3.8-27B via Ollama).
+# ask-qwen.sh — delega un compito al cervello LOCALE (qwen2.5-coder:14b via Ollama).
 # Contratto comune ai wrapper llm/ask-*: prompt come argomento, contesto via stdin,
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
-# Variabili: QWEN_MODEL (default qwen3.8:27b-mtp-q4_K_M, sovrascrivibile anche con
-#            ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
+# Variabili: QWEN_MODEL (default qwen2.5-coder:14b — un solo modello, decisione
+#            2026-09-19, vedi night-shift/revisore.sh:35; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
 #            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
 #            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
 set -euo pipefail
@@ -26,7 +26,10 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 
 # bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
 # override universale, qui era ignorato — solo QWEN_MODEL funzionava.
-MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8:27b-mtp-q4_K_M}}"
+# (giro 19, 2026-09-20): il default era ancora il 27b generale — il morning-gate chiama
+# questo wrapper per il banco avversariale, quindi il gate avrebbe usato il modello che
+# "0/3 in 442 s" mentre la notte usa il 14b. Un solo modello: lo stesso del turno.
+MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen2.5-coder:14b}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"
 API="http://localhost:11434"
@@ -36,8 +39,18 @@ API="http://localhost:11434"
 # iterazione del poll può bloccarsi oltre il budget implicito di ~30s del loop, prima
 # ancora di arrivare alla chiamata principale (quella sì protetta da ai_timeout).
 if ! curl -sf --max-time 2 "$API/api/version" >/dev/null 2>&1; then
+  # (giro 17, 2026-09-20): il binario era fisso a /opt/homebrew/bin — dove non c'e' (Linux,
+  # Intel) il serve falliva in silenzio e si aspettavano comunque 30 giri di curl: ~60 s a
+  # vuoto per OGNI chiamata (misurati nel gate: 62 s per PR). Si cerca sul PATH; se Ollama
+  # non c'e' proprio, lo si dice subito e si esce.
+  OLLAMA_BIN=$(command -v ollama 2>/dev/null || true)
+  [ -x "${OLLAMA_BIN:-}" ] || OLLAMA_BIN=/opt/homebrew/bin/ollama
+  if [ ! -x "$OLLAMA_BIN" ]; then
+    echo "ask-qwen: Ollama non e' in esecuzione e il binario non si trova (PATH, /opt/homebrew/bin): nessun cervello locale qui" >&2
+    exit 1
+  fi
   OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH="$CTX" \
-    /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
+    "$OLLAMA_BIN" serve >> ~/ollama-server.log 2>&1 &
   for _ in $(seq 1 30); do curl -sf --max-time 2 "$API/api/version" >/dev/null 2>&1 && break; sleep 1; done
 fi
 

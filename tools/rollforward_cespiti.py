@@ -67,14 +67,23 @@ def calcola_roll_forward(fa, cespiti_categoria):
 def main():
     """Cespiti JSON in stdin → righe roll-forward. Input non-parsabile: uso.
     """
-    import json as _json
     try:
-        dati = _json.load(sys.stdin)
+        dati = json.load(sys.stdin)
     except (ValueError, EOFError):
         print("uso: rollforward_cespiti.py < cespiti.json (categoria, cespiti[] con costi, ammortamenti, dismissioni, rivalutazioni)", file=sys.stderr)
         return 1
-    dati = json.load(sys.stdin)
-    r = calcola_roll_forward(dati["categoria"], dati["cespiti"])
+    # (giro 21, 2026-09-20 — D31): qui c'era un SECONDO json.load(sys.stdin) fuori dal try —
+    # lo stream era gia' consumato: traceback anche sull'input VALIDO. Il test importava la
+    # funzione e la riga di comando non era mai partita. I campi mancanti si dichiarano.
+    CAMPI_FA = ("openCosto", "openRival", "openSval", "yearCosto", "yearRival", "yearSval", "openFondo", "yearFondo")
+    fa = dati.get("categoria") if isinstance(dati, dict) else None
+    mancanti = ([] if isinstance(fa, dict) else ["categoria"]) + [c for c in CAMPI_FA if isinstance(fa, dict) and c not in fa]
+    if not isinstance(dati, dict) or not isinstance(dati.get("cespiti"), list):
+        mancanti.append("cespiti[]")
+    if mancanti:
+        print(f"uso: rollforward_cespiti.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    r = calcola_roll_forward(fa, dati["cespiti"])
     for chiave, valore in r.items():
         print(f"{chiave}: {valore:.2f}")
 

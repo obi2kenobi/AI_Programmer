@@ -214,7 +214,7 @@ positivo di REPO-E 2026-09-01 in una forma nuova; il file è stato scritto con u
 
 ## Numeri ricontati
 
-- Mappa: «17+ sonde» → 14 identificativi distinti in `tools/giri-ignoranti.sh` (S1–S11, S15–S17);
+- Mappa: «17+ sonde» → 15 identificativi distinti in `tools/giri-ignoranti.sh` (S1–S11, S10bis, S15–S17);
   «7 banchi» → 7 (`tools/banco-passaggio.sh:6`); test: 142 file.
 - Debiti aperti: 15 (8 dominio + 7 risolvibili) — con la classificazione di R6 discutibile (D21).
 - Delibere del censore sul vivo: 0 (D25). PR notturne dell'hub: 4 fuse a mano, 1 chiusa a mano.
@@ -269,6 +269,30 @@ pre-commit li ha morsi alla frontiera); il turno che vive solo sul Mac.
 **Mio errore messo a regime**: E-035 in `docs/errori/REGISTRO.md` (lo stub di `gh` con
 l'argomento sbagliato e il `cd` non guardato che ha copiato lo standard nell'hub).
 
+## Chiusura 2 — venti giri di analisi profonda (Luca: «ripeti 20 giri di analisi capendo profondamente ogni pezzo a cosa serva e come si usi e chiudi tutti gli errori che trovi in piena autonomia»)
+
+Metodo: ogni pezzo letto E lanciato (senza argomenti, con `--help`, con input sbagliato, con
+stub dove il vivo non c'e'), poi il test rosso, la cura, il verde, il commit. Diario in `SAL.md`
+(voce 2026-09-20 (3°)). Diciassette difetti nuovi, D28-D44.
+
+| Giro | Pezzo | Difetti | Cura | Banco (prima → dopo) |
+|---|---|---|---|---|
+| 11 | agente | test teatro senza Ollama; `write` sovrascriveva | mock a sequenza, `NIGHT_API_URL`, write solo su file nuovi | `tests/test-agente.sh` A1-A6 deterministici; mutazioni 51/0 |
+| 12-13 | mutazioni, polso, menu | E-026 fuori dal verdetto; «12 sonde» | `ok`/`ko` contano; sonde calcolate dal file | system-health, help verdi |
+| 14-18 | ciclo-vivo, sonde, attacchi, ask-qwen | storico con righe vuote; E3 vacuo; 60 s a vuoto senza Ollama | scrive solo con finding; E3 legge la colonna repo; binario sul PATH, esce subito | attacchi 95/0 aggirati |
+| 19 | install, ask-qwen | il 27b abbandonato ancora default in tre posti | modello letto da `MODEL_TAG`; default 14b; sfida del censore sul modello vero | nuova lente `tests/test-un-solo-modello.sh` 1/1 → 2/2 |
+| 20 | onboard-repo | D28 solo hook PreToolUse; D29 glob di `git add` espanso nell'hub, niente spinto; D30 coda vera sporcata dalla prova | tutti gli eventi, add per percorso, commit propri, `NIGHT_REPOS_CONF` | nuovo `tests/test-onboard-repo.sh` (gh finto) 6/4 → 10/10 |
+| 21 | oracoli Python | D31 rollforward morto come comando (stdin letto due volte); D32 traceback nudo in otto oracoli, zeri con rc 0 su stdin vuoto | colonne/campi/file dichiarati come scadenzario_aging | nuovo `tests/test-oracoli-uso.sh` 0/21 → 21/21 |
+| 22-24 | BC, specchi, hook | D33 URLError nudo a rete giu' | host e ragione dichiarati, mai l'URL del token | nuovo `tests/test-bc-map.sh` 4/4; bc_tipi 6/6 |
+| 25 | memoria | triage rosso (tre report del 19/9 senza voce SAL); D38 titoli > 130 caratteri scartati in silenzio dall'indice | voce SAL a posteriori coi commit; ogni titolo indicizzato, il lungo dichiarato | triage 3 → 0 non processati; S16 verde; antivirus 3/1 → 4/0 |
+| 26-27 | denti, garante | D34 garante: solo hook PreToolUse, `cp -R` annidava, sovrascriveva settings propri, patterns mai copiati; D39 meta-audit senza asserzioni; md5 mac-only nel test | copia-hook, cartelle solo se assenti, avviso senza tocco, cksum | `tests/test-garante-standard.sh` 5 → 8/8; meta-audit 0 → 149 asserzioni |
+| 28 | i tre lettori di `.night-verify` | D40 il gate troncava la riga al `#`; D41 output delle verifiche in chiaro | stesso contratto del turno e del censore; `mask_secrets` su ogni output | `tests/test-morning-gate-cieco.sh` 7/2 → 9/9 |
+| 29 | documenti vivi | D42 27B nella mappa; D43 «Suite 87/87»; D44 «16 oracoli», «7 agenti» | numeri ricontati e derivati | `tests/test-help.sh` 3 → 4/4 |
+| 30 | chiusura | — | — | suite 149/149; mutazioni 53/0; banco 6/7 (privacy DEGRADATO dichiarato: repos.key sul Mac) |
+
+**Non curato, dichiarato in `DEBITI.md`**: il report BusinessPlan senza file in `docs/campo/`;
+il banco 7/7 che si chiude solo sul Mac (privacy-check con repos.key).
+
 ## Proposta al canone (i difetti riprodotti per primi)
 
 1. Censore: prove lette da `origin/<default>`, rifiuto di ogni PR che tocca `.night-verify`
@@ -293,5 +317,5 @@ l'argomento sbagliato e il `cd` non guardato che ha copiato lo standard nell'hub
 10. Il nome privato in `tools/dashboard.py:71` va tolto (D24); `.night-verify` dovrebbe
     contenere una riga che pretenda l'albero pulito dopo la suite (D23).
 11. Clasp hook: spogliare anche i backtick, o riconoscere che il comando scrive un `.md` (D27).
-12. La mappa della missione va corretta: 14 sonde, dashboard NON testata a unità, censore mai
+12. La mappa della missione va corretta: 15 sonde, dashboard NON testata a unità, censore mai
     deliberato sul vivo, `--standard` non copre la repo vuota.

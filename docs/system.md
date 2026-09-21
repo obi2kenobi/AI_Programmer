@@ -26,7 +26,7 @@
 |---|---|---|
 | Cervello giorno primario | ZCode / GLM 5.3 | sessione diretta |
 | Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain SUL MAC: funziona da terminale utente e launchd, non da shell sandbox locale; **una sessione cloud ha auth propria e risponde davvero** — verificato 2026-08-22, vedi `llm/ask-opus.sh`) |
-| Braccia notturne | Qwen3.8-27B Q4_K_M via Ollama | batteria qualità 4/4 pari alla Q5, 3,7-5,9 tok/s, margine RAM (misure 2026-08-18) |
+| Braccia notturne | qwen2.5-coder:14b via Ollama (un solo modello, decisione 2026-09-19) | bencina 2026-09-19: 14b 1/3 in 22 s, il 27B generale 0/3 in 442 s anche da solo (`night-shift/revisore.sh:35`); fino al 19/9 qui stava il Qwen3.8-27B Q4_K_M (misure 2026-08-18: 3,7-5,9 tok/s) |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
 | Giudice/censore/correttore | REPO-A + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
 | Memoria | SAL.md + metrics/gate.csv | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
@@ -277,8 +277,8 @@ famiglie misurate con popolazioni). Fatto:
 - **Agenti generali**: `sviluppatore-gas` riscritto come agente GENERALE che
   carica il canone progressivamente (non più i soli 6 pattern), e il nuovo
   `revisore-gas` (i quattro verbi su progetti esistenti: censimento con
-  raggiungibilità prima, banco prima, sabotaggio, tre prodotti). Ora 7 agenti,
-  specchiati OpenCode con anti-drift.
+  raggiungibilità prima, banco prima, sabotaggio, tre prodotti). Ora 6 agenti (giro 29 2026-09-20: qui diceva 7, mai stati
+  piu' di 6 — nessun agente e' stato cancellato nella storia), specchiati OpenCode con anti-drift.
 - Guardia: `tests/test-gas-sviluppo-sistema.sh` (16 controlli: provenienza,
   regole non negoziabili, popolazioni numeriche ≥15, privacy).
 

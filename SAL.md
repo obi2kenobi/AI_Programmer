@@ -131,7 +131,9 @@
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 - [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
 - [2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)](#2026-09-17-3-la-notte-soltanto-ai_programmer-decisione-di-luca)
+- [2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)](#2026-09-20-i-tre-report-dal-campo-del-19-9-lavorati-nell-hub-registrazione-a-posteriori)
 - [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
+- [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
 
 
 ## Stato
@@ -2356,6 +2358,28 @@ pulito ogni volta. Stanotte: la stessa macchina con cascata, caccia con cooldown
 quattro categorie di fix, sonno adattivo, auto-verifica. Il test definitivo non
 è più un test: è la produzione.
 
+### 2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)
+
+Registrazione scritta il 20/9 sera (giro 25 dell'analisi profonda): `tools/campo-triage.sh`
+contava tre report NON processati perche' il loro nome non compariva nel diario, mentre il
+lavoro era stato fatto e committato nella mattina del 20/9 — senza voce SAL. Il contratto del
+triage e' il nome del report nel diario: eccoli, con il commit che li ha lavorati.
+
+- 2026-09-19-repo-f-standard-56-giri-21-rilievi → commit 44c74a9 «dal report REPO-F: 5 difetti
+  hub curati (verificati veri uno per uno) + 7 regole al canone».
+- 2026-09-19-repo-i-standard-cinquanta-giri-correzioni → commit 7892bbf «dal report REPO-I: i
+  tre rilievi ALTA dell'hub curati e provati + 8 regole al canone» (il report era arrivato con
+  09b469e e la PR #96).
+- 2026-09-19-budget-vendite-standard-cinquanta-giri → commit 6aeae73 «dal report Budget Vendite
+  (portato a mano: la sessione aveva l'hub in sola lettura): gas-gate portato e seminato, blocco
+  cloud in sync-repo, 5 regole al canone».
+- Il quarto lavoro della mattina, e298794 «dal report BusinessPlan: il carattere che zittiva il
+  settimo patto + le verifiche-vuote rosse + 6 regole», non ha un file in `docs/campo/`: il
+  report e' rimasto nella repo di origine.
+
+Lezione: il triage legge il diario, non i commit — un lavoro senza voce SAL e' invisibile
+all'anello della memoria (T7 del test del sistema completo), anche se il codice lo porta.
+
 ### 2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)
 
 Il report `docs/campo/2026-09-20-test-sistema-completo-fable.md` (PR #97) ha riprodotto 21
@@ -2484,3 +2508,190 @@ curati nello stesso giro — `tools/dashboard.py` sotto la densita' di chiarezza
 (stessa cura: locale scelto, rilevatore morto = rosso); `tools/status-page.sh` moriva in silenzio
 sotto `set -e` quando system-health o gate-summary uscivano rossi, e la pagina non nasceva
 (`|| true`: il rosso di un blocco e' un dato da mostrare — `tests/test-status-page.sh` 6/6).
+
+### 2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)
+
+**Giro 11 — l'agente nostro (`night-shift/agente.sh`).** A cosa serve: il ciclo multi-turno
+bash ↔ modello locale che opencode non chiudeva — il modello chiede read/edit/write/run con
+JSON, lo script esegue confinato e rimanda il risultato; lo usano la caccia-miglioria e la
+cascata solver→agente del turno. Come si prova: `tests/test-agente.sh` saltava tutto senza
+Ollama e il banco delle mutazioni lo segnava «teatro» (l'unico rosso della suite dopo i dieci
+giri). Ora ha una parte A DETERMINISTICA con un mock a sequenza (read → edit esatto → finish;
+old assente/ambiguo → file intatto; read/write fuori dal progetto rifiutati; denylist del run;
+tetto dei turni) e una parte B col modello vero, skip dichiarato. Scoperta in corsa: il
+prompt diceva «write SOLO per file nuovi» ma nulla lo faceva rispettare — la riscrittura
+intera del file (516 righe per un tubo, misurata il 19/9) passava di li'. Ora `write` su un
+file esistente e' RIFIUTATO con l'invito all'edit: la regola e' strutturale. `NIGHT_API_URL`
+anche nell'agente (stesso contratto del solver). 13/13 in 2 s; il banco delle mutazioni
+torna a zero teatri.
+
+**Giro 12 — il banco delle mutazioni e il banco di fine passaggio (`tools/mutation-tests.sh`,
+`tools/banco-passaggio.sh`).** A cosa servono: il primo prova I TEST (neutralizza il tool
+omonimo con `exit 0` e pretende il rosso: chi resta verde e' teatro); il secondo e' la sequenza
+dei sette banchi da chiudere prima di dichiarare finito (suite, ignoranti, avversari, mutazioni,
+privacy, ciclo-vivo, copertura del codice cambiato). Come si usano: su albero PULITO (la guardia
+si ferma se sporco — e mi ha fermato: il banco girato con lo stash del mio lavoro provava il test
+vecchio, non il nuovo; solo dopo il commit del giro 11 il verdetto e' vero). Esito: 51 test
+reagiscono alla mutazione, 0 teatri.
+
+**Giro 13 — il polso e il menu (`tools/system-health.sh`, `tools/help.sh`, `tools/status-page.sh`,
+`tools/turno-vivo.sh`).** system-health: il controllo E-026 (il job nightshift caricato dal plist
+di casa) stampava OK/ROSSO con `echo` nudo, FUORI dai contatori — un «ROSSO nightshift non
+caricato» non toccava il verdetto ne' l'exit code: un cartello, non una sonda. Ora `ok`/`ko`
+contano, e senza `launchctl` (non e' un Mac) e' un `warn` dichiarato. help.sh diceva «12 sonde»
+(sono 15: S1–S11, S10bis, S15–S17 — e il mio report ne contava 14 perche' la mia regex
+ignorava il «bis»: corretti report e mappa): il numero ora si CALCOLA dal file delle sonde,
+cosi' non marcisce. status-page e turno-vivo curati al giro 10/9: 6/6 e 9/9.
+
+**Giri 14-17 — ciclo-vivo, sonde e attacchi, cervelli (`tools/ciclo-vivo.sh`,
+`tools/giri-ignoranti.sh`, `tools/giri-avversari.sh`, `llm/ask-qwen.sh`).** A cosa servono:
+il ciclo-vivo e' il giro a livelli crescenti (tool → collegamenti → flussi → architettura →
+meta) con memoria in file piatti sotto `.ciclo/`; le sonde ignoranti sono le 15 domande dello
+straniero scortese; gli attacchi sono 95 mutazioni che devono far scattare una difesa (avevo scritto 100: ricontato dal RESOCONTO); i
+wrapper `llm/ask-*.sh` sono il gesto unico per parlare a un cervello (stdin come contesto,
+timeout, log d'uso). Difetti trovati leggendo ed eseguendo: (14) con zero finding il ciclo
+appendeva una RIGA VUOTA allo storico a ogni giro — «finding totali» e media/giro contavano
+i giri puliti come finding: ora scrive solo se ce ne sono; (15) l'attacco E3 sul CSV delle
+metriche escludeva ogni riga con una virgola — cioe' tutte: una prova che non poteva fallire
+(R2, verde senza dati) — ora legge la colonna repo di ogni riga e pretende un codice REPO-*;
+(17) `llm/ask-qwen.sh` avviava `/opt/homebrew/bin/ollama` a percorso fisso e, dove non c'e',
+aspettava comunque 30 giri di curl: ~60 s a vuoto per chiamata (i 62 s per PR misurati nel
+gate) — ora cerca il binario sul PATH e senza Ollama esce subito dichiarandolo. Letti senza
+rilievi: i livelli e il ritorno al CUORE del ciclo, il lock a mkdir, le lenti 4a-4h; la sonda
+S3 che uccide gli oracoli a 0,35 s; la classificazione D degli attacchi (traceback = «si
+dichiara», coerente con S3 che lo boccia altrove); gate-esito/gate-summary (giro 18: l'esito
+umano si scrive sull'ULTIMA riga pendente della PR e uno stato finale non si sovrascrive).
+Attacchi (giro 15) rifatti sull'albero pulito dopo i commit: 95 attacchi, 88 tengono, 7 ACK con
+limite dichiarato, 0 aggirati.
+
+**Giro 19 — installazione e cervelli (`night-shift/install.sh`, `llm/ask-qwen.sh`).** A cosa
+serve install.sh: segnala i prerequisiti (non li installa), fa i symlink dei cinque comandi,
+attiva i guardiani (`core.hooksPath`), genera i plist. Difetto: controllava — e chiedeva di
+scaricare, 17 GB — il 27b generale abbandonato il 2026-09-19 (un solo modello, decisione di
+Luca, `night-shift/revisore.sh:35`); `llm/ask-qwen.sh`, il cervello che il morning-gate
+chiama per il banco avversariale, partiva ancora col 27b (quello che «0/3 in 442 s»); il test
+del censore cercava il 27b per decidere se fare la sfida vera — saltata per sempre. Banco: nuova
+lente `tests/test-un-solo-modello.sh` (ogni letterale qwen* in una riga di codice deve essere il
+MODEL_TAG del turno) — rossa su tre file, verde dopo; install.sh ora LEGGE il modello da
+night-shift.sh. Corretti anche due commenti che dicevano «cervello piu' grande» e il protocollo
+dei modelli che chiamava il 27b «attuale».
+
+**Giro 20 — onboard-repo (`tools/onboard-repo.sh`).** A cosa serve: porta una repo ESISTENTE
+nel sistema — label, .night-verify, template issue, vocabolario, skill/agenti/pattern/hook a
+merge prudente (mai sovrascrivere il personalizzato), iscrizione alla coda. Fino a oggi aveva
+solo banchi strutturali o che RIFACEVANO il merge a mano: specchio del codice. Banco nuovo
+`tests/test-onboard-repo.sh`: lo script vero con un gh finto su un origin locale (bare +
+clone), due casi. Rosso su tre difetti: (D28) il ramo «settings.json assente» leggeva solo
+`.hooks.PreToolUse` — `tools/metodo-reminder-hook.sh` (UserPromptSubmit/SessionStart/Stop) non
+arrivava mai, settings.json puntava a uno script inesistente; (D29) `git add tools/*hook*.sh`
+espanso dalla shell nella cartella di CHI LANCIA (l'hub): includeva copia-hook.sh che nella
+repo non c'e', pathspec non corrisposto, git add non aggiungeva NIENTE — nessun hook e' MAI
+arrivato a una repo onboardata da qui; e il commit di settings.json lo faceva per caso la
+sezione degli agenti: repo con gli agenti gia' presenti = niente sull'origin (stesso buco per
+gli specchi OpenCode); (D30) la prima prova ha iscritto due repo finte nella coda VERA
+dell'hub (`night-shift/repos.conf`, gitignored) — rimosse a mano; ora `NIGHT_REPOS_CONF`
+sovrascrive il percorso, come `HUB_METRICS` nel gate. Cura: filtro su tutti gli eventi (lo
+stesso di `tools/copia-hook.sh`), add per percorso esplicito, `chmod +x`, commit e push propri
+anche per gli specchi OpenCode. 10/10; il vecchio banco degli hook ora pretende il filtro su
+tutti gli eventi.
+
+**Giro 21 — gli oracoli Python, verifica_banco, py-gate (`tools/*.py`).** A cosa servono: gli
+undici oracoli sono formule di controllo di gestione minate dal codice reale di REPO-E (CSV o
+JSON in ingresso, report in uscita, mai un default inventato); verifica_banco giudica l'uscita
+di un banco GAS dalla riga canonica «attese eseguite: N/M · fallite: K»; py-gate compila ogni
+.py tracciato. Metodo: ogni oracolo lanciato con niente, con `--help`, con un file inesistente,
+con un CSV dalle colonne sbagliate, con stdin vuoto, con un JSON che non e' un oggetto. Trovati:
+(D31) `tools/rollforward_cespiti.py` leggeva stdin DUE volte — `json.load` nel try e di nuovo
+fuori: lo stream era consumato, traceback anche sull'input VALIDO; il suo test importava la
+funzione e la riga di comando non era mai partita — l'oracolo era morto come comando; (D32)
+traceback nudo in otto oracoli su undici davanti a un input sbagliato (file inesistente,
+colonna mancante, argomento non numerico, JSON non oggetto), mentre indici_crisi e
+scadenzario_aging lo dichiaravano dal 2026-08-28: la cura di quel giorno non era mai arrivata
+ai fratelli; in piu' bilancio_bu, rating_dso, riconciliazione e scostamento su stdin vuoto
+stampavano un report di zeri con rc 0 (R2, verde senza dati); riconciliazione aveva un
+`return 1` DENTRO categorizza(), che main spacchetta in tre liste: sul nan il rifiuto
+dichiarato diventava un TypeError nudo, e main() non tornava mai un exit code. Banco nuovo
+`tests/test-oracoli-uso.sh` (21 attese: rosso 0/21, verde 21/21 dopo); stesso gesto di
+scadenzario_aging ovunque: colonne controllate su `reader.fieldnames`, file aperti in try,
+campi JSON elencati. Le suite dei singoli oracoli restano verdi (18/18 il settimo ciclo). Letti
+senza rilievi: verifica_banco (i cinque controlli, rc 2 sulla forma), py-gate (compile senza
+`__pycache__`, un comando per riga di .night-verify), gas_qualita (errori dichiarati).
+
+**Giri 22-24 — censimento BC, specchi, hook di sessione (`tools/bc_map.py`,
+`tools/bc_tipi_metadata.py`, `tools/bc_index.py`, `.opencode/`, `tools/*-reminder-hook.sh`).**
+bc_map legge un endpoint OData e scrive il censimento con merge delle colonne curate a mano;
+bc_tipi corregge i tipi dal `$metadata`; bc_index rigenera il README. (D33) a rete giu' (o
+servizio token irraggiungibile) uscivano URLError nudo — il docstring di bc_tipi promette «morte
+loud, non traceback nudo»: ora host e ragione dichiarati, mai l'URL intero del token (porta il
+tenant); banco nuovo `tests/test-bc-map.sh` (bc_map non aveva nessun test col suo nome: la
+mutazione non lo vedeva) e il caso rete-giu' in quello di bc_tipi. Specchi: skill e agenti
+identici fra `.claude/` e `.opencode/` (diff -r vuoto), le tre lenti di sincronia verdi; una
+cartella `.claude/agents/agents` vuota e non tracciata era un residuo di E-035: rimossa. Hook:
+letti per intero, semantica coerente (sensibile prima del promemoria SAL, contatori in /tmp per
+directory, Stop una volta l'ora) — nessun rilievo.
+
+**Giro 25 — la memoria (`tools/campo-triage.sh`, `tools/sal-indice.sh`, `tools/sal-archivia.sh`,
+`tools/privacy-check.sh`, `tools/presidio.sh`, `tools/fork-stato.sh`, `tools/polilivello.sh`).**
+Il triage era ROSSO: tre report del 19/9 lavorati la mattina del 20/9 senza voce SAL — scritta
+sopra, a posteriori, con i commit. (D38) `tools/sal-indice.sh` scartava IN SILENZIO ogni titolo
+oltre 130 caratteri: il titolo di questa voce (188) non era nell'indice, la sonda S16 diceva
+«indice FERMO» e l'antivirus dei rilevatori (`tools/prova-rilevatori.sh`) accusava la sonda —
+che aveva ragione. Ora ogni titolo e' indicizzato e quello lungo si dichiara su stderr; il titolo
+accorciato al canone. Gli altri sei: letti ed eseguiti senza rilievi (privacy DEGRADATO
+dichiarato senza repos.key, presidio senza registro, fork-stato rc 2 senza argomenti).
+
+**Giri 26-27 — i denti del canone e il garante (`tools/cita-verifica.sh`,
+`tools/fixture-provenienza.sh`, `tools/gas-gate.sh`, `tools/garante-standard.sh`).** Denti
+verdi ed eseguiti a mano (citazione falsa → rc 1 con la riga; senza argomenti → rc 2).
+Il garante — l'hook di livello utente che installa lo standard su qualsiasi repo — aveva la
+stessa famiglia di D28 (D34: leggeva solo gli hook PreToolUse, metodo-reminder restava a terra
+in OGNI repo installata dal garante), piu' due che il suo test non poteva vedere: `cp -R` su una
+cartella esistente annida e sovrascrive il personalizzato, e un settings.json PROPRIO senza i
+nostri hook veniva sovrascritto dal cp; la copia di patterns non partiva mai (la cartella era
+appena stata creata vuota dal mkdir e risultava «gia' presente»). Il test misurava «nessuna
+modifica» con `xargs md5 | md5`: su Linux md5 non esiste, due impronte vuote, sempre uguali —
+il caso 3 era teatro qui. Cure: hook via `tools/copia-hook.sh` (tutti gli eventi, chmod,
+.gitignore dei residui), cartelle copiate solo se assenti (dichiarato), settings proprio =
+avviso senza tocco, impronta con cksum, due casi nuovi (8/8); lente di portabilita' estesa al
+md5 nudo. (D39) `tests/test-suite-meta-audit.sh`: il grep leggeva stdin invece del file — zero
+asserzioni, «0 OK, 0 FAIL», verde da sempre; ora 149 asserzioni vere.
+Antivirus dei rilevatori dopo la cura di D38: 4 canarini tenuti, 0 rilevatori rotti, clone
+pulito verde.
+
+**Giro 28 — i tre lettori di .night-verify (`night-shift/night-shift.sh`,
+`night-shift/revisore.sh`, `night-shift/morning-gate.sh`).** Turno, censore e gate leggono
+lo stesso file con lo stesso contratto dichiarato (una riga = uno script per `bash -c`,
+`@<sec>` come budget, `# FORMATO: script` per il file intero, stdin da /dev/null). Letti i tre
+cicli fianco a fianco: (D40) il gate era l'unico a spogliare la riga con `${cmd%%#*}` — un `#`
+fra virgolette (`grep -qv "^#" file`) diventava un comando troncato: ROSSO al gate con proposta
+di issue correttiva, VERDE al turno e al censore che la riga la passano intera (bash i commenti
+li ignora da se'). Ora il gate salta solo la riga che inizia con `#`, come gli altri due. (D41)
+l'output delle verifiche rosse entrava nel report e nella proposta di issue SENZA maschera —
+`mask_secrets` copriva solo il banco avversariale: un test che stampa un token lo portava in
+chiaro fino a GitHub («Mask, don't omit», regola vincolante). Ora ogni output di verifica passa
+dalla maschera (formato script e riga per riga), col rc del comando preservato via PIPESTATUS.
+Banco: due casi nel gate intero con gh finto (`tests/test-morning-gate-cieco.sh`, 9/9): rossi
+prima («unexpected EOF while looking for matching» e il token 4 volte nel report), verdi dopo.
+
+**Giro 29 — la coerenza dei documenti vivi (`README.md`, `docs/system.md`, `METHOD.md`,
+`tools/help.sh`).** I numeri ricontati contro il repo: 149 file di test, 38 tool shell, 17 python
+(11 oracoli), 14 skill, 6 agenti, 65 pattern, 3 hook, 95 attacchi, 15 sonde. Corretti: (D42)
+`docs/system.md` dichiarava ancora il Qwen3.8-27B come braccia notturne — la mappa del sistema
+contraddiceva la decisione del 19/9; (D43) `README.md` diceva «Suite: 87/87 (bash .night-verify)»
+— il numero era di agosto e il comando non e' quello (la suite e' `tools/suite.sh`, la notte la
+chiama dalla riga @540); (D44) `tools/help.sh` diceva «16 oracoli» (erano i .py totali di allora)
+e `docs/system.md` «ora 7 agenti» (mai stati piu' di 6, nessuno cancellato nella storia); il mio
+stesso paragrafo dei giri 14-17 diceva «100 mutazioni» (sono 95: ricontate dal RESOCONTO). Guardia
+nuova in `tests/test-help.sh`: menu e README devono contare gli stessi oracoli. METHOD.md e
+PROJECT.md: letti, nessun numero marcio.
+
+**Giro 30 — la chiusura (suite, mutazioni, banco di fine passaggio).** Sull'albero committato:
+`tools/suite.sh` 149/149 file verdi; `tools/mutation-tests.sh` 53 test reagiscono alla
+mutazione, 0 teatri (il primo lancio si e' rifiutato — «albero sporco» — perche' la suite stessa,
+girando in parallelo, aveva appena ripristinato `tools/bc_map.py` con `chmod +x`: il file era
+l'unico .py non eseguibile, ora e' come gli altri); `tools/banco-passaggio.sh --veloce` 6/7 — il
+rosso e' il privacy-check DEGRADATO dichiarato: `night-shift/repos.key` e' locale al Mac, da una
+sessione cloud il gate non puo' controllare niente e lo dice (debito gia' in DEBITI.md: il sistema
+vive sul Mac). Attacchi 95/0 aggirati, antivirus 4/4. Diciassette difetti nuovi (D28-D44) curati
+in venti giri, ognuno col suo test rosso prima. La PR #97 e' stata mergiata durante il lavoro: i
+giri 11-30 vanno in una PR nuova sullo stesso ramo (#98).

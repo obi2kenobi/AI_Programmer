@@ -1,6 +1,13 @@
 #!/bin/bash
-# test-agente.sh — l'agente nostro sotto prova (3 sfide, ambiente pulito).
-# Nato dall'intuizione di Luca: il ciclo era errato, non il modello.
+# test-agente.sh — l'agente nostro sotto prova, in DUE parti.
+#
+# Parte A (sempre, deterministica — giro 11 del 2026-09-20): la MECCANICA del ciclo
+# bash ↔ modello con un server mock che risponde una sequenza di azioni. Nata perche' il
+# banco delle mutazioni segnava questo test «teatro»: senza Ollama saltava tutto, e un
+# agente.sh neutralizzato passava. Qui si prova cio' che non dipende dal modello: edit
+# esatto, edit ambiguo/assente, confinamento dei path, denylist del run, write che non
+# sovrascrive (la regola del prompt diventa strutturale), tetto dei turni.
+# Parte B (solo con Ollama attivo): le tre sfide del modello vero, skip dichiarato.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 AGENTE="$HERE/night-shift/agente.sh"
@@ -9,51 +16,113 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 bash -n "$AGENTE" && ok "sintassi" || { ko "sintassi"; exit 1; }
 
-# Serve Ollama attivo: se non c'e', dichiara il skip
-if ! curl -sf --max-time 2 http://localhost:11434/api/tags >/dev/null 2>&1; then
-  echo "⊘ Ollama non attivo: test saltato (dichiarato, non taciuto)"
-  exit 0
-fi
+# ── Parte A: il mock a SEQUENZA — risponde i file 1.json, 2.json, … del suo dossier ──
+MOCK_DIR=$(mktemp -d /tmp/agente-mock.XXXXXX)
+cat > "$MOCK_DIR/serve.py" <<'PYEOF'
+import http.server, sys, pathlib, itertools
+dossier = pathlib.Path(sys.argv[1]); n = itertools.count(1)
+class NoRev(http.server.HTTPServer):
+    def server_bind(self):
+        import socketserver
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.socket.getsockname()[:2]
+        self.server_name, self.server_port = host, port
+class H(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        i = next(n); f = dossier / f"{i}.json"
+        if not f.exists():  # dossier finito: il modello «finisce» con testo
+            body = b'{"message":{"content":"FINISH (dossier esaurito)"}}'
+        else:
+            body = f.read_bytes()
+        self.send_response(200); self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body))); self.end_headers(); self.wfile.write(body)
+    def log_message(self, *a): pass
+srv = NoRev(("127.0.0.1", 0), H); print(srv.server_address[1], flush=True); srv.serve_forever()
+PYEOF
+SB_ROOT=$(mktemp -d /tmp/test-agente.XXXXXX)
+trap 'rm -rf "$MOCK_DIR" "$SB_ROOT"; jobs -p | xargs -r kill 2>/dev/null' EXIT
+azione() { # azione <json-del-contenuto> → corpo risposta Ollama con quel contenuto
+  python3 -c 'import json,sys; print(json.dumps({"message":{"content":sys.argv[1]}}))' "$1"
+}
+scenario() { # scenario <nome> <dir-progetto> <prompt> <corpo-1> [<corpo-2> …] → OUT e RC globali
+  local nome="$1" dir="$2" prompt="$3"; shift 3
+  local d="$MOCK_DIR/$nome"; mkdir -p "$d"; local i=1
+  for b in "$@"; do printf '%s\n' "$b" > "$d/$i.json"; i=$((i+1)); done
+  python3 "$MOCK_DIR/serve.py" "$d" > "$d/port" 2>/dev/null & local pid=$!
+  for _ in $(seq 1 30); do [ -s "$d/port" ] && break; sleep 0.1; done
+  OUT=$(NIGHT_API_URL="http://127.0.0.1:$(cat "$d/port")/api/chat" AGENTE_MAX_TURNI="${MAX_T:-6}" AGENTE_TIMEOUT=60 bash "$AGENTE" "$dir" "$prompt" 2>&1); RC=$?
+  kill "$pid" 2>/dev/null; wait "$pid" 2>/dev/null
+}
 
-export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
-SB=$(mktemp -d /tmp/test-agente.XXXXXX); trap 'rm -rf "$SB"' EXIT
+# A1: read → edit esatto → finish: il file cambia SOLO nella riga indicata
+SB="$SB_ROOT/a1"; mkdir -p "$SB"; printf 'function sconto(p, x) {\n  return p - x;\n}\n' > "$SB/mat.js"
+scenario a1 "$SB" "fix sconto" \
+  "$(azione '{"action":"read","path":"mat.js"}')" \
+  "$(azione '{"action":"edit","path":"mat.js","old":"  return p - x;","new":"  return p - (p * x / 100);"}')" \
+  "$(azione 'Done: fixed sconto.')"
+[ "$RC" -eq 0 ] && grep -q 'p \* x / 100' "$SB/mat.js" && [ "$(wc -l < "$SB/mat.js")" -eq 3 ] \
+  && ok "A1: read → edit esatto → finish (rc 0, una riga cambiata, le altre byte-identiche)" \
+  || ko "A1: rc=$RC file: $(tr '\n' '|' < "$SB/mat.js") out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
+echo "$OUT" | grep -q "completato in 3 turni" && ok "A1: tre turni contati" || ko "A1: conteggio turni: $(echo "$OUT" | grep completato)"
 
-# SFIDA 1: bug fix (sconto: sottrae il numero invece del percentuale)
-printf 'function sconto(prezzo, percento) {\n  return prezzo - percento;\n}\n' > "$SB/mat.js"
-OUT=$(bash "$AGENTE" "$SB" "Read mat.js. The sconto function subtracts the percentage number directly instead of calculating percentage. Fix: return prezzo - (prezzo * percento / 100). Read then fix." 2>/dev/null)
-# (E-031-adjacent, 2026-09-18): la suite gira ogni ~7min nel turno: un giorno storto
-# del modello NON e' una regressione del codice — skip dichiarato, non falso rosso.
-# MA il contratto delle mutazioni resta sacro (beccato dal test-mutazioni la stessa
-# sera): lo skip e' tollerabile SOLO se qualche sfida del modello PASSA. Se Ollama
-# e' attivo e NESSUNA passa, la meccanica e' rotta (o l'agente neutralizzato):
-# quello non e' flakiness, e' teatro verde.
-SFIDE_PASSATE=0; AGENTE_VIVO=0
-# sfida 1
-OUT=$(bash "$AGENTE" "$SB" "Read mat.js. The sconto function subtracts the percentage number directly instead of calculating percentage. Fix: return prezzo - (prezzo * percento / 100). Read then fix." 2>/dev/null); RC1=$?
-[ "$RC1" -eq 0 ] && AGENTE_VIVO=1
-if grep -q 'percento / 100' "$SB/mat.js"; then ok "sfida 1: bug corretto"; SFIDE_PASSATE=$((SFIDE_PASSATE+1)); else echo "⊘ sfida 1: modello non ha converto (rc=$RC1) — skip dichiarato"; fi
+# A2: edit con old ASSENTE → errore al modello, file intatto; poi old AMBIGUO → errore
+SB="$SB_ROOT/a2"; mkdir -p "$SB"; printf 'a\nb\na\n' > "$SB/f.txt"
+scenario a2 "$SB" "edit" \
+  "$(azione '{"action":"edit","path":"f.txt","old":"zzz","new":"y"}')" \
+  "$(azione '{"action":"edit","path":"f.txt","old":"a","new":"y"}')" \
+  "$(azione 'stop')"
+[ "$(cat "$SB/f.txt" | tr '\n' '|')" = "a|b|a|" ] && ok "A2: old assente e old ambiguo → file INTATTO" || ko "A2: file toccato: $(tr '\n' '|' < "$SB/f.txt")"
+echo "$OUT" | grep -q "vecchio non trovato" && echo "$OUT" | grep -q "ambiguo" && ok "A2: entrambi gli errori dichiarati nel log" || ko "A2: errori non loggati: $(echo "$OUT" | grep edit | tr '\n' ' ')"
 
-# SFIDA 2: nuova funzione
-OUT=$(bash "$AGENTE" "$SB" "Add function quadrato(x) returning x * x to mat.js." 2>/dev/null); RC2=$?
-[ "$RC2" -eq 0 ] && AGENTE_VIVO=1
-if grep -q "function quadrato" "$SB/mat.js"; then ok "sfida 2: funzione aggiunta"; SFIDE_PASSATE=$((SFIDE_PASSATE+1)); else echo "⊘ sfida 2: modello non ha converto (rc=$RC2) — skip dichiarato"; fi
+# A3: confinamento — read e write FUORI dal progetto rifiutati, il segreto non passa
+SB="$SB_ROOT/a3"; mkdir -p "$SB"; printf 'SEGRETO-XYZ\n' > "$MOCK_DIR/segreto.txt"
+scenario a3 "$SB" "leggi" \
+  "$(azione "{\"action\":\"read\",\"path\":\"$MOCK_DIR/segreto.txt\"}")" \
+  "$(azione "{\"action\":\"write\",\"path\":\"$MOCK_DIR/fuori.txt\",\"content\":\"x\"}")" \
+  "$(azione "{\"action\":\"read\",\"path\":\"../segreto.txt\"}")" \
+  "$(azione 'fine')"
+echo "$OUT" | grep -q "SEGRETO-XYZ" && ko "A3: file ESTERNO letto (confinamento rotto!)" || ok "A3: il contenuto esterno non arriva al modello"
+[ -f "$MOCK_DIR/fuori.txt" ] && ko "A3: write FUORI dal progetto eseguito" || ok "A3: write fuori dal progetto rifiutato"
+[ "$(echo "$OUT" | grep -c 'FUORI (rifiutato)')" -ge 3 ] && ok "A3: tre rifiuti dichiarati nel log (read, write, ../)" || ko "A3: rifiuti loggati: $(echo "$OUT" | grep -c FUORI)"
 
-# SFIDA 3: confinamento (path fuori dal progetto = rifiutato)
-printf 'SEGRETO\n' > /tmp/test-agente-segreto.txt
-OUT=$(bash "$AGENTE" "$SB" "Read /tmp/test-agente-segreto.txt" 2>/dev/null)
-grep -q "SEGRETO" <<<"$OUT" && ko "sfida 3: file ESTERNO letto (confinamento rotto!)" || ok "sfida 3: confinamento rispettato"
-rm -f /tmp/test-agente-segreto.txt
+# A4: run — denylist (curl/push/rm -rf/sudo/clasp) rifiutata, comando innocuo eseguito
+SB="$SB_ROOT/a4"; mkdir -p "$SB"
+scenario a4 "$SB" "run" \
+  "$(azione '{"action":"run","command":"curl http://example.invalid"}')" \
+  "$(azione '{"action":"run","command":"git push origin main"}')" \
+  "$(azione '{"action":"run","command":"echo ciao-dal-run"}')" \
+  "$(azione 'fine')"
+[ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 2 ] && ok "A4: curl e push RIFIUTATI (denylist)" || ko "A4: rifiuti: $(echo "$OUT" | grep -c RIFIUTATO) (attesi 2)"
+echo "$OUT" | grep -q 'run: echo ciao-dal-run' && ok "A4: il comando innocuo gira" || ko "A4: comando innocuo non eseguito"
 
-# il patto anti-teatro, versione precisa (18:04: la suite partita 30s dopo una
-# caccia bocciava per congestione Ollama, non per teatro): zero sfide passate
-# e' sospetto SOLO se l'agente ha COMPLETATO il suo loop (rc=0) almeno una
-# volta — loop vivo + risultati sbagliati = meccanica o modello rotti davvero.
-# Solo timeout (rc=3, Ollama congestionato dalla caccia appena finita) = skip.
-# La sintassi rotta resta presidiata dal bash -n in testa al test.
-if [ "$SFIDE_PASSATE" -eq 0 ] && [ "$AGENTE_VIVO" -eq 1 ]; then
-  ko "agente vivo (rc=0) ma zero sfide passate — meccanica sospetta (teatro)"
-elif [ "$SFIDE_PASSATE" -eq 0 ]; then
-  echo "⊘ zero sfide passate, agente mai completato (congestione Ollama) — skip dichiarato"
+# A5: write crea SOLO file nuovi — su un file esistente rifiuta (edit e' l'unica via)
+SB="$SB_ROOT/a5"; mkdir -p "$SB"; printf 'originale\n' > "$SB/c.txt"
+scenario a5 "$SB" "write" \
+  "$(azione '{"action":"write","path":"c.txt","content":"RISCRITTO"}')" \
+  "$(azione '{"action":"write","path":"nuovo.txt","content":"nuovo"}')" \
+  "$(azione 'fine')"
+[ "$(cat "$SB/c.txt")" = "originale" ] && ok "A5: write su file esistente RIFIUTATO (la riscrittura intera non passa piu')" || ko "A5: file esistente riscritto: $(cat "$SB/c.txt")"
+[ "$(cat "$SB/nuovo.txt" 2>/dev/null)" = "nuovo" ] && ok "A5: write crea il file nuovo" || ko "A5: file nuovo non creato"
+
+# A6: tetto dei turni — il modello chiede azioni senza mai finire → rc 1 dopo MAX_TURNI
+SB="$SB_ROOT/a6"; mkdir -p "$SB"; printf 'x\n' > "$SB/x.txt"
+MAX_T=2 scenario a6 "$SB" "loop" \
+  "$(azione '{"action":"read","path":"x.txt"}')" \
+  "$(azione '{"action":"read","path":"x.txt"}')" \
+  "$(azione '{"action":"read","path":"x.txt"}')"
+[ "$RC" -eq 1 ] && echo "$OUT" | grep -q "max turni" && ok "A6: tetto dei turni → rc 1 dichiarato (niente loop infinito)" || ko "A6: rc=$RC: $(echo "$OUT" | tail -1)"
+
+# ── Parte B: le sfide col modello VERO (skip dichiarato senza Ollama) ───────────────
+if curl -sf --max-time 2 http://localhost:11434/api/tags >/dev/null 2>&1; then
+  SB="$SB_ROOT/vivo"; mkdir -p "$SB"
+  printf 'function sconto(prezzo, percento) {\n  return prezzo - percento;\n}\n' > "$SB/mat.js"
+  OUT=$(bash "$AGENTE" "$SB" "Read mat.js. The sconto function subtracts the percentage number directly instead of calculating percentage. Fix: return prezzo - (prezzo * percento / 100). Read then fix." 2>/dev/null); RC1=$?
+  if grep -q 'percento / 100' "$SB/mat.js"; then ok "sfida viva 1: bug corretto"; else echo "⊘ sfida viva 1: modello non ha converto (rc=$RC1) — skip dichiarato"; fi
+  OUT=$(bash "$AGENTE" "$SB" "Add function quadrato(x) returning x * x to mat.js." 2>/dev/null); RC2=$?
+  if grep -q "function quadrato" "$SB/mat.js"; then ok "sfida viva 2: funzione aggiunta"; else echo "⊘ sfida viva 2: modello non ha converto (rc=$RC2) — skip dichiarato"; fi
+else
+  echo "⊘ Ollama non attivo: sfide col modello vero saltate (la meccanica e' provata sopra col mock)"
 fi
 
 echo ""

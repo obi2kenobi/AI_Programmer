@@ -48,7 +48,14 @@ def main():
     del progetto reale (regola 1-2 del docstring); i clienti senza fatture
     pagate restano «n.d.»: la forma del numero dichiara cosa contiene.
     """
-    righe = list(csv.DictReader(sys.stdin))
+    # (giro 21, 2026-09-20 — D32): colonne sbagliate = KeyError nudo; stdin vuoto = tabella
+    # vuota con rc 0 (verde senza dati). Si dichiara cosa manca, come scadenzario_aging.
+    reader = csv.DictReader(sys.stdin)
+    mancanti = [c for c in ("tipo", "data_documento", "importo") if c not in (reader.fieldnames or [])]
+    if mancanti:
+        print(f"uso: rating_dso_clienti.py < movimenti.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    righe = list(reader)
     fatture, pagamenti = [], []
     for r in righe:
         tipo = (r["tipo"] or "").strip().lower()

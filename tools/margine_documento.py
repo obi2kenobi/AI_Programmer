@@ -39,9 +39,20 @@ def normalizza(ref):
     return (ref or "").strip().upper().replace(" ", "").replace("\t", "")
 
 
-def leggi_csv(path):
-    with open(path, encoding="utf-8-sig", newline="") as f:
-        return list(csv.DictReader(f))
+def leggi_csv(path, colonne=()):
+    """(giro 21, 2026-09-20 — D32): file inesistente o colonna mancante = traceback nudo.
+    Si dichiara cosa manca e si esce 1, come scadenzario_aging."""
+    try:
+        with open(path, encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f)
+            mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
+            if mancanti:
+                print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+                sys.exit(1)
+            return list(reader)
+    except OSError as e:
+        print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 def main():
@@ -53,11 +64,11 @@ def main():
     if len(sys.argv) not in (3, 4):
         print("uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv]", file=sys.stderr)
         return 1
-    vendite = leggi_csv(sys.argv[1])
-    acquisti = leggi_csv(sys.argv[2])
+    vendite = leggi_csv(sys.argv[1], ("importo",))
+    acquisti = leggi_csv(sys.argv[2], ("importo",))
     note_credito = set()
     if len(sys.argv) == 4:
-        note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3])}
+        note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3], ("rif",))}
 
     # primo acquisto per riferimento vince (comportamento del map originale)
     acquisti_map = {}

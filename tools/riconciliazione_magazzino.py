@@ -43,8 +43,9 @@ def categorizza(righe):
         # delta "nan" silenziosi nell'output del magazzino
         import math
         if not (math.isfinite(qty_bc) and math.isfinite(costo_finale) and math.isfinite(qty_fisica)):
-            print(f"ERRORE: valore non finito (nan/inf) per {codice}: rifiutato", file=sys.stderr)
-            return 1
+            # (giro 21, 2026-09-20): qui c'era `return 1` — main() spacchetta una tupla di tre
+            # liste, e un intero produceva TypeError nudo invece del rifiuto dichiarato
+            raise ValueError(f"valore non finito (nan/inf) per {codice}: rifiutato")
         delta = qty_fisica - qty_bc
         delta_valore = delta * costo_finale
         riga = {"codice": codice, "delta": delta, "delta_valore": delta_valore}
@@ -60,14 +61,26 @@ def main():
     """CSV in stdin → conteggi per categoria, rettifiche ordinate per impatto
     economico (il più costoso in cima: è l'ordine in cui si interviene).
     """
-    righe = list(csv.DictReader(sys.stdin))
-    non_contato, senza_discrepanza, con_rettifica = categorizza(righe)
+    # (giro 21, 2026-09-20 — D32): colonne sbagliate = KeyError nudo; stdin vuoto = tre zeri
+    # con rc 0 (verde senza dati). Si dichiara cosa manca, come scadenzario_aging.
+    reader = csv.DictReader(sys.stdin)
+    mancanti = [c for c in ("codice", "qty_bc", "costo_finale") if c not in (reader.fieldnames or [])]
+    if mancanti:
+        print(f"uso: riconciliazione_magazzino.py < inventario.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    righe = list(reader)
+    try:
+        non_contato, senza_discrepanza, con_rettifica = categorizza(righe)
+    except ValueError as e:
+        print(f"ERRORE: {e}", file=sys.stderr)
+        return 1
     print(f"Non contati: {len(non_contato)}")
     print(f"Senza discrepanza: {len(senza_discrepanza)}")
     print(f"Con rettifica: {len(con_rettifica)}")
     for r in con_rettifica:
         print(f"  {r['codice']}: delta={r['delta']:+g} deltaValore={r['delta_valore']:+.2f}€")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
