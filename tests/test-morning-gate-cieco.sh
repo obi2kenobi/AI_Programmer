@@ -84,7 +84,7 @@ tail -1 "$HUB_METRICS" | grep -q "verifiche-ok" \
 # SENZA maschera — solo il banco avversariale passava da mask_secrets («Mask, don't omit»).
 # il segreto sta nell'OUTPUT (base64 nel comando: la riga di .night-verify e' pubblica nel repo,
 # non e' lei il segreto — e il gate la stampa com'e')
-aggiorna_verify "echo $(printf 'token=SEGRETO123\n' | base64) | base64 -d; exit 1"
+aggiorna_verify "echo '$(printf 'token=SEGRETO123' | tr 'A-Za-z' 'N-ZA-Mn-za-m')' | tr 'A-Za-z' 'N-ZA-Mn-za-m'; exit 1"
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
 if grep -q "SEGRETO123" "$REPORT"; then
   ko "D41: il valore del token e' nel report del gate in chiaro ($(grep -c SEGRETO123 "$REPORT") volte)"

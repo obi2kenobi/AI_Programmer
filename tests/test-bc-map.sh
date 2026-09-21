@@ -7,6 +7,8 @@
 # Nessuna rete vera: 127.0.0.1:1 rifiuta all'istante.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# (21/9): timeout(1) non esiste su macOS — la suite era ROSSA sul Mac per «command not found»
+source "$HERE/llm/_timeout.sh"
 TOOL="$HERE/tools/bc_map.py"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
@@ -21,7 +23,7 @@ OUT=$(cd "$TMP" && BC_CRED_FILE="$TMP/nonesiste" python3 "$TOOL" Servizio 2>&1);
   && ok "credenziali assenti: dichiarato, rc $RC" || ko "credenziali assenti: rc $RC — $(tail -1 <<<"$OUT")"
 
 printf '{"client_id": "x", "client_secret": "x", "scope": "x", "token_url": "http://127.0.0.1:1/t", "base_url": "http://127.0.0.1:1/b"}\n' > "$TMP/cred.json"
-OUT=$(cd "$TMP" && BC_CRED_FILE="$TMP/cred.json" timeout 30 python3 "$TOOL" Servizio 2>&1); RC=$?
+OUT=$(cd "$TMP" && BC_CRED_FILE="$TMP/cred.json" ai_timeout 30 python3 "$TOOL" Servizio 2>&1); RC=$?
 [ "$RC" -ne 0 ] && ! grep -q Traceback <<<"$OUT" && grep -q "irraggiungibile (127.0.0.1:1)" <<<"$OUT" \
   && ok "rete giu' (D33): errore dichiarato con host e ragione, nessun traceback" \
   || ko "rete giu' (D33): rc $RC, traceback=$(grep -c Traceback <<<"$OUT") — $(tail -1 <<<"$OUT" | cut -c1-90)"
