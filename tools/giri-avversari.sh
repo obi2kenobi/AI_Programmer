@@ -45,7 +45,7 @@ aggirato() { AGGIRATI=$((AGGIRATI+1)); echo "AGGIRA #$ATT $1"; }
 att() { ATT=$((ATT+1)); }
 # sedi: `sed -i` portabile (D22, test del sistema completo 2026-09-20): `sed -i ''` e' solo
 # BSD, su GNU legge '' come script. Il suffisso attaccato vale per entrambi; il .bak si toglie.
-sedi() { local f="${@: -1}"; sed -i.portabile-bak "$@" && rm -f "$f.portabile-bak"; }
+sedi() { local f="${!#}"; sed -i.portabile-bak "$@" && rm -f "$f.portabile-bak"; }  # ${!#} = ultimo argomento (21/9: SC2124 su "${@: -1}")
 difesa_test() {
   bash "$1" >/dev/null 2>&1 && aggirato "$2" || tiene "$2"
   git checkout -- . 2>/dev/null   # ogni attacco parte dall'albero integro: i verdetti non a cascata

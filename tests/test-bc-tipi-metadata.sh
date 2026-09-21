@@ -8,6 +8,8 @@
 # stata fatta sul vivo e sta nella history, non si ripete in un test.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# (21/9): timeout(1) non esiste su macOS — la suite era ROSSA sul Mac per «command not found»
+source "$HERE/llm/_timeout.sh"
 TOOL="$HERE/tools/bc_tipi_metadata.py"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
@@ -71,7 +73,7 @@ RC=$?
 [ "$RC" -ne 0 ] && ok "metadata irraggiungibile: esce $RC, non silenzio" || ko "metadata irraggiungibile: exit 0 inaspettato"
 # (giro 22, 2026-09-20 — D33): «morte loud» non e' un traceback nudo — il tool intero, a rete giu'
 printf '{"client_id": "x", "client_secret": "x", "scope": "x", "token_url": "http://127.0.0.1:1/t", "base_url": "http://127.0.0.1:1/b"}\n' > "$TMP/cred.json"
-OUT=$(BC_CRED_FILE="$TMP/cred.json" timeout 30 python3 "$TOOL" 2>&1); RC=$?
+OUT=$(BC_CRED_FILE="$TMP/cred.json" ai_timeout 30 python3 "$TOOL" 2>&1); RC=$?
 [ "$RC" -ne 0 ] && ! grep -q Traceback <<<"$OUT" && grep -q "irraggiungibile" <<<"$OUT" \
   && ok "rete giu': errore DICHIARATO (host e ragione), nessun traceback" \
   || ko "rete giu': rc $RC, traceback=$(grep -c Traceback <<<"$OUT") — $(tail -1 <<<"$OUT" | cut -c1-80)"

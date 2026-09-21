@@ -747,3 +747,32 @@
 - Aggiramento: lanciare un tool che scrive «nel suo tmp» dalla radice di un repo vivo
   fidandosi del tmp. La regola: gli stub si provano da soli prima di provare il sistema, e
   i tool che scrivono si lanciano da una directory sacrificabile.
+
+## E-036 Le verifiche notturne dell'hub rosse la notte dopo il merge dei venti giri
+- Data / sessione: 2026-09-21 (turno delle 05:09; sessione Fable dei venti giri, riaperta da Luca con la dashboard)
+- Famiglia: R3 (verifica fatta su un ambiente diverso da quello che giudica) + R1 (assunzione non verificata)
+- Chi l'ha trovato: il turno notturno sull'hub — due righe «VERIFICA ROSSA» nel log
+  (`shellcheck --severity=warning …` e `bash tools/suite.sh`), portate da Luca con la dashboard.
+- Sintomo: sul Mac la suite era rossa e shellcheck segnava due warning; nella sessione cloud
+  (Linux) la stessa suite era 149/149 e shellcheck non era mai stato lanciato.
+- Causa prossima: (1) due righe mie con SC2124 (`${@: -1}` in `tools/giri-avversari.sh`,
+  `${FINDINGS[@]+…}` in `tools/ciclo-vivo.sh`); (2) `timeout 30`/`timeout 20` nudi in tre test
+  (`tests/test-bc-map.sh`, `tests/test-bc-tipi-metadata.sh`, `tests/test-dashboard.sh`) —
+  macOS non ha timeout(1): «command not found», rc 127, atteso «irraggiungibile» mai stampato.
+- Causa del ragionamento: ho verificato la chiusura (suite, mutazioni, banco) solo su Linux e
+  ho dato per scontato che «verde qui» valesse anche sul Mac dove il turno esegue davvero le
+  verifiche (R3); la riga shellcheck sta nel `.night-verify` dell'hub dalla prima riga, l'ho
+  letta al giro 28 e non l'ho eseguita perche' il binario mancava — ho assunto che mancasse
+  ovunque (R1). La lente di portabilita' che avevo appena scritto (D22) non aveva la regola
+  proprio sulla forma che il canone aveva gia' pagato con E-029 (ai_timeout esiste per questo).
+- Perché non ci ha fermati: nessun banco della chiusura eseguiva le righe di `.night-verify`
+  dell'hub; la lente di portabilita' cercava stat/sed/date/bad-substitution ma non timeout(1).
+- Guardia: `tests/test-portabilita.sh` — regola «timeout(1) nudo» (rossa sulle tre righe prima
+  della cura, verde dopo); shellcheck installato nella sessione (`pip install shellcheck-py`)
+  e la riga del `.night-verify` eseguita a mano prima del push.
+- Verifica guardia: `bash tests/test-portabilita.sh` 8 → 9 attese; la riga shellcheck del
+  `.night-verify` esce 0; `tests/test-bc-map.sh` 4/4, `tests/test-bc-tipi-metadata.sh` 6/6,
+  `tests/test-dashboard.sh` 14/14 con `ai_timeout`.
+- Aggiramento: chiudere un passaggio con la suite verde su una macchina che non e' quella
+  del turno senza eseguire le righe di `.night-verify` una per una. La regola: la chiusura
+  esegue il `.night-verify` dell'hub riga per riga, non solo la suite.

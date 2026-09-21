@@ -131,6 +131,7 @@
 - [2026-09-17 — LA CASCATA FUNZIONA: solver → agente, provata sul vivo](#2026-09-17-la-cascata-funziona-solver-agente-provata-sul-vivo)
 - [2026-09-17 (2°) — secondo test 1h con caccia migliorata: il cooldown funziona](#2026-09-17-2-secondo-test-1h-con-caccia-migliorata-il-cooldown-funziona)
 - [2026-09-17 (3°) — LA NOTTE SOLTANTO AI_PROGRAMMER (decisione di Luca)](#2026-09-17-3-la-notte-soltanto-ai_programmer-decisione-di-luca)
+- [2026-09-21 — la notte dopo i venti giri: due verifiche rosse sull'hub, mie (E-036)](#2026-09-21-la-notte-dopo-i-venti-giri-due-verifiche-rosse-sull-hub-mie-e-036)
 - [2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)](#2026-09-20-i-tre-report-dal-campo-del-19-9-lavorati-nell-hub-registrazione-a-posteriori)
 - [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
 - [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
@@ -2357,6 +2358,20 @@ Ieri notte (la prima del turno continuo): 33 cicli, 7 ore, zero errori, l'hub
 pulito ogni volta. Stanotte: la stessa macchina con cascata, caccia con cooldown,
 quattro categorie di fix, sonno adattivo, auto-verifica. Il test definitivo non
 è più un test: è la produzione.
+
+### 2026-09-21 — la notte dopo i venti giri: due verifiche rosse sull'hub, mie (E-036)
+
+Il turno delle 05:09 sull'hub (main con la PR #98 appena mergiata) ha segnato due VERIFICHE
+ROSSE: la riga shellcheck di `.night-verify` e `bash tools/suite.sh`. Luca le ha portate con la
+dashboard. Riprodotte qui: shellcheck (installato nella sessione) trovava due SC2124 miei
+(`${@: -1}` in `tools/giri-avversari.sh`, `${FINDINGS[@]+…}` in `tools/ciclo-vivo.sh`); la suite
+era rossa sul Mac perche' tre test miei usavano `timeout 30`/`timeout 20` nudi — macOS non ha
+timeout(1), il canone lo sa da E-029 e ha `ai_timeout` per questo. Cure: `${!#}` e
+`${FINDINGS[*]+…}`; i tre test caricano `llm/_timeout.sh` e usano `ai_timeout`; il caso D41 del
+gate usa rot13 con `tr` invece di `base64 -d` (che sui Mac vecchi e' `-D`). Guardia nuova nella
+lente di portabilita': timeout(1) nudo e' rosso (9/9). Errore a regime: E-036 nel registro —
+la lezione e' che la chiusura si fa eseguendo il `.night-verify` dell'hub riga per riga, non solo
+la suite, e su Linux non si e' mai sul Mac del turno.
 
 ### 2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)
 
