@@ -78,7 +78,7 @@ fi
 ensure_server() {
   curl -sf --max-time 3 http://localhost:11434/api/version >/dev/null 2>&1 && return 0
   log "Avvio server Ollama..."
-  OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 \
+  OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_KEEP_ALIVE=-1 \
     /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
   for _ in $(seq 1 30); do
     curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && return 0
@@ -90,7 +90,9 @@ probe() {
   # E-002 (4a ricorrenza, 2026-09-04): curl | grep -q sotto pipefail — grep esce al
   # match, curl prende SIGPIPE, la sonda boccia un server sano. Cattura prima.
   local RISPOSTA
-  RISPOSTA=$(curl -sf --max-time 120 http://localhost:11434/api/chat -d \
+  # (2026-09-21, iq3s 12GB): il caricamento a freddo supera i 120s — la sonda
+  # uccideva un server sano a meta' caricamento (due volte di fila: turno morto).
+  RISPOSTA=$(curl -sf --max-time 240 http://localhost:11434/api/chat -d \
     "{\"model\":\"$MODEL_TAG\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"stream\":false,\"think\":false,\"options\":{\"num_ctx\":2048}}") \
     && grep -q '"content":"' <<<"$RISPOSTA"
 }
@@ -128,7 +130,7 @@ if ! probe; then
     done
   else
     pkill -f "ollama serve" 2>/dev/null; sleep 4
-    OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 \
+    OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_KEEP_ALIVE=-1 \
       /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
     sleep 8
   fi
