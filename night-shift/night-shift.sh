@@ -108,7 +108,7 @@ export LANG="${LANG:-en_US.UTF-8}" LC_ALL="${LC_ALL:-en_US.UTF-8}"
 # il turno alle 23:00 del 3/9 CON il modello presente e trovato (grep -q esce al match,
 # ollama list prende SIGPIPE, rc 141, pipefail). Cattura prima, confronta poi.
 LISTA_MODELLI=$(ollama list 2>/dev/null)
-grep -q "$MODEL_TAG" <<<"$LISTA_MODELLI" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
+grep -qi "$MODEL_TAG" <<<"$LISTA_MODELLI" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
 # Finding #3 (2026-08-21): opencode orfani di ore rubano il modello e inquinano i turni.
 # Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
 pkill -f "opencode run" 2>/dev/null && log "Puliti processi opencode orfani" && sleep 2 || true
