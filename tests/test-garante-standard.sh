@@ -39,12 +39,40 @@ else
 fi
 
 # caso 3: l'avviso NON tocca i file (diff prima/dopo) — il garante avverte, non sovrascrive
-PRIMA=$(cd "$SB" && find . -type f | sort | xargs md5 2>/dev/null | md5)
-cd "$SB" && bash "$GARANTE" >/dev/null 2>&1
-DOPO=$(find . -type f | sort | xargs md5 2>/dev/null | md5)
-cd "$HERE"
+# (giro 27, 2026-09-20): era `xargs md5 | md5` — su Linux md5 non esiste, PRIMA e DOPO erano
+# entrambi vuoti e il confronto passava sempre. Impronta portabile: cksum sui contenuti.
+impronta() { (cd "$1" && find . -type f | sort | xargs cat 2>/dev/null | cksum); }
+PRIMA=$(impronta "$SB")
+(cd "$SB" && bash "$GARANTE" >/dev/null 2>&1)
+DOPO=$(impronta "$SB")
 [ "$PRIMA" = "$DOPO" ] && ok "avviso senza modifiche: il garante non sovrascrive mai" \
   || ko "il garante ha MODIFICATO file esistenti (deve solo avvisare)"
+
+# caso 4 (giro 27 — D34): installazione da zero → OGNI hook dichiarato in settings.json (tutti
+# gli eventi, non solo PreToolUse) arriva eseguibile; niente annidamento skills/skills
+SB4=$(mktemp -d /tmp/garante-t4.XXXXXX); trap 'rm -rf "$SB" "$SB2" "$SB4" "$SB5"' EXIT
+(cd "$SB4" && bash "$GARANTE" >/dev/null 2>&1)
+MANCANTI=""
+while IFS= read -r H; do
+  [ -n "$H" ] || continue
+  [ -x "$SB4/$H" ] || MANCANTI="$MANCANTI $H"
+done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+[ -z "$MANCANTI" ] && ok "installazione da zero: ogni hook dichiarato (tutti gli eventi) e' installato ed eseguibile" \
+  || ko "installazione da zero (D34): hook dichiarati ma assenti:$MANCANTI"
+[ -f "$SB4/.claude/settings.json" ] && [ -d "$SB4/.claude/skills/gas-sviluppo" ] && [ ! -d "$SB4/.claude/skills/skills" ] && [ -n "$(ls "$SB4/patterns" 2>/dev/null)" ] \
+  && ok "installazione da zero: settings.json e skill al posto giusto, nessun annidamento" \
+  || ko "installazione da zero: struttura sbagliata ($(ls "$SB4/.claude" 2>/dev/null | tr '\n' ' '))"
+
+# caso 5 (giro 27): settings.json PROPRIO senza i nostri hook → avviso, MAI sovrascritto
+SB5=$(mktemp -d /tmp/garante-t5.XXXXXX)
+mkdir -p "$SB5/.claude/skills/mia-skill"
+echo '{"hooks":{"PreToolUse":[{"hooks":[{"command":"tools/mio-hook.sh"}]}]}}' > "$SB5/.claude/settings.json"
+echo "mia" > "$SB5/.claude/skills/mia-skill/SKILL.md"
+P5=$(impronta "$SB5")
+OUT5=$(cd "$SB5" && bash "$GARANTE" 2>&1)
+[ "$(impronta "$SB5")" = "$P5" ] && grep -q "non lo sovrascrivo" <<<"$OUT5" \
+  && ok "settings.json proprio: avviso e nessuna modifica (prima il garante lo sovrascriveva)" \
+  || ko "settings.json proprio: toccato o avviso assente — $(head -1 <<<"$OUT5")"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

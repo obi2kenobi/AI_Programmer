@@ -36,6 +36,10 @@ S=$(righe_con 'date -v' | grep -v 'date -d' || true)
 S=$(righe_con '\$\{#[A-Za-z_]+\[@\]:-' || true)
 [ -z "$S" ] && ok "nessuna forma \${#ARR[@]:-0} (bad substitution su bash 4+)" || ko "bad substitution latente:"$'\n'"$S"
 
+# md5 nudo (macOS): su Linux esiste solo md5sum — ammesso solo nei file che provano `command -v md5`
+S=$(righe_con '(\||xargs) *md5\b' | grep -v 'md5sum' | while IFS= read -r R; do F=${R%%:*}; grep -q 'command -v md5' "$F" || echo "$R"; done)
+[ -z "$S" ] && ok "nessun md5 nudo senza fallback (Linux: solo md5sum)" || ko "md5 mac-only senza fallback (impronta vuota, confronto sempre vero):"$'\n'"$S"
+
 # la forma portabile e' eseguibile qui, su questa bash
 source "$HERE/night-shift/lib.sh"
 T=$(mktemp); M=$(mtime "$T"); rm -f "$T"

@@ -46,10 +46,19 @@ if [ -f "$CWD/.claude/settings.json" ]; then
   fi
 fi
 
+# (giro 27, 2026-09-20): un settings.json PROPRIO senza i nostri hook veniva SOVRASCRITTO dal
+# cp qui sotto — la personalizzazione del progetto persa da un hook silenzioso. Si avverte,
+# non si tocca: l'installazione su una repo che ha gia' scelto i suoi hook e' una scelta umana.
+if [ -f "$CWD/.claude/settings.json" ]; then
+  echo "⚠ AI_Programmer: $CWD ha un .claude/settings.json proprio senza i nostri hook — non lo sovrascrivo (per installare: bash $HUB/tools/sync-repo.sh --standard, scelta consapevole)" >&2
+  exit 0
+fi
+
 # NON installato → INSTALLA
 echo "STANDARD AI_PROGRAMMER INSTALLATO automaticamente su $CWD" >&2
 
-mkdir -p "$CWD/.claude" "$CWD/.opencode" "$CWD/patterns"
+# (giro 27): niente mkdir di patterns qui — la creava vuota e il ciclo sotto la vedeva «gia' presente»
+mkdir -p "$CWD/.claude" "$CWD/.opencode"
 
 # CLAUDE.md (se non esiste già un CLAUDE.md proprio)
 [ -f "$CWD/CLAUDE.md" ] || cp "$HUB/CLAUDE.md" "$CWD/CLAUDE.md"
@@ -57,22 +66,25 @@ mkdir -p "$CWD/.claude" "$CWD/.opencode" "$CWD/patterns"
 # settings.json (gli hook:SessionStart/UserPromptSubmit/PreToolUse)
 cp "$HUB/.claude/settings.json" "$CWD/.claude/settings.json"
 
-# skill e agenti
-cp -R "$HUB/.claude/skills" "$CWD/.claude/skills"
-cp -R "$HUB/.claude/agents" "$CWD/.claude/agents"
-
-# mirror opencode
-cp -R "$HUB/.opencode/agent" "$CWD/.opencode/agent" 2>/dev/null || true
-cp -R "$HUB/.opencode/skills" "$CWD/.opencode/skills" 2>/dev/null || true
-
-# patterns
-cp -R "$HUB/patterns" "$CWD/patterns" 2>/dev/null || true
-
-# hook scripts (deriva da settings.json)
-for H in $(jq -r '.hooks.PreToolUse[]?.hooks[]?.command' "$HUB/.claude/settings.json" 2>/dev/null | xargs -n1 basename 2>/dev/null | sort -u); do
-  mkdir -p "$CWD/tools"
-  cp "$HUB/tools/$H" "$CWD/tools/$H" 2>/dev/null || true
+# skill, agenti, specchi OpenCode, pattern: solo dove la cartella NON esiste. (giro 27,
+# 2026-09-20): `cp -R dir dir` su una destinazione esistente ANNIDA (skills/skills) e
+# sovrascrive il personalizzato; una cartella gia' presente si dichiara e si lascia stare.
+for D in .claude/skills .claude/agents .opencode/agent .opencode/skills patterns; do
+  if [ -e "$CWD/$D" ]; then
+    echo "  $D: gia' presente, non toccato" >&2
+  else
+    mkdir -p "$CWD/$(dirname "$D")"
+    cp -R "$HUB/$D" "$CWD/$D" 2>/dev/null || echo "  $D: copia fallita" >&2
+  fi
 done
+
+# hook scripts: TUTTI gli eventi, derivati da settings.json (giro 27 — D34: qui si leggeva
+# solo .hooks.PreToolUse, e tools/metodo-reminder-hook.sh — SessionStart/UserPromptSubmit/
+# Stop — restava a terra: ogni repo installata dal garante aveva un settings.json che punta
+# a uno script inesistente. La lista la deriva tools/copia-hook.sh, la stessa di sync-repo.)
+mkdir -p "$CWD/tools"
+bash "$HUB/tools/copia-hook.sh" "$CWD" >/dev/null \
+  || echo "⚠ AI_Programmer: copia degli hook fallita — settings.json punta a script che qui mancano" >&2
 
 # le lenti dello standard (fixture-provenienza, cita-verifica): contromisure REPO-V 7/9
 for L in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do

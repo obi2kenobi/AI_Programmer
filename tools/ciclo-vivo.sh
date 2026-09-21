@@ -237,8 +237,10 @@ if [ -f "$MEMORIA/findings_storico.txt" ] && [ "$N" -gt 0 ]; then
   done < <(printf '%s\n' ${FINDINGS[@]+"${FINDINGS[@]}"} | sort -u)
 fi
 
-# Salva finding storico
-printf '%s\n' "${FINDINGS[@]:-}" >> "$MEMORIA/findings_storico.txt" 2>/dev/null || true
+# Salva finding storico — SOLO se ce ne sono (giro 14, 2026-09-20): con zero finding la
+# forma "${FINDINGS[@]:-}" appendeva una RIGA VUOTA a ogni giro, e «Finding totali da inizio
+# ciclo» (wc -l) e la media/giro contavano i giri puliti come finding.
+[ "$N" -gt 0 ] && printf '%s\n' ${FINDINGS[@]+"${FINDINGS[@]}"} >> "$MEMORIA/findings_storico.txt" 2>/dev/null || true
 
 # ===== TREND =====
 echo ""

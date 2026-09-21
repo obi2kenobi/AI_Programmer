@@ -21,7 +21,12 @@ step() { echo "→ $*"; }
 
 # --- Prerequisiti (li segnala, non li installa: scelta tua) --------------------
 command -v ollama >/dev/null 2>&1 || { echo "⚠ MANCA ollama (brew install --cask ollama-app)"; MISSING=1; }
-LISTA_MODELLI=$(ollama list 2>/dev/null); grep -q "qwen3.8:27b-mtp-q4_K_M" <<<"$LISTA_MODELLI" || echo "⚠ modello qwen3.8:27b-mtp-q4_K_M assente (ollama pull qwen3.8:27b-mtp-q4_K_M — 17 GB)"
+# (giro 19, 2026-09-20): qui si controllava il 27b generale, abbandonato il 2026-09-19 (un solo
+# modello, decisione di Luca — night-shift/revisore.sh:35): chi installava scaricava 17 GB
+# che nessun turno usa. Il modello si legge da night-shift.sh (MODEL_TAG), non si riscrive qui.
+MODELLO_TURNO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HUB/night-shift/night-shift.sh" | cut -d'"' -f2)
+MODELLO_TURNO="${MODELLO_TURNO:-qwen2.5-coder:14b}"
+LISTA_MODELLI=$(ollama list 2>/dev/null); grep -q "$MODELLO_TURNO" <<<"$LISTA_MODELLI" || echo "⚠ modello $MODELLO_TURNO assente (ollama pull $MODELLO_TURNO — 9 GB)"
 command -v gh >/dev/null 2>&1 || { echo "⚠ MANCA gh (brew install gh) + gh auth login"; MISSING=1; }
 command -v opencode >/dev/null 2>&1 || { echo "⚠ MANCA opencode (brew install opencode)"; MISSING=1; }
 command -v jq >/dev/null 2>&1 || { echo "⚠ MANCA jq"; MISSING=1; }

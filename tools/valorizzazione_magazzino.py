@@ -130,9 +130,20 @@ def main():
     if len(sys.argv) != 2:
         print("uso: valorizzazione_magazzino.py config.json < righe.csv", file=sys.stderr)
         return 1
-    with open(sys.argv[1], encoding="utf-8") as f:
-        cfg = json.load(f)
-    righe = list(csv.DictReader(sys.stdin))
+    # (giro 21, 2026-09-20 — D32): config inesistente o colonne sbagliate = traceback nudo.
+    # Stesso gesto di scadenzario_aging: si dice cosa manca.
+    try:
+        with open(sys.argv[1], encoding="utf-8") as f:
+            cfg = json.load(f)
+    except (OSError, ValueError) as e:
+        print(f"uso: valorizzazione_magazzino.py config.json < righe.csv — config non leggibile: {e}", file=sys.stderr)
+        return 1
+    reader = csv.DictReader(sys.stdin)
+    mancanti = [c for c in ("codice", "qty") if c not in (reader.fieldnames or [])]
+    if mancanti:
+        print(f"uso: valorizzazione_magazzino.py config.json < righe.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    righe = list(reader)
     totale, dettaglio, senza_costo, negative, escluse = valorizza(righe, cfg)
 
     print(f"Righe lette: {len(righe)}")
