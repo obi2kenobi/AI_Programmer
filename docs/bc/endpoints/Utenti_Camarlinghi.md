@@ -1,6 +1,6 @@
-# Endpoint: `Utenti_Camarlinghi`
+# Endpoint: `Utenti_Gamma Logistica`
 
-- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/Utenti_Camarlinghi`
+- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/Utenti_Gamma Logistica`
 - Righe campione lette: 3
 - Campi trovati: 10
 
@@ -11,7 +11,7 @@
 | `@odata.etag` | string | W/"JzE5OzQ0NDI4NjE3Nzk0NzQ4NjgzNzcxOz... |  | ☐ |
 | `User_Security_ID` | guid | bdd7c872-e081-444e-b9c1-7f8e1309ac95 |  | ☐ |
 | `User_Name` | string | ADMIN |  | ☐ |
-| `Full_Name` | string | Luca Camarlinghi |  | ☐ |
+| `Full_Name` | string | Luca Gamma Logistica |  | ☐ |
 | `State` | string | Enabled |  | ☐ |
 | `Windows_Security_ID` | string |  |  | ☐ |
 | `Windows_User_Name` | string |  |  | ☐ |

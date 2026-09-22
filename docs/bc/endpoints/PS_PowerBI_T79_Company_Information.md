@@ -74,7 +74,7 @@
 | `Ship_to_Name` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string |  |  | ☐ |
 | `SIA_Code` | string | 2C696 |  | ☐ |
-| `Signature_on_Bill` | string | Michele Camarlinghi |  | ☐ |
+| `Signature_on_Bill` | string | Michele Gamma Logistica |  | ☐ |
 | `SWIFT_Code` | string |  |  | ☐ |
 | `System_Indicator_Style` | string | Accent3 |  | ☐ |
 | `System_Indicator` | string | Custom |  | ☐ |
@@ -90,7 +90,7 @@
 | `County` | string | PI |  | ☐ |
 | `GLN` | string |  |  | ☐ |
 | `IBAN` | string |  |  | ☐ |
-| `Name` | string | Gruppo Camarlinghi Spa |  | ☐ |
+| `Name` | string | Gruppo Gamma Logistica Spa |  | ☐ |
 | `SystemCreatedAt` | datetime | 2023-07-05T11:07:34.077Z |  | ☐ |
 | `SystemCreatedBy` | guid | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
 | `SystemModifiedAt` | datetime | 2026-01-19T14:21:09.357Z |  | ☐ |

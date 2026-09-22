@@ -154,7 +154,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Scheda_oggetto_di_costo_Excel` | 17 | ☐ |
 | `Spedire_Lista_indirizzi` | 17 | ☐ |
 | `powerbifinance` | 17 | ☐ |
-| `Impostazioni_Estensione_Camarlinghi` | 16 | ☐ |
+| `Impostazioni_Estensione_Gamma Logistica` | 16 | ☐ |
 | `PS_PowerBI_T45_GL_Register` | 16 | ☐ |
 | `RIGHE_DOC_CONAI` | 16 | ☐ |
 | `Testa_Report_Intrastat` | 16 | ☐ |
@@ -183,7 +183,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `PS_PowerBI_T2000000006_Company` | 10 | ☐ |
 | `Power_BI_Customer_List` | 10 | ☐ |
 | `Power_BI_Vendor_List` | 10 | ☐ |
-| `Utenti_Camarlinghi` | 10 | ☐ |
+| `Utenti_Gamma Logistica` | 10 | ☐ |
 | `Ciclo_Excel` | 9 | ☐ |
 | `DB_produzione_Excel` | 9 | ☐ |
 | `Gruppi_Prezzi_Cliente` | 9 | ☐ |
@@ -192,7 +192,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Spedizionieri` | 9 | ☐ |
 | `Valori_dimensioni_Excel` | 9 | ☐ |
 | `Cliente_Esenzione_Conai` | 8 | ☐ |
-| `GestioneEstensioni_Camarlinghi` | 8 | ☐ |
+| `GestioneEstensioni_Gamma Logistica` | 8 | ☐ |
 | `Movimenti_C_G_TEST` | 8 | ☐ |
 | `PS_PowerBI_T5722_IC` | 8 | ☐ |
 | `PS_PowerBI_T84_Acc_Schedule_Name` | 8 | ☐ |
@@ -220,7 +220,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 | `Dichiarazioni_Servizio` | 4 | ☐ |
 | `ExcelTemplateViewCompanyInformation` | 4 | ☐ |
 | `PS_PowerBI_T170_SSC` | 4 | ☐ |
-| `PianiUtente_Camarlinghi` | 4 | ☐ |
+| `PianiUtente_Gamma Logistica` | 4 | ☐ |
 | `Power_BI_Vendor_Ledger_Entries` | 4 | ☐ |
 | `traduzioni_attributi` | 4 | ☐ |
 | `Collegamenti_tra_ciclo_e_distinta_base_Excel` | 3 | ☐ |

@@ -22,7 +22,7 @@
 | `payToContact` | string |  LUCA  |  | ☐ |
 | `yourReference` | string |  |  | ☐ |
 | `shipToCode` | string |  |  | ☐ |
-| `shipToName` | string | Magazzino Gruppo Camarlinghi S.p.A |  | ☐ |
+| `shipToName` | string | Magazzino Gruppo Gamma Logistica S.p.A |  | ☐ |
 | `shipToName2` | string |  |  | ☐ |
 | `shipToAddress` | string | Via della Repubblica, 340 |  | ☐ |
 | `shipToAddress2` | string |  |  | ☐ |

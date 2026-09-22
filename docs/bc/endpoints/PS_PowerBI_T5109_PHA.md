@@ -151,7 +151,7 @@
 | `Ship_to_Contact` | string |  |  | ☐ |
 | `Ship_to_Country_Region_Code` | string | IT |  | ☐ |
 | `Ship_to_County` | string | Pisa |  | ☐ |
-| `Ship_to_Name` | string | Magazzino Gruppo Camarlinghi S.p.A |  | ☐ |
+| `Ship_to_Name` | string | Magazzino Gruppo Gamma Logistica S.p.A |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string | 56022 |  | ☐ |
 | `Shipment_Method_Code` | string | PFO |  | ☐ |

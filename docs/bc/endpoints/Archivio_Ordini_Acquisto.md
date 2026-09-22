@@ -63,7 +63,7 @@
 | `Prices_Including_VAT` | bool | False |  | ☐ |
 | `Tax_Liable` | bool | False |  | ☐ |
 | `Tax_Area_Code` | string |  |  | ☐ |
-| `Ship_to_Name` | string | Magazzino Gruppo Camarlinghi S.p.A |  | ☐ |
+| `Ship_to_Name` | string | Magazzino Gruppo Gamma Logistica S.p.A |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Address` | string | Via della Repubblica, 340 |  | ☐ |
 | `Ship_to_Address_2` | string |  |  | ☐ |

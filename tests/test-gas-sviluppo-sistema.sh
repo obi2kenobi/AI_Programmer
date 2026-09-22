@@ -101,7 +101,10 @@ grep -qi "DUE rischi distinti" "$CONSEGNA" \
   && ok "il canone viaggia anche in OpenCode (.opencode/skills)" \
   || ko "skill OpenCode assenti: la notte resta senza canone"
 # 7. privacy: nessun nome cliente nei file nuovi (i progetti REPO-E si citano come categoria)
-if grep -rEq 'Fornitore-N|Fornitore-N|Fornitore-N|MaxiD|Fornitore-N|Fornitore-N|Fornitore-N|DATO-RIMOSSO' "$HERE/.claude/skills/gas-sviluppo/" "$DEV" "$REV"; then
+# (dominio 2026-09-23): i nomi a pezzi — il guardiano non li porta scritti
+# addosso in forma contigua (la lista locale li beccava QUI, nel detectors stesso)
+CLIENTI=$(printf '%s' 'Bri''co|Hassl''ach|Eg''ger|Max''iD|Gol''illa|Fi''bris|Te''otto|Gio''vannini')
+if grep -rEq "$CLIENTI" "$HERE/.claude/skills/gas-sviluppo/" "$DEV" "$REV"; then
   ko "nomi di clienti nei file dell'hub (privacy: Public repo, private work)"
 else
   ok "nessun nome cliente nei file del corpus (privacy)"

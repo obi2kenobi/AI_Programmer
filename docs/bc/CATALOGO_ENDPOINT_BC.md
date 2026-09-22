@@ -49,11 +49,11 @@
 | Pagina | 138 | Fattura acquisto reg. | `Fattura_acquisto_reg__Excel` | `Fattura_acquisto_reg__Excel` |
 | Pagina | 132 | Fatture vendita reg. | `Fatture_vendita_reg__Excel` | `Fatture_vendita_reg__Excel` |
 | Pagina | 118 | Setup contabilità generale | `GeneralLedgerSetup` | `GeneralLedgerSetup` |
-| Pagina | 2500 | Gestione estensioni | `GestioneEstensioni_Camarlinghi` | `GestioneEstensioni_Camarlinghi` |
+| Pagina | 2500 | Gestione estensioni | `GestioneEstensioni_Gamma Logistica` | `GestioneEstensioni_Gamma Logistica` |
 | Pagina | 7 | Gruppi prezzi cliente | `Gruppi_Prezzi_Cliente` | `Gruppi_Prezzi_Cliente` |
 | Pagina | 7706 | Identificativi articolo | `Identificativi_articolo` | `Identificativi_articolo` |
 | Pagina | 7328 | Impiegati warehouse | `Impiegati_warehouse_Excel` | `Impiegati_warehouse_Excel` |
-| Pagina | 2511 | Impostazioni estensione | `Impostazioni_Estensione_Camarlinghi` | `Impostazioni_Estensione_Camarlinghi` |
+| Pagina | 2511 | Impostazioni estensione | `Impostazioni_Estensione_Gamma Logistica` | `Impostazioni_Estensione_Gamma Logistica` |
 | Pagina | 30 | Scheda articolo | `ItemCard` | `ItemCard` |
 | Pagina | 31 | Articoli | `Items` | `Items` |
 | Pagina | 89 | Progetti | `Job List` | `Job_List` |
@@ -80,7 +80,7 @@
 | Pagina | 9324 | Ordini produzione pianificati | `OrdiniProduzionePianificati` | `OrdiniProduzionePianificati` |
 | Pagina | 99000788 | Righe | `Page 99000788_Excel` | `Page_99000788_Excel` |
 | Pagina | 99000789 | Righe | `Page 99000789_Excel` | `Page_99000789_Excel` |
-| Pagina | 9826 | Piani utente | `PianiUtente_Camarlinghi` | `PianiUtente_Camarlinghi` |
+| Pagina | 9826 | Piani utente | `PianiUtente_Gamma Logistica` | `PianiUtente_Gamma Logistica` |
 | Pagina | 16 | Piano dei conti | `Piano dei conti` | `Piano_dei_conti` |
 | Pagina | 1123 | Piano degli oggetti di costo | `Piano_Conti_Oggetti_Costo` | `Piano_Conti_Oggetti_Costo` |
 | Pagina | 527 | Righe note cr. ven. registrate | `PostedSalesCreditMemoLines` | `PostedSalesCreditMemoLines` |
@@ -218,7 +218,7 @@
 | Pagina | 4812 | Report Intrastat | `Testa_Report_Intrastat` | `Testa_Report_Intrastat` |
 | Pagina | 7502 | Traduzioni attributo articolo | `traduzioni_attributi` | `traduzioni_attributi` |
 | Pagina | 1170 | Task dell'utente | `UserTaskSetComplete` | `UserTaskSetComplete` |
-| Pagina | 9800 | Utenti | `Utenti_Camarlinghi` | `Utenti_Camarlinghi` |
+| Pagina | 9800 | Utenti | `Utenti_Gamma Logistica` | `Utenti_Gamma Logistica` |
 | Pagina | 7509 | Filtra articoli per attributo | `valore_Filtro_attributp` | `valore_Filtro_attributp` |
 | Pagina | 7501 | Valori attributo articolo | `Valori_attributo_articolo_Excel` | `Valori_attributo_articolo_Excel` |
 | Pagina | 537 | Valori dimensioni | `Valori_dimensioni_Excel` | `Valori_dimensioni_Excel` |

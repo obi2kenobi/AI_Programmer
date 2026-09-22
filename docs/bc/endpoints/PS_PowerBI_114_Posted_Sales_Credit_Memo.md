@@ -115,7 +115,7 @@
 | `Ship_to_Contact` | string |  |  | ☐ |
 | `Ship_to_Country_Region_Code` | string | IT |  | ☐ |
 | `Ship_to_County` | string | PI |  | ☐ |
-| `Ship_to_Name` | string | Gruppo Camarlinghi S.p.A (MAGAZZINO) |  | ☐ |
+| `Ship_to_Name` | string | Gruppo Gamma Logistica S.p.A (MAGAZZINO) |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Post_Code` | string | 56022 |  | ☐ |
 | `Shipment_Date` | date | 0001-01-01 |  | ☐ |
