@@ -1120,6 +1120,21 @@ if [ ! -f "$CERVELLO_MARKER" ] && [ -f "$HERE/../tools/cervello-domanda.sh" ]; t
   fi
 fi
 
+# il /learn del sistema (rubato a everything-claude-code, 2026-09-22): una volta
+# al giorno, dalle 22 in poi, il turno distilla UNA lezione dal log del giorno e
+# la propone come nota del cervello DA APPROVARE al mattino — mai auto-salvata
+# (il loro auto_approve:false e' il nostro ASPETTA IL GIORNO). Fallita = niente
+# marker = riprova al prossimo ciclo.
+IMPRA_MARKER="$WORK/.impara-$(date +%F)"
+if [ ! -f "$IMPRA_MARKER" ] && [ "$(date +%H)" -ge 22 ] && [ -f "$HERE/../tools/cervello-impara.sh" ]; then
+  if IMP_OUT=$(bash "$HERE/../tools/cervello-impara.sh" 2>&1); then
+    printf '%s\n' "$IMP_OUT" > "$IMPRA_MARKER"
+    log "impara: $(echo "$IMP_OUT" | head -1)"
+  else
+    log "impara: fallito (dichiarato) — riprovo al prossimo ciclo"
+  fi
+fi
+
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 

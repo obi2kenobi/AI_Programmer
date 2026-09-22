@@ -16,6 +16,24 @@
 # Esce: 0 sempre — il verdetto e' nel riepilogo (JSON su stdout)
 set -uo pipefail
 MODELLO="${1:?uso: bencina-modelli.sh <modello>}"
+VOLTE="${2:-1}"
+# (2026-09-22, rubato a everything-claude-code): pass@k e pass^k — "almeno una
+# run perfetta su k" contro "tutte perfette su k". Per un turno 24/7 la VARIANZA
+# del modello conta quanto la capacita': 3/3 una volta e 1/3 dopo e' peggio di
+# un 2/3 costante. Uso: bencina-modelli.sh <modello> 3
+if [ "$VOLTE" -gt 1 ] 2>/dev/null; then
+  PERFETTI=0; OK_TOT=0; SEC_TOT=0
+  for _ in $(seq 1 "$VOLTE"); do
+    RIGA=$(bash "$0" "$MODELLO" 2>/dev/null | grep '^{' | tail -1)
+    S=$(jq -r '.successi // 0' <<<"$RIGA" 2>/dev/null); T=$(jq -r '.secondi_totali // 0' <<<"$RIGA" 2>/dev/null)
+    [ "$S" = "3" ] && PERFETTI=$((PERFETTI+1))
+    OK_TOT=$((OK_TOT + S)); SEC_TOT=$((SEC_TOT + T))
+  done
+  echo "pass@$VOLTE (almeno una perfetta): $([ $PERFETTI -ge 1 ] && echo SI || echo NO) · pass^$VOLTE (tutte): $([ "$PERFETTI" -eq "$VOLTE" ] && echo SI || echo NO) — run perfette $PERFETTI/$VOLTE, successi $OK_TOT/$((VOLTE*3)) in ${SEC_TOT}s"
+  jq -cn --arg m "$MODELLO" --argjson v "$VOLTE" --argjson p "$PERFETTI" --argjson ok "$OK_TOT" --argjson t "$SEC_TOT" \
+    '{modello:$m, volte:$v, run_perfect:$p, successi_totali:$ok, su:$v*3, pass_k:($p>0), pass_stretto:($p==$v), secondi_totali:$t}'
+  exit 0
+fi
 API="http://localhost:11434/api/chat"
 TMP=$(mktemp -d /tmp/bencina.XXXXXX)
 trap 'rm -rf "$TMP"' EXIT
