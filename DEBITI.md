@@ -138,7 +138,7 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-27 | I campioni d'esempio dei file endpoint portano dati di business veri (nomi fornitori trovati in 2 file: il grep dei nomi reali li ha ripresi). La census li contiene PER COSTRUZIONE (bc_map legge il vivo) — mascherarli tutti toglierebbe utilità al census | è un trade-off tra utilità del census e privacy della controparte commerciale in una repo pubblica: decisione del proprietario, non dell'agente | decisione di Luca: (a) accettare (i fornitori sono già pubblici nel catalogo prodotti), (b) mascherare la sola colonna Esempio nei file sensibili, (c) mascherarli tutti |
+| 2026-08-27 | ~~I campioni d'esempio portano dati di business veri~~ SALDATO 2026-09-23 (dominio, Luca: sanitizza + guardia — 19 file bonificati con pseudonimi coerenti; il privacy-check ora legge anche ~/.privacy-nomi sui file CORRENTI, coi nomi di repo/aziende usciti dalla lista per la decisione nomi-si e la storia amnistiata)
 
 ## Le obiezioni in DEBITI invecchiano col codice (dal campo REPO-G, 2026-08-27)
 

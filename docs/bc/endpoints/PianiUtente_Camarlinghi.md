@@ -1,6 +1,6 @@
-# Endpoint: `PianiUtente_Camarlinghi`
+# Endpoint: `PianiUtente_Gamma Logistica`
 
-- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/PianiUtente_Camarlinghi`
+- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/PianiUtente_Gamma Logistica`
 - Righe campione lette: 3
 - Campi trovati: 4
 - Ultimo aggiornamento: 2026-08-26 (merge: le colonne compilate a mano sono preservate)

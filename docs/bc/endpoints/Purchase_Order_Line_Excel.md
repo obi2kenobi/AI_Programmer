@@ -144,8 +144,8 @@
 | `No_of_Fixed_Asset_Cards` | int | 0 |  | ☐ |
 | `Attached_to_Line_No` | int | 0 |  | ☐ |
 | `Attached_Lines_Count` | int | 0 |  | ☐ |
-| `SD_Camarlinghi` | bool | False |  | ☐ |
-| `SD_Camarlinghi_Sales_Order_No` | string |  |  | ☐ |
+| `SD_Gamma Logistica` | bool | False |  | ☐ |
+| `SD_Gamma Logistica_Sales_Order_No` | string |  |  | ☐ |
 | `SD_Camarl_Sales_Ord_Line_No` | int | 0 |  | ☐ |
 | `PRJ_Res_Prod_Order_No` | string |  |  | ☐ |
 | `PRJ_Res_Prod_Order_Line_No` | int | 0 |  | ☐ |

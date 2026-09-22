@@ -1,6 +1,6 @@
-# Endpoint: `GestioneEstensioni_Camarlinghi`
+# Endpoint: `GestioneEstensioni_Gamma Logistica`
 
-- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/GestioneEstensioni_Camarlinghi`
+- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/GestioneEstensioni_Gamma Logistica`
 - Righe campione lette: 3
 - Campi trovati: 8
 - Ultimo aggiornamento: 2026-08-26 (merge: le colonne compilate a mano sono preservate)

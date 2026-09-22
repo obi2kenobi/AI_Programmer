@@ -33,7 +33,7 @@ precedente): segnalazione dal campo → canone → verifica indipendente qui.
 **Nota a margine, non richiesta da nessuno ma degna di trasparenza**: nel frattempo, senza
 alcuna azione mia in questa sessione, il report "Quattordici Lenti" (62 proposte, l'artefatto
 HTML che avevo prodotto per il cliente il 27/08 mattina) è stato depositato nell'hub da
-un'altra sessione/mano (`git log`: commit `c8a1320`, autore Luca Camarlinghi) come
+un'altra sessione/mano (`git log`: commit `c8a1320`, autore Luca Gamma Logistica) come
 `docs/campo/2026-08-27-repo-g-quattordici-lenti.html`, e ha già prodotto una riga di canone:
 `docs/ngiri-paralleli.md:28-35` ("La consolidazione delle lenti è zero-waste" — cinquanta giri
 richiesti, consolidati in 14 realmente distinte, stessa disciplina zero-waste applicata al

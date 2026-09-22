@@ -71,5 +71,28 @@ while IFS='=' read -r chiave valore || [ -n "$chiave" ]; do
   done
 done < "$KEY"
 
+# (dominio 2026-09-23, Luca — sanitizza + guardia): anche la lista locale dei
+# nomi (~/.privacy-nomi, stessa classe di repos.key: locale, gitignored) entra
+# nel check. I fornitori veri nei campioni BC sono passati perche' stavano in
+# QUESTA lista, che il check non leggeva. Senza il file (sessioni esterne):
+# passaggio saltato col manifesteo — il gate degradato resta la regola F3.
+NOMI_LOCALI="$HOME/.privacy-nomi"
+if [ -s "$NOMI_LOCALI" ]; then
+  # sorveglianza sui FILE CORRENTI soltanto: la storia coi nomi e' coperta
+  # dalla decisione di dominio (nomi-si, accesso-no) — amnistia dichiarata,
+  # non oblio. Il tripwire e' per cio' che entra ADESSO.
+  while IFS= read -r n || [ -n "$n" ]; do
+    case "$n" in \#*|"") continue ;; esac
+    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$n" 2>/dev/null) | grep -v "repos.key" || true)
+    if [ -n "$FILES_N" ]; then
+      echo "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
+      echo "$FILES_N" | head -5 >&2
+      RC=1
+    fi
+  done < "$NOMI_LOCALI"
+else
+  echo "privacy-check: lista locale ~/.privacy-nomi assente — passaggio saltato (gate degradato, regola F3)" >&2
+fi
+
 [ $RC -eq 0 ] && echo "privacy-check: pulito (file correnti + storia git, tutti i branch)"
 exit $RC

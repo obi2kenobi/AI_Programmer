@@ -82,7 +82,7 @@ while IFS= read -r f; do
     # (2026-09-20): un nome nudo si risolve anche nella CARTELLA del documento che lo cita
     # (docs/bc/README.md cita `CORREZIONI.md` che vive accanto a lui — l'indice BC generato
     # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)
-    [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
+    [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e "patterns/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
   done < <(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$f" | tr -d '`')
 done < <(git diff --cached --name-only 2>/dev/null | grep '\.md$')
 [ -n "$PEND" ] && { echo "⛔ path citati ma inesistenti:"; echo "$PEND"; FALLITI=1; }
@@ -112,7 +112,10 @@ done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.(sh|py)$')
 [ -n "$PIPE_AND" ] && { echo "⛔ pipeline seguita da && (l'esito è del solo ultimo comando — la regola del 3/9 era prose, ora è un dente):"; echo "$PIPE_AND"; FALLITI=1; }
 
 # 6. (contromisura REPO-V 7/9) citazioni file:riga nei .md staged: la riga citata esiste
-STAGED_MD=$(git diff --cached --name-only 2>/dev/null | grep '\.md$' || true)
+# (dominio 2026-09-23): i report di campo citano i file dei repo AUDITATI
+# (case esterne: config.gs, vendite.gs...) — prove portate come evidenza, non
+# istruzioni che devono risolvere nell'hub. Esenti dal file:riga, dichiarato.
+STAGED_MD=$(git diff --cached --name-only 2>/dev/null | grep '\.md$' | grep -v '^docs/campo/' || true)
 if [ -n "$STAGED_MD" ]; then
   if ! bash "$HERE/tools/cita-verifica.sh" $STAGED_MD; then FALLITI=1; fi
 fi

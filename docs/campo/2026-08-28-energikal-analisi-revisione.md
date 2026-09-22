@@ -69,7 +69,7 @@ contabilita.gs:52,255,347-348,403,486: pattern saldo += m.Amount || 0 senza conv
 contabilita.gs:324-354 (usato per il totale "Rimanenze Finali" nel bilancino) somma tutti i movimenti ILE senza verificare la quantità netta per articolo, mentre estraiDettaglioRimanenzeBIOC (righe 410-412) applica il filtro quantità>0 solo per il foglio di dettaglio. Le due fonti possono non tornare: un articolo completamente venduto ma con residuo di costo per arrotondamenti contribuisce al totale bilancino senza comparire nel dettaglio.
 
 2.5 [ALTA] estraiFatturatoTotaleGC non usa la C/G, in contraddizione con la guida
-contabilita.gs:245-260 calcola il fatturato totale Gruppo Camarlinghi (denominatore Formula K) sommando solo le fatture di vendita testata (PS_PowerBI_112_Posted_Sales_Invoice), escludendo le note di credito — mentre il fatturato BIOC usato come base K deriva dalla C/G, che le NC le include già. Numeratore e denominatore della stessa Formula K sono quindi costruiti con criteri disomogenei.
+contabilita.gs:245-260 calcola il fatturato totale Gruppo Gamma Logistica (denominatore Formula K) sommando solo le fatture di vendita testata (PS_PowerBI_112_Posted_Sales_Invoice), escludendo le note di credito — mentre il fatturato BIOC usato come base K deriva dalla C/G, che le NC le include già. Numeratore e denominatore della stessa Formula K sono quindi costruiti con criteri disomogenei.
 
 2.6 [MEDIA-ALTA] Alert Euribor documentato ma non implementato
 costi-engine.gs:59-66: la guida di business (§9.4) dichiara che se il tasso esce dal range contrattuale 1,95%-2,95% "il sistema genera un alert", ma nel codice non esiste alcuna logica di segnalazione — la funzione ritorna solo {tasso, importo}, applicando il tasso comunque fuori range senza avvisare nessuno.

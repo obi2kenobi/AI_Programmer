@@ -1,6 +1,6 @@
-# Endpoint: `Impostazioni_Estensione_Camarlinghi`
+# Endpoint: `Impostazioni_Estensione_Gamma Logistica`
 
-- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/Impostazioni_Estensione_Camarlinghi`
+- URL: `https://api.businesscentral.dynamics.com/v2.0/4d4b10ed-d04a-455b-80e1-aaf7ba4ee0d8/Production/ODataV4/Company('GRUPPO%20CAMARLINGHI%20S.P.A')/Impostazioni_Estensione_Gamma Logistica`
 - Righe campione lette: 3
 - Campi trovati: 16
 - Ultimo aggiornamento: 2026-08-26 (merge: le colonne compilate a mano sono preservate)
@@ -14,7 +14,7 @@
 | `AppId` | string | 8fd4c758-3584-4684-a6ba-0176f95cff01 |  | ☐ |
 | `AppName` | string | Edit Pages ADI |  | ☐ |
 | `AppVersion` | string | 1.0.0.134 |  | ☐ |
-| `AppPublisher` | string | Innovio S.p.A. |  | ☐ |
+| `AppPublisher` | string | Beta Metalli S.p.A. S.p.A. |  | ☐ |
 | `Published_As` | string |  PTE |  | ☐ |
 | `AppIsInstalled` | bool | True |  | ☐ |
 | `AllowHttpClientRequests` | bool | False |  | ☐ |

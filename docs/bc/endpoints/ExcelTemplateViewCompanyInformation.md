@@ -11,5 +11,5 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzM2MzAwODQ2NjUyODA2OTc5ODgxOz... |  | ☐ |
 | `Primary_Key` | string |  |  | ☐ |
-| `DisplayName` | string | Gruppo Camarlinghi Spa |  | ☐ |
+| `DisplayName` | string | Gruppo Gamma Logistica Spa |  | ☐ |
 | `Currency` | string | EUR |  | ☐ |

@@ -52,7 +52,7 @@
 | `Pay_to_Contact` | string | PAOLO CELL. 348-5172300 |  | ☐ |
 | `Shortcut_Dimension_1_Code` | string |  |  | ☐ |
 | `Shortcut_Dimension_2_Code` | string |  |  | ☐ |
-| `Ship_to_Name` | string | Magazzino Gruppo Camarlinghi S.p.A |  | ☐ |
+| `Ship_to_Name` | string | Magazzino Gruppo Gamma Logistica S.p.A |  | ☐ |
 | `Ship_to_Name_2` | string |  |  | ☐ |
 | `Ship_to_Address` | string | Via della Repubblica, 340 |  | ☐ |
 | `Ship_to_Address_2` | string |  |  | ☐ |
