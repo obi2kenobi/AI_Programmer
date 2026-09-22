@@ -15,17 +15,24 @@ if [ -z "$DEST" ]; then
   exit 0
 fi
 
+# (dominio, decisione di Luca 2026-09-23: digest autonomo): il gate e' in
+# pensione dal 29/8 (il censore notturno ne ha preso il posto) e il digest non
+# dipende piu' dal suo report. Se c'e', entra come allegato; la mattina vera
+# sono le lezioni da approvare, gli sospesi e il resoconto della notte.
 REPORT="$HOME/morning-gate-report.md"
-[ -f "$REPORT" ] || { echo "nessun report del gate: esegui morning-gate prima"; exit 1; }
+CORPO_GATE=""
+if [ -f "$REPORT" ]; then
+  CORPO_GATE="$(cat "$REPORT")
+
+---"
+fi
 
 # subject: la riga del totale dal report
-SUBJ=$(grep "Totale:" "$REPORT" | head -1 | sed 's/[*\`]//g' | head -c 120)
-[ -z "$SUBJ" ] && SUBJ="Gate del mattino — $(date '+%Y-%m-%d')"
+SUBJ=$(grep "Totale:" "$REPORT" 2>/dev/null | head -1 | sed 's/[*\`]//g' | head -c 120)
+[ -z "$SUBJ" ] && SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
 # corpo: il report + il summary numerico
-BODY="$(cat "$REPORT")
-
----
+BODY="${CORPO_GATE}$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
 $(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
 $(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] && {
   CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || echo 0)
