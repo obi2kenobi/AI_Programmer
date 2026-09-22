@@ -23,6 +23,8 @@
 #       fix del canone, gate, PR, censore. saldati/rinviati vivono in .git.)
 # Esce: 0 sempre — il debito non e' un errore, e' un debito
 set -uo pipefail
+STATO="$(cd "$(dirname "$0")/.." && pwd)/.git/caccia-registro"
+SALDATI="$STATO/saldati"
 MODO="${1:-}"
 [ "$MODO" = "--prossimo" ] && shift
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
@@ -43,6 +45,14 @@ fi
 E002=$(grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
   | grep -v "^\S*:\s*#" | grep -vc "cattura-prima" || true)
 [ -z "$E002" ] && E002=0
+# (audit 2026-09-23, #112): i SALDATI si sottraggono — prima rientravano nel
+# conteggio e il numero diceva dovuto cio' che era gia' pagato (i rinviati
+# restano contati: posposti, non saldati). Il --prossimo gia' li saltava: le
+# due viste ora dicono la stessa cosa.
+SALDATI_N=0
+[ -s "$SALDATI" ] && SALDATI_N=$(grep -cve '^$' -e '^#' "$SALDATI" || true)
+[ -z "$SALDATI_N" ] && SALDATI_N=0
+E002=$((E002 - SALDATI_N)); [ "$E002" -lt 0 ] && E002=0
 
 # ── famiglia E-032: fixture nel repo vivo ───────────────────────────────────────
 E032=$(grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \

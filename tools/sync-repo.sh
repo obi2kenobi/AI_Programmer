@@ -60,8 +60,25 @@ else
   DEST=""
 fi
 
+# (audit 2026-09-23, il canarino v2): il solo CLAUDE.md lasciva divergere gli
+# HOOK in silenzio — Magazzino girava col refuso corretto in hub da 4 giorni.
+# Il confronto ora include gli hook dichiarati in settings.json: se uno diverge,
+# NON siamo allineati, e il turno aprira' il riallineo.
+HOOK_DIV=""
+while IFS= read -r H; do
+  [ -n "$H" ] || continue
+  if [ -n "$LOCAL_DIR" ]; then
+    # da copia locale: file li', file qui — confronto diretto
+    if ! diff -q "$HERE/$H" "$LOCAL_DIR/$H" >/dev/null 2>&1; then HOOK_DIV="$HOOK_DIV $H"; fi
+  fi
+done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" 2>/dev/null \
+         | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+if [ -n "$HOOK_DIV" ]; then
+  echo "sync-repo: DIVERGENTE — CLAUDE.md coincide ma gli HOOK no:$HOOK_DIV"
+  exit 1
+fi
 if diff -q "$HUB_CLAUDE" "$TMP/CLAUDE.md" >/dev/null 2>&1; then
-  echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub"
+  echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub (e gli hook pure)"
   # (D12): il CLAUDE.md e' il canarino, non lo standard. Con --standard si prosegue e si
   # confronta il sistema intero (skill, agenti, hook): prima l'uscita qui rendeva
   # invisibile la deriva di tutto cio' che non e' CLAUDE.md.
@@ -111,7 +128,10 @@ done
   # assente (patterns/citazione-non-presidio). Gli strumenti citati viaggiano.
   # (report Budget Vendite 2026-09-19): il gate di sintassi GAS viaggia — E-028
   # era stata imparata per Python e mai generalizzata al linguaggio dell'hub stesso
-  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh"
+  # (audit 2026-09-23): aggiunti fork-stato, presidio e polilivello — citati dallo
+  # standard che viaggia (skill/CLAUDE.md) ma mai spediti: il satellite riceveva
+  # documenti che puntavano a tool inesistenti (stessa classe del report REPO-I)
+  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh tools/fork-stato.sh tools/presidio.sh tools/polilivello.sh"
   # (D13, 2026-09-20): i GUARDIANI DEL COMMIT viaggiano — .githooks (pre-commit e
   # commit-msg) e tools/pre-commit.sh; l'attivazione resta `git config core.hooksPath .githooks`
   for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
@@ -174,7 +194,7 @@ done
   git push -q -u origin "$BR" 2>/dev/null || { echo "sync-repo: push fallito"; exit 1; }
   # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
   # la PR si VERIFICA, non si dichiara
-  URL_PR=$(gh pr create --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1)
+  URL_PR=$(gh pr create --head "$BR" --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1)
   case "$URL_PR" in
     https://*) echo "sync-repo --standard: PR aperta $URL_PR ($COPIATI gruppi di file aggiornati)" ;;
     *) echo "sync-repo --standard: RAMO $BR spinto MA la PR non e' stata creata ($URL_PR) — creala a mano"; exit 1 ;;
@@ -191,6 +211,6 @@ if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   git add CLAUDE.md
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: riallinea CLAUDE.md all'hub (regole ereditate) — tools/sync-repo.sh"
   git push -q -u origin "$BR" 2>/dev/null || { echo "sync-repo: push fallito"; exit 1; }
-  gh pr create --fill --title "chore: riallinea CLAUDE.md all'hub" 2>&1 | tail -1
+  gh pr create --head "$BR" --fill --title "chore: riallinea CLAUDE.md all'hub" 2>&1 | tail -1
 fi
 exit 1

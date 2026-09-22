@@ -11,11 +11,10 @@
 #   Sale dopo 3 giri puliti; al 5, dopo 3 giri puliti, torna all'1 (CUORE):
 #   fermo al massimo verificherebbe solo il massimo, le fondamenta invecchiano.
 # Memoria: FILE PIATTI in .ciclo/ (giro, livello, zero_streak,
-#   findings_giro_precedente, findings_storico.txt, trend.csv) — niente JSON:
+#   findings_giro_precedente, findings_storico.txt) — niente JSON:
 #   ogni variabile è un file leggibile con cat.
-# Guardie: un finding ricorrente (3+ volte) viene ACCODATO in
-#   .ciclo/guardie/da-generare-*.txt perché diventi un test. La GENERAZIONE
-#   automatica resta promessa, non implementata: la coda è il contratto attuale.
+# Guardie: (la coda da-generare e' stata rimossa il 2026-09-23, audit: era
+#   write-only da sempre — nessuno leggeva la promessa).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 MEMORIA="$HERE/.ciclo"
@@ -51,13 +50,8 @@ echo "Livello: $LIVELLO ($LIVELLO_NOME) · zero-streak: $ZERO_STREAK"
 # ===== LENTI: le domande del giro, adattate al livello =====
 FINDINGS=()
 
-scan_lente() {
-  local nome="$1"; shift
-  local risultato="$("$@" 2>&1)" || true
-  if [ -n "$risultato" ] && [ "$risultato" != "ok" ]; then
-    FINDINGS+=("[$LIVELLO_NOME] $nome: $risultato")
-  fi
-}
+# (audit 2026-09-23: scan_lente() rimossa — definita e mai chiamata:
+# l'astrazione 'lente' che il file dichiarava e non usava)
 
 # Lente 1: tool che non compilano o non girano. Dal 2026-08-28 copre ANCHE gli
 # script shell (bash -n): un .sh che non compila si scopre solo all'uso — la
@@ -233,7 +227,6 @@ if [ -f "$MEMORIA/findings_storico.txt" ] && [ "$N" -gt 0 ]; then
     if [ "$COUNT" -ge 3 ]; then
       echo "⚠ RICORRENTE ($COUNT volte): $KEY — guardia richiesta, accodata"
       SLUG=$(echo "$KEY" | tr -cs 'a-zA-Z0-9' '-' | tr 'A-Z' 'a-z' | sed 's/^-//;s/-$//')
-      echo "$(date +%F) giro=$GIRO volte=$COUNT · $f" >> "$MEMORIA/guardie/da-generare-$SLUG.txt"
     fi
   done < <(printf '%s\n' ${FINDINGS[@]+"${FINDINGS[@]}"} | sort -u)
 fi
@@ -253,4 +246,3 @@ if [ -f "$MEMORIA/findings_storico.txt" ]; then
   echo "Finding totali da inizio ciclo: $TOTAL"
   echo "Media finding/giro: $((TOTAL / GIRO))"
 fi
-echo "$GIRO $N $LIVELLO" >> "$MEMORIA/trend.csv"

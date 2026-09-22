@@ -145,7 +145,7 @@ fi
 DIFF=$(git diff "$DB"...HEAD)
 
 # ══ 2. PROVE (deterministiche) ══════════════════════════════════════════════════
-PROVE_VERDI=0; PROVE_ROTTE=""
+PROVE_ROTTE=""
 # (D1, 2026-09-20): le prove sono quelle DICHIARATE DALLA REPO sul ramo di default —
 # lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
 # leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.

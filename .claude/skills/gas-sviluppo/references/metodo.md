@@ -910,7 +910,7 @@ silenziosi in un flusso che termina con una registrazione contabile irreversibil
    di un altro repo finite in un documento come misura di questo.
 3. **IL COMMIT SU UNA SUITE ESEGUITA E NON LETTA È UN COMMIT SU NIENTE**: il comando era
    incatenato a `git commit` con `&&`, il controllo era rosso, non è stato letto. La cura
-   non è una regola di processo ma un attrezzo: `tools/gate.sh` legge, stampa una riga per
+   non è una regola di processo ma un attrezzo: il gate di REPO-A (attrezzo che vive in quel repo, non nell'hub) legge, stampa una riga per
    comando, esce 1 se uno è rosso. La regola «verifica && azione» diventa strutturale.
 
 ## Le regole del report REPO-F (2026-09-19: 56 giri, 21 rilievi, 5 difetti hub)
