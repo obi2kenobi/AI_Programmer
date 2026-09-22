@@ -65,7 +65,8 @@ if [ -f "$PWD/package.json" ] && printf '%s' "$CMD_STRIPPED" | grep -qE '(npm|ya
   for SCR in $(printf '%s' "$CMD_STRIPPED" | grep -oE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' | awk '{print $NF}' | sort -u); do
     RISOLTO=$(jq -r --arg s "$SCR" '.scripts[$s] // empty' "$PWD/package.json" 2>/dev/null)
     [ -z "$RISOLTO" ] && continue
-    if printf '%s' "$RISOLTO" | grep -qE "$INVOCAZIONE"; then
+    _cp=$(printf '%s' "$RISOLTO")
+    if grep -qE "$INVOCAZIONE" <<<"$_cp"; then
       jq -n --arg r "NEGATO (clasp-block-hook): npm run $SCR risolve in \`$RISOLTO\` — clasp push/deploy scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I, H7: la via documentata era proprio quella non presidiata)." \
         '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
       exit 0
