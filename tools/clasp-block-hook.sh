@@ -77,7 +77,8 @@ fi
 # che includeva directory dichiarate clone-di-sola-lettura nel CLAUDE.md del
 # repo — Luca l'ha eseguito e ha sovrascritto 2 progetti sviluppati altrove.
 # La guardia ora verifica anche il caso GENERAZIONE)
-if echo "$CMD" | grep -qE "$INVOCAZIONE"; then
+_cp=$(echo "$CMD")
+if grep -qE "$INVOCAZIONE" <<<"$_cp"; then
   MB="$PWD/.mirror-boundaries"
   if [ -f "$MB" ]; then
     jq -n --arg c "ATTENZIONE: questa directory ha .mirror-boundaries (cloni di sola lettura). Un clasp push qui sovrascriverebbe progetti sviluppati altrove. Verifica PRIMA di eseguire." \
