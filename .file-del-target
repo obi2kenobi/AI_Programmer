@@ -1,9 +1,0 @@
-# file di REPO-W citati dal report dei 50 giri (vivono lì, non nell'hub)
-gate.sh
-tools/gate.sh
-bc_sandbox.py
-sabota_regole.mjs
-test_regole.mjs
-test_fase2.mjs
-coerenza_gas.mjs
-test_emulatore.py

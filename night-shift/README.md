@@ -22,7 +22,7 @@ MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale �
 | Regola | Il fatto che l'ha imposta |
 |---|---|
 | **L'issue è una commessa precaricata** (snippet, righe, grep pronti) | tre notti: il modello capisce ma a ~4 tok/s non converge se deve esplorare 4.300 righe per giudicare |
-| **Nessun limite di tempo per issue** (Luca, 2026-08-21) | il watchdog da 90 min ha interrotto l'agente «a un passo dalla fine» tre volte di fila |
+| **Limite di tempo per issue: watchdog a 240 min** (dal 2026-09-20; il no-limit del 2026-08-21 costava 3 notti: cicli persi su commesse senza fine — `NIGHT_SHIFT_TIMEOUT` per cambiarlo) | il no-limit assoluto e il watchdog da 90 min hanno entrambi fallito: 240 min e' la misura presente |
 | **PR sempre BOZZA su branch `night/issue-N`** | la review del mattino è parte del metodo |
 | **Mai scrivere in cartelle specchio/sola lettura** | `gas-src/` in REPO-A: regola fondativa del repo ospite |
 | **Idempotenza completa** | PR aperta → skip; PR fusa → chiude l'issue dimenticata (la keyword italiana non auto-chiudeva) |
@@ -134,8 +134,8 @@ Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica
   le sonde, il health, il banco, il ciclo-vivo e il registro girano, e il modello
   locale INTERPRETA il loro output decidendo se ci sono problemi.
   Cinque lenti in rotazione automatica, una per ciclo.
-- `night-shift/caccia-intelligente.sh` — versione precedente della caccia con
-  lenti specializzate per file (sostituita da caccia-lente per stabilita').
+- (rimossa il 2026-09-23, audit: era la caccia precedente, sostituita da
+  caccia-lente — 119 righe morte che nessuno chiamava più)
 
 ## Il saldatore deterministico (E-002 si salda senza modello)
 
@@ -161,9 +161,10 @@ mai push su main). Il CLAUDE.md e' il canarino del drift.
 ## Il revisore (il censore delle PR)
 
 `night-shift/revisore.sh` — chi scrive non giudica... ma con UN solo
-cervello (bencina 2026-09-19: 14b 1/3 in 22s, 27b 0/3 in 442s anche in
-modalita' SOLA — il quantizzato 27b non funziona su questa macchina;
-decisione di Luca: un modello solo). Le miglioria le scrive il 14b e la
+cervello (storia: 2026-09-19 il 14b batte' il 27b di allora; dal 2026-09-21
+gira qwen3.8-27b:iq3s — quantizzato 3.5bpw, 12GB, bencina 3/3 in 48s con
+think:false — vedi cervello/decisione-modello-unico.md). Le miglioria le
+scrive il modello di turno e la
 PR bozza night/* in quarantena (>=20 min) passa al censore: stesso
 modello, PERSONA diversa (prompt avversario, onere della prova sulla PR,
 contesto fresco) — e le tre guardie deterministiche restano l'argine

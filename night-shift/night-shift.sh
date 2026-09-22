@@ -55,19 +55,17 @@ if [ $# -gt 0 ]; then
   for a in "$@"; do REPO_LIST+=("$a"); done
 else
   [ -f "$CONF" ] || { echo "uso: night-shift.sh owner/repo ... — oppure crea $CONF (vedi repos.conf.example)" >&2; exit 1; }
-  # Formato: owner/repo [tipo] [cadenza]
-  # Cadence: giornaliera (default), settimanale, o giorno settimana (lun/mar/.../dom)
-  GIORNO_ODIerno=$(date '+%u')  # 1=lun ... 7=dom
-  declare -a GIORNI=(lun mar mer gio ven sab dom)
-  OGGI=${GIORNI[$((GIORNO_ODIerno-1))]}
+  # Formato: owner/repo [tipo] — (la cadenza del terzo campo e' stata rimossa
+  # l'2026-09-23, audit: rami orfani, mai alimentati, non documentati)
   while IFS= read -r line; do
     line="${line%%#*}"; [ -z "$(echo "$line" | tr -d '[:space:]')" ] && continue
     CAD=$(echo "$line" | awk '{print $3}')
     ENTRY=$(echo "$line" | awk '{print $1, $2}')
     case "$CAD" in
       ""|giornaliera) REPO_LIST+=("$ENTRY") ;;
-      settimanale) [ "$OGGI" = "lun" ] && REPO_LIST+=("$ENTRY") ;;
-      lun|mar|mer|gio|ven|sab|dom) [ "$CAD" = "$OGGI" ] && REPO_LIST+=("$ENTRY") ;;
+      # (audit 2026-09-23: i rami 'settimanale' e 'lun|mar|...' rimossi sopra:
+      # il terzo campo cadenza non esiste in nessun repos.conf — ramificazione
+      # orfana. Resta l'avviso per i casi sconosciuti.)
       *) log "ATTENZIONE: cadenza '$CAD' sconosciuta in '$ENTRY', la salto" ;;
     esac
   done < "$CONF"
@@ -870,6 +868,9 @@ $(cat "$ISSUE_FILE" | head -60)
 
 Fix the code in the current directory. When done, respond with FINISH." 2>&1)
         AGENTE_RC=$?
+        # (audit 2026-09-23): l'esito della cascade finiva in una variabile e
+        # moriva — ora almeno la coda dell'output si vede nel log del turno.
+        log "Issue #$NUM: cascade-agente rc=$AGENTE_RC — $(echo "$AGENTE_OUT" | tail -2 | head -1 | cut -c1-110)"
         if [ "$AGENTE_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
           log "Issue #$NUM: ✅ AGENTE ha converto (dove il solver non poteva)"
           RC=0

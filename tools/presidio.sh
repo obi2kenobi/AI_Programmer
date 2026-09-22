@@ -45,7 +45,7 @@ case "${1:-}" in
     ZONA="${2:?uso: presidio.sh claim <zona> <nota>}"; NOTA="${3:-}"
     init
     ADESSO=$(date +%Y-%m-%dT%H:%M)
-    SCADE=$(date -v+${ORARIO}H +%Y-%m-%dT%H:%M 2>/dev/null || date -d "+${ORATIO:-$ORARIO} hours" +%Y-%m-%dT%H:%M 2>/dev/null || echo "?")
+    SCADE=$(date -v+${ORARIO}H +%Y-%m-%dT%H:%M 2>/dev/null || date -d "+$ORARIO hours" +%Y-%m-%dT%H:%M 2>/dev/null || echo "?")
     # contesa attuale? (presidio vivo di ALTRO sulla stessa zona)
     VIVI=$(grep "^| " "$FILE" | grep "| $ZONA |" | grep -v "^| Dichiarato" || true)
     if [ -n "$VIVI" ]; then

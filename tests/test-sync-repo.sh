@@ -14,12 +14,18 @@ trap 'rm -rf "$TMP"' EXIT
 # repo finta ALLINEATA
 mkdir -p "$TMP/allineata"
 cp "$HERE/CLAUDE.md" "$TMP/allineata/CLAUDE.md"
+# (canarino v2, audit 2026-09-23): allineata vuol dire ANCHE gli hook uguali
+mkdir -p "$TMP/allineata/tools"
+for H in clasp-block-hook metodo-reminder-hook pattern-reminder-hook; do cp "$HERE/tools/$H.sh" "$TMP/allineata/tools/"; done
 bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" >/dev/null 2>&1
 [ $? -eq 0 ] && ok "repo allineata: exit 0" || ko "allineata non riconosciuta"
 
 # repo finta DIVERGENTE (versione vecchia: manca la coda dell'hub)
 mkdir -p "$TMP/divergente"
 head -50 "$HERE/CLAUDE.md" > "$TMP/divergente/CLAUDE.md"
+# (canarino v2): gli hook allineati, cosi' la divergenza misurata e' quella del CLAUDE
+mkdir -p "$TMP/divergente/tools"
+for H in clasp-block-hook metodo-reminder-hook pattern-reminder-hook; do cp "$HERE/tools/$H.sh" "$TMP/divergente/tools/"; done
 OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/divergente" 2>&1); RC=$?
 [ $RC -eq 1 ] && echo "$OUT" | grep -q "DIVERGENTE" \
   && ok "repo divergente: exit 1 col verdetto DIVERGENTE dichiarato" \
@@ -27,7 +33,6 @@ OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/divergente" 2>&1); RC=$
 echo "$OUT" | grep -qE "dista [0-9]+ righe" \
   && ok "il verdetto porta il conteggio delle righe di distanza" \
   || ko "conteggio righe mancante"
-
 # bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
 # faceva fallire silenziosamente entrambi i diff — DIFF_LINES restava sempre "dista 0
 # righe" (che il check sopra, con una regex troppo permissiva, non distingueva da un

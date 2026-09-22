@@ -14,7 +14,6 @@
 #    del 4/9 l'ha trattato come successo e ha aperto una PR di soli scarti: un .js
 #    proposto + il .night-bak dell'App.html intero, +739 righe di rumore.)
 set -uo pipefail
-HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
 ISSUE="${2:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
 MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
@@ -62,7 +61,7 @@ Is this fix correct? Answer CORRECT or WRONG:"
 # Terza chiamata Ollama: «scrivi un test che fallisce senza questo fix».
 # Il test viene salvato e aggiunto al PR. Il patto resta lo stesso.
 genera_test() {
-  local FN="$1" CODE="$2" COMMESSA="$3"
+  local CODE="$2" COMMESSA="$3"  # (audit: $1 non serve piu', si tiene il posto)
   local PROMPT="Write a minimal Node.js test function that verifies this fix is correct. The test should FAIL if the old buggy code is restored. Output ONLY the test function, no explanation.
 
 === ISSUE ===

@@ -228,7 +228,7 @@ to any brain with the same gesture (`llm/ask-qwen.sh "..."`, stdin for long cont
 - **Local brain (ask-qwen)**: high-volume, low-risk, verifiable work — digests, drafts, triage,
   mechanical commesse. Zero marginal cost, data never leaves the Mac. Measured: 3.7-5.9 tok/s idle.
 - **Night shift** (see `night-shift/README.md`): GitHub issues labeled `night-shift` become draft
-  PRs overnight. No time limit per issue (decided 2026-08-21). Issues must be **pre-loaded work
+  PRs overnight. Issue time budget: 240-min watchdog (since 2026-09-20; the old no-limit cost 3 nights). Issues must be **pre-loaded work
   orders** (snippets, line numbers, ready greps) — never investigation briefs: three nights proved
   the local model understands but does not converge when judgment is required.
 - **Cloud brains (ask-opus / ask-glm)**: programmatic pipelines. Otherwise work in direct sessions.
@@ -254,7 +254,7 @@ lesson paid by REPO-A on 2026-08-08).
 For iterative optimization during the day use `/goal <verifiable objective> | max N attempts`:
 restate the objective as a verification with its level (1-5, see docs/system.md), one change per
 attempt, log every attempt in `loops/<date>-<slug>.md`, adversarial check before claiming
-success, hard attempt cap. Note the deliberate asymmetry: night shift has NO time limit (single
+success, hard attempt cap. Note the deliberate asymmetry: night shift runs under a 240-min per-issue watchdog (since 2026-09-20; single
 long commessa); day goal loops always have a cap (iterative optimization).
 
 ### The minimal-code ladder (from ponytail, adopted 2026-08-21)
