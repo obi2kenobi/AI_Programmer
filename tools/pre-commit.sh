@@ -20,7 +20,8 @@ FALLITI=0
 #    argomento quando lo script e' invocato a mano col messaggio.
 controlla_numero_test() {
   local MSG="$1" N_CLAIM N_REAL
-  if echo "$MSG" | grep -qE '[0-9]+ test'; then
+  _cp=$(echo "$MSG")
+  if grep -qE '[0-9]+ test' <<<"$_cp"; then
     N_CLAIM=$(echo "$MSG" | grep -oE '[0-9]+ test' | grep -oE '^[0-9]+' | head -1)
     N_REAL=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
     [ "$N_CLAIM" != "$N_REAL" ] && { echo "⛔ il messaggio dice \"$N_CLAIM test\" ma i file sono $N_REAL"; return 1; }
