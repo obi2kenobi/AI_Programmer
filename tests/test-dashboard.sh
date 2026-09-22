@@ -104,6 +104,54 @@ FIN=$(NIGHT_LOG="$TMP/lungo.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/nu
 [ "$FIN" = "4500" ] && ok "D18: 4500 finestre in un log di 4501 righe → 4500 contate (nessuna finestra che sottostima)" \
   || ko "D18: finestre contate $FIN su 4500 (la dashboard legge solo una coda del log)"
 
+# ── v5: verdetto, FILA delle PR, battito e buco di silenzio ────────────────────
+# (il 22/9 cinque PR in quarantena erano invisibili e le 11 ore di buio nemmeno:
+# il test prova che la pagina ora GIUDICA e che la pipeline si vede)
+OGGI5=$(date '+%Y-%m-%d')
+{
+  echo "[$OGGI5 10:00:00] === TURNO INIZIATO (1 repo in coda) ==="
+  echo "[$OGGI5 10:05:00] REPO r/x: PR di caccia → https://github.com/r/x/pull/11"
+  echo "[$OGGI5 10:06:00] REPO r/x: PR #11 in quarantena — la porto al CENSORE"
+  echo "[$OGGI5 10:07:00] REPO r/x: PR di caccia → https://github.com/r/x/pull/12"
+  echo "[$OGGI5 10:08:00] REPO r/x: DELIBERA: APPROVA PR #12"
+  echo "[$OGGI5 10:35:00] REPO r/x: censore rinvia la PR #11 (prove rosse)"
+} > "$TMP/finto5.log"
+V5=$(NIGHT_LOG="$TMP/finto5.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c '
+import sys, json
+s = json.load(sys.stdin)
+fila = s.get("pr_fila", {})
+print(fila.get("11"), "|", fila.get("12"), "|", round(s.get("gap_max", [0])[0]))')
+[ "$V5" = "rinviata dal censore | APPROVATA | 27" ] \
+  && ok "v5 fila: #11 rinviata (ultimo evento vince), #12 approvata, buco 27 min rilevato" \
+  || ko "v5 fila/buco: [$V5] atteso [rinviata dal censore | APPROVATA | 27]"
+V5V=$(NIGHT_LOG="$TMP/finto5.log" python3 - "$DASH" <<'PY'
+import sys, os
+import importlib.util
+spec = importlib.util.spec_from_file_location("dash", sys.argv[1])
+dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
+# il verdetto e' deterministico: si prova la FUNZIONE su stati costruiti
+F = lambda: {"finestre":3,"trasformatore":0,"agente_ok":0,"agente_morto":2,"gate":0,"consegne":0,"push_fail":0,"approvate":0,"rigettate":0}
+base = {"funnel": F(), "pr": 0, "pr_fila": {}, "battito_min": 1.0}
+print(dash.verdetto({**base, "attivo": 0})[1],
+      dash.verdetto({**base, "attivo": 1, "battito_min": 40})[1],
+      dash.verdetto({**base, "attivo": 1, "funnel": {**F(), "consegne": 2, "agente_morto": 1}})[1],
+      dash.verdetto({**base, "attivo": 1})[1])
+PY
+)
+[ "$V5V" = "🔴 FERMO 🟠 VIVO MA MUTO 🟢 STA CONSEGNANDO 🟡 GIRA MA NON CONSEGNA" ] \
+  && ok "v5 verdetto: FERMO / MUTO / CONSEGNA / GIRA-A-VUOTO — la pagina giudica" \
+  || ko "v5 verdetto: [$V5V]"
+PAG5=$(NIGHT_LOG="$TMP/finto5.log" python3 - "$DASH" <<'PY'
+import sys
+import importlib.util
+spec = importlib.util.spec_from_file_location("dash", sys.argv[1])
+dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
+print(dash.page(dash.stats()))
+PY
+)
+echo "$PAG5" | grep -q "LA FILA DELLE PR" && ok "v5 pagina: la fila e' in pagina" || ko "v5 pagina senza fila"
+echo "$PAG5" | grep -q "#11" && ok "v5 pagina: la PR #11 si vede nella fila" || ko "la #11 non appare in pagina"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
