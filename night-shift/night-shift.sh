@@ -131,8 +131,18 @@ grep -qi "$MODEL_TAG" <<<"$LISTA_MODELLI" || { log "ERRORE: modello $MODEL_TAG a
 # Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
 pkill -f "opencode run" 2>/dev/null && log "Puliti processi opencode orfani" && sleep 2 || true
 
-if ! probe; then
-  log "Sonda fallita: riavvio server (errori Metal dopo lunga vita)..."
+# (2026-09-22, seconda metà della cura dopo le 11 ore buie): ANCHE questa sonda
+# di generazione uccideva il turno al secondo colpo (23:09, 10:24) — l'exit a
+# riga 153 scavalca la pazienza messa su ensure_server. Stessa medicina: sei
+# round con pause di cinque minuti. Un wedge vero passa.
+PROBE_ROUND=0
+while ! probe; do
+  PROBE_ROUND=$((PROBE_ROUND+1))
+  if [ "$PROBE_ROUND" -ge 6 ]; then
+    log "ERRORE: server sordo dopo $PROBE_ROUND round di sonda (30 minuti) — esco: KeepAlive mi riporta, il prossimo giro riprova"
+    exit 1
+  fi
+  log "⚠ Sonda di generazione muta (round $PROBE_ROUND/6): riavvio server e attendo 5 minuti — un wedge transitorio passa, non esco per lui"
   # Finding #4 (2026-08-21): il server è di LAUNCHD (KeepAlive) — se lo killiamo e ne
   # avviamo uno nostro, lui resuscita e ci contende la porta: si perde la gara entrambi.
   # Strategia: se l'agente esiste, KICKSTART a lui e si aspetta la sua resurrezione;
@@ -150,9 +160,9 @@ if ! probe; then
       /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
     sleep 8
   fi
-  probe || { log "ERRORE: server non risponde nemmeno dopo il riavvio"; exit 1; }
-  log "Server riavviato e sano"
-fi
+  sleep 300
+done
+[ "$PROBE_ROUND" -gt 0 ] && log "Server tornato a generare (dopo $PROBE_ROUND round di pazienza)"
 
 # --- Il turno per una repo -----------------------------------------------------
 shift_repo() {
