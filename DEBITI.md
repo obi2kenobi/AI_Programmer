@@ -92,7 +92,7 @@ force-push + reset delle clone delle altre sessioni + reset dell'automazione
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-24 | La bonifica privacy ha pulito i FILE correnti (11 siti), ma la STORIA git del repo pubblico conserva i nomi in ogni commit passato: `git log --all -S"<nome>"` li ritrova per sempre. Il privacy-check (v3) li vedrebbe e fallirebbe — per questo la chiave locale di QUESA macchina parte con lista vuota | spurgo della storia = `git filter-repo` + force push su repo pubblica con altre sessioni attive: distruttivo e coordinabile solo da Luca (annuncio ai collaboratori, fork/clone da rifare) | decisione di Luca: o si purge la storia (poi i termini entrano in repos.key e il gate li presidia davvero), o si accetta che la storia pre-2026-08-24 li contenga e si presidia solo il futuro (i termini NON entrano nella chiave: il gate resterebbe rosso per sempre) |
+| 2026-08-24 | ~~La bonifica privacy ha pulito i FILE correnti ma la STORIA git conserva i nomi~~ SALDATO PER DECISIONE 2026-09-23 (i nomi possono comparire: resta proibito l'ACCESSO; la storia git e' parte del metodo, non una leak)
 
 ## Onboarding di REPO-G (2026-08-24, report sul campo F1)
 
@@ -104,7 +104,7 @@ force-push + reset delle clone delle altre sessioni + reset dell'automazione
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-26 | Il report dal campo misura il costo del cancello umano (~20 cicli manuali a sessione) e osserva che il rischio VERO è maneggiare le credenziali, non eseguire il deploy: con credenziali fuori portata dall'agente, un deploy assistito ridurrebbe il costo senza perdere la protezione che conta | allentare un divieto di sicurezza su una repo pubblica con produzione vera è decisione del proprietario: il canone separa ora i due rischi (consegna.md), la regola resta intera | decisione di Luca: mantenere il cancello com'è, o definire il rituale del deploy assistito (credenziali dove, comando chi lo lancia, cosa vede l'agente, log) e scriverlo nel canone |
+| 2026-08-26 | ~~Il report dal campo misura il costo del cancello umano~~ SALDATO 2026-09-23 (dominio, Luca: DEPLOY ASSISTITO — tools/prepara-deploy.sh congela il pacchetto firmato su verify verde, tools/deploy-ora.sh e' il gesto umano a voce; l'hook clasp-block resta INTERO per gli agenti; banco tests/test-deploy-assistito.sh 4/4)
 
 ## Valutare Qwen 3.8 Flash come cervello notturno (2026-08-27, dal video di lancio)
 

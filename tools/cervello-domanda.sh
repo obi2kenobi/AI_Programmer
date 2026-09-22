@@ -44,6 +44,15 @@ if [ "$1" = "in-sospeso" ]; then
   done
   [ "$LEZ" -eq 0 ] && echo "  (nessuna in attesa)"
   echo
+  echo "## deploy pronti (aspettano il gesto: deploy-ora <repo>)"
+  DEP=0
+  for mf in "$HOME"/deploy-pronto/*/MANIFEST.md; do
+    [ -f "$mf" ] || continue
+    DEP=$((DEP+1))
+    echo "  - $(basename "$(dirname "$mf")") — $(grep -m1 'commit:' "$mf" | cut -c3-20) $(grep -m1 'preparato:' "$mf" | sed 's/preparato: //')"
+  done
+  [ "$DEP" -eq 0 ] && echo "  (nessuno)"
+  echo
   echo "## PR aperte nei repo del turno"
   PR_TROVATE=0
   for REPO in obi2kenobi/AI_Programmer obi2kenobi/Sistema-Gestione-Magazzino; do
@@ -56,7 +65,7 @@ if [ "$1" = "in-sospeso" ]; then
   done
   [ "$PR_TROVATE" -eq 0 ] && echo "  (nessuna)"
   echo
-  echo "totale: $TROVATE sospesi dichiarati + $LEZ lezioni da approvare + $PR_TROVATE PR aperte"
+  echo "totale: $TROVATE sospesi + $LEZ lezioni + $DEP deploy pronti + $PR_TROVATE PR aperte"
   exit 0
 fi
 
