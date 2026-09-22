@@ -97,7 +97,23 @@ probe() {
     && grep -q '"content":"' <<<"$RISPOSTA"
 }
 
-ensure_server || { log "ERRORE: server Ollama non disponibile"; exit 1; }
+# (2026-09-22, la notte delle 11 ore buie): un wedge alle 23:05 ha fatto fallire
+# la sonda due volte di fila e il turno e' USCITO per sempre — nessuno lo
+# riportava su fino al mattino. Contraddizione col nostro stesso credo: il
+# watchdog di ciclo accetta di girare senza cervello e dichiararlo, ma la
+# sonda d'avvio ammazzava il turno. Ora si riprova: sei round con pause di
+# cinque minuti (mezz'ora di pazienza) prima di arrendersi. Un wedge vero
+# passa; un server morto per sempre e' un'altra malattia, e si dichiara.
+SERVER_ROUND=0
+until ensure_server; do
+  SERVER_ROUND=$((SERVER_ROUND+1))
+  if [ "$SERVER_ROUND" -ge 6 ]; then
+    log "ERRORE: server Ollama sordo dopo $SERVER_ROUND round (30 minuti) — esco, il prossimo ciclo riprovera'"
+    exit 1
+  fi
+  log "⚠ server non visto (round $SERVER_ROUND/6): attendo 5 minuti e riprovo — non esco per un wedge transitorio"
+  sleep 300
+done
 # (2026-09-03: launchd ha PATH=/usr/bin:/bin — ollama sta in ~/.local/bin o /opt/homebrew/bin.
 # Il turno partiva e moriva in 4 secondi col/modello assente" perché non LO TROVAVA, non perché
 # mancasse. PATH esteso prima di qualunque comando ollama.)
