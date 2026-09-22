@@ -41,7 +41,7 @@ bash tools/onboard-repo.sh owner/repo    # repo esistente nel sistema
 
 ```bash
 bash tools/backup-config.sh              # config critica su gist segreto
-bash tools/verify-patterns.sh            # le ancore dei pattern vivono ancora?
+bash tests/test-patterns-ancore-esistono.sh  # le ancore dei pattern vivono ancora? (audit 2026-09-23: qui comandava uno script fantasma — la PR che lo portava non fu mai fusa)
 bash tools/status-page.sh                # vista d'insieme (o quando vuoi)
 ```
 

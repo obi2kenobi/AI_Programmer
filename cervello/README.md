@@ -22,7 +22,8 @@ printf 'corpo con [[altri-link]]' | bash tools/cervello-annota.sh mio-slug decis
 
 - **tipo**: `decisione` (una scelta fatta, con il perché) · `concetto` (un'idea
   con un nome) · `famiglia` (una classe d'errore) · `sospeso` (una cosa
-  dichiarata aperta) · `repo` (una verità su un repo)
+  dichiarata aperta) · `repo` (una verità su un repo) · `lezione` (distillata dal
+  turno col /learn, nasce «da approvare»: decide il mattino)
 - i wikilink rotti vengono **rifiutati**: un pensiero che punta nel vuoto non
   entra nel cervello
 - l'indice si rigenera da solo; il guardiano (`tests/test-cervello.sh`)

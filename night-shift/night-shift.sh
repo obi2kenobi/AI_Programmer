@@ -585,6 +585,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
     if [ -n "${REVISORE_CANDIDATA:-}" ]; then
       log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
       REVISORE_OUT=$(bash "$HERE/revisore.sh" "$DIR" "$REVISORE_CANDIDATA" 2>&1); REVISORE_RC=$?
+      # (audit 2026-09-23): le firme "DELIBERA:" vivevano su stderr catturato e
+      # ingoiato — nel console log sono arrivate ZERO volte in assoluto: funnel e
+      # fila PR della dashboard contavano zeri strutturali. Si ri-loggano.
+      while IFS= read -r _dl; do log "REPO $REPO: $_dl"; done < <(grep -a "^DELIBERA:" <<<"$REVISORE_OUT")
       case "$REVISORE_RC" in
         0) log "REPO $REPO: ✅ censore ha DELIBERATO il merge: PR #$REVISORE_CANDIDATA" ;;
         1) log "REPO $REPO: ⛔ censore ha RIGETTATO la PR #$REVISORE_CANDIDATA (chiusa con motivi)" ;;
@@ -629,6 +633,9 @@ review del giorno." 2>>"$ERR_NOTTE" \
         log "REPO $REPO: caccia: lente dichiara il sistema sano — provo a MIGLIORARE il codice"
         MIGLIORIA_OUT=$(bash "$HERE/caccia-miglioria.sh" "$DIR" 2>&1)
         MIGLIORIA_RC=$?
+        # (audit 2026-09-23): "TRASFORMATORE deterministico" e "gate BOCCIA"
+        # morivano qui come le DELIBERE — il funnel diceva "0 per sempre".
+        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA" <<<"$MIGLIORIA_OUT")
         # (strumento, 2026-09-19): la riga-categoria in produzione — senza questa
         # riga non si sa SE la finestra abbia pagato un debito o girato a rotazione
         log "REPO $REPO: caccia-interna: $(echo "$MIGLIORIA_OUT" | grep -a "categoria" | head -1 | cut -c1-140)"

@@ -26,7 +26,7 @@ git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm 
 OUT=$(bash "$GATE" "$SB" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "rotto bocciato (rc 1)" || ko "rc $RC (atteso 1)"
 echo "$OUT" | grep -q "rotto.py" && ok "il file rotto viene Nominato" || ko "non dice quale file"
-echo "$OUT" | grep -q "buono.py" || ok "il file buono non viene accusato" || ko "accusa il file buono"
+echo "$OUT" | if grep -q "buono.py"; then ko "accusa il file buono (falso positivo — audit 2026-09-23)"; else ok "il file buono non viene accusato"; fi
 
 # 3. il gate non scrive __pycache__ (compile(), non py_compile)
 [ -z "$(find "$SB" -name __pycache__ 2>/dev/null)" ] && ok "nessun __pycache__ scritto" || ko "ha sporcato con __pycache__"
