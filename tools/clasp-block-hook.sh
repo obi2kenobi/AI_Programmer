@@ -61,7 +61,8 @@ if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE"; then
 fi
 
 # H7a: la via documentata — npm run push / npm run deploy — risolta da package.json
-if [ -f "$PWD/package.json" ] && printf '%s' "$CMD_STRIPPED" | grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+'; then
+_cp=$([ -f "$PWD/package.json" ] && printf '%s' "$CMD_STRIPPED")
+if grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' <<<"$_cp"; then
   for SCR in $(printf '%s' "$CMD_STRIPPED" | grep -oE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' | awk '{print $NF}' | sort -u); do
     RISOLTO=$(jq -r --arg s "$SCR" '.scripts[$s] // empty' "$PWD/package.json" 2>/dev/null)
     [ -z "$RISOLTO" ] && continue
