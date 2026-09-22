@@ -162,7 +162,7 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 
 | Data | Scorciatoia | Perché | Quando |
 |---|---|---|---|
-| 2026-08-28 | repos.key locale: sessioni esterne sempre cieche sul privacy-check | soluzione da decidere con Luca | lavoro regolare su esterni |
+| 2026-08-28 | ~~repos.key locale: sessioni esterne cieche~~ SALDATO PER DECISIONE 2026-09-23 (Luca: degrado dichiarato — la superficie di rischio e' calata con nomi-si/accesso-no; restano persone, fornitori e segreti, e le SHAPES girano nel repo. Il gate degradato F3 e' il design permanente)
 
 
 ## Il turno senza limite ha bruciato 3 notti (evidenza misurata, 2026-08-31)
