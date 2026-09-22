@@ -34,6 +34,16 @@ if [ "$1" = "in-sospeso" ]; then
   done
   [ "$TROVATE" -eq 0 ] && echo "  (nessuna)"
   echo
+  echo "## lezioni da approvare (proposte dal turno, /learn)"
+  LEZ=0
+  for f in "$CERVELLO"/lezione-*.md; do
+    [ -f "$f" ] || continue
+    grep -q "stato: da approvare" "$f" || continue
+    LEZ=$((LEZ+1))
+    echo "  - $(sed -n '4s/^titolo: //p' "$f") — $(basename "$f" .md)"
+  done
+  [ "$LEZ" -eq 0 ] && echo "  (nessuna in attesa)"
+  echo
   echo "## PR aperte nei repo del turno"
   PR_TROVATE=0
   for REPO in obi2kenobi/AI_Programmer obi2kenobi/Sistema-Gestione-Magazzino; do
@@ -46,7 +56,7 @@ if [ "$1" = "in-sospeso" ]; then
   done
   [ "$PR_TROVATE" -eq 0 ] && echo "  (nessuna)"
   echo
-  echo "totale: $TROVATE sospesi dichiarati + $PR_TROVATE PR aperte"
+  echo "totale: $TROVATE sospesi dichiarati + $LEZ lezioni da approvare + $PR_TROVATE PR aperte"
   exit 0
 fi
 

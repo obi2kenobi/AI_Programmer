@@ -36,7 +36,7 @@ scrivi_indice() { # $1 = destinazione ("-" per stdout)
     echo "# Indice del cervello"
     echo
     echo "<!-- generato da tools/cervello-annota.sh --indice: non si scrive a mano -->"
-    for tipo in decisione concetto famiglia sospeso repo; do
+    for tipo in decisione concetto famiglia sospeso repo lezione; do
       SEZIONE=$(indice_vero | awk -F'|' -v t="$tipo" '$2==t')
       [ -z "$SEZIONE" ] && continue
       echo; echo "## $tipo"
@@ -58,7 +58,7 @@ esac
 
 SLUG="$1"; TIPO="$2"; TITOLO="$3"
 [ -n "$SLUG" ] && [ -n "$TIPO" ] && [ -n "$TITOLO" ] || { echo "uso: cervello-annota.sh <slug> <tipo> <titolo>" >&2; exit 2; }
-case "$TIPO" in decisione|concetto|famiglia|sospeso|repo) ;; *) echo "tipo '$TIPO' non valido: decisione|concetto|famiglia|sospeso|repo" >&2; exit 2 ;; esac
+case "$TIPO" in decisione|concetto|famiglia|sospeso|repo|lezione) ;; *) echo "tipo '$TIPO' non valido: decisione|concetto|famiglia|sospeso|repo" >&2; exit 2 ;; esac
 [[ "$SLUG" =~ ^[a-z0-9-]+$ ]] || { echo "lo slug deve essere minuscolo con trattini: '$SLUG'" >&2; exit 2; }
 mkdir -p "$CERVELLO"
 

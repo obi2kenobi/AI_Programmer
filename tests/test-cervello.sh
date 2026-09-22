@@ -20,7 +20,7 @@ NOTE_SANE=0; NOTE_ROTTE=""
 for f in "$CER"/*.md; do
   case "$(basename "$f")" in indice.md|README.md) continue ;; esac
   TIPO=$(sed -n '2s/^tipo: //p' "$f")
-  case "$TIPO" in decisione|concetto|famiglia|sospeso|repo) NOTE_SANE=$((NOTE_SANE+1)) ;; *) NOTE_ROTTE="$NOTE_ROTTE $(basename "$f")($TIPO)" ;; esac
+  case "$TIPO" in decisione|concetto|famiglia|sospeso|repo|lezione) NOTE_SANE=$((NOTE_SANE+1)) ;; *) NOTE_ROTTE="$NOTE_ROTTE $(basename "$f")($TIPO)" ;; esac
 done
 if [ -z "$NOTE_ROTTE" ] && [ "$NOTE_SANE" -gt 0 ]; then
   ok "frontmatter sano in tutte le $NOTE_SANE note"
