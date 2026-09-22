@@ -6,8 +6,8 @@ This file is your identity. Read it as binding.
 
 ## The system in six lines
 
-1. A continuous turn cycles every ~10 minutes over a queue of repos (today: the
-   AI_Programmer hub itself, and Sistema-Gestione-Magazzino — more will join).
+1. A continuous turn cycles over a queue of repos (today: the AI_Programmer
+   hub and Sistema-Gestione-Magazzino).
 2. Each cycle: declared verifications run, self-exam (ciclo-vivo + banco), then
    THE HUNT: the system finds its own work instead of waiting for tickets.
 3. The hunt has a mechanical arm and a reasoning arm. The mechanical one
@@ -61,8 +61,7 @@ written where the morning human reads them.
 
 - The bencina: three real tasks (surgical edit, bugfix, censor verdict) —
   latency and correctness. The incumbent is qwen3.8-27b:iq3s: 3/3 in 48s
-  (2026-09-21, with think:false — thinking burns 3 min/task on this Mac).
-  Beat it and the seat is yours.
+  (2026-09-21, with think:false). Beat it and the seat is yours.
 - The funnel (on the dashboard): windows → transformer applied → your honest
   nothings → your dead sessions → gate → PR → censor → merge. Every drop in
   that funnel is a named improvement. Your dead sessions should be zero.

@@ -28,6 +28,10 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 # shellcheck source=lib.sh
 source "$HERE/night-shift/lib.sh"
 DIR="${1:?uso: caccia-miglioria.sh <dir-repo>}"
+# (audit 2026-09-23): il secondo colpo chirurgico passava il prompt col feedback
+# come $2, ma qui si leggeva solo $1 — il retry era IDENTICO al primo colpo e la
+# "vittoria del chirurgo" non aveva base. Ora $2 (se presente) e' il prompt vero.
+PROMPT_SECONDO="${2:-}"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git: $DIR" >&2; exit 2; }
 cd "$DIR"
 
@@ -198,6 +202,11 @@ if [ "$TRANSFORMED" -eq 0 ]; then
   # consegna (18:53, 21:04): rc=1 a 240s in punto, col modello che pagava il
   # ricarico in coda. Il budget e' un soffitto, non una durata: chi finisce
   # prima finisce prima.)
+  # (audit 2026-09-23): al secondo colpo si usa il prompt col feedback del gate
+  # ($2) — prima si rileggeva $PROMPT e il retry era identico al primo tentativo.
+  if [ -n "${SECONDO_COLPO:-}" ] && [ -n "$PROMPT_SECONDO" ]; then
+    PROMPT="$PROMPT_SECONDO"
+  fi
   AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
 fi
 

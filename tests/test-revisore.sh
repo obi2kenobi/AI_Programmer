@@ -88,7 +88,7 @@ SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ok
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "APPROVA → rc 0" || ko "rc $RC (atteso 0): $(echo "$OUT" | tail -2)"
 echo "$OUT" | grep -q "\[DRY\] gh pr merge 7 --squash" && ok "delibera: squash-merge della PR #7" || ko "non ha delibera il merge"
-echo "$OUT" | grep -q "budget\|deliberazione 1/" || ok "budget registrato" || ko "budget non scritto"
+if echo "$OUT" | grep -q "budget\|deliberazione 1/"; then ok "budget registrato"; else ko "budget non scritto (audit 2026-09-23: il ko era irraggiungibile)"; fi
 B=$(cat "$SB"/.git/revisore/mergi-* 2>/dev/null | head -1)
 [ "$B" = "1" ] && ok "budget a 1/5 sul file" || ko "file budget: '$B'"
 BR_FIN=$(git -C "$SB" branch --show-current)
