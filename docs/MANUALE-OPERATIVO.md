@@ -6,7 +6,7 @@
 ## Ogni mattina (2 min)
 
 ```bash
-bash night-shift/morning-gate.sh          # il giudizio: verifiche + banco + minimità
+bash night-shift/morning-gate (IN PENSIONE dal 2026-09-23: decisione di dominio — vedi night-shift/README.md; il digest autonomo gira alle 7:30). Storia: morning-gate.sh          # il giudizio: verifiche + banco + minimità
 bash night-shift/gate-summary.sh          # i numeri: cosa funziona, cosa invecchia
 # registra i tuoi verdetti:
 bash night-shift/gate-esito.sh <repo> <pr> merge|chiusura|commessa
