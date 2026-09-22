@@ -54,7 +54,8 @@ INVOCAZIONE="${SEP}${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
 CMD_STRIPPED=$(printf '%s' "$CMD" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g; s/\`[^\`]*\`//g")
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
-if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE"; then
+_cp=$(printf '%s' "$CMD_STRIPPED")
+if grep -qE "$INVOCAZIONE" <<<"$_cp"; then
   jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). Se il push è davvero giusto, lo fa Luca a mano." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
