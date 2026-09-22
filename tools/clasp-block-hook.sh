@@ -88,7 +88,8 @@ fi
 
 # ADVISORY: comandi che leggono/passano credenziali — possibili e a volte
 # legittimi, ma chi li lancia deve sapere cosa sta toccando
-if echo "$CMD" | grep -qE 'clasp\.json|credenziali|\.env|printenv|secret|token[_ =]|refresh_token'; then
+_cp=$(echo "$CMD")
+if grep -qE 'clasp\.json|credenziali|\.env|printenv|secret|token[_ =]|refresh_token' <<<"$_cp"; then
   jq -n --arg c "Questo comando tocca credenziali: mai nel diff, mai nei log, mai in chat (pattern segreto-come-impronta). Se stai solo LEGGENDO per verificare un'impronta, ok — ma l'output resta locale." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$c}}'
   exit 0
