@@ -161,15 +161,9 @@ mask_secrets() {
     -e 's/(Authorization)[=: ]+(Bearer|Basic|Token)[= ]+[^ ,"]+/\1: \2 ***MASCHERATO***/gi'
 }
 
-# repo_code(): il hub è pubblico — nei dati versionati (metrics, report esportati) le repo
-# sono CODICI ANONIMI. La chiave vive solo in repos.key (locale, gitignored).
+# repo_code(): i codici anonimi sono stati ritirati (dominio, Luca 2026-09-23:
+# il mapping non era mai stato alimentato e i nomi possono comparire — resta
+# proibito l'ACCESSO). La funzione resta per i chiamatori: restituisce il nome.
 repo_code() {
-  local repo="$1" key="$HERE/repos.key"
-  if [ -f "$key" ]; then
-    while IFS='=' read -r code name; do
-      case "$code" in \#*|"") continue ;; esac
-      [ "$name" = "$repo" ] && { echo "$code"; return 0; }
-    done < "$key"
-  fi
-  echo "$repo"
+  echo "$1"
 }

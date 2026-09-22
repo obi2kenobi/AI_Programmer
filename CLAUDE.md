@@ -283,10 +283,12 @@ cite the pattern in commesse and code instead of re-deriving it. If the anchor i
 the pattern is dead: say so, don't trust folklore.
 
 ### Public repo, private work (2026-08-22 — binding)
-This hub is PUBLIC and contains method only: **never write names of private repos, people,
-or company specifics in any versioned file**. Use anonymous codes (REPO-A, REPO-B…); the
-mapping lives ONLY in `night-shift/repos.key` (local, gitignored). `tools/privacy-check.sh`
-enforces it and runs in `.night-verify`: a leak fails the gate. Method, not gossip.
+This hub is PUBLIC and contains method only. Privacy rule (Luca, refined 2026-09 —
+the anonymous-codes mechanism was retired 2026-09-23: the mapping in repos.key was
+never fed and the docs promised a shield that did not exist): **names of repos and
+people may appear; what must NEVER appear is ACCESS** — secrets, credentials, tokens,
+production pushes (clasp). `tools/privacy-check.sh` enforces the term list
+(~/.privacy-nomi, local) and runs in `.night-verify`: a leak fails the gate.
 Before citing a code, check `night-shift/repos-index.md` — a public, name-free registry
 of which role each code already covers (4° ciclo, set 3, 2026-08-23: built after nearly
 colliding a new code with an existing one before assigning REPO-E).
