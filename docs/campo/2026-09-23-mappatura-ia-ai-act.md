@@ -8,4 +8,4 @@ Scansione a grep degli endpoint di IA nel codice (59 repo clonati in sola lettur
 Distinguere l'IA "in esercizio" (endpoint chiamati dal codice sorgente) da quella "di sviluppo" (CLAUDE.md, .claude, .opencode): il primo grep contava anche le parole italiane ("dalle") e i documenti del metodo, gonfiando i conteggi.
 
 ## Proposta al canone
-Un `tools/censimento-ia.sh` che produca l'elenco fornitore·modello·file per repo, e una lente che segnali chiavi API scritte nel sorgente anche nei repo satellite (qui trovate a mano).
+Un `tools/censimento-ia.sh` che produca l'elenco fornitore·modello·file per repo.
