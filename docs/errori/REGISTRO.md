@@ -847,16 +847,18 @@
 - Famiglia: R2 (verde senza dati) + R4 (autoriferimento)
 - Chi l'ha trovato: studio esterno (il postmortem 0003 del loro repo descrive
   l'esatta stessa classe del nostro E-038)
-- Sintomo (loro): l'agente ha "verificato" un server di REPLACEMENT su un'altra
+- Sintomo: l'agente ha "verificato" un server di REPLACEMENT su un'altra
   porta mentre l'utente guardava l'originale; ha accettato un HTTP 200 di Vite
   nudo come "successo" nonostante la white-screen. Il nostro equivalente (E-038):
   il banco contava il verde dell'agente senza guardare il mondo.
+- Causa prossima: nessuna proprietà del mondo esterno veniva provata dopo il lavoro: la parola dell'agente bastava.
 - Causa del ragionamento: l'agente non conosce i prerequisiti nascosti del suo
   runtime (quale URL, quale processo, quale modalita') e verifica contro il
   proprio output invece che contro lo stato del mondo.
 - Perché non ci ha fermati: manca una regola esplicita nel canone.
 - Guardia: `tests/test-deploy-assistito.sh` (verifica STORICO.log e pacchetto
   consumato, non l'output dell'agente); questa voce.
+- Verifica guardia: `bash tests/test-deploy-assistito.sh` 6/6 (il banco guarda STORICO.log e il pacchetto consumato, non l'output dell'agente)
 - Aggiramento: dichiarare successo perche' "l'agente ha detto OK". La regola:
   ogni verdetto di completamento prova una proprieta' del MONDO (il file e'
   cambiato, il comando e' riuscito, il log contiene la firma) — mai la parola
@@ -876,4 +878,5 @@
 - Perché non ci ha fermati: nessuna lente sapeva che doveva guardare.
 - Guardia: `docs/eventi.md` (il catalogo) + `tests/test-eventi.sh` (per ogni
   firma: produttore contiene, consumatore esiste, orfane contate)
+- Verifica guardia: `bash tests/test-eventi.sh` 2/2 (per ogni firma: produttore contiene, consumatore esiste)
 - Aggiramento: aggiungere una firma di log senza aggiungerla al catalogo.

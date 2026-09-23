@@ -100,16 +100,10 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
 
   # prova a parsare come JSON action (spogliando i fence markdown)
   STRIPPED=$(echo "$CONTENT" | sed 's/^```[a-z]*//; s/```$//' | tr -d '\n' | sed 's/^ *//; s/ *$//')
-  # (studio deepseek-harness, guard/repeat-tool-reminder): l'azione IDENTICA
-  # ripetuta e' il segnale del loop che non converge — glielo diciamo nel RESULT
-  if [ "$STRIPPED" = "${PREV_STRIPPED:-}" ]; then
+  # (studio dsh guard, audit-4): conteggio qui, applicazione DOPO il case —
+  # prima RESULT="" a meta' giro azzerava il reminder (era un no-op)
+  if [ "$STRIPPED" = "${PREV_STRIPPED:-}" ] && [ -n "$STRIPPED" ]; then
     RIPETIZIONI=$((RIPETIZIONI+1))
-    if [ "$RIPETIZIONI" -ge 1 ]; then
-      RESULT="$RESULT
-
-NOTE: you just repeated the EXACT same action as the previous turn ($RIPETIZIONI times now). Same input, same output. Change your approach (read more context, try a different old/new pair) or declare finish with an honest result."
-      log "  repeat-reminder: azione identica per $((RIPETIZIONI+1)) turni di fila"
-    fi
   else
     RIPETIZIONI=0
   fi
@@ -218,6 +212,14 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       RESULT="ERROR: unknown action: $ACTION"
       log "  azione sconosciuta: $ACTION" ;;
   esac
+
+  # il reminder vive DOPO il case: RESULT e' pieno, il NOTE arriva al modello
+  if [ "$RIPETIZIONI" -ge 1 ]; then
+    RESULT="$RESULT
+
+NOTE: you have repeated the EXACT same action for $((RIPETIZIONI+1)) consecutive turns. Same input, same result. Change your approach (read more context, try a different old/new pair) or declare finish with an honest result."
+    log "  repeat-reminder: azione identica per $((RIPETIZIONI+1)) turni di fila"
+  fi
 
   # aggiorna la conversazione: risposta del modello + risultato dell'azione
   CONV=$(echo "$CONV" | jq \

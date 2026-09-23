@@ -1252,7 +1252,10 @@ fi
 if command -v gh >/dev/null 2>&1; then
   N_SCOPA=0
   while IFS=$'\t' read -r br prstato; do
-    [ -z "$br" ] || [ "$br" = "main" ] || continue
+    # (audit-4): la guardia || era INVERTITA — con A||B||continue, il continue
+    # scatta solo se ENTRAMBI i test falliscono: main veniva processato e i
+    # rami veri saltati. La forma if...then...continue e' l'unica corretta.
+    if [ -z "$br" ] || [ "$br" = "main" ]; then continue; fi
     case "$prstato" in MERGED|CLOSED)
       gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${br//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) ;;
     esac
