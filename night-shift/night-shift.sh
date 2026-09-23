@@ -40,7 +40,7 @@ rotate_log_if_big "$LOG"
 # si prende PRIMA di tutto. Stava dopo il self-pull (reset --hard dell'hub sotto il turno vivo)
 # e dopo il pkill degli opencode (l'agente del turno vivo): il turno manuale accanto a quello
 # delle 23:00 faceva il danno e solo dopo usciva. Il lock porta il PID e resta preso attraverso
-# `exec "$0"` (stesso PID): nessuna finestra fra un ciclo e il successivo. Regole in lib.sh
+# l'exec di fine ciclo (stesso PID): nessuna finestra fra un ciclo e il successivo. Regole in lib.sh
 # prendi_lock_turno (testata in tests/test-lib.sh).
 TURN_LOCK="$HOME/night-shift-work/.lock-turno"
 mkdir -p "$HOME/night-shift-work"
@@ -139,8 +139,12 @@ SERVER_ROUND=0
 until ensure_server; do
   SERVER_ROUND=$((SERVER_ROUND+1))
   if [ "$SERVER_ROUND" -ge "${SONDA_ROUND:-6}" ]; then
-    log "ERRORE: server Ollama sordo dopo $SERVER_ROUND round (30 minuti) — esco, il prossimo ciclo riprovera'"
-    exit 1
+    # (Q12, 2026-09-23): qui c'era `exit 1` con la promessa «il prossimo ciclo riprovera'» — ma il
+    # plist parte alle 23:00 e non ha KeepAlive: nessuno riportava il turno fino alla sera dopo.
+    # Il ciclo riparte da capo (stesso PID: il lock resta suo), e il log lo dice.
+    log "ERRORE: server Ollama sordo dopo $SERVER_ROUND round (30 minuti) — riparto da capo fra 5 minuti (nessun launchd mi riporterebbe prima delle 23:00)"
+    sleep 300
+    exec bash "$HERE/night-shift.sh" "$@"
   fi
   log "⚠ server non visto (round $SERVER_ROUND/${SONDA_ROUND:-6}): attendo 5 minuti e riprovo — non esco per un wedge transitorio"
   sleep 300
@@ -170,8 +174,10 @@ PROBE_ROUND=0
 while ! probe; do
   PROBE_ROUND=$((PROBE_ROUND+1))
   if [ "$PROBE_ROUND" -ge "${SONDA_ROUND:-6}" ]; then
-    log "ERRORE: server sordo dopo $PROBE_ROUND round di sonda (30 minuti) — esco: KeepAlive mi riporta, il prossimo giro riprova"
-    exit 1
+    # (Q12): il log prometteva che KeepAlive l'avrebbe riportato — il plist non ce l'ha. Si riparte da capo.
+    log "ERRORE: server sordo dopo $PROBE_ROUND round di sonda (30 minuti) — riparto da capo fra 5 minuti (nessun launchd mi riporterebbe prima delle 23:00)"
+    sleep 300
+    exec bash "$HERE/night-shift.sh" "$@"
   fi
   log "⚠ Sonda di generazione muta (round $PROBE_ROUND/${SONDA_ROUND:-6}): riavvio server e attendo 5 minuti — un wedge transitorio passa, non esco per lui"
   # Finding #4 (2026-08-21): il server è di LAUNCHD (KeepAlive) — se lo killiamo e ne
@@ -476,7 +482,9 @@ sys.exit(0 if ultima in blocco else 1)
         CRLF_FILES=$(grep -rl $'\r' "$DIR"/tools/*.sh "$DIR"/night-shift/*.sh "$DIR"/tests/*.sh 2>/dev/null | head -5 || true)
         if [ -n "$CRLF_FILES" ]; then
           for CF in $CRLF_FILES; do
-            LC_ALL=C tr -d '\r' < "$CF" > "$CF.tmp" && mv "$CF.tmp" "$CF"
+            # (Q12): `mv` del temporaneo perdeva +x (e la PR portava un cambio di modo 755→644):
+            # si riscrive il contenuto nello STESSO file, che tiene i suoi permessi
+            LC_ALL=C tr -d '\r' < "$CF" > "$CF.tmp" && cat "$CF.tmp" > "$CF" && rm -f "$CF.tmp"
             log "REPO $REPO: auto-fix — CRLF bonificato in $(basename "$CF")"
             FIX_APPLICATI=$((FIX_APPLICATI+1))
           done
@@ -1365,7 +1373,9 @@ if [ "$TOT_PR_CREATED" -eq 0 ] && [ "$TOT_PROPOSTE" -eq 0 ] && [ "$CICLO_SEC" -l
 else
   log "=== TURNO FINITO — riparto SUBITO ==="
 fi
-# il lock NON si rilascia: il ciclo dopo l'exec ha lo stesso PID e lo ritrova suo (Q10)
-exec "$0" "$@"
+# il lock NON si rilascia: il ciclo dopo l'exec ha lo stesso PID e lo ritrova suo (Q10).
+# (Q12): ripartiva da $0 — lanciato come `bash night-shift.sh` da dentro night-shift/, $0 e'
+# relativo e dopo il `cd` alla radice non esiste: il turno moriva al primo giro. E voleva +x.
+exec bash "$HERE/night-shift.sh" "$@"
 
 exit $GLOBAL_RC

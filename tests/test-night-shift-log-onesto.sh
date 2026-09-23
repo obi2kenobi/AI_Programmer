@@ -56,6 +56,36 @@ PAUSA_DI() { # $1=durata ciclo $2=soglia — replica la condizione del turno con
 [ "$(PAUSA_DI 70 60)" = "0" ] && ok "D17: ciclo sopra la soglia → nessuna pausa (chi lavora riparte subito)" || ko "D17: pausa su ciclo lungo"
 grep -q 'riparto SUBITO' "$NS" && ok "D17: il ramo «riparto SUBITO» resta per i cicli che lavorano (decisione di Luca 2026-09-18 rispettata)" || ko "D17: sparito il riparto immediato"
 
+# --- Q12 (2026-09-23, giro A5 della notte): tre promesse del turno che non si mantenevano.
+# (a) `exec "$0"` a fine ciclo: lanciato come `bash night-shift.sh` da dentro night-shift/, $0 e'
+#     relativo e dopo il `cd` alla radice non esiste piu' — il turno moriva al primo giro. E vuole +x.
+grep -q 'exec "\$0"' "$NS" && ko "Q12a: il ciclo riparte con exec \"\$0\" (relativo dopo il cd, e vuole +x)" \
+  || ok "Q12a: il ciclo non riparte piu' da \$0"
+grep -q 'exec bash "\$HERE/night-shift.sh" "\$@"' "$NS" && ok "Q12a: il ciclo riparte da un percorso assoluto, via bash" \
+  || ko "Q12a: manca il riavvio assoluto exec bash \"\$HERE/night-shift.sh\""
+# (b) il server sordo dopo 30 minuti faceva `exit 1` promettendo «il prossimo ciclo riprovera'» e
+#     «KeepAlive mi riporta»: il plist non ha KeepAlive, parte alle 23:00 — nessuno lo riportava.
+PLIST="$HERE/night-shift/plist/com.luca.nightshift.plist"
+grep -q KeepAlive "$PLIST" && echo "· Q12b: il plist ora ha KeepAlive — rivedere questo caso"
+USCITE=$(grep -A1 -E 'log "ERRORE: server (Ollama )?sordo dopo' "$NS" | grep -c '^[[:space:]]*exit 1')
+[ "$USCITE" = "0" ] && ok "Q12b: server sordo dopo la pazienza → il turno riparte da capo, non esce per sempre" \
+  || ko "Q12b: $USCITE uscite per server sordo: senza KeepAlive nessuno riporta il turno prima delle 23:00"
+grep -q 'KeepAlive mi riporta' "$NS" && ko "Q12b: il log promette un KeepAlive che il plist non ha" || ok "Q12b: nessuna promessa di KeepAlive nel log"
+grep -q 'launchd lo riparte da solo' "$HERE/tools/turno-vivo.sh" && ko "Q12b: turno-vivo promette che launchd riparte il turno ucciso" \
+  || ok "Q12b: turno-vivo non promette un riavvio che non c'e'"
+# (c) l'auto-fix CRLF riscriveva il file con `mv` di un temporaneo: perdeva +x, e la PR di
+#     auto-fix portava anche un cambio di modo 755→644. Si esegue la riga vera su un file 755.
+RIGA_CRLF=$(grep -F "tr -d '\r' < \"\$CF\"" "$NS" | head -1)
+if [ -n "$RIGA_CRLF" ]; then
+  CFT=$(mktemp -d); CF="$CFT/x.sh"; printf '#!/bin/bash\r\necho ok\r\n' > "$CF"; chmod 755 "$CF"
+  ( cd "$CFT" && CF="$CF" eval "$RIGA_CRLF" )
+  { [ -x "$CF" ] && ! grep -q $'\r' "$CF"; } && ok "Q12c: l'auto-fix CRLF toglie i \\r e tiene +x" \
+    || ko "Q12c: l'auto-fix CRLF perde +x (o lascia i \\r): $(ls -l "$CF" | cut -c1-10)"
+  rm -rf "$CFT"
+else
+  ko "Q12c: la riga dell'auto-fix CRLF non si trova"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -44,7 +44,10 @@ if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
   echo "⛔ TURNO INCASTRATO: ultimo ciclo iniziato ${ETA_MIN} minuti fa (soglia ${SOGLIA_MIN}min)."
   echo "   Nel continuo un ciclo non supera i ~15 minuti: qualcosa dentro sta hangando."
   echo "   Dove si e' fermato: l'ultima riga di $LOG."
-  echo "   Pulizia consolidata: pkill -f \"night-shift/night-shift.sh\" — launchd lo riparte da solo."
+  # (Q12, 2026-09-23): prometteva un riavvio automatico di launchd — il plist parte alle 23:00 e non ha
+  # KeepAlive (night-shift/plist/com.luca.nightshift.plist): dopo il pkill il turno resta giu'.
+  echo "   Pulizia: pkill -f \"night-shift/night-shift.sh\", poi riavvialo — launchd da solo lo riparte solo alle 23:00:"
+  echo "   launchctl kickstart gui/\$(id -u)/\$(launchctl list | awk '/nightshift/{print \$3}')"
   exit 1
 fi
 echo "turno-vivo: il turno cicla (ultimo iniziato ${ETA_MIN}min fa, soglia ${SOGLIA_MIN}min)"

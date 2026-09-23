@@ -3441,3 +3441,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Ora i 5 commenti passano da `night-shift/lib.sh` commenta_una_volta: un marcatore invisibile
     per motivo, e con i commenti illeggibili non si commenta.
   - Banco: `tests/test-lib.sh`, 4 casi. Sabotaggio (via il controllo del marcatore): 1 rosso.
+- **Q12**, da A5, tre promesse del turno che non si mantenevano (`night-shift/night-shift.sh`):
+  - il riavvio di fine ciclo usava `$0`: lanciato da dentro night-shift/, dopo il `cd` alla radice
+    il percorso non esisteva più. Ora `exec bash "$HERE/night-shift.sh"`, assoluto;
+  - il server sordo dopo 30 minuti faceva `exit 1` promettendo il ritorno («il prossimo ciclo»,
+    «KeepAlive»), ma il plist parte alle 23:00 e non ha KeepAlive: nessuno lo riportava. Ora
+    riparte da capo. Anche `tools/turno-vivo.sh` prometteva il riavvio di launchd: ora dà il
+    kickstart;
+  - l'auto-fix CRLF rimpiazzava il file con `mv`: perdeva +x, e la PR portava un 755→644. Ora
+    riscrive lo stesso file.
+  - Banco: `tests/test-night-shift-log-onesto.sh`, 7 casi; il caso CRLF esegue la riga vera su un
+    file 755. Sabotaggio (di nuovo `mv`): 1 rosso.

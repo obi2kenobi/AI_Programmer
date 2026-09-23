@@ -21791,7 +21791,7 @@
       },
       "norm_label": "lang",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L155"
+      "source_location": "L159"
     },
     {
       "id": "night_shift_night_shift_lc_all",
@@ -21806,7 +21806,7 @@
       },
       "norm_label": "lc_all",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L155"
+      "source_location": "L159"
     },
     {
       "id": "night_shift_night_shift_log",
@@ -21836,7 +21836,7 @@
       },
       "norm_label": "path",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L151"
+      "source_location": "L155"
     },
     {
       "id": "night_shift_night_shift_probe",
@@ -21881,7 +21881,7 @@
       },
       "norm_label": "shift_repo()",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L199"
+      "source_location": "L205"
     },
     {
       "id": "tests_test_banco_prompt_allowlist_sync",
@@ -48150,7 +48150,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1307",
+      "source_location": "L1315",
       "weight": 1.0
     },
     {
@@ -48174,7 +48174,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L170",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -48222,7 +48222,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1019",
+      "source_location": "L1027",
       "weight": 1.0
     },
     {
@@ -48234,7 +48234,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L202",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -48246,7 +48246,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L236",
+      "source_location": "L242",
       "weight": 1.0
     },
     {
@@ -48258,7 +48258,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L301",
+      "source_location": "L307",
       "weight": 1.0
     },
     {
@@ -48270,7 +48270,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L624",
+      "source_location": "L632",
       "weight": 1.0
     },
     {
@@ -48282,7 +48282,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L644",
+      "source_location": "L652",
       "weight": 1.0
     },
     {
@@ -48294,7 +48294,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L666",
+      "source_location": "L674",
       "weight": 1.0
     },
     {
@@ -48306,7 +48306,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L788",
+      "source_location": "L796",
       "weight": 1.0
     },
     {
@@ -81534,7 +81534,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L151",
+      "source_location": "L155",
       "weight": 1.0
     },
     {
@@ -81545,7 +81545,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L155",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -81556,7 +81556,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L155",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -81567,7 +81567,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L199",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -89284,5 +89284,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d0b84829e42296f1b24888420a9e56c6c8534388"
+  "built_at_commit": "825c8260b40af5b5a668940426637016b106b238"
 }
