@@ -3354,3 +3354,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   git), che ESEGUONO un programma, e il censore le esegue con eval.
   - Ora un gruppo corto con O e un prefisso di un'opzione pericolosa si rifiutano.
   - 6 casi nel banco, rossi prima, e 3 legittimi che restano verdi.
+- **Q1**, da A1, sicurezza: senza `jq` il cancello clasp era APERTO (`|| exit 0`), e senza JSON
+  solo `exit 2` blocca. Ora c'è un modo prudente: grep sull'input grezzo ed `exit 2` per
+  push/deploy/deploy-ora. 4 casi, con un PATH senza jq.
+- **Q2**, da A1, sicurezza: 17 forme della shell scavalcavano il cancello, tutte provate:
+  `if`, `!`, `while`/`until`, `timeout N`, `command`, `nice`, `watch`, `xargs -I{}`/`-n 1`,
+  `find -execdir`, `parallel`, `clasp -A f push`. In più `deploy` combaciava con `deployments`.
+  - La regola è in tre pezzi: PREF (le parole che eseguono ciò che segue), OPT (le opzioni prima
+    del sottocomando), FINE (la fine della parola).
+  - 19 casi nuovi rossi, poi 88/88 con tutti i vecchi falsi positivi ancora verdi.

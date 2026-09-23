@@ -209,6 +209,26 @@ ${P} ${V}")" = "deny" ] && ok "<<< (herestring) non e' un heredoc: il push sotto
 [ "$(decideh "grep -n deploy-ora tools/prepara-deploy.sh")" = "consentito" ] && ok "cercare deploy-ora con grep: consentito (e' un argomento, non un'invocazione)" || ko "grep su deploy-ora negato a torto"
 [ "$(decideh "bash tools/prepara-deploy.sh repo")" = "consentito" ] && ok "prepara-deploy (solo il pacchetto): consentito" || ko "prepara-deploy negato a torto"
 
+# ── (2026-09-23, giro A1 della notte) SENZA jq il cancello era APERTO: `command -v jq || exit 0` ──
+# Solo `exit 2` blocca senza JSON (documentazione degli hook di Claude Code). Senza jq: modo prudente.
+NOJQ=$(mktemp -d); for b in bash sh cat printf tr sed grep awk head tail env; do ln -s "$(command -v "$b")" "$NOJQ/$b" 2>/dev/null; done
+senza_jq() { printf '%s' "$1" | PATH="$NOJQ" bash "$HOOK" >/dev/null 2>&1; echo $?; }
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"clasp push"}}')" = "2" ] && ok "senza jq: clasp push NEGATO (exit 2, modo prudente)" || ko "senza jq il cancello e' aperto"
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"bash tools/deploy-ora.sh r"}}')" = "2" ] && ok "senza jq: deploy-ora NEGATO" || ko "senza jq deploy-ora passa"
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"ls -la"}}')" = "0" ] && ok "senza jq: un comando innocuo passa" || ko "senza jq tutto e' bloccato"
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"clasp deployments"}}')" = "0" ] && ok "senza jq: clasp deployments (sola lettura) passa" || ko "senza jq clasp deployments negato"
+rm -rf "$NOJQ"
+
+# ── (2026-09-23, giro A1 della notte) le forme della shell che scavalcavano il cancello, provate ─
+for FORMA in "if ${P} ${V}; then echo ok; fi" "! ${P} ${V}" "while ${P} ${V}; do sleep 1; done" "until ${P} ${V}; do sleep 1; done" \
+             "timeout 600 ${P} ${V}" "timeout -k 5 60 ${P} ${V}" "command ${P} ${V}" "nice ${P} ${V}" "nice -n 10 ${P} ${V}" "watch ${P} ${V}" \
+             "cat x | xargs -I{} ${P} ${V}" "xargs -n 1 ${P} ${V}" "find . -name .clasp.json -execdir ${P} ${V} \\;" "parallel ${P} ${V} ::: a b" \
+             "${P} -A creds.json ${V}" "${P} --auth creds.json ${V}" "cd x && ${P} -P ./src deploy"; do
+  [ "$(decideh "$FORMA")" = "deny" ] && ok "NEGATO: $FORMA" || ko "passa il cancello: $FORMA"
+done
+[ "$(decideh "${P} deployments")" = "consentito" ] && ok "${P} deployments (elenca soltanto): consentito" || ko "${P} deployments negato a torto (deploy combaciava con deployments)"
+[ "$(decideh "${P} pull && ${P} status")" = "consentito" ] && ok "${P} pull e status: consentiti" || ko "lettura negata a torto"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

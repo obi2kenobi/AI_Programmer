@@ -10,7 +10,18 @@
 # Il deploy è dell'umano: questa è l'unica regola del sistema che da oggi
 # non dipende dalla memoria dell'agente.
 set -uo pipefail
-command -v jq >/dev/null 2>&1 || exit 0
+# (2026-09-23, giro A1 della notte): senza jq il cancello era APERTO (`|| exit 0`), e senza JSON
+# solo `exit 2` blocca (documentazione degli hook di Claude Code). Senza jq: MODO PRUDENTE — un
+# grep sull'input grezzo nega push/deploy/deploy-ora con exit 2; tutto il resto passa. Puo'
+# negare a torto una citazione (niente spoglio senza jq): meglio un falso rosso che un cancello aperto.
+if ! command -v jq >/dev/null 2>&1; then
+  GREZZO="$(cat)"
+  if grep -qE 'clasp[^"]*[^a-z](push|deploy)([^a-z]|$)|deploy-ora' <<<"$GREZZO"; then
+    echo "NEGATO (clasp-block-hook, jq ASSENTE: modo prudente): clasp push/deploy e deploy-ora sono dell'umano. Installa jq per il cancello completo." >&2
+    exit 2
+  fi
+  exit 0
+fi
 
 INPUT="$(cat)"
 CMD="$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
@@ -40,13 +51,20 @@ TOOL="$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)"
 # comando che segue (time, nohup, exec, xargs). Ora SEP riconosce anche ( { e le parole della
 # shell che aprono un comando. I prefissi ARBITRARI (env, sudo) restano fuori, per la ragione
 # detta sotto.
-SEP='(^|[;&|({][[:space:]]*|(^|[;&|({][[:space:]]*|[[:space:]])(do|then|else|elif|time|nohup|exec|xargs([[:space:]]+-[A-Za-z0-9]+)*)[[:space:]]+)'
+# (2026-09-23, giro A1 della notte): 17 forme comuni passavano ancora, provate eseguendo — le parole
+# che ESEGUONO il comando che segue (if, !, while, until, timeout N, command, nice, watch, xargs con
+# opzioni, find -execdir, parallel), le opzioni di clasp PRIMA del sottocomando (`clasp -A f push`),
+# e `deploy` combaciava con `deployments`, che elenca soltanto. Tre pezzi: PREF, OPT, FINE.
+PREF='(do|then|else|elif|if|while|until|!|time|nohup|exec|command|watch([[:space:]]+-[^[:space:]]+)*|nice([[:space:]]+-n[[:space:]]*-?[0-9]+|[[:space:]]+-[0-9]+)?|timeout([[:space:]]+-[^[:space:]]+([[:space:]]+[0-9.]+[smhd]?)?)*[[:space:]]+[0-9.]+[smhd]?|xargs([[:space:]]+-[^[:space:]]+([[:space:]]+[0-9]+)?)*|-exec(dir)?|parallel([[:space:]]+-[^[:space:]]+)*)'
+SEP="(^|[;&|({][[:space:]]*|(^|[;&|({][[:space:]]*|[[:space:]])${PREF}[[:space:]]+)"
 RUN='((npx|bunx|npm[[:space:]]+exec|pnpm[[:space:]]+dlx|yarn[[:space:]]+dlx)[[:space:]]+(-{1,2}[A-Za-z0-9-]+[[:space:]]+)*)?'
 BIN='([A-Za-z0-9_./-]*/)?(@google/)?'
-INVOCAZIONE="${SEP}${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
+OPT='([[:space:]]+-[^[:space:]]+([[:space:]]+[^-[:space:];&|][^[:space:];&|]*)?)*'
+FINE='([[:space:];&|)"'"'"']|$)'
+INVOCAZIONE="${SEP}${RUN}${BIN}clasp${OPT}[[:space:]]+(push|deploy)${FINE}"
 # `bash -c "…"` (e sh/zsh/dash): le virgolette sono DATI per lo spoglio qui sotto, ma
 # l'interprete le ESEGUE — si guarda il comando intero, con l'invocazione dentro le virgolette.
-SHC="(^|[;&|({[:space:]])(ba|z|da)?sh[[:space:]]+(-[A-Za-z]+[[:space:]]+)*-[A-Za-z]*c[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
+SHC="(^|[;&|({[:space:]])(ba|z|da)?sh[[:space:]]+(-[A-Za-z]+[[:space:]]+)*-[A-Za-z]*c[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${RUN}${BIN}clasp${OPT}[[:space:]]+(push|deploy)${FINE}"
 
 # (report REPO-I 2026-09-19, H7 — due buchi misurati eseguendo):
 #   a) `npm run push` non contiene la stringa clasp e PASSAVA — ed e' la via che
