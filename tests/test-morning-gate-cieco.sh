@@ -1,4 +1,5 @@
 #!/bin/bash
+# (dominio 2026-09-23): il morning-gate e' in pensione — questo test verifica codice che resta nel repo ma non gira piu' da launchd. Tenuto perche' il gate resta invocabile a mano.
 # test-morning-gate-cieco.sh — il gate del mattino con gli occhi chiusi (test del
 # sistema completo 2026-09-20, D7 e D8). Due difetti riprodotti prima della cura:
 #   D7: senza `gh` (assente o non autenticato) il gate scriveva «0 PR notturne aperte —
