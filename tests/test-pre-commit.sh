@@ -14,7 +14,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 bash -n "$HOOK" && ok "sintassi" || ko "sintassi rotta"
 [ -x "$HERE/.githooks/pre-commit" ] && ok "il gancio git esiste ed è eseguibile" || ko ".githooks/pre-commit assente"
-grep -q "git grep -lP" "$HOOK" && ok "usa git grep -P (il grep BSD non ha -P: falso verde storico)" || ko "usa grep -P nudo: muore in silenzio su macOS"
+grep -qE "git .*grep --cached -lP" "$HOOK" && ok "usa git grep -P (il grep BSD non ha -P: falso verde storico)" || ko "usa grep -P nudo: muore in silenzio su macOS"
 
 # caso avverso: glifo staged → rosso (costruito a runtime, E-007)
 PROBE="$HERE/docs/_probe_glifo.md"
@@ -108,6 +108,46 @@ rm -f "$MSGF"
 # caso pulito: nessun file staged → via libera
 OUT=$(bash "$HOOK"); RC=$?
 [ "$RC" -eq 0 ] && ok "niente staged: via libera" || { echo "$OUT" | tail -2 | sed 's/^/    /'; ko "rosso a vuoto"; }
+
+# --- Q9 (2026-09-23, giro A2 della notte): il gancio giudicava il WORKING TREE, non l'indice.
+#     Il commit porta l'indice: un glifo stage-ato e poi tolto solo dal working tree passava
+#     (falso verde), il caso inverso bloccava (falso rosso). E i nomi accentati arrivavano
+#     da `git diff --name-only` fra virgolette ottali ("perch\303\251.md"): `[ -f ]` li
+#     saltava in silenzio. Si prova in un repo temporaneo: l'indice dell'hub non si tocca.
+Q9=$(mktemp -d)
+git -C "$Q9" init -q
+mkdir -p "$Q9/tools" "$Q9/docs"
+cp "$HOOK" "$HERE/tools/cita-verifica.sh" "$Q9/tools/"
+q9() { ( cd "$Q9" && HOME="$Q9" bash tools/pre-commit.sh >"$Q9/out" 2>&1 ); echo $?; }
+q9_pulisci() { git -C "$Q9" read-tree --empty; rm -rf "$Q9/docs" "$Q9/tools/p.sh"; mkdir -p "$Q9/docs"; }
+printf 'test %s dentro\n' "$GLIFO" > "$Q9/docs/a.md"; git -C "$Q9" add docs/a.md
+printf 'test pulito\n' > "$Q9/docs/a.md"
+[ "$(q9)" -ne 0 ] && grep -qi alieni "$Q9/out" \
+  && ok "Q9: glifo nell'INDICE (working tree gia' pulito) → rosso: si giudica cio' che si committa" \
+  || ko "Q9: glifo nell'indice non visto perche' il working tree e' pulito — falso verde"
+q9_pulisci
+printf 'test pulito\n' > "$Q9/docs/b.md"; git -C "$Q9" add docs/b.md
+printf 'test %s dentro\n' "$GLIFO" > "$Q9/docs/b.md"
+[ "$(q9)" -eq 0 ] && ok "Q9: glifo solo nel working tree (non stage-ato) → verde: non entra nel commit" \
+  || ko "Q9: glifo NON stage-ato blocca il commit — falso rosso: $(head -3 "$Q9/out")"
+q9_pulisci
+printf 'vedi `inesistente-q9.md`\n' > "$Q9/docs/perché.md"; git -C "$Q9" add "docs/perché.md"
+[ "$(q9)" -ne 0 ] && grep -q "inesistente-q9.md" "$Q9/out" \
+  && ok "Q9: un .md con nome ACCENTATO si controlla (path pendente visto)" \
+  || ko "Q9: il .md accentato e' saltato in silenzio: $(head -3 "$Q9/out")"
+q9_pulisci
+printf 'citato `tools/cita-verifica.sh:999`\n' > "$Q9/docs/c.md"; git -C "$Q9" add docs/c.md
+printf 'citato niente\n' > "$Q9/docs/c.md"
+[ "$(q9)" -ne 0 ] && grep -q "cita-verifica.sh:999" "$Q9/out" \
+  && ok "Q9: la citazione file:riga rotta nell'INDICE si vede (e il messaggio cita il path vero)" \
+  || ko "Q9: citazione rotta nell'indice non vista: $(head -3 "$Q9/out")"
+q9_pulisci
+printf '#!/bin/bash\ncmd | tail -1 %s git commit -m x\n' '&&' > "$Q9/tools/p.sh"; git -C "$Q9" add tools/p.sh
+printf '#!/bin/bash\necho pulito\n' > "$Q9/tools/p.sh"
+[ "$(q9)" -ne 0 ] && grep -q pipeline "$Q9/out" \
+  && ok "Q9: pipe+&& nell'INDICE → rosso anche col working tree pulito" \
+  || ko "Q9: pipe+&& nell'indice non visto — falso verde"
+rm -rf "$Q9"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

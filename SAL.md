@@ -3405,3 +3405,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Banco: `tests/test-ask-wrappers.sh`, 4 casi rossi prima; la chiave finta si conta, non si
     stampa. Il curl vero, contro un server locale, accetta header da fd e corpo da stdin.
     Sabotaggio: la chiave rimessa in argv rifà rossi 2 casi.
+- **Q9**, da A2, falso verde alla frontiera: `tools/pre-commit.sh` giudicava il working tree, ma
+  il commit porta l'indice. Un glifo, un pipe+&& o una citazione rotta stage-ati e poi tolti solo
+  dal disco passavano; il caso inverso bloccava. I nomi accentati arrivavano fra virgolette
+  ottali: saltati, e git grep moriva.
+  - Ora i nomi escono con `core.quotePath=false`, git grep usa `--cached`, e gli altri controlli
+    leggono `git show ":$f"`. cita-verifica riceve una copia dell'indice.
+  - Banco in un repo temporaneo (`tests/test-pre-commit.sh`, 5 casi Q9): 5 rossi prima.
+    Sabotaggio (via `--cached` e lettura dal disco): 4 rossi.
+  - Visto di passaggio: il resto del test stage-a `graphify-out/graph.json` nell'hub (Q23).

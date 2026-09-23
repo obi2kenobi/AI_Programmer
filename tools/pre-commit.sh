@@ -54,11 +54,19 @@ fi
 # rilevatore. LC_ALL preimpostato dal chiamante vince (i test lo usano per forzare la morte).
 UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
 export LANG="${LANG:-${UTF_LOCALE:-en_US.UTF-8}}" LC_ALL="${LC_ALL:-${UTF_LOCALE:-en_US.UTF-8}}"
+# (Q9, 2026-09-23, giro A2 della notte): ogni controllo leggeva il WORKING TREE, ma il commit
+# porta l'INDICE — un glifo stage-ato e poi tolto solo dal disco passava (falso verde), il caso
+# inverso bloccava (falso rosso). E `git diff --name-only` mette fra virgolette ottali i nomi
+# accentati ("docs/perch\303\251.md"): `[ -f ]` li saltava, git grep moriva. Ora i nomi escono
+# senza virgolette e i contenuti si leggono dall'indice. (Un nome con un a-capo resta fuori.)
+staged() { git -c core.quotePath=false diff --cached --name-only "$@" 2>/dev/null; }
+indice() { git show ":$1" 2>/dev/null; }     # il contenuto che il commit porta
+nell_indice() { git cat-file -e ":$1" 2>/dev/null; }
 STAGED_SPEC=()
-while IFS= read -r f; do [ -n "$f" ] && STAGED_SPEC+=(":$f"); done < <(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null)
+while IFS= read -r f; do [ -n "$f" ] && STAGED_SPEC+=(":$f"); done < <(staged --diff-filter=ACMR)
 ALIENI_RC=0; ALIENI_RAW=""
 if [ ${#STAGED_SPEC[@]} -gt 0 ]; then
-  ALIENI_RAW=$(git grep -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}]' -- "${STAGED_SPEC[@]}" 2>/dev/null); ALIENI_RC=$?
+  ALIENI_RAW=$(git -c core.quotePath=false grep --cached -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}]' -- "${STAGED_SPEC[@]}" 2>/dev/null); ALIENI_RC=$?
 fi
 ALIENI=$(printf '%s\n' "$ALIENI_RAW" | grep -vE '^$|docs/errori/REGISTRO.md' || true)
 [ "$ALIENI_RC" -ge 2 ] && { echo "⛔ il controllo glifi e' MORTO (git grep rc=$ALIENI_RC: locale?) — rosso, mai finto verde (rc=1 e' «nessun reperto», sano)"; FALLITI=1; }
@@ -71,7 +79,7 @@ CRLF=""; CRLF_RC=1
 # (revisione 10 giri, 2026-09-23): era `… 2>/dev/null || true` — un git grep -P morto (rc 128:
 # PCRE o locale) passava per «nessun CRLF». Stessa regola del controllo glifi qui sopra.
 if [ ${#CRLF_SPEC[@]} -gt 0 ]; then
-  CRLF=$(git grep -lP '\r$' -- "${CRLF_SPEC[@]}" 2>/dev/null); CRLF_RC=$?
+  CRLF=$(git -c core.quotePath=false grep --cached -lP '\r$' -- "${CRLF_SPEC[@]}" 2>/dev/null); CRLF_RC=$?
 fi
 [ "$CRLF_RC" -ge 2 ] && { echo "⛔ il controllo CRLF e' MORTO (git grep rc=$CRLF_RC: locale/PCRE?) — rosso, mai finto verde"; FALLITI=1; }
 [ -n "$CRLF" ] && { echo "⛔ fine-riga CRLF (muoiono a runtime):"; echo "$CRLF"; FALLITI=1; }
@@ -85,15 +93,15 @@ fi
 PEND=""
 TARGET=$(grep -vE '^#|^$' "$HERE/tools/.file-del-target" 2>/dev/null || true)
 while IFS= read -r f; do
-  [ -f "$f" ] || continue
+  nell_indice "$f" || continue
   while IFS= read -r m; do
     echo "$TARGET" | grep -qxF "$m" && continue          # file-del-target: nel progetto, non qui
     # (2026-09-20): un nome nudo si risolve anche nella CARTELLA del documento che lo cita
     # (docs/bc/README.md cita `CORREZIONI.md` che vive accanto a lui — l'indice BC generato
     # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)
     [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e "patterns/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
-  done < <(grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' "$f" | tr -d '`')
-done < <(git diff --cached --name-only 2>/dev/null | grep '\.md$')
+  done < <(indice "$f" | grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' | tr -d '`')
+done < <(staged | grep '\.md$')
 [ -n "$PEND" ] && { echo "⛔ path citati ma inesistenti:"; echo "$PEND"; FALLITI=1; }
 
 # 4. numero-test nel messaggio — quando lo script e' invocato a mano col messaggio
@@ -113,22 +121,31 @@ controlla_numero_test "${1:-}" || FALLITI=1
 #    una pipeline, e il dente scattava su un commento di bootstrap-app.sh.
 PIPE_AND=""
 while IFS= read -r f; do
-  [ -f "$f" ] || continue
+  nell_indice "$f" || continue
   # la guardia cita il pattern che sorveglia nel proprio commento: non è peccato
   case "$f" in tools/pre-commit.sh|.githooks/pre-commit) continue;; esac
   while IFS= read -r riga; do
     PIPE_AND="$PIPE_AND $f: $riga"
-  done < <(grep -nE '(^|[^|])\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' "$f" | sed 's/^\([0-9]*\):/riga \1:/' || true)
-done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.(sh|py)$')
+  done < <(indice "$f" | grep -nE '(^|[^|])\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' | sed 's/^\([0-9]*\):/riga \1:/' || true)
+done < <(staged | grep -E '\.(sh|py)$')
 [ -n "$PIPE_AND" ] && { echo "⛔ pipeline seguita da && (l'esito è del solo ultimo comando — la regola del 3/9 era prose, ora è un dente):"; echo "$PIPE_AND"; FALLITI=1; }
 
 # 6. (contromisura REPO-V 7/9) citazioni file:riga nei .md staged: la riga citata esiste
 # (dominio 2026-09-23): i report di campo citano i file dei repo AUDITATI
 # (case esterne: config.gs, vendite.gs...) — prove portate come evidenza, non
 # istruzioni che devono risolvere nell'hub. Esenti dal file:riga, dichiarato.
-STAGED_MD=$(git diff --cached --name-only 2>/dev/null | grep '\.md$' | grep -v '^docs/campo/' || true)
-if [ -n "$STAGED_MD" ]; then
-  if ! bash "$HERE/tools/cita-verifica.sh" $STAGED_MD; then FALLITI=1; fi
+# (Q9): cita-verifica legge file su disco — gli si passa una COPIA dell'indice, e i messaggi
+# tornano col path vero. I file citati si risolvono contro il working tree: dichiarato.
+IDX=$(mktemp -d); trap 'rm -rf "$IDX"' EXIT
+COPIE=()
+while IFS= read -r f; do
+  nell_indice "$f" || continue
+  mkdir -p "$IDX/$(dirname "$f")"; indice "$f" > "$IDX/$f"; COPIE+=("$IDX/$f")
+done < <(staged | grep '\.md$' | grep -v '^docs/campo/' || true)
+if [ ${#COPIE[@]} -gt 0 ]; then
+  CV=$(bash "$HERE/tools/cita-verifica.sh" "${COPIE[@]}"); CV_RC=$?
+  printf '%s\n' "${CV//$IDX\//}"
+  [ "$CV_RC" -eq 0 ] || FALLITI=1
 fi
 
 # 7. (E-025, 2026-09-14) NOMI VERO-DA-CASA alla frontiera: report col partner e persone
@@ -138,16 +155,17 @@ fi
 if [ -f "$HOME/.privacy-nomi" ]; then
   LEAK=""
   while IFS= read -r f; do
-    [ -f "$f" ] || continue
+    nell_indice "$f" || continue
     # eccezione DICHIARATA (2026-09-14): docs/bc/ documenta lo SCHEMA del tenant — i nomi
     # delle entita' (es. le estensioni del gruppo) sono FATTI, rinominarli mentirebbe
     # sulla documentazione. La prosa nei report resta protetta.
     case "$f" in docs/bc/*) continue;; esac
+    CONTENUTO=$(indice "$f")
     while IFS= read -r nome; do
       [ -n "$nome" ] || continue
-      grep -qi "$nome" "$f" && LEAK="$LEAK\n  $f contiene '$nome'"
+      grep -qi -- "$nome" <<<"$CONTENUTO" && LEAK="$LEAK\n  $f contiene '$nome'"
     done < "$HOME/.privacy-nomi"
-  done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.md$' || true)
+  done < <(staged | grep -E '\.md$' || true)
   if [ -n "$LEAK" ]; then
     echo "⛔ nomi veri in file in committa (repo pubblica, lavoro privato):$LEAK"
     echo "   anonimizza (codici REPO-*, [partner], [operatore]) oppure rimuovi il nome da ~/.privacy-nomi SE e' pubblico per contratto"
@@ -162,7 +180,7 @@ fi
 #    e' installata qui (graphify-out/.gitattributes: la scrive tools/graphify-spina.sh alla
 #    prima sessione). Il grafo si costruisce dal working tree, non dall'indice: dichiarato.
 #    (E-002: `git diff | grep -q` sotto pipefail puo' morire di SIGPIPE — si cattura prima)
-FUORI_GRAFO=$(git diff --cached --name-only 2>/dev/null | grep -v '^graphify-out/' || true)
+FUORI_GRAFO=$(staged | grep -v '^graphify-out/' || true)
 if [ "$FALLITI" -eq 0 ] && [ -n "$FUORI_GRAFO" ] && [ -f "$HERE/graphify-out/.gitattributes" ] && [ -f "$HERE/tools/graphify-spina.sh" ]; then
   bash "$HERE/tools/graphify-spina.sh" "$HERE" --stage
 fi
