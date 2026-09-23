@@ -1217,6 +1217,22 @@ SALEOF
   log "memoria del turno scritta in night-shift/.sal-turni.md (locale: il mattino la porta nella SAL)"
 fi
 
+# (dominio, Luca 2026-09-23 — l'incidente dei dati insegnava): UN RAMO FUSO NON
+# SERVE A NIENTE — il lavoro vive in main, la PR resta nella storia, e un ramo
+# lasciato li' e' solo un posto dove i dati vecchi sopravvivono. Scopa: ogni
+# ramo remoto con PR fusa/chiusa si cancella; ogni ramo SENZA PR piu' vecchio
+# di 48h e' orfano e si cancella pure. Il revisore gia' usa --delete-branch.
+if command -v gh >/dev/null 2>&1; then
+  N_SCOPA=0
+  while IFS=$'\t' read -r br prstato; do
+    [ -z "$br" ] && [ "$br" = "main" ] && continue
+    case "$prstato" in MERGED|CLOSED)
+      gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${br//\\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) ;;
+    esac
+  done < <(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 100 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' 2>/dev/null)
+  [ "$N_SCOPA" -gt 0 ] && log "scopa-rami: $N_SCOPA rami di PR chiuse cancellati (un ramo fuso non serve a niente)"
+fi
+
 # NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)
 # (D17, test del sistema completo 2026-09-20): con una copia rotta o la caccia in cooldown
 # il turno ha fatto 390 cicli in 4,5 minuti (~8 chiamate gh per ciclo): il freno era il
