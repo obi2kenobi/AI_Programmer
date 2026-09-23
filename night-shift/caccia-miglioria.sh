@@ -128,7 +128,17 @@ ripristina() { git reset -q --hard && git clean -qfd; }
 # e' meccanico, il censimento dice dove. Saldato o rinviato: un tentativo per
 # sito, niente martellamento.
 SITO=""; FAMIGLIA=""; CAT=""
-if [ -z "${MIGLIORIA_CAT:-}" ] && [ -f "$HERE/tools/caccia-registro.sh" ]; then
+# (audit-2, 2026-09-23): il secondo colpo ricorreva con --prossimo NUOVO — il sito
+# del padre era gia' rinviato, il figlio pescava un INNOCENTE e lo marcava saldato
+# senza mai toccarlo. Ora il sito passa di padre in figlio: stesso bersaglio, sempre.
+if [ -n "${SITO_FORZATO:-}" ]; then
+  SITO="$SITO_FORZATO"; FAMIGLIA="${FAMIGLIA_FORZATA:-}"; CAT="${CAT_FORZATA:-debito}"
+  case "$FAMIGLIA" in
+    E-002) CAT_DEBITO="$CAT_DEBITO_E002" ;;
+    E-032) CAT_DEBITO="$CAT_DEBITO_E032" ;;
+  esac
+  log "secondo colpo: stesso sito del primo ($SITO) — non si pesca un innocente"
+elif [ -z "${MIGLIORIA_CAT:-}" ] && [ -f "$HERE/tools/caccia-registro.sh" ]; then
   PROSSIMO=$(bash "$HERE/tools/caccia-registro.sh" --prossimo "$DIR" 2>/dev/null | head -1)
   if [ -n "$PROSSIMO" ]; then
     FAMIGLIA=$(printf '%s' "$PROSSIMO" | cut -d'|' -f1)
@@ -238,7 +248,7 @@ if ! gate; then
     # bocciato come contesto. Uno solo: se serve ancora riscrivere tutto, e' un no.
     log "gate BOCCIA ($N_TROPPE righe): l'agente ha sovra-consegnato — secondo colpo chirurgico"
     ripristina
-    SECONDO_COLPO=1 bash "$0" "$DIR" "$PROMPT
+    SITO_FORZATO="$SITO" FAMIGLIA_FORZATA="$FAMIGLIA" CAT_FORZATA="$CAT" SECONDO_COLPO=1 bash "$0" "$DIR" "$PROMPT
 
 YOUR PREVIOUS ATTEMPT WAS REJECTED: it changed $N_TROPPE lines (maximum $MAX_RIGHE_DIFF). That means you rewrote the file instead of editing the one site. Try again with a SURGICAL edit: at most 10 changed lines, ONLY the lines of that one site. Keep every other line byte-identical." 2>/dev/null
     RC2=$?

@@ -16,47 +16,80 @@
 #   E-002  pipe che finiscono in `grep -q` (SIGPIPE + pipefail: cattura-prima)
 #   E-032  fixture di test scritte nel repo VIVO invece che in quarantena
 #
+# (audit-2, 2026-09-23 — il registro non mente): i SALDATI si sottraggono per
+# IDENTITA' di sito e SOLO se VERIFICATI: un saldato conta quando la riga che
+# cita non ha piu' il difetto. Un marker che punta a una riga cambiata (drift)
+# non sottrae niente; un sito marcato saldato che porta ANCORA il difetto resta
+# visibile come debito — pagato sulla carta, dovuto nella realta'. Niente piu'
+# sottrazioni per conteggio cieco di famiglia.
+#
 # Uso: caccia-registro.sh [dir]           → il censimento (stampa i conteggi)
 #       caccia-registro.sh --prossimo [dir] → il prossimo debito da saldare:
-#       «FAMIGLIA|file:riga|snippet» — il primo non saldato e non rinviato.
-#       (2026-09-18, Luca: il debito censito si SALDA — un sito per finestra,
-#       fix del canone, gate, PR, censore. saldati/rinviati vivono in .git.)
+#       «FAMIGLIA|file:riga» — il primo non saldato-VERIFICATO e non rinviato.
 # Esce: 0 sempre — il debito non e' un errore, e' un debito
 set -uo pipefail
-STATO="$(cd "$(dirname "$0")/.." && pwd)/.git/caccia-registro"
-SALDATI="$STATO/saldati"
 MODO="${1:-}"
 [ "$MODO" = "--prossimo" ] && shift
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 cd "$DIR"
 STATO="$DIR/.git/caccia-registro"
-mkdir -p "$STATO"
+SALDATI="$STATO/saldati"; RINVIA="$STATO/rinviati"
+mkdir -p "$STATO"; touch "$SALDATI" "$RINVIA"
+
+# i siti VIVI per famiglia: la stessa scannerizzazione ovunque (prima le due
+# viste --prossimo/censimento escludevano i commenti con due regex diverse:
+# due verita' sullo stesso debito, audit-1 finding 12)
+siti_e002() { grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
+              | grep -v "^[^:]*:[0-9]*: *#" | grep -v "cattura-prima" \
+              | sed 's/^\([^:]*\):\([0-9]*\):.*/\1:\2/'; }
+siti_e032() { grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \
+              | grep -v "^[^:]*:[0-9]*: *#" | grep -v "mktemp\|/tmp" \
+              | sed 's/^\([^:]*\):\([0-9]*\):.*/\1:\2/'; }
+
+# un saldato e' VERIFICATO quando la riga che cita non porta piu' il difetto
+# della sua famiglia (il marker non pinnava il contenuto: si ricontrolla ora)
+saldati_verificati() { # $1 = famiglia
+  local f n
+  while IFS= read -r m; do
+    [ -z "$m" ] && continue
+    case "$m" in \#*) continue ;; esac
+    f="${m%:*}"; n="${m##*:}"
+    [ -f "$f" ] || continue
+    case "$1" in
+      E-002) sed -n "${n}p" "$f" 2>/dev/null | grep -q "[|] gre[p] -q" || printf '%s\n' "$m" ;;
+      E-032) sed -n "${n}p" "$f" 2>/dev/null | grep -qE '>> "\$HERE|> "\$HERE|sed -i.*"\$HERE' || printf '%s\n' "$m" ;;
+    esac
+  done < "$SALDATI"
+}
+
+VER_E002=$(mktemp); VER_E032=$(mktemp)
+saldati_verificati E-002 > "$VER_E002"
+saldati_verificati E-032 > "$VER_E032"
 
 if [ "$MODO" = "--prossimo" ]; then
-  SALDATI="$STATO/saldati"; RINVIA="$STATO/rinviati"
-  touch "$SALDATI" "$RINVIA"
-  # tutti i siti (famiglia|file:riga), cattura-prima esclusa dai commenti gia' curati
-  { grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null | grep -v "^[^:]*:[0-9]*: *#" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-002|\1:\2/' ; grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null | grep -v "mktemp\|/tmp" | sed 's/^\([^:]*\):\([0-9]*\):.*/E-032|\1:\2/' ; } | grep -vFf "$SALDATI" | grep -vFf "$RINVIA" | head -1
+  LIBERI=$(mktemp)
+  if [ -s "$VER_E002" ]; then siti_e002 | grep -vxFf "$VER_E002" > "$LIBERI" || true
+  else siti_e002 > "$LIBERI"; fi
+  { echo "$LIBERI" >/dev/null; } 2>/dev/null || true
+  : > "$LIBERI.e002"
+  if [ -s "$VER_E002" ]; then siti_e002 | grep -vxFf "$VER_E002" > "$LIBERI.e002" || true
+  else siti_e002 > "$LIBERI.e002"; fi
+  if [ -s "$VER_E032" ]; then siti_e032 | grep -vxFf "$VER_E032" > "$LIBERI.e032" || true
+  else siti_e032 > "$LIBERI.e032"; fi
+  { sed 's/^/E-002|/' "$LIBERI.e002"; sed 's/^/E-032|/' "$LIBERI.e032"; } > "$LIBERI.all"
+  if [ -s "$RINVIA" ]; then grep -vFf "$RINVIA" "$LIBERI.all" | head -1 || true
+  else head -1 "$LIBERI.all"; fi
+  rm -f "$LIBERI" "$LIBERI.e002" "$LIBERI.e032" "$LIBERI.all"
+  rm -f "$VER_E002" "$VER_E032"
   exit 0
 fi
 
-# ── famiglia E-002: pipe in grep -q ─────────────────────────────────────────────
-E002=$(grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
-  | grep -v "^\S*:\s*#" | grep -vc "cattura-prima" || true)
-[ -z "$E002" ] && E002=0
-# (audit 2026-09-23, #112): i SALDATI si sottraggono — prima rientravano nel
-# conteggio e il numero diceva dovuto cio' che era gia' pagato (i rinviati
-# restano contati: posposti, non saldati). Il --prossimo gia' li saltava: le
-# due viste ora dicono la stessa cosa.
-SALDATI_N=0
-[ -s "$SALDATI" ] && SALDATI_N=$(grep -cve '^$' -e '^#' "$SALDATI" || true)
-[ -z "$SALDATI_N" ] && SALDATI_N=0
-E002=$((E002 - SALDATI_N)); [ "$E002" -lt 0 ] && E002=0
 
-# ── famiglia E-032: fixture nel repo vivo ───────────────────────────────────────
-E032=$(grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \
-  | grep -v "mktemp\|/tmp" | wc -l | tr -d ' ')
+# ── censimento: i vivi meno i saldati VERIFICATI ───────────────────────────────
+E002=$(siti_e002 | grep -vxFf "$VER_E002" | wc -l | tr -d ' ')
+E032=$(siti_e032 | grep -vxFf "$VER_E032" | wc -l | tr -d ' ')
+rm -f "$VER_E002" "$VER_E032"
 
 # ── censimento + delta ──────────────────────────────────────────────────────────
 TOT=$(( E002 + E032 ))
@@ -71,7 +104,14 @@ else
   NOTE="baseline (primo censimento)"
 fi
 echo "$E002 $E032" > "$STATO/ultimo"
-echo "$OGGI E-002=$E002 E-032=$E032 tot=$TOT delta=$DELTA" >> "$STATO/storia"
+# (audit-2): la storia si scrive SOLO dal main — la caccia gira su rami di
+# lavoro e i censimenti di ramo producevano delta falsi (pagamenti fantasma)
+BR=$(git branch --show-current 2>/dev/null || echo "?")
+if [ "$BR" = "main" ] || [ "$BR" = "master" ]; then
+  echo "$OGGI E-002=$E002 E-032=$E032 tot=$TOT delta=$DELTA" >> "$STATO/storia"
+else
+  NOTE="$NOTE (storia non scritta: ramo $BR, non main)"
+fi
 
 echo "registro: debito famiglie — E-002(pipe in grep -q)=$E002 · E-032(fixture nel vivo)=$E032 · tot=$TOT ($NOTE)"
 if [ "$DELTA" -gt 0 ]; then
