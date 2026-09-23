@@ -66,41 +66,41 @@ DUR=$((T1-T0))
 QWENTMP=$(mktemp -d)
 cat > "$QWENTMP/curl" <<'EOF'
 #!/bin/bash
-echo "$*" >> /tmp/qwen-curl-args.log
+echo "$*" >> "$(dirname "$0")/args.log"
 [[ "$*" == *"api/version"* ]] && exit 0
 echo '{"message":{"content":"ok"}}'
 EOF
 chmod +x "$QWENTMP/curl"
-rm -f /tmp/qwen-curl-args.log
+rm -f "$QWENTMP/args.log"
 PATH="$QWENTMP:$PATH" ASK_TIMEOUT=42 bash "$HERE/llm/ask-qwen.sh" "test" </dev/null >/dev/null 2>&1
-grep -q -- "--max-time 42 " /tmp/qwen-curl-args.log 2>/dev/null \
+grep -q -- "--max-time 42 " "$QWENTMP/args.log" 2>/dev/null \
   && ok "ask-qwen: ASK_TIMEOUT=42 arriva davvero a curl --max-time (bug corretto)" \
-  || ko "ask-qwen: ASK_TIMEOUT non propagato: $(cat /tmp/qwen-curl-args.log 2>/dev/null)"
-rm -rf "$QWENTMP" /tmp/qwen-curl-args.log
+  || ko "ask-qwen: ASK_TIMEOUT non propagato: $(cat "$QWENTMP/args.log" 2>/dev/null)"
+rm -rf "$QWENTMP"
 
 # --- bug reale (set 1, giro 4): ASK_MODEL ignorato da ask-glm.sh/ask-qwen.sh ---
 MODELTMP=$(mktemp -d)
 cat > "$MODELTMP/curl" <<'EOF'
 #!/bin/bash
-echo "$*" >> /tmp/model-curl.log
-[[ "$*" == *"@-"* ]] && cat >> /tmp/model-curl.log
+echo "$*" >> "$(dirname "$0")/args.log"
+[[ "$*" == *"@-"* ]] && cat >> "$(dirname "$0")/args.log"
 [[ "$*" == *"api/version"* ]] && exit 0
 echo '{"choices":[{"message":{"content":"ok"}}],"message":{"content":"ok"}}'
 EOF
 chmod +x "$MODELTMP/curl"
 
-rm -f /tmp/model-curl.log
+rm -f "$MODELTMP/args.log"
 ( unset GLM_MODEL; PATH="$MODELTMP:$PATH" ZHIPUAI_API_KEY=x ASK_MODEL=modello-custom bash "$HERE/llm/ask-glm.sh" "test" </dev/null >/dev/null 2>&1 )
-grep -q '"model": "modello-custom"' /tmp/model-curl.log 2>/dev/null \
+grep -q '"model": "modello-custom"' "$MODELTMP/args.log" 2>/dev/null \
   && ok "ask-glm: ASK_MODEL usato quando GLM_MODEL è assente (bug corretto)" \
-  || ko "ask-glm: ASK_MODEL ignorato: $(cat /tmp/model-curl.log 2>/dev/null)"
+  || ko "ask-glm: ASK_MODEL ignorato: $(cat "$MODELTMP/args.log" 2>/dev/null)"
 
-rm -f /tmp/model-curl.log
+rm -f "$MODELTMP/args.log"
 ( unset QWEN_MODEL; PATH="$MODELTMP:$PATH" ASK_MODEL=modello-custom-qwen bash "$HERE/llm/ask-qwen.sh" "test" </dev/null >/dev/null 2>&1 )
-grep -q '"model": "modello-custom-qwen"' /tmp/model-curl.log 2>/dev/null \
+grep -q '"model": "modello-custom-qwen"' "$MODELTMP/args.log" 2>/dev/null \
   && ok "ask-qwen: ASK_MODEL usato quando QWEN_MODEL è assente (bug corretto)" \
-  || ko "ask-qwen: ASK_MODEL ignorato: $(cat /tmp/model-curl.log 2>/dev/null)"
-rm -rf "$MODELTMP" /tmp/model-curl.log
+  || ko "ask-qwen: ASK_MODEL ignorato: $(cat "$MODELTMP/args.log" 2>/dev/null)"
+rm -rf "$MODELTMP"
 
 # --- set 1, giro 5: ask-opus.sh armonizza exit 2 per auth assente (come ask-glm.sh) ---
 OPUSTMP=$(mktemp -d)

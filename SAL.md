@@ -3414,3 +3414,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Banco in un repo temporaneo (`tests/test-pre-commit.sh`, 5 casi Q9): 5 rossi prima.
     Sabotaggio (via `--cached` e lettura dal disco): 4 rossi.
   - Visto di passaggio: il resto del test stage-a `graphify-out/graph.json` nell'hub (Q23).
+- **Q23**, da A9, test che sporcano l'hub.
+  - `tests/test-pre-commit.sh` faceva girare il gancio nell'indice vero: il gancio verde stage-ava
+    `graphify-out/graph.json`, e un file già stage-ato da chi lavora entrava nel verdetto. Ora i
+    casi girano in un repo di prova col gancio copiato. La guardia nuova (l'indice dell'hub
+    dopo il test è com'era prima) era rossa sulla versione vecchia.
+  - Percorsi fissi in /tmp (collisioni fra esecuzioni): tolti da `tests/test-ask-wrappers.sh`
+    e `tests/test-stdin-timeout.sh`.
+  - Resta, dichiarato: `tests/test-banco-passaggio.sh` scrive ancora le esclusioni vere e le
+    rimette con un trap, che un SIGKILL salta. Copiare l'albero per isolarlo costa più del rischio.

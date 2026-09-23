@@ -52,7 +52,7 @@ check_bounded() {
   sleep 100 > "$FIFO" &
   SLEEP_PID=$!
   T0=$(date +%s)
-  ai_timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >/tmp/stdintest.out 2>&1
+  ai_timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >"$TMP/stdintest.out" 2>&1
   RC=$?
   T1=$(date +%s); DUR=$((T1-T0))
   kill "$SLEEP_PID" 2>/dev/null
@@ -62,11 +62,11 @@ check_bounded() {
     ko "$nome: bloccato oltre 20s con stdin aperto senza EOF (bug NON corretto)"
   elif [ "$DUR" -gt 10 ]; then
     ko "$nome: ${DUR}s — troppo lento, il timeout sullo stdin non sta limitando l'attesa"
-  elif ! grep -qE "content|non è arrivato tutto entro|non e' arrivato tutto entro" /tmp/stdintest.out 2>/dev/null; then
+  elif ! grep -qE "content|non è arrivato tutto entro|non e' arrivato tutto entro" "$TMP/stdintest.out" 2>/dev/null; then
     # (audit-2): serve la prova che il wrapper ha LAVORATO lo stdin — o la risposta
     # del mock ("content"), o la sua dichiarazione di bounded-bail ("stdin non
     # arrivato entro"): prima qualunque rc!=124 veloce passava, anche un crash
-    ko "$nome: rapido ma sordo — ne' risposta ne' dichiarazione di timeout (contratto rotto: $(head -c 60 /tmp/stdintest.out 2>/dev/null))"
+    ko "$nome: rapido ma sordo — ne' risposta ne' dichiarazione di timeout (contratto rotto: $(head -c 60 "$TMP/stdintest.out" 2>/dev/null))"
   else
     ok "$nome: completa in ${DUR}s con stdin aperto senza EOF (limite rispettato, risposta consumata)"
   fi
