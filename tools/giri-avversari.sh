@@ -29,11 +29,18 @@ if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null || 
   echo "⛔ albero sporco: committa (o stash) prima di attaccare" >&2
   exit 2
 fi
+# (revisione 10 giri, 2026-09-23): l'uscita faceva `rm -rf .ciclo` — cioe' cancellava la
+# memoria PERSISTENTE di tools/ciclo-vivo.sh (livello, serie di giri puliti, storico dei
+# finding) a ogni giro d'attacchi. Si salva prima e si rimette com'era.
+CICLO_BAK=$(mktemp -d)
+[ -d .ciclo ] && cp -a .ciclo "$CICLO_BAK/"
 restore_tutto() {
   git checkout -- . 2>/dev/null
   chmod +x tools/*.sh 2>/dev/null
   rm -f .campo-rem tools/_sleep_malvagio.py /tmp/avv-*.md /tmp/avv-*.py /tmp/avv-*.sh /tmp/avv-*.json /tmp/avv-*.csv /tmp/avv-*.txt /tmp/avv-*.bak /tmp/avv-lib.bak 2>/dev/null
   rm -rf .ciclo 2>/dev/null
+  [ -d "$CICLO_BAK/.ciclo" ] && cp -a "$CICLO_BAK/.ciclo" .ciclo
+  rm -rf "$CICLO_BAK"
 }
 trap restore_tutto EXIT
 

@@ -52,6 +52,12 @@ con_agenti_e_hook_proprio() {
   cp "$HERE"/.claude/agents/*.md .claude/agents/
   cp "$HERE"/.opencode/agent/*.md .opencode/agent/
   echo "HOOK PERSONALIZZATO DAL PROGETTO" > tools/metodo-reminder-hook.sh
+  # (revisione 10 giri, 2026-09-23): anche una SKILL personalizzata dal progetto — i banchi
+  # di propagazione rifacevano a mano il merge delle skill, e con la guardia dell'onboarding
+  # sostituita da `if true; then rm -rf …` la suite restava verde (provato)
+  mkdir -p .claude/skills/dev-critic .opencode/skills/dev-critic
+  echo "SKILL PERSONALIZZATA DAL PROGETTO" > .claude/skills/dev-critic/SKILL.md
+  echo "SKILL PERSONALIZZATA DAL PROGETTO" > .opencode/skills/dev-critic/SKILL.md
 }
 
 DICHIARATI=$(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
@@ -88,6 +94,11 @@ git clone -q "$ORIGIN2" "$TMP/check2"
 [ "$(cat "$TMP/check2/tools/metodo-reminder-hook.sh")" = "HOOK PERSONALIZZATO DAL PROGETTO" ] \
   && ok "caso 2: l'hook personalizzato del progetto NON e' stato sovrascritto" \
   || ko "caso 2: hook personalizzato sovrascritto dall'onboarding"
+[ "$(cat "$TMP/check2/.claude/skills/dev-critic/SKILL.md" 2>/dev/null)" = "SKILL PERSONALIZZATA DAL PROGETTO" ] \
+  && [ "$(cat "$TMP/check2/.opencode/skills/dev-critic/SKILL.md" 2>/dev/null)" = "SKILL PERSONALIZZATA DAL PROGETTO" ] \
+  && ok "caso 2: la skill personalizzata del progetto (claude e opencode) NON e' stata sovrascritta" \
+  || ko "caso 2: skill personalizzata sovrascritta dall'onboarding"
+[ -f "$TMP/check2/.claude/skills/gas-sviluppo/SKILL.md" ] && ok "caso 2: le skill dell'hub mancanti sono arrivate" || ko "caso 2: skill dell'hub mancanti non propagate"
 echo "$OUT2" | grep -q "agenti del hub già tutti presenti" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
 
 echo ""

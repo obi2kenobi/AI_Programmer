@@ -2976,3 +2976,32 @@ dentro casa.
   diceva «sei un cervello piu' grande» (e' lo stesso modello: ora «un processo separato, senza
   la memoria di chi l'ha scritta»), `llm/ask-qwen.sh` «la notte usa il 14b», `night-shift/night-shift.sh`
   «pull --ff-only» (fa fetch + reset --hard).
+
+**Giro 10 — i banchi che provavano una copia, gli ultimi strumenti, la chiusura.**
+- `tests/test-onboard-repo.sh` (end-to-end): una skill personalizzata dal progetto (claude e
+  opencode) deve arrivare intatta sull'origin — con la guardia dell'onboarding sostituita da
+  `if true; then rm -rf …` la suite prima restava verde, ora e' rossa.
+- `tests/test-install-garante.sh` non eseguiva MAI l'installatore (guardava il
+  `~/.claude/settings.json` vero; «assente» valeva ok): ora due installazioni in una HOME
+  temporanea con un hook altrui — una voce sola, l'altrui intatto. `tests/test-status-page.sh`
+  leggeva la pagina dal `$HOME` vero (una pagina vecchia bastava): ora HOME temporanea.
+- `tools/giri-avversari.sh` all'uscita faceva `rm -rf .ciclo`: cancellava la memoria
+  persistente di `tools/ciclo-vivo.sh` a ogni giro d'attacchi. Ora la salva e la rimette —
+  provato in un clone (livello e storico sopravvivono; 95 attacchi, 0 aggirati).
+- `night-shift/risolvi-issue.sh`: `realpath --relative-to` e' GNU — sul Mac il prompt riceveva
+  il path assoluto; ora `os.path.relpath`, e la lente di portabilita' lo pretende (sabotaggio →
+  rosso). `night-shift/night-shift.sh`: il ping del watchdog di Ollama e il default del solver
+  avevano il modello scritto a mano — con `MODELLO` cambiato il ping chiedeva un modello assente
+  e il watchdog avrebbe ucciso Ollama a ogni ciclo; ora `$MODEL_TAG`.
+  `tools/prova-rilevatori.sh` documentava un `--veloce` mai letto: promessa tolta.
+- Dichiarati in DEBITI (non curati, col perche'): i banchi di propagazione di bootstrap e del
+  gate del Design che rifanno la logica; il profilo notturno con 11 chiavi su 15 senza lettori
+  (decisione di Luca); `num_ctx` 4096 contro letture da 24 KB (⏳ misura sul Mac); due banchi
+  con dipendenze d'ambiente minori.
+
+**Chiusura della revisione.** Dieci giri piu' il giro 0: 157 file di test, `bash tools/suite.sh`
+verde (verdetto preteso), 95 attacchi a 0 aggirati. Il report dal campo:
+`docs/campo/2026-09-23-revisione-dieci-giri-hub.md` (due famiglie proposte al registro: «verde
+senza verdetto», «promessa nel commento, assente nel codice»). Proposte che toccano le regole,
+NON applicate: hook di `.claude/settings.json` con `$CLAUDE_PROJECT_DIR` (patch in DEBITI);
+CLAUDE.md §4 cita il morning-gate per i prefissi dei rami, e il gate e' in pensione.

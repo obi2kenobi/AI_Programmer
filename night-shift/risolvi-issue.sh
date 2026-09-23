@@ -121,7 +121,9 @@ for F in $TERRitorio; do
     log "⛔ $F e' FUORI dal progetto: il Territorio di un issue non legge fuori da $DIR (salto)"
     continue
   fi
-  REL_PATH=$(realpath --relative-to="$DIR" "$F" 2>/dev/null || echo "$F")
+  # (revisione 10 giri, 2026-09-23): `realpath --relative-to` e' GNU — sul Mac del turno
+  # falliva e il prompt riceveva il path ASSOLUTO. os.path.relpath e' ovunque.
+  REL_PATH=$(python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$F" "$DIR" 2>/dev/null || echo "$F")
   # (fase A efficienza, 2026-09-07): App.html intera = 41KB = 262s di inferenza.
   #  Limite per file 24000 caratteri (~6-8K token), TRONCATO DICHIARATO nel prompt —
   #  mai taglio silenzioso: il modello sa che non vede tutto e lavora da quello che

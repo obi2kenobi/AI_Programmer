@@ -57,6 +57,11 @@ mtime /nonesiste/xyz >/dev/null 2>&1 && ko "mtime() su file assente dovrebbe tor
 S=$(righe_con 'grep -[a-zA-Z]*P[a-zA-Z]* ' | grep -vE 'git (grep|-C)' || true)
 [ -z "$S" ] && ok "nessun grep -P nudo (BSD: invalid option, il controllo muore zitto)" || ko "grep -P non portabile (E-037):"$'\n'"$S"
 
+# realpath --relative-to / readlink -f: GNU (revisione 10 giri, 2026-09-23 — risolvi-issue.sh
+# mandava al modello il path ASSOLUTO sul Mac). La via portabile e' os.path di python3.
+S=$(righe_con 'realpath --relative-to|readlink -f ' || true)
+[ -z "$S" ] && ok "nessun realpath --relative-to / readlink -f (GNU): python3 os.path" || ko "path GNU-only:"$'\n'"$S"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
