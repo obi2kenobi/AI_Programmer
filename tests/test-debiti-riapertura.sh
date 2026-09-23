@@ -78,6 +78,36 @@ echo "$OUT4" | grep -q "IN ATTESA: primo giro sul Mac" && ok "l'evento dichiarat
 rm -rf "$SB4"
 
 # senza DEBITI.md: dichiarato, non muto (sesto patto)
+# (D5, decisione di Luca 2026-09-23: «a») LA PREMESSA INVECCHIA COL CODICE: una voce aperta che
+# cita un file cambiato in git DOPO la sua data (la piu' recente scritta nella riga: chi la
+# riverifica la aggiorna) chiede di riverificare la premessa. Dal campo REPO-G: le credenziali
+# spostate via nella PR #36, e l'obiezione in DEBITI e' rimasta com'era per giorni.
+SB4=$(mktemp -d /tmp/debiti-t4.XXXXXX)
+g4() { git -C "$SB4" -c user.email=t@t -c user.name=t -c core.hooksPath=/dev/null "$@"; }
+g4 init -q; mkdir -p "$SB4/tools"
+echo v1 > "$SB4/tools/vecchio.sh"; echo v1 > "$SB4/tools/fermo.sh"
+g4 add -A; GIT_COMMITTER_DATE="2026-01-01T12:00:00" g4 commit -q --date "2026-01-01T12:00:00" -m base
+echo v2 > "$SB4/tools/vecchio.sh"
+g4 add -A; GIT_COMMITTER_DATE="2026-03-01T12:00:00" g4 commit -q --date "2026-03-01T12:00:00" -m cambia
+cat > "$SB4/DEBITI.md" <<'FIN'
+# DEBITI
+## Premessa scaduta (dominio)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-02-01 | `tools/vecchio.sh` contiene credenziali | decisione di Luca | quando si decide |
+## Premessa ferma (dominio)
+| 2026-02-01 | `tools/fermo.sh` e `tools/inesistente.sh` | decisione di Luca | quando si decide |
+## Premessa riverificata (dominio)
+| 2026-02-01 | `tools/vecchio.sh` (riverificato 2026-03-05: ancora vero) | decisione di Luca | quando si decide |
+FIN
+OUT4=$(bash "$TOOL" "$SB4" 2>&1)
+echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -q "premessa da riverificare: tools/vecchio.sh" \
+  && ok "file citato cambiato DOPO la voce: premessa da riverificare" || ko "premessa scaduta non segnalata: $(echo "$OUT4" | grep -A3 'Premessa scaduta' | tr '\n' ' ')"
+echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -q "2026-03-01" && ok "la segnalazione dice QUANDO e' cambiato" || ko "manca la data del cambio"
+echo "$OUT4" | grep -A2 "Premessa ferma" | grep -q "riverificare" && ko "file fermo o inesistente segnalato a vuoto" || ok "file fermo o inesistente: nessuna segnalazione"
+echo "$OUT4" | grep -A2 "Premessa riverificata" | grep -q "riverificare" && ko "la data di riverifica nella riga non e' contata" || ok "una data piu' recente nella riga (riverifica) azzera l'orologio"
+rm -rf "$SB4"
+
 SB2=$(mktemp -d /tmp/debiti-t2.XXXXXX)
 OUT2=$(bash "$TOOL" "$SB2" 2>&1)
 echo "$OUT2" | grep -q "nessun DEBITI.md: niente da bruciare (dichiarato" && ok "senza debiti lo DICE (mai muto)" || ko "silenzio senza DEBITI.md"

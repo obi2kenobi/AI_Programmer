@@ -93,12 +93,39 @@ def perche_di(corpo):
             return s.strip("- #* ")
     return ""
 
+# (D5, decisione di Luca 2026-09-23: «a») LA PREMESSA INVECCHIA COL CODICE. Una voce motiva il
+# rinvio con un fatto sul codice; se un file che cita e' cambiato in git DOPO la voce, la premessa
+# va riverificata (dal campo REPO-G: credenziali spostate via nella PR #36, obiezione rimasta
+# com'era per giorni). La data della voce e' la PIU' RECENTE scritta nella riga: chi riverifica
+# la aggiorna, e l'orologio riparte. Solo file che esistono; senza git, lo si dichiara.
+import subprocess
+IN_GIT = subprocess.run(["git", "rev-parse", "--git-dir"], capture_output=True).returncode == 0
+def premesse(corpo):
+    avvisi = []
+    if not IN_GIT:
+        return avvisi
+    for riga in corpo.split("\n"):
+        if not RIGA_DEBITO.match(riga.strip()):
+            continue
+        data = max(re.findall(r"\d{4}-\d{2}-\d{2}", riga))
+        for f in sorted(set(re.findall(r"`([A-Za-z0-9_./-]+)`", riga))):
+            if not os.path.isfile(f):
+                continue
+            log = subprocess.run(["git", "log", f"--since={data} 23:59:59", "--format=%cs", "--", f],
+                                 capture_output=True, text=True).stdout.split()
+            if log:
+                avvisi.append(f"⚠ premessa da riverificare: {f} cambiato {len(log)} volte dopo il {data} (ultimo {log[0]})")
+    return avvisi[:3]
+def stampa_premesse(corpo):
+    for a in premesse(corpo): print(f"      {a}")
+
 print(f"debiti APERTI: {len(aperte)} — di DOMINIO: {len(dominio)} (domande, una alla volta) · RISOLVIBILI: {len(risolvibili)} (da fare PRIMA di procedere) · IN ATTESA: {len(attesa)} (evento esterno dichiarato)")
 print()
 if risolvibili:
     print("DA FARE SUBITO (risolvibile — il prossimo lavoro parte dopo questi):")
     for i, (t, _) in enumerate(risolvibili, 1):
         print(f"  R{i}. {t}")
+        stampa_premesse(_)
     print()
 if dominio:
     print("DOMANDE SINGOLE PER IL PADRONE DEL DOMINIO (una alla volta, nell'ordine — ogni risposta chiude un debito):")
@@ -106,6 +133,7 @@ if dominio:
         perche = perche_di(c)
         print(f"  D{i}. {t}")
         if perche: print(f"      perché conta: {perche[:100]}")
+        stampa_premesse(c)
     print()
     print("Modello: una domanda per messaggio, risposta → subito codice/regola, poi la prossima.")
 if attesa:
@@ -114,6 +142,9 @@ if attesa:
         ev = [re.search(r"⏳[^|]*", l).group(0).strip() for l in c.split("\n") if "⏳" in l]
         print(f"  A{i}. {t}")
         for e in ev: print(f"      {e[:110]}")
+        stampa_premesse(c)
     print()
 print(f"chiusi/storici: {len(sezioni) - len(aperte)} sezioni saldate restano come memoria.")
+if not IN_GIT:
+    print("premesse: la cartella non e' una repo git — l'invecchiamento delle premesse NON e' controllato (dichiarato)")
 PY

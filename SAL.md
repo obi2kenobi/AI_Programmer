@@ -142,6 +142,7 @@
 - [2026-09-23 (5°) — la lente sicurezza scatta da sola sulle PR della notte (D2, decisione di Luca)](#2026-09-23-5-la-lente-sicurezza-scatta-da-sola-sulle-pr-della-notte-d2-decisione-di-luca)
 - [2026-09-23 (6°) — la skill si ricorda quando l'agente tocca il suo terreno (D3, decisione di Luca)](#2026-09-23-6-la-skill-si-ricorda-quando-l-agente-tocca-il-suo-terreno-d3-decisione-di-luca)
 - [2026-09-23 (7°) — Qwen 3.8 Flash: si chiude, il 27B resta (D4, decisione di Luca)](#2026-09-23-7-qwen-3-8-flash-si-chiude-il-27b-resta-d4-decisione-di-luca)
+- [2026-09-23 (8°) — la premessa di un debito invecchia col codice, e la riapertura lo dice (D5, decisione di Luca)](#2026-09-23-8-la-premessa-di-un-debito-invecchia-col-codice-e-la-riapertura-lo-dice-d5-decisione-di-luca)
 
 
 ## Stato
@@ -3114,3 +3115,20 @@ La quarta domanda di dominio: Luca ha scelto «c». La valutazione del Flash (ci
 memoria, non entra nel MacBook Air) si chiude senza acquisto di hardware, e il 27B resta il
 cervello notturno. La riga in DEBITI è SALDATA ma conservata come memoria, con il quadro delle
 macchine. Nessun codice toccato.
+
+### 2026-09-23 (8°) — la premessa di un debito invecchia col codice, e la riapertura lo dice (D5, decisione di Luca)
+
+La quinta domanda di dominio: Luca ha scelto «a», il controllo automatico alla riapertura. Il
+debito veniva dal campo REPO-G: le credenziali erano state spostate via nella PR #36, ma
+l'obiezione in DEBITI è rimasta com'era per giorni.
+- `tools/debiti-riapertura.sh` fa il controllo sotto ogni voce aperta, di dominio, risolvibile o
+  in attesa. Se un file citato in backtick esiste ed è cambiato in git dopo la data PIÙ RECENTE
+  scritta nella riga, stampa «⚠ premessa da riverificare: <file> cambiato N volte dopo il <data>
+  (ultimo <data>)».
+- Chi riverifica aggiorna la data nella riga, e l'orologio riparte. Fuori da una repo git il
+  controllo è dichiarato assente.
+Banco scritto prima: 4 casi nuovi in `tests/test-debiti-riapertura.sh`, rossi 2, poi 16/16. Due
+sabotaggi: con la data più vecchia 1 rosso, con `--until` 3 rossi.
+Primo frutto sul DEBITI vero: la voce del test del sistema completo (2026-09-20) cita
+`tools/giri-avversari.sh` e `night-shift/README.md`, cambiati dopo. La sua premessa va
+riverificata quando la si pone come domanda.
