@@ -15,8 +15,12 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 # lo accettava: metodo-reminder-hook.sh vive su UserPromptSubmit/SessionStart/Stop e non
 # arrivava mai. Ora si pretende il filtro su TUTTI gli eventi (lo stesso di tools/copia-hook.sh);
 # la prova end-to-end (gh finto, origin locale) e' tests/test-onboard-repo.sh.
-grep -qF ".hooks | to_entries[] | .value[]? | .hooks[]? | .command" "$HERE/tools/onboard-repo.sh" \
-  && ok "onboard-repo.sh deriva la lista hook da settings.json su TUTTI gli eventi, non solo PreToolUse" \
+# (revisione 10 giri, 2026-09-23): la derivazione vive in UN posto (tools/copia-hook.sh
+# --elenco, che legge tutti gli eventi): onboard-repo deve delegare, e l'elenco deve portare
+# anche l'hook che non sta su PreToolUse.
+grep -qF 'copia-hook.sh" --elenco' "$HERE/tools/onboard-repo.sh" \
+  && grep -q "metodo-reminder-hook.sh" <<<"$(bash "$HERE/tools/copia-hook.sh" --elenco)" \
+  && ok "onboard-repo.sh deriva la lista hook da copia-hook --elenco, che copre TUTTI gli eventi" \
   || ko "onboard-repo.sh non deriva gli hook da tutti gli eventi di settings.json: metodo-reminder resta a terra"
 
 # riproduce esattamente il ramo reale (settings.json assente) su una copia di lavoro

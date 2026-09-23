@@ -174,7 +174,7 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
       mkdir -p "$WORK/$(dirname "$H")"
       cp "$HERE/$H" "$WORK/$H" && chmod +x "$WORK/$H" && git -C "$WORK" add "$H" && HOOK_AGGIUNTI=$((HOOK_AGGIUNTI+1))
     fi
-  done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" 2>/dev/null            | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+  done < <(bash "$HERE/tools/copia-hook.sh" --elenco 2>/dev/null)  # (revisione 10 giri: una derivazione sola)
   git -C "$WORK" commit -q -m "chore: settings.json e $HOOK_AGGIUNTI hook del metodo (onboarding sistema)"
   git -C "$WORK" push -q
   echo "settings.json e $HOOK_AGGIUNTI hook aggiunti e spinti (gli hook gia' presenti nel progetto: intoccati)"

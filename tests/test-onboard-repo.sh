@@ -60,7 +60,7 @@ con_agenti_e_hook_proprio() {
   echo "SKILL PERSONALIZZATA DAL PROGETTO" > .opencode/skills/dev-critic/SKILL.md
 }
 
-DICHIARATI=$(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+DICHIARATI=$(bash "$HERE/tools/copia-hook.sh" --elenco)
 
 onboard() {  # $1 = origin bare, $2 = nome repo finto
   HOME="$TMP/home-$2" ORIGIN_DIR="$1" NIGHT_REPOS_CONF="$TMP/repos.conf" PATH="$STUB:$PATH" \

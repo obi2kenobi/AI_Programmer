@@ -136,6 +136,7 @@
 - [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
 - [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
 - [2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa](#2026-09-23-revisione-in-dieci-giri-mandato-di-luca-giro-0-i-debiti-e-la-suite-rossa)
+- [2026-09-23 (2°) — gli hook partono dalla radice del progetto (sì di Luca)](#2026-09-23-2-gli-hook-partono-dalla-radice-del-progetto-sì-di-luca)
 
 
 ## Stato
@@ -3005,3 +3006,19 @@ verde (verdetto preteso), 95 attacchi a 0 aggirati. Il report dal campo:
 senza verdetto», «promessa nel commento, assente nel codice»). Proposte che toccano le regole,
 NON applicate: hook di `.claude/settings.json` con `$CLAUDE_PROJECT_DIR` (patch in DEBITI);
 CLAUDE.md §4 cita il morning-gate per i prefissi dei rami, e il gate e' in pensione.
+
+### 2026-09-23 (2°) — gli hook partono dalla radice del progetto (sì di Luca)
+
+La proposta della revisione in dieci giri, approvata da Luca («sì, cambia gli hook»): i comandi
+di `.claude/settings.json` erano path relativi — con la sessione in una sottocartella l'hook
+usciva 127 e il cancello clasp FALLIVA APERTO. Ora partono da `"$CLAUDE_PROJECT_DIR"/tools/…`.
+Censimento prima del cambio: sette lettori estraevano `^tools/.*\.sh$` dal primo campo del
+comando e avrebbero perso gli hook in silenzio (la famiglia del buco REPO-V). La derivazione
+vive ora in un posto solo, `tools/copia-hook.sh --elenco` (toglie il prefisso, legge ancora la
+forma relativa delle repo satellite): `tools/sync-repo.sh`, `tools/onboard-repo.sh` e quattro
+banchi la chiamano. Banco scritto prima: `tests/test-hook-percorso-assoluto.sh` (rosso 1/5,
+poi 5/5). Il cambio ha rotto `tools/ciclo-vivo.sh`: leggeva i comandi con grep sul JSON grezzo,
+si fermava alla virgoletta escapata e sotto `set -e` MORIVA senza verdetto — ora legge con jq,
+e un hook senza script non lo uccide (sabotaggio con un hook inesistente → finding).
+Suite 158/158. Provato DAL VIVO in questa sessione: da `night-shift/` gli avvisi degli hook
+scattano e `clasp push` e' NEGATO dal cancello.

@@ -146,12 +146,16 @@ if [ "$LIVELLO" -ge 4 ]; then
   # 4e. hook: ogni comando in .claude/settings.json punta a uno script esistente
   #     (un hook che punta nel vuoto tace per sempre — e nessuno se ne accorge)
   if [ -f "$HERE/.claude/settings.json" ]; then
+    # (revisione 10 giri, 2026-09-23): i comandi si leggevano con grep sul JSON grezzo, che si
+    # ferma alla prima virgoletta — col prefisso "\$CLAUDE_PROJECT_DIR" (virgolette escapate) il
+    # comando diventava «\», l'estrazione dello script falliva e sotto set -e il ciclo MORIVA
+    # senza verdetto. jq decodifica il JSON; il prefisso si toglie; un hook senza script non uccide.
     while IFS= read -r cmd; do
       [ -n "$cmd" ] || continue
-      scr=$(echo "$cmd" | grep -o '[A-Za-z0-9_./-]*\.\(sh\|py\)' | head -1)
+      scr=$(printf '%s' "$cmd" | sed -E 's#^"?\$(\{CLAUDE_PROJECT_DIR\}|CLAUDE_PROJECT_DIR)"?/##' | grep -o '[A-Za-z0-9_./-]*\.\(sh\|py\)' | head -1 || true)
       [ -n "$scr" ] || continue
       [ -f "$HERE/$scr" ] || FINDINGS+=("ARCH: hook '$cmd' punta a $scr che non esiste")
-    done < <(grep -o '"command": "[^"]*"' "$HERE/.claude/settings.json" | sed 's/"command": "//;s/"//')
+    done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" 2>/dev/null)
   fi
   # 4f. campo: nessun report di campo non processato (campo-triage esce != 0 se ce ne sono)
   bash "$HERE/tools/campo-triage.sh" >/dev/null 2>&1 || \

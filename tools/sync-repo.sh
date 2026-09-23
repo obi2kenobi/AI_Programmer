@@ -71,8 +71,7 @@ while IFS= read -r H; do
     # da copia locale: file li', file qui — confronto diretto
     if ! diff -q "$HERE/$H" "$LOCAL_DIR/$H" >/dev/null 2>&1; then HOOK_DIV="$HOOK_DIV $H"; fi
   fi
-done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" 2>/dev/null \
-         | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+done < <(bash "$HERE/tools/copia-hook.sh" --elenco 2>/dev/null)  # (revisione 10 giri: una derivazione sola)
 if [ -n "$HOOK_DIV" ]; then
   echo "sync-repo: DIVERGENTE — CLAUDE.md coincide ma gli HOOK no:$HOOK_DIV"
   exit 1

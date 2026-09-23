@@ -66,7 +66,9 @@
 7. **`.claude/settings.json` non si installa da una sessione agente** (report BusinessPlan,
    2026-09-20): il blocco di auto-modifica di Claude Code impedisce all'agente di scrivere
    gli hook che lo governano — lo installa una persona (o `tools/sync-repo.sh --standard`,
-   che apre una PR che una persona fonde). Dichiarato qui come chiedeva DEBITI.md.
+   che apre una PR che una persona fonde). Dichiarato qui come chiedeva DEBITI.md. I comandi
+   degli hook partono da `"$CLAUDE_PROJECT_DIR"/` (dal 2026-09-23, sì di Luca): coi path
+   relativi, da una sottocartella il cancello clasp falliva aperto.
 
 ## La fabbrica
 
