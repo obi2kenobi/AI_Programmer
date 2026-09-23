@@ -32,7 +32,7 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 # qwen3.8-27b:iq3s, cervello/decisione-modello-unico.md — il 27b quantizzato, non quello di allora).
 MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8-27b:iq3s}}"
 CTX="${QWEN_CTX:-16384}"
-THINK="${QWEN_THINK:-false}"
+THINK="${QWEN_THINK:-${THINK:-false}}"   # THINK: il profilo del turno (D11)
 API="http://localhost:11434"
 
 # rischio segnalato (revisione 14 lenti, 2026-08-28): senza --max-time, se il server

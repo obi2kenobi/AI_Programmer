@@ -314,6 +314,13 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
   && ok "PR di issue con la lente sicurezza non pulita: parere negativo scritto, niente verdetto del censore" || ko "lente non pulita su PR di issue: rc $RC, nessun commento"
 rm -f "$STUB_PAR"
 
+# (D11, Luca 2026-09-23) il limite del censore segue il profilo: con CENSORE_MAX_RIGHE=0 la stessa
+# PR (1 riga) che passa col default viene rinviata per taglia — con 0 — la chiave cambia davvero il comportamento
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-profilo
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" CENSORE_MAX_RIGHE=0 bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "(max 0)" && ! echo "$OUT" | grep -q "gh pr merge" \
+  && ok "CENSORE_MAX_RIGHE=0 dal profilo: la PR va al giorno per taglia (il profilo comanda)" || ko "CENSORE_MAX_RIGHE ignorato (rc $RC): $(echo "$OUT" | tail -1)"
+
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
 #    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
 CENSORE_MODEL="${REVISORE_MODEL:-qwen3.8-27b:iq3s}"

@@ -15,6 +15,7 @@ MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 # NIGHT_API_URL: solo per i test (server mock, stesso contratto del solver) — di norma non si tocca
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 MAX_TURNI="${AGENTE_MAX_TURNI:-8}"
+PENSA=$( [ "${THINK:-false}" = "true" ] && echo true || echo false )   # THINK del profilo (D11): solo true|false arrivano a jq
 TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-600}"  # (2026-09-21: 300 non bastano al 27B quando paga un ricarico in coda)
 
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
@@ -66,7 +67,8 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
     --arg m "$MODEL" \
     --argjson msgs "$CONV" \
-    '{model:$m, messages:$msgs, stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+    --argjson th "$PENSA" \
+    '{model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
 
   if [ -z "$RESPONSE" ]; then
     # (2026-09-19, Ollama wedged alle 17:29): il server a volte smette di
@@ -90,7 +92,8 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
     RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
       --arg m "$MODEL" \
       --argjson msgs "$CONV" \
-      '{model:$m, messages:$msgs, stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+      --argjson th "$PENSA" \
+      '{model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
   fi
 
   [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }

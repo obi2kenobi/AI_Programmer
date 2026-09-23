@@ -37,10 +37,10 @@ cd "$DIR"
 
 STATE="$DIR/.git/miglioria"
 mkdir -p "$STATE"
-COOLDOWN=21600  # 6h: un file dichiarato 'niente da migliorare' in una categoria non si ritocca
+COOLDOWN="${MIGLIORIA_COOLDOWN_SEC:-21600}"  # profilo (D11) — 6h: un file dichiarato 'niente da migliorare' in una categoria non si ritocca
 AGENT_CMD="${MIGLIORIA_AGENT:-$HERE/night-shift/agente.sh}"
-MAX_RIGHE_DIFF=40
-MAX_FILE=2
+MAX_RIGHE_DIFF="${GATE_MAX_RIGHE:-40}"   # profilo (D11)
+MAX_FILE="${GATE_MAX_FILE:-2}"
 
 log() { echo "[miglioria $(date '+%H:%M:%S')] $*" >&2; }
 

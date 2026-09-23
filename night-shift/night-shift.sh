@@ -109,7 +109,7 @@ probe() {
   local RISPOSTA
   # (2026-09-21, iq3s 12GB): il caricamento a freddo supera i 120s — la sonda
   # uccideva un server sano a meta' caricamento (due volte di fila: turno morto).
-  RISPOSTA=$(curl -sf --max-time 240 http://localhost:11434/api/chat -d \
+  RISPOSTA=$(curl -sf --max-time "${SONDA_SEC:-240}" http://localhost:11434/api/chat -d \
     "{\"model\":\"$MODEL_TAG\",\"messages\":[{\"role\":\"user\",\"content\":\"ping\"}],\"stream\":false,\"think\":false,\"keep_alive\":-1,\"options\":{\"num_ctx\":2048}}") \
     && grep -q '"content":"' <<<"$RISPOSTA"
 }
@@ -124,11 +124,11 @@ probe() {
 SERVER_ROUND=0
 until ensure_server; do
   SERVER_ROUND=$((SERVER_ROUND+1))
-  if [ "$SERVER_ROUND" -ge 6 ]; then
+  if [ "$SERVER_ROUND" -ge "${SONDA_ROUND:-6}" ]; then
     log "ERRORE: server Ollama sordo dopo $SERVER_ROUND round (30 minuti) — esco, il prossimo ciclo riprovera'"
     exit 1
   fi
-  log "⚠ server non visto (round $SERVER_ROUND/6): attendo 5 minuti e riprovo — non esco per un wedge transitorio"
+  log "⚠ server non visto (round $SERVER_ROUND/${SONDA_ROUND:-6}): attendo 5 minuti e riprovo — non esco per un wedge transitorio"
   sleep 300
 done
 # (2026-09-03: launchd ha PATH=/usr/bin:/bin — ollama sta in ~/.local/bin o /opt/homebrew/bin.
@@ -155,11 +155,11 @@ pkill -f "opencode run" 2>/dev/null && log "Puliti processi opencode orfani" && 
 PROBE_ROUND=0
 while ! probe; do
   PROBE_ROUND=$((PROBE_ROUND+1))
-  if [ "$PROBE_ROUND" -ge 6 ]; then
+  if [ "$PROBE_ROUND" -ge "${SONDA_ROUND:-6}" ]; then
     log "ERRORE: server sordo dopo $PROBE_ROUND round di sonda (30 minuti) — esco: KeepAlive mi riporta, il prossimo giro riprova"
     exit 1
   fi
-  log "⚠ Sonda di generazione muta (round $PROBE_ROUND/6): riavvio server e attendo 5 minuti — un wedge transitorio passa, non esco per lui"
+  log "⚠ Sonda di generazione muta (round $PROBE_ROUND/${SONDA_ROUND:-6}): riavvio server e attendo 5 minuti — un wedge transitorio passa, non esco per lui"
   # Finding #4 (2026-08-21): il server è di LAUNCHD (KeepAlive) — se lo killiamo e ne
   # avviamo uno nostro, lui resuscita e ci contende la porta: si perde la gara entrambi.
   # Strategia: se l'agente esiste, KICKSTART a lui e si aspetta la sua resurrezione;
@@ -650,7 +650,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       CACCIA_MARKER="$WORK/.caccia-pulita-${REPO//\//_}"
       if [ -f "$CACCIA_MARKER" ]; then
         CACCIA_ETA=$(( $(date +%s) - $(mtime "$CACCIA_MARKER") ))
-        if [ "$CACCIA_ETA" -lt 1800 ]; then
+        if [ "$CACCIA_ETA" -lt "${CACCIATORIA_COOLDOWN_SEC:-1800}" ]; then  # profilo (D11)
           log "REPO $REPO: caccia in cooldown (${CACCIA_ETA}s < 30min: già dichiarata pulita)"
           return 0
         fi
@@ -1204,7 +1204,7 @@ fi
 # (il loro auto_approve:false e' il nostro ASPETTA IL GIORNO). Fallita = niente
 # marker = riprova al prossimo ciclo.
 IMPRA_MARKER="$WORK/.impara-$(date +%F)"
-if [ ! -f "$IMPRA_MARKER" ] && [ "$(date +%H)" -ge 22 ] && [ -f "$HERE/../tools/cervello-impara.sh" ]; then
+if [ ! -f "$IMPRA_MARKER" ] && [ "$(date +%H)" -ge "${IMPARA_ORA:-22}" ] && [ -f "$HERE/../tools/cervello-impara.sh" ]; then
   if IMP_OUT=$(bash "$HERE/../tools/cervello-impara.sh" 2>&1); then
     printf '%s\n' "$IMP_OUT" > "$IMPRA_MARKER"
     log "impara: $(echo "$IMP_OUT" | head -1)"
@@ -1344,8 +1344,8 @@ rm -f "$RAMI_TSV" "$PR_TSV"
 # il minuto dorme il resto del minuto (NIGHT_CICLO_MIN_SEC, default 60): al massimo un
 # giro a vuoto al minuto, e chi lavora riparte subito come prima.
 CICLO_SEC=$(( $(date +%s) - T_CICLO_INIZIO ))
-if [ "$TOT_PR_CREATED" -eq 0 ] && [ "$TOT_PROPOSTE" -eq 0 ] && [ "$CICLO_SEC" -lt "${NIGHT_CICLO_MIN_SEC:-60}" ]; then
-  PAUSA=$(( ${NIGHT_CICLO_MIN_SEC:-60} - CICLO_SEC ))
+if [ "$TOT_PR_CREATED" -eq 0 ] && [ "$TOT_PROPOSTE" -eq 0 ] && [ "$CICLO_SEC" -lt "${NIGHT_CICLO_MIN_SEC:-${CICLO_MIN_SEC:-60}}" ]; then
+  PAUSA=$(( ${NIGHT_CICLO_MIN_SEC:-${CICLO_MIN_SEC:-60}} - CICLO_SEC ))
   log "=== TURNO FINITO — ciclo a vuoto in ${CICLO_SEC}s: pausa ${PAUSA}s prima di ripartire (niente giri a vuoto sotto il minuto) ==="
   sleep "$PAUSA"
 else

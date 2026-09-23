@@ -149,6 +149,7 @@
 - [2026-09-23 (12°) — il metodo degli N giri diventa la skill `n-giri` (D9, decisione di Luca)](#2026-09-23-12-il-metodo-degli-n-giri-diventa-la-skill-n-giri-d9-decisione-di-luca)
 - [2026-09-23 (13°) — il censore giudica le PR delle issue, e lascia solo un parere (D10, decisione di Luca)](#2026-09-23-13-il-censore-giudica-le-pr-delle-issue-e-lascia-solo-un-parere-d10-decisione-di-luca)
 - [2026-09-23 (14°) — il rosso intermittente della suite era E-002, e la mia esclusione era sbagliata (E-042)](#2026-09-23-14-il-rosso-intermittente-della-suite-era-e-002-e-la-mia-esclusione-era-sbagliata-e-042)
+- [2026-09-23 (15°) — il profilo del turno è collegato davvero (D11, decisione di Luca)](#2026-09-23-15-il-profilo-del-turno-è-collegato-davvero-d11-decisione-di-luca)
 
 
 ## Stato
@@ -3257,3 +3258,31 @@ catturati») è venuto prima della domanda successiva.
   commenti. Sabotaggio: la forma rimessa in test-errori rende rossa la guardia.
 - **Censimento nuovo.** La stessa forma compare in 250 siti di 68 banchi. È in DEBITI come lavoro
   della caccia notturna, un banco per finestra, e la lista del cricchetto cresce con ogni cura.
+
+### 2026-09-23 (15°) — il profilo del turno è collegato davvero (D11, decisione di Luca)
+
+L'undicesima domanda di dominio: Luca ha scelto «a», con la pausa a 30 minuti. Il file
+`profiles/notturno.conf` si dichiarava «l'unica fonte», ma 11 chiavi su 15 non avevano un lettore.
+- **Collegate** tutte le chiavi:
+  - `night-shift/night-shift.sh`: sonda e round, pausa della caccia, ora dell'impara, ciclo minimo.
+    `NIGHT_CICLO_MIN_SEC` resta come override;
+  - `night-shift/caccia-miglioria.sh`: i limiti del gate e la pausa per file;
+  - `night-shift/revisore.sh`: i limiti e il modello del censore;
+  - THINK: agente, censore e ask-qwen. Solo `true|false` arriva a jq.
+  - I numeri nel codice restano il fallback, uguali al profilo: nessun comportamento cambiato.
+- **Errore della mia domanda**, dichiarato a Luca prima di toccare il codice. Le «pause della
+  caccia» sono due, non una divergenza:
+  - dopo una repo pulita: 30 minuti nel codice (`night-shift/night-shift.sh:653`);
+  - per file e categoria: 6 ore (`night-shift/caccia-miglioria.sh:40`). Le 21600 del profilo
+    erano queste.
+  - Ora `CACCIATORIA_COOLDOWN_SEC=1800` (decisione di Luca) e una chiave nuova
+    `MIGLIORIA_COOLDOWN_SEC=21600`, col valore di oggi.
+- **Modello.** MODELLO del profilo è la fonte; gli override per ruolo (NIGHT_MODEL, REVISORE_MODEL,
+  QWEN_MODEL/ASK_MODEL) restano e ricadono su di lui.
+Banco scritto prima: `tests/test-profilo.sh` controlla che ogni chiave abbia un lettore e sia
+nell'allowlist, e che le due pause usino le loro chiavi. Rosso 5/12, poi 12/12. In più un caso di
+comportamento in `tests/test-revisore.sh`: con `CENSORE_MAX_RIGHE=0` la PR va al giorno.
+- **Errore del banco, curato.** Col valore 1 il caso era verde a vuoto, perché il diff di prova è
+  di 1 riga; col valore 0 morde.
+- **Sabotaggi.** Il limite di nuovo scritto a mano nel censore e la pausa riportata a 21600 nel
+  profilo danno 1 rosso e 3 rossi.

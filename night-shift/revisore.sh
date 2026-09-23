@@ -40,9 +40,11 @@ PR="${2:?uso: revisore.sh <dir-repo> <pr>}"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git" >&2; exit 3; }
 cd "$DIR"
 
-GIUDICE_MODEL="${REVISORE_MODEL:-qwen3.8-27b:iq3s}"  # (2026-09-19: 14b 1/3 in 22s; 2026-09-21: qwen3.8-27b:iq3s 3/3 in 48s con think:false — un solo modello, decisione di Luca)
-AUTORE_MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
-MAX_RIGHE=60; MAX_FILE=3; QUARANTENA_MIN=20; BUDGET_GIORNO=5
+GIUDICE_MODEL="${REVISORE_MODEL:-${MODELLO:-qwen3.8-27b:iq3s}}"  # (2026-09-19: 14b 1/3 in 22s; 2026-09-21: qwen3.8-27b:iq3s 3/3 in 48s con think:false — un solo modello, decisione di Luca)
+AUTORE_MODEL="${NIGHT_MODEL:-${MODELLO:-qwen3.8-27b:iq3s}}"
+# (D11, Luca 2026-09-23): i limiti vengono dal profilo del turno (profiles/notturno.conf);
+# i numeri qui sono il fallback, uguale al profilo
+MAX_RIGHE="${CENSORE_MAX_RIGHE:-60}"; MAX_FILE="${CENSORE_MAX_FILE:-3}"; QUARANTENA_MIN="${CENSORE_QUARANTENA_MIN:-20}"; BUDGET_GIORNO="${CENSORE_BUDGET_GIORNO:-5}"
 API="http://localhost:11434/api/chat"
 STATE="$DIR/.git/revisore"; mkdir -p "$STATE"
 # ai_timeout: wrapper portabile dell'hub (macOS non ha timeout(1))
@@ -81,7 +83,8 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
     return
   fi
   curl -s --max-time "$maxsec" "$API" -d "$(jq -cn --arg m "$modello" --arg p "$prompt" \
-    '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}')" \
+    --argjson th "$( [ "${THINK:-false}" = "true" ] && echo true || echo false )" \
+    '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:$th, options:{temperature:0}}')" \
     | jq -r '.message.content // empty' 2>/dev/null
 }
 
