@@ -140,6 +140,7 @@
 - [2026-09-23 (3°) — CLAUDE.md §4: chi giudica le PR, oggi (sì di Luca)](#2026-09-23-3-claude-md-4-chi-giudica-le-pr-oggi-sì-di-luca)
 - [2026-09-23 (4°) — graphify spina dorsale (D1, decisione di Luca)](#2026-09-23-4-graphify-spina-dorsale-d1-decisione-di-luca)
 - [2026-09-23 (5°) — la lente sicurezza scatta da sola sulle PR della notte (D2, decisione di Luca)](#2026-09-23-5-la-lente-sicurezza-scatta-da-sola-sulle-pr-della-notte-d2-decisione-di-luca)
+- [2026-09-23 (6°) — la skill si ricorda quando l'agente tocca il suo terreno (D3, decisione di Luca)](#2026-09-23-6-la-skill-si-ricorda-quando-l-agente-tocca-il-suo-terreno-d3-decisione-di-luca)
 
 
 ## Stato
@@ -3084,3 +3085,24 @@ Banco scritto prima: `tests/test-lente-sicurezza.sh`, rosso 1/15, poi 15/15, pi�
 `tests/test-revisore.sh`. Sabotaggio con lo strato 1 non bloccante e il censore che ignora la lente:
 3 rossi più 1 rosso, e la PR con rilievi veniva MERGIATA.
 ⏳ NON verificato dal vivo: quanto costa una chiamata al cervello per PR sul Mac.
+
+### 2026-09-23 (6°) — la skill si ricorda quando l'agente tocca il suo terreno (D3, decisione di Luca)
+
+La terza domanda di dominio: Luca ha scelto «a», un promemoria su ciò che l'agente tocca, non sulle
+parole della richiesta. Il debito veniva dal 2026-08-24: `verifica-visiva` non si era attivata
+sulla dashboard GAS, con la description che calzava alla lettera.
+- `tools/skill-reminder-hook.sh` è un hook PreToolUse, nella stessa voce del pattern-reminder.
+  I criteri si leggono da fonti già esistenti, senza liste scritte nel hook:
+  - `.html` in un progetto GAS (con `appsscript.json` nella cartella o sopra) → `verifica-visiva`;
+  - `.gs`/`.js` in un progetto GAS → `gas-sviluppo`;
+  - un `.py` citato dall'agente `contabilita-analitica` → `controllo-gestione`. È il registro dei
+    calcoli: 11 file, esclusi bc_*, dashboard, gas_qualita e verifica_banco.
+- La description viene dalla SKILL.md. Il promemoria scatta una volta per skill per sessione, e
+  una skill assente dalla repo non si suggerisce.
+- Non dà `permissionDecision`: un promemoria non deve auto-approvare la modifica. Il
+  pattern-reminder invece dà `allow` a ogni file sensibile. È fuori da questo passo, e lo annoto
+  qui come rilievo.
+- Viaggia con `copia-hook --elenco`.
+Banco scritto prima: `tests/test-skill-reminder-hook.sh`, rosso 4/10, poi 10/10. Sabotaggio senza
+il «una volta per sessione» e senza il controllo GAS: 2 rossi.
+Dichiarato non coperto: `dev-critic` è critica dell'intero progetto, non ha un terreno di file.
