@@ -2913,3 +2913,32 @@ giri 5-10 — ognuno rieseguito prima della cura: nessuno entra per fiducia.
   vera ha (sono `sk-ant-…`). E i prefissi nudi (`github_pat_`, `sk-proj-`, `xoxb-`)
   scattavano su chi li NOMINA (la maschera stessa): ora ogni forma porta il corpo del token;
   nessun file intero escluso (lo avevo fatto, poi tolto: troppo largo).
+
+**Giro 8 — i test che non potevano fallire.**
+- `tests/test-oracoli-integrati.sh`: `python3 -c "abs($V - 1274.0) < 0.01"` valuta e BUTTA
+  l'espressione (esce 0 sempre, anche con V vuoto) — e le attese erano SBAGLIATE: gli oracoli
+  danno 1300.00 e un margine totale di 200.00. Rederivate a mano dalle formule citate negli
+  oracoli (`PERCENTUALE = costo*(1+v/100)`; convenzione G/L amount<0 = ricavo), asserzione
+  vera; oracolo sabotato → rosso.
+- `tools/suite.sh` pretende ora la riga di verdetto «N OK, 0 FAIL» con N ≥ 1: otto test
+  caricano una libreria con `source` e morivano VERDI se la libreria usciva; uno con zero
+  asserzioni usciva 0 uguale. 155/156 la stampavano gia'. Conseguenza dichiarata: un test che
+  «salta» con `exit 0` quando manca `jq` o `node` ora e' rosso — un salto non e' una prova, e
+  l'hub li richiede entrambi.
+- `tests/test-py-gate.sh`: il ko girava nella subshell di una pipe (stampava FAIL, chiudeva
+  7 OK, 0 FAIL) e nascondeva un bug vero di `tools/py-gate.sh` — i path di `git ls-files`
+  relativi a DIR aperti dalla cartella corrente (lanciato altrove accusava i buoni e mancava
+  i rotti). Curati entrambi.
+- `night-shift/risolvi-issue.sh`: il verdetto dell'auto-review provava *correct* prima di
+  *wrong* — «incorrect», «not correct», «scorretto» diventavano CORRECT. Ora
+  `classifica_verdetto()`, provata su 12 casi estraendola dal sorgente. E il turno cercava
+  WRONG in TUTTO l'output del solver (log e codice) con una pipe verso grep -q: ora legge la
+  sola riga `REVIEW:`.
+- `test-night-verify-runs-all-tests`: N_MATCH era lo stesso comando di N_REALI (tautologia)
+  — ora il glob si legge dal runner. `test-mutation-atomico`: accettava «integro» anche senza
+  mutazione avvenuta (banco sostituito da `exit 0` → verde) — ora pretende la mutazione in
+  corso al momento del colpo; sabotaggio → 2 rossi.
+Verdetto del giro 8: `bash tools/suite.sh` → 157/157 (col verdetto preteso). Il primo lancio
+l'ha data rossa su `test-night-verify-riepilogo-suite`, i cui test finti stampavano il verdetto
+con un prefisso («a: 1 OK, 0 FAIL»): fixture aggiornati — la regola nuova ha morso per prima
+dentro casa.

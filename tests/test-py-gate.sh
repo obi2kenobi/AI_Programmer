@@ -26,7 +26,12 @@ git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm 
 OUT=$(bash "$GATE" "$SB" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "rotto bocciato (rc 1)" || ko "rc $RC (atteso 1)"
 echo "$OUT" | grep -q "rotto.py" && ok "il file rotto viene Nominato" || ko "non dice quale file"
-echo "$OUT" | if grep -q "buono.py"; then ko "accusa il file buono (falso positivo — audit 2026-09-23)"; else ok "il file buono non viene accusato"; fi
+# (revisione 10 giri, 2026-09-23): era `echo "$OUT" | if grep …; then ko …` — il ko girava nella
+# SUBSHELL della pipe e il contatore si perdeva: stampava FAIL e chiudeva 7 OK, 0 FAIL.
+if grep -q "buono.py" <<<"$OUT"; then ko "accusa il file buono (falso positivo — audit 2026-09-23)"; else ok "il file buono non viene accusato"; fi
+# e da un'ALTRA cartella: i path di git ls-files sono relativi a DIR, non alla cartella corrente
+OUT_ALTROVE=$(cd / && bash "$GATE" "$SB" 2>&1)
+if grep -q "buono.py" <<<"$OUT_ALTROVE"; then ko "lanciato da un'altra cartella accusa il file buono"; else ok "lanciato da un'altra cartella: il file buono non e' accusato"; fi
 
 # 3. il gate non scrive __pycache__ (compile(), non py_compile)
 [ -z "$(find "$SB" -name __pycache__ 2>/dev/null)" ] && ok "nessun __pycache__ scritto" || ko "ha sporcato con __pycache__"

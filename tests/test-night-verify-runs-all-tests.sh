@@ -31,8 +31,11 @@ NOMINATI=$(grep -oE 'bash tests/test-[a-z0-9-]+\.sh' "$NV" || true)
   || ko "test ancora invocati per nome fisso, fuori dal runner: $NOMINATI"
 
 # il glob del runner deve davvero includere OGNI file tests/test-*.sh presente oggi
+# (revisione 10 giri, 2026-09-23): N_MATCH era lo STESSO comando di N_REALI — una tautologia
+# che non poteva fallire. Ora il glob si legge dal runner vero (tools/suite.sh, il suo `for`).
 N_REALI=$(cd "$HERE" && ls tests/test-*.sh | wc -l | tr -d ' ')
-N_MATCH=$(cd "$HERE" && ls tests/test-*.sh | wc -l | tr -d ' ')
+GLOB_RUNNER=$(grep -oE '^for t in [^;]+' "$HERE/tools/suite.sh" | head -1 | awk '{print $4}')
+N_MATCH=$(cd "$HERE" && ls $GLOB_RUNNER 2>/dev/null | wc -l | tr -d ' ')
 [ "$N_MATCH" -eq "$N_REALI" ] && [ "$N_REALI" -gt 20 ] \
   && ok "il glob del runner copre tutti i $N_REALI file di test presenti oggi" \
   || ko "il glob copre $N_MATCH file su $N_REALI presenti — non tutti raggiunti"

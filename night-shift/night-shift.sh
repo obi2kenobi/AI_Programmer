@@ -983,19 +983,23 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         # Il verdetto arriva nella riga «REVIEW: ...» dell'output del solver (D5: prima
         # qui c'era anche una chiamata `risolvi-issue.sh --review` a una modalita' mai
         # esistita — usciva 2 «dir inesistente» a ogni fix, in silenzio).
+        # (revisione 10 giri, 2026-09-23): si legge la sola riga REVIEW — prima «WRONG»/«CORRECT»
+        # si cercavano in TUTTO l'output del solver (log e codice compresi: una variabile
+        # `wrongCount` bastava), e con una pipe verso grep -q (famiglia E-002)
+        REVIEW_RIGA=$(grep -m1 '^REVIEW: ' <<<"$OUT" || true)
         if [ "$RC" -eq 0 ]; then
-          if echo "$OUT" | grep -qi "WRONG"; then
+          if [ "$REVIEW_RIGA" = "REVIEW: WRONG" ]; then
             NOTA_INS="
 
 ⚠ AUTO-REVIEW: il modello ha dubbi sul proprio fix — verificare con attenzione."
             log "Issue #$NUM: auto-review DUBBIA — PR con warning"
-          elif echo "$OUT" | grep -qi "CORRECT"; then
+          elif [ "$REVIEW_RIGA" = "REVIEW: CORRECT" ]; then
             log "Issue #$NUM: auto-review CORRECT"
           fi
         fi
         # GENERATORE DI TEST (2026-09-17): il fix arriva col test che lo presidia.
         # Terza chiamata Ollama, stesso patto: prompt → codice → applicazione.
-        if [ "$RC" -eq 0 ] && ! echo "$OUT" | grep -qi "WRONG"; then
+        if [ "$RC" -eq 0 ] && [ "$REVIEW_RIGA" != "REVIEW: WRONG" ]; then
           TEST_FILE="$DIR/tests/night/test_$(date +%s)_issue_$NUM.js"
           mkdir -p "$DIR/tests/night"
           # chiediamo al modello (tramite il solver) di scrivere il test

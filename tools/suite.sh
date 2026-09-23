@@ -29,5 +29,13 @@ for t in tests/test-*.sh; do
     echo "$OUT" | tail -10
     exit 1
   }
+  # (revisione 10 giri, 2026-09-23): rc 0 non basta — un test che carica una libreria con
+  # `source` muore VERDE se la libreria esce, e uno con zero asserzioni esce 0 lo stesso.
+  # Si pretende la riga di verdetto «N OK, 0 FAIL» con N >= 1 (la stampano tutti i test).
+  if ! grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$OUT"; then
+    echo "FALLITO ($N/$TOT): $t — verde senza verdetto (manca «N OK, 0 FAIL» con N >= 1)"
+    echo "$OUT" | tail -5
+    exit 1
+  fi
 done
 echo "Suite test hub: $N/$TOT file superati"

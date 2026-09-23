@@ -20,6 +20,23 @@ else
   ok "E-002: nessuna pipeline grep -q (cattura-prima)"
 fi
 
+# --- (revisione 10 giri, 2026-09-23): il verdetto dell'auto-review si classificava con
+# *correct* PRIMA di *wrong* — «incorrect», «not correct», «scorretto» contengono «correct»
+# /«corretto» e diventavano CORRECT. La classificazione vive in classifica_verdetto(),
+# estratta dal sorgente ed eseguita qui (niente copia a mano della logica).
+FN=$(sed -n '/^classifica_verdetto() {/,/^}/p' "$SOLVER")
+if [ -n "$FN" ]; then
+  eval "$FN"
+  for CASO in "correct|CORRECT" "CORRECT.|CORRECT" "corretto|CORRECT" "giusto|CORRECT" \
+              "incorrect|WRONG" "wrong. the fix is not correct|WRONG" "not correct: missing null check|WRONG" \
+              "scorretto|WRONG" "non corretto|WRONG" "sbagliato|WRONG" "boh|UNCLEAR" "|UNCLEAR"; do
+    IN="${CASO%%|*}"; ATTESO="${CASO##*|}"
+    [ "$(classifica_verdetto "$IN")" = "$ATTESO" ] && ok "verdetto «$IN» → $ATTESO" || ko "verdetto «$IN» → $(classifica_verdetto "$IN") (atteso $ATTESO)"
+  done
+else
+  ko "classifica_verdetto() non trovata in risolvi-issue.sh"
+fi
+
 # --- il server mock: risponde /api/chat con il corpo che decidiamo per test
 MOCK_DIR=$(mktemp -d /tmp/risolvi-mock.XXXXXX)
 MOCK_BODY_FILE="$MOCK_DIR/body.json"
