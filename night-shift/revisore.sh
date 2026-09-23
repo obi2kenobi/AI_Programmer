@@ -108,7 +108,7 @@ rinvia() {
 }
 
 # ══ 1. GUARDIE ══════════════════════════════════════════════════════════════════
-PR_JSON=$(gh pr view "$PR" --json number,title,headRefName,isDraft,createdAt,state 2>/dev/null)
+PR_JSON=$(gh pr view "$PR" --json number,title,headRefName,headRefOid,isDraft,createdAt,state 2>/dev/null)
 [ -n "$PR_JSON" ] || { log "PR #$PR non raggiungibile"; exit 3; }
 BRANCH=$(printf '%s' "$PR_JSON" | jq -r '.headRefName')
 TITLE=$(printf '%s' "$PR_JSON" | jq -r '.title')
@@ -151,13 +151,22 @@ N_MERGI=$(cat "$BUDGET_FILE" 2>/dev/null || echo 0)
 # (il fetch e' un rinfresco: in produzione il branch di solito c'e' gia' in
 # locale — l'ha pushato la caccia da questa stessa copia. Se manca anche in
 # locale, il checkout sotto esce comunque con errore)
+# (2026-09-23, giro A6 della notte): si giudica il COMMIT DELLA PR (headRefOid), non il ramo locale
+# con lo stesso nome — riprodotto: ramo locale rimasto a c1, PR a c2, il censore giudicava c1 e
+# FONDEVA c2. Checkout staccato su quel commit; la fusione sotto e' legata a lui
+# (--match-head-commit). Commit illeggibile o assente qui: nessun giudizio (fail-closed).
+HEAD_OID=$(printf '%s' "$PR_JSON" | jq -r '.headRefOid // empty')
 git fetch -q origin "$BRANCH" 2>/dev/null || true
-git checkout -q "$BRANCH" 2>/dev/null || { git checkout -q "$DB"; exit 3; }
+if [ -z "$HEAD_OID" ] || ! git cat-file -e "${HEAD_OID}^{commit}" 2>/dev/null; then
+  log "guardia: il commit della PR (${HEAD_OID:-illeggibile}) non e' qui — nessun giudizio senza il commit vero, al giorno"
+  exit 2
+fi
+git checkout -q --detach "$HEAD_OID" 2>/dev/null || { git checkout -q "$DB"; exit 3; }
 DBRANCH="$DB"
 ripristina() { git checkout -q "$DBRANCH" 2>/dev/null; }
 trap ripristina EXIT
 if [ "$MODO" = "parere" ]; then
-  PARERE_FILE="$STATE/parere-$PR-$(git rev-parse HEAD)"
+  PARERE_FILE="$STATE/parere-$PR-$HEAD_OID"
   [ -f "$PARERE_FILE" ] && { log "parere gia' dato su questo commit della PR #$PR — niente da rifare"; exit 2; }
 fi
 
@@ -331,7 +340,7 @@ if [ "$VERDETTO" = "APPROVA" ]; then
   printf 'Deliberata dal revisore notturno (censore: %s, autore: %s).\nProve: verifiche dichiarate verdi · banco avversario superato · guardie diff (%s righe/%s file).\nMotivazioni: %s\nIl veto resta umano: il mattino puo sempre fare revert.\n' \
     "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-300)" > "$CERT_FILE"
   azione_gh gh pr ready "$PR" || true
-  if azione_gh gh pr merge "$PR" --squash --delete-branch; then
+  if azione_gh gh pr merge "$PR" --squash --delete-branch --match-head-commit "$HEAD_OID"; then
     echo $(( N_MERGI + 1 )) > "$BUDGET_FILE"
     azione_gh gh pr comment "$PR" --body-file "$CERT_FILE" || true
     rm -f "$CERT_FILE"

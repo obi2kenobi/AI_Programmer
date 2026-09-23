@@ -46,7 +46,11 @@ mkdir -p "$GHSTUB"
 cat > "$GHSTUB/gh" <<'EOF'
 #!/bin/bash
 # minimale: `gh pr view N --json ...` risponde dal file $GHSTUB_JSON
-if [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHSTUB_JSON"; exit 0; fi
+# (2026-09-23, giro A6): come il gh vero, la PR porta il suo commit (headRefOid) — se il caso non lo
+# fissa, e' la punta del ramo nominato nel repo corrente
+if [ "$1" = "pr" ] && [ "$2" = "view" ]; then
+  jq --arg o "$(git rev-parse -q --verify "$(jq -r .headRefName "$GHSTUB_JSON")" 2>/dev/null)" 'if has("headRefOid") then . else . + {headRefOid:$o} end' "$GHSTUB_JSON"; exit 0
+fi
 if [ "$1" = "issue" ] && [ "$2" = "view" ]; then printf '{"title":"Titolo della issue %s","body":"Documenta il raddoppio."}\n' "$3"; exit 0; fi
 exit 0
 EOF
@@ -113,6 +117,39 @@ SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-lente
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && echo "$OUT" | grep -q "LENTE SICUREZZA: RILIEVI" \
   && ok "lente sicurezza con rilievi → rc 2, nessun merge" || ko "lente con rilievi: rc $RC — $(echo "$OUT" | tail -1)"
+
+# 2ter. (2026-09-23, giro A6) si giudica il commit DELLA PR, non il ramo locale con lo stesso nome,
+#       e la fusione e' legata a quel commit (--match-head-commit): nessuna PR fusa senza giudizio
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-punta
+C2=$(git -C "$SB" rev-parse night/test-punta)
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+echo "$OUT" | grep -q "gh pr merge 7 --squash --delete-branch --match-head-commit $C2" \
+  && ok "la fusione e' legata al commit giudicato (--match-head-commit)" || ko "fusione non legata al commit giudicato: $(echo "$OUT" | grep 'gh pr merge')"
+# il ramo locale e' rimasto INDIETRO (c1) mentre la PR punta a un commit piu' nuovo che rompe le prove
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vecchio
+git -C "$SB" checkout -q night/test-vecchio
+printf 'function morta() {}\n' > "$SB/utils.js"   # c2 toglie la funzione viva: l'avversario la smaschera
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "c2 che rompe"
+C2=$(git -C "$SB" rev-parse HEAD); git -C "$SB" reset -q --hard HEAD~1; git -C "$SB" checkout -q main
+python3 - "$C2" > "$GHSTUB_JSON" <<'PY'
+import sys, json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-vecchio", "headRefOid": sys.argv[1],
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+  && ok "ramo locale vecchio: si giudica il commit della PR (c2, che rompe) — nessuna fusione" || ko "giudicato il ramo locale vecchio (rc $RC): $(echo "$OUT" | tail -1)"
+# il commit della PR non e' leggibile qui: fail-closed
+python3 > "$GHSTUB_JSON" <<'PY'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-vecchio", "headRefOid": "0123456789abcdef0123456789abcdef01234567",
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -ne 0 ] && [ "$RC" -ne 1 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+  && ok "commit della PR sconosciuto: nessun giudizio, nessuna fusione (rc $RC)" || ko "commit sconosciuto: rc $RC"
 
 # 3. quarantena: PR troppo giovane → skip (rc 2), nessun giudizio speso
 SB=$(nuova_repo); nuova_pr "$SB" 5 night/test-giovane

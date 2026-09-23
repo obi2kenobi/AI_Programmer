@@ -60,11 +60,11 @@ git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm 
 git -C "$SB" checkout -q main
 printf '#!/bin/bash\nif [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHDIR_JSON"; fi\nexit 0\n' > "$GHDIR/gh"; chmod +x "$GHDIR/gh"
 export GHDIR_JSON="$GHDIR/pr.json"
-python3 - > "$GHDIR_JSON" <<'PY'
-import json
+python3 - "$(git -C "$SB" rev-parse night/caccia-test)" > "$GHDIR_JSON" <<'PY'
+import json, sys
 from datetime import datetime, timezone, timedelta
 print(json.dumps({"number": 9, "title": "caccia: miglioria al codice dall'agente notturno",
-  "headRefName": "night/caccia-test", "isDraft": True, "state": "OPEN",
+  "headRefName": "night/caccia-test", "headRefOid": sys.argv[1], "isDraft": True, "state": "OPEN",
   "createdAt": (datetime.now(timezone.utc)-timedelta(minutes=40)).isoformat()}))
 PY
 # stub censore per ruolo (il modello unico non si distingue per nome)

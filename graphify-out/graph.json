@@ -39759,7 +39759,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L157"
+      "source_location": "L166"
     },
     {
       "id": "night_shift_revisore_sh__entry",
@@ -45660,7 +45660,7 @@
       },
       "norm_label": "nuova_pr()",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L55"
+      "source_location": "L59"
     },
     {
       "id": "tests_test_revisore_nuova_repo",
@@ -45675,7 +45675,7 @@
       },
       "norm_label": "nuova_repo()",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L82"
+      "source_location": "L86"
     },
     {
       "id": "tests_test_revisore_ok",
@@ -45720,7 +45720,7 @@
       },
       "norm_label": "pr_issue()",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L275"
+      "source_location": "L312"
     },
     {
       "id": "tests_test_revisore_sh__entry",
@@ -48153,7 +48153,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L169",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -48165,7 +48165,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L204",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -48177,7 +48177,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L233",
+      "source_location": "L242",
       "weight": 1.0
     },
     {
@@ -48189,7 +48189,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L244",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -48201,7 +48201,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L323",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -52293,7 +52293,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L276",
+      "source_location": "L313",
       "weight": 1.0
     },
     {
@@ -52329,7 +52329,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L296",
+      "source_location": "L333",
       "weight": 1.0
     },
     {
@@ -52341,7 +52341,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L93",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -52353,7 +52353,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L93",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -81259,7 +81259,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L157",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -85362,7 +85362,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L275",
+      "source_location": "L312",
       "weight": 1.0
     },
     {
@@ -85384,7 +85384,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L55",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -85395,7 +85395,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L82",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -88854,5 +88854,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7ae81509a5804414393588db6d75293bd999ab68"
+  "built_at_commit": "21b553c23d7298456dddb4a916831d9067692c48"
 }

@@ -3363,3 +3363,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - La regola è in tre pezzi: PREF (le parole che eseguono ciò che segue), OPT (le opzioni prima
     del sottocomando), FINE (la fine della parola).
   - 19 casi nuovi rossi, poi 88/88 con tutti i vecchi falsi positivi ancora verdi.
+- **Q3**, da A6, sicurezza: il censore giudicava il RAMO LOCALE con il nome della PR e fondeva
+  senza legare la fusione al commit giudicato. Riprodotto: ramo locale fermo a c1, PR a c2 (che
+  toglieva la funzione viva), e c2 veniva MERGIATA.
+  - Ora il censore legge `headRefOid`, fa il checkout staccato su quel commit, e fonde con
+    `--match-head-commit`. Un commit illeggibile o assente vuol dire nessun giudizio.
+  - Il parere si ricorda per il commit della PR: chiude anche il ciclo in cui `candidata_parere`
+    riproponeva la stessa PR.
+  - 3 casi, lo stub `gh` dà il commit come il gh vero. Sabotaggio: col checkout del ramo locale
+    torna MERGIATA.
