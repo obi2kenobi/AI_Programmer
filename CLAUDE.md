@@ -289,6 +289,6 @@ never fed and the docs promised a shield that did not exist): **names of repos a
 people may appear; what must NEVER appear is ACCESS** — secrets, credentials, tokens,
 production pushes (clasp). `tools/privacy-check.sh` enforces the term list
 (~/.privacy-nomi, local) and runs in `.night-verify`: a leak fails the gate.
-Before citing a code, check `night-shift/repos-index.md` — a public, name-free registry
+(The anonymous-code registry repos-index.md is retired history since 2026-09-23)
 of which role each code already covers (4° ciclo, set 3, 2026-08-23: built after nearly
 colliding a new code with an existing one before assigning REPO-E).

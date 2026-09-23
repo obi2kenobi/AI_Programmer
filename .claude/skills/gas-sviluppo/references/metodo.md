@@ -47,7 +47,7 @@ entra in Business Central e ci resta.
   la raggiunge il bottone «Esegui», e con una webapp la raggiunge
   `google.script.run`.
 - **I difetti ASSENTI si dichiarano col COMANDO che li cerca**, non con esempi
-  (misurato: due «assenti» dichiarati ad esempio erano falsi). E L'ESITO DEL GIRO
+  E L'ESITO DEL GIRO
   SI DICHIARA: uno sweep ampio che torna a ZERO bug reali sulla stessa superficie
   è informazione di CONVERGENZA, non un giro sprecato — vale una riga esplicita
   quanto un bug trovato (report dal campo REPO-G 2026-08-27: sei giri, cinque bug,
@@ -322,7 +322,7 @@ scoperto solo verificando l'assunzione implicita, non leggendo il rilievo.
 ## Il catalogo pattern è parte del canone (fix G03, 2026-08-28)
 
 Prima di reinventare una soluzione, consulta `patterns/README.md`:
-l'indice di 39 pattern, ciascuno nato da un errore vero. I pattern
+l'indice dei pattern (il conto vive in patterns/, non qui), ciascuno nato da un errore vero. I pattern
 più citati dal canone: scarto-mai-silenzioso · esegui-non-leggere ·
 oracolo-indipendente · forma-dei-dati-verificata · lock-per-risorsa.
 Dopo averne pagato uno nuovo, scrivilo.
@@ -1053,7 +1053,7 @@ La sessione aveva l'hub in sola lettura — le regole sono arrivate a mano.
    dentro l'HTML, che in un progetto GAS è metà dell'applicazione. (Il gate
    esisteva nel cliente e non nell'hub con la skill gas-sviluppo: portato.)
 
-2. **La convergenza di più lenti NON è una conferma.** I giri che leggono la
+2. **La convergenza di più lenti NON è una conferma (qui sotto: se le misure sono INDIPENDENTI vale di piu' di una citazione — la differenza e' l'indipendenza delle fonti, non il numero).** I giri che leggono la
    stessa fonte ereditano la stessa premessa: la loro convergenza misura
    quanto è *convincente* l'errore, non quanto è *vero*. Il consolidamento
    separa «segnalato da N lenti» da «verificato eseguendo», e la prima colonna
@@ -1086,12 +1086,8 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
 **Concorrenza e risorse**: `la-staffetta` (la collaborazione a passi sui canali dichiarati) · `lock-per-risorsa` · `cuore-unico-proprietario` · `workdir-e-proprietario` · `dipendenza-tra-rami-paralleli`
 **Output e verbaldi**: `scarto-mai-silenzioso` · `stato-vuoto-dalla-pipeline` · `verdetto-sempre-visibile` · `soglia-con-provenienza` · `soglia-con-default-guardato` · `versione-sugli-artefatti` · `citazione-non-presidio`
 **Architettura GAS**: `guardia-nel-ponte-non-nella-condivisa` · `ponte-branch-usa-e-getta` · `riga-in-coda-non-interposta` · `estensione-testata-non-distruttiva` · `doppio-livello-escaping` · `collisione-namespace-globale-gas` · `migrazione-con-interruttore` (si cambia senza spegnere il vecchio percorso)
-**Architettura GAS**: `clasp-push-non-e-produzione` (verifica col fetch mirato, non presunzione) · `manifest-webapp-nel-repo` · `diagnosi-differenziale-webapp-gas` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `vivo-gia-in-git` (prima di sovrascrivere un vivo: non «cosa è diverso» ma «c'è qualcosa che git non ha mai visto») · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
-<<<<<<< Updated upstream
-**Metodo e processo**: · `autorita-di-dominio-batte-oracolo` · `la-riga-di-default-e-il-caso-peggiore` · `ambiente-censimento-dichiarato` `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
-=======
-**Metodo e processo**: `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
->>>>>>> Stashed changes
+**Produzione e deploy GAS**: `clasp-push-non-e-produzione` (verifica col fetch mirato, non presunzione) · `manifest-webapp-nel-repo` · `diagnosi-differenziale-webapp-gas` · `link-assoluti-e-decodifica-robusta` · `gas-vivo-definitivo` (il vivo è definitivo: skill allineamento-fork per la prima mossa) · `vivo-gia-in-git` (prima di sovrascrivere un vivo: non «cosa è diverso» ma «c'è qualcosa che git non ha mai visto») · `estrazione-llm-spezzata` (mai prompt monolitici su documenti multi-pagina: a pezzI, e se serve a ripresa)
+**Metodo e processo**: `autorita-di-dominio-batte-oracolo` · `la-riga-di-default-e-il-caso-peggiore` · `ambiente-censimento-dichiarato` `estrazione-per-testabilita` · `estrattore-test-dipendenza-refactor` · `lettura-esecuzione-precedente` · `misura-la-deriva-prima-di-assumerla` · `chiave-stabile-etichetta-libera` · `watchdog-guardato` · `somma-diversa-da-zero-non-e-presenza` · `edifact-release-character` · `pipefail-grep-sigpipe` · `confronto-non-vuoto` · `clone-shallow-mente-sulla-storia` · `il-precedente-porta-il-vincolo-pagato` · `oracolo-dal-sistema-vecchio` · `presidio-senza-consumatori` (una regola che nessuno esegue è folklore) · `misura-prima-di-toccare` (quando la correzione è una decisione del dominio, consegna lo strumento che la rende decidibile) · `numero-col-suo-comando` (un numero dichiarato porta il comando che lo produce, a partire da quelli del canone) · `allowlist-per-segmento` · `forma-dei-dati-verificata`
 
 
 
