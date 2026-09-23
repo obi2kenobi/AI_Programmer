@@ -110,13 +110,14 @@ dal <title> dell'HTML quando la fonte vera era un setTitle() nel .gs, che vince 
 
 ### Conventions of the night gate
 - **Branches start with `night/`, `claude/` or `glm/`** — any other prefix (`feature/x`, `fix/y`) is invisible to every judge, silently. Who judges what today:
-  - **the censore** (night-shift/revisore.sh in the hub, in the night cycle) deliberates ONLY draft PRs on `night/` titled `caccia:` — any other PR it defers as «non mio»;
-  - **the morning-gate** (night-shift/morning-gate.sh in the hub) is **in pensione** from launchd since 2026-09-23: it can still be run by hand, and then judges PRs on `night/`, `claude/`, `glm/`. PRs on `claude/*`, `glm/*` and issue PRs (`night/issue-N`) have no automatic judge today: Luca's review looks at them.
+  - **the censore** (night-shift/revisore.sh in the hub, in the night cycle) deliberates — and may merge — ONLY draft PRs on `night/` titled `caccia:`. On issue PRs (`night/issue-N`) it runs the same guards and proofs, judges the diff against the issue text and leaves only a motivated **parere** as a PR comment: it never merges, readies or closes them. Any other PR it defers as «non mio»;
+  - **the morning-gate** (night-shift/morning-gate.sh in the hub) is **in pensione** from launchd since 2026-09-23: it can still be run by hand, and then judges PRs on `night/`, `claude/`, `glm/`. PRs on `claude/*` and `glm/*` have no automatic judge today, and issue PRs are merged only by Luca: Luca's review looks at them.
 - **The issue-closing keyword stays in INGLESE** (`Closes #N`, `Fixes #N`) — GitHub does not auto-close with the Italian translation.
 - **Mirror / read-only folders**: the night shift honours a `.night-mirror` file at the repo root (one folder per line, like `.night-verify`): those folders are declared to the agent and never written.
 <!-- Nate nel set 3 "flusso delle idee" (2026-08-22): vivevano solo in commenti di codice
 (night-shift/*.sh) o in SAL.md, mai dove un agente di giorno o un progetto onboardato le
-leggesse. Il giudice aggiornato il 2026-09-23 (sì di Luca); la keyword inglese verificata piu'
+leggesse. Il giudice aggiornato il 2026-09-23 (sì di Luca); il parere sulle PR delle issue e' la
+decisione D10 di Luca (2026-09-23: «b», il censore giudica ma non fonde); la keyword inglese verificata piu'
 volte nella storia del sistema (SAL.md); .night-mirror: prima il prompt ne parlava senza che una
 repo avesse modo di dichiararle. -->
 

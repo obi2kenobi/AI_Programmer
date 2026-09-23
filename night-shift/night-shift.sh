@@ -623,6 +623,20 @@ review del giorno." 2>>"$ERR_NOTTE" \
         *) log "REPO $REPO: ⚠ censore in errore sulla PR #$REVISORE_CANDIDATA (rc=$REVISORE_RC)" ;;
       esac
     fi
+    # (D10, decisione di Luca 2026-09-23: «b»): una PR di ISSUE per ciclo riceve il PARERE del
+    # censore — stesse guardie e prove, giudizio contro il testo della issue, un commento motivato;
+    # mai la fusione, che resta di Luca. Un parere per commit (lib.sh candidata_parere).
+    PARERE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,headRefOid --limit 20 2>/dev/null \
+      | candidata_parere "$DIR/.git/revisore")
+    if [ -n "${PARERE_CANDIDATA:-}" ]; then
+      log "REPO $REPO: PR di issue #$PARERE_CANDIDATA — la porto al CENSORE per il parere (non fonde)"
+      PARERE_OUT=$(bash "$HERE/revisore.sh" "$DIR" "$PARERE_CANDIDATA" 2>&1); PARERE_RC=$?
+      case "$PARERE_RC" in
+        4) log "REPO $REPO: $(grep -a 'PARERE:' <<<"$PARERE_OUT" | tail -1 | sed 's/^\[revisore [^]]*\] //') (commento sulla PR)" ;;
+        2) log "REPO $REPO: parere sulla PR #$PARERE_CANDIDATA rinviato ($(echo "$PARERE_OUT" | tail -1 | cut -c1-100))" ;;
+        *) log "REPO $REPO: ⚠ censore in errore sul parere della PR #$PARERE_CANDIDATA (rc=$PARERE_RC)" ;;
+      esac
+    fi
   fi
 
   if [ "$COUNT" -eq 0 ]; then

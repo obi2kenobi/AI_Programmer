@@ -22,9 +22,15 @@
 # del censore, il veto resta umano» — ogni deliberazione finisce nel log e il
 # mattino puo sempre fare revert. Mai toccare PR che non siano nostre (night/*).
 #
+# (D10, decisione di Luca 2026-09-23: «b») SECONDO MODO, il PARERE: le PR delle ISSUE
+# (bozza su night/issue-N, titolo del solver) passano le stesse guardie e prove e il censore le
+# giudica contro il testo della issue — ma lascia SOLO un parere motivato come commento: mai
+# ready, mai merge, mai close. La fusione resta di Luca. Un parere per commit (.git/revisore/).
+#
 # Uso: revisore.sh <dir-repo> <pr-number>
 # Esce: 0 = deliberata (mergiata) · 1 = rigettata (chiusa con motivi)
 #       2 = skip (quarantena/guardie/prove rosse — lasciato al giorno) · 3 = errore
+#       4 = parere dato su una PR di issue (commento, nessun merge)
 # Test: REVISORE_DRY=1 stampa le azioni senza eseguirle; REVISORE_STUB=<script>
 #       sostituisce i due cervelli (riceve il ruolo e il prompt, risponde eco).
 set -uo pipefail
@@ -79,6 +85,25 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
     | jq -r '.message.content // empty' 2>/dev/null
 }
 
+azione_gh() { # in DRY stampa a stdout, altrimenti esegue silenzioso (niente eval)
+  if [ -n "${REVISORE_DRY:-}" ]; then echo "[DRY] $*"; return 0; fi
+  "$@" >/dev/null 2>&1
+}
+MODO="delibera"; PARERE_FILE=""
+# rinvia <motivo>: la PR va al giorno. Nel modo PARERE il motivo diventa il parere (negativo,
+# deterministico) scritto sulla PR, e si ricorda per quel commit: Luca lo legge, il turno non
+# lo rifa' a ogni ciclo.
+rinvia() {
+  log "$1 — al giorno"
+  if [ "$MODO" = "parere" ]; then
+    local f; f=$(mktemp /tmp/revisore-parere.XXXXXX)
+    printf 'Parere del censore notturno: NON APPROVABILE di notte (prove deterministiche).\nMotivo: %s\nLa PR resta aperta: la fusione e la decisione sono di Luca (D10, 2026-09-23).\n' "$1" > "$f"
+    azione_gh gh pr comment "$PR" --body-file "$f" || true
+    rm -f "$f"; [ -n "$PARERE_FILE" ] && touch "$PARERE_FILE"
+  fi
+  exit 2
+}
+
 # ══ 1. GUARDIE ══════════════════════════════════════════════════════════════════
 PR_JSON=$(gh pr view "$PR" --json number,title,headRefName,isDraft,createdAt,state 2>/dev/null)
 [ -n "$PR_JSON" ] || { log "PR #$PR non raggiungibile"; exit 3; }
@@ -88,7 +113,13 @@ IS_DRAFT=$(printf '%s' "$PR_JSON" | jq -r '.isDraft')
 CREATED=$(printf '%s' "$PR_JSON" | jq -r '.createdAt')
 
 case "$BRANCH" in night/*) ;; *) log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2;; esac
-case "$TITLE" in caccia:*) ;; *) log "guardia: titolo non 'caccia:' — non mio"; exit 2;; esac
+case "$TITLE" in
+  caccia:*) ;;
+  *) case "$BRANCH" in
+       night/issue-*) MODO="parere"; log "PR di issue ($BRANCH): modo PARERE — si giudica, non si fonde (D10)" ;;
+       *) log "guardia: titolo non 'caccia:' — non mio"; exit 2 ;;
+     esac ;;
+esac
 [ "$IS_DRAFT" = "true" ] || { log "guardia: non e' piu' bozza — non mio"; exit 2; }
 
 # (D3, 2026-09-20): data illeggibile = quarantena CHIUSA, non aperta. Prima il fallback
@@ -110,7 +141,8 @@ fi
 OGGI=$(date '+%Y-%m-%d')
 BUDGET_FILE="$STATE/mergi-$OGGI"
 N_MERGI=$(cat "$BUDGET_FILE" 2>/dev/null || echo 0)
-[ "$N_MERGI" -lt "$BUDGET_GIORNO" ] || { log "guardia: budget esaurito ($N_MERGI/$BUDGET_GIORNO oggi)"; exit 2; }
+# il budget conta le FUSIONI: il parere non fonde, non lo consuma
+[ "$MODO" = "parere" ] || [ "$N_MERGI" -lt "$BUDGET_GIORNO" ] || { log "guardia: budget esaurito ($N_MERGI/$BUDGET_GIORNO oggi)"; exit 2; }
 
 # diff: piccolo, pochi file, ASCII, niente CRLF
 # (il fetch e' un rinfresco: in produzione il branch di solito c'e' gia' in
@@ -121,28 +153,31 @@ git checkout -q "$BRANCH" 2>/dev/null || { git checkout -q "$DB"; exit 3; }
 DBRANCH="$DB"
 ripristina() { git checkout -q "$DBRANCH" 2>/dev/null; }
 trap ripristina EXIT
+if [ "$MODO" = "parere" ]; then
+  PARERE_FILE="$STATE/parere-$PR-$(git rev-parse HEAD)"
+  [ -f "$PARERE_FILE" ] && { log "parere gia' dato su questo commit della PR #$PR — niente da rifare"; exit 2; }
+fi
 
 DIFF_FILES=$(git diff --name-only "$DB"...HEAD 2>/dev/null)
 N_FILE=$(printf '%s\n' "$DIFF_FILES" | grep -c .)
 N_RIGHE=$(git diff --numstat "$DB"...HEAD 2>/dev/null | awk '{a+=$1+$2} END{print a+0}')
 # (D4, 2026-09-20): un diff VUOTO passava tutte le guardie (0 <= 60) e veniva deliberato
 # — il censore giudicava il nulla e lo mergiava. Niente diff, niente giudizio.
-[ "$N_FILE" -ge 1 ] || { log "guardia: diff vuoto ($DB...HEAD) — niente da giudicare, al giorno"; exit 2; }
+[ "$N_FILE" -ge 1 ] || rinvia "guardia: diff vuoto ($DB...HEAD) — niente da giudicare"
 # (D1, 2026-09-20): chi scrive le prove non le passa. Una PR che tocca .night-verify
 # (anche solo per riscriverlo a `true`) non si giudica: le prove sotto sono lette dal
 # ramo di default, come fa il morning gate, e questa guardia chiude l'altra via.
 if printf '%s\n' "$DIFF_FILES" | grep -qx '.night-verify'; then
-  log "guardia: la PR tocca .night-verify — le prove non si giudicano da chi le scrive, al giorno"
-  exit 2
+  rinvia "guardia: la PR tocca .night-verify — le prove non si giudicano da chi le scrive"
 fi
-[ "$N_FILE" -le "$MAX_FILE" ] || { log "guardia: $N_FILE file (max $MAX_FILE) — al giorno"; exit 2; }
-[ "$N_RIGHE" -le "$MAX_RIGHE" ] || { log "guardia: $N_RIGHE righe (max $MAX_RIGHE) — al giorno"; exit 2; }
+[ "$N_FILE" -le "$MAX_FILE" ] || rinvia "guardia: $N_FILE file (max $MAX_FILE)"
+[ "$N_RIGHE" -le "$MAX_RIGHE" ] || rinvia "guardia: $N_RIGHE righe (max $MAX_RIGHE)"
 if ! git diff "$DB"...HEAD | python3 -c '
 import sys
 for l in sys.stdin:
     if l.startswith("+") and any(ord(c) > 126 or c == "\r" for c in l):
         sys.exit(1)' 2>/dev/null; then
-  log "guardia: non-ASCII o CRLF nel diff — al giorno"; exit 2
+  rinvia "guardia: non-ASCII o CRLF nel diff"
 fi
 DIFF=$(git diff "$DB"...HEAD)
 
@@ -184,7 +219,7 @@ if [ -n "$NV_DICHIARATE" ]; then
 else
   PROVE_ROTTE="; .night-verify assente sul ramo di default ($DB)"
 fi
-[ -z "$PROVE_ROTTE" ] || { log "prove: verifiche dichiarate rosse:$PROVE_ROTTE — al giorno"; exit 2; }
+[ -z "$PROVE_ROTTE" ] || rinvia "prove: verifiche dichiarate rosse:$PROVE_ROTTE"
 PROVE_VERDI=1
 
 # banco avversario: il modello scrive UN comando allowlistato che deve riuscire
@@ -220,14 +255,14 @@ if [ "$AVV_VALIDA" -eq 1 ]; then
 else
   BANCO_ESITO="COMANDO INVALIDO (scartato dall'allowlist) — non conta come prova superata"
 fi
-[ "$BANCO_ESITO" = "REGGE (comando avversario riuscito)" ] || { log "prove: banco: $BANCO_ESITO — al giorno"; exit 2; }
+[ "$BANCO_ESITO" = "REGGE (comando avversario riuscito)" ] || rinvia "prove: banco: $BANCO_ESITO"
 
 # la LENTE SICUREZZA (dev-critic §2bis — D2, Luca 2026-09-23: automatica su ogni PR della notte).
 # Rilievi o lente senza verdetto: al giorno, mai fusa — un segreto mergiato non si ritira con un
 # revert (resta nella storia). Stesso cervello del censore; nei test lo stesso stub.
 LENTE_OUT=$(LENTE_STUB="${LENTE_STUB:-${REVISORE_STUB:-}}" MODELLO="$GIUDICE_MODEL" \
   bash "$HERE/tools/lente-sicurezza.sh" "$DIR" "$DB" HEAD 2>/dev/null); LENTE_RC=$?
-[ "$LENTE_RC" -eq 0 ] || { log "prove: $(tail -1 <<<"$LENTE_OUT") — al giorno (mai fusa con la lente sicurezza non pulita)"; exit 2; }
+[ "$LENTE_RC" -eq 0 ] || rinvia "prove: $(tail -1 <<<"$LENTE_OUT") (mai fusa con la lente sicurezza non pulita)"
 log "prove: $(tail -1 <<<"$LENTE_OUT")"
 
 # ══ 3. GIUDIZIO (il censore: cervello diverso da chi ha scritto) ═══════════════
@@ -247,16 +282,45 @@ Giudica:
 4. i commenti aggiunti dicono la verita' sul codice?
 
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
+if [ "$MODO" = "parere" ]; then
+  ISSUE_N="${BRANCH#night/issue-}"
+  ISSUE_JSON=$(gh issue view "$ISSUE_N" --json title,body 2>/dev/null)
+  [ -n "$ISSUE_JSON" ] || rinvia "issue #$ISSUE_N illeggibile: senza la richiesta non si giudica la risposta"
+  CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritta un altro modello ($AUTORE_MODEL), tu sei un processo separato, senza la sua memoria, e il tuo compito e' trovare il motivo per RIGETTARLA. L'onere della prova e' della PR: nel dubbio, RIGETTA. Il tuo e' un PARERE: la decisione resta a una persona.
+
+La PR dichiara di risolvere questa issue:
+Titolo: $(printf '%s' "$ISSUE_JSON" | jq -r '.title // ""')
+Richiesta: $(printf '%s' "$ISSUE_JSON" | jq -r '.body // ""' | head -c 4000)
+
+Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; lente sicurezza pulita; diff di $N_RIGHE righe su $N_FILE file.
+
+Diff:
+$DIFF
+
+Giudica:
+1. il diff fa DAVVERO quello che chiede la issue, tutto e solo quello?
+2. tocca qualcosa fuori dallo scope della issue?
+3. lascia i file coerenti e funzionanti?
+4. i commenti aggiunti dicono la verita' sul codice?
+
+Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
+fi
 CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il 14b risponde in secondi: 300 di fiato bastano
 VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
 
 # ══ DELIBERA ═══════════════════════════════════════════════════════════════════
-azione_gh() { # in DRY stampa a stdout, altrimenti esegue silenzioso (niente eval)
-  if [ -n "${REVISORE_DRY:-}" ]; then echo "[DRY] $*"; return 0; fi
-  "$@" >/dev/null 2>&1
-}
+
+if [ "$MODO" = "parere" ]; then
+  log "PARERE: $VERDETTO PR #$PR ($N_RIGHE righe, $N_FILE file) — la fusione resta di Luca"
+  PAR_FILE=$(mktemp /tmp/revisore-parere.XXXXXX)
+  printf 'Parere del censore notturno: %s (rischio %s).\nGiudicata contro la issue #%s (censore: %s, autore: %s).\nProve: verifiche dichiarate verdi · banco avversario superato · lente sicurezza pulita · %s righe/%s file.\nMotivi: %s\nIl censore NON fonde le PR delle issue: la fusione e la decisione sono di Luca (D10, 2026-09-23).\n' \
+    "$VERDETTO" "$(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')" "$ISSUE_N" "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-400)" > "$PAR_FILE"
+  azione_gh gh pr comment "$PR" --body-file "$PAR_FILE" || true
+  rm -f "$PAR_FILE"; touch "$PARERE_FILE"
+  exit 4
+fi
 
 if [ "$VERDETTO" = "APPROVA" ]; then
   log "DELIBERA: APPROVA PR #$PR ($N_RIGHE righe, $N_FILE file) — rischio: $(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')"

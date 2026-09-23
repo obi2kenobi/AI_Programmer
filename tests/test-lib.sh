@@ -173,6 +173,24 @@ else
   ko "candidata_censore non definita in lib.sh"
 fi
 
+# --- candidata_parere (D10, Luca 2026-09-23: «b»): la PR di ISSUE che il censore giudica col solo
+#     parere — bozza su night/issue-*, e mai due volte lo stesso commit (il parere dato si ricorda)
+if declare -F candidata_parere >/dev/null; then
+  SP=$(mktemp -d)
+  J='[{"number":8,"headRefName":"night/caccia-x","isDraft":true,"title":"caccia: m","headRefOid":"aaa"},{"number":9,"headRefName":"night/issue-4","isDraft":true,"title":"fix","headRefOid":"bbb"},{"number":10,"headRefName":"night/issue-5","isDraft":true,"title":"fix","headRefOid":"ccc"}]'
+  C=$(candidata_parere "$SP" <<<"$J")
+  [ "$C" = "9" ] && ok "candidata_parere: la prima PR di issue (la caccia resta al censore che fonde)" || ko "candidata_parere sceglie '$C' (attesa 9)"
+  touch "$SP/parere-9-bbb"
+  C=$(candidata_parere "$SP" <<<"$J")
+  [ "$C" = "10" ] && ok "candidata_parere: salta la PR col parere gia' dato su quel commit" || ko "candidata_parere: '$C' (attesa 10: la 9 ha gia' il parere)"
+  touch "$SP/parere-10-ccc"
+  C=$(candidata_parere "$SP" <<<"$J")
+  [ -z "$C" ] && ok "candidata_parere: tutte giudicate → vuoto" || ko "candidata_parere: '$C' con tutti i pareri dati"
+  rm -rf "$SP"
+else
+  ko "candidata_parere non definita in lib.sh"
+fi
+
 # --- rami_da_scopare: la scopa del turno non tocca il lavoro vivo (revisione 10 giri) ---
 # La scopa cancellava OGNI ramo senza PR (la soglia di 48h era solo nel commento) e ogni ramo
 # con una PR fusa/chiusa anche se una PR APERTA riusa lo stesso nome (night/issue-N, o un ramo

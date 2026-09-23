@@ -254,3 +254,17 @@ lente_pr() {
     echo "lente sicurezza su $url: $(tail -1 <<<"$rap") — ⚠ commento NON pubblicato sulla PR"
   fi
 }
+
+# candidata_parere <dir-stato>: dal JSON di `gh pr list --json number,headRefName,isDraft,title,headRefOid`
+# (stdin) il numero della prima PR di ISSUE (bozza, branch night/issue-*) senza parere gia' dato su
+# quel commit — decisione di Luca, D10 2026-09-23: «b», il censore giudica le PR delle issue e lascia
+# un parere, mai la fusione. Il parere dato vive in <dir-stato>/parere-<numero>-<commit> (lo scrive
+# night-shift/revisore.sh): senza questo filtro la stessa PR tornerebbe al censore a ogni ciclo.
+candidata_parere() {
+  local stato="$1" n oid
+  while IFS=$'\t' read -r n oid; do
+    [ -n "$n" ] || continue
+    [ -f "$stato/parere-$n-$oid" ] && continue
+    echo "$n"; return 0
+  done < <(jq -r '.[] | select(.isDraft == true and (.headRefName | startswith("night/issue-"))) | [.number, .headRefOid] | @tsv' 2>/dev/null)
+}

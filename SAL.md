@@ -147,6 +147,7 @@
 - [2026-09-23 (10°) — REPO-M (Energikal): debito chiuso per decisione di Luca (D7)](#2026-09-23-10-repo-m-energikal-debito-chiuso-per-decisione-di-luca-d7)
 - [2026-09-23 (11°) — CLAUDE.md: le sezioni del solo hub restano nell'hub, e il file torna sotto le 200 righe (D8, decisione di Luca)](#2026-09-23-11-claude-md-le-sezioni-del-solo-hub-restano-nell-hub-e-il-file-torna-sotto-le-200-righe-d8-decisione-di-luca)
 - [2026-09-23 (12°) — il metodo degli N giri diventa la skill `n-giri` (D9, decisione di Luca)](#2026-09-23-12-il-metodo-degli-n-giri-diventa-la-skill-n-giri-d9-decisione-di-luca)
+- [2026-09-23 (13°) — il censore giudica le PR delle issue, e lascia solo un parere (D10, decisione di Luca)](#2026-09-23-13-il-censore-giudica-le-pr-delle-issue-e-lascia-solo-un-parere-d10-decisione-di-luca)
 
 
 ## Stato
@@ -3209,3 +3210,29 @@ regola del file prima di rispondere e la tassonomia: 4 rossi.
 Cosa manca per un uso reale, dichiarato: la skill non è mai stata usata dal vivo. Il primo N giri
 che la usa ne è la prova, e il suo report di campo dirà cosa manca. Anche il consolidamento resta
 a mano: non c'è uno strumento che unisca i file dei giri.
+
+### 2026-09-23 (13°) — il censore giudica le PR delle issue, e lascia solo un parere (D10, decisione di Luca)
+
+La decima domanda di dominio: Luca ha scelto «b». Le PR delle issue (`night/issue-N`) non avevano
+un giudice automatico: il morning-gate è in pensione e il censore le rinviava con «non mio». Ora
+`night-shift/revisore.sh` ha il **modo PARERE**:
+- Le guardie sono le stesse (bozza, quarantena, diff, ASCII, `.night-verify`), e così le prove:
+  verifiche dichiarate, banco avversario, lente sicurezza. Il budget no, perché conta le fusioni.
+- Il censore giudica il diff contro il **testo della issue** (`gh issue view`), non contro le
+  categorie della caccia.
+- Esce con un **commento motivato**, APPROVA o RIGETTA con i motivi, e codice d'uscita 4. Mai
+  ready, merge o close: la fusione resta di Luca.
+- Se una prova è rossa, la ragione diventa il parere negativo scritto sulla PR. Un parere per
+  commit, in `.git/revisore/parere-<PR>-<commit>`.
+- Il turno porta una PR di issue per ciclo al censore (`night-shift/lib.sh` candidata_parere,
+  che salta quelle già giudicate sullo stesso commit).
+- CLAUDE.md §4 lo dice. Saldata anche la voce dei «9 percorsi su 15», con la misura presa dopo il
+  D8: in un satellite restano 2 citazioni non spedite, entrambe per scelta.
+Banco scritto prima: 7 casi in `tests/test-revisore.sh` e 3 in `tests/test-lib.sh`, rossi 6, poi
+29/29 e 63/63. Due sabotaggi: con il modo parere che fonde la PR è stata MERGIATA (3 rossi); con il
+filtro senza memoria la PR viene rigiudicata (2 rossi).
+Dichiarato: i limiti di taglia sono quelli della caccia (60 righe, 3 file). Una PR di issue più
+grande riceve il parere negativo «troppo grande», non un giudizio. Alzarli è una decisione di Luca.
+Errore mio, senza danni: un heredoc annidato si è chiuso sull'`EOF` di quello interno, e il resto
+del blocco è andato in esecuzione nella shell. Solo comandi falliti, niente sul disco; ho
+ripristinato i due banchi da git e rifatto con file separati.

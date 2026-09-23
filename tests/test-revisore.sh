@@ -47,6 +47,7 @@ cat > "$GHSTUB/gh" <<'EOF'
 #!/bin/bash
 # minimale: `gh pr view N --json ...` risponde dal file $GHSTUB_JSON
 if [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHSTUB_JSON"; exit 0; fi
+if [ "$1" = "issue" ] && [ "$2" = "view" ]; then printf '{"title":"Titolo della issue %s","body":"Documenta il raddoppio."}\n' "$3"; exit 0; fi
 exit 0
 EOF
 chmod +x "$GHSTUB/gh"
@@ -268,6 +269,50 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 [ "$RC" -eq 2 ] && echo "$OUT" | grep -q "verifiche-vuote" && ! echo "$OUT" | grep -q "gh pr merge" \
   && ok "verifiche-vuote sulla base → rc 2, mai al censore" \
   || ko "verifiche-vuote NON rilevate (rc $RC): $(echo "$OUT" | grep -iE 'prove|integer|merge' | head -2)"
+
+# ── (D10, decisione di Luca 2026-09-23: «b») le PR delle ISSUE: il censore le giudica e lascia
+#    un PARERE motivato come commento, ma NON FONDE MAI — la fusione resta di Luca. ──────────────
+pr_issue() { # pr_issue <dir> <eta_min>: PR night/issue-4 col titolo del solver
+  nuova_pr "$1" "$2" night/issue-4
+  python3 - "$2" > "$GHSTUB_JSON" <<'PY'
+import sys, json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "fix: raddoppio documentato (issue 4)", "headRefName": "night/issue-4",
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=int(sys.argv[1]))).isoformat()}))
+PY
+}
+STUB_PAR=$(mktemp "$RADICE/stub-parere.XXXXXX")
+cat > "$STUB_PAR" <<STUBPAR
+#!/bin/bash
+MODELLO="\$1"; shift; PROMPT=\$(cat)
+case "\$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":[]}\n' ;;
+  *SMASCHERA*) printf '\`\`\`\ngrep -c "function viva" utils.js\n\`\`\`\n' ;;
+  *CENSORE*) printf '%s' "\$PROMPT" > "$RADICE/prompt-censore.txt"
+             printf '{"verdetto":"%s","rischio":"basso","motivi":["fa quello che chiede la issue"]}\n' "\${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
+esac
+STUBPAR
+chmod +x "$STUB_PAR"
+SB=$(nuova_repo); pr_issue "$SB" 30
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 4 ] && echo "$OUT" | grep -q "\[DRY\] gh pr comment 7" \
+  && ok "PR di issue: parere APPROVA → commento motivato, rc 4 (parere dato)" || ko "PR di issue: rc $RC, nessun commento di parere: $(echo "$OUT" | tail -1)"
+echo "$OUT" | grep -qE "\[DRY\] gh pr (merge|ready|close)" \
+  && ko "PR di issue: il censore ha provato a FONDERE/chiudere — il patto lo vieta" || ok "PR di issue: nessun merge, ready o close (la fusione resta di Luca)"
+grep -q "Titolo della issue 4" "$RADICE/prompt-censore.txt" 2>/dev/null \
+  && ok "il censore giudica la PR contro il testo della ISSUE (non contro la categoria della caccia)" || ko "il prompt del censore non porta la issue"
+[ -n "$(ls "$SB"/.git/revisore/parere-7-* 2>/dev/null)" ] && ok "il parere dato si ricorda per quel commit (non si rifa' a ogni ciclo)" || ko "nessuna traccia del parere dato"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr comment" && ok "stesso commit, secondo passaggio: nessun parere ripetuto" || ko "parere ripetuto sullo stesso commit (rc $RC)"
+SB=$(nuova_repo); pr_issue "$SB" 30
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 4 ] && echo "$OUT" | grep -q "\[DRY\] gh pr comment 7" && ! echo "$OUT" | grep -qE "\[DRY\] gh pr (merge|close)" \
+  && ok "parere RIGETTA → commento motivato, la PR resta aperta" || ko "parere RIGETTA: rc $RC o PR chiusa"
+SB=$(nuova_repo); pr_issue "$SB" 30
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "\[DRY\] gh pr comment 7" \
+  && ok "PR di issue con la lente sicurezza non pulita: parere negativo scritto, niente verdetto del censore" || ko "lente non pulita su PR di issue: rc $RC, nessun commento"
+rm -f "$STUB_PAR"
 
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
 #    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
