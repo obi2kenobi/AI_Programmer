@@ -169,10 +169,16 @@ Always check `git diff` before committing to ensure only intended changes are in
 Due regole vivevano solo in commenti di codice (`night-shift/*.sh`) o in `SAL.md`, mai in
 un posto che un agente di giorno o un progetto onboardato leggesse — scoperto costruendo
 proprio questo ciclo, non un'ipotesi:
-- **Il branch deve iniziare per `night/`, `claude/` o `glm/`** — `night-shift/morning-gate.sh`
-  giudica SOLO le PR i cui branch matchano questo prefisso (`gh pr list` filtrato per
-  `headRefName`). Un branch con un altro prefisso (`feature/x`, `fix/y`) viene ignorato in
-  silenzio: nessun errore, nessun avviso, semplicemente il gate non lo vede mai.
+- **Il branch deve iniziare per `night/`, `claude/` o `glm/`**. Chi giudica cosa, oggi
+  (aggiornato 2026-09-23, sì di Luca):
+  - **il censore** (`night-shift/revisore.sh`, nel ciclo notturno) delibera SOLO le PR bozza
+    su `night/` con titolo `caccia:` — ogni altra PR la rinvia «non mio»;
+  - **il morning-gate** (`night-shift/morning-gate.sh`) e' **in pensione** da launchd dal
+    2026-09-23: resta invocabile a mano, e allora giudica le PR su `night/`, `claude/`,
+    `glm/`. Le PR `claude/*`, `glm/*` e quelle delle issue (`night/issue-N`) non hanno oggi
+    un giudice automatico: le guarda la review di Luca.
+  Un branch con un altro prefisso (`feature/x`, `fix/y`) resta invisibile a entrambi, in
+  silenzio: nessun errore, nessun avviso.
 - **La keyword di chiusura issue va in INGLESE** (`Closes #N`, `Fixes #N`) — GitHub non
   auto-chiude le issue con la traduzione italiana. Verificato più volte nella storia di
   questo sistema (`SAL.md`).

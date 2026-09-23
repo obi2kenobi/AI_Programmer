@@ -137,6 +137,7 @@
 - [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
 - [2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa](#2026-09-23-revisione-in-dieci-giri-mandato-di-luca-giro-0-i-debiti-e-la-suite-rossa)
 - [2026-09-23 (2°) — gli hook partono dalla radice del progetto (sì di Luca)](#2026-09-23-2-gli-hook-partono-dalla-radice-del-progetto-sì-di-luca)
+- [2026-09-23 (3°) — CLAUDE.md §4: chi giudica le PR, oggi (sì di Luca)](#2026-09-23-3-claude-md-4-chi-giudica-le-pr-oggi-sì-di-luca)
 
 
 ## Stato
@@ -3027,3 +3028,12 @@ main su una PR nuova. Alla prima suite sul main fuso il banco mutazioni ha trova
 del giro 6 (E-041): `test-presidio` e `test-caccia-registro`, spostati in quarantena, facevano
 girare lo strumento del CLONE — che parte dal commit — e restavano verdi con lo strumento
 neutralizzato. Ora copiano lo strumento dal working tree (sabotaggio → 5 e 9 rossi). Suite 158/158.
+
+### 2026-09-23 (3°) — CLAUDE.md §4: chi giudica le PR, oggi (sì di Luca)
+
+La regola dei prefissi dei rami diceva che il giudice era il morning-gate — in pensione da
+launchd dal 23/9. Riscritta sul codice verificato: il censore (`night-shift/revisore.sh`) delibera
+solo le PR bozza su `night/` con titolo `caccia:`; il morning-gate, invocabile a mano, guarda
+`night/`, `claude/`, `glm/`; le PR `claude/*`, `glm/*` e delle issue non hanno oggi un giudice
+automatico. Banco prima (`tests/test-claude-md-gate-conventions.sh`, 2 attese nuove rosse, poi 8/8):
+la regola deve citare il censore e il filtro vero del suo codice.
