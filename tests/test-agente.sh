@@ -103,6 +103,21 @@ scenario a4 "$SB" "run" \
 [ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 2 ] && ok "A4: curl e push RIFIUTATI (denylist)" || ko "A4: rifiuti: $(echo "$OUT" | grep -c RIFIUTATO) (attesi 2)"
 echo "$OUT" | grep -q 'run: echo ciao-dal-run' && ok "A4: il comando innocuo gira" || ko "A4: comando innocuo non eseguito"
 
+# A4bis (2026-09-23, giro A6 della notte): la denylist a sottostringhe si aggirava — `git p""ush`,
+# wget, un interprete, un touch: tutto andava in eval, fuori sandbox. Ora il run passa dalla STESSA
+# allowlist di sola lettura del censore (lib.sh gate_allowlist_ok); le scritture restano a edit/write.
+SB="$SB_ROOT/a4bis"; mkdir -p "$SB"; printf 'uno\n' > "$SB/f.txt"
+scenario a4bis "$SB" "run" \
+  "$(azione '{"action":"run","command":"git p\"\"ush origin main"}')" \
+  "$(azione '{"action":"run","command":"wget -q http://example.invalid/x"}')" \
+  "$(azione '{"action":"run","command":"python3 -c \"open(chr(80)+chr(87)+chr(78),chr(119))\""}')" \
+  "$(azione '{"action":"run","command":"touch PWN2"}')" \
+  "$(azione '{"action":"run","command":"grep -c uno f.txt"}')" \
+  "$(azione 'fine')"
+[ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 4 ] && ok "A4bis: push camuffato, wget, interprete e touch RIFIUTATI" || ko "A4bis: rifiuti $(echo "$OUT" | grep -c 'run: RIFIUTATO') su 4 attesi"
+[ ! -e "$SB/PWN" ] && [ ! -e "$SB/PWN2" ] && ok "A4bis: nessun file scritto dal run" || ko "A4bis: il run ha SCRITTO nel progetto"
+echo "$OUT" | grep -q 'run: grep -c uno f.txt' && ok "A4bis: la lettura (grep) gira ancora" || ko "A4bis: anche la lettura e' bloccata"
+
 # A5: write crea SOLO file nuovi — su un file esistente rifiuta (edit e' l'unica via)
 SB="$SB_ROOT/a5"; mkdir -p "$SB"; printf 'originale\n' > "$SB/c.txt"
 scenario a5 "$SB" "write" \

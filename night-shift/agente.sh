@@ -11,7 +11,9 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: agente.sh <dir> <prompt>}"
 PROMPT="${2:?uso: agente.sh <dir> <prompt>}"
-MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
+MODEL="${NIGHT_MODEL:-${MODELLO:-qwen3.8-27b:iq3s}}"   # MODELLO: il profilo del turno (D11)
+# shellcheck source=lib.sh
+source "$HERE/night-shift/lib.sh"   # gate_allowlist_ok: l'allowlist di sola lettura del censore
 # NIGHT_API_URL: solo per i test (server mock, stesso contratto del solver) — di norma non si tocca
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 MAX_TURNI="${AGENTE_MAX_TURNI:-8}"
@@ -202,14 +204,24 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
 
     run)
       CMD=$(echo "$STRIPPED" | jq -r '.command')
-      case "$CMD" in
-        *clasp*|*push*|*deploy*|*curl*|*rm\ -rf*|*sudo*)
-          RESULT="ERROR: command not allowed"
-          log "  run: RIFIUTATO: $CMD" ;;
-        *)
-          RESULT="Command: $CMD\nOutput:\n$(eval "$CMD" 2>&1 | head -30)"
-          log "  run: $CMD" ;;
-      esac ;;
+      # (2026-09-23, giro A6 della notte): qui c'era una denylist a SOTTOSTRINGHE e poi eval, fuori
+      # sandbox — `git p""ush`, wget, un interprete o un touch passavano (riprodotto: 0 rifiuti su 4,
+      # file scritti). Ora il run passa dalla stessa allowlist di SOLA LETTURA del censore: le
+      # scritture restano a edit/write, confinate al progetto. Sul Mac il comando gira in piu' dentro
+      # sandbox-exec col profilo del turno (niente rete, scritture solo qui e in /tmp).
+      if ! gate_allowlist_ok "$CMD"; then
+        RESULT="ERROR: command not allowed. run accepts only read-only tools: grep, cat, diff, wc, head, tail, ls, test, jq, echo, and git diff/log/show/grep/status/rev-parse/ls-files/blame. To change files use edit or write."
+        log "  run: RIFIUTATO (fuori dall'allowlist di sola lettura): $CMD"
+      elif command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ]; then
+        PROFILO=$(mktemp /tmp/agente-sandbox.XXXXXX)
+        sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO"
+        RESULT="Command: $CMD\nOutput:\n$(sandbox-exec -f "$PROFILO" bash -c "$CMD" 2>&1 | head -30)"
+        rm -f "$PROFILO"
+        log "  run (sandbox): $CMD"
+      else
+        RESULT="Command: $CMD\nOutput:\n$(eval "$CMD" 2>&1 | head -30)"
+        log "  run: $CMD"
+      fi ;;
 
     *)
       RESULT="ERROR: unknown action: $ACTION"

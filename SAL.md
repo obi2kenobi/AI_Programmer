@@ -3376,3 +3376,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   PULITA, cioè la coda non la giudicava nessuno. Ora un diff oltre il taglio è DEGRADATA e il
   censore non fonde. Caso: 700 righe innocue con l'esfiltrazione di `.clasprc.json` in coda, prima
   PULITA, ora DEGRADATA.
+- **Q4**, da A6, sicurezza: l'azione `run` di `night-shift/agente.sh`, il percorso vivo della
+  caccia e delle issue, faceva `eval` del comando scelto dal modello, fuori sandbox, dietro una
+  denylist a sottostringhe. `git p""ush`, `wget`, un interprete o un `touch` passavano:
+  riprodotto con 0 rifiuti su 4 e file scritti.
+  - Ora il run passa dalla stessa allowlist di SOLA LETTURA del censore (`gate_allowlist_ok`); le
+    scritture restano a edit/write, confinate al progetto.
+  - Sul Mac, in più, `sandbox-exec` col profilo del turno. Il profilo nega ora anche la lettura
+    di `~/.clasprc.json`.
+  - Nello stesso passo: `night-shift/agente.sh` segue il MODELLO del profilo (resto del D11).
+  - ⏳ Non verificato qui: `sandbox-exec` è solo del Mac.
