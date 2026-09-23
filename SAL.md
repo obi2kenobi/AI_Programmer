@@ -141,6 +141,7 @@
 - [2026-09-23 (4°) — graphify spina dorsale (D1, decisione di Luca)](#2026-09-23-4-graphify-spina-dorsale-d1-decisione-di-luca)
 - [2026-09-23 (5°) — la lente sicurezza scatta da sola sulle PR della notte (D2, decisione di Luca)](#2026-09-23-5-la-lente-sicurezza-scatta-da-sola-sulle-pr-della-notte-d2-decisione-di-luca)
 - [2026-09-23 (6°) — la skill si ricorda quando l'agente tocca il suo terreno (D3, decisione di Luca)](#2026-09-23-6-la-skill-si-ricorda-quando-l-agente-tocca-il-suo-terreno-d3-decisione-di-luca)
+- [2026-09-23 (7°) — Qwen 3.8 Flash: si chiude, il 27B resta (D4, decisione di Luca)](#2026-09-23-7-qwen-3-8-flash-si-chiude-il-27b-resta-d4-decisione-di-luca)
 
 
 ## Stato
@@ -3106,3 +3107,10 @@ sulla dashboard GAS, con la description che calzava alla lettera.
 Banco scritto prima: `tests/test-skill-reminder-hook.sh`, rosso 4/10, poi 10/10. Sabotaggio senza
 il «una volta per sessione» e senza il controllo GAS: 2 rossi.
 Dichiarato non coperto: `dev-critic` è critica dell'intero progetto, non ha un terreno di file.
+
+### 2026-09-23 (7°) — Qwen 3.8 Flash: si chiude, il 27B resta (D4, decisione di Luca)
+
+La quarta domanda di dominio: Luca ha scelto «c». La valutazione del Flash (circa 112 GB di
+memoria, non entra nel MacBook Air) si chiude senza acquisto di hardware, e il 27B resta il
+cervello notturno. La riga in DEBITI è SALDATA ma conservata come memoria, con il quadro delle
+macchine. Nessun codice toccato.
