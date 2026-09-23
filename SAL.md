@@ -76,7 +76,7 @@
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
 - [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-e-la-scoperta-che-clasp-push-non-è-andare-in-produzione)
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
-- [2026-09-02 (2) — Fornitore-N: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
+- [2026-09-02 (2) — Fornitore-N: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-fornitore-n-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
 - [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 - [2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa](#2026-09-02-4-repo-k-email-il-modello-a-tre-identità-e-la-diagnosi-completa)
 - [2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni](#2026-09-02-5-la-giornata-gas-più-costosa-3-famiglie-nuove-10-errori-miei-15-lezioni)
@@ -135,6 +135,7 @@
 - [2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)](#2026-09-20-i-tre-report-dal-campo-del-19-9-lavorati-nell-hub-registrazione-a-posteriori)
 - [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
 - [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
+- [2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa](#2026-09-23-revisione-in-dieci-giri-mandato-di-luca-giro-0-i-debiti-e-la-suite-rossa)
 
 
 ## Stato
@@ -2710,3 +2711,57 @@ sessione cloud il gate non puo' controllare niente e lo dice (debito gia' in DEB
 vive sul Mac). Attacchi 95/0 aggirati, antivirus 4/4. Diciassette difetti nuovi (D28-D44) curati
 in venti giri, ognuno col suo test rosso prima. La PR #97 e' stata mergiata durante il lavoro: i
 giri 11-30 vanno in una PR nuova sullo stesso ramo (#98).
+
+### 2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa
+
+Mandato: analisi lenta dell'hub col suo stesso metodo, correzione di errori, incoerenze,
+collegamenti rotti; dieci giri, una PR sola; il meccanico si corregge, le regole si
+propongono. Confini dichiarati: da qui (sessione cloud) il repo e la rete via proxy — NON il
+Mac, Ollama, `gh` autenticato, il GAS vivo. Ciò che dipende da quelli resta ⏳ IN ATTESA.
+
+**Giro 0 — prima del lavoro nuovo (settimo patto).** Baseline sul ramo prima di toccare
+niente: 156 file di test, **6 ROSSI** — la suite del gate era rossa sull'hub stesso:
+- `test-opencode-skills-sync`: lo specchio `.opencode/skills/gas-sviluppo/references/domini-gestionali.md` portava un
+  refuso («racclie») che l'originale non ha → risincronizzato.
+- `test-doc-citazioni` e `test-un-solo-modello`: `MODEL_TAG` e' diventato
+  `"${MODELLO:-qwen3.8-27b:iq3s}"` e le due lenti confrontavano la stringa `${MODELLO:-...}`
+  intera → si estrae il DEFAULT (sabotaggio: un default divergente torna rosso).
+- `test-sync-repo-standard-item-list`: pretendeva `patterns` nello standard, uscito per
+  decisione (audit-3, 4db9af4: registro PER REPO) → la lente ora presidia la decisione, e il
+  commento di `tools/sync-repo.sh` che diceva il contrario e' annotato.
+- `test-lib`: pretendeva i codici anonimi (REPO-X) ritirati oggi → presidia il ritiro. Nello
+  stesso file tre casi FINTI: `check "..." 0 git status && git diff --stat` senza virgolette —
+  la shell del test spezzava il comando, l'allowlist vedeva solo il primo pezzo, `git diff
+  --stat` e `tail -2 file` giravano davvero nell'hub, l'esito di «cat | wc» finiva in `wc`.
+  Virgolettati, piu' un caso «legittimo && vietato» che deve bloccare.
+- `test-deploy-assistito`: con `HOME=$TMP` git perdeva l'identita', i commit del banco
+  fallivano in silenzio e il repo non aveva HEAD — rosso del banco, non del tool
+  (riprodotto). Identita' esplicita; ora 6/6, e «verify rossa → nessun pacchetto» passa per
+  la ragione giusta.
+
+**I debiti.** `tools/debiti-riapertura.sh` giudicava per SEZIONE: una parola «saldato» nel
+corpo chiudeva la sezione intera, e 8+ righe vive erano invisibili (l'hook clasp «codice
+morto», la suite che sporca `docs/bc/README.md`, tre righe del 20/9 accodate a una sezione
+saldata). Ora giudica per RIGA, e ha una terza classe dichiarata, **⏳ IN ATTESA** (l'evento
+esterno scritto nella riga): prima finivano «da fare subito» cose che nessuna sessione puo'
+fare subito. Banco: `tests/test-debiti-riapertura.sh` 12/12, sabotaggio → 2 rossi. Saldati
+con prova: la suite oltre la soglia (gestita da `@540`), il ramo `.mirror-boundaries` (non
+piu' morto dopo D27: attesa nuova in `tests/test-clasp-block-hook.sh`, sabotaggio → rosso),
+la suite che sporca il repo (non si riproduce: 156 test, `git status` pulito), il watchdog
+(deciso il 2026-09-01, mai marcato), `settings.json` non installabile (dichiarato in
+`docs/system.md` limite #7), la maschera del gate (vedi sotto). Esito: 0 risolvibili, 4 in
+attesa, 9 domande di dominio.
+
+**Due difetti di sostanza trovati bruciando i debiti.**
+- `tools/privacy-check.sh` usciva DEGRADATO prima di cercare le forme di segreto: la decisione
+  del 23/9 («le SHAPES girano nel repo») era falsa nei fatti — senza `repos.key` nessun token
+  veniva cercato. Banco scritto prima (rosso), poi la cura: il degradato resta dichiarato e
+  rc=1, ma shapes e `~/.privacy-nomi` girano sempre. `tests/test-privacy.sh` 8/8.
+- `mask_secrets` (`night-shift/lib.sh`) scriveva `***MASCHERATO***`: la regola vincolante
+  («Mask, don't omit») e il pattern vogliono `«segreto <impronta> · N caratteri»`, e i token
+  NUDI (`ghp_…` senza parola chiave) passavano interi. Banco prima (6 rossi), poi la cura; il
+  primo tentativo includeva il newline nel valore (21 caratteri invece di 20, e righe fuse) —
+  la mia attesa diceva 24: l'aritmetica si conta, non si ricorda (regola 7). 40/40.
+
+Verdetto del giro 0: suite eseguita file per file dopo le cure, **156/156 verdi** (era 150/156);
+nessun file tracciato sporcato dalla suite.

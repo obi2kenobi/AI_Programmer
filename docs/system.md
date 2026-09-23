@@ -40,6 +40,9 @@
 4. **Il modello locale non converge sui giudizi**: tre notti di prove (#363 su REPO-A).
    Le indagini restano ai cervelli di giorno
 5. **Le repo private non si nominano nel repo pubblico**: `repos.conf` è locale e gitignored
+   — **SUPERATO 2026-09-23** (dominio, Luca): i nomi di repo e persone possono comparire, resta
+   proibito l'ACCESSO (segreti, credenziali, push di produzione) — regola vigente in CLAUDE.md
+   §«Public repo, private work». `repos.conf` resta locale perché è configurazione del Mac.
 6. **`.claude/agents/` — invocabilità dipende da un refresh del roster, non solo dai
    file (verificato dal vivo due volte, con esiti diversi)**: un primo tentativo REALE
    di invocare `contabilita-analitica` (set 1 giro 8, stesso giorno) è stato rifiutato
@@ -56,10 +59,14 @@
    riprova più tardi o in una sessione nuova prima di concludere che non funzioni.
    Anche OpenCode (ZCode, turno notturno) restava fuori scope — **AGGIORNATO 6°
    ciclo, set 3 (2026-08-24): chiuso per la parte agenti**: `.opencode/agent/`
-   ora specchia i 5 agenti di `.claude/agents/` con corpo identico per contratto
+   ora specchia gli agenti di `.claude/agents/` (erano 5, oggi 6 — conteggio non ripetuto qui: `ls .claude/agents`) con corpo identico per contratto
    (guardia: `tests/test-opencode-agent-sync.sh`) e bootstrap/onboard propagano
    anche quella cartella. La parte Claude Code del limite (refresh del roster)
    resta valida.
+7. **`.claude/settings.json` non si installa da una sessione agente** (report BusinessPlan,
+   2026-09-20): il blocco di auto-modifica di Claude Code impedisce all'agente di scrivere
+   gli hook che lo governano — lo installa una persona (o `tools/sync-repo.sh --standard`,
+   che apre una PR che una persona fonde). Dichiarato qui come chiedeva DEBITI.md.
 
 ## La fabbrica
 

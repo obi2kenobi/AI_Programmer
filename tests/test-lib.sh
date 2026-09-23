@@ -37,11 +37,16 @@ check "curl"                        1 curl http://evil.example
 check "grep semplice"               0 grep -q "AVVISO" file.js
 # caso speciale: stringa GREZZA (le virgolette devono arrivare intere alla lib)
 if gate_allowlist_ok 'grep -c "a;b" file.txt'; then ok "grep con ; nelle virgolette (falso positivo storico, stringa grezza)"; else ko "grep con ; nelle virgolette (stringa grezza)"; fi
-check "cat | wc"                    0 cat /tmp/out | wc -l
+# (revisione 10 giri, 2026-09-23): i tre casi composti sotto erano scritti SENZA virgolette —
+# la shell del test interpretava `|` e `&&` prima di check(): l'allowlist vedeva solo il primo
+# pezzo, `git diff --stat` e `tail -2 file` giravano DAVVERO nell'hub, e l'esito di «cat | wc»
+# finiva dentro wc (conteggio perso nella subshell). Tre verdi che non provavano niente.
+check "cat | wc"                    0 'cat /tmp/out | wc -l'
 check "git diff readonly"           0 git diff HEAD~1
 check "git log"                     0 git log --oneline -5
-check "git status concatenato"      0 git status && git diff --stat
-check "head/tail"                   0 head -3 file && tail -2 file
+check "git status concatenato"      0 'git status && git diff --stat'
+check "head/tail"                   0 'head -3 file && tail -2 file'
+check "legittimo && vietato"        1 'git status && rm -rf x'
 check "diff"                        0 diff a.txt b.txt
 check "jq"                          0 jq -s length out.json
 check "wc standalone"               0 wc -l accessi.log
@@ -79,32 +84,42 @@ else
   ok "run_guarded: pgrep assente, controllo residui saltato (non bloccante)"
 fi
 
-# --- repo_code: anonimizzazione con chiave (repo fittizia in tmp) ---
+# --- repo_code: i codici anonimi sono RITIRATI (dominio, Luca 2026-09-23) ---
+# (revisione 10 giri, 2026-09-23): questo blocco pretendeva ancora la mappatura da
+# repos.key (REPO-X) — rosso sul codice giusto dal giorno del ritiro. Ora presidia la
+# decisione: il nome esce invariato, anche se una repos.key residua lo mapperebbe.
 KEYTMP=$(mktemp -d)
 printf '# test\nREPO-X=finto/proprio\n' > "$KEYTMP/repos.key"
-# repo_code legge $HERE/repos.key: patch temporanea del HERE... la funzione usa $HERE globale
-ORIG_HERE="$HERE"
-( HERE="$KEYTMP"
-  source "$ORIG_HERE/night-shift/lib.sh" 2>/dev/null || true
-  R1=$(repo_code "finto/proprio"); R2=$(repo_code "altra/qualunque")
-  [ "$R1" = "REPO-X" ] && echo "OK   repo_code: nome privato → codice" || echo "FAIL repo_code: $R1"
-  [ "$R2" = "altra/qualunque" ] && echo "OK   repo_code: nome ignoto passa tale" || echo "FAIL repo_code ignoto: $R2"
-) >> /dev/null 2>&1 # nota: le echo sopra finiscono nella subshell — rifacciamo fuori
-OUT=$( HERE="$KEYTMP" bash -c "source '$ORIG_HERE/night-shift/lib.sh'; repo_code 'finto/proprio'; repo_code 'altra/qualunque'" 2>/dev/null )
-echo "$OUT" | head -1 | grep -q "REPO-X" && ok "repo_code: nome in chiave → codice anonimo" || ko "repo_code chiave: $OUT"
-echo "$OUT" | tail -1 | grep -q "altra/qualunque" && ok "repo_code: nome fuori chiave passa invariato" || ko "repo_code ignoto"
+OUT=$( HERE="$KEYTMP" bash -c "source '$HERE/night-shift/lib.sh'; repo_code 'finto/proprio'; repo_code 'altra/qualunque'" 2>/dev/null )
+[ "$(echo "$OUT" | head -1)" = "finto/proprio" ] && ok "repo_code: nome invariato anche con una repos.key residua (codici ritirati)" || ko "repo_code mappa ancora: $OUT"
+[ "$(echo "$OUT" | tail -1)" = "altra/qualunque" ] && ok "repo_code: nome qualunque passa invariato" || ko "repo_code ignoto: $OUT"
 rm -rf "$KEYTMP"
 
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
+# (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
+# («Mask, don't omit») e del pattern segreto-come-impronta — «segreto <impronta> · N caratteri».
+# Prima usciva ***MASCHERATO***: si vedeva che c'era un segreto, non quanto era lungo ne' se
+# due righe portavano lo stesso.
+IMPRONTA='«segreto [0-9a-f]{8} · [0-9]+ caratteri»'
 M1=$(echo 'export GH_TOKEN=ghp_abcdef1234567890' | mask_secrets)
-grep -q '\*\*\*MASCHERATO\*\*\*' <<<"$M1" && ! grep -q 'ghp_abcdef1234567890' <<<"$M1" \
-  && ok "mask_secrets: token=valore mascherato" || ko "mask_secrets token=: $M1"
+grep -qE "$IMPRONTA" <<<"$M1" && ! grep -q 'ghp_abcdef1234567890' <<<"$M1" \
+  && ok "mask_secrets: token=valore mascherato con impronta" || ko "mask_secrets token=: $M1"
+grep -q '· 20 caratteri»' <<<"$M1" && ok "mask_secrets: la lunghezza del valore e' dichiarata (20: ghp_ + 16)" || ko "mask_secrets lunghezza: $M1"
 
 # bug reale trovato con dogfooding: "Authorization: Bearer <jwt>" passava intero,
 # perché "Authorization" non è tra le parole chiave (secret|token|password|key)
 M2=$(echo 'curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.super.secretpayload"' | mask_secrets)
-grep -q '\*\*\*MASCHERATO\*\*\*' <<<"$M2" && ! grep -q 'secretpayload' <<<"$M2" \
+grep -qE "$IMPRONTA" <<<"$M2" && ! grep -q 'secretpayload' <<<"$M2" \
   && ok "mask_secrets: Authorization Bearer mascherato (bug reale corretto)" || ko "mask_secrets bearer: $M2"
+M2b=$(echo 'curl -H "Authorization: Token abcdefghijklmnop"' | mask_secrets)
+[ "$(grep -o '«segreto' <<<"$M2b" | wc -l | tr -d ' ')" = "1" ] && ok "mask_secrets: schema Token mascherato UNA volta (la maschera non si rimaschera)" || ko "mask_secrets doppia maschera: $M2b"
+
+# (revisione 10 giri): un token NUDO, senza parola chiave davanti, passava intero
+M4=$(echo 'risposta: ghp_ABCDEFGHIJKLMNOPQRST1234 fine' | mask_secrets)
+grep -qE "$IMPRONTA" <<<"$M4" && ! grep -q 'ghp_ABCDEFGHIJKLMNOPQRST1234' <<<"$M4" \
+  && ok "mask_secrets: token nudo (ghp_...) mascherato" || ko "mask_secrets token nudo: $M4"
+M5=$( (echo 'x token=AAAABBBBCCCC'; echo 'y token=AAAABBBBCCCC') | mask_secrets | grep -oE '[0-9a-f]{8} ·' | sort -u | wc -l | tr -d ' ')
+[ "$M5" = "1" ] && ok "mask_secrets: stesso segreto → stessa impronta (confrontabile senza vederlo)" || ko "mask_secrets impronta instabile ($M5 impronte)"
 
 M3=$(echo 'niente da mascherare qui' | mask_secrets)
 [ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \

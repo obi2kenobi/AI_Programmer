@@ -18,7 +18,9 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-TAG=$(grep -oE '^MODEL_TAG="[^"]+"' "$HERE/night-shift/night-shift.sh" | cut -d'"' -f2)
+# (revisione 10 giri, 2026-09-23): MODEL_TAG e' `"${MODELLO:-<default>}"` — si confronta
+# il DEFAULT; prima il TAG era la stringa `${MODELLO:-...}` e ogni riga risultava divergente.
+TAG=$(grep -oE '^MODEL_TAG="[^"]+"' "$HERE/night-shift/night-shift.sh" | cut -d'"' -f2 | sed -E 's/^\$\{[A-Z_]+:-(.*)\}$/\1/')
 [ -n "$TAG" ] && ok "MODEL_TAG dichiarato nel turno: $TAG" || { ko "MODEL_TAG assente in night-shift/night-shift.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 
 # righe di codice (non commento) con un letterale qwen<qualcosa con una cifra>

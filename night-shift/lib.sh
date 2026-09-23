@@ -155,10 +155,28 @@ PY
 #      (nuovo ciclo 10 giri, 2026-08-22): un comando che stampa un header HTTP con un
 #      Bearer token passava INTERO, perché "Authorization" non contiene nessuna delle
 #      parole chiave della forma 1.
+# (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
+# («Mask, don't omit») e del pattern — «segreto <impronta> · N caratteri», non piu'
+# ***MASCHERATO***: chi legge vede che c'era un segreto, quanto era lungo, e se due righe
+# portano lo STESSO (impronta = primi 8 hex di sha256). Forma 3 nuova: i token NUDI con
+# prefisso noto (ghp_, github_pat_, sk-ant-, xoxb-, AKIA...) — prima passavano interi se
+# nessuna parola chiave li precedeva. Una maschera gia' messa («...) non si rimaschera.
 mask_secrets() {
-  sed -E \
-    -e 's/(secret|token|password|key)[a-z_]*[=: ][^ ,"]+/\1=***MASCHERATO***/gi' \
-    -e 's/(Authorization)[=: ]+(Bearer|Basic|Token)[= ]+[^ ,"]+/\1: \2 ***MASCHERATO***/gi'
+  python3 -c '
+import sys, re, hashlib
+def imp(v):
+    return "«segreto %s · %d caratteri»" % (hashlib.sha256(v.encode("utf-8", "surrogateescape")).hexdigest()[:8], len(v))
+AUTH = re.compile(r"(Authorization[=: ]+(?:Bearer|Basic|Token)[= ]+)([^\s,\"«][^\s,\"]*)", re.I)
+KW = re.compile(r"((?:secret|token|password|key)[a-z_]*[=: ])([^\s,\"«][^\s,\"]*)", re.I)
+NUDI = re.compile(r"(?:ghp_|gho_|github_pat_|sk-ant-|sk-proj-|xox[bp]-|AKIA)[A-Za-z0-9_-]{12,}")
+for raw in sys.stdin.buffer:
+    l = raw.decode("utf-8", "surrogateescape")
+    l = AUTH.sub(lambda m: m.group(1) + imp(m.group(2)), l)
+    l = KW.sub(lambda m: m.group(1) + imp(m.group(2)), l)
+    l = NUDI.sub(lambda m: imp(m.group(0)), l)
+    sys.stdout.buffer.write(l.encode("utf-8", "surrogateescape"))
+    sys.stdout.buffer.flush()
+'
 }
 
 # repo_code(): i codici anonimi sono stati ritirati (dominio, Luca 2026-09-23:

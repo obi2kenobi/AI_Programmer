@@ -90,7 +90,7 @@ OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
 if grep -q "SEGRETO123" "$REPORT"; then
   ko "D41: il valore del token e' nel report del gate in chiaro ($(grep -c SEGRETO123 "$REPORT") volte)"
 else
-  grep -q "MASCHERATO" "$REPORT" && ok "D41: l'output della verifica rossa e' mascherato nel report e nella proposta di issue" \
+  grep -qE "«segreto [0-9a-f]{8} · [0-9]+ caratteri»" "$REPORT" && ok "D41: l'output della verifica rossa e' mascherato nel report e nella proposta di issue" \
     || ko "D41: ne' il valore ne' la maschera nel report: l'output e' stato OMESSO (mask, don't omit)"
 fi
 

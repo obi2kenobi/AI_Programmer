@@ -34,7 +34,10 @@ else
 fi
 
 # e il modello del turno: i documenti devono citare quello VERO, non il precedente
-MODELLO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HERE/night-shift/night-shift.sh" | cut -d'"' -f2)
+# (revisione 10 giri, 2026-09-23): MODEL_TAG e' diventato `"${MODELLO:-<default>}"`
+# (override da env) e il test confrontava la stringa `${MODELLO:-...}` intera: rosso su
+# un README giusto. Si estrae il DEFAULT, che e' il modello del turno quando nessuno lo cambia.
+MODELLO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HERE/night-shift/night-shift.sh" | cut -d'"' -f2 | sed -E 's/^\$\{[A-Z_]+:-(.*)\}$/\1/')
 if [ -n "$MODELLO" ]; then
   if grep -q "$MODELLO" "$HERE/night-shift/README.md"; then
     ok "il README cita il modello di turno vero ($MODELLO)"

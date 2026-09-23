@@ -16,8 +16,19 @@ KEY="$HERE/night-shift/repos.key"
 # v4 (2026-08-24, report dal campo su REPO-G): senza chiave il gate è CIECO — e usciva 0,
 # cioè "promosso", proprio nelle sessioni cloud dove la chiave non esiste per disegno.
 # Un gate che non può giudicare non dice pulito: dice degradato, e fallisce.
-[ -f "$KEY" ] || { echo "⛔ privacy-check: GATE DEGRADATO — repos.key assente: NON ho controllato niente (né file, né storia git). Questo non è un verdetto di pulizia: crea night-shift/repos.key (locale, gitignored) per rendere il gate reale." >&2; exit 1; }
+# (revisione 10 giri, 2026-09-23): il degradato usciva QUI, prima delle SHAPES — che il
+# commento A20 sotto e la decisione di dominio del 2026-09-23 (DEBITI «Privacy fuori casa»:
+# «le SHAPES girano nel repo») davano per sempre attive. Senza chiave nessuna forma di
+# segreto veniva cercata. Ora: degradato dichiarato e rc=1 come prima, ma le shapes e la
+# lista locale girano comunque; saltano solo i passaggi che la chiave alimenta.
 RC=0
+if [ -f "$KEY" ]; then
+  HA_KEY=1
+else
+  HA_KEY=0
+  echo "⛔ privacy-check: GATE DEGRADATO — repos.key assente: nomi/persone/termini della chiave NON controllati (né file, né storia git). Non è un verdetto di pulizia. Le forme di segreto e ~/.privacy-nomi si controllano comunque, qui sotto." >&2
+  RC=1
+fi
 
 # giri avversari 2026-08-28 (A20): un segreto VERO non deve aspettare che repos.key
 # ne conosca il nome. Le FORME generiche (prefissi di token AWS/GitHub/Anthropic/Slack,
@@ -56,7 +67,7 @@ scan_termine() {
 # editor che non lo aggiungono) — un nome sensibile su quella riga passava "pulito" per
 # errore. La condizione `|| [ -n "$code" ]` cattura anche l'ultima riga senza newline
 # (read fallisce a EOF ma ha comunque popolato le variabili).
-while IFS='=' read -r code name || [ -n "$code" ]; do
+[ "$HA_KEY" -eq 1 ] && while IFS='=' read -r code name || [ -n "$code" ]; do
   case "$code" in \#*|"") continue ;; esac
   base="${name##*/}"
   scan_termine "$base" "NOME PRIVATO"
@@ -65,7 +76,7 @@ done < "$KEY"
 
 # v2 (giro 4/10 del ciclo precedente): anche PERSONE e TERMINI riservati — chiavi
 # PERSONA=x / TERMINI=a,b,c nella stessa repos.key. La privacy non è solo il nome delle repo.
-while IFS='=' read -r chiave valore || [ -n "$chiave" ]; do
+[ "$HA_KEY" -eq 1 ] && while IFS='=' read -r chiave valore || [ -n "$chiave" ]; do
   case "$chiave" in PERSONA|TERMINI) ;; *) continue ;; esac
   IFS=',' read -ra TERMINI_ARR <<<"$valore"
   for t in "${TERMINI_ARR[@]}"; do
