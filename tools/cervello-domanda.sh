@@ -55,7 +55,11 @@ if [ "$1" = "in-sospeso" ]; then
   echo
   echo "## PR aperte nei repo del turno"
   PR_TROVATE=0
-  for REPO in obi2kenobi/AI_Programmer obi2kenobi/Sistema-Gestione-Magazzino; do
+  # (audit-2): la coda vera vive in repos.conf — la terza repo (Bilancio) era
+  # invisibile al mattino. Se il conf manca o e' vuoto, le due storiche.
+  REPO_CAND=$(grep -vE '^#|^$' "$HERE/night-shift/repos.conf" 2>/dev/null | awk '{print $1}' | tr '\n' ' ')
+  [ -z "$REPO_CAND" ] && REPO_CAND="obi2kenobi/AI_Programmer obi2kenobi/Sistema-Gestione-Magazzino"
+  for REPO in $REPO_CAND; do
     while IFS=$'\t' read -r num stato titolo; do
       [ -z "$num" ] && continue
       PR_TROVATE=$((PR_TROVATE+1))

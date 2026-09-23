@@ -51,6 +51,11 @@ $(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] 
 # e ammazzava il digest la mattina che il marker manca)
 # (il || true e' DENTRO, prima della pipe: ls su glob senza match esce 2, e con
 # pipefail+set -e il digest moriva la mattina senza marker)
+# (audit-2): i deploy pronti si guardano ORA, non solo via marker del mattino —
+# un pacchetto preparato stamattina scade domattina
+if ls "$HOME"/deploy-pronto/*/MANIFEST.md >/dev/null 2>&1; then
+  BODY="$(printf '%s\n\n---\nDEPLOY PRONTI (il gesto: deploy-ora <repo>)\n%s' "$BODY" "$(grep -H '' "$HOME"/deploy-pronto/*/MANIFEST.md 2>/dev/null | grep -E 'commit:|preparato:' | sed 's|.*/deploy-pronto/||;s|MANIFEST.md:||' | head -8)")"
+fi
 CERVMARK=$({ ls -t "$HOME"/night-shift-work/.cervello-????-??-?? 2>/dev/null || true; } | head -1)
 if [ -n "$CERVMARK" ]; then
   BODY="$(printf '%s\n\n---\n%s' "$BODY" "$(cat "$CERVMARK")")"
