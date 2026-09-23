@@ -902,3 +902,26 @@
 - Verifica guardia: strumento sostituito da `exit 0` → test-presidio 4 OK, 5 FAIL;
   test-caccia-registro 3 OK, 9 FAIL (prima della cura: verdi).
 - Aggiramento: un test in quarantena che esegue un secondo strumento del clone senza copiarlo.
+
+## E-042 Una causa esclusa con una misura a macchina scarica
+
+- Data / sessione: 2026-09-23 (sessione cloud dei debiti di dominio, dopo il D10 — errore mio)
+- Famiglia: R2 (verde senza dati)
+- Chi l'ha trovato: la caccia sotto carico (quattro esecuzioni in parallelo di
+  `tests/test-errori.sh`), dopo che il rosso intermittente era stato registrato in DEBITI
+- Sintomo: la suite rossa una volta ogni tanto («144 OK, 1 FAIL»), mai ripetuta a comando;
+  nella voce di DEBITI avevo scritto che la forma E-002 era «esclusa con una misura».
+- Causa prossima: `echo "$BLOCCO" | grep -q` sotto pipefail in `tests/test-errori.sh` (e la
+  stessa forma in `tests/test-suite-runner.sh`): grep -q esce alla prima riga, echo prende
+  SIGPIPE e la pipeline e' falsa con il campo presente («E-032: mancanti: Guardia:»).
+- Causa del ragionamento: ho misurato la forma sospetta (500 prove, 0 falsi) su una macchina
+  scarica, dove echo scrive tutto prima che grep sia schedulato — e ho promosso quel verde a
+  esclusione. La misura provava l'assenza del difetto nelle condizioni in cui non poteva comparire.
+- Perché non ci ha fermati: la famiglia E-002 era gia' nota e censita, ma solo per `tools/`; i
+  banchi non erano nel censimento, e ogni singolo rosso spariva al rilancio.
+- Guardia: `tests/test-e002-banchi-curati.sh` (cricchetto: i banchi curati non tornano alla forma
+  che morde) + la cura `grep -q … <<<"$X"` nei due banchi.
+- Verifica guardia: con la forma rimessa in `tests/test-errori.sh` la guardia e' rossa; sotto
+  carico la forma dava 2 rossi su 120, la cura 0 su 120.
+- Aggiramento: gli altri 248 siti nei banchi (DEBITI, famiglia E-002) finche' non sono curati.
+

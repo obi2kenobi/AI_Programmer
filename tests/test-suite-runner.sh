@@ -21,14 +21,14 @@ printf '#!/bin/bash\necho "vero due"\necho "2 OK, 0 FAIL — con un suffisso"\n'
 # 1. tutti verdi: rc 0, riepilogo 2/2
 OUT=$(bash "$RUNNER" "$SB" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "tutti verdi: rc 0" || ko "rc $RC con suite tutta verde"
-echo "$OUT" | grep -q "2/2 file superati" && ok "riepilogo N/TOT presente" || ko "riepilogo mancante: $OUT"
+grep -q "2/2 file superati" <<<"$OUT" && ok "riepilogo N/TOT presente" || ko "riepilogo mancante: $OUT"
 
 # 2. uno rosso: rc 1, NOME del file e suo output (la lezione del giro 7)
 printf '#!/bin/bash\necho "dettaglio importante del fallimento"\nexit 7\n' > "$SB/tests/test-tre.sh"
 OUT=$(bash "$RUNNER" "$SB" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "uno rosso: rc 1" || ko "rc $RC con un test rosso"
-echo "$OUT" | grep -q "test-tre.sh" && ok "il file fallito viene nominato" || ko "non nomina il file fallito"
-echo "$OUT" | grep -q "dettaglio importante" && ok "l'output del fallito si vede" || ko "output del fallito perso"
+grep -q "test-tre.sh" <<<"$OUT" && ok "il file fallito viene nominato" || ko "non nomina il file fallito"
+grep -q "dettaglio importante" <<<"$OUT" && ok "l'output del fallito si vede" || ko "output del fallito perso"
 
 # 3. zero test: rosso dichiarato (verifiche-vuote non passano inosservate)
 SB2=$(mktemp -d /tmp/test-suite2.XXXXXX)

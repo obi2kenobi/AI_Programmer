@@ -148,6 +148,7 @@
 - [2026-09-23 (11°) — CLAUDE.md: le sezioni del solo hub restano nell'hub, e il file torna sotto le 200 righe (D8, decisione di Luca)](#2026-09-23-11-claude-md-le-sezioni-del-solo-hub-restano-nell-hub-e-il-file-torna-sotto-le-200-righe-d8-decisione-di-luca)
 - [2026-09-23 (12°) — il metodo degli N giri diventa la skill `n-giri` (D9, decisione di Luca)](#2026-09-23-12-il-metodo-degli-n-giri-diventa-la-skill-n-giri-d9-decisione-di-luca)
 - [2026-09-23 (13°) — il censore giudica le PR delle issue, e lascia solo un parere (D10, decisione di Luca)](#2026-09-23-13-il-censore-giudica-le-pr-delle-issue-e-lascia-solo-un-parere-d10-decisione-di-luca)
+- [2026-09-23 (14°) — il rosso intermittente della suite era E-002, e la mia esclusione era sbagliata (E-042)](#2026-09-23-14-il-rosso-intermittente-della-suite-era-e-002-e-la-mia-esclusione-era-sbagliata-e-042)
 
 
 ## Stato
@@ -3236,3 +3237,23 @@ grande riceve il parere negativo «troppo grande», non un giudizio. Alzarli è 
 Errore mio, senza danni: un heredoc annidato si è chiuso sull'`EOF` di quello interno, e il resto
 del blocco è andato in esecuzione nella shell. Solo comandi falliti, niente sul disco; ho
 ripristinato i due banchi da git e rifatto con file separati.
+
+### 2026-09-23 (14°) — il rosso intermittente della suite era E-002, e la mia esclusione era sbagliata (E-042)
+
+Per il settimo patto, il debito risolvibile appena registrato («rossi intermittenti non
+catturati») è venuto prima della domanda successiva.
+- **Cattura.** Una caccia con quattro esecuzioni in parallelo ha preso il rosso col suo messaggio:
+  `tests/test-errori.sh` → «E-032: mancanti: Guardia:», e il campo c'era.
+- **Causa.** `echo "$BLOCCO" | grep -q` sotto pipefail: `grep -q` esce alla prima riga, `echo`
+  prende SIGPIPE e la pipeline è falsa. È la famiglia E-002.
+- **Errore mio (E-042).** Nella voce di DEBITI avevo scritto che la forma era «esclusa con una
+  misura». Ma avevo misurato a macchina scarica, dove la forma non può mordere. Registrato con la
+  sua guardia.
+- **Cura.** `grep -q … <<<"$X"` in `tests/test-errori.sh` e in `tests/test-suite-runner.sh`, che
+  aveva la stessa forma e l'altro rosso isolato. Sotto carico: 2 rossi su 120 prima della cura,
+  0 su 120 dopo.
+- **Guardia a cricchetto.** `tests/test-e002-banchi-curati.sh`: i banchi curati non tornano alla
+  forma che morde. La prima stesura contava anche il commento che cita la forma; ora ignora i
+  commenti. Sabotaggio: la forma rimessa in test-errori rende rossa la guardia.
+- **Censimento nuovo.** La stessa forma compare in 250 siti di 68 banchi. È in DEBITI come lavoro
+  della caccia notturna, un banco per finestra, e la lista del cricchetto cresce con ogni cura.

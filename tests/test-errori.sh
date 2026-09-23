@@ -26,7 +26,10 @@ while IFS= read -r voce; do
   BLOCCO=$(awk -v ini="$voce" 'index($0, ini)==1 {p=1; next} p && /^## E-/ {exit} p {print}' "$REG")
   MANCA=""
   for c in "${CAMPI[@]}"; do
-    echo "$BLOCCO" | grep -q "^- $c" || MANCA="$MANCA $c"
+    # (2026-09-23, E-042): era `echo "$BLOCCO" | grep -q` — sotto pipefail, con la macchina
+    # carica, grep -q esce alla prima riga e l'echo prende SIGPIPE: un campo PRESENTE risultava
+    # mancante (catturato: «E-032: mancanti: Guardia:», 2 rossi su 120 a quattro in parallelo).
+    grep -q "^- $c" <<<"$BLOCCO" || MANCA="$MANCA $c"
   done
   [ -z "$MANCA" ] && ok "$ID: sette campi + famiglia completi" || ko "$ID: mancanti:$MANCA"
   # (2026-09-09, report REPO-V): dalle voci dal 24 in poi, il campo «Chi l'ha trovato:»
@@ -34,7 +37,7 @@ while IFS= read -r voce; do
   # Le voci storiche restano come sono: il passato non si riscrive per la regola nuova.
   N=$(echo "$ID" | grep -oE '[0-9]+')
   if [ "$N" -ge 24 ] 2>/dev/null; then
-    echo "$BLOCCO" | grep -q "^- Chi l'ha trovato:" \
+    grep -q "^- Chi l'ha trovato:" <<<"$BLOCCO" \
       && ok "$ID: chi l'ha trovato dichiarato" \
       || ko "$ID: manca «Chi l'ha trovato:» (lente / vivo / padrone del dominio — obbligatorio da E-024)"
   fi
