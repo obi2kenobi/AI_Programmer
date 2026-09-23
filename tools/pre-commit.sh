@@ -18,10 +18,14 @@ FALLITI=0
 #    dall'hook («test: 999 test verdi» e' passato). Ora vive in una funzione chiamata
 #    dal gancio commit-msg (`--commit-msg <file>`) E, per compatibilita', dal primo
 #    argomento quando lo script e' invocato a mano col messaggio.
+# (revisione 10 giri, 2026-09-23): conta solo la dichiarazione del TOTALE verde («N test
+# verdi/superati/passati/OK») — prima ogni «N test» era letto cosi', e «6 test rossi» o
+# «2 test nuovi» (conteggi parziali, legittimi) venivano respinti.
 controlla_numero_test() {
   local MSG="$1" N_CLAIM N_REAL
-  if echo "$MSG" | grep -qE '[0-9]+ test'; then
-    N_CLAIM=$(echo "$MSG" | grep -oE '[0-9]+ test' | grep -oE '^[0-9]+' | head -1)
+  local TOTALE='[0-9]+ test (verdi|superati|passati|OK|in verde)'
+  if echo "$MSG" | grep -qiE "$TOTALE"; then
+    N_CLAIM=$(echo "$MSG" | grep -oiE "$TOTALE" | grep -oE '^[0-9]+' | head -1)
     N_REAL=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
     [ "$N_CLAIM" != "$N_REAL" ] && { echo "⛔ il messaggio dice \"$N_CLAIM test\" ma i file sono $N_REAL"; return 1; }
   fi

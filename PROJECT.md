@@ -69,3 +69,21 @@ Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file pe
 - Auth: OAuth2 `client_credentials` (Azure AD), scope `.default`. Tenant/client/secret in **`credenziali BC.rtf`** (confermato 2026-06-23; il `Config.gs` del catalogo è la copia del backend GAS).
 - Strumento: **`tools/bc_map.py`** (Python stdlib, nessuna dipendenza) — legge le credenziali a runtime, prende il token, interroga l'endpoint e genera `docs/bc/endpoints/<Nome>.md`. Per un test al volo: `curl`.
 - Regola segreti: credenziali usabili per autenticarsi, mai riprodurne i _valori_ in output, commit o documenti (regola _"Never expose secrets"_).
+
+---
+
+## AI_Programmer — l'hub stesso (questa repo)
+
+> Sezione aggiunta dalla revisione in dieci giri (2026-09-23) per la regola del primo
+> contatto (CLAUDE.md §6): l'hub era la repo più lavorata e non aveva una sezione sua.
+
+- **Cos'è**: il metodo (regole, skill, agenti, pattern) più il turno notturno e i wrapper dei
+  modelli. Pubblica: i nomi possono comparire, l'accesso mai (CLAUDE.md §«Public repo»).
+- **Suite**: `bash tools/suite.sh` (ogni `tests/test-*.sh`, si ferma al primo rosso e lo mostra).
+  Verifiche dichiarate: `.night-verify` (una riga = uno script per `bash -c`, budget `@<sec>`).
+- **Prima di committare**: `git config core.hooksPath .githooks` attiva i guardiani
+  (`tools/pre-commit.sh`: glifi, CRLF, path citati, numero-test nel messaggio).
+- **Il diario**: `SAL.md` (dopo una voce nuova: `bash tools/sal-indice.sh`, che l'ultima riga
+  di `.night-verify` pretende), `DEBITI.md` (riapertura: `bash tools/debiti-riapertura.sh`).
+- **Cosa non si prova da una sessione cloud**: Ollama, `gh` autenticato, il Mac del turno —
+  ciò che ne dipende si dichiara ⏳ in DEBITI.

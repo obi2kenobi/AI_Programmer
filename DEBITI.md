@@ -219,3 +219,10 @@ scorciatoie, dichiarate:
 | 2026-09-20 | Il quarto lavoro della mattina del 20/9 (commit e298794, «dal report BusinessPlan») non ha un file in `docs/campo/`: il report vive nella repo di origine | La sessione cloud non la raggiunge; il triage non puo' contarlo | Chi ha la repo lo porta in `docs/campo/2026-09-19-<slug>.md` (tre righe bastano) ⏳ IN ATTESA: una sessione con accesso alla repo di origine |
 | 2026-09-20 | Dalla sessione cloud il banco di fine passaggio chiude 6/7: privacy-check DEGRADATO (repos.key locale al Mac) | Non e' curabile qui: la chiave e' gitignored per design | Il banco 7/7 si chiude sul Mac (bash tools/banco-passaggio.sh --veloce) prima del merge ⏳ IN ATTESA: il banco sul Mac prima del merge |
 | 2026-09-20 | Il turno gira solo con `gh` autenticato e Ollama: da una sessione cloud si prova solo con stub (i test dei giri 1-9 sono quegli stub, resi permanenti) | e' la natura del sistema: il vivo e' il Mac | dichiarato in `night-shift/README.md` quando si decide se il turno debba girare anche altrove ⏳ IN ATTESA: decisione se il turno gira anche altrove |
+
+## Revisione in dieci giri (2026-09-23)
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-09-23 | Gli hook di `.claude/settings.json` sono path RELATIVI (`tools/clasp-block-hook.sh`): con la sessione in una sottocartella lo script non si trova, l'hook esce 127 e — errore non bloccante — il comando passa. Il cancello clasp FALLISCE APERTO. Riprodotto: `cd night-shift && … tools/clasp-block-hook.sh` → «No such file», rc=127. Cura: `"command": "\"$CLAUDE_PROJECT_DIR\"/tools/<hook>.sh"` per i cinque hook, e in `tools/copia-hook.sh` spogliare il prefisso prima del filtro `^tools/.*\.sh$` | `settings.json` governa l'agente stesso: lo installa una persona (docs/system.md limite #7) — e un errore di quoting lo spegnerebbe ovunque | ⏳ IN ATTESA: una persona applica la patch a settings.json e a copia-hook.sh, e prova un clasp push da una sottocartella |
+

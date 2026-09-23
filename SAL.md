@@ -2765,3 +2765,25 @@ attesa, 9 domande di dominio.
 
 Verdetto del giro 0: suite eseguita file per file dopo le cure, **156/156 verdi** (era 150/156);
 nessun file tracciato sporcato dalla suite.
+
+**Giro 1 — i documenti vivi contro le decisioni recenti (privacy 23/9, contratto di
+`.night-verify`, primo contatto).**
+- `METHOD.md` regola 5 era SPEZZATA: una correzione del 23/9 era stata incollata in mezzo al
+  nome del file (`tools/privacy-check. (STORICO: …)sh`) e il resto diceva ancora «nomi mai,
+  codici sempre». Riscritta sulla decisione vigente; data di revisione aggiornata; il «23+
+  pattern» di agosto (sono 65) diventa il comando che li conta.
+- `CLAUDE.md` §«Public repo»: un frammento orfano («of which role each code already
+  covers…») rimasto dal taglio della frase sul registro dei codici — ricucito, senza
+  cambiare la regola.
+- `night-shift/repos-index.md` porta ora in testa il ritiro del meccanismo (le sue frasi al
+  presente descrivevano un regime finito).
+- `.night-verify`: l'intestazione descriveva ancora `eval "ai_timeout 120 <riga>"` e «niente
+  righe che iniziano con un'assegnazione» — il turno usa `bash -c` dal 19/9.
+- `PROJECT.md`: l'hub non aveva una sezione sua (regola del primo contatto, CLAUDE.md §6).
+- `tools/pre-commit.sh` (gancio commit-msg): ogni «N test» era letto come il totale della
+  suite, e «6 test rossi» veniva respinto (mi e' successo al commit del giro 0). Ora conta
+  solo la dichiarazione del totale verde; due attese nuove in `tests/test-pre-commit.sh`
+  (rosso prima, 14/14 dopo).
+- **Scoperto, non curato (⏳ in DEBITI):** gli hook di `.claude/settings.json` sono path
+  relativi — da una sottocartella il cancello clasp esce 127 e FALLISCE APERTO (riprodotto).
+  La patch e' scritta nella voce; `settings.json` lo installa una persona (limite #7).
