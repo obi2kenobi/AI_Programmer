@@ -62,3 +62,65 @@ modello, timeout, budget agenti, rotazione lenti. Sostituisce i default sparsi i
 - Agent teams / spawn_teammate: il turno e' seriale per design (lock per repo);
   il parallelismo e' il modo piu' veloce di creare contese GPU su 24GB.
 - Browser-use / computer-use: nessun caso d'uso notturno; il browser lo usa il giorno.
+
+---
+
+# Secondo giro di studio: l'ecosistema dei 1.000 plugin
+
+(awesome-dsh-plugin: la community ha prodotto 1.000 plugin in giorni. Ecco
+quelli che insegnano qualcosa al NOSTRO sistema, con cosa rubiamo.)
+
+## I 4 plugin che valgono oro per noi
+
+### 1. dsh-repeat-stop (173787247) — "Hard-stop consecutive identical tool calls"
+Il nostro repeat-reminder AVVERTISCE; questo plugin HARD-STOPPA dopo N
+ripetizioni identiche configurabili. Per l'agente notturno: se dopo il
+warning il modello ripete UN ALTRA volta l'azione identica, il terzo colpo
+deve essere un exit con dichiarazione, non un altro giro di GPU bruciata.
+RUBIAMO: lo stop-dopo-N, non solo il reminder.
+
+### 2. dsh-evidence-gate (AaronandWork) — "cross-checks first-hand claims
+against a durable per-session tool-activity index, blocks unverified guesses
+and tracks blocked-versus-converted metrics"
+Un cancello che verifica OGNI affermazione dell'agente contro l'indice
+durable di cio' che i tool hanno DAVVERO fatto in sessione. Blocca le
+supposizioni non verificate. E **conta bloccati vs convertiti**.
+RUBIAMO: il revisore potrebbe contare quante affermazioni della PR sono
+verificate contro l'output reale dei tool vs quante sono supposizione pura.
+E la metrica blocked-vs-converted: quante PR il censore ha bloccato che
+poi sono state convertite in verifiche vere.
+
+### 3. qiushi-dsh-evidence-audit (030611) — "hash-chained JSONL receipts
+for tool results... without storing prompts"
+Ricevute con hash-chain per OGNI risultato di tool: immutabili,
+verificabili, senza salvare il contenuto. Per il nostro censore: ogni
+verifica dichiarata nella PR porta il suo hash — se l'hash non torna,
+la prova e' rifiutata.
+RUBIAMO: il principio delle ricevute hashate per le prove del censore.
+
+### 4. dsh-auto-memory (Aik358) — "proactive associative memory, three-layer
+auto-consolidation, skill crystallization, handoff ledgers that survive
+context switches"
+Il piu' ambizioso: memoria proattiva a 3 strati con consolidazione
+automatica e handoff-ledger che sopravvive ai cambio di contesto.
+Il nostro cervello e' a 1 strato (le note statiche) + il /learn serale.
+RUBIAMO: l'idea del handoff-ledger — quando l'agente cambia finestra di
+contesto (il nostro num_ctx e' fisso ma il modello cambia sessione), il
+ledger dice al nuovo what the old one was doing.
+
+## I 3 principi che l'ecosistema conferma
+
+1. **Verification is a plugin, not a feature** — 5+ plugin diversi per
+   verificare/attestare/bloccare: la community ha capito che la verifica
+   e' un punto di estensione, non un'opzione di configurazione. Il nostro
+   sistema la tratta uguale (banco, censore, gate) — conferma che siamo
+   sulla strada giusta.
+
+2. **Memory is the battleground** — 15+ plugin di memoria diversi:
+   triage, auto-consolidation, handoff, crystallization. Nessuno ha
+   ancora vinto. Il nostro cervello è semplice e dichiarato — meglio
+   semplice e onesto che complesso e opaco.
+
+3. **Billing/telemetry come categoria a se'** — 6+ plugin solo per
+   contare token e costi: la community paga per sapere quanto spende.
+   Il nostro bencina fa lo stesso per la GPU locale. Conferma.
