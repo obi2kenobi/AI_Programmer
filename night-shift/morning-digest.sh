@@ -35,9 +35,10 @@ SUBJ=$(grep "Totale:" "$REPORT" 2>/dev/null | head -1 | sed 's/[*\`]//g' | head 
 BODY="${CORPO_GATE}$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
 $(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
 $(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] && {
-  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || echo 0)
-  PR=$(grep -c "PR bozza" "$SAL_TURNI" 2>/dev/null || echo 0)
-  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || echo 0)
+  # (revisione 10 giri): `grep -c … || echo 0` stampava «0» due volte a conteggio zero
+  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
+  PR=$(grep -c "PR bozza" "$SAL_TURNI" 2>/dev/null || true); PR=${PR:-0}
+  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || true); FIX=${FIX:-0}
   echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
   ASPETTA=$(sed -n "/ASPETTA IL GIORNO/,$ p" "$SAL_TURNI" 2>/dev/null | grep -c "  ") ; ASPETTA=${ASPETTA:-0}
   [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"

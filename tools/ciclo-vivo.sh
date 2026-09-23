@@ -158,7 +158,7 @@ if [ "$LIVELLO" -ge 4 ]; then
     FINDINGS+=("ARCH: report in docs/campo/ non processati in SAL (campo-triage)")
   # 4g. bc: il numero di file endpoint coincide con l'indice rigenerato
   N_EP=$(ls "$HERE"/docs/bc/endpoints/*.md 2>/dev/null | wc -l | tr -d ' ')
-  N_IX=$(grep -c '^| ' "$HERE/docs/bc/README.md" 2>/dev/null || echo 0)
+  N_IX=$(grep -c '^| ' "$HERE/docs/bc/README.md" 2>/dev/null || true); N_IX=${N_IX:-0}
   N_IX=$((N_IX - 1))   # riga di intestazione della tabella
   [ "$N_EP" -eq "$N_IX" ] 2>/dev/null || \
     FINDINGS+=("ARCH: endpoints $N_EP file vs $N_IX nell'indice docs/bc/README.md")

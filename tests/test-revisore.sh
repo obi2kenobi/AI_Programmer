@@ -243,6 +243,18 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" b
   || ko "D4: rc $RC — un diff vuoto e' stato deliberato"
 rm -f "$STUB_LS"
 
+# 7b. (revisione 10 giri, 2026-09-23): .night-verify di SOLI commenti sulla base — la guardia
+# «verifiche-vuote» usava `grep -vc ... || echo 0`: con zero comandi grep stampa 0 ED esce 1,
+# l'echo aggiunge un secondo 0, `[ "0\n0" -eq 0 ]` e' un errore di sintassi → falso → nessun
+# comando da eseguire → nessuna prova rotta → la PR arrivava al censore «con le prove verdi».
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vuote
+printf '# solo commenti\n\n# nessuna verifica\n' > "$SB/.night-verify"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm vuote
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "verifiche-vuote" && ! echo "$OUT" | grep -q "gh pr merge" \
+  && ok "verifiche-vuote sulla base → rc 2, mai al censore" \
+  || ko "verifiche-vuote NON rilevate (rc $RC): $(echo "$OUT" | grep -iE 'prove|integer|merge' | head -2)"
+
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
 #    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
 CENSORE_MODEL="${REVISORE_MODEL:-qwen3.8-27b:iq3s}"

@@ -152,7 +152,11 @@ PROVE_ROTTE=""
 NV_DICHIARATE=$(git show "$DB:.night-verify" 2>/dev/null || true)
 if [ -n "$NV_DICHIARATE" ]; then
   # (report BusinessPlan): un .night-verify senza comandi NON e' una prova superata
-  if [ "$(printf '%s\n' "$NV_DICHIARATE" | grep -vcE '^\s*#|^\s*$' || echo 0)" -eq 0 ]; then
+  # (revisione 10 giri, 2026-09-23): era `grep -vc … || echo 0` — con zero comandi grep
+  # stampa 0 ED esce 1, l'echo ne aggiunge un secondo: «0\n0» non e' un intero, il test
+  # falliva e un .night-verify vuoto arrivava fino al MERGE (riprodotto in tests/test-revisore.sh 7b).
+  NV_N_CMD=$(printf '%s\n' "$NV_DICHIARATE" | grep -vcE '^\s*#|^\s*$' || true)
+  if [ "${NV_N_CMD:-0}" -eq 0 ]; then
     PROVE_ROTTE="; .night-verify senza comandi (verifiche-vuote)"
   # (2026-09-19): due formati — script intero o riga-per-riga (contratto del turno)
   elif printf '%s\n' "$NV_DICHIARATE" | head -10 | grep -q "^# FORMATO: script"; then

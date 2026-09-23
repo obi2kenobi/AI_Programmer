@@ -22,7 +22,7 @@ OUT=$(cd "$TMP" && python3 "$HERE/tools/bc_index.py" 2>&1); RC=$?
   || ko "bc_index.py rc=$RC: $OUT"
 [ -f "$TMP/docs/bc/README.md" ] && ok "README.md generato" || ko "README.md non generato"
 
-N_RIGHE=$(grep -c '^| `' "$TMP/docs/bc/README.md" 2>/dev/null || echo 0)
+N_RIGHE=$(grep -c '^| `' "$TMP/docs/bc/README.md" 2>/dev/null || true); N_RIGHE=${N_RIGHE:-0}
 [ "$N_RIGHE" -eq "$N_FILE" ] && ok "una riga per ogni endpoint copiato ($N_FILE)" \
   || ko "righe=$N_RIGHE, file=$N_FILE — endpoint persi o duplicati"
 

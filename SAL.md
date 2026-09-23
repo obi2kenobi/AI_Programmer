@@ -2787,3 +2787,15 @@ nessun file tracciato sporcato dalla suite.
 - **Scoperto, non curato (⏳ in DEBITI):** gli hook di `.claude/settings.json` sono path
   relativi — da una sottocartella il cancello clasp esce 127 e FALLISCE APERTO (riprodotto).
   La patch e' scritta nella voce; `settings.json` lo installa una persona (limite #7).
+
+**Giro 2 — il censore che deliberava sul vuoto (famiglia «doppio zero»).** In
+`night-shift/revisore.sh` la guardia «verifiche-vuote» era `[ "$(… | grep -vcE … || echo 0)"
+-eq 0 ]`: a zero comandi grep stampa 0 ED esce 1, l'echo ne aggiunge un secondo, «0\n0» non
+e' un intero, il test e' falso — e un `.night-verify` di soli commenti sulla base portava la
+PR fino al **merge** (riprodotto in DRY: rc 0, `gh pr merge 7 --squash`). Banco prima
+(`tests/test-revisore.sh` 7b, rosso), poi la cura: 21/21. La stessa forma in altri cinque
+siti — `night-shift/morning-digest.sh` (tre contatori: il digest stampava «0» su due righe),
+`tools/ciclo-vivo.sh` (conteggio indice BC), `tests/test-canone-integrita.sh`,
+`tests/test-bc-index.sh` — tutti con `|| true; N=${N:-0}`. Guardia nuova:
+`tests/test-grep-conta-zero.sh` (prova prima che la forma produca davvero «0\n0», poi che il
+codice non la contenga; sabotaggio col revisore di prima → rosso).
