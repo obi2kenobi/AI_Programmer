@@ -27,6 +27,17 @@ cp "$HERE/tools/prepara-deploy.sh" "$HERE/tools/deploy-ora.sh" "$TMP/tools/"
 printf '#!/bin/bash\necho "CLASP-FINTO $*"\nexit 0\n' > "$TMP/bin/npx"; chmod +x "$TMP/bin/npx"
 export PATH="$TMP/bin:$PATH"
 
+# (2026-09-23, giro A7 della notte): il gesto si fa in un TERMINALE (pty) e fuori da una sessione
+# agente — com'e' quello di Luca. Prima il banco faceva `echo si |` da una sessione agente: la
+# stessa strada con cui un agente deploiava davvero (deploy-ora leggeva il «si» dalla pipe).
+gesto() { # gesto <risposta> <repo>
+  if script --version >/dev/null 2>&1; then
+    printf '%s\n' "$1" | env -u CLAUDECODE script -qec "bash '$TMP/tools/deploy-ora.sh' '$2'" /dev/null
+  else
+    printf '%s\n' "$1" | env -u CLAUDECODE script -q /dev/null bash "$TMP/tools/deploy-ora.sh" "$2"
+  fi
+}
+
 mkrepo() { # $1 nome, $2 verify (true|false)
   mkdir -p "$TMP/$1/.git" "$TMP/night-shift-work/$1"
   ( cd "$TMP/$1" && git init -q . && git commit -qm base --allow-empty \
@@ -50,15 +61,23 @@ bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-rossa" >/dev/null 2>&1 \
   && ko "verify ROSSA ma il pacchetto e' pronto: si deploea robaccia" \
   || ok "verify rossa → nessun pacchetto"
 
-echo no | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+gesto no repo-verde >/dev/null 2>&1
 [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] \
   && ok "gesto rifiutato (no) → nessun deploy, nessuno storico" \
   || ko "il no ha comunque deploeato!"
 
+# (2026-09-23, giro A7): un agente NON deploia — ne' dichiarandosi agente, ne' fingendo il si in pipe
+OUT=$(echo si | CLAUDECODE=1 bash "$TMP/tools/deploy-ora.sh" repo-verde 2>&1); RC=$?
+[ "$RC" -ne 0 ] && [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && grep -qi "sessione agente" <<<"$OUT" \
+  && ok "da una sessione agente (CLAUDECODE): rifiutato, nessun deploy" || ko "una sessione agente ha deploiato (o non ha detto perche'): rc $RC"
+OUT=$(echo si | env -u CLAUDECODE bash "$TMP/tools/deploy-ora.sh" repo-verde 2>&1); RC=$?
+[ "$RC" -ne 0 ] && [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && grep -qi "terminale" <<<"$OUT" \
+  && ok "un «si» in pipe, senza terminale: rifiutato, nessun deploy" || ko "un si in pipe ha deploiato: rc $RC"
+
 # (audit-2): il check legge il CONTENUTO (epoch), non l'mtime — toccare il file
 # non scadeva niente e il test passava due volte per sbaglio
 echo 946684800 > "$TMP/deploy-pronto/repo-verde/preparato-at.txt"
-echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+gesto si repo-verde >/dev/null 2>&1
 [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] \
   && ok "pacchetto scaduto (24h) → il si non basta, niente deploy" \
   || ko "il si su un pacchetto scaduto ha deploeato!"
@@ -67,7 +86,7 @@ echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
 # → clasp (finto) eseguito, STORICO scritto, pacchetto consumato. La strada che
 # tocca la produzione non era mai stata provata.
 bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1
-echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+gesto si repo-verde >/dev/null 2>&1
 if [ -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && grep -q "CLASP-FINTO" "$TMP/deploy-pronto/repo-verde/STORICO.log" && grep -q "OK$" "$TMP/deploy-pronto/repo-verde/STORICO.log"; then
   ok "percorso felice: si → clasp eseguito, STORICO scritto"
   [ -f "$TMP/deploy-pronto/repo-verde/MANIFEST.md" ] && ko "il pacchetto NON e' stato consumato dopo il deploy" || ok "pacchetto consumato dopo il deploy"
@@ -83,12 +102,12 @@ bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1
 ( cd "$WORK" && git checkout -q "$(cat "$TMP/deploy-pronto/repo-verde/commit.txt")" 2>/dev/null )
 echo 'function sporca(){}' >> "$WORK/app.gs"
 rm -f "$TMP/deploy-pronto/repo-verde/STORICO.log"
-echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+gesto si repo-verde >/dev/null 2>&1
 [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && ok "copia di lavoro con modifiche non committate → nessun deploy" \
   || ko "deploy di modifiche NON firmate (albero sporco)"
 ( cd "$WORK" && git checkout -q -- app.gs )
 echo 'function intrusa(){}' > "$WORK/intruso.gs"
-echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+gesto si repo-verde >/dev/null 2>&1
 [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && ok "file NON tracciato nella copia di lavoro → nessun deploy" \
   || ko "deploy con un file non tracciato (clasp lo spedisce)"
 rm -f "$WORK/intruso.gs"

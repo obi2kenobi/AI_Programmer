@@ -202,6 +202,13 @@ ${P} ${V}")" = "deny" ] && ok "heredoc senza chiusura: il corpo non si toglie (p
 [ "$(decideh "grep -c x <<<\"testo\"
 ${P} ${V}")" = "deny" ] && ok "<<< (herestring) non e' un heredoc: il push sotto resta NEGATO" || ko "herestring scambiata per heredoc"
 
+# ── (2026-09-23, giro A7 della notte) deploy-ora e' il gesto di LUCA: l'agente non lo invoca ──────
+[ "$(decideh "bash tools/deploy-ora.sh repo")" = "deny" ] && ok "bash tools/deploy-ora.sh: NEGATO (il deploy assistito e' dell'umano)" || ko "l'agente puo' invocare deploy-ora"
+[ "$(decideh "echo si | bash tools/deploy-ora.sh repo")" = "deny" ] && ok "echo si | deploy-ora: NEGATO" || ko "il si in pipe verso deploy-ora passa il cancello"
+[ "$(decideh "./tools/deploy-ora.sh repo")" = "deny" ] && ok "./tools/deploy-ora.sh: NEGATO" || ko "deploy-ora col percorso relativo passa"
+[ "$(decideh "grep -n deploy-ora tools/prepara-deploy.sh")" = "consentito" ] && ok "cercare deploy-ora con grep: consentito (e' un argomento, non un'invocazione)" || ko "grep su deploy-ora negato a torto"
+[ "$(decideh "bash tools/prepara-deploy.sh repo")" = "consentito" ] && ok "prepara-deploy (solo il pacchetto): consentito" || ko "prepara-deploy negato a torto"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

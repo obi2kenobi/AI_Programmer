@@ -113,40 +113,64 @@
       "source_location": "L42"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
+      "id": "tools_bc_index_catalogo_mancanti",
+      "label": "catalogo_mancanti()",
       "_callable": true,
       "_origin": "ast",
-      "community": 147,
-      "community_name": "margine_documento.py",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L42"
+      "norm_label": "catalogo_mancanti()",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L27"
     },
     {
-      "id": "tools_margine_documento_main",
+      "id": "tools_bc_index_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
-      "community": 147,
-      "community_name": "margine_documento.py",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L58"
+      "source_file": "tools/bc_index.py",
+      "source_location": "L48"
     },
     {
-      "id": "tools_margine_documento_normalizza",
-      "label": "normalizza()",
+      "id": "tools_bc_index_parse",
+      "label": "parse()",
       "_callable": true,
       "_origin": "ast",
-      "community": 147,
-      "community_name": "margine_documento.py",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L38"
+      "norm_label": "parse()",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L15"
+    },
+    {
+      "id": "tools_bc_tipi_metadata_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L31"
+    },
+    {
+      "id": "tools_verifica_banco_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L34"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -485,64 +509,40 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_bc_index_catalogo_mancanti",
-      "label": "catalogo_mancanti()",
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
       "_callable": true,
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "code",
-      "norm_label": "catalogo_mancanti()",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L27"
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L42"
     },
     {
-      "id": "tools_bc_index_main",
+      "id": "tools_margine_documento_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L48"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L58"
     },
     {
-      "id": "tools_bc_index_parse",
-      "label": "parse()",
+      "id": "tools_margine_documento_normalizza",
+      "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "code",
-      "norm_label": "parse()",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L15"
-    },
-    {
-      "id": "tools_bc_tipi_metadata_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L31"
-    },
-    {
-      "id": "tools_verifica_banco_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L34"
+      "norm_label": "normalizza()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L38"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -8934,48 +8934,64 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
       "_origin": "ast",
       "community": 147,
-      "community_name": "margine_documento.py",
-      "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L1"
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
     },
     {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
       "_origin": "ast",
       "community": 147,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
     },
     {
-      "id": "tools_margine_documento_rationale_43",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
       "_origin": "ast",
       "community": 147,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L43"
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
     },
     {
-      "id": "tools_margine_documento_rationale_59",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
       "_origin": "ast",
       "community": 147,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L59"
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 147,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "tests_test_struttura_test",
@@ -11663,64 +11679,137 @@
       "source_location": "L24"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "id": "tools_bc_index",
+      "label": "bc_index.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "bc_index.py",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "id": "tools_bc_tipi_metadata",
+      "label": "bc_tipi_metadata.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "bc_tipi_metadata.py",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "id": "tools_verifica_banco",
+      "label": "verifica_banco.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "verifica_banco.py",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "id": "docs_campo_2026_08_31_repo_j_revisione_100_agenti_severit\u00e0_media_15",
+      "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
       "community": 174,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
+      "norm_label": "severita media (15)",
+      "source_file": "docs/campo/2026-08-31-repo-j-revisione-100-agenti.md",
+      "source_location": "L71"
     },
     {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "id": "tools_bc_index_rationale_16",
+      "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L16"
+    },
+    {
+      "id": "tools_bc_index_rationale_2",
+      "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_bc_index_rationale_28",
+      "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L28"
+    },
+    {
+      "id": "tools_bc_index_rationale_49",
+      "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L49"
+    },
+    {
+      "id": "tools_bc_tipi_metadata_rationale_2",
+      "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_bc_tipi_metadata_rationale_32",
+      "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L32"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_2",
+      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_35",
+      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L35"
     },
     {
       "id": "opencode_skills_allineamento_fork_skill",
@@ -14814,6 +14903,21 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_deploy_assistito_gesto",
+      "label": "gesto()",
+      "_origin": "ast",
+      "community": 20,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gesto()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L33"
+    },
+    {
       "id": "tests_test_deploy_assistito_git_author_email",
       "label": "GIT_AUTHOR_EMAIL",
       "_origin": "ast",
@@ -14931,7 +15035,7 @@
       },
       "norm_label": "mkrepo()",
       "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L30"
+      "source_location": "L41"
     },
     {
       "id": "tests_test_deploy_assistito_ok",
@@ -39197,137 +39301,48 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_bc_index",
-      "label": "bc_index.py",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "code",
-      "norm_label": "bc_index.py",
-      "source_file": "tools/bc_index.py",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_bc_tipi_metadata",
-      "label": "bc_tipi_metadata.py",
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "bc_tipi_metadata.py",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_verifica_banco",
-      "label": "verifica_banco.py",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "verifica_banco.py",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "docs_campo_2026_08_31_repo_j_revisione_100_agenti_severit\u00e0_media_15",
-      "label": "Severit\u00e0 MEDIA (15)",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "severita media (15)",
-      "source_file": "docs/campo/2026-08-31-repo-j-revisione-100-agenti.md",
-      "source_location": "L71"
-    },
-    {
-      "id": "tools_bc_index_rationale_16",
-      "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "rationale",
-      "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L16"
-    },
-    {
-      "id": "tools_bc_index_rationale_2",
-      "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
-      "source_file": "tools/bc_index.py",
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_bc_index_rationale_28",
-      "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
+      "id": "tools_margine_documento_rationale_43",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "rationale",
-      "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L28"
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L43"
     },
     {
-      "id": "tools_bc_index_rationale_49",
-      "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
+      "id": "tools_margine_documento_rationale_59",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 61,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "margine_documento.py",
       "file_type": "rationale",
-      "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L49"
-    },
-    {
-      "id": "tools_bc_tipi_metadata_rationale_2",
-      "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_bc_tipi_metadata_rationale_32",
-      "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L32"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_2",
-      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_35",
-      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L35"
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L59"
     },
     {
       "id": "docs_bc_endpoints_workflowpurchasedocuments",
@@ -47429,6 +47444,78 @@
       "source_location": "L64"
     },
     {
+      "id": "glob",
+      "label": "glob",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "glob",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "importlib_util",
+      "label": "importlib_util",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "importlib_util",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "os",
+      "label": "os",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "os",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "re",
+      "label": "re",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "re",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "urllib_request",
+      "label": "urllib_request",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "urllib_request",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "xml_etree_elementtree",
+      "label": "xml_etree_elementtree",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "xml_etree_elementtree",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "csv",
       "label": "csv",
       "_origin": "semantic",
@@ -47521,78 +47608,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_parse",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "glob",
-      "label": "glob",
-      "_origin": "semantic",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "glob",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "importlib_util",
-      "label": "importlib_util",
-      "_origin": "semantic",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "importlib_util",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "os",
-      "label": "os",
-      "_origin": "semantic",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "os",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "re",
-      "label": "re",
-      "_origin": "semantic",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "re",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "urllib_request",
-      "label": "urllib_request",
-      "_origin": "semantic",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "urllib_request",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "xml_etree_elementtree",
-      "label": "xml_etree_elementtree",
-      "_origin": "semantic",
-      "community": 61,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "xml_etree_elementtree",
       "source_file": "",
       "type": "external"
     },
@@ -49575,7 +49590,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L37",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -49587,7 +49602,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L46",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -49599,7 +49614,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L47",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_deploy_assistito_sh__entry",
+      "target": "tests_test_deploy_assistito_gesto",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -82739,13 +82766,24 @@
     },
     {
       "source": "tests_test_deploy_assistito",
+      "target": "tests_test_deploy_assistito_gesto",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_deploy_assistito",
       "target": "tests_test_deploy_assistito_mkrepo",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L30",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -88767,5 +88805,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "be1f6b8c3ea6b3f6f2313a1a55b44fa2052cbe32"
+  "built_at_commit": "61b77c54c4ddb64457ca5494f610fba2799424b1"
 }

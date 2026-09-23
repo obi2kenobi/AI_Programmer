@@ -110,6 +110,16 @@ if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE" || printf '%s' "$CMD_NO
   exit 0
 fi
 
+# (2026-09-23, giro A7 della notte): deploy-ora e' il GESTO di Luca, dal suo terminale — un agente
+# non lo invoca. Prima `echo si | bash tools/deploy-ora.sh X` passava questo cancello (vede solo il
+# comando esterno) e deploiava. Si nega l'invocazione, non la citazione: `grep deploy-ora …` passa.
+DEPLOY_ORA="${SEP}${RUN}((ba|z|da)?sh[[:space:]]+)?([A-Za-z0-9_./~-]*/)?deploy-ora(\.sh)?([[:space:]]|;|$)"
+if printf '%s' "$CMD_STRIPPED" | grep -qE "$DEPLOY_ORA"; then
+  jq -n --arg r "NEGATO (clasp-block-hook): deploy-ora e' il gesto del deploy di Luca, dal suo terminale — un agente non lo invoca (il deploy e' dell'umano). Prepara il pacchetto con tools/prepara-deploy.sh e lascialo a lui." \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
+  exit 0
+fi
+
 # H7a: la via documentata — npm run push / npm run deploy — risolta da package.json
 if [ -f "$PWD/package.json" ] && printf '%s' "$CMD_STRIPPED" | grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+'; then
   for SCR in $(printf '%s' "$CMD_STRIPPED" | grep -oE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' | awk '{print $NF}' | sort -u); do

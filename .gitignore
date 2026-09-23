@@ -18,3 +18,8 @@ night-shift/.sal-turni.md.1
 
 # l'ID del gist SEGRETO di tools/backup-config.sh e' la sua URL: accesso al backup (revisione 10 giri, 2026-09-23)
 .gist-backup-id
+
+# i GREZZI dei giri (n-giri): materiale di lavoro dei sottoagenti, con citazioni non verificate
+# (notte del 2026-09-23: 123 citazioni file:riga rotte). Nel repo entrano il brief e il
+# consolidamento verificato; i grezzi restano locali.
+docs/giri/*/A*-L*.md
