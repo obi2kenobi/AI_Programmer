@@ -52,7 +52,7 @@ cosa serve, le domande di dominio da fare a una persona).
 
 ## Gli oracoli e i tool dell'hub
 
-tools/ contiene 16 tool Python: 11 oracoli contabili, 2 rilevatori (gas_qualita, verifica_banco), indice BC e correttore tipi.
+tools/ contiene 17 tool Python: 11 oracoli contabili, 2 rilevatori (gas_qualita, verifica_banco), 3 per Business Central (bc_map che interroga, bc_index che indicizza, bc_tipi_metadata che corregge i tipi) e la dashboard — conteggio del 2026-09-23 (`ls tools/*.py`; qui diceva 16 e ne elencava 15).
 
 ## Il primo artefatto: le domande, non il codice
 

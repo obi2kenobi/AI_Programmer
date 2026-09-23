@@ -4,9 +4,9 @@
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
 # Variabili: QWEN_MODEL (default qwen3.8-27b:iq3s — un solo modello, decisione
-#            2026-09-19, vedi night-shift/revisore.sh:35; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
-#            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
-#            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
+#            2026-09-21, vedi cervello/decisione-modello-unico.md; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
+#            ASK_TIMEOUT secondi (1800 — soglia alta di default, configurabile; il turno
+#            ha il suo watchdog per-issue di 240 min dal 2026-09-01, NIGHT_SHIFT_TIMEOUT)
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 

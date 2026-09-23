@@ -593,7 +593,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
   # il codice e decide se deliberarlo o no»): ogni ciclo, UNA PR bozza night/*
   # passa dal censore — guardie deterministiche, prove sul branch, giudizio di
   # un processo separato senza la memoria di chi ha scritto (stesso modello dal
-  # 2026-09-19 — revisore.sh:35 —, istruzioni e ruolo diversi: chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
+  # 2026-09-19 — cervello/decisione-modello-unico.md —, istruzioni e ruolo diversi: chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
   # chi crea non si giudica nello stesso respiro. Il veto resta umano.
   if [ -f "$HERE/revisore.sh" ]; then
     REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft --limit 20 2>/dev/null \

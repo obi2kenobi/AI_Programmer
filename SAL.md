@@ -2799,3 +2799,29 @@ siti — `night-shift/morning-digest.sh` (tre contatori: il digest stampava «0�
 `tests/test-bc-index.sh` — tutti con `|| true; N=${N:-0}`. Guardia nuova:
 `tests/test-grep-conta-zero.sh` (prova prima che la forma produca davvero «0\n0», poi che il
 codice non la contenga; sabotaggio col revisore di prima → rosso).
+
+**Giro 3 — riferimenti e conteggi (lente in sola lettura, ogni rilievo rieseguito prima della
+cura).**
+- `docs/MANUALE-OPERATIVO.md`: una nota «IN PENSIONE» incollata DENTRO il comando del mattino
+  (la riga non era piu' eseguibile), blocchi `bash` con commenti inline (CLAUDE.md §3: su zsh
+  il `#` diventa argomento) e slash-command mescolati ai comandi di shell. Riscritto: la prosa
+  sopra, i blocchi puliti, gli slash-command fuori dal terminale; il mattino descrive il
+  digest autonomo e il gate in pensione.
+- `/audit-commesse` (plurale) non esiste — la skill e' `audit-commessa`: corretto in
+  `docs/MANUALE-OPERATIVO.md`, `docs/system.md` (3 siti) e nella notifica serale
+  `night-shift/plist/com.luca.auditsera.plist`.
+- `docs/system.md` dava ancora il 14b come braccia notturne: il modello unico e'
+  qwen3.8-27b:iq3s dal 2026-09-21 (`cervello/decisione-modello-unico.md`); le citazioni
+  a «revisore.sh riga 35» (una riga vuota) puntano ora alla decisione, in quattro file.
+- «La notte non ha limite di tempo» in `docs/system.md`, `llm/README.md`, skill `goal`
+  (e specchio): falso dal 2026-09-01 — la notte non ha un tetto di TENTATIVI ma un watchdog di
+  tempo di 240 min; l'asimmetria voluta resta, detta giusta.
+- Pattern: due report di campo citati col nome di prima del rinomino (REPO-J → bricoman), un
+  titolo col refuso «menta», due «vedi anche» verso pattern inesistenti (`presidio`,
+  `pipeline-a-ripresa`).
+- Skill `controllo-gestione` (e specchio) insegnava ancora «mai per nome, solo codice
+  anonimo»; skill `goal` aveva due percorsi incollati in uno (system.md e il README di loops).
+- Conteggi: quattro agenti (e specchi) dicevano «39 pattern» (sono 65) — ora il numero si
+  conta; `gas-sviluppo` «16 tool Python» ne elencava 15 (sono 17).
+Lenti rieseguite: sync specchi 14/14 e 15/15, struttura agenti 36/36, gas-sviluppo 33/33,
+help 4/4, doc-citazioni 2/2.

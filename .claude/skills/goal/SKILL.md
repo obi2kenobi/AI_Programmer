@@ -1,6 +1,6 @@
 ---
 name: goal
-description: Loop di ottimizzazione diurno con un obiettivo verificabile e un tetto di tentativi — un cambiamento per tentativo, verifica dichiarata col suo livello (1-5), verifica avversariale prima di dichiarare vittoria, log di ogni tentativo in loops/. Citato in CLAUDE.md §7 ("/goal <obiettivo verificabile> | max N tentativi") e in docs/system.md/loops/README.md da quando il sistema esiste, ma senza alcun file che lo implementasse — loops/ è rimasta vuota (solo il README) finché non è stato scritto questo comando; il primo loop reale è stato eseguito solo al ciclo successivo (5° ciclo, set 2 giro 3, 2026-08-23 — "costruito" non era ancora "provato"). Usa quando l'utente chiede un'ottimizzazione iterativa con verifica ("ottimizza X finché...", "prova a migliorare Y", esplicitamente con "| max N tentativi"), o invoca /goal. Diverso dal turno notturno: qui c'è SEMPRE un tetto di tentativi (ottimizzazione iterativa diurna), la notte non ne ha mai uno (commessa unica e lunga) — tensione dichiarata e voluta in docs/system.md, non un'incoerenza da correggere.
+description: Loop di ottimizzazione diurno con un obiettivo verificabile e un tetto di tentativi — un cambiamento per tentativo, verifica dichiarata col suo livello (1-5), verifica avversariale prima di dichiarare vittoria, log di ogni tentativo in loops/. Citato in CLAUDE.md §7 ("/goal <obiettivo verificabile> | max N tentativi") e in docs/system.md e loops/README.md da quando il sistema esiste, ma senza alcun file che lo implementasse — loops/ è rimasta vuota (solo il README) finché non è stato scritto questo comando; il primo loop reale è stato eseguito solo al ciclo successivo (5° ciclo, set 2 giro 3, 2026-08-23 — "costruito" non era ancora "provato"). Usa quando l'utente chiede un'ottimizzazione iterativa con verifica ("ottimizza X finché...", "prova a migliorare Y", esplicitamente con "| max N tentativi"), o invoca /goal. Diverso dal turno notturno: qui c'è SEMPRE un tetto di tentativi (ottimizzazione iterativa diurna), la notte non ha un tetto di tentativi ma un watchdog di TEMPO per issue (240 min dal 2026-09-01; commessa unica e lunga) — tensione dichiarata e voluta in docs/system.md, non un'incoerenza da correggere.
 ---
 
 # goal — un obiettivo, un tetto, una prova ad ogni passo
@@ -70,9 +70,9 @@ altri: registralo e continua (se il tetto non è esaurito) o fermati e dillo (se
 ## 5. Cosa NON è questo comando
 
 - Non è il turno notturno: qui c'è sempre un tetto di tentativi (ottimizzazione diurna
-  iterativa); la notte non ne ha mai uno (commessa unica, lunga, guardia = review del
-  mattino) — due contesti diversi, entrambe le regole sono giuste per il loro contesto
-  (`docs/system.md`).
+  iterativa); la notte non ha un tetto di tentativi ma un watchdog di tempo per issue
+  (240 min dal 2026-09-01 — prima nessun limite, costato 3 notti; commessa unica, lunga) —
+  due contesti diversi, entrambe le regole sono giuste per il loro contesto (`docs/system.md`).
 - Non sostituisce il banco avversariale del gate — quello giudica una PR già pronta;
   questo itera PRIMA di aprirla.
 

@@ -22,7 +22,7 @@ step() { echo "→ $*"; }
 # --- Prerequisiti (li segnala, non li installa: scelta tua) --------------------
 command -v ollama >/dev/null 2>&1 || { echo "⚠ MANCA ollama (brew install --cask ollama-app)"; MISSING=1; }
 # (giro 19, 2026-09-20): qui si controllava il 27b generale, abbandonato il 2026-09-19 (un solo
-# modello, decisione di Luca — night-shift/revisore.sh:35): chi installava scaricava 17 GB
+# modello, decisione di Luca — oggi cervello/decisione-modello-unico.md): chi installava scaricava 17 GB
 # che nessun turno usa. Il modello si legge da night-shift.sh (MODEL_TAG), non si riscrive qui.
 MODELLO_TURNO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HUB/night-shift/night-shift.sh" | cut -d'"' -f2)
 MODELLO_TURNO="${MODELLO_TURNO:-qwen3.8-27b:iq3s}"

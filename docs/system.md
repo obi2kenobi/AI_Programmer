@@ -26,7 +26,7 @@
 |---|---|---|
 | Cervello giorno primario | ZCode / GLM 5.3 | sessione diretta |
 | Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain SUL MAC: funziona da terminale utente e launchd, non da shell sandbox locale; **una sessione cloud ha auth propria e risponde davvero** — verificato 2026-08-22, vedi `llm/ask-opus.sh`) |
-| Braccia notturne | qwen2.5-coder:14b via Ollama (un solo modello, decisione 2026-09-19) | bencina 2026-09-19: 14b 1/3 in 22 s, il 27B generale 0/3 in 442 s anche da solo (`night-shift/revisore.sh:35`); fino al 19/9 qui stava il Qwen3.8-27B Q4_K_M (misure 2026-08-18: 3,7-5,9 tok/s) |
+| Braccia notturne | qwen3.8-27b:iq3s via Ollama (un solo modello, decisione 2026-09-21 — `cervello/decisione-modello-unico.md`) | bencina 2026-09-21: 3/3 in 48 s con think:false (il 14b 1/3 in 22 s); dal 19 al 21/9 qui stava qwen2.5-coder:14b, prima il Qwen3.8-27B Q4_K_M (misure 2026-08-18: 3,7-5,9 tok/s). Default in `night-shift/night-shift.sh` (`MODEL_TAG`), presidiato da `tests/test-un-solo-modello.sh` |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
 | Giudice/censore/correttore | REPO-A + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
 | Memoria | SAL.md + metrics/gate.csv | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
@@ -111,10 +111,11 @@ quattro regole sono in CLAUDE.md dal principio) arriva dopo e formalizza.
 | 5 · checkpoint umano | la review di Luca — mai saltato, chiude ogni ciclo |
 
 Comando per i loop diurni iterativi: **`/goal`** (obiettivo verificabile + tetto di tentativi,
-log di ogni tentativo in `loops/`). Tensione dichiarata e voluta: la notte non ha limite di
-tempo (decisione del 2026-08-21, guardia = review del mattino); i loop `/goal` diurni hanno
-sempre un tetto — commessa unica e lunga vs ottimizzazione iterativa: contesti diversi,
-regole diverse, entrambe giuste.
+log di ogni tentativo in `loops/`). Tensione dichiarata e voluta: la notte non ha un tetto di
+TENTATIVI ma un watchdog di tempo per issue (240 min dal 2026-09-01, `NIGHT_SHIFT_TIMEOUT`; il
+no-limit del 2026-08-21 era costato 3 notti); i loop `/goal` diurni hanno sempre un tetto di
+tentativi — commessa unica e lunga vs ottimizzazione iterativa: contesti diversi, regole
+diverse, entrambe giuste.
 
 ## Plugin adottati nel tessuto (2026-08-21)
 
@@ -144,12 +145,12 @@ citava solo "l'onboarding", non il bootstrap).
                   ciclo, set 2 giro 7, 2026-08-23: non forzare una scelta scadente)
                   │
                   ├─ territorio piccolo/giorno → /goal | max N tentativi
-                  └─ territorio grande/notte   → commessa → /audit-commesse (il giorno
+                  └─ territorio grande/notte   → commessa → /audit-commessa (il giorno
                      verifica le assunzioni sul codice PRIMA della notte) → notte →
                      gate (night/* E claude/*: due occhi) → review di Luca
 ```
 
-- **`/audit-commesse <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
+- **`/audit-commessa <repo>`** (Claude e ZCode): audita le commesse in coda contro il codice
   reale, corregge i body, compila la "Forma dei dati (verificata)". Nato dall'A/B: la commessa
   con l'assunzione sbagliata costa alla notte ore, al giorno una lettura
 - **`/design-doc <feature>`** (Claude e ZCode): 2-3 opzioni confrontate su criteri
@@ -158,7 +159,7 @@ citava solo "l'onboarding", non il bootstrap).
   più un trade-off narrativo libero), senza implementare — la scelta resta di Luca. È il
   passo /brainstorming che diventa documento. Implementato come skill Claude in
   `.claude/skills/design-doc/SKILL.md` (set 2 2026-08-22: prima citato qui senza esistere
-  — stesso debito già chiuso per `/audit-commesse`)
+  — stesso debito già chiuso per `/audit-commessa`)
 - **Il gate guarda anche i branch `claude/*`**: il lavoro del giorno passa le stesse verifiche
   dichiarate e lo stesso banco avversariale di quello notturno
 
@@ -286,7 +287,7 @@ famiglie misurate con popolazioni). Fatto:
   `revisore-gas` (i quattro verbi su progetti esistenti: censimento con
   raggiungibilità prima, banco prima, sabotaggio, tre prodotti). Ora 6 agenti (giro 29 2026-09-20: qui diceva 7, mai stati
   piu' di 6 — nessun agente e' stato cancellato nella storia), specchiati OpenCode con anti-drift.
-- Guardia: `tests/test-gas-sviluppo-sistema.sh` (16 controlli: provenienza,
+- Guardia: `tests/test-gas-sviluppo-sistema.sh` (16 controlli allora, 33 al 2026-09-23: provenienza,
   regole non negoziabili, popolazioni numeriche ≥15, privacy).
 
 La lezione di metodo, scritta nel SAL: quando il mandato dice «gli agenti

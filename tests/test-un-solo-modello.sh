@@ -1,8 +1,8 @@
 #!/bin/bash
 # test-un-solo-modello.sh — lente nata dal giro 19 dell'analisi profonda (2026-09-20).
 #
-# La decisione (2026-09-19, Luca, citata in night-shift/revisore.sh:35): UN SOLO modello
-# locale, qwen2.5-coder:14b — il 27b generale faceva 0/3 in 442 s anche da solo. Ma la
+# La decisione (2026-09-19, Luca): UN SOLO modello locale — allora qwen2.5-coder:14b, dal
+# 2026-09-21 qwen3.8-27b:iq3s (cervello/decisione-modello-unico.md: 3/3 in 48s). Ma la
 # decisione viveva in alcuni default e non in altri: night-shift/install.sh controllava
 # (e chiedeva di scaricare, 17 GB) il 27b che nessun turno usa piu'; llm/ask-qwen.sh —
 # il cervello che il morning-gate chiama per il banco avversariale — partiva ancora col

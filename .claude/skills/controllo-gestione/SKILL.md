@@ -61,9 +61,9 @@ Una richiesta di calcolo/riconciliazione/analisi su una cifra contabile o gestio
 - La formula e la sua fonte (oracolo citato per file:riga, o la conferma del proprietario
   del dominio se non esisteva) vanno in un commento nel tool stesso E in una voce di
   `SAL.md` — non solo in uno dei due, altrimenti chi legge il codice fra sei mesi non sa
-  se la formula era verificata o assunta. Nei file versionati di questo hub pubblico,
-  cita il repo esterno per codice anonimo (es. REPO-E), mai per nome — la mappatura reale
-  vive solo in `night-shift/repos.key` (locale, gitignored).
+  se la formula era verificata o assunta. Il repo esterno si cita per nome o per il codice
+  storico (es. REPO-E): dal 2026-09-23 i nomi possono comparire, resta proibito l'ACCESSO
+  (CLAUDE.md §«Public repo, private work» — i codici anonimi sono ritirati).
 - Se il calcolo lavora su un endpoint BC, la mappatura del campo usato deve esistere in
   `docs/bc/endpoints/<Nome>.md` — se non c'è ancora, va prima censita (vedi `PROJECT.md`),
   non assunta al volo dentro il nuovo tool.
