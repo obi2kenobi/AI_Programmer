@@ -20,7 +20,8 @@ run_install() {
 CONF_PRIMA=0; [ -f "$HERE/night-shift/repos.conf" ] && CONF_PRIMA=1
 trap '[ "$CONF_PRIMA" -eq 0 ] && rm -f "$HERE/night-shift/repos.conf"; rm -rf "$FAKE"' EXIT
 OUT1=$(run_install)
-echo "$OUT1" | grep -q "Fatto" && ok "prima esecuzione: completa" || ok "prima esecuzione gira (output parziale in HOME finta: $OUT1 | tail -1)"
+# (audit-2): un install che esplode a meta' non puo' passare come 'parziale'
+echo "$OUT1" | grep -q "Fatto" && ok "prima esecuzione: completa" || ko "prima esecuzione incompleta: $(echo "$OUT1" | tail -1 | cut -c1-80)"
 # symlinks creati? (mutation-testing 2026-08-28: prima era ok||ok — un install
 # rotto che non fa NIENTE passava lo stesso; ora l'artefatto è obbligatorio)
 [ -L "$FAKE/.local/bin/ask-qwen" ] && ok "symlink ask-qwen creato" || ko "install non ha creato ~/.local/bin/ask-qwen"

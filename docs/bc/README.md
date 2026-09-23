@@ -18,7 +18,7 @@ Anomalie (403/404/vuoti): `CORREZIONI.md`.
 - File con data di aggiornamento: 143 su 231 (i senza data sono pre-2026-08-26: un refresh con bc_map li marca)
 - Refresh: `python3 tools/bc_map.py <NomeServizio>` rigenera UN endpoint preservando Significato/Verificato compilati
 - Su Luca's Mac: `python3 tools/bc_map.py --catalog docs/bc/CATALOGO_ENDPOINT_BC.md` mappa in blocco TUTTI i mancanti (salta i già fatti, credenziali locali)
-- Catalogo servizi OData: 258 · mancanti al censimento: 27
+- Catalogo servizi OData: 258 · mancanti al censimento: 31
 
 | Endpoint | Campi | Verificato |
 |---|---|---|

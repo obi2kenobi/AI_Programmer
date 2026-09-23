@@ -47,7 +47,13 @@ grep -q "AREA FRAGILE" <<<"$SUM" && ko "area fragile scatta già a 1 commessa (s
 grep -q "smentite banco: 1 (50%)" <<<"$SUM" && ok "summary: % smentite per-repo (REPO-A: 1/2 = 50%)" || ko "percentuali: $(grep smentite <<<"$SUM" | head -1)"
 
 # 6) aging: la riga di REPO-A #2 ha esito → nessuna attesa con dati freschi
-grep -q " aging" <<<"$SUM" && ok "summary: sezione aging presente quando serve" || ok "summary: nessun aging (tutte chiuse) — coerente"
+# (audit-2): il doppio-ok passava qualunque stato — ora l'attesa e' DETtata dal
+# csv: con la riga di REPO-A #2 APERTA, l'aging DEVE esserci
+if grep -q ",aperta," "$TMP/gate.csv" 2>/dev/null || grep -qE ",[0-9]+," <(grep -vc "chiusa" "$TMP/gate.csv" 2>/dev/null); then
+  grep -q " aging" <<<"$SUM" && ok "summary: aging presente con righe aperte (dettato dal dato)" || ko "righe aperte ma nessun aging nel summary"
+else
+  grep -q " aging" <<<"$SUM" && ko "aging mostrato senza righe aperte" || ok "summary: nessun aging, tutte chiuse — coerente col dato"
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
