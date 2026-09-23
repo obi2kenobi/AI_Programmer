@@ -36,6 +36,8 @@ elif [ -z "$ALIENI" ]; then sonda 0 "S1 nessun carattere alieno nei testi"
 else sonda 1 "S1 caratteri alieni: $ALIENI"; fi
 
 # S2 — numeri claims vs realtà: ogni "<N> test|pattern|agenti" nei doc di testa
+#   (revisione 10 giri, 2026-09-23: era "agenti\?" — sotto grep -E un ? letterale, il
+#   controllo degli agenti non trovava mai un claim e taceva)
 #   deve corrispondere ai file veri (i numeri nei doc marciscono in silenzio)
 check_numero() { # check_numero <file> <claim-regex> <reale>
   local file="$1" rx="$2" reale="$3" trovato
@@ -48,7 +50,7 @@ N_PAT=$(ls "$HERE"/patterns/*.md 2>/dev/null | grep -v README | wc -l | tr -d ' 
 N_AG=$(ls "$HERE"/.claude/agents/*.md 2>/dev/null | wc -l | tr -d ' ')
 check_numero "$HERE/README.md" "test" "$N_TEST" \
   && check_numero "$HERE/README.md" "pattern" "$N_PAT" \
-  && check_numero "$HERE/README.md" "agenti\?" "$N_AG" \
+  && check_numero "$HERE/README.md" "agenti?" "$N_AG" \
   && check_numero "$HERE/AGENTS.md" "test" "$N_TEST" \
   && check_numero "$HERE/AGENTS.md" "pattern" "$N_PAT" \
   && check_numero "$HERE/METHOD.md" "test" "$N_TEST" \

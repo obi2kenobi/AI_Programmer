@@ -9,7 +9,9 @@
 # (Nato dopo tre rilevatori miei colti a mentire in un'ora: cwd sbagliata, '.'+path senza
 # slash, tabella cercata dove c'era una lista. Tutti e tre: verdicti plausibili, falsi.)
 #
-# Uso: bash tools/prova-rilevatori.sh [--veloce]   (--veloce: solo il canarino di ogni sonde)
+# Uso: bash tools/prova-rilevatori.sh   (un canarino per sonda, sempre). (Revisione 10 giri,
+# 2026-09-23: qui era documentato un «--veloce» che il codice non ha mai letto — la corsa e'
+# gia' la versione veloce; la promessa e' tolta, non implementata.)
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SB=$(mktemp -d /tmp/prova-rilevatori.XXXXXX)

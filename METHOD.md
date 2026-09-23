@@ -1,16 +1,16 @@
 # METHOD.md — il metodo in una pagina
 
 > Il sistema ha molte stanze; questa è la porta. Ogni elemento rimanda alla sua fonte
-> di verità. Ultima revisione: 2026-08-28 (revisione 14 lenti — data corretta: il
-> contenuto conteneva già "terza corsia" del 7° ciclo 2026-08-24 e "Lo standard" del
-> 2026-08-26, la data qui sopra era rimasta al 4° ciclo, 2026-08-23).
+> di verità. Ultima revisione: 2026-09-23 (revisione in dieci giri: regola 5 riscritta sulla
+> decisione privacy del giorno — il testo era spezzato a metà di un nome di file —, conteggio
+> dei pattern). La precedente: 2026-08-28 (revisione 14 lenti).
 
 ## Il ciclo
 
 ```
 /selezione-contesto → /brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
                                                → territorio grande: commessa → /audit-commessa → notte
-                                                 → gate → review di Luca
+                                                 → censore (PR `caccia:`) → digest del mattino → review di Luca
 TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
   chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
   (leggere prima, chiedere invece di indovinare, banco/prima della dichiarazione di fine,
@@ -28,7 +28,9 @@ TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul camp
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commessa` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
-| Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
+| Censore nel ciclo (guardie + prove sul branch + delibera, solo PR `caccia:`) | `night-shift/revisore.sh` | idem |
+| Digest del mattino (email alle 7:30: lezioni, sospesi, resoconto) | `night-shift/morning-digest.sh` | idem |
+| Gate del mattino — **in pensione dal 2026-09-23**, invocabile a mano (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem (`cervello/decisione-dominio-2026-09-23.md`) |
 | Registro esiti (notte) | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |
 | Registro chiamate (giorno) | `llm/usage-summary.sh` | `~/.ai-programmer-usage.log` (4° ciclo, set 3, giro 5, 2026-08-23: il log esisteva dal ciclo precedente, il riepilogo no) |
 | Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 5° ciclo, set 2 giro 3, 2026-08-23: primo loop reale eseguito, `loops/` non più vuota) |
@@ -58,14 +60,17 @@ pezzo, manca il metodo.
 2. **Design dichiarato** — da dove nasce la commessa (SAL/analisi), prima del lavoro
 3. **Territorio dichiarato** — quanto codice serve leggere; grande = giorno
 4. **Forma dei dati verificata** — le assunzioni si controllano sul codice
-5. **Privacy come presidio** — repo pubblica: nomi mai, codici sempre (`tools/privacy-check. (STORICO: i codici anonimi sono stati ritirati il 2026-09-23 — nomi liberi, ACCESSO mai; vedi CLAUDE.md)sh` fallisce il gate su una perdita; `night-shift/repos-index.md` registra il ruolo di ogni codice senza nomi reali)
+5. **Privacy come presidio** — repo pubblica: i nomi possono comparire, l'ACCESSO mai (segreti,
+   credenziali, token, push di produzione — CLAUDE.md §«Public repo, private work», dal 2026-09-23;
+   prima valeva «nomi mai, codici sempre»). `tools/privacy-check.sh` fallisce il gate su una
+   perdita; `night-shift/repos-index.md` resta come storia dei codici anonimi ritirati
 6. **Il guardiano si prova quando deve fallire** — un check si testa col caso noto-difettoso
 7. **L'aspettativa si deriva** — l'aritmetica del test si conta a mano, non a memoria
 8. **Il giorno non tocca il workdir della notte** — passa dall'API
 
 ## I pattern
 
-`patterns/` — 23+ trucchi ancorati al codice che li usa (l'ancora muore, la voce muore).
+`patterns/` — i trucchi ancorati al codice che li usa (l'ancora muore, la voce muore); il numero non si scrive qui, si conta: `ls patterns/*.md | grep -v README | wc -l` (65 al 2026-09-23 — era «23+» da agosto).
 
 ## La mappa completa
 

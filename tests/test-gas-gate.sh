@@ -40,6 +40,18 @@ printf '<html><script>\nvar = ;\n</script></html>' > "$SB/q.html"
 commit_tutto
 bash "$GATE" "$SB" >/dev/null 2>&1; RC=$?
 [ "$RC" -eq 1 ] && ok "JS inline rotto: rc 1" || ko "inline rotto: rc=$RC"
+# 5. (revisione 10 giri, 2026-09-23): PIU' blocchi <script>, con attributi — `sed '1d;$d'`
+# toglieva solo il primo e l'ultimo tag: i tag interni restavano nel JS e node dava un falso
+# KO; un <script type="…"> non veniva nemmeno visto.
+git -C "$SB" rm -q q.html
+printf '<html>\n<script>\nvar a = 1;\n</script>\n<p>x</p>\n<script type="text/javascript">\nvar b = 2;\n</script>\n</html>\n' > "$SB/m.html"
+commit_tutto
+bash "$GATE" "$SB" >/dev/null 2>&1; RC=$?
+[ "$RC" -eq 0 ] && ok "due blocchi <script> buoni (uno con attributi): rc 0" || ko "due blocchi buoni: rc=$RC (falso KO)"
+printf '<html>\n<script>\nvar a = 1;\n</script>\n<script type="text/javascript">\nvar = ;\n</script>\n</html>\n' > "$SB/m.html"
+commit_tutto
+bash "$GATE" "$SB" >/dev/null 2>&1; RC=$?
+[ "$RC" -eq 1 ] && ok "rotto nel SECONDO blocco (con attributi): rc 1" || ko "rotto nel secondo blocco non visto: rc=$RC"
 rm -rf "$SB"
 
 echo ""

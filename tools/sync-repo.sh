@@ -110,6 +110,9 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # aggiunto dopo l'onboarding non raggiungeva più le repo già onboardate). Corretto in
   # due filoni indipendenti concorrenti; unificato: patterns/ (in entrambi) + .opencode/skills
   # (solo in questo filone, mancava ancora sull'altro).
+  # (audit-3, 2026-09-23): patterns/ e' poi USCITO dalla lista — e' un registro PER REPO,
+  # e il sync aveva sovrascritto quello di un satellite (12 ancore morte). Viaggia solo
+  # .opencode/skills; lo presidia tests/test-sync-repo-standard-item-list.sh.
   # (dal campo REPO-E 2026-09-01: docs/campo/ dell'hub contiene voci storiche di ALTRI
 # clienti — si copia SOLO il README come formato, mai le voci: privacy)
 # (contromisura REPO-V 7/9): le LENTI DELLO STANDARD viaggiano anche loro — fixture

@@ -1,8 +1,8 @@
 #!/bin/bash
 # test-un-solo-modello.sh — lente nata dal giro 19 dell'analisi profonda (2026-09-20).
 #
-# La decisione (2026-09-19, Luca, citata in night-shift/revisore.sh:35): UN SOLO modello
-# locale, qwen2.5-coder:14b — il 27b generale faceva 0/3 in 442 s anche da solo. Ma la
+# La decisione (2026-09-19, Luca): UN SOLO modello locale — allora qwen2.5-coder:14b, dal
+# 2026-09-21 qwen3.8-27b:iq3s (cervello/decisione-modello-unico.md: 3/3 in 48s). Ma la
 # decisione viveva in alcuni default e non in altri: night-shift/install.sh controllava
 # (e chiedeva di scaricare, 17 GB) il 27b che nessun turno usa piu'; llm/ask-qwen.sh —
 # il cervello che il morning-gate chiama per il banco avversariale — partiva ancora col
@@ -18,7 +18,9 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-TAG=$(grep -oE '^MODEL_TAG="[^"]+"' "$HERE/night-shift/night-shift.sh" | cut -d'"' -f2)
+# (revisione 10 giri, 2026-09-23): MODEL_TAG e' `"${MODELLO:-<default>}"` — si confronta
+# il DEFAULT; prima il TAG era la stringa `${MODELLO:-...}` e ogni riga risultava divergente.
+TAG=$(grep -oE '^MODEL_TAG="[^"]+"' "$HERE/night-shift/night-shift.sh" | cut -d'"' -f2 | sed -E 's/^\$\{[A-Z_]+:-(.*)\}$/\1/')
 [ -n "$TAG" ] && ok "MODEL_TAG dichiarato nel turno: $TAG" || { ko "MODEL_TAG assente in night-shift/night-shift.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 
 # righe di codice (non commento) con un letterale qwen<qualcosa con una cifra>

@@ -27,13 +27,30 @@ log() { echo "[$(date '+%H:%M:%S')] $*" >&2; }
 # --- 8. AUTO-REVIEW: il modello rivede il proprio lavoro (2026-09-17) ---
 # Una seconda chiamata con una domanda DIVERSA («e' corretto?») invece della
 # stessa («correggi»). Il patto resta: niente agent, niente tool — solo
-# prompt → verdetto. Se la review dice NO, il fix viene degradato a proposta.
+# prompt → verdetto. Se la review dice WRONG, il turno apre la PR con un warning (non piu'
+# «degradato a proposta»: il comportamento vero e' in night-shift.sh, riga REVIEW).
 # (D5, test del sistema completo 2026-09-20): queste due funzioni vivevano in CODA al
 # file, DOPO l'`exit 3` — bash le definisce quando le legge, quindi al momento della
 # chiamata non esistevano: «auto_review: command not found» a ogni fix applicato, REVIEW
 # vuota, nessun test generato, e il turno leggeva esiti che non arrivavano mai. Le
 # definizioni stanno PRIMA dell'uso, e parlano allo stesso $API del solver (il mock dei
 # test le raggiunge: prima puntavano a localhost fisso).
+# classifica_verdetto <prima riga della risposta>: CORRECT | WRONG | UNCLEAR.
+# (revisione 10 giri, 2026-09-23): prima un `case` provava *correct* PRIMA di *wrong* —
+# «incorrect», «not correct», «scorretto» contengono «correct»/«corretto» e diventavano
+# CORRECT. Ora si cercano prima le forme NEGATIVE, poi le positive come parola intera.
+classifica_verdetto() {
+  local V
+  V=$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')
+  if grep -qE '(^|[^a-z])(wrong|incorrect|not correct|sbagliat[oa]|scorrett[oa]|non corrett[oa]|errat[oa]|errore)([^a-z]|$)' <<<"$V"; then
+    echo "WRONG"
+  elif grep -qE '(^|[^a-z])(correct|corrett[oa]|giust[oa])([^a-z]|$)' <<<"$V"; then
+    echo "CORRECT"
+  else
+    echo "UNCLEAR"
+  fi
+}
+
 auto_review() {
   local CODE="$1" COMMESSA="$2"
   local PROMPT="You are a code reviewer. Given this issue and this code fix, answer with exactly one word: CORRECT or WRONG. If WRONG, add one line explaining why.
@@ -49,12 +66,8 @@ $CODE
 Is this fix correct? Answer CORRECT or WRONG:"
   local RESPONSE VERDETTO
   RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
-  VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | head -1 | tr '[:upper:]' '[:lower:]')
-  case "$VERDETTO" in
-    *correct*|*giusto*|*corretto*) echo "CORRECT";;
-    *wrong*|*sbagliato*|*errore*) echo "WRONG";;
-    *) echo "UNCLEAR";;
-  esac
+  VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | head -1)
+  classifica_verdetto "$VERDETTO"
 }
 
 # --- 9. GENERATORE DI TEST: il fix arriva col suo test (2026-09-17) ---
@@ -108,7 +121,9 @@ for F in $TERRitorio; do
     log "⛔ $F e' FUORI dal progetto: il Territorio di un issue non legge fuori da $DIR (salto)"
     continue
   fi
-  REL_PATH=$(realpath --relative-to="$DIR" "$F" 2>/dev/null || echo "$F")
+  # (revisione 10 giri, 2026-09-23): `realpath --relative-to` e' GNU — sul Mac del turno
+  # falliva e il prompt riceveva il path ASSOLUTO. os.path.relpath e' ovunque.
+  REL_PATH=$(python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$F" "$DIR" 2>/dev/null || echo "$F")
   # (fase A efficienza, 2026-09-07): App.html intera = 41KB = 262s di inferenza.
   #  Limite per file 24000 caratteri (~6-8K token), TRONCATO DICHIARATO nel prompt —
   #  mai taglio silenzioso: il modello sa che non vede tutto e lavora da quello che
@@ -310,8 +325,13 @@ PYEOF
         echo "REVIEW: $RV"
         # GENERATORE DI TEST: terza domanda (il fix arriva presidiato)
         TG=$(genera_test "$TARGET_FN" "$CODE" "$(cat "$ISSUE" | head -30)")
+        # (revisione 10 giri, 2026-09-23): il test ha PIU' righe e il protocollo era una riga
+        # («TEST-GENERATO: $TG»): il turno ne salvava solo la prima (`function test_fix() {`) e
+        # la committava come test. Ora il test sta fra due marcatori, intero.
         if [ -n "$TG" ]; then
-          echo "TEST-GENERATO: $TG"
+          echo "TEST-GENERATO-INIZIO"
+          printf '%s\n' "$TG"
+          echo "TEST-GENERATO-FINE"
         fi
         rm -f "$TARGET_FILE.night-bak"
         rm -f "$PATCH_FILE"

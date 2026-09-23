@@ -18,10 +18,14 @@ FALLITI=0
 #    dall'hook («test: 999 test verdi» e' passato). Ora vive in una funzione chiamata
 #    dal gancio commit-msg (`--commit-msg <file>`) E, per compatibilita', dal primo
 #    argomento quando lo script e' invocato a mano col messaggio.
+# (revisione 10 giri, 2026-09-23): conta solo la dichiarazione del TOTALE verde («N test
+# verdi/superati/passati/OK») — prima ogni «N test» era letto cosi', e «6 test rossi» o
+# «2 test nuovi» (conteggi parziali, legittimi) venivano respinti.
 controlla_numero_test() {
   local MSG="$1" N_CLAIM N_REAL
-  if echo "$MSG" | grep -qE '[0-9]+ test'; then
-    N_CLAIM=$(echo "$MSG" | grep -oE '[0-9]+ test' | grep -oE '^[0-9]+' | head -1)
+  local TOTALE='[0-9]+ test (verdi|superati|passati|OK|in verde)'
+  if echo "$MSG" | grep -qiE "$TOTALE"; then
+    N_CLAIM=$(echo "$MSG" | grep -oiE "$TOTALE" | grep -oE '^[0-9]+' | head -1)
     N_REAL=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
     [ "$N_CLAIM" != "$N_REAL" ] && { echo "⛔ il messaggio dice \"$N_CLAIM test\" ma i file sono $N_REAL"; return 1; }
   fi
@@ -63,8 +67,13 @@ ALIENI=$(printf '%s\n' "$ALIENI_RAW" | grep -vE '^$|docs/errori/REGISTRO.md' || 
 # 2. CRLF negli script staged (passano bash -n, muoiono a runtime)
 CRLF_SPEC=()
 for s in ${STAGED_SPEC[@]+"${STAGED_SPEC[@]}"}; do case "$s" in *.sh|*.py) CRLF_SPEC+=("$s");; esac; done
-CRLF=""
-[ ${#CRLF_SPEC[@]} -gt 0 ] && CRLF=$(git grep -lP '\r$' -- "${CRLF_SPEC[@]}" 2>/dev/null || true)
+CRLF=""; CRLF_RC=1
+# (revisione 10 giri, 2026-09-23): era `… 2>/dev/null || true` — un git grep -P morto (rc 128:
+# PCRE o locale) passava per «nessun CRLF». Stessa regola del controllo glifi qui sopra.
+if [ ${#CRLF_SPEC[@]} -gt 0 ]; then
+  CRLF=$(git grep -lP '\r$' -- "${CRLF_SPEC[@]}" 2>/dev/null); CRLF_RC=$?
+fi
+[ "$CRLF_RC" -ge 2 ] && { echo "⛔ il controllo CRLF e' MORTO (git grep rc=$CRLF_RC: locale/PCRE?) — rosso, mai finto verde"; FALLITI=1; }
 [ -n "$CRLF" ] && { echo "⛔ fine-riga CRLF (muoiono a runtime):"; echo "$CRLF"; FALLITI=1; }
 
 # 3. path in backtick nei file .md staged: devono esistere (link pendenti alla

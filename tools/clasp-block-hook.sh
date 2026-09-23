@@ -34,10 +34,19 @@ TOOL="$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)"
 # `sudo`, alias di shell. Riconoscerli vorrebbe dire accettare un comando arbitrario
 # davanti a clasp, e riaprirebbe il falso positivo appena difeso. Questo è un cancello
 # contro l'errore, non contro un aggressore (attese e limiti: tests/test-clasp-block-hook.sh).
-SEP='(^|[;&|][[:space:]]*)'
+# (revisione 10 giri, 2026-09-23): SEP accettava solo inizio riga e ; & | — undici forme
+# comuni della shell passavano: il LOOP generato (`for …; do clasp push; done`, la forma
+# dell'incidente REPO-Q), `(…)`, `{ …; }`, `if …; then …`, e i prefissi che eseguono il
+# comando che segue (time, nohup, exec, xargs). Ora SEP riconosce anche ( { e le parole della
+# shell che aprono un comando. I prefissi ARBITRARI (env, sudo) restano fuori, per la ragione
+# detta sotto.
+SEP='(^|[;&|({][[:space:]]*|(^|[;&|({][[:space:]]*|[[:space:]])(do|then|else|elif|time|nohup|exec|xargs([[:space:]]+-[A-Za-z0-9]+)*)[[:space:]]+)'
 RUN='((npx|bunx|npm[[:space:]]+exec|pnpm[[:space:]]+dlx|yarn[[:space:]]+dlx)[[:space:]]+(-{1,2}[A-Za-z0-9-]+[[:space:]]+)*)?'
 BIN='([A-Za-z0-9_./-]*/)?(@google/)?'
 INVOCAZIONE="${SEP}${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
+# `bash -c "…"` (e sh/zsh/dash): le virgolette sono DATI per lo spoglio qui sotto, ma
+# l'interprete le ESEGUE — si guarda il comando intero, con l'invocazione dentro le virgolette.
+SHC="(^|[;&|({[:space:]])(ba|z|da)?sh[[:space:]]+(-[A-Za-z]+[[:space:]]+)*-[A-Za-z]*c[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
 
 # (report REPO-I 2026-09-19, H7 — due buchi misurati eseguendo):
 #   a) `npm run push` non contiene la stringa clasp e PASSAVA — ed e' la via che
@@ -51,10 +60,17 @@ INVOCAZIONE="${SEP}${RUN}${BIN}clasp[[:space:]]+(push|deploy)"
 # (D27, test del sistema completo 2026-09-20): anche i BACKTICK sono dati — il comando che
 # scriveva il report di campo (heredoc con `npx clasp push` citato come forma vietata)
 # e' stato NEGATO. Stesso falso positivo di REPO-E in una forma nuova.
-CMD_STRIPPED=$(printf '%s' "$CMD" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g; s/\`[^\`]*\`//g")
+# (revisione 10 giri, 2026-09-23): lo spoglio lavorava PER RIGA (sed) — uno span fra backtick
+# che va a capo non si toglieva, e il SAL che documentava le forme vietate e' stato negato.
+# Ora l'a capo diventa `;` (e' un separatore della shell: «cd x⏎clasp push» resta negato),
+# poi si tolgono i backtick (anche su piu' righe), poi le virgolette. Il controllo `bash -c`
+# guarda il comando SENZA backtick ma CON le virgolette: fra backtick e' un dato citato.
+CMD_UNA=$(printf '%s' "$CMD" | tr '\n' ';')
+CMD_NOBT=$(printf '%s' "$CMD_UNA" | sed "s/\`[^\`]*\`//g")
+CMD_STRIPPED=$(printf '%s' "$CMD_NOBT" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
-if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE"; then
+if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE" || printf '%s' "$CMD_NOBT" | grep -qE "$SHC"; then
   jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). Se il push è davvero giusto, lo fa Luca a mano." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0

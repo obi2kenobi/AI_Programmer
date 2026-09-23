@@ -25,23 +25,35 @@ STAGE="$HOME/deploy-pronto/$REPO"
 mkdir -p "$STAGE"
 
 # 1. l'albero dev'essere pulito: si deploera un commit, non un pasticcio
-if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
-  echo "⛔ albero sporco: committa prima — il deploy firma un commit esatto" >&2; exit 1
+# (revisione 10 giri, 2026-09-23): anche i file NON tracciati — clasp li spedisce, git diff no
+if [ -n "$(git status --porcelain --untracked-files=all 2>/dev/null)" ]; then
+  echo "⛔ albero sporco (modifiche o file non tracciati): committa prima — il deploy firma un commit esatto" >&2; exit 1
 fi
 SHA=$(git rev-parse HEAD)
 DATA=$(date '+%Y-%m-%d %H:%M')
 
 # 2. le verifiche dichiarate del repo devono essere verdi QUI, ORA
-if [ -f .night-verify ]; then
+# (revisione 10 giri, 2026-09-23): stesso contratto degli altri tre lettori (turno, gate,
+# censore) — FORMATO script si esegue intero; riga per riga si salta solo la riga vuota o che
+# inizia con # (spazi ammessi); ZERO comandi e' «verifiche-vuote», non verde. Prima il manifest
+# scriveva «.night-verify verde» anche senza .night-verify o con soli commenti.
+[ -f .night-verify ] || { echo "⛔ nessun .night-verify: niente da verificare, niente pacchetto (il manifest non firma il vuoto)" >&2; exit 1; }
+N_VERIFICHE=0
+if head -10 .night-verify | grep -q "^# FORMATO: script"; then
+  ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null || { echo "⛔ verifica rossa (formato script), niente pacchetto" >&2; exit 1; }
+  N_VERIFICHE=1
+else
   while IFS= read -r riga; do
-    case "$riga" in \#*|"") continue ;; esac
+    case "$(printf '%s' "$riga" | tr -d '[:space:]')" in \#*|"") continue ;; esac
     SEC=120; CMD="$riga"
     case "$riga" in @*) SEC="${riga%% *}"; SEC="${SEC#@}"; CMD="${riga#* }" ;; esac
+    N_VERIFICHE=$((N_VERIFICHE+1))
     if ! ai_timeout "$SEC" bash -c "$CMD" >/dev/null 2>&1 </dev/null; then
       echo "⛔ verifica rossa, niente pacchetto: $CMD" >&2; exit 1
     fi
   done < .night-verify
 fi
+[ "$N_VERIFICHE" -gt 0 ] || { echo "⛔ .night-verify senza comandi (verifiche-vuote): niente pacchetto" >&2; exit 1; }
 
 # 3. il manifest: cio' che il gesto umano vedra' e firmara'
 SUM=$(find . -name "*.gs" -not -path "./.git/*" -exec cat {} + 2>/dev/null | shasum | cut -c1-16)
@@ -51,7 +63,7 @@ cat > "$STAGE/MANIFEST.md" <<EOF
 
 - commit: $SHA
 - preparato: $DATA (scade dopo 24h)
-- verifica: .night-verify verde su questo commit
+- verifica: .night-verify verde su questo commit ($N_VERIFICHE verifiche eseguite)
 - file di produzione: $N_FILE .gs — shasum complessivo: $SUM
 
 ## Il gesto

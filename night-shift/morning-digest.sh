@@ -32,16 +32,22 @@ SUBJ=$(grep "Totale:" "$REPORT" 2>/dev/null | head -1 | sed 's/[*\`]//g' | head 
 [ -z "$SUBJ" ] && SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
 # corpo: il report + il summary numerico
+# (revisione 10 giri, 2026-09-23): il riepilogo del gate entrava DUE volte; «PR» contava le
+# intestazioni dei turni che contengono «PR bozza» (non le PR: si sommano i numeri); «ASPETTA»
+# contava ogni riga con due spazi dal primo marcatore alla FINE del file (il log dei turni
+# dopo compreso: si contano le sole voci sotto ciascun marcatore, fino al turno successivo);
+# e la memoria si svuotava QUI, prima dell'invio — ora solo a invio riuscito, in fondo.
+SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"
 BODY="${CORPO_GATE}$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
-$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
-$(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] && {
-  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || echo 0)
-  PR=$(grep -c "PR bozza" "$SAL_TURNI" 2>/dev/null || echo 0)
-  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || echo 0)
+$([ -f "$SAL_TURNI" ] && {
+  # (revisione 10 giri): `grep -c … || echo 0` stampava «0» due volte a conteggio zero
+  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
+  PR=$(grep -oE '[0-9]+ PR bozza' "$SAL_TURNI" 2>/dev/null | awk '{s+=$1} END{print s+0}')
+  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || true); FIX=${FIX:-0}
   echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
-  ASPETTA=$(sed -n "/ASPETTA IL GIORNO/,$ p" "$SAL_TURNI" 2>/dev/null | grep -c "  ") ; ASPETTA=${ASPETTA:-0}
+  ASPETTA=$(awk '/ASPETTA IL GIORNO/{dentro=1; next} /^### /{dentro=0} dentro && /^  [^ ]/{n++} END{print n+0}' "$SAL_TURNI" 2>/dev/null); ASPETTA=${ASPETTA:-0}
   [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"
-  : > "$SAL_TURNI"
+  true
 } || echo "(nessuna memoria del turno)")"
 
 # il secondo cervello: gli sospesi compilati dal turno alla prima domanda del giorno
@@ -77,7 +83,16 @@ tell application \"Mail\"
     make new to recipient at end of to recipients with properties {address:\"$DEST_ESC\"}
   end tell
   send newMsg
-end tell" 2>/dev/null && echo "Digest inviato a $DEST" || {
+end tell" 2>/dev/null && INVIATO="Digest inviato a $DEST" || {
   # fallback: mail CLI
-  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>/dev/null && echo "Digest inviato a $DEST (via mail)" || echo "ERRORE invio"
+  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>/dev/null && INVIATO="Digest inviato a $DEST (via mail)" || INVIATO=""
 }
+# (revisione 10 giri): la memoria del turno si svuota SOLO a invio riuscito; un invio fallito
+# e' un rosso (rc 1), non un «ERRORE invio» con esito 0 — e la memoria resta per domani
+if [ -n "${INVIATO:-}" ]; then
+  echo "$INVIATO"
+  if [ -f "$SAL_TURNI" ]; then : > "$SAL_TURNI"; fi
+else
+  echo "ERRORE invio: digest NON consegnato — la memoria del turno resta in $SAL_TURNI" >&2
+  exit 1
+fi

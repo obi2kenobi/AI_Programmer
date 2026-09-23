@@ -38,7 +38,8 @@ rotate_log_if_big "$LOG"
 
 # 2026-08-29 (dal campo): la copia operativa era 5 commit indietro e la notte ha
 # girato col metodo stantio. Il turno si aggiorna DA SOLO prima di partire:
-# l'hub è un repo git, pull --ff-only (mai merge automatici nel turno).
+# l'hub è un repo git: fetch + reset --hard sul main remoto (mai merge automatici nel
+# turno — la copia operativa non ha lavoro proprio da preservare; era «pull --ff-only»).
 # (audit-3, 2026-09-23): il turno PARTE SEMPRE DA MAIN. Stanotte la copia viva
 # e' rimasta parcheggiata su un ramo di probe (un test esterno ricorrente che
 # committa e spinge): il self-pull seguiva il ramo e il turno girava col codice
@@ -467,6 +468,10 @@ sys.exit(0 if ultima in blocco else 1)
           done
         fi
         # fix 4: indice pattern README non alfabetico → riordinato
+        # (revisione 10 giri, 2026-09-23): l'esito si leggeva al ROVESCIO — dopo un riordino
+        # riuscito l'indice e' in ordine e finiva nel ramo «gia' in ordine» (mai contato); un
+        # python fallito finiva nel ramo «riordinato». Ora conta se il file e' CAMBIATO.
+        IDX_PRIMA=$(cksum < "$DIR/patterns/README.md" 2>/dev/null)
         python3 - "$DIR/patterns/README.md" <<'PYIDX' 2>/dev/null
 import sys
 p = sys.argv[1]
@@ -485,11 +490,7 @@ if rows and rows != sorted(rows, key=lambda l: l.split(']')[0].lower()):
     open(p, 'w').write('\n'.join(out))
     print('INDICE-RIORDINATO')
 PYIDX
-        if [ "$?" -eq 0 ] && python3 -c "
-rows = [l for l in open('$DIR/patterns/README.md') if l.startswith('| [')]
-exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2>/dev/null; then
-          : # gia' in ordine
-        else
+        if [ -n "$IDX_PRIMA" ] && [ "$(cksum < "$DIR/patterns/README.md" 2>/dev/null)" != "$IDX_PRIMA" ]; then
           log "REPO $REPO: auto-fix — indice pattern riordinato (alfabetico)"
           FIX_APPLICATI=$((FIX_APPLICATI+1))
         fi
@@ -505,7 +506,11 @@ exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2
           # macchina — una QUESTIONE DI POLITICA aperta non deve bloccare i fix meccanici;
           # le issue [banco] la tengono viva per il giorno. Dichiarato, mai nascosto.)
           GATE_OK=0
-          bash "$HERE/../tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 || true
+          # (revisione 10 giri, 2026-09-23): l'esito del banco si buttava (`|| true`) e il commit
+          # e la PR dicevano comunque «banco CHIUSO». Ora il banco rosso ferma il gate.
+          BANCO_OK=0
+          bash "$HERE/../tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 && BANCO_OK=1
+          [ "$BANCO_OK" -eq 1 ] || log "REPO $REPO: banco di copertura ROSSO sul branch notte — gate chiuso, niente commit"
           PASS_T=0; FAIL_T=0
           for tt in "$HERE"/../tests/test-*.sh; do
             # i test che chiamano CERVELLI ESTERNI (claude/ollama) restano fuori dal gate
@@ -525,7 +530,7 @@ exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2
               fi
             fi
           done
-          [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
+          [ "$BANCO_OK" -eq 1 ] && [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
           if [ "$GATE_OK" -eq 1 ]; then
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
@@ -542,13 +547,15 @@ review del giorno." 2>>"$ERR_NOTTE" \
             else
               log "⚠ REPO $REPO: commit o push del branch notte FALLITI — albero ripristinato, il rilievo resta nell'issue"
               log "⚠ stderr del commit/push: $(head -c 400 "$ERR_NOTTE" | tr '\n' ' ')"
-              git -C "$DIR" reset -q --hard "origin/$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 2>/dev/null || echo main)"
+              # (revisione 10 giri): $DB, gia' calcolato — la ri-derivazione con rev-parse, senza
+              # origin/HEAD, stampava «origin/HEAD» + «main» (due righe) sotto pipefail
+              git -C "$DIR" reset -q --hard "origin/${DB:-main}"
             fi
           else
             log "⚠ REPO $REPO: auto-fix BOCCIATI dal banco — branch scartato (resta il rilievo)"
             git -C "$DIR" reset -q --hard HEAD
           fi
-          git -C "$DIR" checkout -q "$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 || echo main)"
+          git -C "$DIR" checkout -q "${DB:-main}"
         fi
       fi
     fi
@@ -593,11 +600,13 @@ review del giorno." 2>>"$ERR_NOTTE" \
   # il codice e decide se deliberarlo o no»): ogni ciclo, UNA PR bozza night/*
   # passa dal censore — guardie deterministiche, prove sul branch, giudizio di
   # un processo separato senza la memoria di chi ha scritto (stesso modello dal
-  # 2026-09-19 — revisore.sh:35 —, istruzioni e ruolo diversi: chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
+  # 2026-09-19 — cervello/decisione-modello-unico.md —, istruzioni e ruolo diversi: chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
   # chi crea non si giudica nello stesso respiro. Il veto resta umano.
   if [ -f "$HERE/revisore.sh" ]; then
-    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft --limit 20 2>/dev/null \
-      | jq -r '.[] | select(.isDraft == true and (.headRefName | startswith("night/"))) | .number' 2>/dev/null | head -1)
+    # (revisione 10 giri): la candidata si sceglie coi predicati del censore (lib.sh
+    # candidata_censore) — prima una PR di issue in testa affamava le caccia dietro di lei
+    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title --limit 20 2>/dev/null \
+      | candidata_censore)
     if [ -n "${REVISORE_CANDIDATA:-}" ]; then
       log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
       REVISORE_OUT=$(bash "$HERE/revisore.sh" "$DIR" "$REVISORE_CANDIDATA" 2>&1); REVISORE_RC=$?
@@ -703,6 +712,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
         git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
       fi
     fi
+    # (revisione 10 giri, 2026-09-23): il ramo della caccia usciva PRIMA dell'aggregazione in
+    # fondo a shift_repo — una PR di caccia non contava mai: il SAL del turno diceva 0 PR e il
+    # ciclo, creduto a vuoto, dormiva la sua pausa.
+    TOT_PR_CREATED=$((TOT_PR_CREATED+PR_CREATED))
     return 0
   fi
 
@@ -874,7 +887,9 @@ $BODY"
       #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
       #  capacita' migliore non e' spam: e' il lavoro che riparte.
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
-      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
+      # (revisione 10 giri): il default e' MODEL_TAG — con MODELLO cambiato, sonda e solver
+      # usavano due modelli diversi
+      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-$MODEL_TAG}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
       # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo
@@ -981,23 +996,29 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         # Il verdetto arriva nella riga «REVIEW: ...» dell'output del solver (D5: prima
         # qui c'era anche una chiamata `risolvi-issue.sh --review` a una modalita' mai
         # esistita — usciva 2 «dir inesistente» a ogni fix, in silenzio).
+        # (revisione 10 giri, 2026-09-23): si legge la sola riga REVIEW — prima «WRONG»/«CORRECT»
+        # si cercavano in TUTTO l'output del solver (log e codice compresi: una variabile
+        # `wrongCount` bastava), e con una pipe verso grep -q (famiglia E-002)
+        REVIEW_RIGA=$(grep -m1 '^REVIEW: ' <<<"$OUT" || true)
         if [ "$RC" -eq 0 ]; then
-          if echo "$OUT" | grep -qi "WRONG"; then
+          if [ "$REVIEW_RIGA" = "REVIEW: WRONG" ]; then
             NOTA_INS="
 
 ⚠ AUTO-REVIEW: il modello ha dubbi sul proprio fix — verificare con attenzione."
             log "Issue #$NUM: auto-review DUBBIA — PR con warning"
-          elif echo "$OUT" | grep -qi "CORRECT"; then
+          elif [ "$REVIEW_RIGA" = "REVIEW: CORRECT" ]; then
             log "Issue #$NUM: auto-review CORRECT"
           fi
         fi
         # GENERATORE DI TEST (2026-09-17): il fix arriva col test che lo presidia.
         # Terza chiamata Ollama, stesso patto: prompt → codice → applicazione.
-        if [ "$RC" -eq 0 ] && ! echo "$OUT" | grep -qi "WRONG"; then
+        if [ "$RC" -eq 0 ] && [ "$REVIEW_RIGA" != "REVIEW: WRONG" ]; then
           TEST_FILE="$DIR/tests/night/test_$(date +%s)_issue_$NUM.js"
           mkdir -p "$DIR/tests/night"
           # chiediamo al modello (tramite il solver) di scrivere il test
-          TEST_GEN=$(echo "$OUT" | grep "TEST-GENERATO:" | sed 's/TEST-GENERATO: //' | head -1)
+          # (revisione 10 giri): il test intero fra i marcatori del solver (prima: la sola
+          # prima riga di un test multi-riga finiva nel file e nel commit)
+          TEST_GEN=$(sed -n '/^TEST-GENERATO-INIZIO$/,/^TEST-GENERATO-FINE$/p' <<<"$OUT" | sed '1d;$d')
           if [ -n "$TEST_GEN" ] && [ "${#TEST_GEN}" -gt 20 ]; then
             echo "$TEST_GEN" > "$TEST_FILE"
             log "Issue #$NUM: test generato → tests/night/$(basename "$TEST_FILE")"
@@ -1065,7 +1086,10 @@ Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${
       log "⚠ issue #$NUM: LOOP DI RIPLETTURA rilevato ($NREP ripetizioni consecutive senza esecuzione) — issue lasciata aperta; il piano già scritto nel log è il punto di ripartenza, non un punto da rifare"
       echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$NUM,loop-rilettura,—," >> "${HUB_METRICS:-/dev/null}" 2>/dev/null || true
     fi
-    local OP_RC=$?
+    # (revisione 10 giri, 2026-09-23): era `local OP_RC=$?` — l'esito dell'`if` appena chiuso,
+    # sempre 0: il ramo «OpenCode fallito» (commento sull'issue, regola dell'A/B) era MORTO.
+    # L'esito dell'agente e' RC, letto dal `wait` qui sopra.
+    local OP_RC=$RC
     pkill -f "opencode run" 2>/dev/null
 
     if [ "$OP_RC" -ne 0 ]; then
@@ -1181,7 +1205,10 @@ T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 # a OGNI inizio ciclo, un ping di GENERAZIONE (non tags: quello risponde anche
 # da wedged); muto = kill del serve, launchd lo riporta, si aspetta. Il turno
 # non parte mai con un cervello morto accanto.
-OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false,"keep_alive":-1}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+# (revisione 10 giri, 2026-09-23): il modello del ping era scritto a mano — con MODELLO cambiato
+# il ping chiedeva un modello assente, tornava vuoto e il watchdog uccideva Ollama a ogni ciclo
+PING_JSON=$(jq -cn --arg m "$MODEL_TAG" '{model:$m, messages:[{role:"user",content:"Say OK"}], stream:false, think:false, keep_alive:-1}')
+OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d "$PING_JSON" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
 if [ -z "$OLLM_PING" ]; then
   log "⚠ Ollama wedged al via del turno (ping di generazione muto): kill e attesa rilancio"
   pkill -f "ollama serve" 2>/dev/null
@@ -1189,7 +1216,7 @@ if [ -z "$OLLM_PING" ]; then
     sleep 5
     curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
   done
-  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d '{"model":"qwen3.8-27b:iq3s","messages":[{"role":"user","content":"Say OK"}],"stream":false,"think":false,"keep_alive":-1}' 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
+  OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d "$PING_JSON" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
   if [ -n "$OLLM_PING" ]; then
     log "✓ Ollama rianimato dal watchdog del turno"
   else
@@ -1200,14 +1227,24 @@ fi
 # PULIZIA RAMI NOTTE STANTI (2026-09-16): i rami notte/auto-* piu' vecchi di 24h
 # sul remoto sono scarti (PR fusa o mai create). Con 53 cicli a notte, i rami si
 # accumulano se nessuno li pulisce.
-STANTI=$(gh api repos/obi2kenobi/AI_Programmer/branches --jq '.[].name' 2>/dev/null | grep "^notte/auto-" | head -10 || true)
-for B in $STANTI; do
-  # la PR esiste ancora?
-  if ! gh pr list -R obi2kenobi/AI_Programmer --state all --json headRefName -q '.[].headRefName' 2>/dev/null | grep -qF "$B"; then
+# (revisione 10 giri, 2026-09-23): le 24h erano solo nel commento (nessun controllo d'eta') e
+# la PR si cercava per SOTTOSTRINGA (notte/auto-1 «trovava» la PR di notte/auto-12). La
+# decisione ora vive in lib.sh rami_da_scopare (testata), con le date dal clone dell'hub.
+RAMI_TSV=$(mktemp); PR_TSV=$(mktemp)
+if git -C "$HERE" fetch -q --prune origin 2>/dev/null \
+   && git -C "$HERE" for-each-ref refs/remotes/origin --format='%(refname:lstrip=3)%09%(committerdate:unix)' 2>/dev/null | grep -v '^HEAD' > "$RAMI_TSV" \
+   && gh pr list -R obi2kenobi/AI_Programmer --state all --limit 200 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' > "$PR_TSV" 2>/dev/null; then
+  SCOPA_OK=1
+else
+  SCOPA_OK=0
+  log "pulizia rami: fetch o lista PR falliti — non cancello niente (senza date o PR la scopa e' cieca)"
+fi
+if [ "$SCOPA_OK" -eq 1 ]; then
+  for B in $(rami_da_scopare "$(date +%s)" 24 "$RAMI_TSV" "$PR_TSV" | grep "^notte/auto-" | head -10); do
     gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
-      && log "pulizia: ramo notte stante '$B' cancellato (nessuna PR collegata)"
-  fi
-done
+      && log "pulizia: ramo notte stante '$B' cancellato (PR fusa/chiusa, o nessuna PR da oltre 24h)"
+  done
+fi
 GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_PROPOSTE=0
@@ -1249,27 +1286,19 @@ fi
 # lasciato li' e' solo un posto dove i dati vecchi sopravvivono. Scopa: ogni
 # ramo remoto con PR fusa/chiusa si cancella; ogni ramo SENZA PR piu' vecchio
 # di 48h e' orfano e si cancella pure. Il revisore gia' usa --delete-branch.
-if command -v gh >/dev/null 2>&1; then
+# (revisione 10 giri, 2026-09-23): la soglia delle 48h era solo in questo commento — il
+# codice cancellava OGNI ramo senza PR, anche uno spinto un minuto prima di aprirla; e un
+# ramo con una PR fusa veniva cancellato anche se una PR APERTA riusava lo stesso nome,
+# chiudendola. Le regole vivono in lib.sh rami_da_scopare (testata in tests/test-lib.sh).
+if command -v gh >/dev/null 2>&1 && [ "${SCOPA_OK:-0}" -eq 1 ]; then
   N_SCOPA=0
-  while IFS=$'\t' read -r br prstato; do
-    # (audit-4): la guardia || era INVERTITA — con A||B||continue, il continue
-    # scatta solo se ENTRAMBI i test falliscono: main veniva processato e i
-    # rami veri saltati. La forma if...then...continue e' l'unica corretta.
-    if [ -z "$br" ] || [ "$br" = "main" ]; then continue; fi
-    case "$prstato" in MERGED|CLOSED)
-      gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${br//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) ;;
-    esac
-  done < <(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 100 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' 2>/dev/null)
-  # e gli ORFANI: rami senza PR, piu' vecchi di 48h — promessi nel commento,
-  # mai implementati (il probe/push2 di stamattina li aspettava invano)
-  BR_ORFANI=$(gh api repos/obi2kenobi/AI_Programmer/branches --paginate --jq '.[].name' 2>/dev/null | grep -vx main || true)
-  PR_APERTE=$(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 200 --json headRefName -q '.[].headRefName' 2>/dev/null | sort -u)
-  for B in $BR_ORFANI; do
-    grep -qxF "$B" <<<"$PR_APERTE" && continue
-    gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: orfano '$B' cancellato (senza PR, oltre la soglia)"
+  for B in $(rami_da_scopare "$(date +%s)" 48 "$RAMI_TSV" "$PR_TSV"); do
+    gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
+      && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: '$B' cancellato (PR fusa/chiusa, o orfano oltre 48h)"
   done
   [ "$N_SCOPA" -gt 0 ] && log "scopa-rami: $N_SCOPA rami cancellati in tutto (un ramo fuso non serve a niente)"
 fi
+rm -f "$RAMI_TSV" "$PR_TSV"
 
 # NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)
 # (D17, test del sistema completo 2026-09-20): con una copia rotta o la caccia in cooldown

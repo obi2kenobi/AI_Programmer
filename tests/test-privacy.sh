@@ -48,6 +48,25 @@ OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
   && ok "chiave assente: exit 1 con GATE DEGRADATO dichiarato (non 'pulito')" \
   || ko "chiave assente: rc=$RC — il gate cieco si spaccia ancora per pulito: $OUT"
 
+# 6b) (revisione 10 giri, 2026-09-23): chiave assente ma FORMA di segreto piantata — le
+# shapes devono girare comunque (commento A20 nel tool; decisione DEBITI 2026-09-23 «le
+# SHAPES girano nel repo»). Prima l'uscita anticipata del degradato le saltava: il
+# degradato taceva anche su un token vero.
+echo "token ghp_ABCDEFGHIJKLMNOPQRSTUVWX" > "$TMP/fuga.md" && git -C "$TMP" add fuga.md
+OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -q "FORMA DI SEGRETO" <<<"$OUT" && grep -q "GATE DEGRADATO" <<<"$OUT" \
+  && ok "chiave assente: le SHAPES girano comunque (forma vista) e il degradato resta dichiarato" \
+  || ko "chiave assente: forma di segreto NON vista (rc=$RC): $OUT"
+git -C "$TMP" rm -q --cached fuga.md; rm -f "$TMP/fuga.md"
+
+# 6c) (revisione 10 giri): la forma cercata era `sk-ANTHROPIC`, che nessuna chiave vera ha —
+# le chiavi Anthropic iniziano `sk-ant-`. Il token finto si compone a runtime: in questo file
+# non c'e' nessuna stringa che somigli a una chiave.
+PFX="sk-an""t-"; printf 'chiave %sFINTOFINTOFINTOFINTOFINTO\n' "$PFX" > "$TMP/fuga2.md" && git -C "$TMP" add fuga2.md
+OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1)
+grep -q "FORMA DI SEGRETO" <<<"$OUT" && ok "chiave in forma sk-ant-… vista" || ko "chiave sk-ant-… NON vista: $OUT"
+git -C "$TMP" rm -q --cached fuga2.md; rm -f "$TMP/fuga2.md"
+
 # 7) bug reale (revisione 14 lenti, 2026-08-28): repos.key SENZA newline finale — `while
 # read` salta silenziosamente l'ultima riga, un nome sensibile su quella riga passava
 # "pulito" per errore. printf senza \n finale riproduce esattamente il caso.

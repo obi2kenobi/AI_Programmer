@@ -4,12 +4,13 @@
 # non-commento e' UNA RIGA DI SCRIPT eseguita con `bash -c` — costrutti shell,
 # prefissi d'ambiente e assegnazioni sono legittimi DENTRO la riga (non su
 # piu' righe). Prima era "un comando solo": 16/45 rosse false sul Magazzino.
-# eseguibile da `timeout(1)` — il turno notturno esegue `eval "ai_timeout 120
-# <riga>"` per ciascuna e conta i rossi. Conseguenze: (1) niente righe composte
-# che iniziano con un'assegnazione (diventerebbe argomento del comando, E-029);
-# (2) se esegui `bash .night-verify` intero, l'rc finale riflette SOLO l'ultima
-# riga: per il verdetto conta i FALLITO nell'output, o guarda le singole righe
-# come fa il turno.
+# Il turno esegue `ai_timeout <budget> bash -c "<riga>"` (night-shift/night-shift.sh,
+# ciclo delle verifiche; budget 120s, o `@<sec> ` in testa alla riga) e conta i rossi;
+# il morning-gate e tools/prepara-deploy.sh fanno lo stesso. (Revisione 10 giri,
+# 2026-09-23: qui restava scritto il contratto di prima — `eval "ai_timeout 120 <riga>"`,
+# «niente righe che iniziano con un'assegnazione» — superato dal bash -c.)
+# Se esegui `bash .night-verify` intero, l'rc finale riflette SOLO l'ultima riga:
+# per il verdetto conta i FALLITO nell'output, o guarda le singole righe come fa il turno.
 shellcheck --severity=warning --exclude=SC2034,SC2164,SC2155,SC2010 night-shift/*.sh llm/*.sh tools/*.sh
 bash -n night-shift/morning-gate.sh
 # (E-028+E-029): ogni .py tracciato deve compilare. E-028: la dashboard era
@@ -17,7 +18,7 @@ bash -n night-shift/morning-gate.sh
 # E-029: la prima versione di questo gate era una RIGA COMPOSTA qui dentro — ma
 # il turno antepone `ai_timeout 120` a ogni riga: una riga deve essere UN
 # COMANDO solo, o l'assegnazione iniziale diventa argomento e la riga muore di
-# unary (falso rosso notturno). Contratto: un comando per riga. Il gate vive in
+# unary (falso rosso notturno). Contratto di allora: un comando per riga. Il gate vive in
 # tools/py-gate.sh, con il suo test.
 bash tools/py-gate.sh
 bash tools/privacy-check.sh
@@ -28,7 +29,7 @@ bash tools/privacy-check.sh
 # solo il tail — un successo diceva '3 OK' (l'ultimo test) invece di 29. Da
 # allora: loop su TUTTI i file + riepilogo N/TOT esplicito. 2026-09-18, E-029:
 # la riga composta `N=0; TOT=...` diventava argomento di `ai_timeout` — vive in
-# tools/suite.sh, cosi' .night-verify resta UN COMANDO per riga).
+# tools/suite.sh, cosi' .night-verify restava UN COMANDO per riga — contratto di allora).
 # (E-029, seconda lezione: il budget di default e' 120s per riga; una riga puo'
 # dichiarare il suo con il prefisso `@<sec>`. La suite completa dura ~300s —
 # sotto il budget standard moriva a meta' e dava un rosso stabile ogni notte.)

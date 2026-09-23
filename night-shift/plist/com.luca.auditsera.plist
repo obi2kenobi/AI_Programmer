@@ -8,7 +8,7 @@
   <array>
     <string>/bin/bash</string>
     <string>-c</string>
-    <string>osascript -e 'display notification "Le commesse di stanotte hanno tutte Design+Territorio+Forma dei dati? /audit-commesse prima delle 23:00" with title "AI_Programmer" subtitle "Audit serale"'</string>
+    <string>osascript -e 'display notification "Le commesse di stanotte hanno tutte Design+Territorio+Forma dei dati? /audit-commessa prima delle 23:00" with title "AI_Programmer" subtitle "Audit serale"'</string>
   </array>
   <key>StartCalendarInterval</key>
   <dict><key>Hour</key><integer>21</integer><key>Minute</key><integer>30</integer></dict>

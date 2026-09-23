@@ -14,7 +14,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 bash -n "$SALDA" && ok "sintassi" || { ko "sintassi"; exit 1; }
 
-nuova() { SB=$(mktemp -d /tmp/test-salda.XXXXXX); cd "$SB"; git init -q -b main; }
+# (revisione 10 giri): la pulizia finale cancellava /tmp/test-salda.* — anche le cartelle di
+# un'altra esecuzione in corso (il banco notturno si sovrappone). Si puliscono solo le proprie.
+MIE=()
+nuova() { SB=$(mktemp -d /tmp/test-salda.XXXXXX); MIE+=("$SB"); cd "$SB"; git init -q -b main; }
 
 # 1. forma A
 nuova
@@ -50,7 +53,39 @@ git add -A && git -c user.name=t -c user.email=t@t commit -qm i
 bash "$SALDA" d.sh 3 2>/dev/null
 grep -q '_cp2=' d.sh && ok "collisione variabile: usa _cp2" || ko "collisione non gestita: $(grep -c '_cp2' d.sh)"
 
-cd "$HERE"; rm -rf /tmp/test-salda.*
+# 5. (revisione 10 giri, 2026-09-23): la NEGAZIONE — `if ! PROD | grep` diventava
+# `_cp=$(! PROD)` + `if grep`: logica ROVESCIATA, e bash -n passava. Prova di COMPORTAMENTO:
+# prima e dopo la trasformazione lo script deve rispondere uguale, per ogni ingresso.
+for FORMA in A B; do
+  nuova
+  if [ "$FORMA" = A ]; then
+    printf '#!/bin/bash
+X="$1"
+if ! echo "$X" %s PAT; then
+  echo manca
+else
+  echo trovato
+fi
+' "$PDQ" > n.sh
+  else
+    printf '#!/bin/bash
+X="$1"
+if [ -z "$X" ] || ! echo "$X" %s PAT; then
+  echo manca
+else
+  echo trovato
+fi
+' "$PDQ" > n.sh
+  fi
+  git add -A && git -c user.name=t -c user.email=t@t commit -qm i
+  PRIMA_SI=$(bash n.sh "c'e' PAT"); PRIMA_NO=$(bash n.sh "niente")
+  bash "$SALDA" n.sh 3 >/dev/null 2>&1
+  DOPO_SI=$(bash n.sh "c'e' PAT"); DOPO_NO=$(bash n.sh "niente")
+  [ "$PRIMA_SI|$PRIMA_NO" = "$DOPO_SI|$DOPO_NO" ] && ok "negazione (forma $FORMA): stesso comportamento prima e dopo ($DOPO_SI/$DOPO_NO)" \
+    || ko "negazione (forma $FORMA) ROVESCIATA: prima $PRIMA_SI/$PRIMA_NO, dopo $DOPO_SI/$DOPO_NO"
+done
+
+cd "$HERE"; rm -rf "${MIE[@]}"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -1,6 +1,6 @@
 #!/bin/bash
 # help.sh — IL MENU DEI VERBI (trucco di scopribilità, 100 giri assurdi
-# 2026-08-29): l'hub ha 19 tool di shell e 16 python, e chi arriva non sa cosa
+# 2026-08-29): l'hub aveva allora 19 tool di shell e 16 python (oggi di più: `ls tools/`), e chi arriva non sa cosa
 # può chiedere al sistema. Questo elenco è la porta d'ingresso operativa —
 # lo stesso principio del README per i documenti, applicato ai comandi.
 set -uo pipefail

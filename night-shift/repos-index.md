@@ -1,5 +1,10 @@
 # Indice dei codici repo (REPO-A, REPO-B, …)
 
+> **STORIA — meccanismo RITIRATO il 2026-09-23** (dominio, Luca: CLAUDE.md §«Public repo,
+> private work»). I nomi di repo e persone possono comparire; resta proibito l'ACCESSO. Questo
+> file resta per decifrare i codici nei documenti scritti prima: non si assegnano codici nuovi,
+> e le frasi al presente qui sotto («vivono SOLO in repos.key») descrivono il regime di allora.
+
 Regola CLAUDE.md "Public repo, private work": questo hub è pubblico, i nomi reali di
 repo private vivono SOLO in `night-shift/repos.key` (locale, gitignored). I codici
 anonimi (REPO-A, REPO-B, …) sono invece sparsi in oltre 15 file (skill, SAL.md,

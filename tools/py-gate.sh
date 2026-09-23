@@ -19,7 +19,9 @@ DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 ROTTI=0
 while IFS= read -r f; do
   # compile() esegue la sintassi senza scrivere __pycache__ (py_compile lo scrive)
-  if ! python3 -c "import sys; compile(open(sys.argv[1]).read(), sys.argv[1], 'exec')" "$f" 2>/dev/null; then
+  # (revisione 10 giri): i path di git ls-files sono relativi a DIR — si aprono da DIR, non
+  # dalla cartella corrente (lanciato altrove accusava i buoni e mancava i rotti)
+  if ! python3 -c "import sys; compile(open(sys.argv[1]).read(), sys.argv[1], 'exec')" "$DIR/$f" 2>/dev/null; then
     echo "⛔ python non compila: $f"
     ROTTI=$((ROTTI+1))
   fi

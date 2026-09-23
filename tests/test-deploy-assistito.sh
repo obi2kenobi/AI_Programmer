@@ -14,6 +14,12 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 TMP=$(mktemp -d); export TMP
 trap 'rm -rf "$TMP"' EXIT
 export HOME_BAK="$HOME"; export HOME="$TMP"
+# (revisione 10 giri, 2026-09-23): con HOME spostato git perde l'identita' del
+# ~/.gitconfig — i `git commit` di mkrepo fallivano in silenzio (>/dev/null), il
+# repo non aveva HEAD e prepara-deploy moriva su rev-parse: 2 rossi del BANCO,
+# non del tool (riprodotto: con un'identita' il pacchetto nasce). Identita' esplicita.
+export GIT_AUTHOR_NAME=banco GIT_AUTHOR_EMAIL=banco@example.invalid
+export GIT_COMMITTER_NAME=banco GIT_COMMITTER_EMAIL=banco@example.invalid
 mkdir -p "$TMP/llm" "$TMP/tools" "$TMP/bin"
 cp "$HERE/llm/_timeout.sh" "$TMP/llm/"
 cp "$HERE/tools/prepara-deploy.sh" "$HERE/tools/deploy-ora.sh" "$TMP/tools/"
@@ -68,6 +74,41 @@ if [ -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && grep -q "CLASP-FINTO" "
 else
   ko "percorso felice rotto: il si non ha deploeato ($(head -c 80 "$TMP/deploy-pronto/repo-verde/STORICO.log" 2>/dev/null))"
 fi
+
+# ── (revisione 10 giri, 2026-09-23): il gesto spediva cio' che il manifest non firmava ──
+# deploy-ora guardava solo HEAD == commit firmato: una modifica NON committata o un file NON
+# tracciato nella copia di lavoro (quella dove il turno notturno lavora) andava in produzione.
+WORK="$TMP/night-shift-work/repo-verde"
+bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1
+( cd "$WORK" && git checkout -q "$(cat "$TMP/deploy-pronto/repo-verde/commit.txt")" 2>/dev/null )
+echo 'function sporca(){}' >> "$WORK/app.gs"
+rm -f "$TMP/deploy-pronto/repo-verde/STORICO.log"
+echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+[ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && ok "copia di lavoro con modifiche non committate → nessun deploy" \
+  || ko "deploy di modifiche NON firmate (albero sporco)"
+( cd "$WORK" && git checkout -q -- app.gs )
+echo 'function intrusa(){}' > "$WORK/intruso.gs"
+echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+[ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && ok "file NON tracciato nella copia di lavoro → nessun deploy" \
+  || ko "deploy con un file non tracciato (clasp lo spedisce)"
+rm -f "$WORK/intruso.gs"
+
+# prepara-deploy: «verifica verde» senza verifiche e' una frase falsa nel manifest
+mkrepo repo-vuota '# solo commenti'
+bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-vuota" >/dev/null 2>&1 \
+  && ko ".night-verify senza comandi ma pacchetto pronto («verifica verde» falsa)" \
+  || ok ".night-verify senza comandi → nessun pacchetto (verifiche-vuote, come gli altri lettori)"
+# prepara-deploy: un file non tracciato nel repo non e' un albero pulito
+echo 'x' > "$TMP/repo-verde/nuovo.gs"
+bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1 \
+  && ko "file non tracciato nel repo ma pacchetto pronto" || ok "file non tracciato nel repo → nessun pacchetto (albero non pulito)"
+rm -f "$TMP/repo-verde/nuovo.gs"
+# prepara-deploy: FORMATO script si esegue intero (come turno, gate e censore)
+mkdir -p "$TMP/repo-script/.git"
+( cd "$TMP/repo-script" && git init -q . && printf '# FORMATO: script\nX=1\nif [ "$X" = 1 ]; then\n  true\nfi\n' > .night-verify \
+  && printf 'function y(){}\n' > app.gs && git add -A && git commit -qm s ) >/dev/null 2>&1
+bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-script" >/dev/null 2>&1 \
+  && ok "FORMATO script: eseguito intero, pacchetto pronto" || ko "FORMATO script eseguito riga per riga (rosso falso)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

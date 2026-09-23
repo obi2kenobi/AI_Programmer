@@ -24,23 +24,46 @@ if not deb:
     print("nessun DEBITI.md: niente da bruciare (dichiarato, non taciuto)")
     sys.exit(0)
 
-# le sezioni aperte = senza SALDATO/saldato nel corpo
+# Una sezione e' APERTA se ha almeno una RIGA DI DEBITO (riga di tabella che inizia con una
+# data) non saldata; senza righe di debito, se il corpo non dice SALDATO.
+# (Revisione 10 giri, 2026-09-23): prima bastava UNA parola «saldato» nel corpo per chiudere
+# la sezione intera — 8+ righe aperte restavano invisibili perche' condividevano la sezione
+# con una riga saldata (es. l'hook clasp con codice morto, sotto «Pattern candidato»).
+RIGA_DEBITO = re.compile(r"^\|\s*\d{4}-\d{2}-\d{2}")
+SALDO = re.compile(r"SALDAT[OA]", re.I)
 sezioni = re.split(r"^## ", deb, flags=re.M)[1:]
 aperte = []
 for s in sezioni:
     titolo = s.split("\n")[0].strip()
-    if re.search(r"SALDATO|saldata|saldato", s, re.I):
-        continue
-    aperte.append((titolo, s))
+    righe = s.split("\n")[1:]
+    debiti = [l for l in righe if RIGA_DEBITO.match(l.strip())]
+    if debiti:
+        vive = [l for l in debiti if not SALDO.search(l)]
+        if not vive:
+            continue
+        # il corpo da classificare: la prosa fuori tabella + le sole righe vive
+        prosa = [l for l in righe if not l.strip().startswith("|")]
+        aperte.append((titolo, "\n".join(prosa + vive)))
+    elif not SALDO.search(s):
+        aperte.append((titolo, s))
 
 # classificazione: DI DOMINIO se la sezione chiede una decisione/contains domande/dominio/Luca;
 # RISOLVIBILE altrimenti (lavoro tecnico che la sessione può fare da sola).
 # (D21b, test del sistema completo 2026-09-20): si guarda il corpo INTERO — con una finestra
 # di 600 caratteri «Valutare Qwen 3.8 Flash» (decisione hardware di Luca a offset 754)
 # finiva tra i RISOLVIBILI.
-dominio, risolvibili = [], []
+# (Revisione 10 giri, 2026-09-23): terza classe, IN ATTESA — la riga dichiara con «⏳» l'evento
+# esterno che la sblocca (il Mac, la terza ricorrenza, un gh autenticato). Prima finivano tra
+# i RISOLVIBILI «da fare subito» cose che nessuna sessione poteva fare subito. Il marcatore e'
+# esplicito nella riga, non indovinato: una sezione e' IN ATTESA se TUTTE le sue righe vive lo
+# portano (una riga viva senza ⏳ la riporta fra le altre due classi).
+dominio, risolvibili, attesa = [], [], []
 for titolo, corpo in aperte:
     t = titolo.lower()
+    vive = [l for l in corpo.split("\n") if RIGA_DEBITO.match(l.strip())]
+    if vive and all("⏳" in l for l in vive):
+        attesa.append((titolo, corpo))
+        continue
     if re.search(r"dominio|decis|domanda|luca|valutare da|da decidere|censire", t + " " + corpo.lower()):
         dominio.append((titolo, corpo))
     else:
@@ -70,7 +93,7 @@ def perche_di(corpo):
             return s.strip("- #* ")
     return ""
 
-print(f"debiti APERTI: {len(aperte)} — di DOMINIO: {len(dominio)} (domande, una alla volta) · RISOLVIBILI: {len(risolvibili)} (da fare PRIMA di procedere)")
+print(f"debiti APERTI: {len(aperte)} — di DOMINIO: {len(dominio)} (domande, una alla volta) · RISOLVIBILI: {len(risolvibili)} (da fare PRIMA di procedere) · IN ATTESA: {len(attesa)} (evento esterno dichiarato)")
 print()
 if risolvibili:
     print("DA FARE SUBITO (risolvibile — il prossimo lavoro parte dopo questi):")
@@ -85,5 +108,12 @@ if dominio:
         if perche: print(f"      perché conta: {perche[:100]}")
     print()
     print("Modello: una domanda per messaggio, risposta → subito codice/regola, poi la prossima.")
+if attesa:
+    print("IN ATTESA DI UN EVENTO (dichiarato con ⏳ nella riga — non si fa ora, si guarda che l'evento non sia gia' accaduto):")
+    for i, (t, c) in enumerate(attesa, 1):
+        ev = [re.search(r"⏳[^|]*", l).group(0).strip() for l in c.split("\n") if "⏳" in l]
+        print(f"  A{i}. {t}")
+        for e in ev: print(f"      {e[:110]}")
+    print()
 print(f"chiusi/storici: {len(sezioni) - len(aperte)} sezioni saldate restano come memoria.")
 PY

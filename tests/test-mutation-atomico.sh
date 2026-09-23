@@ -34,6 +34,11 @@ PAYLOAD=$(printf '#!/bin/bash\nexit 0\n')   # $(...) strippa il newline finale: 
 ( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
 sleep 3   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
+# (revisione 10 giri, 2026-09-23): «integro» era accettato anche se la mutazione NON era mai
+# avvenuta (il banco sostituito da `exit 0` passava A, B e C). Prima del colpo, la mutazione
+# dev'essere IN CORSO — altrimenti la prova e' vuota, non verde.
+[ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "A: la mutazione e' in corso al momento del colpo (prova non vuota)" \
+  || ko "A: al colpo foo.sh non era mutato — la prova di atomicita' sarebbe vuota"
 kill -KILL "$PID" 2>/dev/null
 pkill -KILL -P "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
@@ -53,6 +58,8 @@ git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
 ( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
 sleep 3
+[ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "B: la mutazione e' in corso al momento del colpo (prova non vuota)" \
+  || ko "B: al colpo foo.sh non era mutato — la prova del trap sarebbe vuota"
 kill -TERM "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
 sleep 1

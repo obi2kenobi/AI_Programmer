@@ -76,7 +76,7 @@
 - [2026-09-01 (8) — 30 giri di accuratezza/affidabilità/funzionalità: due difetti trovati e chiusi](#2026-09-01-8-30-giri-di-accuratezza-affidabilità-funzionalità-due-difetti-trovati-e-chiusi)
 - [2026-09-01 (9) — REPO-K, terza sessione: 3 giri extra, e la scoperta che `clasp push` non è "andare in produzione"](#2026-09-01-9-repo-k-terza-sessione-3-giri-extra-e-la-scoperta-che-clasp-push-non-è-andare-in-produzione)
 - [2026-09-02 — REPO-E: diagnosi a tre strati, deploy v74, e il pattern della diagnosi differenziale](#2026-09-02-repo-e-diagnosi-a-tre-strati-deploy-v74-e-il-pattern-della-diagnosi-differenziale)
-- [2026-09-02 (2) — Fornitore-N: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-golilla-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
+- [2026-09-02 (2) — Fornitore-N: 6 agenti convergono, l'apostrofo che ferma la produzione, e «decidi tu»](#2026-09-02-2-fornitore-n-6-agenti-convergono-l-apostrofo-che-ferma-la-produzione-e-decidi-tu)
 - [2026-09-02 (3) — REPO-Q: 131 rilievi e l'incidente clasp DAL VIVO (E-018)](#2026-09-02-3-repo-q-131-rilievi-e-l-incidente-clasp-dal-vivo-e-018)
 - [2026-09-02 (4) — REPO-K email: il modello a TRE identità e la diagnosi completa](#2026-09-02-4-repo-k-email-il-modello-a-tre-identità-e-la-diagnosi-completa)
 - [2026-09-02 (5) — La giornata GAS più costosa: 3 famiglie nuove, 10 errori miei, 15 lezioni](#2026-09-02-5-la-giornata-gas-più-costosa-3-famiglie-nuove-10-errori-miei-15-lezioni)
@@ -135,6 +135,7 @@
 - [2026-09-20 — i tre report dal campo del 19/9, lavorati nell'hub (registrazione a posteriori)](#2026-09-20-i-tre-report-dal-campo-del-19-9-lavorati-nell-hub-registrazione-a-posteriori)
 - [2026-09-20 (2°) — dieci giri di chiusura dal test del sistema completo (report Fable)](#2026-09-20-2-dieci-giri-di-chiusura-dal-test-del-sistema-completo-report-fable)
 - [2026-09-20 (3°) — venti giri di analisi profonda (mandato di Luca: capire ogni pezzo, chiudere ogni errore in autonomia)](#2026-09-20-3-venti-giri-di-analisi-profonda-mandato-di-luca-capire-ogni-pezzo-chiudere-ogni-errore-in-autonomia)
+- [2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa](#2026-09-23-revisione-in-dieci-giri-mandato-di-luca-giro-0-i-debiti-e-la-suite-rossa)
 
 
 ## Stato
@@ -2710,3 +2711,297 @@ sessione cloud il gate non puo' controllare niente e lo dice (debito gia' in DEB
 vive sul Mac). Attacchi 95/0 aggirati, antivirus 4/4. Diciassette difetti nuovi (D28-D44) curati
 in venti giri, ognuno col suo test rosso prima. La PR #97 e' stata mergiata durante il lavoro: i
 giri 11-30 vanno in una PR nuova sullo stesso ramo (#98).
+
+### 2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa
+
+Mandato: analisi lenta dell'hub col suo stesso metodo, correzione di errori, incoerenze,
+collegamenti rotti; dieci giri, una PR sola; il meccanico si corregge, le regole si
+propongono. Confini dichiarati: da qui (sessione cloud) il repo e la rete via proxy — NON il
+Mac, Ollama, `gh` autenticato, il GAS vivo. Ciò che dipende da quelli resta ⏳ IN ATTESA.
+
+**Giro 0 — prima del lavoro nuovo (settimo patto).** Baseline sul ramo prima di toccare
+niente: 156 file di test, **6 ROSSI** — la suite del gate era rossa sull'hub stesso:
+- `test-opencode-skills-sync`: lo specchio `.opencode/skills/gas-sviluppo/references/domini-gestionali.md` portava un
+  refuso («racclie») che l'originale non ha → risincronizzato.
+- `test-doc-citazioni` e `test-un-solo-modello`: `MODEL_TAG` e' diventato
+  `"${MODELLO:-qwen3.8-27b:iq3s}"` e le due lenti confrontavano la stringa `${MODELLO:-...}`
+  intera → si estrae il DEFAULT (sabotaggio: un default divergente torna rosso).
+- `test-sync-repo-standard-item-list`: pretendeva `patterns` nello standard, uscito per
+  decisione (audit-3, 4db9af4: registro PER REPO) → la lente ora presidia la decisione, e il
+  commento di `tools/sync-repo.sh` che diceva il contrario e' annotato.
+- `test-lib`: pretendeva i codici anonimi (REPO-X) ritirati oggi → presidia il ritiro. Nello
+  stesso file tre casi FINTI: `check "..." 0 git status && git diff --stat` senza virgolette —
+  la shell del test spezzava il comando, l'allowlist vedeva solo il primo pezzo, `git diff
+  --stat` e `tail -2 file` giravano davvero nell'hub, l'esito di «cat | wc» finiva in `wc`.
+  Virgolettati, piu' un caso «legittimo && vietato» che deve bloccare.
+- `test-deploy-assistito`: con `HOME=$TMP` git perdeva l'identita', i commit del banco
+  fallivano in silenzio e il repo non aveva HEAD — rosso del banco, non del tool
+  (riprodotto). Identita' esplicita; ora 6/6, e «verify rossa → nessun pacchetto» passa per
+  la ragione giusta.
+
+**I debiti.** `tools/debiti-riapertura.sh` giudicava per SEZIONE: una parola «saldato» nel
+corpo chiudeva la sezione intera, e 8+ righe vive erano invisibili (l'hook clasp «codice
+morto», la suite che sporca `docs/bc/README.md`, tre righe del 20/9 accodate a una sezione
+saldata). Ora giudica per RIGA, e ha una terza classe dichiarata, **⏳ IN ATTESA** (l'evento
+esterno scritto nella riga): prima finivano «da fare subito» cose che nessuna sessione puo'
+fare subito. Banco: `tests/test-debiti-riapertura.sh` 12/12, sabotaggio → 2 rossi. Saldati
+con prova: la suite oltre la soglia (gestita da `@540`), il ramo `.mirror-boundaries` (non
+piu' morto dopo D27: attesa nuova in `tests/test-clasp-block-hook.sh`, sabotaggio → rosso),
+la suite che sporca il repo (non si riproduce: 156 test, `git status` pulito), il watchdog
+(deciso il 2026-09-01, mai marcato), `settings.json` non installabile (dichiarato in
+`docs/system.md` limite #7), la maschera del gate (vedi sotto). Esito: 0 risolvibili, 4 in
+attesa, 9 domande di dominio.
+
+**Due difetti di sostanza trovati bruciando i debiti.**
+- `tools/privacy-check.sh` usciva DEGRADATO prima di cercare le forme di segreto: la decisione
+  del 23/9 («le SHAPES girano nel repo») era falsa nei fatti — senza `repos.key` nessun token
+  veniva cercato. Banco scritto prima (rosso), poi la cura: il degradato resta dichiarato e
+  rc=1, ma shapes e `~/.privacy-nomi` girano sempre. `tests/test-privacy.sh` 8/8.
+- `mask_secrets` (`night-shift/lib.sh`) scriveva `***MASCHERATO***`: la regola vincolante
+  («Mask, don't omit») e il pattern vogliono `«segreto <impronta> · N caratteri»`, e i token
+  NUDI (`ghp_…` senza parola chiave) passavano interi. Banco prima (6 rossi), poi la cura; il
+  primo tentativo includeva il newline nel valore (21 caratteri invece di 20, e righe fuse) —
+  la mia attesa diceva 24: l'aritmetica si conta, non si ricorda (regola 7). 40/40.
+
+Verdetto del giro 0: suite eseguita file per file dopo le cure, **156/156 verdi** (era 150/156);
+nessun file tracciato sporcato dalla suite.
+
+**Giro 1 — i documenti vivi contro le decisioni recenti (privacy 23/9, contratto di
+`.night-verify`, primo contatto).**
+- `METHOD.md` regola 5 era SPEZZATA: una correzione del 23/9 era stata incollata in mezzo al
+  nome del file (`tools/privacy-check. (STORICO: …)sh`) e il resto diceva ancora «nomi mai,
+  codici sempre». Riscritta sulla decisione vigente; data di revisione aggiornata; il «23+
+  pattern» di agosto (sono 65) diventa il comando che li conta.
+- `CLAUDE.md` §«Public repo»: un frammento orfano («of which role each code already
+  covers…») rimasto dal taglio della frase sul registro dei codici — ricucito, senza
+  cambiare la regola.
+- `night-shift/repos-index.md` porta ora in testa il ritiro del meccanismo (le sue frasi al
+  presente descrivevano un regime finito).
+- `.night-verify`: l'intestazione descriveva ancora `eval "ai_timeout 120 <riga>"` e «niente
+  righe che iniziano con un'assegnazione» — il turno usa `bash -c` dal 19/9.
+- `PROJECT.md`: l'hub non aveva una sezione sua (regola del primo contatto, CLAUDE.md §6).
+- `tools/pre-commit.sh` (gancio commit-msg): ogni «N test» era letto come il totale della
+  suite, e «6 test rossi» veniva respinto (mi e' successo al commit del giro 0). Ora conta
+  solo la dichiarazione del totale verde; due attese nuove in `tests/test-pre-commit.sh`
+  (rosso prima, 14/14 dopo).
+- **Scoperto, non curato (⏳ in DEBITI):** gli hook di `.claude/settings.json` sono path
+  relativi — da una sottocartella il cancello clasp esce 127 e FALLISCE APERTO (riprodotto).
+  La patch e' scritta nella voce; `settings.json` lo installa una persona (limite #7).
+
+**Giro 2 — il censore che deliberava sul vuoto (famiglia «doppio zero»).** In
+`night-shift/revisore.sh` la guardia «verifiche-vuote» era `[ "$(… | grep -vcE … || echo 0)"
+-eq 0 ]`: a zero comandi grep stampa 0 ED esce 1, l'echo ne aggiunge un secondo, «0\n0» non
+e' un intero, il test e' falso — e un `.night-verify` di soli commenti sulla base portava la
+PR fino al **merge** (riprodotto in DRY: rc 0, `gh pr merge 7 --squash`). Banco prima
+(`tests/test-revisore.sh` 7b, rosso), poi la cura: 21/21. La stessa forma in altri cinque
+siti — `night-shift/morning-digest.sh` (tre contatori: il digest stampava «0» su due righe),
+`tools/ciclo-vivo.sh` (conteggio indice BC), `tests/test-canone-integrita.sh`,
+`tests/test-bc-index.sh` — tutti con `|| true; N=${N:-0}`. Guardia nuova:
+`tests/test-grep-conta-zero.sh` (prova prima che la forma produca davvero «0\n0», poi che il
+codice non la contenga; sabotaggio col revisore di prima → rosso).
+
+**Giro 3 — riferimenti e conteggi (lente in sola lettura, ogni rilievo rieseguito prima della
+cura).**
+- `docs/MANUALE-OPERATIVO.md`: una nota «IN PENSIONE» incollata DENTRO il comando del mattino
+  (la riga non era piu' eseguibile), blocchi `bash` con commenti inline (CLAUDE.md §3: su zsh
+  il `#` diventa argomento) e slash-command mescolati ai comandi di shell. Riscritto: la prosa
+  sopra, i blocchi puliti, gli slash-command fuori dal terminale; il mattino descrive il
+  digest autonomo e il gate in pensione.
+- `/audit-commesse` (plurale) non esiste — la skill e' `audit-commessa`: corretto in
+  `docs/MANUALE-OPERATIVO.md`, `docs/system.md` (3 siti) e nella notifica serale
+  `night-shift/plist/com.luca.auditsera.plist`.
+- `docs/system.md` dava ancora il 14b come braccia notturne: il modello unico e'
+  qwen3.8-27b:iq3s dal 2026-09-21 (`cervello/decisione-modello-unico.md`); le citazioni
+  a «revisore.sh riga 35» (una riga vuota) puntano ora alla decisione, in quattro file.
+- «La notte non ha limite di tempo» in `docs/system.md`, `llm/README.md`, skill `goal`
+  (e specchio): falso dal 2026-09-01 — la notte non ha un tetto di TENTATIVI ma un watchdog di
+  tempo di 240 min; l'asimmetria voluta resta, detta giusta.
+- Pattern: due report di campo citati col nome di prima del rinomino (REPO-J → bricoman), un
+  titolo col refuso «menta», due «vedi anche» verso pattern inesistenti (`presidio`,
+  `pipeline-a-ripresa`).
+- Skill `controllo-gestione` (e specchio) insegnava ancora «mai per nome, solo codice
+  anonimo»; skill `goal` aveva due percorsi incollati in uno (system.md e il README di loops).
+- Conteggi: quattro agenti (e specchi) dicevano «39 pattern» (sono 65) — ora il numero si
+  conta; `gas-sviluppo` «16 tool Python» ne elencava 15 (sono 17).
+Lenti rieseguite: sync specchi 14/14 e 15/15, struttura agenti 36/36, gas-sviluppo 33/33,
+help 4/4, doc-citazioni 2/2.
+
+**Giro 4 — il pensionamento del gate arriva ai documenti; il censore non e' piu' affamato.**
+La decisione del 23/9 (morning-gate in pensione, digest autonomo alle 7:30 —
+`cervello/decisione-dominio-2026-09-23.md`) viveva solo nel digest e in tre test:
+`night-shift/README.md`, `METHOD.md` e `docs/system.md` descrivevano ancora il gate come il
+giudizio del mattino. Allineati (ciclo, tabelle, diagramma L3, «verifica» e «loop sul loop»),
+con la conseguenza detta: le PR delle issue non hanno oggi nessun giudice automatico — la
+premessa del debito D9 e' cambiata e la voce lo dice. Scoperto facendolo: il turno portava al
+censore la PRIMA bozza `night/*` (`head -1`), il censore accetta solo titoli `caccia:` — con
+una PR di issue in testa, «non mio» a ogni ciclo e le caccia dietro di lei mai giudicate. La
+scelta vive ora in `candidata_censore()` (`night-shift/lib.sh`, stessi predicati delle guardie
+del censore), con due attese in `tests/test-lib.sh` scritte prima (rosse) — 42/42.
+
+Le tre lenti in sola lettura partite al giro 1 hanno consegnato: 17 riferimenti/conteggi
+(curati al giro 3), 30 difetti di codice, 20 test finti o deboli. Ordinati per gravita' nei
+giri 5-10 — ognuno rieseguito prima della cura: nessuno entra per fiducia.
+
+**Giro 5 — la produzione e il Mac (ogni cura col banco rosso prima).**
+- **Cancello clasp** (`tools/clasp-block-hook.sh`): l'ancora SEP accettava solo inizio riga e
+  `; & |` — undici forme comuni passavano, fra cui il LOOP generato (`for …; do clasp push;
+  done`, la forma esatta dell'incidente REPO-Q che l'hook cita), `(…)`, `{ …; }`, `if …;
+  then`, `time`/`nohup`/`exec`/`xargs`, e `bash -c "clasp push"` (le virgolette sono dati per
+  lo spoglio, ma l'interprete le esegue). Riprodotte tutte, poi curate. La cura ha negato il
+  commit di QUESTA voce: lo spoglio dei backtick lavorava per riga e uno span che va a capo
+  restava — ora l'a capo diventa `;` (separatore vero) e i backtick si tolgono su piu' righe;
+  il controllo `bash -c` guarda il testo senza backtick. Sabotaggio → rosso. 52/52.
+- **Deploy assistito**: `tools/deploy-ora.sh` guardava solo HEAD == commit firmato — nella
+  copia dove lavora il turno, una modifica non committata o un file non tracciato sarebbero
+  andati in produzione. Ora albero pulito o niente. `tools/prepara-deploy.sh` scriveva
+  «verifica verde» anche senza verifiche, ignorava i non tracciati e il FORMATO script: ora
+  stesso contratto degli altri lettori, e il manifest dice quante verifiche ha eseguito.
+  `tests/test-deploy-assistito.sh` 11/11 (5 attese nuove, rosse prima).
+- **Installer** (`night-shift/install.sh`): bootout/print su `com.<utente>.<job>`, ma launchd
+  conosce la Label del plist (`<utente>.<job>`) — il reinstall non ricaricava mai e il
+  controllo E-019 diceva sempre «NON punta»; il plist del digest usava `__DIR__`, mai
+  sostituito; il controllo del modello cercava la stringa `${MODELLO:-…}`. E il suo banco
+  (`tests/test-install.sh`) su un Mac chiamava il **launchctl VERO** sul turno di produzione:
+  `$FAKE/bin` era vuoto, e comunque `$FAKE` non arrivava al PATH del figlio (virgolette
+  singole). Ora un launchctl finto registra le chiamate e le etichette si verificano: 10/10.
+- **Backup**: l'ID del gist SEGRETO (`.gist-backup-id`, cioe' l'accesso a `repos.key` e
+  `repos.conf`) viveva alla radice dell'hub pubblico senza essere ignorato → `.gitignore`, con
+  attesa in `tests/test-backup-config.sh`.
+
+**Giro 6 — i gesti distruttivi.**
+- **La scopa dei rami** (`night-shift/night-shift.sh`, fine ciclo): la soglia delle 48h per
+  gli orfani era SOLO nel commento — il codice cancellava ogni ramo senza PR fra le ultime 200,
+  anche uno spinto un minuto prima della sua PR (il turno gira 24/7); e un ramo con una PR
+  fusa veniva cancellato anche se una PR APERTA riusava lo stesso nome (`night/issue-N` e'
+  riusato per disegno), chiudendola. La pulizia `notte/auto-*` prometteva 24h senza
+  controllarle e cercava la PR per sottostringa. Le regole vivono ora in `rami_da_scopare()`
+  (`night-shift/lib.sh`, funzione pura: date da `git for-each-ref` sul clone dell'hub, stati
+  da `gh pr list`), testata prima in `tests/test-lib.sh`; senza fetch o lista PR la scopa non
+  cancella niente.
+- **Il trasformatore E-002** (`tools/salda-e002.sh`): `if ! PROD | grep …` diventava
+  `_cp=$(! PROD)` + `if grep …` — logica ROVESCIATA con `bash -n` verde. Banco di
+  COMPORTAMENTO (stesse risposte prima e dopo, per ogni ingresso), rosso prima, verde dopo.
+  Nessun sito dell'hub era gia' stato rovesciato (cercato).
+- **Test che distruggevano**: `test-banco-passaggio` ripristinava le esclusioni con
+  `git checkout --` (cancellava le modifiche non committate di chi lavorava: provato con una
+  riga di prova, ora sopravvive); `test-presidio` spostava il `PRESIDI.md` vivo e «simulava»
+  l'union senza leggere il verdetto (stampava union-persa ed era verde) — ora quarantena e un
+  merge git VERO fra due cloni (sabotaggio senza union → rosso); `test-caccia-registro`
+  riscriveva dal main la baseline e la storia VERE del censimento (il delta notturno si
+  azzerava a ogni suite) — ora su un clone; `test-revisore` e `test-salda-e002` pulivano
+  `/tmp/<prefisso>.*`, cioe' anche le cartelle di un'altra esecuzione in corso — ora
+  ciascuno pulisce le sue.
+
+**Giro 7 — il sandbox del banco: allowlist, watchdog, maschera, forme di segreto.**
+- **Allowlist** (`gate_allowlist_ok`, `night-shift/lib.sh`): passavano `&` singolo (il secondo
+  comando in background senza esame: `grep x f & rm -rf ~/…`), `git grep -O<prog>` e
+  `--open-files-in-pager` (ESEGUONO un programma — riprodotto con echo), `--output=` di
+  diff/log/show (scrivono file), `--ext-diff`, e le redirezioni `>`/`>>`. Chiusi; restano
+  ammessi `2>/dev/null`, `>/dev/null`, `2>&1` e tutto cio' che sta fra virgolette. 12 attese
+  nuove, rosse prima.
+- **Watchdog** (`run_guarded`): TERM al solo figlio, mai KILL, rc del comando — un nipote
+  nella pipe teneva il chiamante 6s su 1s di budget, e un comando che ignora TERM tornava
+  VERDE dopo 12s. La cura c'era gia' in `llm/_timeout.sh` (gruppo, `-k 5`, 124): run_guarded
+  la usa. Provato su entrambi i rami (GNU e il perl del Mac). Pattern `watchdog-guardato`
+  aggiornato.
+- **Maschera**: i valori FRA VIRGOLETTE passavano interi (`"password": "…"`, `X="…"`); e se
+  il python della maschera moriva l'output spariva in silenzio — ora una riga dice che la
+  maschera e' morta e l'output e' soppresso (rosso, non silenzio). Il primo tentativo della
+  cura rompeva tutto: un apostrofo nella regex chiudeva la stringa bash che la contiene
+  (9 rossi, visti subito).
+- **Forme di segreto** (`tools/privacy-check.sh`): cercava `sk-ANTHROPIC`, che nessuna chiave
+  vera ha (sono `sk-ant-…`). E i prefissi nudi (`github_pat_`, `sk-proj-`, `xoxb-`)
+  scattavano su chi li NOMINA (la maschera stessa): ora ogni forma porta il corpo del token;
+  nessun file intero escluso (lo avevo fatto, poi tolto: troppo largo).
+
+**Giro 8 — i test che non potevano fallire.**
+- `tests/test-oracoli-integrati.sh`: `python3 -c "abs($V - 1274.0) < 0.01"` valuta e BUTTA
+  l'espressione (esce 0 sempre, anche con V vuoto) — e le attese erano SBAGLIATE: gli oracoli
+  danno 1300.00 e un margine totale di 200.00. Rederivate a mano dalle formule citate negli
+  oracoli (`PERCENTUALE = costo*(1+v/100)`; convenzione G/L amount<0 = ricavo), asserzione
+  vera; oracolo sabotato → rosso.
+- `tools/suite.sh` pretende ora la riga di verdetto «N OK, 0 FAIL» con N ≥ 1: otto test
+  caricano una libreria con `source` e morivano VERDI se la libreria usciva; uno con zero
+  asserzioni usciva 0 uguale. 155/156 la stampavano gia'. Conseguenza dichiarata: un test che
+  «salta» con `exit 0` quando manca `jq` o `node` ora e' rosso — un salto non e' una prova, e
+  l'hub li richiede entrambi.
+- `tests/test-py-gate.sh`: il ko girava nella subshell di una pipe (stampava FAIL, chiudeva
+  7 OK, 0 FAIL) e nascondeva un bug vero di `tools/py-gate.sh` — i path di `git ls-files`
+  relativi a DIR aperti dalla cartella corrente (lanciato altrove accusava i buoni e mancava
+  i rotti). Curati entrambi.
+- `night-shift/risolvi-issue.sh`: il verdetto dell'auto-review provava *correct* prima di
+  *wrong* — «incorrect», «not correct», «scorretto» diventavano CORRECT. Ora
+  `classifica_verdetto()`, provata su 12 casi estraendola dal sorgente. E il turno cercava
+  WRONG in TUTTO l'output del solver (log e codice) con una pipe verso grep -q: ora legge la
+  sola riga `REVIEW:`.
+- `test-night-verify-runs-all-tests`: N_MATCH era lo stesso comando di N_REALI (tautologia)
+  — ora il glob si legge dal runner. `test-mutation-atomico`: accettava «integro» anche senza
+  mutazione avvenuta (banco sostituito da `exit 0` → verde) — ora pretende la mutazione in
+  corso al momento del colpo; sabotaggio → 2 rossi.
+Verdetto del giro 8: `bash tools/suite.sh` → 157/157 (col verdetto preteso). Il primo lancio
+l'ha data rossa su `test-night-verify-riepilogo-suite`, i cui test finti stampavano il verdetto
+con un prefisso («a: 1 OK, 0 FAIL»): fixture aggiornati — la regola nuova ha morso per prima
+dentro casa.
+
+**Giro 9 — il turno, il digest e gli strumenti minori (ognuno riprodotto, poi curato).**
+- **Digest** (`night-shift/morning-digest.sh`): svuotava la memoria del turno PRIMA di
+  inviare e usciva 0 su «ERRORE invio» (memoria persa se Mail e mail fallivano); «PR»
+  contava le intestazioni dei turni, non le PR (ora la somma); «ASPETTA» contava ogni riga con
+  due spazi fino alla fine del file (il log dei turni dopo compreso); il riepilogo del gate
+  entrava due volte. `tests/test-morning-digest.sh` 12/12 (5 attese nuove, rosse prima). La
+  prima cura usciva 1 su un invio riuscito — `[ -f … ] && …` in coda sotto `set -e`, la
+  trappola che lo script stesso documenta: `if`.
+- **Turno** (`night-shift/night-shift.sh`): le PR della caccia non contavano mai (il ramo usciva
+  prima dell'aggregazione: SAL a 0 PR e ciclo creduto a vuoto); il riordino dell'indice
+  pattern si leggeva al rovescio; il banco di copertura si buttava (`|| true`) mentre commit e
+  PR dicevano «banco CHIUSO» — ora il banco rosso chiude il gate; il test generato multi-riga
+  si salvava dalla sola prima riga (ora fra marcatori, anche in `night-shift/risolvi-issue.sh`);
+  `OP_RC=$?` leggeva l'`if` appena chiuso (sempre 0: il ramo «OpenCode fallito» era morto);
+  due ri-derivazioni del ramo di default rotte senza origin/HEAD (ora `$DB`).
+- **Caccia** (`night-shift/caccia-miglioria.sh`): i file NUOVI dell'agente erano invisibili al
+  gate e RESTAVANO nel working tree dopo un «niente da migliorare» — il `git add -A` dopo li
+  avrebbe committati. Intent-to-add prima dei controlli; ripristino li toglie.
+- **Registro** (`tools/caccia-registro.sh --prossimo`): `paste` accoppiava le famiglie di
+  tutte le righe ai siti filtrati (col primo rinviato, un sito E-032 usciva E-002); e con un
+  solo file nel glob `grep` non stampava il nome (sito «2:…»). `-H` e filtro per riga.
+- **Minori**: `tools/gas-gate.sh` leggeva un solo blocco `<script>` nudo (falso KO con due
+  blocchi, cieco su `<script type=…>`); `tools/giri-ignoranti.sh` cercava «agenti\?» sotto
+  `grep -E` (un `?` letterale: il controllo taceva sempre — sabotaggio in un clone ora lo
+  vede); `tools/cervello-impara.sh` estraeva il JSON con un `.*` avido (una lezione con
+  `${VAR:-x}` si perdeva) e mandava al modello la data come testo `$(date +%F)`;
+  `tools/pre-commit.sh` nascondeva il rilevatore CRLF morto (rc 128); `tools/ciclo-vivo.sh`
+  diceva «accodata» senza scrivere niente (la coda promessa dal SAL del 28/8 era sparita) e
+  contava le ricorrenze per CATEGORIA (tre finding ARCH diversi = «lo stesso 3 volte»).
+- **Commenti che mentivano**: il censore «ha 600s» (il codice gliene da' 300), il prompt gli
+  diceva «sei un cervello piu' grande» (e' lo stesso modello: ora «un processo separato, senza
+  la memoria di chi l'ha scritta»), `llm/ask-qwen.sh` «la notte usa il 14b», `night-shift/night-shift.sh`
+  «pull --ff-only» (fa fetch + reset --hard).
+
+**Giro 10 — i banchi che provavano una copia, gli ultimi strumenti, la chiusura.**
+- `tests/test-onboard-repo.sh` (end-to-end): una skill personalizzata dal progetto (claude e
+  opencode) deve arrivare intatta sull'origin — con la guardia dell'onboarding sostituita da
+  `if true; then rm -rf …` la suite prima restava verde, ora e' rossa.
+- `tests/test-install-garante.sh` non eseguiva MAI l'installatore (guardava il
+  `~/.claude/settings.json` vero; «assente» valeva ok): ora due installazioni in una HOME
+  temporanea con un hook altrui — una voce sola, l'altrui intatto. `tests/test-status-page.sh`
+  leggeva la pagina dal `$HOME` vero (una pagina vecchia bastava): ora HOME temporanea.
+- `tools/giri-avversari.sh` all'uscita faceva `rm -rf .ciclo`: cancellava la memoria
+  persistente di `tools/ciclo-vivo.sh` a ogni giro d'attacchi. Ora la salva e la rimette —
+  provato in un clone (livello e storico sopravvivono; 95 attacchi, 0 aggirati).
+- `night-shift/risolvi-issue.sh`: `realpath --relative-to` e' GNU — sul Mac il prompt riceveva
+  il path assoluto; ora `os.path.relpath`, e la lente di portabilita' lo pretende (sabotaggio →
+  rosso). `night-shift/night-shift.sh`: il ping del watchdog di Ollama e il default del solver
+  avevano il modello scritto a mano — con `MODELLO` cambiato il ping chiedeva un modello assente
+  e il watchdog avrebbe ucciso Ollama a ogni ciclo; ora `$MODEL_TAG`.
+  `tools/prova-rilevatori.sh` documentava un `--veloce` mai letto: promessa tolta.
+- Dichiarati in DEBITI (non curati, col perche'): i banchi di propagazione di bootstrap e del
+  gate del Design che rifanno la logica; il profilo notturno con 11 chiavi su 15 senza lettori
+  (decisione di Luca); `num_ctx` 4096 contro letture da 24 KB (⏳ misura sul Mac); due banchi
+  con dipendenze d'ambiente minori.
+
+**Chiusura della revisione.** Dieci giri piu' il giro 0: 157 file di test, `bash tools/suite.sh`
+verde (verdetto preteso), 95 attacchi a 0 aggirati. Il report dal campo:
+`docs/campo/2026-09-23-revisione-dieci-giri-hub.md` (due famiglie proposte al registro: «verde
+senza verdetto», «promessa nel commento, assente nel codice»). Proposte che toccano le regole,
+NON applicate: hook di `.claude/settings.json` con `$CLAUDE_PROJECT_DIR` (patch in DEBITI);
+CLAUDE.md §4 cita il morning-gate per i prefissi dei rami, e il gate e' in pensione.

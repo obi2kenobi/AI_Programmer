@@ -31,12 +31,15 @@ mkdir -p "$TMP/tests"
 # Caso 1: mini-suite tutta verde -> il tail deve riportare N/TOT, non l'output dell'ultimo test
 cat > "$TMP/tests/test-a.sh" <<'EOF'
 #!/bin/bash
-echo "a: 1 OK, 0 FAIL"
+# (revisione 10 giri): la riga di verdetto sta da sola — il runner la pretende (tools/suite.sh)
+echo "a: fatto"
+echo "1 OK, 0 FAIL"
 exit 0
 EOF
 cat > "$TMP/tests/test-b.sh" <<'EOF'
 #!/bin/bash
-echo "b: 1 OK, 0 FAIL"
+echo "b: fatto"
+echo "1 OK, 0 FAIL"
 exit 0
 EOF
 chmod +x "$TMP/tests/test-a.sh" "$TMP/tests/test-b.sh"

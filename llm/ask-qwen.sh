@@ -4,9 +4,9 @@
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
 # Variabili: QWEN_MODEL (default qwen3.8-27b:iq3s — un solo modello, decisione
-#            2026-09-19, vedi night-shift/revisore.sh:35; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
-#            ASK_TIMEOUT secondi (1800 — la notte non ha limite di tempo, decisione
-#            2026-08-21: la soglia resta alta di default, ma ORA è configurabile)
+#            2026-09-21, vedi cervello/decisione-modello-unico.md; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
+#            ASK_TIMEOUT secondi (1800 — soglia alta di default, configurabile; il turno
+#            ha il suo watchdog per-issue di 240 min dal 2026-09-01, NIGHT_SHIFT_TIMEOUT)
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 
@@ -28,7 +28,8 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 # override universale, qui era ignorato — solo QWEN_MODEL funzionava.
 # (giro 19, 2026-09-20): il default era ancora il 27b generale — il morning-gate chiama
 # questo wrapper per il banco avversariale, quindi il gate avrebbe usato il modello che
-# "0/3 in 442 s" mentre la notte usa il 14b. Un solo modello: lo stesso del turno.
+# "0/3 in 442 s" mentre la notte usava il 14b. Un solo modello: lo stesso del turno (oggi
+# qwen3.8-27b:iq3s, cervello/decisione-modello-unico.md — il 27b quantizzato, non quello di allora).
 MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8-27b:iq3s}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"

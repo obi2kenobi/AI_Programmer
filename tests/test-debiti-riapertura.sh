@@ -52,6 +52,31 @@ echo "$OUT3" | grep -q "APERTI: 2 — di DOMINIO: 2" && ok "D21b: la parola chia
   || ko "D21b: classificazione su finestra corta: $(echo "$OUT3" | sed -n 2p)"
 rm -rf "$SB3"
 
+# (revisione 10 giri, 2026-09-23): la granularita' e' la RIGA, non la sezione.
+#  a) una sezione con una riga SALDATA e una viva era chiusa per intero (8+ righe vive
+#     invisibili sul DEBITI vero);
+#  b) le righe che aspettano un evento esterno (⏳) non sono «da fare subito».
+SB4=$(mktemp -d /tmp/debiti-t4.XXXXXX)
+cat > "$SB4/DEBITI.md" <<'FIN'
+# DEBITI
+## Mista (2026-01-01)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-01-01 ✅ SALDATO | vecchia cosa chiusa | - | - |
+| 2026-01-02 | refactor ancora aperto | tempo | prossimo giro |
+## Solo in attesa (2026-01-01)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-01-03 | provare sul Mac | serve il Mac | ⏳ IN ATTESA: primo giro sul Mac |
+FIN
+OUT4=$(bash "$TOOL" "$SB4" 2>&1)
+echo "$OUT4" | grep -q "R1. Mista" && ok "riga viva in sezione con una saldata: la sezione resta APERTA" \
+  || ko "la riga saldata nasconde la viva: $(echo "$OUT4" | sed -n 2p)"
+echo "$OUT4" | grep -q "A1. Solo in attesa" && ok "riga ⏳: classe IN ATTESA, non «da fare subito»" \
+  || ko "riga ⏳ non in attesa: $(echo "$OUT4" | sed -n 2p)"
+echo "$OUT4" | grep -q "IN ATTESA: primo giro sul Mac" && ok "l'evento dichiarato si vede" || ko "evento ⏳ non mostrato"
+rm -rf "$SB4"
+
 # senza DEBITI.md: dichiarato, non muto (sesto patto)
 SB2=$(mktemp -d /tmp/debiti-t2.XXXXXX)
 OUT2=$(bash "$TOOL" "$SB2" 2>&1)

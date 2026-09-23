@@ -94,6 +94,23 @@ OUT=$(MIGLIORIA_AGENT="$STUB_CATTIVO" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.j
 git -C "$SB" diff --quiet 2>/dev/null && ok "working tree ripristinato" || ko "il gate ha lasciato sporco"
 grep -q padding "$SB/utils.js" && ko "il padding è sopravvissuto" || ok "padding eliminato"
 
+# 2b. (revisione 10 giri, 2026-09-23): un FILE NUOVO dell'agente era invisibile al gate —
+# `git diff` non vede i non tracciati, e il turno poi committa con `git add -A`: un file intero
+# (60 righe, non-ASCII) passava il gate «poche righe, solo ASCII» e finiva nella PR.
+STUB_NUOVO=$(mktemp /tmp/stub-nuovo.XXXXXX)
+cat > "$STUB_NUOVO" <<'EOF'
+#!/bin/bash
+DIR="$1"
+python3 -c "
+open('$DIR/nuovo.js','w').write(''.join('var x%d = \'è\';\n' % i for i in range(60)))"
+exit 0
+EOF
+chmod +x "$STUB_NUOVO"
+OUT=$(MIGLIORIA_AGENT="$STUB_NUOVO" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.js bash "$CM" "$SB" 2>/dev/null); RC=$?
+[ "$RC" -eq 1 ] && ok "file NUOVO troppo grande/non-ASCII: bocciato dal gate (rc 1)" || ko "file nuovo passato dal gate (rc $RC)"
+[ ! -f "$SB/nuovo.js" ] && ok "file nuovo rimosso dal ripristino" || ko "il file nuovo e' rimasto nel working tree"
+rm -f "$STUB_NUOVO" "$SB/nuovo.js"; git -C "$SB" reset -q 2>/dev/null
+
 # 3. l'onestà: niente da migliorare → rc 1 + marker con cooldown
 OUT=$(MIGLIORIA_AGENT="$STUB_MUTO" MIGLIORIA_CAT=docs MIGLIORIA_FILE=utils.js bash "$CM" "$SB" 2>/dev/null); RC=$?
 [ "$RC" -eq 1 ] && ok "rc 1: 'niente' è una risposta valida" || ko "rc $RC (atteso 1)"

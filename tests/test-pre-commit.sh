@@ -91,6 +91,16 @@ OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
 printf 'docs: aggiorna il diario\n' > "$MSGF"
 OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
 [ "$RC" -eq 0 ] && ok "D10: messaggio senza numeri-test → via libera" || ko "D10: falso rosso su messaggio benigno: $OUT"
+# (revisione 10 giri, 2026-09-23): «sei file rossi» si poteva scrivere solo in lettere —
+# «6 test rossi» veniva letto come il TOTALE della suite. Un conteggio parziale non e' la
+# dichiarazione che la guardia difende («N test verdi», il totale).
+printf 'fix: 6 test rossi curati, 2 test nuovi\n' > "$MSGF"
+OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
+[ "$RC" -eq 0 ] && ok "conteggio parziale («6 test rossi», «2 test nuovi») → via libera" || ko "falso rosso su conteggio parziale: $OUT"
+N_VERI=$(ls "$HERE"/tests/test-*.sh | wc -l | tr -d ' ')
+printf 'fix: suite %s test verdi\n' "$N_VERI" > "$MSGF"
+OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
+[ "$RC" -eq 0 ] && ok "totale vero («$N_VERI test verdi») → via libera" || ko "falso rosso sul totale vero: $OUT"
 rm -f "$MSGF"
 
 # caso pulito: nessun file staged → via libera

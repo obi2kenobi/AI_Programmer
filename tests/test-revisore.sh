@@ -18,7 +18,11 @@ bash -n "$REV" && ok "sintassi" || { ko "sintassi"; exit 1; }
 # stub dei cervelli: $1=nome modello; l'autore risponde col comando avversario
 # (grep che trova il simbolo vivo: riesce se il codice regge), il censore col
 # verdetto dettato da REVISORE_STUB_VERDETTO
-STUB=$(mktemp /tmp/stub-revisore.XXXXXX)
+# (revisione 10 giri, 2026-09-23): la pulizia era `rm -rf /tmp/test-rev.* …` — cancellava
+# anche le cartelle di un'ALTRA esecuzione in corso (il banco notturno si sovrappone). Ora
+# ogni esecuzione ha la sua radice e pulisce solo quella.
+RADICE=$(mktemp -d /tmp/test-revisore-run.XXXXXX)
+STUB=$(mktemp "$RADICE/stub-revisore.XXXXXX")
 cat > "$STUB" <<'EOF'
 #!/bin/bash
 # (2026-09-20, modello unico): i due cervelli non si distinguono piu' dal NOME
@@ -35,7 +39,7 @@ chmod +x "$STUB"
 
 # repo scratch con PR bozza vera (le azioni gh girano in DRY; per le GUARDIE
 # serve gh pr view: anche quello e' uno stub che risponde dal file $GHSTUB_JSON)
-GHSTUB=$(mktemp -d /tmp/ghstub.XXXXXX)
+GHSTUB=$(mktemp -d "$RADICE/ghstub.XXXXXX")
 export GHSTUB_JSON="$GHSTUB/pr.json"
 mkdir -p "$GHSTUB"
 cat > "$GHSTUB/gh" <<'EOF'
@@ -74,14 +78,14 @@ PY
 }
 
 nuova_repo() {
-  SB=$(mktemp -d /tmp/test-rev.XXXXXX)
+  SB=$(mktemp -d "$RADICE/test-rev.XXXXXX")
   git -C "$SB" init -q -b main
   git -C "$SB" -c user.name=t -c user.email=t@t commit -qm init --allow-empty
   printf 'true\n' > "$SB/.night-verify"   # una verifica banale, sempre verde
   git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm verify
   echo "$SB"
 }
-trap 'rm -rf /tmp/test-rev.* /tmp/stub-revisore.* /tmp/ghstub.*' EXIT
+trap 'rm -rf "$RADICE"' EXIT
 
 # 1. flusso completo: PR matura, guardie ok, prove ok, censore APPROVA → merge (DRY)
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ok
@@ -140,7 +144,7 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 [ "$RC" -eq 2 ] && ok "verifiche rosse → rc 2 (mai al censore)" || ko "rc $RC (atteso 2)"
 
 # 6. allowlist del banco: comando con interprete/concatenatore → scartato → rc 2
-STUB_CATTIVO=$(mktemp /tmp/stub-avv-cattivo.XXXXXX)
+STUB_CATTIVO=$(mktemp "$RADICE/stub-avv-cattivo.XXXXXX")
 cat > "$STUB_CATTIVO" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; cat >/dev/null
@@ -168,7 +172,7 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 # stub con avversario che RIESCE sempre (ls di un file che c'e'): cosi' la prova morde
 # sulle guardie, non sul banco (la prima stesura passava per il motivo sbagliato:
 # l'avversario smascherava la PR e il rinvio arrivava comunque)
-STUB_LS=$(mktemp /tmp/stub-avv-ls.XXXXXX)
+STUB_LS=$(mktemp "$RADICE/stub-avv-ls.XXXXXX")
 cat > "$STUB_LS" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; PROMPT=$(cat)
@@ -201,7 +205,7 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" b
   || ko "D1: rc $RC — una PR che addomestica le proprie prove e' stata deliberata: $(echo "$OUT" | tail -1)"
 
 # 10. D2: il comando avversario con redirezione NON deve scrivere nel repo ne' contare come prova
-STUB_SCRIVE=$(mktemp /tmp/stub-avv-scrive.XXXXXX)
+STUB_SCRIVE=$(mktemp "$RADICE/stub-avv-scrive.XXXXXX")
 cat > "$STUB_SCRIVE" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; PROMPT=$(cat)
@@ -242,6 +246,18 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" b
 [ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D4: diff vuoto → rinvio, nessun merge del nulla" \
   || ko "D4: rc $RC — un diff vuoto e' stato deliberato"
 rm -f "$STUB_LS"
+
+# 7b. (revisione 10 giri, 2026-09-23): .night-verify di SOLI commenti sulla base — la guardia
+# «verifiche-vuote» usava `grep -vc ... || echo 0`: con zero comandi grep stampa 0 ED esce 1,
+# l'echo aggiunge un secondo 0, `[ "0\n0" -eq 0 ]` e' un errore di sintassi → falso → nessun
+# comando da eseguire → nessuna prova rotta → la PR arrivava al censore «con le prove verdi».
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vuote
+printf '# solo commenti\n\n# nessuna verifica\n' > "$SB/.night-verify"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm vuote
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "verifiche-vuote" && ! echo "$OUT" | grep -q "gh pr merge" \
+  && ok "verifiche-vuote sulla base → rc 2, mai al censore" \
+  || ko "verifiche-vuote NON rilevate (rc $RC): $(echo "$OUT" | grep -iE 'prove|integer|merge' | head -2)"
 
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
 #    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
