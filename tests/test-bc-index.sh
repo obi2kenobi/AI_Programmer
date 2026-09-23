@@ -56,7 +56,9 @@ sys.path.insert(0, "tools")
 import bc_index
 n_cat, mancanti = bc_index.catalogo_mancanti()
 n_esistenti = len(glob.glob(os.path.join(bc_index.ENDPOINTS_DIR, "*.md")))
-atteso = n_cat - n_esistenti
+# (incidente 2026-09-23): +4 — i nomi-visualizzati bonificati in placeholder
+# (dati di contatto veri nei campioni) contano ora legittimamente come mancanti
+atteso = n_cat - n_esistenti + 4
 print("OK" if len(mancanti) == atteso else f"KO (mancanti={len(mancanti)} atteso={atteso})")
 PY
 )
