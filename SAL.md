@@ -146,6 +146,7 @@
 - [2026-09-23 (9°) — REPO-L: il secret BC nella history è già stato ruotato (D6, Luca)](#2026-09-23-9-repo-l-il-secret-bc-nella-history-è-già-stato-ruotato-d6-luca)
 - [2026-09-23 (10°) — REPO-M (Energikal): debito chiuso per decisione di Luca (D7)](#2026-09-23-10-repo-m-energikal-debito-chiuso-per-decisione-di-luca-d7)
 - [2026-09-23 (11°) — CLAUDE.md: le sezioni del solo hub restano nell'hub, e il file torna sotto le 200 righe (D8, decisione di Luca)](#2026-09-23-11-claude-md-le-sezioni-del-solo-hub-restano-nell-hub-e-il-file-torna-sotto-le-200-righe-d8-decisione-di-luca)
+- [2026-09-23 (12°) — il metodo degli N giri diventa la skill `n-giri` (D9, decisione di Luca)](#2026-09-23-12-il-metodo-degli-n-giri-diventa-la-skill-n-giri-d9-decisione-di-luca)
 
 
 ## Stato
@@ -3188,3 +3189,23 @@ Curato strada facendo: il dente «pipeline seguita da &&» di `tools/pre-commit.
 per una pipe. È scattato su un commento di `tools/bootstrap-app.sh` appena lo si è toccato. Ora la
 `|` non deve far parte di un `||`. Caso benigno aggiunto a `tests/test-pre-commit.sh`; il caso
 colpevole morde ancora. Suite 162/162.
+
+### 2026-09-23 (12°) — il metodo degli N giri diventa la skill `n-giri` (D9, decisione di Luca)
+
+La nona domanda di dominio: Luca ha scelto «a». Il metodo dei «cinquanta giri» esisteva solo come
+artefatto finito, e Budget Vendite (2026-09-19) l'aveva ricostruito a mano. Ora è
+`.claude/skills/n-giri/`, invocabile con `/n-giri`, con specchio OpenCode:
+- **Prima e durante i giri**: confini e settimo patto, poi il brief unico con le aree ancorate a
+  `file:riga-riga` e le lenti consolidate. Ogni giro ha una lente e un'area, e scrive il suo file
+  prima di rispondere.
+- **Formato di un giro**: Oggi / Manca / Proposta, al massimo 6 finding, «nulla in questa lente»
+  come esito valido, e il modello dichiarato per blocco.
+- **Dopo i giri**: la verifica avversariale con le smentite dichiarate, le due colonne «segnalato
+  da N» e «verificato eseguendo», i temi trasversali, la tassonomia a quattro categorie, le
+  domande di dominio, la correzione a banco.
+- `.claude/skills/n-giri/references/brief-modello.md` è il brief da copiare.
+Banco scritto prima: `tests/test-skill-n-giri.sh`, rosso 0/1, poi 20/20. Sabotaggio togliendo la
+regola del file prima di rispondere e la tassonomia: 4 rossi.
+Cosa manca per un uso reale, dichiarato: la skill non è mai stata usata dal vivo. Il primo N giri
+che la usa ne è la prova, e il suo report di campo dirà cosa manca. Anche il consolidamento resta
+a mano: non c'è uno strumento che unisca i file dei giri.
