@@ -3022,3 +3022,8 @@ si fermava alla virgoletta escapata e sotto `set -e` MORIVA senza verdetto — o
 e un hook senza script non lo uccide (sabotaggio con un hook inesistente → finding).
 Suite 158/158. Provato DAL VIVO in questa sessione: da `night-shift/` gli avvisi degli hook
 scattano e `clasp push` e' NEGATO dal cancello.
+La PR #123 e' stata fusa al giro 10, prima di questo commit: il cambio degli hook riparte da
+main su una PR nuova. Alla prima suite sul main fuso il banco mutazioni ha trovato un MIO errore
+del giro 6 (E-041): `test-presidio` e `test-caccia-registro`, spostati in quarantena, facevano
+girare lo strumento del CLONE — che parte dal commit — e restavano verdi con lo strumento
+neutralizzato. Ora copiano lo strumento dal working tree (sabotaggio → 5 e 9 rossi). Suite 158/158.

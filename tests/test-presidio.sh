@@ -21,6 +21,9 @@ grep -q "PRESIDI.md merge=union" "$HERE/.gitattributes" && ok "il registro e' ap
 QT=$(mktemp -d /tmp/test-presidio.XXXXXX); trap 'rm -rf "$QT"' EXIT
 git clone -q --local "$HERE" "$QT/hub" 2>/dev/null || { ko "clone di quarantena fallito"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 rm -f "$QT/hub/PRESIDI.md"
+# il clone parte dal COMMIT: lo strumento sotto prova si porta dal working tree, o una
+# mutazione di tools/presidio.sh non arriverebbe mai qui (il banco mutazioni l'ha visto: TEATRO)
+cp "$HERE/tools/presidio.sh" "$QT/hub/tools/presidio.sh"
 TOOL="$QT/hub/tools/presidio.sh"
 HERE="$QT/hub"
 
