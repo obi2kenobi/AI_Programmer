@@ -109,6 +109,8 @@ controlla_numero_test "${1:-}" || FALLITI=1
 #    NOTA regex: la negata `[^|&;]*&&` NON funziona nel grep BSD (provato col caso
 #    avverso: falso dente silenzioso) — si usa la whitelist dei caratteri tipici
 #    fra comando e &&, verificata contro righe colpevoli e benigne.
+#    (D8, 2026-09-23): la `|` non deve far parte di un `||` — l'OR logico seguito da && non e'
+#    una pipeline, e il dente scattava su un commento di bootstrap-app.sh.
 PIPE_AND=""
 while IFS= read -r f; do
   [ -f "$f" ] || continue
@@ -116,7 +118,7 @@ while IFS= read -r f; do
   case "$f" in tools/pre-commit.sh|.githooks/pre-commit) continue;; esac
   while IFS= read -r riga; do
     PIPE_AND="$PIPE_AND $f: $riga"
-  done < <(grep -nE '\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' "$f" | sed 's/^\([0-9]*\):/riga \1:/' || true)
+  done < <(grep -nE '(^|[^|])\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' "$f" | sed 's/^\([0-9]*\):/riga \1:/' || true)
 done < <(git diff --cached --name-only 2>/dev/null | grep -E '\.(sh|py)$')
 [ -n "$PIPE_AND" ] && { echo "⛔ pipeline seguita da && (l'esito è del solo ultimo comando — la regola del 3/9 era prose, ora è un dente):"; echo "$PIPE_AND"; FALLITI=1; }
 

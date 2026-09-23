@@ -30,7 +30,8 @@ mkdir -p "$DEST" && cd "$DEST"
 git init -q -b main
 
 # Le regole universali si EREDITANO dal hub: un solo luogo dove vivono.
-cp "$HERE/CLAUDE.md" CLAUDE.md
+# (D8, Luca 2026-09-23): senza i blocchi del solo hub — tools/claude-md-satellite.sh
+bash "$HERE/tools/claude-md-satellite.sh" > CLAUDE.md || { echo "bootstrap-app: CLAUDE.md dell'hub con marcatori solo-hub rotti — mi fermo"; exit 1; }
 cat > PROJECT.md <<EOF
 # PROJECT.md — contesto specifico di $NAME
 

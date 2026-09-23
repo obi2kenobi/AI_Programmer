@@ -61,7 +61,9 @@ echo "STANDARD AI_PROGRAMMER INSTALLATO automaticamente su $CWD" >&2
 mkdir -p "$CWD/.claude" "$CWD/.opencode"
 
 # CLAUDE.md (se non esiste già un CLAUDE.md proprio)
-[ -f "$CWD/CLAUDE.md" ] || cp "$HUB/CLAUDE.md" "$CWD/CLAUDE.md"
+# (D8, Luca 2026-09-23): la versione senza i blocchi del solo hub (tools/claude-md-satellite.sh)
+[ -f "$CWD/CLAUDE.md" ] || bash "$HUB/tools/claude-md-satellite.sh" "$HUB/CLAUDE.md" > "$CWD/CLAUDE.md" \
+  || { rm -f "$CWD/CLAUDE.md"; echo "⚠ AI_Programmer: CLAUDE.md dell'hub con marcatori solo-hub rotti — non installato" >&2; }
 
 # settings.json (gli hook:SessionStart/UserPromptSubmit/PreToolUse)
 cp "$HUB/.claude/settings.json" "$CWD/.claude/settings.json"

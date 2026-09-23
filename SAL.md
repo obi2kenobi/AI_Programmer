@@ -145,6 +145,7 @@
 - [2026-09-23 (8°) — la premessa di un debito invecchia col codice, e la riapertura lo dice (D5, decisione di Luca)](#2026-09-23-8-la-premessa-di-un-debito-invecchia-col-codice-e-la-riapertura-lo-dice-d5-decisione-di-luca)
 - [2026-09-23 (9°) — REPO-L: il secret BC nella history è già stato ruotato (D6, Luca)](#2026-09-23-9-repo-l-il-secret-bc-nella-history-è-già-stato-ruotato-d6-luca)
 - [2026-09-23 (10°) — REPO-M (Energikal): debito chiuso per decisione di Luca (D7)](#2026-09-23-10-repo-m-energikal-debito-chiuso-per-decisione-di-luca-d7)
+- [2026-09-23 (11°) — CLAUDE.md: le sezioni del solo hub restano nell'hub, e il file torna sotto le 200 righe (D8, decisione di Luca)](#2026-09-23-11-claude-md-le-sezioni-del-solo-hub-restano-nell-hub-e-il-file-torna-sotto-le-200-righe-d8-decisione-di-luca)
 
 
 ## Stato
@@ -3148,3 +3149,42 @@ La settima domanda di dominio: Luca ha detto «chiudi il debito e andiamo avanti
 client_secret in `config.gs` di Energikal è SALDATA per decisione del proprietario. Da una sessione
 cloud non si raggiungono né Azure né REPO-M, quindi qui non è verificato né se il secret sia
 stato ruotato né se il segnaposto sia stato ripristinato. Nessun codice toccato.
+
+### 2026-09-23 (11°) — CLAUDE.md: le sezioni del solo hub restano nell'hub, e il file torna sotto le 200 righe (D8, decisione di Luca)
+
+L'ottava domanda di dominio: Luca ha scelto «a», con la richiesta di verificare in rete se il
+nostro CLAUDE.md fosse ancora efficace. Poi ha confermato la lista delle sezioni del solo hub:
+«procedi con tutte le correzioni».
+- **Verifica** sulla documentazione ufficiale di Claude Code (memory, best-practices):
+  - la guida chiede meno di 200 righe («longer files consume more context and reduce adherence»);
+    il nostro file ne aveva 303;
+  - l'enfasi va su pochissime righe, non sparsa ovunque;
+  - le procedure lunghe vanno nelle skill;
+  - i commenti HTML a blocco non arrivano al modello;
+  - se esiste anche CLAUDE.md, l'AGENTS.md non viene letto da Claude Code.
+- **Solo hub.** I blocchi fra `<!-- solo-hub -->` e `<!-- /solo-hub -->` contengono §7: i
+  wrapper LLM, «When/Never delegate», «Full method», «Goal loops», «Public repo».
+  `tools/claude-md-satellite.sh` li toglie e si rifiuta se i marcatori sono sbilanciati. Lo usano
+  `tools/sync-repo.sh`, `tools/bootstrap-app.sh`, `tools/garante-standard.sh` e il confronto di
+  deriva di `night-shift/morning-gate.sh`.
+- **Riscrittura.** Le righe che il modello vede sono 116 nell'hub e 101 nei satelliti, contro
+  circa 300 prima. Le provenienze stanno nei commenti HTML, l'enfasi su una riga sola.
+  - Aggiunta una riga universale: «Deploy is the human's». Prima il divieto del deploy stava solo
+    nella regola del repo pubblico, che è del solo hub: i satelliti GAS l'avrebbero perso.
+- **Revisione avversaria** da un sottoagente, confrontando la versione vecchia e la nuova:
+  - una contraddizione NUOVA: il passaggio del segreto parlava ancora di «login/deploy» da
+    eseguire da sé; ristretto al login;
+  - otto restringimenti restituiti, tra cui la categoria del mascheramento, «refactor → test
+    prima e dopo» e i percorsi del morning-gate e di grafo-semantico;
+  - un errore già presente prima: post-mortem ha OTTO campi, non sette.
+Banco scritto prima: `tests/test-claude-md-snello.sh`, rosso 3/15, poi 15/15. Sabotaggio con lo
+stripper che non toglie niente: 2 rossi. Tre banchi aggiornati alla versione satellite:
+test-sync-repo, test-sync-repo-standard-item-list e test-claude-md-gate-conventions.
+Rilievo dal campo, non curato: `tools/clasp-block-hook.sh` ha NEGATO due comandi di questa sessione
+(un heredoc Python e l'accodamento di questa voce) il cui testo citava il divieto, preceduto da una
+parentesi aperta. Il separatore `(` dentro una stringa conta come apertura di un comando: è la
+stessa famiglia dei falsi positivi REPO-E e D27. Aggirato scrivendo il testo in un file.
+Curato strada facendo: il dente «pipeline seguita da &&» di `tools/pre-commit.sh` scambiava `||`
+per una pipe. È scattato su un commento di `tools/bootstrap-app.sh` appena lo si è toccato. Ora la
+`|` non deve far parte di un `||`. Caso benigno aggiunto a `tests/test-pre-commit.sh`; il caso
+colpevole morde ancora. Suite 162/162.

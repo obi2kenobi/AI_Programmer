@@ -35,7 +35,7 @@ grep -q 'case "$BRANCH" in night/\*)' "$HERE/night-shift/revisore.sh" && grep -q
   || ko "filtro del censore e CLAUDE.md divergono"
 
 # CLAUDE.md viaggia davvero verso i progetti nuovi (altrimenti la documentazione non arriva)
-grep -q 'cp "\$HERE/CLAUDE.md" CLAUDE.md' "$HERE/tools/bootstrap-app.sh" \
+grep -q 'claude-md-satellite.sh" > CLAUDE.md' "$HERE/tools/bootstrap-app.sh" \
   && ok "CLAUDE.md (con le nuove convenzioni) viene copiato nei progetti bootstrappati" \
   || ko "bootstrap-app.sh non copia più CLAUDE.md — la documentazione non arriverebbe"
 

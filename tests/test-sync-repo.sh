@@ -13,7 +13,7 @@ trap 'rm -rf "$TMP"' EXIT
 
 # repo finta ALLINEATA
 mkdir -p "$TMP/allineata"
-cp "$HERE/CLAUDE.md" "$TMP/allineata/CLAUDE.md"
+bash "$HERE/tools/claude-md-satellite.sh" > "$TMP/allineata/CLAUDE.md"  # D8: allineata = la versione per i satelliti
 # (canarino v2, audit 2026-09-23): allineata vuol dire ANCHE gli hook uguali
 mkdir -p "$TMP/allineata/tools"
 while IFS= read -r H; do cp "$HERE/$H" "$TMP/allineata/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
@@ -55,6 +55,7 @@ bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/vuota" >/dev/null 2>&1
 # gh e' uno stub: `api contents/CLAUDE.md` risponde dal file $GH_CLAUDE_MD (o 404 se
 # assente), `repo clone` clona dal bare $GH_CLONE_SRC, `pr create` stampa una URL.
 mkdir -p "$TMP/bin"
+bash "$HERE/tools/claude-md-satellite.sh" > "$TMP/claude-sat.md"   # D8: il CLAUDE.md che un satellite allineato ha
 cat > "$TMP/bin/gh" <<'EOF'
 #!/bin/bash
 case "$1 $2" in
@@ -86,7 +87,7 @@ echo "$OUT" | grep -q "ASSENTE" && ok "D11: il verdetto dice che CLAUDE.md era A
 
 # D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
 nuovo_bare canarino-uguale 1
-OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
 BR=$(ramo_standard canarino-uguale)
 [ -n "$BR" ] && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -q '^\.claude/settings.json$' \
   && ok "D12: CLAUDE.md uguale ma standard mancante → il ramo porta lo standard (skill, hook)" \
@@ -102,7 +103,7 @@ fi
 # «GIÀ A STANDARD» se non c'e' nulla da portare (misurato nell'hub durante il test del sistema)
 if [ -n "$BR" ]; then
   git -C "$TMP/canarino-uguale-seed" fetch -q origin && git -C "$TMP/canarino-uguale-seed" merge -q --no-edit "origin/$BR" && git -C "$TMP/canarino-uguale-seed" push -q origin HEAD:main 2>/dev/null
-  OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
+  OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
   echo "$OUT" | grep -q "GIÀ A STANDARD" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
     || ko "riallineo: atteso GIÀ A STANDARD, avuto (rc=$RC): $(echo "$OUT" | tail -1)"
   git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -q '\.claude/skills/skills/' \
@@ -114,7 +115,7 @@ fi
 mkdir -p "$TMP/bin-rotto"; cp "$TMP/bin/gh" "$TMP/bin-rotto/gh"
 sed -i 's|git clone -q "${GH_CLONE_SRC:?}" "$4"|exit 0|' "$TMP/bin-rotto/gh"
 mkdir -p "$TMP/cwd-pulita"
-OUT=$(cd "$TMP/cwd-pulita" && GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin-rotto:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/fantasma --standard 2>&1); RC=$?
+OUT=$(cd "$TMP/cwd-pulita" && GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin-rotto:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/fantasma --standard 2>&1); RC=$?
 [ "$RC" -ne 0 ] && [ -z "$(ls -A "$TMP/cwd-pulita")" ] \
   && ok "D14: clone senza directory → errore detto, la CWD resta intatta" \
   || ko "D14: rc=$RC e la CWD contiene: $(ls -A "$TMP/cwd-pulita" | tr '\n' ' ')"

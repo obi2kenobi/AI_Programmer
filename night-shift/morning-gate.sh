@@ -80,7 +80,7 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
   git -C "$DIR" fetch origin --prune -q
   DB=$(default_branch "$DIR") || log "ATTENZIONE: default branch non rilevato in $REPO, assumo main"
   # review §4.2: drift-check del CLAUDE.md (informativo, non bloccante)
-  if ! diff -q <(git -C "$DIR" show "origin/$DB:CLAUDE.md" 2>/dev/null) "$HERE/../CLAUDE.md" >/dev/null 2>&1; then
+  if ! diff -q <(git -C "$DIR" show "origin/$DB:CLAUDE.md" 2>/dev/null) <(bash "$HERE/../tools/claude-md-satellite.sh") >/dev/null 2>&1; then
     echo "_⚠ Drift: il CLAUDE.md della repo $REPO differisce da quello del hub (regole ereditate non allineate — valutare l'aggiornamento)._" >> "$REPORT"
   fi
 

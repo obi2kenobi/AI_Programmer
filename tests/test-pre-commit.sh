@@ -53,7 +53,9 @@ git -C "$HERE" restore --staged "$PROBE3" >/dev/null 2>&1; rm -f "$PROBE3"
 
 # e il benigno (|| true, pipe senza &&) non deve scattare
 PROBE4="$HERE/tools/_probe_pipe_ok.sh"
-printf '#!/bin/bash\nls | xargs grep -l foo 2>/dev/null || true\ngrep -q x file || exit 1\n' > "$PROBE4"
+# (D8, 2026-09-23): anche l'OR logico seguito da && non e' una pipe — il dente scattava su un
+# commento di bootstrap-app.sh («[ dry ] || git add -A && …»)
+printf '#!/bin/bash\nls | xargs grep -l foo 2>/dev/null || true\ngrep -q x file || exit 1\n[ -n "$x" ] || echo a %s echo b\n' '&&' > "$PROBE4"
 git -C "$HERE" add "$PROBE4"
 OUT=$(bash "$HOOK"); RC=$?
 [ "$RC" -eq 0 ] && ok "pipe senza && : via libera (nessun falso positivo)" \

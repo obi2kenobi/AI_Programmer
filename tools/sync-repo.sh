@@ -20,7 +20,6 @@
 # la PR restano al Mac del proprietario. Un agente cloud deve DIRLO, non morire.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-HUB_CLAUDE="$HERE/CLAUDE.md"
 
 REPO=""
 LOCAL_DIR=""
@@ -38,6 +37,10 @@ done
 
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
+# (D8, Luca 2026-09-23): il CLAUDE.md che si confronta e si installa e' la versione per i
+# satelliti — senza i blocchi del solo hub (tools/claude-md-satellite.sh). Marcatori rotti: stop.
+HUB_CLAUDE="$TMP/claude-satellite.md"
+bash "$HERE/tools/claude-md-satellite.sh" > "$HUB_CLAUDE" || { echo "sync-repo: CLAUDE.md dell'hub con marcatori solo-hub rotti — mi fermo"; exit 1; }
 
 if [ -n "$LOCAL_DIR" ]; then
   [ -f "$LOCAL_DIR/CLAUDE.md" ] || { echo "sync-repo: CLAUDE.md assente in $LOCAL_DIR"; exit 1; }
@@ -136,7 +139,8 @@ done
   CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh tools/py-gate.sh tools/fork-stato.sh tools/presidio.sh tools/polilivello.sh"
   # (D13, 2026-09-20): i GUARDIANI DEL COMMIT viaggiano — .githooks (pre-commit e
   # commit-msg) e tools/pre-commit.sh; l'attivazione resta `git config core.hooksPath .githooks`
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
+  cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null && COPIATI=$((COPIATI+1))  # D8: versione satellite
+  for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
     [ -e "$HERE/$ITEM" ] || continue
     if [ -d "$HERE/$ITEM" ]; then
       # (2026-09-20, misurato nell'hub durante il test del sistema): `cp -r dir dir` con la
