@@ -202,6 +202,44 @@ else
   ko "verifica_issue_comando non definita in lib.sh"
 fi
 
+# --- prendi_lock_turno (Q10, 2026-09-23, giro A5 della notte): il lock globale del turno si
+#     prendeva DOPO il self-pull (reset --hard dell'hub sotto un turno vivo) e il pkill degli
+#     opencode (l'agente del turno vivo): un secondo turno — quello manuale accanto a quello
+#     delle 23:00, patterns/lock-per-risorsa.md — faceva il danno e solo dopo usciva. E il lock
+#     «scadeva» a 1h mentre un ciclo con l'issue lenta dura fino a 4h (watchdog): rubato a un
+#     turno vivo. Ora conta il PID: vivo e del turno = occupato, a qualunque eta'; morto = orfano
+#     (E-026) e si prende subito; lo stesso PID (il ciclo dopo l'exec) = suo.
+if declare -F prendi_lock_turno >/dev/null; then
+  LT=$(mktemp -d)
+  lock_da_altro() { bash -c 'source "$1/night-shift/lib.sh"; prendi_lock_turno "$2"' _ "$HERE" "$1"; }
+  lock_da_altro "$LT/l1"; RC=$?
+  [ "$RC" -eq 0 ] && [ -s "$LT/l1/pid" ] && ok "lock turno: libero → preso, col PID dentro" || ko "lock turno: libero non preso (rc=$RC)"
+  ( exec -a night-shift-finto sleep 30 ) & VIVO=$!
+  mkdir "$LT/l2"; echo "$VIVO" > "$LT/l2/pid"; python3 -c 'import os,sys,time; t=time.time()-7200; os.utime(sys.argv[1],(t,t))' "$LT/l2"
+  lock_da_altro "$LT/l2"; RC=$?
+  [ "$RC" -eq 1 ] && [ "$(cat "$LT/l2/pid")" = "$VIVO" ] && ok "lock turno: tenuto da un turno VIVO da 2h → occupato (non si ruba per eta')" || ko "lock turno: rubato a un turno vivo (rc=$RC)"
+  kill "$VIVO" 2>/dev/null; wait "$VIVO" 2>/dev/null
+  lock_da_altro "$LT/l2"; RC=$?
+  [ "$RC" -eq 0 ] && [ "$(cat "$LT/l2/pid")" != "$VIVO" ] && ok "lock turno: PID morto (orfano, E-026) → preso subito" || ko "lock turno: orfano di un turno morto non preso (rc=$RC)"
+  sleep 30 & ALTRO=$!
+  mkdir "$LT/l3"; echo "$ALTRO" > "$LT/l3/pid"
+  lock_da_altro "$LT/l3"; RC=$?
+  [ "$RC" -eq 0 ] && ok "lock turno: PID vivo ma NON del turno (PID riusato) → orfano, preso" || ko "lock turno: un PID riusato blocca il turno (rc=$RC)"
+  kill "$ALTRO" 2>/dev/null; wait "$ALTRO" 2>/dev/null
+  RC=$(bash -c 'source "$1/night-shift/lib.sh"; prendi_lock_turno "$2"; a=$?; prendi_lock_turno "$2"; echo "$a$?"' _ "$HERE" "$LT/l4")
+  [ "$RC" = "00" ] && ok "lock turno: stesso PID (il ciclo dopo exec) → e' suo" || ko "lock turno: il turno non riconosce il proprio lock dopo l'exec ($RC)"
+  mkdir "$LT/l5"; lock_da_altro "$LT/l5"; RC=$?
+  [ "$RC" -eq 1 ] && ok "lock turno: senza PID (versione vecchia) e fresco → occupato" || ko "lock turno: lock senza PID fresco rubato (rc=$RC)"
+  rm -rf "$LT"
+  NSH="$HERE/night-shift/night-shift.sh"
+  R_LOCK=$(grep -n 'prendi_lock_turno "' "$NSH" | head -1 | cut -d: -f1)
+  R_RESET=$(grep -n 'reset -q --hard' "$NSH" | head -1 | cut -d: -f1)
+  R_PKILL=$(grep -n 'pkill -f "opencode run"' "$NSH" | grep -v '^[0-9]*:[[:space:]]*#' | head -1 | cut -d: -f1)
+  [ -n "$R_LOCK" ] && [ "$R_LOCK" -lt "${R_RESET:-0}" ] && [ "$R_LOCK" -lt "${R_PKILL:-0}" ]     && ok "night-shift.sh: il lock del turno si prende PRIMA del self-pull e del pkill"     || ko "night-shift.sh: lock (riga ${R_LOCK:-assente}) dopo reset (${R_RESET:-?}) o pkill (${R_PKILL:-?})"
+else
+  ko "prendi_lock_turno non definita in lib.sh"
+fi
+
 # --- candidata_parere (D10, Luca 2026-09-23: «b»): la PR di ISSUE che il censore giudica col solo
 #     parere — bozza su night/issue-*, e mai due volte lo stesso commit (il parere dato si ricorda)
 if declare -F candidata_parere >/dev/null; then

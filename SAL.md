@@ -3423,3 +3423,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     e `tests/test-stdin-timeout.sh`.
   - Resta, dichiarato: `tests/test-banco-passaggio.sh` scrive ancora le esclusioni vere e le
     rimette con un trap, che un SIGKILL salta. Copiare l'albero per isolarlo costa più del rischio.
+- **Q10**, da A5, turni sovrapposti. Il lock globale di `night-shift/night-shift.sh` si prendeva
+  dopo il self-pull (reset --hard dell'hub sotto il turno vivo) e dopo il pkill degli opencode
+  (l'agente del turno vivo). Il turno manuale accanto a quello delle 23:00 faceva il danno e solo
+  dopo usciva. E il lock scadeva a 1h, mentre un ciclo con l'issue lenta dura fino a 4h.
+  - Ora il lock si prende in testa e porta il PID (`night-shift/lib.sh` prendi_lock_turno):
+    - vivo e del turno = occupato, a qualunque età;
+    - morto o riusato = orfano (E-026), preso subito;
+    - stesso PID = suo. Resta preso attraverso `exec "$0"`: niente finestra fra i cicli.
+  - Banco: `tests/test-lib.sh`, 7 casi (6 di regola, 1 d'ordine nel sorgente). Sabotaggio (via
+    il riconoscimento del proprio PID e del comando): 2 rossi.
+  - ASSUNTO: `ps -p <pid> -o command=` si comporta così anche sul Mac (è POSIX); qui è provato
+    solo su Linux.

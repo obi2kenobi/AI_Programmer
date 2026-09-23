@@ -292,3 +292,26 @@ verifica_issue_comando() {
   case "$riga" in *" /"*|*..*|*" -"[ecm]" "*|*" --eval"*) return 0 ;; esac   # niente assoluti ne' risalite
   printf '%s' "$riga"
 }
+
+# prendi_lock_turno <dir-lock>: 0 = il lock e' di questo processo (preso ora, o gia' suo: il ciclo
+# dopo `exec "$0"` ha lo stesso PID), 1 = lo tiene un altro turno VIVO. (Q10, 2026-09-23, giro A5
+# della notte): prima contava l'eta' — oltre 1h il lock si toglieva, ma un ciclo con l'issue lenta
+# dura fino a 4h (watchdog) e il lock si rubava a un turno vivo. Ora conta il PID: vivo e del
+# turno = occupato, a qualunque eta'; morto, o riusato da un altro programma = orfano (E-026) e si
+# prende subito. Un lock senza PID (versione di prima) tiene la vecchia regola dell'ora.
+prendi_lock_turno() {
+  local L="$1" pid comando
+  if mkdir "$L" 2>/dev/null; then echo $$ > "$L/pid"; return 0; fi
+  pid=$(cat "$L/pid" 2>/dev/null)
+  [ "$pid" = "$$" ] && return 0
+  if [ -n "$pid" ]; then
+    comando=$(ps -p "$pid" -o command= 2>/dev/null)
+    grep -q 'night-shift' <<<"$comando" && return 1
+  elif [ $(( $(date +%s) - $(mtime "$L") )) -lt 3600 ]; then
+    return 1
+  fi
+  rm -rf "$L"
+  mkdir "$L" 2>/dev/null || return 1
+  echo $$ > "$L/pid"
+  return 0
+}

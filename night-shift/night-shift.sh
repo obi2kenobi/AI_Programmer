@@ -36,6 +36,20 @@ LOG="$HOME/night-shift.log"
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
 rotate_log_if_big "$LOG"
 
+# --- Lock GLOBALE del turno (2026-09-15, finestra oraria; Q10, 2026-09-23, giro A5 della notte):
+# si prende PRIMA di tutto. Stava dopo il self-pull (reset --hard dell'hub sotto il turno vivo)
+# e dopo il pkill degli opencode (l'agente del turno vivo): il turno manuale accanto a quello
+# delle 23:00 faceva il danno e solo dopo usciva. Il lock porta il PID e resta preso attraverso
+# `exec "$0"` (stesso PID): nessuna finestra fra un ciclo e il successivo. Regole in lib.sh
+# prendi_lock_turno (testata in tests/test-lib.sh).
+TURN_LOCK="$HOME/night-shift-work/.lock-turno"
+mkdir -p "$HOME/night-shift-work"
+if ! prendi_lock_turno "$TURN_LOCK"; then
+  log "turno precedente ancora vivo (PID $(cat "$TURN_LOCK/pid" 2>/dev/null || echo '?')): questo avvio saluta ed esce, senza toccare nulla"
+  exit 0
+fi
+trap 'rm -rf "$TURN_LOCK"' EXIT
+
 # 2026-08-29 (dal campo): la copia operativa era 5 commit indietro e la notte ha
 # girato col metodo stantio. Il turno si aggiorna DA SOLO prima di partire:
 # l'hub è un repo git: fetch + reset --hard sul main remoto (mai merge automatici nel
@@ -1178,21 +1192,7 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
 }
 
 # --- Esecuzione -----------------------------------------------------------------
-# (2026-09-15, finestra 23-06 oraria): con cicli ogni ora, due turni possono sovrapporsi
-# (un issue-lento supera l'ora). Lock GLOBALE del turno: il secondo ciclo si accorge,
-# saluta e ritorna — il per-repo lock resta per le repliche multiple.
-TURN_LOCK="$WORK/.lock-turno"
-if ! mkdir "$TURN_LOCK" 2>/dev/null; then
-  ETA=$(( $(date +%s) - $(mtime "$TURN_LOCK") ))
-  if [ "$ETA" -ge 3600 ]; then
-    log "lock turno globale scaduto (${ETA}s > 1h: un turno oltre l'ora e' anomalia da guardare, non da aspettare — E-026): lo rimuovo e proseseguo"
-    rmdir "$TURN_LOCK" 2>/dev/null; mkdir "$TURN_LOCK" 2>/dev/null || { log "turno precedente ancora vivo: esco"; exit 0; }
-  else
-    log "turno precedente ancora in corsa: questo ciclo saluta ed esce (finestra oraria)"
-    exit 0
-  fi
-fi
-trap 'rmdir "$TURN_LOCK" 2>/dev/null' EXIT
+# (il lock globale del turno si prende in testa allo script: vedi prendi_lock_turno)
 
 # il SECONDO CERVELLO (2026-09-21): una domanda al giorno, la prima del giorno.
 # Compila gli sospesi (note tipo:sospeso + PR aperte) in modo DETERMINISTICO e
@@ -1363,7 +1363,7 @@ if [ "$TOT_PR_CREATED" -eq 0 ] && [ "$TOT_PROPOSTE" -eq 0 ] && [ "$CICLO_SEC" -l
 else
   log "=== TURNO FINITO — riparto SUBITO ==="
 fi
-rmdir "$TURN_LOCK" 2>/dev/null
+# il lock NON si rilascia: il ciclo dopo l'exec ha lo stesso PID e lo ritrova suo (Q10)
 exec "$0" "$@"
 
 exit $GLOBAL_RC
