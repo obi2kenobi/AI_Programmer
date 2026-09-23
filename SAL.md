@@ -2841,3 +2841,29 @@ del censore), con due attese in `tests/test-lib.sh` scritte prima (rosse) — 42
 Le tre lenti in sola lettura partite al giro 1 hanno consegnato: 17 riferimenti/conteggi
 (curati al giro 3), 30 difetti di codice, 20 test finti o deboli. Ordinati per gravita' nei
 giri 5-10 — ognuno rieseguito prima della cura: nessuno entra per fiducia.
+
+**Giro 5 — la produzione e il Mac (ogni cura col banco rosso prima).**
+- **Cancello clasp** (`tools/clasp-block-hook.sh`): l'ancora SEP accettava solo inizio riga e
+  `; & |` — undici forme comuni passavano, fra cui il LOOP generato (`for …; do clasp push;
+  done`, la forma esatta dell'incidente REPO-Q che l'hook cita), `(…)`, `{ …; }`, `if …;
+  then`, `time`/`nohup`/`exec`/`xargs`, e `bash -c "clasp push"` (le virgolette sono dati per
+  lo spoglio, ma l'interprete le esegue). Riprodotte tutte, poi curate. La cura ha negato il
+  commit di QUESTA voce: lo spoglio dei backtick lavorava per riga e uno span che va a capo
+  restava — ora l'a capo diventa `;` (separatore vero) e i backtick si tolgono su piu' righe;
+  il controllo `bash -c` guarda il testo senza backtick. Sabotaggio → rosso. 52/52.
+- **Deploy assistito**: `tools/deploy-ora.sh` guardava solo HEAD == commit firmato — nella
+  copia dove lavora il turno, una modifica non committata o un file non tracciato sarebbero
+  andati in produzione. Ora albero pulito o niente. `tools/prepara-deploy.sh` scriveva
+  «verifica verde» anche senza verifiche, ignorava i non tracciati e il FORMATO script: ora
+  stesso contratto degli altri lettori, e il manifest dice quante verifiche ha eseguito.
+  `tests/test-deploy-assistito.sh` 11/11 (5 attese nuove, rosse prima).
+- **Installer** (`night-shift/install.sh`): bootout/print su `com.<utente>.<job>`, ma launchd
+  conosce la Label del plist (`<utente>.<job>`) — il reinstall non ricaricava mai e il
+  controllo E-019 diceva sempre «NON punta»; il plist del digest usava `__DIR__`, mai
+  sostituito; il controllo del modello cercava la stringa `${MODELLO:-…}`. E il suo banco
+  (`tests/test-install.sh`) su un Mac chiamava il **launchctl VERO** sul turno di produzione:
+  `$FAKE/bin` era vuoto, e comunque `$FAKE` non arrivava al PATH del figlio (virgolette
+  singole). Ora un launchctl finto registra le chiamate e le etichette si verificano: 10/10.
+- **Backup**: l'ID del gist SEGRETO (`.gist-backup-id`, cioe' l'accesso a `repos.key` e
+  `repos.conf`) viveva alla radice dell'hub pubblico senza essere ignorato → `.gitignore`, con
+  attesa in `tests/test-backup-config.sh`.

@@ -24,7 +24,9 @@ command -v ollama >/dev/null 2>&1 || { echo "⚠ MANCA ollama (brew install --ca
 # (giro 19, 2026-09-20): qui si controllava il 27b generale, abbandonato il 2026-09-19 (un solo
 # modello, decisione di Luca — oggi cervello/decisione-modello-unico.md): chi installava scaricava 17 GB
 # che nessun turno usa. Il modello si legge da night-shift.sh (MODEL_TAG), non si riscrive qui.
-MODELLO_TURNO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HUB/night-shift/night-shift.sh" | cut -d'"' -f2)
+# (revisione 10 giri, 2026-09-23): MODEL_TAG e' `"${MODELLO:-<default>}"` — senza togliere la
+# forma ${…:-…} qui si cercava in `ollama list` la stringa letterale, che non c'e' mai.
+MODELLO_TURNO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HUB/night-shift/night-shift.sh" | cut -d'"' -f2 | sed -E 's/^\$\{[A-Z_]+:-(.*)\}$/\1/')
 MODELLO_TURNO="${MODELLO_TURNO:-qwen3.8-27b:iq3s}"
 LISTA_MODELLI=$(ollama list 2>/dev/null); grep -qi "$MODELLO_TURNO" <<<"$LISTA_MODELLI" || echo "⚠ modello $MODELLO_TURNO assente (ollama pull $MODELLO_TURNO — 12 GB)"
 command -v gh >/dev/null 2>&1 || { echo "⚠ MANCA gh (brew install gh) + gh auth login"; MISSING=1; }
@@ -58,19 +60,24 @@ mkdir -p "$AGENTS"
 for tpl in nightshift morningdigest; do
   SRC="$HUB/night-shift/plist/com.luca.$tpl.plist"
   DST="$AGENTS/com.$USER_NAME.$tpl.plist"
-  sed -e "s|__USER__|$USER_NAME|g" -e "s|__HOME__|$HOME_DIR|g" -e "s|__HUB__|$HUB|g" "$SRC" > "$DST"
-  launchctl bootout "gui/$(id -u)/com.$USER_NAME.$tpl" 2>/dev/null
+  # (revisione 10 giri, 2026-09-23): launchd conosce il job per la Label DEL PLIST
+  # (`__USER__.<job>`), non per il nome del file: bootout/print su com.<utente>.<job> non
+  # trovavano mai il job — il reinstall non ricaricava e il controllo E-019 diceva sempre
+  # «NON punta». E __DIR__ (plist del digest) non era sostituito: sinonimo di __HUB__.
+  LABEL="$USER_NAME.$tpl"
+  sed -e "s|__USER__|$USER_NAME|g" -e "s|__HOME__|$HOME_DIR|g" -e "s|__HUB__|$HUB|g" -e "s|__DIR__|$HUB|g" "$SRC" > "$DST"
+  launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null
   launchctl bootstrap "gui/$(id -u)" "$DST" 2>/dev/null || echo "  ⚠ $DST non caricato (già attivo con altro nome?)"
   # E-019 (2026-09-03): bootstrap silenzioso fallito → plist on-disk e job caricato
   # puntavano a COPIE DIVERSE del repo. Il turno sarebbe partito dalla copia sbagliata
   # (repos.conf vuota) al primo reload. Verifica che il job caricato sia quello appena scritto.
   sleep 1
-  STATO_AGENTE=$(launchctl print "gui/$(id -u)/com.$USER_NAME.$tpl" 2>/dev/null)
+  STATO_AGENTE=$(launchctl print "gui/$(id -u)/$LABEL" 2>/dev/null)
   if grep -q "$HUB/" <<<"$STATO_AGENTE"; then
     echo "  ✓ $tpl caricato e punta a $HUB"
   else
     echo "  ⚠⚠ $tpl: il job caricato NON punta a $HUB — plist e launchd divergono!"
-    echo "     sistema a mano: launchctl bootout gui/$(id -u)/com.$USER_NAME.$tpl && launchctl bootstrap gui/$(id -u) $DST"
+    echo "     sistema a mano: launchctl bootout gui/$(id -u)/$LABEL && launchctl bootstrap gui/$(id -u) $DST"
   fi
 done
 # E-019: installare DALLA workspace di sviluppo rende produzione la copia sbagliata
@@ -78,7 +85,7 @@ done
 case "$HUB" in
   */.zcode/workspace/*) echo "  ⚠⚠ HUB dentro una workspace di sviluppo ($HUB): sei sicuro che questa copia debba essere il turno di notte? La coda reale (repos.conf) vive di norma nella copia di automazione." ;;
 esac
-echo "  attivi: com.$USER_NAME.ollama com.$USER_NAME.nightshift"
+echo "  installati: $USER_NAME.nightshift $USER_NAME.morningdigest (Label dei plist)"
 
 echo ""
 echo "== Fatto. Verifiche: =="

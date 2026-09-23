@@ -34,6 +34,11 @@ cd "$HOME/night-shift-work/$REPO" 2>/dev/null || { echo "⛔ la copia locale di 
 [ -d .git ] || { echo "⛔ $REPO non e' un repo git" >&2; exit 1; }
 ATTUALE=$(git rev-parse HEAD)
 [ "$ATTUALE" = "$SHA" ] || { echo "⛔ il commit attuale ($ATTUALE) non e' quello firmato ($SHA): riprepara" >&2; exit 1; }
+# (revisione 10 giri, 2026-09-23): HEAD giusto non basta — clasp spedisce i FILE, e questa e'
+# la copia dove lavora il turno notturno: una modifica non committata o un file non tracciato
+# sarebbero andati in produzione senza essere nel commit firmato. Albero pulito, o niente.
+SPORCO=$(git status --porcelain --untracked-files=all 2>/dev/null)
+[ -z "$SPORCO" ] || { echo "⛔ la copia di lavoro NON e' il commit firmato: ci sono modifiche o file non tracciati —" >&2; echo "$SPORCO" | head -10 >&2; echo "   pulisci (o committa e riprepara): si deploea solo cio' che il manifest firma" >&2; exit 1; }
 
 echo "— clasp push (credenziali del tuo profilo, mai toccate dall'agente)..."
 if npx clasp push -f 2>&1 | tee -a "$STAGE/STORICO.log"; then

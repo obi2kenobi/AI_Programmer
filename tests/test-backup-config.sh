@@ -34,4 +34,10 @@ else
   ok "gh assente: verifica del ripristino dichiarata NON ESEGUIBILE (non falsificata)"
 fi
 
+# (revisione 10 giri, 2026-09-23): l'ID del gist SEGRETO e' la sua URL — chi lo legge, legge
+# repos.key e repos.conf. Viveva in .gist-backup-id alla radice dell'hub PUBBLICO senza essere
+# ignorato: un `git add -A` lo avrebbe pubblicato (ACCESSO, la cosa che la regola vieta).
+git -C "$HERE" check-ignore -q .gist-backup-id && ok ".gist-backup-id e' ignorato da git (l'ID del gist segreto non si pubblica)" \
+  || ko ".gist-backup-id NON e' ignorato: l'accesso al backup finirebbe nel repo pubblico"
+
 echo ""; echo "$PASS OK, $FAIL FAIL"; [ $FAIL -eq 0 ]

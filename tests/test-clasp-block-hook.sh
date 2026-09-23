@@ -122,6 +122,36 @@ D=$(decide7 "echo ${BT}clasp push${BT}")
 D=$(decide7 'clasp push')
 [ "$D" = "deny" ] && ok "D27: la forma NUDA resta negata dopo lo spoglio dei backtick" || ko "D27: la forma nuda passa ($D)"
 
+# ── Revisione 10 giri (2026-09-23): le forme composte della shell ────────────────────
+# L'ancora SEP accettava solo inizio riga e ; & | — undici forme comuni passavano, fra cui
+# il LOOP generato (la forma dell'incidente REPO-Q) e `bash -c "…"` (le virgolette sono
+# dati per lo spoglio, ma bash -c le ESEGUE).
+for F in 'for d in a b; do clasp push; done' 'bash -c "clasp push"' "sh -c 'npx clasp push'" '(clasp push)' \
+         'if true; then clasp deploy; fi' 'time clasp push' 'xargs -n1 clasp push' '{ clasp push; }' \
+         'nohup clasp push &' 'exec clasp push' 'while true; do npx clasp deploy; done'; do
+  D=$(jq -n --arg c "$F" '{tool_name:"Bash",tool_input:{command:$c}}' | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+  [ "$D" = "deny" ] && ok "forma composta NEGATA: $F" || ko "forma composta PASSA: $F"
+done
+# (revisione 10 giri): il SAL che documentava queste forme e' stato NEGATO — uno span fra
+# backtick che va a capo non veniva spogliato (sed lavora per riga), e `bash -c "…"` fra
+# backtick e' un dato, non un'esecuzione. Il falso positivo nato dalla cura, curato.
+BT='`'
+F="cat >> SAL.md <<'EOF'
+il LOOP generato (${BT}for d in x; do clasp push;
+done${BT}) e ${BT}bash -c \"clasp push\"${BT} erano forme che passavano
+EOF"
+D=$(jq -n --arg c "$F" '{tool_name:"Bash",tool_input:{command:$c}}' | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+[ -z "$D" ] && ok "heredoc con forme fra backtick su piu' righe → consentito (sono dati)" || ko "documento che cita le forme su piu' righe NEGATO"
+F="cd x
+clasp push"
+D=$(jq -n --arg c "$F" '{tool_name:"Bash",tool_input:{command:$c}}' | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+[ "$D" = "deny" ] && ok "a capo e' un separatore: «cd x⏎clasp push» → NEGATO" || ko "a capo come separatore: la seconda riga passa"
+# e i falsi positivi gia' difesi restano consentiti
+for F in "grep 'npx clasp push' docs" 'git commit -m "vieta clasp push"' 'echo "clasp push"' 'echo done clasp-notes'; do
+  D=$(jq -n --arg c "$F" '{tool_name:"Bash",tool_input:{command:$c}}' | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+  [ -z "$D" ] && ok "dati, non invocazione → consentito: $F" || ko "falso positivo: $F → $D"
+done
+
 # ── REPO-Q (2026-09-02): GENERARE un push dentro un clone di sola lettura ────────────
 # Il DEBITI del 2026-09-03 lo dava per codice morto (stessa condizione del deny). Dopo
 # D27 il deny guarda il comando SPOGLIATO, l'avviso quello intero: un comando che SCRIVE
