@@ -44,6 +44,17 @@ check "git grep --open-files-in-pager" 1 'git grep --open-files-in-pager=vim x'
 check "git diff --output"           1 'git diff --output=/tmp/x'
 check "git log --output"            1 'git log --output=../x'
 check "git diff --ext-diff"         1 'git diff --ext-diff HEAD~1'
+# (2026-09-23, giro A6 della notte): due vie ancora aperte, riprodotte prima della cura — le
+# opzioni corte RAGGRUPPATE (-iO) e le lunghe ABBREVIATE, che git accetta se non ambigue
+check "git grep -iO raggruppata"    1 "git grep -iO'touch /tmp/PWN1' x"
+check "git grep --open-files= (abbreviata)" 1 'git grep --open-files=touch x'
+check "git grep --open= (abbreviata)" 1 'git grep --open=touch x'
+check "git diff --out= (abbreviata)" 1 'git diff --out=/tmp/x'
+check "git diff --ext (abbreviata)" 1 'git diff --ext HEAD~1'
+check "git log --textc (abbreviata)" 1 'git log --textc -p'
+check "git grep -i -e (legittimo)"  0 'git grep -i -e foo'
+check "git log --oneline (legittimo)" 0 'git log --oneline -3'
+check "git diff --stat (legittimo)" 0 'git diff --stat HEAD~1'
 check "redirezione >"               1 'grep x f > out.txt'
 check "redirezione >>"              1 'cat f >> g'
 check "& e > fra virgolette sono dati" 0 "grep -q 'a & b > c' f"

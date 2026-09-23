@@ -152,6 +152,7 @@
 - [2026-09-23 (15°) — il profilo del turno è collegato davvero (D11, decisione di Luca)](#2026-09-23-15-il-profilo-del-turno-è-collegato-davvero-d11-decisione-di-luca)
 - [2026-09-23 (16°) — il promemoria dei pattern non approva più da solo (sì di Luca)](#2026-09-23-16-il-promemoria-dei-pattern-non-approva-più-da-solo-sì-di-luca)
 - [2026-09-23 (17°) — il cancello clasp non scambia più il corpo di un heredoc per un comando (sì di Luca)](#2026-09-23-17-il-cancello-clasp-non-scambia-più-il-corpo-di-un-heredoc-per-un-comando-sì-di-luca)
+- [2026-09-23 (18°) — la notte dei giri: mandato di Luca «analisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti»](#2026-09-23-18-la-notte-dei-giri-mandato-di-luca-analisi-lenta-trova-e-aggiusta-tutto-10-giri-e-poi-20-non-fermarti)
 
 
 ## Stato
@@ -3330,3 +3331,26 @@ un'invocazione. È la stessa famiglia dei falsi positivi REPO-E e D27.
   - quella vera: il file della porta veniva svuotato DENTRO il processo in background, e l'attesa
     trovava la porta del finto precedente, già ucciso. Ora si svuota prima del lancio.
   - Sotto carico (6 × 25): 3 rossi prima della cura, 0 dopo.
+
+### 2026-09-23 (18°) — la notte dei giri: mandato di Luca «analisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti»
+
+Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte/00-BRIEF.md`:
+10 aree × 3 lenti (difetto silenzioso, coerenza, affilatura), 10 sottoagenti in parallelo.
+- **Lezione sulla skill, subito.** I grezzi dei giri avevano **123 citazioni file:riga rotte**:
+  numeri di riga sbagliati, a volte oltre la fine del file, e nomi nudi. Li ha rifiutati il
+  pre-commit.
+  - I grezzi restano locali (`.gitignore`).
+  - Ogni rilievo si VERIFICA eseguendo prima di curarlo, come la skill prescrive: la convergenza
+    non è conferma, e il rapporto nemmeno.
+- **S1**, da A7, sicurezza: un agente poteva deploiare con `echo si | bash tools/deploy-ora.sh X`.
+  Il cancello vede solo il comando esterno, e il «si» arrivava dalla pipe; il commento dello
+  script diceva il contrario. Tre strati:
+  - il cancello nega l'invocazione;
+  - lo script rifiuta con `CLAUDECODE` impostata;
+  - lo script rifiuta se lo stdin non è un terminale.
+  - Banco col gesto in un pty. Sabotaggi rossi.
+- **S4**, da A6, sicurezza: l'allowlist del banco avversario del censore lasciava passare
+  `git grep -iO'cmd'` (opzioni raggruppate) e `--open-files=cmd` (abbreviazione accettata da
+  git), che ESEGUONO un programma, e il censore le esegue con eval.
+  - Ora un gruppo corto con O e un prefisso di un'opzione pericolosa si rifiutano.
+  - 6 casi nel banco, rossi prima, e 3 legittimi che restano verdi.

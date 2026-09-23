@@ -147,9 +147,17 @@ for seg in split_operators(cmd):
         # (revisione 10 giri): le opzioni che fanno ESEGUIRE (git grep -O<prog>,
         # --open-files-in-pager, --ext-diff, --textconv) o SCRIVERE (--output) un sottocomando
         # di sola lettura — riprodotto: `git grep -O'echo X' …` eseguiva echo.
+        # (2026-09-23, giro A6 della notte): riprodotte due vie ancora aperte — le opzioni corte
+        # RAGGRUPPATE (`-iO'cmd'` esegue cmd) e le lunghe ABBREVIATE (`--open-files=cmd`: git
+        # accetta ogni prefisso non ambiguo). Ora: un gruppo corto che contiene O si rifiuta, e
+        # una lunga che e' l'inizio di un'opzione pericolosa si rifiuta.
+        PERICOLOSE = ("open-files-in-pager", "output", "ext-diff", "textconv")
         for t in tokens[2:]:
-            if t.startswith("-O") or t.startswith("--open-files-in-pager") or t.startswith("--output") \
-               or t in ("--ext-diff", "--textconv"):
+            if t.startswith("--"):
+                nome = t[2:].split("=", 1)[0]
+                if nome and any(p.startswith(nome) for p in PERICOLOSE):
+                    sys.exit(1)
+            elif t.startswith("-") and "O" in t.split("=", 1)[0]:
                 sys.exit(1)
 sys.exit(0)
 PY
