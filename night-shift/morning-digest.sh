@@ -39,7 +39,7 @@ $(SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"; [ -f "$SAL_TURNI" ] 
   PR=$(grep -c "PR bozza" "$SAL_TURNI" 2>/dev/null || echo 0)
   FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || echo 0)
   echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
-  ASPETTA=$(sed -n "/ASPETTA IL GIORNO/,\$p" "$SAL_TURNI" 2>/dev/null | grep -c "  " || echo 0)
+  ASPETTA=$(sed -n "/ASPETTA IL GIORNO/,$ p" "$SAL_TURNI" 2>/dev/null | grep -c "  ") ; ASPETTA=${ASPETTA:-0}
   [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"
   : > "$SAL_TURNI"
 } || echo "(nessuna memoria del turno)")"

@@ -69,17 +69,17 @@ saldati_verificati E-032 > "$VER_E032"
 
 if [ "$MODO" = "--prossimo" ]; then
   LIBERI=$(mktemp)
-  if [ -s "$VER_E002" ]; then siti_e002 | grep -vxFf "$VER_E002" > "$LIBERI" || true
-  else siti_e002 > "$LIBERI"; fi
-  { echo "$LIBERI" >/dev/null; } 2>/dev/null || true
-  : > "$LIBERI.e002"
   if [ -s "$VER_E002" ]; then siti_e002 | grep -vxFf "$VER_E002" > "$LIBERI.e002" || true
   else siti_e002 > "$LIBERI.e002"; fi
   if [ -s "$VER_E032" ]; then siti_e032 | grep -vxFf "$VER_E032" > "$LIBERI.e032" || true
   else siti_e032 > "$LIBERI.e032"; fi
   { sed 's/^/E-002|/' "$LIBERI.e002"; sed 's/^/E-032|/' "$LIBERI.e032"; } > "$LIBERI.all"
-  if [ -s "$RINVIA" ]; then grep -vFf "$RINVIA" "$LIBERI.all" | head -1 || true
+  # (audit-3): -vF SENZA -x matchava per sottostinga — un rinviato :62 spegneva
+  # :620-:629. Si filtra sul sito NUDO con -x: colpo chirurgico.
+  SITI_NUDI=$(mktemp); sed 's/^[^|]*|//' "$LIBERI.all" > "$SITI_NUDI"
+  if [ -s "$RINVIA" ]; then paste -d'|' <(sed 's/|.*//' "$LIBERI.all") <(grep -vxFf "$RINVIA" "$SITI_NUDI" || true) | head -1 || true
   else head -1 "$LIBERI.all"; fi
+  rm -f "$SITI_NUDI"
   rm -f "$LIBERI" "$LIBERI.e002" "$LIBERI.e032" "$LIBERI.all"
   rm -f "$VER_E002" "$VER_E032"
   exit 0
@@ -94,6 +94,7 @@ rm -f "$VER_E002" "$VER_E032"
 # ── censimento + delta ──────────────────────────────────────────────────────────
 TOT=$(( E002 + E032 ))
 OGGI=$(date '+%Y-%m-%d %H:%M')
+BR=$(git branch --show-current 2>/dev/null || echo "?")
 if [ -f "$STATO/ultimo" ]; then
   PREC=$(cat "$STATO/ultimo")
   P002=$(echo "$PREC" | awk '{print $1}'); P032=$(echo "$PREC" | awk '{print $2}')
@@ -103,10 +104,11 @@ else
   DELTA=0
   NOTE="baseline (primo censimento)"
 fi
-echo "$E002 $E032" > "$STATO/ultimo"
+if [ "$BR" = "main" ] || [ "$BR" = "master" ]; then
+  echo "$E002 $E032" > "$STATO/ultimo"
+fi
 # (audit-2): la storia si scrive SOLO dal main — la caccia gira su rami di
 # lavoro e i censimenti di ramo producevano delta falsi (pagamenti fantasma)
-BR=$(git branch --show-current 2>/dev/null || echo "?")
 if [ "$BR" = "main" ] || [ "$BR" = "master" ]; then
   echo "$OGGI E-002=$E002 E-032=$E032 tot=$TOT delta=$DELTA" >> "$STATO/storia"
 else

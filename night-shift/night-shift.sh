@@ -1225,12 +1225,20 @@ fi
 if command -v gh >/dev/null 2>&1; then
   N_SCOPA=0
   while IFS=$'\t' read -r br prstato; do
-    [ -z "$br" ] && [ "$br" = "main" ] && continue
+    [ -z "$br" ] || [ "$br" = "main" ] || continue
     case "$prstato" in MERGED|CLOSED)
-      gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${br//\\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) ;;
+      gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${br//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) ;;
     esac
   done < <(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 100 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' 2>/dev/null)
-  [ "$N_SCOPA" -gt 0 ] && log "scopa-rami: $N_SCOPA rami di PR chiuse cancellati (un ramo fuso non serve a niente)"
+  # e gli ORFANI: rami senza PR, piu' vecchi di 48h — promessi nel commento,
+  # mai implementati (il probe/push2 di stamattina li aspettava invano)
+  BR_ORFANI=$(gh api repos/obi2kenobi/AI_Programmer/branches --paginate --jq '.[].name' 2>/dev/null | grep -vx main || true)
+  PR_APERTE=$(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 200 --json headRefName -q '.[].headRefName' 2>/dev/null | sort -u)
+  for B in $BR_ORFANI; do
+    grep -qxF "$B" <<<"$PR_APERTE" && continue
+    gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: orfano '$B' cancellato (senza PR, oltre la soglia)"
+  done
+  [ "$N_SCOPA" -gt 0 ] && log "scopa-rami: $N_SCOPA rami cancellati in tutto (un ramo fuso non serve a niente)"
 fi
 
 # NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)

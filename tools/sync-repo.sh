@@ -131,10 +131,10 @@ done
   # (audit 2026-09-23): aggiunti fork-stato, presidio e polilivello — citati dallo
   # standard che viaggia (skill/CLAUDE.md) ma mai spediti: il satellite riceveva
   # documenti che puntavano a tool inesistenti (stessa classe del report REPO-I)
-  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh tools/fork-stato.sh tools/presidio.sh tools/polilivello.sh"
+  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh tools/py-gate.sh tools/fork-stato.sh tools/presidio.sh tools/polilivello.sh"
   # (D13, 2026-09-20): i GUARDIANI DEL COMMIT viaggiano — .githooks (pre-commit e
   # commit-msg) e tools/pre-commit.sh; l'attivazione resta `git config core.hooksPath .githooks`
-  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills patterns docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
+  for ITEM in CLAUDE.md .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
     [ -e "$HERE/$ITEM" ] || continue
     if [ -d "$HERE/$ITEM" ]; then
       # (2026-09-20, misurato nell'hub durante il test del sistema): `cp -r dir dir` con la
