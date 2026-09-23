@@ -2891,3 +2891,25 @@ giri 5-10 — ognuno rieseguito prima della cura: nessuno entra per fiducia.
   azzerava a ogni suite) — ora su un clone; `test-revisore` e `test-salda-e002` pulivano
   `/tmp/<prefisso>.*`, cioe' anche le cartelle di un'altra esecuzione in corso — ora
   ciascuno pulisce le sue.
+
+**Giro 7 — il sandbox del banco: allowlist, watchdog, maschera, forme di segreto.**
+- **Allowlist** (`gate_allowlist_ok`, `night-shift/lib.sh`): passavano `&` singolo (il secondo
+  comando in background senza esame: `grep x f & rm -rf ~/…`), `git grep -O<prog>` e
+  `--open-files-in-pager` (ESEGUONO un programma — riprodotto con echo), `--output=` di
+  diff/log/show (scrivono file), `--ext-diff`, e le redirezioni `>`/`>>`. Chiusi; restano
+  ammessi `2>/dev/null`, `>/dev/null`, `2>&1` e tutto cio' che sta fra virgolette. 12 attese
+  nuove, rosse prima.
+- **Watchdog** (`run_guarded`): TERM al solo figlio, mai KILL, rc del comando — un nipote
+  nella pipe teneva il chiamante 6s su 1s di budget, e un comando che ignora TERM tornava
+  VERDE dopo 12s. La cura c'era gia' in `llm/_timeout.sh` (gruppo, `-k 5`, 124): run_guarded
+  la usa. Provato su entrambi i rami (GNU e il perl del Mac). Pattern `watchdog-guardato`
+  aggiornato.
+- **Maschera**: i valori FRA VIRGOLETTE passavano interi (`"password": "…"`, `X="…"`); e se
+  il python della maschera moriva l'output spariva in silenzio — ora una riga dice che la
+  maschera e' morta e l'output e' soppresso (rosso, non silenzio). Il primo tentativo della
+  cura rompeva tutto: un apostrofo nella regex chiudeva la stringa bash che la contiene
+  (9 rossi, visti subito).
+- **Forme di segreto** (`tools/privacy-check.sh`): cercava `sk-ANTHROPIC`, che nessuna chiave
+  vera ha (sono `sk-ant-…`). E i prefissi nudi (`github_pat_`, `sk-proj-`, `xoxb-`)
+  scattavano su chi li NOMINA (la maschera stessa): ora ogni forma porta il corpo del token;
+  nessun file intero escluso (lo avevo fatto, poi tolto: troppo largo).

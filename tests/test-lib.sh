@@ -33,6 +33,23 @@ check "git push"                    1 git push origin main
 check "rm"                          1 rm -rf /
 check "sudo"                        1 sudo id
 check "curl"                        1 curl http://evil.example
+# --- (revisione 10 giri, 2026-09-23): altre vie aperte, riprodotte prima della cura ---
+# `&` singolo non separava (il secondo comando girava in background senza esame); git grep -O
+# ESEGUE il programma che gli si passa; --output= fa SCRIVERE file a diff/log/show; le
+# redirezioni > e >> scrivevano (il banco e' in sola lettura).
+check "& in background"             1 "grep -q x README.md & python3 -c 'print(1)'"
+check "& con rm"                    1 'grep x f & rm -rf ~/qualcosa'
+check "git grep -O (pager)"         1 'git grep -Otouch -e foo'
+check "git grep --open-files-in-pager" 1 'git grep --open-files-in-pager=vim x'
+check "git diff --output"           1 'git diff --output=/tmp/x'
+check "git log --output"            1 'git log --output=../x'
+check "git diff --ext-diff"         1 'git diff --ext-diff HEAD~1'
+check "redirezione >"               1 'grep x f > out.txt'
+check "redirezione >>"              1 'cat f >> g'
+check "& e > fra virgolette sono dati" 0 "grep -q 'a & b > c' f"
+check "2>/dev/null e 2>&1 ammessi"   0 'grep -c x f 2>/dev/null && git log --oneline -3 2>&1'
+check ">/dev/null ammesso"           0 'grep -q x f >/dev/null'
+check "> verso un file dopo /dev/null" 1 'grep x f 2>/dev/null > out.txt'
 # --- I LEGITTIMI: devono PASSARE (falsi positivi = banco zoppo) ---
 check "grep semplice"               0 grep -q "AVVISO" file.js
 # caso speciale: stringa GREZZA (le virgolette devono arrivare intere alla lib)
@@ -84,6 +101,15 @@ else
   ok "run_guarded: pgrep assente, controllo residui saltato (non bloccante)"
 fi
 
+# --- (revisione 10 giri, 2026-09-23): run_guarded uccideva solo il figlio diretto, col solo
+# TERM, e restituiva l'rc del comando: un nipote che tiene aperta la pipe teneva il chiamante
+# per l'intera durata, e un comando che ignora TERM tornava VERDE dopo la sua durata intera.
+T0=$(date +%s); X=$(run_guarded 1 bash -c 'sleep 6; true' | cat); T1=$(date +%s)
+[ $((T1-T0)) -le 3 ] && ok "run_guarded: il nipote nella pipe muore col gruppo ($((T1-T0))s, non 6)" || ko "run_guarded: il nipote ha tenuto la pipe $((T1-T0))s"
+T0=$(date +%s); run_guarded 1 bash -c 'trap "" TERM; sleep 12; true'; RCG=$?; T1=$(date +%s)
+[ "$RCG" -ne 0 ] && [ $((T1-T0)) -le 9 ] && ok "run_guarded: chi ignora TERM muore di KILL e l'esito e' ROSSO (rc=$RCG, $((T1-T0))s)" \
+  || ko "run_guarded: TERM ignorato → rc=$RCG dopo $((T1-T0))s (verde falso o watchdog aggirato)"
+
 # --- repo_code: i codici anonimi sono RITIRATI (dominio, Luca 2026-09-23) ---
 # (revisione 10 giri, 2026-09-23): questo blocco pretendeva ancora la mappatura da
 # repos.key (REPO-X) — rosso sul codice giusto dal giorno del ritiro. Ora presidia la
@@ -120,6 +146,14 @@ grep -qE "$IMPRONTA" <<<"$M4" && ! grep -q 'ghp_ABCDEFGHIJKLMNOPQRST1234' <<<"$M
   && ok "mask_secrets: token nudo (ghp_...) mascherato" || ko "mask_secrets token nudo: $M4"
 M5=$( (echo 'x token=AAAABBBBCCCC'; echo 'y token=AAAABBBBCCCC') | mask_secrets | grep -oE '[0-9a-f]{8} ·' | sort -u | wc -l | tr -d ' ')
 [ "$M5" = "1" ] && ok "mask_secrets: stesso segreto → stessa impronta (confrontabile senza vederlo)" || ko "mask_secrets impronta instabile ($M5 impronte)"
+
+# (revisione 10 giri): i valori FRA VIRGOLETTE passavano interi — JSON e assegnazioni quotate
+M6=$(echo '{"password": "hunter2hunter2", "api_key": "abcd1234efgh"}' | mask_secrets)
+! grep -q 'hunter2hunter2\|abcd1234efgh' <<<"$M6" && [ "$(grep -o '«segreto' <<<"$M6" | wc -l | tr -d ' ')" = 2 ] \
+  && ok "mask_secrets: chiavi JSON quotate mascherate (2 impronte)" || ko "mask_secrets JSON: $M6"
+M7=$(echo 'export GH_TOKEN="valoresegreto123"' | mask_secrets)
+! grep -q 'valoresegreto123' <<<"$M7" && grep -qE "$IMPRONTA" <<<"$M7" \
+  && ok "mask_secrets: assegnazione quotata mascherata" || ko "mask_secrets quotata: $M7"
 
 M3=$(echo 'niente da mascherare qui' | mask_secrets)
 [ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \

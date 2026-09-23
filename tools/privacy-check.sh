@@ -33,11 +33,14 @@ fi
 # giri avversari 2026-08-28 (A20): un segreto VERO non deve aspettare che repos.key
 # ne conosca il nome. Le FORME generiche (prefissi di token AWS/GitHub/Anthropic/Slack,
 # chiavi private PEM) si cercano sempre, su tutti i file tracciati. I file di TEST e
-# l'archivio SAL citano queste forme per parlarne: esclusi per costruzione.
+# l'archivio SAL citano queste forme per parlarne: esclusi per costruzione. (Revisione 10
+# giri: le forme con prefisso portano il CORPO — `sk-ant-` e `github_pat_` seguiti da 20
+# caratteri, come i token veri: cosi' un file che NOMINA il prefisso, come la maschera di
+# night-shift/lib.sh, non e' una perdita, e nessun file intero va escluso.)
 # (incidente 2026-09-23: email e telefoni VERI nei campioni BC — 39 email e 42
 # numeri in 21+31 file, bonificati): le forme dei DATI DI CONTATTO entrano tra
 # le shapes. Esclusi i domini tecnici (odata.media) e i placeholder (esempio).
-SHAPES='sk-ANTHROPIC|sk-proj-|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_|AKIA[0-9A-Z]{12}|xoxb-|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|[a-zA-Z0-9._%+-]+@(yahoo|tiscali|gmail|libero|hotmail|outlook|virgilio|alice|jacer)\.[a-z]{2,}|[a-zA-Z0-9._%+-]+@pec\.[a-zA-Z0-9.-]+|\+39[ /0-9]{8,12}'
+SHAPES='sk-ant-[A-Za-z0-9_-]{20}|sk-proj-[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{12}|xoxb-[0-9A-Za-z-]{10}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|[a-zA-Z0-9._%+-]+@(yahoo|tiscali|gmail|libero|hotmail|outlook|virgilio|alice|jacer)\.[a-z]{2,}|[a-zA-Z0-9._%+-]+@pec\.[a-zA-Z0-9.-]+|\+39[ /0-9]{8,12}'
 SHAPE_HIT=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -lE "$SHAPES" 2>/dev/null)   | grep -vE '^tests/|SAL-ARCHIVIO\.md|repos\.key|tools/privacy-check\.sh|tools/giri-avversari\.sh' || true)
 if [ -n "$SHAPE_HIT" ]; then
   echo "⛔ privacy-check: FORMA DI SEGRETO generica in:" >&2
