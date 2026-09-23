@@ -4,7 +4,7 @@ La memoria **stabilizzata** del sistema: le decisioni prese, i concetti con un
 nome, le famiglie d'errore, gli sospesi dichiarati. Una nota per concetto,
 per sempre, collegata con `[[wikilink]]`.
 
-Non è il diario (quello è la SAL) e non è la moglia degli errori (quella è
+Non è il diario (quello è la SAL) e non è la mappa degli errori (quella è
 `docs/errori/REGISTRO.md`): è ciò che resta quando il diario è passato e gli
 errori sono diventati vaccini. Il grafo non si naviga a mano — si interroga:
 

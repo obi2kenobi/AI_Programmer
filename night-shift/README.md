@@ -14,7 +14,7 @@ GIORNO (cervelli): ZCode/GLM · Claude Code/Opus · OpenCode via Wayfinder → Q
 NOTTE (braccia):   night-shift 23:00 → issue `night-shift` → OpenCode → Qwen locale
                    commesse meccaniche → PR BOZZA, mai push su main
 MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale →
-                    proposte correttive (il sì è sempre umano)
+                    proposte correttive (il sì è del censore, il VETO resta umano — patto del 2026-09-18)
 ```
 
 ## Le regole vincolanti
@@ -27,7 +27,7 @@ MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale �
 | **Mai scrivere in cartelle specchio/sola lettura** | `gas-src/` in REPO-A: regola fondativa del repo ospite |
 | **Idempotenza completa** | PR aperta → skip; PR fusa → chiude l'issue dimenticata (la keyword italiana non auto-chiudeva) |
 | **Sonda di salute del server + un modello per turno** | dopo scambi di modelli a caldo, errori Metal con risposte vuote silenziose |
-| **Config reale fuori dal repo pubblico** | `night-shift/repos.conf` gitignored: i nomi delle repo private non si pubblicano |
+| **Config reale fuori dal repo pubblico** | `night-shift/repos.conf` gitignored: i nomi delle repo possono comparire (dominio 2026-09-23), l'ACCESSO mai |
 | **Loop su array, bash 3.2, `cd` nel subshell, `git clean` per issue** | i quattro difetti d'infrastruttura trovati nelle notti di test |
 
 ## I numeri che scelgono il modello (MacBook Air M5, 24 GB, misurati 2026-08-18)
