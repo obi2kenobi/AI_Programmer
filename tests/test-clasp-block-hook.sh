@@ -164,6 +164,44 @@ D=$(decide7 'clasp push')
 [ "$D" = "deny" ] && ok "REPO-Q: nel mirror la forma nuda resta NEGATA (il deny vince sull'avviso)" || ko "REPO-Q: forma nuda nel mirror passa ($D)"
 rm -f "$SB7/.mirror-boundaries"
 
+# ── (2026-09-23, sì di Luca) il corpo di un HEREDOC e' dato, non comando ─────────────────────────
+# Il falso positivo, misurato due volte in una sessione: un heredoc che scriveva un file (python
+# che riscrive CLAUDE.md, un `cat >> SAL.md`) citava la regola «(clasp push/deploy MAI…)» e veniva
+# NEGATO — l'a capo diventa `;`, la `(` conta come separatore, e il testo del file sembrava un
+# comando. Il corpo si toglie prima del confronto; ma se il heredoc NUTRE una shell
+# (`bash <<EOF`, `cat <<EOF | sh`) e' codice eseguito, e si guarda come prima.
+decideh() { # decideh <comando multi-riga> → deny | consentito
+  local D
+  D=$(jq -n --arg c "$1" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK" | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+  [ -n "$D" ] || D=consentito; printf '%s' "$D"
+}
+P='clasp'; V='push'   # la forma vietata si compone: il sorgente del banco non la contiene nuda
+[ "$(decideh "python3 - <<'PY'
+s = '''l'hub: il deploy e' dell'umano (${P} ${V}/deploy MAI)'''
+PY")" = "consentito" ] && ok "heredoc di python che CITA la regola fra parentesi: consentito (era il falso positivo)" || ko "heredoc di python che cita la regola: ancora negato"
+[ "$(decideh "cat >> SAL.md <<'EOF'
+- riga universale aggiunta (${P} ${V} MAI dall'agente)
+EOF")" = "consentito" ] && ok "cat >> file <<EOF con la regola nel testo: consentito" || ko "heredoc verso un file: ancora negato"
+[ "$(decideh "cat > note.md <<-FINE
+	poi a mano (${P} ${V}) dal Mac
+	FINE")" = "consentito" ] && ok "heredoc <<- (delimitatore con tab): corpo tolto, consentito" || ko "heredoc <<- non riconosciuto"
+# ... ma dove il heredoc e' codice, resta negato
+[ "$(decideh "bash <<'EOF'
+cd x
+${P} ${V}
+EOF")" = "deny" ] && ok "bash <<EOF col push nel corpo: NEGATO (la shell lo esegue)" || ko "bash <<EOF col push: passa"
+[ "$(decideh "cat <<EOF | sh
+${P} ${V}
+EOF")" = "deny" ] && ok "cat <<EOF | sh: NEGATO (il corpo va a una shell)" || ko "heredoc in pipe verso sh: passa"
+[ "$(decideh "cat > x.txt <<EOF
+dato
+EOF
+${P} ${V}")" = "deny" ] && ok "push DOPO la fine del heredoc: NEGATO" || ko "push dopo il heredoc: passa"
+[ "$(decideh "cat > x.txt <<EOF
+${P} ${V}")" = "deny" ] && ok "heredoc senza chiusura: il corpo non si toglie (prudenza), NEGATO" || ko "heredoc aperto: passa"
+[ "$(decideh "grep -c x <<<\"testo\"
+${P} ${V}")" = "deny" ] && ok "<<< (herestring) non e' un heredoc: il push sotto resta NEGATO" || ko "herestring scambiata per heredoc"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

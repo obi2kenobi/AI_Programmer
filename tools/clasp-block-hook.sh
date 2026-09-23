@@ -65,7 +65,41 @@ SHC="(^|[;&|({[:space:]])(ba|z|da)?sh[[:space:]]+(-[A-Za-z]+[[:space:]]+)*-[A-Za
 # Ora l'a capo diventa `;` (e' un separatore della shell: «cd x⏎clasp push» resta negato),
 # poi si tolgono i backtick (anche su piu' righe), poi le virgolette. Il controllo `bash -c`
 # guarda il comando SENZA backtick ma CON le virgolette: fra backtick e' un dato citato.
-CMD_UNA=$(printf '%s' "$CMD" | tr '\n' ';')
+# (2026-09-23, sì di Luca): il CORPO di un heredoc e' dato, non comando. Misurato due volte in una
+# sessione: un heredoc che scriveva un file (python che riscrive CLAUDE.md, `cat >> SAL.md`)
+# citava la regola «(… MAI)» fra parentesi e veniva NEGATO: l'a capo diventa `;`, la `(` e' un
+# separatore, e il testo del file sembrava un'invocazione. Il corpo si toglie — tranne quando
+# resta prudente tenerlo: la riga del heredoc nutre una SHELL (`bash <<EOF`, `cat <<EOF | sh`:
+# quel corpo si esegue), la riga ha piu' di un heredoc, o il heredoc non si chiude mai.
+# `<<<` (herestring) non e' un heredoc. Banco: tests/test-clasp-block-hook.sh, casi «heredoc».
+senza_heredoc() {
+  awk -v Q="'" '
+    function scrivi_buf() { printf "%s", buf; buf = "" }
+    dentro {
+      t = $0; if (trattino) sub(/^\t+/, "", t)
+      if (t == delim) { dentro = 0; buf = ""; next }
+      buf = buf $0 "\n"; next
+    }
+    {
+      print
+      riga = $0; n = 0; resto = riga; re = "<<-?[ \t]*[\"" Q "]?[A-Za-z_][A-Za-z0-9_]*"
+      while (match(resto, re)) {
+        prima = (RSTART > 1) ? substr(resto, RSTART - 1, 1) : ""
+        op = substr(resto, RSTART, RLENGTH)
+        if (prima != "<" && substr(op, 3, 1) != "<") { n++; trovato = op }
+        resto = substr(resto, RSTART + RLENGTH)
+      }
+      if (n != 1) next
+      if (riga ~ /(^|[;&|({ \t])(ba|z|da)?sh([ \t]|$)/) next
+      trattino = (substr(trovato, 3, 1) == "-")
+      d = trovato; sub(/^<<-?[ \t]*/, "", d); gsub("[\"" Q "]", "", d)
+      delim = d; dentro = 1; buf = ""
+    }
+    END { if (dentro) scrivi_buf() }
+  '
+}
+CMD_H=$(printf '%s\n' "$CMD" | senza_heredoc)
+CMD_UNA=$(printf '%s' "$CMD_H" | tr '\n' ';')
 CMD_NOBT=$(printf '%s' "$CMD_UNA" | sed "s/\`[^\`]*\`//g")
 CMD_STRIPPED=$(printf '%s' "$CMD_NOBT" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
 

@@ -29,8 +29,12 @@ OGGI=$(date +%F)
 mkmock() { # $1 = file con le risposte (una per riga, json-encodate dal chiamante)
   printf '#!/usr/bin/env python3\nimport http.server,sys\nRISP=[l.strip() for l in open(sys.argv[1]) if l.strip()]\nn=[0]\nclass H(http.server.BaseHTTPRequestHandler):\n def do_POST(self):\n  self.rfile.read(int(self.headers.get("Content-Length",0)))\n  i=min(n[0],len(RISP)-1); n[0]+=1\n  b=RISP[i].encode()\n  self.send_response(200);self.send_header("Content-Length",str(len(b)));self.end_headers();self.wfile.write(b)\n def log_message(self,*a):pass\ns=http.server.HTTPServer(("127.0.0.1",0),H)\nprint(s.server_address[1],flush=True)\ns.serve_forever()\n' > "$TMP/serve.py"
 }
-avvia() { python3 "$TMP/serve.py" "$1" > "$TMP/port" 2>/dev/null & MOCKPID=$!
-  for _ in $(seq 1 30); do [ -s "$TMP/port" ] && break; sleep 0.1; done; }
+# (2026-09-23): il file della porta si SVUOTA PRIMA del lancio, qui e non nel processo in
+# background — sotto carico il figlio tardava a troncarlo, l'attesa trovava la porta del finto
+# PRECEDENTE (gia' ucciso) e il tool diceva «il modello non ha risposto»: 3 rossi su 150.
+avvia() { : > "$TMP/port"; python3 "$TMP/serve.py" "$1" > "$TMP/port" 2>/dev/null & MOCKPID=$!
+  for _ in $(seq 1 150); do [ -s "$TMP/port" ] && break; sleep 0.1; done # (2026-09-23): 15 s, non 2-3 — sotto carico python parte piu' lento, la porta restava vuota e il tool diceva «il modello non ha risposto» (rosso a caso, catturato su test-cervello-impara)
+  [ -s "$TMP/port" ] || echo "⚠ il modello finto non e' partito in 15 s: il FAIL che segue e' dell'ambiente, non del tool" >&2; }
 risposta() { python3 -c 'import json,sys; print(json.dumps({"message":{"content":sys.argv[1]}}))' "$1"; }
 
 # ── 1. lezione valida: nota creata, link rotto scartato e dichiarato ─────────

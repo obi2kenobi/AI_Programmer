@@ -151,6 +151,7 @@
 - [2026-09-23 (14°) — il rosso intermittente della suite era E-002, e la mia esclusione era sbagliata (E-042)](#2026-09-23-14-il-rosso-intermittente-della-suite-era-e-002-e-la-mia-esclusione-era-sbagliata-e-042)
 - [2026-09-23 (15°) — il profilo del turno è collegato davvero (D11, decisione di Luca)](#2026-09-23-15-il-profilo-del-turno-è-collegato-davvero-d11-decisione-di-luca)
 - [2026-09-23 (16°) — il promemoria dei pattern non approva più da solo (sì di Luca)](#2026-09-23-16-il-promemoria-dei-pattern-non-approva-più-da-solo-sì-di-luca)
+- [2026-09-23 (17°) — il cancello clasp non scambia più il corpo di un heredoc per un comando (sì di Luca)](#2026-09-23-17-il-cancello-clasp-non-scambia-più-il-corpo-di-un-heredoc-per-un-comando-sì-di-luca)
 
 
 ## Stato
@@ -3300,3 +3301,32 @@ le operazioni più delicate.
 - Il banco pretendeva «allow» come requisito: `tests/test-pattern-reminder-hook.sh` aveva scritto
   il difetto come attesa. Riscritto prima della cura: rosso 13/15, poi 15/15.
 - Provato dal vivo: su `printenv` l'uscita ha solo le chiavi additionalContext e hookEventName.
+
+### 2026-09-23 (17°) — il cancello clasp non scambia più il corpo di un heredoc per un comando (sì di Luca)
+
+Era un rilievo fuori scope della PR #125, e Luca ha detto «sì, sistema il blocco dei clasp push».
+`tools/clasp-block-hook.sh` ha negato due comandi di questa sessione che SCRIVEVANO un file:
+- un heredoc di python che riscriveva CLAUDE.md;
+- un `cat >> SAL.md`.
+Il testo citava la regola fra parentesi. L'a capo diventa `;`, la `(` è un separatore, e un
+apostrofo fuori posto rompe l'appaiamento delle virgolette: il testo del file diventava
+un'invocazione. È la stessa famiglia dei falsi positivi REPO-E e D27.
+- **Cura.** `senza_heredoc` toglie il corpo dei heredoc prima del confronto. Resta PRUDENTE: il
+  corpo si tiene quando la riga del heredoc nutre una shell (`bash <<EOF`, `cat <<EOF | sh`),
+  quando la riga ha più di un heredoc, e quando il heredoc non si chiude mai. `<<<` non è un
+  heredoc.
+- **Banco scritto prima**: 8 casi in `tests/test-clasp-block-hook.sh`.
+  - Il primo giro aveva due casi «consentito» che passavano per caso (niente parentesi, virgolette
+    intatte); resi fedeli ai comandi negati davvero.
+  - Rosso 57/60, poi 60/60. I 5 casi «negato» sono rimasti verdi da prima a dopo.
+- **Due sabotaggi**: il filtro che non toglie niente dà 3 rossi; il filtro che toglie anche il
+  corpo passato a una shell dà 2 rossi.
+- **Provato dal vivo** in questa sessione: il heredoc che cita la regola passa; `bash <<EOF` con il
+  push nel corpo è NEGATO.
+- Rosso nella suite dopo questa cura, catturato sotto carico: `tests/test-cervello-impara.sh` → «il
+  modello non ha risposto». Due cause, entrambe del banco e non del tool:
+  - l'attesa del modello finto durava 3 s. Portata a 15 s, con un avviso se il finto non parte,
+    anche in `tests/test-agente.sh` e `tests/test-risolvi-issue.sh`;
+  - quella vera: il file della porta veniva svuotato DENTRO il processo in background, e l'attesa
+    trovava la porta del finto precedente, già ucciso. Ora si svuota prima del lancio.
+  - Sotto carico (6 × 25): 3 rossi prima della cura, 0 dopo.

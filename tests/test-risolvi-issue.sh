@@ -69,7 +69,8 @@ srv.serve_forever()
 PYEOF
 python3 "$MOCK_DIR/serve.py" "$MOCK_BODY_FILE" > "$MOCK_DIR/port" 2>/dev/null &
 MOCK_PID=$!
-for _ in $(seq 1 20); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done
+for _ in $(seq 1 150); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done # (2026-09-23): 15 s, non 2-3 — sotto carico python parte piu' lento, la porta restava vuota e il tool diceva «il modello non ha risposto» (rosso a caso, catturato su test-cervello-impara)
+[ -s "$MOCK_DIR/port" ] || echo "⚠ il server finto non e' partito in 15 s: i FAIL che seguono sono dell'ambiente" >&2
 MOCK_PORT=$(cat "$MOCK_DIR/port")
 trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4" "$SB5" "$SB6" "$SB7" "$SB8"' EXIT
 ok "server mock su porta $MOCK_PORT"

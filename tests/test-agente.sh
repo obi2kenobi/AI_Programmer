@@ -50,7 +50,8 @@ scenario() { # scenario <nome> <dir-progetto> <prompt> <corpo-1> [<corpo-2> …]
   local d="$MOCK_DIR/$nome"; mkdir -p "$d"; local i=1
   for b in "$@"; do printf '%s\n' "$b" > "$d/$i.json"; i=$((i+1)); done
   python3 "$MOCK_DIR/serve.py" "$d" > "$d/port" 2>/dev/null & local pid=$!
-  for _ in $(seq 1 30); do [ -s "$d/port" ] && break; sleep 0.1; done
+  for _ in $(seq 1 150); do [ -s "$d/port" ] && break; sleep 0.1; done # (2026-09-23): 15 s, non 2-3 — sotto carico python parte piu' lento, la porta restava vuota e il tool diceva «il modello non ha risposto» (rosso a caso, catturato su test-cervello-impara)
+  [ -s "$d/port" ] || echo "⚠ il modello finto non e' partito in 15 s: il FAIL che segue e' dell'ambiente, non dell'agente" >&2
   OUT=$(NIGHT_API_URL="http://127.0.0.1:$(cat "$d/port")/api/chat" AGENTE_MAX_TURNI="${MAX_T:-6}" AGENTE_TIMEOUT=60 bash "$AGENTE" "$dir" "$prompt" 2>&1); RC=$?
   kill "$pid" 2>/dev/null; wait "$pid" 2>/dev/null
 }
