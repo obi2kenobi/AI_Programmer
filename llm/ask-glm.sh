@@ -62,15 +62,18 @@ BASE="${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}"
 MODEL="${GLM_MODEL:-${ASK_MODEL:-glm-5.3}}"
 TIMEOUT="${ASK_TIMEOUT:-600}"
 
-PAYLOAD=$(python3 - "$MODEL" "$PROMPT" <<'PY'
+# (2026-09-23, giro A1 della notte): il prompt col suo stdin passava come ARGOMENTO a python3
+# e il payload come argomento a curl: oltre 128 KB (MAX_ARG_STRLEN di Linux) il wrapper moriva
+# con «Argument list too long», rc=126 — proprio il contesto lungo via stdin. Ora viaggiano su
+# stdin (here-string: il suo "\n" finale si toglie qui sotto).
+PAYLOAD=$(python3 -c '
 import json, sys
+p = sys.stdin.read()
 print(json.dumps({
     "model": sys.argv[1],
-    "messages": [{"role": "user", "content": sys.argv[2]}],
+    "messages": [{"role": "user", "content": p[:-1] if p.endswith("\n") else p}],
     "stream": False,
-}))
-PY
-)
+}))' "$MODEL" <<<"$PROMPT")
 
 # bug reale (revisione 14 lenti, 2026-08-28): questa command substitution non era protetta
 # come la sua analoga in ask-opus.sh (stesso "tranello" già documentato là) — se curl
@@ -78,9 +81,13 @@ PY
 # dice di gestire), `set -e` fa uscire lo script SUBITO qui, prima di raggiungere il
 # parsing che produce "ERRORE glm: ...". Verificato dal vivo: rc=7, zero output su
 # stderr, nessuna diagnosi. set +e locale per leggere l'exit code senza farlo esplodere.
+# (2026-09-23, giro A1 della notte): la chiave stava negli argomenti di curl, leggibile da `ps`
+# per tutta la chiamata (fino a ASK_TIMEOUT=600s). Ora l'header arriva da un file descrittore
+# (printf e' un builtin: nessun processo la porta in argv) e il payload da stdin.
 set +e
 RESP=$(curl -s --max-time "$TIMEOUT" "$BASE/chat/completions" \
-  -H "Authorization: Bearer $ZHIPUAI_API_KEY" -H "Content-Type: application/json" -d "$PAYLOAD")
+  -H @<(printf 'Authorization: Bearer %s\n' "$ZHIPUAI_API_KEY") -H "Content-Type: application/json" \
+  --data-binary @- <<<"$PAYLOAD")
 CURL_RC=$?
 set -e
 if [ "$CURL_RC" -ne 0 ]; then

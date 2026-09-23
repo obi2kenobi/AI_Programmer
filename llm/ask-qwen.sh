@@ -75,17 +75,19 @@ fi
 ---
 $STDIN_DATA"
 
-PAYLOAD=$(python3 - "$MODEL" "$CTX" "$THINK" "$PROMPT" <<'PY'
+# (2026-09-23, giro A1 della notte): prompt e payload viaggiano su stdin, non come argomenti —
+# oltre 128 KB (MAX_ARG_STRLEN) il wrapper moriva con «Argument list too long», rc=126 (stesso
+# difetto e stessa cura di ask-glm.sh). Il "\n" finale del here-string si toglie qui sotto.
+PAYLOAD=$(python3 -c '
 import json, sys
+p = sys.stdin.read()
 print(json.dumps({
     "model": sys.argv[1],
-    "messages": [{"role": "user", "content": sys.argv[4]}],
+    "messages": [{"role": "user", "content": p[:-1] if p.endswith("\n") else p}],
     "stream": False,
     "think": sys.argv[3] == "true",
     "options": {"num_ctx": int(sys.argv[2]), "temperature": 0.3},
-}))
-PY
-)
+}))' "$MODEL" "$CTX" "$THINK" <<<"$PROMPT")
 
 # bug reale (dogfooding, set 1 "armonizza gli agenti"): --max-time era fisso a 1800,
 # ignorando ASK_TIMEOUT — llm/README.md lo dichiara un override universale per
@@ -98,7 +100,7 @@ START=$(date +%s)
 # qui, prima di qualunque diagnosi. set +e locale per leggere l'exit code senza farlo
 # esplodere (stesso fix di ask-glm.sh).
 set +e
-RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" -d "$PAYLOAD")
+RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" --data-binary @- <<<"$PAYLOAD")
 CURL_RC=$?
 set -e
 if [ "$CURL_RC" -ne 0 ]; then

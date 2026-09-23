@@ -3396,3 +3396,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - 12 casi.
   - ⏳ Il filtro sull'AUTORE dell'issue (chi può scriverla) richiede di sapere quali campi espone
     `gh issue list` sul Mac: aperto in DEBITI.
+- **Q8**, da A1, sicurezza e contesto lungo, riprodotti entrambi.
+  - `llm/ask-glm.sh` passava la chiave negli argomenti di curl: `ps` la legge per tutta la
+    chiamata. Ora l'header arriva da un file descrittore.
+  - Prompt e payload erano argomenti di python3 e curl: oltre 128 KB (MAX_ARG_STRLEN) ask-glm e
+    ask-qwen morivano con «Argument list too long», rc=126 — il «contesto lungo via stdin» di
+    CLAUDE.md §7. Ora viaggiano su stdin.
+  - Banco: `tests/test-ask-wrappers.sh`, 4 casi rossi prima; la chiave finta si conta, non si
+    stampa. Il curl vero, contro un server locale, accetta header da fd e corpo da stdin.
+    Sabotaggio: la chiave rimessa in argv rifà rossi 2 casi.

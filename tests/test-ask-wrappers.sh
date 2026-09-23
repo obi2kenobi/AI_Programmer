@@ -83,6 +83,7 @@ MODELTMP=$(mktemp -d)
 cat > "$MODELTMP/curl" <<'EOF'
 #!/bin/bash
 echo "$*" >> /tmp/model-curl.log
+[[ "$*" == *"@-"* ]] && cat >> /tmp/model-curl.log
 [[ "$*" == *"api/version"* ]] && exit 0
 echo '{"choices":[{"message":{"content":"ok"}}],"message":{"content":"ok"}}'
 EOF
@@ -206,6 +207,41 @@ grep -q "ATTENZIONE.*TRONCATO" <<<"$OUT_STDIN" \
   && ok "ask-glm: stdin lento avvisa del troncamento invece di corrompere in silenzio" \
   || ko "ask-glm: stdin lento senza avviso — output: $OUT_STDIN"
 rm -rf "$STDINTMP"
+
+# --- 2026-09-23, giro A1 della notte: la chiave di ask-glm stava negli ARGOMENTI di curl
+# (`-H "Authorization: Bearer $KEY"`), leggibile da `ps` per tutta la durata della chiamata
+# (fino a 600s); e il prompt con lo stdin passava come argomento a python3 e a curl: oltre
+# 128 KB (MAX_ARG_STRLEN) il wrapper moriva con «Argument list too long» (rc=126) — proprio
+# il «contesto lungo via stdin» che CLAUDE.md §7 promette. Ora la chiave passa da un file
+# descrittore, prompt e payload da stdin. La chiave non si stampa mai: si CONTA.
+ARGVTMP=$(mktemp -d)
+cat > "$ARGVTMP/curl" <<'EOF'
+#!/bin/bash
+D=$(dirname "$0"); printf '%s\n' "$@" >> "$D/argv"
+prec=""; for a in "$@"; do [ "$prec" = "-H" ] && [ "${a#@}" != "$a" ] && cat "${a#@}" >> "$D/header"; prec="$a"; done
+[[ "$*" == *"@-"* ]] && cat >> "$D/corpo"
+[[ "$*" == *"api/version"* ]] && exit 0
+printf '{"choices":[{"message":{"content":"ok"}}],"message":{"content":"ok"}}'
+EOF
+chmod +x "$ARGVTMP/curl"
+CHIAVE_FINTA="chiave-finta-$$-xyz"
+PATH="$ARGVTMP:$PATH" ZHIPUAI_API_KEY="$CHIAVE_FINTA" bash "$HERE/llm/ask-glm.sh" "ciao" </dev/null >/dev/null 2>&1
+[ "$(grep -c -- "$CHIAVE_FINTA" "$ARGVTMP/argv" 2>/dev/null)" = "0" ] \
+  && ok "ask-glm: la chiave NON compare negli argomenti di curl (invisibile a ps)" \
+  || ko "ask-glm: la chiave e' negli argomenti di curl ($(grep -c -- "$CHIAVE_FINTA" "$ARGVTMP/argv") righe)"
+[ "$(grep -c -- "Authorization: Bearer $CHIAVE_FINTA" "$ARGVTMP/header" 2>/dev/null)" = "1" ] \
+  && ok "ask-glm: l'header di autorizzazione arriva comunque a curl (da file descrittore)" \
+  || ko "ask-glm: l'header di autorizzazione non arriva a curl"
+head -c 200000 /dev/zero | tr '\0' q > "$ARGVTMP/grande"
+for W in glm qwen; do
+  rm -f "$ARGVTMP/argv" "$ARGVTMP/corpo"
+  PATH="$ARGVTMP:$PATH" ZHIPUAI_API_KEY="$CHIAVE_FINTA" bash "$HERE/llm/ask-$W.sh" "riassumi" <"$ARGVTMP/grande" >"$ARGVTMP/out" 2>&1; RC=$?
+  N=$(cat "$ARGVTMP/argv" "$ARGVTMP/corpo" 2>/dev/null | tr -cd q | wc -c | tr -d ' ')
+  [ "$RC" -eq 0 ] && [ "$N" -ge 200000 ] \
+    && ok "ask-$W: un contesto di 200 KB via stdin arriva intero al modello (niente E2BIG)" \
+    || ko "ask-$W: contesto di 200 KB perso — rc=$RC, $N byte arrivati: $(head -c 200 "$ARGVTMP/out")"
+done
+rm -rf "$ARGVTMP"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
