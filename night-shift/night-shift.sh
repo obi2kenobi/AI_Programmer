@@ -781,15 +781,17 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # stringa vuota) con un messaggio meno preciso ("troppo povera" invece di "assente").
     # I due commenti dedicati "manca la sezione" non sono MAI arrivati a un operatore
     # reale — verificato con simulazione. Ordine corretto: assenza prima, qualità dopo.
+    # (Q11, 2026-09-23): ogni commento del cancello passa da lib.sh commenta_una_volta — uno per
+    # motivo, non uno per ciclo (il turno riparte subito: era spam).
     if ! grep -q "^## Territorio" <<<"$BODY"; then
       log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." >/dev/null 2>&1
+      commenta_una_volta "$NUM" "$REPO" territorio-assente "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." || true
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
     if ! grep -q "^## Design" <<<"$BODY"; then
       log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." >/dev/null 2>&1
+      commenta_una_volta "$NUM" "$REPO" design-assente "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." || true
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 
@@ -797,7 +799,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
     DESIGN_BODY=$(printf '%s' "$DESIGN_RAW" | tr -d '[:space:]')
     if [ "${#DESIGN_BODY}" -lt 80 ]; then
       log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." >/dev/null 2>&1
+      commenta_una_volta "$NUM" "$REPO" design-povero "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." || true
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
     # bug reale (dogfooding, set 2 "capacità di progettare"): la sola lunghezza è una
@@ -808,13 +810,13 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # verificabile (URL, link markdown, SAL.md, un'issue #N, o un percorso di file).
     if ! grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' <<<"$DESIGN_RAW"; then
       log "Issue #$NUM: ## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." >/dev/null 2>&1
+      commenta_una_volta "$NUM" "$REPO" design-senza-fonte "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." || true
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
     TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
     if ! grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b' <<<"$TERR_BODY"; then
       log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
-      gh issue comment "$NUM" -R "$REPO" --body "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." >/dev/null 2>&1
+      commenta_una_volta "$NUM" "$REPO" territorio-vago "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." || true
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 

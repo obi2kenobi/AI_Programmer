@@ -3435,3 +3435,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     il riconoscimento del proprio PID e del comando): 2 rossi.
   - ASSUNTO: `ps -p <pid> -o command=` si comporta così anche sul Mac (è POSIX); qui è provato
     solo su Linux.
+- **Q11**, da A5, spam: il cancello Design/Territorio di `night-shift/night-shift.sh` commentava
+  l'issue a ogni ciclo, e il turno riparte subito. Risultato: centinaia di commenti identici in una
+  notte sulla stessa issue.
+  - Ora i 5 commenti passano da `night-shift/lib.sh` commenta_una_volta: un marcatore invisibile
+    per motivo, e con i commenti illeggibili non si commenta.
+  - Banco: `tests/test-lib.sh`, 4 casi. Sabotaggio (via il controllo del marcatore): 1 rosso.

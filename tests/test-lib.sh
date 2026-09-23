@@ -240,6 +240,39 @@ else
   ko "prendi_lock_turno non definita in lib.sh"
 fi
 
+# --- commenta_una_volta (Q11, 2026-09-23, giro A5 della notte): il cancello Design/Territorio
+#     commentava l'issue a OGNI ciclo — e il turno riparte subito, a ciclo continuo: centinaia di
+#     commenti identici in una notte sulla stessa issue. Ora il commento porta un marcatore
+#     invisibile e non si ripete; se i commenti non si leggono (gh giu'), non si commenta.
+if declare -F commenta_una_volta >/dev/null; then
+  CU=$(mktemp -d)
+  cat > "$CU/gh" <<'EOF'
+#!/bin/bash
+D=$(dirname "$0")
+[ -f "$D/rotto" ] && exit 1
+case "$1 $2" in
+  "issue view")    cat "$D/commenti" 2>/dev/null; exit 0 ;;
+  "issue comment") shift 2; while [ $# -gt 0 ]; do [ "$1" = "--body" ] && { printf '%s\n---\n' "$2" >> "$D/commenti"; }; shift; done; exit 0 ;;
+esac
+EOF
+  chmod +x "$CU/gh"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r territorio-assente "🌙 Saltata: manca Territorio"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r territorio-assente "🌙 Saltata: manca Territorio"
+  N=$(grep -c 'Saltata: manca Territorio' "$CU/commenti" 2>/dev/null)
+  [ "$N" = "1" ] && ok "commenta_una_volta: due cicli, UN commento" || ko "commenta_una_volta: $N commenti per due cicli"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r design-povero "🌙 Saltata: Design povero"
+  grep -q 'Design povero' "$CU/commenti" && ok "commenta_una_volta: un motivo NUOVO si commenta" || ko "commenta_una_volta: il motivo nuovo non e' stato commentato"
+  : > "$CU/commenti"; touch "$CU/rotto"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r territorio-assente "🌙 Saltata: manca Territorio"; RC=$?
+  [ "$RC" -ne 0 ] && [ ! -s "$CU/commenti" ] && ok "commenta_una_volta: commenti illeggibili → non commenta, e lo dice (rc=$RC)" || ko "commenta_una_volta: con gh giu' ha commentato o taciuto (rc=$RC)"
+  rm -rf "$CU"
+  NSH="$HERE/night-shift/night-shift.sh"
+  NUDI=$(sed -n '/if ! grep -q "^## Territorio"/,/Idempotenza: PR aperta/p' "$NSH" | grep -c 'gh issue comment')
+  [ "$NUDI" = "0" ] && ok "night-shift.sh: il cancello Design/Territorio commenta solo con commenta_una_volta" || ko "night-shift.sh: $NUDI commenti nudi nel cancello Design/Territorio"
+else
+  ko "commenta_una_volta non definita in lib.sh"
+fi
+
 # --- candidata_parere (D10, Luca 2026-09-23: «b»): la PR di ISSUE che il censore giudica col solo
 #     parere — bozza su night/issue-*, e mai due volte lo stesso commit (il parere dato si ricorda)
 if declare -F candidata_parere >/dev/null; then

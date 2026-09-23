@@ -315,3 +315,17 @@ prendi_lock_turno() {
   echo $$ > "$L/pid"
   return 0
 }
+
+# commenta_una_volta <num> <owner/repo> <motivo> <corpo>: commenta l'issue UNA volta per motivo.
+# (Q11, 2026-09-23, giro A5 della notte): il cancello Design/Territorio commentava a OGNI ciclo, e
+# il turno riparte subito — centinaia di commenti identici in una notte. Il corpo porta un
+# marcatore invisibile (<!-- night-gate:<motivo> -->); se c'e' gia', si tace. Commenti illeggibili
+# (gh giu', rete) = non si commenta: rc 2, meglio un avviso in meno che uno spam.
+commenta_una_volta() {
+  local num="$1" repo="$2" marcatore="<!-- night-gate:$3 -->" corpo="$4" gia
+  gia=$(gh issue view "$num" -R "$repo" --json comments -q '.comments[].body' 2>/dev/null) || return 2
+  grep -qF -- "$marcatore" <<<"$gia" && return 0
+  gh issue comment "$num" -R "$repo" --body "$corpo
+
+$marcatore" >/dev/null 2>&1
+}
