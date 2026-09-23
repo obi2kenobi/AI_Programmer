@@ -840,3 +840,40 @@
 - Aggiramento: fidarsi del verdetto verde di un check i cui fratelli passano
   vacuamente. E scrivere commenti dentro le catene di continuazione: il commento
   sta SOPRA il comando, sempre.
+
+## E-039 Verifica contro lo stato esterno, non il self-report
+
+- Data / sessione: 2026-09-23 (studio deepseek-harness postmortem 0003)
+- Famiglia: R2 (verde senza dati) + R4 (autoriferimento)
+- Chi l'ha trovato: studio esterno (il postmortem 0003 del loro repo descrive
+  l'esatta stessa classe del nostro E-038)
+- Sintomo (loro): l'agente ha "verificato" un server di REPLACEMENT su un'altra
+  porta mentre l'utente guardava l'originale; ha accettato un HTTP 200 di Vite
+  nudo come "successo" nonostante la white-screen. Il nostro equivalente (E-038):
+  il banco contava il verde dell'agente senza guardare il mondo.
+- Causa del ragionamento: l'agente non conosce i prerequisiti nascosti del suo
+  runtime (quale URL, quale processo, quale modalita') e verifica contro il
+  proprio output invece che contro lo stato del mondo.
+- Perché non ci ha fermati: manca una regola esplicita nel canone.
+- Guardia: `tests/test-deploy-assistito.sh` (verifica STORICO.log e pacchetto
+  consumato, non l'output dell'agente); questa voce.
+- Aggiramento: dichiarare successo perche' "l'agente ha detto OK". La regola:
+  ogni verdetto di completamento prova una proprieta' del MONDO (il file e'
+  cambiato, il comando e' riuscito, il log contiene la firma) — mai la parola
+  dell'agente.
+
+## E-040 La firma senza consumatori
+
+- Data / sessione: 2026-09-23 (catalogo eventi, studio deepseek-harness)
+- Famiglia: R2 (verde senza dati)
+- Chi l'ha trovato: audit-2 (DELIBERA: contava zero da sempre), formalizzato
+  col catalogo eventi
+- Sintomo: contatori della dashboard a zero strutturale per mesi.
+- Causa prossima: firme di log scritte su stderr catturato e ingoiato, mai
+  arrivate al console log.
+- Causa del ragionamento: nessun documento dichiarava CHI consuma ogni firma:
+  il contratto produttore->consumatore era implicito e invisibile.
+- Perché non ci ha fermati: nessuna lente sapeva che doveva guardare.
+- Guardia: `docs/eventi.md` (il catalogo) + `tests/test-eventi.sh` (per ogni
+  firma: produttore contiene, consumatore esiste, orfane contate)
+- Aggiramento: aggiungere una firma di log senza aggiungerla al catalogo.

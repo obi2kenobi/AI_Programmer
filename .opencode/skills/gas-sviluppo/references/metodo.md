@@ -1053,7 +1053,7 @@ La sessione aveva l'hub in sola lettura — le regole sono arrivate a mano.
    dentro l'HTML, che in un progetto GAS è metà dell'applicazione. (Il gate
    esisteva nel cliente e non nell'hub con la skill gas-sviluppo: portato.)
 
-2. **La convergenza di più lenti NON è una conferma.** I giri che leggono la
+2. **La convergenza di più lenti NON è una conferma (qui sotto: se le misure sono INDIPENDENTI vale di piu' di una citazione — la differenza e' l'indipendenza delle fonti, non il numero).** I giri che leggono la
    stessa fonte ereditano la stessa premessa: la loro convergenza misura
    quanto è *convincente* l'errore, non quanto è *vero*. Il consolidamento
    separa «segnalato da N lenti» da «verificato eseguendo», e la prima colonna
@@ -1110,3 +1110,19 @@ Ogni nome è un file in `patterns/` con il caso reale che l'ha prodotto. Prima d
    sandbox — test-catena-viva e' il cancello, ed e' nella suite. Il live e'
    per le sorprese, non per le prove: cicli lenti, contese e cooldown
    moltiplicano ogni esperimento per mezz'ora.
+
+## Verifica il mondo, non il self-report
+
+(regola portata dallo studio deepseek-harness testing.md, 2026-09-23; vedi
+REGISTRO E-039 ed E-038 per i casi veri che l'hanno pagata)
+
+Ogni verdetto di completamento — un banco, un censore, un test, un agente che
+dichiara "fatto" — deve provare una proprieta' del MONDO ESTERNO: il file e'
+cambiato sul disco, il comando e' riuscito col suo exit code, il log contiene
+la firma attesa, il pacchetto e' consumato. Mai la parola di chi ha fatto il
+lavoro. Una keyword probe sull'output dell'agente lascia passare un agente
+che bara; un file byte-identico dopo "l'ho modificato" no.
+
+L'agente deve conoscere i prerequisiti nascosti del suo runtime — quale URL,
+quale processo, quale modalita' di avvio — perche' quella e' contesto
+dell'applicazione, non sapere tribale.

@@ -57,7 +57,7 @@ Apply this expertise to the task. Cite specific patterns or rules from your spec
 CONV=$(jq -n --arg sys "$SYSTEM" --arg p "$PROMPT" \
   '[{"role":"system","content":$sys},{"role":"user","content":$p}]')
 
-TURNO=0
+TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   TURNO=$((TURNO+1))
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
@@ -100,7 +100,22 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
 
   # prova a parsare come JSON action (spogliando i fence markdown)
   STRIPPED=$(echo "$CONTENT" | sed 's/^```[a-z]*//; s/```$//' | tr -d '\n' | sed 's/^ *//; s/ *$//')
-  ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
+  # (studio deepseek-harness, guard/repeat-tool-reminder): l'azione IDENTICA
+  # ripetuta e' il segnale del loop che non converge — glielo diciamo nel RESULT
+  if [ "$STRIPPED" = "${PREV_STRIPPED:-}" ]; then
+    RIPETIZIONI=$((RIPETIZIONI+1))
+    if [ "$RIPETIZIONI" -ge 1 ]; then
+      RESULT="$RESULT
+
+NOTE: you just repeated the EXACT same action as the previous turn ($RIPETIZIONI times now). Same input, same output. Change your approach (read more context, try a different old/new pair) or declare finish with an honest result."
+      log "  repeat-reminder: azione identica per $((RIPETIZIONI+1)) turni di fila"
+    fi
+  else
+    RIPETIZIONI=0
+  fi
+  PREV_STRIPPED="$STRIPPED"
+
+ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
 
   if [ -z "$ACTION" ]; then
     # non è un'action: il modello ha finito

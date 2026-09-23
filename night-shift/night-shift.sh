@@ -55,8 +55,15 @@ if git -C "$HERE" reset -q --hard "$(git -C "$HERE" symbolic-ref refs/remotes/or
 else
   log "ATTENZIONE: hub non allineabile — il turno gira col metodo che c'e'"
 fi
+# (studio deepseek-harness profiles, 2026-09-23): la configurazione del turno
+# vive in UNA dichiarazione (profiles/notturno.conf) ricomposta a ogni ciclo —
+# il nostro exec-per-ciclo e' un hot-reload gratis. I default nel codice sono
+# fallback di emergenza, non la fonte.
+if [ -f "$HERE/../tools/profilo.sh" ]; then
+  . "$HERE/../tools/profilo.sh" notturno
+fi
 WORK="$HOME/night-shift-work"
-MODEL_TAG="qwen3.8-27b:iq3s"
+MODEL_TAG="${MODELLO:-qwen3.8-27b:iq3s}"
 OCPROVIDER="ollama/$MODEL_TAG"
 DEFAULT_TYPE="chore"
 
@@ -823,6 +830,11 @@ $BODY"
       # scritto DOPO il check, che sotto set -u leggeva una variabile vuota e non girava
       # mai — la lezione del caso #10 era scritta e inattiva.)
       ISSUE_FILE="/tmp/night-issue-$NUM.md"
+      # (studio dsh goal, 2026-09-23): l'obiettivo dura quanto la issue, non un ciclo
+      if [ -f "$HERE/../tools/goal-issue.sh" ]; then
+        bash "$HERE/../tools/goal-issue.sh" "$DIR" create "$NUM" "$(gh issue view "$NUM" -R "$REPO" --json title -q .title 2>/dev/null || echo "issue #$NUM")" >/dev/null 2>&1 || true
+        log "REPO $REPO: goal aperto per issue #$NUM (durable: sopravvive ai cicli)"
+      fi
       printf '%s\n' "$BODY" > "$ISSUE_FILE"
       # (2026-09-08, dal caso #10): la notte inseguiva una commessa che il giorno aveva
       # gia' consegnato (funzione presente E cablata, commit a72213d) — quattro notti a
@@ -865,6 +877,9 @@ $BODY"
       OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
       log "Issue #$NUM: $OUT"
+      # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo
+      # vede DOVE eravamo rimasti, non riparte da zero
+      [ -f "$HERE/../tools/goal-issue.sh" ] && bash "$HERE/../tools/goal-issue.sh" "$DIR" update "$NUM" "solver rc=$RC: $(echo "$OUT" | tail -1 | cut -c1-80)" >/dev/null 2>&1 || true
 
       # CASCATA solver → agente (2026-09-17, intuizione di Luca): se il solver non
       # converge, l'agente multi-turno prova strade che il solver non vede.
@@ -887,6 +902,7 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
           log "Issue #$NUM: ✅ AGENTE ha converto (dove il solver non poteva)"
           RC=0
           OUT="AGENTE: completato"
+          [ -f "$HERE/../tools/goal-issue.sh" ] && bash "$HERE/../tools/goal-issue.sh" "$DIR" update "$NUM" "AGENTE ha converto (cascade)" >/dev/null 2>&1 || true
         else
           log "Issue #$NUM: anche l'agente non ha converto (rc=$AGENTE_RC)"
         fi
