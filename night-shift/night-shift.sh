@@ -1195,6 +1195,25 @@ if [ ! -f "$IMPRA_MARKER" ] && [ "$(date +%H)" -ge 22 ] && [ -f "$HERE/../tools/
   fi
 fi
 
+# il GRAFO SEMANTICO (D1, Luca 2026-09-23: «la notte, Ollama»): una volta al giorno, in
+# BACKGROUND — un pass sui documenti a ~4 tok/s dura ore e il ciclo non lo aspetta. Hub + ogni
+# repo del turno; ogni grafo cambiato diventa una PR in bozza (tools/grafo-semantico.sh). Il lock
+# evita due pass insieme; un lock oltre le 24h e' un pass morto: si toglie e si dichiara.
+GRAFO_MARKER="$WORK/.grafo-$(date +%F)"; GRAFO_LOCK="$WORK/.lock-grafo"
+if [ -d "$GRAFO_LOCK" ] && [ $(( $(date +%s) - $(mtime "$GRAFO_LOCK") )) -ge 86400 ]; then
+  rmdir "$GRAFO_LOCK" 2>/dev/null && log "grafo semantico: lock oltre 24h (pass morto) rimosso"
+fi
+if [ ! -f "$GRAFO_MARKER" ] && [ -f "$HERE/../tools/grafo-semantico.sh" ] && command -v graphify >/dev/null 2>&1 \
+   && mkdir "$GRAFO_LOCK" 2>/dev/null; then
+  touch "$GRAFO_MARKER"
+  GRAFO_REPO=("obi2kenobi/AI_Programmer"); for E in "${REPO_LIST[@]}"; do [ "${E%% *}" = "${GRAFO_REPO[0]}" ] || GRAFO_REPO+=("${E%% *}"); done
+  ( for R in "${GRAFO_REPO[@]}"; do MODELLO="$MODEL_TAG" bash "$HERE/../tools/grafo-semantico.sh" "$R" "$WORK"; done \
+      >> "$WORK/grafo-semantico.log" 2>&1; rmdir "$GRAFO_LOCK" 2>/dev/null ) &
+  log "grafo semantico: avviato in background su ${#GRAFO_REPO[@]} repo (log: $WORK/grafo-semantico.log)"
+elif [ ! -f "$GRAFO_MARKER" ] && ! command -v graphify >/dev/null 2>&1; then
+  log "grafo semantico: graphify ASSENTE — pass saltato (DEGRADATO; pip install graphifyy)"
+fi
+
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
 T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 

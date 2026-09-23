@@ -155,5 +155,15 @@ else
   echo "⚠ privacy: ~/.privacy-nomi assente — il controllo nomi e' DEGRADATO (non e' un via libera)"
 fi
 
+# 8. (D1, Luca 2026-09-23: graphify spina dorsale, grafo VERSIONATO) il grafo segue il commit.
+#    Solo se i controlli sono passati, se il commit tocca qualcosa FUORI dal grafo, e se la spina
+#    e' installata qui (graphify-out/.gitattributes: la scrive tools/graphify-spina.sh alla
+#    prima sessione). Il grafo si costruisce dal working tree, non dall'indice: dichiarato.
+#    (E-002: `git diff | grep -q` sotto pipefail puo' morire di SIGPIPE — si cattura prima)
+FUORI_GRAFO=$(git diff --cached --name-only 2>/dev/null | grep -v '^graphify-out/' || true)
+if [ "$FALLITI" -eq 0 ] && [ -n "$FUORI_GRAFO" ] && [ -f "$HERE/graphify-out/.gitattributes" ] && [ -f "$HERE/tools/graphify-spina.sh" ]; then
+  bash "$HERE/tools/graphify-spina.sh" "$HERE" --stage
+fi
+
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
 exit $FALLITI

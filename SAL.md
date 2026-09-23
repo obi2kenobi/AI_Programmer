@@ -138,6 +138,7 @@
 - [2026-09-23 — revisione in dieci giri (mandato di Luca): giro 0, i debiti e la suite rossa](#2026-09-23-revisione-in-dieci-giri-mandato-di-luca-giro-0-i-debiti-e-la-suite-rossa)
 - [2026-09-23 (2°) — gli hook partono dalla radice del progetto (sì di Luca)](#2026-09-23-2-gli-hook-partono-dalla-radice-del-progetto-sì-di-luca)
 - [2026-09-23 (3°) — CLAUDE.md §4: chi giudica le PR, oggi (sì di Luca)](#2026-09-23-3-claude-md-4-chi-giudica-le-pr-oggi-sì-di-luca)
+- [2026-09-23 (4°) — graphify spina dorsale (D1, decisione di Luca)](#2026-09-23-4-graphify-spina-dorsale-d1-decisione-di-luca)
 
 
 ## Stato
@@ -3037,3 +3038,26 @@ solo le PR bozza su `night/` con titolo `caccia:`; il morning-gate, invocabile a
 `night/`, `claude/`, `glm/`; le PR `claude/*`, `glm/*` e delle issue non hanno oggi un giudice
 automatico. Banco prima (`tests/test-claude-md-gate-conventions.sh`, 2 attese nuove rosse, poi 8/8):
 la regola deve citare il censore e il filtro vero del suo codice.
+
+### 2026-09-23 (4°) — graphify spina dorsale (D1, decisione di Luca)
+
+La prima domanda di dominio, con la risposta di Luca: «il graphify deve essere il teletrasporto
+per trovare tutti i dati, e quando installi ai_programmer in un repo deve essere la spina dorsale
+anche del nuovo repo». Le due scelte: grafo VERSIONATO e semantica LA NOTTE con Ollama.
+- `tools/graphify-spina.sh` e' un hook SessionStart. Fa `graphify update`: solo AST, circa 3 s,
+  e i .md entrano per titolo. Scrive le regole del grafo NELLA SUA CARTELLA
+  (`graphify-out/.gitignore`, `graphify-out/.gitattributes` con `merge=graphify`), quindi non
+  tocca nessun file della repo ospite. Registra il merge-driver nella config locale.
+  Essendo un hook dichiarato, `copia-hook --elenco` lo porta con sé nei quattro installatori.
+- Il pre-commit lo rilancia con `--stage`: il grafo versionato segue ogni commit.
+- `tools/grafo-semantico.sh` gira una volta al giorno, in background dal turno notturno, su hub
+  e repo del turno. Usa `--backend ollama --max-concurrency 1` e apre una PR in bozza su
+  `night/grafo-<data>` solo se il grafo è cambiato.
+- La skill è specchiata in `.claude/skills/graphify`; l'eccezione in ciclo-vivo 4a è tolta.
+  Rimossa la sezione graphify duplicata in AGENTS.md.
+- Misura dichiarata: il grafo con i .md pesa 3,2 MB (non i 916 KB del solo codice), e ogni
+  commit riordina circa 1000 righe di JSON. È `linguist-generated`, quindi le PR lo comprimono.
+  Il sabotaggio lo prova: senza il merge-driver un merge dei grafi PERDE nodi.
+Banco scritto prima: `tests/test-graphify-spina.sh`, rosso 1/16, poi 16/16. Il sabotaggio del
+merge-driver e del controllo «invariato» fa 4 rossi.
+⏳ NON verificato dal vivo: il primo pass Ollama sul Mac (durata, graphify nel PATH di launchd).

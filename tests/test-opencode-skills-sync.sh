@@ -33,12 +33,10 @@ for dir in "${CLAUDE_SKILLS[@]}"; do
   fi
 done
 
-# skill OpenCode orfana (presente lì, non in Claude): drift anch'essa, TRANNE graphify
-# — plugin/hook opencode-only dichiarato tale (nessuna controparte prevista in .claude,
-# non un'omissione: AGENTS.md la cita come reminder specifico di quel framework).
+# skill OpenCode orfana (presente lì, non in Claude): drift anch'essa. (D1, 2026-09-23:
+# graphify era l'eccezione opencode-only — ora e' la spina dorsale, specchiata in .claude.)
 for o in "$HERE"/.opencode/skills/*/; do
   nome="$(basename "$o")"
-  [ "$nome" = "graphify" ] && continue
   [ -d "$HERE/.claude/skills/$nome" ] || ko "$nome: orfana in .opencode/skills senza origine Claude"
 done
 

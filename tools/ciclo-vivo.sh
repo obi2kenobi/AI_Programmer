@@ -101,10 +101,11 @@ fi
 # frattempo gli specchi agenti driftavano davvero mentre il test anti-drift
 # confrontava due stream vuoti (pattern confronto-non-vuoto).
 if [ "$LIVELLO" -ge 4 ]; then
-  # 4a. specchio skills: ogni skill di .claude vive anche in .opencode (graphify
-  #     esclusa: è nativa di OpenCode) e nessuna orfana vive solo nello specchio
+  # 4a. specchio skills: ogni skill di .claude vive anche in .opencode e nessuna orfana
+  #     vive solo nello specchio (D1 2026-09-23: graphify non e' piu' un'eccezione — e' la
+  #     spina dorsale, la vede anche Claude Code)
   for d in "$HERE"/.claude/skills/*/; do
-    n=$(basename "$d"); [ "$n" = "graphify" ] && continue
+    n=$(basename "$d")
     [ -d "$HERE/.opencode/skills/$n" ] || FINDINGS+=("ARCH: skill $n assente dallo specchio .opencode")
   done
   for d in "$HERE"/.opencode/skills/*/; do

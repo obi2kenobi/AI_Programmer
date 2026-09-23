@@ -46,7 +46,9 @@ check_referenced_paths() {
       # apparire come una citazione rotta di questo hub.
       gas/Sp.js|tools/test-sp.js) continue ;;
     esac
-    if [ ! -e "$HERE/$ref" ]; then
+    # (D1, 2026-09-23): una skill cita le sue references/ relative alla PROPRIA cartella
+    # (la skill graphify lo fa) — si risolve anche li', come fa giri-ignoranti S10
+    if [ ! -e "$HERE/$ref" ] && [ ! -e "$(dirname "$path")/$ref" ]; then
       echo "   riferimento non trovato: $ref"
       missing=$((missing+1))
     fi

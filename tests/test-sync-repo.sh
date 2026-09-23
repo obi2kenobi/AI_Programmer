@@ -16,7 +16,7 @@ mkdir -p "$TMP/allineata"
 cp "$HERE/CLAUDE.md" "$TMP/allineata/CLAUDE.md"
 # (canarino v2, audit 2026-09-23): allineata vuol dire ANCHE gli hook uguali
 mkdir -p "$TMP/allineata/tools"
-for H in clasp-block-hook metodo-reminder-hook pattern-reminder-hook; do cp "$HERE/tools/$H.sh" "$TMP/allineata/tools/"; done
+while IFS= read -r H; do cp "$HERE/$H" "$TMP/allineata/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
 bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" >/dev/null 2>&1
 [ $? -eq 0 ] && ok "repo allineata: exit 0" || ko "allineata non riconosciuta"
 
@@ -25,7 +25,7 @@ mkdir -p "$TMP/divergente"
 head -50 "$HERE/CLAUDE.md" > "$TMP/divergente/CLAUDE.md"
 # (canarino v2): gli hook allineati, cosi' la divergenza misurata e' quella del CLAUDE
 mkdir -p "$TMP/divergente/tools"
-for H in clasp-block-hook metodo-reminder-hook pattern-reminder-hook; do cp "$HERE/tools/$H.sh" "$TMP/divergente/tools/"; done
+while IFS= read -r H; do cp "$HERE/$H" "$TMP/divergente/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
 OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/divergente" 2>&1); RC=$?
 [ $RC -eq 1 ] && echo "$OUT" | grep -q "DIVERGENTE" \
   && ok "repo divergente: exit 1 col verdetto DIVERGENTE dichiarato" \

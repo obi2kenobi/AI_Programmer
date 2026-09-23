@@ -13,8 +13,7 @@ shopt -s nullglob
 CLAUDE_SKILLS=("$HERE"/.claude/skills/*/SKILL.md)
 OC_SKILLS=()
 for d in "$HERE"/.opencode/skills/*/; do
-  n=$(basename "$d")
-  [ "$n" = "graphify" ] && continue  # OpenCode-specific, non uno specchio
+  # (D1, 2026-09-23): graphify non e' piu' un'eccezione OpenCode — e' specchiata anche in .claude
   OC_SKILLS+=("$d/SKILL.md")
 done
 

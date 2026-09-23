@@ -108,7 +108,7 @@ ROTTO=""
 DOCS_MD=$(find "$HERE/docs" -maxdepth 1 -name '*.md' ! -name GRAMMATICA_DOMINIO_TEMPLATE.md)
 while IFS= read -r ref; do
   # (2026-09-15, dall'auto-esame notturno): i path GITIGNORED sono ambiente-dipendenti
-  # (graphify-out/, repos.conf, repos.key) — nella cloni mancano per costruzione e
+  # (repos.conf, repos.key; graphify-out/graph.json e' versionato dal D1 2026-09-23) — nella cloni mancano per costruzione e
   # non sono porte rotte. Chi li cita dichiara un'opzione locale, non una promessa.
   git -C "$HERE" check-ignore -q "$ref" 2>/dev/null && continue
   [ -e "$HERE/$ref" ] || ROTTO="$ROTTO $ref"
@@ -167,6 +167,10 @@ for f in zone:
         # mancano nelle cloni per costruzione, non sono porte rotte
         import subprocess
         if subprocess.run(['git','-C',here,'check-ignore','-q',m], capture_output=True).returncode == 0:
+            continue
+        # (D1, 2026-09-23): la skill graphify cita i file di lavoro di graphify per nome nudo —
+        # vivono in graphify-out/ (graph.json) o ci nascono a runtime (.graphify_*, locali)
+        if os.path.exists(f'{here}/graphify-out/{m}') or m.startswith('.graphify_'):
             continue
         if not (os.path.exists(f'{here}/{m}') or os.path.exists(os.path.join(os.path.dirname(f), m))):
             pendenti.append(f"{f.split('/')[-1]}: {m}")
