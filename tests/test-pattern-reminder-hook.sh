@@ -4,7 +4,10 @@
 # meccanismo del sistema. Verifica il hook PreToolUse (Edit|Write, tools/pattern-reminder-
 # hook.sh) simulando lo stdin JSON che Claude Code gli passerebbe davvero: deve segnalare i
 # path sensibili citando patterns/README.md, ignorare i path non sensibili, e non bloccare
-# mai l'operazione (permissionDecision sempre "allow").
+# mai l'operazione. (2026-09-23, sì di Luca): e NON DECIDE nemmeno — prima rispondeva
+# permissionDecision "allow", che in Claude Code SALTA la richiesta di permesso: il promemoria
+# sui file e i comandi sensibili auto-approvava proprio le operazioni piu' delicate. Un
+# promemoria da' solo contesto; il permesso segue il suo corso normale.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 HOOK="$HERE/tools/pattern-reminder-hook.sh"
@@ -24,9 +27,9 @@ OUT_SENSIBILE=$(cd "$NOSAL" && echo '{"tool_name":"Edit","tool_input":{"file_pat
 echo "$OUT_SENSIBILE" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
   && ok "path sensibile: produce additionalContext" \
   || ko "path sensibile: nessun additionalContext prodotto"
-echo "$OUT_SENSIBILE" | jq -e '.hookSpecificOutput.permissionDecision == "allow"' >/dev/null 2>&1 \
-  && ok "path sensibile: permissionDecision è 'allow' (non blocca mai)" \
-  || ko "path sensibile: permissionDecision non è 'allow'"
+echo "$OUT_SENSIBILE" | jq -e '.hookSpecificOutput | has("permissionDecision") | not' >/dev/null 2>&1 \
+  && ok "path sensibile: nessuna permissionDecision (non blocca e non auto-approva)" \
+  || ko "path sensibile: il promemoria DECIDE il permesso ($(echo "$OUT_SENSIBILE" | jq -r '.hookSpecificOutput.permissionDecision // empty'))"
 echo "$OUT_SENSIBILE" | grep -qi 'segreto-come-impronta' \
   && ok "cita il pattern segreto-come-impronta nel reminder" \
   || ko "non cita il pattern segreto-come-impronta"
@@ -50,9 +53,9 @@ OUT_B_SENS=$(echo '{"tool_name":"Bash","tool_input":{"command":"printenv | grep 
 echo "$OUT_B_SENS" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
   && ok "Bash sensibile (printenv): produce additionalContext" \
   || ko "Bash sensibile: nessun additionalContext"
-echo "$OUT_B_SENS" | jq -e '.hookSpecificOutput.permissionDecision == "allow"' >/dev/null 2>&1 \
-  && ok "Bash sensibile: permissionDecision resta 'allow' (reminder, non cancello)" \
-  || ko "Bash sensibile: permissionDecision non è 'allow'"
+echo "$OUT_B_SENS" | jq -e '.hookSpecificOutput | has("permissionDecision") | not' >/dev/null 2>&1 \
+  && ok "Bash sensibile: nessuna permissionDecision (reminder, non cancello e non lasciapassare)" \
+  || ko "Bash sensibile: il promemoria DECIDE il permesso ($(echo "$OUT_B_SENS" | jq -r '.hookSpecificOutput.permissionDecision // empty'))"
 OUT_B_ENV=$(echo '{"tool_name":"Bash","tool_input":{"command":"cat .env.production"}}' | bash "$HOOK")
 echo "$OUT_B_ENV" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
   && ok "Bash che legge .env: reminder prodotto" || ko "Bash .env: nessun reminder"

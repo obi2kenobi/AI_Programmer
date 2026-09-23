@@ -4,7 +4,10 @@
 # dipendeva dalla memoria dell'agente in quel turno, non da un meccanismo del sistema.
 # Quando il file_path toccato matcha una categoria sensibile (auth/secret/credential/
 # token/login/password, incluse le varianti italiane), stampa un reminder con le righe
-# pertinenti del registro patterns/README.md — non blocca mai l'operazione (allow sempre).
+# pertinenti del registro patterns/README.md — non blocca mai l'operazione, e non la approva:
+# (2026-09-23, sì di Luca) rispondeva permissionDecision "allow", che in Claude Code SALTA la
+# richiesta di permesso — il promemoria sui file e i comandi sensibili auto-approvava proprio le
+# operazioni piu' delicate. Ora da' solo contesto: il permesso segue il suo corso normale.
 # 6° ciclo, set 3 (2026-08-24): esteso a Bash — il varco documentato nella voce SAL del
 # 5° ciclo: l'hook copriva Edit|Write ma "non copre il modo in cui si è lavorato oggi
 # (clasp deploy, probe su BC)". Un COMANDO che stampa/legge segreti (printenv, cat di
@@ -66,7 +69,7 @@ $HITS_B"
   else
     CTX_B="Il comando tocca materiale sensibile — vale comunque CLAUDE.md \"Never expose secrets\" / \"Mask, don't omit\" / \"One-shot secret handoff\"."
   fi
-  jq -n --arg ctx "$CTX_B" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",additionalContext:$ctx}}'
+  jq -n --arg ctx "$CTX_B" '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$ctx}}'
   exit 0
 fi
 
@@ -103,4 +106,4 @@ $CTX_SAL"
 [ "$CTX" = "
 " ] && exit 0
 
-jq -n --arg ctx "$CTX" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"allow",additionalContext:$ctx}}'
+jq -n --arg ctx "$CTX" '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$ctx}}'

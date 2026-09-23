@@ -150,6 +150,7 @@
 - [2026-09-23 (13°) — il censore giudica le PR delle issue, e lascia solo un parere (D10, decisione di Luca)](#2026-09-23-13-il-censore-giudica-le-pr-delle-issue-e-lascia-solo-un-parere-d10-decisione-di-luca)
 - [2026-09-23 (14°) — il rosso intermittente della suite era E-002, e la mia esclusione era sbagliata (E-042)](#2026-09-23-14-il-rosso-intermittente-della-suite-era-e-002-e-la-mia-esclusione-era-sbagliata-e-042)
 - [2026-09-23 (15°) — il profilo del turno è collegato davvero (D11, decisione di Luca)](#2026-09-23-15-il-profilo-del-turno-è-collegato-davvero-d11-decisione-di-luca)
+- [2026-09-23 (16°) — il promemoria dei pattern non approva più da solo (sì di Luca)](#2026-09-23-16-il-promemoria-dei-pattern-non-approva-più-da-solo-sì-di-luca)
 
 
 ## Stato
@@ -3286,3 +3287,16 @@ comportamento in `tests/test-revisore.sh`: con `CENSORE_MAX_RIGHE=0` la PR va al
   di 1 riga; col valore 0 morde.
 - **Sabotaggi.** Il limite di nuovo scritto a mano nel censore e la pausa riportata a 21600 nel
   profilo danno 1 rosso e 3 rossi.
+
+### 2026-09-23 (16°) — il promemoria dei pattern non approva più da solo (sì di Luca)
+
+Era un rilievo fuori scope della PR #125, e Luca ha detto «sì, sistema il promemoria dei pattern».
+`tools/pattern-reminder-hook.sh` rispondeva `permissionDecision: "allow"` sui file e sui comandi
+sensibili (credenziali, `.env`, printenv, Authorization). In Claude Code «allow» salta la
+richiesta di permesso: il promemoria, nato per chiedere più attenzione proprio lì, auto-approvava
+le operazioni più delicate.
+- Ora il hook dà solo `additionalContext`, e il permesso segue il suo corso normale. È la stessa
+  forma di `tools/skill-reminder-hook.sh` (D3).
+- Il banco pretendeva «allow» come requisito: `tests/test-pattern-reminder-hook.sh` aveva scritto
+  il difetto come attesa. Riscritto prima della cura: rosso 13/15, poi 15/15.
+- Provato dal vivo: su `printenv` l'uscita ha solo le chiavi additionalContext e hookEventName.
