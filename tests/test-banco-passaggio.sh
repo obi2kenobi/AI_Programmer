@@ -30,13 +30,21 @@ OUT=$(bash "$BANCO" --solo-copertura 2>&1); RC=$?
 rm -f "$HERE/$PROBE"
 
 # esclusione giustificata: il banco chiude (dichiarato, non dimenticato)
-printf '%s # esiste solo dentro questo test, giustificato qui\n' "$PROBE" >> "$HERE/tools/banco-passaggio.esclusioni"
+# (revisione 10 giri, 2026-09-23): il ripristino era `git checkout --` sul file — cancellava
+# anche le modifiche NON committate di chi ci stava lavorando. Ora si salva il contenuto e
+# si rimette com'era (anche se il test muore a meta': trap).
+ESCL="$HERE/tools/banco-passaggio.esclusioni"
+ESCL_COPIA=$(mktemp); cp "$ESCL" "$ESCL_COPIA"
+trap 'cp "$ESCL_COPIA" "$ESCL"; rm -f "$ESCL_COPIA" "$HERE/$PROBE"' EXIT
+printf '%s # esiste solo dentro questo test, giustificato qui\n' "$PROBE" >> "$ESCL"
 printf '#!/usr/bin/env python3\nprint("prova")\n' > "$HERE/$PROBE"
 OUT=$(bash "$BANCO" --solo-copertura 2>&1); RC=$?
 [ $RC -eq 0 ] && ok "esclusione giustificata: il banco chiude" \
   || { echo "$OUT" | tail -2 | sed 's/^/    /'; ko "esclusione ignorata"; }
 rm -f "$HERE/$PROBE"
-git -C "$HERE" checkout -- tools/banco-passaggio.esclusioni 2>/dev/null || true
+cp "$ESCL_COPIA" "$ESCL"
+cmp -s "$ESCL_COPIA" "$ESCL" && ok "esclusioni rimesse esattamente com'erano (anche con modifiche non committate)" \
+  || ko "il file delle esclusioni non e' tornato com'era"
 
 # dopo la pulizia il banco torna verde (il repo vero non ha scoperti)
 OUT=$(bash "$BANCO" --solo-copertura 2>&1); RC=$?

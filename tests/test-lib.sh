@@ -139,6 +139,21 @@ else
   ko "candidata_censore non definita in lib.sh"
 fi
 
+# --- rami_da_scopare: la scopa del turno non tocca il lavoro vivo (revisione 10 giri) ---
+# La scopa cancellava OGNI ramo senza PR (la soglia di 48h era solo nel commento) e ogni ramo
+# con una PR fusa/chiusa anche se una PR APERTA riusa lo stesso nome (night/issue-N, o un ramo
+# di sessione ripartito dopo il merge) — chiudendo la PR viva.
+if declare -F rami_da_scopare >/dev/null; then
+  ORA=1000000; H=3600
+  RAMI=$(printf '%s\t%s\n' main 1 vecchio-fuso $((ORA-100*H)) riusato $((ORA-100*H)) orfano-vecchio $((ORA-49*H)) orfano-giovane $((ORA-1*H)) chiuso-giovane $((ORA-1*H)))
+  PRS=$(printf '%s\t%s\n' vecchio-fuso MERGED riusato MERGED riusato OPEN chiuso-giovane CLOSED)
+  OUT=$(rami_da_scopare "$ORA" 48 <(printf '%s\n' "$RAMI") <(printf '%s\n' "$PRS") | sort | tr '\n' ' ')
+  [ "$OUT" = "chiuso-giovane orfano-vecchio vecchio-fuso " ] && ok "rami_da_scopare: fusi/chiusi e orfani oltre 48h si', PR aperta e orfano giovane no, main mai" \
+    || ko "rami_da_scopare: '$OUT' (attesi: chiuso-giovane orfano-vecchio vecchio-fuso)"
+else
+  ko "rami_da_scopare non definita in lib.sh"
+fi
+
 # --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
 LOGTMP=$(mktemp -d)
 echo "riga piccola" > "$LOGTMP/small.log"

@@ -15,8 +15,14 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 bash -n "$TOOL" && ok "sintassi" || ko "sintassi rotta"
 grep -q "PRESIDI.md merge=union" "$HERE/.gitattributes" && ok "il registro e' append-only (union nel gitattributes)" || ko "PRESIDI.md senza union"
 
-# ambiente isolato: il tool lavora su $HERE/PRESIDI.md — si salva e ripristina
-BAK="$HERE/PRESIDI.md.bak"; [ -f "$HERE/PRESIDI.md" ] && mv "$HERE/PRESIDI.md" "$BAK"; trap '[ -f "$BAK" ] && mv "$BAK" "$HERE/PRESIDI.md" || rm -f "$HERE/PRESIDI.md"' EXIT
+# ambiente isolato (revisione 10 giri, 2026-09-23): prima il test SPOSTAVA il PRESIDI.md vivo
+# dell'hub — le presenze delle altre sessioni sparivano finche' girava. Ora lavora su un clone
+# in quarantena: il tool scrive il PRESIDI.md accanto a se', cioe' nel clone.
+QT=$(mktemp -d /tmp/test-presidio.XXXXXX); trap 'rm -rf "$QT"' EXIT
+git clone -q --local "$HERE" "$QT/hub" 2>/dev/null || { ko "clone di quarantena fallito"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
+rm -f "$QT/hub/PRESIDI.md"
+TOOL="$QT/hub/tools/presidio.sh"
+HERE="$QT/hub"
 
 PRESIDIO_USER=alice bash "$TOOL" claim oracoli "formule" >/dev/null 2>&1
 grep -q "| alice | oracoli |" "$HERE/PRESIDI.md" && ok "claim di alice registrato con chi e zona" || ko "claim non registrato"
@@ -50,19 +56,20 @@ echo "$OUT" | grep -q "potati 1" && ok "presidio scaduto: potato E dichiarato" |
 PRESIDIO_USER=alice bash "$TOOL" rilascia oracoli >/dev/null 2>&1
 ! grep -q "| alice | oracoli" "$HERE/PRESIDI.md" && ok "rilascio: il proprio presidio chiuso" || ko "rilascio non funzionante"
 
-# UNION: due append da due cloni non perdono righe (merge simulato)
-rm -f "$HERE/PRESIDI.md"; PRESIDIO_USER=alice bash "$TOOL" claim zona-x prima >/dev/null 2>&1
-cp "$HERE/PRESIDI.md" /tmp/presidi-clone.md
-PRESIDIO_USER=bob bash "$TOOL" claim zona-y seconda >/dev/null 2>&1
-python3 - "$HERE/PRESIDI.md" /tmp/presidi-clone.md <<'PY'
-# simula il merge union: entrambi i lati aggiungono righe — nessuna persa
-import sys
-a = open(sys.argv[1]).read(); b = open(sys.argv[2]).read()
-righe_a = set(a.split('\n')); righe_b = set(b.split('\n'))
-unite = righe_a | righe_b
-print("union-ok" if "| alice | zona-x" in unite and "| bob | zona-y" in unite else "union-persa")
-PY
-grep -q "zona-x" "$HERE/PRESIDI.md" && grep -q "zona-y" "$HERE/PRESIDI.md" && ok "registro vivo con entrambe le presenze" || ko "presenze perse"
+# UNION con un merge VERO (revisione 10 giri): prima il python «simulava» il merge, stampava
+# union-ok/union-persa e nessuno leggeva il verdetto (stampava union-persa e il test era verde).
+# Due cloni appendono una presenza ciascuno, si fondono: nessuna riga persa, nessun conflitto.
+U="$QT/union"; mkdir -p "$U/base/tools"
+cp "$HERE/tools/presidio.sh" "$U/base/tools/"; grep "PRESIDI.md" "$HERE/.gitattributes" > "$U/base/.gitattributes"
+G="git -c user.name=t -c user.email=t@t"
+( cd "$U/base" && git init -q -b main . && $G add -A && $G commit -qm base ) >/dev/null 2>&1
+git clone -q "$U/base" "$U/a" && git clone -q "$U/base" "$U/b"
+( cd "$U/a" && PRESIDIO_USER=alice bash tools/presidio.sh claim zona-x prima >/dev/null 2>&1 && $G add PRESIDI.md && $G commit -qm a ) >/dev/null 2>&1
+( cd "$U/b" && PRESIDIO_USER=bob bash tools/presidio.sh claim zona-y seconda >/dev/null 2>&1 && $G add PRESIDI.md && $G commit -qm b ) >/dev/null 2>&1
+( cd "$U/a" && $G pull -q --no-rebase --no-edit "$U/b" main ) >/dev/null 2>&1; RC_M=$?
+[ "$RC_M" -eq 0 ] && grep -q "| alice | zona-x" "$U/a/PRESIDI.md" && grep -q "| bob | zona-y" "$U/a/PRESIDI.md" && ! grep -q '^<<<<<<<' "$U/a/PRESIDI.md" \
+  && ok "merge vero di due cloni: entrambe le presenze, zero conflitti (union)" \
+  || ko "merge union: rc=$RC_M, $(grep -c '|' "$U/a/PRESIDI.md" 2>/dev/null) righe, conflitti: $(grep -c '^<<<<<<<' "$U/a/PRESIDI.md" 2>/dev/null)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

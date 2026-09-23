@@ -47,14 +47,22 @@ mA = re.match(r"^(\s*)if\s+(.+?)\s*\|\s*grep\s+(.+?);?\s*then\s*$", linea)
 mB = re.match(r"^(\s*)if\s+((?:\[[^\]]*\]\s*\|\|\s*)+)(.+?)\s*\|\s*grep\s+(.+?);?\s*then\s*$", linea)
 
 nuovo = None
+# (revisione 10 giri, 2026-09-23): `! PROD | grep` nega la PIPELINE intera — catturato cosi'
+# com'era diventava `_cp=$(! PROD)` + `if grep`: logica ROVESCIATA con bash -n verde. La
+# negazione si toglie dal produttore e passa davanti al grep, dove continua a negare l'esito.
+def separa_negazione(prod):
+    m = re.match(r"^!\s+(.+)$", prod)
+    return (m.group(1), "! ") if m else (prod, "")
 # mB PRIMA di mA: mB e' piu' specifica (condizione composta) e mA e' un superset
 # che altrimenti cattura anche le forme B, mettendo la condizione nella cattura
 if mB:
     ind, cond, prod, resto = mB.group(1), mB.group(2), mB.group(3), mB.group(4)
-    nuovo = [f"{ind}{v}=$({prod})\n", f'{ind}if {cond}grep {resto} <<<"${v}"; then\n']
+    prod, neg = separa_negazione(prod)
+    nuovo = [f"{ind}{v}=$({prod})\n", f'{ind}if {cond}{neg}grep {resto} <<<"${v}"; then\n']
 elif mA:
     ind, prod, resto = mA.group(1), mA.group(2), mA.group(3)
-    nuovo = [f"{ind}{v}=$({prod})\n", f'{ind}if grep {resto} <<<"${v}"; then\n']
+    prod, neg = separa_negazione(prod)
+    nuovo = [f"{ind}{v}=$({prod})\n", f'{ind}if {neg}grep {resto} <<<"${v}"; then\n']
 else:
     print("forma non riconosciuta — all'agente", file=sys.stderr); sys.exit(1)
 

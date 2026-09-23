@@ -188,6 +188,39 @@ candidata_censore() {
   jq -r '[.[] | select(.isDraft == true and (.headRefName | startswith("night/")) and ((.title // "") | startswith("caccia:")))][0].number // empty' 2>/dev/null
 }
 
+# rami_da_scopare <ora-epoch> <soglia-ore> <file-rami> <file-pr>: i rami remoti che la scopa
+# del turno puo' cancellare. <file-rami>: «nome<TAB>epoch dell'ultimo commit» per riga;
+# <file-pr>: «head<TAB>stato» (OPEN|MERGED|CLOSED) per riga. Regole (decisione di Luca
+# 2026-09-23 «un ramo fuso non serve a niente», con le guardie che il codice non aveva):
+#  - mai main, mai un ramo con una PR APERTA (anche se un'altra PR sullo stesso nome e' fusa);
+#  - PR fusa/chiusa → si cancella;
+#  - nessuna PR → si cancella solo oltre la soglia (48h): prima la soglia era nel commento
+#    e un ramo spinto un minuto prima della sua PR spariva al ciclo dopo.
+# (Revisione 10 giri, 2026-09-23.)
+rami_da_scopare() {
+  python3 - "$1" "$2" "$3" "$4" <<'PY'
+import sys
+ora, soglia = int(sys.argv[1]), int(sys.argv[2]) * 3600
+rami = {}
+for l in open(sys.argv[3]):
+    p = l.rstrip("\n").split("\t")
+    if len(p) == 2 and p[0] and p[1].isdigit():
+        rami[p[0]] = int(p[1])
+stati = {}
+for l in open(sys.argv[4]):
+    p = l.rstrip("\n").split("\t")
+    if len(p) == 2 and p[0]:
+        stati.setdefault(p[0], set()).add(p[1])
+for nome, eta in rami.items():
+    if nome == "main" or "OPEN" in stati.get(nome, set()):
+        continue
+    if stati.get(nome, set()) & {"MERGED", "CLOSED"}:
+        print(nome)
+    elif nome not in stati and ora - eta > soglia:
+        print(nome)
+PY
+}
+
 # repo_code(): i codici anonimi sono stati ritirati (dominio, Luca 2026-09-23:
 # il mapping non era mai stato alimentato e i nomi possono comparire — resta
 # proibito l'ACCESSO). La funzione resta per i chiamatori: restituisce il nome.

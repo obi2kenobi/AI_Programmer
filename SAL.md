@@ -2867,3 +2867,27 @@ giri 5-10 — ognuno rieseguito prima della cura: nessuno entra per fiducia.
 - **Backup**: l'ID del gist SEGRETO (`.gist-backup-id`, cioe' l'accesso a `repos.key` e
   `repos.conf`) viveva alla radice dell'hub pubblico senza essere ignorato → `.gitignore`, con
   attesa in `tests/test-backup-config.sh`.
+
+**Giro 6 — i gesti distruttivi.**
+- **La scopa dei rami** (`night-shift/night-shift.sh`, fine ciclo): la soglia delle 48h per
+  gli orfani era SOLO nel commento — il codice cancellava ogni ramo senza PR fra le ultime 200,
+  anche uno spinto un minuto prima della sua PR (il turno gira 24/7); e un ramo con una PR
+  fusa veniva cancellato anche se una PR APERTA riusava lo stesso nome (`night/issue-N` e'
+  riusato per disegno), chiudendola. La pulizia `notte/auto-*` prometteva 24h senza
+  controllarle e cercava la PR per sottostringa. Le regole vivono ora in `rami_da_scopare()`
+  (`night-shift/lib.sh`, funzione pura: date da `git for-each-ref` sul clone dell'hub, stati
+  da `gh pr list`), testata prima in `tests/test-lib.sh`; senza fetch o lista PR la scopa non
+  cancella niente.
+- **Il trasformatore E-002** (`tools/salda-e002.sh`): `if ! PROD | grep …` diventava
+  `_cp=$(! PROD)` + `if grep …` — logica ROVESCIATA con `bash -n` verde. Banco di
+  COMPORTAMENTO (stesse risposte prima e dopo, per ogni ingresso), rosso prima, verde dopo.
+  Nessun sito dell'hub era gia' stato rovesciato (cercato).
+- **Test che distruggevano**: `test-banco-passaggio` ripristinava le esclusioni con
+  `git checkout --` (cancellava le modifiche non committate di chi lavorava: provato con una
+  riga di prova, ora sopravvive); `test-presidio` spostava il `PRESIDI.md` vivo e «simulava»
+  l'union senza leggere il verdetto (stampava union-persa ed era verde) — ora quarantena e un
+  merge git VERO fra due cloni (sabotaggio senza union → rosso); `test-caccia-registro`
+  riscriveva dal main la baseline e la storia VERE del censimento (il delta notturno si
+  azzerava a ogni suite) — ora su un clone; `test-revisore` e `test-salda-e002` pulivano
+  `/tmp/<prefisso>.*`, cioe' anche le cartelle di un'altra esecuzione in corso — ora
+  ciascuno pulisce le sue.

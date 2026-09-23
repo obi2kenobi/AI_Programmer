@@ -1202,14 +1202,24 @@ fi
 # PULIZIA RAMI NOTTE STANTI (2026-09-16): i rami notte/auto-* piu' vecchi di 24h
 # sul remoto sono scarti (PR fusa o mai create). Con 53 cicli a notte, i rami si
 # accumulano se nessuno li pulisce.
-STANTI=$(gh api repos/obi2kenobi/AI_Programmer/branches --jq '.[].name' 2>/dev/null | grep "^notte/auto-" | head -10 || true)
-for B in $STANTI; do
-  # la PR esiste ancora?
-  if ! gh pr list -R obi2kenobi/AI_Programmer --state all --json headRefName -q '.[].headRefName' 2>/dev/null | grep -qF "$B"; then
+# (revisione 10 giri, 2026-09-23): le 24h erano solo nel commento (nessun controllo d'eta') e
+# la PR si cercava per SOTTOSTRINGA (notte/auto-1 «trovava» la PR di notte/auto-12). La
+# decisione ora vive in lib.sh rami_da_scopare (testata), con le date dal clone dell'hub.
+RAMI_TSV=$(mktemp); PR_TSV=$(mktemp)
+if git -C "$HERE" fetch -q --prune origin 2>/dev/null \
+   && git -C "$HERE" for-each-ref refs/remotes/origin --format='%(refname:lstrip=3)%09%(committerdate:unix)' 2>/dev/null | grep -v '^HEAD' > "$RAMI_TSV" \
+   && gh pr list -R obi2kenobi/AI_Programmer --state all --limit 200 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' > "$PR_TSV" 2>/dev/null; then
+  SCOPA_OK=1
+else
+  SCOPA_OK=0
+  log "pulizia rami: fetch o lista PR falliti — non cancello niente (senza date o PR la scopa e' cieca)"
+fi
+if [ "$SCOPA_OK" -eq 1 ]; then
+  for B in $(rami_da_scopare "$(date +%s)" 24 "$RAMI_TSV" "$PR_TSV" | grep "^notte/auto-" | head -10); do
     gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
-      && log "pulizia: ramo notte stante '$B' cancellato (nessuna PR collegata)"
-  fi
-done
+      && log "pulizia: ramo notte stante '$B' cancellato (PR fusa/chiusa, o nessuna PR da oltre 24h)"
+  done
+fi
 GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_PROPOSTE=0
@@ -1251,27 +1261,19 @@ fi
 # lasciato li' e' solo un posto dove i dati vecchi sopravvivono. Scopa: ogni
 # ramo remoto con PR fusa/chiusa si cancella; ogni ramo SENZA PR piu' vecchio
 # di 48h e' orfano e si cancella pure. Il revisore gia' usa --delete-branch.
-if command -v gh >/dev/null 2>&1; then
+# (revisione 10 giri, 2026-09-23): la soglia delle 48h era solo in questo commento — il
+# codice cancellava OGNI ramo senza PR, anche uno spinto un minuto prima di aprirla; e un
+# ramo con una PR fusa veniva cancellato anche se una PR APERTA riusava lo stesso nome,
+# chiudendola. Le regole vivono in lib.sh rami_da_scopare (testata in tests/test-lib.sh).
+if command -v gh >/dev/null 2>&1 && [ "${SCOPA_OK:-0}" -eq 1 ]; then
   N_SCOPA=0
-  while IFS=$'\t' read -r br prstato; do
-    # (audit-4): la guardia || era INVERTITA — con A||B||continue, il continue
-    # scatta solo se ENTRAMBI i test falliscono: main veniva processato e i
-    # rami veri saltati. La forma if...then...continue e' l'unica corretta.
-    if [ -z "$br" ] || [ "$br" = "main" ]; then continue; fi
-    case "$prstato" in MERGED|CLOSED)
-      gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${br//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) ;;
-    esac
-  done < <(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 100 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' 2>/dev/null)
-  # e gli ORFANI: rami senza PR, piu' vecchi di 48h — promessi nel commento,
-  # mai implementati (il probe/push2 di stamattina li aspettava invano)
-  BR_ORFANI=$(gh api repos/obi2kenobi/AI_Programmer/branches --paginate --jq '.[].name' 2>/dev/null | grep -vx main || true)
-  PR_APERTE=$(gh pr list -R obi2kenobi/AI_Programmer --state all --limit 200 --json headRefName -q '.[].headRefName' 2>/dev/null | sort -u)
-  for B in $BR_ORFANI; do
-    grep -qxF "$B" <<<"$PR_APERTE" && continue
-    gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: orfano '$B' cancellato (senza PR, oltre la soglia)"
+  for B in $(rami_da_scopare "$(date +%s)" 48 "$RAMI_TSV" "$PR_TSV"); do
+    gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
+      && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: '$B' cancellato (PR fusa/chiusa, o orfano oltre 48h)"
   done
   [ "$N_SCOPA" -gt 0 ] && log "scopa-rami: $N_SCOPA rami cancellati in tutto (un ramo fuso non serve a niente)"
 fi
+rm -f "$RAMI_TSV" "$PR_TSV"
 
 # NESSUNA finestra, NESSUN sonno (Luca 2026-09-18: gira sempre, riparte subito)
 # (D17, test del sistema completo 2026-09-20): con una copia rotta o la caccia in cooldown
