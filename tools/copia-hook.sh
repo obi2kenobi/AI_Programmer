@@ -13,23 +13,43 @@
 # BASTA: nessun secondo posto da ricordare.
 #
 # Uso:   copia-hook.sh <dir-destinazione>
+#        copia-hook.sh --elenco [settings.json]  stampa soltanto gli hook dichiarati (un
+#        percorso relativo per riga) — l'UNICA derivazione: sync-repo, onboard-repo e i banchi
+#        la chiamano invece di rifarla (erano sette copie della stessa pipeline).
 # Stampa un percorso relativo per riga (il chiamante ci fa il suo `git add`).
 # Esiti: 0 tutti copiati · 1 errore DETTO (jq assente, settings illeggibile, hook
 #        dichiarato e assente dall'hub, copia fallita). Mai un successo silenzioso su
 #        una copia parziale: è esattamente così che il buco è passato inosservato.
 set -uo pipefail
-DEST="${1:?uso: copia-hook.sh <dir-destinazione>}"
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-SETTINGS="$HERE/.claude/settings.json"
 
 command -v jq >/dev/null 2>&1 || { echo "copia-hook: jq assente, impossibile leggere gli hook dichiarati" >&2; exit 1; }
+
+# hook_dichiarati <settings.json>: gli script del repo nominati dai comandi degli hook.
+# `awk '{print $1}'`: il comando di un hook può portare argomenti, il percorso è il primo
+# campo. (Revisione 10 giri, 2026-09-23 — decisione di Luca): i comandi partono ora da
+# "$CLAUDE_PROJECT_DIR"/ (con path relativi, da una sottocartella l'hook usciva 127 e il
+# cancello clasp falliva APERTO): il prefisso si toglie qui, e la forma relativa di una repo
+# satellite resta leggibile. Il filtro su tools/*.sh tiene fuori gli hook che non sono script.
+hook_dichiarati() {
+  jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$1" \
+    | awk '{print $1}' | sed -E 's#^"?\$(\{CLAUDE_PROJECT_DIR\}|CLAUDE_PROJECT_DIR)"?/##' \
+    | grep -E '^tools/.*\.sh$' | sort -u
+}
+
+if [ "${1:-}" = "--elenco" ]; then
+  S="${2:-$HERE/.claude/settings.json}"
+  [ -f "$S" ] || { echo "copia-hook: $S assente" >&2; exit 1; }
+  hook_dichiarati "$S"
+  exit 0
+fi
+
+DEST="${1:?uso: copia-hook.sh <dir-destinazione> | --elenco [settings.json]}"
+SETTINGS="$HERE/.claude/settings.json"
 [ -f "$SETTINGS" ] || { echo "copia-hook: $SETTINGS assente" >&2; exit 1; }
 [ -d "$DEST" ] || { echo "copia-hook: destinazione inesistente: $DEST" >&2; exit 1; }
 
-# `awk '{print $1}'`: il comando di un hook può portare argomenti, il percorso è il primo
-# campo. Il filtro su tools/*.sh tiene fuori gli hook che non sono script del repo.
-DICHIARATI=$(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$SETTINGS" \
-  | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+DICHIARATI=$(hook_dichiarati "$SETTINGS")
 
 [ -n "$DICHIARATI" ] || { echo "copia-hook: nessun hook dichiarato in $SETTINGS — sospetto, non copio niente" >&2; exit 1; }
 

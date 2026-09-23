@@ -880,3 +880,25 @@
   firma: produttore contiene, consumatore esiste, orfane contate)
 - Verifica guardia: `bash tests/test-eventi.sh` 2/2 (per ogni firma: produttore contiene, consumatore esiste)
 - Aggiramento: aggiungere una firma di log senza aggiungerla al catalogo.
+
+## E-041 La quarantena che non vede lo strumento sotto prova
+
+- Data / sessione: 2026-09-23 (revisione in dieci giri, giro 6 — errore mio)
+- Famiglia: R2 (verde senza dati)
+- Chi l'ha trovato: il banco mutazioni (`tests/test-mutation-tests.sh`), alla prima suite dopo
+  la fusione della PR #123: «TEATRO: test-presidio.sh passa con presidio.sh neutralizzato»
+- Sintomo: `tests/test-presidio.sh` e `tests/test-caccia-registro.sh` verdi anche con lo
+  strumento sostituito da `exit 0`.
+- Causa prossima: per non toccare il vivo li avevo spostati su un clone in quarantena
+  (`git clone --local`) e facevo girare lo strumento DEL CLONE — che parte dal commit, non dal
+  working tree: una mutazione (o una modifica non committata) non arrivava mai al test.
+- Causa del ragionamento: ho curato un effetto collaterale (scrivere nel vivo) senza chiedermi
+  QUALE copia del codice il test stava ora provando. La lezione l'avevo gia' scritta nel report
+  di campo dello stesso giorno («il clone parte dal commit») — per un sabotaggio, non per un test.
+- Perché non ci ha fermati: i test restavano verdi (sul codice committato erano giusti); solo il
+  banco mutazioni, che muta il working tree, poteva vederlo — e l'ha visto.
+- Guardia: `tests/test-mutation-tests.sh` (un test che passa con lo strumento neutralizzato e'
+  TEATRO) + nei due test il `cp` dello strumento dal working tree dentro il clone.
+- Verifica guardia: strumento sostituito da `exit 0` → test-presidio 4 OK, 5 FAIL;
+  test-caccia-registro 3 OK, 9 FAIL (prima della cura: verdi).
+- Aggiramento: un test in quarantena che esegue un secondo strumento del clone senza copiarlo.

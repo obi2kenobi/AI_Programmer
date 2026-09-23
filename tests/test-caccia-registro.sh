@@ -67,6 +67,8 @@ rm -rf "$SB2"
 # Un clone locale ha lo stesso codice e il suo .git: il contratto si prova li'.
 QT=$(mktemp -d /tmp/test-caccia-reg.XXXXXX)
 git clone -q --local "$HERE" "$QT/hub" 2>/dev/null
+# il clone parte dal COMMIT: lo strumento sotto prova si porta dal working tree (banco mutazioni)
+cp "$TOOL" "$QT/hub/tools/caccia-registro.sh"
 VIVO_PRIMA=$(cat "$HERE/.git/caccia-registro/storia" 2>/dev/null | wc -l | tr -d ' ')
 PRIMA=$(git -C "$QT/hub" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
 OUT=$(bash "$QT/hub/tools/caccia-registro.sh" "$QT/hub" 2>&1); RC=$?

@@ -56,7 +56,7 @@ MANCANTI=""
 while IFS= read -r H; do
   [ -n "$H" ] || continue
   [ -x "$SB4/$H" ] || MANCANTI="$MANCANTI $H"
-done < <(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$HERE/.claude/settings.json" | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+done < <(bash "$HERE/tools/copia-hook.sh" --elenco)
 [ -z "$MANCANTI" ] && ok "installazione da zero: ogni hook dichiarato (tutti gli eventi) e' installato ed eseguibile" \
   || ko "installazione da zero (D34): hook dichiarati ma assenti:$MANCANTI"
 [ -f "$SB4/.claude/settings.json" ] && [ -d "$SB4/.claude/skills/gas-sviluppo" ] && [ ! -d "$SB4/.claude/skills/skills" ] && [ -n "$(ls "$SB4/patterns" 2>/dev/null)" ] \

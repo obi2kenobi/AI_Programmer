@@ -20,8 +20,7 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-DICHIARATI=$(jq -r '.hooks | to_entries[] | .value[]? | .hooks[]? | .command' "$SETTINGS" \
-  | awk '{print $1}' | grep -E '^tools/.*\.sh$' | sort -u)
+DICHIARATI=$(bash "$HERE/tools/copia-hook.sh" --elenco "$SETTINGS")  # (revisione 10 giri: una derivazione sola)
 N_DICHIARATI=$(echo "$DICHIARATI" | grep -c .)
 
 grep -q 'copia-hook\.sh' "$SCRIPT" \
