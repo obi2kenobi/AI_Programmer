@@ -184,6 +184,24 @@ else
   ko "candidata_censore non definita in lib.sh"
 fi
 
+# --- verifica_issue_comando (2026-09-23, giro A5 della notte): la «## Verifica» di un'issue e' testo
+#     ESTERNO (l'autore puo' modificarlo dopo la label) che il turno esegue. Prima la regex accettava
+#     `npm install <pacchetto>`, `npm exec`, `python3 -m pip install`: codice arbitrario installato.
+#     Ora si esegue solo un FILE del progetto (node|python3 <file.js|py> [argomenti]) o `npm test`.
+if declare -F verifica_issue_comando >/dev/null; then
+  VI=$(mktemp)
+  vi() { printf '## Richiesta\nx\n## Verifica\n%s\n## Altro\n' "$1" > "$VI"; verifica_issue_comando "$VI"; }
+  for C in "node tests/test-sconto.js" "python3 tools/oracolo.py dati.csv" "npm test"; do
+    [ "$(vi "$C")" = "$C" ] && ok "verifica ammessa: $C" || ko "verifica legittima rifiutata: $C ('$(vi "$C")')"
+  done
+  for C in "npm install leftpad-evil" "npm exec cowsay" "npm i x" "python3 -m pip install x" "node -e 1" "node --eval 1" "python3 -c 1" "npm run deploy" "node x.js; rm -rf ~"; do
+    [ -z "$(vi "$C")" ] && ok "verifica RIFIUTATA: $C" || ko "verifica pericolosa ammessa: $C"
+  done
+  rm -f "$VI"
+else
+  ko "verifica_issue_comando non definita in lib.sh"
+fi
+
 # --- candidata_parere (D10, Luca 2026-09-23: «b»): la PR di ISSUE che il censore giudica col solo
 #     parere — bozza su night/issue-*, e mai due volte lo stesso commit (il parere dato si ricorda)
 if declare -F candidata_parere >/dev/null; then

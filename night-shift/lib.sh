@@ -276,3 +276,19 @@ candidata_parere() {
     echo "$n"; return 0
   done < <(jq -r '.[] | select(.isDraft == true and (.headRefName | startswith("night/issue-"))) | [.number, .headRefOid] | @tsv' 2>/dev/null)
 }
+
+# verifica_issue_comando <file-issue>: il comando della «## Verifica» che il turno puo' eseguire, o
+# vuoto. (2026-09-23, giro A5 della notte): e' testo ESTERNO — l'autore dell'issue puo' modificarlo
+# dopo che Luca ha messo la label — e il turno lo esegue. Prima: grep -o sulla forma
+# `(node|npm|python3?) …` + denylist → passavano `npm install <pacchetto>`, `npm exec`, `npm i`,
+# `python3 -m pip install`, `node -e`, `python3 -c` (riprodotto: 8 vie). Ora la PRIMA riga che
+# comincia con node/npm/python si valida PER INTERO: solo `npm test`, o un FILE del progetto
+# eseguito (node|python3 <percorso relativo .js/.mjs/.cjs/.py> [argomenti semplici]).
+verifica_issue_comando() {
+  local riga
+  riga=$(sed -n '/^## Verifica/,/^## /p' "$1" 2>/dev/null | grep -E '^(node|npm|python3?)( |$)' | head -1 | sed 's/[[:space:]]*$//')
+  [ "$riga" = "npm test" ] && { printf '%s' "$riga"; return 0; }
+  grep -qE '^(node|python3?) [A-Za-z0-9_./-]+\.(js|mjs|cjs|py)( [A-Za-z0-9_./=-]+)*$' <<<"$riga" || return 0
+  case "$riga" in *" /"*|*..*|*" -"[ecm]" "*|*" --eval"*) return 0 ;; esac   # niente assoluti ne' risalite
+  printf '%s' "$riga"
+}

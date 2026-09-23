@@ -998,13 +998,25 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         # sappiamo eseguire al sicuro (denylist: mai clasp/rm/push/deploy/curl/git da
         # un issue body — input esterno). L'esito si riporta nel commit, non fa gate:
         # un rosso dichiarato vale piu' di un silenzio.
-        VERIFICA_CMD=$(sed -n '/^## Verifica/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '^(node|npm|python3?) [a-zA-Z0-9_./ -]+' | head -1)
+        # (2026-09-23, giro A5): la scelta del comando vive in lib.sh verifica_issue_comando (testata):
+        # solo `npm test` o un file del progetto eseguito — mai un install, un exec, un -e/-c
+        VERIFICA_CMD=$(verifica_issue_comando "$ISSUE_FILE")
         VERIFICA_OUT="non dichiarata o non eseguibile al sicuro"
-        if [ -n "$VERIFICA_CMD" ] && ! echo "$VERIFICA_CMD" | grep -qE 'clasp|rm |push|deploy|curl|git'; then
+        if [ -n "$VERIFICA_CMD" ]; then
           # timeout(1) non esiste su macOS: ai_timeout e' il wrapper portabile dell'hub
           # (llm/_timeout.sh, nato per questo). D2 2026-09-07: la verifica diceva ROTTA
           # per command-not-found scambiato per esito — un finto rosso insegna a ignorare i rossi.
-          VERIFICA_OUT=$(cd "$DIR" && ai_timeout 60 $VERIFICA_CMD >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
+          # (2026-09-23, giro A5): il file eseguito puo' averlo scritto il modello — sul Mac dentro la
+          # sandbox del turno (niente rete, scritture solo nella copia e in /tmp)
+          SANDBOX_PRE=()
+          if command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/sandbox.sb" ]; then
+            SANDBOX_PROF=$(mktemp /tmp/verifica-sandbox.XXXXXX)
+            sed -e "s|__WORKDIR__|$DIR|g" -e "s|__HOME__|$HOME|g" "$HERE/sandbox.sb" > "$SANDBOX_PROF"
+            SANDBOX_PRE=(sandbox-exec -f "$SANDBOX_PROF")
+          fi
+          # shellcheck disable=SC2086  # VERIFICA_CMD va diviso in parole: e' un comando validato
+          VERIFICA_OUT=$(cd "$DIR" && ai_timeout 60 ${SANDBOX_PRE[@]+"${SANDBOX_PRE[@]}"} $VERIFICA_CMD >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
+          [ -n "${SANDBOX_PROF:-}" ] && rm -f "$SANDBOX_PROF"
           log "Issue #$NUM: verifica dell'issue eseguita: $VERIFICA_OUT"
         fi
         # AUTO-REVIEW (2026-09-17): il modello rivede il proprio fix con una

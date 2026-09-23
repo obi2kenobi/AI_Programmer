@@ -21629,6 +21629,21 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_verifica_issue_comando",
+      "label": "verifica_issue_comando()",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "verifica_issue_comando()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L287"
+    },
+    {
       "id": "night_shift_morning_gate",
       "label": "morning-gate.sh",
       "_origin": "ast",
@@ -21942,6 +21957,21 @@
       "norm_label": "test-lib.sh script",
       "source_file": "tests/test-lib.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib_vi",
+      "label": "vi()",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "vi()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L193"
     },
     {
       "id": "tests_test_portabilita",
@@ -47985,7 +48015,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1174",
+      "source_location": "L1186",
       "weight": 1.0
     },
     {
@@ -48009,7 +48039,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1293",
+      "source_location": "L1305",
       "weight": 1.0
     },
     {
@@ -48046,6 +48076,18 @@
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_shift_repo",
+      "target": "night_shift_lib_verifica_issue_comando",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L1003",
       "weight": 1.0
     },
     {
@@ -50781,31 +50823,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L192",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_lib_sh__entry",
-      "target": "night_shift_lib_rami_da_scopare",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L213",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_lib_sh__entry",
-      "target": "night_shift_lib_rotate_log_if_big",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L223",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -50818,6 +50836,30 @@
       "context": "call",
       "source_file": "tests/test-lib.sh",
       "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_lib_sh__entry",
+      "target": "night_shift_lib_rami_da_scopare",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L231",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_lib_sh__entry",
+      "target": "night_shift_lib_rotate_log_if_big",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -50866,6 +50908,18 @@
       "context": "call",
       "source_file": "tests/test-lib.sh",
       "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_lib_vi",
+      "target": "night_shift_lib_verifica_issue_comando",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -81122,6 +81176,17 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_verifica_issue_comando",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L287",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_rotate_log_if_big",
       "relation": "defines",
       "_origin": "ast",
@@ -83868,6 +83933,17 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-lib.sh",
       "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_lib",
+      "target": "tests_test_lib_vi",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -88878,5 +88954,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2375008c206862fe8c3a45b4efc8108196cd300a"
+  "built_at_commit": "4728de08f510e37e57deda5105ce1384eb9ecc60"
 }

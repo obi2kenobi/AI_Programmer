@@ -3386,3 +3386,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     di `~/.clasprc.json`.
   - Nello stesso passo: `night-shift/agente.sh` segue il MODELLO del profilo (resto del D11).
   - ⏳ Non verificato qui: `sandbox-exec` è solo del Mac.
+- **Q7**, da A5, sicurezza: la «## Verifica» del corpo di un'issue la esegue il turno, ed è testo
+  che l'autore può modificare dopo la label. La regex più la denylist lasciavano passare
+  `npm install <pacchetto>`, `npm exec`, `npm i`, `python3 -m pip install`, `node -e` e
+  `python3 -c`: 8 vie riprodotte.
+  - Ora la scelta vive in `night-shift/lib.sh` verifica_issue_comando e valida la riga per
+    intero: solo `npm test`, o un file del progetto eseguito.
+  - Sul Mac gira in sandbox.
+  - 12 casi.
+  - ⏳ Il filtro sull'AUTORE dell'issue (chi può scriverla) richiede di sapere quali campi espone
+    `gh issue list` sul Mac: aperto in DEBITI.
