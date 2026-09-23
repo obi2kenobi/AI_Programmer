@@ -72,6 +72,7 @@ cat > "$STUBC" <<'STUBEOF'
 #!/bin/bash
 M="$1"; shift; P=$(cat)
 case "$P" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":[]}\n' ;;  # D2: la lente fra le prove del censore
   *SMASCHERA*) printf '%s\n' '```' 'grep -c _cp tools/vendite.sh' '```' ;;
   *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["conversione meccanica, comportamento identico"]}\n' ;;
 esac

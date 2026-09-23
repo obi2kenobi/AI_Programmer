@@ -139,6 +139,7 @@
 - [2026-09-23 (2°) — gli hook partono dalla radice del progetto (sì di Luca)](#2026-09-23-2-gli-hook-partono-dalla-radice-del-progetto-sì-di-luca)
 - [2026-09-23 (3°) — CLAUDE.md §4: chi giudica le PR, oggi (sì di Luca)](#2026-09-23-3-claude-md-4-chi-giudica-le-pr-oggi-sì-di-luca)
 - [2026-09-23 (4°) — graphify spina dorsale (D1, decisione di Luca)](#2026-09-23-4-graphify-spina-dorsale-d1-decisione-di-luca)
+- [2026-09-23 (5°) — la lente sicurezza scatta da sola sulle PR della notte (D2, decisione di Luca)](#2026-09-23-5-la-lente-sicurezza-scatta-da-sola-sulle-pr-della-notte-d2-decisione-di-luca)
 
 
 ## Stato
@@ -3061,3 +3062,25 @@ anche del nuovo repo». Le due scelte: grafo VERSIONATO e semantica LA NOTTE con
 Banco scritto prima: `tests/test-graphify-spina.sh`, rosso 1/16, poi 16/16. Il sabotaggio del
 merge-driver e del controllo «invariato» fa 4 rossi.
 ⏳ NON verificato dal vivo: il primo pass Ollama sul Mac (durata, graphify nel PATH di launchd).
+
+### 2026-09-23 (5°) — la lente sicurezza scatta da sola sulle PR della notte (D2, decisione di Luca)
+
+La seconda domanda di dominio: Luca ha scelto «a», automatica su tutte le PR notturne. Il debito
+veniva dal 2026-08-21: una commessa «stampa la config a console per debug» produceva codice che
+stampava una chiave, e nessun punto della pipeline lo diceva.
+- `tools/lente-sicurezza.sh <dir> <base> [head]` ha due strati.
+  - Strato 1, deterministico e BLOCCANTE: le forme di segreto (lette da `tools/privacy-check.sh`,
+    una sola definizione) e le credenziali letterali assegnate nel codice.
+  - Strato 2: il cervello con la §2bis. Riceve gli INDIZI (righe che stampano valori sensibili),
+    risponde in JSON; se è muto il verdetto è DEGRADATA, mai «pulita» per silenzio.
+  - I valori sono sempre mascherati con `mask_secrets`, anche nel prompt.
+  - Un diff fatto solo di `graphify-out/` non chiama il cervello.
+- `lente_pr` (`night-shift/lib.sh`) la lancia dopo ognuna delle 5 creazioni di PR notturne (4 in
+  `night-shift/night-shift.sh`, 1 in `tools/grafo-semantico.sh`). Il rapporto diventa un commento
+  della PR.
+- Il censore (`night-shift/revisore.sh`) la rilancia fra le PROVE: se non è PULITA, la PR va al
+  giorno e non si fonde. Un segreto fuso resta nella storia anche dopo il revert.
+Banco scritto prima: `tests/test-lente-sicurezza.sh`, rosso 1/15, poi 15/15, più il caso 2bis di
+`tests/test-revisore.sh`. Sabotaggio con lo strato 1 non bloccante e il censore che ignora la lente:
+3 rossi più 1 rosso, e la PR con rilievi veniva MERGIATA.
+⏳ NON verificato dal vivo: quanto costa una chiamata al cervello per PR sul Mac.

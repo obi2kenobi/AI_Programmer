@@ -28,6 +28,9 @@ else
   log "clonata"
 fi
 cd "$W" || exit 1
+BASE_REF=$(git rev-parse --abbrev-ref '@{u}' 2>/dev/null || echo origin/main)   # per la lente sicurezza
+# shellcheck source=../night-shift/lib.sh
+source "$HERE/night-shift/lib.sh"   # lente_pr
 
 # le regole del grafo e il merge-driver: la spina (senza stage, nessun update a vuoto se assente)
 bash "$HERE/tools/graphify-spina.sh" "$W" >/dev/null
@@ -51,6 +54,6 @@ git push -q origin "$BR" 2>/dev/null || { log "push di $BR fallito (ramo gia' es
 URL=$(gh pr create --draft --head "$BR" --title "chore: grafo semantico $(date +%F)" \
   --body "Pass semantico notturno del grafo (graphify extract --backend ollama, modello $MODEL). Solo graphify-out/. Il merge unisce i grafi (merge=graphify)." 2>&1 | tail -1)
 case "$URL" in
-  https://*) log "PR in bozza: $URL" ;;
+  https://*) log "PR in bozza: $URL"; log "$(lente_pr "$W" "$BASE_REF" "$BR" "$URL")" ;;  # D2: lente sicurezza automatica
   *) log "ramo $BR spinto MA la PR non e' stata creata ($URL)"; exit 1 ;;
 esac

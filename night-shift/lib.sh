@@ -238,3 +238,19 @@ PY
 repo_code() {
   echo "$1"
 }
+
+# lente_pr <dir> <base> <head> <url-pr>: la lente sicurezza (dev-critic §2bis) su una PR appena
+# creata dalla notte — decisione di Luca, D2 2026-09-23: automatica su TUTTE le PR notturne. Il
+# rapporto (valori gia' mascherati da tools/lente-sicurezza.sh) diventa un commento della PR;
+# la riga di sintesi va a stdout per il log del chiamante. Non blocca la creazione: chi delibera
+# (il censore, il giorno) legge il verdetto — il censore la rilancia da se' prima di fondere.
+lente_pr() {
+  local dir="$1" base="$2" head="$3" url="$4" rap
+  case "$url" in https://*) ;; *) echo "lente sicurezza: nessuna PR da guardare ('$url') — salto dichiarato"; return 0 ;; esac
+  rap=$(bash "$(dirname "${BASH_SOURCE[0]}")/../tools/lente-sicurezza.sh" "$dir" "$base" "$head" 2>/dev/null)
+  if (cd "$dir" && gh pr comment "$url" --body "$rap") >/dev/null 2>&1; then
+    echo "lente sicurezza su $url: $(tail -1 <<<"$rap") (rapporto nel commento della PR)"
+  else
+    echo "lente sicurezza su $url: $(tail -1 <<<"$rap") — ⚠ commento NON pubblicato sulla PR"
+  fi
+}

@@ -64,6 +64,10 @@ nella storia git di un progetto onboardato. Nessuno dei due è stato trovato leg
 codice per la prima intenzione — solo provando ad aggirarlo o ispezionando cosa contiene
 davvero il repo prima di toccarlo. Applica sempre, non solo se il target "sembra" sensibile:
 
+> **Automatica sulle PR della notte** (D2, decisione di Luca 2026-09-23): `tools/lente-sicurezza.sh`
+> gira su ogni PR creata dal turno (`lente_pr` in `night-shift/lib.sh`, rapporto come commento
+> della PR) e il censore non fonde se non e' PULITA. Qui sotto la lente completa, per il giorno.
+
 - **Se il target esegue codice generato da un LLM** (banco avversariale, agenti che
   eseguono comandi): una blacklist per parola chiave non basta — verifica se un interprete
   general-purpose (`bash`, `sh`, `python3`, `node`, `awk`, `sed`) resta nell'allowlist, e

@@ -30,6 +30,7 @@ cat > "$STUB" <<'EOF'
 # distinguono dal RUOLO nel prompt: l'avversario SMASCHERA, il censore delibera.
 MODELLO="$1"; shift; PROMPT=$(cat)
 case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
   *CENSORE*) printf '{"verdetto":"%s","rischio":"basso","motivi":["il diff fa quello che dichiara","nessun danno collaterale"]}\n' "${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
   *) printf '' ;;
@@ -105,6 +106,13 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
 echo "$OUT" | grep -q "\[DRY\] gh pr close 7" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
 echo "$OUT" | grep -q "gh pr merge" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
 
+# 2bis. (D2, 2026-09-23) la lente sicurezza trova un rilievo → rc 2 al giorno, NESSUN merge
+#       anche col censore pronto ad APPROVARE (un segreto fuso resta nella storia)
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-lente
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && echo "$OUT" | grep -q "LENTE SICUREZZA: RILIEVI" \
+  && ok "lente sicurezza con rilievi → rc 2, nessun merge" || ko "lente con rilievi: rc $RC — $(echo "$OUT" | tail -1)"
+
 # 3. quarantena: PR troppo giovane → skip (rc 2), nessun giudizio speso
 SB=$(nuova_repo); nuova_pr "$SB" 5 night/test-giovane
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
@@ -177,6 +185,7 @@ cat > "$STUB_LS" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; PROMPT=$(cat)
 case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\nls .night-verify\n```\n' ;;
   *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["x"]}\n' ;;
 esac
@@ -210,6 +219,7 @@ cat > "$STUB_SCRIVE" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; PROMPT=$(cat)
 case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\necho pwned > utils.js\n```\n' ;;
   *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["x"]}\n' ;;
 esac

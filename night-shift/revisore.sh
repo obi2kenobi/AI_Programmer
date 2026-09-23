@@ -13,7 +13,8 @@
 #      solo PR bozza night/* con titolo 'caccia:', quarantena >=20 min dal push
 #      (chi crea non si giudica nello stesso respiro), budget <=5 merge/giorno.
 #   2. PROVE (deterministiche): verifiche dichiarate riga per riga + un comando
-#      avversario scritto dal modello con allowlist ristretta (deve riuscire).
+#      avversario scritto dal modello con allowlist ristretta (deve riuscire)
+#      + la lente sicurezza §2bis (tools/lente-sicurezza.sh, D2 2026-09-23): deve essere PULITA.
 #   3. GIUDIZIO (il censore): vede diff + prove e delibera APPROVA/RIGETTA.
 # Solo se TUTTI e tre dicono si' la PR viene mergiata. Un solo no e' no.
 #
@@ -220,6 +221,14 @@ else
   BANCO_ESITO="COMANDO INVALIDO (scartato dall'allowlist) — non conta come prova superata"
 fi
 [ "$BANCO_ESITO" = "REGGE (comando avversario riuscito)" ] || { log "prove: banco: $BANCO_ESITO — al giorno"; exit 2; }
+
+# la LENTE SICUREZZA (dev-critic §2bis — D2, Luca 2026-09-23: automatica su ogni PR della notte).
+# Rilievi o lente senza verdetto: al giorno, mai fusa — un segreto mergiato non si ritira con un
+# revert (resta nella storia). Stesso cervello del censore; nei test lo stesso stub.
+LENTE_OUT=$(LENTE_STUB="${LENTE_STUB:-${REVISORE_STUB:-}}" MODELLO="$GIUDICE_MODEL" \
+  bash "$HERE/tools/lente-sicurezza.sh" "$DIR" "$DB" HEAD 2>/dev/null); LENTE_RC=$?
+[ "$LENTE_RC" -eq 0 ] || { log "prove: $(tail -1 <<<"$LENTE_OUT") — al giorno (mai fusa con la lente sicurezza non pulita)"; exit 2; }
+log "prove: $(tail -1 <<<"$LENTE_OUT")"
 
 # ══ 3. GIUDIZIO (il censore: cervello diverso da chi ha scritto) ═══════════════
 CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritto un altro modello ($AUTORE_MODEL), tu sei un processo separato, senza la memoria di chi l'ha scritta, e il tuo compito e' trovare il motivo per RIGETTARLA. L'onore della prova e' della PR: nel dubbio, RIGETTA.

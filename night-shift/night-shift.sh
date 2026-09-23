@@ -544,6 +544,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
                && git -C "$DIR" push -q -u origin "$BRANCH" 2>>"$ERR_NOTTE"; then
               PR_NOTTE=$(cd "$DIR" && gh pr create --draft --head "$BRANCH" --title "notte: auto-miglioramento meccanico del $(date +%F)" --body "Generata dalla finestra notturna 23-06. Fix meccanici di categoria nota, banco CHIUSO. La notte non decide: questa PR aspetta la review del giorno." 2>&1 | tail -1)
               log "REPO $REPO: PR bozza di auto-miglioramento → $PR_NOTTE ($FIX_APPLICATI fix, banco CHIUSO)"
+              log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$BRANCH" "$PR_NOTTE")"  # D2: lente sicurezza automatica
             else
               log "⚠ REPO $REPO: commit o push del branch notte FALLITI — albero ripristinato, il rilievo resta nell'issue"
               log "⚠ stderr del commit/push: $(head -c 400 "$ERR_NOTTE" | tr '\n' ' ')"
@@ -679,6 +680,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         if [ $? -eq 0 ]; then
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
           log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
+          log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
           git -C "$DIR" checkout "$DB" -q
           PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
         else
@@ -1033,6 +1035,7 @@ Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${
           # --head e --base espliciti: niente inferenze su shallow clone e upstream strani
           PR_URL=$(cd "$DIR" && gh pr create --fill --draft --head "$BRANCH" --base "$DB" 2>&1 | tail -1)
           log "Issue #$NUM: PR $PR_URL"
+          log "Issue #$NUM: $(lente_pr "$DIR" "origin/$DB" "$BRANCH" "$PR_URL")"  # D2: lente sicurezza automatica
           case "$PR_URL" in
             https*) PR_CREATED=$((PR_CREATED+1)) ;;
             *) log "⚠ Issue #$NUM: PR NON creata ($PR_URL)"; FAILED=$((FAILED+1)) ;;
@@ -1125,6 +1128,7 @@ Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le t
 - [ ] Verifiche dichiarate della repo passano
 - [ ] Banco avversariale (morning-gate) senza smentite" 2>/dev/null) || { log "Issue #$NUM: creazione PR fallita"; FAILED=$((FAILED+1)); continue; }
 
+    log "Issue #$NUM: $(lente_pr "$DIR" "origin/$DB" "$BRANCH" "$PR_URL")"  # D2: lente sicurezza automatica
     gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte completato: PR bozza pronta per il gate del mattino → $PR_URL" >/dev/null 2>&1
     log "Issue #$NUM: PR creata → $PR_URL"
     PR_CREATED=$((PR_CREATED+1))
