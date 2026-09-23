@@ -143,6 +143,7 @@
 - [2026-09-23 (6°) — la skill si ricorda quando l'agente tocca il suo terreno (D3, decisione di Luca)](#2026-09-23-6-la-skill-si-ricorda-quando-l-agente-tocca-il-suo-terreno-d3-decisione-di-luca)
 - [2026-09-23 (7°) — Qwen 3.8 Flash: si chiude, il 27B resta (D4, decisione di Luca)](#2026-09-23-7-qwen-3-8-flash-si-chiude-il-27b-resta-d4-decisione-di-luca)
 - [2026-09-23 (8°) — la premessa di un debito invecchia col codice, e la riapertura lo dice (D5, decisione di Luca)](#2026-09-23-8-la-premessa-di-un-debito-invecchia-col-codice-e-la-riapertura-lo-dice-d5-decisione-di-luca)
+- [2026-09-23 (9°) — REPO-L: il secret BC nella history è già stato ruotato (D6, Luca)](#2026-09-23-9-repo-l-il-secret-bc-nella-history-è-già-stato-ruotato-d6-luca)
 
 
 ## Stato
@@ -3132,3 +3133,10 @@ sabotaggi: con la data più vecchia 1 rosso, con `--until` 3 rossi.
 Primo frutto sul DEBITI vero: la voce del test del sistema completo (2026-09-20) cita
 `tools/giri-avversari.sh` e `night-shift/README.md`, cambiati dopo. La sua premessa va
 riverificata quando la si pone come domanda.
+
+### 2026-09-23 (9°) — REPO-L: il secret BC nella history è già stato ruotato (D6, Luca)
+
+La sesta domanda di dominio: Luca ha risposto «4», il client_secret di Unicredit_Factoring è già
+stato ruotato. Il valore rimasto nei 7 commit non vale più, e la pulizia della history non serve.
+Il debito è SALDATO sulla parola del proprietario. Da una sessione cloud Azure non si raggiunge,
+quindi la rotazione non è verificata qui. Nessun codice toccato.

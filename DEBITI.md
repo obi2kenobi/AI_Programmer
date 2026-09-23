@@ -150,7 +150,7 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-28 | Client_secret BC presente in 7 commit su main di Unicredit_Factoring (TestConnessioneBC.js/.gs, rimossi dal working tree ma recuperabili con git show). Rotazione necessaria INDIPENDENTEMENTE dalla pulizia. Pulizia history = filter-repo + force-push (distruttivo, coordinato) | rotazione: va fatta su Azure AD/BC dal proprietario. Pulizia: operazione distruttiva su repo condivisa | decisione Luca: (1) ruotare il secret su Azure, (2) pulire la history (filter-repo), (3) o entrambe |
+| 2026-08-28 ✅ SALDATO (D6, Luca 2026-09-23: «4» — il secret e' GIA' STATO RUOTATO; il valore nella history non vale piu'. Dichiarazione del proprietario, non verificabile da una sessione cloud: Azure non raggiungibile) | Client_secret BC presente in 7 commit su main di Unicredit_Factoring (TestConnessioneBC.js/.gs, rimossi dal working tree ma recuperabili con git show). Rotazione necessaria INDIPENDENTEMENTE dalla pulizia. Pulizia history = filter-repo + force-push (distruttivo, coordinato) | rotazione: va fatta su Azure AD/BC dal proprietario. Pulizia: operazione distruttiva su repo condivisa | decisione Luca: (1) ruotare il secret su Azure, (2) pulire la history (filter-repo), (3) o entrambe |
 
 ## REPO-M (Energikal): credenziali Azure AD in git history (2026-08-28)
 
