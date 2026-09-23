@@ -179,6 +179,15 @@ for raw in sys.stdin.buffer:
 '
 }
 
+# candidata_censore(): dal JSON di `gh pr list --json number,headRefName,isDraft,title` (stdin)
+# il numero della prima PR che il censore ACCETTA — bozza, branch night/*, titolo `caccia:`:
+# gli stessi predicati delle guardie di night-shift/revisore.sh. (Revisione 10 giri,
+# 2026-09-23): il turno prendeva la prima bozza night/* qualunque; con una PR di issue in
+# testa il censore rispondeva «non mio» a ogni ciclo e le caccia dietro non passavano mai.
+candidata_censore() {
+  jq -r '[.[] | select(.isDraft == true and (.headRefName | startswith("night/")) and ((.title // "") | startswith("caccia:")))][0].number // empty' 2>/dev/null
+}
+
 # repo_code(): i codici anonimi sono stati ritirati (dominio, Luca 2026-09-23:
 # il mapping non era mai stato alimentato e i nomi possono comparire — resta
 # proibito l'ACCESSO). La funzione resta per i chiamatori: restituisce il nome.

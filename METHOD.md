@@ -10,7 +10,7 @@
 ```
 /selezione-contesto → /brainstorming ⇄ /design-doc → territorio piccolo: /goal | max N
                                                → territorio grande: commessa → /audit-commessa → notte
-                                                 → gate → review di Luca
+                                                 → censore (PR `caccia:`) → digest del mattino → review di Luca
 TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
   chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
   (leggere prima, chiedere invece di indovinare, banco/prima della dichiarazione di fine,
@@ -28,7 +28,9 @@ TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul camp
 | Commessa (issue `night-shift` con Design+Territorio+Forma dei dati) | template | `.github/ISSUE_TEMPLATE/` |
 | Audit serale (verifica le assunzioni sul codice) | `/audit-commessa` | idem |
 | Notte (turno 23:00, multi-repo, ponytail) | `night-shift/night-shift.sh` | `night-shift/README.md` |
-| Gate del mattino (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem |
+| Censore nel ciclo (guardie + prove sul branch + delibera, solo PR `caccia:`) | `night-shift/revisore.sh` | idem |
+| Digest del mattino (email alle 7:30: lezioni, sospesi, resoconto) | `night-shift/morning-digest.sh` | idem |
+| Gate del mattino — **in pensione dal 2026-09-23**, invocabile a mano (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem (`cervello/decisione-dominio-2026-09-23.md`) |
 | Registro esiti (notte) | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |
 | Registro chiamate (giorno) | `llm/usage-summary.sh` | `~/.ai-programmer-usage.log` (4° ciclo, set 3, giro 5, 2026-08-23: il log esisteva dal ciclo precedente, il riepilogo no) |
 | Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 5° ciclo, set 2 giro 3, 2026-08-23: primo loop reale eseguito, `loops/` non più vuota) |

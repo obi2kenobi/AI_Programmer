@@ -2825,3 +2825,19 @@ cura).**
   conta; `gas-sviluppo` «16 tool Python» ne elencava 15 (sono 17).
 Lenti rieseguite: sync specchi 14/14 e 15/15, struttura agenti 36/36, gas-sviluppo 33/33,
 help 4/4, doc-citazioni 2/2.
+
+**Giro 4 — il pensionamento del gate arriva ai documenti; il censore non e' piu' affamato.**
+La decisione del 23/9 (morning-gate in pensione, digest autonomo alle 7:30 —
+`cervello/decisione-dominio-2026-09-23.md`) viveva solo nel digest e in tre test:
+`night-shift/README.md`, `METHOD.md` e `docs/system.md` descrivevano ancora il gate come il
+giudizio del mattino. Allineati (ciclo, tabelle, diagramma L3, «verifica» e «loop sul loop»),
+con la conseguenza detta: le PR delle issue non hanno oggi nessun giudice automatico — la
+premessa del debito D9 e' cambiata e la voce lo dice. Scoperto facendolo: il turno portava al
+censore la PRIMA bozza `night/*` (`head -1`), il censore accetta solo titoli `caccia:` — con
+una PR di issue in testa, «non mio» a ogni ciclo e le caccia dietro di lei mai giudicate. La
+scelta vive ora in `candidata_censore()` (`night-shift/lib.sh`, stessi predicati delle guardie
+del censore), con due attese in `tests/test-lib.sh` scritte prima (rosse) — 42/42.
+
+Le tre lenti in sola lettura partite al giro 1 hanno consegnato: 17 riferimenti/conteggi
+(curati al giro 3), 30 difetti di codice, 20 test finti o deboli. Ordinati per gravita' nei
+giri 5-10 — ognuno rieseguito prima della cura: nessuno entra per fiducia.

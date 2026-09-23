@@ -125,6 +125,20 @@ M3=$(echo 'niente da mascherare qui' | mask_secrets)
 [ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \
   || ko "mask_secrets falso positivo: $M3"
 
+# --- candidata_censore: la PR portata al censore deve essere una che il censore accetta ---
+# (revisione 10 giri, 2026-09-23): il turno prendeva la PRIMA bozza night/* (`head -1`), il
+# censore accetta solo titoli `caccia:` (revisore.sh, guardia del titolo): con una PR di issue
+# in testa, «non mio» a ogni ciclo e le caccia dietro di lei mai giudicate.
+if declare -F candidata_censore >/dev/null; then
+  J='[{"number":9,"headRefName":"night/issue-4","isDraft":true,"title":"fix: issue 4"},{"number":8,"headRefName":"night/caccia-x","isDraft":true,"title":"caccia: miglioria"},{"number":7,"headRefName":"claude/y","isDraft":true,"title":"caccia: altro"}]'
+  C=$(candidata_censore <<<"$J")
+  [ "$C" = "8" ] && ok "candidata_censore: salta la PR di issue in testa, sceglie la prima caccia: su night/*" || ko "candidata_censore sceglie '$C' (attesa 8)"
+  C=$(candidata_censore <<<'[{"number":9,"headRefName":"night/issue-4","isDraft":true,"title":"fix"}]')
+  [ -z "$C" ] && ok "candidata_censore: nessuna caccia: → vuoto (nessun giudizio sprecato)" || ko "candidata_censore: '$C' senza caccia"
+else
+  ko "candidata_censore non definita in lib.sh"
+fi
+
 # --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
 LOGTMP=$(mktemp -d)
 echo "riga piccola" > "$LOGTMP/small.log"

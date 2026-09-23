@@ -13,9 +13,17 @@ GIORNO (cervelli): ZCode/GLM · Claude Code/Opus · OpenCode via Wayfinder → Q
                    pianificano, correggono, giudicano
 NOTTE (braccia):   night-shift 23:00 → issue `night-shift` → OpenCode → Qwen locale
                    commesse meccaniche → PR BOZZA, mai push su main
-MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale →
-                    proposte correttive (il sì è del censore, il VETO resta umano — patto del 2026-09-18)
+NEL CICLO (giudizio): revisore.sh (il censore) → guardie + prove sul branch + delibera
+                    sulle PR `caccia:` (il sì è del censore, il VETO resta umano — patto del 2026-09-18)
+MATTINA (7:30):     morning-digest.sh → email: lezioni da approvare, sospesi, resoconto
 ```
+
+> **Il morning-gate è in pensione dal 2026-09-23** (decisione di dominio,
+> `cervello/decisione-dominio-2026-09-23.md`): non gira più da launchd, resta invocabile a mano
+> e le sezioni che lo descrivono qui sotto sono il suo contratto se lo lanci. Conseguenza da
+> sapere: le PR delle issue (`night/issue-N`, titolo non `caccia:`) non hanno più un giudice
+> automatico — il censore le rinvia «non mio», e restano alla review di Luca (debito in
+> DEBITI.md, «Dal test del sistema completo»).
 
 ## Le regole vincolanti
 
@@ -32,6 +40,10 @@ MATTINA (giudizio): morning-gate → verifiche dichiarate + banco avversariale �
 
 ## I numeri che scelgono il modello (MacBook Air M5, 24 GB, misurati 2026-08-18)
 
+> Storia: questa tabella scelse il 27B Q4_K_M ad agosto. Il modello di turno oggi è
+> `qwen3.8-27b:iq3s` (12 GB, 3/3 in 48 s — `cervello/decisione-modello-unico.md`, 2026-09-21);
+> «operativa» qui sotto vale per allora.
+
 | Quant | Velocità | Esito |
 |---|---|---|
 | Q4_K_M MTP 17,1 GB | 3,7-5,9 tok/s | **operativa** (parità 4/4 con Q5 nella batteria di qualità) |
@@ -42,17 +54,20 @@ Server: flash attention, KV q8_0, contesto 16K, thinking off per il batch.
 
 ## Come si usa
 
+Tutte le repo in `repos.conf`; una repo sola; il gate del mattino a mano (in pensione da
+launchd):
+
 ```bash
-night-shift/night-shift.sh                # tutte le repo in repos.conf
-night-shift/night-shift.sh owner/repo     # una repo
-night-shift/morning-gate.sh               # il giudizio del mattino
+night-shift/night-shift.sh
+night-shift/night-shift.sh owner/repo
+night-shift/morning-gate.sh
 ```
 
 Mettere in coda: issue con label `night-shift`, scritta come commessa. Il turno parte da solo
 alle 23:00 (LaunchAgent). Il Mac: alimentatore, coperchio aperto, app pesanti chiuse
 (è la differenza fra 1 e 4 tok/s).
 
-## Il gate del mattino (`night-shift/morning-gate.sh`)
+## Il gate del mattino (`night-shift/morning-gate.sh`) — in pensione dal 2026-09-23, invocabile a mano
 
 1. **Verifiche dichiarate**: la repo dichiara i comandi in `.night-verify` (una riga per comando).
    Se non esiste: `non-dichiarate`. Se esiste ma non contiene nessun comando reale (solo

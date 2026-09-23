@@ -13,8 +13,8 @@
 │              nominate @route/night @route/digest                       │
 │ L2 LAVORO    giorno: sessioni dirette + deleghe llm/ask-*              │
 │              notte: night-shift 23:00 multi-repo (repos.conf LOCALE)   │
-│ L3 GIUDIZIO  morning-gate: verifiche dichiarate + banco avversariale   │
-│              + proposte correttive (sì umano obbligatorio)             │
+│ L3 GIUDIZIO  censore nel ciclo (revisore.sh, PR caccia:) + digest 7:30 │
+│              (morning-gate in pensione dal 2026-09-23; veto umano)     │
 │ L4 MEMORIA   SAL.md + metrics/gate.csv → le decisioni future le        │
 │              decidono i dati accumulati, non le opinioni               │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -28,7 +28,7 @@
 | Cervello giorno profondo | Claude Code / Opus 5 | **Limite verificato**: Wayfinder non implementa l'outbound Anthropic (letto nei sorgenti, non presunto) — Opus resta diretto, `ask-opus` via `claude -p` (auth nel Keychain SUL MAC: funziona da terminale utente e launchd, non da shell sandbox locale; **una sessione cloud ha auth propria e risponde davvero** — verificato 2026-08-22, vedi `llm/ask-opus.sh`) |
 | Braccia notturne | qwen3.8-27b:iq3s via Ollama (un solo modello, decisione 2026-09-21 — `cervello/decisione-modello-unico.md`) | bencina 2026-09-21: 3/3 in 48 s con think:false (il 14b 1/3 in 22 s); dal 19 al 21/9 qui stava qwen2.5-coder:14b, prima il Qwen3.8-27B Q4_K_M (misure 2026-08-18: 3,7-5,9 tok/s). Default in `night-shift/night-shift.sh` (`MODEL_TAG`), presidiato da `tests/test-un-solo-modello.sh` |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
-| Giudice/censore/correttore | REPO-A + morning-gate | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
+| Giudice/censore/correttore | REPO-A + censore (`night-shift/revisore.sh`; il morning-gate è in pensione dal 2026-09-23) | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
 | Memoria | SAL.md + metrics/gate.csv | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
 
 ## Limiti dichiarati (cosa il sistema NON fa, oggi)
@@ -96,9 +96,9 @@ quattro regole sono in CLAUDE.md dal principio) arriva dopo e formalizza.
 |---|---|
 | Trigger (evento o orario) | issue `night-shift` + launchd 23:00 |
 | Harness (subtask, stato su file, contesto fresco per step) | CLAUDE.md + SAL + grafo + commesse precaricate |
-| Verifica | `.night-verify` + morning-gate col banco |
+| Verifica | `.night-verify` + censore (`night-shift/revisore.sh`) con le prove sul branch; il morning-gate col banco resta invocabile a mano (in pensione dal 2026-09-23) |
 | Memoria persistente (file system come estensione del contesto) | SAL.md + metrics/gate.csv + lezioni |
-| Loop sul loop | commessa → notte → gate → correttore → notte |
+| Loop sul loop | commessa → notte → censore/digest → correttore → notte |
 
 **I cinque livelli di verifica** (tassonomia assorbita, i nostri nomi):
 

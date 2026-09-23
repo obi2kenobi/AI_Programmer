@@ -596,8 +596,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
   # 2026-09-19 — cervello/decisione-modello-unico.md —, istruzioni e ruolo diversi: chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
   # chi crea non si giudica nello stesso respiro. Il veto resta umano.
   if [ -f "$HERE/revisore.sh" ]; then
-    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft --limit 20 2>/dev/null \
-      | jq -r '.[] | select(.isDraft == true and (.headRefName | startswith("night/"))) | .number' 2>/dev/null | head -1)
+    # (revisione 10 giri): la candidata si sceglie coi predicati del censore (lib.sh
+    # candidata_censore) — prima una PR di issue in testa affamava le caccia dietro di lei
+    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title --limit 20 2>/dev/null \
+      | candidata_censore)
     if [ -n "${REVISORE_CANDIDATA:-}" ]; then
       log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
       REVISORE_OUT=$(bash "$HERE/revisore.sh" "$DIR" "$REVISORE_CANDIDATA" 2>&1); REVISORE_RC=$?
