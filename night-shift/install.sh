@@ -55,7 +55,7 @@ fi
 # --- LaunchAgent ----------------------------------------------------------------
 step "LaunchAgent: Ollama always-on + turno 23:00"
 mkdir -p "$AGENTS"
-for tpl in ollama nightshift; do
+for tpl in ollama nightshift morningdigest; do
   SRC="$HUB/night-shift/plist/com.luca.$tpl.plist"
   DST="$AGENTS/com.$USER_NAME.$tpl.plist"
   sed -e "s|__USER__|$USER_NAME|g" -e "s|__HOME__|$HOME_DIR|g" -e "s|__HUB__|$HUB|g" "$SRC" > "$DST"

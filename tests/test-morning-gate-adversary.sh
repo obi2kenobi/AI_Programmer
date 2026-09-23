@@ -1,4 +1,5 @@
 #!/bin/bash
+# (dominio 2026-09-23): il morning-gate e' in pensione — questo test verifica codice che resta nel repo ma non gira piu' da launchd. Tenuto perche' il gate resta invocabile a mano.
 # test-morning-gate-adversary.sh — set 1 giro 6: GLM diventa selezionabile come
 # ADVERSARY nel banco avversariale (prima solo qwen/opus erano cablati, nonostante
 # GLM sia un cervello di giorno pienamente documentato in llm/README.md).
