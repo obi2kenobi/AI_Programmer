@@ -85,7 +85,7 @@
 | `Ship_to_County` | string | RE |  | ☐ |
 | `Ship_to_Post_Code` | string | 42019 |  | ☐ |
 | `Ship_to_Country_Region_Code` | string | IT |  | ☐ |
-| `Ship_to_Phone_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Ship_to_Phone_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Ship_to_Contact` | string |  |  | ☐ |
 | `Bill_to_Name` | string | Matteo Manghi |  | ☐ |
 | `Bill_to_Name_2` | string |  |  | ☐ |
@@ -107,8 +107,8 @@
 | `PRJ_Ship_to_County` | string | MC |  | ☐ |
 | `PRJ_Ship_to_Post_Code` | string | 62010 |  | ☐ |
 | `PRJ_Ship_to_Count_Reg_Code` | string | IT |  | ☐ |
-| `PRJ_Ship_to_E_Mail` | string | contatto@esempio.example |  | ☐ |
-| `PRJ_Ship_to_Phone_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `PRJ_Ship_to_E_Mail` | string | contatto.72@esempio.example |  | ☐ |
+| `PRJ_Ship_to_Phone_No` | string | 02 xxxx xxxx |  | ☐ |
 | `PRJ_Shipping_Add_Price_Group` | string | BRCIV |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |
 | `Service_Tariff_No` | string |  |  | ☐ |
@@ -140,7 +140,7 @@
 | `Contract_Date` | date | 0001-01-01 |  | ☐ |
 | `data_type` | string |  |  | ☐ |
 | `Administrative_Ref` | string |  |  | ☐ |
-| `PEC_Email` | string | pec@esempio.example |  | ☐ |
+| `PEC_Email` | string | contatto.28@esempio.example |  | ☐ |
 | `XML_validation_error` | string |  |  | ☐ |
 | `BolloVirtuale` | bool | False |  | ☐ |
 | `Not_show_DDT_Ref_On_XMLFile` | bool | False |  | ☐ |

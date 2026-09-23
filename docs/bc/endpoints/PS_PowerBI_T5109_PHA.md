@@ -30,7 +30,7 @@
 | `Assigned_User_ID` | string |  |  | ☐ |
 | `Bal_Account_No` | string |  |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
-| `Bank_Account` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bank_Account` | string | 02 xxxx xxxx |  | ☐ |
 | `Birth_City` | string |  |  | ☐ |
 | `Buy_from_Address` | string | CSO GIULIO CESARE, 268 |  | ☐ |
 | `Buy_from_Address_2` | string |  |  | ☐ |

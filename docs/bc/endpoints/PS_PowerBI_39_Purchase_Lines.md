@@ -141,10 +141,10 @@
 | `Promised_Receipt_Date` | date | 0001-01-01 |  | ☐ |
 | `Purchasing_Code` | string |  |  | ☐ |
 | `Qty_Assigned` | float | 0 |  | ☐ |
-| `Qty_Invoiced_Base` | float | TELEFONO-RIMOSSO |  | ☐ |
+| `Qty_Invoiced_Base` | float | 02 xxxx xxxx |  | ☐ |
 | `Qty_Rcd_Not_Invoiced` | float | 0 |  | ☐ |
 | `Qty_Rcd_Not_Invoiced_Base` | float | 0 |  | ☐ |
-| `Qty_Received_Base` | float | TELEFONO-RIMOSSO |  | ☐ |
+| `Qty_Received_Base` | float | 02 xxxx xxxx |  | ☐ |
 | `Qty_per_Unit_of_Measure` | float | 1000 |  | ☐ |
 | `Qty_to_Assign` | float | 0 |  | ☐ |
 | `Qty_to_Invoice` | float | 0 |  | ☐ |
@@ -152,7 +152,7 @@
 | `Qty_to_Receive` | float | 0 |  | ☐ |
 | `Qty_to_Receive_Base` | float | 0 |  | ☐ |
 | `Quantity` | float | 324000 |  | ☐ |
-| `Quantity_Base` | float | TELEFONO-RIMOSSO |  | ☐ |
+| `Quantity_Base` | float | 02 xxxx xxxx |  | ☐ |
 | `Quantity_Invoiced` | float | 324000 |  | ☐ |
 | `Quantity_Received` | float | 324000 |  | ☐ |
 | `Recalculate_Invoice_Disc` | bool | False |  | ☐ |

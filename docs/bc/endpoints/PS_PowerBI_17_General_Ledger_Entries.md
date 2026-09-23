@@ -31,7 +31,7 @@
 | `FA_Entry_No` | int | 0 |  | ☐ |
 | `FA_Entry_Type` | string |   |  | ☐ |
 | `G_L_Account_Name` | string | BILANCIO D'APERTURA   |  | ☐ |
-| `G_L_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `G_L_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Gen_Bus_Posting_Group` | string |  |  | ☐ |
 | `Gen_Posting_Type` | string |   |  | ☐ |
 | `Gen_Prod_Posting_Group` | string |  |  | ☐ |

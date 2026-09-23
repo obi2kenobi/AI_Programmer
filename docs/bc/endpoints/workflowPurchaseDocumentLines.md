@@ -136,13 +136,13 @@
 | `binCode` | string |  |  | ☐ |
 | `qtyPerUnitOfMeasure` | float | 1000 |  | ☐ |
 | `unitOfMeasureCode` | string | ML |  | ☐ |
-| `quantityBase` | float | TELEFONO-RIMOSSO |  | ☐ |
+| `quantityBase` | float | 02 xxxx xxxx |  | ☐ |
 | `outstandingQtyBase` | float | 0 |  | ☐ |
 | `qtyToInvoiceBase` | float | 0 |  | ☐ |
 | `qtyToReceiveBase` | float | 0 |  | ☐ |
 | `qtyRcdNotInvoicedBase` | float | 0 |  | ☐ |
-| `qtyReceivedBase` | float | TELEFONO-RIMOSSO |  | ☐ |
-| `qtyInvoicedBase` | float | TELEFONO-RIMOSSO |  | ☐ |
+| `qtyReceivedBase` | float | 02 xxxx xxxx |  | ☐ |
+| `qtyInvoicedBase` | float | 02 xxxx xxxx |  | ☐ |
 | `reservedQtyBase` | float | 0 |  | ☐ |
 | `faPostingDate` | date | 0001-01-01 |  | ☐ |
 | `faPostingType` | string |   |  | ☐ |

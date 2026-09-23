@@ -22,7 +22,7 @@
 | `Applies_to_ID` | string |  |  | ☐ |
 | `Applies_to_Occurrence_No` | int | 0 |  | ☐ |
 | `Applying_Entry` | bool | False |  | ☐ |
-| `Bal_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bal_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
 | `Buy_from_Vendor_No` | string | 0001253 |  | ☐ |
 | `Closed_at_Date` | date | 2024-01-03 |  | ☐ |

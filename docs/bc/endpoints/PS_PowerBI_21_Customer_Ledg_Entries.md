@@ -24,7 +24,7 @@
 | `Applies_to_ID` | string |  |  | ☐ |
 | `Applies_to_Occurrence_No` | int | 0 |  | ☐ |
 | `Applying_Entry` | bool | False |  | ☐ |
-| `Bal_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bal_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
 | `Bank_Receipt` | bool | False |  | ☐ |
 | `Bank_Receipt_Issued` | bool | False |  | ☐ |

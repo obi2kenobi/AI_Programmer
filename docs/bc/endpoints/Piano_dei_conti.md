@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE0MDU0OTc1MTAxOTY0NDMwMjgzMT... |  | ☐ |
-| `No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `No` | string | 02 xxxx xxxx |  | ☐ |
 | `Name` | string | STATO PATRIMONIALE |  | ☐ |
 | `Net_Change` | float | 0 |  | ☐ |
 | `Balance` | float | 0 |  | ☐ |

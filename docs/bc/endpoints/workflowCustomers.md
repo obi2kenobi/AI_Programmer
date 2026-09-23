@@ -92,7 +92,7 @@
 | `creditAmount` | float | 0 |  | ☐ |
 | `debitAmountLcy` | float | 0 |  | ☐ |
 | `creditAmountLcy` | float | 0 |  | ☐ |
-| `eMail` | string | contatto@esempio.example |  | ☐ |
+| `eMail` | string | contatto.95@esempio.example |  | ☐ |
 | `homePage` | string |  |  | ☐ |
 | `reminderTermsCode` | string |  |  | ☐ |
 | `reminderAmounts` | float | 0 |  | ☐ |

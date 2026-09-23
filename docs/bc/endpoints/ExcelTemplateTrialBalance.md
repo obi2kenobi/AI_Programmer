@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzcyMTQwNzgxMzIxMzU3ODYzMTUxOz... |  | ☐ |
-| `number` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `number` | string | 02 xxxx xxxx |  | ☐ |
 | `accountId` | guid | da4d774a-cf40-ee11-bdf5-0022489f1000 |  | ☐ |
 | `accountType` | string | Heading |  | ☐ |
 | `display` | string | STATO PATRIMONIALE |  | ☐ |

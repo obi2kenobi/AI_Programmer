@@ -16,5 +16,5 @@
 | `Windows_Security_ID` | string |  |  | ☐ |
 | `Windows_User_Name` | string |  |  | ☐ |
 | `License_Type` | string | Full User |  | ☐ |
-| `Authentication_Email` | string | admin@camarlinghi.onmicrosoft.com |  | ☐ |
+| `Authentication_Email` | string | contatto.31@esempio.example |  | ☐ |
 | `User_Telemetry_ID` | string | d9c24cfc-43ea-4d6d-8f31-5274cbf0745f |  | ☐ |

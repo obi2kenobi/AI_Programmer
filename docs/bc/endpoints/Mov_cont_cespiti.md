@@ -31,7 +31,7 @@
 | `Index_Entry` | bool | False |  | ☐ |
 | `No_of_Depreciation_Days` | int | 0 |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
-| `Bal_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bal_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `User_ID` | string | USER_EEB83BD8DDC34A4B92AB0B7EB961D38D |  | ☐ |
 | `Source_Code` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |

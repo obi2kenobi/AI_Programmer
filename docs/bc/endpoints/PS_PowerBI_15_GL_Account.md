@@ -10,7 +10,7 @@
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE0NzQ4NDg0NDY4NTY1NDc1NTY1MT... |  | ☐ |
-| `No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `No` | string | 02 xxxx xxxx |  | ☐ |
 | `Account_Category` | string |   |  | ☐ |
 | `Account_Subcategory_Descript` | string |  |  | ☐ |
 | `Account_Subcategory_Entry_No` | int | 0 |  | ☐ |

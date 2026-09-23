@@ -9,7 +9,7 @@
 
 | Campo | Tipo | Esempio | Significato | Verificato |
 |---|---|---|---|---|
-| `GL_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `GL_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Name` | string | PROFITTI E PERDITE      |  | ☐ |
 | `Account_Type` | string | Posting |  | ☐ |
 | `Debit_Credit` | string | Both |  | ☐ |

@@ -42,9 +42,9 @@
 | `County` | string | LU |  | ☐ |
 | `Post_Code` | string | 00000 |  | ☐ |
 | `ShowMap` | string | Show on Map |  | ☐ |
-| `Phone_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Phone_No` | string | 02 xxxx xxxx |  | ☐ |
 | `MobilePhoneNo` | string |  |  | ☐ |
-| `E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `E_Mail` | string | contatto.20@esempio.example |  | ☐ |
 | `Fax_No` | string |  |  | ☐ |
 | `Home_Page` | string | https://www.vetreriadimontagnana.it/ |  | ☐ |
 | `Our_Account_No` | string |  |  | ☐ |
@@ -126,7 +126,7 @@
 | `Receive_E_Document_To` | string | None |  | ☐ |
 | `E_Document_Service_Participation_Ids` | int | 0 |  | ☐ |
 | `e_Invoice_Destination_Cod` | string | 0000000 |  | ☐ |
-| `PEC_Email` | string | DTESRL@MYPEC.EU |  | ☐ |
+| `PEC_Email` | string | contatto.78@esempio.example |  | ☐ |
 | `e_Doc_Format` | string | B2B Invoice |  | ☐ |
 | `With_DDT` | bool | False |  | ☐ |
 | `With_Cross_Ref` | bool | False |  | ☐ |

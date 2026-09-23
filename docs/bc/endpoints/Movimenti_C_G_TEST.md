@@ -11,7 +11,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzE5OzM1ODY4MDk0NTkwNzgwMjIwNDcxOz... |  | ☐ |
 | `Entry_No` | int | 14626 |  | ☐ |
-| `AccNo` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `AccNo` | string | 02 xxxx xxxx |  | ☐ |
 | `AccName` | string | PROFITTI E PERDITE      |  | ☐ |
 | `Descr` | string | Risconti Passivi |  | ☐ |
 | `Amt` | float | -1513.35 |  | ☐ |

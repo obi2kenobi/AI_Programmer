@@ -18,8 +18,8 @@
 | `address2` | string |  |  | ☐ |
 | `city` | string | ÚSTÍ NAD LABEM-MĚSTO, PŘEDLICE |  | ☐ |
 | `contact` | string |  |  | ☐ |
-| `phoneNumber` | string | TELEFONO-RIMOSSO |  | ☐ |
-| `telexNumber` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `phoneNumber` | string | 02 xxxx xxxx |  | ☐ |
+| `telexNumber` | string | 02 xxxx xxxx |  | ☐ |
 | `ourAccountNumber` | string |  |  | ☐ |
 | `territoryCode` | string |  |  | ☐ |
 | `globalDimension1Code` | string |  |  | ☐ |
@@ -78,7 +78,7 @@
 | `creditAmount` | float | 0 |  | ☐ |
 | `debitAmountLcy` | float | 0 |  | ☐ |
 | `creditAmountLcy` | float | 0 |  | ☐ |
-| `eMail` | string | contatto@esempio.example |  | ☐ |
+| `eMail` | string | contatto.20@esempio.example |  | ☐ |
 | `homePage` | string | https://www.vetreriadimontagnana.it/ |  | ☐ |
 | `reminderAmounts` | float | 0 |  | ☐ |
 | `reminderAmountsLcy` | float | 0 |  | ☐ |

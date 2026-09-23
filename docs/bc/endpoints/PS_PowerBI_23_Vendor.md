@@ -45,7 +45,7 @@
 | `Debit_Amount` | float | 0 |  | ☐ |
 | `Disable_Search_by_Name` | bool | False |  | ☐ |
 | `Document_Sending_Profile` | string |  |  | ☐ |
-| `E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `E_Mail` | string | contatto.20@esempio.example |  | ☐ |
 | `Fax_No` | string |  |  | ☐ |
 | `Fin_Charge_Memo_Amounts_LCY` | float | 0 |  | ☐ |
 | `Fin_Charge_Terms_Code` | string |  |  | ☐ |
@@ -117,7 +117,7 @@
 | `Pay_to_No_of_Quotes` | int | 0 |  | ☐ |
 | `Pay_to_No_of_Return_Orders` | int | 0 |  | ☐ |
 | `Pay_to_Vendor_No` | string |  |  | ☐ |
-| `Phone_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Phone_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Pmt_Disc_Tolerance_LCY` | float | 0 |  | ☐ |
 | `Pmt_Discounts_LCY` | float | 0 |  | ☐ |
 | `Pmt_Tolerance_LCY` | float | 0 |  | ☐ |
@@ -156,7 +156,7 @@
 | `Tax_Representative_No` | string |  |  | ☐ |
 | `Tax_Representative_Type` | string |   |  | ☐ |
 | `Telex_Answer_Back` | string |  |  | ☐ |
-| `Telex_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Telex_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Territory_Code` | string |  |  | ☐ |
 | `Validate_EU_Vat_Reg_No` | bool | False |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_UE |  | ☐ |

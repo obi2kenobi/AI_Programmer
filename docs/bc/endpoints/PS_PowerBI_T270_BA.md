@@ -48,7 +48,7 @@
 | `Debit_Amount` | float | 215975.04 |  | ☐ |
 | `Debit_Amount_LCY` | float | 215975.04 |  | ☐ |
 | `Direct_Debit_Msg_Nos` | string |  |  | ☐ |
-| `E_Mail` | string | pec@esempio.example |  | ☐ |
+| `E_Mail` | string | contatto.14@esempio.example |  | ☐ |
 | `Fax_No` | string |  |  | ☐ |
 | `Global_Dimension_1_Code` | string |  |  | ☐ |
 | `Global_Dimension_2_Code` | string |  |  | ☐ |

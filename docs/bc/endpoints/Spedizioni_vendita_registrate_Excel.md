@@ -23,7 +23,7 @@
 | `SellToPhoneNo` | string |  |  | ☐ |
 | `SellToMobilePhoneNo` | string |  |  | ☐ |
 | `SellToEmail` | string |  |  | ☐ |
-| `Sell_to_E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `Sell_to_E_Mail` | string | contatto.95@esempio.example |  | ☐ |
 | `Sell_to_Contact` | string |  |  | ☐ |
 | `No_Printed` | int | 1 |  | ☐ |
 | `Posting_Date` | date | 2025-07-22 |  | ☐ |
@@ -49,7 +49,7 @@
 | `Ship_to_County` | string | RE |  | ☐ |
 | `Ship_to_Post_Code` | string | 42019 |  | ☐ |
 | `Ship_to_Country_Region_Code` | string | IT |  | ☐ |
-| `Ship_to_Phone_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Ship_to_Phone_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Ship_to_Contact` | string |  |  | ☐ |
 | `Additional_Information` | string |  |  | ☐ |
 | `Additional_Notes` | string |  |  | ☐ |
@@ -72,8 +72,8 @@
 | `PRJ_Ship_to_County` | string | CH |  | ☐ |
 | `PRJ_Ship_to_Post_Code` | string | 66030 |  | ☐ |
 | `PRJ_Ship_to_Count_Reg_Code` | string | IT |  | ☐ |
-| `PRJ_Ship_to_E_Mail` | string | contatto@esempio.example |  | ☐ |
-| `PRJ_Ship_to_Phone_No` | string | TELEFONO-RIMOSSO|  | ☐ |
+| `PRJ_Ship_to_E_Mail` | string | contatto.72@esempio.example |  | ☐ |
+| `PRJ_Ship_to_Phone_No` | string | +39 xx xxxx xxxx|  | ☐ |
 | `Bill_to_Customer_No` | string | 501733 |  | ☐ |
 | `Bill_to_Name` | string | il referente di dominio Manghi |  | ☐ |
 | `Bill_to_Name_2` | string |  |  | ☐ |

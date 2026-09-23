@@ -20,7 +20,7 @@
 | `Document_No` | string | 0001 |  | ☐ |
 | `Document_Type` | string | Invoice |  | ☐ |
 | `External_Document_No` | string | 0001 |  | ☐ |
-| `G_L_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `G_L_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Official_Date` | date | 2023-12-31 |  | ☐ |
 | `Positive` | bool | False |  | ☐ |
 | `Posting_Date` | date | 2023-12-31 |  | ☐ |

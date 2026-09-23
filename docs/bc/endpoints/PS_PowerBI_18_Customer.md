@@ -60,7 +60,7 @@
 | `Debit_Amount` | float | 0 |  | ☐ |
 | `Disable_Search_by_Name` | bool | False |  | ☐ |
 | `Document_Sending_Profile` | string |  |  | ☐ |
-| `E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `E_Mail` | string | contatto.95@esempio.example |  | ☐ |
 | `Exposure_LCY` | float | 0 |  | ☐ |
 | `Exposure_Filter` | string |  |  | ☐ |
 | `Fax_No` | string |  |  | ☐ |

@@ -58,7 +58,7 @@
 | `ShowMap` | string | Show on Map |  | ☐ |
 | `Phone_No` | string | 338 9470008 |  | ☐ |
 | `MobilePhoneNo` | string |  |  | ☐ |
-| `E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `E_Mail` | string | contatto.95@esempio.example |  | ☐ |
 | `Fax_No` | string |  |  | ☐ |
 | `Home_Page` | string |  |  | ☐ |
 | `Language_Code` | string | ITA |  | ☐ |

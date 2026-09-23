@@ -104,7 +104,7 @@
 | `Sell_to_Customer_Name` | string | BRICOMAN ITALIA SRL |  | ☐ |
 | `Sell_to_Customer_Name_2` | string |  |  | ☐ |
 | `Sell_to_Customer_No` | string | 0004608 |  | ☐ |
-| `Sell_to_E_Mail` | string | contabilita.fornitori@bricoman.it;for... |  | ☐ |
+| `Sell_to_E_Mail` | string | contatto.44@esempio.example;for... |  | ☐ |
 | `Sell_to_Phone_No` | string | 02 928901 |  | ☐ |
 | `Sell_to_Post_Code` | string | 20089 |  | ☐ |
 | `Service_Tariff_No` | string |  |  | ☐ |
@@ -139,5 +139,5 @@
 | `Draft_Cr_Memo_SystemId` | guid | 28526994-e266-f011-8eee-6045bde0d4e1 |  | ☐ |
 | `Fattura_Document_Type` | string | TD04 |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |
-| `Work_Description@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
-| `Work_Description@odata.mediaReadLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.30@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.93@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |

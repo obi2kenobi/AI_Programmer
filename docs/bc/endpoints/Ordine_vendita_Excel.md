@@ -26,7 +26,7 @@
 | `Sell_to_Contact_No` | string |  |  | ☐ |
 | `Sell_to_Phone_No` | string | 0587/686094-5-6 |  | ☐ |
 | `SellToMobilePhoneNo` | string |  |  | ☐ |
-| `Sell_to_E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `Sell_to_E_Mail` | string | contatto.57@esempio.example |  | ☐ |
 | `Sell_to_Contact` | string |  |  | ☐ |
 | `No_of_Archived_Versions` | int | 1 |  | ☐ |
 | `Document_Date` | date | 2024-11-25 |  | ☐ |
@@ -74,7 +74,7 @@
 | `Customer_Posting_Group` | string | GDS |  | ☐ |
 | `Payment_Terms_Code` | string | 120FM10 |  | ☐ |
 | `Payment_Method_Code` | string | BNKDOMCONV |  | ☐ |
-| `Bank_Account` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bank_Account` | string | 02 xxxx xxxx |  | ☐ |
 | `PRJ_Our_Bank_Account` | string | B011 |  | ☐ |
 | `Cumulative_Bank_Receipts` | bool | False |  | ☐ |
 | `EU_3_Party_Trade` | bool | False |  | ☐ |

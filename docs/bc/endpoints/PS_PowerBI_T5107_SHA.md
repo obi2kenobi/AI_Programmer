@@ -191,5 +191,5 @@
 | `Your_Reference` | string |  |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |
 | `Location_Filter` | string |  |  | ☐ |
-| `Work_Description@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
-| `Work_Description@odata.mediaReadLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.30@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.93@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |

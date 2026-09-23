@@ -115,8 +115,8 @@
 | `Sell_to_Customer_Name` | string | Matteo Manghi |  | ☐ |
 | `Sell_to_Customer_Name_2` | string |  |  | ☐ |
 | `Sell_to_Customer_No` | string | 501733 |  | ☐ |
-| `Sell_to_E_Mail` | string | contatto@esempio.example |  | ☐ |
-| `Sell_to_Phone_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Sell_to_E_Mail` | string | contatto.95@esempio.example |  | ☐ |
+| `Sell_to_Phone_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Sell_to_Post_Code` | string | 42019 |  | ☐ |
 | `Service_Tariff_No` | string |  |  | ☐ |
 | `Ship_to_Address` | string | Via Mazzalasino, 33 |  | ☐ |
@@ -152,5 +152,5 @@
 | `Fattura_Document_Type` | string | TD01 |  | ☐ |
 | `Payment_Reference` | string |  |  | ☐ |
 | `Price_Calculation_Method` | string | Lowest Price |  | ☐ |
-| `Work_Description@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
-| `Work_Description@odata.mediaReadLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.30@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.93@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |

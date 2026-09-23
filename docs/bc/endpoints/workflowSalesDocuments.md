@@ -171,5 +171,5 @@
 | `getShipmentUsed` | bool | False |  | ☐ |
 | `assignedUserId` | string |  |  | ☐ |
 | `Date_Filter` | string |  |  | ☐ |
-| `workDescription@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
-| `workDescription@odata.mediaReadLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.58@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.63@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |

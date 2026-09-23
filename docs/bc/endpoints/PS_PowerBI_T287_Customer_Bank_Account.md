@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | `@odata.etag` | string | W/"JzIwOzE4MjQwMTk1NzYwMTY3MjYyNTM4MT... |  | ☐ |
 | `Customer_No` | string | 0000849 |  | ☐ |
-| `Code` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Code` | string | 02 xxxx xxxx |  | ☐ |
 | `Address_2` | string |  |  | ☐ |
 | `Bank_Account_No` | string | 000020057352 |  | ☐ |
 | `Bank_Branch_No` | string |  |  | ☐ |

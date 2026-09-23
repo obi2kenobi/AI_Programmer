@@ -35,8 +35,8 @@
 | `Customs_Permit_Date` | date | 0001-01-01 |  | ☐ |
 | `Customs_Permit_No` | string |  |  | ☐ |
 | `Demo_Company` | bool | False |  | ☐ |
-| `E_Mail` | string | info@esempio.example |  | ☐ |
-| `Fax_No` | string | TELEFONO-RIMOSSO|  | ☐ |
+| `E_Mail` | string | contatto.80@esempio.example |  | ☐ |
+| `Fax_No` | string | +39 xx xxxx xxxx|  | ☐ |
 | `FD_Address` | string |  |  | ☐ |
 | `FD_City` | string |  |  | ☐ |
 | `FD_County` | string |  |  | ☐ |
@@ -55,7 +55,7 @@
 | `Paid_In_Capital` | float | 0 |  | ☐ |
 | `Payment_Routing_No` | string |  |  | ☐ |
 | `Phone_No_2` | string |  |  | ☐ |
-| `Phone_No` | string | TELEFONO-RIMOSSO|  | ☐ |
+| `Phone_No` | string | +39 xx xxxx xxxx|  | ☐ |
 | `Picture_Last_Mod_Date_Time` | datetime | 2023-10-26T16:03:41.727Z |  | ☐ |
 | `Post_Code` | string | 56020 |  | ☐ |
 | `REA_No` | string | PI - 90530 |  | ☐ |
@@ -95,5 +95,5 @@
 | `SystemCreatedBy` | guid | e6bc6d6f-e8e0-47b1-90b4-f0194fea5165 |  | ☐ |
 | `SystemModifiedAt` | datetime | 2026-01-19T14:21:09.357Z |  | ☐ |
 | `SystemModifiedBy` | guid | d542b5c3-fab8-46d0-b399-944e1fab200e |  | ☐ |
-| `Picture@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
-| `Picture@odata.mediaReadLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.54@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.20@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |

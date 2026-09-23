@@ -51,7 +51,7 @@
 | `Source_Code` | string |  |  | ☐ |
 | `Reason_Code` | string |  |  | ☐ |
 | `Transaction_No` | int | 874 |  | ☐ |
-| `Bal_Account_No` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bal_Account_No` | string | 02 xxxx xxxx |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
 | `VAT_Amount` | float | 0 |  | ☐ |
 | `Gen_Posting_Type` | string |   |  | ☐ |

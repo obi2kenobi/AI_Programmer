@@ -31,7 +31,7 @@
 | `Assigned_User_ID` | string |  |  | ☐ |
 | `Bal_Account_No` | string |  |  | ☐ |
 | `Bal_Account_Type` | string | G/L Account |  | ☐ |
-| `Bank_Account` | string | TELEFONO-RIMOSSO |  | ☐ |
+| `Bank_Account` | string | 02 xxxx xxxx |  | ☐ |
 | `Bill_to_Address` | string | Strada 8 Palazzo N |  | ☐ |
 | `Bill_to_Address_2` | string |  |  | ☐ |
 | `Bill_to_City` | string | MILANO |  | ☐ |
@@ -160,7 +160,7 @@
 | `Sell_to_Customer_Name` | string | LEROY MERLIN ITALIA S.r.l. |  | ☐ |
 | `Sell_to_Customer_Name_2` | string |  |  | ☐ |
 | `Sell_to_Customer_No` | string | 0009541 |  | ☐ |
-| `Sell_to_E_Mail` | string | contatto@esempio.example |  | ☐ |
+| `Sell_to_E_Mail` | string | contatto.57@esempio.example |  | ☐ |
 | `Sell_to_IC_Partner_Code` | string |  |  | ☐ |
 | `Sell_to_Phone_No` | string | 0587/686094-5-6 |  | ☐ |
 | `Sell_to_Post_Code` | string | 20089 |  | ☐ |
@@ -216,5 +216,5 @@
 | `e_Doc_FileName` | string |  |  | ☐ |
 | `e_Doc_Format` | string | B2B Invoice |  | ☐ |
 | `e_Invoice_Destination_Cod` | string | NML228P |  | ☐ |
-| `Work_Description@odata.mediaEditLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
-| `Work_Description@odata.mediaReadLink` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.30@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
+| `contatto.93@esempio.example` | string | https://api.businesscentral.dynamics.... |  | ☐ |
