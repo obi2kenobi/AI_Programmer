@@ -42,6 +42,25 @@ OUT=$(bash "$TOOL" "$SB" 2>&1)
 echo "$OUT" | grep -q "censimento: 1" && ok "debito cresciuto: delta +1" || ko "delta crescita: $OUT"
 echo "$OUT" | grep -q "CRESCIUTO" && ok "la crescita viene urlata" || ko "crescita silenziosa"
 
+# --prossimo con un rinviato (revisione 10 giri, 2026-09-23): `paste` affiancava la colonna
+# delle famiglie di TUTTE le righe ai siti gia' filtrati — con un rinviato le righe
+# scivolavano e un sito E-032 usciva etichettato E-002 (all'agente la cura sbagliata).
+SB2=$(mktemp -d /tmp/test-cregistro2.XXXXXX)
+git -C "$SB2" init -q -b main; mkdir -p "$SB2/tools" "$SB2/tests"
+printf '#!/bin/bash
+X=$(ls %s foo && echo y)
+' "$PIPEQ" > "$SB2/tools/uno.sh"
+printf '#!/bin/bash
+printf hi >> "$HERE/vivo.md"
+' > "$SB2/tests/test-vivo.sh"
+git -C "$SB2" add -A && git -C "$SB2" -c user.name=t -c user.email=t@t commit -qm base
+PRIMO=$(bash "$TOOL" --prossimo "$SB2" 2>/dev/null)
+mkdir -p "$SB2/.git/caccia-registro"; printf '%s\n' "${PRIMO#*|}" > "$SB2/.git/caccia-registro/rinviati"
+SECONDO=$(bash "$TOOL" --prossimo "$SB2" 2>/dev/null)
+[ "$SECONDO" = "E-032|tests/test-vivo.sh:2" ] && ok "--prossimo col primo sito rinviato: il sito dopo con la SUA famiglia ($SECONDO)" \
+  || ko "--prossimo con rinviato: '$SECONDO' (atteso E-032|tests/test-vivo.sh:2; primo era '$PRIMO')"
+rm -rf "$SB2"
+
 # sul repo VERO, ma in QUARANTENA (revisione 10 giri, 2026-09-23): prima girava sull'hub vivo
 # e, dal main (cioe' nel turno, che esegue la suite dal main), riscriveva la baseline e la
 # storia VERE in .git/caccia-registro — il delta che la notte legge si azzerava a ogni suite.

@@ -36,7 +36,7 @@ SAPEVOLI=$(grep -a "^## E-0" "$HERE/docs/errori/REGISTRO.md" 2>/dev/null | tail 
 
 read -r -d '' PROMPT <<FINE || true
 Sei la memoria di un sistema di sviluppo autonomo (AI_Programmer) che gira 24/7.
-Questi sono gli eventi notevoli della giornata di oggi (\$(date +%F)):
+Questi sono gli eventi notevoli della giornata di oggi ($OGGI):
 
 $CTX
 
@@ -59,8 +59,11 @@ R=$(curl -sf --max-time 150 "$API" -d "$(jq -cn --arg m "$MODEL" --arg p "$PROMP
   | jq -r '.message.content // empty' 2>/dev/null)
 [ -n "$R" ] || { echo "IMPARA: il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }
 
-# il modello a volte incarta il JSON: si estrae la prima { ... } della riga
-R=$(sed -n 's/.*\({.*}\).*/\1/p' <<<"$R" | head -1)
+# il modello a volte incarta il JSON: si estrae dalla PRIMA { all'ultima } della riga.
+# (revisione 10 giri, 2026-09-23): era `sed 's/.*\({.*}\).*/\1/'` — il `.*` iniziale, avido,
+# arrivava all'ULTIMA graffa aperta: una lezione con `${VAR:-x}` diventava JSON rotto.
+# `grep -o` prende la corrispondenza piu' a sinistra: parte dalla prima graffa.
+R=$(grep -oE '\{.*\}' <<<"$R" | head -1)
 if jq -e '.niente == true' <<<"$R" >/dev/null 2>&1; then
   echo "IMPARA: onesto niente — $(jq -r '.perche' <<<"$R" 2>/dev/null)"
   exit 0

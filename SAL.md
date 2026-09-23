@@ -2942,3 +2942,37 @@ Verdetto del giro 8: `bash tools/suite.sh` → 157/157 (col verdetto preteso). I
 l'ha data rossa su `test-night-verify-riepilogo-suite`, i cui test finti stampavano il verdetto
 con un prefisso («a: 1 OK, 0 FAIL»): fixture aggiornati — la regola nuova ha morso per prima
 dentro casa.
+
+**Giro 9 — il turno, il digest e gli strumenti minori (ognuno riprodotto, poi curato).**
+- **Digest** (`night-shift/morning-digest.sh`): svuotava la memoria del turno PRIMA di
+  inviare e usciva 0 su «ERRORE invio» (memoria persa se Mail e mail fallivano); «PR»
+  contava le intestazioni dei turni, non le PR (ora la somma); «ASPETTA» contava ogni riga con
+  due spazi fino alla fine del file (il log dei turni dopo compreso); il riepilogo del gate
+  entrava due volte. `tests/test-morning-digest.sh` 12/12 (5 attese nuove, rosse prima). La
+  prima cura usciva 1 su un invio riuscito — `[ -f … ] && …` in coda sotto `set -e`, la
+  trappola che lo script stesso documenta: `if`.
+- **Turno** (`night-shift/night-shift.sh`): le PR della caccia non contavano mai (il ramo usciva
+  prima dell'aggregazione: SAL a 0 PR e ciclo creduto a vuoto); il riordino dell'indice
+  pattern si leggeva al rovescio; il banco di copertura si buttava (`|| true`) mentre commit e
+  PR dicevano «banco CHIUSO» — ora il banco rosso chiude il gate; il test generato multi-riga
+  si salvava dalla sola prima riga (ora fra marcatori, anche in `night-shift/risolvi-issue.sh`);
+  `OP_RC=$?` leggeva l'`if` appena chiuso (sempre 0: il ramo «OpenCode fallito» era morto);
+  due ri-derivazioni del ramo di default rotte senza origin/HEAD (ora `$DB`).
+- **Caccia** (`night-shift/caccia-miglioria.sh`): i file NUOVI dell'agente erano invisibili al
+  gate e RESTAVANO nel working tree dopo un «niente da migliorare» — il `git add -A` dopo li
+  avrebbe committati. Intent-to-add prima dei controlli; ripristino li toglie.
+- **Registro** (`tools/caccia-registro.sh --prossimo`): `paste` accoppiava le famiglie di
+  tutte le righe ai siti filtrati (col primo rinviato, un sito E-032 usciva E-002); e con un
+  solo file nel glob `grep` non stampava il nome (sito «2:…»). `-H` e filtro per riga.
+- **Minori**: `tools/gas-gate.sh` leggeva un solo blocco `<script>` nudo (falso KO con due
+  blocchi, cieco su `<script type=…>`); `tools/giri-ignoranti.sh` cercava «agenti\?» sotto
+  `grep -E` (un `?` letterale: il controllo taceva sempre — sabotaggio in un clone ora lo
+  vede); `tools/cervello-impara.sh` estraeva il JSON con un `.*` avido (una lezione con
+  `${VAR:-x}` si perdeva) e mandava al modello la data come testo `$(date +%F)`;
+  `tools/pre-commit.sh` nascondeva il rilevatore CRLF morto (rc 128); `tools/ciclo-vivo.sh`
+  diceva «accodata» senza scrivere niente (la coda promessa dal SAL del 28/8 era sparita) e
+  contava le ricorrenze per CATEGORIA (tre finding ARCH diversi = «lo stesso 3 volte»).
+- **Commenti che mentivano**: il censore «ha 600s» (il codice gliene da' 300), il prompt gli
+  diceva «sei un cervello piu' grande» (e' lo stesso modello: ora «un processo separato, senza
+  la memoria di chi l'ha scritta»), `llm/ask-qwen.sh` «la notte usa il 14b», `night-shift/night-shift.sh`
+  «pull --ff-only» (fa fetch + reset --hard).

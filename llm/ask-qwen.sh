@@ -28,7 +28,8 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 # override universale, qui era ignorato — solo QWEN_MODEL funzionava.
 # (giro 19, 2026-09-20): il default era ancora il 27b generale — il morning-gate chiama
 # questo wrapper per il banco avversariale, quindi il gate avrebbe usato il modello che
-# "0/3 in 442 s" mentre la notte usa il 14b. Un solo modello: lo stesso del turno.
+# "0/3 in 442 s" mentre la notte usava il 14b. Un solo modello: lo stesso del turno (oggi
+# qwen3.8-27b:iq3s, cervello/decisione-modello-unico.md — il 27b quantizzato, non quello di allora).
 MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8-27b:iq3s}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-false}"

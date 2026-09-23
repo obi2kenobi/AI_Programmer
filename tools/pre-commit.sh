@@ -67,8 +67,13 @@ ALIENI=$(printf '%s\n' "$ALIENI_RAW" | grep -vE '^$|docs/errori/REGISTRO.md' || 
 # 2. CRLF negli script staged (passano bash -n, muoiono a runtime)
 CRLF_SPEC=()
 for s in ${STAGED_SPEC[@]+"${STAGED_SPEC[@]}"}; do case "$s" in *.sh|*.py) CRLF_SPEC+=("$s");; esac; done
-CRLF=""
-[ ${#CRLF_SPEC[@]} -gt 0 ] && CRLF=$(git grep -lP '\r$' -- "${CRLF_SPEC[@]}" 2>/dev/null || true)
+CRLF=""; CRLF_RC=1
+# (revisione 10 giri, 2026-09-23): era `… 2>/dev/null || true` — un git grep -P morto (rc 128:
+# PCRE o locale) passava per «nessun CRLF». Stessa regola del controllo glifi qui sopra.
+if [ ${#CRLF_SPEC[@]} -gt 0 ]; then
+  CRLF=$(git grep -lP '\r$' -- "${CRLF_SPEC[@]}" 2>/dev/null); CRLF_RC=$?
+fi
+[ "$CRLF_RC" -ge 2 ] && { echo "⛔ il controllo CRLF e' MORTO (git grep rc=$CRLF_RC: locale/PCRE?) — rosso, mai finto verde"; FALLITI=1; }
 [ -n "$CRLF" ] && { echo "⛔ fine-riga CRLF (muoiono a runtime):"; echo "$CRLF"; FALLITI=1; }
 
 # 3. path in backtick nei file .md staged: devono esistere (link pendenti alla

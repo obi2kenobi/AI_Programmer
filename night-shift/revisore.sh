@@ -64,9 +64,10 @@ fi
 
 # ── i due cervelli (sostituibili per i test) ────────────────────────────────────
 chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
-  # il censore (27b) non sta in GPU insieme al 14b del turno: Ollama SCAMBIA i
-  # modelli (unload + load ~1-2 min) prima di rispondere — per questo il censore
-  # ha 600s di fiato mentre l avversario (14b, gia' caldo) ne ha 300
+  # (revisione 10 giri, 2026-09-23 — commento riallineato al codice): quando il censore
+  # era il 27b e l'avversario il 14b, lo scambio dei modelli costava 1-2 minuti e il
+  # censore aveva 600s. Oggi e' UN SOLO modello (cervello/decisione-modello-unico.md):
+  # niente scambio, e il codice da' 300s a entrambi (le due chiamate qui sotto)
   local modello="$1" maxsec="$2" prompt="$3"
   if [ -n "${REVISORE_STUB:-}" ]; then
     printf '%s' "$prompt" | bash "$REVISORE_STUB" "$modello"
@@ -221,7 +222,7 @@ fi
 [ "$BANCO_ESITO" = "REGGE (comando avversario riuscito)" ] || { log "prove: banco: $BANCO_ESITO — al giorno"; exit 2; }
 
 # ══ 3. GIUDIZIO (il censore: cervello diverso da chi ha scritto) ═══════════════
-CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritto un altro modello ($AUTORE_MODEL), tu sei un cervello piu' grande e il tuo compito e' trovare il motivo per RIGETTARLA. L'onore della prova e' della PR: nel dubbio, RIGETTA.
+CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritto un altro modello ($AUTORE_MODEL), tu sei un processo separato, senza la memoria di chi l'ha scritta, e il tuo compito e' trovare il motivo per RIGETTARLA. L'onore della prova e' della PR: nel dubbio, RIGETTA.
 
 La PR dichiara di essere una piccola miglioria notturna (categoria: morto=eliminazione codice non usato, docs=commenti aggiunti, semplice=semplificazione a comportamento identico, ripetuto=letterale ripetuto estratto a costante).
 

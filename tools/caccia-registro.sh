@@ -40,10 +40,12 @@ mkdir -p "$STATO"; touch "$SALDATI" "$RINVIA"
 # i siti VIVI per famiglia: la stessa scannerizzazione ovunque (prima le due
 # viste --prossimo/censimento escludevano i commenti con due regex diverse:
 # due verita' sullo stesso debito, audit-1 finding 12)
-siti_e002() { grep -rn "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
+# (revisione 10 giri, 2026-09-23): -H — con UN solo file nel glob grep non stampa il nome, e
+# il sito usciva «2:…» (in una repo satellite con un test solo, misurato)
+siti_e002() { grep -rnH "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
               | grep -v "^[^:]*:[0-9]*: *#" | grep -v "cattura-prima" \
               | sed 's/^\([^:]*\):\([0-9]*\):.*/\1:\2/'; }
-siti_e032() { grep -rn '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \
+siti_e032() { grep -rnH '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \
               | grep -v "^[^:]*:[0-9]*: *#" | grep -v "mktemp\|/tmp" \
               | sed 's/^\([^:]*\):\([0-9]*\):.*/\1:\2/'; }
 
@@ -75,11 +77,12 @@ if [ "$MODO" = "--prossimo" ]; then
   else siti_e032 > "$LIBERI.e032"; fi
   { sed 's/^/E-002|/' "$LIBERI.e002"; sed 's/^/E-032|/' "$LIBERI.e032"; } > "$LIBERI.all"
   # (audit-3): -vF SENZA -x matchava per sottostinga — un rinviato :62 spegneva
-  # :620-:629. Si filtra sul sito NUDO con -x: colpo chirurgico.
-  SITI_NUDI=$(mktemp); sed 's/^[^|]*|//' "$LIBERI.all" > "$SITI_NUDI"
-  if [ -s "$RINVIA" ]; then paste -d'|' <(sed 's/|.*//' "$LIBERI.all") <(grep -vxFf "$RINVIA" "$SITI_NUDI" || true) | head -1 || true
+  # :620-:629. Il confronto resta ESATTO sul sito (awk qui sotto): colpo chirurgico.
+  # (revisione 10 giri, 2026-09-23): era `paste` della colonna famiglie di TUTTE le righe coi
+  # siti gia' filtrati — con un rinviato le righe scivolavano e il sito prendeva la famiglia
+  # di un altro. Ora si filtra la riga intera per il suo sito (campo 2, confronto esatto).
+  if [ -s "$RINVIA" ]; then awk -F'|' 'NR==FNR { r[$0]=1; next } !($2 in r)' "$RINVIA" "$LIBERI.all" | head -1
   else head -1 "$LIBERI.all"; fi
-  rm -f "$SITI_NUDI"
   rm -f "$LIBERI" "$LIBERI.e002" "$LIBERI.e032" "$LIBERI.all"
   rm -f "$VER_E002" "$VER_E032"
   exit 0

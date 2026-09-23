@@ -38,7 +38,8 @@ rotate_log_if_big "$LOG"
 
 # 2026-08-29 (dal campo): la copia operativa era 5 commit indietro e la notte ha
 # girato col metodo stantio. Il turno si aggiorna DA SOLO prima di partire:
-# l'hub è un repo git, pull --ff-only (mai merge automatici nel turno).
+# l'hub è un repo git: fetch + reset --hard sul main remoto (mai merge automatici nel
+# turno — la copia operativa non ha lavoro proprio da preservare; era «pull --ff-only»).
 # (audit-3, 2026-09-23): il turno PARTE SEMPRE DA MAIN. Stanotte la copia viva
 # e' rimasta parcheggiata su un ramo di probe (un test esterno ricorrente che
 # committa e spinge): il self-pull seguiva il ramo e il turno girava col codice
@@ -467,6 +468,10 @@ sys.exit(0 if ultima in blocco else 1)
           done
         fi
         # fix 4: indice pattern README non alfabetico → riordinato
+        # (revisione 10 giri, 2026-09-23): l'esito si leggeva al ROVESCIO — dopo un riordino
+        # riuscito l'indice e' in ordine e finiva nel ramo «gia' in ordine» (mai contato); un
+        # python fallito finiva nel ramo «riordinato». Ora conta se il file e' CAMBIATO.
+        IDX_PRIMA=$(cksum < "$DIR/patterns/README.md" 2>/dev/null)
         python3 - "$DIR/patterns/README.md" <<'PYIDX' 2>/dev/null
 import sys
 p = sys.argv[1]
@@ -485,11 +490,7 @@ if rows and rows != sorted(rows, key=lambda l: l.split(']')[0].lower()):
     open(p, 'w').write('\n'.join(out))
     print('INDICE-RIORDINATO')
 PYIDX
-        if [ "$?" -eq 0 ] && python3 -c "
-rows = [l for l in open('$DIR/patterns/README.md') if l.startswith('| [')]
-exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2>/dev/null; then
-          : # gia' in ordine
-        else
+        if [ -n "$IDX_PRIMA" ] && [ "$(cksum < "$DIR/patterns/README.md" 2>/dev/null)" != "$IDX_PRIMA" ]; then
           log "REPO $REPO: auto-fix — indice pattern riordinato (alfabetico)"
           FIX_APPLICATI=$((FIX_APPLICATI+1))
         fi
@@ -505,7 +506,11 @@ exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2
           # macchina — una QUESTIONE DI POLITICA aperta non deve bloccare i fix meccanici;
           # le issue [banco] la tengono viva per il giorno. Dichiarato, mai nascosto.)
           GATE_OK=0
-          bash "$HERE/../tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 || true
+          # (revisione 10 giri, 2026-09-23): l'esito del banco si buttava (`|| true`) e il commit
+          # e la PR dicevano comunque «banco CHIUSO». Ora il banco rosso ferma il gate.
+          BANCO_OK=0
+          bash "$HERE/../tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 && BANCO_OK=1
+          [ "$BANCO_OK" -eq 1 ] || log "REPO $REPO: banco di copertura ROSSO sul branch notte — gate chiuso, niente commit"
           PASS_T=0; FAIL_T=0
           for tt in "$HERE"/../tests/test-*.sh; do
             # i test che chiamano CERVELLI ESTERNI (claude/ollama) restano fuori dal gate
@@ -525,7 +530,7 @@ exit(0 if rows == sorted(rows, key=lambda l: l.split(']')[0].lower()) else 1)" 2
               fi
             fi
           done
-          [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
+          [ "$BANCO_OK" -eq 1 ] && [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
           if [ "$GATE_OK" -eq 1 ]; then
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
@@ -542,13 +547,15 @@ review del giorno." 2>>"$ERR_NOTTE" \
             else
               log "⚠ REPO $REPO: commit o push del branch notte FALLITI — albero ripristinato, il rilievo resta nell'issue"
               log "⚠ stderr del commit/push: $(head -c 400 "$ERR_NOTTE" | tr '\n' ' ')"
-              git -C "$DIR" reset -q --hard "origin/$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 2>/dev/null || echo main)"
+              # (revisione 10 giri): $DB, gia' calcolato — la ri-derivazione con rev-parse, senza
+              # origin/HEAD, stampava «origin/HEAD» + «main» (due righe) sotto pipefail
+              git -C "$DIR" reset -q --hard "origin/${DB:-main}"
             fi
           else
             log "⚠ REPO $REPO: auto-fix BOCCIATI dal banco — branch scartato (resta il rilievo)"
             git -C "$DIR" reset -q --hard HEAD
           fi
-          git -C "$DIR" checkout -q "$(git -C "$DIR" rev-parse --abbrev-ref origin/HEAD 2>/dev/null | cut -d/ -f2 || echo main)"
+          git -C "$DIR" checkout -q "${DB:-main}"
         fi
       fi
     fi
@@ -705,6 +712,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
         git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
       fi
     fi
+    # (revisione 10 giri, 2026-09-23): il ramo della caccia usciva PRIMA dell'aggregazione in
+    # fondo a shift_repo — una PR di caccia non contava mai: il SAL del turno diceva 0 PR e il
+    # ciclo, creduto a vuoto, dormiva la sua pausa.
+    TOT_PR_CREATED=$((TOT_PR_CREATED+PR_CREATED))
     return 0
   fi
 
@@ -1003,7 +1014,9 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
           TEST_FILE="$DIR/tests/night/test_$(date +%s)_issue_$NUM.js"
           mkdir -p "$DIR/tests/night"
           # chiediamo al modello (tramite il solver) di scrivere il test
-          TEST_GEN=$(echo "$OUT" | grep "TEST-GENERATO:" | sed 's/TEST-GENERATO: //' | head -1)
+          # (revisione 10 giri): il test intero fra i marcatori del solver (prima: la sola
+          # prima riga di un test multi-riga finiva nel file e nel commit)
+          TEST_GEN=$(sed -n '/^TEST-GENERATO-INIZIO$/,/^TEST-GENERATO-FINE$/p' <<<"$OUT" | sed '1d;$d')
           if [ -n "$TEST_GEN" ] && [ "${#TEST_GEN}" -gt 20 ]; then
             echo "$TEST_GEN" > "$TEST_FILE"
             log "Issue #$NUM: test generato → tests/night/$(basename "$TEST_FILE")"
@@ -1071,7 +1084,10 @@ Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${
       log "⚠ issue #$NUM: LOOP DI RIPLETTURA rilevato ($NREP ripetizioni consecutive senza esecuzione) — issue lasciata aperta; il piano già scritto nel log è il punto di ripartenza, non un punto da rifare"
       echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$NUM,loop-rilettura,—," >> "${HUB_METRICS:-/dev/null}" 2>/dev/null || true
     fi
-    local OP_RC=$?
+    # (revisione 10 giri, 2026-09-23): era `local OP_RC=$?` — l'esito dell'`if` appena chiuso,
+    # sempre 0: il ramo «OpenCode fallito» (commento sull'issue, regola dell'A/B) era MORTO.
+    # L'esito dell'agente e' RC, letto dal `wait` qui sopra.
+    local OP_RC=$RC
     pkill -f "opencode run" 2>/dev/null
 
     if [ "$OP_RC" -ne 0 ]; then

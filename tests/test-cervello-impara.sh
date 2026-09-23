@@ -80,6 +80,18 @@ else
   ko "doppioni: rc=$RC lezioni=$N_LEZIONI out=[$OUT]"
 fi
 
+# ── 4. (revisione 10 giri, 2026-09-23): una lezione che CONTIENE graffe ─────────
+# L'estrazione era `sed 's/.*\({.*}\).*/\1/'`: il `.*` iniziale e' avido e si mangia tutto fino
+# all'ULTIMA graffa aperta — una lezione di bash con `${VAR:-x}` diventava «{VAR:-x} …}»,
+# JSON rotto, e la lezione vera si perdeva come «risposta non valida».
+mkmock
+printf '%s\n' "$(risposta 'Ecco: {"titolo":"Default con le graffe","problema":"variabile vuota","soluzione":"usa ${VAR:-x} sempre","quando":"script bash","link":[]} fine')" > "$TMP/risp4.txt"
+avvia "$TMP/risp4.txt"
+OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
+kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
+[ $RC -eq 0 ] && ls "$TMP/repo/cervello/"lezione-default-con-le-graffe*.md >/dev/null 2>&1 \
+  && ok "lezione con \${VAR:-x} dentro → estratta intera, nota creata" || ko "lezione con graffe persa: rc=$RC out=[$OUT]"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

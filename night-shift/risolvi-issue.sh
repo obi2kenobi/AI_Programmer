@@ -323,8 +323,13 @@ PYEOF
         echo "REVIEW: $RV"
         # GENERATORE DI TEST: terza domanda (il fix arriva presidiato)
         TG=$(genera_test "$TARGET_FN" "$CODE" "$(cat "$ISSUE" | head -30)")
+        # (revisione 10 giri, 2026-09-23): il test ha PIU' righe e il protocollo era una riga
+        # («TEST-GENERATO: $TG»): il turno ne salvava solo la prima (`function test_fix() {`) e
+        # la committava come test. Ora il test sta fra due marcatori, intero.
         if [ -n "$TG" ]; then
-          echo "TEST-GENERATO: $TG"
+          echo "TEST-GENERATO-INIZIO"
+          printf '%s\n' "$TG"
+          echo "TEST-GENERATO-FINE"
         fi
         rm -f "$TARGET_FILE.night-bak"
         rm -f "$PATCH_FILE"

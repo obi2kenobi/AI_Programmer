@@ -222,11 +222,18 @@ if [ -f "$MEMORIA/findings_storico.txt" ] && [ "$N" -gt 0 ]; then
   mkdir -p "$MEMORIA/guardie"
   while IFS= read -r f; do
     [ -n "$f" ] || continue
-    KEY=$(echo "$f" | cut -d: -f1)
-    COUNT=$(grep -c "^$KEY" "$MEMORIA/findings_storico.txt" 2>/dev/null); COUNT=${COUNT:-0}
+    # (revisione 10 giri): la chiave era la sola CATEGORIA (`cut -d: -f1` → «ARCH») — tre
+    # finding ARCH diversi contavano come «lo stesso, ricorrente 3 volte». Ricorrente e' lo
+    # STESSO finding: confronto esatto sulla riga intera.
+    KEY="$f"
+    COUNT=$(grep -cxF "$KEY" "$MEMORIA/findings_storico.txt" 2>/dev/null || true); COUNT=${COUNT:-0}
     if [ "$COUNT" -ge 3 ]; then
-      echo "⚠ RICORRENTE ($COUNT volte): $KEY — guardia richiesta, accodata"
-      SLUG=$(echo "$KEY" | tr -cs 'a-zA-Z0-9' '-' | tr 'A-Z' 'a-z' | sed 's/^-//;s/-$//')
+      # (revisione 10 giri, 2026-09-23): la scrittura in coda era sparita (restavano la frase
+      # «accodata» e uno SLUG inutilizzato): la promessa del SAL (.ciclo/guardie/
+      # da-generare-*.txt) torna vera — un file per chiave, riscritto col conteggio corrente.
+      SLUG=$(echo "$KEY" | tr -cs 'a-zA-Z0-9' '-' | tr 'A-Z' 'a-z' | sed 's/^-//;s/-$//' | cut -c1-60)
+      printf '%s\nricorrenze: %s\nultimo: %s\n' "$f" "$COUNT" "$(date '+%F %H:%M')" > "$MEMORIA/guardie/da-generare-$SLUG.txt"
+      echo "⚠ RICORRENTE ($COUNT volte): $KEY — guardia richiesta, accodata in .ciclo/guardie/da-generare-$SLUG.txt"
     fi
   done < <(printf '%s\n' ${FINDINGS[@]+"${FINDINGS[@]}"} | sort -u)
 fi

@@ -233,6 +233,12 @@ if [ "$AGENTE_RC" -ne 0 ]; then
   ripristina
   exit 1
 fi
+# (revisione 10 giri, 2026-09-23): i file NUOVI dell'agente erano invisibili — `git diff` non
+# vede i non tracciati: la caccia li dichiarava «niente da migliorare» e li LASCIAVA nel
+# working tree, dove il `git add -A` successivo del turno li avrebbe committati senza gate.
+# Intent-to-add: da qui in poi diff, numstat e gate li vedono come ogni altra modifica, e
+# ripristina() (reset --hard + clean -fd) li toglie.
+git add -N . 2>/dev/null || true
 if git diff --quiet 2>/dev/null; then
   log "'$CAT' su $TARGET: niente da migliorare (dichiarato pulito per ${COOLDOWN}s)"
   touch "$STATE/$(marker_name "$CAT" "$TARGET")"

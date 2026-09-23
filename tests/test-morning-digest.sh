@@ -57,6 +57,46 @@ grep -qF '\"virgolette\"' <<<"$CAPTURED" && ok "le virgolette nel report sono es
 grep -qF '\\' <<<"$CAPTURED" && ok "il backslash nel report è escaped nello script AppleScript" \
   || ko "backslash non escaped: $CAPTURED"
 
+# ── (revisione 10 giri, 2026-09-23): la memoria del turno ─────────────────────────────
+# Tre difetti misurati: (a) `.sal-turni.md` si svuotava PRIMA dell'invio — se Mail e mail
+# fallivano la memoria era persa e il digest usciva 0 su «ERRORE invio»; (b) «PR» contava le
+# righe d'intestazione dei turni che contengono «PR bozza», non le PR; (c) «ASPETTA» contava
+# ogni riga con due spazi dal primo marcatore alla fine del file — anche il log dei turni dopo.
+SALT="$TMP/repo/night-shift/.sal-turni.md"
+cat > "$TMP/salt.orig" <<'EOF'
+
+### 2026-09-22, turno automatico — 3 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio
+
+  [01:00:00] === TURNO INIZIATO ===
+  [01:00:01] riga di log
+
+**ASPETTA IL GIORNO** (proposta pubblicata, decisione diurna pendente):
+  owner/repo #7: una decisione vera
+
+### 2026-09-22, turno automatico — 2 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio
+
+  [02:00:00] === TURNO INIZIATO ===
+  [02:00:01] altra riga di log
+  [02:00:02] altra ancora
+
+**ASPETTA IL GIORNO** (proposta pubblicata, decisione diurna pendente):
+EOF
+cp "$TMP/salt.orig" "$SALT"
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out2.log" 2>&1
+CAP2=$(cat "$TMP/captured.txt" 2>/dev/null)
+grep -q "Cicli notturni\*\*: 2 " <<<"$CAP2" && ok "cicli = turni scritti (2)" || ko "cicli: $(grep -o 'Cicli notturni[^/]*' <<<"$CAP2")"
+grep -q "\*\*PR\*\*: 5 " <<<"$CAP2" && ok "PR = somma delle PR dei turni (3+2 = 5), non il numero di turni" || ko "PR: $(grep -o 'PR\*\*: [0-9]*' <<<"$CAP2")"
+grep -q "ASPETTA IL GIORNO\*\*: 1 decisioni" <<<"$CAP2" && ok "ASPETTA = le decisioni pendenti (1), non il log dei turni dopo" || ko "ASPETTA: $(grep -o 'ASPETTA IL GIORNO[^p]*' <<<"$CAP2")"
+PRIMA_RIGA_SUMMARY=$(bash "$TMP/repo/night-shift/gate-summary.sh" 0 2>/dev/null | head -1)
+[ -z "$PRIMA_RIGA_SUMMARY" ] || [ "$(grep -cF "$PRIMA_RIGA_SUMMARY" <<<"$CAP2")" -eq 1 ] \
+  && ok "il riepilogo del gate compare UNA volta" || ko "riepilogo del gate duplicato nel digest"
+# invio fallito: la memoria RESTA e l'esito e' rosso
+cp "$TMP/salt.orig" "$SALT"
+printf '#!/bin/bash\nexit 1\n' > "$TMP/bin/osascript"; printf '#!/bin/bash\nexit 1\n' > "$TMP/bin/mail"; chmod +x "$TMP/bin/mail"
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out3.log" 2>&1; RC3=$?
+[ "$RC3" -ne 0 ] && ok "invio fallito → esito rosso (rc=$RC3)" || ko "invio fallito ma rc 0"
+cmp -s "$SALT" "$TMP/salt.orig" && ok "invio fallito → la memoria del turno RESTA (non svuotata)" || ko "invio fallito e memoria svuotata: persa"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
