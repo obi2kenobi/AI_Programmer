@@ -208,6 +208,9 @@ def lettura_funnel(F):
     return "ancora nessuna caccia conclusa oggi"
 
 def lettura_debiti(cens):
+    """Il verdetto calcolato della curva del debito: scende, sale o sta ferma
+    nella finestra del trend — col colore che la dashboard usa per dirlo."""
+
     if not cens or len(cens.get("trend") or []) < 2:
         return ""
     delta = cens["trend"][-1]["tot"] - cens["trend"][0]["tot"]
