@@ -3372,3 +3372,7 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     riproponeva la stessa PR.
   - 3 casi, lo stub `gh` dà il commit come il gh vero. Sabotaggio: col checkout del ramo locale
     torna MERGIATA.
+- **Q5**, da A6: la lente sicurezza tagliava il diff a 12000 caratteri per il cervello e dava
+  PULITA, cioè la coda non la giudicava nessuno. Ora un diff oltre il taglio è DEGRADATA e il
+  censore non fonde. Caso: 700 righe innocue con l'esfiltrazione di `.clasprc.json` in coda, prima
+  PULITA, ora DEGRADATA.

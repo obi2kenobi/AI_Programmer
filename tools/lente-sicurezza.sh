@@ -62,6 +62,13 @@ log "indizi: $N_IND righe"
 
 # ── strato 2: il cervello con la lente §2bis ─────────────────────────────────────
 DIFF_PROMPT=$(git -C "$DIR" diff "$BASE...$TESTA" -- . ':(exclude)graphify-out' 2>/dev/null | mask_secrets | head -c "$MAX_PROMPT")
+# (2026-09-23, giro A6 della notte): un diff piu' lungo del taglio non e' giudicato per intero — la
+# coda poteva nascondere il problema, e il verdetto era PULITA. Ora: DEGRADATA, e il censore non fonde.
+LUNGO=$(git -C "$DIR" diff "$BASE...$TESTA" -- . ':(exclude)graphify-out' 2>/dev/null | mask_secrets | wc -c | tr -d ' ')
+if [ "$LUNGO" -gt "$MAX_PROMPT" ]; then
+  echo ""; echo "Il diff ($LUNGO caratteri) supera quanto il cervello vede ($MAX_PROMPT): il giudizio sarebbe su una parte."
+  verdetto "DEGRADATA (diff oltre il taglio del cervello: $LUNGO > $MAX_PROMPT caratteri)" 2
+fi
 # solo file generati (il grafo): lo strato 1 li ha gia' guardati, al cervello non resta niente
 [ -n "$DIFF_PROMPT" ] || { echo ""; echo "Solo graphify-out/ nel diff: guardato dallo strato 1, il cervello non serve."; verdetto "PULITA" 0; }
 PROMPT="Sei la LENTE SICUREZZA (dev-critic §2bis) su una pull request notturna. Cerca SOLO problemi di sicurezza: segreti o credenziali stampati, loggati o scritti in chiaro (anche indirettamente: stampare un oggetto config intero che contiene una chiave); comandi generati da un modello eseguiti con un interprete general-purpose; controlli di accesso aggirabili; dati sensibili mandati fuori. I valori gia' mascherati appaiono come «segreto …».
