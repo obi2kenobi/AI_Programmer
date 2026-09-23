@@ -39,10 +39,21 @@ rotate_log_if_big "$LOG"
 # 2026-08-29 (dal campo): la copia operativa era 5 commit indietro e la notte ha
 # girato col metodo stantio. Il turno si aggiorna DA SOLO prima di partire:
 # l'hub è un repo git, pull --ff-only (mai merge automatici nel turno).
-if git -C "$HERE" pull -q --ff-only >/dev/null 2>&1; then
-  log "Hub aggiornato all'ultimo metodo prima del turno"
+# (audit-3, 2026-09-23): il turno PARTE SEMPRE DA MAIN. Stanotte la copia viva
+# e' rimasta parcheggiata su un ramo di probe (un test esterno ricorrente che
+# committa e spinge): il self-pull seguiva il ramo e il turno girava col codice
+# vecchio per ore. Ora: qualunque ramo trovi, torna a main e si allinea —
+# dichiarando se ha dovuto scalare qualcosa.
+BR_ATTUALE=$(git -C "$HERE" branch --show-current 2>/dev/null || echo "?")
+if [ "$BR_ATTUALE" != "main" ] && [ "$BR_ATTUALE" != "master" ]; then
+  log "ATTENZIONE: la copia era sul ramo '$BR_ATTUALE' (esterno al turno) — torno a main e mi allineo"
+  git -C "$HERE" checkout -q main 2>/dev/null || git -C "$HERE" checkout -q master 2>/dev/null || true
+fi
+git -C "$HERE" fetch -q origin 2>/dev/null || true
+if git -C "$HERE" reset -q --hard "$(git -C "$HERE" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/||' || echo origin/main)" >/dev/null 2>&1; then
+  log "Hub allineato a main prima del turno"
 else
-  log "ATTENZIONE: hub non aggiornabile (pull --ff-only fallito) — il turno gira col metodo che c'e'"
+  log "ATTENZIONE: hub non allineabile — il turno gira col metodo che c'e'"
 fi
 WORK="$HOME/night-shift-work"
 MODEL_TAG="qwen3.8-27b:iq3s"
