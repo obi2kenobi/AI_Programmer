@@ -30,6 +30,10 @@ mkrepo() { # $1 nome, $2 verify (true|false)
 
 mkrepo repo-verde true
 mkrepo repo-rossa false
+# (audit-2): la copia di lavoro deve essere un REPO vero, non una directory
+# vuota — deploy-ora ci fa cd e rev-parse: il percorso felice moriva qui
+git clone -q "$TMP/repo-verde" "$TMP/night-shift-work/repo-verde" 2>/dev/null || true
+git clone -q "$TMP/repo-rossa" "$TMP/night-shift-work/repo-rossa" 2>/dev/null || true
 
 bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1 \
   && [ -f "$TMP/deploy-pronto/repo-verde/MANIFEST.md" ] && [ -f "$TMP/deploy-pronto/repo-verde/commit.txt" ] \
@@ -45,11 +49,25 @@ echo no | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
   && ok "gesto rifiutato (no) → nessun deploy, nessuno storico" \
   || ko "il no ha comunque deploeato!"
 
-touch -t 202001010000 "$TMP/deploy-pronto/repo-verde/preparato-at.txt"
+# (audit-2): il check legge il CONTENUTO (epoch), non l'mtime — toccare il file
+# non scadeva niente e il test passava due volte per sbaglio
+echo 946684800 > "$TMP/deploy-pronto/repo-verde/preparato-at.txt"
 echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
 [ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] \
   && ok "pacchetto scaduto (24h) → il si non basta, niente deploy" \
   || ko "il si su un pacchetto scaduto ha deploeato!"
+
+# ── (audit-2): il PERCORSO FELICE — si + pacchetto fresco + commit coincidente
+# → clasp (finto) eseguito, STORICO scritto, pacchetto consumato. La strada che
+# tocca la produzione non era mai stata provata.
+bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1
+echo si | bash "$TMP/tools/deploy-ora.sh" repo-verde >/dev/null 2>&1
+if [ -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && grep -q "CLASP-FINTO" "$TMP/deploy-pronto/repo-verde/STORICO.log" && grep -q "OK$" "$TMP/deploy-pronto/repo-verde/STORICO.log"; then
+  ok "percorso felice: si → clasp eseguito, STORICO scritto"
+  [ -f "$TMP/deploy-pronto/repo-verde/MANIFEST.md" ] && ko "il pacchetto NON e' stato consumato dopo il deploy" || ok "pacchetto consumato dopo il deploy"
+else
+  ko "percorso felice rotto: il si non ha deploeato ($(head -c 80 "$TMP/deploy-pronto/repo-verde/STORICO.log" 2>/dev/null))"
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
