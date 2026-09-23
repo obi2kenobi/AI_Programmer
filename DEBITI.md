@@ -156,7 +156,7 @@ Economia attuale: il 27B gira sul MacBook Air esistente = costo marginale ZERO; 
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-08-28 | Client_secret BC committato in config.gs dal 16/02/2026, pushato su GitHub. Da ruotare su Azure AD + ripristinare placeholder. Eventuale pulizia history = filter-repo (distruttivo, coordinato). | rotazione: da fare su Azure AD dal proprietario | decisione Luca: ruotare secret, pulire codice, eventuale pulizia history |
+| 2026-08-28 ✅ SALDATO (D7, Luca 2026-09-23: «chiudi il debito e andiamo avanti» — chiuso per decisione del proprietario; rotazione e segnaposto non verificabili da una sessione cloud: Azure e REPO-M non raggiungibili) | Client_secret BC committato in config.gs dal 16/02/2026, pushato su GitHub. Da ruotare su Azure AD + ripristinare placeholder. Eventuale pulizia history = filter-repo (distruttivo, coordinato). | rotazione: da fare su Azure AD dal proprietario | decisione Luca: ruotare secret, pulire codice, eventuale pulizia history |
 
 ## Privacy fuori casa (REPO-N 2026-08-28)
 

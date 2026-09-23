@@ -144,6 +144,7 @@
 - [2026-09-23 (7°) — Qwen 3.8 Flash: si chiude, il 27B resta (D4, decisione di Luca)](#2026-09-23-7-qwen-3-8-flash-si-chiude-il-27b-resta-d4-decisione-di-luca)
 - [2026-09-23 (8°) — la premessa di un debito invecchia col codice, e la riapertura lo dice (D5, decisione di Luca)](#2026-09-23-8-la-premessa-di-un-debito-invecchia-col-codice-e-la-riapertura-lo-dice-d5-decisione-di-luca)
 - [2026-09-23 (9°) — REPO-L: il secret BC nella history è già stato ruotato (D6, Luca)](#2026-09-23-9-repo-l-il-secret-bc-nella-history-è-già-stato-ruotato-d6-luca)
+- [2026-09-23 (10°) — REPO-M (Energikal): debito chiuso per decisione di Luca (D7)](#2026-09-23-10-repo-m-energikal-debito-chiuso-per-decisione-di-luca-d7)
 
 
 ## Stato
@@ -3140,3 +3141,10 @@ La sesta domanda di dominio: Luca ha risposto «4», il client_secret di Unicred
 stato ruotato. Il valore rimasto nei 7 commit non vale più, e la pulizia della history non serve.
 Il debito è SALDATO sulla parola del proprietario. Da una sessione cloud Azure non si raggiunge,
 quindi la rotazione non è verificata qui. Nessun codice toccato.
+
+### 2026-09-23 (10°) — REPO-M (Energikal): debito chiuso per decisione di Luca (D7)
+
+La settima domanda di dominio: Luca ha detto «chiudi il debito e andiamo avanti». La voce sul
+client_secret in `config.gs` di Energikal è SALDATA per decisione del proprietario. Da una sessione
+cloud non si raggiungono né Azure né REPO-M, quindi qui non è verificato né se il secret sia
+stato ruotato né se il segnaposto sia stato ripristinato. Nessun codice toccato.
