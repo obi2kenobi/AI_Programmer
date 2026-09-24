@@ -55,6 +55,23 @@ grep -q 'MAX_RIGHE="${CENSORE_MAX_RIGHE:-60}"' "$HERE/night-shift/revisore.sh" \
 grep -q 'GIUDICE_MODEL="${REVISORE_MODEL:-${MODELLO:-' "$HERE/night-shift/revisore.sh" && grep -q 'AUTORE_MODEL="${NIGHT_MODEL:-${MODELLO:-' "$HERE/night-shift/revisore.sh" \
   && ok "il modello del censore segue MODELLO (gli override per ruolo restano)" || ko "il censore ignora MODELLO del profilo"
 
+# (Q28, 2026-09-23, giro A5 della notte): il parser del profilo, su un file scritto a mano.
+# Riprodotti: un commento a fine riga finiva nel valore («240  # quattro minuti»), un CR pure,
+# `CHIAVE = valore` e l'ultima riga senza a capo si perdevano in silenzio, e la variabile NOME
+# del CHIAMANTE veniva cancellata (unset NOME).
+P="$HERE/profiles/_prova_q28_$$.conf"
+printf 'SONDA_SEC=240  # quattro minuti\r\nSONDA_ROUND = 6\nTHINK=true\r\nCHIAVE_IGNOTA=1\nIMPARA_ORA=5' > "$P"
+OUT=$( ( NOME=del-chiamante; unset SONDA_SEC SONDA_ROUND THINK IMPARA_ORA
+  . "$HERE/tools/profilo.sh" "_prova_q28_$$" 2>"$P.err"
+  printf '%s|%s|%s|%s|%s' "${SONDA_SEC:-}" "${SONDA_ROUND:-}" "${THINK:-}" "${IMPARA_ORA:-}" "${NOME:-}" ) )
+ERR=$(cat "$P.err" 2>/dev/null); rm -f "$P" "$P.err"
+[ "$(cut -d'|' -f1 <<<"$OUT")" = "240" ] && ok "Q28: il commento a fine riga e il CR non entrano nel valore" || ko "Q28: SONDA_SEC vale [$(cut -d'|' -f1 <<<"$OUT" | od -c | head -1)]"
+[ "$(cut -d'|' -f2 <<<"$OUT")" = "6" ] && ok "Q28: «CHIAVE = valore» con gli spazi si legge" || ko "Q28: SONDA_ROUND con gli spazi perso"
+[ "$(cut -d'|' -f3 <<<"$OUT")" = "true" ] && ok "Q28: THINK=true con CRLF vale «true»" || ko "Q28: THINK porta il CR"
+[ "$(cut -d'|' -f4 <<<"$OUT")" = "5" ] && ok "Q28: l'ultima riga senza a capo si legge" || ko "Q28: l'ultima riga persa"
+[ "$(cut -d'|' -f5 <<<"$OUT")" = "del-chiamante" ] && ok "Q28: la variabile NOME del chiamante resta com'era" || ko "Q28: NOME del chiamante cancellata"
+grep -q "CHIAVE_IGNOTA" <<<"$ERR" && ok "Q28: una chiave fuori allowlist si dice (refuso visibile), non si tace" || ko "Q28: chiave ignota taciuta: $ERR"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

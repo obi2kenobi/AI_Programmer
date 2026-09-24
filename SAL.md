@@ -3643,3 +3643,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     sotto pipefail. Sabotaggio (pattern-reminder com'era): rosso.
   - Nel banco-passaggio: `tools/bencina-modelli.sh` e `night-shift/caccia-lente.sh` sono esclusi
     dalla copertura col perché (chiamano il modello vero).
+- **Q28**, da A5, `tools/profilo.sh` (la dichiarazione del turno, scritta a mano). Riprodotto su un
+  profilo di prova:
+  - un commento a fine riga e un CR finivano nel valore («240  # quattro minuti\r»);
+  - `CHIAVE = valore` e l'ultima riga senza a capo si perdevano;
+  - la variabile NOME del CHIAMANTE veniva cancellata;
+  - una chiave con un refuso spariva in silenzio.
+  - Ora il nome è privato; CR, commenti e spazi via; l'ultima riga si legge; la chiave ignota si
+    dice.
+  - Banco: `tests/test-profilo.sh`, 6 casi, rossi prima. Sabotaggio (via la pulizia del CR):
+    rosso.
