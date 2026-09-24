@@ -95,3 +95,20 @@
   - CLAUDE.md §1 «Before deleting or overwriting, look at the target» ha retto come regola, ma non come
     abitudine: è E-048. Proposta per la skill `post-mortem` o per §2: «un `cp` sopra un file tracciato si fa
     solo dopo averne letto la testa».
+
+## Aggiornamento (2026-09-24, sesto ventaglio, fino alle 23Z)
+- Usato: cinque lenti nuove (le istruzioni all'operatore, il secondo giro, i percorsi ostili, l'interruzione
+  a metà, le cure della notte sotto la lente del Mac). Consolidamento in
+  `docs/giri/2026-09-24-sesto/99-CONSOLIDAMENTO.md`: 30 rilievi, 29 curati (3 in parte), 1 escluso, sei
+  domande di dominio nuove in DEBITI. Suite 187/187, anche 184/184 sul Mac simulato prima dei banchi nuovi.
+- Ha retto: il Mac simulato di S5 (bash 3.2.57, sed e seq di Apple, python 3.9, niente `timeout` né
+  `setsid`). La suite si fermava al 35° file su 183. Nessuna lettura l'aveva visto.
+- Ha ostacolato: un'anomalia non riprodotta (`docs/bc/README.md` riscritto col modello vecchio durante una
+  suite), dichiarata nel consolidamento. Un giro (S1) ha installato pacchetti nel container, fuori dal brief.
+- Proposte al canone (non applicate):
+  - CLAUDE.md §3 «What you hand to a human to run is code»: la regola ora ha una guardia
+    (`tests/test-blocchi-operatore.sh`). Si può citare accanto alla regola, come §5 cita `tests/test-errori.sh`.
+  - CLAUDE.md §2: la portabilità verso il Mac si prova eseguendo, non leggendo. Una bash 3.2 (`BASH_MAC`)
+    nella suite di chi lavora fuori dal Mac.
+  - Il contratto del «Mac di serie» (quali strumenti si danno per presenti) è la domanda S5 D2 in DEBITI:
+    prima la risposta di Luca, poi la frase.
