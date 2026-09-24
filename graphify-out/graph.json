@@ -146,7 +146,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L63"
+      "source_location": "L73"
     },
     {
       "id": "tools_margine_documento_normalizza",
@@ -302,7 +302,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L51"
+      "source_location": "L61"
     },
     {
       "id": "tools_rating_dso_clienti_main",
@@ -6553,7 +6553,7 @@
       "source_location": "L48"
     },
     {
-      "id": "tools_margine_documento_rationale_64",
+      "id": "tools_margine_documento_rationale_74",
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 125,
@@ -6561,7 +6561,7 @@
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L64"
+      "source_location": "L74"
     },
     {
       "id": "docs_campo_2026_08_28_repo_k_dal_dossier_a_tutti_i_fix",
@@ -31102,7 +31102,7 @@
       "source_location": "L36"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_52",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_62",
       "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
       "_origin": "ast",
       "community": 38,
@@ -31110,7 +31110,7 @@
       "file_type": "rationale",
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L52"
+      "source_location": "L62"
     },
     {
       "id": "tools_rating_dso_clienti_rationale_3",
@@ -40419,7 +40419,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L263"
+      "source_location": "L264"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -40431,7 +40431,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L257"
+      "source_location": "L258"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -57815,7 +57815,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L69",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -58655,7 +58655,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L72",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -58667,7 +58667,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L81",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -58912,18 +58912,6 @@
     },
     {
       "source": "tools_scadenzario_aging_main",
-      "target": "tools_scadenzario_aging_importo_fornitore",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L129",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_scadenzario_aging_main",
       "target": "tools_scadenzario_aging_fascia_dettaglio",
       "relation": "calls",
       "_origin": "ast",
@@ -58931,7 +58919,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L142",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scadenzario_aging_main",
+      "target": "tools_scadenzario_aging_importo_fornitore",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L136",
       "weight": 1.0
     },
     {
@@ -58943,7 +58943,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L151",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -63835,7 +63835,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L257",
+      "source_location": "L258",
       "weight": 1.0
     },
     {
@@ -63846,7 +63846,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L263",
+      "source_location": "L264",
       "weight": 1.0
     },
     {
@@ -85439,7 +85439,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L51",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -86242,7 +86242,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L63",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -93913,14 +93913,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_52",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_62",
       "target": "tools_accuratezza_fatture_acquisto_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L52",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -94397,14 +94397,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_64",
+      "source": "tools_margine_documento_rationale_74",
       "target": "tools_margine_documento_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L64",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -96290,5 +96290,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d56372f91675ea118b87e9b9357b7619738a483c"
+  "built_at_commit": "72e3583fb75da68996814be528d4f1064de0e5a2"
 }

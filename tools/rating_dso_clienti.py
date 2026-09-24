@@ -59,20 +59,28 @@ def main():
     righe = list(reader)
     fatture, pagamenti = [], []
     ignorate = []   # (Q22): righe di tipo che il rating non legge — prima sparivano senza conteggio
-    for r in righe:
+    for n, r in enumerate(righe, start=2):
         tipo = (r["tipo"] or "").strip().lower()
         cliente = normalizza(r.get("cliente"))
-        importo = float(r["importo"] or 0)
+        # (2026-09-24, quinto ventaglio, R3 R3): una data vuota o «24/09/2026», o un importo «1.234,56»,
+        # erano un traceback. La data si legge solo dove il rating la usa (fatture, pagamenti, cessioni).
+        try:
+            importo = float(r["importo"] or 0)
+            data = date.fromisoformat(r["data_documento"]) if tipo in ("fattura", "pagamento", "cessione") else None
+        except (ValueError, TypeError):
+            print(f"ERRORE: riga {n}: importo o data non leggibili (importo={r['importo']!r}, data_documento={r['data_documento']!r};"
+                  f" attesi importo col punto decimale e data AAAA-MM-GG) — nessun rating", file=sys.stderr)
+            return 1
         # (2026-09-24, quinto ventaglio, R3 R2): un importo nan passava come «NON MATCHATO … nan», rc 0
         if not math.isfinite(importo):
             print(f"ERRORE: importo non finito (nan/inf) nella riga {r.get('nr_doc') or '?'} — nessun rating", file=sys.stderr)
             return 1
         descrizione = (r.get("descrizione") or "")
         if tipo == "fattura":
-            fatture.append({"cliente": cliente, "data": date.fromisoformat(r["data_documento"]),
+            fatture.append({"cliente": cliente, "data": data,
                             "descrizione": descrizione, "importo": importo, "matched": False})
         elif tipo in ("pagamento", "cessione"):
-            d = date.fromisoformat(r["data_documento"])
+            d = data
             if tipo == "cessione":
                 m = CESSIONE_RE.search(descrizione)
                 if m:

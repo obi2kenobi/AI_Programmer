@@ -110,7 +110,14 @@ def main():
     for r in reader:
         giorni = r["giorni"].strip() if r["giorni"].strip() != "" else None
         tipo = r["tipo"]
-        importo_bc = float(r["importo"])
+        # (2026-09-24, quinto ventaglio, R3 R3): una cella vuota, «1.234,56» o giorni «1.5» erano un traceback
+        try:
+            importo_bc = float(r["importo"])
+            fascia = fascia_dettaglio(giorni)
+        except (ValueError, TypeError):
+            print(f"ERRORE: riga {reader.line_num}: importo o giorni non numerici (importo={r['importo']!r}, giorni={r['giorni']!r};"
+                  f" attesi importo col punto decimale e giorni interi) — nessun verdetto", file=sys.stderr)
+            return 1
         # giri avversari 2026-08-28 (D5/D6): nan/inf passavano e producevano totali
         # "+nan€" in silenzio. Un importo non finito è dato marcio: si dichiara.
         import math
@@ -139,7 +146,7 @@ def main():
         righe.append({
             "tipo": tipo,
             "importo": importo,
-            "fascia": fascia_dettaglio(giorni),
+            "fascia": fascia,
         })
     # (Q22): con zero righe stampava entrate, uscite e fasce a +0.00€, rc 0
     if not righe:

@@ -153,6 +153,23 @@ echo '{"categoria":{"openCosto":NaN,"openRival":0,"openSval":0,"yearCosto":10,"y
 dichiara "rollforward: openCosto NaN (era «clClose: nan», rc 0)" python3 "$T/rollforward_cespiti.py" < "$TMP/rf.json"
 printf '%s\nfattura,2026-01-01,,1,Rossi,,nan\npagamento,2026-01-05,,2,Rossi,,nan\n' "$H" > "$TMP/r.csv"
 dichiara "rating: importo nan" python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
+# (2026-09-24, quinto ventaglio, R3 R3): il contratto D32 si provava sulle colonne, non sulle celle. Una cella
+# vuota, in formato italiano o non intera era un traceback in aging, rating, margine e accuratezza. Ora si
+# rifiuta col numero di riga; se «1.234,56» vada invece LETTO e' una domanda (DEBITI, D-R3-2).
+printf 'giorni,tipo,importo\n10,Cliente,\n' > "$TMP/a.csv";            dichiara "aging: importo vuoto"          python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
+printf 'giorni,tipo,importo\n10,Cliente,"1.234,56"\n' > "$TMP/a.csv";  dichiara "aging: importo 1.234,56"       python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
+printf 'giorni,tipo,importo\n1.5,Cliente,100\n' > "$TMP/a.csv";        dichiara "aging: giorni 1.5"             python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
+printf '%s\nfattura,,,1,Rossi,,100\n' "$H" > "$TMP/r.csv";                dichiara "rating: data vuota"            python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
+printf '%s\nfattura,24/09/2026,,1,Rossi,,100\n' "$H" > "$TMP/r.csv";      dichiara "rating: data 24/09/2026"       python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
+printf '%s\nfattura,2026-01-01,,1,Rossi,,"1.234,56"\n' "$H" > "$TMP/r.csv"; dichiara "rating: importo 1.234,56"   python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
+printf 'rif,importo\nRF1,"1.200,00"\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,100\n' > "$TMP/ma.csv"
+dichiara "margine: importo vendita 1.200,00" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
+printf 'rif,importo\nRF1,100\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,\n' > "$TMP/ma.csv"
+dichiara "margine: importo acquisto vuoto" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
+printf 'nr,importo,ordine_nr,fornitore\nF1,100,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,\n' > "$TMP/on.csv"
+dichiara "accuratezza: importo ordine vuoto" python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/fn.csv" "$TMP/on.csv"
+printf 'nr,importo,ordine_nr,fornitore\nF1,,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,100\n' > "$TMP/on.csv"
+dichiara "accuratezza: importo fattura vuoto" python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/fn.csv" "$TMP/on.csv"
 # (2026-09-24, quinto ventaglio, R3 R1): il ramo «fornitore» in minuscolo (o con uno spazio davanti) non
 # assegnava l'importo — la riga prendeva quello della riga PRIMA (Entrate +2000 invece di +1500), o, se era la
 # prima, un traceback. Il segno resta quello che l'ATTENZIONE dichiara (+abs, convenzione provvisoria: la

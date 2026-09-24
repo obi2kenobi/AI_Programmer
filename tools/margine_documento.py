@@ -54,10 +54,20 @@ def leggi_csv(path, colonne=()):
             if mancanti:
                 print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
                 sys.exit(1)
-            return list(reader)
+            righe = list(reader)
     except OSError as e:
         print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
         sys.exit(1)
+    # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
+    # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
+    for n, r in enumerate(righe, start=2):
+        if "importo" in colonne:
+            try:
+                float(r["importo"])
+            except (ValueError, TypeError):
+                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso col punto decimale, es. 1234.56) — nessun verdetto", file=sys.stderr)
+                sys.exit(1)
+    return righe
 
 
 def main():

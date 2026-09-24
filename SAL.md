@@ -4742,3 +4742,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Nove casi nuovi in `tests/test-oracoli-uso.sh` (64/0), rossi prima. Sabotaggio con i sei oracoli di
   prima e un `PYTHONPYCACHEPREFIX` nuovo (E-047): 55/9, i nove casi. I banchi propri restano verdi.
+- **Quinto ventaglio, R3 R3 — una cella illeggibile era ancora un traceback.** Il contratto D32 si provava
+  sui file, sulle colonne e sul vuoto, non sulle celle. Un importo vuoto o `1.234,56`, giorni `1.5`, una
+  data vuota o `24/09/2026` facevano `ValueError` nudo in `tools/scadenzario_aging.py`,
+  `tools/rating_dso_clienti.py`, `tools/margine_documento.py` e `tools/accuratezza_fatture_acquisto.py`.
+  Ora ognuno risponde «ERRORE: riga N: … — nessun verdetto», rc 1, e dice la forma attesa. Margine e
+  accuratezza provano l'importo in `leggi_csv`, dove c'è il file; il rating legge la data solo nelle righe
+  che usa. Se il formato italiano vada invece letto è una domanda (DEBITI, D-R3-2): la scelta provvisoria è
+  il rifiuto dichiarato.
+
+  Dieci casi nuovi in `tests/test-oracoli-uso.sh` (74/0), rossi prima. Sabotaggio con i quattro oracoli di
+  prima: 64/10. I banchi propri restano verdi.
