@@ -4991,3 +4991,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   sync-repo vuole: incollate, rispondevano con la riga d'uso ed uscivano 1. Ora il nome si legge dall'origin
   GitHub del satellite; senza origin c'è il segnaposto `<owner/repo>`. Due casi nuovi in
   `tests/test-garante-standard.sh` (16/0), rossi prima. Sabotaggio: 14/2.
+- **Sesto ventaglio, S3 R1 — privacy-check non controllava i termini con l'apostrofo.** Un termine come
+  «Dell'Orto» in `repos.key` non si cercava mai. `tools/privacy-check.sh` lo rifilava con `xargs`, che
+  sull'apice esce in errore e non stampa niente; il termine vuoto valeva «pulito». Il giro l'ha provato col
+  termine in un file tracciato: rc 0, e l'hub è pubblico. Ora `rifila` toglie gli spazi con l'espansione dei
+  parametri, sia nella ricerca sia nella maschera. Due casi nuovi in `tests/test-privacy.sh` (24/0): il leak si
+  vede, e l'uscita lo maschera. Rosso prima; sabotaggio 23/1.

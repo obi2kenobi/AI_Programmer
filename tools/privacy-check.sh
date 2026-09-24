@@ -63,6 +63,11 @@ if [ -n "$CRED_STORIA" ]; then
   RC=1
 fi
 
+# rifila <testo>: toglie gli spazi in testa e in coda. (2026-09-24, sesto ventaglio, S3 R1): era `xargs`, che su
+# un apostrofo («Dell'Orto») esce in errore e non stampa niente — il termine vuoto valeva «pulito», e un leak
+# vero di un nome con l'apice passava con rc 0.
+rifila() { local t="$1"; t="${t#"${t%%[![:space:]]*}"}"; printf '%s' "${t%"${t##*[![:space:]]}"}"; }
+
 # (2026-09-23, notte dei giri, T5#4): l'uscita di questo check finisce nell'issue «[banco]» del repo
 # PUBBLICO (banco-passaggio.sh -> night-shift.sh). Stampava il termine che proteggeva. Ora ne stampa
 # l'impronta (CLAUDE.md «Mask, don't omit»): chi ha la chiave la riconosce, il lettore pubblico no.
@@ -71,7 +76,7 @@ fi
 TERMINI_NOTI=()
 if [ "$HA_KEY" -eq 1 ]; then
   while IFS='=' read -r k v || [ -n "$k" ]; do
-    case "$k" in \#*|"") continue ;; PERSONA|TERMINI) IFS=',' read -ra PEZZI <<<"$v"; for t in "${PEZZI[@]}"; do TERMINI_NOTI+=("$(xargs <<<"$t")"); done ;; *) TERMINI_NOTI+=("$v" "${v##*/}") ;; esac
+    case "$k" in \#*|"") continue ;; PERSONA|TERMINI) IFS=',' read -ra PEZZI <<<"$v"; for t in "${PEZZI[@]}"; do TERMINI_NOTI+=("$(rifila "$t")"); done ;; *) TERMINI_NOTI+=("$v" "${v##*/}") ;; esac
   done < "$KEY"
 fi
 [ -s "$HOME/.privacy-nomi" ] && while IFS= read -r n || [ -n "$n" ]; do
@@ -125,7 +130,7 @@ done < "$KEY"
   case "$chiave" in PERSONA|TERMINI) ;; *) continue ;; esac
   IFS=',' read -ra TERMINI_ARR <<<"$valore"
   for t in "${TERMINI_ARR[@]}"; do
-    tt=$(echo "$t" | xargs)
+    tt=$(rifila "$t")
     scan_termine "$tt" "TERMINE PRIVATO"
   done
 done < "$KEY"

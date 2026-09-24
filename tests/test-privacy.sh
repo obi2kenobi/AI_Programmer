@@ -138,6 +138,15 @@ SH=$(sed -n "s/^SHAPES='\(.*\)'$/\1/p" "$PCK"); CR=$(sed -n "s/^SHAPES_CREDENZIA
 FUORI=$(python3 -c 'import sys; a=sys.argv[1]; b=sys.argv[2]; print(" ".join(x for x in b.split("|") if x and x not in a))' "$SH" "$CR")
 [ -n "$CR" ] && [ -z "$FUORI" ] && ok "SHAPES_CREDENZIALI e' contenuta in SHAPES" || ko "credenziali della storia fuori da SHAPES: ${FUORI:-lista vuota}"
 
+# (2026-09-24, sesto ventaglio, S3 R1): un TERMINE con l'apostrofo («Dell'Orto») non si controllava mai — il
+# trim con `xargs` rompe sull'apice e restituisce vuoto, e il termine vuoto vale «pulito». Rc 0 su un leak vero.
+printf "TERMINI=Dell'Ortolano, Altro\n" > "$TMP/night-shift/repos.key"
+printf "fornito da Dell'Ortolano\n" > "$TMP/apice.md" && git -C "$TMP" add apice.md
+OUT=$(HOME="$TMP/vuota" bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -c "TERMINE PRIVATO" <<<"$OUT" >/dev/null && ok "S3 R1: il termine con l'apostrofo si controlla (leak vista, rc 1)" || ko "S3 R1: termine con l'apostrofo saltato: rc=$RC"
+grep -c "Dell'Ortolano" <<<"$OUT" >/dev/null && ko "S3 R1: l'uscita porta il termine con l'apostrofo in chiaro" || ok "S3 R1: e l'uscita lo maschera"
+git -C "$TMP" rm -q --cached apice.md
+
 rm -rf "$TMP"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
