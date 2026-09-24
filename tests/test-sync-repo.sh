@@ -63,7 +63,8 @@ cat > "$TMP/bin/gh" <<'EOF'
 case "$1 $2" in
   "api "*) [ -f "${GH_CLAUDE_MD:-}" ] && base64 < "$GH_CLAUDE_MD" || { echo "gh: HTTP 404" >&2; exit 1; } ;;
   "repo clone") git clone -q "${GH_CLONE_SRC:?}" "$4" ;;
-  "pr create") echo "https://github.invalid/stub/pull/1" ;;
+  "pr create") if [ -n "${GH_PR_ESISTE:-}" ]; then echo 'a pull request for branch "x" into branch "main" already exists:'; echo "https://github.invalid/stub/pull/9"; exit 1; fi
+               echo "https://github.invalid/stub/pull/1" ;;
   *) exit 0 ;;
 esac
 EOF
@@ -105,6 +106,12 @@ grep -c "⚠ 2 righe del CLAUDE.md" <<<"$OUT" >/dev/null && grep -c "foglio MAST
 NDICH=$(grep -oE '\(([0-9]+) file nel commit\)' <<<"$OUT" | grep -oE '[0-9]+')
 NVERI=$(git -C "$TMP/proprio.git" diff --name-only "$BR~1" "$BR" 2>/dev/null | grep -c .)
 [ -n "$NDICH" ] && [ "$NDICH" = "$NVERI" ] && ok "S2 R6: la PR dice quanti file cambia davvero ($NVERI)" || ko "S2 R6: la PR dichiara «${NDICH:-?}», il commit ne cambia $NVERI: $(grep -m1 'PR aperta' <<<"$OUT")"
+
+# (2026-09-24, sesto ventaglio, S2 R4): l'rc di `gh pr create` non si guardava — con la PR gia' aperta gh esce 1 e
+# stampa la sua URL, e sync diceva «PR aperta», un fatto detto due volte. Una PR che c'e' si dice per quello che e'.
+nuovo_bare esiste 0
+OUT=$(cd "$TMP" && GH_PR_ESISTE=1 GH_CLONE_SRC="$TMP/esiste.git" GH_CLAUDE_MD="" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/esiste --standard 2>&1); RC=$?
+grep -ci 'gia.* aperta' <<<"$OUT" >/dev/null && ! grep -c 'PR aperta https' <<<"$OUT" >/dev/null && ok "S2 R4: PR gia' aperta: detta come tale, non «PR aperta»" || ko "S2 R4: PR esistente annunciata come nuova (rc $RC): $(tail -1 <<<"$OUT")"
 
 # D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
 nuovo_bare canarino-uguale 1

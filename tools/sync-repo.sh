@@ -260,7 +260,15 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   spingi "$BR" || exit 1
   # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
   # la PR si VERIFICA, non si dichiara
-  URL_PR=$(gh pr create --head "$BR" --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1)
+  # (2026-09-24, sesto ventaglio, S2 R4): l'rc di gh non si guardava — con la PR gia' aperta gh esce 1 e stampa la
+  # sua URL, e qui si diceva «PR aperta». Una PR che c'e' gia' si dice per quello che e'.
+  OUT_PR=$(gh pr create --head "$BR" --fill --title "chore: adotta lo standard AI_Programmer" 2>&1); RC_PR=$?
+  URL_PR=$(tail -1 <<<"$OUT_PR")
+  if [ "$RC_PR" -ne 0 ] && grep -qi 'already exists' <<<"$OUT_PR"; then
+    echo "sync-repo --standard: la PR di $BR c'e' GIA', aperta: $URL_PR — non ne apro un'altra"
+    exit 0
+  fi
+  [ "$RC_PR" -eq 0 ] || URL_PR="rc $RC_PR: $URL_PR"
   case "$URL_PR" in
     https://*) echo "sync-repo --standard: PR aperta $URL_PR ($NFILE file nel commit)" ;;
     *) echo "sync-repo --standard: RAMO $BR spinto MA la PR non e' stata creata ($URL_PR) — creala a mano"; exit 1 ;;

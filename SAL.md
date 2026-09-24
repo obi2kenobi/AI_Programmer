@@ -5161,3 +5161,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   sposta. Fra le righe vive conta la più recente di chi|zona. Un'altra persona resta una contesa. Tre casi nuovi
   in `tests/test-presidio.sh` (15/0), rossi prima; sabotaggio 13/2. La prima stesura aveva un apostrofo in un
   commento dentro il programma awk fra apici: chiudeva l'apice, e shellcheck e il banco l'hanno preso subito.
+- **Sesto ventaglio, S2 R4 — una PR di riallineo già aperta veniva annunciata come nuova.** `tools/sync-repo.sh`
+  non guardava l'rc di `gh pr create`. Con la PR già aperta gh esce 1 e stampa la sua URL, e sync diceva «PR
+  aperta». Ora una PR che c'è già si dice per quello che è («c'è GIÀ, aperta … non ne apro un'altra»). Un altro
+  rc diverso da 0 porta l'rc nel messaggio di fallimento. Caso nuovo in `tests/test-sync-repo.sh` (29/0), col gh
+  finto che risponde «already exists»; rosso prima, sabotaggio 28/1. Se una PR chiusa senza fonderla vada
+  riproposta è la domanda D-S2-1 (DEBITI).
