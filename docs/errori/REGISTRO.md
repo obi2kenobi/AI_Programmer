@@ -1006,3 +1006,51 @@
   corretti → 9/0.
 - Aggiramento: la guardia copre questo nome solo; un'altra assenza affermata a torto non la vede. Il
   SAL (append-only) resta com'è, e lo corregge una voce successiva.
+
+## E-046 Il controllo «verde prima di mutare» eseguiva il banco di se stesso
+
+- Data / sessione: 2026-09-24 (notte dei giri, cura Q32 del primo ventaglio — errore mio; messo agli
+  atti in ritardo, alla ripresa del terzo ventaglio: il SAL lo nominava, il registro no)
+- Famiglia: R4 (autoriferimento: l'arnese nel mirino delle proprie sonde) + R3 (precondizione non
+  chiesta: albero pulito contro albero in stage)
+- Chi l'ha trovato: lente (il giro V2 del terzo ventaglio, «i banchi come giudici»)
+- Sintomo: `tools/mutation-tests.sh` su un albero pulito non finiva più: 9 livelli annidati in 15
+  minuti, ucciso dal tetto (`rc=124`).
+- Causa prossima: il controllo di Q32 (`d1554c0`) esegue ogni banco abbinato prima di mutare, compreso
+  `tests/test-mutation-tests.sh`, che su un albero pulito rilancia il run completo di mutation-tests.
+- Causa del ragionamento: ho aggiunto un passo che esegue «tutti i banchi» senza chiedermi se fra loro
+  ci fosse il banco dello strumento stesso, e l'ho provato solo col mio helper di consegna.
+- Perché non ci ha fermati: l'helper mette tutto in stage PRIMA della suite; con l'indice sporco quel
+  banco prende il ramo veloce e la ricorsione non scatta. Il turno gira su un albero pulito.
+- Guardia: `tests/test-mutation-tests.sh` — una repo di prova in cui il banco di mutation-tests rilancia
+  mutation-tests; il run deve finire entro 30 s.
+- Verifica guardia: col salto del proprio banco tolto, ucciso dal tetto di 30 s (FAIL); con la cura,
+  finito. Più la suite intera in un clone pulito: 249 s, 170/170.
+- Aggiramento: nessuno serve; il ramo dell'albero pulito si misura in un clone fresco, non con l'helper.
+
+## E-047 Due sabotaggi diversi, lo stesso FAIL: Python leggeva il bytecode stantio
+
+- Data / sessione: 2026-09-24 (terzo ventaglio, V2#5, sabotaggi delle soglie degli indici della crisi)
+- Famiglia: R2 (verde senza dati: il banco girava su un codice diverso da quello sotto prova) + R1
+  (assunzione non verificata: «ho cambiato il file, quindi il test vede il cambio»)
+- Chi l'ha trovato: lente (la lettura dell'uscita in un comando separato, regola di E-043: tre
+  sabotaggi su tre soglie diverse davano tutti «FAIL oneriFinRicavi»)
+- Sintomo: sabotando `tools/indici_crisi.py` con `sed` (2.1→21, poi 6.3→63, poi 2.9→29), il secondo e il
+  terzo sabotaggio facevano fallire il caso del PRIMO. Il giro V2 aveva scritto «6.3→63: rc 0, 10 OK»,
+  ma con il sorgente vero quel sabotaggio fa rosso il caso «sana» (pn/passivo = 50% ≤ 63): anche quello
+  era probabilmente un verde falso della stessa causa.
+- Causa prossima: Python invalida un `.pyc` confrontando mtime (al secondo) e dimensione del sorgente.
+  `2.1`→`21 ` e `6.3`→`63` lasciano la stessa dimensione, e i sabotaggi in sequenza cadono nello stesso
+  secondo: il modulo importato dal banco era quello in `tools/__pycache__`. Riprodotto su un file di una
+  riga: dopo `X = 2.1` → `X = 21 `, `import` restituisce 2.1.
+- Causa del ragionamento: un sabotaggio l'ho sempre pensato come «cambio il file, rilancio». Ma il
+  banco non esegue il file: esegue ciò che l'interprete ne ha in cache.
+- Perché non ci ha fermati: nessun banco giudicava la cache; `tools/mutation-tests.sh` è salvo per
+  costruzione (il mutante ha un'altra dimensione), i sabotaggi a mano no.
+- Guardia: `tests/test-suite-runner.sh`, caso 5 — un modulo con un `.pyc` valido, modificato alla stessa
+  dimensione e con lo stesso mtime: la suite deve vedere il sorgente. Cura in `tools/suite.sh`: ogni giro
+  ha una cache fresca (`PYTHONPYCACHEPREFIX` in una cartella temporanea).
+- Verifica guardia: senza l'export della variabile, «12 OK, 1 FAIL» («la suite ha giudicato il bytecode
+  stantio»); con la cura, 13/0.
+- Aggiramento: un sabotaggio di un modulo Python lanciato FUORI dalla suite si esegue con
+  `PYTHONPYCACHEPREFIX=$(mktemp -d)`, oppure dopo aver tolto il `__pycache__` del file.

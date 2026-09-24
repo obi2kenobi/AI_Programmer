@@ -17,24 +17,12 @@
       "source_location": "L323"
     },
     {
-      "id": "tools_bilancio_bu_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36"
-    },
-    {
       "id": "tools_scadenzario_aging_aggrega_totali",
       "label": "aggrega_totali()",
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
@@ -46,7 +34,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
@@ -58,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
@@ -70,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
@@ -173,28 +161,52 @@
       "source_location": "L31"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
+      "id": "tools_bilancio_bu_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 248,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L36"
+    },
+    {
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L46"
     },
     {
-      "id": "tools_rating_dso_clienti_normalizza",
+      "id": "tools_margine_documento_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L62"
+    },
+    {
+      "id": "tools_margine_documento_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
       "community": 248,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L39"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -257,19 +269,7 @@
       "source_location": "L59"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tools_margine_documento_main",
+      "id": "tools_rating_dso_clienti_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
@@ -277,11 +277,11 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L62"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L46"
     },
     {
-      "id": "tools_margine_documento_normalizza",
+      "id": "tools_rating_dso_clienti_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
@@ -289,8 +289,8 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L39"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L42"
     },
     {
       "id": "tools_verifica_banco_main",
@@ -3521,55 +3521,22 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_bilancio_bu",
-      "label": "bilancio_bu.py",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "bilancio_bu.py",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_scadenzario_aging",
       "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "scadenzario_aging.py",
       "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_bilancio_bu_rationale_3",
-      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_bilancio_bu_rationale_37",
-      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37"
-    },
-    {
       "id": "tools_scadenzario_aging_rationale_2",
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3580,7 +3547,7 @@
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3591,7 +3558,7 @@
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3602,7 +3569,7 @@
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
@@ -19667,37 +19634,81 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "tools_bilancio_bu",
+      "label": "bilancio_bu.py",
       "_origin": "ast",
       "community": 248,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "csv",
       "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "bilancio_bu.py",
+      "source_file": "tools/bilancio_bu.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 248,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_bilancio_bu_rationale_3",
+      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "csv",
       "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
+      "source_file": "tools/bilancio_bu.py",
       "source_location": "L3"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "id": "tools_bilancio_bu_rationale_37",
+      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
       "_origin": "ast",
       "community": 248,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "csv",
       "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_margine_documento_rationale_47",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L47"
+    },
+    {
+      "id": "tools_margine_documento_rationale_63",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L63"
     },
     {
       "id": "tests_test_bootstrap_app_percorso_cloud",
@@ -24868,66 +24879,6 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
-    },
-    {
       "id": "tests_test_night_shift_sal",
       "label": "test-night-shift-sal.sh",
       "_origin": "ast",
@@ -27618,14 +27569,14 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L1"
     },
     {
@@ -27684,37 +27635,26 @@
       "source_location": "L60"
     },
     {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
     },
     {
-      "id": "tools_margine_documento_rationale_47",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "id": "tools_rating_dso_clienti_rationale_47",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L47"
-    },
-    {
-      "id": "tools_margine_documento_rationale_63",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L63"
     },
     {
       "id": "tools_verifica_banco_rationale_2",
@@ -31639,6 +31579,30 @@
       "norm_label": "e-045 un file dato per assente, cercato col nome sbagliato",
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L985"
+    },
+    {
+      "id": "docs_errori_registro_e_046_il_controllo_verde_prima_di_mutare_eseguiva_il_banco_di_se_stesso",
+      "label": "E-046 Il controllo \u00abverde prima di mutare\u00bb eseguiva il banco di se stesso",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-046 il controllo \u00abverde prima di mutare\u00bb eseguiva il banco di se stesso",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1010"
+    },
+    {
+      "id": "docs_errori_registro_e_047_due_sabotaggi_diversi_lo_stesso_fail_python_leggeva_il_bytecode_stantio",
+      "label": "E-047 Due sabotaggi diversi, lo stesso FAIL: Python leggeva il bytecode stantio",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-047 due sabotaggi diversi, lo stesso fail: python leggeva il bytecode stantio",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1031"
     },
     {
       "id": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
@@ -47253,6 +47217,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -47287,6 +47299,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1797"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -49534,18 +49558,6 @@
       "source_location": "L64"
     },
     {
-      "id": "csv",
-      "label": "csv",
-      "_origin": "semantic",
-      "community": 100,
-      "community_name": "csv",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "csv",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "glob",
       "label": "glob",
       "_origin": "semantic",
@@ -49606,11 +49618,23 @@
       "type": "external"
     },
     {
+      "id": "csv",
+      "label": "csv",
+      "_origin": "semantic",
+      "community": 248,
+      "community_name": "csv",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "csv",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "datetime",
       "label": "datetime",
       "_origin": "semantic",
-      "community": 248,
-      "community_name": "rating_dso_clienti.py",
+      "community": 34,
+      "community_name": "sys",
       "external": true,
       "file_type": "concept",
       "norm_label": "datetime",
@@ -71190,6 +71214,28 @@
       "confidence_score": 1.0,
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_046_il_controllo_verde_prima_di_mutare_eseguiva_il_banco_di_se_stesso",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1010",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_047_due_sabotaggi_diversi_lo_stesso_fail_python_leggeva_il_bytecode_stantio",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1031",
       "weight": 1.0
     },
     {
@@ -93728,5 +93774,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "caf34c9f735bfbb590c661065376a502f2207e78"
+  "built_at_commit": "ec3cf4b0e7bb5217e86d3742c09792f5d577bcfb"
 }

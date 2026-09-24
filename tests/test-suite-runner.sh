@@ -70,6 +70,26 @@ OUT=$(bash "$SB3/runner-saltante.sh" "$SB3" 2>&1); RC=$?
 [ "$RC" -ne 0 ] && ! grep -c "7/7 file superati" <<<"$OUT" >/dev/null && ok "un runner che salta banchi e' rosso, non «7/7»" || ko "runner che salta 2 banchi: rc $RC — $(tail -1 <<<"$OUT")"
 rm -rf "$SB3"
 
+# 5. (2026-09-24, E-047): il bytecode stantio. Un sabotaggio a mano che cambia 2.1 in «21 » lascia il file
+# della stessa dimensione, e nello stesso secondo il .pyc in tools/__pycache__ resta «valido»: il banco che
+# importa il modulo gira col codice di PRIMA. Due sabotaggi diversi davano lo stesso FAIL. La suite deve
+# giudicare il sorgente, non la cache.
+SB5=$(mktemp -d /tmp/test-suite5.XXXXXX); mkdir -p "$SB5/tools" "$SB5/tests"
+printf 'X = 2.1\n' > "$SB5/tools/m.py"
+# fuori dalla cache della suite che sta girando questo banco: qui serve il __pycache__ vero, e il runner
+# sotto prova deve crearsi la SUA cache, non ereditare quella di fuori
+(cd "$SB5" && env -u PYTHONPYCACHEPREFIX python3 -c 'import sys; sys.path.insert(0, "tools"); import m') 2>/dev/null
+touch -r "$SB5/tools/m.py" "$SB5/rif"; printf 'X = 21 \n' > "$SB5/tools/m.py"; touch -r "$SB5/rif" "$SB5/tools/m.py"
+printf '#!/bin/bash\ncd "$(dirname "$0")/.."\npython3 -c "import sys; sys.path.insert(0, \\"tools\\"); import m; sys.exit(0 if m.X == 21 else 1)" && echo "1 OK, 0 FAIL" || { echo "0 OK, 1 FAIL"; exit 1; }\n' > "$SB5/tests/test-m.sh"
+if ls "$SB5"/tools/__pycache__/m.*.pyc >/dev/null 2>&1; then
+  OUT=$(env -u PYTHONPYCACHEPREFIX bash "$RUNNER" "$SB5" 2>&1); RC=$?
+  [ "$RC" -eq 0 ] && ok "la suite legge il sorgente, non un .pyc stantio della stessa dimensione" \
+    || ko "la suite ha giudicato il bytecode stantio (rc $RC): $(tail -2 <<<"$OUT")"
+else
+  ko "premessa: il .pyc di prova non si e' formato"
+fi
+rm -rf "$SB5"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

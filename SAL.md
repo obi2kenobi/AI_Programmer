@@ -4238,3 +4238,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   raggiunge: il banco le fissa, non le certifica. Verde (20/0). Sabotaggi, uno per soglia (2.1→21,
   6.3→63, 2.9→29, 101.4→10.14): tutti rossi, ma solo al secondo giro. Al primo, i sabotaggi 2 e 3
   davano lo stesso FAIL del primo: Python leggeva il `.pyc` stantio (E-047, sotto).
+- **E-047 (errore di metodo, il mio e del giro V2) — un sabotaggio giudicato sul bytecode stantio.** Nei
+  sabotaggi di V2#5 (sopra), il secondo e il terzo davano lo stesso FAIL del primo. Una modifica della
+  stessa dimensione, nello stesso secondo, lascia valido il `.pyc` in `tools/__pycache__`: il banco
+  importava il codice di prima. Il «6.3→63 verde» del rapporto V2 era probabilmente lo stesso caso: col
+  sorgente vero è rosso. Cura: `tools/suite.sh` dà a ogni giro una cache fresca (`PYTHONPYCACHEPREFIX`).
+  Guardia: `tests/test-suite-runner.sh`, caso 5 (un `.pyc` valido su un sorgente cambiato alla stessa
+  dimensione): rossa senza l'export (12/1), verde con la cura (13/0). La regola per i sabotaggi fuori
+  dalla suite è nella skill n-giri §5. REGISTRO: E-047, e anche E-046, che il SAL nominava ma il registro
+  non aveva. AGENTS.md cita ora `tools/suite.sh:60`.
+  Primo tentativo di consegna rosso: dentro la suite, il banco ereditava la cache fresca e il suo `.pyc`
+  di prova non si formava. Ora il caso 5 toglie la variabile di fuori (`env -u`), sia per la premessa sia
+  per il runner sotto prova. Sabotaggio rifatto sotto una cache esterna: rosso (12/1).

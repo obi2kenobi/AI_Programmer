@@ -19,6 +19,13 @@ set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 cd "$DIR"
 
+# (2026-09-24, E-047): una cache di bytecode FRESCA per ogni giro della suite. Un sabotaggio a mano della
+# stessa dimensione, nello stesso secondo, lascia valido il .pyc in tools/__pycache__: i banchi che
+# importano il modulo giudicavano il codice di prima. Con PYTHONPYCACHEPREFIX Python legge e scrive il
+# bytecode solo qui dentro, mai nei __pycache__ del sorgente.
+PYTHONPYCACHEPREFIX=$(mktemp -d "${TMPDIR:-/tmp}/suite-pyc.XXXXXX"); export PYTHONPYCACHEPREFIX
+trap 'case "$PYTHONPYCACHEPREFIX" in */suite-pyc.??????) rm -rf "$PYTHONPYCACHEPREFIX" ;; esac' EXIT
+
 N=0; SUPERATI=0
 TOT=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
 [ "$TOT" -eq 0 ] && { echo "⛔ suite: nessun tests/test-*.sh trovato"; exit 1; }
