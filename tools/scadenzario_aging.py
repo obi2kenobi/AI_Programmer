@@ -129,6 +129,11 @@ def main():
             importo = importo_fornitore(importo_bc, doc_type)
         elif tipo.strip().lower().startswith("fornitore"):
             non_riconosciuti.append(tipo)
+            # (2026-09-24, quinto ventaglio, R3 R1): qui l'importo non si assegnava — la riga prendeva quello
+            # della riga PRIMA (o, se prima, un traceback). Il segno e' quello che l'ATTENZIONE qui sotto
+            # dichiara per i tipi non riconosciuti (+abs): convenzione provvisoria, la domanda 1 di
+            # docs/giri/2026-09-23-notte/DOMANDE.md resta aperta.
+            importo = abs(importo_bc)
         else:
             importo = importo_bc
         righe.append({

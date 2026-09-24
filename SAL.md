@@ -4632,3 +4632,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   nuove: la memoria del sistema, il satellite end-to-end, gli oracoli come strumenti, i consumatori dei
   log, giorno e notte sulla stessa repo. C'è anche una regola nuova dopo il `/CLAUDE.md` del quarto
   ventaglio: mai scrivere fuori dal clone, e un TMPDIR sempre dentro il clone.
+- **Quinto ventaglio, R3 R1 — nell'aging una riga «fornitore» minuscola prendeva l'importo della riga
+  prima.** Il ramo di `tools/scadenzario_aging.py` per «fornitore …» in minuscolo, o con uno spazio
+  davanti, non assegnava l'importo. Dopo una riga cliente da 1000, «fornitore Fattura, 500» portava 1000:
+  «Entrate +2000» invece di +1500, rc 0. Se era la prima riga, un traceback. Ora la riga porta il SUO
+  importo, col segno che l'ATTENZIONE già dichiara per i tipi non riconosciuti (+abs). Quale segno
+  debba avere resta la domanda 1 di `docs/giri/2026-09-23-notte/DOMANDE.md`: qui non si decide.
+  `tests/test-oracoli-uso.sh` ha due casi: rossi prima, verdi ora (55/0). Sabotaggio (con una cache
+  fresca, E-047): 53/2. Verde anche `tests/test-scadenzario-aging.sh` (24/0).

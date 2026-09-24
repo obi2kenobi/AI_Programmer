@@ -133,6 +133,16 @@ OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a.csv" 2>&1)
 grep -q "ATTENZIONE" <<<"$OUT" && grep -q "FATTURA" <<<"$OUT" && grep -q "Payment" <<<"$OUT" \
   && ok "aging: i tipi documento fornitore non riconosciuti sono DETTI (prima: entrate in silenzio)" \
   || ko "aging: tipi fornitore ignoti presi come entrate senza avviso: $(head -2 <<<"$OUT" | tr '\n' ' ')"
+# (2026-09-24, quinto ventaglio, R3 R1): il ramo «fornitore» in minuscolo (o con uno spazio davanti) non
+# assegnava l'importo — la riga prendeva quello della riga PRIMA (Entrate +2000 invece di +1500), o, se era la
+# prima, un traceback. Il segno resta quello che l'ATTENZIONE dichiara (+abs, convenzione provvisoria: la
+# domanda 1 di docs/giri/2026-09-23-notte/DOMANDE.md): qui si pretende solo che l'importo sia il SUO.
+printf 'giorni,tipo,importo\n10,Cliente Fattura,1000\n10,fornitore Fattura,500\n' > "$TMP/a2.csv"
+OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a2.csv" 2>&1)
+grep -c '^Entrate: +1500.00' <<<"$OUT" >/dev/null && ok "aging: la riga «fornitore» minuscola porta il SUO importo (+1500, non +2000)" || ko "aging: importo copiato dalla riga prima: $(grep Entrate <<<"$OUT")"
+printf 'giorni,tipo,importo\n10, Fornitore Fattura,500\n' > "$TMP/a3.csv"
+OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a3.csv" 2>&1); RC=$?
+! grep -c Traceback <<<"$OUT" >/dev/null && [ "$RC" -eq 0 ] && ok "aging: la riga «fornitore» come PRIMA riga non e' un traceback" || ko "aging: prima riga fornitore: rc=$RC $(tail -1 <<<"$OUT")"
 printf 'rif,data,bu,ubicazione,importo\nFT\xc2\xa0001,2026-01-01,ARRG,X,150\nFT002,2026-01-01,ARRG,X,0\n' > "$TMP/v.csv"
 printf 'rif,data,bu,fornitore,importo\nFT001,2026-01-01,ARRG,F,100\nFT002,2026-01-01,ARRG,F,100\n' > "$TMP/ac.csv"
 OUT=$(python3 "$T/margine_documento.py" "$TMP/v.csv" "$TMP/ac.csv" 2>&1)
