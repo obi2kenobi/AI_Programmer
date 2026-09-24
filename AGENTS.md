@@ -102,8 +102,10 @@ Consulta prima di reinventare; dopo averne pagato uno nuovo, scrivilo.
 
 ## 5. La verifica: come esco da qui
 
-`bash .night-verify` — suite completa (fail-fast) + shellcheck +
-privacy-check + indice SAL. Se touchi `SAL.md`, rigenera l'indice
+`bash tools/suite.sh` — la suite completa (verde = «Suite test hub: N/N file superati», `tools/suite.sh:41`); poi le altre righe di
+`.night-verify` (shellcheck, py-gate, privacy-check, indice SAL), UNA ALLA VOLTA come fa il turno.
+(2026-09-23, notte dei giri: qui si insegnava a eseguire il file intero con bash, che esce 0 senza far girare un
+solo banco — la riga `@540 …` e' un budget che capisce solo il turno, e l'rc e' quello dell'ultima riga.) Se touchi `SAL.md`, rigenera l'indice
 (`bash tools/sal-indice.sh`) e porta le modifiche in un commit/giro prima che il
 gate giri. Privacy: REPO-E è il codice con cui riferirsi al repo esterno, MAI il
 nome di clienti o progetti reali (il privacy-check fallisce il gate su una perdita).

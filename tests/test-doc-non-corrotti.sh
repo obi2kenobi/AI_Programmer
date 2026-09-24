@@ -22,6 +22,12 @@ grep -qE ' e  lo porta' <<<"$A" && ko "AGENTS.md: «e  lo porta tutto» — il c
 grep -qE 'Generato dal codice reale:[[:space:]]*$' "$HERE/docs/eventi.md" && ko "docs/eventi.md: «Generato dal codice reale:» senza seguito" \
   || ok "docs/eventi.md: la frase d'apertura e' intera"
 
+# (2026-09-23, notte dei giri, T4): AGENTS.md insegnava `bash .night-verify` come «suite completa» —
+# eseguito, esce 0 senza far girare un solo banco («@540: command not found»; l'rc e' dell'ultima
+# riga). Un documento vivo non insegna quel comando come verifica.
+INSEGNA=$(cd "$HERE" && grep -ln '`bash \.night-verify`' AGENTS.md README.md METHOD.md PROJECT.md docs/*.md night-shift/README.md 2>/dev/null | grep -v REGISTRO || true)
+[ -z "$INSEGNA" ] && ok "nessun documento vivo insegna «bash .night-verify» come verifica" || ko "insegnano «bash .night-verify» (esce 0 senza banchi): $INSEGNA"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

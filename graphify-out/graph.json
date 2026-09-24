@@ -31334,7 +31334,7 @@
       "node_kind": "heading",
       "norm_label": "regole graphify",
       "source_file": "AGENTS.md",
-      "source_location": "L111"
+      "source_location": "L113"
     },
     {
       "id": "docs_bc_endpoints_componenti_ordine_produzione_excel",
@@ -55915,7 +55915,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -90092,5 +90092,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a3d6a756bd366a150af47556349990533f57443c"
+  "built_at_commit": "8db1497a2c1941271c054eaf1557cee6dc633aa7"
 }

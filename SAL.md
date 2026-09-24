@@ -3744,3 +3744,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Un rilevatore unico, `tools/e002-siti.py` (virgolette e commenti compresi), per i due
     cricchetti: `tests/test-e002-codice.sh` e `tests/test-e002-banchi-curati.sh`. Sabotaggio:
     rosso. Zero siti nel repo.
+- **T4#1 — AGENTS.md §5 insegnava una verifica che non verifica.** «`bash .night-verify` — la
+  suite completa»: eseguito, esce 0 con «@540: command not found» e senza un banco (il prefisso
+  `@<sec>` lo capisce solo il turno, l'rc è quello dell'ultima riga). Ora insegna
+  `bash tools/suite.sh` citando `tools/suite.sh:41`. Guardia in `tests/test-doc-non-corrotti.sh`:
+  rossa sul testo vecchio (e sulla mia prima stesura, che citava il comando nella nota storica),
+  verde ora.
