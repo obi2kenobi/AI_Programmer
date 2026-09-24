@@ -17,6 +17,9 @@ echo "$*" >> "$GH_LOG"
 case "$1 $2" in
   "auth status") exit 0 ;;
   "api user") echo tester ;;
+  # (2026-09-24, sesto ventaglio, S1 R2): come il gh vero (2.45), -R vuole OWNER/REPO — il finto che accettava
+  # tutto lasciava verde un bootstrap che la label non la creava mai
+  "label create") R=$(sed -n 's/.* -R \([^ ]*\).*/\1/p' <<<"$*"); case "$R" in */*) exit 0 ;; *) echo 'expected the "[HOST/]OWNER/REPO" format' >&2; exit 1 ;; esac ;;
   *) exit 0 ;;
 esac
 EOF
@@ -46,6 +49,8 @@ D="$TMP/home/night-shift-work/prova-vera"
 [ "$RC" -eq 0 ] && [ -f "$D/CLAUDE.md" ] && ok "vero: la repo nasce con CLAUDE.md" || ko "vero: rc=$RC — $(tail -2 "$TMP/out")"
 grep -q '^repo create prova-vera --private' "$TMP/gh.log" && ok "vero: gh repo create chiamato, privata" || ko "vero: repo create assente o non privata: $(grep '^repo' "$TMP/gh.log")"
 grep -q '^label create night-shift' "$TMP/gh.log" && ok "vero: la label night-shift si crea" || ko "vero: label non creata"
+grep -c 'label create night-shift.* -R tester/prova-vera' "$TMP/gh.log" >/dev/null && ! grep -c 'label night-shift NON creata' "$TMP/out" >/dev/null \
+  && ok "S1 R2: la label si crea su owner/repo, senza avviso" || ko "S1 R2: label chiesta senza owner: $(grep '^label' "$TMP/gh.log") — $(grep -c 'NON creata' "$TMP/out") avvisi"
 grep -q '^tester/prova-vera feat$' "$TMP/repos.conf" && ok "vero: iscritta nella coda (NIGHT_REPOS_CONF)" || ko "vero: non iscritta nella coda di prova"
 # (2026-09-24, notte dei giri, T1#2): i guardiani del commit (.githooks) arrivavano nel satellite ma
 # spenti — nessuno impostava core.hooksPath, e il CLAUDE.md del satellite parla del pre-commit come

@@ -160,9 +160,17 @@ else
   # push (lo stesso gesto di night-shift/install.sh per l'hub). Negli altri cloni lo ricorda il garante.
   git config core.hooksPath .githooks && echo "guardiani del commit accesi (core.hooksPath .githooks)"
 fi
+# (2026-09-24, sesto ventaglio, S1 R2): `-R "$NAME"` senza owner — gh vuole OWNER/REPO, e la label non si
+# creava MAI (l'avviso scattava a ogni bootstrap; il banco dava verde col gh finto che accettava tutto).
+# Il nome pieno: quello dato, se ha gia' l'owner; se no il login di gh.
+case "$NAME" in
+  */*) PIENO="$NAME" ;;
+  *) LOGIN=$(gh api user --jq .login 2>/dev/null || true); PIENO="${LOGIN:+$LOGIN/}$NAME" ;;
+esac
 # (Q2 R4): la label non creata si dice — senza, le commesse della notte non vengono viste
-gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 \
-  || echo "⚠ label night-shift NON creata su $NAME: le commesse della notte non saranno viste — gh label create night-shift -R <owner>/$NAME"
+gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$PIENO" >/dev/null 2>&1 \
+  || { case "$PIENO" in */*) ;; *) PIENO="<owner>/$NAME" ;; esac
+       echo "⚠ label night-shift NON creata su $PIENO: le commesse della notte non saranno viste — gh label create night-shift -R $PIENO"; }
 
 # La iscrive alla coda locale (se esiste repos.conf). NIGHT_REPOS_CONF: override per i banchi,
 # stesso gesto di tools/onboard-repo.sh (Q14: un banco vero avrebbe iscritto repo finte nella

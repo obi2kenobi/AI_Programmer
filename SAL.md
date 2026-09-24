@@ -4978,3 +4978,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Ora ognuno aggiunge prima un a capo se il file non ne finisce con uno. Banco nuovo
   `tests/test-a-capo-finale.sh` (3/0), rosso prima (0/3). Sabotaggio: 0/3.
+- **Sesto ventaglio, S1 R2 — il bootstrap non creava mai la label del turno.** `tools/bootstrap-app.sh`
+  chiamava `gh label create … -R "$NAME"` col nome senza owner. gh vuole OWNER/REPO (2.45: «expected the
+  "[HOST/]OWNER/REPO" format»), quindi l'avviso scattava a ogni bootstrap. Il turno vede solo le issue con
+  quella label. La cura stampata conteneva `<owner>`, che lo strumento sa. Ora il nome pieno è quello dato, se
+  ha già l'owner, se no il login di gh. Il `gh` finto di `tests/test-bootstrap-app-e2e.sh` accettava tutto: ora
+  rifiuta `-R` senza la barra, come quello vero. Caso nuovo (15/0), rosso prima. Sabotaggio: 14/1. La prima stesura leggeva il login con
+  un'assegnazione nuda sotto `set -e`: col login illeggibile il bootstrap moriva lì. L'ha presa
+  `tests/test-iscrivi-coda.sh` prima del commit; ora c'è `|| true`, e il caso resta verde (12/0).
