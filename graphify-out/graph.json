@@ -74,7 +74,7 @@
       "file_type": "code",
       "norm_label": "crisi_presunta()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L66"
+      "source_location": "L72"
     },
     {
       "id": "tools_indici_crisi_main",
@@ -86,7 +86,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L70"
+      "source_location": "L76"
     },
     {
       "id": "tools_indici_crisi_pct",
@@ -98,7 +98,7 @@
       "file_type": "code",
       "norm_label": "pct()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L39"
+      "source_location": "L44"
     },
     {
       "id": "tools_indici_crisi_valuta_indici_crisi",
@@ -110,7 +110,7 @@
       "file_type": "code",
       "norm_label": "valuta_indici_crisi()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L43"
+      "source_location": "L48"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -5380,18 +5380,18 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_indici_crisi_rationale_44",
-      "label": "Sei indici con soglie del codice REPO-E (non leggi italiane: la presunzione di\u2026",
+      "id": "tools_indici_crisi_rationale_49",
+      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
       "_origin": "ast",
       "community": 117,
       "community_name": "indici_crisi.py",
       "file_type": "rationale",
-      "norm_label": "sei indici con soglie del codice repo-e (non leggi italiane: la presunzione di...",
+      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L44"
+      "source_location": "L49"
     },
     {
-      "id": "tools_indici_crisi_rationale_71",
+      "id": "tools_indici_crisi_rationale_77",
       "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
       "_origin": "ast",
       "community": 117,
@@ -5399,7 +5399,7 @@
       "file_type": "rationale",
       "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L71"
+      "source_location": "L77"
     },
     {
       "id": "claude",
@@ -40419,7 +40419,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L264"
+      "source_location": "L266"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -40431,7 +40431,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L258"
+      "source_location": "L260"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -58559,7 +58559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L93",
+      "source_location": "L100",
       "weight": 1.0
     },
     {
@@ -58571,7 +58571,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L97",
+      "source_location": "L108",
       "weight": 1.0
     },
     {
@@ -58583,7 +58583,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L59",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -63835,7 +63835,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L258",
+      "source_location": "L260",
       "weight": 1.0
     },
     {
@@ -63846,7 +63846,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L264",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
@@ -86099,7 +86099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L39",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -86110,7 +86110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L43",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -86121,7 +86121,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L66",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -86132,7 +86132,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L70",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -94309,25 +94309,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_44",
+      "source": "tools_indici_crisi_rationale_49",
       "target": "tools_indici_crisi_valuta_indici_crisi",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L44",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_71",
+      "source": "tools_indici_crisi_rationale_77",
       "target": "tools_indici_crisi_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L71",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -96290,5 +96290,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9726f24bcb3f2413d15ed8dc50eeda2d11f08b58"
+  "built_at_commit": "2292127c4ac1d39e4fd93b8c22784c9d6cd8ee25"
 }

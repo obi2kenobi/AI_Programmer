@@ -104,6 +104,19 @@ grep -q "CNDCEC" "$HERE/tools/indici_crisi.py" \
   && ok "le soglie sono attribuite alla fonte regolatoria pubblica (non spacciate per invenzione)" \
   || ko "le soglie non citano più la fonte regolatoria"
 
+# (2026-09-24, quinto ventaglio, R3 R5): la docstring prometteva una NOTA sul denominatore nullo «nel
+# risultato», che main() non stampava; il messaggio d'uso elencava campi che non esistono (patrimonio netto,
+# perdite esercizi precedenti); la docstring di valuta_indici_crisi diceva «Sei indici» (sono cinque).
+ZERI='{"pn":0,"ricavi":0,"oneriFin":0,"passivoTot":0,"debPrev":0,"debTrib":0,"cashFlow":0,"attivo":0,"attCorrenti":0,"passCorrenti":0}'
+OUT=$(python3 "$HERE/tools/indici_crisi.py" <<<"$ZERI" 2>&1)
+[ "$(grep -c '^NOTA: denominatore nullo' <<<"$OUT")" -eq 5 ] \
+  && ok "tutto zero: una NOTA per ciascuno dei cinque indici a denominatore nullo" \
+  || ko "tutto zero: le note promesse dalla docstring mancano — $(grep -c '^NOTA' <<<"$OUT") righe NOTA"
+USO=$(python3 "$HERE/tools/indici_crisi.py" <<<"non json" 2>&1)
+grep -c 'oneriFin' <<<"$USO" >/dev/null && ! grep -c 'perdite esercizi' <<<"$USO" >/dev/null \
+  && ok "il messaggio d'uso elenca i campi veri" || ko "il messaggio d'uso elenca campi inesistenti: $USO"
+! grep -c 'Sei indici' "$HERE/tools/indici_crisi.py" >/dev/null && ok "la docstring conta cinque indici" || ko "la docstring dice ancora «Sei indici»"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

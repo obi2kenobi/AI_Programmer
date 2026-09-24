@@ -188,6 +188,8 @@ echo '{"categoria":{"openCosto":100,"openRival":0,"openSval":0,"yearCosto":10,"y
 dichiara "rollforward: un cespite non oggetto"    python3 "$T/rollforward_cespiti.py" < "$TMP/rf.json"
 # indici: «"pn": "100"» e null erano un TypeError; li copre gia' la guardia di R3 R2 (numero finito, non bool)
 sed 's/"pn": NaN/"pn": "100"/' "$TMP/ic.json" > "$TMP/ic2.json"; dichiara "indici: pn stringa (gia' coperto da R3 R2)" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
+echo 5 > "$TMP/ic2.json"; dichiara "indici: JSON numero (non oggetto)" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
+echo '["pn"]' > "$TMP/ic2.json"; dichiara "indici: JSON lista con un nome di campo" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
 # (2026-09-24, quinto ventaglio, R3 R1): il ramo «fornitore» in minuscolo (o con uno spazio davanti) non
 # assegnava l'importo — la riga prendeva quello della riga PRIMA (Entrate +2000 invece di +1500), o, se era la
 # prima, un traceback. Il segno resta quello che l'ATTENZIONE dichiara (+abs, convenzione provvisoria: la
