@@ -3532,3 +3532,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     presidia, non inventato un comando.
   - Banco: `tests/test-doc-non-corrotti.sh`, con la firma generale (JSON di hook in un .md
     tracciato), 4 rossi prima.
+- **Q20**, da A6, gli specchi OpenCode degli agenti (`.opencode/agent/*.md`) portavano
+  `tools: Read, Grep, Glob, Bash`, la forma di Claude Code. Per OpenCode `tools` è una mappa, ed è
+  deprecata a favore di `permission` (https://opencode.ai/docs/agents/, letto stanotte): l'agente
+  di notte non era ristretto come quello di giorno.
+  - Ora `permission:` fedele al gemello: edit allow solo con Edit o Write, bash, webfetch.
+  - Banco: `tests/test-opencode-agent-sync.sh`, 12 casi, 6 rossi prima. Sabotaggio (un edit
+    aperto): 1 rosso.
+  - NON VERIFICATO DAL VIVO: OpenCode non è installato qui; sul Mac va visto che il turno carichi
+    gli agenti.

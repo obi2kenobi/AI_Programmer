@@ -59,6 +59,22 @@ for o in "${OPEN[@]}"; do
   [ -f "$HERE/.claude/agents/$nome.md" ] || ko "$nome: orfano OpenCode senza origine Claude"
 done
 
+# (Q20, 2026-09-23, giro A6 della notte): il frontmatter degli specchi portava `tools: Read, Grep,
+# Glob, Bash` — la forma di Claude Code. Per OpenCode `tools` e' una MAPPA nome→booleano (e
+# deprecata a favore di `permission`, https://opencode.ai/docs/agents/): la stringa non dice nulla
+# e l'agente di notte non era ristretto come quello di giorno. Ora `permission:` fedele al gemello.
+fm() { awk 'NR==1&&/^---/{f=1;next} f&&/^---/{exit} f' "$1"; }
+for o in "${OPEN[@]}"; do
+  nome="$(basename "$o" .md)"; c="$HERE/.claude/agents/$nome.md"; [ -f "$c" ] || continue
+  FO=$(fm "$o"); TC=$(fm "$c" | sed -n 's/^tools:[[:space:]]*//p')
+  grep -qE '^tools:[[:space:]]*[A-Za-z]' <<<"$FO" && { ko "$nome: tools come stringa (forma Claude), OpenCode vuole una mappa"; continue; }
+  grep -qE 'Edit|Write' <<<"$TC" && ATTESO=allow || ATTESO=deny
+  grep -qE "^  edit: $ATTESO$" <<<"$FO" && ok "$nome: permission.edit = $ATTESO come il gemello Claude ($TC)" \
+    || ko "$nome: permission.edit non e' $ATTESO (gemello: $TC)"
+  grep -qw 'WebFetch' <<<"$TC" && AW=allow || AW=deny
+  grep -qE "^  webfetch: $AW$" <<<"$FO" && ok "$nome: permission.webfetch = $AW" || ko "$nome: permission.webfetch non e' $AW"
+done
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
