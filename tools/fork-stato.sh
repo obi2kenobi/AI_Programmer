@@ -40,16 +40,34 @@ impronta() { # hash normalizzato del codice della copia (il marcatore porta il p
     done | eval "$HASHER" | awk '{print $1}'
 }
 conta() { codice "$1" | wc -l | tr -d ' '; }
+# (2026-09-24, terzo ventaglio, V3): la matrice a coppie, file per file. Prima ogni copia si confrontava
+# solo con la prima: che due copie coincidessero fra loro lo dicevano solo le impronte, e QUALI file
+# differivano restava da cercare coi diff.
+impronta_file() { sed 's/[[:space:]]*$//' "$1" | grep -v '^$' | eval "$HASHER" | awk '{print $1}'; }
+relativi() { codice "$1" | while IFS= read -r f; do echo "${f#"$1"/}"; done; }
+confronta_coppia() { # $1 $2 cartelle, $3 $4 nomi: una riga «A ↔ B: uguali» o «A ↔ B: N file — …»
+  local a="$1" b="$2" diversi="" soloa="" solob="" n=0 r parti=""
+  while IFS= read -r r; do
+    if [ ! -f "$b/$r" ]; then soloa="$soloa $r"; n=$((n+1))
+    elif [ "$(impronta_file "$a/$r")" != "$(impronta_file "$b/$r")" ]; then diversi="$diversi $r"; n=$((n+1)); fi
+  done < <(relativi "$a")
+  while IFS= read -r r; do [ -f "$a/$r" ] || { solob="$solob $r"; n=$((n+1)); }; done < <(relativi "$b")
+  [ "$n" -eq 0 ] && { echo "  $3 ↔ $4: uguali"; return; }
+  [ -n "$diversi" ] && parti="diversi:$diversi"
+  [ -n "$soloa" ] && parti="${parti:+$parti; }solo in $3:$soloa"
+  [ -n "$solob" ] && parti="${parti:+$parti; }solo in $4:$solob"
+  echo "  $3 ↔ $4: $n file — $parti"
+}
 righe() { codice "$1" | while IFS= read -r f; do cat "$f"; done | wc -l | tr -d ' '; }
 
 # array INDICIZZATI (bash 3.2 di macOS non ha declare -A: gli indici qui sono
 # numerici 0..N-1, l'associativo non serve e il -A fa solo sputare errori)
-declare -a HASH FILES RIGHE NOMI
+declare -a HASH FILES RIGHE NOMI DIRS
 N=0
 for d in "$@"; do
   [ -d "$d" ] || { echo "⛔ copia inesistente: $d" >&2; exit 2; }
   NOME=$(basename "$d" | sed 's/__[A-Za-z0-9_-]*$//')   # via il suffisso id GAS
-  HASH[$N]=$(impronta "$d"); FILES[$N]=$(conta "$d"); RIGHE[$N]=$(righe "$d"); NOMI[$N]="$NOME"
+  HASH[$N]=$(impronta "$d"); FILES[$N]=$(conta "$d"); RIGHE[$N]=$(righe "$d"); NOMI[$N]="$NOME"; DIRS[$N]="${d%/}"
   N=$((N+1))
 done
 
@@ -86,6 +104,12 @@ for i in $(seq 0 $((N-1))); do
   [ "${HASH[$i]}" != "${HASH[$BASE]}" ] && D="≠"
   echo "  ${NOMI[$i]} $D ${NOMI[$BASE]}"
 done
+echo "Confronto a coppie, file per file:"
+for i in $(seq 0 $((N-2))); do
+  for j in $(seq $((i+1)) $((N-1))); do confronta_coppia "${DIRS[$i]}" "${DIRS[$j]}" "${NOMI[$i]}" "${NOMI[$j]}"; done
+done
+echo "  (chi è avanti non si misura dal contenuto: lo dicono la storia delle copie — git log, data"
+echo "  dell'ultimo deploy — e la tabella M4 della skill)"
 cat <<TAB
   Il da farsi SIN DA SUBITO (skill allineamento-fork):
   - IL GAS VIVO È DEFINITIVO: se una copia è un clasp clone fresco del vivo,

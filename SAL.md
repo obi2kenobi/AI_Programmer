@@ -4191,3 +4191,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Le tre frasi sono corrette, con i loro specchi `.opencode`. `tests/test-doc-non-corrotti.sh` ha tre
   controlli nuovi: rosso prima (3 FAIL), verde ora (12/0). Sabotaggio: con la vecchia goal torna
   rosso (11/1).
+- **Terzo ventaglio, V3 fuori tetto — fork-stato confrontava ogni copia solo con la prima.** La skill
+  (`.claude/skills/allineamento-fork/SKILL.md`, M3) promette una matrice fra tutte le copie, con i
+  file diversi. `tools/fork-stato.sh` stampava solo «X ≠ prima». Con tre copie, che due di loro
+  coincidessero lo dicevano solo le impronte, e i file diversi andavano cercati coi diff.
+  Ora c'è il confronto a coppie, file per file: «A ↔ B: uguali» oppure «A ↔ B: N file — diversi: …;
+  solo in A: …». L'uscita dichiara anche che chi è avanti non si misura dal contenuto, ma lo dice la
+  storia delle copie. `tests/test-fork-stato.sh` ha tre controlli nuovi: rosso prima (3 FAIL), verde
+  ora (15/0). Sabotaggio: con la lista dei file di A svuotata torna rosso (14/1).

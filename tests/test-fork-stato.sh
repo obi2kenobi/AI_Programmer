@@ -43,6 +43,21 @@ printf 'function main() { return 0; }\n' > "$SB/vecchia/Codice.js"
 OUT=$(bash "$TOOL" "$SB/vivo" "$SB/fork" "$SB/vecchia" 2>&1); RC=$?
 [ $RC -eq 1 ] && grep -q "vecchia ≠ vivo" <<<"$OUT" && ok "tre copie: l'indietro è nominato nella matrice" || ko "matrice a tre incompleta"
 
+# (2026-09-24, terzo ventaglio, V3 fuori tetto): la matrice confrontava ogni copia solo con la prima e
+# non diceva QUALI file differiscono. Con tre copie fa, fb, fc (fb e fc uguali fra loro, entrambe diverse
+# da fa) che fb = fc lo dicevano solo le impronte; e «chi e' indietro e di quanto» (skill, M3) restava
+# da ricostruire a mano coi diff.
+for c in fa fb fc; do mkdir -p "$SB/$c"; printf 'function a(){ return 1; }\n' > "$SB/$c/Code.gs"; printf '<p>x</p>\n' > "$SB/$c/Index.html"; done
+printf 'function a(){ return 2; }\n' > "$SB/fb/Code.gs"; cp "$SB/fb/Code.gs" "$SB/fc/Code.gs"
+printf 'function b(){}\n' > "$SB/fb/Extra.gs"; cp "$SB/fb/Extra.gs" "$SB/fc/Extra.gs"
+OUT=$(bash "$TOOL" "$SB/fa" "$SB/fb" "$SB/fc" 2>&1); RC=$?
+grep -c '^  fb ↔ fc: uguali' <<<"$OUT" >/dev/null \
+  && ok "matrice a coppie: fb e fc dichiarate uguali fra loro" || ko "la matrice non confronta fb con fc: $OUT"
+grep -c '^  fa ↔ fb: 2 file — diversi: Code.gs; solo in fb: Extra.gs' <<<"$OUT" >/dev/null \
+  && ok "la matrice dice quali file differiscono e quali mancano" || ko "la matrice non nomina i file: $OUT"
+grep -c 'chi è avanti non si misura dal contenuto' <<<"$OUT" >/dev/null \
+  && ok "il verso della deriva (chi e' avanti) e' dichiarato non misurato" || ko "il verso della deriva non e' dichiarato"
+
 # copia inesistente → uso, exit 2
 bash "$TOOL" "$SB/vivo" /non/esiste >/dev/null 2>&1; RC=$?
 [ $RC -eq 2 ] && ok "copia inesistente: exit 2 (uso)" || ko "copia inesistente: rc=$RC"
