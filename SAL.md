@@ -3488,3 +3488,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Ora la cattura porta `|| true`, e le forme `-v` vanno all'agente.
   - Banco: `tests/test-salda-e002.sh`, 2 casi che ESEGUONO prima e dopo e confrontano l'esito.
     Sabotaggio (via `|| true`): 1 rosso.
+- **Q17**, da A2, verde senza verdetto: nove attacchi di `tools/giri-avversari.sh` cercavano il nome
+  della sonda («S7»). `tools/giri-ignoranti.sh` lo stampa sia con OK sia con FIND: il verdetto era
+  sempre TIENE.
+  - Ora leggono «^FIND +S…», come già faceva `tools/prova-rilevatori.sh`.
+  - Batteria rieseguita in un clone: da 88 TIENE / 0 AGGIRATI a 84 / 4. A18, C10, G7 e G20, gli
+    stessi previsti dal giro, erano aggirati davvero e contati fra i TIENE. Si curano nei passi
+    seguenti.
+  - Banco: `tests/test-giri-avversari-verdetto.sh` (premessa misurata + cricchetto sulla forma).

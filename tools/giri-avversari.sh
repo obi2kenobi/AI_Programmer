@@ -80,7 +80,7 @@ difesa_test tests/test-canone-integrita.sh "A3 indice che cita pattern inesisten
 
 att; mv patterns/watchdog-guardato.md /tmp/avv-pattern.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S7" <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
+grep -qE "^FIND +S7 " <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
 mv /tmp/avv-pattern.md patterns/watchdog-guardato.md
 
 att; sedi 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
@@ -137,7 +137,7 @@ mv /tmp/avv-ga .gitattributes
 
 att; rm -rf .claude/skills/design-doc
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S8" <<<"$OUT_BAT" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
+grep -qE "^FIND +S8 " <<<"$OUT_BAT" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
 git checkout -- .claude/skills 2>/dev/null; true
 
 att; sedi 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
@@ -209,12 +209,13 @@ rm docs/campo/2026-08-28-attacco-gate.md
 
 att; printf 'Il sistema ha 999 test e 999 pattern.\n' >> METHOD.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S2" <<<"$OUT_BAT" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
+grep -qE "^FIND +S2 " <<<"$OUT_BAT" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
 git checkout -- METHOD.md
 
 att; CJK=$(python3 -c "print(chr(0x81ea)+chr(0x8eab)+chr(0x7684))")
 printf '%s\n' "$CJK" >> SAL-ARCHIVIO.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S1" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -qE "^FIND +S1 " <<<"$OUT_BAT" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
 git checkout -- SAL-ARCHIVIO.md
 
 att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > /tmp/avv-finto.sh
@@ -232,7 +233,7 @@ echo "$OUT" | grep -q "ARCH: endpoints" && tiene "C9 endpoint cancellato + indic
 git checkout -- docs/bc; rm -rf .ciclo
 
 att; printf '#!/usr/bin/env python3\nimport time\ntime.sleep(2)\nraise RuntimeError("boom ritardato")\n' > tools/_sleep_malvagio.py
-OUT=$(bash tools/giri-ignoranti.sh 2>/dev/null | grep -c "S3")
+OUT=$(bash tools/giri-ignoranti.sh 2>/dev/null | grep -cE "^FIND +S3 ")
 [ "${OUT:-0}" -ge 1 ] && tiene "C10 oracolo lento-che-crasha preso lo stesso" || aggirato "C10 S3 uccide a 0.9s: un oracolo che crasha dopo 2s passerebbe"
 rm tools/_sleep_malvagio.py
 
@@ -395,7 +396,7 @@ git checkout -- patterns/README.md
 
 att; printf 'REPO-%s\n' 'Z' >> night-shift/repos-index.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S9" <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
+grep -qE "^FIND +S9 " <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
 git checkout -- night-shift/repos-index.md
 
 att; sedi 's/ .opencode\/plugins//' tools/sync-repo.sh
@@ -442,19 +443,19 @@ git checkout -- tools/campo-triage.sh
 
 att; rm .night-verify
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S8" <<<"$OUT_BAT" && tiene "G17 .night-verify cancellato visto da S8" || aggirato "G17 .night-verify senza presidio"
+grep -qE "^FIND +S8 " <<<"$OUT_BAT" && tiene "G17 .night-verify cancellato visto da S8" || aggirato "G17 .night-verify senza presidio"
 git checkout -- .night-verify 2>/dev/null; true
 
 att; ack "G18 il PROSA di AGENTS.md non ha guardia riga-per-rigola: presidiati i numeri (S2), i file promessi (S8) e le convenzioni gate — la prosa vive di revisione"
 
 att; rm docs/MANUALE-OPERATIVO.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -qE "S4|S6" <<<"$OUT_BAT" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
+grep -qE "^FIND +(S4|S6) " <<<"$OUT_BAT" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
 git checkout -- docs/MANUALE-OPERATIVO.md
 
 att; sedi 's/sync-repo.sh/sync-repX.sh/g' docs/benvenuto-collaboratori.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S6" <<<"$OUT_BAT" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
+grep -qE "^FIND +S6 " <<<"$OUT_BAT" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
 git checkout -- docs/benvenuto-collaboratori.md
 
 echo ""
