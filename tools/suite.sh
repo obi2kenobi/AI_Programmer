@@ -22,8 +22,12 @@ cd "$DIR"
 N=0
 TOT=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
 [ "$TOT" -eq 0 ] && { echo "⛔ suite: nessun tests/test-*.sh trovato"; exit 1; }
+T0=$(date +%s)
 for t in tests/test-*.sh; do
   N=$((N+1))
+  # (2026-09-24, terzo ventaglio, V4#1): il banco in corso, su stderr — se un budget taglia la suite,
+  # l'ultima riga dice dove si e' fermata
+  echo "▶ $t" >&2
   OUT=$(bash "$t" 2>&1) || {
     echo "FALLITO ($N/$TOT): $t"
     echo "$OUT" | tail -10
@@ -38,4 +42,5 @@ for t in tests/test-*.sh; do
     exit 1
   fi
 done
-echo "Suite test hub: $N/$TOT file superati"
+echo "Durata della suite: $(( $(date +%s) - T0 )) s"
+echo "Suite test hub: $N/$TOT file superati"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono

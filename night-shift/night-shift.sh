@@ -326,11 +326,17 @@ shift_repo() {
       # assegnazioni) non sono comandi eseguibili e con ai_timeout anteposto
       # morivano tutti (16/45 rosse false). Il morning-gate faceva gia' cosi:
       # era il turno l'asimmetria. Niente eval: la riga e' UN argomento.
-        if ! (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
+        # (V4#1, 2026-09-24): esegui_verifica (lib.sh) tiene l'uscita in un file del lavoro del turno e
+        # distingue VERDE (con la durata: il margine sul budget si legge nel log), ROSSA e SFORO
+        NV_OUT="$WORK/.night-verify-${REPO//\//_}-$NV_TOTALI.log"
+        if NV_ESITO=$(esegui_verifica "$DIR" "$NV_SEC" "$NV_CMD" "$NV_OUT"); then
+          log "REPO $REPO: verifica $NV_ESITO: $NV_CMD"
+        else
           NV_ROSSI=$((NV_ROSSI+1))
           NV_ROSSI_LISTA="${NV_ROSSI_LISTA:+$NV_ROSSI_LISTA
-}$NV_CMD"
-          log "REPO $REPO: VERIFICA ROSSA: $NV_CMD"
+}$NV_CMD — $NV_ESITO"
+          # «VERIFICA ROSSA:» resta il prefisso: dashboard.py e cervello-impara.sh lo cercano, anche per lo sforo
+          log "REPO $REPO: VERIFICA ROSSA: $NV_CMD — $NV_ESITO (uscita in $NV_OUT)"
         fi
       done < "$DIR/.night-verify"
     fi

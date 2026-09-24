@@ -158,6 +158,24 @@ grep -c "timeout: perl" <<<"$(AI_TIMEOUT_FORCE_PERL=1 ambiente_turno 2>/dev/null
 grep -c 'log "$(ambiente_turno)"' "$HERE/night-shift/night-shift.sh" >/dev/null \
   && ok "night-shift.sh scrive l'ambiente nel log" || ko "night-shift.sh non scrive l'ambiente nel log"
 
+# --- (2026-09-24, terzo ventaglio, V4#1): esegui_verifica — lo sforo del budget non e' un rosso qualunque.
+# Il turno scriveva «VERIFICA ROSSA» per ogni rc != 0 e buttava l'uscita: uno sforo (124) e un banco rotto
+# erano lo stesso evento, e nessuno sapeva dove la suite si era fermata.
+if command -v esegui_verifica >/dev/null; then
+  VD=$(mktemp -d)
+  E1=$(esegui_verifica "$VD" 5 'echo tutto bene' "$VD/v.log"); R1=$?
+  E2=$(esegui_verifica "$VD" 5 'echo banco rotto >&2; exit 1' "$VD/r.log"); R2=$?
+  E3=$(esegui_verifica "$VD" 1 'echo "▶ tests/test-lento.sh" >&2; sleep 5' "$VD/s.log"); R3=$?
+  [ "$R1" -eq 0 ] && grep -cE '^VERDE in [0-9]+ s$' <<<"$E1" >/dev/null && ok "esegui_verifica: verde, con la durata («$E1»)" || ko "esegui_verifica verde: rc $R1 «$E1»"
+  [ "$R2" -eq 1 ] && grep -c 'ROSSA (rc 1)' <<<"$E2" >/dev/null && grep -c 'banco rotto' <<<"$E2" >/dev/null && ok "esegui_verifica: rosso, con rc e ultima riga («$E2»)" || ko "esegui_verifica rosso: rc $R2 «$E2»"
+  [ "$R3" -eq 124 ] && grep -c 'SFORO DEL BUDGET (1 s)' <<<"$E3" >/dev/null && grep -c 'test-lento' <<<"$E3" >/dev/null && ok "esegui_verifica: sforo distinto dal rosso, e dice dove («$E3»)" || ko "esegui_verifica sforo: rc $R3 «$E3»"
+  [ -s "$VD/r.log" ] && ok "esegui_verifica: l'uscita resta in un file, non in /dev/null" || ko "esegui_verifica: uscita buttata"
+  rm -rf "$VD"
+else
+  ko "esegui_verifica assente da night-shift/lib.sh"
+fi
+grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
+
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
 # (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
 # («Mask, don't omit») e del pattern segreto-come-impronta — «segreto <impronta> · N caratteri».

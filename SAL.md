@@ -4071,3 +4071,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   prima, rosso al sabotaggio. Il banco passa da 43 a 16 s. `tests/test-lock-turno-corsa.sh` fa le
   prove a lotti di 20 in parallelo: da 21 a 2,5 s, e il sabotaggio del rigiudizio ora dà 22 doppie su
   60 (prima 3).
+- **Terzo ventaglio, V4#1 — lo sforo del budget era un rosso muto.** Il turno scriveva «VERIFICA
+  ROSSA» per ogni rc diverso da 0 e buttava l'uscita. Uno sforo (124) e un banco rotto erano lo
+  stesso evento, e dopo un taglio nessuno sapeva dove la suite si era fermata. Ora c'è
+  `esegui_verifica` in `night-shift/lib.sh`: l'uscita resta in un file del lavoro del turno, e l'esito
+  è VERDE con la durata (il margine sul budget si legge nel log ogni notte), ROSSA con rc e ultima riga
+  mascherata, oppure SFORO DEL BUDGET. `tools/suite.sh` scrive su stderr il banco in corso (dopo un
+  taglio l'ultima riga dice dove) e la durata totale. Il prefisso «VERIFICA ROSSA:» del log resta:
+  dashboard e cervello-impara lo cercano. Banco in `tests/test-lib.sh`: 2 rossi prima, 1 al
+  sabotaggio (lo sforo trattato come rosso).

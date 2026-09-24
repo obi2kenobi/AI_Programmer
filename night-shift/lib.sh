@@ -79,6 +79,26 @@ run_guarded() {
   ai_timeout "$secs" "$@"
 }
 
+# esegui_verifica <dir> <secondi> <riga> <file-uscita>: esegue una riga di .night-verify dalla radice della
+# repo, sotto budget, e stampa UNA riga di esito: «VERDE in N s», «ROSSA (rc X) in N s — <ultima riga>»,
+# «SFORO DEL BUDGET (S s) — <ultima riga>». L'uscita resta nel file; rc = quello della riga (124 = sforo).
+# (2026-09-24, terzo ventaglio, V4#1): il turno scriveva «VERIFICA ROSSA» per ogni rc diverso da 0 e
+# buttava l'uscita in /dev/null — uno sforo del budget e un banco rotto erano lo stesso evento, e dopo un
+# taglio nessuno sapeva dove la suite si era fermata. L'ultima riga passa dalla maschera: finisce nel log.
+esegui_verifica() {
+  local dir="$1" sec="$2" riga="$3" out="$4" t0 rc dur ult
+  t0=$(date +%s)
+  (cd "$dir" && ai_timeout "$sec" bash -c "$riga" >"$out" 2>&1 </dev/null); rc=$?
+  dur=$(( $(date +%s) - t0 ))
+  ult=$(grep -v '^[[:space:]]*$' "$out" 2>/dev/null | tail -1 | cut -c1-160 | mask_secrets)
+  case "$rc" in
+    0) echo "VERDE in $dur s" ;;
+    124) echo "SFORO DEL BUDGET ($sec s) — ${ult:-nessuna uscita}" ;;
+    *) echo "ROSSA (rc $rc) in $dur s — ${ult:-nessuna uscita}" ;;
+  esac
+  return "$rc"
+}
+
 # ambiente_turno: una riga per il log — la bash, il ramo di ai_timeout, la sandbox (2026-09-23, notte dei
 # giri, T3#6). Il turno gira sul Mac, i banchi su Linux: senza questa riga le differenze fra i due
 # (il ramo perl del timeout, la sandbox) non si misurano dal log.
