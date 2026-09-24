@@ -112,6 +112,25 @@ gesto si repo-verde >/dev/null 2>&1
   || ko "deploy con un file non tracciato (clasp lo spedisce)"
 rm -f "$WORK/intruso.gs"
 
+# ── (2026-09-24, terzo ventaglio, V2#3): i due punti della produzione che nessun banco giudicava ──
+# (a) HEAD AVANZATO e albero pulito: il controllo «commit firmato» si toglieva a banco verde, e un «si»
+#     deploiava un commit mai firmato. (b) clasp che fallisce: mai provato — il npx finto vinceva sempre.
+bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-verde" >/dev/null 2>&1
+( cd "$WORK" && git checkout -q "$(cat "$TMP/deploy-pronto/repo-verde/commit.txt")" 2>/dev/null \
+  && echo 'function nonfirmata(){}' >> app.gs && git -c user.email=t@t -c user.name=t -c commit.gpgsign=false commit -qam "non firmato" )
+rm -f "$TMP/deploy-pronto/repo-verde/STORICO.log"
+OUT=$(gesto si repo-verde 2>&1)
+[ ! -f "$TMP/deploy-pronto/repo-verde/STORICO.log" ] && grep -c "non e' quello firmato" <<<"$OUT" >/dev/null \
+  && ok "HEAD avanzato su un commit non firmato, albero pulito → nessun deploy, e lo dice" || ko "deploy di un commit NON firmato (albero pulito): $(grep -m1 -E 'deploy|firmato' <<<"$OUT")"
+( cd "$WORK" && git checkout -q "$(cat "$TMP/deploy-pronto/repo-verde/commit.txt")" 2>/dev/null )
+printf '#!/bin/bash\necho "CLASP-FINTO $* — errore di autenticazione"\nexit 1\n' > "$TMP/bin/npx"
+rm -f "$TMP/deploy-pronto/repo-verde/STORICO.log"
+gesto si repo-verde >/dev/null 2>&1
+grep -c "FALLITO$" "$TMP/deploy-pronto/repo-verde/STORICO.log" >/dev/null 2>&1 && ! grep -c " OK$" "$TMP/deploy-pronto/repo-verde/STORICO.log" >/dev/null 2>&1 \
+  && [ -f "$TMP/deploy-pronto/repo-verde/MANIFEST.md" ] \
+  && ok "clasp che fallisce → STORICO dice FALLITO, e il pacchetto resta (non consumato)" || ko "clasp fallito registrato come riuscito, o pacchetto consumato: $(tail -1 "$TMP/deploy-pronto/repo-verde/STORICO.log" 2>/dev/null)"
+printf '#!/bin/bash\necho "CLASP-FINTO $*"\nexit 0\n' > "$TMP/bin/npx"; chmod +x "$TMP/bin/npx"
+
 # prepara-deploy: «verifica verde» senza verifiche e' una frase falsa nel manifest
 mkrepo repo-vuota '# solo commenti'
 bash "$TMP/tools/prepara-deploy.sh" "$TMP/repo-vuota" >/dev/null 2>&1 \

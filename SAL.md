@@ -4117,3 +4117,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   contengono, anche se girano sempre sotto il pipefail di chi le include. Ora conta anche un file
   incluso da uno script sotto pipefail. Banco in `tests/test-e002-codice.sh` (libreria di prova):
   rosso prima; il mio sito rimesso in `night-shift/lib.sh` è rosso. Nessun altro sito nelle librerie.
+- **Terzo ventaglio, V2#3 — i due punti del deploy in produzione che nessun banco giudicava.** In
+  `tools/deploy-ora.sh` il controllo «il commit è quello firmato» si poteva togliere a banco verde. Il
+  giro V2 l'ha riprodotto: un «sì» deploiava un commit mai firmato. E un `clasp push` fallito non era
+  mai provato, perché il npx finto vinceva sempre. Il codice era giusto (`pipefail` c'è, il controllo
+  c'è): mancava il banco. `tests/test-deploy-assistito.sh` ha ora due scenari: HEAD avanzato su un
+  commit non firmato con albero pulito (nessun deploy, e lo dice), e clasp che esce 1 (STORICO dice
+  FALLITO, il pacchetto resta). Verdi sul codice di oggi. I due sabotaggi del giro (S20a: controllo
+  del commit tolto; S20b: `|| true` su clasp) ora sono rossi: 2 e 1.
