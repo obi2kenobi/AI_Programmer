@@ -7,11 +7,23 @@
 // Uso: node tools/verifica-visiva.js <url> <output.png>
 // Exit 0 = screenshot preso, nessun segnale d'errore noto nel testo della pagina.
 // Exit 1 = screenshot preso ma la pagina mostra un errore noto (Apps Script o vuota).
-// Exit 2 = non è stato possibile aprire l'URL (rete, auth, timeout).
+// Exit 2 = non è stata aperta la webapp: rete, accesso Google, certificato, timeout, browser assente.
 const { execFileSync } = require("child_process");
 const fs = require("fs");
 
-const CHROME = process.env.CHROME_PATH || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+// (Q21, 2026-09-23, giro A7 della notte): il default era il percorso di UNA cloud — sul Mac mancava
+// e l'errore diceva «impossibile aprire l'URL». Ora si cerca fra i candidati del Mac e della cloud;
+// nessuno = exit 2 detto come tale.
+const CANDIDATI_CHROME = [
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/Applications/Chromium.app/Contents/MacOS/Chromium",
+  "/opt/pw-browsers/chromium",
+  "/usr/bin/chromium", "/usr/bin/chromium-browser", "/usr/bin/google-chrome",
+];
+function trovaChrome() {
+  if (process.env.CHROME_PATH) return fs.existsSync(process.env.CHROME_PATH) ? process.env.CHROME_PATH : null;
+  return CANDIDATI_CHROME.find((c) => fs.existsSync(c)) || null;
+}
 const FLAGS_COMUNI = ["--headless=new", "--no-sandbox", "--disable-gpu", "--virtual-time-budget=8000"];
 
 // Segnali noti di Apps Script/webapp rotta — non un elenco esaustivo, un primo filtro onesto.
@@ -28,6 +40,15 @@ const SEGNALI_ERRORE = [
   "undefined", "NaN", "[object Object]",
 ];
 const SOGLIA_TESTO_VUOTO = 40; // caratteri di testo visibile sotto cui la pagina è "vuota"
+// (Q21): pagine che NON sono la webapp — misurate stanotte con Chromium headless, davano exit 0:
+// l'accesso di Google (webapp che chiede il login, aperta da un browser anonimo) e le pagine
+// d'errore di Chrome (certificato, rete), che portano sempre un codice ERR_… in ogni lingua.
+// Sono «non aperta» (exit 2), non un verde e non un errore della webapp.
+const SEGNALI_NON_PAGINA = [
+  /\bERR_[A-Z_]+\b/,
+  /Utilizza il tuo Account Google|Use your Google Account/i,
+  /Accedi - Account Google|Sign in - Google Accounts/i,
+];
 
 // estrazione-per-testabilità: isolata dalla logica di dominio (Chromium, exit code) per
 // poterla provare con dati sintetici (pattern estrazione-per-testabilita.md).
@@ -45,11 +66,26 @@ function estraiTesto(dom) {
     .trim();
 }
 
+// giudica(testo): {esito, motivo} — 0 verde · 1 la webapp mostra un errore · 2 non e' la webapp
+function giudica(testo) {
+  const nonPagina = SEGNALI_NON_PAGINA.find((r) => r.test(testo));
+  if (nonPagina) return { esito: 2, motivo: `non e' la webapp (accesso Google o pagina d'errore di Chrome: ${testo.match(nonPagina)[0]})` };
+  const trovato = SEGNALI_ERRORE.find((s) => testo.toLowerCase().includes(s.toLowerCase()));
+  if (trovato) return { esito: 1, motivo: `segnale d'errore nella pagina: "${trovato}" — lo screenshot esiste ma NON è un verde valido` };
+  if (testo.length < SOGLIA_TESTO_VUOTO) return { esito: 1, motivo: `pagina quasi vuota (${testo.length} caratteri di testo) — probabile schermata bianca/errore silenzioso` };
+  return { esito: 0, motivo: `nessun segnale d'errore noto, ${testo.length} caratteri di testo visibile` };
+}
+
 function main() {
   const url = process.argv[2];
   const out = process.argv[3];
   if (!url || !out) {
     console.error("uso: node tools/verifica-visiva.js <url> <output.png>");
+    process.exit(2);
+  }
+  const CHROME = trovaChrome();
+  if (!CHROME) {
+    console.error(`✗ nessun Chromium trovato (CHROME_PATH=${process.env.CHROME_PATH || "non impostato"}; cercati: ${CANDIDATI_CHROME.join(", ")}) — non ho aperto l'URL`);
     process.exit(2);
   }
 
@@ -73,17 +109,13 @@ function main() {
   const dimensioni = fs.existsSync(out) ? fs.statSync(out).size : 0;
   console.log(`✓ screenshot salvato: ${out} (${dimensioni} byte)`);
 
-  const trovato = SEGNALI_ERRORE.find((s) => testo.toLowerCase().includes(s.toLowerCase()));
-  if (trovato) {
-    console.error(`✗ segnale d'errore nella pagina: "${trovato}" — lo screenshot esiste ma NON è un verde valido.`);
-    process.exit(1);
+  const g = giudica(testo);
+  if (g.esito !== 0) {
+    console.error(`✗ ${g.motivo}.`);
+    process.exit(g.esito);
   }
-  if (testo.length < SOGLIA_TESTO_VUOTO) {
-    console.error(`✗ pagina quasi vuota (${testo.length} caratteri di testo) — probabile schermata bianca/errore silenzioso.`);
-    process.exit(1);
-  }
-  console.log(`✓ nessun segnale d'errore noto, ${testo.length} caratteri di testo visibile.`);
+  console.log(`✓ ${g.motivo}.`);
 }
 
 if (require.main === module) main();
-module.exports = { SEGNALI_ERRORE, SOGLIA_TESTO_VUOTO, estraiTesto };
+module.exports = { SEGNALI_ERRORE, SEGNALI_NON_PAGINA, SOGLIA_TESTO_VUOTO, estraiTesto, giudica, trovaChrome };

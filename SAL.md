@@ -3541,3 +3541,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     aperto): 1 rosso.
   - NON VERIFICATO DAL VIVO: OpenCode non è installato qui; sul Mac va visto che il turno carichi
     gli agenti.
+- **Q21**, da A7, `tools/verifica-visiva.js` (la prova visiva di un deploy). Misurato stanotte con
+  Chromium headless: tre pagine che NON sono la webapp davano exit 0, «verde»:
+  - l'accesso di Google (una webapp che chiede il login, aperta da un browser anonimo);
+  - l'errore di certificato;
+  - «This site can’t be reached».
+  - E il Chromium di default era il percorso di questa cloud: sul Mac l'errore diceva «rete,
+    auth, timeout».
+  - Ora `giudica()` è una funzione pura: login e pagine d'errore di Chrome (codice ERR_…, in ogni
+    lingua) sono exit 2, «non aperta». Il Chromium si cerca fra i candidati del Mac e della cloud.
+  - Banco: `tests/test-verifica-visiva-giudizio.sh`, 8 casi con i testi misurati, rossi prima.
+    Controprova col tool vero sulle due pagine: rc=2. Sabotaggio (via ERR_): 2 rossi.
+  - ASSUNTO: i percorsi di Chrome sul Mac sono quelli standard di /Applications.

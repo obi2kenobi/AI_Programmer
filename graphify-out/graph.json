@@ -113,42 +113,6 @@
       "source_location": "L42"
     },
     {
-      "id": "tools_bc_index_catalogo_mancanti",
-      "label": "catalogo_mancanti()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "catalogo_mancanti()",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L27"
-    },
-    {
-      "id": "tools_bc_index_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L48"
-    },
-    {
-      "id": "tools_bc_index_parse",
-      "label": "parse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "parse()",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L15"
-    },
-    {
       "id": "tools_bc_tipi_metadata_main",
       "label": "main()",
       "_callable": true,
@@ -185,7 +149,19 @@
       "source_location": "L36"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_margine_documento_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
@@ -193,11 +169,11 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L58"
     },
     {
-      "id": "tools_rating_dso_clienti_normalizza",
+      "id": "tools_margine_documento_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
@@ -205,8 +181,8 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L38"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -302,7 +278,19 @@
       "file_type": "code",
       "norm_label": "estraitesto()",
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L34"
+      "source_location": "L55"
+    },
+    {
+      "id": "tools_verifica_visiva_giudica",
+      "label": "giudica()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "verifica-visiva.js",
+      "file_type": "code",
+      "norm_label": "giudica()",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L70"
     },
     {
       "id": "tools_verifica_visiva_main",
@@ -314,7 +302,19 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L48"
+      "source_location": "L79"
+    },
+    {
+      "id": "tools_verifica_visiva_trovachrome",
+      "label": "trovaChrome()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "verifica-visiva.js",
+      "file_type": "code",
+      "norm_label": "trovachrome()",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L23"
     },
     {
       "id": "tools_valorizzazione_magazzino_applica_override",
@@ -399,18 +399,6 @@
       "norm_label": "cred()",
       "source_file": "tools/bc_map.py",
       "source_location": "L36"
-    },
-    {
-      "id": "tools_bc_map_fetch",
-      "label": "fetch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "code",
-      "norm_label": "fetch()",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L67"
     },
     {
       "id": "tools_bc_map_get_token",
@@ -509,40 +497,76 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
+      "id": "tools_bc_index_catalogo_mancanti",
+      "label": "catalogo_mancanti()",
       "_callable": true,
       "_origin": "ast",
-      "community": 61,
-      "community_name": "margine_documento.py",
+      "community": 719,
+      "community_name": "bc_index.py",
       "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L42"
+      "norm_label": "catalogo_mancanti()",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L27"
     },
     {
-      "id": "tools_margine_documento_main",
+      "id": "tools_bc_index_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
-      "community": 61,
-      "community_name": "margine_documento.py",
+      "community": 719,
+      "community_name": "bc_index.py",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L58"
+      "source_file": "tools/bc_index.py",
+      "source_location": "L48"
     },
     {
-      "id": "tools_margine_documento_normalizza",
+      "id": "tools_bc_index_parse",
+      "label": "parse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 719,
+      "community_name": "bc_index.py",
+      "file_type": "code",
+      "norm_label": "parse()",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L15"
+    },
+    {
+      "id": "tools_bc_map_fetch",
+      "label": "fetch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "code",
+      "norm_label": "fetch()",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L67"
+    },
+    {
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L46"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
-      "community": 61,
-      "community_name": "margine_documento.py",
+      "community": 722,
+      "community_name": "rating_dso_clienti.py",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L38"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L42"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -2415,18 +2439,6 @@
       "norm_label": "2026-09-23 (17\u00b0) \u2014 il cancello clasp non scambia piu il corpo di un heredoc per un comando (si di luca)",
       "source_file": "SAL.md",
       "source_location": "L3306"
-    },
-    {
-      "id": "sal_2026_09_23_18_la_notte_dei_giri_mandato_di_luca_analisi_lenta_trova_e_aggiusta_tutto_10_giri_e_poi_20_non_fermarti",
-      "label": "2026-09-23 (18\u00b0) \u2014 la notte dei giri: mandato di Luca \u00abanalisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti\u00bb",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "Log cronologico",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-09-23 (18\u00b0) \u2014 la notte dei giri: mandato di luca \u00abanalisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti\u00bb",
-      "source_file": "SAL.md",
-      "source_location": "L3335"
     },
     {
       "id": "sal_2026_09_23_2_gli_hook_partono_dalla_radice_del_progetto_s\u00ec_di_luca",
@@ -11556,17 +11568,6 @@
       "source_location": "L24"
     },
     {
-      "id": "tools_bc_index",
-      "label": "bc_index.py",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "bc_index.py",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_bc_tipi_metadata",
       "label": "bc_tipi_metadata.py",
       "_origin": "ast",
@@ -11587,62 +11588,6 @@
       "norm_label": "verifica_banco.py",
       "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
-    },
-    {
-      "id": "docs_campo_2026_08_31_repo_j_revisione_100_agenti_severit\u00e0_media_15",
-      "label": "Severit\u00e0 MEDIA (15)",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "severita media (15)",
-      "source_file": "docs/campo/2026-08-31-repo-j-revisione-100-agenti.md",
-      "source_location": "L71"
-    },
-    {
-      "id": "tools_bc_index_rationale_16",
-      "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L16"
-    },
-    {
-      "id": "tools_bc_index_rationale_2",
-      "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_bc_index_rationale_28",
-      "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L28"
-    },
-    {
-      "id": "tools_bc_index_rationale_49",
-      "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
-      "source_file": "tools/bc_index.py",
-      "source_location": "L49"
     },
     {
       "id": "tools_bc_tipi_metadata_rationale_2",
@@ -27454,14 +27399,14 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L1"
     },
     {
@@ -27498,26 +27443,37 @@
       "source_location": "L37"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "id": "tools_margine_documento_rationale_43",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "tools_margine_documento_rationale_59",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L59"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -30376,6 +30332,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_verifica_visiva_candidati_chrome",
+      "label": "CANDIDATI_CHROME",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "verifica-visiva.js",
+      "file_type": "code",
+      "norm_label": "candidati_chrome",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L17"
+    },
+    {
       "id": "tools_verifica_visiva_execfilesync",
       "label": "{ execFileSync }",
       "_origin": "ast",
@@ -30395,7 +30362,7 @@
       "file_type": "code",
       "norm_label": "flags_comuni",
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L15"
+      "source_location": "L27"
     },
     {
       "id": "tools_verifica_visiva_fs",
@@ -30417,7 +30384,30 @@
       "file_type": "code",
       "norm_label": "segnali_errore",
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L24"
+      "source_location": "L36"
+    },
+    {
+      "id": "tools_verifica_visiva_segnali_non_pagina",
+      "label": "SEGNALI_NON_PAGINA",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "verifica-visiva.js",
+      "file_type": "code",
+      "norm_label": "segnali_non_pagina",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "sal_2026_09_23_18_la_notte_dei_giri_mandato_di_luca_analisi_lenta_trova_e_aggiusta_tutto_10_giri_e_poi_20_non_fermarti",
+      "label": "2026-09-23 (18\u00b0) \u2014 la notte dei giri: mandato di Luca \u00abanalisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti\u00bb",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "verifica-visiva.js",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-23 (18\u00b0) \u2014 la notte dei giri: mandato di luca \u00abanalisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti\u00bb",
+      "source_file": "SAL.md",
+      "source_location": "L3335"
     },
     {
       "id": "opencode_plugins_graphify_rationale_4",
@@ -34923,234 +34913,6 @@
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni",
-      "label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_1_la_famiglia_di_difetti_nuova_il_pezzo_che_vale_per_tutto_il_parco",
-      "label": "1. La famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. la famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L17"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2026_09_02_una_webapp_gas_morta_da_loggati_il_manifest_i_verdetti_che_mentono_la_consegna_dei_comandi",
-      "label": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-09-02 \u2014 una webapp gas morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2_la_seconda_famiglia_il_nome_del_trigger_non_segue_la_rinomina",
-      "label": "2. La seconda famiglia: il nome del trigger non segue la rinomina",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. la seconda famiglia: il nome del trigger non segue la rinomina",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L57"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_3_la_terza_l_underscore_finale_nasconde_anche_all_editor",
-      "label": "3. La terza: l'underscore finale nasconde anche all'editor",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. la terza: l'underscore finale nasconde anche all'editor",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L90"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_4_la_lezione_di_ragionamento_pi\u00f9_costosa_correlazione_al_posto_della_causa",
-      "label": "4. La lezione di ragionamento pi\u00f9 costosa: correlazione al posto della causa",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. la lezione di ragionamento piu costosa: correlazione al posto della causa",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L115"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
-      "label": "5.1 Il denominatore va provato, non stampato",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.1 il denominatore va provato, non stampato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L137"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
-      "label": "5.2 Un verde per assenza non \u00e8 un verde",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.2 un verde per assenza non e un verde",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L157"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
-      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L163"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
-      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L169"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
-      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L174"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
-      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L132"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
-      "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "6. il byte invisibile (famiglia chiusa, non due casi curati)",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L183"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_7_consegnare_comandi_a_un_umano_\u00e8_un_interfaccia_e_l_ho_rotta_quattro_volte",
-      "label": "7. Consegnare comandi a un umano \u00e8 un'interfaccia, e l'ho rotta quattro volte",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "7. consegnare comandi a un umano e un'interfaccia, e l'ho rotta quattro volte",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L205"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_8_cosa_ha_retto",
-      "label": "8. Cosa ha retto",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "8. cosa ha retto",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L245"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_9_cosa_ha_ostacolato",
-      "label": "9. Cosa ha ostacolato",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "9. cosa ha ostacolato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L267"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_il_corollario_atomico",
-      "label": "Il corollario atomico",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "il corollario atomico",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L43"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_numeri_della_giornata",
-      "label": "Numeri della giornata",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "numeri della giornata",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L321"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
-      "label": "Proposta al canone",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "proposta al canone",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L280"
-    },
-    {
       "id": "tools_bc_map_rationale_104",
       "label": "Le colonne compilate a mano (Significato, Verificato) del file esistente, per\u2026",
       "_origin": "ast",
@@ -35237,17 +34999,6 @@
       "norm_label": "oauth2 client-credentials verso bc: il token vive in memoria per il processo,...",
       "source_file": "tools/bc_map.py",
       "source_location": "L44"
-    },
-    {
-      "id": "tools_bc_map_rationale_68",
-      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "bc_map.py",
-      "file_type": "rationale",
-      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L68"
     },
     {
       "id": "tools_bc_map_rationale_92",
@@ -39778,48 +39529,148 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni",
+      "label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
-      "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_1_la_famiglia_di_difetti_nuova_il_pezzo_che_vale_per_tutto_il_parco",
+      "label": "1. La famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. la famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L17"
     },
     {
-      "id": "tools_margine_documento_rationale_43",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2026_09_02_una_webapp_gas_morta_da_loggati_il_manifest_i_verdetti_che_mentono_la_consegna_dei_comandi",
+      "label": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-02 \u2014 una webapp gas morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2_la_seconda_famiglia_il_nome_del_trigger_non_segue_la_rinomina",
+      "label": "2. La seconda famiglia: il nome del trigger non segue la rinomina",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. la seconda famiglia: il nome del trigger non segue la rinomina",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L57"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_3_la_terza_l_underscore_finale_nasconde_anche_all_editor",
+      "label": "3. La terza: l'underscore finale nasconde anche all'editor",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. la terza: l'underscore finale nasconde anche all'editor",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_4_la_lezione_di_ragionamento_pi\u00f9_costosa_correlazione_al_posto_della_causa",
+      "label": "4. La lezione di ragionamento pi\u00f9 costosa: correlazione al posto della causa",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. la lezione di ragionamento piu costosa: correlazione al posto della causa",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L115"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
+      "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. il byte invisibile (famiglia chiusa, non due casi curati)",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L183"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_7_consegnare_comandi_a_un_umano_\u00e8_un_interfaccia_e_l_ho_rotta_quattro_volte",
+      "label": "7. Consegnare comandi a un umano \u00e8 un'interfaccia, e l'ho rotta quattro volte",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. consegnare comandi a un umano e un'interfaccia, e l'ho rotta quattro volte",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L205"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_8_cosa_ha_retto",
+      "label": "8. Cosa ha retto",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "8. cosa ha retto",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L245"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_9_cosa_ha_ostacolato",
+      "label": "9. Cosa ha ostacolato",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "9. cosa ha ostacolato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L267"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_il_corollario_atomico",
+      "label": "Il corollario atomico",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il corollario atomico",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
       "source_location": "L43"
     },
     {
-      "id": "tools_margine_documento_rationale_59",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_numeri_della_giornata",
+      "label": "Numeri della giornata",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L59"
+      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "numeri della giornata",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L321"
     },
     {
       "id": "docs_bc_endpoints_workflowpurchasedocuments",
@@ -44233,64 +44084,71 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "id": "tools_bc_index",
+      "label": "bc_index.py",
       "_origin": "ast",
       "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
+      "community_name": "bc_index.py",
+      "file_type": "code",
+      "norm_label": "bc_index.py",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "id": "docs_campo_2026_08_31_repo_j_revisione_100_agenti_severit\u00e0_media_15",
+      "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
       "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "bc_index.py",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
+      "norm_label": "severita media (15)",
+      "source_file": "docs/campo/2026-08-31-repo-j-revisione-100-agenti.md",
+      "source_location": "L71"
     },
     {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "id": "tools_bc_index_rationale_16",
+      "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
       "_origin": "ast",
       "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
+      "community_name": "bc_index.py",
+      "file_type": "rationale",
+      "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L16"
     },
     {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "id": "tools_bc_index_rationale_2",
+      "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
       "_origin": "ast",
       "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
+      "community_name": "bc_index.py",
+      "file_type": "rationale",
+      "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L2"
     },
     {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "id": "tools_bc_index_rationale_28",
+      "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
       "_origin": "ast",
       "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
+      "community_name": "bc_index.py",
+      "file_type": "rationale",
+      "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L28"
+    },
+    {
+      "id": "tools_bc_index_rationale_49",
+      "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
+      "_origin": "ast",
+      "community": 719,
+      "community_name": "bc_index.py",
+      "file_type": "rationale",
+      "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
+      "source_file": "tools/bc_index.py",
+      "source_location": "L49"
     },
     {
       "id": "docs_campo_2026_09_19_budget_vendite_standard_cinquanta_giri",
@@ -44470,6 +44328,194 @@
       },
       "norm_label": "test-e002-banchi-curati.sh script",
       "source_file": "tests/test-e002-banchi-curati.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
+      "label": "5.1 Il denominatore va provato, non stampato",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.1 il denominatore va provato, non stampato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L137"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
+      "label": "5.2 Un verde per assenza non \u00e8 un verde",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.2 un verde per assenza non e un verde",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L157"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
+      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L163"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
+      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L169"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
+      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L174"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
+      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L132"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L280"
+    },
+    {
+      "id": "tools_bc_map_rationale_68",
+      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
+      "_origin": "ast",
+      "community": 721,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "rationale",
+      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L68"
+    },
+    {
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_47",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tests_test_verifica_visiva_giudizio",
+      "label": "test-verifica-visiva-giudizio.sh",
+      "_origin": "ast",
+      "community": 723,
+      "community_name": "test-verifica-visiva-giudizio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-verifica-visiva-giudizio.sh",
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_verifica_visiva_giudizio_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 723,
+      "community_name": "test-verifica-visiva-giudizio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L20"
+    },
+    {
+      "id": "tests_test_verifica_visiva_giudizio_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 723,
+      "community_name": "test-verifica-visiva-giudizio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L19"
+    },
+    {
+      "id": "tests_test_verifica_visiva_giudizio_sh__entry",
+      "label": "test-verifica-visiva-giudizio.sh script",
+      "_origin": "ast",
+      "community": 723,
+      "community_name": "test-verifica-visiva-giudizio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-verifica-visiva-giudizio.sh script",
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
       "source_location": "L1"
     },
     {
@@ -45630,6 +45676,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -45664,6 +45758,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1797"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -47906,18 +48012,6 @@
       "source_location": "L64"
     },
     {
-      "id": "glob",
-      "label": "glob",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "glob",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "importlib_util",
       "label": "importlib_util",
       "_origin": "semantic",
@@ -47926,18 +48020,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "importlib_util",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "os",
-      "label": "os",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "os",
       "source_file": "",
       "type": "external"
     },
@@ -48074,11 +48156,23 @@
       "type": "external"
     },
     {
+      "id": "glob",
+      "label": "glob",
+      "_origin": "semantic",
+      "community": 719,
+      "community_name": "bc_index.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "glob",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "datetime",
       "label": "datetime",
       "_origin": "semantic",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
+      "community": 722,
+      "community_name": "rating_dso_clienti.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "datetime",
@@ -48118,6 +48212,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "time",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "os",
+      "label": "os",
+      "_origin": "semantic",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "os",
       "source_file": "",
       "type": "external"
     }
@@ -53848,6 +53954,30 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_verifica_visiva_giudizio_sh__entry",
+      "target": "tests_test_verifica_visiva_giudizio_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_verifica_visiva_giudizio_sh__entry",
+      "target": "tests_test_verifica_visiva_giudizio_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
       "source": "tools_accuratezza_fatture_acquisto_main",
       "target": "tools_accuratezza_fatture_acquisto_leggi_csv",
       "relation": "calls",
@@ -55032,7 +55162,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L64",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_verifica_visiva_main",
+      "target": "tools_verifica_visiva_giudica",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_verifica_visiva_main",
+      "target": "tools_verifica_visiva_trovachrome",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -80291,6 +80445,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_verifica_visiva_giudizio",
+      "target": "tests_test_verifica_visiva_giudizio_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tools_accuratezza_fatture_acquisto",
       "target": "tools_accuratezza_fatture_acquisto_leggi_csv",
       "relation": "contains",
@@ -81568,13 +81733,24 @@
     },
     {
       "source": "tools_verifica_visiva",
+      "target": "tools_verifica_visiva_candidati_chrome",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_verifica_visiva",
       "target": "tools_verifica_visiva_flags_comuni",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L15",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -81585,7 +81761,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L24",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_verifica_visiva",
+      "target": "tools_verifica_visiva_segnali_non_pagina",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -81596,7 +81783,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L48",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -87199,6 +87386,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_verifica_visiva_giudizio",
+      "target": "tests_test_verifica_visiva_giudizio_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_verifica_visiva_giudizio",
+      "target": "tests_test_verifica_visiva_giudizio_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-verifica-visiva-giudizio.sh",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
       "source": "tools_banco_passaggio",
       "target": "tools_banco_passaggio_step",
       "relation": "defines",
@@ -89787,7 +89996,31 @@
       "confidence_score": 0.85,
       "context": "collection",
       "source_file": "tools/verifica-visiva.js",
-      "source_location": "L89",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_verifica_visiva",
+      "target": "tools_verifica_visiva_giudica",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_verifica_visiva",
+      "target": "tools_verifica_visiva_trovachrome",
+      "relation": "indirect_call",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "collection",
+      "source_file": "tools/verifica-visiva.js",
+      "source_location": "L121",
       "weight": 1.0
     },
     {
@@ -89812,6 +90045,18 @@
       "context": "fetch",
       "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
       "source_location": "L306",
+      "weight": 1.0
+    },
+    {
+      "source": "sal_2026_09_23_18_la_notte_dei_giri_mandato_di_luca_analisi_lenta_trova_e_aggiusta_tutto_10_giri_e_poi_20_non_fermarti",
+      "target": "tools_verifica_visiva_giudica",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "giudica()",
+      "source_file": "SAL.md",
+      "source_location": "L3551",
       "weight": 1.0
     },
     {
@@ -89852,5 +90097,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c15bd353bcb7a64deca1b7689abb0f0c66922de0"
+  "built_at_commit": "0198b7fc0d91ded4ce69eea2452bc788e1dd3783"
 }
