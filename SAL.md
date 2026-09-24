@@ -4602,3 +4602,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   nuovo, con un remoto finto che rifiuta via pre-receive: rosso prima, verde ora (24/0). Sabotaggio: senza
   lo stderr, 23/1. Nota alla voce Q5 R5 qui sopra: la prima consegna è stata fermata dal rilevatore E-002
   (`indice … | grep -Iq`, il mio). Corretta in `grep -Ic … >/dev/null` prima del push.
+- **Quarto ventaglio chiuso — consolidamento.** In `docs/giri/2026-09-24-quarto/99-CONSOLIDAMENTO.md`: 30
+  rilievi, 28 curati (3 in parte), 2 domande di dominio. I tre temi: il muto letto come sano, il guardiano
+  che si aggira per errore, l'ingresso non detto. Da fare a mano: i due file che il giro Q2 ha lasciato
+  alla radice del container. Il report di campo ha la sezione del quarto ventaglio, con due proposte a
+  CLAUDE.md non applicate.

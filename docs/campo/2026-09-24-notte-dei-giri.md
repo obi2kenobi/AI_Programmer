@@ -63,3 +63,18 @@
     gira mai (V1#6d). La frase va corretta, dopo la risposta di Luca in DEBITI.
   - CLAUDE.md §5: un sabotaggio di un modulo Python si esegue con una cache di bytecode fresca (E-047).
     Già scritto nella skill `n-giri` §5, che non è canone vincolante.
+
+## Aggiornamento (2026-09-24, quarto ventaglio, fino alle 14Z)
+- Usato: cinque lenti nuove (il primo giorno, il guasto, i contratti d'uscita, il grafo, i ganci visti
+  da un avversario). I grezzi sono in `docs/giri/2026-09-24-quarto/grezzi/`: la regola nuova della skill
+  n-giri §2 ha retto al primo uso. Consolidamento in `docs/giri/2026-09-24-quarto/99-CONSOLIDAMENTO.md`:
+  30 rilievi, 28 curati (3 in parte), 2 domande di dominio.
+- Ha retto: il banco prima della cura ha preso sei mie prime stesure, compreso un gancio di sicurezza
+  che moriva e, morendo, lasciava passare tutto. Il rilevatore E-002 ha fermato una mia pipe.
+- Ha ostacolato: un giro (Q2), provando il difetto che poi ha trovato, ha lasciato due file alla radice
+  del container, e il controllo di sicurezza non mi lascia toglierli. Vanno tolti a mano.
+- Proposte al canone (non applicate):
+  - CLAUDE.md §7: accanto a «trust the graph for orientation», la frase sui chiamanti invisibili al grafo
+    (`"$(…)"`, `<(…)`, `trap`) e sulla conferma con `grep -rn` prima di dire morta una funzione (Q4 R1).
+  - CLAUDE.md §2 «Deploy is the human's»: il gancio nega anche quando muore (modo prudente). È una
+    proprietà da pretendere da ogni guardiano, non solo da questo.
