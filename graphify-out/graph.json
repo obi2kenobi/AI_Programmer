@@ -8991,7 +8991,7 @@
       },
       "norm_label": "dichiara_file_nuovo()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L410"
+      "source_location": "L413"
     },
     {
       "id": "night_shift_lib_dipendenze_mancanti",
@@ -9006,7 +9006,7 @@
       },
       "norm_label": "dipendenze_mancanti()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L498"
+      "source_location": "L501"
     },
     {
       "id": "night_shift_lib_rianima_ollama",
@@ -9021,7 +9021,7 @@
       },
       "norm_label": "rianima_ollama()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L570"
+      "source_location": "L573"
     },
     {
       "id": "tests_test_dipendenze_turno",
@@ -15506,7 +15506,7 @@
       },
       "norm_label": "aggiungi_consegna()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L421"
+      "source_location": "L424"
     },
     {
       "id": "night_shift_lib_caccia_gia_aperta",
@@ -15521,7 +15521,7 @@
       },
       "norm_label": "caccia_gia_aperta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L342"
+      "source_location": "L345"
     },
     {
       "id": "night_shift_lib_cancello_design",
@@ -15536,7 +15536,7 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L653"
+      "source_location": "L656"
     },
     {
       "id": "night_shift_lib_candidata_censore",
@@ -15551,7 +15551,7 @@
       },
       "norm_label": "candidata_censore()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L334"
+      "source_location": "L337"
     },
     {
       "id": "night_shift_lib_candidata_parere",
@@ -15566,7 +15566,7 @@
       },
       "norm_label": "candidata_parere()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L459"
+      "source_location": "L462"
     },
     {
       "id": "night_shift_lib_commenta_una_volta",
@@ -15581,7 +15581,7 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L637"
+      "source_location": "L640"
     },
     {
       "id": "night_shift_lib_commit_altrui",
@@ -15596,7 +15596,7 @@
       },
       "norm_label": "commit_altrui()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L552"
+      "source_location": "L555"
     },
     {
       "id": "night_shift_lib_default_branch",
@@ -15641,7 +15641,7 @@
       },
       "norm_label": "eta_secondi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L626"
+      "source_location": "L629"
     },
     {
       "id": "night_shift_lib_forme_prima_del_push",
@@ -15656,7 +15656,7 @@
       },
       "norm_label": "forme_prima_del_push()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L399"
+      "source_location": "L402"
     },
     {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
@@ -15671,7 +15671,7 @@
       },
       "norm_label": "funzione_definita_e_chiamata()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L135"
+      "source_location": "L138"
     },
     {
       "id": "night_shift_lib_gate_banchi",
@@ -15686,7 +15686,7 @@
       },
       "norm_label": "gate_banchi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L109"
+      "source_location": "L112"
     },
     {
       "id": "night_shift_lib_leggi_coda",
@@ -15701,7 +15701,7 @@
       },
       "norm_label": "leggi_coda()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L508"
+      "source_location": "L511"
     },
     {
       "id": "night_shift_lib_lente_pr",
@@ -15716,7 +15716,7 @@
       },
       "norm_label": "lente_pr()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L443"
+      "source_location": "L446"
     },
     {
       "id": "night_shift_lib_mtime",
@@ -15746,7 +15746,7 @@
       },
       "norm_label": "repo_code()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L390"
+      "source_location": "L393"
     },
     {
       "id": "night_shift_lib_sh__entry",
@@ -15776,7 +15776,7 @@
       },
       "norm_label": "verifica_issue_comando()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L475"
+      "source_location": "L478"
     },
     {
       "id": "night_shift_night_shift_shift_repo",
@@ -19682,7 +19682,7 @@
       },
       "norm_label": "allinea_hub()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L524"
+      "source_location": "L527"
     },
     {
       "id": "tests_test_allinea_hub",
@@ -45031,7 +45031,7 @@
       },
       "norm_label": "lock_turno_orfano()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L614"
+      "source_location": "L617"
     },
     {
       "id": "night_shift_lib_prendi_lock_turno",
@@ -45046,7 +45046,7 @@
       },
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L593"
+      "source_location": "L596"
     },
     {
       "id": "tests_test_lock_turno_corsa",
@@ -46519,7 +46519,7 @@
       },
       "norm_label": "mask_secrets()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L304"
+      "source_location": "L307"
     },
     {
       "id": "tools_prepara_deploy",
@@ -46879,7 +46879,7 @@
       },
       "norm_label": "messaggio_fix()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L561"
+      "source_location": "L564"
     },
     {
       "id": "tests_test_messaggio_fix",
@@ -47528,7 +47528,7 @@
       },
       "norm_label": "ambiente_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L144"
+      "source_location": "L147"
     },
     {
       "id": "night_shift_lib_gate_allowlist_ok",
@@ -47543,7 +47543,7 @@
       },
       "norm_label": "gate_allowlist_ok()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L155"
+      "source_location": "L158"
     },
     {
       "id": "night_shift_lib_rami_da_scopare",
@@ -47558,7 +47558,7 @@
       },
       "norm_label": "rami_da_scopare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L363"
+      "source_location": "L366"
     },
     {
       "id": "night_shift_lib_rotate_log_if_big",
@@ -47678,7 +47678,7 @@
       },
       "norm_label": "g()",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L244"
+      "source_location": "L248"
     },
     {
       "id": "tests_test_lib_ko",
@@ -47708,7 +47708,7 @@
       },
       "norm_label": "lock_da_altro()",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L351"
+      "source_location": "L355"
     },
     {
       "id": "tests_test_lib_ok",
@@ -47753,7 +47753,7 @@
       },
       "norm_label": "vi()",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L330"
+      "source_location": "L334"
     },
     {
       "id": "tests_test_dashboard",
@@ -51337,6 +51337,18 @@
       "type": "external"
     },
     {
+      "id": "html",
+      "label": "html",
+      "_origin": "semantic",
+      "community": 9,
+      "community_name": "dashboard.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "html",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "http_server",
       "label": "http_server",
       "_origin": "semantic",
@@ -51369,17 +51381,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "time",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "html",
-      "label": "html",
-      "community": 9,
-      "community_name": "dashboard.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "html",
       "source_file": "",
       "type": "external"
     }
@@ -51658,7 +51659,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L628",
+      "source_location": "L631",
       "weight": 1.0
     },
     {
@@ -51670,7 +51671,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L115",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -51682,7 +51683,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L597",
+      "source_location": "L600",
       "weight": 1.0
     },
     {
@@ -54646,7 +54647,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-eventi.sh",
-      "source_location": "L48",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -55726,7 +55727,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L209",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -55750,7 +55751,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L231",
+      "source_location": "L235",
       "weight": 1.0
     },
     {
@@ -55762,7 +55763,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L245",
+      "source_location": "L249",
       "weight": 1.0
     },
     {
@@ -55774,7 +55775,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L249",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -55786,7 +55787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L264",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -55798,7 +55799,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L311",
+      "source_location": "L315",
       "weight": 1.0
     },
     {
@@ -55810,7 +55811,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L352",
+      "source_location": "L356",
       "weight": 1.0
     },
     {
@@ -55822,7 +55823,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L396",
+      "source_location": "L400",
       "weight": 1.0
     },
     {
@@ -55834,7 +55835,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L419",
+      "source_location": "L423",
       "weight": 1.0
     },
     {
@@ -55846,7 +55847,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L440",
+      "source_location": "L444",
       "weight": 1.0
     },
     {
@@ -55858,7 +55859,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L457",
+      "source_location": "L461",
       "weight": 1.0
     },
     {
@@ -55870,7 +55871,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-lib.sh",
-      "source_location": "L330",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -87801,7 +87802,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L109",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -87812,7 +87813,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L135",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -87823,7 +87824,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L144",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -87834,7 +87835,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L155",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -87856,7 +87857,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L304",
+      "source_location": "L307",
       "weight": 1.0
     },
     {
@@ -87867,7 +87868,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L334",
+      "source_location": "L337",
       "weight": 1.0
     },
     {
@@ -87878,7 +87879,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L342",
+      "source_location": "L345",
       "weight": 1.0
     },
     {
@@ -87889,7 +87890,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L363",
+      "source_location": "L366",
       "weight": 1.0
     },
     {
@@ -87911,7 +87912,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L390",
+      "source_location": "L393",
       "weight": 1.0
     },
     {
@@ -87922,7 +87923,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L399",
+      "source_location": "L402",
       "weight": 1.0
     },
     {
@@ -87933,7 +87934,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L410",
+      "source_location": "L413",
       "weight": 1.0
     },
     {
@@ -87944,7 +87945,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L421",
+      "source_location": "L424",
       "weight": 1.0
     },
     {
@@ -87955,7 +87956,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L443",
+      "source_location": "L446",
       "weight": 1.0
     },
     {
@@ -87966,7 +87967,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L459",
+      "source_location": "L462",
       "weight": 1.0
     },
     {
@@ -87977,18 +87978,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L475",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_lib",
-      "target": "night_shift_lib_dipendenze_mancanti",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L498",
+      "source_location": "L478",
       "weight": 1.0
     },
     {
@@ -88004,13 +87994,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_dipendenze_mancanti",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L501",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_leggi_coda",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L508",
+      "source_location": "L511",
       "weight": 1.0
     },
     {
@@ -88021,7 +88022,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L524",
+      "source_location": "L527",
       "weight": 1.0
     },
     {
@@ -88032,7 +88033,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L552",
+      "source_location": "L555",
       "weight": 1.0
     },
     {
@@ -88043,7 +88044,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L561",
+      "source_location": "L564",
       "weight": 1.0
     },
     {
@@ -88054,7 +88055,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L570",
+      "source_location": "L573",
       "weight": 1.0
     },
     {
@@ -88065,7 +88066,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L593",
+      "source_location": "L596",
       "weight": 1.0
     },
     {
@@ -88076,7 +88077,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L614",
+      "source_location": "L617",
       "weight": 1.0
     },
     {
@@ -88087,7 +88088,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L626",
+      "source_location": "L629",
       "weight": 1.0
     },
     {
@@ -88098,7 +88099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L637",
+      "source_location": "L640",
       "weight": 1.0
     },
     {
@@ -88109,7 +88110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L653",
+      "source_location": "L656",
       "weight": 1.0
     },
     {
@@ -91596,7 +91597,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-lib.sh",
-      "source_location": "L244",
+      "source_location": "L248",
       "weight": 1.0
     },
     {
@@ -91607,7 +91608,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-lib.sh",
-      "source_location": "L330",
+      "source_location": "L334",
       "weight": 1.0
     },
     {
@@ -91618,7 +91619,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-lib.sh",
-      "source_location": "L351",
+      "source_location": "L355",
       "weight": 1.0
     },
     {
@@ -97244,5 +97245,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "22c3f95be6109964791997b0dafff37b972a3284"
+  "built_at_commit": "8d404fe0473148f394d3ad8e8aefd4f2983abf9e"
 }

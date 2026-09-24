@@ -86,13 +86,16 @@ run_guarded() {
 # buttava l'uscita in /dev/null — uno sforo del budget e un banco rotto erano lo stesso evento, e dopo un
 # taglio nessuno sapeva dove la suite si era fermata. L'ultima riga passa dalla maschera: finisce nel log.
 esegui_verifica() {
-  local dir="$1" sec="$2" riga="$3" out="$4" t0 rc dur ult
+  local dir="$1" sec="$2" riga="$3" out="$4" t0 rc dur ult sen
   t0=$(date +%s)
   (cd "$dir" && ai_timeout "$sec" bash -c "$riga" >"$out" 2>&1 </dev/null); rc=$?
   dur=$(( $(date +%s) - t0 ))
   ult=$(grep -v '^[[:space:]]*$' "$out" 2>/dev/null | tail -1 | cut -c1-160 | mask_secrets)
   case "$rc" in
-    0) echo "VERDE in $dur s" ;;
+    # (2026-09-24, quinto ventaglio, R4 R6): la «⚠ SENTINELLA» della suite (budget oltre il 70%) restava nel file
+    # d'uscita, che il ciclo dopo sovrascrive: nel log arrivava solo «VERDE». Ora viaggia nella riga VERDE.
+    0) sen=$(grep -m1 'SENTINELLA' "$out" 2>/dev/null | cut -c1-160 | mask_secrets)
+       echo "VERDE in $dur s${sen:+ — $sen}" ;;
     124) echo "SFORO DEL BUDGET ($sec s) — ${ult:-nessuna uscita}" ;;
     *) echo "ROSSA (rc $rc) in $dur s — ${ult:-nessuna uscita}" ;;
   esac

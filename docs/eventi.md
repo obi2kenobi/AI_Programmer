@@ -33,4 +33,15 @@ col funnel: DELIBERA: contava zero da sempre). Scritto leggendo il codice reale 
 | `ERRORE` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi |
 | `ALLINEATO` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi |
 | `DIVERGENTE` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi |
-| `registro: debito famiglie` | `tools/caccia-registro.sh` | `tools/dashboard.py` | test-eventi |
+| `registro: debito famiglie` | `tools/caccia-registro.sh` | `tools/cervello-impara.sh` | test-eventi |
+| `registro:` | `tools/caccia-registro.sh` | `tools/dashboard.py` | test-eventi |
+| `coda ILLEGGIBILE` | `night-shift/night-shift.sh` | `tools/dashboard.py`, `tools/cervello-impara.sh` | test-eventi, test-dashboard |
+| `⛔ MANCA` | `night-shift/night-shift.sh` | `tools/cervello-impara.sh` | test-eventi |
+| `SENTINELLA` | `tools/suite.sh`, `night-shift/lib.sh` | `tools/cervello-impara.sh` | test-eventi, test-lib |
+| `rianima_ollama: esito` | `night-shift/lib.sh` | `night-shift/night-shift.sh`, `tools/cervello-impara.sh` | test-eventi, test-rianima-ollama |
+| `SFORO DEL BUDGET` | `night-shift/lib.sh` | `tools/cervello-impara.sh` | test-eventi, test-lib |
+
+Note (2026-09-24, quinto ventaglio, R4 R6): la dashboard legge il censimento del registro dal file storia e
+mostra le righe `registro:` fra le recenti; `⛔ MANCA` lo conta fra gli errori (ogni `⛔`). Il guardiano ora
+vuole che ogni consumatore CERCHI la firma, non solo che esista. Resta fuori, dichiarato: il censimento
+inverso delle 27 righe `⚠`/`⛔` di `night-shift/night-shift.sh` contro questo catalogo.

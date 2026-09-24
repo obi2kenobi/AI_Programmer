@@ -191,6 +191,10 @@ if command -v esegui_verifica >/dev/null; then
   [ "$R2" -eq 1 ] && grep -c 'ROSSA (rc 1)' <<<"$E2" >/dev/null && grep -c 'banco rotto' <<<"$E2" >/dev/null && ok "esegui_verifica: rosso, con rc e ultima riga («$E2»)" || ko "esegui_verifica rosso: rc $R2 «$E2»"
   [ "$R3" -eq 124 ] && grep -c 'SFORO DEL BUDGET (1 s)' <<<"$E3" >/dev/null && grep -c 'test-lento' <<<"$E3" >/dev/null && ok "esegui_verifica: sforo distinto dal rosso, e dice dove («$E3»)" || ko "esegui_verifica sforo: rc $R3 «$E3»"
   [ -s "$VD/r.log" ] && ok "esegui_verifica: l'uscita resta in un file, non in /dev/null" || ko "esegui_verifica: uscita buttata"
+  # (2026-09-24, quinto ventaglio, R4 R6): con la verifica verde nel log arrivava solo «VERDE in N s» — la
+  # «⚠ SENTINELLA» della suite (budget oltre il 70%) restava nel file d'uscita, sovrascritto al ciclo dopo
+  E4=$(esegui_verifica "$VD" 5 'echo "⚠ SENTINELLA: la suite ha usato il 81% del budget"; echo "Suite: 3/3"' "$VD/t.log")
+  grep -c '^VERDE in [0-9]* s — ⚠ SENTINELLA: la suite ha usato il 81%' <<<"$E4" >/dev/null && ok "R4 R6: la sentinella della suite arriva nella riga VERDE («$E4»)" || ko "R4 R6: sentinella persa: «$E4»"
   rm -rf "$VD"
 else
   ko "esegui_verifica assente da night-shift/lib.sh"

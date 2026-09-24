@@ -4916,3 +4916,21 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   lavoro arriverà»: ora il verdetto è «🟡 CODA ILLEGGIBILE», col numero.
 
   Tre casi nuovi in `tests/test-dashboard.sh` (22/0), rossi prima. Sabotaggio: 19/3.
+- **Quinto ventaglio, R4 R6 — il catalogo degli eventi non vedeva le firme nuove, e i consumatori cercavano
+  firme morte.** In `docs/eventi.md` mancavano tutte le firme del 24/9, e `tests/test-eventi.sh` restava verde:
+  bastava che il FILE del consumatore esistesse. Così `tools/cervello-impara.sh` cercava «registro: debiti»,
+  mentre il produttore scrive «registro: debito famiglie» (morta dalla nascita), e «rianimat» non prendeva
+  «rianima_ollama:». Ora:
+  - il guardiano vuole che ogni consumatore CERCHI la firma, e che le cinque firme del 24/9 siano nel catalogo;
+  - il catalogo ha le righe per coda ILLEGGIBILE, ⛔ MANCA, SENTINELLA, rianima_ollama: esito e SFORO DEL
+    BUDGET;
+  - il filtro di cervello-impara le legge;
+  - la «⚠ SENTINELLA» della suite, che restava nel file d'uscita sovrascritto al ciclo dopo, viaggia nella riga
+    VERDE di `esegui_verifica` (`night-shift/lib.sh`).
+
+  Rinviati, dichiarati:
+  - il censimento inverso delle 27 righe ⚠/⛔ del turno contro il catalogo;
+  - la metrica `loop-rilettura`, che il turno scrive su `${HUB_METRICS:-/dev/null}` senza mai impostare
+    HUB_METRICS.
+
+  Casi nuovi in `tests/test-lib.sh` (153/0) e `tests/test-eventi.sh`, rossi prima. Sabotaggio: 152/1 e 2/6.
