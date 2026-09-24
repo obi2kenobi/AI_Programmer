@@ -13,7 +13,7 @@
 set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 [ -d "$DIR" ] || { echo "⛔ gas-gate: dir inesistente: $DIR" >&2; exit 2; }
-cd "$DIR"
+cd -- "$DIR" || exit 2   # (sesto ventaglio, S3 R6): «--», e senza cd riuscito non si giudica la cartella del chiamante
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 N=0; KO=0
 while IFS= read -r f; do

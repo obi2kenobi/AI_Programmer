@@ -65,6 +65,8 @@ righe() { codice "$1" | while IFS= read -r f; do cat "$f"; done | wc -l | tr -d 
 declare -a HASH FILES RIGHE NOMI DIRS
 N=0
 for d in "$@"; do
+  # (sesto ventaglio, rinviati di S3 R6): una cartella relativa che comincia col trattino e' un percorso, non un'opzione.
+  case "$d" in -*) d="./$d" ;; esac
   [ -d "$d" ] || { echo "⛔ copia inesistente: $d" >&2; exit 2; }
   NOME=$(basename "$d" | sed 's/__[A-Za-z0-9_-]*$//')   # via il suffisso id GAS
   HASH[$N]=$(impronta "$d"); FILES[$N]=$(conta "$d"); RIGHE[$N]=$(righe "$d"); NOMI[$N]="$NOME"; DIRS[$N]="${d%/}"

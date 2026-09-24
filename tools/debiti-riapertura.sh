@@ -10,7 +10,7 @@
 set -uo pipefail
 DIR="${1:-.}"
 SE="$(cd "$(dirname "$0")" && pwd)"
-cd "$DIR" || { echo "⛔ dir inesistente: $DIR"; exit 1; }
+cd -- "$DIR" || { echo "⛔ dir inesistente: $DIR"; exit 1; }
 echo "== RIAPERTURA: il debito si brucia qui =="
 
 python3 - <<'PY'

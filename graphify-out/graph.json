@@ -48798,6 +48798,81 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_trattino_iniziale",
+      "label": "test-trattino-iniziale.sh",
+      "_origin": "ast",
+      "community": 761,
+      "community_name": "test-trattino-iniziale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-trattino-iniziale.sh",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_trattino_iniziale_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 761,
+      "community_name": "test-trattino-iniziale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_trattino_iniziale_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 761,
+      "community_name": "test-trattino-iniziale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_trattino_iniziale_prova",
+      "label": "prova()",
+      "_origin": "ast",
+      "community": 761,
+      "community_name": "test-trattino-iniziale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prova()",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_trattino_iniziale_sh__entry",
+      "label": "test-trattino-iniziale.sh script",
+      "_origin": "ast",
+      "community": 761,
+      "community_name": "test-trattino-iniziale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-trattino-iniziale.sh script",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "opencode_skills_dev_critic_skill",
       "label": ".opencode/skills/dev-critic/SKILL.md",
       "_origin": "ast",
@@ -59037,6 +59112,66 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_trattino_iniziale_prova",
+      "target": "tests_test_trattino_iniziale_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_trattino_iniziale_prova",
+      "target": "tests_test_trattino_iniziale_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_trattino_iniziale_sh__entry",
+      "target": "tests_test_trattino_iniziale_prova",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_trattino_iniziale_sh__entry",
+      "target": "tests_test_trattino_iniziale_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_trattino_iniziale_sh__entry",
+      "target": "tests_test_trattino_iniziale_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_turno_vivo_sh__entry",
       "target": "tests_test_turno_vivo_ko",
       "relation": "calls",
@@ -59705,7 +59840,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/fork-stato.sh",
-      "source_location": "L109",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -59717,7 +59852,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/fork-stato.sh",
-      "source_location": "L70",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -59729,7 +59864,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/fork-stato.sh",
-      "source_location": "L70",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -59741,7 +59876,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/fork-stato.sh",
-      "source_location": "L70",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -87221,6 +87356,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_trattino_iniziale",
+      "target": "tests_test_trattino_iniziale_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_turno_vivo",
       "target": "tests_test_turno_vivo_sh__entry",
       "relation": "contains",
@@ -95207,6 +95353,39 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_trattino_iniziale",
+      "target": "tests_test_trattino_iniziale_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_trattino_iniziale",
+      "target": "tests_test_trattino_iniziale_prova",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_trattino_iniziale",
+      "target": "tests_test_trattino_iniziale_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-trattino-iniziale.sh",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_turno_vivo",
       "target": "tests_test_turno_vivo_ok",
       "relation": "defines",
@@ -98508,5 +98687,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "442d19fc7d271b15450ab78c7be861f3911c8a61"
+  "built_at_commit": "9289fc902b6f04ec1b0ca4ae99ca1fd0524afa5a"
 }

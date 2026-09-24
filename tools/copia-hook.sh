@@ -53,6 +53,8 @@ SOLO_RESIDUI=0
 DEST="${1:?uso: copia-hook.sh <dir-destinazione> | --residui <dir-destinazione> | --elenco [settings.json]}"
 SETTINGS="$HERE/.claude/settings.json"
 [ -f "$SETTINGS" ] || { echo "copia-hook: $SETTINGS assente" >&2; exit 1; }
+# (sesto ventaglio, rinviati di S3 R6): una cartella relativa che comincia col trattino e' un percorso, non un'opzione.
+case "$DEST" in -*) DEST="./$DEST" ;; esac
 [ -d "$DEST" ] || { echo "copia-hook: destinazione inesistente: $DEST" >&2; exit 1; }
 
 DICHIARATI=$(hook_dichiarati "$SETTINGS")
