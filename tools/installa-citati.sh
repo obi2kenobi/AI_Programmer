@@ -42,12 +42,16 @@ for P in $LENTI $CITATI $GUARDIANI $FORMATI; do
     while IFS= read -r F; do
       R="$P/${F#"$HERE/$P/"}"
       [ "$SOLO_MANCANTI" -eq 1 ] && [ -e "$DEST/$R" ] && continue
+      cmp -s "$F" "$DEST/$R" && continue   # (S2 R6): identico = niente da scrivere, niente da contare
       mkdir -p "$DEST/$(dirname "$R")"
       cp -p "$F" "$DEST/$R" || exit 1
       echo "$R"; N=$((N+1))
     done < <(find "$HERE/$P" -type f)
   else
     [ "$SOLO_MANCANTI" -eq 1 ] && [ -e "$DEST/$P" ] && continue
+    # (2026-09-24, sesto ventaglio, S2 R6): il secondo giro diceva «17 file scritti» con l'albero pulito — si contavano
+    # le copie, non i cambiamenti, e sync-repo ne faceva la misura della PR. Un file identico non si riscrive.
+    cmp -s "$HERE/$P" "$DEST/$P" && continue
     mkdir -p "$DEST/$(dirname "$P")"
     cp -p "$HERE/$P" "$DEST/$P" || exit 1
     echo "$P"; N=$((N+1))

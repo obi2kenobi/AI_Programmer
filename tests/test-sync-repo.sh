@@ -100,6 +100,12 @@ grep -c "⚠ 2 righe del CLAUDE.md" <<<"$OUT" >/dev/null && grep -c "foglio MAST
 [ -n "$BR" ] && git -C "$TMP/proprio.git" log -1 --format=%B "$BR" | grep -c "foglio MASTER" >/dev/null \
   && ok "R2 R5: le righe tolte sono nel messaggio del commit (quindi nel corpo della PR, --fill)" || ko "R2 R5: il commit del ramo '$BR' non le nomina"
 
+# (2026-09-24, sesto ventaglio, S2 R6): «PR aperta … (24 gruppi di file aggiornati)» contava le copie, non il diff —
+# il numero finiva nel log del turno come misura della PR. Ora e' il numero di file del commit.
+NDICH=$(grep -oE '\(([0-9]+) file nel commit\)' <<<"$OUT" | grep -oE '[0-9]+')
+NVERI=$(git -C "$TMP/proprio.git" diff --name-only "$BR~1" "$BR" 2>/dev/null | grep -c .)
+[ -n "$NDICH" ] && [ "$NDICH" = "$NVERI" ] && ok "S2 R6: la PR dice quanti file cambia davvero ($NVERI)" || ko "S2 R6: la PR dichiara «${NDICH:-?}», il commit ne cambia $NVERI: $(grep -m1 'PR aperta' <<<"$OUT")"
+
 # D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
 nuovo_bare canarino-uguale 1
 OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?

@@ -168,7 +168,6 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # «riesce» senza creare la directory, il ciclo di copia qui sotto gira nella CWD di chi
   # lancia (misurato: 100+ file dello standard copiati e staged DENTRO l'hub). Mai.
   cd "$TMP/work" || { echo "sync-repo: il clone non ha creato $TMP/work — mi fermo, non copio nella directory corrente"; exit 1; }
-  COPIATI=0
   # bug reale (revisione 14 lenti, 2026-08-28): mancavano .opencode/skills (root cause
   # della divergenza trovata da 3 lenti indipendenti — le 9 skill "viaggiavano" solo
   # all'onboarding iniziale, mai più dopo) e patterns/ (stesso gap: un pattern nuovo
@@ -185,10 +184,10 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # (report REPO-E, REPO-F, REPO-I, Budget Vendite, D13, Q13) e' scritta la'.
   SCRITTI=$(bash "$HERE/tools/installa-citati.sh" "$PWD") || { echo "sync-repo: installazione degli strumenti citati fallita — lo standard NON è completo"; exit 1; }
   while IFS= read -r P; do
-    [ -n "$P" ] && git add "$P" 2>/dev/null && COPIATI=$((COPIATI+1))
+    [ -n "$P" ] && git add "$P" 2>/dev/null
   done <<< "$SCRITTI"
   PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"
-  cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null && COPIATI=$((COPIATI+1))  # D8: versione satellite
+  cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null  # D8: versione satellite
   for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
     case "$ITEM" in
@@ -198,7 +197,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
         # hook del satellite che cadono si dicono.
         if [ -f "$ITEM" ] && ! cmp -s "$HERE/$ITEM" "$ITEM"; then
           fondi_settings "$ITEM" "$HERE/$ITEM" || exit 1
-          git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
+          git add "$ITEM" 2>/dev/null
           continue
         fi ;;
     esac
@@ -213,7 +212,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
       mkdir -p "$(dirname "$ITEM")"
       cp "$HERE/$ITEM" "$ITEM"
     fi
-    git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
+    git add "$ITEM" 2>/dev/null
   done
   # bug reale dal campo (REPO-V, progetto GAS nuovo, 2026-09-03): qui la lista degli hook
   # era scritta a mano e si era fermata a due, mentre .claude/settings.json — copiato
@@ -251,6 +250,9 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
     echo "sync-repo --standard: GIÀ A STANDARD — $REPO ha tutto (CLAUDE.md, skills, agenti, hook)"
     exit 0
   fi
+  # (2026-09-24, sesto ventaglio, S2 R6): il conto della PR erano le copie («24 gruppi aggiornati» per un diff di un
+  # file); ora sono i file che il commit cambia davvero
+  NFILE=$(git diff --cached --name-only | grep -c .)
   BR="claude/standard-$(date +%Y%m%d)"
   git checkout -q -b "$BR"
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard" \
@@ -260,7 +262,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # la PR si VERIFICA, non si dichiara
   URL_PR=$(gh pr create --head "$BR" --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1)
   case "$URL_PR" in
-    https://*) echo "sync-repo --standard: PR aperta $URL_PR ($COPIATI gruppi di file aggiornati)" ;;
+    https://*) echo "sync-repo --standard: PR aperta $URL_PR ($NFILE file nel commit)" ;;
     *) echo "sync-repo --standard: RAMO $BR spinto MA la PR non e' stata creata ($URL_PR) — creala a mano"; exit 1 ;;
   esac
   exit 0

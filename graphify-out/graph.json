@@ -70,7 +70,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "catalogo_mancanti()",
       "source_file": "tools/bc_index.py",
@@ -82,7 +82,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_index.py",
@@ -94,7 +94,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "parse()",
       "source_file": "tools/bc_index.py",
@@ -106,23 +106,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L31"
-    },
-    {
-      "id": "tools_verifica_banco_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L34"
     },
     {
       "id": "tools_accuratezza_fatture_acquisto_leggi_csv",
@@ -149,30 +137,6 @@
       "source_location": "L61"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_rating_dso_clienti_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L43"
-    },
-    {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
       "label": "calcola_roll_forward()",
       "_callable": true,
@@ -195,6 +159,54 @@
       "norm_label": "main()",
       "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L68"
+    },
+    {
+      "id": "tools_scadenzario_aging_aggrega_totali",
+      "label": "aggrega_totali()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "aggrega_totali()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L70"
+    },
+    {
+      "id": "tools_scadenzario_aging_fascia_dettaglio",
+      "label": "fascia_dettaglio()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "fascia_dettaglio()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "tools_scadenzario_aging_importo_fornitore",
+      "label": "importo_fornitore()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "importo_fornitore()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L65"
+    },
+    {
+      "id": "tools_scadenzario_aging_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L94"
     },
     {
       "id": "tools_e002_siti_dentro_virgolette",
@@ -245,6 +257,30 @@
       "source_location": "L36"
     },
     {
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L43"
+    },
+    {
       "id": "tools_riconciliazione_magazzino_categorizza",
       "label": "categorizza()",
       "_callable": true,
@@ -267,54 +303,6 @@
       "norm_label": "main()",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L60"
-    },
-    {
-      "id": "tools_scadenzario_aging_aggrega_totali",
-      "label": "aggrega_totali()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "aggrega_totali()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L70"
-    },
-    {
-      "id": "tools_scadenzario_aging_fascia_dettaglio",
-      "label": "fascia_dettaglio()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "fascia_dettaglio()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tools_scadenzario_aging_importo_fornitore",
-      "label": "importo_fornitore()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "importo_fornitore()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L65"
-    },
-    {
-      "id": "tools_scadenzario_aging_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L94"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -634,7 +622,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/margine_documento.py",
@@ -646,7 +634,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
@@ -658,11 +646,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/margine_documento.py",
       "source_location": "L40"
+    },
+    {
+      "id": "tools_verifica_banco_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 739,
+      "community_name": "re",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L34"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -4479,21 +4479,6 @@
       "norm_label": "proposta al canone",
       "source_file": "docs/campo/2026-09-07-repo-v-asse-sbagliato-fixture-che-mentono.md",
       "source_location": "L123"
-    },
-    {
-      "id": "night_shift_lib_allinea_hub",
-      "label": "allinea_hub()",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "allinea_hub()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L527"
     },
     {
       "id": "night_shift_lib_ferma_opencode_del_turno",
@@ -11982,7 +11967,7 @@
       "label": "bc_index.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "bc_index.py",
       "source_file": "tools/bc_index.py",
@@ -11993,21 +11978,10 @@
       "label": "bc_tipi_metadata.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "bc_tipi_metadata.py",
       "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_verifica_banco",
-      "label": "verifica_banco.py",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "verifica_banco.py",
-      "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
     },
     {
@@ -12015,7 +11989,7 @@
       "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "severita media (15)",
@@ -12027,7 +12001,7 @@
       "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
       "source_file": "tools/bc_index.py",
@@ -12038,7 +12012,7 @@
       "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
       "source_file": "tools/bc_index.py",
@@ -12049,7 +12023,7 @@
       "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
       "source_file": "tools/bc_index.py",
@@ -12060,7 +12034,7 @@
       "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
       "source_file": "tools/bc_index.py",
@@ -12071,7 +12045,7 @@
       "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
       "source_file": "tools/bc_tipi_metadata.py",
@@ -12082,33 +12056,11 @@
       "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L32"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_2",
-      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_35",
-      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L35"
     },
     {
       "id": "opencode_skills_allineamento_fork_skill",
@@ -15710,7 +15662,7 @@
       "label": "messaggio_fix()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-portabilita.sh",
+      "community_name": "test-messaggio-fix.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15725,7 +15677,7 @@
       "label": "test-messaggio-fix.sh",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-portabilita.sh",
+      "community_name": "test-messaggio-fix.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15740,7 +15692,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-portabilita.sh",
+      "community_name": "test-messaggio-fix.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15755,7 +15707,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-portabilita.sh",
+      "community_name": "test-messaggio-fix.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15770,7 +15722,7 @@
       "label": "test-messaggio-fix.sh script",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-portabilita.sh",
+      "community_name": "test-messaggio-fix.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15778,126 +15730,6 @@
       },
       "norm_label": "test-messaggio-fix.sh script",
       "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_portabilita",
-      "label": "test-portabilita.sh",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-portabilita.sh",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_portabilita_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_portabilita_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_portabilita_righe_con",
-      "label": "righe_con()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "righe_con()",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L18"
-    },
-    {
-      "id": "tests_test_portabilita_sh__entry",
-      "label": "test-portabilita.sh script",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-portabilita.sh script",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico",
-      "label": "grafo-semantico.sh",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "grafo-semantico.sh",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L18"
-    },
-    {
-      "id": "tools_grafo_semantico_sh__entry",
-      "label": "grafo-semantico.sh script",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-portabilita.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "grafo-semantico.sh script",
-      "source_file": "tools/grafo-semantico.sh",
       "source_location": "L1"
     },
     {
@@ -19792,6 +19624,21 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_allinea_hub",
+      "label": "allinea_hub()",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "test-allinea-hub.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "allinea_hub()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L527"
+    },
+    {
       "id": "tests_test_allinea_hub",
       "label": "test-allinea-hub.sh",
       "_origin": "ast",
@@ -19983,17 +19830,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_rollforward_cespiti",
       "label": "rollforward_cespiti.py",
       "_origin": "ast",
@@ -20038,28 +19874,6 @@
       "source_location": "L62"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_48",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48"
-    },
-    {
       "id": "tools_rollforward_cespiti_rationale_2",
       "label": "Roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per\u2026",
       "_origin": "ast",
@@ -20093,303 +19907,133 @@
       "source_location": "L69"
     },
     {
-      "id": "tests_test_deploy_assistito",
-      "label": "test-deploy-assistito.sh",
+      "id": "tools_scadenzario_aging",
+      "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 253,
-      "community_name": "test-deploy-assistito.sh",
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "scadenzario_aging.py",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_2",
+      "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_38",
+      "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L38"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_71",
+      "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L71"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_95",
+      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L95"
+    },
+    {
+      "id": "tests_test_portabilita",
+      "label": "test-portabilita.sh",
+      "_origin": "ast",
+      "community": 254,
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-deploy-assistito.sh",
-      "source_file": "tests/test-deploy-assistito.sh",
+      "norm_label": "test-portabilita.sh",
+      "source_file": "tests/test-portabilita.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_deploy_assistito_gesto",
-      "label": "gesto()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gesto()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L33"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_author_email",
-      "label": "GIT_AUTHOR_EMAIL",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_author_email",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L21"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_author_name",
-      "label": "GIT_AUTHOR_NAME",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_author_name",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L21"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_committer_email",
-      "label": "GIT_COMMITTER_EMAIL",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_committer_email",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L22"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_committer_name",
-      "label": "GIT_COMMITTER_NAME",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_committer_name",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L22"
-    },
-    {
-      "id": "tests_test_deploy_assistito_home",
-      "label": "HOME",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "home",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_deploy_assistito_home_bak",
-      "label": "HOME_BAK",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "home_bak",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_deploy_assistito_ko",
+      "id": "tests_test_portabilita_ko",
       "label": "ko()",
       "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
+      "community": 254,
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L12"
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L13"
     },
     {
-      "id": "tests_test_deploy_assistito_mkrepo",
-      "label": "mkrepo()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mkrepo()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L41"
-    },
-    {
-      "id": "tests_test_deploy_assistito_ok",
+      "id": "tests_test_portabilita_ok",
       "label": "ok()",
       "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
+      "community": 254,
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L11"
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L12"
     },
     {
-      "id": "tests_test_deploy_assistito_path",
-      "label": "PATH",
+      "id": "tests_test_portabilita_righe_con",
+      "label": "righe_con()",
       "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
+      "community": 254,
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
-        "kind": "code"
+        "kind": "bash_function"
       },
-      "norm_label": "path",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L28"
+      "norm_label": "righe_con()",
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L18"
     },
     {
-      "id": "tests_test_deploy_assistito_sh__entry",
-      "label": "test-deploy-assistito.sh script",
+      "id": "tests_test_portabilita_sh__entry",
+      "label": "test-portabilita.sh script",
       "_origin": "ast",
-      "community": 253,
-      "community_name": "test-deploy-assistito.sh",
+      "community": 254,
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-deploy-assistito.sh script",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_revisore",
-      "label": "revisore.sh",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "revisore.sh",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_revisore_azione_gh",
-      "label": "azione_gh()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "azione_gh()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L94"
-    },
-    {
-      "id": "night_shift_revisore_chiedi",
-      "label": "chiedi()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "chiedi()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L76"
-    },
-    {
-      "id": "night_shift_revisore_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L60"
-    },
-    {
-      "id": "night_shift_revisore_rinvia",
-      "label": "rinvia()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rinvia()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L102"
-    },
-    {
-      "id": "night_shift_revisore_ripristina",
-      "label": "ripristina()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ripristina()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L177"
-    },
-    {
-      "id": "night_shift_revisore_sh__entry",
-      "label": "revisore.sh script",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "revisore.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "revisore.sh script",
-      "source_file": "night-shift/revisore.sh",
+      "norm_label": "test-portabilita.sh script",
+      "source_file": "tests/test-portabilita.sh",
       "source_location": "L1"
     },
     {
@@ -24800,108 +24444,63 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_dashboard",
-      "label": "test-dashboard.sh",
+      "id": "tests_test_installa_citati",
+      "label": "test-installa-citati.sh",
       "_origin": "ast",
       "community": 303,
-      "community_name": "test-dashboard.sh",
+      "community_name": "test-installa-citati.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-dashboard.sh",
-      "source_file": "tests/test-dashboard.sh",
+      "norm_label": "test-installa-citati.sh",
+      "source_file": "tests/test-installa-citati.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_dashboard_ko",
+      "id": "tests_test_installa_citati_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 303,
-      "community_name": "test-dashboard.sh",
+      "community_name": "test-installa-citati.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L14"
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_dashboard_lang",
-      "label": "LANG",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-dashboard.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "lang",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_dashboard_lc_all",
-      "label": "LC_ALL",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-dashboard.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "lc_all",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_dashboard_ok",
+      "id": "tests_test_installa_citati_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 303,
-      "community_name": "test-dashboard.sh",
+      "community_name": "test-installa-citati.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L13"
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L9"
     },
     {
-      "id": "tests_test_dashboard_path",
-      "label": "PATH",
+      "id": "tests_test_installa_citati_sh__entry",
+      "label": "test-installa-citati.sh script",
       "_origin": "ast",
       "community": 303,
-      "community_name": "test-dashboard.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_dashboard_sh__entry",
-      "label": "test-dashboard.sh script",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-dashboard.sh",
+      "community_name": "test-installa-citati.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-dashboard.sh script",
-      "source_file": "tests/test-dashboard.sh",
+      "norm_label": "test-installa-citati.sh script",
+      "source_file": "tests/test-installa-citati.sh",
       "source_location": "L1"
     },
     {
@@ -30262,6 +29861,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_riconciliazione_magazzino",
       "label": "riconciliazione_magazzino.py",
       "_origin": "ast",
@@ -30270,17 +29880,6 @@
       "file_type": "code",
       "norm_label": "riconciliazione_magazzino.py",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_scadenzario_aging",
-      "label": "scadenzario_aging.py",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "scadenzario_aging.py",
-      "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
@@ -30304,6 +29903,28 @@
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
       "source_location": "L37"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_48",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L48"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -30337,50 +29958,6 @@
       "norm_label": "csv in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto...",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L61"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_2",
-      "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_38",
-      "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_71",
-      "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L71"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_95",
-      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L95"
     },
     {
       "id": "tools_prova_rilevatori",
@@ -45203,109 +44780,49 @@
       "source_location": "L3"
     },
     {
-      "id": "tests_test_stdin_timeout",
-      "label": "test-stdin-timeout.sh",
+      "id": "tools_grafo_semantico",
+      "label": "grafo-semantico.sh",
       "_origin": "ast",
       "community": 722,
-      "community_name": "test-stdin-timeout.sh",
+      "community_name": "grafo-semantico.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-stdin-timeout.sh",
-      "source_file": "tests/test-stdin-timeout.sh",
+      "norm_label": "grafo-semantico.sh",
+      "source_file": "tools/grafo-semantico.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_stdin_timeout_check_bounded",
-      "label": "check_bounded()",
+      "id": "tools_grafo_semantico_log",
+      "label": "log()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "test-stdin-timeout.sh",
+      "community_name": "grafo-semantico.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "check_bounded()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L39"
+      "norm_label": "log()",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L18"
     },
     {
-      "id": "tests_test_stdin_timeout_ko",
-      "label": "ko()",
+      "id": "tools_grafo_semantico_sh__entry",
+      "label": "grafo-semantico.sh script",
       "_origin": "ast",
       "community": 722,
-      "community_name": "test-stdin-timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_stdin_timeout_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "test-stdin-timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_stdin_timeout_path",
-      "label": "PATH",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "test-stdin-timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L36"
-    },
-    {
-      "id": "tests_test_stdin_timeout_sh__entry",
-      "label": "test-stdin-timeout.sh script",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "test-stdin-timeout.sh",
+      "community_name": "grafo-semantico.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-stdin-timeout.sh script",
-      "source_file": "tests/test-stdin-timeout.sh",
+      "norm_label": "grafo-semantico.sh script",
+      "source_file": "tools/grafo-semantico.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout_zhipuai_api_key",
-      "label": "ZHIPUAI_API_KEY",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "test-stdin-timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "zhipuai_api_key",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L37"
     },
     {
       "id": "tests_test_verifica_visiva_giudizio",
@@ -46463,66 +45980,6 @@
       "source_location": "L2805"
     },
     {
-      "id": "llm_ask_glm",
-      "label": "ask-glm.sh",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ask-glm.sh",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_glm_sh__entry",
-      "label": "ask-glm.sh script",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-glm.sh script",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus",
-      "label": "ask-opus.sh",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ask-opus.sh",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus_sh__entry",
-      "label": "ask-opus.sh script",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-opus.sh script",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "llm_ask_qwen",
       "label": "ask-qwen.sh",
       "_origin": "ast",
@@ -46613,8 +46070,8 @@
       "source_location": "L1"
     },
     {
-      "id": "llm_usage",
-      "label": "_usage.sh",
+      "id": "night_shift_revisore",
+      "label": "revisore.sh",
       "_origin": "ast",
       "community": 738,
       "community_name": "ai_timeout",
@@ -46623,13 +46080,13 @@
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "_usage.sh",
-      "source_file": "llm/_usage.sh",
+      "norm_label": "revisore.sh",
+      "source_file": "night-shift/revisore.sh",
       "source_location": "L1"
     },
     {
-      "id": "llm_usage_log_ask_usage",
-      "label": "log_ask_usage()",
+      "id": "night_shift_revisore_azione_gh",
+      "label": "azione_gh()",
       "_origin": "ast",
       "community": 738,
       "community_name": "ai_timeout",
@@ -46638,13 +46095,73 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "log_ask_usage()",
-      "source_file": "llm/_usage.sh",
-      "source_location": "L15"
+      "norm_label": "azione_gh()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L94"
     },
     {
-      "id": "llm_usage_sh__entry",
-      "label": "_usage.sh script",
+      "id": "night_shift_revisore_chiedi",
+      "label": "chiedi()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "chiedi()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L76"
+    },
+    {
+      "id": "night_shift_revisore_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L60"
+    },
+    {
+      "id": "night_shift_revisore_rinvia",
+      "label": "rinvia()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rinvia()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L102"
+    },
+    {
+      "id": "night_shift_revisore_ripristina",
+      "label": "ripristina()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ripristina()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L177"
+    },
+    {
+      "id": "night_shift_revisore_sh__entry",
+      "label": "revisore.sh script",
       "_origin": "ast",
       "community": 738,
       "community_name": "ai_timeout",
@@ -46653,8 +46170,8 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "_usage.sh script",
-      "source_file": "llm/_usage.sh",
+      "norm_label": "revisore.sh script",
+      "source_file": "night-shift/revisore.sh",
       "source_location": "L1"
     },
     {
@@ -46778,6 +46295,156 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_ask_wrappers",
+      "label": "test-ask-wrappers.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-ask-wrappers.sh",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ask_wrappers_check_glm_response",
+      "label": "check_glm_response()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check_glm_response()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L150"
+    },
+    {
+      "id": "tests_test_ask_wrappers_check_qwen_response",
+      "label": "check_qwen_response()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check_qwen_response()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L170"
+    },
+    {
+      "id": "tests_test_ask_wrappers_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_ask_wrappers_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_ask_wrappers_sh__entry",
+      "label": "test-ask-wrappers.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-ask-wrappers.sh script",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_map",
+      "label": "test-bc-map.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bc-map.sh",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_map_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_bc_map_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_bc_map_sh__entry",
+      "label": "test-bc-map.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bc-map.sh script",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_bc_tipi_metadata",
       "label": "test-bc-tipi-metadata.sh",
       "_origin": "ast",
@@ -46898,6 +46565,306 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_dashboard",
+      "label": "test-dashboard.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-dashboard.sh",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_dashboard_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_dashboard_lang",
+      "label": "LANG",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lang",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_dashboard_lc_all",
+      "label": "LC_ALL",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lc_all",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_dashboard_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_dashboard_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_dashboard_sh__entry",
+      "label": "test-dashboard.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-dashboard.sh script",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_deploy_assistito",
+      "label": "test-deploy-assistito.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-deploy-assistito.sh",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_deploy_assistito_gesto",
+      "label": "gesto()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gesto()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L33"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_author_email",
+      "label": "GIT_AUTHOR_EMAIL",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_email",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_author_name",
+      "label": "GIT_AUTHOR_NAME",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_name",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_committer_email",
+      "label": "GIT_COMMITTER_EMAIL",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_email",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_committer_name",
+      "label": "GIT_COMMITTER_NAME",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_name",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_deploy_assistito_home",
+      "label": "HOME",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "home",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_deploy_assistito_home_bak",
+      "label": "HOME_BAK",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "home_bak",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_deploy_assistito_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_deploy_assistito_mkrepo",
+      "label": "mkrepo()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mkrepo()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L41"
+    },
+    {
+      "id": "tests_test_deploy_assistito_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_deploy_assistito_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L28"
+    },
+    {
+      "id": "tests_test_deploy_assistito_sh__entry",
+      "label": "test-deploy-assistito.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-deploy-assistito.sh script",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_mutation_tests",
       "label": "test-mutation-tests.sh",
       "_origin": "ast",
@@ -46958,6 +46925,111 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_stdin_timeout",
+      "label": "test-stdin-timeout.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-stdin-timeout.sh",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_stdin_timeout_check_bounded",
+      "label": "check_bounded()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check_bounded()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L39"
+    },
+    {
+      "id": "tests_test_stdin_timeout_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_stdin_timeout_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_stdin_timeout_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L36"
+    },
+    {
+      "id": "tests_test_stdin_timeout_sh__entry",
+      "label": "test-stdin-timeout.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-stdin-timeout.sh script",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_stdin_timeout_zhipuai_api_key",
+      "label": "ZHIPUAI_API_KEY",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "zhipuai_api_key",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L37"
+    },
+    {
       "id": "tools_prepara_deploy",
       "label": "prepara-deploy.sh",
       "_origin": "ast",
@@ -46992,10 +47064,21 @@
       "label": "margine_documento.py",
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "margine_documento.py",
       "source_file": "tools/margine_documento.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_verifica_banco",
+      "label": "verifica_banco.py",
+      "_origin": "ast",
+      "community": 739,
+      "community_name": "re",
+      "file_type": "code",
+      "norm_label": "verifica_banco.py",
+      "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
     },
     {
@@ -47003,7 +47086,7 @@
       "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
       "source_file": "tools/margine_documento.py",
@@ -47014,7 +47097,7 @@
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/margine_documento.py",
@@ -47025,11 +47108,33 @@
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 739,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
       "source_location": "L74"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_2",
+      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
+      "_origin": "ast",
+      "community": 739,
+      "community_name": "re",
+      "file_type": "rationale",
+      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_35",
+      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
+      "_origin": "ast",
+      "community": 739,
+      "community_name": "re",
+      "file_type": "rationale",
+      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L35"
     },
     {
       "id": "tests_test_lente_sicurezza",
@@ -47272,96 +47377,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_ask_wrappers",
-      "label": "test-ask-wrappers.sh",
-      "_origin": "ast",
-      "community": 742,
-      "community_name": "test-ask-wrappers.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-ask-wrappers.sh",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ask_wrappers_check_glm_response",
-      "label": "check_glm_response()",
-      "_origin": "ast",
-      "community": 742,
-      "community_name": "test-ask-wrappers.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_glm_response()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L150"
-    },
-    {
-      "id": "tests_test_ask_wrappers_check_qwen_response",
-      "label": "check_qwen_response()",
-      "_origin": "ast",
-      "community": 742,
-      "community_name": "test-ask-wrappers.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_qwen_response()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L170"
-    },
-    {
-      "id": "tests_test_ask_wrappers_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 742,
-      "community_name": "test-ask-wrappers.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_ask_wrappers_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 742,
-      "community_name": "test-ask-wrappers.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_ask_wrappers_sh__entry",
-      "label": "test-ask-wrappers.sh script",
-      "_origin": "ast",
-      "community": 742,
-      "community_name": "test-ask-wrappers.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-ask-wrappers.sh script",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "night_shift_lib_cancello_design",
       "label": "cancello_design()",
       "_origin": "ast",
@@ -47524,66 +47539,6 @@
       },
       "norm_label": "test-grafo-notturno.sh script",
       "source_file": "tests/test-grafo-notturno.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map",
-      "label": "test-bc-map.sh",
-      "_origin": "ast",
-      "community": 745,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bc-map.sh",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 745,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_bc_map_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 745,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_bc_map_sh__entry",
-      "label": "test-bc-map.sh script",
-      "_origin": "ast",
-      "community": 745,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bc-map.sh script",
-      "source_file": "tests/test-bc-map.sh",
       "source_location": "L1"
     },
     {
@@ -47951,21 +47906,6 @@
       "source_location": "L5"
     },
     {
-      "id": "night_shift_lib_esegui_verifica",
-      "label": "esegui_verifica()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "esegui_verifica()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L88"
-    },
-    {
       "id": "night_shift_lib_eta_secondi",
       "label": "eta_secondi()",
       "_origin": "ast",
@@ -48039,21 +47979,6 @@
       "norm_label": "lente_pr()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L446"
-    },
-    {
-      "id": "night_shift_lib_mask_secrets",
-      "label": "mask_secrets()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mask_secrets()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L307"
     },
     {
       "id": "night_shift_lib_mtime",
@@ -48431,11 +48356,146 @@
       "source_location": "L1"
     },
     {
+      "id": "llm_ask_glm",
+      "label": "ask-glm.sh",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ask-glm.sh",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_glm_sh__entry",
+      "label": "ask-glm.sh script",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-glm.sh script",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus",
+      "label": "ask-opus.sh",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ask-opus.sh",
+      "source_file": "llm/ask-opus.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus_sh__entry",
+      "label": "ask-opus.sh script",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-opus.sh script",
+      "source_file": "llm/ask-opus.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_usage",
+      "label": "_usage.sh",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "_usage.sh",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_usage_log_ask_usage",
+      "label": "log_ask_usage()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log_ask_usage()",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "llm_usage_sh__entry",
+      "label": "_usage.sh script",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "_usage.sh script",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_lib_esegui_verifica",
+      "label": "esegui_verifica()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "esegui_verifica()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L88"
+    },
+    {
+      "id": "night_shift_lib_mask_secrets",
+      "label": "mask_secrets()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mask_secrets()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L307"
+    },
+    {
       "id": "tools_lente_sicurezza",
       "label": "lente-sicurezza.sh",
       "_origin": "ast",
       "community": 755,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48450,7 +48510,7 @@
       "label": "log()",
       "_origin": "ast",
       "community": 755,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48465,7 +48525,7 @@
       "label": "lente-sicurezza.sh script",
       "_origin": "ast",
       "community": 755,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48480,7 +48540,7 @@
       "label": "verdetto()",
       "_origin": "ast",
       "community": 755,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -51584,7 +51644,7 @@
       "label": "glob",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "glob",
@@ -51596,7 +51656,7 @@
       "label": "importlib_util",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "importlib_util",
@@ -51608,22 +51668,10 @@
       "label": "os",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "os",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "re",
-      "label": "re",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "re",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -51632,7 +51680,7 @@
       "label": "urllib_request",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_request",
@@ -51644,7 +51692,7 @@
       "label": "xml_etree_elementtree",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "xml_etree_elementtree",
@@ -51768,6 +51816,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_parse",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "re",
+      "label": "re",
+      "_origin": "semantic",
+      "community": 739,
+      "community_name": "re",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -56022,6 +56082,30 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_installa_citati_sh__entry",
+      "target": "tests_test_installa_citati_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_citati_sh__entry",
+      "target": "tests_test_installa_citati_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_iscrivi_coda_sh__entry",
       "target": "tests_test_iscrivi_coda_ko",
       "relation": "calls",
@@ -60230,7 +60314,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L190",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -60242,7 +60326,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L190",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -60254,7 +60338,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L200",
+      "source_location": "L199",
       "weight": 1.0
     },
     {
@@ -60266,7 +60350,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L258",
+      "source_location": "L260",
       "weight": 1.0
     },
     {
@@ -86000,6 +86084,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_installa_citati",
+      "target": "tests_test_installa_citati_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_iscrivi_coda",
       "target": "tests_test_iscrivi_coda_sh__entry",
       "relation": "contains",
@@ -92314,6 +92409,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_installa_citati",
+      "target": "tests_test_installa_citati_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_citati",
+      "target": "tests_test_installa_citati_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-citati.sh",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_iscrivi_coda",
       "target": "tests_test_iscrivi_coda_ok",
       "relation": "defines",
@@ -98145,5 +98262,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d134b97303745ff3dfcd2d534df14d232f0bf16e"
+  "built_at_commit": "f1ea585c4da58f6c565b5f26bcc6bf5b0175ad94"
 }

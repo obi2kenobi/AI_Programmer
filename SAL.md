@@ -5148,3 +5148,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   l'archivio pure. Ora il blocco sostituisce e basta: due giri di fila danno lo stesso file. Caso nuovo in
   `tests/test-sal-indice-ancore.sh` (14/0), rosso prima; sabotaggio 13/1. SAL.md e SAL-ARCHIVIO.md perdono
   la riga in più.
+- **Sesto ventaglio, S2 R6 (conteggi) — installa-citati e sync-repo contavano le copie, non i cambiamenti.** Al
+  secondo giro `tools/installa-citati.sh` diceva «17 file scritti» con l'albero pulito. `tools/sync-repo.sh` ne
+  faceva la misura della PR: «PR aperta … (24 gruppi di file aggiornati)» per un diff di un file, e il numero
+  finiva nel log del turno. Ora un file identico non si riscrive e non si conta (`cmp -s`), e la PR dice «(N file
+  nel commit)», contati dal diff in stage. Il contatore `COPIATI`, rimasto senza lettori, è tolto. Banco nuovo
+  `tests/test-installa-citati.sh` (3/0) e un caso in `tests/test-sync-repo.sh` (28/0), rossi prima; sabotaggio
+  2/1 e 27/1.
