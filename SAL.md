@@ -4156,3 +4156,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   portavano in ogni satellite. Ora `.claude` porta la variante per Claude del pacchetto (
   strumento Agent) e `.opencode` resta con la sua. Il banco confronta graphify per variante, con i
   references identici: rosso prima (variante OpenCode in `.claude`), verde ora.
+- **Terzo ventaglio, V3#4 — la skill n-giri non diceva dove vanno i rapporti grezzi (lezione E-044).**
+  In `.claude/skills/n-giri/SKILL.md` la regola «il giro scrive il suo file PRIMA di rispondere» non
+  diceva dove. Stanotte i grezzi T1-T6 stavano nello scratchpad in `/tmp` e sono morti con lui (E-044).
+  Ora la regola li mette in `docs/giri/<data>/grezzi/`, una cartella ignorata da git, e chiede prima un
+  `git check-ignore`. `.gitignore` ha la riga `docs/giri/*/grezzi/`. Anche
+  `.claude/skills/n-giri/references/brief-modello.md` porta il posto, e lo specchio `.opencode` segue.
+  Il banco `tests/test-skill-n-giri.sh` ha due controlli nuovi: era rosso prima (2 FAIL), ora è verde
+  (22/0). Sabotaggio: tolta la riga dal `.gitignore`, torna rosso (21/1).

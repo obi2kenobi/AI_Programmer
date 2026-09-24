@@ -35,7 +35,13 @@ N = aree × lenti. Cinquanta non è un numero sacro: consolidate le lenti, si ar
 Regole di ogni giro, scritte nel brief:
 1. **Il giro scrive il suo file PRIMA di rispondere.** Un giro il cui unico prodotto è la risposta
    finale si perde quando l'agente muore, e un limite esaurito a metà del ventaglio è il caso
-   normale: Budget Vendite, 16 giri su 20 sopravvissuti a un blocco caduto.
+   normale: Budget Vendite, 16 giri su 20 sopravvissuti a un blocco caduto. **Dove**: nel repo, in
+   `docs/giri/<data>/grezzi/`, una cartella ignorata da git — prima di partire
+   `git check-ignore docs/giri/<data>/grezzi/x.md` deve rispondere, altrimenti si aggiunge la riga
+   `docs/giri/*/grezzi/` al `.gitignore`. Mai nello scratchpad in `/tmp`: il 2026-09-24 una pulizia di
+   `/tmp` ha cancellato sei rapporti grezzi in un colpo (E-044). Mai con un nome qualunque fuori da
+   `grezzi/`: un rapporto chiamato come il giro (T1, B3) non è ignorato e finirebbero nel commit, con le loro citazioni non
+   verificate.
 2. **Formato Oggi / Manca / Proposta**, ogni voce ancorata a un `file:riga` letto davvero. Mai un
    principio da manuale.
 3. **Tetto di 6 finding per giro**, in ordine di gravità: costringe a scegliere.

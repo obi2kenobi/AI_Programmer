@@ -18,7 +18,8 @@ scrivi in <cartella>/<X>-<Y>.md — le regole sono nel brief».
 | L1 | … | … | correttezza / prodotto |
 
 ## Regole di ogni giro
-1. Scrivi il tuo file PRIMA di rispondere: se muori dopo, il giro resta.
+1. Scrivi il tuo file PRIMA di rispondere: se muori dopo, il giro resta. Il file va in
+   `docs/giri/<data>/grezzi/<lente>.md` (ignorata da git: non entra nel commit, e non sparisce con `/tmp`).
 2. Una lente, un'area: non guardare le altre.
 3. Formato per ogni voce: **Oggi** (cosa succede ora, con `file:riga`) · **Manca** (il buco
    specifico) · **Proposta** (una mossa concreta, non un principio).

@@ -9484,7 +9484,7 @@
       "node_kind": "heading",
       "norm_label": "3. verifica avversariale: i rilievi si provano, non si contano",
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L48"
+      "source_location": "L54"
     },
     {
       "id": "claude_skills_n_giri_skill_4_sintesi",
@@ -9496,7 +9496,7 @@
       "node_kind": "heading",
       "norm_label": "4. sintesi",
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L58"
+      "source_location": "L64"
     },
     {
       "id": "claude_skills_n_giri_skill_5_correzione_se_richiesta",
@@ -9508,7 +9508,7 @@
       "node_kind": "heading",
       "norm_label": "5. correzione (se richiesta)",
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L69"
+      "source_location": "L75"
     },
     {
       "id": "claude_skills_n_giri_skill_6_chiusura",
@@ -9520,7 +9520,7 @@
       "node_kind": "heading",
       "norm_label": "6. chiusura",
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L77"
+      "source_location": "L83"
     },
     {
       "id": "claude_skills_n_giri_skill_n_giri_molte_letture_indipendenti_un_metodo_che_non_si_ricostruisce_a_mano",
@@ -12996,7 +12996,7 @@
       "node_kind": "heading",
       "norm_label": "3. verifica avversariale: i rilievi si provano, non si contano",
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L48"
+      "source_location": "L54"
     },
     {
       "id": "opencode_skills_n_giri_skill_4_sintesi",
@@ -13008,7 +13008,7 @@
       "node_kind": "heading",
       "norm_label": "4. sintesi",
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L58"
+      "source_location": "L64"
     },
     {
       "id": "opencode_skills_n_giri_skill_5_correzione_se_richiesta",
@@ -13020,7 +13020,7 @@
       "node_kind": "heading",
       "norm_label": "5. correzione (se richiesta)",
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L69"
+      "source_location": "L75"
     },
     {
       "id": "opencode_skills_n_giri_skill_6_chiusura",
@@ -13032,7 +13032,7 @@
       "node_kind": "heading",
       "norm_label": "6. chiusura",
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L77"
+      "source_location": "L83"
     },
     {
       "id": "opencode_skills_n_giri_skill_n_giri_molte_letture_indipendenti_un_metodo_che_non_si_ricostruisce_a_mano",
@@ -19550,7 +19550,7 @@
       "node_kind": "heading",
       "norm_label": "uscita del consolidamento (dopo i giri)",
       "source_file": ".claude/skills/n-giri/references/brief-modello.md",
-      "source_location": "L30"
+      "source_location": "L31"
     },
     {
       "id": "tests_test_bc_index",
@@ -19754,7 +19754,7 @@
       "node_kind": "heading",
       "norm_label": "uscita del consolidamento (dopo i giri)",
       "source_file": ".opencode/skills/n-giri/references/brief-modello.md",
-      "source_location": "L30"
+      "source_location": "L31"
     },
     {
       "id": "tests_test_bilancio_bu",
@@ -61026,7 +61026,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/n-giri/references/brief-modello.md",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -61092,7 +61092,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L48",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -61103,7 +61103,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L58",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -61114,7 +61114,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L69",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -61125,7 +61125,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/n-giri/SKILL.md",
-      "source_location": "L77",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -76283,7 +76283,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/n-giri/references/brief-modello.md",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -76349,7 +76349,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L48",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -76360,7 +76360,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L58",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -76371,7 +76371,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L69",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -76382,7 +76382,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/n-giri/SKILL.md",
-      "source_location": "L77",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -93077,5 +93077,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1d75e17ca7cb1c60893cf0e435a34e63b3b7a152"
+  "built_at_commit": "c65179a85c48217a7fe2d2f77da892ef61166fe5"
 }

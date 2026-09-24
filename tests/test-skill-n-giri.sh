@@ -36,6 +36,12 @@ attesa 'stessa domanda'                                "la consolidazione delle 
 attesa 'domande di dominio'                            "le domande di dominio in un file numerato, mai indovinate"
 [ -f "$SK/references/brief-modello.md" ] && ok "il modello del brief e' pronto da copiare" || ko "manca references/brief-modello.md"
 grep -q 'docs/ngiri-paralleli.md' "$SK/SKILL.md" && ok "rimanda al workflow docs/ngiri-paralleli.md" || ko "non rimanda a docs/ngiri-paralleli.md"
+# (2026-09-24, terzo ventaglio, V3#4 — la lezione di E-044): i grezzi nello scratchpad sono spariti con /tmp;
+# nel repo, con nomi qualunque (T1.md, B3.md), finirebbero nel commit. La skill dice DOVE: una cartella
+# grezzi/ ignorata da git, e di verificarlo con git check-ignore prima di partire.
+grep -c 'grezzi/' "$SK/SKILL.md" >/dev/null && grep -c 'git check-ignore' "$SK/SKILL.md" >/dev/null && grep -c 'grezzi/' "$SK/references/brief-modello.md" >/dev/null \
+  && ok "la skill (e il brief modello) dicono dove vanno i grezzi e come verificarlo" || ko "la skill non dice dove scrivere i grezzi (E-044)"
+(cd "$HERE" && git check-ignore -q docs/giri/qualunque/grezzi/T1.md) && ok "nell'hub docs/giri/*/grezzi/ e' ignorato da git" || ko "docs/giri/*/grezzi/ non ignorato: i grezzi finirebbero nel commit"
 diff -rq "$SK" "$HERE/.opencode/skills/n-giri" >/dev/null 2>&1 && ok "specchio OpenCode identico" || ko "specchio .opencode/skills/n-giri assente o divergente"
 
 echo ""
