@@ -77,6 +77,11 @@ def main():
     """Bilancio JSON in stdin → verdetti per indice + presunzione finale.
     Input non-parsabile: uso, non traceback.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: indici_crisi.py < bilancio.json — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     try:
         a = json.load(sys.stdin)
     except (json.JSONDecodeError, EOFError):

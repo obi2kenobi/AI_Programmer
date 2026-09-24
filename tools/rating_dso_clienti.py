@@ -49,6 +49,11 @@ def main():
     del progetto reale (regola 1-2 del docstring); i clienti senza fatture
     pagate restano «n.d.»: la forma del numero dichiara cosa contiene.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: rating_dso_clienti.py < movimenti.csv — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     # (giro 21, 2026-09-20 — D32): colonne sbagliate = KeyError nudo; stdin vuoto = tabella
     # vuota con rc 0 (verde senza dati). Si dichiara cosa manca, come scadenzario_aging.
     reader = csv.DictReader(sys.stdin)

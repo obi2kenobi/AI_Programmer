@@ -4781,3 +4781,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   periodo è in DEBITI accanto. Banchi: `tests/test-indici-crisi.sh` 23/0 (sabotaggio 20/3),
   `tests/test-oracoli-uso.sh` 85/0 (sabotaggio 84/1), `tests/test-giri-avversari-classifica.sh` nuovo, 4/0
   (sabotaggio 2/2). La categoria D di giri-avversari, lanciata da sola: zero aggirati.
+- **Quinto ventaglio, R3 R6 — sei oracoli ignoravano in silenzio un file passato come argomento.** aging,
+  riconciliazione, rating, bilancio_bu, indici e rollforward leggono solo stdin. `scadenzario_aging.py
+  scadenzario.csv`, la forma usata da margine, accuratezza e leasing, calcolava su quello che c'era in
+  stdin, rc 0: da terminale restava in attesa. Ora un argomento si rifiuta con «uso: X.py < file — legge
+  solo stdin: l'argomento … non e' letto», rc 1. Nessun chiamante del repo passa argomenti a questi sei
+  (cercato: giri-ignoranti e ciclo-vivo li lanciano con stdin vuoto).
+
+  Sei casi nuovi in `tests/test-oracoli-uso.sh` (91/0), con stdin VALIDO, rossi prima. Sabotaggio con gli
+  oracoli di prima: 85/6. I banchi propri restano verdi.

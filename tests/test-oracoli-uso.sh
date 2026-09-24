@@ -190,6 +190,20 @@ dichiara "rollforward: un cespite non oggetto"    python3 "$T/rollforward_cespit
 sed 's/"pn": NaN/"pn": "100"/' "$TMP/ic.json" > "$TMP/ic2.json"; dichiara "indici: pn stringa (gia' coperto da R3 R2)" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
 echo 5 > "$TMP/ic2.json"; dichiara "indici: JSON numero (non oggetto)" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
 echo '["pn"]' > "$TMP/ic2.json"; dichiara "indici: JSON lista con un nome di campo" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
+# (2026-09-24, quinto ventaglio, R3 R6): i sei oracoli che leggono stdin ignoravano un file passato come
+# argomento — «aging.py scadenzario.csv» calcolava su quello che c'era in stdin, rc 0. Stdin qui e' VALIDO:
+# il rifiuto viene dall'argomento, non dall'input.
+printf 'giorni,tipo,importo\n10,Cliente,999\n' > "$TMP/sa.csv"
+dichiara "aging: file come argomento"           python3 "$T/scadenzario_aging.py" "$TMP/sa.csv" < "$TMP/sa.csv"
+printf 'codice,qty_bc,costo_finale,qty_fisica,stato\nX,10,5,5,Contato\n' > "$TMP/sr.csv"
+dichiara "riconciliazione: file come argomento" python3 "$T/riconciliazione_magazzino.py" "$TMP/sr.csv" < "$TMP/sr.csv"
+printf '%s\nfattura,2026-01-01,,1,Rossi,,100\n' "$H" > "$TMP/r.csv"
+dichiara "rating: file come argomento"          python3 "$T/rating_dso_clienti.py" "$TMP/r.csv" < "$TMP/r.csv"
+printf 'bu,amount\nARRG,100\n' > "$TMP/sb.csv"
+dichiara "bilancio_bu: file come argomento"     python3 "$T/bilancio_bu.py" "$TMP/sb.csv" < "$TMP/sb.csv"
+echo '{"pn":10,"ricavi":100,"oneriFin":1,"passivoTot":100,"debPrev":0,"debTrib":0,"cashFlow":5,"attivo":100,"attCorrenti":200,"passCorrenti":100}' > "$TMP/ic3.json"
+dichiara "indici: file come argomento"          python3 "$T/indici_crisi.py" "$TMP/ic3.json" < "$TMP/ic3.json"
+dichiara "rollforward: file come argomento"     python3 "$T/rollforward_cespiti.py" "$TMP/cespiti.json" < "$TMP/cespiti.json"
 # (2026-09-24, quinto ventaglio, R3 R1): il ramo «fornitore» in minuscolo (o con uno spazio davanti) non
 # assegnava l'importo — la riga prendeva quello della riga PRIMA (Entrate +2000 invece di +1500), o, se era la
 # prima, un traceback. Il segno resta quello che l'ATTENZIONE dichiara (+abs, convenzione provvisoria: la

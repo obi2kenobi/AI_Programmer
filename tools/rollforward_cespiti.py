@@ -68,6 +68,11 @@ def calcola_roll_forward(fa, cespiti_categoria):
 def main():
     """Cespiti JSON in stdin → righe roll-forward. Input non-parsabile: uso.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: rollforward_cespiti.py < cespiti.json — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     try:
         dati = json.load(sys.stdin)
     except (ValueError, EOFError):
