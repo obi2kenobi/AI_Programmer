@@ -5134,3 +5134,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   orfani in `/tmp` stasera, dichiarati e non toccati). Ora il test dà al banco la sua cartella. Due casi nuovi
   (9/0), rossi prima; sabotaggio 7/2. La mia prima stesura del caso cercava «neutralizzato» contro
   «NEUTRALIZZATI».
+- **Sesto ventaglio, S4 R6 — un pass del grafo ucciso a metà spariva in silenzio per un giorno.**
+  `night-shift/night-shift.sh` scriveva il segno «grafo fatto oggi» PRIMA del pass (ore, in background), e il lock
+  non aveva il PID: si toglieva solo dopo 24 ore. Un turno ucciso a metà pass lasciava segno e lock, e il pass
+  mancava per il resto del giorno e quasi tutto il successivo, senza una riga nel log. Ora il lock porta il PID
+  del pass. Vale la regola di `lock_turno_orfano`: PID morto vuol dire lock orfano, che si toglie e si dice. Il
+  segno si scrive a pass finito. Banco nuovo `tests/test-grafo-notturno.sh` (5/0): fa girare il blocco vero con
+  un pass finto, lo uccide per PID, e vuole che il ciclo dopo riparta e che un pass vivo resti intoccato. Rosso
+  prima; sabotaggio 1/3. Il banco si ingannava da solo, perché `$( )` aspetta il pass in background: l'uscita va
+  su file.
