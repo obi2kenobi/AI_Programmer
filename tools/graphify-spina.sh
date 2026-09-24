@@ -71,5 +71,7 @@ if [ "$STAGE" -eq 1 ]; then
   git -C "$DIR" add graphify-out/.gitignore graphify-out/.gitattributes graphify-out/graph.json 2>>"$LOG" \
     && log "grafo in stage" || log "git add del grafo fallito (vedi sopra)"
 fi
-echo "graphify-spina: grafo aggiornato${RIASSUNTO:+ ($RIASSUNTO)}${AVVISO:-} — interrogalo: graphify query \"<domanda>\""
+# (2026-09-24, Q4): la riga che ogni sessione vede dice anche il limite misurato — i chiamanti dentro "$(f)",
+# <(f) e trap sono invisibili, e «chi usa X» si chiede ad affected, confermato con grep
+echo "graphify-spina: grafo aggiornato${RIASSUNTO:+ ($RIASSUNTO)}${AVVISO:-} — dove vive: graphify query \"<termini del codice>\"; chi usa X: graphify affected \"X\" + grep -rn (le chiamate in \"\$(…)\", <(…) e trap non sono nel grafo)"
 exit 0

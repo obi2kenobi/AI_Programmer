@@ -4356,3 +4356,21 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   nuove: il primo giorno, il guasto, i contratti d'uscita, il grafo come navigazione, i ganci visti da un
   avversario. I rapporti grezzi vanno in `docs/giri/2026-09-24-quarto/grezzi/`, ignorata da git: il
   controllo `git check-ignore` che la skill n-giri §2 chiede prima di partire ha risposto.
+- **Quarto ventaglio, Q4 R1-R6 — il grafo dava per morte funzioni vive, e nessuno lo diceva.** Il giro Q4
+  ha fatto dieci domande tipiche al grafo: tre risposte giuste, tre parziali, quattro sbagliate. Al
+  commit il grafo è fresco: le righe dei nodi di codice tornano tutte, 690 su 690. I problemi sono
+  altrove:
+  - l'estrattore bash non vede le chiamate dentro `"$(f …)"`, `<(f)` e `trap '…'`. Riprodotto qui:
+    `graphify affected "lente_pr"` risponde «No affected nodes found», eppure `night-shift/night-shift.sh`
+    la chiama due volte (è la lente di sicurezza D2);
+  - `query`, col budget di default, non stampa i siti di chiamata;
+  - un arco porta solo il primo sito di ogni chiamante;
+  - le frasi in italiano agganciano parole sbagliate («maschera» porta al privacy-check, non a
+    `mask_secrets`);
+  - le costanti di testa, `.night-verify` e `.claude/settings.json` sono fuori dal grafo.
+
+  La cura va dove l'agente legge: una regola in AGENTS.md (affected per «chi usa X», conferma con
+  `grep -rn`, i limiti misurati) e la riga che `tools/graphify-spina.sh` stampa a ogni avvio.
+  `tests/test-graphify-spina.sh` ha due controlli nuovi: rosso prima (2 FAIL), verde ora (18/0).
+  Sabotaggio: con la vecchia riga d'avvio torna rosso (17/1). Proposta a CLAUDE.md §7, non applicata:
+  la stessa frase accanto a «trust the graph for orientation».

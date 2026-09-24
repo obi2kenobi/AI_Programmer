@@ -113,6 +113,17 @@ OUT=$(GRAFO_FINTO='{"nodes":[{"id":"semantico"}]}' GS); RC=$?
 [ $RC -eq 0 ] && [ ! -f "$T/pr.log" ] && grep -q "invariato" <<<"$OUT" \
   && ok "grafo invariato: nessuna PR, e lo dice" || ko "grafo invariato ma PR aperta o silenzio (rc=$RC): $OUT"
 
+# 10. (2026-09-24, quarto ventaglio, Q4): il grafo non vede le chiamate dentro "$(f …)", <(f) e trap '…' —
+# `graphify affected lente_pr` (la lente di sicurezza D2, chiamata due volte dal turno) risponde «No affected
+# nodes found», e chi applica «no dead code» la toglierebbe. Le regole che l'agente legge (AGENTS.md) e la
+# riga che la spina stampa a ogni avvio dicono il limite e la forma giusta per «chi usa X».
+A=$(cat "$HERE/AGENTS.md")
+grep -c 'graphify affected' <<<"$A" >/dev/null && grep -c 'grep -rn' <<<"$A" >/dev/null \
+  && ok "AGENTS.md insegna affected per «chi usa X» e la conferma con grep (siti invisibili al grafo)" \
+  || ko "AGENTS.md non dice il limite del grafo sui chiamanti"
+grep -c 'affected' "$SPINA" >/dev/null && ok "la riga d'avvio della spina nomina affected e il limite" \
+  || ko "la spina all'avvio insegna solo query"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
