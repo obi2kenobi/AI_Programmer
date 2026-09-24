@@ -4017,3 +4017,18 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   (satellite vero, una voce, voce tolta): 3 rossi prima, 1 al sabotaggio (il confronto con HEAD
   tolto). Il vecchio dente «almeno una voce» proteggeva l'hub da un registro cancellato; quello nuovo
   lo protegge anche da una voce tolta.
+- **Terzo ventaglio, V5 — il catalogo dei pattern.** 65 pattern: 12 àncore vive e coerenti, 3 vive
+  ma incoerenti, 50 esterne non verificabili da qui.
+  - `patterns/watchdog-guardato.md` apriva con lo snippet del killer fatto a mano, la forma
+    abbandonata: eseguita su un comando che ignora TERM torna rc 0, cioè verde. Ora la regola in testa
+    è `run_guarded`/`ai_timeout`, e lo snippet è detto superato, «non si copia».
+  - `patterns/lock-per-risorsa.md` diceva «lock con età, 12 h»: le mie cure T2#3/T2#4 di stanotte
+    l'avevano reso falso. Ora dice la regola del PID.
+  - La guardia `tests/test-patterns-ancore-esistono.sh` controllava solo che il file dell'àncora
+    esistesse: con `run_guarded` rinominata restava 14/0. Ora un'àncora `file:simbolo` vuole il
+    simbolo DEFINITO nel file. La prima estensione («il nome compare») restava verde al sabotaggio
+    perché il nome sta anche nei commenti; ora si cerca la definizione, e il sabotaggio dà 1 rosso.
+    Contava anche README fra i pattern: non più.
+  - La guardia estesa ha trovato subito un'àncora morta: `pipefail-grep-sigpipe` puntava a
+    `tools/ciclo-vivo.sh:lente-2`, riscritto il 2026-09-23. Riàncorata al rilevatore unico
+    `tools/e002-siti.py`.
