@@ -19,6 +19,12 @@ bash "$TOOL" "$D/buona.md" >/dev/null 2>&1 && ok "citazione esistente: VERDE" ||
 # 3. orario HH:MM non e' una citazione: non scatta mai
 printf 'alle `14:30` e `SAL.md:12:00` non conta\n' > "$D/orario.md"
 bash "$TOOL" "$D/orario.md" >/dev/null 2>&1 && ok "orario HH:MM ignorato (nessun falso positivo)" || ko "orario scambiato per citazione"
+# 5. (2026-09-24, terzo ventaglio, V2 S5a): il file citato non esiste — il caso di verify-patterns.sh, per
+# cui il ramo «file inesistente» e' nato — non era provato: via il ramo, verde lo stesso
+printf 'vede `tools/non-esiste-davvero.sh:3`\n' > "$D/assente.md"
+OUT=$(bash "$TOOL" "$D/assente.md" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -c "file inesistente" <<<"$OUT" >/dev/null && ok "file citato inesistente: ROSSA, e lo dice" \
+  || ko "file citato inesistente: rc=$RC, $OUT"
 # 4. il dente e' nel pre-commit (la frontiera giusta)
 grep -q "cita-verifica" "$HERE/tools/pre-commit.sh" && ok "il dente gira nel pre-commit" || ko "cita-verifica non e' nel pre-commit"
 

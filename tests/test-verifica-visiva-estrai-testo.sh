@@ -15,6 +15,9 @@ const sane = m.estraiTesto('<html><head><script>var u = undefined;</script></hea
 const broken = m.estraiTesto('<html><body><p>Errore durante lelaborazione della richiesta.</p></body></html>');
 console.log(sane.includes('undefined') ? 'KO script-contaminato' : 'OK sane-pulita');
 console.log(broken.includes('Errore') ? 'OK errore-rilevato' : 'KO errore-perso');
+// (2026-09-24, terzo ventaglio, V2 S26): l'intestazione nomina <script>/<style>, ma si provava solo <script>
+const stile = m.estraiTesto('<html><head><style>.x:after{content:\\'undefined\\'}</style></head><body><p>Testo sufficientemente lungo per superare la soglia.</p></body></html>');
+console.log(stile.includes('undefined') ? 'KO style-contaminato' : 'OK style-pulito');
 ")
 
 while IFS= read -r line; do

@@ -4315,3 +4315,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   rifiuta anche `-c`, `--config-env` e `-C .`; `git blame --contents` resta ammesso, perché legge e
   basta. `tests/test-lib.sh` ha tre casi nuovi (config, `-c`, `--config-env`): verde (139/0). Il
   sabotaggio di V2 (config in GIT_RO) ora è rosso (138/1).
+- **Terzo ventaglio, V2 S5a e S26 — due rami dichiarati senza un caso che li giudicasse.**
+  - `tests/test-cita-verifica.sh` non provava la citazione di un file inesistente, il caso per cui il
+    ramo di `tools/cita-verifica.sh` è nato. Ora c'è, e il sabotaggio che toglie il ramo è rosso (5/1).
+  - `tests/test-verifica-visiva-estrai-testo.sh` nomina `<script>` e `<style>`, ma provava solo il
+    primo. Ora c'è un `<style>` con «undefined», e il sabotaggio che toglie la rimozione degli stili è
+    rosso (2/1).
