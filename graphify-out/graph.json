@@ -12337,64 +12337,64 @@
       "source_location": "L11"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "id": "docs_giri_2026_09_24_sesto_00_brief",
+      "label": "2026-09-24-sesto/00-BRIEF.md",
       "_origin": "ast",
       "community": 18,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "Sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
       "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2840"
+      "node_kind": "page",
+      "norm_label": "2026-09-24-sesto/00-brief.md",
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "id": "docs_giri_2026_09_24_sesto_00_brief_lenti",
+      "label": "Lenti",
       "_origin": "ast",
       "community": 18,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "Sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2898"
+      "norm_label": "lenti",
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L8"
     },
     {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "id": "docs_giri_2026_09_24_sesto_00_brief_modello",
+      "label": "Modello",
       "_origin": "ast",
       "community": 18,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "Sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2942"
+      "norm_label": "modello",
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L39"
     },
     {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "id": "docs_giri_2026_09_24_sesto_00_brief_regole",
+      "label": "Regole",
       "_origin": "ast",
       "community": 18,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "Sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2995"
+      "norm_label": "regole",
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L17"
     },
     {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "id": "docs_giri_2026_09_24_sesto_00_brief_sesto_ventaglio_giri_36_40_2026_09_24",
+      "label": "Sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
       "_origin": "ast",
       "community": 18,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "Sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2806"
+      "norm_label": "sesto ventaglio \u2014 giri 36-40 (2026-09-24)",
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L1"
     },
     {
       "id": "router_readme",
@@ -48999,6 +48999,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2840"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2898"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2942"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2995"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -49033,6 +49081,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1767"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2806"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -74876,6 +74936,50 @@
       "weight": 1.0
     },
     {
+      "source": "docs_giri_2026_09_24_sesto_00_brief",
+      "target": "docs_giri_2026_09_24_sesto_00_brief_sesto_ventaglio_giri_36_40_2026_09_24",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_sesto_00_brief_sesto_ventaglio_giri_36_40_2026_09_24",
+      "target": "docs_giri_2026_09_24_sesto_00_brief_regole",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_sesto_00_brief_sesto_ventaglio_giri_36_40_2026_09_24",
+      "target": "docs_giri_2026_09_24_sesto_00_brief_modello",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_sesto_00_brief_sesto_ventaglio_giri_36_40_2026_09_24",
+      "target": "docs_giri_2026_09_24_sesto_00_brief_lenti",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-sesto/00-BRIEF.md",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
       "source": "docs_giri_2026_09_24_terzo_00_brief",
       "target": "docs_giri_2026_09_24_terzo_00_brief_terzo_ventaglio_giri_21_25_2026_09_24",
       "relation": "contains",
@@ -97526,5 +97630,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5ce84a0558682e3864fa0d9c1cd38e891f1dd2f5"
+  "built_at_commit": "c049717e848e0b5244ccd782d7f7e339f1c85e61"
 }
