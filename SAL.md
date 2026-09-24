@@ -3951,3 +3951,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Stop. Il promemoria del report di campo potrebbe essere ignorato in silenzio, oppure forzare la
   continuazione. Da qui non si prova: è in DEBITI (⏳, voce «e»), senza cambiare il codice alla
   cieca.
+- **T6#6 — due regex sbagliate, in modi opposti, per la stessa coda.** `tools/onboard-repo.sh`
+  (`^$REPO\b`) dava `luca/app` per già iscritta se c'era `luca/app-v2`, e il punto nel nome faceva
+  da jolly: la repo non entrava mai nella coda della notte, in silenzio. Riprodotti entrambi.
+  `tools/bootstrap-app.sh` (`^login/nome$`) non combaciava mai con «login/nome feat» e aggiungeva
+  un doppione a ogni esecuzione. Ora c'è un gesto solo, `tools/iscrivi-coda.sh`: confronto esatto sul
+  primo campo delle righe non commentate, e ogni esito detto. Banco `tests/test-iscrivi-coda.sh`:
+  rosso prima (lo strumento mancava), 3 rossi al sabotaggio (la regex vecchia rimessa). Il `\b` in
+  sé non era il difetto (T3#4: il grep del Mac lo capisce); lo era il confine di parola.

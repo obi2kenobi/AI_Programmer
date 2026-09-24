@@ -159,10 +159,7 @@ gh label create night-shift --description "Lavorata dal turno di notte (modello 
 # stesso gesto di tools/onboard-repo.sh (Q14: un banco vero avrebbe iscritto repo finte nella
 # coda VERA dell'hub — successo a onboard al giro 20)
 CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
-if [ -f "$CONF" ] && ! grep -q "^$(gh api user --jq .login)/$NAME\$" "$CONF"; then
-  echo "$(gh api user --jq .login)/$NAME feat" >> "$CONF"
-  echo "aggiunta a $CONF"
-fi
+[ -f "$CONF" ] && bash "$HERE/tools/iscrivi-coda.sh" "$CONF" "$(gh api user --jq .login)/$NAME" feat   # T6#6: confronto esatto
 
 echo ""
 echo "Fatto: $NAME è nel sistema."

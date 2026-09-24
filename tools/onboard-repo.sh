@@ -232,7 +232,7 @@ fi
 # repo finte nella coda VERA dell'hub; stesso gesto di HUB_METRICS nel morning-gate)
 CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
-grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }
+bash "$HERE/tools/iscrivi-coda.sh" "$CONF" "$REPO" "$TYPE"   # T6#6: confronto esatto, un gesto solo
 
 echo ""
 echo "Fatto: $REPO è nel sistema. Prima issue con label night-shift e la notte lavora."
