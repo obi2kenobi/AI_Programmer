@@ -1,0 +1,285 @@
+diff --git a/SAL.md b/SAL.md
+index aecb410..26d1e91 100644
+--- a/SAL.md
++++ b/SAL.md
+@@ -3840,3 +3840,21 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
+   include `.githooks/`: rosso prima (un sito), rosso al sabotaggio. T3#4 (letto nei sorgenti Apple,
+   non eseguito) dice che `\b` e `\s` funzionano nel grep del Mac (REG_ENHANCED). La parte «`\b`»
+   di T6·6 non è quindi un difetto provato. Restano le classi POSIX, che valgono ovunque.
++- **T2#1 — la batteria d'attacchi mutava l'albero vero.** `tools/giri-avversari.sh` rompeva
++  un'àncora, piantava un file Python finto fra gli strumenti, spostava file, e usava percorsi fissi `/tmp/avv-*`. Due
++  batterie insieme sullo stesso albero davano AGGIRA falsi: nel banco 4 e 1. Un kill -9 a metà
++  lasciava gli attacchi nel repo. E `tools/banco-passaggio.sh` promette «due banchi sovrapposti non
++  si calpestano» chiamando proprio lei. Ora la batteria si rilancia in un clone usa e getta, con
++  una cartella temporanea sua. Banco `tests/test-giri-avversari-isolati.sh` (38 s): due batterie in
++  parallelo e un kill -9 a metà. 3 rossi prima, 0 dopo.
++- **E-044 (errore mio, grave): il sabotaggio di T2#1 ha fatto `rm -rf /tmp`.** Avevo rimesso
++  `AVVT=/tmp`, e la pulizia che avevo appena scritto faceva `rm -rf "$AVVT"`. Persi lo scratchpad
++  (i rapporti grezzi T1-T6, i backup) e il programma di firma dei commit dell'ambiente: da allora
++  nessun commit locale passa. Il ripristino da `/root/.claude/environment-manager/` è stato negato,
++  giustamente, e resta a Luca. Guardia nel banco: la pulizia cancella solo una cartella col nome che
++  la batteria si è data; rossa sulla pulizia nuda (2 rossi). Regola di procedura: un sabotaggio non
++  tocca mai una variabile che finisce in `rm`, e il suo backup non sta dove può cancellare.
++  Registro: E-044. Da qui in poi i banchi si verificano con `commit.gpgsign=false` passato via
++  ambiente (`GIT_CONFIG_COUNT`): le repo di prova non firmano, il repo vero non è toccato. Suite
++  163/163 così. I commit veri non si fanno: questo lavoro sta in
++  `docs/giri/2026-09-23-notte/in-attesa-di-firma-01.patch`, pubblicata via API GitHub.
+diff --git a/docs/errori/REGISTRO.md b/docs/errori/REGISTRO.md
+index 44d8a46..9f789db 100644
+--- a/docs/errori/REGISTRO.md
++++ b/docs/errori/REGISTRO.md
+@@ -949,3 +949,32 @@
+   resta un'affermazione. Il commit 1a6572b non si riscrive (storia pubblicata): lo corregge questa
+   voce e il commit successivo.
+ 
++
++## E-044 Un sabotaggio su una variabile che alimenta rm -rf: /tmp svuotata
++
++- Data / sessione: 2026-09-24 (notte dei giri, T2#1 — errore mio)
++- Famiglia: R6 (effetto collaterale ignorato: la pulizia cancella cio' che la variabile dice) + R1
++  (assunzione non verificata: «il sabotaggio tocca solo il banco»)
++- Chi l'ha trovato: io, subito: l'uscita del comando era sparita («output file could not be read»)
++- Sintomo: `/tmp` vuota. Persi lo scratchpad della sessione (helper di consegna, backup, i sei
++  rapporti grezzi T1-T6 dei giri, le note), il backup da cui ripristinare il sabotaggio e il programma
++  di firma dei commit dell'ambiente (`/tmp/code-sign`): da allora ogni commit locale fallisce.
++- Causa prossima: per sabotare la cura di `tools/giri-avversari.sh` ho rimesso `AVVT=/tmp`. La
++  pulizia della batteria faceva `rm -rf "$AVVT"`: con quel valore, `rm -rf /tmp`, da root.
++- Causa del ragionamento: ho scelto il sabotaggio «riporta la cartella condivisa», senza guardare
++  che quella stessa variabile era l'argomento di un `rm -rf` che avevo appena scritto io. Il
++  sabotaggio va sulla difesa, non su un valore che la pulizia usa per cancellare.
++- Perché non ci ha fermati: `rm -rf "$VAR"` non ha nessun controllo su cosa sia VAR; il backup era
++  nella stessa `/tmp` che è stata cancellata.
++- Guardia: `tests/test-giri-avversari-isolati.sh` (caso 0): ogni `rm -rf` di `$AVVT` deve portare
++  la guardia del nome (`case "$AVVT" in */giri-avversari.??????)`); la stessa riga, valutata su una
++  cartella altrui, la deve lasciare stare. Nel codice la cartella si crea con quel nome
++  (`mktemp -d …/giri-avversari.XXXXXX`) e si cancella solo se lo porta. Regola di procedura, da
++  ora: un sabotaggio non tocca mai una variabile che finisce in `rm`, e i backup dei sabotaggi non
++  stanno nella cartella che il sabotaggio può cancellare.
++- Verifica guardia: pulizia nuda `rm -rf "$AVVT"` → «4 OK, 2 FAIL» («altrui CANCELLATA»);
++  ripristinata → 6/0.
++- Aggiramento: il programma di firma NON è ripristinato. Rimetterlo da `/root/.claude/environment-manager/`
++  è stato negato dal classificatore dei permessi, giustamente: è dell'ambiente, non mio. Serve Luca
++  (o una sessione nuova). I rapporti grezzi T1-T6 sono persi: ne restano i riassunti che i giri mi
++  hanno consegnato e le cure già nel SAL.
+diff --git a/tools/giri-avversari.sh b/tools/giri-avversari.sh
+index a3e23cd..7f48287 100755
+--- a/tools/giri-avversari.sh
++++ b/tools/giri-avversari.sh
+@@ -29,6 +29,23 @@ if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null ||
+   echo "⛔ albero sporco: committa (o stash) prima di attaccare" >&2
+   exit 2
+ fi
++# (2026-09-23, notte dei giri, T2#1): gli attacchi mutavano l'ALBERO VERO e usavano percorsi fissi in
++# /tmp — due batterie insieme davano AGGIRA falsi (una si riprendeva il file dell'altra), un kill -9 a
++# meta' lasciava gli attacchi nel repo. Ora la batteria si rilancia in un CLONE usa e getta dell'albero
++# (pulito: e' uguale a HEAD), con una cartella temporanea sua; la memoria di ciclo-vivo (.ciclo, non
++# versionata) ci entra in copia. L'albero vero non si tocca mai.
++if [ -z "${GIRI_AVVERSARI_NEL_CLONE:-}" ]; then
++  CLONE=$(mktemp -d)
++  git clone -q "$HERE" "$CLONE/hub" || { echo "⛔ clone per la batteria non riuscito" >&2; rm -rf "$CLONE"; exit 2; }
++  [ -d .ciclo ] && cp -a .ciclo "$CLONE/hub/"
++  echo "(batteria in un clone usa e getta: $CLONE/hub — l'albero vero non si tocca)"
++  GIRI_AVVERSARI_NEL_CLONE=1 bash "$CLONE/hub/tools/giri-avversari.sh" "$@"; RC=$?
++  rm -rf "$CLONE"
++  exit $RC
++fi
++# i file di passaggio degli attacchi: una cartella per batteria, mai /tmp condivisa. Si cancella SOLO se
++# porta il nome che le da' questa riga (E-044: un sabotaggio con AVVT=/tmp ha fatto rm -rf /tmp)
++AVVT=$(mktemp -d "${TMPDIR:-/tmp}/giri-avversari.XXXXXX")
+ # (revisione 10 giri, 2026-09-23): l'uscita faceva `rm -rf .ciclo` — cioe' cancellava la
+ # memoria PERSISTENTE di tools/ciclo-vivo.sh (livello, serie di giri puliti, storico dei
+ # finding) a ogni giro d'attacchi. Si salva prima e si rimette com'era.
+@@ -37,7 +54,8 @@ CICLO_BAK=$(mktemp -d)
+ restore_tutto() {
+   git checkout -- . 2>/dev/null
+   chmod +x tools/*.sh 2>/dev/null
+-  rm -f .campo-rem tools/_sleep_malvagio.py /tmp/avv-*.md /tmp/avv-*.py /tmp/avv-*.sh /tmp/avv-*.json /tmp/avv-*.csv /tmp/avv-*.txt /tmp/avv-*.bak /tmp/avv-lib.bak 2>/dev/null
++  rm -f .campo-rem tools/_sleep_malvagio.py 2>/dev/null
++  case "$AVVT" in */giri-avversari.??????) rm -rf "$AVVT" ;; esac
+   rm -rf .ciclo 2>/dev/null
+   [ -d "$CICLO_BAK/.ciclo" ] && cp -a "$CICLO_BAK/.ciclo" .ciclo
+   rm -rf "$CICLO_BAK"
+@@ -78,10 +96,10 @@ p='.claude/skills/gas-sviluppo/references/metodo.md'; s=open(p).read()
+ open(p,'w').write(s + '\n**Meta**: ' + bt + 'pippo-rosso-finto' + bt + '\n')"
+ difesa_test tests/test-canone-integrita.sh "A3 indice che cita pattern inesistente"
+ 
+-att; mv patterns/watchdog-guardato.md /tmp/avv-pattern.md
++att; mv patterns/watchdog-guardato.md $AVVT/avv-pattern.md
+ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+ grep -qE "^FIND +S7 " <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
+-mv /tmp/avv-pattern.md patterns/watchdog-guardato.md
++mv $AVVT/avv-pattern.md patterns/watchdog-guardato.md
+ 
+ att; sedi 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
+ difesa_test tests/test-patterns-ancore-esistono.sh "A5 àncora pattern rotta"
+@@ -104,9 +122,9 @@ difesa_test tests/test-pattern-reminder-hook.sh "A9 hook rimosso da settings"
+ att; chmod -x tools/pattern-reminder-hook.sh
+ difesa_test tests/test-pattern-reminder-hook.sh "A10 hook non eseguibile"
+ 
+-att; mv tools/margine_documento.py /tmp/avv-oracolo.py
++att; mv tools/margine_documento.py $AVVT/avv-oracolo.py
+ difesa_test tests/test-margine-documento.sh "A11 oracolo cancellato"
+-mv /tmp/avv-oracolo.py tools/margine_documento.py
++mv $AVVT/avv-oracolo.py tools/margine_documento.py
+ 
+ att; sedi 's/margine = importo_v - importo_a/margine = importo_v + importo_a/' tools/margine_documento.py
+ difesa_test tests/test-margine-documento.sh "A12 aritmetica oracolo invertita (riga vera)"
+@@ -127,13 +145,13 @@ p='CLAUDE.md'; s=open(p).read()
+ open(p,'w').write(re.sub(r'(?m)^.*clasp.*$', '', s))"
+ difesa_test tests/test-claude-md-gate-conventions.sh "A15 regola clasp tolta da CLAUDE.md"
+ 
+-att; mv docs/campo/README.md /tmp/avv-campo-readme.md
++att; mv docs/campo/README.md $AVVT/avv-campo-readme.md
+ difesa_test tests/test-report-campo.sh "A16 formato report campo cancellato"
+-mv /tmp/avv-campo-readme.md docs/campo/README.md
++mv $AVVT/avv-campo-readme.md docs/campo/README.md
+ 
+-att; mv .gitattributes /tmp/avv-ga
++att; mv .gitattributes $AVVT/avv-ga
+ difesa_test tests/test-claude-md-gate-conventions.sh "A17 union merge driver rimosso"
+-mv /tmp/avv-ga .gitattributes
++mv $AVVT/avv-ga .gitattributes
+ 
+ att; rm -rf .claude/skills/design-doc
+ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+@@ -218,9 +236,9 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+ grep -qE "^FIND +S1 " <<<"$OUT_BAT" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
+ git checkout -- SAL-ARCHIVIO.md
+ 
+-att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > /tmp/avv-finto.sh
+-head -30 /tmp/avv-finto.sh | grep -c "flag-segreto" >/dev/null && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
+-rm -f /tmp/avv-finto.sh
++att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > $AVVT/avv-finto.sh
++head -30 $AVVT/avv-finto.sh | grep -c "flag-segreto" >/dev/null && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
++rm -f $AVVT/avv-finto.sh
+ 
+ att; : > patterns/vuoto-finto.md
+ bash tests/test-patterns-ancore-esistono.sh >/dev/null 2>&1 && aggirato "C8 pattern VUOTO passa il test àncore (nessun contenuto richiesto)" || tiene "C8 pattern vuoto respinto"
+@@ -265,10 +283,10 @@ classifica "$OUT" "$RC" "D5 scadenzario importo=nan"
+ att; OUT=$(printf 'giorni,tipo,importo\n5,Cliente,1e999\n' | python3 tools/scadenzario_aging.py 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D6 scadenzario importo=inf"
+ 
+-att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2027-01-01","data_fine":"2026-01-01","data_riferimento":"2026-06-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > /tmp/avv-l.json; python3 tools/leasing_amministrativo.py /tmp/avv-l.json 2>&1); RC=$?
++att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2027-01-01","data_fine":"2026-01-01","data_riferimento":"2026-06-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l.json 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D7 leasing date invertite"
+ 
+-att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > /tmp/avv-l2.json; python3 tools/leasing_amministrativo.py /tmp/avv-l2.json 2>&1); RC=$?
++att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l2.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l2.json 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D8 leasing spread con virgola italiana"
+ 
+ att; OUT=$(echo '{"pn":0,"ricavi":0,"patrimonio":0,"debiti_tributari":0,"perdite_precedenti":0}' | python3 tools/indici_crisi.py 2>&1); RC=$?
+@@ -283,22 +301,22 @@ classifica "$OUT" "$RC" "D11 indici crisi input non-JSON"
+ att; OUT=$(python3 tools/scostamento_standard_effettivo.py abc </dev/null 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D12 scostamento costo=abc"
+ 
+-att; OUT=$(printf 'nr,fornitore,ordine_nr,importo\nF1,F,{},1\n' > /tmp/avv-f.csv; printf '{}' > /tmp/avv-c.json; python3 tools/accuratezza_fatture_acquisto.py /tmp/avv-c.json /tmp/avv-f.csv /dev/null 2>&1); RC=$?
++att; OUT=$(printf 'nr,fornitore,ordine_nr,importo\nF1,F,{},1\n' > $AVVT/avv-f.csv; printf '{}' > $AVVT/avv-c.json; python3 tools/accuratezza_fatture_acquisto.py $AVVT/avv-c.json $AVVT/avv-f.csv /dev/null 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D13 accuratezza importo={}"
+ 
+-att; OUT=$(printf 'vendite,acquisti\n' > /tmp/avv-v.csv; printf 'x\n' > /tmp/avv-a.csv; python3 tools/margine_documento.py /tmp/avv-v.csv /tmp/avv-a.csv 2>&1); RC=$?
++att; OUT=$(printf 'vendite,acquisti\n' > $AVVT/avv-v.csv; printf 'x\n' > $AVVT/avv-a.csv; python3 tools/margine_documento.py $AVVT/avv-v.csv $AVVT/avv-a.csv 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D14 margine CSV con una sola colonna"
+ 
+ att; OUT=$(printf 'a;b;c\n1;2;3\n' | python3 tools/riconciliazione_magazzino.py 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D15 riconciliazione CSV a punto-e-virgola"
+ 
+-att; OUT=$(mkdir -p /tmp/avv-vuota && python3 tools/gas_qualita.py /tmp/avv-vuota 2>&1); RC=$?
++att; OUT=$(mkdir -p $AVVT/avv-vuota && python3 tools/gas_qualita.py $AVVT/avv-vuota 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D16 gas_qualita su cartella vuota"
+ 
+-att; OUT=$(printf 'riga senza verdetto\n' > /tmp/avv-b.txt; python3 tools/verifica_banco.py /tmp/avv-b.txt 2>&1); RC=$?
++att; OUT=$(printf 'riga senza verdetto\n' > $AVVT/avv-b.txt; python3 tools/verifica_banco.py $AVVT/avv-b.txt 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D17 verifica_banco senza riga verdetto"
+ 
+-att; OUT=$( : > /tmp/avv-b2.txt; python3 tools/verifica_banco.py /tmp/avv-b2.txt 2>&1); RC=$?
++att; OUT=$( : > $AVVT/avv-b2.txt; python3 tools/verifica_banco.py $AVVT/avv-b2.txt 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D18 verifica_banco file vuoto"
+ 
+ att; OUT=$(printf 'cliente,importo\nA,nan\n' | python3 tools/rating_dso_clienti.py 2>&1); RC=$?
+@@ -307,7 +325,7 @@ classifica "$OUT" "$RC" "D19 rating con importo nan"
+ att; OUT=$(printf 'bu,amount\nX,1e999\n' | python3 tools/bilancio_bu.py 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D20 bilancio con inf"
+ 
+-att; OUT=$(echo '{"canone_base":-1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > /tmp/avv-l3.json; python3 tools/leasing_amministrativo.py /tmp/avv-l3.json 2>&1); RC=$?
++att; OUT=$(echo '{"canone_base":-1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l3.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l3.json 2>&1); RC=$?
+ classifica "$OUT" "$RC" "D21 leasing canone negativo"
+ 
+ att; OUT=$(echo '{"pn":"abc","ricavi":1}' | python3 tools/indici_crisi.py 2>&1); RC=$?
+@@ -382,10 +400,10 @@ git checkout -- llm/README.md
+ 
+ att; python3 -c "
+ p='night-shift/lib.sh'; s=open(p).read()
+-open('/tmp/avv-lib.bak','w').write(s)
++open('$AVVT/avv-lib.bak','w').write(s)
+ open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))"
+ [ -f tests/test-lib.sh ] && { bash tests/test-lib.sh >/dev/null 2>&1 && aggirato "G5 lib.sh allowlist rotta passa test-lib.sh" || tiene "G5 lib.sh allowlist presidiata da test-lib.sh"; } || aggirato "G5 test-lib.sh assente"
+-cp /tmp/avv-lib.bak night-shift/lib.sh
++cp $AVVT/avv-lib.bak night-shift/lib.sh
+ 
+ att; sedi 's/## Registro/## RegistrX/' patterns/README.md
+ # verificato a mano: nessuna difesa scatta — ma NIENTE dipende dal titolo della
+diff --git a/tests/test-giri-avversari-isolati.sh b/tests/test-giri-avversari-isolati.sh
+new file mode 100755
+index 0000000..c4be4bd
+--- /dev/null
++++ b/tests/test-giri-avversari-isolati.sh
+@@ -0,0 +1,59 @@
++#!/bin/bash
++# test-giri-avversari-isolati.sh — la batteria d'attacchi non si pesta i piedi e non sporca l'albero
++# (2026-09-23, notte dei giri, T2#1). tools/giri-avversari.sh mutava l'ALBERO VERO (un'ancora rotta, un
++# tools/test.py, un file tolto…) e usava 20 percorsi fissi /tmp/avv-*: due batterie insieme sullo stesso
++# albero davano 8 AGGIRA falsi, due in cloni diversi 1 (una si riprendeva il file dell'altra da /tmp), e un
++# kill -9 a meta' lasciava gli attacchi nel repo. tools/banco-passaggio.sh promette «due banchi
++# sovrapposti non si calpestano» e chiama proprio questa batteria.
++set -uo pipefail
++HERE="$(cd "$(dirname "$0")/.." && pwd)"
++PASS=0; FAIL=0
++ok() { PASS=$((PASS+1)); echo "OK   $1"; }
++ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
++T=$(mktemp -d)
++PIDS=()
++pulisci() { for p in ${PIDS[@]+"${PIDS[@]}"}; do kill -9 -- "-$p" 2>/dev/null; done; sleep 1; rm -rf "$T"; }
++trap pulisci EXIT
++g() { git -c user.email=t@t -c user.name=t -c core.hooksPath=/dev/null "$@"; }
++
++# 0. (E-044, 2026-09-24): la pulizia della batteria cancella SOLO la cartella che si e' data. Un mio
++# sabotaggio (AVVT=/tmp) con la pulizia nuda `rm -rf "$AVVT"` ha svuotato /tmp intera. Ogni riga che
++# cancella $AVVT deve portare la guardia del nome, e la guardia deve lasciare stare una cartella altrui.
++RIGHE=$(grep -E 'rm -rf "?\$AVVT' "$HERE/tools/giri-avversari.sh")
++NUDE=$(grep -vE 'case "\$AVVT" in \*/giri-avversari\.\?\?\?\?\?\?\)' <<<"$RIGHE" || true)
++[ -n "$RIGHE" ] && [ -z "$NUDE" ] && ok "ogni rm -rf di \$AVVT porta la guardia del nome" || ko "rm -rf di \$AVVT senza guardia: ${NUDE:-nessuna riga di pulizia}"
++mkdir -p "$T/altrui" "$T/giri-avversari.abcdef"; touch "$T/altrui/vivo" "$T/giri-avversari.abcdef/x"
++while IFS= read -r R; do AVVT="$T/altrui"; eval "$R"; AVVT="$T/giri-avversari.abcdef"; eval "$R"; done <<<"$RIGHE"
++[ -f "$T/altrui/vivo" ] && [ ! -d "$T/giri-avversari.abcdef" ] && ok "la pulizia lascia una cartella altrui e toglie la propria" \
++  || ko "pulizia sbagliata: altrui $([ -f "$T/altrui/vivo" ] && echo intatta || echo CANCELLATA), propria $([ -d "$T/giri-avversari.abcdef" ] && echo rimasta || echo tolta)"
++
++# un hub usa e getta con la batteria di QUESTO albero (non quella di HEAD)
++git clone -q "$HERE" "$T/hub"
++cp "$HERE/tools/giri-avversari.sh" "$T/hub/tools/giri-avversari.sh"
++g -C "$T/hub" commit -qam "batteria in prova" >/dev/null 2>&1 || true
++
++# 1. due batterie INSIEME sullo stesso albero: nessun AGGIRA falso
++( cd "$T/hub" && setsid bash tools/giri-avversari.sh > "$T/a.out" 2>&1 ) & PIDS+=($!)
++( cd "$T/hub" && setsid bash tools/giri-avversari.sh > "$T/b.out" 2>&1 ) & PIDS+=($!)
++wait
++for x in a b; do
++  V=$(grep -m1 '^VERDETTO:' "$T/$x.out")
++  [ "$V" = "VERDETTO: 0 aggirati non riconosciuti" ] && ok "batteria $x in parallelo: $V" \
++    || ko "batteria $x in parallelo: ${V:-nessun verdetto} — $(grep '^AGGIRA' "$T/$x.out" | head -3 | tr '\n' ' ')"
++done
++[ -z "$(git -C "$T/hub" status --porcelain)" ] && ok "dopo due batterie l'albero e' pulito" || ko "albero sporco dopo due batterie: $(git -C "$T/hub" status --porcelain | head -3 | tr '\n' ' ')"
++
++# 2. kill -9 a meta': l'albero resta pulito
++setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/k.out" 2>&1 & KP=$!; PIDS+=($KP)
++SPORCO=""
++for i in $(seq 1 40); do
++  sleep 0.25
++  [ -n "$(git -C "$T/hub" status --porcelain)" ] && { SPORCO=$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' '); break; }
++done
++{ kill -9 "$KP"; wait "$KP"; } 2>/dev/null; sleep 1
++[ -z "$SPORCO" ] && [ -z "$(git -C "$T/hub" status --porcelain)" ] \
++  && ok "durante la batteria e dopo un kill -9 l'albero resta pulito" || ko "la batteria scrive nell'albero: ${SPORCO:-$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' ')}"
++
++echo ""
++echo "$PASS OK, $FAIL FAIL"
++[ $FAIL -eq 0 ]
