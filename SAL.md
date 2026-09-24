@@ -4262,3 +4262,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Sabotaggi, con una cache di bytecode fresca (E-047): ordine per Δ, via il ramo della quantità
   vuota, `abs` tolto, `< -5` → `< -50`, via `yearCessioni != 0`. Tutti e cinque rossi.
+- **Terzo ventaglio, V4#5 — ogni suite faceva una chiamata vera a `claude -p`.** `tests/test-ask-wrappers.sh`
+  chiamava ask-opus senza finti: 10 s qui, con un tetto di 90 s, dentro un budget fisso. Il gate
+  dell'auto-fix esclude proprio i test-ask-* perché sotto launchd l'autenticazione non è affidabile.
+  Ora c'è una sentinella: un `claude` in testa al PATH che registra ogni chiamata che nessun finto
+  intercetta. La chiamata vera parte solo con ASK_VIVO=1. Di norma il ramo «auth presente» si prova
+  con un `claude` finto che risponde, come i rami «auth assente» ed «errore». Rosso prima (la
+  sentinella vede `-p test`), verde ora (31/0, 7,7 s). Con ASK_VIVO=1 la chiamata vera passa (31/0).
+  Sabotaggio: la chiamata senza il finto torna rossa (29/2).

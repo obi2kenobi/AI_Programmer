@@ -9,6 +9,14 @@ source "$HERE/llm/_timeout.sh"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
+# (2026-09-24, terzo ventaglio, V4#5): ogni suite faceva una chiamata `claude -p` VERA (10 s qui, fino a
+# 90 s di tetto) dentro un budget fisso, mentre il gate dell'auto-fix esclude proprio test-ask-* per l'auth
+# sotto launchd. Una sentinella in testa al PATH registra ogni chiamata a claude che nessun finto intercetta:
+# senza ASK_VIVO=1 non ce ne deve essere nessuna.
+SENT=$(mktemp -d)
+printf '#!/bin/bash\necho "$*" >> "%s/vere.log"\necho "sentinella: chiamata vera a claude senza ASK_VIVO=1" >&2\nexit 1\n' "$SENT" > "$SENT/claude"
+chmod +x "$SENT/claude"
+[ "${ASK_VIVO:-0}" = 1 ] || export PATH="$SENT:$PATH"
 
 # --- ask-glm senza API key: exit 2 col messaggio chiaro (mai fallire in silenzio) ---
 unset ZHIPUAI_API_KEY
@@ -39,13 +47,25 @@ OUT3=$(bash "$HERE/llm/ask-opus.sh" 2>&1); RC3=$?
 # ask-opus.sh (timeout 5s sulla lettura di stdin, vedi tests/test-stdin-timeout.sh).
 # Il timeout qui resta comunque una buona guardia: un limite duro evita che UN test
 # blocchi tutta la suite all'infinito, qualunque sia la causa di un futuro rallentamento.
-OUT4=$(ai_timeout 90 bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
-if [ "$RC4" -eq 124 ]; then
-  ko "ask-opus: timeout dopo 90s (chiamata ricorsiva a claude -p lenta o bloccata)"
-elif [ "$RC4" -eq 0 ]; then
-  [ -n "$OUT4" ] && ok "ask-opus con auth presente: risposta non vuota (rc=0)" || ko "ask-opus rc=0 ma output vuoto"
+# (V4#5): la chiamata vera solo con ASK_VIVO=1; di norma il ramo «auth presente» si prova con un claude
+# finto che risponde, come i rami «auth assente» ed «errore» qui sotto.
+if [ "${ASK_VIVO:-0}" = 1 ]; then
+  OUT4=$(ai_timeout 90 bash "$HERE/llm/ask-opus.sh" "test" 2>&1); RC4=$?
+  if [ "$RC4" -eq 124 ]; then
+    ko "ask-opus: timeout dopo 90s (chiamata ricorsiva a claude -p lenta o bloccata)"
+  elif [ "$RC4" -eq 0 ]; then
+    [ -n "$OUT4" ] && ok "ask-opus con auth presente: risposta non vuota (rc=0)" || ko "ask-opus rc=0 ma output vuoto"
+  else
+    grep -qiE "gateway|Keychain|ask-opus:|login" <<<"$OUT4" && ok "ask-opus con auth assente: diagnosi leggibile (rc=$RC4)" || ko "opus diag: $OUT4"
+  fi
 else
-  grep -qiE "gateway|Keychain|ask-opus:|login" <<<"$OUT4" && ok "ask-opus con auth assente: diagnosi leggibile (rc=$RC4)" || ko "opus diag: $OUT4"
+  echo "SALTO la chiamata vera a claude -p: ASK_VIVO=1 per provarla (fuori dal budget della suite)"
+  VIVOTMP=$(mktemp -d)
+  printf '#!/bin/bash\necho "OK dalla risposta finta"\n' > "$VIVOTMP/claude"; chmod +x "$VIVOTMP/claude"
+  OUT4=$(PATH="$VIVOTMP:$PATH" ai_timeout 30 bash "$HERE/llm/ask-opus.sh" "test" </dev/null 2>&1); RC4=$?
+  [ "$RC4" -eq 0 ] && grep -c "OK dalla risposta finta" <<<"$OUT4" >/dev/null \
+    && ok "ask-opus con auth presente (claude finto): la risposta arriva, rc 0" || ko "ask-opus con auth presente (finto): rc=$RC4, $OUT4"
+  rm -rf "$VIVOTMP"
 fi
 
 # --- contratto uniforme: usage anche con stdin in arrivo ---
@@ -288,6 +308,10 @@ PATH="$MSKTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "rivedi GH_TOKEN=$FINTO" <<<"p
 cat "$MSKTMP/domanda" "$MSKTMP/contesto" 2>/dev/null | grep -cF "$FINTO" >/dev/null && ko "ask-opus: il segreto parte intero verso il cloud" \
   || { grep -c "«segreto" "$MSKTMP/contesto" >/dev/null 2>&1 && ok "ask-opus: domanda e contesto partono mascherati" || ko "ask-opus: claude finto mai chiamato o contesto vuoto"; }
 rm -rf "$MSKTMP"
+
+[ ! -s "$SENT/vere.log" ] && ok "nessuna chiamata vera a claude senza ASK_VIVO=1 (il budget della suite non paga la rete)" \
+  || ko "chiamata vera a claude senza ASK_VIVO=1: $(cat "$SENT/vere.log")"
+rm -rf "$SENT"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
