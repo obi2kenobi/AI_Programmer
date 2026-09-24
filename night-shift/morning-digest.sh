@@ -43,9 +43,12 @@ SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"
 BODY="${CORPO_GATE}$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
 $([ -f "$SAL_TURNI" ] && {
   # (revisione 10 giri): `grep -c … || echo 0` stampava «0» due volte a conteggio zero
-  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
+  # (2026-09-24, quinto ventaglio, R4 R4): cicli e fix si contavano nelle code di log che ogni turno accoda,
+  # finestre sovrapposte (un ciclo corto contato due volte, uno lungo zero). Un'intestazione = un ciclo; i fix
+  # sono il numero dell'intestazione (le intestazioni di prima non lo portano: contano 0, e lo si sa).
+  CICLI=$(grep -c '^### .*turno automatico' "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
   PR=$(grep -oE '[0-9]+ PR bozza' "$SAL_TURNI" 2>/dev/null | awk '{s+=$1} END{print s+0}')
-  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || true); FIX=${FIX:-0}
+  FIX=$(grep '^### .*turno automatico' "$SAL_TURNI" 2>/dev/null | grep -oE '[0-9]+ auto-fix' | awk '{s+=$1} END{print s+0}')
   echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
   ASPETTA=$(awk '/ASPETTA IL GIORNO/{dentro=1; next} /^### /{dentro=0} dentro && /^  [^ ]/{n++} END{print n+0}' "$SAL_TURNI" 2>/dev/null); ASPETTA=${ASPETTA:-0}
   [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"

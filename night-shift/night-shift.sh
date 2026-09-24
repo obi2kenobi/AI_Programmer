@@ -1338,9 +1338,13 @@ HUB_SAL="$HERE/.sal-turni.md"
 rotate_log_if_big "$HUB_SAL" 1
 if true; then
   DT=$(date '+%Y-%m-%d')
+  # (2026-09-24, quinto ventaglio, R4 R4): il digest contava i fix nelle 20 righe di coda qui sotto, finestre
+  # che si sovrappongono fra cicli. Il numero si scrive nell'intestazione, come le PR: i fix riusciti
+  # («auto-fix — …») dall'ultimo «TURNO INIZIATO» del log.
+  TOT_AUTOFIX=$(awk '/TURNO INIZIATO/{n=0} /auto-fix — /{n++} END{print n+0}' "$LOG" 2>/dev/null); TOT_AUTOFIX=${TOT_AUTOFIX:-0}
   cat >> "$HUB_SAL" <<SALEOF
 
-### $DT, turno automatico — $TOT_PR_CREATED PR bozza, $TOT_PROPOSTE proposte in issue, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio
+### $DT, turno automatico — $TOT_PR_CREATED PR bozza, $TOT_PROPOSTE proposte in issue, $TOT_FAILED fallite, $TOT_SKIPPED_DESIGN saltate per Design/Territorio, $TOT_AUTOFIX auto-fix
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
 

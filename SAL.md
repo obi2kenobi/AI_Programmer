@@ -4898,3 +4898,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Visto curando, ed è una domanda: il turno tratta come rosso anche un `.night-verify` che dichiara
   NON-VERIFICABILE, cioè proprio la forma che il modello chiede di scrivere. Quattro casi nuovi in
   `tests/test-onboard-repo.sh` (19/0), tre rossi prima. Sabotaggio: 16/3.
+- **Quinto ventaglio, R4 R4 — il digest contava cicli e fix da finestre di log che si sovrappongono.** A ogni
+  ciclo il turno accoda alla sua memoria locale (.sal-turni.md, fuori da git) l'intestazione e le ultime 20 righe di TUTTO il log.
+  `night-shift/morning-digest.sh` contava «TURNO INIZIATO» e «auto-fix» su quel file. Un ciclo corto rientrava
+  nella coda del precedente e contava due volte; uno lungo non ci lasciava la riga d'inizio e contava zero (il
+  giro: 5 cicli davano 9, 3 cicli davano 0). Ora un'intestazione è un ciclo. I fix sono un numero
+  dell'intestazione, come già le PR: `night-shift/night-shift.sh` li conta dall'ultimo «TURNO INIZIATO». Le
+  intestazioni scritte prima non lo portano e contano 0.
+
+  Tre casi nuovi in `tests/test-morning-digest.sh` (17/0), rossi prima. Sabotaggio: 14/3.

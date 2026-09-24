@@ -91,6 +91,37 @@ CAP2=$(cat "$TMP/captured.txt" 2>/dev/null)
 grep -q "Cicli notturni\*\*: 2 " <<<"$CAP2" && ok "cicli = turni scritti (2)" || ko "cicli: $(grep -o 'Cicli notturni[^/]*' <<<"$CAP2")"
 grep -q "\*\*PR\*\*: 5 " <<<"$CAP2" && ok "PR = somma delle PR dei turni (3+2 = 5), non il numero di turni" || ko "PR: $(grep -o 'PR\*\*: [0-9]*' <<<"$CAP2")"
 grep -q "ASPETTA IL GIORNO\*\*: 1 decisioni" <<<"$CAP2" && ok "ASPETTA = le decisioni pendenti (1), non il log dei turni dopo" || ko "ASPETTA: $(grep -o 'ASPETTA IL GIORNO[^p]*' <<<"$CAP2")"
+# (2026-09-24, quinto ventaglio, R4 R4): cicli e fix si contavano nelle 20 righe di coda del log che ogni
+# turno accoda — finestre che si sovrappongono. Un ciclo corto rientra nella coda del precedente (contato due
+# volte), uno lungo non ci lascia la riga d'inizio (zero). Ora: un'intestazione = un ciclo, e i fix sono un
+# numero dell'intestazione, come le PR.
+cat > "$SALT" <<'EOF'
+
+### 2026-09-23, turno automatico — 0 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio, 1 auto-fix
+
+  [00:30:00] === TURNO INIZIATO ===
+  [01:00:00] === TURNO INIZIATO ===
+  [01:00:01] REPO a: auto-fix — indice del SAL rigenerato (S16)
+
+### 2026-09-23, turno automatico — 0 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio, 2 auto-fix
+
+  [01:00:00] === TURNO INIZIATO ===
+  [01:00:01] REPO a: auto-fix — indice del SAL rigenerato (S16)
+  [02:00:00] === TURNO INIZIATO ===
+  [02:00:01] REPO a: auto-fix — CRLF bonificato in x.sh
+  [02:00:02] REPO a: auto-fix — indice pattern riordinato (alfabetico)
+
+### 2026-09-23, turno automatico — 1 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio, 0 auto-fix
+
+  [03:10:00] una riga lunga, l'inizio del ciclo e' fuori dalla coda
+EOF
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out4.log" 2>&1
+CAP4=$(cat "$TMP/captured.txt" 2>/dev/null)
+grep -q "Cicli notturni\*\*: 3 " <<<"$CAP4" && ok "R4 R4: cicli = intestazioni (3), non le righe d'inizio nelle code sovrapposte" || ko "R4 R4: cicli: $(grep -o 'Cicli notturni[^/]*' <<<"$CAP4")"
+grep -q "\*\*Fix\*\*: 3" <<<"$CAP4" && ok "R4 R4: fix = somma dalle intestazioni (1+2+0 = 3)" || ko "R4 R4: fix: $(grep -o 'Fix\*\*: [0-9]*' <<<"$CAP4")"
+grep -c 'saltate per Design/Territorio, \$TOT_AUTOFIX auto-fix' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "R4 R4: il turno scrive i fix nell'intestazione" \
+  || ko "R4 R4: l'intestazione del turno non porta il numero dei fix"
+cp "$TMP/salt.orig" "$SALT"
 PRIMA_RIGA_SUMMARY=$(bash "$TMP/repo/night-shift/gate-summary.sh" 0 2>/dev/null | head -1)
 [ -z "$PRIMA_RIGA_SUMMARY" ] || [ "$(grep -cF "$PRIMA_RIGA_SUMMARY" <<<"$CAP2")" -eq 1 ] \
   && ok "il riepilogo del gate compare UNA volta" || ko "riepilogo del gate duplicato nel digest"
