@@ -98,6 +98,17 @@ if [ -n "$BR" ]; then
     && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -xc '.githooks/commit-msg' >/dev/null \
     && ok "D13: tools/pre-commit.sh e .githooks/ viaggiano con --standard" \
     || ko "D13: i guardiani del commit non viaggiano: $(git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -E 'githooks|pre-commit' | tr '\n' ' ')"
+  # (2026-09-24, terzo ventaglio, V2#4): gli HOOK dichiarati da settings.json — il cancello clasp compreso —
+  # arrivano sul ramo, eseguibili. Prima si guardava solo settings.json: con la copia degli hook spenta in
+  # sync-repo.sh la suite intera restava verde (0 rossi su 170), e la repo riceveva un settings.json che
+  # punta a script inesistenti.
+  ALBERO=$(git -C "$TMP/canarino-uguale.git" ls-tree -r "$BR")
+  MANCANTI=""
+  while IFS= read -r H; do
+    [ -n "$H" ] || continue
+    grep -qE "^100755 blob [0-9a-f]+[[:space:]]$H$" <<<"$ALBERO" || MANCANTI="$MANCANTI $H"
+  done < <(bash "$HERE/tools/copia-hook.sh" --elenco)
+  [ -z "$MANCANTI" ] && ok "V2#4: ogni hook dichiarato (clasp compreso) arriva sul ramo, eseguibile" || ko "V2#4: hook dichiarati assenti o non eseguibili sul ramo:$MANCANTI"
 fi
 # riallineo su repo GIA' onboardata: niente annidamento (.claude/skills/skills) e verdetto
 # «GIÀ A STANDARD» se non c'e' nulla da portare (misurato nell'hub durante il test del sistema)

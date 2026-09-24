@@ -4133,3 +4133,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-suite-runner.sh`: sette banchi con un segno ciascuno, e il runner sabotato dentro il
   banco (salta dal sesto). Rosso prima, rosso al sabotaggio (controllo finale tolto: «5/7» con rc 0).
   AGENTS.md cita ora la riga giusta (`tools/suite.sh:53`).
+- **Terzo ventaglio, V2#4 — sync-repo poteva smettere di copiare gli hook, a suite verde.** Il giro V2
+  ha spento la copia degli hook in `tools/sync-repo.sh --standard` (S17): 0 rossi su 170, e ogni repo
+  esistente avrebbe ricevuto un `settings.json` che punta a script assenti, cancello clasp compreso. Il
+  banco e2e `tests/test-sync-repo.sh` guardava `settings.json` e i guardiani del commit, non gli hook.
+  Ora ogni hook dichiarato (`tools/copia-hook.sh --elenco`) deve arrivare sul ramo, con modo 100755. Verde
+  sul codice di oggi; S17 rimesso è rosso (6 hook mancanti).
