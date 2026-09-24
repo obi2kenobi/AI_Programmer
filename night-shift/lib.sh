@@ -492,6 +492,16 @@ verifica_issue_comando() {
 # dal primo. Ora il furto e' serializzato da un secondo mkdir (<lock>.furto), e dentro si RIGIUDICA:
 # chi arriva dopo trova il lock gia' preso da un vivo e si ferma. Un .furto lasciato da un processo
 # morto a meta' si toglie dopo 60 secondi (il furto dura millisecondi).
+# dipendenze_mancanti <cmd…> — stampa, separati da spazio, i comandi che mancano sul PATH (niente = tutti ci
+# sono). (2026-09-24, quarto ventaglio, Q2 R2): senza jq il ping di generazione restava vuoto, il turno
+# scriveva «Ollama wedged» e uccideva un'istanza sana. Prima si esclude l'attrezzo, poi si accusa il cervello.
+dipendenze_mancanti() {
+  local c m=""
+  for c in "$@"; do command -v "$c" >/dev/null 2>&1 || m="${m:+$m }$c"; done
+  printf '%s' "$m"
+  [ -z "$m" ]
+}
+
 # messaggio_fix <tipo> <num> <titolo> <autore> <nota> <verifica> — il messaggio del commit di un fix d'issue.
 # (2026-09-24, terzo ventaglio, V1#6): il turno lo scriveva a mano con «(risolvi-issue.sh, modello locale)»
 # anche quando aveva risolto l'agente della cascata, e senza `Closes #N`: la PR (`gh pr create --fill`

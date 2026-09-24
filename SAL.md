@@ -4488,3 +4488,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   email: falsi positivi miei, corretti costruendo l'elenco a mano. Casi nuovi (token costruiti a
   runtime, E-007): `tests/test-pre-commit.sh` (27/0) e `tests/test-privacy.sh` (20/0), rossi prima.
   Sabotaggi: il pre-commit che non conta, 26/1; la storia ignorata, 19/1.
+- **Quarto ventaglio, Q2 R2 — senza jq il turno accusava Ollama e ne uccideva un'istanza sana.** Il ping
+  di generazione si costruisce e si legge con jq. Senza jq restava vuoto, il turno scriveva «Ollama
+  wedged» e chiamava `rianima_ollama` (pkill del serve), a ogni ciclo. `night-shift/agente.sh` faceva la
+  stessa catena, e da stamattina diceva «risposta vuota del modello»: un'altra diagnosi falsa.
+  «jq: command not found» finiva solo su stderr. Cure:
+  - `dipendenze_mancanti` in `night-shift/lib.sh`;
+  - il turno controlla jq, curl, python3 e git subito dopo aver esteso il PATH (sotto launchd
+    `/opt/homebrew/bin` arriva lì) e prima di qualunque diagnosi: se ne manca uno, «⛔ MANCA …», esce;
+  - l'agente fa lo stesso ed esce 2.
+
+  Banco nuovo `tests/test-dipendenze-turno.sh`, con un PATH senza jq, un Ollama finto sano e un pkill
+  finto che registra: rosso prima (4 FAIL), verde ora (4/0). Nessun pkill. Sabotaggio: senza il
+  controllo nell'agente torna rosso (3/1). Il primo posto che avevo scelto nel turno (dopo il lock)
+  veniva prima dell'export del PATH: spostato.

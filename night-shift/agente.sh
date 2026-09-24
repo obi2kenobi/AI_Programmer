@@ -21,6 +21,8 @@ PENSA=$( [ "${THINK:-false}" = "true" ] && echo true || echo false )   # THINK d
 TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-600}"  # (2026-09-21: 300 non bastano al 27B quando paga un ricarico in coda)
 
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
+# (Q2 R2): senza jq il corpo della richiesta restava vuoto e l'agente accusava Ollama (e lo rianimava)
+MANCANO=$(dipendenze_mancanti jq curl) || { echo "⛔ MANCA $MANCANO: l'agente non parte — ogni diagnosi del modello sarebbe falsa" >&2; exit 2; }
 cd "$DIR"
 
 log() { echo "[agente $(date '+%H:%M:%S')] $*" >&2; }

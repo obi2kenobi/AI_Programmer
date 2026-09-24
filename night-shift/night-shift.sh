@@ -154,6 +154,12 @@ done
 # Il turno partiva e moriva in 4 secondi col/modello assente" perché non LO TROVAVA, non perché
 # mancasse. PATH esteso prima di qualunque comando ollama.)
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+# (2026-09-24, quarto ventaglio, Q2 R2): senza jq il ping di generazione restava vuoto, il turno scriveva
+# «Ollama wedged» e rianimava (pkill) un server sano, a ogni ciclo; «jq: command not found» finiva solo nel
+# console log di launchd. Gli attrezzi si controllano prima di qualunque diagnosi (dopo il PATH esteso).
+if MANCANO=$(dipendenze_mancanti jq curl python3 git); then :; else
+  log "⛔ MANCA $MANCANO: il turno non parte — ogni diagnosi (Ollama, suite, PR) sarebbe falsa"; exit 1
+fi
 # (2026-09-15, dall'auto-esame): senza LANG/LC_ALL, il git di Apple rifiuta \x{4E00}
 # in git grep -P («code point too large»): il controllo glifi false-verdava in tutto
 # il banco notturno. Il locale e' parte dell'ambiente di verita', non un orpello.
