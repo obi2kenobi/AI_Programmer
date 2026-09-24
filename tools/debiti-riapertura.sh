@@ -41,7 +41,14 @@ class _Saldo:
                    for m in SALDO_PAROLA.finditer(testo))
 SALDO = _Saldo()
 sezioni = re.split(r"^## ", deb, flags=re.M)[1:]
+def celle_di(riga):
+    return [c.strip() for c in riga.strip().strip("|").split("|")]
+# (2026-09-24, quinto ventaglio, R1 R1): l'unita' di conto era la SEZIONE — dieci righe vive nella stessa
+# sezione, nove domande di dominio a se', uscivano «DOMINIO: 1». Ora ogni riga viva e' un debito: il titolo
+# e' «sezione — scorciatoia», il corpo e' la prosa della sezione piu' la riga. Una sezione senza righe di
+# debito resta un debito solo, come prima.
 aperte = []
+sezioni_vive = 0
 for s in sezioni:
     titolo = s.split("\n")[0].strip()
     righe = s.split("\n")[1:]
@@ -50,10 +57,14 @@ for s in sezioni:
         vive = [l for l in debiti if not SALDO.search(l)]
         if not vive:
             continue
-        # il corpo da classificare: la prosa fuori tabella + le sole righe vive
+        sezioni_vive += 1
         prosa = [l for l in righe if not l.strip().startswith("|")]
-        aperte.append((titolo, "\n".join(prosa + vive)))
+        for v in vive:
+            c = celle_di(v)
+            scorciatoia = c[1] if len(c) > 1 else ""
+            aperte.append((f"{titolo} — {scorciatoia[:70]}", "\n".join(prosa + [v])))
     elif not SALDO.search(s):
+        sezioni_vive += 1
         aperte.append((titolo, s))
 
 # classificazione: DI DOMINIO se la sezione chiede una decisione/contains domande/dominio/Luca;
@@ -84,6 +95,10 @@ def perche_di(corpo):
     domande mostravano quella. Le intestazioni e i separatori di tabella si saltano; da una
     riga di tabella si prende la cella che risponde, non la riga intera."""
     righe = corpo.split("\n")
+    # una riga di debito ha la sua colonna «Perché rimandata» (la terza): e' quella che risponde
+    vive = [l for l in righe if RIGA_DEBITO.match(l.strip())]
+    if len(vive) == 1 and len(celle_di(vive[0])) > 2:
+        return re.sub(r"^perch[eé] conta:\s*", "", celle_di(vive[0])[2], flags=re.I)
     for i, l in enumerate(righe):
         s = l.strip()
         if not s:
@@ -153,7 +168,7 @@ if attesa:
         for e in ev: print(f"      {e[:110]}")
         stampa_premesse(c)
     print()
-print(f"chiusi/storici: {len(sezioni) - len(aperte)} sezioni saldate restano come memoria.")
+print(f"chiusi/storici: {len(sezioni) - sezioni_vive} sezioni saldate restano come memoria.")
 if not IN_GIT:
     print("premesse: la cartella non e' una repo git — l'invecchiamento delle premesse NON e' controllato (dichiarato)")
 PY

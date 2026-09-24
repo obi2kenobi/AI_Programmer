@@ -4790,3 +4790,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Sei casi nuovi in `tests/test-oracoli-uso.sh` (91/0), con stdin VALIDO, rossi prima. Sabotaggio con gli
   oracoli di prima: 85/6. I banchi propri restano verdi.
+- **Quinto ventaglio, R1 R1 — il settimo patto contava le sezioni, non i debiti.** `tools/debiti-riapertura.sh`
+  faceva di ogni sezione `## ` un debito solo, col perché della prima riga. La sezione «La notte dei giri»
+  ha quattordici righe vive, tutte domande di dominio a sé, e l'uscita diceva «DOMINIO: 1». Chi riapriva
+  vedeva una domanda, e le altre tredici non comparivano. Ora ogni riga viva è un debito, col titolo
+  «sezione — scorciatoia» e il perché preso dalla sua colonna. Una sezione senza tabella resta un debito
+  solo, come prima. Sul DEBITI vero: 26 aperti, 14 di dominio, 12 in attesa (prima 10, 1, 9).
+
+  Tre casi nuovi in `tests/test-debiti-riapertura.sh` (22/0), rossi prima: una sezione con due domande e una
+  riga tecnica. Sabotaggio con il tool di prima: 19/3.

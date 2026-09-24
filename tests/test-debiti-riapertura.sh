@@ -126,6 +126,28 @@ aperti_con() {  # $1 = la cella «Data» della sola riga della sezione → il nu
 [ "$(aperti_con '2026-01-01 ✅ SALDATO')" = "0" ] && ok "«✅ SALDATO» si chiude" || ko "«✅ SALDATO» non si chiude piu'"
 rm -rf "$SB5"
 
+# (2026-09-24, quinto ventaglio, R1 R1): l'unita' di conto era la SEZIONE. Sul DEBITI vero la sezione «La notte
+# dei giri» ha dieci righe vive, nove sono domande di dominio a se': l'uscita diceva «DOMINIO: 1» e mostrava
+# il perche' della prima. Il settimo patto chiede domande singole: si conta la RIGA.
+SB6=$(mktemp -d /tmp/debiti-t6.XXXXXX)
+cat > "$SB6/DEBITI.md" <<'FIN'
+# DEBITI
+## Due domande nella stessa sezione (2026-01-01)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-01-01 | Domanda di dominio: la soglia dello sconto | perché conta: lo sconto cambia il margine | una risposta |
+| 2026-01-02 | Domanda di dominio: il segno del fondo | perché conta: il fondo decide il netto | una risposta |
+| 2026-01-03 | refactor della funzione X | tempo | prossimo giro |
+FIN
+OUT6=$(bash "$TOOL" "$SB6" 2>&1)
+grep -c "APERTI: 3 — di DOMINIO: 2" <<<"$OUT6" >/dev/null && ok "R1 R1: tre righe vive nella stessa sezione sono tre debiti, due di dominio" \
+  || ko "R1 R1: conto per sezione: $(sed -n 2p <<<"$OUT6")"
+grep -A1 "D1\. " <<<"$OUT6" | grep -c "lo sconto cambia il margine" >/dev/null && grep -A1 "D2\. " <<<"$OUT6" | grep -c "il fondo decide il netto" >/dev/null \
+  && ok "R1 R1: D1 e D2 portano ciascuna il suo perche'" || ko "R1 R1: perche' non per riga: $(grep -A1 '^  D' <<<"$OUT6" | tr '\n' ' ')"
+grep -c "R1\. Due domande nella stessa sezione (2026-01-01) — refactor della funzione X" <<<"$OUT6" >/dev/null \
+  && ok "R1 R1: la riga tecnica della stessa sezione e' un risolvibile, con la sua scorciatoia" || ko "R1 R1: la riga tecnica non e' R1: $(grep '^  R' <<<"$OUT6")"
+rm -rf "$SB6"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
