@@ -53,6 +53,18 @@ done < "$HERE/.night-verify"
 grep -q "^bash tools/py-gate.sh$" "$HERE/.night-verify" && ok "il gate è dichiarato in .night-verify" \
   || ko ".night-verify non invoca py-gate.sh"
 
+# (Q30, 2026-09-23, notte dei giri): fuori da una repo git `git ls-files` falliva nel 2>/dev/null e il
+# gate diceva «tutti i .py compilano (0 file)», rc 0 — con un .py ROTTO nella cartella. Zero
+# giudicati non e' verde: come tools/gas-gate.sh, perimetro non giudicabile, exit 2.
+NG=$(mktemp -d); printf 'def x(:\n' > "$NG/rotto.py"
+OUT=$(bash "$GATE" "$NG" 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -q "tutti i .py compilano" <<<"$OUT" && ok "fuori da git: perimetro non giudicabile (exit 2), non «tutti compilano»" \
+  || ko "fuori da git con un .py rotto: rc=$RC — $(tail -1 <<<"$OUT")"
+git -C "$NG" init -q; rm -f "$NG/rotto.py"
+OUT=$(bash "$GATE" "$NG" 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ok "repo senza .py tracciati: exit 2 dichiarato (zero giudicati non e' verde)" || ko "zero .py: rc=$RC — $(tail -1 <<<"$OUT")"
+rm -rf "$NG"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

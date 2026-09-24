@@ -3680,3 +3680,24 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     risposta): 1 rosso.
   - ASSUNTO: `claude -p "q"` col contesto su stdin si comporta sul Mac come documentato. Qui è
     provato solo col finto.
+- **Q30**, da A7, «verde senza verdetto»: quattro strumenti davano esito 0 senza aver giudicato. Tutti
+  riprodotti.
+  - `tools/py-gate.sh`, fuori da git, con un .py rotto, diceva «tutti compilano (0 file)». Ora è
+    exit 2, perimetro non giudicabile, come gas-gate; zero .py tracciati è exit 2.
+  - `tools/system-health.sh` stampava «TURNO INCASTRATO» fuori dai contatori, con lo stesso
+    verdetto di un turno sano. Ora conta come critico.
+  - `tools/banco-passaggio.sh`:
+    - senza origin/main la copertura diceva «tutti presidiati» su un tool nuovo senza test;
+    - con un file sporco i commit del ramo sparivano;
+    - un ciclo-vivo morto valeva «0 finding».
+    - Ora la copertura è l'unione di sporchi e commit del ramo, in una funzione sola (erano due
+      copie); origin/main assente è DEGRADATO; il verdetto vuoto è rosso.
+  - `tools/cervello-domanda.sh` archeologia: bastava che la riga citata esistesse («CLAUDE.md:1»,
+    il titolo, contava), e zero citazioni usciva 0. Ora la riga deve contenere il termine: il
+    contesto dato al modello è fatto solo di quelle. Zero verificate = non ancorata.
+  - Banchi, rossi prima:
+    - `tests/test-py-gate.sh`, 2 casi;
+    - `tests/test-system-health.sh`, 1;
+    - `tests/test-banco-passaggio.sh`, 3, in una repo di prova;
+    - `tests/test-cervello-domanda.sh`, nuovo, curl finto, 3.
+  - Sabotaggi rossi: 4, 1, 3 (sul vecchio), 1.

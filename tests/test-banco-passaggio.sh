@@ -50,6 +50,31 @@ cmp -s "$ESCL_COPIA" "$ESCL" && ok "esclusioni rimesse esattamente com'erano (an
 OUT=$(bash "$BANCO" --solo-copertura 2>&1); RC=$?
 [ $RC -eq 0 ] && ok "pulito: copertura OK ($(echo "$OUT" | head -1))" || { echo "$OUT" | sed 's/^/    /'; ko "copertura rossa su repo pulito"; }
 
+# (Q30, 2026-09-23, notte dei giri): senza origin/main `git diff origin/main...HEAD` falliva nel
+# 2>/dev/null e la copertura diceva «0 file di codice cambiati, tutti presidiati»: un tool NUOVO,
+# committato e senza test, passava. E con un solo file sporco i commit del ramo non si guardavano
+# piu' (il fallback era un'alternativa, non un'unione). Si prova in una repo senza origin/main.
+BP=$(mktemp -d)
+git -C "$BP" init -q; mkdir -p "$BP/tools" "$BP/tests"
+git -C "$BP" -c user.name=t -c user.email=t@t commit -q --allow-empty -m base
+BASE_BP=$(git -C "$BP" rev-parse HEAD)
+cp "$BANCO" "$BP/tools/"; : > "$BP/tools/banco-passaggio.esclusioni"
+printf '#!/bin/bash\necho nuovo\n' > "$BP/tools/nuovo.sh"
+git -C "$BP" add -A; git -C "$BP" -c user.name=t -c user.email=t@t commit -qm nuovo
+OUT=$(cd "$BP" && bash tools/banco-passaggio.sh --solo-copertura 2>&1); RC=$?
+grep -q "DEGRADATO" <<<"$OUT" && ok "senza origin/main la copertura si dichiara DEGRADATA" \
+  || ko "senza origin/main nessun avviso: $(tail -2 <<<"$OUT" | tr '\n' ' ')"
+printf 'x\n' > "$BP/tools/sporco.sh"; git -C "$BP" add tools/sporco.sh; git -C "$BP" -c user.name=t -c user.email=t@t commit -qm sporco
+git -C "$BP" update-ref refs/remotes/origin/main "$BASE_BP"
+printf 'y\n' >> "$BP/tools/sporco.sh"
+OUT=$(cd "$BP" && bash tools/banco-passaggio.sh --solo-copertura 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -q "tools/nuovo.sh" <<<"$OUT" \
+  && ok "un file sporco non nasconde i commit del ramo: il tool nuovo senza test e' SCOPERTO" \
+  || ko "copertura: con un file sporco il tool committato senza test passa (rc=$RC): $(grep -E 'SCOPERTO|presidiati' <<<"$OUT" | tr '\n' ' ')"
+rm -rf "$BP"
+grep -q 'ciclo-vivo non ha dato il verdetto' "$BANCO" && ok "banco 6: un ciclo-vivo senza verdetto e' rosso (non «0 finding»)" \
+  || ko "banco 6: un ciclo-vivo morto (N vuoto) conta come verde"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -134,18 +134,24 @@ FINE
   [ -z "$RISPOSTA" ] && { echo "il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }
   echo "$RISPOSTA"
   echo
-  # verifica meccanica delle citazioni percorso:riga
+  # verifica meccanica delle citazioni percorso:riga. (Q30, 2026-09-23, notte dei giri): bastava che
+  # la riga ESISTESSE — «(CLAUDE.md:1)», il titolo, contava verificata — e una risposta senza nessuna
+  # citazione usciva 0. Il contesto dato al modello sono SOLO righe che contengono il termine: una
+  # citazione fedele cade su una riga col termine. Zero verificate = risposta non ancorata.
   VERIFICATE=0; ROTTE=0; ROTTE_LIST=""
   while IFS= read -r cita; do
+    [ -n "$cita" ] || continue
     FILE="${cita%:*}"; RIGA="${cita##*:}"
-    if [ -f "$HERE/$FILE" ] && [ "$RIGA" -le "$(wc -l < "$HERE/$FILE")" ] 2>/dev/null; then
+    if [ -f "$HERE/$FILE" ] && [ "$RIGA" -le "$(wc -l < "$HERE/$FILE")" ] 2>/dev/null \
+       && grep -qiF -- "$TERMINE" <<<"$(sed -n "${RIGA}p" "$HERE/$FILE")"; then
       VERIFICATE=$((VERIFICATE+1))
     else
       ROTTE=$((ROTTE+1)); ROTTE_LIST="$ROTTE_LIST $cita"
     fi
-  done < <(echo "$RISPOSTA" | grep -oE '[a-zA-Z0-9_./-]+\.[a-z]+:[0-9]+' | sort -u)
-  echo "— citazioni verificate: $VERIFICATE, rotte: $ROTTE"
-  [ -n "$ROTTE_LIST" ] && { echo "⚠ ROTTE (il modello ha citato cose che non esistono):$ROTTE_LIST" >&2; exit 3; }
+  done < <(grep -oE '[a-zA-Z0-9_./-]+\.[a-z]+:[0-9]+' <<<"$RISPOSTA" | sort -u)
+  echo "— citazioni verificate: $VERIFICATE, rotte o estranee: $ROTTE"
+  [ -n "$ROTTE_LIST" ] && { echo "⚠ ROTTE o ESTRANEE (righe inesistenti, o che non parlano di '$TERMINE'):$ROTTE_LIST" >&2; exit 3; }
+  [ "$VERIFICATE" -eq 0 ] && { echo "⚠ nessuna citazione verificata: la risposta non e' ancorata alle fonti — non e' storia, e' racconto" >&2; exit 3; }
   exit 0
 fi
 

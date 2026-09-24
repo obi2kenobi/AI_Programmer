@@ -39,6 +39,17 @@ echo "$OUT" | grep -q "repos.conf vuoto o assente" \
   && ok "coda con solo commenti: segnalata correttamente come vuota" \
   || ko "coda con solo commenti: non segnalata come vuota — output: $OUT"
 
+# (Q30, 2026-09-23, notte dei giri): turno-vivo girava FUORI dai contatori — «⛔ TURNO INCASTRATO»
+# stampato, ma il verdetto e l'exit code identici a un turno sano (il guasto delle tre notti del
+# 2026-08-31 non spostava nulla, e quindi nemmeno status-page). Un log fermo alza i critici di 1.
+TV=$(mktemp -d)
+printf '[2026-01-01 00:00:00] === TURNO INIZIATO ===\n' > "$TV/fermo.log"
+critici() { TURNO_VIVO_LOG="$1" bash "$HERE/tools/system-health.sh" 2>/dev/null | sed -n 's/.*attenzione · \([0-9]*\) critici.*/\1/p'; }
+C_FERMO=$(critici "$TV/fermo.log"); C_NESSUNO=$(critici "$TV/nessuno.log")
+[ -n "$C_FERMO" ] && [ "$C_FERMO" -eq $((C_NESSUNO+1)) ] && ok "turno incastrato: i critici salgono di 1 ($C_NESSUNO → $C_FERMO)" \
+  || ko "turno incastrato non conta nel verdetto (critici: senza log $C_NESSUNO, log fermo ${C_FERMO:-?})"
+rm -rf "$TV"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
