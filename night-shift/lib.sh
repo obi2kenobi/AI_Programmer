@@ -302,6 +302,36 @@ forme_prima_del_push() {
   return 1
 }
 
+# dichiara_file_nuovo <dir> <percorso-relativo>: il file NUOVO che un agente ha creato e che puo'
+# entrare nella consegna (2026-09-24, notte dei giri, T5#2b). La lista vive dentro .git: non si committa.
+dichiara_file_nuovo() {
+  local gd; gd=$(git -C "$1" rev-parse --absolute-git-dir 2>/dev/null) || return 1
+  printf '%s\n' "$2" >> "$gd/agente-file-nuovi"
+}
+
+# aggiungi_consegna <dir> [file-nuovi-dichiarati...]: prepara l'indice della consegna — le modifiche ai
+# file tracciati, piu' i SOLI file nuovi dichiarati (qui come argomenti, o da dichiara_file_nuovo).
+# (T5#2b): i punti di consegna dopo agente.sh facevano `git add -A`, e un file «di passaggio» nuovo,
+# magari con dati letti, entrava nel commit e nel push. Un file nuovo non dichiarato resta nella copia,
+# fuori dal commit, e lo si dice; si SPOSTA (mai cancellato) in .git/consegna-fuori/<ora>/, perche' non
+# ricompaia a ogni consegna dopo. La dichiarazione si consuma qui.
+aggiungi_consegna() {
+  local dir="$1" gd f fuori; shift
+  gd=$(git -C "$dir" rev-parse --absolute-git-dir 2>/dev/null) || return 1
+  git -C "$dir" add -u || return 1
+  { printf '%s\n' "$@"; cat "$gd/agente-file-nuovi" 2>/dev/null; } | grep -v '^$' | sort -u > "$gd/consegna-dichiarati"
+  while IFS= read -r f; do
+    if grep -qxF -- "$f" "$gd/consegna-dichiarati"; then
+      git -C "$dir" add -- "$f" || return 1
+    else
+      fuori="$gd/consegna-fuori/$(date +%Y%m%d-%H%M%S)"
+      mkdir -p "$fuori/$(dirname "$f")" && mv -- "$dir/$f" "$fuori/$f"
+      echo "consegna: file nuovo NON dichiarato, fuori dal commit: $f (spostato in $fuori/)"
+    fi
+  done < <(git -C "$dir" -c core.quotePath=false ls-files --others --exclude-standard)
+  rm -f "$gd/agente-file-nuovi" "$gd/consegna-dichiarati"
+}
+
 # lente_pr <dir> <base> <head> <url-pr>: la lente sicurezza (dev-critic §2bis) su una PR appena
 # creata dalla notte — decisione di Luca, D2 2026-09-23: automatica su TUTTE le PR notturne. Il
 # rapporto (valori gia' mascherati da tools/lente-sicurezza.sh) diventa un commento della PR;

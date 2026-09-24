@@ -3903,3 +3903,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     globale `dashboard` nel README. Al loro posto c'è quello che esiste; se vivono sul Mac, è
     dichiarato ⏳.
   - DEBITI: la domanda sui termini (dominio), le verifiche Mac (⏳), T5#2b (risolvibile).
+- **T5#2b (il debito risolvibile, fatto prima del resto per il settimo patto) — nel commit solo i
+  file nuovi dichiarati.** I due punti di consegna che seguono `night-shift/agente.sh` (la caccia e
+  la cascata solver→agente dell'issue) facevano `git add -A`. Un file «di passaggio» nuovo entrava
+  nel commit e nel push. Ora l'agente dichiara ogni file che crea con `write`
+  (`dichiara_file_nuovo`, lista dentro `.git`), e `aggiungi_consegna` in `night-shift/lib.sh`
+  aggiunge le modifiche, i file dichiarati e il test generato. Un file non dichiarato si sposta in
+  `.git/consegna-fuori/`, mai cancellato, e il log lo dice. Banco
+  `tests/test-consegna-dichiarata.sh`: rosso prima, 3 rossi al sabotaggio. Due miei buchi di prima
+  stesura, visti rileggendo prima del banco: l'esclusione finiva in una variabile d'errore mai
+  loggata sul successo, e il file escluso restava nella copia e ricompariva a ogni consegna. Gli
+  altri due punti (fix deterministici, opencode) restano `add -A`, per scelta dichiarata nel codice.
+  Per opencode c'è una domanda di dominio in DEBITI.

@@ -550,6 +550,8 @@ PYIDX
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
             # il commit moriva nel pre-commit hook e l'stderr andava nel vuoto)
+            # (T5#2b, 2026-09-24): qui resta `add -A` per scelta — i fix sono deterministici (nessun
+            # modello, nessuna lettura fuori dal progetto) e uno puo' creare lo specchio .opencode/
             if git -C "$DIR" add -A 2>"$ERR_NOTTE" \
                && git -C "$DIR" commit -qm "notte: auto-miglioramento meccanico (banco CHIUSO, PR bozza per il giorno)
 
@@ -706,8 +708,9 @@ review del giorno." 2>>"$ERR_NOTTE" \
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
-        ERR_CONSEGNA=$(cd "$DIR" && git add -A 2>&1 && git commit -qm "$MSG_PR" 2>&1 && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
+        ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" 2>&1 && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
         if [ $? -eq 0 ]; then
+          grep 'NON dichiarato' <<<"$ERR_CONSEGNA" | while IFS= read -r l; do log "REPO $REPO: $l"; done   # T5#2b: detto, mai taciuto
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
           log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
           log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
@@ -1060,7 +1063,9 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
           fi
         fi
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
-        if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)${NOTA_INS}
+        # T5#2b: nel commit le modifiche, il test generato e i file nuovi dichiarati da agente.sh
+        if ( cd "$DIR" && aggiungi_consegna "$DIR" "${TEST_FILE:+${TEST_FILE#"$DIR"/}}" | while IFS= read -r l; do log "Issue #$NUM: $l"; done \
+             && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)${NOTA_INS}
 
 Verifica dell'issue: $VERIFICA_OUT" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
              && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
@@ -1145,6 +1150,8 @@ Verifica dell'issue: $VERIFICA_OUT" && { F=$(forme_prima_del_push "$DIR" "origin
       FAILED=$((FAILED+1)); continue
     fi
 
+    # (T5#2b, 2026-09-24): qui resta `add -A` — i file nuovi di opencode (un test, un modulo) sono il suo
+    # lavoro e opencode non li dichiara. Se debbano passare da una dichiarazione e' una domanda (DEBITI).
     git -C "$DIR" add -A
     git -C "$DIR" commit -q -m "$CTYPE: night issue #$NUM — $TITLE" || { log "Issue #$NUM: commit fallito"; FAILED=$((FAILED+1)); continue; }
     F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; FAILED=$((FAILED+1)); continue; }  # T5#3: prima del push

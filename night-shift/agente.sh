@@ -197,6 +197,8 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         else
           mkdir -p "$(dirname "$REAL")"
           echo "$FCONTENT" > "$REAL"
+          # T5#2b: il file nuovo si dichiara — nella consegna del turno entrano solo i file dichiarati
+          dichiara_file_nuovo "$DIR" "${REAL#"$REAL_DIR"/}" || log "  write: $DIR non e' una repo git — nessuna consegna a cui dichiarare il file"
           RESULT="OK: wrote to $FPATH"
           log "  write: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
         fi ;;
