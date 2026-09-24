@@ -167,6 +167,33 @@ spec = importlib.util.spec_from_file_location("d", sys.argv[1]); d = importlib.u
 print(s["funnel"].get("lente_muta", "assente"), "|", d.lettura_funnel(s["funnel"]))' "$DASH")
 grep -c '^4 | .*modello non risponde' <<<"$L5" >/dev/null && ok "giorno di lente muta: contata (4) e letta come modello muto, non come forme" || ko "lente muta: [$L5]"
 
+# (2026-09-24, quinto ventaglio, R4 R5): il FERMO prometteva «KeepAlive lo riscatta entro 30s» — il plist del
+# turno non ha KeepAlive (lo aveva gia' tolto la Q12 da turno-vivo). Gli errori del giorno si contavano e non si
+# mostravano; un giorno di «coda ILLEGGIBILE» col PID vivo restava «IN OSSERVAZIONE — il lavoro arrivera'».
+OGGI6=$(date '+%Y-%m-%d')
+{
+  echo "[$OGGI6 10:00:00] === TURNO INIZIATO (1 repo in coda) ==="
+  echo "[$OGGI6 10:00:01] ⚠ TURNO su r/x: coda ILLEGGIBILE (gh: HTTP 502) — non «0 issue»: la repo si salta in questo ciclo"
+  echo "[$OGGI6 10:30:00] ⛔ MANCA jq: il turno non parte — ogni diagnosi (Ollama, suite, PR) sarebbe falsa"
+} > "$TMP/finto6.log"
+R6=$(NIGHT_LOG="$TMP/finto6.log" python3 - "$DASH" <<'PY'
+import sys, importlib.util
+spec = importlib.util.spec_from_file_location("dash", sys.argv[1])
+dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
+s = dash.stats()
+fermo = dash.verdetto({**s, "attivo": 0})
+vivo = dash.verdetto({**s, "attivo": 1, "battito_min": 1.0})
+pag = dash.page({**s, "attivo": 1})
+print("KA" if "KeepAlive" in fermo[2] else "noKA", "|", "kick" if "kickstart" in fermo[2] else "nokick", "|",
+      "manca" if "MANCA jq" in fermo[2] else "nomanca", "|", vivo[1], "|", vivo[2], "|",
+      "errori-visti" if "errori oggi" in pag else "errori-nascosti")
+PY
+)
+grep -c '^noKA | kick | manca |' <<<"$R6" >/dev/null && ok "R4 R5: FERMO dice il gesto vero (kickstart, niente KeepAlive) e l'ultimo ⛔ del log" || ko "R4 R5: FERMO: [$R6]"
+grep -ci 'coda illeggibile' <<<"$(cut -d'|' -f4,5 <<<"$R6")" >/dev/null && ! grep -c 'IN OSSERVAZIONE' <<<"$R6" >/dev/null \
+  && ok "R4 R5: la coda illeggibile e' il motivo del verdetto, non «il lavoro arrivera'»" || ko "R4 R5: coda illeggibile invisibile: [$R6]"
+grep -c 'errori-visti' <<<"$R6" >/dev/null && ok "R4 R5: gli errori del giorno si vedono nella pagina" || ko "R4 R5: il contatore degli errori resta nascosto"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

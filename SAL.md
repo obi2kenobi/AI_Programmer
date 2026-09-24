@@ -4907,3 +4907,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   intestazioni scritte prima non lo portano e contano 0.
 
   Tre casi nuovi in `tests/test-morning-digest.sh` (17/0), rossi prima. Sabotaggio: 14/3.
+- **Quinto ventaglio, R4 R5 — la dashboard prometteva un KeepAlive che non c'è, e nascondeva gli errori.**
+  Il verdetto FERMO di `tools/dashboard.py` diceva «KeepAlive lo riscatta entro 30s». Il plist del turno non ha
+  KeepAlive: la Q12 aveva tolto la stessa promessa da turno-vivo, non da qui. Ora dice il gesto vero:
+  launchd lo riparte solo alle 23:00, e serve `launchctl kickstart`. Dice anche l'ultimo ERRORE/⛔ del log (per
+  esempio «⛔ MANCA jq»). Il contatore degli errori c'era, ma la pagina non lo mostrava: ora compare nei blocchi,
+  con l'ultimo errore, escapato. Un giorno di «coda ILLEGGIBILE» col PID vivo restava «IN OSSERVAZIONE — il
+  lavoro arriverà»: ora il verdetto è «🟡 CODA ILLEGGIBILE», col numero.
+
+  Tre casi nuovi in `tests/test-dashboard.sh` (22/0), rossi prima. Sabotaggio: 19/3.
