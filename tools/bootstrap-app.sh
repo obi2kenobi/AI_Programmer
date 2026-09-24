@@ -14,17 +14,27 @@
 set -euo pipefail
 
 NAME="${1:?uso: bootstrap-app.sh <nome-repo> [--private] [--dry-run]}"
-DRY_RUN=0
-for a in "$@"; do [ "$a" = "--dry-run" ] && DRY_RUN=1; done
+# (Q14, 2026-09-23, giro A8 della notte): i flag si leggono in qualunque ordine — `--private`
+# valeva solo come secondo argomento, e `<nome> --dry-run --private` creava una repo PUBBLICA.
+DRY_RUN=0; VIS="--public"
+for a in "$@"; do
+  case "$a" in --dry-run) DRY_RUN=1 ;; --private) VIS="--private" ;; esac
+done
 if [ $DRY_RUN -eq 1 ]; then echo "== DRY RUN: tutto what-if, nessuna scrittura =="; fi
-VIS="--public"
-[ "${2:-}" = "--private" ] && VIS="--private"
 
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/night-shift-work/$NAME"
 
 [ -d "$DEST" ] && { echo "esiste già: $DEST"; exit 1; }
 gh auth status >/dev/null 2>&1 || { echo "gh non autenticato"; exit 1; }
+# (Q14): il dry-run prometteva «nessuna scrittura» e creava la repo locale intera (e un secondo
+# lancio vero moriva su «esiste già»). Ora costruisce in una cartella temporanea — cosi' prova
+# davvero ogni copia — dice cosa creerebbe, e la cancella.
+if [ $DRY_RUN -eq 1 ]; then
+  PROVA_DRY=$(mktemp -d)
+  trap 'rm -rf "$PROVA_DRY"' EXIT
+  DEST="$PROVA_DRY/$NAME"
+fi
 
 mkdir -p "$DEST" && cd "$DEST"
 git init -q -b main
@@ -119,7 +129,11 @@ echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
 if [ $DRY_RUN -eq 1 ]; then
-  echo "(dry: creerebbe la repo)"
+  [ "$VIS" = "--private" ] && VISIBILE="privata" || VISIBILE="pubblica"
+  echo "(dry: creerebbe la repo $NAME, $VISIBILE, in $HOME/night-shift-work/$NAME, con:)"
+  find . -path ./.git -prune -o -type f -print | sed 's|^\./|  |' | sort
+  echo "(dry: creerebbe la label night-shift e iscriverebbe la repo nella coda)"
+  exit 0
 else
   # bug reale (dogfooding, nuovo ciclo 10 giri): la vecchia catena
   # "[ dry ] || git add -A && [ dry ] || git commit" non si fermava se git add
@@ -131,8 +145,10 @@ else
 fi
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
 
-# La iscrive alla coda locale (se esiste repos.conf)
-CONF="$HERE/night-shift/repos.conf"
+# La iscrive alla coda locale (se esiste repos.conf). NIGHT_REPOS_CONF: override per i banchi,
+# stesso gesto di tools/onboard-repo.sh (Q14: un banco vero avrebbe iscritto repo finte nella
+# coda VERA dell'hub — successo a onboard al giro 20)
+CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
 if [ -f "$CONF" ] && ! grep -q "^$(gh api user --jq .login)/$NAME\$" "$CONF"; then
   echo "$(gh api user --jq .login)/$NAME feat" >> "$CONF"
   echo "aggiunta a $CONF"

@@ -3462,3 +3462,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Smentita: le skill custom del satellite sopravvivevano già (`cp -r dir/.` fonde).
   - Banco: `tests/test-sync-repo.sh`, 6 casi end-to-end con gh finto, 5 rossi prima.
     Sabotaggio (lo stato di nuovo sovrascritto): 2 rossi.
+- **Q14**, da A8, `tools/bootstrap-app.sh --dry-run` prometteva «nessuna scrittura», invece:
+  - creava la repo locale intera (e il lancio vero moriva su «esiste già»);
+  - creava la label vera su GitHub;
+  - iscriveva la repo nella coda vera, senza override per i banchi.
+  - E `--private` valeva solo come secondo argomento.
+  - Ora il dry-run costruisce in una cartella temporanea, dice cosa creerebbe e la cancella; i
+    flag valgono in qualunque ordine; `NIGHT_REPOS_CONF` come in onboard.
+  - Banco: il primo che LANCIA il bootstrap, `tests/test-bootstrap-app-e2e.sh`, 10 casi con gh
+    finto, 5 rossi prima. Sabotaggio (dry-run di nuovo nella cartella vera): 1 rosso.

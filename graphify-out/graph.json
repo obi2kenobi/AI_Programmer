@@ -14945,6 +14945,81 @@
       "source_location": "L158"
     },
     {
+      "id": "tests_test_bootstrap_app_e2e",
+      "label": "test-bootstrap-app-e2e.sh",
+      "_origin": "ast",
+      "community": 202,
+      "community_name": "test-bootstrap-app-e2e.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bootstrap-app-e2e.sh",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bootstrap_app_e2e_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 202,
+      "community_name": "test-bootstrap-app-e2e.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_bootstrap_app_e2e_lancia",
+      "label": "lancia()",
+      "_origin": "ast",
+      "community": 202,
+      "community_name": "test-bootstrap-app-e2e.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lancia()",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L25"
+    },
+    {
+      "id": "tests_test_bootstrap_app_e2e_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 202,
+      "community_name": "test-bootstrap-app-e2e.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_bootstrap_app_e2e_sh__entry",
+      "label": "test-bootstrap-app-e2e.sh script",
+      "_origin": "ast",
+      "community": 202,
+      "community_name": "test-bootstrap-app-e2e.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bootstrap-app-e2e.sh script",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_clasp_block_hook",
       "label": "test-clasp-block-hook.sh",
       "_origin": "ast",
@@ -49093,6 +49168,42 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_bootstrap_app_e2e_sh__entry",
+      "target": "tests_test_bootstrap_app_e2e_lancia",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_bootstrap_app_e2e_sh__entry",
+      "target": "tests_test_bootstrap_app_e2e_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_bootstrap_app_e2e_sh__entry",
+      "target": "tests_test_bootstrap_app_e2e_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_bootstrap_app_percorso_cloud_sh__entry",
       "target": "tests_test_bootstrap_app_percorso_cloud_ok",
       "relation": "calls",
@@ -78265,6 +78376,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_bootstrap_app_e2e",
+      "target": "tests_test_bootstrap_app_e2e_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_bootstrap_app_percorso_cloud",
       "target": "tests_test_bootstrap_app_percorso_cloud_sh__entry",
       "relation": "contains",
@@ -82233,6 +82355,39 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-bootstrap-app.sh",
       "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_bootstrap_app_e2e",
+      "target": "tests_test_bootstrap_app_e2e_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_bootstrap_app_e2e",
+      "target": "tests_test_bootstrap_app_e2e_lancia",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_bootstrap_app_e2e",
+      "target": "tests_test_bootstrap_app_e2e_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-bootstrap-app-e2e.sh",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -89322,5 +89477,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4b0c77fe6a133ac4f208813a7a223f5fb14eb2f4"
+  "built_at_commit": "0508c229638a8f7d463979c345bfa228e5369832"
 }
