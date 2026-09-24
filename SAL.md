@@ -4352,3 +4352,7 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   ora (26/0). Sabotaggio: senza la riga dell'avviso torna rosso (25/1). Non curato: V4#3 per
   `run_guarded` in `tests/test-lib.sh`. Il risparmio sarebbe di circa 4 s e costerebbe rimaneggiare il
   banco più grande: dichiarato, non fatto.
+- **Quarto ventaglio — il brief.** In `docs/giri/2026-09-24-quarto/00-BRIEF.md` ci sono cinque lenti
+  nuove: il primo giorno, il guasto, i contratti d'uscita, il grafo come navigazione, i ganci visti da un
+  avversario. I rapporti grezzi vanno in `docs/giri/2026-09-24-quarto/grezzi/`, ignorata da git: il
+  controllo `git check-ignore` che la skill n-giri §2 chiede prima di partire ha risposto.
