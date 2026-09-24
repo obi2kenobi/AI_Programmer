@@ -58,6 +58,17 @@ else
   echo "SKIP: né timeout né gtimeout disponibili in questo ambiente, ramo primario non esercitabile"
 fi
 
+# 7. (2026-09-23, notte dei giri, T3#1): i due rami davano garanzie DIVERSE. GNU manda TERM al gruppo e
+# KILL dopo 5s; il perl (il Mac senza coreutils) mandava KILL subito — i trap EXIT dei comandi
+# interrotti non giravano mai sul Mac (un lock lasciato sporco). Stesso comando, due rami.
+MK=$(mktemp -d); trap 'rm -rf "$MK"' EXIT
+AI_TIMEOUT_FORCE_PERL=1 ai_timeout 2 bash -c "trap 'touch $MK/perl' EXIT; sleep 30" >/dev/null 2>&1; RC7=$?
+[ -f "$MK/perl" ] && ok "ramo perl: TERM prima del KILL, il trap EXIT del comando gira (rc=$RC7)" \
+  || ko "ramo perl: KILL diretto, il trap EXIT del comando NON gira (rc=$RC7)"
+[ "$RC7" -eq 124 ] && ok "ramo perl: allo scadere rc 124 come GNU" || ko "ramo perl: rc $RC7 (atteso 124)"
+T4=$(date +%s); AI_TIMEOUT_FORCE_PERL=1 ai_timeout 2 bash -c 'trap "" TERM; sleep 20' >/dev/null 2>&1; DUR7=$(( $(date +%s) - T4 ))
+[ "$DUR7" -le 10 ] && ok "ramo perl: chi ignora TERM muore di KILL entro ${DUR7}s" || ko "ramo perl: chi ignora TERM vive ${DUR7}s"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

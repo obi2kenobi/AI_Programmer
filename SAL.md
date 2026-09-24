@@ -3820,3 +3820,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   vero nega le scritture in `~/.npm`, quindi un `npm test` potrebbe dare un rosso falso, cioè un
   rinvio e mai una fusione falsa (T3#2). Lo stesso buco resta nel `.night-verify` del
   morning-gate, in pensione.
+- **T3#1 — i due rami di `ai_timeout` davano garanzie diverse.** Il ramo GNU manda TERM al gruppo e
+  KILL dopo 5 s. Il ramo perl di `llm/_timeout.sh`, quello del Mac senza coreutils, mandava KILL
+  subito: i trap EXIT dei comandi interrotti non giravano mai, e un lock restava sporco. Il giro T3
+  l'ha provato con la bash 3.2 compilata. Ora il perl manda TERM al gruppo, attende fino a 5 s, poi
+  KILL al gruppo (il nipote orfano muore comunque). Rc 124 invariato. Banco
+  `tests/test-ai-timeout.sh` sul ramo forzato: rosso prima, rosso al sabotaggio (KILL al posto di
+  TERM). ⏳ Quale ramo usi davvero il Mac non si misura da qui (T3#6: il turno non lo scrive nel log).

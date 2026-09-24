@@ -20,8 +20,8 @@ ai_timeout() {
     # ignora/blocca (trap '' TERM), timeout non forza mai la terminazione, esattamente sul
     # ramo più comune (coreutils presenti). Verificato dal vivo: un comando con
     # trap '' TERM sotto `timeout 2` tornava dopo l'intera durata del comando, non a 2s.
-    # "-k 5": se il comando è ancora vivo 5s dopo il TERM, SIGKILL — stessa garanzia del
-    # fallback perl sotto (kill di gruppo), non solo sul ramo di emergenza.
+    # "-k 5": se il comando è ancora vivo 5s dopo il TERM, SIGKILL — la stessa garanzia che dal
+    # 2026-09-23 (T3#1) da anche il fallback perl sotto (prima mandava KILL subito, senza TERM).
     if command -v timeout >/dev/null 2>&1; then command timeout -k 5 "$secs" "$@"; return; fi
     if command -v gtimeout >/dev/null 2>&1; then command gtimeout -k 5 "$secs" "$@"; return; fi
   fi
@@ -34,7 +34,17 @@ ai_timeout() {
     # del suo gruppo (setpgrp) e il segnale di allarme uccide il gruppo (-$pid).
     # NOTA: qui dentro niente apostrofi nei commenti — questa stringa è delimitata
     # da apici singoli e un apostrofo italiano la chiuderebbe (pagato dal vivo).
-    $SIG{ALRM} = sub { kill "KILL", -$pid if $pid; exit 124 };
+    # (2026-09-23, notte dei giri, T3#1): come GNU timeout -k 5 — prima TERM al gruppo, poi fino a
+    # 5 secondi di attesa, poi KILL. Prima era KILL subito: sul Mac senza coreutils i trap EXIT dei
+    # comandi interrotti non giravano mai (un lock lasciato sporco). Il KILL finale va comunque al
+    # gruppo: il nipote orfano muore anche quando il figlio e gia uscito col TERM.
+    $SIG{ALRM} = sub {
+      if ($pid) {
+        kill "TERM", -$pid;
+        for (1 .. 50) { last if waitpid($pid, 1) > 0; select(undef, undef, undef, 0.1) }
+        kill "KILL", -$pid;
+      }
+      exit 124 };
     alarm $s;
     $pid = fork();
     if ($pid == 0) { setpgrp(0, 0); exec @ARGV or exit 127 }
