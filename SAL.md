@@ -3915,3 +3915,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   loggata sul successo, e il file escluso restava nella copia e ricompariva a ogni consegna. Gli
   altri due punti (fix deterministici, opencode) restano `add -A`, per scelta dichiarata nel codice.
   Per opencode c'è una domanda di dominio in DEBITI.
+- **T6#1 — la quarantena del censore contava solo la creazione della PR.** L'header di
+  `night-shift/revisore.sh` prometteva «≥20 min dal push», ma il codice misurava `createdAt`: un
+  commit spinto un minuto fa su una PR di mezz'ora si giudicava e si fondeva subito. Ora conta anche
+  l'età del commit giudicato (data del committer di `headRefOid`), e l'header lo dice. Banco
+  `tests/test-revisore.sh` (8bis): rosso prima, rosso al sabotaggio. L'helper del banco e
+  `tests/test-catena-viva.sh` ora datano il commit con l'età della PR, altrimenti ogni PR sarebbe
+  in quarantena.

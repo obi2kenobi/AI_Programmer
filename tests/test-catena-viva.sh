@@ -56,7 +56,9 @@ grep -q "debito sceso" <<<"$OUT" && ok "8. il delta urla: 'debito sceso'" || ko 
 # ── 5. il CENSORE delibera sul diff (guardie + prove + verdetto) ────────────────
 # la miglioria committata su un ramo night/ VERO: il censore ci fa checkout
 git -C "$SB" checkout -q -b night/caccia-test
-git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: test" >/dev/null
+# (T6#1): il commit della PR ha l'eta' della PR — la quarantena del censore conta anche il commit
+QUANDO=$(python3 -c "import datetime; print((datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(minutes=30)).isoformat())")
+git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: test" >/dev/null
 git -C "$SB" checkout -q main
 printf '#!/bin/bash\nif [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHDIR_JSON"; fi\nexit 0\n' > "$GHDIR/gh"; chmod +x "$GHDIR/gh"
 export GHDIR_JSON="$GHDIR/pr.json"

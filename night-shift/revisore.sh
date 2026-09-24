@@ -10,7 +10,7 @@
 #
 # La deliberazione e' a tre livelli, in ordine di autorita':
 #   1. GUARDIE (deterministiche): diff <=60 righe, <=3 file, ASCII, no CRLF,
-#      solo PR bozza night/* con titolo 'caccia:', quarantena >=20 min dal push
+#      solo PR bozza night/* con titolo 'caccia:', quarantena >=20 min dalla PR e dal suo ultimo commit
 #      (chi crea non si giudica nello stesso respiro), budget <=5 merge/giorno.
 #   2. PROVE (deterministiche): verifiche dichiarate riga per riga + un comando
 #      avversario scritto dal modello con allowlist ristretta (deve riuscire)
@@ -161,6 +161,14 @@ HEAD_OID=$(printf '%s' "$PR_JSON" | jq -r '.headRefOid // empty')
 git fetch -q origin "$BRANCH" 2>/dev/null || true
 if [ -z "$HEAD_OID" ] || ! git cat-file -e "${HEAD_OID}^{commit}" 2>/dev/null; then
   log "guardia: il commit della PR (${HEAD_OID:-illeggibile}) non e' qui — nessun giudizio senza il commit vero, al giorno"
+  exit 2
+fi
+# (2026-09-24, notte dei giri, T6#1): la quarantena contava solo la CREAZIONE della PR (createdAt) — un
+# commit spinto un minuto fa su una PR vecchia si giudicava e si fondeva nello stesso respiro. L'header
+# prometteva «>=20 min dal push»: ora conta anche l'eta' del commit giudicato (data del committer).
+ETA_COMMIT=$(( ( $(date +%s) - $(git log -1 --format=%ct "$HEAD_OID" 2>/dev/null || echo 0) ) / 60 ))
+if [ "$ETA_COMMIT" -lt "$QUARANTENA_MIN" ]; then
+  log "guardia: quarantena del commit ${HEAD_OID:0:8}: ${ETA_COMMIT}min < ${QUARANTENA_MIN}min — spinto da poco, al ciclo dopo"
   exit 2
 fi
 git checkout -q --detach "$HEAD_OID" 2>/dev/null || { git checkout -q "$DB"; exit 3; }

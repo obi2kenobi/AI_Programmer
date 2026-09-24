@@ -80,7 +80,10 @@ function viva(x) {
   return x * 2;
 }
 EOF
-  git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: docs"
+  # (T6#1, 2026-09-24): il commit della PR porta l'eta' dichiarata (la quarantena conta anche lui);
+  # ${4:-$2}: l'eta' del commit, se diversa da quella della PR
+  local QUANDO; QUANDO=$(python3 -c "import datetime,sys; print((datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(minutes=int(sys.argv[1]))).isoformat())" "${4:-$2}")
+  git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: docs"
   git -C "$SB" checkout -q main
   python3 - "$2" "$3" > "$GHSTUB_JSON" <<'PY'
 import sys, json
@@ -375,6 +378,13 @@ if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -c "
 else
   echo "⊘ sfida modello vero saltata (censore $CENSORE_MODEL non attivo — dichiarato, non taciuto)"
 fi
+
+# 8bis. (2026-09-24, T6#1): la quarantena contava solo la CREAZIONE della PR — un commit spinto un
+# minuto fa su una PR di 30 minuti si giudicava (e si fondeva) subito. Ora conta anche il commit.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-fresco 1
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -c "gh pr merge" <<<"$OUT" >/dev/null && grep -c "quarantena" <<<"$OUT" >/dev/null \
+  && ok "PR vecchia ma commit di 1 minuto: quarantena, rc 2, nessun merge" || ko "commit fresco giudicato subito (rc $RC): $(tail -1 <<<"$OUT")"
 
 # 9. (2026-09-23, notte dei giri, T5#1): le prove girano DENTRO la sandbox, col profilo della copia
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-sandbox; rm -f "$GHSTUB_JSON.sandbox" "$GHSTUB_JSON.profili"
