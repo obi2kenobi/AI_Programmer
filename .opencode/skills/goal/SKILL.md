@@ -50,7 +50,7 @@ tetto):
 ## 3. Verifica avversariale prima della vittoria (non facoltativa)
 
 Prima di dichiarare l'obiettivo raggiunto, **un secondo passo tenta di smentirlo** —
-stesso principio del banco avversariale del turno notturno (`night-shift/morning-gate.sh`): chi ha
+stesso principio del banco avversariale del turno notturno (`night-shift/revisore.sh`, il censore; il morning-gate è in pensione dal 2026-09-23): chi ha
 costruito la soluzione è il peggior giudice della propria soluzione. In pratica:
 - livello 1-2 (deterministico/numerico): fai girare la verifica un'altra volta, in
   condizioni leggermente diverse se possibile (dati diversi, cache pulita) — un passaggio

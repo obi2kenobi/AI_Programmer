@@ -4180,3 +4180,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   classe POSIX vale anche col grep del Mac. Banco nuovo `tests/test-selezione-contesto-densita.sh`: estrae il
   comando dalla skill e lo lancia su un progetto di prova (due commenti, una riga di aritmetica).
   Era rosso prima (3 righe contate), ora è verde (1). Sabotaggio: rimesso `-n`, torna rosso (3).
+- **Terzo ventaglio, V3 fuori tetto — tre skill dicevano lo stato di ieri.** Tre correzioni:
+  - `.claude/skills/goal/SKILL.md` §3 metteva il banco avversariale nel `night-shift/morning-gate.sh`,
+    che è in pensione. Oggi il banco vive in `night-shift/revisore.sh`.
+  - `.claude/skills/post-mortem/SKILL.md` diceva che la lente controlla «sette campi». Il titolo della
+    sezione e CLAUDE.md §5 dicono otto: i sette numerati più «Chi l'ha trovato».
+  - `.claude/skills/design-doc/SKILL.md` diceva «il grafo non è installato qui». Era vero il 2026-08-23;
+    ora il grafo è versionato.
+
+  Le tre frasi sono corrette, con i loro specchi `.opencode`. `tests/test-doc-non-corrotti.sh` ha tre
+  controlli nuovi: rosso prima (3 FAIL), verde ora (12/0). Sabotaggio: con la vecchia goal torna
+  rosso (11/1).

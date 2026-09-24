@@ -42,6 +42,17 @@ if [ -f "$HERE/.zcode-commands-nuova-commessa.md" ]; then
   [ -z "$FALSO" ] && ok "nessun documento vivo dice assente il wizard /nuova-commessa (che esiste)" || ko "wizard dato per assente: $(cut -c1-120 <<<"$FALSO" | tr '\n' ' ')"
 fi
 
+# (2026-09-24, terzo ventaglio, V3 fuori tetto): tre skill dicevano il vecchio stato del sistema.
+SK="$HERE/.claude/skills"
+! grep -c 'banco avversariale del turno notturno (`night-shift/morning-gate.sh`)' "$SK/goal/SKILL.md" >/dev/null \
+  && ok "goal: il banco avversariale non e' attribuito al morning-gate (in pensione)" || ko "goal cita ancora il morning-gate come sede del banco avversariale"
+! grep -c 'controlla che ogni voce abbia i sette' "$SK/post-mortem/SKILL.md" >/dev/null \
+  && ok "post-mortem: la lente non e' descritta con «sette campi» (sono otto, CLAUDE.md §5)" || ko "post-mortem dice ancora «sette campi»"
+if [ -f "$HERE/graphify-out/graph.json" ]; then
+  ! grep -c 'il grafo non è installato qui)' "$SK/design-doc/SKILL.md" >/dev/null \
+    && ok "design-doc non dice il grafo assente dove e' versionato" || ko "design-doc dice «il grafo non è installato qui», ma graphify-out/graph.json c'e'"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

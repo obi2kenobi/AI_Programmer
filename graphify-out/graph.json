@@ -47990,7 +47990,7 @@
       "node_kind": "heading",
       "norm_label": "1bis. esempio del formato (criteri \u2192 tabella, non narrativa libera)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L110"
+      "source_location": "L111"
     },
     {
       "id": "claude_skills_design_doc_skill_2_dove_va_a_vivere_il_documento_mai_solo_in_chat",
@@ -48002,7 +48002,7 @@
       "node_kind": "heading",
       "norm_label": "2. dove va a vivere il documento (mai solo in chat)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L131"
+      "source_location": "L132"
     },
     {
       "id": "claude_skills_design_doc_skill_3_dopo_la_scelta_notte_o_giorno_non_solo_la_notte_4_ciclo_set_2_giro_10_2026_08_23",
@@ -48014,7 +48014,7 @@
       "node_kind": "heading",
       "norm_label": "3. dopo la scelta \u2014 notte o giorno, non solo la notte (4\u00b0 ciclo, set 2, giro 10, 2026-08-23)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L152"
+      "source_location": "L153"
     },
     {
       "id": "claude_skills_design_doc_skill_4_regole_non_negoziabili_eredit\u00e0_da_claude_md",
@@ -48026,7 +48026,7 @@
       "node_kind": "heading",
       "norm_label": "4. regole non negoziabili (eredita da claude.md)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L170"
+      "source_location": "L171"
     },
     {
       "id": "claude_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
@@ -48050,7 +48050,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L182"
+      "source_location": "L183"
     },
     {
       "id": "claude_skills_graphify_references_exports",
@@ -49038,7 +49038,7 @@
       "node_kind": "heading",
       "norm_label": "1bis. esempio del formato (criteri \u2192 tabella, non narrativa libera)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L110"
+      "source_location": "L111"
     },
     {
       "id": "opencode_skills_design_doc_skill_2_dove_va_a_vivere_il_documento_mai_solo_in_chat",
@@ -49050,7 +49050,7 @@
       "node_kind": "heading",
       "norm_label": "2. dove va a vivere il documento (mai solo in chat)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L131"
+      "source_location": "L132"
     },
     {
       "id": "opencode_skills_design_doc_skill_3_dopo_la_scelta_notte_o_giorno_non_solo_la_notte_4_ciclo_set_2_giro_10_2026_08_23",
@@ -49062,7 +49062,7 @@
       "node_kind": "heading",
       "norm_label": "3. dopo la scelta \u2014 notte o giorno, non solo la notte (4\u00b0 ciclo, set 2, giro 10, 2026-08-23)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L152"
+      "source_location": "L153"
     },
     {
       "id": "opencode_skills_design_doc_skill_4_regole_non_negoziabili_eredit\u00e0_da_claude_md",
@@ -49074,7 +49074,7 @@
       "node_kind": "heading",
       "norm_label": "4. regole non negoziabili (eredita da claude.md)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L170"
+      "source_location": "L171"
     },
     {
       "id": "opencode_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
@@ -49098,7 +49098,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L182"
+      "source_location": "L183"
     },
     {
       "id": "opencode_skills_graphify_references_exports",
@@ -59232,7 +59232,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -59243,7 +59243,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L131",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -59254,7 +59254,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L152",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -59265,7 +59265,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -59287,7 +59287,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L182",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -74489,7 +74489,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -74500,7 +74500,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L131",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -74511,7 +74511,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L152",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -74522,7 +74522,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -74544,7 +74544,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L182",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -93397,5 +93397,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "570d56f67b2b176df1eb0cf523f0e01496de1004"
+  "built_at_commit": "6639c1800a8a38b0c8e2b06ff8c5e06045e619b0"
 }

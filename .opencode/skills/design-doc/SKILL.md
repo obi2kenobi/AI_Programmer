@@ -58,7 +58,8 @@ decisioni già chiuse (regola "Only what is asked").
    vicenda (`calls` non è risolto, lezione già pagata: non fidarti del grafo per la
    semantica, solo per dove guardare). **Se `graphify-out/graph.json` NON esiste**
    (5° ciclo, set 2 "progettare", giro 2, 2026-08-23 — caso reale di questa stessa
-   sessione, non ipotetico: il grafo non è installato qui) — non restare senza un
+   sessione, non ipotetico: allora il grafo non era installato; dal 2026-09-23 l'hub lo versiona, ma
+   una repo appena nata o un clone senza graphify possono non averlo) — non restare senza un
    passo: usa `Grep`/`Glob` sui termini di dominio della richiesta per un territorio
    piccolo e già chiaro, o l'agente `Explore` (breadth "quick"/"medium") quando il
    territorio è ampio o i nomi dei componenti coinvolti non sono ancora noti — stessa
