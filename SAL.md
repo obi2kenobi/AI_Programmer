@@ -4284,3 +4284,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   ha un ramo proprio: «⚠ LENTE MUTA — NON è 'sistema sano'», nessuna miglioria, nessun cooldown.
   `tests/test-caccia-lente.sh` ha due controlli nuovi: rosso prima (2 FAIL), verde ora (5/0).
   Sabotaggio: muto di nuovo a 1, torna rosso (4/1).
+- **Terzo ventaglio, V1#6b-c — il commit di un fix d'issue non diceva chi l'aveva scritto, e la PR non
+  chiudeva l'issue.** Il turno scriveva sempre «(risolvi-issue.sh, modello locale)», anche quando l'issue
+  l'aveva risolta l'agente della cascata. Il corpo della PR (`gh pr create --fill`, preso dal commit) non
+  portava `Closes #N`: lo faceva solo il ramo opencode, che non gira mai. Ora il messaggio lo compone
+  `messaggio_fix` in `night-shift/lib.sh`, con la provenienza vera (`AUTORE_FIX`, che la cascata cambia
+  in agente.sh) e `Closes #N` su una riga sua. Banco nuovo `tests/test-messaggio-fix.sh`: rosso prima
+  (la funzione non c'era), verde ora (7/0). Sabotaggio: senza la riga Closes torna rosso (6/1). Il ramo
+  opencode irraggiungibile (con il watchdog da 240 minuti che CLAUDE.md §7 promette) e il test generato
+  mai eseguito sono due domande di dominio in DEBITI.md.

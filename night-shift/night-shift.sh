@@ -932,6 +932,7 @@ $BODY"
       # CASCATA solver → agente (2026-09-17, intuizione di Luca): se il solver non
       # converge, l'agente multi-turno prova strade che il solver non vede.
       # Previene 33 cicli di retry su qualcosa che non può matchare il pattern.
+      AUTORE_FIX="risolvi-issue.sh, modello locale"   # chi ha scritto il fix: lo dice il commit (V1#6)
       if [ "$RC" -ne 0 ] && [ "$RC" -ne 3 ] && [ -f "$HERE/agente.sh" ]; then
         log "Issue #$NUM: solver rc=$RC — provo l'AGENTE (cascade)"
         AGENTE_OUT=$(bash "$HERE/agente.sh" "$DIR" \
@@ -948,7 +949,7 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
         log "Issue #$NUM: cascade-agente rc=$AGENTE_RC — $(echo "$AGENTE_OUT" | tail -2 | head -1 | cut -c1-110)"
         if [ "$AGENTE_RC" -eq 0 ] && ! git -C "$DIR" diff --quiet 2>/dev/null; then
           log "Issue #$NUM: ✅ AGENTE ha converto (dove il solver non poteva)"
-          RC=0
+          RC=0; AUTORE_FIX="agente.sh, cascata dopo il solver"
           OUT="AGENTE: completato"
           [ -f "$HERE/../tools/goal-issue.sh" ] && bash "$HERE/../tools/goal-issue.sh" "$DIR" update "$NUM" "AGENTE ha converto (cascade)" >/dev/null 2>&1 || true
         else
@@ -1072,9 +1073,7 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
         # T5#2b: nel commit le modifiche, il test generato e i file nuovi dichiarati da agente.sh
         if ( cd "$DIR" && aggiungi_consegna "$DIR" "${TEST_FILE:+${TEST_FILE#"$DIR"/}}" | while IFS= read -r l; do log "Issue #$NUM: $l"; done \
-             && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)${NOTA_INS}
-
-Verifica dell'issue: $VERIFICA_OUT" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
+             && git commit -qm "$(messaggio_fix "$CTYPE" "$NUM" "$TITLE" "$AUTORE_FIX" "$NOTA_INS" "$VERIFICA_OUT")" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
              && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
           # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.

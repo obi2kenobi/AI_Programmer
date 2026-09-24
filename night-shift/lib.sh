@@ -467,6 +467,14 @@ verifica_issue_comando() {
 # dal primo. Ora il furto e' serializzato da un secondo mkdir (<lock>.furto), e dentro si RIGIUDICA:
 # chi arriva dopo trova il lock gia' preso da un vivo e si ferma. Un .furto lasciato da un processo
 # morto a meta' si toglie dopo 60 secondi (il furto dura millisecondi).
+# messaggio_fix <tipo> <num> <titolo> <autore> <nota> <verifica> — il messaggio del commit di un fix d'issue.
+# (2026-09-24, terzo ventaglio, V1#6): il turno lo scriveva a mano con «(risolvi-issue.sh, modello locale)»
+# anche quando aveva risolto l'agente della cascata, e senza `Closes #N`: la PR (`gh pr create --fill`
+# prende il corpo dal commit) non chiudeva l'issue al merge. La keyword resta INGLESE (CLAUDE.md §4).
+messaggio_fix() {
+  printf "%s: issue #%s — %s (%s)%s\n\nVerifica dell'issue: %s\n\nCloses #%s\n" "$1" "$2" "$3" "$4" "$5" "$6" "$2"
+}
+
 # rianima_ollama — il SOLO gesto che riavvia il server Ollama (pattern cuore-unico-proprietario).
 # (2026-09-24, terzo ventaglio, V5 R4): tre punti lo riavviavano, e solo la sonda chiedeva al custode.
 # Il watchdog d'inizio ciclo e agente.sh facevano pkill e aspettavano launchd anche dove launchd non c'era:
