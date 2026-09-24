@@ -4164,3 +4164,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `.claude/skills/n-giri/references/brief-modello.md` porta il posto, e lo specchio `.opencode` segue.
   Il banco `tests/test-skill-n-giri.sh` ha due controlli nuovi: era rosso prima (2 FAIL), ora è verde
   (22/0). Sabotaggio: tolta la riga dal `.gitignore`, torna rosso (21/1).
+- **Terzo ventaglio, V3#5 — verifica-visiva cancellava il «prima» che prometteva di confrontare.**
+  La skill (`.claude/skills/verifica-visiva/SKILL.md` §1.3) diceva di confrontare lo screenshot con
+  quello precedente allo stesso percorso. Ma `tools/verifica-visiva.js` scriveva sopra quel percorso
+  senza guardare. Ora `conservaPrima()` sposta il vecchio file in `<nome>.prima.png` prima dello
+  scatto, e l'uscita stampa «prima N byte → dopo M byte». Il §3 non cita più Playwright, che il §1
+  esclude. Banco nuovo `tests/test-verifica-visiva-prima.sh`, con un Chromium finto via
+  CHROME_PATH: era rosso prima (3 FAIL), ora è verde (4/0). Sabotaggio: senza la chiamata torna
+  rosso (2/2).

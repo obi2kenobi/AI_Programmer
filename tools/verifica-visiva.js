@@ -76,6 +76,16 @@ function giudica(testo) {
   return { esito: 0, motivo: `nessun segnale d'errore noto, ${testo.length} caratteri di testo visibile` };
 }
 
+// (2026-09-24, terzo ventaglio, V3#5): la skill promette il confronto con la volta prima, ma lo
+// screenshot nuovo scriveva sopra il vecchio allo stesso percorso. Ora il vecchio si sposta accanto,
+// <nome>.prima.png, e l'uscita dice «prima N byte → dopo M byte». Nessun precedente = null, detto.
+function conservaPrima(out) {
+  if (!fs.existsSync(out)) return null;
+  const percorso = out.replace(/(\.png)?$/i, ".prima.png");
+  fs.renameSync(out, percorso);
+  return { percorso, byte: fs.statSync(percorso).size };
+}
+
 function main() {
   const url = process.argv[2];
   const out = process.argv[3];
@@ -99,6 +109,8 @@ function main() {
   }
   const testo = estraiTesto(dom);
 
+  const prima = conservaPrima(out);
+  console.log(prima ? `↻ screenshot precedente spostato in ${prima.percorso}` : "· nessuno screenshot precedente allo stesso percorso");
   try {
     execFileSync(CHROME, [...FLAGS_COMUNI, `--screenshot=${out}`, "--window-size=1400,1000", url],
       { timeout: 20000, stdio: ["ignore", "ignore", "ignore"] });
@@ -108,6 +120,7 @@ function main() {
   }
   const dimensioni = fs.existsSync(out) ? fs.statSync(out).size : 0;
   console.log(`✓ screenshot salvato: ${out} (${dimensioni} byte)`);
+  if (prima) console.log(`  confronto grezzo: prima ${prima.byte} byte → dopo ${dimensioni} byte`);
 
   const g = giudica(testo);
   if (g.esito !== 0) {
@@ -118,4 +131,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { SEGNALI_ERRORE, SEGNALI_NON_PAGINA, SOGLIA_TESTO_VUOTO, estraiTesto, giudica, trovaChrome };
+module.exports = { SEGNALI_ERRORE, SEGNALI_NON_PAGINA, SOGLIA_TESTO_VUOTO, estraiTesto, giudica, trovaChrome, conservaPrima };

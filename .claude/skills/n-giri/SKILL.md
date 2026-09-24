@@ -40,7 +40,7 @@ Regole di ogni giro, scritte nel brief:
    `git check-ignore docs/giri/<data>/grezzi/x.md` deve rispondere, altrimenti si aggiunge la riga
    `docs/giri/*/grezzi/` al `.gitignore`. Mai nello scratchpad in `/tmp`: il 2026-09-24 una pulizia di
    `/tmp` ha cancellato sei rapporti grezzi in un colpo (E-044). Mai con un nome qualunque fuori da
-   `grezzi/`: un rapporto chiamato come il giro (T1, B3) non è ignorato e finirebbero nel commit, con le loro citazioni non
+   `grezzi/`: un rapporto chiamato come il giro (T1, B3) non è ignorato e finirebbe nel commit, con le sue citazioni non
    verificate.
 2. **Formato Oggi / Manca / Proposta**, ogni voce ancorata a un `file:riga` letto davvero. Mai un
    principio da manuale.
