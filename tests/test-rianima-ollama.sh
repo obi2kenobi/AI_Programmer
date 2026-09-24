@@ -32,6 +32,7 @@ L=$(cat "$T/chiamate.log" 2>/dev/null)
 [ $RC -eq 0 ] && grep -c 'launchctl kickstart -k gui/501/homebrew.mxcl.ollama' <<<"$L" >/dev/null && ! grep -c '^pkill' <<<"$L" >/dev/null \
   && ok "custode presente: kickstart al custode, nessun pkill" || ko "custode presente (rc=$RC): $L"
 grep -c 'custode' "$T/err" >/dev/null && ok "la scelta e' detta (sesto patto)" || ko "rianima_ollama tace la scelta: $(cat "$T/err")"
+grep -c 'rianima_ollama: esito OK' "$T/err" >/dev/null && ok "l'esito si dice (OK), non solo la scelta (R4 R3)" || ko "rianima_ollama tace l'esito: $(cat "$T/err")"
 
 # 2. senza custode: kill del serve e istanza propria (nessun kickstart a vuoto)
 rm -f "$T/chiamate.log"

@@ -688,7 +688,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         MIGLIORIA_RC=$?
         # (audit 2026-09-23): "TRASFORMATORE deterministico" e "gate BOCCIA"
         # morivano qui come le DELIBERE — il funnel diceva "0 per sempre".
-        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA" <<<"$MIGLIORIA_OUT")
+        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA|agente: .*(⚠|⛔|rianima_ollama: esito)" <<<"$MIGLIORIA_OUT")   # (R4 R3): anche i wedge dell'agente
         # (strumento, 2026-09-19): la riga-categoria in produzione — senza questa
         # riga non si sa SE la finestra abbia pagato un debito o girato a rotazione
         log "REPO $REPO: caccia-interna: $(echo "$MIGLIORIA_OUT" | grep -a "categoria" | head -1 | cut -c1-140)"

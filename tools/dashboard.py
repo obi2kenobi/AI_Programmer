@@ -91,7 +91,8 @@ def stats():
                 if m: s["pr_eventi"].setdefault(m.group(1), []).append("consegnata")
             if "auto-fix" in l and "senza diff" not in l: s["fix"] += 1
             if "ERRORE" in l or "⛔" in l: s["errori"] += 1
-            if "Ollama wedged" in l: s["ollama_wedge"] += 1
+            # (2026-09-24, R4 R3): anche il wedge DENTRO la finestra dell'agente (rilanciato da caccia-miglioria)
+            if "Ollama wedged" in l or "server muto anche al ping" in l: s["ollama_wedge"] += 1
             if "rianimato dal watchdog" in l: s["ollama_revive"] += 1
             m = re.search(r"PR #(\d+) in quarantena", l)
             if m: s["pr_eventi"].setdefault(m.group(1), []).append("in quarantena")

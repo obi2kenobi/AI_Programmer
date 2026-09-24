@@ -217,7 +217,12 @@ if [ "$TRANSFORMED" -eq 0 ]; then
   if [ -n "${SECONDO_COLPO:-}" ] && [ -n "$PROMPT_SECONDO" ]; then
     PROMPT="$PROMPT_SECONDO"
   fi
-  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
+  # (2026-09-24, R4 R3): lo stderr dell'agente andava in /dev/null — i wedge DENTRO la finestra (server muto,
+  # rianima_ollama, «NESSUN rianimamento») non arrivavano al log. Le righe che contano si rilanciano.
+  ERR_AGENTE=$(mktemp "${TMPDIR:-/tmp}/miglioria-agente.XXXXXX")
+  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>"$ERR_AGENTE" || AGENTE_RC=$?
+  while IFS= read -r _r; do log "agente: $_r"; done < <(grep -aE '⚠|⛔|rianima_ollama' "$ERR_AGENTE" | head -8)
+  rm -f "$ERR_AGENTE"
 fi
 
 # il debito e' un tentativo solo — marcato ALL'ATTEMPT, prima di ogni uscita:

@@ -579,10 +579,14 @@ rianima_ollama() {
     OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_KEEP_ALIVE=-1 \
       /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
   fi
+  # (2026-09-24, quinto ventaglio, R4 R3): la scelta si diceva, l'esito no — e i chiamanti (`… | while log`)
+  # si mangiano l'rc. La riga d'esito la scrive lei.
+  local t0=$SECONDS
   for _ in $(seq 1 30); do
-    curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && return 0
+    curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && { echo "rianima_ollama: esito OK in $((SECONDS - t0)) s" >&2; return 0; }
     sleep 2
   done
+  echo "rianima_ollama: esito FALLITO in $((SECONDS - t0)) s (/api/version muto)" >&2
   return 1
 }
 

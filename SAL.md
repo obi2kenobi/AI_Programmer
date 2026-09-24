@@ -4717,3 +4717,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   registrata in `docs/eventi.md`. Caso nuovo in `tests/test-dashboard.sh`, con le righe vere del turno:
   rosso prima, verde ora (19/0). Sabotaggio (con una cache fresca): senza il conteggio, 18/1.
   test-eventi verde.
+- **Quinto ventaglio, R4 R3 — i wedge dentro le finestre dell'agente non arrivavano al log.**
+  `night-shift/caccia-miglioria.sh` lanciava l'agente con `2>/dev/null`. Così «server muto anche al ping»,
+  le righe di `rianima_ollama` e «NESSUN rianimamento ha funzionato» sparivano, e al turno restava «agente
+  rc=1». `rianima_ollama` diceva la sua scelta, ma non l'esito, e i chiamanti (`… | while log`) si mangiano
+  l'rc. Ora:
+  - `rianima_ollama` scrive «esito OK / FALLITO in N s»;
+  - caccia-miglioria tiene lo stderr dell'agente e rilancia le righe ⚠/⛔/rianima_ollama;
+  - il turno le porta nel log;
+  - la dashboard conta come wedge anche «server muto anche al ping».
+
+  Casi nuovi in `tests/test-caccia-miglioria.sh` (23/0) e `tests/test-rianima-ollama.sh` (6/0), rossi
+  prima. Sabotaggio: senza il rilancio, 22/1. test-dashboard verde (19/0).

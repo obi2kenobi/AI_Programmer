@@ -14,7 +14,7 @@
       "file_type": "code",
       "norm_label": "h",
       "source_file": "tools/dashboard.py",
-      "source_location": "L331"
+      "source_location": "L332"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -710,7 +710,7 @@
       "file_type": "code",
       "norm_label": "barrette()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L151"
+      "source_location": "L152"
     },
     {
       "id": "tools_dashboard_h_do_get",
@@ -722,7 +722,7 @@
       "file_type": "code",
       "norm_label": ".do_get()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L332"
+      "source_location": "L333"
     },
     {
       "id": "tools_dashboard_h_log_message",
@@ -734,7 +734,7 @@
       "file_type": "code",
       "norm_label": ".log_message()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L335"
+      "source_location": "L336"
     },
     {
       "id": "tools_dashboard_leggi_log",
@@ -758,7 +758,7 @@
       "file_type": "code",
       "norm_label": "lettura_debiti()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L218"
+      "source_location": "L219"
     },
     {
       "id": "tools_dashboard_lettura_funnel",
@@ -770,7 +770,7 @@
       "file_type": "code",
       "norm_label": "lettura_funnel()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L201"
+      "source_location": "L202"
     },
     {
       "id": "tools_dashboard_page",
@@ -782,7 +782,7 @@
       "file_type": "code",
       "norm_label": "page()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L229"
+      "source_location": "L230"
     },
     {
       "id": "tools_dashboard_riga_data",
@@ -818,7 +818,7 @@
       "file_type": "code",
       "norm_label": "verdetto()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L172"
+      "source_location": "L173"
     },
     {
       "id": "tools_gas_qualita_function_bodies",
@@ -16707,7 +16707,7 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L633"
+      "source_location": "L637"
     },
     {
       "id": "night_shift_lib_default_branch",
@@ -16752,7 +16752,7 @@
       },
       "norm_label": "eta_secondi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L622"
+      "source_location": "L626"
     },
     {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
@@ -21246,7 +21246,7 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L649"
+      "source_location": "L653"
     },
     {
       "id": "night_shift_lib_messaggio_fix",
@@ -46022,7 +46022,7 @@
       },
       "norm_label": "lock_turno_orfano()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L610"
+      "source_location": "L614"
     },
     {
       "id": "night_shift_lib_prendi_lock_turno",
@@ -46037,7 +46037,7 @@
       },
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L589"
+      "source_location": "L593"
     },
     {
       "id": "tests_test_lock_turno_corsa",
@@ -49454,7 +49454,7 @@
       "source_location": "L2416"
     },
     {
-      "id": "tools_dashboard_rationale_152",
+      "id": "tools_dashboard_rationale_153",
       "label": "sparkline SVG del debito nel tempo \u2014 analisi vera, dati veri.",
       "_origin": "ast",
       "community": 9,
@@ -49462,10 +49462,10 @@
       "file_type": "rationale",
       "norm_label": "sparkline svg del debito nel tempo \u2014 analisi vera, dati veri.",
       "source_file": "tools/dashboard.py",
-      "source_location": "L152"
+      "source_location": "L153"
     },
     {
-      "id": "tools_dashboard_rationale_173",
+      "id": "tools_dashboard_rationale_174",
       "label": "LA RIGA LAMPANTE: la pagina giudica, con il motivo. Ordine di gravita': fermo >\u2026",
       "_origin": "ast",
       "community": 9,
@@ -49473,7 +49473,7 @@
       "file_type": "rationale",
       "norm_label": "la riga lampante: la pagina giudica, con il motivo. ordine di gravita': fermo >...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L173"
+      "source_location": "L174"
     },
     {
       "id": "tools_dashboard_rationale_2",
@@ -49487,7 +49487,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_dashboard_rationale_202",
+      "id": "tools_dashboard_rationale_203",
       "label": "La lettura CALCOLATA: la prima anomalia vera del funnel, non un consiglio\u2026",
       "_origin": "ast",
       "community": 9,
@@ -49495,10 +49495,10 @@
       "file_type": "rationale",
       "norm_label": "la lettura calcolata: la prima anomalia vera del funnel, non un consiglio...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L202"
+      "source_location": "L203"
     },
     {
-      "id": "tools_dashboard_rationale_219",
+      "id": "tools_dashboard_rationale_220",
       "label": "Il verdetto calcolato della curva del debito: scende, sale o sta ferma nella\u2026",
       "_origin": "ast",
       "community": 9,
@@ -49506,10 +49506,10 @@
       "file_type": "rationale",
       "norm_label": "il verdetto calcolato della curva del debito: scende, sale o sta ferma nella...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L219"
+      "source_location": "L220"
     },
     {
-      "id": "tools_dashboard_rationale_230",
+      "id": "tools_dashboard_rationale_231",
       "label": "Rende i numeri in una pagina HTML sola, senza dipendenze. v5: verdetto in cima,\u2026",
       "_origin": "ast",
       "community": 9,
@@ -49517,7 +49517,7 @@
       "file_type": "rationale",
       "norm_label": "rende i numeri in una pagina html sola, senza dipendenze. v5: verdetto in cima,...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L230"
+      "source_location": "L231"
     },
     {
       "id": "tools_dashboard_rationale_31",
@@ -51095,7 +51095,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L233",
+      "source_location": "L238",
       "weight": 1.0
     },
     {
@@ -51107,7 +51107,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L248",
+      "source_location": "L253",
       "weight": 1.0
     },
     {
@@ -51155,7 +51155,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L624",
+      "source_location": "L628",
       "weight": 1.0
     },
     {
@@ -51179,7 +51179,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L593",
+      "source_location": "L597",
       "weight": 1.0
     },
     {
@@ -58127,7 +58127,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L334",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -58139,7 +58139,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L334",
+      "source_location": "L335",
       "weight": 1.0
     },
     {
@@ -58151,7 +58151,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L284",
+      "source_location": "L285",
       "weight": 1.0
     },
     {
@@ -58163,7 +58163,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L317",
+      "source_location": "L318",
       "weight": 1.0
     },
     {
@@ -58175,7 +58175,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L324",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -58187,7 +58187,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L324",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -59567,7 +59567,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/dashboard.py",
-      "source_location": "L341",
+      "source_location": "L342",
       "weight": 1.0
     },
     {
@@ -85731,7 +85731,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L151",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -85742,7 +85742,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L172",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -85753,7 +85753,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L201",
+      "source_location": "L202",
       "weight": 1.0
     },
     {
@@ -85764,7 +85764,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L218",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -85775,7 +85775,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L229",
+      "source_location": "L230",
       "weight": 1.0
     },
     {
@@ -85797,7 +85797,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L331",
+      "source_location": "L332",
       "weight": 1.0
     },
     {
@@ -87205,7 +87205,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L589",
+      "source_location": "L593",
       "weight": 1.0
     },
     {
@@ -87216,7 +87216,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L610",
+      "source_location": "L614",
       "weight": 1.0
     },
     {
@@ -87227,7 +87227,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L622",
+      "source_location": "L626",
       "weight": 1.0
     },
     {
@@ -87238,7 +87238,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L633",
+      "source_location": "L637",
       "weight": 1.0
     },
     {
@@ -87249,7 +87249,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L649",
+      "source_location": "L653",
       "weight": 1.0
     },
     {
@@ -93805,7 +93805,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L332",
+      "source_location": "L333",
       "weight": 1.0
     },
     {
@@ -93816,7 +93816,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L335",
+      "source_location": "L336",
       "weight": 1.0
     },
     {
@@ -94062,25 +94062,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_152",
+      "source": "tools_dashboard_rationale_153",
       "target": "tools_dashboard_barrette",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L152",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_173",
+      "source": "tools_dashboard_rationale_174",
       "target": "tools_dashboard_verdetto",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L173",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -94095,36 +94095,36 @@
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_202",
+      "source": "tools_dashboard_rationale_203",
       "target": "tools_dashboard_lettura_funnel",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L202",
+      "source_location": "L203",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_219",
+      "source": "tools_dashboard_rationale_220",
       "target": "tools_dashboard_lettura_debiti",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L219",
+      "source_location": "L220",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_230",
+      "source": "tools_dashboard_rationale_231",
       "target": "tools_dashboard_page",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L230",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -96230,5 +96230,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e0d16286980676ab011ce96df465128a033dd5ac"
+  "built_at_commit": "20ee3c23f3f076e1816e23f2e29ae2416d68e662"
 }
