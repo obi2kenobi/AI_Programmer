@@ -97,6 +97,26 @@ else
   diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | head -20 | sed 's/^/  /'
 fi
 
+# fondi_settings <settings-del-satellite> <settings-dell-hub> (Q13): riscrive il primo con la fusione.
+# Oggetti fusi chiave per chiave (prima le chiavi del satellite), array uniti senza doppioni,
+# scalari: vince lo standard; .hooks e' tutto dell'hub. Gli hook del satellite che cadono si dicono.
+fondi_settings() {
+  local sat="$1" hub="$2" fuso persi
+  fuso=$(jq -n --slurpfile s "$sat" --slurpfile h "$hub" '
+    def unione(a; b): reduce (a + b)[] as $x ([]; if any(.[]; . == $x) then . else . + [$x] end);
+    def fondi(a; b):
+      if (a|type) == "object" and (b|type) == "object" then
+        reduce ((a|keys_unsorted) + (b|keys_unsorted))[] as $k ({}; if has($k) then . else .[$k] = fondi(a[$k]; b[$k]) end)
+      elif (a|type) == "array" and (b|type) == "array" then unione(a; b)
+      elif b == null then a else b end;
+    fondi($s[0]; $h[0]) | if $h[0].hooks then .hooks = $h[0].hooks else . end') \
+    || { echo "sync-repo: settings.json del satellite illeggibile (JSON?) — non lo fondo alla cieca"; return 1; }
+  persi=$(jq -rn --slurpfile s "$sat" --slurpfile h "$hub" \
+    '([$s[0].hooks // {} | .. | .command? // empty] - [$h[0].hooks // {} | .. | .command? // empty])[]')
+  [ -n "$persi" ] && echo "sync-repo --standard: ⚠ hook del satellite NON portati (gli hook sono dello standard): $persi"
+  printf '%s\n' "$fuso" > "$sat"
+}
+
 # --standard: il sistema intero, non solo CLAUDE.md — lo standard non è un'opzione
 # che si dichiara, è un insieme di file che devono esserci (METHOD.md §"Lo standard")
 if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
@@ -142,6 +162,27 @@ done
   cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null && COPIATI=$((COPIATI+1))  # D8: versione satellite
   for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
     [ -e "$HERE/$ITEM" ] || continue
+    # (Q13, 2026-09-23, giro A8 della notte): DEBITI.md e il REGISTRO sono lo STATO del satellite
+    # — si copiavano quelli dell'hub sopra i suoi (debiti ed errori persi nella PR, e un REGISTRO
+    # che cita guardie che li' non esistono). Ora: se c'e', e' suo e non si tocca; da zero arriva
+    # lo scheletro (l'intestazione dell'hub fino alla prima voce, senza le voci).
+    case "$ITEM" in
+      DEBITI.md|docs/errori/REGISTRO.md)
+        [ -e "$ITEM" ] && continue
+        mkdir -p "$(dirname "$ITEM")"
+        awk '/^## /{exit} {print}' "$HERE/$ITEM" > "$ITEM"
+        git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
+        continue ;;
+      .claude/settings.json)
+        # (Q13): si sovrascriveva intero — i permessi e le scelte del satellite sparivano. Ora si
+        # FONDE: gli hook sono dello standard (quelli dell'hub), il resto e' l'unione, e gli
+        # hook del satellite che cadono si dicono.
+        if [ -f "$ITEM" ] && ! cmp -s "$HERE/$ITEM" "$ITEM"; then
+          fondi_settings "$ITEM" "$HERE/$ITEM" || exit 1
+          git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
+          continue
+        fi ;;
+    esac
     if [ -d "$HERE/$ITEM" ]; then
       # (2026-09-20, misurato nell'hub durante il test del sistema): `cp -r dir dir` con la
       # destinazione GIA' esistente annida (.claude/skills/skills) — su una repo gia'

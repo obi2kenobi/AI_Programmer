@@ -3452,3 +3452,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     riscrive lo stesso file.
   - Banco: `tests/test-night-shift-log-onesto.sh`, 7 casi; il caso CRLF esegue la riga vera su un
     file 755. Sabotaggio (di nuovo `mv`): 1 rosso.
+- **Q13**, da A8, `tools/sync-repo.sh --standard` calpestava il satellite.
+  - Copiava `DEBITI.md` e il REGISTRO dell'hub sopra quelli del satellite: i suoi debiti e i suoi
+    errori sparivano nella PR, e il REGISTRO dell'hub cita guardie che lì non esistono.
+    Sovrascriveva `.claude/settings.json` intero: permessi e scelte del satellite persi.
+  - Ora lo stato del satellite non si tocca; una repo nuova riceve lo scheletro. settings.json
+    si fonde: gli hook sono dello standard, il resto è l'unione, e gli hook del satellite che
+    cadono si dicono.
+  - Smentita: le skill custom del satellite sopravvivevano già (`cp -r dir/.` fonde).
+  - Banco: `tests/test-sync-repo.sh`, 6 casi end-to-end con gh finto, 5 rossi prima.
+    Sabotaggio (lo stato di nuovo sovrascritto): 2 rossi.

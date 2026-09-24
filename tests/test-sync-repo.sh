@@ -123,6 +123,44 @@ OUT=$(cd "$TMP/cwd-pulita" && GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin-r
   && ok "D14: l'hub non ha file NUOVI dopo il test (nessuna copia dello standard finita qui)" \
   || ko "D14: l'hub ha file nuovi dopo il test: $(git -C "$HERE" status --porcelain -- .claude patterns .opencode tools | grep '^??' | head -3 | tr '\n' ' ')"
 
+# --- Q13 (2026-09-23, giro A8 della notte): --standard copiava DEBITI.md e il REGISTRO DELL'HUB
+#     sopra quelli del satellite (i debiti e gli errori del satellite sparivano nella PR, e il
+#     REGISTRO dell'hub cita guardie che li' non esistono), e sovrascriveva .claude/settings.json
+#     intero (i permessi del satellite persi). Ora lo stato del satellite non si tocca, e da zero
+#     arriva lo scheletro vuoto; settings.json si FONDE: gli hook dello standard + il resto suo.
+if [ -n "$(ramo_standard vuota-remota)" ]; then
+  BRV=$(ramo_standard vuota-remota)
+  DEB_V=$(git -C "$TMP/vuota-remota.git" show "$BRV:DEBITI.md" 2>/dev/null)
+  [ -n "$DEB_V" ] && ! grep -q 'Da review Opus 2026-08-21' <<<"$DEB_V" \
+    && ok "Q13: repo da zero → DEBITI.md e' lo scheletro, non i debiti dell'hub" \
+    || ko "Q13: repo da zero → DEBITI.md assente o coi debiti dell'hub"
+  REG_V=$(git -C "$TMP/vuota-remota.git" show "$BRV:docs/errori/REGISTRO.md" 2>/dev/null)
+  [ -n "$REG_V" ] && ! grep -q '^## E-001' <<<"$REG_V" \
+    && ok "Q13: repo da zero → il REGISTRO e' lo scheletro, non gli errori dell'hub" \
+    || ko "Q13: repo da zero → REGISTRO assente o con gli errori dell'hub"
+fi
+nuovo_bare con-stato 1
+mkdir -p "$TMP/con-stato-seed/docs/errori" "$TMP/con-stato-seed/.claude"
+printf '# DEBITI.md\n\n| 2026-09-01 | debito-del-satellite | x | y |\n' > "$TMP/con-stato-seed/DEBITI.md"
+printf '# Registro\n\n## E-001 errore-del-satellite\n' > "$TMP/con-stato-seed/docs/errori/REGISTRO.md"
+printf '{"permissions":{"allow":["Bash(npm run lint)"]},"model":"scelta-del-satellite"}\n' > "$TMP/con-stato-seed/.claude/settings.json"
+git -C "$TMP/con-stato-seed" add -A && git -C "$TMP/con-stato-seed" -c user.name=t -c user.email=t@t commit -qm stato && git -C "$TMP/con-stato-seed" push -q origin HEAD:main 2>/dev/null
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/con-stato.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/con-stato --standard 2>&1); RC=$?
+BRS=$(ramo_standard con-stato)
+if [ -n "$BRS" ]; then
+  git -C "$TMP/con-stato.git" show "$BRS:DEBITI.md" | grep -q 'debito-del-satellite' \
+    && ok "Q13: i DEBITI del satellite restano i suoi" || ko "Q13: i DEBITI del satellite sovrascritti da quelli dell'hub"
+  git -C "$TMP/con-stato.git" show "$BRS:docs/errori/REGISTRO.md" | grep -q 'errore-del-satellite' \
+    && ok "Q13: il REGISTRO del satellite resta il suo" || ko "Q13: il REGISTRO del satellite sovrascritto da quello dell'hub"
+  SET=$(git -C "$TMP/con-stato.git" show "$BRS:.claude/settings.json")
+  jq -e '(.permissions.allow | index("Bash(npm run lint)")) and .model == "scelta-del-satellite"' <<<"$SET" >/dev/null 2>&1 \
+    && ok "Q13: settings.json tiene i permessi e le scelte del satellite" || ko "Q13: settings.json del satellite sovrascritto: $(head -c 120 <<<"$SET")"
+  grep -q 'clasp-block-hook' <<<"$SET" \
+    && ok "Q13: settings.json porta comunque gli hook dello standard" || ko "Q13: la fusione ha perso gli hook dello standard"
+else
+  ko "Q13: nessun ramo standard per la repo con stato (rc=$RC): $(echo "$OUT" | tail -1)"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

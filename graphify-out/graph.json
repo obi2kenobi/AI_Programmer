@@ -43687,6 +43687,21 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_sync_repo_fondi_settings",
+      "label": "fondi_settings()",
+      "_origin": "ast",
+      "community": 709,
+      "community_name": "sync-repo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "fondi_settings()",
+      "source_file": "tools/sync-repo.sh",
+      "source_location": "L103"
+    },
+    {
       "id": "tools_sync_repo_sh__entry",
       "label": "sync-repo.sh script",
       "_origin": "ast",
@@ -54523,6 +54538,18 @@
       "context": "call",
       "source_file": "tools/skill-reminder-hook.sh",
       "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sync_repo_sh__entry",
+      "target": "tools_sync_repo_fondi_settings",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/sync-repo.sh",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -87115,6 +87142,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_sync_repo",
+      "target": "tools_sync_repo_fondi_settings",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/sync-repo.sh",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
       "source": "tools_system_health",
       "target": "tools_system_health_ok",
       "relation": "defines",
@@ -89284,5 +89322,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "825c8260b40af5b5a668940426637016b106b238"
+  "built_at_commit": "4b0c77fe6a133ac4f208813a7a223f5fb14eb2f4"
 }
