@@ -3617,3 +3617,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Ora una menzione vale saldo solo se non è negata.
   - Banco: `tests/test-debiti-riapertura.sh`, 3 casi. Rossi sullo strumento vecchio (2), verdi
     sulla cura.
+- **Settimo patto, il risolvibile rimasto**: il gate del Design.
+  - La sequenza viveva dentro `night-shift/night-shift.sh` e il suo banco ne teneva una copia.
+    Ora sta in `night-shift/lib.sh` cancello_design (motivo o niente), e il turno tiene solo il
+    log e il commento per motivo.
+  - `tests/test-night-shift-design-gate.sh` prova la funzione vera: gate spento, 4 rossi.
+    `tests/test-morning-gate-issue-num.sh` esegue il blocco vero del morning-gate: blocco rotto,
+    2 rossi.
+  - La riga di DEBITI è saldata.
+  - Poi l'ultimo risolvibile, `tests/test-backup-config.sh`. Forzava «gh assente» con
+    PATH=/usr/bin:/bin, che non basta dove gh sta proprio in /usr/bin. E contava i salti come OK.
+    - Ora il PATH di prova ha tutti i comandi tranne gh, e i salti si dichiarano senza contarli.
+    - Sabotaggio del controllo di gh nel tool: rosso.
+    - Non riprodotto col gh vero in /usr/bin: avrei dovuto scrivere nel sistema del container.
+  - Il rapporto di riapertura ora dà 0 RISOLVIBILI.
