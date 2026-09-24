@@ -243,6 +243,30 @@ for W in glm qwen; do
 done
 rm -rf "$ARGVTMP"
 
+# --- Q29 (2026-09-23, notte dei giri): ask-opus. (a) `2>&1` metteva nello STDOUT anche gli avvisi che
+# claude stampa su stderr: sul successo la risposta arrivava sporca a chi la legge (pipeline, turno).
+# (b) il contesto dallo stdin viaggiava nell'argomento: oltre 128 KB, «Argument list too long».
+OPTMP=$(mktemp -d)
+cat > "$OPTMP/claude" <<'EOF'
+#!/bin/bash
+D=$(dirname "$0")
+printf '%s' "$*" | wc -c > "$D/argv-len"
+[ -t 0 ] || cat > "$D/stdin"
+echo "Warning: una nuova versione e' disponibile" >&2
+echo "RISPOSTA DEL MODELLO"
+EOF
+chmod +x "$OPTMP/claude"
+OUT=$(PATH="$OPTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "domanda" </dev/null 2>/dev/null); RC=$?
+[ "$RC" -eq 0 ] && [ "$OUT" = "RISPOSTA DEL MODELLO" ] && ok "ask-opus: sul successo lo stdout e' la sola risposta (gli avvisi di claude restano su stderr)" \
+  || ko "ask-opus: risposta sporca o rc=$RC: $(head -c 120 <<<"$OUT")"
+head -c 200000 /dev/zero | tr '\0' q > "$OPTMP/grande"
+OUT=$(PATH="$OPTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "riassumi" <"$OPTMP/grande" 2>&1); RC=$?
+N=$(tr -cd q < "$OPTMP/stdin" 2>/dev/null | wc -c | tr -d ' ')
+[ "$RC" -eq 0 ] && [ "${N:-0}" -ge 200000 ] && [ "$(cat "$OPTMP/argv-len")" -lt 1000 ] \
+  && ok "ask-opus: un contesto di 200 KB arriva a claude su stdin, non nell'argomento (niente E2BIG)" \
+  || ko "ask-opus: contesto di 200 KB — rc=$RC, su stdin ${N:-0} byte: $(head -c 150 <<<"$OUT")"
+rm -rf "$OPTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

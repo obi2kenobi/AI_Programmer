@@ -3671,3 +3671,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     - METHOD e night-shift/README dicono «storico».
   - Banco: 2 casi nuovi (data di modifica del file vero invariata; età dichiarata), rossi prima.
     Sabotaggio: 4 rossi (percorso fisso) e 1 rosso (soglia).
+- **Q29**, da A1, `llm/ask-opus.sh`, riprodotto con un claude finto:
+  - `2>&1` metteva gli avvisi di claude DENTRO la risposta, anche sul successo;
+  - il contesto dallo stdin viaggiava nell'argomento: «Argument list too long» oltre 128 KB.
+  - Ora la domanda resta argomento e il contesto va su stdin (la forma documentata
+    `cat f | claude -p "q"`), con un here-string; stderr a parte.
+  - Banco: `tests/test-ask-wrappers.sh`, 2 casi, rossi prima. Sabotaggio (stderr di nuovo nella
+    risposta): 1 rosso.
+  - ASSUNTO: `claude -p "q"` col contesto su stdin si comporta sul Mac come documentato. Qui è
+    provato solo col finto.

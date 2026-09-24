@@ -60,13 +60,26 @@ set +e
 # "${MODEL_ARGS[@]}" su array vuoto è "unbound variable" sotto set -u sulla bash 3.2
 # di sistema di macOS (verificato: 2026-08-24T12:51Z rc=1 dal vivo) — la guardia
 # ${arr[@]+...} è l'idioma portabile pre-4.4, non un vezzo.
-OUT=$(ai_timeout "$TIMEOUT" claude -p "$PROMPT" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} 2>&1)
+# (Q29, 2026-09-23, notte dei giri): due difetti, riprodotti con un claude finto. (a) `2>&1` metteva
+# nello stdout gli avvisi di claude: sul successo la risposta arrivava sporca a chi la legge. (b) Il
+# contesto dallo stdin viaggiava nell'argomento: oltre 128 KB «Argument list too long». Ora la
+# domanda resta argomento e il contesto va su stdin (la forma documentata `cat f | claude -p "q"`),
+# come here-string: nessun processo produttore da uccidere; stderr a parte, e sul successo va su stderr.
+ERRF=$(mktemp); trap 'rm -f "$ERRF"; log_ask_usage ask-opus "${#PROMPT}"' EXIT
+if [ -n "$STDIN_DATA" ]; then
+  OUT=$(ai_timeout "$TIMEOUT" claude -p "$1" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} <<<"$STDIN_DATA" 2>"$ERRF")
+else
+  OUT=$(ai_timeout "$TIMEOUT" claude -p "$1" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} </dev/null 2>"$ERRF")
+fi
 RC=$?
+ERR=$(cat "$ERRF")
 set -e
 if [ "$RC" -eq 124 ]; then
   echo "ask-opus: timeout dopo ${TIMEOUT}s (claude -p non ha risposto in tempo — ASK_TIMEOUT per allungarlo)" >&2
   exit 1
 elif [ "$RC" -ne 0 ]; then
+  OUT="$OUT${ERR:+
+$ERR}"
   echo "ask-opus: $OUT" >&2
   # armonizzazione (set 1 "armonizza gli agenti"): ask-glm.sh usa exit 2 per "via
   # non configurata", distinto da un errore generico (exit 1) — qui tornava sempre
@@ -77,4 +90,5 @@ elif [ "$RC" -ne 0 ]; then
     && exit 2
   exit 1
 fi
+[ -n "$ERR" ] && printf '%s\n' "$ERR" >&2
 echo "$OUT"
