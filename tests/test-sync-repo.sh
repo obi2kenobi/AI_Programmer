@@ -17,6 +17,7 @@ bash "$HERE/tools/claude-md-satellite.sh" > "$TMP/allineata/CLAUDE.md"  # D8: al
 # (canarino v2, audit 2026-09-23): allineata vuol dire ANCHE gli hook uguali
 mkdir -p "$TMP/allineata/tools"
 while IFS= read -r H; do cp "$HERE/$H" "$TMP/allineata/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
+mkdir -p "$TMP/allineata/.claude"; cp "$HERE/.claude/settings.json" "$TMP/allineata/.claude/settings.json"   # (R2 R2): allineata = hook anche REGISTRATI
 bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" >/dev/null 2>&1
 [ $? -eq 0 ] && ok "repo allineata: exit 0" || ko "allineata non riconosciuta"
 
@@ -26,6 +27,7 @@ head -50 "$HERE/CLAUDE.md" > "$TMP/divergente/CLAUDE.md"
 # (canarino v2): gli hook allineati, cosi' la divergenza misurata e' quella del CLAUDE
 mkdir -p "$TMP/divergente/tools"
 while IFS= read -r H; do cp "$HERE/$H" "$TMP/divergente/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
+mkdir -p "$TMP/divergente/.claude"; cp "$HERE/.claude/settings.json" "$TMP/divergente/.claude/settings.json"   # (R2 R2): hook registrati, la divergenza e' del solo CLAUDE
 OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/divergente" 2>&1); RC=$?
 [ $RC -eq 1 ] && grep -q "DIVERGENTE" <<<"$OUT" \
   && ok "repo divergente: exit 1 col verdetto DIVERGENTE dichiarato" \
@@ -171,6 +173,14 @@ if [ -n "$BRS" ]; then
 else
   ko "Q13: nessun ramo standard per la repo con stato (rc=$RC): $(echo "$OUT" | tail -1)"
 fi
+
+# (2026-09-24, quinto ventaglio, R2 R2): --from-local confrontava i FILE degli hook, non chi li registra — un
+# satellite con settings.json senza PreToolUse (clasp-block non registrato) dava «ALLINEATO … (e gli hook
+# pure)», e il turno non apriva il riallineo.
+cp -r "$TMP/allineata" "$TMP/non-reg"; mkdir -p "$TMP/non-reg/.claude"
+jq 'del(.hooks.PreToolUse)' "$HERE/.claude/settings.json" > "$TMP/non-reg/.claude/settings.json"
+OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/non-reg" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'NON registrat' <<<"$OUT" >/dev/null && ok "settings.json senza il cancello: DIVERGENTE, hook non registrati detti" || ko "hook non registrati e ALLINEATO (rc $RC): $OUT"
 
 # (2026-09-24, quarto ventaglio, Q2 R6, seconda meta'): il push rifiutato diceva solo «push fallito», col motivo
 # buttato in 2>/dev/null. Un remoto che rifiuta (pre-receive che esce 1 con un messaggio): il motivo si vede.

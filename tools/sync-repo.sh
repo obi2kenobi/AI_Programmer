@@ -91,6 +91,16 @@ while IFS= read -r H; do
     if ! diff -q "$HERE/$H" "$LOCAL_DIR/$H" >/dev/null 2>&1; then HOOK_DIV="$HOOK_DIV $H"; fi
   fi
 done <<<"$ELENCO_HOOK"  # (revisione 10 giri: una derivazione sola)
+# (2026-09-24, quinto ventaglio, R2 R2): i FILE uguali non bastano — un hook che settings.json del satellite non
+# registra non gira (clasp-block senza PreToolUse: clasp push non negato). Ogni hook dell'hub va registrato.
+HOOK_NONREG=""
+if [ -n "$LOCAL_DIR" ]; then
+  REG_LOCALI=$(bash "$HERE/tools/copia-hook.sh" --elenco "$LOCAL_DIR/.claude/settings.json" 2>/dev/null || true)
+  while IFS= read -r H; do
+    [ -n "$H" ] && ! grep -qxF "$H" <<<"$REG_LOCALI" && HOOK_NONREG="$HOOK_NONREG $H"
+  done <<<"$ELENCO_HOOK"
+fi
+[ -n "$HOOK_NONREG" ] && { echo "sync-repo: DIVERGENTE — hook dell'hub NON registrati in .claude/settings.json del satellite:$HOOK_NONREG"; exit 1; }
 if [ -n "$HOOK_DIV" ]; then
   echo "sync-repo: DIVERGENTE — CLAUDE.md coincide ma gli HOOK no:$HOOK_DIV"
   exit 1

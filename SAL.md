@@ -4693,3 +4693,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Verde anche `tests/test-install-garante.sh`. Non fatti: CLAUDE.md svuotato (non c'è una regola su
   cos'è «vuoto») e un modo `--verifica` con rc 1 come riga di `.night-verify` (è una funzione nuova, non
   una cura).
+- **Quinto ventaglio, R2 R2 — il sensore del turno diceva ALLINEATO su un satellite senza cancello.**
+  `tools/sync-repo.sh --from-local`, che il turno usa per decidere il riallineo, confrontava i FILE degli
+  hook, non chi li registra. Un satellite con settings.json senza PreToolUse dava «ALLINEATO … (e gli hook
+  pure)», rc 0: il cancello clasp non girava, e la PR di riallineo non partiva. Ora ogni hook dell'hub deve
+  essere registrato nel settings.json del satellite; se no, «DIVERGENTE — hook NON registrati», rc 1. Nel
+  turno questo apre la PR di riallineo, che è il comportamento voluto. `tests/test-sync-repo.sh` ha un caso
+  nuovo: rosso prima, verde ora (25/0). Due fixture («allineata», «divergente») non avevano settings.json:
+  ora lo hanno, perché «allineata» vuol dire anche hook registrati. Sabotaggio: senza il controllo, 24/1.
+  Non fatti, e dichiarati: il confronto di skill, agenti, pre-commit e dell'elenco di installa-citati
+  (resta a `--standard`), e il verdetto ALLINEATO con rc 1 di `--from-local --standard`.
