@@ -135,7 +135,7 @@ legge il riepilogo (lo usa `morning-digest`).
   (`qwen3.8-27b:iq3s`), il modello scrive il codice, lo script lo applica e lo verifica
   (`node --check`, rollback). Exit: 0 applicato · 1 fallito · 2 uso · 3 proposta non applicabile.
 - `night-shift/morning-gate.sh` / `night-shift/morning-digest.sh` — il giudizio del mattino e il riepilogo che lo legge.
-- `night-shift/install.sh` — installazione: symlink, LaunchAgent 23:00 + Ollama always-on. Verifica che il
+- `night-shift/install.sh` — installazione: i comandi in ~/.local/bin (lanciatori, non symlink), LaunchAgent 23:00 + Ollama always-on. Verifica che il
   job caricato punti davvero all'HUB installato (E-019).
 - `night-shift/lib.sh` — le funzioni condivise (log, rotazione, default branch).
 

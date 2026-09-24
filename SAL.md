@@ -3782,3 +3782,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   dopo `--opzione=`) e un `..` come cartella. `HEAD~1..HEAD` resta ammesso. Banco
   `tests/test-lib.sh`: 9 rossi prima; un caso legittimo che leggeva `/tmp/out` è ora dentro il
   progetto (provava la pipe). Sabotaggio: 9 rossi. Rinviato: `git add -A` → i soli file dichiarati.
+- **I comandi installati non giravano (trovato preparando T5#5).** `night-shift/install.sh`
+  metteva in `~/.local/bin` dei symlink ai cinque comandi (ask-qwen, ask-opus, ask-glm,
+  night-shift, morning-gate). Ma tutti e cinque calcolano `HERE` da `$0`, cioè dalla cartella del
+  link, e morivano al primo `source`: riprodotto con `ask-glm ping`, «_usage.sh: No such file or
+  directory», rc 1. Ora lo script scrive un lanciatore che fa `exec bash <file dell'hub>`, e
+  toglie PRIMA il vecchio symlink: scrivere attraverso il link avrebbe riscritto il file dell'hub.
+  `tests/test-install.sh` fa girare il comando installato (rc 2 documentato) e prova l'aggiornamento
+  da un symlink vecchio. Rosso prima; il sabotaggio sul `rm -f` è rosso. Errore mio di passaggio,
+  senza danni: il mio giro a mano dello script ha creato `night-shift/repos.conf` nell'hub (copia
+  dell'esempio, gitignored). L'ho visto dall'mtime e rimosso dopo il confronto con l'esempio.

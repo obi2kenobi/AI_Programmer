@@ -48492,7 +48492,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/install.sh",
-      "source_location": "L38",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -51372,19 +51372,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-install.sh",
-      "source_location": "L36",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_install_sh__entry",
-      "target": "tests_test_install_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-install.sh",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -51396,7 +51384,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-install.sh",
-      "source_location": "L38",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_install_sh__entry",
+      "target": "tests_test_install_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-install.sh",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -90397,5 +90397,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7226b2aab55ded9cef3f8bb11205f64310e8a636"
+  "built_at_commit": "f09daae8a0cb09a807d08d7f487c287d13fbf9c5"
 }

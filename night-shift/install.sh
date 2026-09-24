@@ -35,11 +35,16 @@ command -v jq >/dev/null 2>&1 || { echo "⚠ MANCA jq"; MISSING=1; }
 [ "$MISSING" -eq 1 ] && echo "(sistema comunque installato: completa i prerequisiti per il turno)"
 
 # --- Symlink dei comandi -------------------------------------------------------
-step "symlink in $BIN"
+# (2026-09-23, notte dei giri): erano symlink — e i cinque comandi calcolano HERE da $0, cioe' dalla
+# cartella del LINK: morivano al primo `source` (ask-glm: «_usage.sh: No such file or directory»).
+# Ora un lanciatore di due righe che fa exec del file dell'hub: $0 e' il percorso vero. Il vecchio
+# symlink si toglie PRIMA di scrivere: `>` su un symlink scriverebbe dentro il file dell'hub.
+step "comandi in $BIN"
 mkdir -p "$BIN"
 for cmd in llm/ask-qwen.sh llm/ask-opus.sh llm/ask-glm.sh night-shift/night-shift.sh night-shift/morning-gate.sh; do
   name=$(basename "$cmd" .sh)
-  ln -sf "$HUB/$cmd" "$BIN/$name"
+  rm -f "$BIN/$name"
+  printf '#!/bin/bash\nexec bash "%s" "$@"\n' "$HUB/$cmd" > "$BIN/$name" && chmod +x "$BIN/$name"
 done
 echo "  comandi: ask-qwen ask-opus ask-glm night-shift morning-gate"
 # il pre-commit dell'hub (controlli rapidi: glifi, CRLF, link pendenti)
