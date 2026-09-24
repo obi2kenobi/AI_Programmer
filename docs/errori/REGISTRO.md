@@ -949,3 +949,35 @@
   resta un'affermazione. Il commit 1a6572b non si riscrive (storia pubblicata): lo corregge questa
   voce e il commit successivo.
 
+
+## E-044 Un sabotaggio su una variabile che alimenta rm -rf: /tmp svuotata
+
+- Data / sessione: 2026-09-24 (notte dei giri, T2#1 — errore mio)
+- Famiglia: R6 (effetto collaterale ignorato: la pulizia cancella cio' che la variabile dice) + R1
+  (assunzione non verificata: «il sabotaggio tocca solo il banco»)
+- Chi l'ha trovato: io, subito: l'uscita del comando era sparita («output file could not be read»)
+- Sintomo: `/tmp` vuota. Persi lo scratchpad della sessione (helper di consegna, backup, i sei
+  rapporti grezzi T1-T6 dei giri, le note), il backup da cui ripristinare il sabotaggio e il programma
+  di firma dei commit dell'ambiente (`/tmp/code-sign`): da allora ogni commit locale fallisce.
+- Causa prossima: per sabotare la cura di `tools/giri-avversari.sh` ho rimesso `AVVT=/tmp`. La
+  pulizia della batteria faceva `rm -rf "$AVVT"`: con quel valore, `rm -rf /tmp`, da root.
+- Causa del ragionamento: ho scelto il sabotaggio «riporta la cartella condivisa», senza guardare
+  che quella stessa variabile era l'argomento di un `rm -rf` che avevo appena scritto io. Il
+  sabotaggio va sulla difesa, non su un valore che la pulizia usa per cancellare.
+- Perché non ci ha fermati: `rm -rf "$VAR"` non ha nessun controllo su cosa sia VAR; il backup era
+  nella stessa `/tmp` che è stata cancellata.
+- Guardia: `tests/test-giri-avversari-isolati.sh` (caso 0): ogni `rm -rf` di `$AVVT` deve portare
+  la guardia del nome (`case "$AVVT" in */giri-avversari.??????)`); la stessa riga, valutata su una
+  cartella altrui, la deve lasciare stare. Nel codice la cartella si crea con quel nome
+  (`mktemp -d …/giri-avversari.XXXXXX`) e si cancella solo se lo porta. Regola di procedura, da
+  ora: un sabotaggio non tocca mai una variabile che finisce in `rm`, e i backup dei sabotaggi non
+  stanno nella cartella che il sabotaggio può cancellare.
+- Verifica guardia: pulizia nuda `rm -rf "$AVVT"` → «4 OK, 2 FAIL» («altrui CANCELLATA»);
+  ripristinata → 6/0.
+- Aggiramento: il programma di firma NON è ripristinato. Rimetterlo da `/root/.claude/environment-manager/`
+  è stato negato dal classificatore dei permessi, giustamente: è dell'ambiente, non mio. Serve Luca
+  (o una sessione nuova). I rapporti grezzi T1-T6 sono persi: ne restano i riassunti che i giri mi
+  hanno consegnato e le cure già nel SAL.
+- Esito (2026-09-24, 05:29Z): alla ripresa della sessione l'ambiente ha ricreato `/tmp/code-sign` da
+  sé; la patch in attesa e' diventata un commit normale, verificato con la suite, e il file della patch
+  e' stato tolto.

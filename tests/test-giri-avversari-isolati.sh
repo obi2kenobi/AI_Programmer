@@ -1,0 +1,59 @@
+#!/bin/bash
+# test-giri-avversari-isolati.sh — la batteria d'attacchi non si pesta i piedi e non sporca l'albero
+# (2026-09-23, notte dei giri, T2#1). tools/giri-avversari.sh mutava l'ALBERO VERO (un'ancora rotta, un
+# tools/test.py, un file tolto…) e usava 20 percorsi fissi /tmp/avv-*: due batterie insieme sullo stesso
+# albero davano 8 AGGIRA falsi, due in cloni diversi 1 (una si riprendeva il file dell'altra da /tmp), e un
+# kill -9 a meta' lasciava gli attacchi nel repo. tools/banco-passaggio.sh promette «due banchi
+# sovrapposti non si calpestano» e chiama proprio questa batteria.
+set -uo pipefail
+HERE="$(cd "$(dirname "$0")/.." && pwd)"
+PASS=0; FAIL=0
+ok() { PASS=$((PASS+1)); echo "OK   $1"; }
+ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
+T=$(mktemp -d)
+PIDS=()
+pulisci() { for p in ${PIDS[@]+"${PIDS[@]}"}; do kill -9 -- "-$p" 2>/dev/null; done; sleep 1; rm -rf "$T"; }
+trap pulisci EXIT
+g() { git -c user.email=t@t -c user.name=t -c core.hooksPath=/dev/null "$@"; }
+
+# 0. (E-044, 2026-09-24): la pulizia della batteria cancella SOLO la cartella che si e' data. Un mio
+# sabotaggio (AVVT=/tmp) con la pulizia nuda `rm -rf "$AVVT"` ha svuotato /tmp intera. Ogni riga che
+# cancella $AVVT deve portare la guardia del nome, e la guardia deve lasciare stare una cartella altrui.
+RIGHE=$(grep -E 'rm -rf "?\$AVVT' "$HERE/tools/giri-avversari.sh")
+NUDE=$(grep -vE 'case "\$AVVT" in \*/giri-avversari\.\?\?\?\?\?\?\)' <<<"$RIGHE" || true)
+[ -n "$RIGHE" ] && [ -z "$NUDE" ] && ok "ogni rm -rf di \$AVVT porta la guardia del nome" || ko "rm -rf di \$AVVT senza guardia: ${NUDE:-nessuna riga di pulizia}"
+mkdir -p "$T/altrui" "$T/giri-avversari.abcdef"; touch "$T/altrui/vivo" "$T/giri-avversari.abcdef/x"
+while IFS= read -r R; do AVVT="$T/altrui"; eval "$R"; AVVT="$T/giri-avversari.abcdef"; eval "$R"; done <<<"$RIGHE"
+[ -f "$T/altrui/vivo" ] && [ ! -d "$T/giri-avversari.abcdef" ] && ok "la pulizia lascia una cartella altrui e toglie la propria" \
+  || ko "pulizia sbagliata: altrui $([ -f "$T/altrui/vivo" ] && echo intatta || echo CANCELLATA), propria $([ -d "$T/giri-avversari.abcdef" ] && echo rimasta || echo tolta)"
+
+# un hub usa e getta con la batteria di QUESTO albero (non quella di HEAD)
+git clone -q "$HERE" "$T/hub"
+cp "$HERE/tools/giri-avversari.sh" "$T/hub/tools/giri-avversari.sh"
+g -C "$T/hub" commit -qam "batteria in prova" >/dev/null 2>&1 || true
+
+# 1. due batterie INSIEME sullo stesso albero: nessun AGGIRA falso
+( cd "$T/hub" && setsid bash tools/giri-avversari.sh > "$T/a.out" 2>&1 ) & PIDS+=($!)
+( cd "$T/hub" && setsid bash tools/giri-avversari.sh > "$T/b.out" 2>&1 ) & PIDS+=($!)
+wait
+for x in a b; do
+  V=$(grep -m1 '^VERDETTO:' "$T/$x.out")
+  [ "$V" = "VERDETTO: 0 aggirati non riconosciuti" ] && ok "batteria $x in parallelo: $V" \
+    || ko "batteria $x in parallelo: ${V:-nessun verdetto} — $(grep '^AGGIRA' "$T/$x.out" | head -3 | tr '\n' ' ')"
+done
+[ -z "$(git -C "$T/hub" status --porcelain)" ] && ok "dopo due batterie l'albero e' pulito" || ko "albero sporco dopo due batterie: $(git -C "$T/hub" status --porcelain | head -3 | tr '\n' ' ')"
+
+# 2. kill -9 a meta': l'albero resta pulito
+setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/k.out" 2>&1 & KP=$!; PIDS+=($KP)
+SPORCO=""
+for i in $(seq 1 40); do
+  sleep 0.25
+  [ -n "$(git -C "$T/hub" status --porcelain)" ] && { SPORCO=$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' '); break; }
+done
+{ kill -9 "$KP"; wait "$KP"; } 2>/dev/null; sleep 1
+[ -z "$SPORCO" ] && [ -z "$(git -C "$T/hub" status --porcelain)" ] \
+  && ok "durante la batteria e dopo un kill -9 l'albero resta pulito" || ko "la batteria scrive nell'albero: ${SPORCO:-$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' ')}"
+
+echo ""
+echo "$PASS OK, $FAIL FAIL"
+[ $FAIL -eq 0 ]
