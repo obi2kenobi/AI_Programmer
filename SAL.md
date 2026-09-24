@@ -4270,3 +4270,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   con un `claude` finto che risponde, come i rami «auth assente» ed «errore». Rosso prima (la
   sentinella vede `-p test`), verde ora (31/0, 7,7 s). Con ASK_VIVO=1 la chiamata vera passa (31/0).
   Sabotaggio: la chiamata senza il finto torna rossa (29/2).
+- **Terzo ventaglio, V4#2 — il margine del budget si scopriva solo allo sforo.** La suite cresceva
+  (136 → 170 banchi in sei giorni). Il budget di `.night-verify` (`@540`) si vedeva solo quando saltava,
+  di notte. Ora `tools/suite.sh` stampa la quota usata («N s su 540 s dichiarati (P%)») e dal 70% una riga
+  «⚠ SENTINELLA». Avvisa, non boccia: se debba far rosso il turno è una domanda di dominio, in DEBITI.md.
+  `tests/test-suite-runner.sh` ha tre controlli nuovi (avviso oltre soglia, quota senza avviso sotto,
+  riepilogo sempre ultima riga): rosso prima (2 FAIL), verde ora (16/0). Sabotaggio: soglia a 700%,
+  torna rosso (15/1). AGENTS.md cita ora `tools/suite.sh:72`.

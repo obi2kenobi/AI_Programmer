@@ -90,6 +90,23 @@ else
 fi
 rm -rf "$SB5"
 
+# 6. (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. La suite cresceva (136 -> 170 banchi in
+# sei giorni) e il budget di .night-verify si scopriva solo allo sforo, di notte. Ora la suite dice che
+# quota del budget dichiarato ha usato, e avvisa dal 70%.
+SB6=$(mktemp -d /tmp/test-suite6.XXXXXX); mkdir -p "$SB6/tests"
+printf '#!/bin/bash\nsleep 1\necho "1 OK, 0 FAIL"\n' > "$SB6/tests/test-lento.sh"
+echo '@1 bash tools/suite.sh' > "$SB6/.night-verify"
+OUT=$(bash "$RUNNER" "$SB6" 2>&1)
+grep -c 'SENTINELLA' <<<"$OUT" >/dev/null && ok "oltre il 70% del budget di .night-verify: la sentinella avvisa" \
+  || ko "suite oltre il budget dichiarato e nessun avviso: $OUT"
+echo '@1000 bash tools/suite.sh' > "$SB6/.night-verify"
+OUT=$(bash "$RUNNER" "$SB6" 2>&1)
+grep -c 'su 1000 s dichiarati' <<<"$OUT" >/dev/null && ! grep -c 'SENTINELLA' <<<"$OUT" >/dev/null \
+  && ok "sotto il 70%: la quota si dice, nessun avviso" || ko "sotto soglia: $OUT"
+tail -1 <<<"$OUT" | grep -c '^Suite test hub: 1/1 file superati$' >/dev/null \
+  && ok "il riepilogo resta l'ultima riga" || ko "il riepilogo non e' piu' l'ultima riga: $(tail -1 <<<"$OUT")"
+rm -rf "$SB6"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

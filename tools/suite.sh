@@ -56,5 +56,17 @@ if [ "$SUPERATI" -ne "$TOT" ]; then
   echo "FALLITO: superati $SUPERATI banchi su $TOT — il runner ne ha saltati $((TOT - SUPERATI))"
   exit 1
 fi
-echo "Durata della suite: $(( $(date +%s) - T0 )) s"
+DURATA=$(( $(date +%s) - T0 ))
+echo "Durata della suite: $DURATA s"
+# (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. Il budget di .night-verify si scopriva solo
+# allo sforo, di notte; ora la suite dice la quota usata, e dal 70% avvisa. Avvisa, non boccia: se la soglia
+# debba far rosso il turno e' una domanda aperta in DEBITI.md.
+BUDGET=$(sed -n 's/^@\([0-9][0-9]*\) bash tools\/suite\.sh.*/\1/p' .night-verify 2>/dev/null | head -1)
+if [ -n "$BUDGET" ] && [ "$BUDGET" -gt 0 ]; then
+  PERC=$(( DURATA * 100 / BUDGET ))
+  echo "Budget della suite: $DURATA s su $BUDGET s dichiarati in .night-verify ($PERC%)"
+  [ "$PERC" -ge 70 ] && echo "⚠ SENTINELLA: la suite ha usato il $PERC% del budget (soglia 70%) — il margine si chiude: banchi lenti o budget da rivedere PRIMA dello sforo"
+else
+  echo "Budget della suite: non dichiarato in .night-verify — nessuna sentinella del margine"
+fi
 echo "Suite test hub: $SUPERATI/$TOT file superati"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono
