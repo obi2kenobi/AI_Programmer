@@ -4969,3 +4969,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   è dichiarata in «Righe ⚠/⛔ del turno lette solo dal battito». La chiave che `tests/test-eventi.sh` cerca è il
   primo tratto letterale di almeno 8 caratteri dopo il simbolo, fino a «(». Una riga nuova senza dichiarazione
   fa rosso. Guardia 3/0. Due sabotaggi, tutti e due 2/1: senza l'elenco, e con una riga ⚠ nuova aggiunta al turno.
+- **Sesto ventaglio, S2 R2 — una riga aggiunta a un file senza a capo finale si incollava all'ultima.** Tre
+  strumenti accodavano con `echo >>` senza guardare l'ultimo byte:
+  - `tools/copia-hook.sh` sulla `.gitignore`: «node_modules» diventava «node_modules.campo-rem» e smetteva di
+    essere ignorato, anche dal garante all'avvio di ogni sessione;
+  - `tools/installa-citati.sh` su `.night-verify`: il gate GAS finiva dentro l'ultimo commento;
+  - `tools/iscrivi-coda.sh` su `repos.conf`: la repo in coda si fondeva con la nuova.
+
+  Ora ognuno aggiunge prima un a capo se il file non ne finisce con uno. Banco nuovo
+  `tests/test-a-capo-finale.sh` (3/0), rosso prima (0/3). Sabotaggio: 0/3.

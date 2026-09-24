@@ -84,6 +84,8 @@ fi
 RESIDUI=$(while IFS= read -r H; do sed -n 's/^[[:space:]]*# residuo: \([A-Za-z0-9_.-]*\)[[:space:]]*$/\1/p' "$HERE/$H"; done <<< "$DICHIARATI" | sort -u)
 if [ -n "$RESIDUI" ]; then
   touch "$DEST/.gitignore"
+  # (2026-09-24, sesto ventaglio, S2 R2): senza a capo finale la riga nuova si incollava all'ultima
+  [ -s "$DEST/.gitignore" ] && [ -n "$(tail -c1 "$DEST/.gitignore")" ] && echo >> "$DEST/.gitignore"
   while IFS= read -r R; do
     [ -n "$R" ] || continue
     grep -qxF "$R" "$DEST/.gitignore" || echo "$R" >> "$DEST/.gitignore"

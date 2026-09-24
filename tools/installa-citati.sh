@@ -67,6 +67,8 @@ NV="$DEST/.night-verify"
 if [ -n "$(git -C "$DEST" ls-files '*.gs' '*.html' 2>/dev/null)" ] && ! grep -qvE '^[[:space:]]*(#|$)' "$NV" 2>/dev/null \
    && ! grep -qE '^#[[:space:]]*NON-VERIFICABILE:[[:space:]]*[^<[:space:]]' "$NV" 2>/dev/null; then
   [ -f "$NV" ] || printf '# Verifiche dichiarate del turno di notte (una riga per comando).\n# VUOTO = il gate lo dice. Dichiara i comandi appena puoi.\n' > "$NV"
+  # (2026-09-24, sesto ventaglio, S2 R2): senza a capo finale la riga nuova si incollava all'ultima
+  [ -s "$NV" ] && [ -n "$(tail -c1 "$NV")" ] && echo >> "$NV"
   echo "bash tools/gas-gate.sh" >> "$NV"
   echo ".night-verify"; N=$((N+1))
 fi

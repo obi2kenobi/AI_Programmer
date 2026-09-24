@@ -20,5 +20,7 @@ if [ -f "$CONF" ] && awk -v r="$REPO" '$1 !~ /^#/ && $1 == r {trovata=1} END {ex
   echo "coda: $REPO gia' iscritta in $CONF — niente da aggiungere"
   exit 0
 fi
+# (2026-09-24, sesto ventaglio, S2 R2): senza a capo finale la riga nuova si incollava all'ultima
+[ -s "$CONF" ] && [ -n "$(tail -c1 "$CONF")" ] && echo >> "$CONF"
 echo "$REPO $TIPO" >> "$CONF" || { echo "coda: scrittura fallita in $CONF" >&2; exit 1; }
 echo "coda: $REPO iscritta in $CONF ($TIPO)"
