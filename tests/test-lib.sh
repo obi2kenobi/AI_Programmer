@@ -225,6 +225,12 @@ grep -c 'gate_banchi "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && o
 VIVI=$(sed -n '/IL GATE DEL FIXER/,/&& GATE_OK=1/p' "$HERE/night-shift/night-shift.sh" | grep -E 'bash "\$HERE/\.\./tools/(banco-passaggio|giri-ignoranti)\.sh"' || true)
 [ -z "$VIVI" ] && ok "il gate del fixer giudica col banco e le sonde del ramo, non della copia viva" || ko "banco/sonde del gate dalla copia viva: $VIVI"
 
+# (2026-09-24, quinto ventaglio, R5 R5): lo stesso errore, nell'auto-fix «indice del SAL»: rigenerava il SAL della
+# COPIA VIVA (dove lavora il giorno) e poi guardava il diff della copia del ramo, intatta — il fix non arrivava
+# mai nel ramo e il SAL del giorno veniva toccato. Ora lo strumento e il SAL sono quelli del ramo.
+grep -c 'bash "\$HERE/\.\./tools/sal-indice\.sh"' "$HERE/night-shift/night-shift.sh" >/dev/null && ko "R5 R5: l'auto-fix del SAL riscrive il SAL della copia viva" \
+  || { grep -c 'bash "\$DIR/tools/sal-indice\.sh"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "R5 R5: l'auto-fix del SAL lavora sul SAL del ramo" || ko "R5 R5: l'auto-fix del SAL non c'e' piu'"; }
+
 # --- (2026-09-24, terzo ventaglio, V1#3): «GIA' IMPLEMENTATA?» — la funzione «e' chiamata» se `nome(` compare
 # nel file: vero gia' sulla riga che la DEFINISCE. Ogni issue che nomina foo() veniva saltata per sempre.
 if command -v funzione_definita_e_chiamata >/dev/null; then

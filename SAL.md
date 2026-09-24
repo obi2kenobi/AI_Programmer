@@ -4934,3 +4934,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     HUB_METRICS.
 
   Casi nuovi in `tests/test-lib.sh` (153/0) e `tests/test-eventi.sh`, rossi prima. Sabotaggio: 152/1 e 2/6.
+- **Quinto ventaglio, R5 R5 — l'auto-fix «indice del SAL» scriveva nel SAL del giorno, non nel ramo della
+  notte.** `night-shift/night-shift.sh` lanciava `"$HERE/../tools/sal-indice.sh"`, che riscrive il SAL della
+  copia viva, dove può lavorare una sessione del giorno. Poi guardava il diff della copia del ramo, rimasta
+  intatta. Il fix non arrivava mai nel ramo, il controllo tornava rosso a ogni ciclo, e il SAL del giorno veniva
+  toccato. È lo stesso errore già curato per il banco del fixer (V1#5). Ora lo strumento è quello del ramo,
+  `"$DIR/tools/sal-indice.sh"`. Guardia in `tests/test-lib.sh` (154/0), sul modello di quella del gate:
+  rossa prima, sabotaggio 153/1.

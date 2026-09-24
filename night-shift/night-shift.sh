@@ -464,7 +464,9 @@ ultima = voci[-1][:40]
 blocco = sal[sal.find('<!-- SAL-INDICE'):sal.find('## ', sal.find('<!-- SAL-INDICE')+100)]
 sys.exit(0 if ultima in blocco else 1)
 " 2>/dev/null; then
-          bash "$HERE/../tools/sal-indice.sh" >/dev/null 2>&1
+          # (2026-09-24, quinto ventaglio, R5 R5): era "$HERE/../tools/sal-indice.sh" — riscriveva il SAL della
+          # COPIA VIVA (dove lavora il giorno) e il diff qui sotto guardava il ramo, intatto: fix mai arrivato
+          bash "$DIR/tools/sal-indice.sh" >/dev/null 2>&1
           # solo se ha prodotto un diff reale (niente fix fantasma)
           if ! git -C "$DIR" diff --quiet -- SAL.md 2>/dev/null; then
             FIX_APPLICATI=$((FIX_APPLICATI+1))
