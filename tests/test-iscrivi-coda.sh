@@ -28,6 +28,23 @@ for f in tools/onboard-repo.sh tools/bootstrap-app.sh; do
   grep -c 'tools/iscrivi-coda.sh' "$HERE/$f" >/dev/null && ok "$f iscrive con tools/iscrivi-coda.sh" || ko "$f ha ancora la sua regex"
 done
 
+# (2026-09-24, quarto ventaglio, Q2 R4): col login GitHub illeggibile il bootstrap iscriveva «/nome» — il
+# turno poi falliva il clone ogni notte, lontano dalla causa — e diceva «Fatto». La forma owner/repo si
+# pretende; e il bootstrap, con `gh api user` in errore, non iscrive e lo dice.
+Q=$(mktemp -d); printf '# coda\n' > "$Q/repos.conf"
+for SBAGLIATA in "/prova" "prova" "a/b/c" "a b/c"; do
+  bash "$HERE/tools/iscrivi-coda.sh" "$Q/repos.conf" "$SBAGLIATA" feat >/dev/null 2>&1; RC=$?
+  [ "$RC" -ne 0 ] && ! grep -cF -- "$SBAGLIATA feat" "$Q/repos.conf" >/dev/null && ok "iscrivi-coda rifiuta «$SBAGLIATA» (non e' owner/repo)" || ko "iscrivi-coda ha iscritto «$SBAGLIATA» (rc $RC)"
+done
+mkdir -p "$Q/bin" "$Q/home"
+printf '#!/bin/bash\ncase "$1 $2" in "api user") echo "error connecting to api.github.com" >&2; exit 1 ;; "label create") exit 1 ;; esac\nexit 0\n' > "$Q/bin/gh"; chmod +x "$Q/bin/gh"
+OUT=$(HOME="$Q/home" PATH="$Q/bin:$PATH" NIGHT_REPOS_CONF="$Q/repos.conf" GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t \
+  GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=commit.gpgsign GIT_CONFIG_VALUE_0=false bash "$HERE/tools/bootstrap-app.sh" prova-coda 2>&1); RC=$?
+! grep -cE '^/prova-coda' "$Q/repos.conf" >/dev/null && [ "$RC" -ne 0 ] && grep -ci 'login' <<<"$OUT" >/dev/null \
+  && ok "bootstrap col login illeggibile: non iscrive «/prova-coda», esce $RC e lo dice" || ko "bootstrap col login illeggibile: rc $RC, coda: $(grep -v '^#' "$Q/repos.conf"), $(tail -1 <<<"$OUT")"
+grep -c 'label night-shift NON creata' <<<"$OUT" >/dev/null && ok "la label non creata si dice" || ko "label non creata taciuta"
+rm -rf "$Q"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

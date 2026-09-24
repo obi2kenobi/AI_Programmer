@@ -160,13 +160,21 @@ else
   # push (lo stesso gesto di night-shift/install.sh per l'hub). Negli altri cloni lo ricorda il garante.
   git config core.hooksPath .githooks && echo "guardiani del commit accesi (core.hooksPath .githooks)"
 fi
-gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
+# (Q2 R4): la label non creata si dice — senza, le commesse della notte non vengono viste
+gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 \
+  || echo "⚠ label night-shift NON creata su $NAME: le commesse della notte non saranno viste — gh label create night-shift -R <owner>/$NAME"
 
 # La iscrive alla coda locale (se esiste repos.conf). NIGHT_REPOS_CONF: override per i banchi,
 # stesso gesto di tools/onboard-repo.sh (Q14: un banco vero avrebbe iscritto repo finte nella
 # coda VERA dell'hub — successo a onboard al giro 20)
 CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
-[ -f "$CONF" ] && bash "$HERE/tools/iscrivi-coda.sh" "$CONF" "$(gh api user --jq .login)/$NAME" feat   # T6#6: confronto esatto
+# (Q2 R4): il login si legge e si controlla PRIMA di scriverlo nella coda; una sostituzione usata come
+# argomento non ferma set -e, e il bootstrap iscriveva «/nome» e diceva «Fatto»
+if [ -f "$CONF" ]; then
+  LOGIN=$(gh api user --jq .login 2>/dev/null) && [ -n "$LOGIN" ] \
+    || { echo "⛔ login GitHub illeggibile (gh api user): repo creata ma NON iscritta nella coda — a mano: bash tools/iscrivi-coda.sh $CONF <owner>/$NAME feat"; exit 1; }
+  bash "$HERE/tools/iscrivi-coda.sh" "$CONF" "$LOGIN/$NAME" feat   # T6#6: confronto esatto
+fi
 
 echo ""
 echo "Fatto: $NAME è nel sistema."

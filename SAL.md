@@ -4515,3 +4515,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   e salta la repo per questo ciclo: il lock si libera col `trap RETURN`. Banco nuovo
   `tests/test-leggi-coda.sh`: rosso prima (la funzione non c'era), verde ora (6/0). Sabotaggio: senza la
   validazione, 4/2.
+- **Quarto ventaglio, Q2 R4 — col login GitHub illeggibile il bootstrap iscriveva «/nome» e diceva
+  «Fatto».** `gh api user` fallito dentro una sostituzione usata come argomento non ferma `set -e`. La
+  coda riceveva «/prova feat», e il turno poi falliva il clone ogni notte, lontano dalla causa. La label
+  non creata era taciuta (`|| true`). Cure:
+  - `tools/iscrivi-coda.sh` iscrive solo la forma owner/repo;
+  - `tools/bootstrap-app.sh` legge e controlla il login prima di scriverlo, e se è illeggibile dice «repo
+    creata ma NON iscritta» col comando per farlo a mano, rc 1;
+  - la label non creata si dice.
+
+  `tests/test-iscrivi-coda.sh` ha sei casi nuovi (quattro forme sbagliate, un bootstrap con gh finto, la
+  label): rosso prima (6 FAIL), verde ora (12/0). L'e2e del bootstrap resta 14/0. Sabotaggio: senza il
+  controllo della forma, 8/4. Il caso del bootstrap resta verde sotto quel sabotaggio: la guardia del
+  login è una seconda difesa, indipendente.
