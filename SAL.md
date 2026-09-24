@@ -3799,3 +3799,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   testo. ask-qwen resta com'era: è locale. Banco `tests/test-ask-wrappers.sh` con curl e claude
   finti: rosso prima, 2 rossi al sabotaggio. Un mio errore di banco, corretto prima di
   concludere: cercavo «segreto nel payload, dove il JSON la scrive `«`.
+- **T5#6 — i prompt verso Ollama viaggiavano negli argomenti.** Quattordici siti in
+  `night-shift/` e `tools/` (agente, caccia-lente, revisore, risolvi-issue, bencina-modelli,
+  cervello-domanda, cervello-impara) costruivano il payload in argv: `curl -d "$(jq --arg p
+  "$PROMPT" …)"`. Il prompt era leggibile da `ps`. Su Linux, oltre 128 KB per argomento, il comando
+  non partiva, e la conversazione di `night-shift/agente.sh` arriva a 8 turni × 24 KB. Misurato
+  nel banco: un argomento da 200 KB non parte. Ora `printf | jq -Rs '. as $p | …' | curl
+  --data-binary @-`, la stessa cura di Q8. Cricchetto `tests/test-payload-da-stdin.sh`: rosso sui 14
+  siti prima, rosso al sabotaggio di un sito. I banchi con i server finti (agente, risolvi-issue,
+  revisore, caccia, cervello) sono verdi. Resta da provare sul Mac, dove il tetto è ARG_MAX (1 MB):
+  l'argv era un'esposizione locale più che un limite.

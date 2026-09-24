@@ -82,9 +82,11 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
     printf '%s' "$prompt" | bash "$REVISORE_STUB" "$modello"
     return
   fi
-  curl -s --max-time "$maxsec" "$API" -d "$(jq -cn --arg m "$modello" --arg p "$prompt" \
+  # (T5#6, 2026-09-23): il prompt (col diff) su stdin, mai negli argomenti
+  printf '%s' "$prompt" | jq -cRs --arg m "$modello" \
     --argjson th "$( [ "${THINK:-false}" = "true" ] && echo true || echo false )" \
-    '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:$th, options:{temperature:0}}')" \
+    '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:$th, options:{temperature:0}}' \
+    | curl -s --max-time "$maxsec" "$API" --data-binary @- \
     | jq -r '.message.content // empty' 2>/dev/null
 }
 

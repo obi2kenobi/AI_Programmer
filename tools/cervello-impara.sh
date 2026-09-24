@@ -54,8 +54,9 @@ Rispondi SOLO con JSON su una riga:
 I link devono puntare a note esistenti in cervello/ (slug minuscoli col trattino) o essere lista vuota.
 FINE
 
-R=$(curl -sf --max-time 150 "$API" -d "$(jq -cn --arg m "$MODEL" --arg p "$PROMPT" \
-  '{model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null \
+R=$(printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
+  '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
+  | curl -sf --max-time 150 "$API" --data-binary @- 2>/dev/null \
   | jq -r '.message.content // empty' 2>/dev/null)
 [ -n "$R" ] || { echo "IMPARA: il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }
 

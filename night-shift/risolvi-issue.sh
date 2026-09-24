@@ -18,6 +18,7 @@ DIR="${1:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
 ISSUE="${2:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
 MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 # NIGHT_API_URL: solo per i test (server mock) — di norma non si tocca
+# (T5#6, 2026-09-23): i prompt (con i sorgenti) viaggiano su stdin verso jq e curl, mai negli argomenti
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 [ -f "$ISSUE" ] || { echo "⛔ issue inesistente: $ISSUE" >&2; exit 2; }
@@ -65,7 +66,7 @@ $CODE
 
 Is this fix correct? Answer CORRECT or WRONG:"
   local RESPONSE VERDETTO
-  RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
+  RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}' | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | head -1)
   classifica_verdetto "$VERDETTO"
 }
@@ -85,7 +86,7 @@ $CODE
 
 Write the test:"
   local RESPONSE TEST
-  RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}')" 2>/dev/null)
+  RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}' | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   TEST=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | sed -n '/^```/,/^```/p' | sed '/^```/d')
   [ -n "$TEST" ] && echo "$TEST" || return 1
 }
@@ -165,7 +166,7 @@ EOF
 # --- 3. chiamata a Ollama (LOCALE) ---
 log "Chiamando $MODEL su localhost..."
 START=$(date +%s)
-RESPONSE=$(curl -sf --max-time 300 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}')" 2>&1)
+RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}' | curl -sf --max-time 300 "$API" --data-binary @- 2>&1)
 RC=$?
 ELAPSED=$(( $(date +%s) - START ))
 if [ $RC -ne 0 ]; then

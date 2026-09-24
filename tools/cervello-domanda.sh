@@ -127,8 +127,9 @@ CONTESTO (percorso:riga:testo):
 $CTX
 FINE
 
-  RISPOSTA=$(curl -sf --max-time 120 "$API" -d "$(jq -cn --arg m "$MODEL" --arg p "$PROMPT" \
-    '{model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null \
+  RISPOSTA=$(printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
+    '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
+    | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null \
     | jq -r '.message.content // empty' 2>/dev/null)
 
   [ -z "$RISPOSTA" ] && { echo "il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }

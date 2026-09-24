@@ -39,8 +39,9 @@ TMP=$(mktemp -d /tmp/bencina.XXXXXX)
 trap 'rm -rf "$TMP"' EXIT
 
 chiama() { # chiama <prompt> <max-sec> → contenuto (vuoto se muto)
-  curl -s --max-time "$2" "$API" -d "$(jq -cn --arg m "$MODELLO" --arg p "$1" \
-    '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" \
+  printf '%s' "$1" | jq -cRs --arg m "$MODELLO" \
+    '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:4096}}' \
+    | curl -s --max-time "$2" "$API" --data-binary @- \
     | jq -r '.message.content // empty' 2>/dev/null
 }
 

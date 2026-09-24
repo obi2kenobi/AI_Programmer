@@ -56,9 +56,10 @@ Be concise. Maximum 5 lines."
 
 log "chiamo il modello per interpretare ($(echo "$TOOL_OUT" | wc -c | tr -d ' ') bytes di output)..."
 
-RESPONSE=$(curl -sf --max-time 60 "$API" -d "$(jq -n \
-  --arg m "$MODEL" --arg p "$PROMPT" \
-  '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
+# (T5#6, 2026-09-23): il prompt (con l'uscita dello strumento) su stdin, mai negli argomenti
+RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" \
+  '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}' \
+  | curl -sf --max-time 60 "$API" --data-binary @- 2>/dev/null)
 
 if [ -z "$RESPONSE" ]; then
   log "modello non ha risposto"

@@ -57,8 +57,11 @@ $AGENTE_INTELLIGENZA
 Apply this expertise to the task. Cite specific patterns or rules from your specialty when relevant.}"
 
 # la conversazione: parte con system + user
-CONV=$(jq -n --arg sys "$SYSTEM" --arg p "$PROMPT" \
-  '[{"role":"system","content":$sys},{"role":"user","content":$p}]')
+# (2026-09-23, notte dei giri, T5#6): prompt e conversazione viaggiano su STDIN verso jq e curl, mai
+# negli argomenti — leggibili da `ps`, e oltre 128 KB per argomento (Linux) il comando non parte:
+# la conversazione arriva a MAX_TURNI × 24 KB di file letti.
+CONV=$(printf '%s' "$PROMPT" | jq -Rs --arg sys "$SYSTEM" \
+  '. as $p | [{"role":"system","content":$sys},{"role":"user","content":$p}]')
 
 TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
@@ -66,11 +69,11 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
   [ "$ELAPSED" -gt "$TIMEOUT_TOTALE" ] && { log "⛔ timeout ${TIMEOUT_TOTALE}s"; exit 3; }
 
-  RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
+  RESPONSE=$(jq -c \
     --arg m "$MODEL" \
-    --argjson msgs "$CONV" \
     --argjson th "$PENSA" \
-    '{model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+    '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}' <<<"$CONV" \
+    | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
 
   if [ -z "$RESPONSE" ]; then
     # (2026-09-19, Ollama wedged alle 17:29): il server a volte smette di
@@ -91,11 +94,11 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
     # ping — il rianimamento non basta, serve il RIENTO. Un tentativo in piu'
     # costa secondi; la finestra morta costa mezz'ora di cooldown.
     log "generazione vuota (ping: $([ -n "$PING" ] && echo sano || echo muto)) — ritento il turno"
-    RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
+    RESPONSE=$(jq -c \
       --arg m "$MODEL" \
-      --argjson msgs "$CONV" \
       --argjson th "$PENSA" \
-      '{model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+      '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}' <<<"$CONV" \
+      | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   fi
 
   [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
