@@ -116,6 +116,16 @@ cp "$HERE/.claude/settings.json" .claude/settings.json
 mkdir -p tools
 bash "$HERE/tools/copia-hook.sh" "$PWD" >/dev/null \
   || { echo "⛔ copia degli hook fallita: il progetto nascerebbe senza il cancello sul deploy"; exit 1; }
+# (Q15, 2026-09-23, giro A8 della notte): il CLAUDE.md qui sopra CITA il settimo patto (`bash
+# tools/debiti-riapertura.sh`), il REGISTRO con la sua guardia, i guardiani del commit, il formato
+# del report di campo — e nessuno arrivava (sync-repo li portava, qui la lista non c'era). Stessa
+# lista di sync-repo e onboard: tools/installa-citati.sh. E gli specchi dei plugin OpenCode.
+bash "$HERE/tools/installa-citati.sh" "$PWD" >/dev/null \
+  || { echo "⛔ installazione degli strumenti citati fallita: il CLAUDE.md citerebbe il nulla"; exit 1; }
+if [ -d "$HERE/.opencode/plugins" ]; then
+  mkdir -p .opencode/plugins
+  cp -r "$HERE/.opencode/plugins/." .opencode/plugins/
+fi
 
 # gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
 # viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA

@@ -47,6 +47,26 @@ D="$TMP/home/night-shift-work/prova-vera"
 grep -q '^repo create prova-vera --private' "$TMP/gh.log" && ok "vero: gh repo create chiamato, privata" || ko "vero: repo create assente o non privata: $(grep '^repo' "$TMP/gh.log")"
 grep -q '^label create night-shift' "$TMP/gh.log" && ok "vero: la label night-shift si crea" || ko "vero: label non creata"
 grep -q '^tester/prova-vera feat$' "$TMP/repos.conf" && ok "vero: iscritta nella coda (NIGHT_REPOS_CONF)" || ko "vero: non iscritta nella coda di prova"
+# Q15 (2026-09-23, giro A8): il CLAUDE.md che il satellite riceve CITA strumenti e file (il settimo
+# patto: `bash tools/debiti-riapertura.sh`; il registro errori con la sua guardia; il formato del
+# report di campo) — e il bootstrap non li portava: 43 citazioni su 62 al nulla, lo stesso difetto
+# del report REPO-I gia' curato in sync-repo e mai arrivato qui. Cricchetto: ogni percorso citato
+# esiste nella repo nuova, oppure e' dichiarato qui sotto come «solo nell'hub», col perche'.
+SOLO_HUB="night-shift/morning-gate.sh night-shift/revisore.sh tools/grafo-semantico.sh tools/claude-md-satellite.sh tests/test-claude-md-snello.sh patterns/segreto-come-impronta.md"
+# (i giudici della notte e il passo semantico girano nell'hub; claude-md-satellite genera questo
+#  file e il suo banco vivono li'; segreto-come-impronta e' citato come implementazione di
+#  riferimento dell'hub — patterns/ del satellite e' un registro suo)
+MANCANTI=""
+for C in $(bash "$HERE/tools/claude-md-satellite.sh" | grep -oE '(tools|night-shift|llm|tests|docs|patterns)/[A-Za-z0-9_./-]+[A-Za-z0-9_-]|`[A-Z][A-Za-z_-]+\.md`' | tr -d '`' | sort -u); do
+  case " $SOLO_HUB " in *" $C "*) continue ;; esac
+  [ -e "$D/$C" ] || MANCANTI="$MANCANTI $C"
+done
+[ -z "$MANCANTI" ] && ok "Q15: ogni percorso citato dal CLAUDE.md dei satelliti esiste nella repo nuova" \
+  || ko "Q15: citati dal CLAUDE.md ma assenti nella repo nuova:$MANCANTI"
+for F in .githooks/pre-commit tools/pre-commit.sh tools/cita-verifica.sh; do
+  [ -e "$D/$F" ] || ko "Q15: il guardiano del commit $F non arriva alla repo nuova"
+done
+grep -q 'Da review Opus 2026-08-21' "$D/DEBITI.md" 2>/dev/null && ko "Q15: la repo nuova nasce coi debiti dell'hub" || ok "Q15: DEBITI.md della repo nuova e' lo scheletro (se c'e')"
 : > "$TMP/gh.log"; rm -rf "$D"
 lancia prova-ordine --dry-run --private
 grep -q 'privata' "$TMP/out" && ok "--private vale anche dopo --dry-run (l'ordine dei flag non conta)" || ko "--private ignorato se non e' il secondo argomento"

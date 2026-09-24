@@ -213,6 +213,21 @@ else
   echo "agenti del hub già tutti presenti, intoccati"
 fi
 
+# (Q15, 2026-09-23, giro A8 della notte): gli strumenti che lo standard CITA (settimo patto,
+# REGISTRO, guardiani del commit, formato del report di campo) non arrivavano mai a una repo
+# onboardata. Stessa lista di sync-repo e bootstrap (tools/installa-citati.sh), col merge
+# prudente di questo script: solo i mancanti, niente sovrascritto. Commit e push propri.
+CITATI_SCRITTI=$(bash "$HERE/tools/installa-citati.sh" "$WORK" --solo-mancanti) \
+  || { echo "⛔ installazione degli strumenti citati fallita"; exit 1; }
+if [ -n "$CITATI_SCRITTI" ]; then
+  while IFS= read -r P; do git -C "$WORK" add "$P"; done <<< "$CITATI_SCRITTI"
+  git -C "$WORK" commit -q -m "chore: strumenti citati dallo standard (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$(grep -c . <<< "$CITATI_SCRITTI") strumento/i citato/i dallo standard aggiunto/i e spinto/i (i gia' presenti: intoccati)"
+else
+  echo "strumenti citati dallo standard gia' tutti presenti, intoccati"
+fi
+
 # NIGHT_REPOS_CONF: override per i banchi (giro 20 — la prima prova end-to-end ha iscritto due
 # repo finte nella coda VERA dell'hub; stesso gesto di HUB_METRICS nel morning-gate)
 CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"

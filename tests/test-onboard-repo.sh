@@ -58,6 +58,8 @@ con_agenti_e_hook_proprio() {
   mkdir -p .claude/skills/dev-critic .opencode/skills/dev-critic
   echo "SKILL PERSONALIZZATA DAL PROGETTO" > .claude/skills/dev-critic/SKILL.md
   echo "SKILL PERSONALIZZATA DAL PROGETTO" > .opencode/skills/dev-critic/SKILL.md
+  # (Q15): anche i DEBITI del progetto — l'onboard porta gli strumenti citati, mai sopra i suoi
+  printf '# DEBITI del progetto\n' > DEBITI.md
 }
 
 DICHIARATI=$(bash "$HERE/tools/copia-hook.sh" --elenco)
@@ -100,6 +102,14 @@ git clone -q "$ORIGIN2" "$TMP/check2"
   || ko "caso 2: skill personalizzata sovrascritta dall'onboarding"
 [ -f "$TMP/check2/.claude/skills/gas-sviluppo/SKILL.md" ] && ok "caso 2: le skill dell'hub mancanti sono arrivate" || ko "caso 2: skill dell'hub mancanti non propagate"
 echo "$OUT2" | grep -q "agenti del hub già tutti presenti" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
+
+# (Q15, 2026-09-23): gli strumenti che lo standard CITA arrivano (settimo patto, guardiani del
+# commit), e lo stato del progetto resta suo
+[ -x "$TMP/check1/tools/debiti-riapertura.sh" ] && [ -f "$TMP/check1/.githooks/pre-commit" ] && [ -f "$TMP/check1/tools/cita-verifica.sh" ] \
+  && ok "caso 1 (Q15): gli strumenti citati dallo standard arrivano sull'origin" \
+  || ko "caso 1 (Q15): strumenti citati assenti (debiti-riapertura, .githooks, cita-verifica)"
+[ "$(cat "$TMP/check2/DEBITI.md" 2>/dev/null)" = "# DEBITI del progetto" ] \
+  && ok "caso 2 (Q15): i DEBITI del progetto NON sono stati toccati" || ko "caso 2 (Q15): DEBITI del progetto sovrascritti"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

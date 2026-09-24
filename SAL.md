@@ -3471,3 +3471,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     flag valgono in qualunque ordine; `NIGHT_REPOS_CONF` come in onboard.
   - Banco: il primo che LANCIA il bootstrap, `tests/test-bootstrap-app-e2e.sh`, 10 casi con gh
     finto, 5 rossi prima. Sabotaggio (dry-run di nuovo nella cartella vera): 1 rosso.
+- **Q15**, da A8, tema trasversale: tre installatori, tre liste a mano, divergenti.
+  - `tools/sync-repo.sh` portava gli strumenti che il CLAUDE.md dei satelliti cita (settimo
+    patto, REGISTRO, guardiani del commit, formato del report di campo). `tools/bootstrap-app.sh`
+    e `tools/onboard-repo.sh` no: una repo nuova nasceva citando 7 percorsi al nulla, e senza
+    `.githooks`. È lo stesso difetto del report REPO-I, curato in un installatore su tre.
+  - Cura alla radice: una lista sola, `tools/installa-citati.sh`, chiamata da tutti e tre; per
+    onboard solo i mancanti. METHOD.md la nomina.
+  - Banco: in `tests/test-bootstrap-app-e2e.sh`, un cricchetto: ogni percorso citato dal CLAUDE.md
+    dei satelliti esiste nella repo nuova, oppure è dichiarato «solo nell'hub» col perché.
+    `tests/test-onboard-repo.sh` ha 2 casi nuovi. Sabotaggio (via la chiamata): 4 + 1 rossi.

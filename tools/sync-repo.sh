@@ -135,44 +135,19 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # (audit-3, 2026-09-23): patterns/ e' poi USCITO dalla lista — e' un registro PER REPO,
   # e il sync aveva sovrascritto quello di un satellite (12 ancore morte). Viaggia solo
   # .opencode/skills; lo presidia tests/test-sync-repo-standard-item-list.sh.
-  # (dal campo REPO-E 2026-09-01: docs/campo/ dell'hub contiene voci storiche di ALTRI
-# clienti — si copia SOLO il README come formato, mai le voci: privacy)
-# (contromisura REPO-V 7/9): le LENTI DELLO STANDARD viaggiano anche loro — fixture
-#  senza provenienza e citazioni file:riga rotte sono i due banchi-verdi-bugiardi del campo
-for LENTE in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do
-  [ -f "$HERE/tools/$LENTE" ] && { mkdir -p tools; cp "$HERE/tools/$LENTE" "tools/$LENTE"; git add "tools/$LENTE" 2>/dev/null && COPIATI=$((COPIATI+1)); }
-  # (report REPO-F 2026-09-19, difetto 1): la lente viaggia SENZA la sua lista di
-  # esclusione (tools/.file-del-target per cita-verifica) — 10 rossi il giorno zero,
-  # misurati. La lente senza i suoi dati non e' la lente.
-  [ -f "$HERE/tools/.file-del-target" ] && { cp "$HERE/tools/.file-del-target" "tools/.file-del-target"; git add "tools/.file-del-target" 2>/dev/null || true; }
-done
-# (report REPO-I 2026-09-19, H2): lo standard installava 43 citazioni su 62 che
-  # puntavano al nulla nella destinazione — CLAUDE.md cita DEBITI.md, il REGISTRO,
-  # debiti-riapertura, privacy-check, test-errori, e nessuno viaggiava. La lente che
-  # pretende che le citazioni esistano non puo' essere essa stessa una citazione
-  # assente (patterns/citazione-non-presidio). Gli strumenti citati viaggiano.
-  # (report Budget Vendite 2026-09-19): il gate di sintassi GAS viaggia — E-028
-  # era stata imparata per Python e mai generalizzata al linguaggio dell'hub stesso
-  # (audit 2026-09-23): aggiunti fork-stato, presidio e polilivello — citati dallo
-  # standard che viaggia (skill/CLAUDE.md) ma mai spediti: il satellite riceveva
-  # documenti che puntavano a tool inesistenti (stessa classe del report REPO-I)
-  CITATI="DEBITI.md docs/errori/REGISTRO.md docs/ngiri-paralleli.md tools/debiti-riapertura.sh tools/privacy-check.sh tests/test-errori.sh tools/gas-gate.sh tools/py-gate.sh tools/fork-stato.sh tools/presidio.sh tools/polilivello.sh"
-  # (D13, 2026-09-20): i GUARDIANI DEL COMMIT viaggiano — .githooks (pre-commit e
-  # commit-msg) e tools/pre-commit.sh; l'attivazione resta `git config core.hooksPath .githooks`
+    # (Q15, 2026-09-23, giro A8 della notte): le lenti con i loro dati, gli strumenti citati, i
+  # guardiani del commit, il formato del report di campo, il garante e lo scheletro dello STATO
+  # (DEBITI, REGISTRO) vivevano qui in liste a mano — e bootstrap e onboard non le vedevano. Ora
+  # una lista sola, in tools/installa-citati.sh, per tutti e tre. La storia delle singole voci
+  # (report REPO-E, REPO-F, REPO-I, Budget Vendite, D13, Q13) e' scritta la'.
+  SCRITTI=$(bash "$HERE/tools/installa-citati.sh" "$PWD") || { echo "sync-repo: installazione degli strumenti citati fallita — lo standard NON è completo"; exit 1; }
+  while IFS= read -r P; do
+    [ -n "$P" ] && git add "$P" 2>/dev/null && COPIATI=$((COPIATI+1))
+  done <<< "$SCRITTI"
   cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null && COPIATI=$((COPIATI+1))  # D8: versione satellite
-  for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh $CITATI; do
+  for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
-    # (Q13, 2026-09-23, giro A8 della notte): DEBITI.md e il REGISTRO sono lo STATO del satellite
-    # — si copiavano quelli dell'hub sopra i suoi (debiti ed errori persi nella PR, e un REGISTRO
-    # che cita guardie che li' non esistono). Ora: se c'e', e' suo e non si tocca; da zero arriva
-    # lo scheletro (l'intestazione dell'hub fino alla prima voce, senza le voci).
     case "$ITEM" in
-      DEBITI.md|docs/errori/REGISTRO.md)
-        [ -e "$ITEM" ] && continue
-        mkdir -p "$(dirname "$ITEM")"
-        awk '/^## /{exit} {print}' "$HERE/$ITEM" > "$ITEM"
-        git add "$ITEM" 2>/dev/null && COPIATI=$((COPIATI+1))
-        continue ;;
       .claude/settings.json)
         # (Q13): si sovrascriveva intero — i permessi e le scelte del satellite sparivano. Ora si
         # FONDE: gli hook sono dello standard (quelli dell'hub), il resto e' l'unione, e gli
@@ -209,7 +184,7 @@ done
   mkdir -p tools
   # (report REPO-F, difetto 5): garante-standard.sh esiste e --standard non lo
   # copiava — la domanda «questa repo e' a standard?» non ha risposta dal dentro
-  [ -f "$HERE/tools/garante-standard.sh" ] && { cp "$HERE/tools/garante-standard.sh" "tools/garante-standard.sh"; git add "tools/garante-standard.sh" 2>/dev/null || true; }
+  # (il garante viaggia con gli strumenti citati: tools/installa-citati.sh)
   HOOK_COPIATI=$(bash "$HERE/tools/copia-hook.sh" "$PWD") \
     || { echo "sync-repo: copia degli hook fallita — lo standard NON è completo"; exit 1; }
   while IFS= read -r H; do

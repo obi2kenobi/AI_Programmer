@@ -7639,7 +7639,7 @@
       "node_kind": "heading",
       "norm_label": "i pattern",
       "source_file": "METHOD.md",
-      "source_location": "L71"
+      "source_location": "L75"
     },
     {
       "id": "method_il_ciclo",
@@ -7663,7 +7663,7 @@
       "node_kind": "heading",
       "norm_label": "la mappa completa",
       "source_file": "METHOD.md",
-      "source_location": "L75"
+      "source_location": "L79"
     },
     {
       "id": "method_le_regole_che_contano_le_altre_stanno_nelle_fonti",
@@ -7675,7 +7675,7 @@
       "node_kind": "heading",
       "norm_label": "le regole che contano (le altre stanno nelle fonti)",
       "source_file": "METHOD.md",
-      "source_location": "L57"
+      "source_location": "L61"
     },
     {
       "id": "method_lo_standard_2026_08_26_non_un_opzione",
@@ -33968,7 +33968,7 @@
       },
       "norm_label": "onboard()",
       "source_file": "tests/test-onboard-repo.sh",
-      "source_location": "L65"
+      "source_location": "L67"
     },
     {
       "id": "tests_test_onboard_repo_sh__entry",
@@ -44053,6 +44053,36 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_installa_citati",
+      "label": "installa-citati.sh",
+      "_origin": "ast",
+      "community": 716,
+      "community_name": "installa-citati.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "installa-citati.sh",
+      "source_file": "tools/installa-citati.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_installa_citati_sh__entry",
+      "label": "installa-citati.sh script",
+      "_origin": "ast",
+      "community": 716,
+      "community_name": "installa-citati.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "installa-citati.sh script",
+      "source_file": "tools/installa-citati.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_bc_tipi_metadata",
       "label": "test-bc-tipi-metadata.sh",
       "_origin": "ast",
@@ -51912,7 +51942,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-onboard-repo.sh",
-      "source_location": "L71",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -51924,7 +51954,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-onboard-repo.sh",
-      "source_location": "L72",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -51936,7 +51966,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-onboard-repo.sh",
-      "source_location": "L73",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -51948,7 +51978,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-onboard-repo.sh",
-      "source_location": "L73",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -54660,7 +54690,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L181",
+      "source_location": "L156",
       "weight": 1.0
     },
     {
@@ -70342,7 +70372,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "METHOD.md",
-      "source_location": "L57",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -70353,7 +70383,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "METHOD.md",
-      "source_location": "L71",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -70364,7 +70394,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "METHOD.md",
-      "source_location": "L75",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -80686,6 +80716,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_installa_citati",
+      "target": "tools_installa_citati_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/installa-citati.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tools_leasing_amministrativo",
       "target": "tools_leasing_amministrativo_mesi_tra",
       "relation": "contains",
@@ -85148,7 +85189,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-onboard-repo.sh",
-      "source_location": "L65",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -89477,5 +89518,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0508c229638a8f7d463979c345bfa228e5369832"
+  "built_at_commit": "0994ec2be45c84f1d042264c067fbb805b204ee6"
 }

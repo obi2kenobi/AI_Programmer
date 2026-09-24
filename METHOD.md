@@ -48,6 +48,10 @@ AI_Programmer ha, fisicamente:
    UserPromptSubmit lo ri-inietta a ogni prompt (il problema era «invocato
    all'inizio e poi dimenticato»: ora non serve invocarlo);
 4. **`.night-verify`** dichiarato.
+5. **gli strumenti che il CLAUDE.md cita** — il settimo patto (`tools/debiti-riapertura.sh`), lo
+   scheletro di `DEBITI.md` e del REGISTRO, i guardiani del commit (`.githooks/`,
+   `tools/pre-commit.sh`), il formato del report di campo. Una lista sola,
+   `tools/installa-citati.sh`, per sync-repo, bootstrap-app e onboard-repo.
 
 Un solo comando porta tutto: `tools/sync-repo.sh <owner/repo> --standard`
 (apre la PR). `tools/sync-repo.sh <owner/repo>` senza flag verifica e riporta

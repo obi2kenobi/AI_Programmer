@@ -15,10 +15,23 @@ LINEA=$(grep -n 'for ITEM in' "$HERE/tools/sync-repo.sh" | head -1)
 # giri avversari 2026-08-28 (A14/G8): la lista era DRIFTATA da tools/sync-repo.sh
 # (mancava .opencode/plugins) e non presidiava il flag --standard
 # (D13, test del sistema completo 2026-09-20): i guardiani del commit viaggiano
-for item in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills docs/campo/README.md .opencode/plugins .githooks tools/pre-commit.sh; do
+for item in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
   echo "$LINEA" | grep -qF "$item" \
     && ok "ITEM list di sync-repo.sh --standard include: $item" \
     || ko "ITEM list di sync-repo.sh --standard NON include: $item"
+done
+# (Q15, 2026-09-23): i file singoli dello standard (guardiani del commit, formato del report di
+# campo, strumenti citati) vivono nella lista UNICA di tools/installa-citati.sh, che sync-repo,
+# bootstrap-app e onboard-repo chiamano tutti e tre
+for item in docs/campo/README.md .githooks tools/pre-commit.sh tools/debiti-riapertura.sh tools/cita-verifica.sh; do
+  grep -qE "^[A-Z]+=\"(.* )?$item([ \"]|$)" "$HERE/tools/installa-citati.sh" \
+    && ok "la lista unica (installa-citati.sh) include: $item" \
+    || ko "la lista unica (installa-citati.sh) NON include: $item"
+done
+for S in sync-repo bootstrap-app onboard-repo; do
+  grep -q 'tools/installa-citati.sh" "' "$HERE/tools/$S.sh" \
+    && ok "$S.sh installa gli strumenti citati dalla lista unica" \
+    || ko "$S.sh non chiama tools/installa-citati.sh"
 done
 # (D8, Luca 2026-09-23): CLAUDE.md viaggia fuori dalla lista, nella versione per i satelliti
 grep -qF 'cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md' "$HERE/tools/sync-repo.sh" \
