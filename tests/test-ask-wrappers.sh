@@ -267,6 +267,28 @@ N=$(tr -cd q < "$OPTMP/stdin" 2>/dev/null | wc -c | tr -d ' ')
   || ko "ask-opus: contesto di 200 KB — rc=$RC, su stdin ${N:-0} byte: $(head -c 150 <<<"$OUT")"
 rm -rf "$OPTMP"
 
+# --- (2026-09-23, notte dei giri, T5#5): verso i cervelli CLOUD il contesto parte mascherato. Il
+# morning-gate con ADVERSARY=glm|opus manda il diff delle repo private: un token o una password nel
+# diff arrivavano interi nel payload. Il cervello locale (ask-qwen) resta com'e': i dati non escono.
+MSKTMP=$(mktemp -d)
+cat > "$MSKTMP/curl" <<EOF
+#!/bin/bash
+cat > "$MSKTMP/payload"; echo '{"choices":[{"message":{"content":"ok"}}]}'
+EOF
+cat > "$MSKTMP/claude" <<EOF
+#!/bin/bash
+printf '%s\n' "\$2" > "$MSKTMP/domanda"; cat > "$MSKTMP/contesto"; echo ok
+EOF
+chmod +x "$MSKTMP/curl" "$MSKTMP/claude"
+FINTO="gh""p_ABCDEFGHIJKLMNOPQRSTUVWX"
+PATH="$MSKTMP:$PATH" ZHIPUAI_API_KEY=x bash "$HERE/llm/ask-glm.sh" "rivedi GH_TOKEN=$FINTO" <<<"password=$FINTO nel diff" >/dev/null 2>&1
+grep -cF "$FINTO" "$MSKTMP/payload" >/dev/null 2>&1 && ko "ask-glm: il segreto parte intero verso il cloud" \
+  || { grep -cE "segreto [0-9a-f]{8}" "$MSKTMP/payload" >/dev/null && ok "ask-glm: domanda e contesto partono mascherati" || ko "ask-glm: payload senza maschera ne' segreto: $(head -c 200 "$MSKTMP/payload")"; }
+PATH="$MSKTMP:$PATH" bash "$HERE/llm/ask-opus.sh" "rivedi GH_TOKEN=$FINTO" <<<"password=$FINTO nel diff" >/dev/null 2>&1
+cat "$MSKTMP/domanda" "$MSKTMP/contesto" 2>/dev/null | grep -cF "$FINTO" >/dev/null && ko "ask-opus: il segreto parte intero verso il cloud" \
+  || { grep -c "«segreto" "$MSKTMP/contesto" >/dev/null 2>&1 && ok "ask-opus: domanda e contesto partono mascherati" || ko "ask-opus: claude finto mai chiamato o contesto vuoto"; }
+rm -rf "$MSKTMP"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

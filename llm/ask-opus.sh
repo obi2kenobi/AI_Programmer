@@ -42,6 +42,14 @@ if [ ! -t 0 ]; then
   set -e
   [ "$STDIN_RC" -eq 124 ] && echo "ask-opus: ATTENZIONE — lo stdin non è arrivato tutto entro 5s, il contesto potrebbe essere TRONCATO (non solo ritardato)" >&2
 fi
+# (2026-09-23, notte dei giri, T5#5): verso un cervello CLOUD domanda e contesto partono mascherati
+# (mask_secrets di night-shift/lib.sh, la stessa maschera dei log): il morning-gate con
+# ADVERSARY=glm|opus manda il diff delle repo private, e un token nel diff arrivava intero. Se la
+# maschera muore, il testo diventa il suo avviso: nel dubbio non esce niente.
+# shellcheck source=../night-shift/lib.sh
+source "$HERE/../night-shift/lib.sh"
+DOMANDA=$(mask_secrets <<<"$1")
+[ -n "$STDIN_DATA" ] && STDIN_DATA=$(mask_secrets <<<"$STDIN_DATA")
 [ -n "$STDIN_DATA" ] && PROMPT="$PROMPT
 
 ---
@@ -67,9 +75,9 @@ set +e
 # come here-string: nessun processo produttore da uccidere; stderr a parte, e sul successo va su stderr.
 ERRF=$(mktemp); trap 'rm -f "$ERRF"; log_ask_usage ask-opus "${#PROMPT}"' EXIT
 if [ -n "$STDIN_DATA" ]; then
-  OUT=$(ai_timeout "$TIMEOUT" claude -p "$1" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} <<<"$STDIN_DATA" 2>"$ERRF")
+  OUT=$(ai_timeout "$TIMEOUT" claude -p "$DOMANDA" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} <<<"$STDIN_DATA" 2>"$ERRF")
 else
-  OUT=$(ai_timeout "$TIMEOUT" claude -p "$1" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} </dev/null 2>"$ERRF")
+  OUT=$(ai_timeout "$TIMEOUT" claude -p "$DOMANDA" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} </dev/null 2>"$ERRF")
 fi
 RC=$?
 ERR=$(cat "$ERRF")

@@ -54,6 +54,14 @@ fi
 ---
 $STDIN_DATA"
 
+# (2026-09-23, notte dei giri, T5#5): verso un cervello CLOUD domanda e contesto partono mascherati
+# (mask_secrets di night-shift/lib.sh, la stessa maschera dei log): il morning-gate con
+# ADVERSARY=glm|opus manda il diff delle repo private, e un token nel diff arrivava intero. Se la
+# maschera muore, il testo diventa il suo avviso: nel dubbio non esce niente.
+# shellcheck source=../night-shift/lib.sh
+source "$HERE/../night-shift/lib.sh"
+PROMPT=$(mask_secrets <<<"$PROMPT")
+
 BASE="${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}"
 # bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
 # override universale per tutti i wrapper ask-*, ma qui era ignorato — solo

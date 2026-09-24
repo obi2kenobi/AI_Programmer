@@ -12,6 +12,8 @@ cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"   # contesto v
 
 - Prompt come argomento, contesto lungo via stdin (mai incollato nel prompt)
 - Risposta pulita su **stdout**; statistiche/diagnosi su **stderr**
+- Verso i cervelli **cloud** (ask-glm, ask-opus) domanda e contesto partono **mascherati**
+  (`mask_secrets`, 2026-09-23): un segreto diventa `«segreto <impronta> · N caratteri»`. ask-qwen no: è locale
 - Exit 0 ok · 1 errore · 2 via non configurata (ask-glm sempre; ask-opus quando
   l'errore di `claude -p` indica auth assente — armonizzato, set 1 2026-08-22)
 - Override per chiamata: `ASK_MODEL`, `ASK_TIMEOUT` — **davvero** universali su tutti e

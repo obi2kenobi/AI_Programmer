@@ -3792,3 +3792,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   da un symlink vecchio. Rosso prima; il sabotaggio sul `rm -f` è rosso. Errore mio di passaggio,
   senza danni: il mio giro a mano dello script ha creato `night-shift/repos.conf` nell'hub (copia
   dell'esempio, gitignored). L'ho visto dall'mtime e rimosso dopo il confronto con l'esempio.
+- **T5#5 — verso i cervelli cloud i segreti partivano interi.** `llm/ask-glm.sh` e
+  `llm/ask-opus.sh` inoltravano domanda e stdin senza maschera. Il morning-gate con
+  `ADVERSARY=glm|opus` manda il diff delle repo private. Ora entrambi passano domanda e contesto per
+  `mask_secrets` (la stessa maschera dei log). Se la maschera muore, parte il suo avviso e non il
+  testo. ask-qwen resta com'era: è locale. Banco `tests/test-ask-wrappers.sh` con curl e claude
+  finti: rosso prima, 2 rossi al sabotaggio. Un mio errore di banco, corretto prima di
+  concludere: cercavo «segreto nel payload, dove il JSON la scrive `«`.
