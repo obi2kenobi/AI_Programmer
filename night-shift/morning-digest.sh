@@ -28,7 +28,9 @@ if [ -f "$REPORT" ]; then
 fi
 
 # subject: la riga del totale dal report
-SUBJ=$(grep "Totale:" "$REPORT" 2>/dev/null | head -1 | sed 's/[*\`]//g' | head -c 120)
+# (2026-09-24, Q2 R3): senza il report (il gate e' in pensione) grep esce 2, e sotto set -e + pipefail il
+# digest moriva qui, rc 2, senza una riga — il contrario di quanto dice il commento sopra
+SUBJ=$( { grep "Totale:" "$REPORT" 2>/dev/null || true; } | head -1 | sed 's/[*\`]//g' | head -c 120)
 [ -z "$SUBJ" ] && SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
 # corpo: il report + il summary numerico

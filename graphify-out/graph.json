@@ -29537,7 +29537,7 @@
       },
       "norm_label": "escape_as()",
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L74"
+      "source_location": "L76"
     },
     {
       "id": "night_shift_morning_digest_sh__entry",
@@ -50642,7 +50642,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L75",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -86365,7 +86365,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L74",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -95080,5 +95080,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8560c0bdc3c014bbb26ec7145867fe6d313e0ed2"
+  "built_at_commit": "992139bf74c25172e136e0a851982474efc6634e"
 }

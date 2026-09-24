@@ -101,6 +101,15 @@ bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out3.log" 2>&1; RC3=$?
 [ "$RC3" -ne 0 ] && ok "invio fallito → esito rosso (rc=$RC3)" || ko "invio fallito ma rc 0"
 cmp -s "$SALT" "$TMP/salt.orig" && ok "invio fallito → la memoria del turno RESTA (non svuotata)" || ko "invio fallito e memoria svuotata: persa"
 
+# (2026-09-24, quarto ventaglio, Q2 R3): il report del morning-gate (in pensione dal 2026-09-23) puo' mancare.
+# Il commento del digest dice che non ne dipende piu', ma `SUBJ=$(grep … "$REPORT" | …)` sotto set -e e
+# pipefail moriva rc 2, senza una riga: la mail del mattino spariva in silenzio.
+rm -f "$HOME/morning-gate-report.md" "$TMP/captured.txt"
+printf '#!/bin/bash\n[ "$1" = "-e" ] && printf "%%s" "$2" > "$OSASCRIPT_CAPTURE"\nexit 0\n' > "$TMP/bin/osascript"; chmod +x "$TMP/bin/osascript"   # l'invio riesce: qui si giudica il report assente
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out2.log" 2>&1; RC=$?
+[ "$RC" -eq 0 ] && [ -f "$TMP/captured.txt" ] && grep -c 'Mattina del sistema' "$TMP/captured.txt" >/dev/null \
+  && ok "senza il report del gate il digest parte lo stesso, con l'oggetto di ripiego" || ko "senza report del gate: rc=$RC, $(tail -1 "$TMP/out2.log")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

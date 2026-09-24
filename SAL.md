@@ -4528,3 +4528,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   label): rosso prima (6 FAIL), verde ora (12/0). L'e2e del bootstrap resta 14/0. Sabotaggio: senza il
   controllo della forma, 8/4. Il caso del bootstrap resta verde sotto quel sabotaggio: la guardia del
   login è una seconda difesa, indipendente.
+- **Quarto ventaglio, Q2 R3 — senza il report del gate in pensione, il digest del mattino moriva muto.**
+  Il commento di `night-shift/morning-digest.sh` dice che il digest non dipende più dal report. Ma
+  `SUBJ=$(grep … "$REPORT" | …)`, sotto `set -e` e pipefail, con il report assente usciva rc 2, senza
+  una riga. Ora il grep ha il suo `|| true` e l'oggetto di ripiego entra. `tests/test-morning-digest.sh`
+  ha un caso senza report: rosso col digest di HEAD (13/1), verde ora (14/0). Il mio primo caso
+  ereditava l'osascript finto che fallisce da un caso precedente: rimesso quello che riesce. Il ripiego
+  `mail`, che su macOS forse esce 0 senza consegnare e svuoterebbe la memoria del turno, non si prova
+  da qui: è la voce (g) della riga ⏳ Mac in DEBITI.md.
