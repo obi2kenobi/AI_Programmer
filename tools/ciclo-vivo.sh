@@ -32,8 +32,10 @@ mkdir -p "$MEMORIA"
 source "$HERE/night-shift/lib.sh"
 LOCK="$MEMORIA/lock"
 I=0
+# (2026-09-24, terzo ventaglio, V4#3): i tentativi da variabile — il banco del lock vivo ne chiede 2 e non
+# paga 10 s di attesa a ogni suite; il turno usa il default, 50 x 0,2 s
 until prendi_lock_turno "$LOCK" ciclo-vivo; do
-  I=$((I+1)); [ $I -gt 50 ] && { echo "ciclo-vivo: lock occupato da troppi giri (PID $(cat "$LOCK/pid" 2>/dev/null || echo '?')) — esco senza toccare la memoria" >&2; exit 1; }
+  I=$((I+1)); [ $I -gt "${CICLO_LOCK_TENTATIVI:-50}" ] && { echo "ciclo-vivo: lock occupato da troppi giri (PID $(cat "$LOCK/pid" 2>/dev/null || echo '?')) — esco senza toccare la memoria" >&2; exit 1; }
   sleep 0.2
 done
 trap 'rm -rf "$LOCK"' EXIT

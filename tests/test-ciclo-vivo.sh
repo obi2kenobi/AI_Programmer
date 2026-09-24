@@ -39,7 +39,7 @@ grep -c "^=== CICLO VIVO" <<<"$OUT" >/dev/null && [ ! -d "$C/hub/.ciclo/lock" ] 
   && ok "lock di un giro ucciso (PID morto): ripreso, il giro gira e libera il lock" || ko "lock orfano blocca il giro (rc $RC): $(tail -1 <<<"$OUT")"
 bash -c 'exec -a ciclo-vivo-finto sleep 30' & VIVO=$!
 mkdir -p "$C/hub/.ciclo/lock"; echo "$VIVO" > "$C/hub/.ciclo/lock/pid"
-OUT=$(cd "$C/hub" && ai_timeout 60 bash tools/ciclo-vivo.sh 2>&1); RC=$?
+OUT=$(cd "$C/hub" && CICLO_LOCK_TENTATIVI=2 ai_timeout 60 bash tools/ciclo-vivo.sh 2>&1); RC=$?
 kill "$VIVO" 2>/dev/null; wait "$VIVO" 2>/dev/null
 [ "$RC" -eq 1 ] && grep -c "lock occupato" <<<"$OUT" >/dev/null && ok "lock di un giro VIVO: rispettato (rc 1, detto)" || ko "lock di un giro vivo non rispettato (rc $RC)"
 rm -rf "$C"

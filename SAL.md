@@ -4293,3 +4293,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   (la funzione non c'era), verde ora (7/0). Sabotaggio: senza la riga Closes torna rosso (6/1). Il ramo
   opencode irraggiungibile (con il watchdog da 240 minuti che CLAUDE.md §7 promette) e il test generato
   mai eseguito sono due domande di dominio in DEBITI.md.
+- **Terzo ventaglio, V4#3 — due banchi pagavano attese che non provano niente.**
+  - `tests/test-ciclo-vivo.sh` aspettava i 50 tentativi da 0,2 s del lock vivo (10,8 s). Ora
+    `tools/ciclo-vivo.sh` legge i tentativi da `CICLO_LOCK_TENTATIVI` (default 50, il turno non cambia)
+    e il banco ne chiede 2: da 12,8 a 4,9 s. Sabotaggio: con il lock ignorato torna rosso (7/1).
+  - `tests/test-stdin-timeout.sh` provava i tre wrapper in fila, e ognuno aspettava intera la finestra
+    di 5 s. Ora i tre girano insieme, ognuno col suo file d'esito: da 15,3 a 5,2 s. Sabotaggio: senza il
+    timeout sullo stdin di ask-glm torna rosso (5/1).
+
+  Restano da fare, come stime del giro, `tests/test-ai-timeout.sh` e i casi di `run_guarded` in
+  `tests/test-lib.sh`, dove l'attesa è proprio il caso da provare.
