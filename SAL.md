@@ -3939,3 +3939,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   scrive (`# residuo: <file>`) e i sorgenti si leggono dall'hub. Nei satelliti nati prima, la riga
   `.mirror-boundaries` si toglie alla prossima copia, dicendolo. Banco in
   `tests/test-bootstrap-hooks-propagation.sh`: 2 rossi prima, 2 al sabotaggio.
+- **T6#5 — l'avvio di una sessione azzerava i contatori SAL di tutte le cartelle.**
+  `tools/metodo-reminder-hook.sh` all'avvio cancellava ogni file di contatore: una sessione aperta
+  in un'altra repo azzerava il conteggio di quella in corso, e il promemoria «SAL prima del passo
+  successivo» arrivava in ritardo o mai. Ora il contatore di `tools/pattern-reminder-hook.sh` porta
+  la sessione (`<session_id> <n>`, `sal_conteggio`): un'altra sessione non lo tocca, e una sessione
+  nuova nella stessa cartella riparte da zero. Banco `tests/test-hook-sal-promemoria.sh`: 2 rossi
+  prima, 1 al sabotaggio (la cancellazione rimessa).
+- **T6#4 — il promemoria di fine sessione usa un campo non documentato.** Per la guida agli hook di
+  Claude Code, `hookSpecificOutput.additionalContext` è previsto per UserPromptSubmit, non per
+  Stop. Il promemoria del report di campo potrebbe essere ignorato in silenzio, oppure forzare la
+  continuazione. Da qui non si prova: è in DEBITI (⏳, voce «e»), senza cambiare il codice alla
+  cieca.

@@ -33,7 +33,8 @@ if [ "$EVENT" = "Stop" ]; then
 fi
 
 if [ "$EVENT" = "SessionStart" ]; then
-  rm -f /tmp/ai-programmer-sal-counter.* 2>/dev/null
+  # (T6#5, 2026-09-24): qui si cancellavano i contatori SAL di TUTTE le cartelle — ora il contatore
+  # porta la sessione e riparte da solo (tools/pattern-reminder-hook.sh, sal_conteggio)
   # (settimo patto, 2026-09-09) IL DEBITO SI BRUCIA ALLA RIAPERTURA: se la repo ha
   # DEBITI.md, il riepilogo entra nel contesto dell'apertura — i debiti di dominio come
   # domande singole, i risolvibili da fare prima di procedere. Mai taciti.

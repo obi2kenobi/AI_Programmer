@@ -250,7 +250,7 @@ scorciatoie, dichiarate:
 
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
-| 2026-09-24 | Provare dal vivo, sul Mac: (a) le prove del censore in `sandbox-exec` (il profilo nega le scritture in `~/.npm`: un `npm test` può dare un rinvio falso); (b) quale ramo di `ai_timeout` prende il turno (riga «ambiente:» del log); (c) `ps -p <pid> -o command=` del lock col PID; (d) se `/qwen` e `/nuova-commessa` esistono nel ZCode o in `~/.claude` (nel repo no) | ⏳ IN ATTESA: una notte del turno sul Mac, con il log letto il mattino dopo | letta la riga «ambiente:» e un parere/fusione del censore in sandbox, si scrive l'esito nel SAL e si salda |
+| 2026-09-24 | Provare dal vivo, sul Mac: (a) le prove del censore in `sandbox-exec` (il profilo nega le scritture in `~/.npm`: un `npm test` può dare un rinvio falso); (b) quale ramo di `ai_timeout` prende il turno (riga «ambiente:» del log); (c) `ps -p <pid> -o command=` del lock col PID; (d) se `/qwen` e `/nuova-commessa` esistono nel ZCode o in `~/.claude` (nel repo no); (e) se il promemoria di fine sessione di `tools/metodo-reminder-hook.sh` arriva davvero: usa `hookSpecificOutput.additionalContext` sull'evento Stop, che la documentazione di Claude Code non prevede per Stop (T6#4, letto nella guida agli hook) — potrebbe essere ignorato in silenzio o forzare la continuazione | ⏳ IN ATTESA: una notte del turno sul Mac, con il log letto il mattino dopo | letta la riga «ambiente:» e un parere/fusione del censore in sandbox, si scrive l'esito nel SAL e si salda |
 
 ## La notte dei giri — rinviato risolvibile
 

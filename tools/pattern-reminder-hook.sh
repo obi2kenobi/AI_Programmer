@@ -45,15 +45,25 @@ COMMAND="$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
 # promemoria esisteva solo per il turno notturno (morning-gate), mai per una
 # sessione diurna che edita molto senza toccare SAL.md. Contatore per directory di
 # lavoro: dopo 5 edit senza SAL.md, il promemoria entra nel contesto (mai un blocco).
+# (2026-09-24, notte dei giri, T6#5): il contatore era della CARTELLA, e l'avvio di qualunque sessione
+# (metodo-reminder, SessionStart) cancellava quelli di tutte le cartelle — una sessione aperta in
+# un'altra repo azzerava quella in corso qui. Ora il file porta anche la sessione («<session_id> <n>»):
+# un'altra sessione non lo tocca, una sessione nuova nella stessa cartella riparte da zero.
+SESSIONE="$(jq -r '.session_id // "senza-sessione"' <<<"$INPUT" 2>/dev/null)"
+sal_conteggio() { # il numero di edit di QUESTA sessione in questa cartella (0 se di un'altra sessione)
+  local sid n
+  read -r sid n < "/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")" 2>/dev/null || { echo 0; return; }
+  [ "$sid" = "$SESSIONE" ] && [ "${n:-x}" -ge 0 ] 2>/dev/null && echo "$n" || echo 0
+}
 sal_promemoria() {
   local stato="/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")"
   case "$FILE_PATH" in
-    */SAL.md|SAL.md) : > "$stato" 2>/dev/null; return 1 ;;
+    */SAL.md|SAL.md) echo "$SESSIONE 0" > "$stato" 2>/dev/null; return 1 ;;
   esac
   [ -f "$PWD/SAL.md" ] || return 1
   local n
-  n=$(($(cat "$stato" 2>/dev/null || echo 0) + 1))
-  echo "$n" > "$stato" 2>/dev/null
+  n=$(( $(sal_conteggio) + 1 ))
+  echo "$SESSIONE $n" > "$stato" 2>/dev/null
   [ $((n % 5)) -eq 0 ] || return 1
   return 0
 }
@@ -97,7 +107,7 @@ fi
 
 CTX_SAL=""
 if sal_promemoria; then
-  CTX_SAL="Hai fatto $(( $(cat "/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")" 2>/dev/null || echo 0) )) edit e SAL.md non è tra questi — se in questo giro c'è una scoperta o una correzione, va scritta in SAL.md PRIMA del passo successivo (CLAUDE.md 'keep living documentation' + PROJECT.md del progetto). Un promemoria, non un blocco."
+  CTX_SAL="Hai fatto $(sal_conteggio) edit e SAL.md non è tra questi — se in questo giro c'è una scoperta o una correzione, va scritta in SAL.md PRIMA del passo successivo (CLAUDE.md 'keep living documentation' + PROJECT.md del progetto). Un promemoria, non un blocco."
 fi
 
 [ -z "$CTX_SENS" ] && [ -z "$CTX_SAL" ] && exit 0

@@ -38,6 +38,23 @@ echo "$OUT" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
   && ok "edit di SAL.md resetta il contatore (il conteggio ricomincia: dice 5, non 10)" \
   || ko "reset non funzionante: $(echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | head -1)"
 
+# (2026-09-24, notte dei giri, T6#5): l'avvio di una sessione (metodo-reminder, SessionStart) cancellava
+# i contatori di TUTTE le cartelle: una sessione aperta in un'altra repo azzerava quella in corso qui.
+# Ora il contatore e' della sessione (session_id dell'input): un'altra sessione non lo tocca, e una
+# sessione nuova nella stessa cartella riparte da zero.
+edit_s() { echo "{\"tool_name\":\"Edit\",\"session_id\":\"$1\",\"tool_input\":{\"file_path\":\"$2\"}}" | (cd "$TMP/con-sal" && bash "$HOOK"); }
+edit "SAL.md" >/dev/null 2>&1
+for f in a b c; do edit_s SESS-A "src/$f.js" >/dev/null 2>&1; done
+mkdir -p "$TMP/altra-repo"; echo '{"hook_event_name":"SessionStart","session_id":"SESS-B"}' | (cd "$TMP/altra-repo" && bash "$HERE/tools/metodo-reminder-hook.sh") >/dev/null 2>&1
+edit_s SESS-A "src/d.js" >/dev/null 2>&1
+OUT=$(edit_s SESS-A "src/e.js" 2>/dev/null)
+jq -r '.hookSpecificOutput.additionalContext // empty' <<<"$OUT" 2>/dev/null | grep -c "Hai fatto 5 edit" >/dev/null \
+  && ok "una sessione aperta in un'altra repo non azzera il contatore di questa" || ko "contatore azzerato da un'altra sessione (OUT=$(head -c 120 <<<"$OUT"))"
+for f in f g h i; do edit_s SESS-C "src/$f.js" >/dev/null 2>&1; done
+OUT=$(edit_s SESS-C "src/j.js" 2>/dev/null)
+jq -r '.hookSpecificOutput.additionalContext // empty' <<<"$OUT" 2>/dev/null | grep -c "Hai fatto 5 edit" >/dev/null \
+  && ok "una sessione nuova nella stessa cartella riparte da zero (5 suoi edit, non 11)" || ko "sessione nuova: il conteggio non riparte (OUT=$(head -c 160 <<<"$OUT"))"
+
 # senza SAL.md nel progetto: mai promemoria
 edit_ns() { echo "{\"tool_name\":\"Edit\",\"tool_input\":{\"file_path\":\"$1\"}}" | (cd "$TMP/senza-sal" && bash "$HOOK"); }
 for i in 1 2 3 4 5 6; do edit_ns "x$i.js" >/dev/null 2>&1; done
