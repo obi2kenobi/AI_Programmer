@@ -39,6 +39,13 @@ printf '#!/bin/bash\nset -o pipefail\nhead -3 f %s x %s echo si\necho "testo %s 
 [ "$(python3 "$HERE/tools/e002-siti.py" "$TMP/forma.sh")" = "$TMP/forma.sh:3" ] \
   && ok "il rilevatore prende «head | grep -q» e non il testo di un messaggio" || ko "rilevatore: $(python3 "$HERE/tools/e002-siti.py" "$TMP/forma.sh")"
 
+# (2026-09-24, terzo ventaglio): una LIBRERIA inclusa con `source` non scrive `pipefail`, ma gira sotto il
+# pipefail di chi la include — il rilevatore la saltava, e night-shift/lib.sh non e' mai stato guardato.
+printf 'f() { grep x a %s y; }\n' "$PQ" > "$TMP/libreria.sh"
+printf '#!/bin/bash\nset -o pipefail\nsource "$(dirname "$0")/libreria.sh"\n' > "$TMP/usa.sh"
+[ "$(python3 "$HERE/tools/e002-siti.py" "$TMP/usa.sh" "$TMP/libreria.sh")" = "$TMP/libreria.sh:1" ] \
+  && ok "il rilevatore guarda anche le librerie incluse da uno script sotto pipefail" || ko "libreria inclusa sotto pipefail saltata: «$(python3 "$HERE/tools/e002-siti.py" "$TMP/usa.sh" "$TMP/libreria.sh")»"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

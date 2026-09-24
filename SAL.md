@@ -4103,3 +4103,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   sonde partono da `$DIR`, sotto tetto; se il ramo non li ha, il gate resta chiuso. Banco in
   `tests/test-lib.sh`: 2 rossi prima, 2 al sabotaggio (il `night-shift/night-shift.sh` di prima). L'auto-esame
   dell'hub (ciclo-vivo, banco veloce) resta sulla copia viva per disegno: dopo l'allineamento è main.
+- **Terzo ventaglio, V1#3 — «GIÀ IMPLEMENTATA?» contava la definizione come chiamata.** Il turno
+  diceva «chiamata» se `nome(` compariva nel file, vero già sulla riga che la definisce; e `function
+  nome` prendeva anche `nomeBar`. Ogni issue che nominava `foo()` era «già implementata», saltata
+  per sempre. Ora c'è `funzione_definita_e_chiamata` in `night-shift/lib.sh`: definita, e chiamata su
+  un'altra riga. Banco in `tests/test-lib.sh`: 2 rossi prima, 1 al sabotaggio (tolta l'esclusione
+  della definizione). Resta una domanda di dominio, in DEBITI: una correzione su una funzione davvero
+  cablata viene ancora saltata. Come si distingue?
+- **Il rilevatore E-002 non guardava le librerie incluse.** Scrivendo la cura qui sopra ho messo un
+  `grep … | grep -vqE` in `night-shift/lib.sh`, e il cricchetto E-002 è rimasto verde.
+  `tools/e002-siti.py` guardava solo i file che contengono la parola `pipefail`, e le librerie incluse
+  con `source` (`night-shift/lib.sh`, `tools/profilo.sh`, `llm/_timeout.sh`, `llm/_usage.sh`) non la
+  contengono, anche se girano sempre sotto il pipefail di chi le include. Ora conta anche un file
+  incluso da uno script sotto pipefail. Banco in `tests/test-e002-codice.sh` (libreria di prova):
+  rosso prima; il mio sito rimesso in `night-shift/lib.sh` è rosso. Nessun altro sito nelle librerie.

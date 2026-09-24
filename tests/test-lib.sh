@@ -200,6 +200,22 @@ grep -c 'gate_banchi "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && o
 VIVI=$(sed -n '/IL GATE DEL FIXER/,/&& GATE_OK=1/p' "$HERE/night-shift/night-shift.sh" | grep -E 'bash "\$HERE/\.\./tools/(banco-passaggio|giri-ignoranti)\.sh"' || true)
 [ -z "$VIVI" ] && ok "il gate del fixer giudica col banco e le sonde del ramo, non della copia viva" || ko "banco/sonde del gate dalla copia viva: $VIVI"
 
+# --- (2026-09-24, terzo ventaglio, V1#3): «GIA' IMPLEMENTATA?» — la funzione «e' chiamata» se `nome(` compare
+# nel file: vero gia' sulla riga che la DEFINISCE. Ogni issue che nomina foo() veniva saltata per sempre.
+if command -v funzione_definita_e_chiamata >/dev/null; then
+  FC=$(mktemp -d)
+  printf 'function foo(a) {\n  return a;\n}\nfunction fooBar() {}\n' > "$FC/solo-def.gs"
+  printf 'function foo(a) {\n  return a;\n}\nfunction usa() { return foo(1); }\n' > "$FC/chiamata.gs"
+  printf 'function fooBar() {}\nvar x = fooBar();\n' > "$FC/altra.gs"
+  funzione_definita_e_chiamata "$FC/solo-def.gs" foo && ko "funzione solo definita data per chiamata (la riga della definizione conta come chiamata)" || ok "funzione solo definita: non «chiamata»"
+  funzione_definita_e_chiamata "$FC/chiamata.gs" foo && ok "funzione definita e chiamata altrove: si'" || ko "funzione definita e chiamata non riconosciuta"
+  funzione_definita_e_chiamata "$FC/altra.gs" foo && ko "fooBar scambiata per foo" || ok "fooBar non e' foo"
+  rm -rf "$FC"
+else
+  ko "funzione_definita_e_chiamata assente da night-shift/lib.sh"
+fi
+grep -c 'funzione_definita_e_chiamata "\$TF" "\$FN"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il controllo GIA' IMPLEMENTATA usa la funzione" || ko "il controllo GIA' IMPLEMENTATA conta la definizione come chiamata"
+
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
 # (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
 # («Mask, don't omit») e del pattern segreto-come-impronta — «segreto <impronta> · N caratteri».

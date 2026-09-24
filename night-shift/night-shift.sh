@@ -890,7 +890,7 @@ $BODY"
         if [ -f "$TF" ]; then
           GIA_FATTO=""
           for FN in $FN_NOMINATA; do
-            if grep -q "function $FN" "$TF" && grep -qE "$FN\(" "$TF"; then
+            if funzione_definita_e_chiamata "$TF" "$FN"; then   # V1#3: la definizione non e' una chiamata
               GIA_FATTO="$FN ($(grep -n "function $FN" "$TF" | head -1 | cut -d: -f1))"
               break
             fi

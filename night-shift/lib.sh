@@ -128,6 +128,16 @@ gate_banchi() {
   echo "TOTALE $pass $fail"
 }
 
+# funzione_definita_e_chiamata <file> <nome>: 0 se <file> DEFINISCE `function <nome>(` e la CHIAMA su un'altra
+# riga. (2026-09-24, terzo ventaglio, V1#3): il turno contava `nome(` ovunque — vero gia' sulla riga della
+# definizione — e `function nome` prendeva anche nomeBar: ogni issue che nominava foo() era «gia'
+# implementata» e saltata per sempre.
+funzione_definita_e_chiamata() {
+  local f="$1" n="$2" def="function[[:space:]]+$2[[:space:]]*\\("
+  grep -qE "$def" "$f" || return 1
+  grep -E "(^|[^A-Za-z0-9_\$.])$n[[:space:]]*\\(" "$f" | grep -vcE "$def" >/dev/null   # -c, non -q: E-002
+}
+
 # ambiente_turno: una riga per il log — la bash, il ramo di ai_timeout, la sandbox (2026-09-23, notte dei
 # giri, T3#6). Il turno gira sul Mac, i banchi su Linux: senza questa riga le differenze fra i due
 # (il ramo perl del timeout, la sandbox) non si misurano dal log.

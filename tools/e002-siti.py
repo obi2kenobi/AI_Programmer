@@ -36,10 +36,30 @@ def dentro_virgolette(riga, pos):
     return q is not None
 
 
-def siti(percorso):
-    """I siti file:riga di un file, solo se il file e' sotto pipefail (altrove la forma non morde)."""
+INCLUDE = re.compile(r"^\s*(?:source|\.)\s+(.*)$", re.M)   # la riga di inclusione; i nomi .sh si prendono tutti
+NOME_SH = re.compile(r"([A-Za-z0-9_.-]+\.sh)\b")
+
+
+def incluse_sotto_pipefail(percorsi):
+    """I nomi dei file che uno script sotto pipefail include con `source`/`.` — girano sotto il SUO pipefail.
+    (2026-09-24, terzo ventaglio): night-shift/lib.sh, llm/_timeout.sh e simili non scrivono `pipefail`,
+    e il rilevatore li saltava sempre, benche' girino solo dentro script che lo hanno."""
+    nomi = set()
+    for p in percorsi:
+        try:
+            t = open(p, encoding="utf-8", errors="replace").read()
+        except OSError:
+            continue
+        if "pipefail" in t:
+            for m in INCLUDE.finditer(t):
+                nomi.update(NOME_SH.findall(m.group(1)))
+    return nomi
+
+
+def siti(percorso, incluse=frozenset()):
+    """I siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo include chi lo dichiara."""
     testo = open(percorso, encoding="utf-8", errors="replace").read()
-    if "pipefail" not in testo:
+    if "pipefail" not in testo and percorso.rsplit("/", 1)[-1] not in incluse:
         return []
     trovati = []
     for n, riga in enumerate(testo.split("\n"), start=1):
@@ -51,6 +71,7 @@ def siti(percorso):
 
 
 if __name__ == "__main__":
+    incluse = incluse_sotto_pipefail(sys.argv[1:])
     for f in sys.argv[1:]:
-        for s in siti(f):
+        for s in siti(f, incluse):
             print(s)
