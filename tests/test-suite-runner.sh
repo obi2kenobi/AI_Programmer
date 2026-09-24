@@ -55,6 +55,21 @@ rm -rf "$SB3"
 grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify" && ok "dichiarato in .night-verify" \
   || ko ".night-verify non invoca suite.sh"
 
+# (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo, non i banchi eseguiti — col
+# ciclo sabotato (`[ "$N" -gt 5 ] && continue`) stampava «170/170 superati» avendone eseguiti 5. Qui 7
+# banchi lasciano ognuno un segno, e il runner deve eseguirli tutti; e un runner che ne salta uno e' rosso.
+SB3=$(mktemp -d /tmp/test-suite3.XXXXXX); mkdir -p "$SB3/tests"
+for i in 1 2 3 4 5 6 7; do printf '#!/bin/bash\ntouch "%s/segno-%s"\necho "1 OK, 0 FAIL"\n' "$SB3" "$i" > "$SB3/tests/test-s$i.sh"; done
+OUT=$(bash "$RUNNER" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && [ "$(ls "$SB3"/segno-* 2>/dev/null | wc -l | tr -d ' ')" -eq 7 ] && grep -c "7/7 file superati" <<<"$OUT" >/dev/null \
+  && ok "7 banchi: tutti eseguiti (7 segni) e «7/7»" || ko "banchi eseguiti: $(ls "$SB3"/segno-* 2>/dev/null | wc -l | tr -d ' ') su 7, uscita: $(tail -1 <<<"$OUT")"
+# il runner sabotato come nel giro: salta dal sesto in poi — deve dirlo, non stampare 7/7
+sed 's/^  N=\$((N+1))$/  N=$((N+1)); [ "$N" -gt 5 ] \&\& continue/' "$RUNNER" > "$SB3/runner-saltante.sh"
+grep -c 'N" -gt 5' "$SB3/runner-saltante.sh" >/dev/null || ko "il sabotaggio del runner non si e' applicato: la riga N=… e' cambiata"
+OUT=$(bash "$SB3/runner-saltante.sh" "$SB3" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c "7/7 file superati" <<<"$OUT" >/dev/null && ok "un runner che salta banchi e' rosso, non «7/7»" || ko "runner che salta 2 banchi: rc $RC — $(tail -1 <<<"$OUT")"
+rm -rf "$SB3"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -4125,3 +4125,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   commit non firmato con albero pulito (nessun deploy, e lo dice), e clasp che esce 1 (STORICO dice
   FALLITO, il pacchetto resta). Verdi sul codice di oggi. I due sabotaggi del giro (S20a: controllo
   del commit tolto; S20b: `|| true` su clasp) ora sono rossi: 2 e 1.
+- **Terzo ventaglio, V2#2 — il riepilogo della suite contava i giri, non i banchi superati.**
+  `tools/suite.sh` stampava `$N/$TOT` con N contato all'inizio del ciclo. Il giro V2 l'ha provato: con
+  `[ "$N" -gt 5 ] && continue` la suite stampava «170/170 superati» in 22 s, dopo 5 banchi, e i tre
+  guardiani del runner restavano verdi. È il cancello di tutto l'hub (`.night-verify`). Ora si contano i
+  banchi SUPERATI dopo il loro verdetto, e mancarne uno è rosso. Banco in
+  `tests/test-suite-runner.sh`: sette banchi con un segno ciascuno, e il runner sabotato dentro il
+  banco (salta dal sesto). Rosso prima, rosso al sabotaggio (controllo finale tolto: «5/7» con rc 0).
+  AGENTS.md cita ora la riga giusta (`tools/suite.sh:53`).

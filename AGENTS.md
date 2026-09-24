@@ -104,7 +104,7 @@ Consulta prima di reinventare; dopo averne pagato uno nuovo, scrivilo.
 
 ## 5. La verifica: come esco da qui
 
-`bash tools/suite.sh` — la suite completa (verde = «Suite test hub: N/N file superati», `tools/suite.sh:46`); poi le altre righe di
+`bash tools/suite.sh` — la suite completa (verde = «Suite test hub: N/N file superati», `tools/suite.sh:53`); poi le altre righe di
 `.night-verify` (shellcheck, py-gate, privacy-check, indice SAL), UNA ALLA VOLTA come fa il turno.
 (2026-09-23, notte dei giri: qui si insegnava a eseguire il file intero con bash, che esce 0 senza far girare un
 solo banco — la riga `@540 …` e' un budget che capisce solo il turno, e l'rc e' quello dell'ultima riga.) Se touchi `SAL.md`, rigenera l'indice

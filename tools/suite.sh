@@ -19,7 +19,7 @@ set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 cd "$DIR"
 
-N=0
+N=0; SUPERATI=0
 TOT=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
 [ "$TOT" -eq 0 ] && { echo "⛔ suite: nessun tests/test-*.sh trovato"; exit 1; }
 T0=$(date +%s)
@@ -41,6 +41,13 @@ for t in tests/test-*.sh; do
     echo "$OUT" | tail -5
     exit 1
   fi
+  SUPERATI=$((SUPERATI+1))
 done
+# (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo (N), non i banchi superati — un
+# ciclo che saltava banchi stampava lo stesso «TOT/TOT». Si conta dopo il verdetto, e mancarne uno e' rosso.
+if [ "$SUPERATI" -ne "$TOT" ]; then
+  echo "FALLITO: superati $SUPERATI banchi su $TOT — il runner ne ha saltati $((TOT - SUPERATI))"
+  exit 1
+fi
 echo "Durata della suite: $(( $(date +%s) - T0 )) s"
-echo "Suite test hub: $N/$TOT file superati"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono
+echo "Suite test hub: $SUPERATI/$TOT file superati"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono
