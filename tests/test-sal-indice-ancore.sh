@@ -46,6 +46,41 @@ grep -q "<!-- SAL-INDICE: generato da tools/sal-indice.sh" "$HERE/SAL.md" \
   && ok "il SAL vero porta il marker dell'indice" \
   || ko "il SAL vero ha perso il marker SAL-INDICE (sal-indice duplicherebbe)"
 
+# (2026-09-24, quinto ventaglio, R1 R4): l'ancora fondeva ogni gruppo di non-parola in UN trattino. GitHub
+# toglie la punteggiatura e fa di OGNI spazio un trattino, senza fondere: «(8) — l'hub: n.2» da' «8--lhub-n2».
+# Sul diario vero 146 link su 146 non combaciavano. ASSUNTO dichiarato: l'algoritmo e' quello di
+# github-slugger (la libreria di riferimento), non verificato contro github.com da questa sessione.
+printf '# T\n\nintro\n\n### 2026-08-27 (8) — l'"'"'hub: n.2\n\nx\n\n### Doppio\n\ny\n\n### Doppio\n\nz\n' > "$TMP/SAL.md"
+bash "$TMP/tools/sal-indice.sh" >/dev/null 2>&1
+grep -c '](#2026-08-27-8--lhub-n2)' "$TMP/SAL.md" >/dev/null && ok "R1 R4: punteggiatura tolta, ogni spazio un trattino (8--lhub-n2)" \
+  || ko "R1 R4: ancora non GitHub — $(grep '2026-08-27' "$TMP/SAL.md" | head -1)"
+grep -c '](#doppio-1)' "$TMP/SAL.md" >/dev/null && ok "R1 R4: il secondo titolo uguale prende il suffisso -1, come su GitHub" \
+  || ko "R1 R4: duplicati senza suffisso — $(grep -c '](#doppio)' "$TMP/SAL.md") link a #doppio"
+
+# (2026-09-24, quinto ventaglio, R1 R5): l'indice di SAL-ARCHIVIO.md non lo rigenerava nessuno — copiato alla
+# separazione, 30 link su 167 puntavano a voci rimaste in SAL.md. Ora il tool rigenera anche l'archivio.
+printf '# T\n\nintro\n\n### Voce del diario\n\nx\n' > "$TMP/SAL.md"
+printf '# A\n\nintro\n\n<!-- SAL-INDICE: generato da tools/sal-indice.sh — non editare a mano -->\n## Indice del diario\n\n- [Voce del diario](#voce-del-diario)\n\n### Voce archiviata\n\ny\n' > "$TMP/SAL-ARCHIVIO.md"
+bash "$TMP/tools/sal-indice.sh" >/dev/null 2>&1
+grep -c '](#voce-archiviata)' "$TMP/SAL-ARCHIVIO.md" >/dev/null && ! grep -c '](#voce-del-diario)' "$TMP/SAL-ARCHIVIO.md" >/dev/null \
+  && ok "R1 R5: l'indice dell'archivio elenca le sue voci, non quelle del diario" || ko "R1 R5: indice dell'archivio fermo: $(grep '^- \[' "$TMP/SAL-ARCHIVIO.md" | tr '\n' ' ')"
+# sul vero: ogni link dei due indici ha la sua voce nello stesso file
+for F in SAL.md SAL-ARCHIVIO.md; do
+  MORTI=$(python3 - "$HERE/$F" <<'PY'
+import re, sys
+t = open(sys.argv[1], encoding="utf-8").read()
+def slug(v): return re.sub(r"[^\w\- ]", "", v.lower()).replace(" ", "-")
+visti, ancore = {}, set()
+for h in re.findall(r"^#{1,6} (.+?)\s*$", t, flags=re.M):
+    b = slug(h); n = visti.get(b, 0); visti[b] = n + 1
+    ancore.add(b if n == 0 else f"{b}-{n}")
+link = re.findall(r"^- \[.*\]\(#([^)]+)\)$", t, flags=re.M)
+print(sum(1 for l in link if l not in ancore))
+PY
+)
+  [ "$MORTI" = 0 ] && ok "R1 R4-R5: $F — nessun link dell'indice senza la sua voce" || ko "R1 R4-R5: $F — $MORTI link senza voce"
+done
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

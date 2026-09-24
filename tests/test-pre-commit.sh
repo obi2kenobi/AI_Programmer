@@ -213,6 +213,15 @@ grep -c 'patterns/lock-finto.md' <<<"$OUT" >/dev/null && ok "file ancorato in st
 git -C "$SB" add patterns/lock-finto.md; OUT=$(gancio)
 ! grep -c 'dice ancora il vero' <<<"$OUT" >/dev/null && ok "file ancorato e pattern insieme: nessun avviso" || ko "avviso anche col pattern in stage: $OUT"
 git -C "$SB" rm -rq --cached night-shift/lib.sh patterns/lock-finto.md >/dev/null
+# (2026-09-24, quinto ventaglio, R1 R5): SAL-ARCHIVIO.md e' storia congelata — cita file e righe che c'erano
+# quando fu scritto. Da quando sal-indice rigenera anche il suo indice il file entra in stage, e i controlli 3
+# e 6 lo bloccavano su citazioni vere all'epoca. Lo stesso testo nel SAL vivo resta rosso.
+printf '# A\n\nvedi `morto-da-tempo.sh` e `Cache.gs:14`\n' > "$SB/SAL-ARCHIVIO.md"; git -C "$SB" add SAL-ARCHIVIO.md
+OUT=$(gancio); RC=$?
+[ "$RC" -eq 0 ] && ok "R1 R5: l'archivio del SAL non si controlla sulle citazioni (storia)" || ko "R1 R5: l'archivio bloccato (rc=$RC): $(grep '⛔' <<<"$OUT" | head -2 | tr '\n' ' ')"
+git -C "$SB" rm -q --cached SAL-ARCHIVIO.md; mv "$SB/SAL-ARCHIVIO.md" "$SB/SAL.md"; git -C "$SB" add SAL.md; OUT=$(gancio); RC=$?
+[ "$RC" -ne 0 ] && ok "R1 R5: la stessa citazione morta nel SAL vivo resta rossa" || ko "R1 R5: l'esenzione si e' allargata al SAL vivo"
+git -C "$SB" rm -q --cached SAL.md; rm -f "$SB/SAL.md"
 [ "$(git -C "$HERE" diff --cached --name-only 2>/dev/null)" = "$INDICE_PRIMA" ] \
   && ok "Q23: l'indice dell'hub e' com'era prima del test" \
   || ko "Q23: il test ha cambiato l'indice dell'hub: $(git -C "$HERE" diff --cached --name-only | tr '\n' ' ')"

@@ -20656,7 +20656,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
+      "source_location": "L2840"
     },
     {
       "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
@@ -20668,7 +20668,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
+      "source_location": "L2898"
     },
     {
       "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
@@ -20680,7 +20680,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
+      "source_location": "L2942"
     },
     {
       "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
@@ -20692,7 +20692,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
+      "source_location": "L2995"
     },
     {
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
@@ -20704,7 +20704,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
+      "source_location": "L2806"
     },
     {
       "id": "tests_test_campo_triage",
@@ -23353,7 +23353,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (10) \u2014 il report dal campo su repo-g: verificato,processato, chiuso",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3074"
+      "source_location": "L3044"
     },
     {
       "id": "sal_archivio_2026_08_26_2_report_repo_g_versione_aggiornata_tutto_gi\u00e0_chiuso_due_novit\u00e0",
@@ -23365,7 +23365,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-26 (2) \u2014 report repo-g versione aggiornata: tutto gia chiuso, due novita",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3173"
+      "source_location": "L3143"
     },
     {
       "id": "sal_archivio_2026_08_26_3_standard_non_opzione_il_metodo_diventa_meccanico",
@@ -23377,7 +23377,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-26 (3) \u2014 \u00abstandard non opzione\u00bb: il metodo diventa meccanico",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3143"
+      "source_location": "L3113"
     },
     {
       "id": "sal_archivio_2026_08_26_4_il_censimento_bc_diventa_aggiornabile_e_confessa_0_verificati_su_88",
@@ -23389,7 +23389,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-26 (4) \u2014 il censimento bc diventa aggiornabile (e confessa: 0 verificati su 88)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3190"
+      "source_location": "L3160"
     },
     {
       "id": "sal_archivio_2026_08_26_5_la_pozza_entra_il_catalogo_vive_nell_hub_i_mancanti_sono_170",
@@ -23401,7 +23401,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-26 (5) \u2014 la pozza entra: il catalogo vive nell'hub, i mancanti sono 170",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3216"
+      "source_location": "L3186"
     },
     {
       "id": "sal_archivio_2026_08_26_6_censimento_bc_completato_al_vivo_203_258_anomalie_registrate",
@@ -23413,7 +23413,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-26 (6) \u2014 censimento bc completato al vivo: 203/258, anomalie registrate",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3236"
+      "source_location": "L3206"
     },
     {
       "id": "sal_archivio_2026_08_26_il_report_dei_tagli_il_canone_ha_retto_e_cresce_di_cinque_pezzi",
@@ -23425,7 +23425,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-26 \u2014 il report dei tagli: il canone ha retto, e cresce di cinque pezzi",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3102"
+      "source_location": "L3072"
     },
     {
       "id": "sal_archivio_2026_08_27_2_distribuito_chiuso_l_esperimento_che_non_si_presume",
@@ -23437,7 +23437,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 (2) \u2014 distribuito chiuso: l'esperimento che non si presume",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3259"
+      "source_location": "L3229"
     },
     {
       "id": "sal_archivio_2026_08_27_3_dieci_giri_di_coerenza_il_sistema_\u00e8_collegato_tre_rotture_trovate_e_chiuse",
@@ -23449,7 +23449,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 (3) \u2014 dieci giri di coerenza: il sistema e collegato, tre rotture trovate e chiuse",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3273"
+      "source_location": "L3243"
     },
     {
       "id": "sal_archivio_2026_08_27_4_venti_giri_lenti_nuove_mutazione_dei_guardiani_e_ci\u00f2_che_ha_rivelato",
@@ -23461,7 +23461,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 (4) \u2014 venti giri, lenti nuove: mutazione dei guardiani e cio che ha rivelato",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3287"
+      "source_location": "L3257"
     },
     {
       "id": "sal_archivio_2026_08_27_5_venti_giri_terza_serie_la_vetrina_pubblica_era_ferma_a_tre_giorni_fa",
@@ -23473,7 +23473,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 (5) \u2014 venti giri, terza serie: la vetrina pubblica era ferma a tre giorni fa",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3304"
+      "source_location": "L3274"
     },
     {
       "id": "sal_archivio_2026_08_27_6_terzo_report_repo_g_la_riverifica_indipendente_chiude_il_loop",
@@ -23485,7 +23485,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 (6) \u2014 terzo report repo-g: la riverifica indipendente chiude il loop",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3314"
+      "source_location": "L3284"
     },
     {
       "id": "sal_archivio_2026_08_27_7_primo_report_dal_campo_nel_formato_nuovo_pattern_19_repo_h_quattro_proposte_adottate",
@@ -23497,7 +23497,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 (7) \u2014 primo report dal campo nel formato nuovo: pattern 19, repo-h, quattro proposte adottate",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3331"
+      "source_location": "L3301"
     },
     {
       "id": "sal_archivio_2026_08_27_il_report_dal_campo_diventa_sistematico_proposta_di_luca",
@@ -23509,7 +23509,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-27 \u2014 il report dal campo diventa sistematico (proposta di luca)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3246"
+      "source_location": "L3216"
     },
     {
       "id": "sal_archivio_riepilogo_dei_tre_set_7_ciclo_strumenti_dogfood_giudizio",
@@ -23521,7 +23521,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo dei tre set (7\u00b0 ciclo) \u2014 \u00abstrumenti, dogfood, giudizio\u00bb",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3051"
+      "source_location": "L3021"
     },
     {
       "id": "tests_test_giri_ignoranti",
@@ -24133,7 +24133,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21 \u2014 assemblaggio del sistema",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L207"
+      "source_location": "L177"
     },
     {
       "id": "sal_archivio_2026_08_21_chiusura_dei_5_giri_autonomi_su_un_secondo_progetto_onboardato_cosa_ha_funzionato_nel_processo",
@@ -24145,7 +24145,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21 \u2014 chiusura dei 5 giri autonomi su un secondo progetto onboardato: cosa ha funzionato nel processo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L985"
+      "source_location": "L955"
     },
     {
       "id": "sal_archivio_2026_08_21_giro_1_di_5_su_un_progetto_onboardato_due_bug_della_stessa_famiglia_di_18_un_secondo_pattern_nuovo",
@@ -24157,7 +24157,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21 \u2014 giro 1 di 5 su un progetto onboardato: due bug della stessa famiglia di (18), un secondo pattern nuovo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L918"
+      "source_location": "L888"
     },
     {
       "id": "sal_archivio_2026_08_21_giro_2_sullo_stesso_progetto_onboardato_un_terzo_pattern_sul_test_non_sul_fix",
@@ -24169,7 +24169,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21 \u2014 giro 2 sullo stesso progetto onboardato: un terzo pattern, sul test non sul fix",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L953"
+      "source_location": "L923"
     },
     {
       "id": "sal_archivio_2026_08_21_giro_3_sullo_stesso_progetto_onboardato_un_addendum_non_un_pattern_nuovo",
@@ -24181,7 +24181,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21 \u2014 giro 3 sullo stesso progetto onboardato: un addendum, non un pattern nuovo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L972"
+      "source_location": "L942"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_10_giro_5_una_convenzione_di_dominio_inventata_non_confermata",
@@ -24193,7 +24193,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (10) \u2014 giro 5: una convenzione di dominio inventata, non confermata",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L693"
+      "source_location": "L663"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_11_giro_6_una_regressione_vera_e_cosa_fa_davvero_il_gate",
@@ -24205,7 +24205,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (11) \u2014 giro 6: una regressione vera, e cosa fa davvero il gate",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L708"
+      "source_location": "L678"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_12_giro_7_verifica_visiva_non_vedeva_undefined",
@@ -24217,7 +24217,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (12) \u2014 giro 7: verifica-visiva non vedeva \"undefined\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L731"
+      "source_location": "L701"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_13_giro_8_due_commesse_gemelle_un_conflitto_reale_e_un_buco_nel_gate",
@@ -24229,7 +24229,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (13) \u2014 giro 8: due commesse gemelle, un conflitto reale, e un buco nel gate",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L748"
+      "source_location": "L718"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_14_giro_9_gate_esito_sh_su_dati_veri_non_su_un_test_giocattolo",
@@ -24241,7 +24241,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (14) \u2014 giro 9: gate-esito.sh su dati veri, non su un test giocattolo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L773"
+      "source_location": "L743"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_15_giro_10_closes_multiplo_e_prima_commessa_chore_entrambi_puliti",
@@ -24253,7 +24253,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (15) \u2014 giro 10: closes multiplo e prima commessa chore, entrambi puliti",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L804"
+      "source_location": "L774"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_16_giri_11_12_la_propria_citazione_non_verificata_trovata_verificandola",
@@ -24265,7 +24265,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (16) \u2014 giri 11/12: la propria citazione non verificata, trovata verificandola",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L830"
+      "source_location": "L800"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_17_le_due_correzioni_in_sospeso_eseguite_col_s\u00ec_di_luca",
@@ -24277,7 +24277,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (17) \u2014 le due correzioni in sospeso, eseguite col si di luca",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L850"
+      "source_location": "L820"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_18_un_bug_reale_su_un_progetto_vero_apre_una_lente_mancante_nel_roster",
@@ -24289,7 +24289,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (18) \u2014 un bug reale su un progetto vero apre una lente mancante nel roster",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L876"
+      "source_location": "L846"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_2_il_bypass_dell_allowlist_chiuso_con_l_opzione_c_di_luca",
@@ -24301,7 +24301,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (2) \u2014 il bypass dell'allowlist chiuso con l'opzione (c) di luca",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L405"
+      "source_location": "L375"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_2_il_primo_giro_di_audit_commesse_3_commesse_su_4_difettose",
@@ -24313,7 +24313,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (2) \u2014 il primo giro di /audit-commesse: 3 commesse su 4 difettose",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L491"
+      "source_location": "L461"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_3_gate_summary_i_dati_promessi_diventano_leggibili",
@@ -24325,7 +24325,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (3) \u2014 gate-summary: i dati promessi diventano leggibili",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L418"
+      "source_location": "L388"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_3_il_raccolto_di_repo_a_entra_18_pattern_vivi",
@@ -24337,7 +24337,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (3) \u2014 il raccolto di repo-a entra: 18 pattern vivi",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L511"
+      "source_location": "L481"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_4_quattro_ambiti_mancanti_nel_roster_chiesti_da_luca_dopo_l_analisi",
@@ -24349,7 +24349,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (4) \u2014 quattro ambiti mancanti nel roster, chiesti da luca dopo l'analisi",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L522"
+      "source_location": "L492"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_5_due_giri_del_pilota_chiusi_end_to_end_e_un_vincolo_scoperto_sul_vivo",
@@ -24361,7 +24361,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (5) \u2014 due giri del pilota chiusi end-to-end, e un vincolo scoperto sul vivo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L561"
+      "source_location": "L531"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_6_giro_1_dei_3_giri_con_test_autonomi_audit_commessa_alla_prova",
@@ -24373,7 +24373,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (6) \u2014 giro 1 dei \"3 giri con test autonomi\": audit-commessa alla prova",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L588"
+      "source_location": "L558"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_7_giro_2_dei_3_giri_autonomi_verifica_visiva_su_un_artefatto_vero",
@@ -24385,7 +24385,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (7) \u2014 giro 2 dei \"3 giri autonomi\": verifica-visiva su un artefatto vero",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L622"
+      "source_location": "L592"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_8_giro_3_dei_3_giri_autonomi_la_lente_sicurezza_di_dev_critic_alla_prova",
@@ -24397,7 +24397,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (8) \u2014 giro 3 dei \"3 giri autonomi\": la lente sicurezza di dev-critic alla prova",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L645"
+      "source_location": "L615"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_9_luca_chiede_altri_10_giri_giro_4_design_assente",
@@ -24409,7 +24409,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte (9) \u2014 luca chiede altri 10 giri: giro 4, design assente",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L680"
+      "source_location": "L650"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_dev_critic_il_critico_costruttivo_diventa_un_comando_non_un_abitudine",
@@ -24421,7 +24421,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte \u2014 dev-critic: il critico costruttivo diventa un comando, non un'abitudine",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L355"
+      "source_location": "L325"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_dev_critic_verifica_la_review_opus_un_fix_confermato_solo_a_met\u00e0",
@@ -24433,7 +24433,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte \u2014 dev-critic verifica la review opus: un fix confermato solo a meta",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L373"
+      "source_location": "L343"
     },
     {
       "id": "sal_archivio_2026_08_21_notte_le_interazioni_col_giorno_diventano_workflow_del_sistema",
@@ -24445,7 +24445,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, notte \u2014 le interazioni col giorno diventano workflow del sistema",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L480"
+      "source_location": "L450"
     },
     {
       "id": "sal_archivio_2026_08_21_nuova_regola_qui_solo_metodo_mai_il_nome_dei_progetti_onboardati",
@@ -24457,7 +24457,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21 \u2014 nuova regola: qui solo metodo, mai il nome dei progetti onboardati",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L907"
+      "source_location": "L877"
     },
     {
       "id": "sal_archivio_2026_08_21_ore_12_prima_lezione_operativa_del_gate_e_chi_la_firma",
@@ -24469,7 +24469,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, ore 12 \u2014 prima lezione operativa del gate (e chi la firma)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L214"
+      "source_location": "L184"
     },
     {
       "id": "sal_archivio_2026_08_21_pomeriggio_graphify_entra_nel_sistema_come_strato_di_navigazione",
@@ -24481,7 +24481,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, pomeriggio \u2014 graphify entra nel sistema come strato di navigazione",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L225"
+      "source_location": "L195"
     },
     {
       "id": "sal_archivio_2026_08_21_pomeriggio_tardi_ponytail_e_superpowers_il_delta_non_il_catechismo",
@@ -24493,7 +24493,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, pomeriggio tardi \u2014 ponytail e superpowers: il delta, non il catechismo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L287"
+      "source_location": "L257"
     },
     {
       "id": "sal_archivio_2026_08_21_sera_2_secondo_turno_preparato_e_il_processo_si_difende_da_solo",
@@ -24505,7 +24505,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, sera (2) \u2014 secondo turno preparato e il processo si difende da solo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L445"
+      "source_location": "L415"
     },
     {
       "id": "sal_archivio_2026_08_21_sera_3_il_primo_a_b_giorno_vs_notte_e_la_commessa_col_difetto",
@@ -24517,7 +24517,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, sera (3) \u2014 il primo a/b giorno-vs-notte, e la commessa col difetto",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L456"
+      "source_location": "L426"
     },
     {
       "id": "sal_archivio_2026_08_21_sera_il_test_che_contava_sviluppare_una_feature_nuova",
@@ -24529,7 +24529,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, sera \u2014 il test che contava: sviluppare una feature nuova",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L430"
+      "source_location": "L400"
     },
     {
       "id": "sal_archivio_2026_08_21_sera_l_esperimento_dflash2_il_video_prometteva_3x_i_fatti_dicono_altro",
@@ -24541,7 +24541,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, sera \u2014 l'esperimento dflash2: il video prometteva 3x, i fatti dicono altro",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L246"
+      "source_location": "L216"
     },
     {
       "id": "sal_archivio_2026_08_21_sera_la_review_di_opus_applicata_ogni_punto_verificato_sul_codice_poi_corretto",
@@ -24553,7 +24553,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, sera \u2014 la review di opus applicata: ogni punto verificato sul codice, poi corretto",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L317"
+      "source_location": "L287"
     },
     {
       "id": "sal_archivio_2026_08_21_sera_loop_engineering_il_nome_arriva_dopo_la_pratica",
@@ -24565,7 +24565,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-21, sera \u2014 loop engineering: il nome arriva dopo la pratica",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L275"
+      "source_location": "L245"
     },
     {
       "id": "sal_archivio_2026_08_22_mattina_2_messo_a_posto_tutto_la_regola_del_territorio_e_il_giorno_chiude_10_12",
@@ -24577,7 +24577,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, mattina (2) \u2014 messo a posto tutto: la regola del territorio, e il giorno chiude #10+#12",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1045"
+      "source_location": "L1015"
     },
     {
       "id": "sal_archivio_2026_08_22_mattina_la_notte_ha_parlato_11h39m_su_12_zero_file",
@@ -24589,7 +24589,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, mattina \u2014 la notte ha parlato: 11h39m su #12, zero file",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1033"
+      "source_location": "L1003"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_2_10_giri_di_auto_miglioramento_il_sistema_giudica_se_stesso",
@@ -24601,7 +24601,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (2) \u2014 10 giri di auto-miglioramento: il sistema giudica se stesso",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1118"
+      "source_location": "L1088"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_3_10_giri_di_feature_cosa_mancava_davvero",
@@ -24613,7 +24613,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (3) \u2014 10 giri di feature: cosa mancava davvero",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1143"
+      "source_location": "L1113"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_4_le_decisioni_di_dominio_prese_mandato_di_luca_decidi_da_solo",
@@ -24625,7 +24625,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (4) \u2014 le decisioni di dominio prese (mandato di luca: \"decidi da solo\")",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1166"
+      "source_location": "L1136"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_5_terzo_ciclo_di_10_giri_bug_reali_trovati_eseguendo_non_leggendo",
@@ -24637,7 +24637,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (5) \u2014 terzo ciclo di 10 giri: bug reali trovati eseguendo, non leggendo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1186"
+      "source_location": "L1156"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_6_correzione_la_diagnosi_claude_p_lento_era_sbagliata",
@@ -24649,7 +24649,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (6) \u2014 correzione: la diagnosi \"claude -p lento\" era sbagliata",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1216"
+      "source_location": "L1186"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_7_set_1_3_agenti_giorno_notte_armonizzati_8_bug_reali",
@@ -24661,7 +24661,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (7) \u2014 set 1/3: agenti giorno+notte armonizzati, 8 bug reali",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1230"
+      "source_location": "L1200"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_8_set_2_3_capacit\u00e0_di_progettare_3_skill_mai_esistite_bug_ad_alta_severit\u00e0",
@@ -24673,7 +24673,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (8) \u2014 set 2/3: capacita di progettare, 3 skill mai esistite + bug ad alta severita",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1254"
+      "source_location": "L1224"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_9_set_3_3_flusso_delle_idee_tutte_le_interazioni",
@@ -24685,7 +24685,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte (9) \u2014 set 3/3: flusso delle idee, tutte le interazioni",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1277"
+      "source_location": "L1247"
     },
     {
       "id": "sal_archivio_2026_08_22_notte_ciclo_2_su_repo_d_la_progettazione_protagonista",
@@ -24697,7 +24697,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, notte \u2014 ciclo 2 su repo-d: la progettazione protagonista",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1107"
+      "source_location": "L1077"
     },
     {
       "id": "sal_archivio_2026_08_22_pomeriggio_ciclo_dei_5_giri_su_repo_d_mandato_tutto_da_solo_processo_osservato",
@@ -24709,7 +24709,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, pomeriggio \u2014 ciclo dei 5 giri su repo-d (mandato: tutto da solo, processo osservato)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1060"
+      "source_location": "L1030"
     },
     {
       "id": "sal_archivio_2026_08_22_sera_ciclo_dei_5_giri_completato_il_processo_osservato_in_loop",
@@ -24721,7 +24721,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-22, sera \u2014 ciclo dei 5 giri completato: il processo osservato in loop",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1081"
+      "source_location": "L1051"
     },
     {
       "id": "sal_archivio_log_cronologico",
@@ -24733,7 +24733,7 @@
       "node_kind": "heading",
       "norm_label": "log cronologico",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L205"
+      "source_location": "L175"
     },
     {
       "id": "docs_campo_2026_08_31_repo_m_chiusura_sessione_estesa",
@@ -37626,7 +37626,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (10) \u2014 set 2/3 giro 1: /design-doc confronta le opzioni, non solo le elenca",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1494"
+      "source_location": "L1464"
     },
     {
       "id": "sal_archivio_2026_08_23_11_set_2_3_giro_2_graphify_esiste_per_la_notte_non_arrivava_al_giorno",
@@ -37638,7 +37638,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (11) \u2014 set 2/3 giro 2: graphify esiste per la notte, non arrivava al giorno",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1515"
+      "source_location": "L1485"
     },
     {
       "id": "sal_archivio_2026_08_23_12_set_2_3_giro_3_la_tabella_di_confronto_rischiava_di_restare_in_chat",
@@ -37650,7 +37650,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (12) \u2014 set 2/3 giro 3: la tabella di confronto rischiava di restare in chat",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1527"
+      "source_location": "L1497"
     },
     {
       "id": "sal_archivio_2026_08_23_13_set_2_3_giro_5_la_mappa_descriveva_ancora_il_vecchio_design_doc",
@@ -37662,7 +37662,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (13) \u2014 set 2/3 giro 5: la mappa descriveva ancora il vecchio design-doc",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1561"
+      "source_location": "L1531"
     },
     {
       "id": "sal_archivio_2026_08_23_14_set_2_3_giro_6_la_stessa_staleness_un_file_mai_testato_prima",
@@ -37674,7 +37674,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (14) \u2014 set 2/3 giro 6: la stessa staleness, un file mai testato prima",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1568"
+      "source_location": "L1538"
     },
     {
       "id": "sal_archivio_2026_08_23_15_chiude_un_loose_end_del_set_1_giro_4_il_report_del_gate_mostrava_solo_l_ultimo_test",
@@ -37686,7 +37686,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (15) \u2014 chiude un loose end del set 1 giro 4: il report del gate mostrava solo l'ultimo test",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1578"
+      "source_location": "L1548"
     },
     {
       "id": "sal_archivio_2026_08_23_16_set_2_3_giro_8_la_stessa_staleness_un_terzo_posto_mai_controllato",
@@ -37698,7 +37698,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (16) \u2014 set 2/3 giro 8: la stessa staleness, un terzo posto mai controllato",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1594"
+      "source_location": "L1564"
     },
     {
       "id": "sal_archivio_2026_08_23_17_set_2_3_giro_9_le_idee_di_dev_critic_non_avevano_un_passo_successivo",
@@ -37710,7 +37710,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (17) \u2014 set 2/3 giro 9: le idee di dev-critic non avevano un passo successivo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1605"
+      "source_location": "L1575"
     },
     {
       "id": "sal_archivio_2026_08_23_18_set_2_3_giro_10_chiude_il_set_design_doc_apriva_solo_la_porta_della_notte",
@@ -37722,7 +37722,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (18) \u2014 set 2/3 giro 10 (chiude il set): design-doc apriva solo la porta della notte",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1615"
+      "source_location": "L1585"
     },
     {
       "id": "sal_archivio_2026_08_23_design_la_lente_sicurezza_dev_critic_2bis_diventa_automatica_nel_gate",
@@ -37734,7 +37734,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 design: la lente sicurezza (dev-critic \u00a72bis) diventa automatica nel gate?",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1537"
+      "source_location": "L1507"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_4_ciclo_agenti_per_problemi_matematico_contabili",
@@ -37746,7 +37746,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo set 1/3 (10 giri, 4\u00b0 ciclo) \u2014 \"agenti per problemi matematico-contabili\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1471"
+      "source_location": "L1441"
     },
     {
       "id": "docs_bc_endpoints_ps_powerbi_t271_bale",
@@ -37998,7 +37998,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (19) \u2014 set 3/3 giro 1: project.md non conosceva la nuova capacita contabile",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1652"
+      "source_location": "L1622"
     },
     {
       "id": "sal_archivio_2026_08_23_20_set_3_3_giro_2_la_traccia_dei_cervelli_di_giorno_entrava_e_non_usciva",
@@ -38010,7 +38010,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (20) \u2014 set 3/3 giro 2: la traccia dei cervelli di giorno entrava e non usciva",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1667"
+      "source_location": "L1637"
     },
     {
       "id": "sal_archivio_2026_08_23_21_set_3_3_giro_3_i_codici_anonimi_non_avevano_un_indice",
@@ -38022,7 +38022,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (21) \u2014 set 3/3 giro 3: i codici anonimi non avevano un indice",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1679"
+      "source_location": "L1649"
     },
     {
       "id": "sal_archivio_2026_08_23_22_set_3_3_giro_5_method_md_non_conosceva_il_registro_del_giorno_e_citava_male_due_percorsi",
@@ -38034,7 +38034,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (22) \u2014 set 3/3 giro 5: method.md non conosceva il registro del giorno, e citava male due percorsi",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1717"
+      "source_location": "L1687"
     },
     {
       "id": "sal_archivio_2026_08_23_23_set_3_3_giro_6_in_testa_al_file_era_in_fondo",
@@ -38046,7 +38046,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (23) \u2014 set 3/3 giro 6: \"in testa al file\" era in fondo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1729"
+      "source_location": "L1699"
     },
     {
       "id": "sal_archivio_2026_08_23_24_set_3_3_giro_7_lo_stesso_gap_mai_propagato_al_file_gemello",
@@ -38058,7 +38058,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (24) \u2014 set 3/3 giro 7: lo stesso gap, mai propagato al file gemello",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1741"
+      "source_location": "L1711"
     },
     {
       "id": "sal_archivio_2026_08_23_25_set_3_3_giro_8_la_mappa_citava_solo_met\u00e0_del_limite_condiviso",
@@ -38070,7 +38070,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (25) \u2014 set 3/3 giro 8: la mappa citava solo meta del limite condiviso",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1751"
+      "source_location": "L1721"
     },
     {
       "id": "sal_archivio_2026_08_23_26_set_3_3_giro_9_tenere_d_occhio_la_crescita_della_suite",
@@ -38082,7 +38082,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (26) \u2014 set 3/3 giro 9: tenere d'occhio la crescita della suite",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1758"
+      "source_location": "L1728"
     },
     {
       "id": "sal_archivio_2026_08_23_27_set_3_3_giro_10_chiude_il_set_verifica_end_to_end_di_tutto_il_gate",
@@ -38094,7 +38094,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (27) \u2014 set 3/3 giro 10 (chiude il set): verifica end-to-end di tutto il gate",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1767"
+      "source_location": "L1737"
     },
     {
       "id": "sal_archivio_2026_08_23_design_quale_modello_ha_giudicato_ogni_riga_del_banco_avversariale",
@@ -38106,7 +38106,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 design: quale modello ha giudicato ogni riga del banco avversariale?",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1692"
+      "source_location": "L1662"
     },
     {
       "id": "sal_archivio_riepilogo_set_2_3_10_giri_4_ciclo_capacit\u00e0_di_progettare_contesto_e_scelta_delle_idee",
@@ -38118,7 +38118,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo set 2/3 (10 giri, 4\u00b0 ciclo) \u2014 \"capacita di progettare: contesto e scelta delle idee\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1625"
+      "source_location": "L1595"
     },
     {
       "id": "docs_bc_endpoints_ps_powerbi_t5407_prod_order_component",
@@ -38370,7 +38370,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 dopo il push e la pr #35: il limite del set 1 giro 8 era temporaneo, non permanente",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2440"
+      "source_location": "L2410"
     },
     {
       "id": "sal_archivio_2026_08_24_2_6_ciclo_set_1_3_mappa_del_dominio_2_agenti_e_3_oracoli",
@@ -38382,7 +38382,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (2) \u2014 6\u00b0 ciclo, set 1/3: mappa del dominio, 2 agenti e 3 oracoli",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2624"
+      "source_location": "L2594"
     },
     {
       "id": "sal_archivio_2026_08_24_3_6_ciclo_set_2_3_divergenza_contesto_col_budget_squalifiche_e_spike",
@@ -38394,7 +38394,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (3) \u2014 6\u00b0 ciclo, set 2/3: divergenza, contesto col budget, squalifiche e spike",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2692"
+      "source_location": "L2662"
     },
     {
       "id": "sal_archivio_2026_08_24_4_design_i_costi_generali_nella_valorizzazione_di_magazzino",
@@ -38406,7 +38406,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (4) \u2014 design: i costi generali % nella valorizzazione di magazzino",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2745"
+      "source_location": "L2715"
     },
     {
       "id": "sal_archivio_2026_08_24_5_6_ciclo_set_3_3_flusso_contratto_notte_agenti_gate_memoria",
@@ -38418,7 +38418,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 (5) \u2014 6\u00b0 ciclo, set 3/3: flusso=contratto, notte=agenti, gate=memoria",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2783"
+      "source_location": "L2753"
     },
     {
       "id": "sal_archivio_2026_08_24_6_ciclo_giro_0_baseline_verde_tre_bug_di_portabilit\u00e0_macos",
@@ -38430,7 +38430,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 \u2014 6\u00b0 ciclo, giro 0: baseline verde, tre bug di portabilita macos",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2584"
+      "source_location": "L2554"
     },
     {
       "id": "sal_archivio_2026_08_24_feedback_dal_campo_repo_f_bc_gas_il_matching_per_description_non_\u00e8_affidabile_quanto_presunto",
@@ -38442,7 +38442,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 \u2014 feedback dal campo (repo-f, bc/gas): il matching per description non e affidabile quanto presunto",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2540"
+      "source_location": "L2510"
     },
     {
       "id": "sal_archivio_2026_08_24_feedback_di_un_utente_esterno_reale_5_gap_di_processo_non_di_codice",
@@ -38454,7 +38454,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 \u2014 feedback di un utente esterno reale: 5 gap di processo, non di codice",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2467"
+      "source_location": "L2437"
     },
     {
       "id": "sal_archivio_2026_08_24_punti_2_4_tre_nuove_regole_vincolanti_in_claude_md",
@@ -38466,7 +38466,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 \u2014 punti 2-4: tre nuove regole vincolanti in claude.md",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2496"
+      "source_location": "L2466"
     },
     {
       "id": "sal_archivio_2026_08_24_punto_5_patterns_auto_consultato_via_hook_pretooluse_mai_fatto_prima_in_questo_repo",
@@ -38478,7 +38478,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-24 \u2014 punto 5: patterns/ auto-consultato via hook pretooluse (mai fatto prima in questo repo)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2519"
+      "source_location": "L2489"
     },
     {
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_5_ciclo_dopo_il_ciclo_precedente_da_30_giri",
@@ -38490,7 +38490,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo dei tre set (30 giri, 5\u00b0 ciclo) \u2014 dopo il ciclo precedente da 30 giri",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2410"
+      "source_location": "L2380"
     },
     {
       "id": "docs_bc_endpoints_ps_powerbi_t98_general_ledger_setup",
@@ -38742,7 +38742,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 10 (chiude il set): un bug reale trovato rieseguendo la suite piu volte",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2001"
+      "source_location": "L1971"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_1_nessun_sistema_di_subagent_solo_skill",
@@ -38754,7 +38754,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 1: nessun sistema di subagent, solo skill",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1816"
+      "source_location": "L1786"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_2_un_secondo_agente_non_un_duplicato",
@@ -38766,7 +38766,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 2: un secondo agente, non un duplicato",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1842"
+      "source_location": "L1812"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_3_il_terzo_ruolo_dogfoodato_per_davvero_sui_4_tool_esistenti",
@@ -38778,7 +38778,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 3: il terzo ruolo, dogfoodato per davvero sui 4 tool esistenti",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1858"
+      "source_location": "L1828"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_4_quinto_caso_reale_minato_da_gas_src_scadenzario_aging",
@@ -38790,7 +38790,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 4: quinto caso reale minato da gas-src, scadenzario aging",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1885"
+      "source_location": "L1855"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_5_stesso_gap_gi\u00e0_trovato_due_volte_mai_chiuso_per_gli_agenti",
@@ -38802,7 +38802,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 5: stesso gap gia trovato due volte, mai chiuso per gli agenti",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1909"
+      "source_location": "L1879"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_6_il_sistema_di_agenti_non_si_conosceva_da_solo",
@@ -38814,7 +38814,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 6: il sistema di agenti non si conosceva da solo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1925"
+      "source_location": "L1895"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_7_un_limite_reale_non_ancora_dichiarato",
@@ -38826,7 +38826,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 7: un limite reale non ancora dichiarato",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1943"
+      "source_location": "L1913"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_8_dogfooding_reale_sui_propri_agenti_non_sono_invocabili_qui",
@@ -38838,7 +38838,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 8: dogfooding reale sui propri agenti \u2014 non sono invocabili qui",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1960"
+      "source_location": "L1930"
     },
     {
       "id": "sal_archivio_2026_08_23_set_1_giro_9_la_scoperta_del_giro_8_entra_in_debiti_md",
@@ -38850,7 +38850,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 1 giro 9: la scoperta del giro 8 entra in debiti.md",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1987"
+      "source_location": "L1957"
     },
     {
       "id": "sal_archivio_5_ciclo_set_1_3_giro_1_claude_agents_non_esisteva",
@@ -38862,7 +38862,7 @@
       "node_kind": "heading",
       "norm_label": "5\u00b0 ciclo \u2014 set 1/3, giro 1: `.claude/agents/` non esisteva",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1814"
+      "source_location": "L1784"
     },
     {
       "id": "docs_bc_endpoints_righe_fatt_acq_registrate_excel",
@@ -39114,7 +39114,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 10 (chiude il set): verifica end-to-end di tutta la pipeline di progettazione",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2209"
+      "source_location": "L2179"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_1_la_regola_tabella_persistita_era_verificata_solo_nella_prosa_non_nella_realt\u00e0",
@@ -39126,7 +39126,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 1: la regola \"tabella persistita\" era verificata solo nella prosa, non nella realta",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2055"
+      "source_location": "L2025"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_2_selezione_del_contesto_nessun_percorso_senza_graphify",
@@ -39138,7 +39138,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 2: selezione del contesto \u2014 nessun percorso senza graphify",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2072"
+      "source_location": "L2042"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_3_goal_costruito_e_mai_eseguito_chiuso_col_primo_loop_reale",
@@ -39150,7 +39150,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 3: `/goal` costruito e mai eseguito, chiuso col primo loop reale",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2088"
+      "source_location": "L2058"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_4_il_wizard_chiedeva_come_verificare_non_quale_livello",
@@ -39162,7 +39162,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 4: il wizard chiedeva \"come\" verificare, non \"quale livello\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2107"
+      "source_location": "L2077"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_5_il_gate_meccanico_verifica_che_un_riferimento_somigli_a",
@@ -39174,7 +39174,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 5: il gate meccanico verifica che un riferimento somigli a",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2121"
+      "source_location": "L2091"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_6_scelta_delle_migliori_idee_al_plurale_nessuna_riga_lo_diceva",
@@ -39186,7 +39186,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 6: \"scelta delle migliori idee\" al plurale \u2014 nessuna riga lo diceva",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2139"
+      "source_location": "L2109"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_7_cosa_fare_quando_nessuna_opzione_\u00e8_buona",
@@ -39198,7 +39198,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 7: cosa fare quando nessuna opzione e buona",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2157"
+      "source_location": "L2127"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_8_lo_stesso_bug_nomi_hardcoded_non_un_glob_trovato_una_terza_volta",
@@ -39210,7 +39210,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 8: lo stesso bug (nomi hardcoded, non un glob) trovato una terza volta",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2170"
+      "source_location": "L2140"
     },
     {
       "id": "sal_archivio_2026_08_23_set_2_giro_9_lo_stesso_bug_una_quarta_e_una_quinta_volta_una_scritta_da_me_in_questo_stesso_ciclo",
@@ -39222,7 +39222,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 2 giro 9: lo stesso bug, una quarta e una quinta volta (una scritta da me in questo stesso ciclo)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2190"
+      "source_location": "L2160"
     },
     {
       "id": "sal_archivio_5_ciclo_set_2_3_progettare_brainstorming_selezione_del_contesto_scelta_delle_idee",
@@ -39234,7 +39234,7 @@
       "node_kind": "heading",
       "norm_label": "5\u00b0 ciclo \u2014 set 2/3: progettare (brainstorming, selezione del contesto, scelta delle idee)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2053"
+      "source_location": "L2023"
     },
     {
       "id": "docs_bc_endpoints_salesordersbysalesperson",
@@ -39486,7 +39486,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 10 (chiude il set e il ciclo): verifica end-to-end finale",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2377"
+      "source_location": "L2347"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_1_un_cross_reference_in_una_sola_direzione",
@@ -39498,7 +39498,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 1: un cross-reference in una sola direzione",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2241"
+      "source_location": "L2211"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_2_i_diagrammi_in_cima_mostravano_solo_la_strada_notturna",
@@ -39510,7 +39510,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 2: i diagrammi in cima mostravano solo la strada notturna",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2258"
+      "source_location": "L2228"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_3_l_indice_dei_codici_anonimi_era_rimasto_indietro_sul_proprio_ciclo",
@@ -39522,7 +39522,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 3: l'indice dei codici anonimi era rimasto indietro sul proprio ciclo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2271"
+      "source_location": "L2241"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_4_la_stessa_famiglia_di_bug_diventa_un_pattern_nel_catalogo",
@@ -39534,7 +39534,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 4: la stessa famiglia di bug diventa un pattern nel catalogo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2285"
+      "source_location": "L2255"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_5_una_regola_del_catalogo_mai_verificata_meccanicamente",
@@ -39546,7 +39546,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 5: una regola del catalogo mai verificata meccanicamente",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2301"
+      "source_location": "L2271"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_6_goal_aveva_raggiunto_il_suo_obiettivo_ma_nessuno_lo_sapeva_ancora",
@@ -39558,7 +39558,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 6: `/goal` aveva raggiunto il suo obiettivo ma nessuno lo sapeva ancora",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2314"
+      "source_location": "L2284"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_7_controllo_gestione_parlava_un_vocabolario_isolato_sulla_verifica",
@@ -39570,7 +39570,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 7: controllo-gestione parlava un vocabolario isolato sulla verifica",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2329"
+      "source_location": "L2299"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_8_sweep_sistematico_di_tutte_le_citazioni_fra_skill_agenti",
@@ -39582,7 +39582,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 8: sweep sistematico di tutte le citazioni fra skill/agenti",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2342"
+      "source_location": "L2312"
     },
     {
       "id": "sal_archivio_2026_08_23_set_3_giro_9_un_ipotesi_di_bug_smentita_dal_vivo_prima_di_diventare_un_fix",
@@ -39594,7 +39594,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 set 3 giro 9: un'ipotesi di bug smentita dal vivo, prima di diventare un fix",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2356"
+      "source_location": "L2326"
     },
     {
       "id": "sal_archivio_5_ciclo_set_3_3_flusso_delle_idee_interazione_fra_le_parti",
@@ -39606,7 +39606,7 @@
       "node_kind": "heading",
       "norm_label": "5\u00b0 ciclo \u2014 set 3/3: flusso delle idee, interazione fra le parti",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2239"
+      "source_location": "L2209"
     },
     {
       "id": "docs_bc_endpoints_spedizioni_vendita_registrate_excel",
@@ -48798,7 +48798,7 @@
       "node_kind": "heading",
       "norm_label": "decisioni",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L186"
+      "source_location": "L156"
     },
     {
       "id": "sal_archivio_indice_del_diario",
@@ -48822,7 +48822,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1797"
+      "source_location": "L1767"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -48834,7 +48834,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo set 1/3 (10 giri, 5\u00b0 ciclo) \u2014 \"un sistema di agenti per problemi matematico-contabili\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2030"
+      "source_location": "L2000"
     },
     {
       "id": "sal_archivio_riepilogo_set_2_3_10_giri_5_ciclo_progettare_brainstorming_contesto_scelta_delle_idee",
@@ -48846,7 +48846,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo set 2/3 (10 giri, 5\u00b0 ciclo) \u2014 \"progettare: brainstorming, contesto, scelta delle idee\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2217"
+      "source_location": "L2187"
     },
     {
       "id": "sal_archivio_riepilogo_set_3_3_10_giri_4_ciclo_flusso_delle_idee_interazione_fra_le_parti",
@@ -48858,7 +48858,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo set 3/3 (10 giri, 4\u00b0 ciclo) \u2014 \"flusso delle idee, interazione fra le parti\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1779"
+      "source_location": "L1749"
     },
     {
       "id": "sal_archivio_riepilogo_set_3_3_10_giri_5_ciclo_flusso_delle_idee_interazione_fra_le_parti",
@@ -48870,7 +48870,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo set 3/3 (10 giri, 5\u00b0 ciclo) \u2014 \"flusso delle idee, interazione fra le parti\"",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2386"
+      "source_location": "L2356"
     },
     {
       "id": "sal_archivio_sal_il_diario_vivo_del_sistema",
@@ -48894,7 +48894,7 @@
       "node_kind": "heading",
       "norm_label": "stato",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L180"
+      "source_location": "L150"
     },
     {
       "id": "sal_archivio_2026_08_23_2_set_1_3_giri_2_3_la_skill_raggiunge_la_commessa_poi_il_progetto_nuovo",
@@ -48906,7 +48906,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (2) \u2014 set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1348"
+      "source_location": "L1318"
     },
     {
       "id": "sal_archivio_2026_08_23_3_set_1_3_giro_4_il_gate_non_applicava_a_se_stesso_la_propria_regola",
@@ -48918,7 +48918,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (3) \u2014 set 1/3 giro 4: il gate non applicava a se stesso la propria regola",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1370"
+      "source_location": "L1340"
     },
     {
       "id": "sal_archivio_2026_08_23_4_ciclo_set_1_3_giro_1_agenti_per_problemi_matematico_contabili_ancorati_a_dati_reali",
@@ -48930,7 +48930,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 \u2014 4\u00b0 ciclo, set 1/3 giro 1: agenti per problemi matematico-contabili, ancorati a dati reali",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1311"
+      "source_location": "L1281"
     },
     {
       "id": "sal_archivio_2026_08_23_4_set_1_3_giro_5_la_mappa_completa_non_conosceva_la_nuova_capacit\u00e0",
@@ -48942,7 +48942,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (4) \u2014 set 1/3 giro 5: la mappa completa non conosceva la nuova capacita",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1384"
+      "source_location": "L1354"
     },
     {
       "id": "sal_archivio_2026_08_23_5_set_1_3_giro_6_secondo_caso_dominio_diverso_il_metodo_generalizza",
@@ -48954,7 +48954,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (5) \u2014 set 1/3 giro 6: secondo caso, dominio diverso \u2014 il metodo generalizza",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1396"
+      "source_location": "L1366"
     },
     {
       "id": "sal_archivio_2026_08_23_6_set_1_3_giro_7_due_lenti_sullo_stesso_dominio_non_si_conoscevano",
@@ -48966,7 +48966,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (6) \u2014 set 1/3 giro 7: due lenti sullo stesso dominio non si conoscevano",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1410"
+      "source_location": "L1380"
     },
     {
       "id": "sal_archivio_2026_08_23_7_set_1_3_giro_8_terzo_caso_dominio_cespiti_il_segno_del_fondo",
@@ -48978,7 +48978,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (7) \u2014 set 1/3 giro 8: terzo caso, dominio cespiti \u2014 il segno del fondo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1428"
+      "source_location": "L1398"
     },
     {
       "id": "sal_archivio_2026_08_23_8_set_1_3_giro_9_l_audit_serale_non_sapeva_controllare_l_oracolo",
@@ -48990,7 +48990,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (8) \u2014 set 1/3 giro 9: l'audit serale non sapeva controllare l'oracolo",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1442"
+      "source_location": "L1412"
     },
     {
       "id": "sal_archivio_2026_08_23_9_set_1_3_giro_10_quarto_caso_indici_di_crisi_il_lato_economico_industriale",
@@ -49002,7 +49002,7 @@
       "node_kind": "heading",
       "norm_label": "2026-08-23 (9) \u2014 set 1/3 giro 10: quarto caso \u2014 indici di crisi, il lato economico-industriale",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1455"
+      "source_location": "L1425"
     },
     {
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_totali_dopo_i_10_iniziali",
@@ -49014,7 +49014,7 @@
       "node_kind": "heading",
       "norm_label": "riepilogo dei tre set (30 giri totali, dopo i 10 iniziali)",
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1299"
+      "source_location": "L1269"
     },
     {
       "id": "tests_test_catena_viva",
@@ -80704,7 +80704,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1816",
+      "source_location": "L1786",
       "weight": 1.0
     },
     {
@@ -80715,7 +80715,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1842",
+      "source_location": "L1812",
       "weight": 1.0
     },
     {
@@ -80726,7 +80726,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1858",
+      "source_location": "L1828",
       "weight": 1.0
     },
     {
@@ -80737,7 +80737,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1885",
+      "source_location": "L1855",
       "weight": 1.0
     },
     {
@@ -80748,7 +80748,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1909",
+      "source_location": "L1879",
       "weight": 1.0
     },
     {
@@ -80759,7 +80759,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1925",
+      "source_location": "L1895",
       "weight": 1.0
     },
     {
@@ -80770,7 +80770,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1943",
+      "source_location": "L1913",
       "weight": 1.0
     },
     {
@@ -80781,7 +80781,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1960",
+      "source_location": "L1930",
       "weight": 1.0
     },
     {
@@ -80792,7 +80792,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1987",
+      "source_location": "L1957",
       "weight": 1.0
     },
     {
@@ -80803,7 +80803,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2001",
+      "source_location": "L1971",
       "weight": 1.0
     },
     {
@@ -80814,7 +80814,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2055",
+      "source_location": "L2025",
       "weight": 1.0
     },
     {
@@ -80825,7 +80825,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2072",
+      "source_location": "L2042",
       "weight": 1.0
     },
     {
@@ -80836,7 +80836,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2088",
+      "source_location": "L2058",
       "weight": 1.0
     },
     {
@@ -80847,7 +80847,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2107",
+      "source_location": "L2077",
       "weight": 1.0
     },
     {
@@ -80858,7 +80858,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2121",
+      "source_location": "L2091",
       "weight": 1.0
     },
     {
@@ -80869,7 +80869,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2139",
+      "source_location": "L2109",
       "weight": 1.0
     },
     {
@@ -80880,7 +80880,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2157",
+      "source_location": "L2127",
       "weight": 1.0
     },
     {
@@ -80891,7 +80891,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2170",
+      "source_location": "L2140",
       "weight": 1.0
     },
     {
@@ -80902,7 +80902,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2190",
+      "source_location": "L2160",
       "weight": 1.0
     },
     {
@@ -80913,7 +80913,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2209",
+      "source_location": "L2179",
       "weight": 1.0
     },
     {
@@ -80924,7 +80924,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2241",
+      "source_location": "L2211",
       "weight": 1.0
     },
     {
@@ -80935,7 +80935,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2258",
+      "source_location": "L2228",
       "weight": 1.0
     },
     {
@@ -80946,7 +80946,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2271",
+      "source_location": "L2241",
       "weight": 1.0
     },
     {
@@ -80957,7 +80957,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2285",
+      "source_location": "L2255",
       "weight": 1.0
     },
     {
@@ -80968,7 +80968,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2301",
+      "source_location": "L2271",
       "weight": 1.0
     },
     {
@@ -80979,7 +80979,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2314",
+      "source_location": "L2284",
       "weight": 1.0
     },
     {
@@ -80990,7 +80990,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2329",
+      "source_location": "L2299",
       "weight": 1.0
     },
     {
@@ -81001,7 +81001,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2342",
+      "source_location": "L2312",
       "weight": 1.0
     },
     {
@@ -81012,7 +81012,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2356",
+      "source_location": "L2326",
       "weight": 1.0
     },
     {
@@ -81023,7 +81023,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2377",
+      "source_location": "L2347",
       "weight": 1.0
     },
     {
@@ -81034,7 +81034,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1033",
+      "source_location": "L1003",
       "weight": 1.0
     },
     {
@@ -81045,7 +81045,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1045",
+      "source_location": "L1015",
       "weight": 1.0
     },
     {
@@ -81056,7 +81056,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1060",
+      "source_location": "L1030",
       "weight": 1.0
     },
     {
@@ -81067,7 +81067,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1081",
+      "source_location": "L1051",
       "weight": 1.0
     },
     {
@@ -81078,7 +81078,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1107",
+      "source_location": "L1077",
       "weight": 1.0
     },
     {
@@ -81089,7 +81089,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1118",
+      "source_location": "L1088",
       "weight": 1.0
     },
     {
@@ -81100,7 +81100,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1143",
+      "source_location": "L1113",
       "weight": 1.0
     },
     {
@@ -81111,7 +81111,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1166",
+      "source_location": "L1136",
       "weight": 1.0
     },
     {
@@ -81122,7 +81122,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1186",
+      "source_location": "L1156",
       "weight": 1.0
     },
     {
@@ -81133,7 +81133,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1216",
+      "source_location": "L1186",
       "weight": 1.0
     },
     {
@@ -81144,7 +81144,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1230",
+      "source_location": "L1200",
       "weight": 1.0
     },
     {
@@ -81155,7 +81155,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1254",
+      "source_location": "L1224",
       "weight": 1.0
     },
     {
@@ -81166,7 +81166,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1277",
+      "source_location": "L1247",
       "weight": 1.0
     },
     {
@@ -81177,7 +81177,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L207",
+      "source_location": "L177",
       "weight": 1.0
     },
     {
@@ -81188,7 +81188,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L214",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -81199,7 +81199,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L225",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -81210,7 +81210,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L246",
+      "source_location": "L216",
       "weight": 1.0
     },
     {
@@ -81221,7 +81221,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L275",
+      "source_location": "L245",
       "weight": 1.0
     },
     {
@@ -81232,7 +81232,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L287",
+      "source_location": "L257",
       "weight": 1.0
     },
     {
@@ -81243,7 +81243,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L317",
+      "source_location": "L287",
       "weight": 1.0
     },
     {
@@ -81254,7 +81254,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L355",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -81265,7 +81265,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L373",
+      "source_location": "L343",
       "weight": 1.0
     },
     {
@@ -81276,7 +81276,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L405",
+      "source_location": "L375",
       "weight": 1.0
     },
     {
@@ -81287,7 +81287,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L418",
+      "source_location": "L388",
       "weight": 1.0
     },
     {
@@ -81298,7 +81298,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L430",
+      "source_location": "L400",
       "weight": 1.0
     },
     {
@@ -81309,7 +81309,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L445",
+      "source_location": "L415",
       "weight": 1.0
     },
     {
@@ -81320,7 +81320,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L456",
+      "source_location": "L426",
       "weight": 1.0
     },
     {
@@ -81331,7 +81331,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L480",
+      "source_location": "L450",
       "weight": 1.0
     },
     {
@@ -81342,7 +81342,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L491",
+      "source_location": "L461",
       "weight": 1.0
     },
     {
@@ -81353,7 +81353,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L511",
+      "source_location": "L481",
       "weight": 1.0
     },
     {
@@ -81364,7 +81364,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L522",
+      "source_location": "L492",
       "weight": 1.0
     },
     {
@@ -81375,7 +81375,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L561",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -81386,7 +81386,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L588",
+      "source_location": "L558",
       "weight": 1.0
     },
     {
@@ -81397,7 +81397,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L622",
+      "source_location": "L592",
       "weight": 1.0
     },
     {
@@ -81408,7 +81408,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L645",
+      "source_location": "L615",
       "weight": 1.0
     },
     {
@@ -81419,7 +81419,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L680",
+      "source_location": "L650",
       "weight": 1.0
     },
     {
@@ -81430,7 +81430,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L693",
+      "source_location": "L663",
       "weight": 1.0
     },
     {
@@ -81441,7 +81441,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L708",
+      "source_location": "L678",
       "weight": 1.0
     },
     {
@@ -81452,7 +81452,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L731",
+      "source_location": "L701",
       "weight": 1.0
     },
     {
@@ -81463,7 +81463,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L748",
+      "source_location": "L718",
       "weight": 1.0
     },
     {
@@ -81474,7 +81474,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L773",
+      "source_location": "L743",
       "weight": 1.0
     },
     {
@@ -81485,7 +81485,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L804",
+      "source_location": "L774",
       "weight": 1.0
     },
     {
@@ -81496,7 +81496,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L830",
+      "source_location": "L800",
       "weight": 1.0
     },
     {
@@ -81507,7 +81507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L850",
+      "source_location": "L820",
       "weight": 1.0
     },
     {
@@ -81518,7 +81518,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L876",
+      "source_location": "L846",
       "weight": 1.0
     },
     {
@@ -81529,7 +81529,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L907",
+      "source_location": "L877",
       "weight": 1.0
     },
     {
@@ -81540,7 +81540,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L918",
+      "source_location": "L888",
       "weight": 1.0
     },
     {
@@ -81551,7 +81551,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L953",
+      "source_location": "L923",
       "weight": 1.0
     },
     {
@@ -81562,7 +81562,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L972",
+      "source_location": "L942",
       "weight": 1.0
     },
     {
@@ -81573,7 +81573,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L985",
+      "source_location": "L955",
       "weight": 1.0
     },
     {
@@ -81584,7 +81584,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2440",
+      "source_location": "L2410",
       "weight": 1.0
     },
     {
@@ -81595,7 +81595,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2467",
+      "source_location": "L2437",
       "weight": 1.0
     },
     {
@@ -81606,7 +81606,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2496",
+      "source_location": "L2466",
       "weight": 1.0
     },
     {
@@ -81617,7 +81617,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2519",
+      "source_location": "L2489",
       "weight": 1.0
     },
     {
@@ -81628,7 +81628,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2540",
+      "source_location": "L2510",
       "weight": 1.0
     },
     {
@@ -81639,7 +81639,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2584",
+      "source_location": "L2554",
       "weight": 1.0
     },
     {
@@ -81650,7 +81650,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2624",
+      "source_location": "L2594",
       "weight": 1.0
     },
     {
@@ -81661,7 +81661,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2692",
+      "source_location": "L2662",
       "weight": 1.0
     },
     {
@@ -81672,7 +81672,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2745",
+      "source_location": "L2715",
       "weight": 1.0
     },
     {
@@ -81683,7 +81683,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2783",
+      "source_location": "L2753",
       "weight": 1.0
     },
     {
@@ -81694,7 +81694,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870",
+      "source_location": "L2840",
       "weight": 1.0
     },
     {
@@ -81705,7 +81705,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928",
+      "source_location": "L2898",
       "weight": 1.0
     },
     {
@@ -81716,7 +81716,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972",
+      "source_location": "L2942",
       "weight": 1.0
     },
     {
@@ -81727,7 +81727,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025",
+      "source_location": "L2995",
       "weight": 1.0
     },
     {
@@ -81738,7 +81738,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1311",
+      "source_location": "L1281",
       "weight": 1.0
     },
     {
@@ -81749,7 +81749,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1348",
+      "source_location": "L1318",
       "weight": 1.0
     },
     {
@@ -81760,7 +81760,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1370",
+      "source_location": "L1340",
       "weight": 1.0
     },
     {
@@ -81771,7 +81771,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1384",
+      "source_location": "L1354",
       "weight": 1.0
     },
     {
@@ -81782,7 +81782,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1396",
+      "source_location": "L1366",
       "weight": 1.0
     },
     {
@@ -81793,7 +81793,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1410",
+      "source_location": "L1380",
       "weight": 1.0
     },
     {
@@ -81804,7 +81804,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1428",
+      "source_location": "L1398",
       "weight": 1.0
     },
     {
@@ -81815,7 +81815,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1442",
+      "source_location": "L1412",
       "weight": 1.0
     },
     {
@@ -81826,7 +81826,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1455",
+      "source_location": "L1425",
       "weight": 1.0
     },
     {
@@ -81837,7 +81837,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3074",
+      "source_location": "L3044",
       "weight": 1.0
     },
     {
@@ -81848,7 +81848,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3102",
+      "source_location": "L3072",
       "weight": 1.0
     },
     {
@@ -81859,7 +81859,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3143",
+      "source_location": "L3113",
       "weight": 1.0
     },
     {
@@ -81870,7 +81870,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3173",
+      "source_location": "L3143",
       "weight": 1.0
     },
     {
@@ -81881,7 +81881,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3190",
+      "source_location": "L3160",
       "weight": 1.0
     },
     {
@@ -81892,7 +81892,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3216",
+      "source_location": "L3186",
       "weight": 1.0
     },
     {
@@ -81903,7 +81903,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3236",
+      "source_location": "L3206",
       "weight": 1.0
     },
     {
@@ -81914,7 +81914,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3246",
+      "source_location": "L3216",
       "weight": 1.0
     },
     {
@@ -81925,7 +81925,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3259",
+      "source_location": "L3229",
       "weight": 1.0
     },
     {
@@ -81936,7 +81936,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3273",
+      "source_location": "L3243",
       "weight": 1.0
     },
     {
@@ -81947,7 +81947,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3287",
+      "source_location": "L3257",
       "weight": 1.0
     },
     {
@@ -81958,7 +81958,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3304",
+      "source_location": "L3274",
       "weight": 1.0
     },
     {
@@ -81969,7 +81969,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3314",
+      "source_location": "L3284",
       "weight": 1.0
     },
     {
@@ -81980,7 +81980,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3331",
+      "source_location": "L3301",
       "weight": 1.0
     },
     {
@@ -81991,7 +81991,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1494",
+      "source_location": "L1464",
       "weight": 1.0
     },
     {
@@ -82002,7 +82002,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1515",
+      "source_location": "L1485",
       "weight": 1.0
     },
     {
@@ -82013,7 +82013,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1527",
+      "source_location": "L1497",
       "weight": 1.0
     },
     {
@@ -82024,7 +82024,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1537",
+      "source_location": "L1507",
       "weight": 1.0
     },
     {
@@ -82035,7 +82035,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1561",
+      "source_location": "L1531",
       "weight": 1.0
     },
     {
@@ -82046,7 +82046,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1568",
+      "source_location": "L1538",
       "weight": 1.0
     },
     {
@@ -82057,7 +82057,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1578",
+      "source_location": "L1548",
       "weight": 1.0
     },
     {
@@ -82068,7 +82068,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1594",
+      "source_location": "L1564",
       "weight": 1.0
     },
     {
@@ -82079,7 +82079,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1605",
+      "source_location": "L1575",
       "weight": 1.0
     },
     {
@@ -82090,7 +82090,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1615",
+      "source_location": "L1585",
       "weight": 1.0
     },
     {
@@ -82101,7 +82101,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1652",
+      "source_location": "L1622",
       "weight": 1.0
     },
     {
@@ -82112,7 +82112,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1667",
+      "source_location": "L1637",
       "weight": 1.0
     },
     {
@@ -82123,7 +82123,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1679",
+      "source_location": "L1649",
       "weight": 1.0
     },
     {
@@ -82134,7 +82134,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1692",
+      "source_location": "L1662",
       "weight": 1.0
     },
     {
@@ -82145,7 +82145,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1717",
+      "source_location": "L1687",
       "weight": 1.0
     },
     {
@@ -82156,7 +82156,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1729",
+      "source_location": "L1699",
       "weight": 1.0
     },
     {
@@ -82167,7 +82167,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1741",
+      "source_location": "L1711",
       "weight": 1.0
     },
     {
@@ -82178,7 +82178,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1751",
+      "source_location": "L1721",
       "weight": 1.0
     },
     {
@@ -82189,7 +82189,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1758",
+      "source_location": "L1728",
       "weight": 1.0
     },
     {
@@ -82200,7 +82200,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1767",
+      "source_location": "L1737",
       "weight": 1.0
     },
     {
@@ -82211,7 +82211,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1299",
+      "source_location": "L1269",
       "weight": 1.0
     },
     {
@@ -82222,40 +82222,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1471",
-      "weight": 1.0
-    },
-    {
-      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
-      "target": "sal_archivio_riepilogo_set_2_3_10_giri_4_ciclo_capacit\u00e0_di_progettare_contesto_e_scelta_delle_idee",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1625",
-      "weight": 1.0
-    },
-    {
-      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
-      "target": "sal_archivio_riepilogo_set_3_3_10_giri_4_ciclo_flusso_delle_idee_interazione_fra_le_parti",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1779",
-      "weight": 1.0
-    },
-    {
-      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
-      "target": "sal_archivio_riepilogo_dei_tre_set_30_giri_4_ciclo_dopo_il_ciclo_precedente_da_40_giri",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1797",
+      "source_location": "L1441",
       "weight": 1.0
     },
     {
@@ -82266,18 +82233,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L180",
-      "weight": 1.0
-    },
-    {
-      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
-      "target": "sal_archivio_5_ciclo_set_1_3_giro_1_claude_agents_non_esisteva",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L1814",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -82288,18 +82244,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L186",
+      "source_location": "L156",
       "weight": 1.0
     },
     {
       "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
-      "target": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
+      "target": "sal_archivio_riepilogo_set_2_3_10_giri_4_ciclo_capacit\u00e0_di_progettare_contesto_e_scelta_delle_idee",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2030",
+      "source_location": "L1595",
+      "weight": 1.0
+    },
+    {
+      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
+      "target": "sal_archivio_riepilogo_set_3_3_10_giri_4_ciclo_flusso_delle_idee_interazione_fra_le_parti",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L1749",
       "weight": 1.0
     },
     {
@@ -82310,7 +82277,40 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L205",
+      "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
+      "target": "sal_archivio_riepilogo_dei_tre_set_30_giri_4_ciclo_dopo_il_ciclo_precedente_da_40_giri",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L1767",
+      "weight": 1.0
+    },
+    {
+      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
+      "target": "sal_archivio_5_ciclo_set_1_3_giro_1_claude_agents_non_esisteva",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L1784",
+      "weight": 1.0
+    },
+    {
+      "source": "sal_archivio_sal_il_diario_vivo_del_sistema",
+      "target": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2000",
       "weight": 1.0
     },
     {
@@ -82321,7 +82321,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2053",
+      "source_location": "L2023",
       "weight": 1.0
     },
     {
@@ -82332,7 +82332,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2217",
+      "source_location": "L2187",
       "weight": 1.0
     },
     {
@@ -82343,7 +82343,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2239",
+      "source_location": "L2209",
       "weight": 1.0
     },
     {
@@ -82354,7 +82354,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2386",
+      "source_location": "L2356",
       "weight": 1.0
     },
     {
@@ -82365,7 +82365,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2410",
+      "source_location": "L2380",
       "weight": 1.0
     },
     {
@@ -82376,7 +82376,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836",
+      "source_location": "L2806",
       "weight": 1.0
     },
     {
@@ -82387,7 +82387,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3051",
+      "source_location": "L3021",
       "weight": 1.0
     },
     {
@@ -97055,5 +97055,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f1d6b562bffd6801632ebaaa6f0b96312f4b42d8"
+  "built_at_commit": "eb1f42e7fa8f018698a3bc0229d9cdd490fb9212"
 }

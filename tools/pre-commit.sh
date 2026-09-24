@@ -126,7 +126,9 @@ while IFS= read -r f; do
     # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)
     [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e "patterns/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
   done < <(indice "$f" | grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' | tr -d '`')
-done < <(staged | grep '\.md$')
+# (2026-09-24, quinto ventaglio, R1 R5): SAL-ARCHIVIO.md e' storia congelata — cita i file com'erano quando
+# fu scritto; ci entra in stage solo l'indice rigenerato da sal-indice. Qui e al controllo 6 non si guarda.
+done < <(staged | grep '\.md$' | grep -vx 'SAL-ARCHIVIO.md')
 [ -n "$PEND" ] && { echo "⛔ path citati ma inesistenti:"; echo "$PEND"; FALLITI=1; }
 
 # 4. numero-test nel messaggio — quando lo script e' invocato a mano col messaggio
@@ -166,7 +168,7 @@ COPIE=()
 while IFS= read -r f; do
   nell_indice "$f" || continue
   mkdir -p "$IDX/$(dirname "$f")"; indice "$f" > "$IDX/$f"; COPIE+=("$IDX/$f")
-done < <(staged | grep '\.md$' | grep -v '^docs/campo/' || true)
+done < <(staged | grep '\.md$' | grep -v '^docs/campo/' | grep -vx 'SAL-ARCHIVIO.md' || true)
 if [ ${#COPIE[@]} -gt 0 ]; then
   CV=$(bash "$HERE/tools/cita-verifica.sh" "${COPIE[@]}"); CV_RC=$?
   printf '%s\n' "${CV//$IDX\//}"
