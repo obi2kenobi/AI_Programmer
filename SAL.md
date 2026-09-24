@@ -3957,5 +3957,7 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tools/bootstrap-app.sh` (`^login/nome$`) non combaciava mai con «login/nome feat» e aggiungeva
   un doppione a ogni esecuzione. Ora c'è un gesto solo, `tools/iscrivi-coda.sh`: confronto esatto sul
   primo campo delle righe non commentate, e ogni esito detto. Banco `tests/test-iscrivi-coda.sh`:
-  rosso prima (lo strumento mancava), 3 rossi al sabotaggio (la regex vecchia rimessa). Il `\b` in
+  rosso prima (lo strumento mancava), 2 rossi al sabotaggio (la regex vecchia rimessa). [Correzione:
+  qui avevo scritto «3 rossi», nello stesso comando che leggeva l'uscita e prima di vederla — E-043
+  ripetuto. Da qui il verdetto si scrive solo in un comando successivo.] Il `\b` in
   sé non era il difetto (T3#4: il grep del Mac lo capisce); lo era il confine di parola.
