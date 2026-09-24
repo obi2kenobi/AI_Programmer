@@ -70,12 +70,14 @@ RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" \
   '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}' \
   | curl -sf --max-time 60 "$API" --data-binary @- 2>/dev/null)
 
+# (2026-09-24, terzo ventaglio, V1#6): muto usciva 1, lo stesso codice di «sana», e il turno scriveva
+# «lente dichiara il sistema sano». Codici: 0 problemi · 1 sana · 2 cartella assente · 3 modello muto.
 if [ -z "$RESPONSE" ]; then
-  log "modello non ha risposto"
+  log "modello non ha risposto: la lente e' MUTA (rc 3), ne' sana ne' malata"
   echo "LENTE: $(echo "$LENTE_DATA" | cut -d'|' -f1)"
   echo "TOOL_RC: $TOOL_RC"
   echo "TOOL_OUTPUT:\n$TOOL_OUT"
-  exit 1
+  exit 3
 fi
 
 VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty')

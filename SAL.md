@@ -4277,3 +4277,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-suite-runner.sh` ha tre controlli nuovi (avviso oltre soglia, quota senza avviso sotto,
   riepilogo sempre ultima riga): rosso prima (2 FAIL), verde ora (16/0). Sabotaggio: soglia a 700%,
   torna rosso (15/1). AGENTS.md cita ora `tools/suite.sh:72`.
+- **Terzo ventaglio, V1#6a — una lente muta passava per «sistema sano».** Senza risposta dal modello,
+  `night-shift/caccia-lente.sh` usciva 1, lo stesso codice di «sana». Il turno allora scriveva «lente
+  dichiara il sistema sano», tentava la miglioria e a fine giro metteva il cooldown della salute. Ora
+  il modello muto esce 3, e i codici sono dichiarati in testa alla risposta vuota. `night-shift/night-shift.sh`
+  ha un ramo proprio: «⚠ LENTE MUTA — NON è 'sistema sano'», nessuna miglioria, nessun cooldown.
+  `tests/test-caccia-lente.sh` ha due controlli nuovi: rosso prima (2 FAIL), verde ora (5/0).
+  Sabotaggio: muto di nuovo a 1, torna rosso (4/1).

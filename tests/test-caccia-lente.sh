@@ -25,6 +25,15 @@ grep -cE "\\(($ATTESO|$((ATTESO-1))) bytes" <<<"$OUT" >/dev/null && ok "il model
 grep -cF "parole-spia: FIND finding" <<<"$OUT" >/dev/null && ok "le parole da cercare sono quelle dichiarate (terzo campo)" \
   || ko "parole da cercare sbagliate o mai usate: $(grep -m1 'parole' <<<"$OUT")"
 
+# (2026-09-24, terzo ventaglio, V1#6): con il modello muto la lente usciva 1, lo stesso codice di «sana»,
+# e il turno scriveva «lente dichiara il sistema sano» e il cooldown della salute. Muta ha il suo codice (3)
+# e il turno la dice per quello che e'.
+NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/dev/null 2>&1; RC=$?
+[ "$RC" -eq 3 ] && ok "modello muto: la lente esce 3, non 1 (sana)" || ko "modello muto: rc=$RC (1 = sana: il muto passa per salute)"
+NS="$HERE/night-shift/night-shift.sh"
+grep -c '"$CACCIA_RC" -eq 3' "$NS" >/dev/null && grep -c 'LENTE MUTA' "$NS" >/dev/null \
+  && ok "il turno ha un ramo per la lente muta (rc 3), distinto da «sana»" || ko "il turno non distingue la lente muta"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -726,6 +726,12 @@ review del giorno." 2>>"$ERR_NOTTE" \
         log "REPO $REPO: caccia: problemi segnalati dalla lente — nessun fix automatico qui, il giorno giudica (auto-esame e issue)"
         git -C "$DIR" checkout "$DB" -q 2>/dev/null || true
         git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
+      elif [ "$CACCIA_RC" -eq 3 ]; then
+        # (2026-09-24, V1#6): il modello non ha risposto — non e' salute, e niente cooldown della salute:
+        # il ciclo dopo la lente riprova
+        log "REPO $REPO: caccia: ⚠ LENTE MUTA (il modello non ha risposto) — NON e' 'sistema sano'"
+        git -C "$DIR" checkout "$DB" -q 2>/dev/null || true
+        git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
       else
         # (2026-09-19, Ollama wedged): «nessuna trovata» e «agente morto» NON sono
         # la stessa cosa — la finestra con lo strumento rotto va detta per quello che e'
