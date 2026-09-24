@@ -47,7 +47,8 @@ if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
   echo "   Dove si e' fermato: l'ultima riga di $LOG."
   # (Q12, 2026-09-23): prometteva un riavvio automatico di launchd — il plist parte alle 23:00 e non ha
   # KeepAlive (night-shift/plist/com.luca.nightshift.plist): dopo il pkill il turno resta giu'.
-  echo "   Pulizia: pkill -f \"night-shift/night-shift.sh\", poi riavvialo — launchd da solo lo riparte solo alle 23:00:"
+  # (2026-09-24, Q1 R4): `[n]ight-shift` — la forma nuda, eseguita da un agente, uccide anche la sua shell
+  echo "   Pulizia: pkill -f \"[n]ight-shift/night-shift.sh\", poi riavvialo — launchd da solo lo riparte solo alle 23:00:"
   echo "   launchctl kickstart gui/\$(id -u)/\$(launchctl list | awk '/nightshift/{print \$3}')"
   exit 1
 fi

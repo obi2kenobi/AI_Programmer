@@ -53,6 +53,12 @@ if [ -f "$HERE/graphify-out/graph.json" ]; then
     && ok "design-doc non dice il grafo assente dove e' versionato" || ko "design-doc dice «il grafo non è installato qui», ma graphify-out/graph.json c'e'"
 fi
 
+# (2026-09-24, quarto ventaglio, Q1 R4): `pkill -f "opencode run"` eseguito da un agente uccide la sua stessa
+# shell — l'espressione compare nella riga di comando dello strumento (provato con pgrep: 2 processi, la
+# shell esterna e la bash -c). La forma con la classe, `[o]pencode run`, trova il processo ma non la riga.
+NUDI=$(grep -n 'pkill -f "opencode run"\|pkill -f \\"night-shift/night-shift.sh' "$HERE/docs/MANUALE-OPERATIVO.md" "$HERE/tools/turno-vivo.sh" 2>/dev/null || true)
+[ -z "$NUDI" ] && ok "le pulizie da eseguire (manuale, turno-vivo) non si riconoscono da sole" || ko "pkill che uccide la propria shell: $NUDI"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

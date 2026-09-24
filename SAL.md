@@ -4548,3 +4548,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   swap non misurato è «⚠️ non misurabile qui», e i job launchd si giudicano solo se launchctl c'è.
   `tests/test-system-health.sh` ha due casi (girano solo dove launchctl manca, altrimenti SALTO
   dichiarato): rosso prima (2 FAIL), verde ora (8/0). Sabotaggio: senza il ramo del non misurato, 7/1.
+- **Quarto ventaglio, Q1 R4 — due pulizie che, eseguite da un agente, uccidevano la sua shell.** La riga
+  `pkill -f "opencode run"` di `docs/MANUALE-OPERATIVO.md` e la «Pulizia» stampata da `tools/turno-vivo.sh`
+  (`pkill -f "night-shift/night-shift.sh"`) combaciano con la riga di comando dello strumento Bash che le
+  esegue. Provato con pgrep, mai con pkill: forma nuda → 2 processi (la shell esterna e la `bash -c`), forma
+  con la classe `[o]pencode run` → 0. Anche due miei primi conteggi erano inquinati: la stessa chiamata
+  conteneva la forma nuda, rifatti da soli. Ora entrambe usano la classe, e il manuale spiega perché nella
+  prosa sopra il blocco, non con un commento inline (CLAUDE.md §3). I `pkill` dentro
+  `night-shift/night-shift.sh` restano come sono: girano nello script, non in una riga che contiene
+  l'espressione. Guardia in `tests/test-doc-non-corrotti.sh`: rossa sul manuale di prima e sul turno-vivo
+  di HEAD (12/1), verde ora (13/0).

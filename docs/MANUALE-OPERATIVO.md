@@ -83,12 +83,14 @@ bash tools/status-page.sh
 ## Se qualcosa non funziona
 
 Nell'ordine: cosa è giù; il motore si resuscita così; un agente impantanato si libera così;
-il turno dice cosa sta facendo.
+il turno dice cosa sta facendo. La pulizia scrive `[o]pencode run` e non `opencode run`: la classe trova il
+processo ma non la riga di comando che la contiene, così un agente che la esegue alla lettera non uccide
+la propria shell (provato con pgrep, 2026-09-24, Q1 R4).
 
 ```bash
 bash tools/system-health.sh
 launchctl kickstart -k gui/$(id -u)/luca.ollama
-pkill -f "opencode run"
+pkill -f "[o]pencode run"
 tail -5 ~/night-shift.log
 ```
 

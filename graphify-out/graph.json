@@ -49370,7 +49370,7 @@
       "node_kind": "heading",
       "norm_label": "configurazione (una volta sola)",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L95"
+      "source_location": "L97"
     },
     {
       "id": "docs_manuale_operativo_manuale_operativo_ai_programmer",
@@ -73385,7 +73385,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L95",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -95080,5 +95080,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "756b58ac8308104b2295285ba464030a8f61acd3"
+  "built_at_commit": "00bbab10bb8269085e31b5298a60056be91d13d8"
 }
