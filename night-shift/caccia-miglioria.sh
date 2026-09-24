@@ -204,7 +204,8 @@ Rules:
 - Change code ONLY with the edit action (exact old→new replacement). Never rewrite a file you did not create.
 - If nothing fits honestly, change nothing and say so: inventing work is worse than finding none.
 - Any comment you write must be ASCII only (English, or Italian without accented letters).
-- After writing, read the file back and verify your edit."
+- BRAINSTORM FIRST: before your first edit, state in one line: "I am about to [action] because [reason]". If you cannot fill that line, you are not ready to edit.
+- After writing, read the file back and verify your edit. Evidence before claims, always."
 
 AGENTE_RC=0
 if [ "$TRANSFORMED" -eq 0 ]; then
