@@ -5025,3 +5025,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Con i tre gate rossi, `gate_banchi` non apriva mai il cancello del fixer. Ora la suite intera, col PATH
   «Mac», dà 184/184, come su Linux. Sabotaggio col PATH «Mac»: 99/3, 4/3, 4/1. ASSUNTO dichiarato: il Mac
   simulato non è un Mac. awk, grep, find, stat, date e ps restano GNU, e il motore regex del sed è glibc.
+- **Sesto ventaglio, S5 R5 — la lente della portabilità non vedeva le forme che hanno fermato il Mac.**
+  `tests/test-portabilita.sh` cercava `timeout <numero>`, e non `timeout "$SEC"`. Non cercava `setsid`, né il
+  comando `a`/`i`/`c` del sed su una riga sola. Ora cerca tutte e tre: `setsid` è ammesso solo accanto a
+  `command -v setsid`, e l'implementazione `llm/_timeout.sh` è esclusa. Allargata, ha trovato due falsi positivi
+  (l'implementazione e una stringa di log), tolti con una forma più stretta, non con un'eccezione per riga.
+  Sabotaggio con le versioni di prima delle tre cure di S5 R1, in file temporanei: 14/3, uno per forma.
+  Verde 17/0.

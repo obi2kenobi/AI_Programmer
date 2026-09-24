@@ -41,7 +41,9 @@ S=$(righe_con '(\||xargs) *md5\b' | grep -v 'md5sum' | while IFS= read -r R; do 
 [ -z "$S" ] && ok "nessun md5 nudo senza fallback (Linux: solo md5sum)" || ko "md5 mac-only senza fallback (impronta vuota, confronto sempre vero):"$'\n'"$S"
 
 # timeout(1) nudo: macOS non lo ha (la suite del 21/9 era rossa sul Mac per «command not found») — si usa ai_timeout
-S=$(righe_con '(^|[ (;&|=])timeout [0-9]' | grep -v 'ai_timeout' | grep -v 'tools/test-modelli-notturni.sh:' || true)
+# (2026-09-24, sesto ventaglio, S5 R5): cercava solo `timeout <numero>` — `timeout "$SEC"` di eval-review passava
+# (llm/_timeout.sh e' l'implementazione: usa timeout dopo averlo cercato con command -v)
+S=$(righe_con '(^|[ (;&|=!])timeout ([0-9]|"\$|-k)' | grep -v 'ai_timeout' | grep -v 'tools/test-modelli-notturni.sh:' | grep -v '/llm/_timeout.sh:' || true)
 [ -z "$S" ] && ok "nessun timeout(1) nudo (macOS: solo ai_timeout di llm/_timeout.sh)" || ko "timeout nudo, assente su macOS:"$'\n'"$S"
 
 # la forma portabile e' eseguibile qui, su questa bash
@@ -97,6 +99,14 @@ for f in sys.argv[1:]:
 PYHD
 S=$(cat "$USCITA_PY"); rm -f "$USCITA_PY"
 [ -z "$S" ] && ok "nessun heredoc dentro \$( ) con altro dopo il delimitatore (errore a runtime su bash 5.2)" || ko "heredoc in \$( ) con redirezione/operatore dopo il delimitatore:"$'\n'"$S"
+
+# (2026-09-24, sesto ventaglio, S5 R5): due forme che la lente non cercava, e che fermavano la suite sul Mac:
+# `setsid` (il Mac non l'ha: si ripiega su perl, come in sessione_nuova) e il comando `a`/`i`/`c` del sed su una
+# riga sola (il sed del Mac vuole `a\` e l'a capo).
+S=$(righe_con '(^|[ (;&|=!])setsid ' | grep -v 'command -v setsid' || true)
+[ -z "$S" ] && ok "S5 R5: nessun setsid senza ripiego (sul Mac non c'e')" || ko "S5 R5: setsid nudo:"$'\n'"$S"
+S=$(righe_con "sed( -[a-zA-Z]+)* '[^']*/[aic] [^\\]" || true)
+[ -z "$S" ] && ok "S5 R5: nessun sed a/i/c su una riga sola (il sed del Mac lo rifiuta)" || ko "S5 R5: sed a/i/c GNU-only:"$'\n'"$S"
 
 # (2026-09-24, sesto ventaglio, S5 R2): nessuno lanciava `bash -n` con la bash del Mac — questo stesso banco non si
 # analizzava con la 3.2 e nessuno lo vedeva. Ogni script del repo si analizza con /bin/bash (sul Mac e' la 3.2.57) e
