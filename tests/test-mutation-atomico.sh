@@ -19,12 +19,14 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 TMP=$(mktemp -d /tmp/mutation-atomico.XXXXXX)
 trap 'rm -rf "$TMP"' EXIT
 
-# fixture: mini-repo con git, un tool e un test che dorme 30s
+# fixture: mini-repo con git, un tool e un test che dorme 30s quando il tool e' mutato
 git init -q "$TMP/repo"
 mkdir -p "$TMP/repo/tools" "$TMP/repo/tests"
 printf '#!/bin/bash\necho "sono il tool foo, riga 3"\n' > "$TMP/repo/tools/foo.sh"
 chmod +x "$TMP/repo/tools/foo.sh"
-printf '#!/bin/bash\nsleep 30\nexit 1\n' > "$TMP/repo/tests/test-foo.sh"
+# (Q32, 2026-09-23): il banco di mutazione ora esegue ogni test PRIMA col tool intatto (un banco gia'
+# rosso non prova niente): il test passa subito col tool sano e dorme solo col tool mutato
+printf '#!/bin/bash\ngrep -q "riga 3" "$(dirname "$0")/../tools/foo.sh" && exit 0\nsleep 30\nexit 1\n' > "$TMP/repo/tests/test-foo.sh"
 cp "$HERE/tools/mutation-tests.sh" "$TMP/repo/tools/"
 git -C "$TMP/repo" add -A && git -C "$TMP/repo" commit -qm base
 ORIG=$(cat "$TMP/repo/tools/foo.sh")

@@ -31,6 +31,21 @@ else
     || ko "la guardia non scatta (rc=$RC): muterebbe lavoro non committato"
 fi
 
+# (Q32, 2026-09-23, notte dei giri): un banco GIA' rosso prima della mutazione fallisce anche dopo,
+# e veniva contato «reagisce alla mutazione» — un TIENE regalato da un banco rotto. Si prova in una
+# repo di prova: tool sano, banco che fallisce sempre.
+MT=$(mktemp -d)
+git -C "$MT" init -q; mkdir -p "$MT/tools" "$MT/tests"
+cp "$HERE/tools/mutation-tests.sh" "$MT/tools/"
+printf '#!/bin/bash\necho sano\n' > "$MT/tools/soggetto.sh"
+printf '#!/bin/bash\nexit 1\n' > "$MT/tests/test-soggetto.sh"
+git -C "$MT" add -A; git -C "$MT" -c user.name=t -c user.email=t@t commit -qm base
+OUT=$(cd "$MT" && bash tools/mutation-tests.sh 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -qi "rosso gia' prima" <<<"$OUT" && ! grep -q "^VERDETTO: 1 test reagiscono" <<<"$OUT" \
+  && ok "banco gia' rosso prima della mutazione: detto, e non contato fra quelli che reagiscono" \
+  || ko "banco rotto promosso a «reagisce alla mutazione» (rc=$RC): $(tail -1 <<<"$OUT")"
+rm -rf "$MT"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

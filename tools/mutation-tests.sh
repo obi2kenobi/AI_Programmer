@@ -38,7 +38,7 @@ ripristina() {
 }
 trap ripristina INT TERM EXIT
 
-TENGONO=0; TEATRI=0
+TENGONO=0; TEATRI=0; ROTTI=0
 for t in tests/test-*.sh; do
   base=$(basename "$t" .sh); base=${base#test-}
   tool=""
@@ -47,6 +47,13 @@ for t in tests/test-*.sh; do
     if [ "$nb" = "$base" ]; then tool="$cand"; break; fi
   done
   [ -z "$tool" ] && continue
+  # (Q32, 2026-09-23, notte dei giri): un banco GIA' rosso fallisce anche dopo la mutazione, e
+  # veniva contato «reagisce» — un TIENE regalato da un banco rotto. Prima si guarda che sia verde.
+  if ! bash "$t" >/dev/null 2>&1; then
+    ROTTI=$((ROTTI+1))
+    echo "ROSSO GIA' PRIMA: $(basename "$t") fallisce col tool intatto — la mutazione non dimostrerebbe niente"
+    continue
+  fi
   BACKUP=$(mktemp /tmp/mutation-backup.XXXXXX) || continue
   cp "$tool" "$BACKUP" || { BACKUP=""; continue; }
   MUTATO="$tool"
@@ -64,5 +71,5 @@ for t in tests/test-*.sh; do
 done
 
 echo ""
-echo "VERDETTO: $TENGONO test reagiscono alla mutazione, $TEATRI teatri verdi"
-[ "$TEATRI" -eq 0 ]
+echo "VERDETTO: $TENGONO test reagiscono alla mutazione, $TEATRI teatri verdi, $ROTTI rossi gia' prima (non giudicabili)"
+[ "$TEATRI" -eq 0 ] && [ "$ROTTI" -eq 0 ]

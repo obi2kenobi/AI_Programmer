@@ -3715,3 +3715,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     (sabotaggio: rosso), e la caccia guarda anche tests/ (`tests/test-caccia-registro.sh`, rosso
     sullo strumento vecchio).
   - Restano 72 siti `comando | grep -q`, un'altra forma: ora la caccia li vede.
+- **Q32**, da A3, `tools/mutation-tests.sh`: un banco GIÀ rosso fallisce anche col tool neutralizzato,
+  e veniva contato «reagisce alla mutazione». Un TIENE regalato da un banco rotto.
+  - Ora ogni banco si esegue prima col tool intatto; «rosso già prima» si dice e fa fallire il
+    verdetto.
+  - Smentita l'altra metà del rilievo: sostituire il file intero è il disegno dichiarato
+    (neutralizzare il tool), non un difetto.
+  - `tests/test-mutation-atomico.sh`: la fixture dormiva sempre; ora dorme solo col tool mutato,
+    e la prova resta non vuota.
+  - Banco: `tests/test-mutation-tests.sh`, 1 caso in una repo di prova, rosso prima. Sabotaggio
+    (via il controllo preliminare): rosso.
