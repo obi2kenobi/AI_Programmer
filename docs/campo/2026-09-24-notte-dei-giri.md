@@ -82,7 +82,7 @@
 ## Aggiornamento (2026-09-24, quinto ventaglio, fino alle 19Z)
 - Usato: cinque lenti nuove (la memoria, il satellite end-to-end, gli oracoli come strumenti, i
   consumatori dei log, giorno e notte sulla stessa repo). Consolidamento in
-  `docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md`: 30 rilievi, 29 curati (4 in parte), 1 escluso, otto
+  `docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md`: 30 rilievi, 29 curati (4 in parte), 1 escluso, sette
   domande di dominio nuove in DEBITI. In mezzo, un merge di main che ha portato tre difetti, curati nel merge.
 - Ha retto: il settimo patto, ora che conta le righe. Chi riapre vede 14 domande di dominio invece di una,
   più tre saldati con un residuo ⏳ e il conto delle citazioni scivolate (9 su 10).
