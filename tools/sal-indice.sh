@@ -57,7 +57,9 @@ indice.append("")
 
 blocco = "\n".join(indice)
 if "<!-- SAL-INDICE" in sal:
-    sal = re.sub(r'<!-- SAL-INDICE[\s\S]*?-->\n## Indice del diario\n(?:.*\n)*?(?=\n#|\n## [^I]|\Z)', blocco + "\n", sal, count=1)
+    # (2026-09-24, sesto ventaglio, S2 R6): era `blocco + "\n"` — la lookahead lascia fuori l'a capo di separazione,
+    # e il blocco lo rimetteva: una riga vuota in piu' a ogni SAL nuovo al secondo giro. Il blocco finisce gia' in a capo.
+    sal = re.sub(r'<!-- SAL-INDICE[\s\S]*?-->\n## Indice del diario\n(?:.*\n)*?(?=\n#|\n## [^I]|\Z)', blocco, sal, count=1)
     # fallback semplice: sostituzione dall marker al primo ## successivo non-Indice
 else:
     # inserisce dopo il primo blocco di intestazione (dopo la prima riga vuota seguente il titolo)

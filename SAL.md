@@ -154,7 +154,6 @@
 - [2026-09-23 (17°) — il cancello clasp non scambia più il corpo di un heredoc per un comando (sì di Luca)](#2026-09-23-17--il-cancello-clasp-non-scambia-più-il-corpo-di-un-heredoc-per-un-comando-sì-di-luca)
 - [2026-09-23 (18°) — la notte dei giri: mandato di Luca «analisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti»](#2026-09-23-18--la-notte-dei-giri-mandato-di-luca-analisi-lenta-trova-e-aggiusta-tutto-10-giri-e-poi-20-non-fermarti)
 
-
 ## Stato
 
 `PRIMA INSTALLAZIONE` (2026-08-21) — sistema completo assemblato: base (regole + conoscenza),
@@ -5143,3 +5142,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   un pass finto, lo uccide per PID, e vuole che il ciclo dopo riparta e che un pass vivo resti intoccato. Rosso
   prima; sabotaggio 1/3. Il banco si ingannava da solo, perché `$( )` aspetta il pass in background: l'uscita va
   su file.
+- **Sesto ventaglio, S2 R6 (sal-indice) — il secondo giro su un SAL nuovo aggiungeva una riga vuota.** In
+  `tools/sal-indice.sh` la sostituzione dell'indice rimetteva un a capo che la lookahead aveva lasciato fuori:
+  una riga vuota in più al secondo giro, poi il file convergeva. Il diario vero ne portava la cicatrice, e
+  l'archivio pure. Ora il blocco sostituisce e basta: due giri di fila danno lo stesso file. Caso nuovo in
+  `tests/test-sal-indice-ancore.sh` (14/0), rosso prima; sabotaggio 13/1. SAL.md e SAL-ARCHIVIO.md perdono
+  la riga in più.

@@ -146,7 +146,6 @@
 - [2026-08-27 (6) — terzo report REPO-G: la riverifica indipendente chiude il loop](#2026-08-27-6--terzo-report-repo-g-la-riverifica-indipendente-chiude-il-loop)
 - [2026-08-27 (7) — primo report dal campo nel formato nuovo: pattern 19, REPO-H, quattro proposte adottate](#2026-08-27-7--primo-report-dal-campo-nel-formato-nuovo-pattern-19-repo-h-quattro-proposte-adottate)
 
-
 ## Stato
 
 `PRIMA INSTALLAZIONE` (2026-08-21) — sistema completo assemblato: base (regole + conoscenza),

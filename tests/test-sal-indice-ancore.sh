@@ -95,6 +95,13 @@ fi
 : > "$TMP/SAL.md"; OUT=$(bash "$TMP/tools/sal-indice.sh" 2>&1); RC=$?
 [ "$RC" -ne 0 ] && grep -ci 'vuoto' <<<"$OUT" >/dev/null && ok "S4 R1: un SAL vuoto si rifiuta (rc $RC), non «nessuna voce»" || ko "S4 R1: SAL vuoto: rc $RC — $OUT"
 
+# (2026-09-24, sesto ventaglio, S2 R6): su un SAL nuovo (senza indice) il secondo giro aggiungeva una riga vuota fra
+# l'indice e la prima voce, e solo il terzo convergeva. Due giri di fila: lo stesso file.
+printf '# T\n\nintro\n\n### Prima voce\n\nx\n' > "$TMP/SAL.md"; rm -f "$TMP/SAL-ARCHIVIO.md"
+bash "$TMP/tools/sal-indice.sh" >/dev/null 2>&1; M1=$(cksum < "$TMP/SAL.md")
+bash "$TMP/tools/sal-indice.sh" >/dev/null 2>&1; M2=$(cksum < "$TMP/SAL.md")
+[ "$M1" = "$M2" ] && ok "S2 R6: il secondo giro su un SAL nuovo non cambia niente" || ko "S2 R6: il secondo giro cambia il SAL: $(diff <(bash -c true) /dev/null; echo "$M1 → $M2")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
