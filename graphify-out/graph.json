@@ -15175,7 +15175,7 @@
       },
       "norm_label": "impronta()",
       "source_file": "tests/test-garante-standard.sh",
-      "source_location": "L46"
+      "source_location": "L52"
     },
     {
       "id": "tests_test_garante_standard_ko",
@@ -55118,7 +55118,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-garante-standard.sh",
-      "source_location": "L47",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -91252,7 +91252,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-garante-standard.sh",
-      "source_location": "L46",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -97747,5 +97747,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fe125089550b4c4313398353f450457de4bd8e90"
+  "built_at_commit": "074c8982fe9c38f20247e722922826b2b032d70a"
 }

@@ -4986,3 +4986,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   rifiuta `-R` senza la barra, come quello vero. Caso nuovo (15/0), rosso prima. Sabotaggio: 14/1. La prima stesura leggeva il login con
   un'assegnazione nuda sotto `set -e`: col login illeggibile il bootstrap moriva lì. L'ha presa
   `tests/test-iscrivi-coda.sh` prima del commit; ora c'è `|| true`, e il caso resta verde (12/0).
+- **Sesto ventaglio, S1 — il rimedio del garante non girava, incollato.** Le quattro cure che
+  `tools/garante-standard.sh` stampa dicevano `bash …/tools/sync-repo.sh --standard`, senza l'`owner/repo` che
+  sync-repo vuole: incollate, rispondevano con la riga d'uso ed uscivano 1. Ora il nome si legge dall'origin
+  GitHub del satellite; senza origin c'è il segnaposto `<owner/repo>`. Due casi nuovi in
+  `tests/test-garante-standard.sh` (16/0), rossi prima. Sabotaggio: 14/2.

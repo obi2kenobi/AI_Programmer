@@ -22,6 +22,12 @@ OUT=$(cd "$SB" && bash "$GARANTE" 2>&1)
 if grep -q "DIVERGE" <<<"$OUT"; then
   ok "metodo installato vecchio → avviso deriva (con il comando per aggiornare)"
   grep -q "sync-repo" <<<"$OUT" && ok "l'avviso dice COME aggiornare" || ko "avviso senza rimedio"
+  # (2026-09-24, sesto ventaglio, S1): il rimedio era «sync-repo.sh --standard» senza owner/repo — incollato,
+  # sync-repo rispondeva con la riga d'uso ed usciva 1. Senza origin si dice il segnaposto; con, il nome vero.
+  grep -c 'sync-repo.sh <owner/repo> --standard' <<<"$OUT" >/dev/null && ok "S1: il rimedio ha l'argomento che sync-repo vuole" || ko "S1: rimedio senza owner/repo: $(grep -o 'sync-repo.sh[^)]*' <<<"$OUT" | head -1)"
+  git -C "$SB" init -q 2>/dev/null; git -C "$SB" remote add origin https://github.com/luca/satellite.git
+  OUTR=$(cd "$SB" && bash "$GARANTE" 2>&1)
+  grep -c 'sync-repo.sh luca/satellite --standard' <<<"$OUTR" >/dev/null && ok "S1: con un origin GitHub il rimedio porta il nome vero" || ko "S1: origin non letto: $(grep -o 'sync-repo.sh[^)]*' <<<"$OUTR" | head -1)"
 else
   ko "deriva del metodo NON vista — il garante e' tornato una-tantum"
 fi
