@@ -4406,3 +4406,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Banco nuovo `tests/test-banchi-identita.sh`: un cricchetto sui banchi che fanno un commit senza
   identità (escluso per nome quello col git finto) e il bootstrap in una HOME vuota. Rosso prima (2
   FAIL), verde ora (3/0). Il bootstrap di HEAD resta rosso (1/2); l'e2e è 14/0, come su HEAD.
+- **Quarto ventaglio, Q3 R1-R2 — tre vie per cui un muto veniva letto come sano.** Il giro l'ha provato
+  con un Ollama finto:
+  - `night-shift/agente.sh`, a una risposta 200 col contenuto vuoto, usciva 0 «✅ completato».
+    `night-shift/caccia-miglioria.sh` dichiarava allora il file pulito per 6 ore, e il turno scriveva
+    «repository in salute»;
+  - `night-shift/caccia-lente.sh` usciva 1 (sana) con uno strumento morto senza output, e con un
+    verdetto vuoto;
+  - `night-shift/night-shift.sh` faceva cadere il rc 2 (cartella assente) nel ramo della salute.
+
+  Ora il contenuto vuoto esce 1, con «agente rc=1» (il chiamante lo legge come agente fallito); strumento
+  e verdetto muti escono 3; e il turno tratta il 2 come il 3. Casi nuovi: `tests/test-agente.sh` A7 e tre
+  controlli in `tests/test-caccia-lente.sh`. Rossi prima (1 + 3 FAIL), verdi ora (17/0, 8/0). Sabotaggi:
+  senza il rifiuto del contenuto vuoto, 16/1; senza quello del verdetto vuoto, 7/1. Il mio primo banco A7
+  cercava «completato» e prendeva «NON completato»: corretto su «✅ completato».

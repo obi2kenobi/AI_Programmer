@@ -43,8 +43,9 @@ TOOL_OUT=$(eval "$LENTE_CMD" 2>&1 | head -50)
 TOOL_RC=$?
 
 if [ -z "$TOOL_OUT" ]; then
-  log "strumento non ha prodotto output"
-  exit 1
+  # (2026-09-24, Q3 R2): usciva 1 (sana) — uno strumento morto senza output non ha detto niente
+  log "strumento non ha prodotto output: la lente e' MUTA (rc 3), ne' sana ne' malata"
+  exit 3
 fi
 
 # --- Il modello INTERPRETA l'output (contesto piccolo, domanda precisa) --------------
@@ -81,6 +82,8 @@ if [ -z "$RESPONSE" ]; then
 fi
 
 VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty')
+# (Q3 R2): 200 con il verdetto vuoto finiva «sistema sano» (la prima riga vuota non e' YES)
+[ -z "$VERDETTO" ] && { log "verdetto vuoto del modello: la lente e' MUTA (rc 3)"; exit 3; }
 
 echo "LENTE: $(echo "$LENTE_DATA" | cut -d'|' -f1)"
 echo "STRUMENTO_RC: $TOOL_RC"

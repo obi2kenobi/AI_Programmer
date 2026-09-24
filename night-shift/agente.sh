@@ -100,6 +100,10 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
 
   CONTENT=$(echo "$RESPONSE" | jq -r '.message.content // empty')
+  # (2026-09-24, quarto ventaglio, Q3 R1): 200 con il contenuto vuoto (un modello che pensa soltanto, un
+  # contesto saturo) usciva 0 «completato», e a valle la caccia dichiarava il file pulito per 6 ore.
+  # Muto non e' finito: rc 1, e il chiamante lo legge come agente fallito.
+  [ -z "$CONTENT" ] && { log "⛔ risposta vuota del modello (turno $TURNO) — muto, NON completato: agente rc=1"; exit 1; }
   log "turno $TURNO (${ELAPSED}s): il modello risponde"
 
   # prova a parsare come JSON action (spogliando i fence markdown)

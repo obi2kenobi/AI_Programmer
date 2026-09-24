@@ -135,6 +135,14 @@ MAX_T=2 scenario a6 "$SB" "loop" \
   "$(azione '{"action":"read","path":"x.txt"}')"
 [ "$RC" -eq 1 ] && grep -q "max turni" <<<"$OUT" && ok "A6: tetto dei turni → rc 1 dichiarato (niente loop infinito)" || ko "A6: rc=$RC: $(echo "$OUT" | tail -1)"
 
+# A7 (2026-09-24, quarto ventaglio, Q3 R1): una risposta 200 con il contenuto VUOTO usciva 0 «completato»
+# — a valle caccia-miglioria dichiarava il file pulito per 6 ore e il turno «repository in salute».
+# Muto non e' finito: rc diverso da 0, e il chiamante lo vede come agente fallito («agente rc=»).
+SB="$SB_ROOT/a7"; mkdir -p "$SB"; printf 'x\n' > "$SB/x.txt"
+scenario a7 "$SB" "correggi" '{"message":{"role":"assistant","content":""}}'
+[ "$RC" -ne 0 ] && grep -c "vuota" <<<"$OUT" >/dev/null && ! grep -c "✅ completato" <<<"$OUT" >/dev/null \
+  && ok "A7: contenuto vuoto → rc $RC, «risposta vuota», non «completato»" || ko "A7: contenuto vuoto → rc=$RC: $(echo "$OUT" | tail -1)"
+
 # ── Parte B: le sfide col modello VERO (skip dichiarato senza Ollama) ───────────────
 if curl -sf --max-time 2 http://localhost:11434/api/tags >/dev/null 2>&1; then
   SB="$SB_ROOT/vivo"; mkdir -p "$SB"

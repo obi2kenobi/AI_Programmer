@@ -34,6 +34,17 @@ NS="$HERE/night-shift/night-shift.sh"
 grep -c '"$CACCIA_RC" -eq 3' "$NS" >/dev/null && grep -c 'LENTE MUTA' "$NS" >/dev/null \
   && ok "il turno ha un ramo per la lente muta (rc 3), distinto da «sana»" || ko "il turno non distingue la lente muta"
 
+# (2026-09-24, quarto ventaglio, Q3 R2): altre due strade portavano ancora a 1 (sana) — lo strumento morto
+# senza output, e il modello che risponde 200 con il verdetto vuoto.
+printf '#!/bin/bash\nexit 127\n' > "$T/hub/tools/giri-ignoranti.sh"; echo 0 > "$T/hub/.caccia-rotazione"
+NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/dev/null 2>&1; RC=$?
+[ "$RC" -eq 3 ] && ok "strumento senza output: la lente e' muta (rc 3), non sana" || ko "strumento senza output: rc=$RC"
+printf '#!/bin/bash\necho "FIND finding"\n' > "$T/hub/tools/giri-ignoranti.sh"; echo 0 > "$T/hub/.caccia-rotazione"
+mkdir -p "$T/bin"; printf '#!/bin/bash\ncat >/dev/null; echo %s\n' "'{\"message\":{\"content\":\"\"}}'" > "$T/bin/curl"; chmod +x "$T/bin/curl"
+PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/dev/null 2>&1; RC=$?
+[ "$RC" -eq 3 ] && ok "verdetto vuoto (200 senza contenuto): muta (rc 3), non sana" || ko "verdetto vuoto: rc=$RC"
+grep -c '"$CACCIA_RC" -eq 2' "$NS" >/dev/null && ok "il turno ha un ramo per la cartella assente (rc 2), non la salute" || ko "rc 2 cade nella salute"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
