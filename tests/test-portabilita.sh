@@ -68,6 +68,32 @@ S=$(righe_con 'realpath --relative-to|readlink -f ' || true)
 S=$(righe_con "sed [^|]*\\\\[sSwWb]|sed [^|]*s/[^/]*/[^/]*/[a-zA-Z]*I" || true)
 [ -z "$S" ] && ok "nessun \\s/\\w/\\b o flag I in un'espressione sed (BSD sed: letterali o «bad flag»)" || ko "sed GNU-only:"$'\n'"$S"
 
+# (2026-09-24, terzo ventaglio, V1#4): dentro `$( )`, un heredoc seguito sulla stessa riga da una
+# redirezione E da un operatore (`<<'X' 2>/dev/null || true`) e' un errore di sintassi A RUNTIME su bash
+# 5.2 — `bash -n` passa. L'auto-esame dell'hub moriva li' ogni notte, in silenzio, e saltava fixer, banco,
+# censore e caccia. La premessa si misura qui; nel codice, il delimitatore chiude la riga.
+printf 'X=$(cd / && python3 - <<%sE%s 2>/dev/null || true\nprint(1)\nE\n)\n' "'" "'" > "${TMPDIR:-/tmp}/premessa-heredoc.$$"
+if grep -c "syntax error" <<<"$(bash "${TMPDIR:-/tmp}/premessa-heredoc.$$" 2>&1)" >/dev/null; then   # non in pipe: sotto pipefail il rc 1 di bash la renderebbe falsa
+  ok "premessa: su questa bash ($BASH_VERSION) la forma rompe davvero a runtime"
+else
+  ok "premessa: su questa bash ($BASH_VERSION) la forma non rompe — il cricchetto resta, perche' su 5.2 si'"
+fi
+rm -f "${TMPDIR:-/tmp}/premessa-heredoc.$$"
+S=$(python3 - $FILES <<'PYHD'
+import re, sys
+# dentro $( … ) sulla stessa riga: <<[-] DELIMITATORE (anche fra apici) seguito da qualcosa che non e' nulla
+pat = re.compile(r"""(?<!\\)\$\([^)]*<<-?\s*(['"]?)([A-Za-z_]\w*)\1(.*)$""")   # \$( e' testo, non una sostituzione
+for f in sys.argv[1:]:
+    if "/tests/" in f: continue
+    for n, riga in enumerate(open(f, errors="ignore"), 1):
+        if riga.lstrip().startswith("#"): continue
+        m = pat.search(riga.rstrip("\n"))
+        if m and m.group(3).strip():
+            print(f"{f}:{n}:{riga.strip()[:120]}")
+PYHD
+)
+[ -z "$S" ] && ok "nessun heredoc dentro \$( ) con altro dopo il delimitatore (errore a runtime su bash 5.2)" || ko "heredoc in \$( ) con redirezione/operatore dopo il delimitatore:"$'\n'"$S"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

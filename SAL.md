@@ -4080,3 +4080,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   taglio l'ultima riga dice dove) e la durata totale. Il prefisso «VERIFICA ROSSA:» del log resta:
   dashboard e cervello-impara lo cercano. Banco in `tests/test-lib.sh`: 2 rossi prima, 1 al
   sabotaggio (lo sforo trattato come rosso).
+- **Terzo ventaglio, V1#4 — l'auto-esame dell'hub moriva ogni notte su un errore di sintassi a
+  runtime.** In `night-shift/night-shift.sh`, `NON_CITATI=$(… python3 - <<'PYSCAN' 2>/dev/null || true`
+  su bash 5.2 è un errore di sintassi quando la riga gira, e `bash -n` passa. Da lì saltavano fixer,
+  banco veloce, censore e caccia. Riprodotto isolando la forma: rompe solo con redirezione E operatore
+  dopo il delimitatore, dentro `$( )`. Il blocco curato gira dentro una funzione e trova il pattern
+  orfano. Cricchetto in `tests/test-portabilita.sh`, con la premessa misurata sulla bash che gira: il
+  delimitatore dell'heredoc chiude la riga, e `\$(` è testo. Rosso sul sito, rosso al sabotaggio.
+  Errori miei di passaggio, visti dal banco: la regex prima stesura prendeva il delimitatore stesso,
+  e la premessa era in pipe sotto pipefail (E-002 al contrario). ⏳ Dopo la fusione, la prima notte
+  farà girare davvero fixer, banco, censore e caccia sull'hub dopo molto tempo: il log del mattino va
+  letto.

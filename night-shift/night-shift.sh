@@ -418,7 +418,10 @@ Riprodurre a mano, correggere il comando o il codice che verifica, chiudere l'is
     # la scansione e' DIRETTA (non attraverso il ciclo-vivo: il suo livello dipende
     # dagli streak e la lente dei collegamenti puo' non girare stasera — un fixer
     # che dipende da una lente che forse parte non e' un fixer)
-    NON_CITATI=$(cd "$DIR" && python3 - <<'PYSCAN' 2>/dev/null || true
+    # (2026-09-24, terzo ventaglio, V1#4): era `$(… <<'PYSCAN' 2>/dev/null || true` — su bash 5.2 un errore
+    # di sintassi A RUNTIME (bash -n passa), e l'auto-esame dell'hub moriva qui ogni notte saltando fixer,
+    # banco, censore e caccia. La redirezione va prima dell'heredoc, e `|| true` fuori dalla sostituzione.
+    NON_CITATI=$(cd "$DIR" && python3 - 2>/dev/null <<'PYSCAN'
 import glob, os, re
 # corpus ALLINEATO al dente (ciclo-vivo lente 2): references + agents. Le SKILL.md
 # NON contano: la lente non le guarda, e un fixer che guarda piu' largo del dente
@@ -431,7 +434,7 @@ for p in sorted(glob.glob('patterns/*.md')):
     if base != 'README' and '`' + base + '`' not in corpus:
         print(base)
 PYSCAN
-)
+) || true
     if [ "$N_FIND" -gt 0 ] || [ -n "$NON_CITATI" ]; then
       BRANCH="notte/auto-$(date +%Y%m%d-%H%M)"
       if git -C "$DIR" checkout -b "$BRANCH" -q 2>/dev/null; then
