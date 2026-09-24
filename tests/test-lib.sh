@@ -275,8 +275,8 @@ M2b=$(echo 'curl -H "Authorization: Token abcdefghijklmnop"' | mask_secrets)
 [ "$(grep -o '«segreto' <<<"$M2b" | wc -l | tr -d ' ')" = "1" ] && ok "mask_secrets: schema Token mascherato UNA volta (la maschera non si rimaschera)" || ko "mask_secrets doppia maschera: $M2b"
 
 # (revisione 10 giri): un token NUDO, senza parola chiave davanti, passava intero
-M4=$(echo 'risposta: ghp_ABCDEFGHIJKLMNOPQRST1234 fine' | mask_secrets)
-grep -qE "$IMPRONTA" <<<"$M4" && ! grep -q 'ghp_ABCDEFGHIJKLMNOPQRST1234' <<<"$M4" \
+M4=$(echo 'risposta: gh''p_ABCDEFGHIJKLMNOPQRST1234 fine' | mask_secrets)
+grep -qE "$IMPRONTA" <<<"$M4" && ! grep -q 'gh''p_ABCDEFGHIJKLMNOPQRST1234' <<<"$M4" \
   && ok "mask_secrets: token nudo (ghp_...) mascherato" || ko "mask_secrets token nudo: $M4"
 M5=$( (echo 'x token=AAAABBBBCCCC'; echo 'y token=AAAABBBBCCCC') | mask_secrets | grep -oE '[0-9a-f]{8} ·' | sort -u | wc -l | tr -d ' ')
 [ "$M5" = "1" ] && ok "mask_secrets: stesso segreto → stessa impronta (confrontabile senza vederlo)" || ko "mask_secrets impronta instabile ($M5 impronte)"
@@ -297,7 +297,7 @@ M3=$(echo 'niente da mascherare qui' | mask_secrets)
 # credenziali, la chiave Zhipu nuda, PASSWD=. I valori finti si compongono a runtime.
 F20=ABCDEFGHIJKLMNOPQRST
 for campione in "tok ya2""9.$F20" "REFRESH=1/""/0$F20" "cliente=GOCSP""X-$F20" \
-                "remote=https://luca:$F20""@github.com/x" "glm $(printf '%032d' 7 | tr 0 a).$F20" "PASSW""D=$F20"; do
+                "remote=https:/""/luca:$F20""@github.com/x" "glm $(printf '%032d' 7 | tr 0 a).$F20" "PASSW""D=$F20"; do
   M=$(mask_secrets <<<"$campione")
   grep -cF "$F20" <<<"$M" >/dev/null && ko "mask_secrets: valore intero in «${campione:0:8}…»" || ok "mask_secrets: mascherato «${campione:0:12}…»"
 done

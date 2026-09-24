@@ -4618,3 +4618,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   ora (35/0). Il mio primo caso di ask-qwen senza python3 usava il curl vero e moriva sulla sonda di
   Ollama: corretto col curl finto. Sabotaggio: senza il controllo del vuoto in ask-glm, 34/1. Verdi
   anche stdin-timeout, lente-sicurezza, i tre banchi del morning-gate e payload-da-stdin.
+- **Quarto ventaglio, Q5 R5 (resto) — `tests/` era escluso per intero dalle forme di segreto.** Un token
+  vero dentro un banco passava sia privacy-check sia il pre-commit. L'esclusione esisteva perché due
+  banchi (`tests/test-lib.sh`, `tests/test-privacy.sh`) scrivevano le forme sintetiche per esteso: 5
+  righe. Ora le compongono a runtime (E-007): `gh''p_…` fra apici singoli, `gh""p_…` fra virgolette,
+  `https:/""/` per l'URL con credenziali. Controllato che il valore ricomposto sia lo stesso. Il mio
+  primo tentativo metteva `""` dentro gli apici singoli: era un carattere letterale, e il controllo
+  diventava vuoto. Corretto prima di consegnare. `tests/` non è più escluso sui file di oggi, ed è
+  escluso ancora nella storia, dove i commit vecchi portano le forme per esteso. privacy-check sull'hub:
+  nessuna forma. Caso nuovo in `tests/test-privacy.sh` (un token in `tests/`): verde (22/0). Sabotaggio:
+  rimessa l'esclusione, 21/1. Verdi anche test-lib (150/0) e test-pre-commit (28/0).

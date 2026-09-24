@@ -43,7 +43,7 @@ fi
 # (2026-09-23, notte dei giri, T5#3): le credenziali di QUESTO parco — Google OAuth (clasp, cioe' la
 # produzione: ya29., 1//0, GOCSPX-), la password dentro un URL, la chiave Zhipu nuda.
 SHAPES='sk-ant-[A-Za-z0-9_-]{20}|sk-proj-[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{12}|xoxb-[0-9A-Za-z-]{10}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|[a-zA-Z0-9._%+-]+@(yahoo|tiscali|gmail|libero|hotmail|outlook|virgilio|alice|jacer)\.[a-z]{2,}|[a-zA-Z0-9._%+-]+@pec\.[a-zA-Z0-9.-]+|\+39[ /0-9]{8,12}|ya29\.[A-Za-z0-9_-]{20}|1//0[A-Za-z0-9_-]{20}|GOCSPX-[A-Za-z0-9_-]{20}|://[^/[:space:]:@]+:[^/[:space:]@]{6,}@|[0-9a-f]{32}\.[A-Za-z0-9]{16}'
-SHAPE_HIT=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -lE "$SHAPES" 2>/dev/null)   | grep -vE '^tests/|SAL-ARCHIVIO\.md|repos\.key|tools/privacy-check\.sh|tools/giri-avversari\.sh' || true)
+SHAPE_HIT=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -lE "$SHAPES" 2>/dev/null)   | grep -vE 'SAL-ARCHIVIO\.md|repos\.key|tools/privacy-check\.sh|tools/giri-avversari\.sh' || true)   # (2026-09-24, Q5 R5): tests/ non piu' escluso — i banchi compongono le forme a runtime (E-007)
 if [ -n "$SHAPE_HIT" ]; then
   echo "⛔ privacy-check: FORMA DI SEGRETO generica in:" >&2
   echo "$SHAPE_HIT" | sed 's/^/  file: /' >&2

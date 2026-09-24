@@ -52,7 +52,7 @@ OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 # shapes devono girare comunque (commento A20 nel tool; decisione DEBITI 2026-09-23 «le
 # SHAPES girano nel repo»). Prima l'uscita anticipata del degradato le saltava: il
 # degradato taceva anche su un token vero.
-echo "token ghp_ABCDEFGHIJKLMNOPQRSTUVWX" > "$TMP/fuga.md" && git -C "$TMP" add fuga.md
+echo "token gh""p_ABCDEFGHIJKLMNOPQRSTUVWX" > "$TMP/fuga.md" && git -C "$TMP" add fuga.md
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 [ $RC -eq 1 ] && grep -q "FORMA DI SEGRETO" <<<"$OUT" && grep -q "GATE DEGRADATO" <<<"$OUT" \
   && ok "chiave assente: le SHAPES girano comunque (forma vista) e il degradato resta dichiarato" \
@@ -69,7 +69,7 @@ git -C "$TMP" rm -q --cached fuga2.md; rm -f "$TMP/fuga2.md"
 # 6d) (2026-09-23, notte dei giri, T5#3): le forme di QUESTO parco — Google OAuth (clasp: la
 # produzione), l'URL con credenziali, la chiave Zhipu nuda. Valori finti composti a runtime.
 F20=ABCDEFGHIJKLMNOPQRST
-for campione in "ya2""9.$F20" "1/""/0$F20" "GOCSP""X-$F20" "https://luca:$F20""@github.com/x" "$(printf '%032d' 7 | tr 0 a).$F20"; do
+for campione in "ya2""9.$F20" "1/""/0$F20" "GOCSP""X-$F20" "https:/""/luca:$F20""@github.com/x" "$(printf '%032d' 7 | tr 0 a).$F20"; do
   printf 'x %s\n' "$campione" > "$TMP/fuga3.md" && git -C "$TMP" add fuga3.md
   grep -c "FORMA DI SEGRETO" <<<"$(bash "$TMP/tools/privacy-check.sh" 2>&1)" >/dev/null \
     && ok "forma vista: «${campione:0:8}…»" || ko "forma NON vista: «${campione:0:8}…»"
@@ -124,6 +124,13 @@ OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && grep -c 'STORIA' <<<"$OUT" >/dev/null && ! grep -cF "$TOKH" <<<"$OUT" >/dev/null \
   && ok "credenziale tolta ma rimasta nella storia: rosso, detta per commit e file, mai il valore" \
   || ko "credenziale nella storia: rc=$RC (o valore stampato): $(tail -2 <<<"$OUT")"
+
+# (2026-09-24, Q5 R5): tests/ era escluso per intero dalle forme — un token vero dentro un banco passava. Ora i
+# banchi compongono le loro forme a runtime (E-007) e tests/ si guarda come il resto.
+mkdir -p "$TMP/tests"; printf 'x=%s\n' "$TOKH" > "$TMP/tests/test-fuga.sh"; git -C "$TMP" add tests/test-fuga.sh
+OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1)
+grep -c 'tests/test-fuga.sh' <<<"$OUT" >/dev/null && ok "forma di segreto dentro tests/: vista" || ko "forma dentro tests/ non vista: $(tail -1 <<<"$OUT")"
+git -C "$TMP" rm -q --cached tests/test-fuga.sh; rm -f "$TMP/tests/test-fuga.sh"
 
 # le credenziali della storia sono un sottoinsieme delle SHAPES (una sola lista che si allarga, non due che divergono)
 PCK="$HERE/tools/privacy-check.sh"

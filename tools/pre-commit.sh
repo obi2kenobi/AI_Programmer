@@ -66,7 +66,7 @@ nell_indice() { git cat-file -e ":$1" 2>/dev/null; }
 # 0bis. (2026-09-24, quarto ventaglio, Q5 R2): le FORME di segreto (token, chiavi, credenziali Google) nel
 #    contenuto dell'INDICE. Vivevano solo in tools/privacy-check.sh, che gira la notte: una sessione di giorno
 #    poteva committare e pushare un token sull'hub pubblico, «controlli rapidi OK». Stesse forme e stesse
-#    esclusioni di privacy-check (tests/ ha le sue forme sintetiche). Si dice il FILE, mai il valore.
+#    esclusioni di privacy-check (tests/ compreso dal 2026-09-24: i banchi compongono le forme a runtime). Si dice il FILE, mai il valore.
 if [ -f "$HERE/tools/privacy-check.sh" ]; then
   SHAPES=$(sed -n "s/^SHAPES='\(.*\)'$/\1/p" "$HERE/tools/privacy-check.sh")
   if [ -z "$SHAPES" ]; then
@@ -74,7 +74,7 @@ if [ -f "$HERE/tools/privacy-check.sh" ]; then
   else
     FORME=""
     while IFS= read -r f; do
-      case "$f" in tests/*|*SAL-ARCHIVIO.md|*repos.key|tools/privacy-check.sh|tools/giri-avversari.sh|"") continue ;; esac
+      case "$f" in *SAL-ARCHIVIO.md|*repos.key|tools/privacy-check.sh|tools/giri-avversari.sh|"") continue ;; esac
       N=$(indice "$f" | grep -cE "$SHAPES")
       [ "${N:-0}" -gt 0 ] && FORME="$FORME\n  $f ($N righe)"
     done < <(staged --diff-filter=ACMR)
