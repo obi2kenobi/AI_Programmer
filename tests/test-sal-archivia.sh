@@ -45,6 +45,21 @@ OUT2=$(SAL="$SB/SAL.md" ARCHIVIO="$SB/ARCHIVIO.md" bash "$HERE/tools/sal-archivi
 grep -q "nessuna voce" <<<"$OUT2" && ok "secondo giro: nulla da archiviare (idempotente)" || ko "secondo giro archivia ancora: $OUT2"
 grep -c "voce vecchissima" "$SB/ARCHIVIO.md" | grep -c "^1$" >/dev/null && ok "nessun doppione in archivio" || ko "doppione in archivio"
 
+# (2026-09-24, sesto ventaglio, S4 R1): due scritture in fila, senza transazione — accodava all'archivio, poi
+# riscriveva il SAL. Ucciso fra le due, al giro dopo riaccodava le stesse voci: l'archivio (append-only per regola)
+# teneva i doppioni per sempre. Ora ogni scrittura e' atomica e una voce gia' nell'archivio non si riaccoda.
+SB2=$(mktemp -d)
+printf '# SAL\n\n## Indice del diario\n- x\n\n## Log\n### 2026-05-01 — vecchia uno\nuno\n\n### 2026-05-02 — vecchia due\ndue\n\n### 2026-08-27 — recente\nr\n' > "$SB2/SAL.md"; : > "$SB2/ARCHIVIO.md"
+if command -v strace >/dev/null 2>&1; then
+  SAL="$SB2/SAL.md" ARCHIVIO="$SB2/ARCHIVIO.md" strace -f -o /dev/null -P "$SB2/SAL.md" -e trace=openat -e inject=openat:signal=KILL:when=2 bash "$HERE/tools/sal-archivia.sh" 30 >/dev/null 2>&1
+  SAL="$SB2/SAL.md" ARCHIVIO="$SB2/ARCHIVIO.md" bash "$HERE/tools/sal-archivia.sh" 30 >/dev/null 2>&1
+  N=$(grep -c '^### 2026-05-01 — vecchia uno' "$SB2/ARCHIVIO.md")
+  [ "$N" -eq 1 ] && ! grep -c 'vecchia uno' "$SB2/SAL.md" >/dev/null && ok "S4 R1: ucciso fra le due scritture, il giro dopo non raddoppia l'archivio" || ko "S4 R1: voce nell'archivio $N volte, nel SAL: $(grep -c 'vecchia uno' "$SB2/SAL.md")"
+else
+  echo "⊘ S4 R1: strace assente — il kill fra le due scritture non si prova qui (dichiarato)"
+fi
+rm -rf "$SB2"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

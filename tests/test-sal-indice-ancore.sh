@@ -81,6 +81,20 @@ PY
   [ "$MORTI" = 0 ] && ok "R1 R4-R5: $F — nessun link dell'indice senza la sua voce" || ko "R1 R4-R5: $F — $MORTI link senza voce"
 done
 
+# (2026-09-24, sesto ventaglio, S4 R1): sal-indice riscriveva SAL.md sul posto (`open(…,"w")` tronca prima di
+# scrivere) — ucciso durante la scrittura, o col disco pieno, SAL.md restava a 0 byte, con la voce nuova non
+# ancora committata persa; e il giro dopo diceva «nessuna voce ### trovata», rc 0. Ora scrivi-e-rinomina, e un SAL
+# vuoto si rifiuta. Il kill lo mette strace nel punto esatto (senza strace, come sul Mac: saltato e detto).
+printf '# T\n\nintro\n\n### Voce del giorno, non committata\n\nlavoro\n' > "$TMP/SAL.md"; rm -f "$TMP/SAL-ARCHIVIO.md"
+if command -v strace >/dev/null 2>&1; then
+  strace -f -o /dev/null -P "$TMP/SAL.md" -e trace=write -e inject=write:signal=KILL bash "$TMP/tools/sal-indice.sh" >/dev/null 2>&1
+  grep -c 'Voce del giorno' "$TMP/SAL.md" >/dev/null && ok "S4 R1: ucciso mentre scrive, SAL.md ha ancora la sua voce" || ko "S4 R1: kill a meta' scrittura: SAL.md = $(wc -c < "$TMP/SAL.md") byte"
+else
+  echo "⊘ S4 R1: strace assente — il kill a meta' scrittura non si prova qui (dichiarato)"
+fi
+: > "$TMP/SAL.md"; OUT=$(bash "$TMP/tools/sal-indice.sh" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -ci 'vuoto' <<<"$OUT" >/dev/null && ok "S4 R1: un SAL vuoto si rifiuta (rc $RC), non «nessuna voce»" || ko "S4 R1: SAL vuoto: rc $RC — $OUT"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

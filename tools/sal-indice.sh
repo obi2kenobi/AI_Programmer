@@ -17,6 +17,11 @@ import io, os, re, sys
 path = sys.argv[1]
 with io.open(path, encoding="utf-8") as f:
     sal = f.read()
+# (2026-09-24, sesto ventaglio, S4 R1): un SAL vuoto non e' «nessuna voce»: e' un diario perso (un kill a meta'
+# della riscrittura, il disco pieno). Si rifiuta, e non si tocca.
+if not sal.strip():
+    print(f"sal-indice: {os.path.basename(path)} e' VUOTO — non lo tocco (un diario perso? git show HEAD:{os.path.basename(path)})", file=sys.stderr)
+    sys.exit(1)
 
 def slug(v):
     """L'ancora che GitHub da' al titolo. (2026-09-24, quinto ventaglio, R1 R4): era
@@ -62,8 +67,12 @@ else:
     else:
         sal = sal + "\n" + blocco
 
-with io.open(path, "w", encoding="utf-8") as f:
+# (S4 R1): era `open(path, "w")` — tronca PRIMA di scrivere: ucciso a meta', il SAL restava a 0 byte e la voce
+# del giorno non committata era persa. Scrivi-e-rinomina: il vecchio resta intero finche' il nuovo non c'e' tutto.
+tmp = f"{path}.tmp.{os.getpid()}"
+with io.open(tmp, "w", encoding="utf-8") as f:
     f.write(sal)
+os.replace(tmp, path)
 print(f"indice rigenerato: {len(voci)} voci" + ("" if os.path.basename(path) == "SAL.md" else f" ({os.path.basename(path)})"))
 PY
 done

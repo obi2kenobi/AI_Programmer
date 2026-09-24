@@ -5032,3 +5032,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   (l'implementazione e una stringa di log), tolti con una forma più stretta, non con un'eccezione per riga.
   Sabotaggio con le versioni di prima delle tre cure di S5 R1, in file temporanei: 14/3, uno per forma.
   Verde 17/0.
+- **Sesto ventaglio, S4 R1 — il diario si riscriveva sul posto: un kill lo lasciava vuoto, e l'archivio
+  raddoppiava.** `tools/sal-indice.sh` apriva SAL.md con `open(…,"w")`, che tronca prima di scrivere. Il giro S4
+  l'ha ucciso con strace durante la scrittura: SAL.md a 0 byte, la voce del giorno non committata persa. Il giro
+  dopo diceva «nessuna voce ### trovata», rc 0. `tools/sal-archivia.sh` accodava all'archivio e poi riscriveva il
+  SAL. Ucciso fra le due scritture, il giro dopo riaccodava le stesse voci: 126 doppioni in un archivio che per
+  regola non si riscrive. Ora:
+  - le due scritture sono scrivi-e-rinomina (temporaneo accanto, poi `os.replace`);
+  - un SAL vuoto si rifiuta (rc 1, col comando per recuperarlo da git);
+  - una voce già nell'archivio, identica, non si riaccoda: si toglie solo dal SAL, e l'uscita lo dice.
+
+  Tre casi nuovi con strace, che uccide nel punto esatto (saltati e dichiarati dove strace manca, come sul Mac):
+  `tests/test-sal-indice-ancore.sh` 13/0 e `tests/test-sal-archivia.sh` 9/0, rossi prima. Sabotaggio 11/2 e 8/1.
+  Dichiarato: dopo un kill resta un `SAL.md.tmp.<pid>` non tracciato, visibile, che si toglie a mano.
