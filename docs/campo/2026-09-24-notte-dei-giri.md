@@ -37,3 +37,13 @@
   un comando separato» (E-043).
 - skill `n-giri` §2 (proposta): il giro scrive il suo file DENTRO il repo, in una cartella ignorata
   da git, non nello scratchpad. Sopravvive a una pulizia di `/tmp` e resta non versionato.
+
+## Aggiornamento (2026-09-24, ripresa della sessione alle 05:29Z)
+- La firma dei commit è tornata da sola: l'ambiente ha ricreato `/tmp/code-sign` alla ripresa. La
+  patch in attesa è diventata il commit `cc26f7a`; il file della patch è stato tolto.
+- Il lavoro è ripreso dalla coda: T2#2-5, T4, T5#2b (il debito risolvibile, prima del resto per il
+  settimo patto), T6 e T1 per intero. Poi il consolidamento del secondo ventaglio e il brief del terzo.
+- Ha retto, ancora: il banco prima della cura ha preso quattro mie prime stesure bucate prima della
+  consegna. Ha ostacolato: E-043 si è ripetuto una volta (T6#6), corretto nel SAL.
+- Proposta in più per la skill `n-giri` §2, già applicata al terzo ventaglio: il rapporto del giro va
+  in una cartella del repo ignorata da git (`docs/giri/*/V*.md`), non nello scratchpad.
