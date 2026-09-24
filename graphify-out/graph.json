@@ -221,7 +221,19 @@
       "source_location": "L36"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L46"
+    },
+    {
+      "id": "tools_margine_documento_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
@@ -229,11 +241,11 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L62"
     },
     {
-      "id": "tools_rating_dso_clienti_normalizza",
+      "id": "tools_margine_documento_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
@@ -241,8 +253,8 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L39"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -569,54 +581,6 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tools_margine_documento_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L62"
-    },
-    {
-      "id": "tools_margine_documento_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L39"
-    },
-    {
-      "id": "tools_verifica_banco_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L34"
-    },
-    {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
       "label": "calcola_scostamento()",
       "_callable": true,
@@ -675,6 +639,30 @@
       "norm_label": "valuta_alert()",
       "source_file": "tools/scostamento_standard_effettivo.py",
       "source_location": "L63"
+    },
+    {
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 89,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L46"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 89,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L42"
     },
     {
       "id": "tools_dashboard_barrette",
@@ -843,6 +831,18 @@
       "norm_label": "riga_di()",
       "source_file": "tools/gas_qualita.py",
       "source_location": "L59"
+    },
+    {
+      "id": "tools_verifica_banco_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L34"
     },
     {
       "id": "sal_2026_08_27_10_trenta_giri_n_2_il_collegamento_rotto_ero_io",
@@ -15900,381 +15900,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_onboard_agents_propagation",
-      "label": "test-onboard-agents-propagation.sh",
-      "_origin": "ast",
-      "community": 211,
-      "community_name": "test-onboard-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-onboard-agents-propagation.sh",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_agents_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 211,
-      "community_name": "test-onboard-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_onboard_agents_propagation_merge_agents",
-      "label": "merge_agents()",
-      "_origin": "ast",
-      "community": 211,
-      "community_name": "test-onboard-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "merge_agents()",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_onboard_agents_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 211,
-      "community_name": "test-onboard-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_onboard_agents_propagation_sh__entry",
-      "label": "test-onboard-agents-propagation.sh script",
-      "_origin": "ast",
-      "community": 211,
-      "community_name": "test-onboard-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-onboard-agents-propagation.sh script",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_hooks_propagation",
-      "label": "test-onboard-hooks-propagation.sh",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "test-onboard-hooks-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-onboard-hooks-propagation.sh",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_hooks_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "test-onboard-hooks-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_onboard_hooks_propagation_merge_hooks",
-      "label": "merge_hooks()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "test-onboard-hooks-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "merge_hooks()",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L27"
-    },
-    {
-      "id": "tests_test_onboard_hooks_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "test-onboard-hooks-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_onboard_hooks_propagation_sh__entry",
-      "label": "test-onboard-hooks-propagation.sh script",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "test-onboard-hooks-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-onboard-hooks-propagation.sh script",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_opencode_skills_propagation",
-      "label": "test-onboard-opencode-skills-propagation.sh",
-      "_origin": "ast",
-      "community": 213,
-      "community_name": "test-onboard-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-onboard-opencode-skills-propagation.sh",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_opencode_skills_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 213,
-      "community_name": "test-onboard-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_onboard_opencode_skills_propagation_merge_opencode_skills",
-      "label": "merge_opencode_skills()",
-      "_origin": "ast",
-      "community": 213,
-      "community_name": "test-onboard-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "merge_opencode_skills()",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L17"
-    },
-    {
-      "id": "tests_test_onboard_opencode_skills_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 213,
-      "community_name": "test-onboard-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_onboard_opencode_skills_propagation_sh__entry",
-      "label": "test-onboard-opencode-skills-propagation.sh script",
-      "_origin": "ast",
-      "community": 213,
-      "community_name": "test-onboard-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-onboard-opencode-skills-propagation.sh script",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_patterns_propagation",
-      "label": "test-onboard-patterns-propagation.sh",
-      "_origin": "ast",
-      "community": 214,
-      "community_name": "test-onboard-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-onboard-patterns-propagation.sh",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_patterns_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 214,
-      "community_name": "test-onboard-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L8"
-    },
-    {
-      "id": "tests_test_onboard_patterns_propagation_merge_patterns",
-      "label": "merge_patterns()",
-      "_origin": "ast",
-      "community": 214,
-      "community_name": "test-onboard-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "merge_patterns()",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_onboard_patterns_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 214,
-      "community_name": "test-onboard-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L7"
-    },
-    {
-      "id": "tests_test_onboard_patterns_propagation_sh__entry",
-      "label": "test-onboard-patterns-propagation.sh script",
-      "_origin": "ast",
-      "community": 214,
-      "community_name": "test-onboard-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-onboard-patterns-propagation.sh script",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_skills_propagation",
-      "label": "test-onboard-skills-propagation.sh",
-      "_origin": "ast",
-      "community": 215,
-      "community_name": "test-onboard-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-onboard-skills-propagation.sh",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_onboard_skills_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 215,
-      "community_name": "test-onboard-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_onboard_skills_propagation_merge_skills",
-      "label": "merge_skills()",
-      "_origin": "ast",
-      "community": 215,
-      "community_name": "test-onboard-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "merge_skills()",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_onboard_skills_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 215,
-      "community_name": "test-onboard-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_onboard_skills_propagation_sh__entry",
-      "label": "test-onboard-skills-propagation.sh script",
-      "_origin": "ast",
-      "community": 215,
-      "community_name": "test-onboard-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-onboard-skills-propagation.sh script",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_test_opencode_agent_sync",
       "label": "test-opencode-agent-sync.sh",
       "_origin": "ast",
@@ -18936,66 +18561,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_bootstrap_agents_propagation",
-      "label": "test-bootstrap-agents-propagation.sh",
-      "_origin": "ast",
-      "community": 248,
-      "community_name": "test-bootstrap-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bootstrap-agents-propagation.sh",
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_agents_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 248,
-      "community_name": "test-bootstrap-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_bootstrap_agents_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 248,
-      "community_name": "test-bootstrap-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_bootstrap_agents_propagation_sh__entry",
-      "label": "test-bootstrap-agents-propagation.sh script",
-      "_origin": "ast",
-      "community": 248,
-      "community_name": "test-bootstrap-agents-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bootstrap-agents-propagation.sh script",
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_test_bootstrap_app_percorso_cloud",
       "label": "test-bootstrap-app-percorso-cloud.sh",
       "_origin": "ast",
@@ -19305,246 +18870,6 @@
       },
       "norm_label": "test-bootstrap-hooks-propagation.sh script",
       "source_file": "tests/test-bootstrap-hooks-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_issue_template_propagation",
-      "label": "test-bootstrap-issue-template-propagation.sh",
-      "_origin": "ast",
-      "community": 251,
-      "community_name": "test-bootstrap-issue-template-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bootstrap-issue-template-propagation.sh",
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_issue_template_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 251,
-      "community_name": "test-bootstrap-issue-template-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_bootstrap_issue_template_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 251,
-      "community_name": "test-bootstrap-issue-template-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_bootstrap_issue_template_propagation_sh__entry",
-      "label": "test-bootstrap-issue-template-propagation.sh script",
-      "_origin": "ast",
-      "community": 251,
-      "community_name": "test-bootstrap-issue-template-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bootstrap-issue-template-propagation.sh script",
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_opencode_skills_propagation",
-      "label": "test-bootstrap-opencode-skills-propagation.sh",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "test-bootstrap-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bootstrap-opencode-skills-propagation.sh",
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_opencode_skills_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "test-bootstrap-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_bootstrap_opencode_skills_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "test-bootstrap-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_bootstrap_opencode_skills_propagation_sh__entry",
-      "label": "test-bootstrap-opencode-skills-propagation.sh script",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "test-bootstrap-opencode-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bootstrap-opencode-skills-propagation.sh script",
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_patterns_propagation",
-      "label": "test-bootstrap-patterns-propagation.sh",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-bootstrap-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bootstrap-patterns-propagation.sh",
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_patterns_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-bootstrap-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_bootstrap_patterns_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-bootstrap-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_bootstrap_patterns_propagation_sh__entry",
-      "label": "test-bootstrap-patterns-propagation.sh script",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "test-bootstrap-patterns-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bootstrap-patterns-propagation.sh script",
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_skills_propagation",
-      "label": "test-bootstrap-skills-propagation.sh",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-bootstrap-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bootstrap-skills-propagation.sh",
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bootstrap_skills_propagation_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-bootstrap-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_bootstrap_skills_propagation_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-bootstrap-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_bootstrap_skills_propagation_sh__entry",
-      "label": "test-bootstrap-skills-propagation.sh script",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-bootstrap-skills-propagation.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bootstrap-skills-propagation.sh script",
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
       "source_location": "L1"
     },
     {
@@ -20473,6 +19798,21 @@
       "norm_label": "test-debiti-riapertura.sh",
       "source_file": "tests/test-debiti-riapertura.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_test_debiti_riapertura_aperti_con",
+      "label": "aperti_con()",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "aperti_con()",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L120"
     },
     {
       "id": "tests_test_debiti_riapertura_g4",
@@ -27500,14 +26840,14 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L1"
     },
     {
@@ -27544,26 +26884,37 @@
       "source_location": "L37"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "id": "tools_margine_documento_rationale_47",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L47"
+    },
+    {
+      "id": "tools_margine_documento_rationale_63",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L63"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -39273,6 +38624,18 @@
       "source_location": "L168"
     },
     {
+      "id": "debiti_la_notte_dei_giri_2026_09_23",
+      "label": "La notte dei giri (2026-09-23)",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DEBITI.md \u2014 il registro delle scorciatoie rimandate",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "la notte dei giri (2026-09-23)",
+      "source_file": "DEBITI.md",
+      "source_location": "L241"
+    },
+    {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
       "label": "Lavoro distribuito a due mani (Luca + Lavinia) \u2014 2026-08-27, valutazione su evidenza",
       "_origin": "ast",
@@ -39858,81 +39221,148 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "docs_giri_2026_09_23_notte_domande",
+      "label": "DOMANDE.md",
       "_origin": "ast",
       "community": 61,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "domande.md",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
       "source_location": "L1"
     },
     {
-      "id": "tools_verifica_banco",
-      "label": "verifica_banco.py",
+      "id": "docs_giri_2026_09_23_notte_domande_10_leasing_l_adeguamento_si_aggiunge_a_ogni_data_o_solo_al_mese_del_trimestre",
+      "label": "10. Leasing: l'adeguamento si aggiunge a ogni data o solo al mese del trimestre?",
       "_origin": "ast",
       "community": 61,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "verifica_banco.py",
-      "source_file": "tools/verifica_banco.py",
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "10. leasing: l'adeguamento si aggiunge a ogni data o solo al mese del trimestre?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L95"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_1_aging_i_tipi_documento_fornitore_fuori_elenco_vanno_fra_le_entrate",
+      "label": "1. Aging: i tipi documento fornitore fuori elenco vanno fra le entrate?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. aging: i tipi documento fornitore fuori elenco vanno fra le entrate?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_2_rating_dso_l_abbinamento_per_codice_attraversa_i_clienti",
+      "label": "2. Rating DSO: l'abbinamento per codice attraversa i clienti?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. rating dso: l'abbinamento per codice attraversa i clienti?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_3_rating_dso_come_si_arrotonda_la_met\u00e0",
+      "label": "3. Rating DSO: come si arrotonda la met\u00e0?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. rating dso: come si arrotonda la meta?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L36"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_4_rating_dso_un_importo_vuoto_vale_zero",
+      "label": "4. Rating DSO: un importo vuoto vale zero?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. rating dso: un importo vuoto vale zero?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_5_margine_le_bu_si_confrontano_distinguendo_le_maiuscole",
+      "label": "5. Margine: le BU si confrontano distinguendo le maiuscole?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. margine: le bu si confrontano distinguendo le maiuscole?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L49"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_6_roll_forward_cespiti_il_segno_del_fondo_\u00e8_un_invariante_da_far_rispettare",
+      "label": "6. Roll-forward cespiti: il segno del fondo \u00e8 un invariante da far rispettare?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. roll-forward cespiti: il segno del fondo e un invariante da far rispettare?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L56"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_7_accuratezza_fatture_gli_ordini_a_importo_0_sono_errori_reali",
+      "label": "7. Accuratezza fatture: gli ordini a importo \u2264 0 sono errori reali?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. accuratezza fatture: gli ordini a importo \u2264 0 sono errori reali?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L67"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_8_bilancio_per_bu_c_\u00e8_un_elenco_chiuso_delle_bu_e_il_segno_va_per_riga_o_per_conto",
+      "label": "8. Bilancio per BU: c'\u00e8 un elenco chiuso delle BU, e il segno va per riga o per conto?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "8. bilancio per bu: c'e un elenco chiuso delle bu, e il segno va per riga o per conto?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L75"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_9_indici_di_crisi_da_dove_vengono_le_soglie_e_cosa_vale_un_denominatore_zero",
+      "label": "9. Indici di crisi: da dove vengono le soglie, e cosa vale un denominatore zero?",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "9. indici di crisi: da dove vengono le soglie, e cosa vale un denominatore zero?",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L85"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "label": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "Domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "domande di dominio \u2014 la notte dei giri (2026-09-23)",
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
       "source_location": "L1"
-    },
-    {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_margine_documento_rationale_47",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_margine_documento_rationale_63",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L63"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_2",
-      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_35",
-      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L35"
     },
     {
       "id": "docs_bc_endpoints_workflowpurchasedocuments",
@@ -44346,66 +43776,6 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
-      "_origin": "ast",
-      "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "_origin": "ast",
-      "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "_origin": "ast",
-      "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
-      "_origin": "ast",
-      "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 719,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
-    },
-    {
       "id": "docs_campo_2026_09_19_budget_vendite_standard_cinquanta_giri",
       "label": "2026-09-19-budget-vendite-standard-cinquanta-giri.md",
       "_origin": "ast",
@@ -45803,6 +45173,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -45837,6 +45255,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1797"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -46844,6 +46274,39 @@
       "norm_label": "step 8 - token reduction benchmark (only if total_words > 5000)",
       "source_file": ".claude/skills/graphify/references/exports.md",
       "source_location": "L79"
+    },
+    {
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
+      "_origin": "ast",
+      "community": 89,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 89,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_47",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 89,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
     },
     {
       "id": "tools_dashboard",
@@ -47980,6 +47443,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_verifica_banco",
+      "label": "verifica_banco.py",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "verifica_banco.py",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_gas_qualita_rationale_2",
       "label": "Censimento qualit\u00e0 di un progetto Google Apps Script \u2014 le famiglie misurate del\u2026",
       "_origin": "ast",
@@ -48024,14 +47498,36 @@
       "source_location": "L64"
     },
     {
-      "id": "datetime",
-      "label": "datetime",
+      "id": "tools_verifica_banco_rationale_2",
+      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_35",
+      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L35"
+    },
+    {
+      "id": "math",
+      "label": "math",
       "_origin": "semantic",
       "community": 125,
       "community_name": "leasing_amministrativo.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "datetime",
+      "norm_label": "math",
       "source_file": "",
       "type": "external"
     },
@@ -48168,18 +47664,6 @@
       "type": "external"
     },
     {
-      "id": "math",
-      "label": "math",
-      "_origin": "semantic",
-      "community": 48,
-      "community_name": "valorizzazione_magazzino.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "math",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "urllib_error",
       "label": "urllib_error",
       "_origin": "semantic",
@@ -48204,14 +47688,14 @@
       "type": "external"
     },
     {
-      "id": "re",
-      "label": "re",
+      "id": "datetime",
+      "label": "datetime",
       "_origin": "semantic",
-      "community": 61,
-      "community_name": "re",
+      "community": 89,
+      "community_name": "rating_dso_clienti.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "re",
+      "norm_label": "datetime",
       "source_file": "",
       "type": "external"
     },
@@ -48248,6 +47732,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "time",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "re",
+      "label": "re",
+      "_origin": "semantic",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "re",
       "source_file": "",
       "type": "external"
     }
@@ -49454,30 +48950,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_bootstrap_agents_propagation_sh__entry",
-      "target": "tests_test_bootstrap_agents_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_agents_propagation_sh__entry",
-      "target": "tests_test_bootstrap_agents_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L15",
-      "weight": 1.0
-    },
-    {
       "source": "tests_test_bootstrap_app_e2e_sh__entry",
       "target": "tests_test_bootstrap_app_e2e_lancia",
       "relation": "calls",
@@ -49583,102 +49055,6 @@
       "context": "call",
       "source_file": "tests/test-bootstrap-hooks-propagation.sh",
       "source_location": "L30",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_issue_template_propagation_sh__entry",
-      "target": "tests_test_bootstrap_issue_template_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L16",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_issue_template_propagation_sh__entry",
-      "target": "tests_test_bootstrap_issue_template_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L17",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_opencode_skills_propagation_sh__entry",
-      "target": "tests_test_bootstrap_opencode_skills_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_opencode_skills_propagation_sh__entry",
-      "target": "tests_test_bootstrap_opencode_skills_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L15",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_patterns_propagation_sh__entry",
-      "target": "tests_test_bootstrap_patterns_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_patterns_propagation_sh__entry",
-      "target": "tests_test_bootstrap_patterns_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_skills_propagation_sh__entry",
-      "target": "tests_test_bootstrap_skills_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_skills_propagation_sh__entry",
-      "target": "tests_test_bootstrap_skills_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -52094,150 +51470,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_onboard_agents_propagation_sh__entry",
-      "target": "tests_test_onboard_agents_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_agents_propagation_sh__entry",
-      "target": "tests_test_onboard_agents_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_agents_propagation_sh__entry",
-      "target": "tests_test_onboard_agents_propagation_merge_agents",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L34",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation_sh__entry",
-      "target": "tests_test_onboard_hooks_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L23",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation_sh__entry",
-      "target": "tests_test_onboard_hooks_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L24",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation_sh__entry",
-      "target": "tests_test_onboard_hooks_propagation_merge_hooks",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L38",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation_sh__entry",
-      "target": "tests_test_onboard_opencode_skills_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation_sh__entry",
-      "target": "tests_test_onboard_opencode_skills_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L15",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation_sh__entry",
-      "target": "tests_test_onboard_opencode_skills_propagation_merge_opencode_skills",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L35",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation_sh__entry",
-      "target": "tests_test_onboard_patterns_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation_sh__entry",
-      "target": "tests_test_onboard_patterns_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation_sh__entry",
-      "target": "tests_test_onboard_patterns_propagation_merge_patterns",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L32",
-      "weight": 1.0
-    },
-    {
       "source": "tests_test_onboard_repo_percorso_cloud_in_testa_sh__entry",
       "target": "tests_test_onboard_repo_percorso_cloud_in_testa_ok",
       "relation": "calls",
@@ -52307,42 +51539,6 @@
       "context": "call",
       "source_file": "tests/test-onboard-repo.sh",
       "source_location": "L75",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation_sh__entry",
-      "target": "tests_test_onboard_skills_propagation_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation_sh__entry",
-      "target": "tests_test_onboard_skills_propagation_ko",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation_sh__entry",
-      "target": "tests_test_onboard_skills_propagation_merge_skills",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -59770,6 +58966,17 @@
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
       "source_location": "L233",
+      "weight": 1.0
+    },
+    {
+      "source": "debiti_debiti_md_il_registro_delle_scorciatoie_rimandate",
+      "target": "debiti_la_notte_dei_giri_2026_09_23",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "DEBITI.md",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -69332,6 +68539,127 @@
       "weight": 1.0
     },
     {
+      "source": "docs_giri_2026_09_23_notte_domande",
+      "target": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_1_aging_i_tipi_documento_fornitore_fuori_elenco_vanno_fra_le_entrate",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_2_rating_dso_l_abbinamento_per_codice_attraversa_i_clienti",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_3_rating_dso_come_si_arrotonda_la_met\u00e0",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_4_rating_dso_un_importo_vuoto_vale_zero",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_5_margine_le_bu_si_confrontano_distinguendo_le_maiuscole",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_6_roll_forward_cespiti_il_segno_del_fondo_\u00e8_un_invariante_da_far_rispettare",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_7_accuratezza_fatture_gli_ordini_a_importo_0_sono_errori_reali",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_8_bilancio_per_bu_c_\u00e8_un_elenco_chiuso_delle_bu_e_il_segno_va_per_riga_o_per_conto",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_9_indici_di_crisi_da_dove_vengono_le_soglie_e_cosa_vale_un_denominatore_zero",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
+      "target": "docs_giri_2026_09_23_notte_domande_10_leasing_l_adeguamento_si_aggiunge_a_ogni_data_o_solo_al_mese_del_trimestre",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/DOMANDE.md",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
       "source": "docs_grammatica_dominio_template",
       "target": "docs_grammatica_dominio_template_grammatica_di_dominio_template",
       "relation": "contains",
@@ -78880,17 +78208,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_bootstrap_agents_propagation",
-      "target": "tests_test_bootstrap_agents_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
       "source": "tests_test_bootstrap_app",
       "target": "tests_test_bootstrap_app_sh__entry",
       "relation": "contains",
@@ -78931,50 +78248,6 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-bootstrap-hooks-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_issue_template_propagation",
-      "target": "tests_test_bootstrap_issue_template_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_opencode_skills_propagation",
-      "target": "tests_test_bootstrap_opencode_skills_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_patterns_propagation",
-      "target": "tests_test_bootstrap_patterns_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_skills_propagation",
-      "target": "tests_test_bootstrap_skills_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
       "source_location": "L1",
       "weight": 1.0
     },
@@ -79859,50 +79132,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_onboard_agents_propagation",
-      "target": "tests_test_onboard_agents_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation",
-      "target": "tests_test_onboard_hooks_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation",
-      "target": "tests_test_onboard_opencode_skills_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation",
-      "target": "tests_test_onboard_patterns_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
       "source": "tests_test_onboard_repo",
       "target": "tests_test_onboard_repo_sh__entry",
       "relation": "contains",
@@ -79921,17 +79150,6 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-onboard-repo-percorso-cloud-in-testa.sh",
-      "source_location": "L1",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation",
-      "target": "tests_test_onboard_skills_propagation_sh__entry",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-skills-propagation.sh",
       "source_location": "L1",
       "weight": 1.0
     },
@@ -82873,28 +82091,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_bootstrap_agents_propagation",
-      "target": "tests_test_bootstrap_agents_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_agents_propagation",
-      "target": "tests_test_bootstrap_agents_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-agents-propagation.sh",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
       "source": "tests_test_bootstrap_app",
       "target": "tests_test_bootstrap_app_ok",
       "relation": "defines",
@@ -83024,94 +82220,6 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-bootstrap-hooks-propagation.sh",
       "source_location": "L22",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_issue_template_propagation",
-      "target": "tests_test_bootstrap_issue_template_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_issue_template_propagation",
-      "target": "tests_test_bootstrap_issue_template_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-issue-template-propagation.sh",
-      "source_location": "L13",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_opencode_skills_propagation",
-      "target": "tests_test_bootstrap_opencode_skills_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_opencode_skills_propagation",
-      "target": "tests_test_bootstrap_opencode_skills_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-opencode-skills-propagation.sh",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_patterns_propagation",
-      "target": "tests_test_bootstrap_patterns_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_patterns_propagation",
-      "target": "tests_test_bootstrap_patterns_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-patterns-propagation.sh",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_skills_propagation",
-      "target": "tests_test_bootstrap_skills_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_bootstrap_skills_propagation",
-      "target": "tests_test_bootstrap_skills_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-bootstrap-skills-propagation.sh",
-      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -83794,6 +82902,17 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-debiti-riapertura.sh",
       "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_debiti_riapertura",
+      "target": "tests_test_debiti_riapertura_aperti_con",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
@@ -85546,138 +84665,6 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_onboard_agents_propagation",
-      "target": "tests_test_onboard_agents_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_agents_propagation",
-      "target": "tests_test_onboard_agents_propagation_merge_agents",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L16",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_agents_propagation",
-      "target": "tests_test_onboard_agents_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-agents-propagation.sh",
-      "source_location": "L9",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation",
-      "target": "tests_test_onboard_hooks_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation",
-      "target": "tests_test_onboard_hooks_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_hooks_propagation",
-      "target": "tests_test_onboard_hooks_propagation_merge_hooks",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-hooks-propagation.sh",
-      "source_location": "L27",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation",
-      "target": "tests_test_onboard_opencode_skills_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation",
-      "target": "tests_test_onboard_opencode_skills_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L11",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_opencode_skills_propagation",
-      "target": "tests_test_onboard_opencode_skills_propagation_merge_opencode_skills",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-opencode-skills-propagation.sh",
-      "source_location": "L17",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation",
-      "target": "tests_test_onboard_patterns_propagation_merge_patterns",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation",
-      "target": "tests_test_onboard_patterns_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L7",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_patterns_propagation",
-      "target": "tests_test_onboard_patterns_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-patterns-propagation.sh",
-      "source_location": "L8",
-      "weight": 1.0
-    },
-    {
       "source": "tests_test_onboard_repo",
       "target": "tests_test_onboard_repo_ok",
       "relation": "defines",
@@ -85807,39 +84794,6 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-onboard-repo-percorso-cloud-in-testa.sh",
       "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation",
-      "target": "tests_test_onboard_skills_propagation_ko",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L10",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation",
-      "target": "tests_test_onboard_skills_propagation_merge_skills",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L16",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_onboard_skills_propagation",
-      "target": "tests_test_onboard_skills_propagation_ok",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-onboard-skills-propagation.sh",
-      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -90205,5 +89159,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "51b675c3f643e3cc43e5ea3ff0d6dd3d04e5a1f7"
+  "built_at_commit": "1a4e91947514329b84a60ed913c781c9c6a76542"
 }

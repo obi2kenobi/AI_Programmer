@@ -82,6 +82,14 @@ while IFS= read -r H; do
 done <<< "$DICHIARATI"
 [ -z "$MANCANTI" ] && ok "caso 1: OGNI hook dichiarato in settings.json e' sull'origin ed eseguibile" \
   || ko "caso 1 (D28): hook dichiarati ma assenti/non eseguibili sull'origin:$MANCANTI"
+# (Q24, 2026-09-23, notte): i banchi di propagazione dell'onboard rifacevano il merge a mano; qui si
+# guarda l'origin VERO dopo l'onboarding: ogni skill, agente, specchio e pattern dell'hub arriva
+MANCA=""
+for d in .claude/skills .opencode/skills .claude/agents .opencode/agent patterns; do
+  for x in "$HERE/$d"/*; do [ -e "$TMP/check1/$d/$(basename "$x")" ] || MANCA="$MANCA $d/$(basename "$x")"; done
+done
+[ -z "$MANCA" ] && ok "caso 1 (Q24): ogni skill, agente, specchio e pattern dell'hub e' sull'origin" \
+  || ko "caso 1 (Q24): assenti sull'origin:$MANCA"
 [ -f "$TMP/check1/.night-verify" ] && ok "caso 1: .night-verify arrivato" || ko "caso 1: .night-verify assente"
 grep -q "^sandbox/vuota" "$TMP/repos.conf" && ok "caso 1: iscritta nella coda (repos.conf del test, non dell'hub)" || ko "caso 1: non iscritta in repos.conf"
 

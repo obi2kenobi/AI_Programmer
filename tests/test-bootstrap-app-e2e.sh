@@ -66,6 +66,18 @@ done
 for F in .githooks/pre-commit tools/pre-commit.sh tools/cita-verifica.sh; do
   [ -e "$D/$F" ] || ko "Q15: il guardiano del commit $F non arriva alla repo nuova"
 done
+# Q24 (2026-09-23, notte): i banchi di propagazione del bootstrap cercavano la riga di copia con grep
+# e poi rifacevano la copia A MANO — con la copia vera commentata restavano verdi. Qui si guarda la
+# repo NATA: ogni skill, agente, specchio, pattern dell'hub e il template dell'issue ci sono.
+MANCA=""
+for d in .claude/skills .opencode/skills .claude/agents .opencode/agent; do
+  for x in "$HERE/$d"/*; do [ -e "$D/$d/$(basename "$x")" ] || MANCA="$MANCA $d/$(basename "$x")"; done
+done
+[ -f "$D/patterns/README.md" ] || MANCA="$MANCA patterns/README.md"
+[ -f "$D/.github/ISSUE_TEMPLATE/night-shift.md" ] || MANCA="$MANCA .github/ISSUE_TEMPLATE/night-shift.md"
+while IFS= read -r H; do [ -x "$D/$H" ] || MANCA="$MANCA $H(hook)"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)
+[ -z "$MANCA" ] && ok "Q24: skill, agenti, specchi, pattern, template e hook dell'hub sono nella repo nata" \
+  || ko "Q24: assenti nella repo nata:$MANCA"
 grep -q 'Da review Opus 2026-08-21' "$D/DEBITI.md" 2>/dev/null && ko "Q15: la repo nuova nasce coi debiti dell'hub" || ok "Q15: DEBITI.md della repo nuova e' lo scheletro (se c'e')"
 : > "$TMP/gh.log"; rm -rf "$D"
 lancia prova-ordine --dry-run --private
