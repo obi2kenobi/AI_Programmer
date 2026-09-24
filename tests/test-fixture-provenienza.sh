@@ -20,6 +20,20 @@ bash "$TOOL" "$SB" >/dev/null 2>&1 && ok "fixture con provenienza: VERDE" || ko 
 printf '{"b":2}' > "$SB/tests/fixtures/a-mano-per-motivi.json"
 printf 'a-mano-per-motivi.json\n' > "$SB/.fixture-esclusioni"
 bash "$TOOL" "$SB" >/dev/null 2>&1 && ok "esclusione dichiarata: VERDE (il motivo sta nell'elenco)" || ko "esclusione ignorata"
+# (2026-09-24, terzo ventaglio, V2 S6a-c): tre scelte della convenzione senza un caso — via il ramo del
+# fratello, -qxF scritto -qF, -ic scritto -c: verde lo stesso.
+rm -f "$SB/.fixture-esclusioni" "$SB/tests/fixtures/a-mano-per-motivi.json"
+printf '{"c":3}' > "$SB/tests/fixtures/col-fratello.json"
+printf 'prodotto da: python3 estrai.py --mese 09\n' > "$SB/tests/fixtures/col-fratello.json.provenienza"
+bash "$TOOL" "$SB" >/dev/null 2>&1 && ok "provenienza nel file fratello .provenienza: VERDE" || ko "il fratello .provenienza non e' letto"
+rm -f "$SB/tests/fixtures/col-fratello.json"*
+printf '{"d":4}' > "$SB/tests/fixtures/motivi.json"
+printf 'a-mano-per-motivi.json\n' > "$SB/.fixture-esclusioni"
+bash "$TOOL" "$SB" >/dev/null 2>&1 && ko "motivi.json escluso perche' il suo nome e' dentro un'altra riga dell'elenco" \
+  || ok "l'esclusione vale per il nome ESATTO: motivi.json non dichiarata resta ROSSA"
+rm -f "$SB/tests/fixtures/motivi.json" "$SB/.fixture-esclusioni"
+printf '# Prodotto da: node estrai.js\n{"e":5}\n' > "$SB/tests/fixtures/maiuscola.json"
+bash "$TOOL" "$SB" >/dev/null 2>&1 && ok "«Prodotto da:» con la maiuscola vale (la riga e' letta senza badare al caso)" || ko "«Prodotto da:» maiuscolo bocciato"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

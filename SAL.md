@@ -4321,3 +4321,7 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - `tests/test-verifica-visiva-estrai-testo.sh` nomina `<script>` e `<style>`, ma provava solo il
     primo. Ora c'è un `<style>` con «undefined», e il sabotaggio che toglie la rimozione degli stili è
     rosso (2/1).
+- **Terzo ventaglio, V2 S6a-c — tre scelte di `tools/fixture-provenienza.sh` senza un caso.** Il file
+  fratello `.provenienza`, l'esclusione per nome ESATTO (`-qxF`) e la riga letta senza badare al caso
+  (`-ic`) restavano verdi a ogni sabotaggio. `tests/test-fixture-provenienza.sh` ha un caso per
+  ciascuna: verde (7/0). Tutti e tre i sabotaggi ora sono rossi (6/1 ciascuno).
