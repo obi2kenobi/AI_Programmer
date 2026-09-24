@@ -4859,3 +4859,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Quattro casi nuovi in `tests/test-cita-verifica.sh` (10/0), rossi prima: la citazione scivolata, quella
   ferma, rc 0, il richiamo dalla riapertura. Sabotaggio: 8/2.
+- **Quinto ventaglio, R2 R3 — il cancello clasp, da una sottocartella, lasciava passare `npm run push`.**
+  npm risale le cartelle fino al `package.json` più vicino. `tools/clasp-block-hook.sh` cercava gli script
+  vietati solo da `$PWD` in giù. In un progetto clasp (`package.json` alla radice, sorgenti in `src/`)
+  `cd src && npm run push` passava, e npm eseguiva clasp push (provato dal giro col clasp finto). Ora la
+  ricerca parte dalla cartella della sessione: il campo `cwd` dell'input, se no `$PWD`. Guarda i
+  `package.json` sotto di lei, quelli sotto la radice del progetto (`CLAUDE_PROJECT_DIR`, se no la radice
+  git) e quelli delle cartelle antenate, come fa npm.
+
+  Tre casi nuovi in `tests/test-clasp-block-hook.sh` (101/0), due rossi prima: da `src/`, e col solo campo
+  `cwd` a gancio lanciato altrove. Il terzo prova che `npm test` resta consentito. Sabotaggio: 99/2.
+  ASSUNTO del giro: che Claude Code lanci il gancio nella cartella corrente dopo un `cd`. Ora non conta più,
+  perché il campo `cwd` c'è in ogni input di gancio.

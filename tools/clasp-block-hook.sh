@@ -176,15 +176,23 @@ fi
 # gli script di OGNI package.json sotto $PWD (profondita' 3, node_modules fuori) che arrivano a clasp
 # push/deploy, anche per catena, sono vietati per NOME a qualunque runner nello stesso segmento.
 if grep -qE '(^|[^A-Za-z0-9_-])(npm|yarn|pnpm|bun)([[:space:]]|$)' <<<"$CMD_STRIPPED"; then
-  SCRIPTS=$(find "$PWD" -maxdepth 3 -name node_modules -prune -o -name package.json -print 2>/dev/null \
-    | while IFS= read -r PJ; do jq -r --arg f "$PJ" '(.scripts // {}) | to_entries[] | "\($f)\t\(.key)\t\(.value)"' "$PJ" 2>/dev/null; done)
+  # (2026-09-24, quinto ventaglio, R2 R3): npm risale le cartelle fino al package.json piu' vicino, e qui si
+  # cercava solo da $PWD in giu' — da src/ (la forma normale di un progetto clasp) `npm run push` usava il
+  # package.json della radice e passava. Ora: la cartella della sessione (campo cwd dell'input, se no $PWD),
+  # i package.json sotto di lei e sotto la radice del progetto (CLAUDE_PROJECT_DIR, se no la radice git), e
+  # quelli delle cartelle antenate, come fa npm.
+  QUI=$(jq -r '.cwd // empty' <<<"$INPUT" 2>/dev/null); [ -d "$QUI" ] || QUI="$PWD"
+  RADICE="${CLAUDE_PROJECT_DIR:-$(git -C "$QUI" rev-parse --show-toplevel 2>/dev/null || echo "$QUI")}"
+  SCRIPTS=$( { find "$QUI" "$RADICE" -maxdepth 3 -name node_modules -prune -o -name package.json -print 2>/dev/null
+               SU="$QUI"; while [ -n "$SU" ] && [ "$SU" != / ]; do [ -f "$SU/package.json" ] && echo "$SU/package.json"; SU=$(dirname "$SU"); done; } \
+    | sort -u | while IFS= read -r PJ; do jq -r --arg f "$PJ" '(.scripts // {}) | to_entries[] | "\($f)\t\(.key)\t\(.value)"' "$PJ" 2>/dev/null; done)
   VIETATI=""; ORIGINE=""
   for _giro in 1 2 3 4; do   # catene: fino al punto fisso, al massimo 4 anelli
     while IFS=$'\t' read -r PJ NOME VAL; do
       [ -n "$NOME" ] || continue
       grep -qxF "$NOME" <<<"$VIETATI" && continue
       if grep -qE "$INVOCAZIONE" <<<"$VAL" || { [ -n "$VIETATI" ] && grep -qE "(npm|yarn|pnpm|bun)[[:space:]]+((run|run-script)[[:space:]]+)?($(tr '\n' '|' <<<"$VIETATI" | sed 's/|$//; s/[.[*^$()+?{]/\\&/g'))([[:space:];&|]|$)" <<<"$VAL"; }; then
-        VIETATI=$(printf '%s\n%s' "$VIETATI" "$NOME" | sed '/^$/d'); ORIGINE="$ORIGINE $NOME:${PJ#"$PWD"/}"
+        VIETATI=$(printf '%s\n%s' "$VIETATI" "$NOME" | sed '/^$/d'); ORIGINE="$ORIGINE $NOME:${PJ#"$QUI"/}"
       fi
     done <<<"$SCRIPTS"
   done

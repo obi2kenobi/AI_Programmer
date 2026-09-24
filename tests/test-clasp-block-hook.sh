@@ -251,6 +251,19 @@ done
 [ "$NQ" -eq 0 ] && ok "Q5: 20 forme normali di clasp push/deploy (runner, catene, sottocartelle, shell, eval, virgolette) → NEGATE"
 D=$(decideq Monitor 'clasp push'); [ "$D" = deny ] && ok "Q5: il tool Monitor esegue un comando di shell: clasp push → NEGATO" || ko "Q5: Monitor clasp push passa ($D)"
 grep -c '"matcher": "Bash|Monitor"' "$SETTINGS" >/dev/null && ok "Q5: il gancio e' registrato anche per Monitor" || ko "Q5: settings.json registra il gancio solo per Bash"
+# (2026-09-24, quinto ventaglio, R2 R3): npm risale fino al package.json piu' vicino; il gancio cercava solo da
+# $PWD in giu'. In un progetto clasp (package.json alla radice, sorgenti in src/) `cd src && npm run push`
+# passava, e npm eseguiva clasp push. Qui: da una sottocartella senza package.json, e col solo campo cwd.
+mkdir -p "$SBQ/src"
+dsub() { jq -cn --arg c "$1" --arg w "$2" '{tool_name:"Bash", cwd:$w, tool_input:{command:$c}}' \
+  | (cd "$3" && env -u CLAUDE_PROJECT_DIR bash "$SBQ/hook.sh") | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null; }
+[ "$(dsub 'npm run push' "$SBQ/src" "$SBQ/src")" = deny ] && ok "R2 R3: da src/ senza package.json, npm run push (quello della radice) → NEGATO" \
+  || ko "R2 R3: da una sottocartella npm run push passa"
+ALTROVE=$(mktemp -d /tmp/clasp-altrove.XXXXXX)
+[ "$(dsub 'npm start' "$SBQ/src" "$ALTROVE")" = deny ] && ok "R2 R3: la cartella della sessione si legge dal campo cwd dell'input" \
+  || ko "R2 R3: col campo cwd e il gancio lanciato altrove, npm start passa"
+[ -z "$(dsub 'npm test' "$SBQ/src" "$SBQ/src")" ] && ok "R2 R3: da src/, npm test resta consentito" || ko "R2 R3: npm test negato a torto da src/"
+rmdir "$ALTROVE"
 for LECITO in 'npm test' 'npm install' 'npm run test' $'cat <<EOF > note.md\nclasp push resta vietato\nEOF' "grep -rn 'clasp push' docs"; do
   D=$(decideq Bash "$LECITO"); [ "$D" = consentito ] && ok "Q5: consentito → $(tr '\n' '~' <<<"$LECITO")" || ko "Q5: negato a torto → $(tr '\n' '~' <<<"$LECITO")"
 done
