@@ -4675,3 +4675,21 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   rifiutato come non fast-forward, il lavoro del giorno resta, e il log dice «N commit non del turno: non
   lo sovrascrivo». Banco nuovo `tests/test-commit-altrui.sh`: rosso prima, verde ora (4/0). Sabotaggio:
   conta tutti i commit, 2/2.
+- **Quinto ventaglio, R2 R1 — il garante tace su un satellite senza cancello, e installava a metà.** In
+  `tools/garante-standard.sh` «installato» voleva dire solo «SessionStart non vuoto». Il giro ha provato
+  tre casi: il `clasp-block-hook.sh` tolto, PreToolUse tolto da settings.json, CLAUDE.md svuotato. Ogni
+  volta rc 0, nessuna riga. Nel satellite senza script il cancello dava «not found», rc 127: un errore non
+  bloccante, quindi clasp push passava. E installando da zero il garante saltava `tools/installa-citati.sh`:
+  mancavano 18 file che gli altri tre installatori portano. Ora:
+  - ogni hook dichiarato che manca si dice;
+  - «cancello clasp NON registrato» se settings.json non lo nomina;
+  - l'installazione passa da installa-citati.
+
+  `tests/test-garante-standard.sh`:
+  - due fixture fittizie (un SessionStart «x») erano proprio il satellite senza cancello, e pretendevano
+    silenzio: ora sono satelliti completi;
+  - tre casi nuovi: rossi col garante di HEAD (11/3), verdi ora (14/0).
+
+  Verde anche `tests/test-install-garante.sh`. Non fatti: CLAUDE.md svuotato (non c'è una regola su
+  cos'è «vuoto») e un modo `--verifica` con rc 1 come riga di `.night-verify` (è una funzione nuova, non
+  una cura).

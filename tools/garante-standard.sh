@@ -53,6 +53,15 @@ if [ -f "$CWD/.claude/settings.json" ]; then
     if [ -d "$CWD/.githooks" ] && [ "$(git -C "$CWD" config core.hooksPath 2>/dev/null)" != ".githooks" ]; then
       echo "⚠ AI_Programmer: i guardiani del commit (.githooks) qui sono SPENTI — per accenderli: git config core.hooksPath .githooks" >&2
     fi
+    # (2026-09-24, quinto ventaglio, R2 R1): «installato» voleva dire solo «SessionStart non vuoto» — un satellite
+    # SENZA cancello clasp (script tolto, o PreToolUse tolto da settings.json) dava la stessa uscita di uno a
+    # posto: niente. Ogni hook dichiarato deve esistere, e il cancello deve essere registrato.
+    DICHIARATI=$(bash "$HUB/tools/copia-hook.sh" --elenco "$CWD/.claude/settings.json" 2>/dev/null)
+    while IFS= read -r H; do
+      [ -n "$H" ] && [ ! -f "$CWD/$H" ] && echo "⚠ AI_Programmer: hook dichiarato e ASSENTE: $H — settings.json punta a uno script che qui non c'e' (per rimetterlo: bash $HUB/tools/sync-repo.sh --standard)" >&2
+    done <<<"$DICHIARATI"
+    grep -qxF 'tools/clasp-block-hook.sh' <<<"$DICHIARATI" \
+      || echo "⚠ AI_Programmer: cancello clasp NON registrato in .claude/settings.json — clasp push/deploy qui non sono negati (per rimetterlo: bash $HUB/tools/sync-repo.sh --standard)" >&2
     exit 0
   fi
 fi
@@ -103,6 +112,10 @@ bash "$HUB/tools/copia-hook.sh" "$CWD" >/dev/null \
 for L in fixture-provenienza.sh cita-verifica.sh debiti-riapertura.sh; do
   [ -f "$HUB/tools/$L" ] && cp "$HUB/tools/$L" "$CWD/tools/$L"
 done
+# (2026-09-24, R2 R1): gli strumenti e i file che lo standard CITA — UNA lista, quella degli altri tre
+# installatori. Il garante era il quarto e non la usava: mancavano 18 file (DEBITI, REGISTRO, pre-commit…).
+bash "$HUB/tools/installa-citati.sh" "$CWD" --solo-mancanti >/dev/null \
+  || echo "⚠ AI_Programmer: installa-citati.sh fallito — alcuni file citati dal CLAUDE.md qui mancano" >&2
 
 # .night-verify minimo se assente
 if [ ! -f "$CWD/.night-verify" ]; then
