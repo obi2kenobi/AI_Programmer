@@ -4472,3 +4472,19 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Il gancio costa 44 ms su `npm test` nell'hub. Il limite dichiarato nomina, per nome, le forme da
   aggressore lasciate fuori (interpreti non shell, backslash, graffe, variabili, `$'…'`, maiuscole su
   macOS).
+- **Quarto ventaglio, Q5 R2 — di giorno un token poteva entrare nell'hub pubblico, e restarci nella
+  storia.** Le forme di segreto vivevano solo in `tools/privacy-check.sh`, che gira la notte. Il giro ha
+  committato un token in uno script («controlli rapidi OK»), poi l'ha tolto: privacy-check diceva
+  pulito, perché guardava solo i file di oggi. Cure:
+  - `tools/pre-commit.sh` (controllo 0bis) legge le stesse forme sull'INDICE dei file in stage e nomina
+    il file, mai il valore;
+  - privacy-check cerca nella storia (`git log -G`) le forme di CREDENZIALE, `SHAPES_CREDENZIALI`. Il
+    banco pretende che sia contenuta in SHAPES. I dati di contatto restano fuori, perché la storia è
+    amnistiata per i dati di business (DEBITI.md). Costa 5 s sull'hub.
+
+  Misurato prima di scriverla: nella storia dell'hub zero commit con una forma di credenziale. Le sole
+  forme presenti sono i contatti dei campioni BC del commit `0290514`, già bonificati e amnistiati. Un
+  mio primo conteggio ne dava 4, perché avevo spezzato SHAPES sulle `|` rompendo il gruppo dei domini
+  email: falsi positivi miei, corretti costruendo l'elenco a mano. Casi nuovi (token costruiti a
+  runtime, E-007): `tests/test-pre-commit.sh` (27/0) e `tests/test-privacy.sh` (20/0), rossi prima.
+  Sabotaggi: il pre-commit che non conta, 26/1; la storia ignorata, 19/1.

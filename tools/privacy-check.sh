@@ -50,6 +50,19 @@ if [ -n "$SHAPE_HIT" ]; then
   RC=1
 fi
 
+# (2026-09-24, quarto ventaglio, Q5 R2, caso A2): le forme si cercavano solo nei file di OGGI — un token
+# committato e tolto nel commit dopo restava nella storia sull'hub pubblico, e qui «pulito». Le forme di
+# CREDENZIALE (non i dati di contatto: la storia e' amnistiata per i dati di business, DEBITI.md) si cercano
+# anche nella storia. Si dicono commit e oggetto, mai il valore. Misurato sull'hub: 5 s, zero commit.
+# Ogni alternativa sta anche in SHAPES (lo pretende tests/test-privacy.sh).
+SHAPES_CREDENZIALI='sk-ant-[A-Za-z0-9_-]{20}|sk-proj-[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{12}|xoxb-[0-9A-Za-z-]{10}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|ya29\.[A-Za-z0-9_-]{20}|1//0[A-Za-z0-9_-]{20}|GOCSPX-[A-Za-z0-9_-]{20}|://[^/[:space:]:@]+:[^/[:space:]@]{6,}@|[0-9a-f]{32}\.[A-Za-z0-9]{16}'
+CRED_STORIA=$( (cd "$HERE" && git log --all --format='%h %s' -G"$SHAPES_CREDENZIALI" -- . ':!tests/' ':!tools/privacy-check.sh' ':!tools/giri-avversari.sh' ':!SAL-ARCHIVIO.md' ':!**/repos.key' 2>/dev/null) || true)
+if [ -n "$CRED_STORIA" ]; then
+  echo "⛔ privacy-check: forma di CREDENZIALE nella STORIA git (il valore non si stampa: la chiave va ruotata; riscrivere la storia lo decide Luca):" >&2
+  echo "$CRED_STORIA" | cut -c1-90 | sed 's/^/  commit /' >&2
+  RC=1
+fi
+
 # (2026-09-23, notte dei giri, T5#4): l'uscita di questo check finisce nell'issue «[banco]» del repo
 # PUBBLICO (banco-passaggio.sh -> night-shift.sh). Stampava il termine che proteggeva. Ora ne stampa
 # l'impronta (CLAUDE.md «Mask, don't omit»): chi ha la chiave la riconosce, il lettore pubblico no.

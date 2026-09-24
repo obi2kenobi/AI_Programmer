@@ -28,7 +28,7 @@ SB=$(mktemp -d)
 git -C "$SB" init -q
 git -C "$SB" -c user.email=prova@invalid -c user.name=prova commit -q --allow-empty -m inizio   # restore --staged vuole HEAD
 mkdir -p "$SB/tools" "$SB/docs/campo"
-cp "$HOOK" "$HERE/tools/cita-verifica.sh" "$SB/tools/"
+cp "$HOOK" "$HERE/tools/cita-verifica.sh" "$HERE/tools/privacy-check.sh" "$SB/tools/"
 : > "$SB/docs/campo/2026-08-28-repo-l-fix.md"; : > "$SB/tools/indici_crisi.py"
 gancio() { ( cd "$SB" && HOME="$SB" bash tools/pre-commit.sh "$@" ); }
 trap 'rm -rf "$SB"' EXIT
@@ -182,6 +182,16 @@ DORMIENTI=$(git -C "$HERE" ls-files '*.sh' '*.py' | grep -vE '^(tools/pre-commit
   | (cd "$HERE" && xargs grep -nE '(^|[^|])\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' 2>/dev/null) || true)
 [ -z "$DORMIENTI" ] && ok "nessuna riga pipe+&& dorme nell'albero (non solo nei file stage-ati)" \
   || ko "righe pipe+&& nell'albero: $(cut -d: -f1,2 <<<"$DORMIENTI" | tr '\n' ' ')"
+# (2026-09-24, quarto ventaglio, Q5 R2): alla frontiera del giorno nessun dente cercava le FORME di segreto
+# — il giro ha committato un token in uno script, «controlli rapidi OK». Il token si costruisce a runtime
+# (E-007: la forma non vive nel repo), e il gancio dice il file, MAI il valore.
+TOK="gh""p_$(printf 'A%.0s' $(seq 1 24))"
+printf 'curl -H "Authorization: token %s" x\n' "$TOK" > "$SB/tools/chiama.sh"; git -C "$SB" add tools/chiama.sh
+OUT=$(gancio); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'tools/chiama.sh' <<<"$OUT" >/dev/null && ! grep -cF "$TOK" <<<"$OUT" >/dev/null \
+  && ok "forma di segreto in stage: il gancio rifiuta, nomina il file e non stampa il valore" || ko "token in stage e il gancio passa o lo stampa (rc=$RC)"
+git -C "$SB" rm -q --cached tools/chiama.sh; rm -f "$SB/tools/chiama.sh"
+
 # (2026-09-24, terzo ventaglio, V5 R3b): due fix sul lock e sul watchdog hanno cambiato la regola del codice
 # ancorato, e i pattern che la descrivono sono rimasti com'erano — nessuno ha chiesto «il pattern dice ancora
 # il vero?». Ora il gancio lo chiede quando si tocca un file ancorato senza il suo pattern. Avviso, non blocco.

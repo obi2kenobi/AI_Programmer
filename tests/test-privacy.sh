@@ -105,6 +105,25 @@ grep -c "NOME PRIVATO NEL REPO" <<<"$OUT" >/dev/null && ko "un TERMINE riportato
   || ok "un termine si riporta come TERMINE, non anche come nome di repo"
 git -C "$TMP" rm -q --cached SuperSegretoAziendale.md
 
+# (2026-09-24, quarto ventaglio, Q5 R2, caso A2): un token committato e poi tolto nel commit dopo — la
+# storia sull'hub pubblico lo porta ancora, e privacy-check (che guardava solo i file di oggi) diceva
+# pulito. Le forme di CREDENZIALE si cercano anche nella storia; i dati di contatto no (la storia e'
+# amnistiata per i dati di business, DEBITI.md). Il token si costruisce a runtime (E-007).
+TOKH="gh""p_$(printf 'B%.0s' $(seq 1 24))"
+G="git -C $TMP -c user.email=t@t -c user.name=t -c commit.gpgsign=false"
+printf 'x=%s\n' "$TOKH" > "$TMP/chiama.sh"; $G add chiama.sh; $G commit -qm "con token"
+$G rm -q chiama.sh; $G commit -qm "tolto"
+OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -c 'STORIA' <<<"$OUT" >/dev/null && ! grep -cF "$TOKH" <<<"$OUT" >/dev/null \
+  && ok "credenziale tolta ma rimasta nella storia: rosso, detta per commit e file, mai il valore" \
+  || ko "credenziale nella storia: rc=$RC (o valore stampato): $(tail -2 <<<"$OUT")"
+
+# le credenziali della storia sono un sottoinsieme delle SHAPES (una sola lista che si allarga, non due che divergono)
+PCK="$HERE/tools/privacy-check.sh"
+SH=$(sed -n "s/^SHAPES='\(.*\)'$/\1/p" "$PCK"); CR=$(sed -n "s/^SHAPES_CREDENZIALI='\(.*\)'$/\1/p" "$PCK")
+FUORI=$(python3 -c 'import sys; a=sys.argv[1]; b=sys.argv[2]; print(" ".join(x for x in b.split("|") if x and x not in a))' "$SH" "$CR")
+[ -n "$CR" ] && [ -z "$FUORI" ] && ok "SHAPES_CREDENZIALI e' contenuta in SHAPES" || ko "credenziali della storia fuori da SHAPES: ${FUORI:-lista vuota}"
+
 rm -rf "$TMP"
 echo ""
 echo "$PASS OK, $FAIL FAIL"

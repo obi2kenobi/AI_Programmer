@@ -63,6 +63,25 @@ staged() { git -c core.quotePath=false diff --cached --name-only "$@" 2>/dev/nul
 indice() { git show ":$1" 2>/dev/null; }     # il contenuto che il commit porta
 nell_indice() { git cat-file -e ":$1" 2>/dev/null; }
 
+# 0bis. (2026-09-24, quarto ventaglio, Q5 R2): le FORME di segreto (token, chiavi, credenziali Google) nel
+#    contenuto dell'INDICE. Vivevano solo in tools/privacy-check.sh, che gira la notte: una sessione di giorno
+#    poteva committare e pushare un token sull'hub pubblico, «controlli rapidi OK». Stesse forme e stesse
+#    esclusioni di privacy-check (tests/ ha le sue forme sintetiche). Si dice il FILE, mai il valore.
+if [ -f "$HERE/tools/privacy-check.sh" ]; then
+  SHAPES=$(sed -n "s/^SHAPES='\(.*\)'$/\1/p" "$HERE/tools/privacy-check.sh")
+  if [ -z "$SHAPES" ]; then
+    echo "⚠ forme di segreto: illeggibili da tools/privacy-check.sh — controllo DEGRADATO"
+  else
+    FORME=""
+    while IFS= read -r f; do
+      case "$f" in tests/*|*SAL-ARCHIVIO.md|*repos.key|tools/privacy-check.sh|tools/giri-avversari.sh|"") continue ;; esac
+      N=$(indice "$f" | grep -cE "$SHAPES")
+      [ "${N:-0}" -gt 0 ] && FORME="$FORME\n  $f ($N righe)"
+    done < <(staged --diff-filter=ACMR)
+    [ -n "$FORME" ] && { printf '⛔ forma di segreto nei file in stage (il valore non si stampa):%b\n   togli il segreto (riferiscilo per percorso, CLAUDE.md §2) e ricommetti\n' "$FORME"; FALLITI=1; }
+  fi
+fi
+
 # 0. (2026-09-24, notte dei giri, T1#3): la CHIAVE della privacy (repos.key: nomi, persone, termini) e la
 #    lista dei nomi (.privacy-nomi) non entrano mai in un commit, in nessun percorso — l'hub si
 #    affidava al .gitignore, e un `git add -f` o una chiave in un altro percorso (un satellite) passavano.
