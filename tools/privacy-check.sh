@@ -48,6 +48,32 @@ if [ -n "$SHAPE_HIT" ]; then
   RC=1
 fi
 
+# (2026-09-23, notte dei giri, T5#4): l'uscita di questo check finisce nell'issue «[banco]» del repo
+# PUBBLICO (banco-passaggio.sh -> night-shift.sh). Stampava il termine che proteggeva. Ora ne stampa
+# l'impronta (CLAUDE.md «Mask, don't omit»): chi ha la chiave la riconosce, il lettore pubblico no.
+# Il testo si maschera con TUTTI i termini noti, non solo con quello cercato: il nome di un file
+# puo' essere a sua volta un termine protetto.
+TERMINI_NOTI=()
+if [ "$HA_KEY" -eq 1 ]; then
+  while IFS='=' read -r k v || [ -n "$k" ]; do
+    case "$k" in \#*|"") continue ;; PERSONA|TERMINI) IFS=',' read -ra PEZZI <<<"$v"; for t in "${PEZZI[@]}"; do TERMINI_NOTI+=("$(xargs <<<"$t")"); done ;; *) TERMINI_NOTI+=("$v" "${v##*/}") ;; esac
+  done < "$KEY"
+fi
+[ -s "$HOME/.privacy-nomi" ] && while IFS= read -r n || [ -n "$n" ]; do
+  case "$n" in \#*|"") ;; *) TERMINI_NOTI+=("$n") ;; esac
+done < "$HOME/.privacy-nomi"
+# maschera <testo>: il testo con ogni termine noto sostituito dalla sua impronta (i piu' lunghi prima,
+# cosi' «org/app» non viene spezzato dalla maschera di «app»)
+maschera() {
+  local testo="$1" t imp
+  while IFS= read -r t; do
+    [ -z "$t" ] && continue
+    imp=$(printf '%s' "$t" | { shasum -a 256 2>/dev/null || sha256sum; } | cut -c1-8)
+    testo="${testo//"$t"/«termine $imp · ${#t} caratteri»}"
+  done < <(for t in "${TERMINI_NOTI[@]+"${TERMINI_NOTI[@]}"}"; do printf '%d\t%s\n' "${#t}" "$t"; done | sort -rn | cut -f2-)
+  printf '%s\n' "$testo"
+}
+
 # scan_termine <termine> <etichetta>: FALLISCE se il termine compare nei file tracciati
 # oggi, nel CONTENUTO di un commit passato (pickaxe), o nel messaggio di un commit passato.
 scan_termine() {
@@ -59,8 +85,8 @@ scan_termine() {
   MSG=$( (cd "$HERE" && git log --all --oneline --grep="$termine" -F 2>/dev/null) | sed 's/^/messaggio: /' || true)
   ALL=$(printf '%s\n%s\n%s\n' "$FILES" "$HIST" "$MSG" | grep -v '^$' || true)
   if [ -n "$ALL" ]; then
-    echo "⛔ $etichetta NEL REPO PUBBLICO ($termine) in:" >&2
-    echo "$ALL" | head -8 >&2
+    maschera "⛔ $etichetta NEL REPO PUBBLICO ($termine) in:" >&2
+    maschera "$(head -8 <<<"$ALL")" >&2
     RC=1
   fi
 }
@@ -71,7 +97,7 @@ scan_termine() {
 # errore. La condizione `|| [ -n "$code" ]` cattura anche l'ultima riga senza newline
 # (read fallisce a EOF ma ha comunque popolato le variabili).
 [ "$HA_KEY" -eq 1 ] && while IFS='=' read -r code name || [ -n "$code" ]; do
-  case "$code" in \#*|"") continue ;; esac
+  case "$code" in \#*|""|PERSONA|TERMINI) continue ;; esac   # persone e termini: il ciclo sotto
   base="${name##*/}"
   scan_termine "$base" "NOME PRIVATO"
   scan_termine "$name" "NOME PRIVATO"
@@ -102,8 +128,8 @@ if [ -s "$NOMI_LOCALI" ]; then
     case "$n" in \#*|"") continue ;; esac
     FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$n" 2>/dev/null) | grep -v "repos.key" || true)
     if [ -n "$FILES_N" ]; then
-      echo "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
-      echo "$FILES_N" | head -5 >&2
+      maschera "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
+      maschera "$(head -5 <<<"$FILES_N")" >&2
       RC=1
     fi
   done < "$NOMI_LOCALI"

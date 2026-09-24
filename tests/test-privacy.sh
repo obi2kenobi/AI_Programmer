@@ -73,10 +73,28 @@ git -C "$TMP" rm -q --cached fuga2.md; rm -f "$TMP/fuga2.md"
 printf '# chiave di test\nREPO-T=finto/prova\nREPO-U=ultimo/senzanewline' > "$TMP/night-shift/repos.key"
 echo "guarda ultimo/senzanewline" > "$TMP/leak-ultima-riga.md" && git -C "$TMP" add leak-ultima-riga.md
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
-[ $RC -eq 1 ] && grep -q "ultimo/senzanewline" <<<"$OUT" \
+[ $RC -eq 1 ] && grep -q "NOME PRIVATO" <<<"$OUT" \
   && ok "repos.key senza newline finale: ultima riga letta comunque, leak rilevato" \
   || ko "ultima riga di repos.key ignorata silenziosamente: rc=$RC — $OUT"
 rm "$TMP/leak-ultima-riga.md" && git -C "$TMP" add -A 2>/dev/null || git -C "$TMP" rm -q --cached leak-ultima-riga.md
+
+# 8) (2026-09-23, notte dei giri, T5#4): l'uscita del check finisce nell'issue «[banco]» del repo
+# PUBBLICO (banco-passaggio -> night-shift.sh). Il tripwire stampava il termine che proteggeva: ora
+# ne stampa l'impronta (CLAUDE.md «Mask, don't omit»), sia per repos.key sia per ~/.privacy-nomi.
+printf 'TERMINI=SuperSegretoAziendale\n' > "$TMP/night-shift/repos.key"
+mkdir -p "$TMP/casa"; printf 'FornitoreRiservato\n' > "$TMP/casa/.privacy-nomi"
+printf 'SuperSegretoAziendale e FornitoreRiservato\n' > "$TMP/SuperSegretoAziendale.md" && git -C "$TMP" add SuperSegretoAziendale.md
+OUT=$(HOME="$TMP/casa" bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -c "TERMINE PRIVATO" <<<"$OUT" >/dev/null && grep -c "lista locale" <<<"$OUT" >/dev/null \
+  && ok "leak di termine e di nome locale: vista (rc 1)" || ko "leak non vista rc=$RC: $OUT"
+grep -cE "SuperSegretoAziendale|FornitoreRiservato" <<<"$OUT" >/dev/null \
+  && ko "l'uscita porta il termine protetto in chiaro: $(grep -cE 'SuperSegretoAziendale|FornitoreRiservato' <<<"$OUT") righe" \
+  || ok "l'uscita non porta il termine protetto in chiaro"
+[ "$(grep -cE '«termine [0-9a-f]{8} · [0-9]+ caratteri»' <<<"$OUT")" -ge 2 ] \
+  && ok "al posto del termine, la sua impronta («termine <sha8> · N caratteri»)" || ko "impronta assente: $OUT"
+grep -c "NOME PRIVATO NEL REPO" <<<"$OUT" >/dev/null && ko "un TERMINE riportato anche come NOME di repo" \
+  || ok "un termine si riporta come TERMINE, non anche come nome di repo"
+git -C "$TMP" rm -q --cached SuperSegretoAziendale.md
 
 rm -rf "$TMP"
 echo ""

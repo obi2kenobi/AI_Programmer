@@ -3750,3 +3750,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `bash tools/suite.sh` citando `tools/suite.sh:41`. Guardia in `tests/test-doc-non-corrotti.sh`:
   rossa sul testo vecchio (e sulla mia prima stesura, che citava il comando nella nota storica),
   verde ora.
+- **T5#4 — privacy-check scriveva in chiaro il termine che proteggeva.** Il suo stderr passa da
+  `banco-passaggio.sh` all.issue «[banco]» che `night-shift/night-shift.sh` apre sull'hub PUBBLICO. Riprodotto
+  nel banco: il termine compariva in chiaro nell'uscita, anche nel nome del file che lo conteneva.
+  Ora ogni messaggio si maschera con TUTTI i termini noti (repos.key e `~/.privacy-nomi`, i più
+  lunghi prima) → `«termine <sha8> · N caratteri»`. Nel banco la prima cura mascherava solo il
+  termine cercato ed era ancora rossa: il nome del file era un altro termine. Sabotaggio della maschera: 2 rossi.
+  Di passaggio: `TERMINI=` era riportato anche come «NOME PRIVATO» di repo (ciclo dei nomi senza
+  filtro sulle chiavi), ora no. Aperta la domanda di dominio: «nomi sì» vale anche per i termini?

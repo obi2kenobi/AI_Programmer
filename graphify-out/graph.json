@@ -17,12 +17,24 @@
       "source_location": "L323"
     },
     {
+      "id": "tools_bilancio_bu_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L36"
+    },
+    {
       "id": "tools_scadenzario_aging_aggrega_totali",
       "label": "aggrega_totali()",
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
@@ -34,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
@@ -46,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
@@ -58,7 +70,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
@@ -113,48 +125,12 @@
       "source_location": "L42"
     },
     {
-      "id": "tools_leasing_amministrativo_capitale_residuo",
-      "label": "capitale_residuo()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "capitale_residuo()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L49"
-    },
-    {
-      "id": "tools_leasing_amministrativo_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L67"
-    },
-    {
-      "id": "tools_leasing_amministrativo_mesi_tra",
-      "label": "mesi_tra()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "mesi_tra()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L43"
-    },
-    {
       "id": "tools_rating_dso_clienti_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 125,
-      "community_name": "leasing_amministrativo.py",
+      "community_name": "rating_dso_clienti.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/rating_dso_clienti.py",
@@ -166,7 +142,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 125,
-      "community_name": "leasing_amministrativo.py",
+      "community_name": "rating_dso_clienti.py",
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/rating_dso_clienti.py",
@@ -425,16 +401,52 @@
       "source_location": "L23"
     },
     {
+      "id": "tools_leasing_amministrativo_capitale_residuo",
+      "label": "capitale_residuo()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "capitale_residuo()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L49"
+    },
+    {
+      "id": "tools_leasing_amministrativo_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L67"
+    },
+    {
       "id": "tools_leasing_amministrativo_main_numero",
       "label": "numero()",
       "_callable": true,
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "code",
       "norm_label": "numero()",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L91"
+    },
+    {
+      "id": "tools_leasing_amministrativo_mesi_tra",
+      "label": "mesi_tra()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "mesi_tra()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L43"
     },
     {
       "id": "tools_valorizzazione_magazzino_applica_override",
@@ -627,18 +639,6 @@
       "norm_label": "write_md()",
       "source_file": "tools/bc_map.py",
       "source_location": "L126"
-    },
-    {
-      "id": "tools_bilancio_bu_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "scostamento_standard_effettivo.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -3497,22 +3497,55 @@
       "source_location": "L2"
     },
     {
+      "id": "tools_bilancio_bu",
+      "label": "bilancio_bu.py",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "bilancio_bu.py",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_scadenzario_aging",
       "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "scadenzario_aging.py",
       "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
+      "id": "tools_bilancio_bu_rationale_3",
+      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_bilancio_bu_rationale_37",
+      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37"
+    },
+    {
       "id": "tools_scadenzario_aging_rationale_2",
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3523,7 +3556,7 @@
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3534,7 +3567,7 @@
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3545,7 +3578,7 @@
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
@@ -6418,77 +6451,22 @@
       "source_location": "L80"
     },
     {
-      "id": "tools_leasing_amministrativo",
-      "label": "leasing_amministrativo.py",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "leasing_amministrativo.py",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_rating_dso_clienti",
       "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 125,
-      "community_name": "leasing_amministrativo.py",
+      "community_name": "rating_dso_clienti.py",
       "file_type": "code",
       "norm_label": "rating_dso_clienti.py",
       "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_leasing_amministrativo_rationale_2",
-      "label": "Controllo canoni leasing con adeguamento Euribor trimestrale arretrato. Oracolo\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "controllo canoni leasing con adeguamento euribor trimestrale arretrato. oracolo...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_44",
-      "label": "Differenza di mesi calendario SENZA aggiustamento del giorno \u2014 fedele a\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "differenza di mesi calendario senza aggiustamento del giorno \u2014 fedele a...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L44"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_50",
-      "label": "Ammortamento UNIFORME (semplificazione DICHIARATA nel sorgente REPO-E, non un\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "ammortamento uniforme (semplificazione dichiarata nel sorgente repo-e, non un...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L50"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_68",
-      "label": "Un contratto JSON \u2192 importo previsto col canone + adeguamento Euribor\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L68"
-    },
-    {
       "id": "tools_rating_dso_clienti_rationale_3",
       "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
       "_origin": "ast",
       "community": 125,
-      "community_name": "leasing_amministrativo.py",
+      "community_name": "rating_dso_clienti.py",
       "file_type": "rationale",
       "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
       "source_file": "tools/rating_dso_clienti.py",
@@ -6499,7 +6477,7 @@
       "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 125,
-      "community_name": "leasing_amministrativo.py",
+      "community_name": "rating_dso_clienti.py",
       "file_type": "rationale",
       "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
       "source_file": "tools/rating_dso_clienti.py",
@@ -29870,6 +29848,21 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_privacy_check_maschera",
+      "label": "maschera()",
+      "_origin": "ast",
+      "community": 379,
+      "community_name": "privacy-check.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "maschera()",
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L67"
+    },
+    {
       "id": "tools_privacy_check_scan_termine",
       "label": "scan_termine()",
       "_origin": "ast",
@@ -29882,7 +29875,7 @@
       },
       "norm_label": "scan_termine()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L53"
+      "source_location": "L79"
     },
     {
       "id": "tools_privacy_check_sh__entry",
@@ -33497,11 +33490,22 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_leasing_amministrativo",
+      "label": "leasing_amministrativo.py",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "leasing_amministrativo.py",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
       "label": "2026-08-28-parrocchie-giornata-completa.md",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
@@ -33513,7 +33517,7 @@
       "label": "1. I numeri del giorno",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. i numeri del giorno",
@@ -33525,7 +33529,7 @@
       "label": "2. Le commesse della giornata, in ordine",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. le commesse della giornata, in ordine",
@@ -33537,7 +33541,7 @@
       "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
@@ -33549,7 +33553,7 @@
       "label": "4. Le lezioni di metodo di oggi",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. le lezioni di metodo di oggi",
@@ -33561,7 +33565,7 @@
       "label": "5. Consegna e artefatti",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. consegna e artefatti",
@@ -33573,12 +33577,56 @@
       "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
       "_origin": "ast",
       "community": 46,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
       "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
       "source_location": "L1"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_2",
+      "label": "Controllo canoni leasing con adeguamento Euribor trimestrale arretrato. Oracolo\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "controllo canoni leasing con adeguamento euribor trimestrale arretrato. oracolo...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_44",
+      "label": "Differenza di mesi calendario SENZA aggiustamento del giorno \u2014 fedele a\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "differenza di mesi calendario senza aggiustamento del giorno \u2014 fedele a...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_50",
+      "label": "Ammortamento UNIFORME (semplificazione DICHIARATA nel sorgente REPO-E, non un\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "ammortamento uniforme (semplificazione dichiarata nel sorgente repo-e, non un...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_68",
+      "label": "Un contratto JSON \u2192 importo previsto col canone + adeguamento Euribor\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L68"
     },
     {
       "id": "docs_bc_endpoints_postedsalescreditmemolines",
@@ -46195,17 +46243,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_bilancio_bu",
-      "label": "bilancio_bu.py",
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "scostamento_standard_effettivo.py",
-      "file_type": "code",
-      "norm_label": "bilancio_bu.py",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_scostamento_standard_effettivo",
       "label": "scostamento_standard_effettivo.py",
       "_origin": "ast",
@@ -46215,28 +46252,6 @@
       "norm_label": "scostamento_standard_effettivo.py",
       "source_file": "tools/scostamento_standard_effettivo.py",
       "source_location": "L1"
-    },
-    {
-      "id": "tools_bilancio_bu_rationale_3",
-      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "scostamento_standard_effettivo.py",
-      "file_type": "rationale",
-      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_bilancio_bu_rationale_37",
-      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
-      "_origin": "ast",
-      "community": 84,
-      "community_name": "scostamento_standard_effettivo.py",
-      "file_type": "rationale",
-      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37"
     },
     {
       "id": "tools_scostamento_standard_effettivo_rationale_2",
@@ -47966,11 +47981,23 @@
       "source_location": "L64"
     },
     {
+      "id": "csv",
+      "label": "csv",
+      "_origin": "semantic",
+      "community": 100,
+      "community_name": "csv",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "csv",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "datetime",
       "label": "datetime",
       "_origin": "semantic",
       "community": 125,
-      "community_name": "leasing_amministrativo.py",
+      "community_name": "rating_dso_clienti.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "datetime",
@@ -48113,8 +48140,8 @@
       "id": "math",
       "label": "math",
       "_origin": "semantic",
-      "community": 48,
-      "community_name": "valorizzazione_magazzino.py",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "math",
@@ -48142,18 +48169,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_parse",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "csv",
-      "label": "csv",
-      "_origin": "semantic",
-      "community": 84,
-      "community_name": "scostamento_standard_effettivo.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "csv",
       "source_file": "",
       "type": "external"
     },
@@ -54700,6 +54715,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_privacy_check_scan_termine",
+      "target": "tools_privacy_check_maschera",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
       "source": "tools_privacy_check_sh__entry",
       "target": "tools_privacy_check_scan_termine",
       "relation": "calls",
@@ -54708,7 +54735,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L76",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_privacy_check_sh__entry",
+      "target": "tools_privacy_check_maschera",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -87787,13 +87826,24 @@
     },
     {
       "source": "tools_privacy_check",
+      "target": "tools_privacy_check_maschera",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_privacy_check",
       "target": "tools_privacy_check_scan_termine",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L53",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -90092,5 +90142,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8db1497a2c1941271c054eaf1557cee6dc633aa7"
+  "built_at_commit": "3e7af6c51dc80bec87712c88a9fe5a9d92877ffd"
 }
