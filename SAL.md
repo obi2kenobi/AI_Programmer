@@ -4009,3 +4009,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-hook-citazioni-satellite.sh` (satellite e hub): 7 citazioni rosse prima, 6 al
   sabotaggio (solo metodo-reminder sabotato). Errore di prima stesura, visto dal banco:
   `compgen -G` su un percorso senza asterisco lo dava per esistente; ora `[ -e ]` senza glob.
+- **T1#6 — la lente del registro errori era rossa in ogni satellite appena nato.**
+  `tests/test-errori.sh` arriva nei satelliti con lo scheletro del registro, zero voci, e
+  rispondeva «registro vuoto». Riprodotto su un satellite costruito da zero: unico rosso. La regola
+  vera, «il registro non si svuota mai», ora è scritta così: zero voci sono lecite se HEAD non ne
+  aveva (lo si dice), meno voci di HEAD è rosso. Banco nuovo `tests/test-errori-satellite.sh`
+  (satellite vero, una voce, voce tolta): 3 rossi prima, 1 al sabotaggio (il confronto con HEAD
+  tolto). Il vecchio dente «almeno una voce» proteggeva l'hub da un registro cancellato; quello nuovo
+  lo protegge anche da una voce tolta.

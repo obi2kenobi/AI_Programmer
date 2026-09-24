@@ -16,7 +16,17 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 [ -f "$HERE/.claude/skills/post-mortem/SKILL.md" ] && ok "la skill del protocollo esiste" || ko "skill post-mortem assente"
 
 N_VOCI=$(grep -c "^## E-" "$REG")
-[ "$N_VOCI" -ge 1 ] && ok "voci a regime: $N_VOCI" || ko "registro vuoto"
+# (2026-09-24, notte dei giri, T1#6): era «almeno una voce» — un satellite appena nato riceve lo
+# scheletro del registro (zero voci) ed era rosso dal primo giorno. La regola vera: il registro non si
+# svuota mai (append-only). Zero voci sono lecite se HEAD non ne aveva; meno voci di HEAD e' rosso.
+N_HEAD=$(git -C "$HERE" show "HEAD:docs/errori/REGISTRO.md" 2>/dev/null | grep -c "^## E-")
+if [ "$N_VOCI" -lt "${N_HEAD:-0}" ]; then
+  ko "voci tolte dal registro: $N_VOCI contro le $N_HEAD di HEAD (il registro e' append-only)"
+elif [ "$N_VOCI" -ge 1 ]; then
+  ok "voci a regime: $N_VOCI"
+else
+  ok "registro senza voci: nessun errore registrato ancora (repo nuova, dichiarato)"
+fi
 
 CAMPI=("Data / sessione:" "Famiglia:" "Sintomo:" "Causa prossima:" \
        "Causa del ragionamento:" "Perché non ci ha fermati:" "Guardia:" \
