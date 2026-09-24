@@ -83,7 +83,16 @@ def main():
     if mancanti:
         print(f"uso: rollforward_cespiti.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
         return 1
-    r = calcola_roll_forward(fa, dati["cespiti"])
+    # (Q22, 2026-09-23): un cespite dismesso senza «fondo» (KeyError) o un null in un campo della
+    # categoria (TypeError) erano traceback nudi: il contratto D32 e' uso/ERRORE, mai traceback
+    try:
+        r = calcola_roll_forward(fa, dati["cespiti"])
+    except KeyError as e:
+        print(f"ERRORE: un cespite di cespiti[] non ha il campo {e} — nessun roll-forward", file=sys.stderr)
+        return 1
+    except TypeError as e:
+        print(f"ERRORE: un campo numerico e' null o non numerico ({e}) — nessun roll-forward", file=sys.stderr)
+        return 1
     for chiave, valore in r.items():
         print(f"{chiave}: {valore:.2f}")
 

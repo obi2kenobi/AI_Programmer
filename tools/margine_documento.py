@@ -32,11 +32,15 @@ acquisti.csv:   rif,data,bu,fornitore,importo
 note_credito.csv: rif (una per riga, con intestazione)
 """
 import csv
+import re
 import sys
 
 
 def normalizza(ref):
-    return (ref or "").strip().upper().replace(" ", "").replace("\t", "")
+    # (Q22, 2026-09-23): toglieva solo spazio e tab; il sorgente citato qui sopra usa /\s+/g, che
+    # toglie anche NBSP e gli altri spazi Unicode — un rif esportato con NBSP non si accoppiava.
+    # In Python 3 \s su str copre gli stessi spazi Unicode.
+    return re.sub(r"\s+", "", (ref or "").strip().upper())
 
 
 def leggi_csv(path, colonne=()):
@@ -72,7 +76,8 @@ def main():
         return 1
     note_credito = set()
     if len(sys.argv) == 4:
-        note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3], ("rif",))}
+        # (Q22): un rif vuoto (anche solo " ") entrava come "" e annullava ogni vendita senza rif
+        note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3], ("rif",))} - {""}
 
     # primo acquisto per riferimento vince (comportamento del map originale)
     acquisti_map = {}
@@ -110,9 +115,11 @@ def main():
         print(f"  {rif}: vendita={importo_v:.2f} acquisto={importo_a:.2f}"
               f" margine={margine:+.2f} ({perc_txt} sui ricavi){avviso}")
 
-    perc_tot = totale_margine / totale_ricavi if totale_ricavi else 0.0
+    # (Q22): la cura del 2026-08-28 per la riga (percentuale n.d. a ricavi nulli) non era arrivata
+    # al totale: «-100.00 EUR (+0.0% sui ricavi)»
+    perc_tot_txt = f"{totale_margine / totale_ricavi:+.1%}" if totale_ricavi else "n.d. (ricavi a zero)"
     print(f"Totale ricavi accoppiati: {totale_ricavi:.2f} EUR")
-    print(f"Totale margine: {totale_margine:+.2f} EUR ({perc_tot:+.1%} sui ricavi)")
+    print(f"Totale margine: {totale_margine:+.2f} EUR ({perc_tot_txt} sui ricavi)")
     if annullati:
         print(f"Annullati da nota di credito: {len(annullati)} — "
               + ", ".join(f"{x['rif']} ({x['importo']:.2f} EUR esclusi)" for x in annullati))

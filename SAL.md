@@ -3572,3 +3572,22 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     come il costo «abc»: ignorato e dichiarato senza costo.
   - Banco: `tests/test-oracoli-uso.sh`, 10 casi, 9 rossi prima. Sabotaggio (via isfinite nel
     leasing): 2 rossi.
+- **Q22c**, da A4, il resto MECCANICO dei rilievi sugli oracoli. Nessuna formula di dominio
+  toccata.
+  - `tools/scostamento_standard_effettivo.py`:
+    - un traceback su media1 = 0, che ora dà DATI_INSUFFICIENTI;
+    - «abc» o «nan» (ALERT MEDIO «sotto» su nan) ora danno ERRORE;
+    - la quantità nulla dava «-100% ALERT ALTO»: il dato assente preso per zero, che il suo stesso
+      docstring vieta.
+  - `tools/rollforward_cespiti.py`: KeyError e TypeError nudi, ora ERRORE.
+  - `tools/rating_dso_clienti.py`: la data di cessione impossibile era un traceback; le righe di
+    tipo ignoto sparivano, ora sono contate e dette.
+  - `tools/scadenzario_aging.py`: i tipi documento fornitore fuori convenzione finivano fra le
+    entrate in silenzio. Ora un avviso, con i numeri invariati: la fedeltà è una domanda.
+  - `tools/margine_documento.py`:
+    - la normalizzazione ora è `\s+`, come il sorgente citato dal docstring (NBSP);
+    - «+0.0%» sul totale a ricavi nulli;
+    - un rif vuoto di nota di credito annullava ogni vendita senza rif.
+  - `tools/accuratezza_fatture_acquisto.py`: l'etichetta degli errori reali taceva un addendo.
+  - Banco: `tests/test-oracoli-uso.sh`, 13 casi, rossi prima. Sabotaggio (via l'avviso di aging):
+    1 rosso.

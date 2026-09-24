@@ -123,7 +123,7 @@ def main():
     print(f" Discrepanze over-invoicing (>{soglia:g}%): {len(discrepanze)}")
     for d in discrepanze:
         print(f"  {d['fattura']}→{d['ordine']}: fattura oltre ordine di {d['eccedenza']:+.2f} EUR ({d['pct']:+.1f}%)")
-    print(f"Errori reali: {errori_reali} (anomale + inesistenti + discrepanze)")
+    print(f"Errori reali: {errori_reali} (anomale + inesistenti + discrepanze + ordini a importo <= 0)")
     print(f"Accuratezza: {accuratezza:.1f}% · Margine di errore: {margine_errore:.1f}%")
     esito = "RAGGIUNTO" if margine_errore < obiettivo_pct else "NON raggiunto"
     print(f"Obiettivo (margine < {obiettivo_pct:g}%): {esito}")

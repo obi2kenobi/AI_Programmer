@@ -104,6 +104,52 @@ echo "{$L}" > "$TMP/l.json"
 OUT=$(python3 "$T/leasing_amministrativo.py" "$TMP/l.json" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "leasing: contratto valido senza euribor corrente → rc 0" || ko "leasing: contratto valido rc=$RC — $(tail -1 <<<"$OUT")"
 
+# --- Q22c (2026-09-23, giro A4 della notte): il resto MECCANICO dei rilievi del giro — traceback,
+#     righe che spariscono senza conteggio, «+0.0%» su un denominatore nullo, e una normalizzazione
+#     diversa da quella del sorgente che il docstring cita. Nessuna formula di dominio toccata: le
+#     domande di fedelta' al sistema studiato stanno in docs/giri/2026-09-23-notte/DOMANDE.md.
+S="costo_eff_unitario,qta_prodotta"
+printf '%s\n12,0\n13,0\n' "$S" > "$TMP/s.csv";                 dichiara "scostamento: quantita' prodotta nulla (dava -100% ALERT ALTO)" python3 "$T/scostamento_standard_effettivo.py" 10 < "$TMP/s.csv"
+printf '%s\nnan,5\n12,5\n30,5\n30,5\n' "$S" > "$TMP/s.csv";  dichiara "scostamento: costo nan"         python3 "$T/scostamento_standard_effettivo.py" 10 < "$TMP/s.csv"
+printf '%s\nabc,5\n' "$S" > "$TMP/s.csv";                       dichiara "scostamento: costo non numerico" python3 "$T/scostamento_standard_effettivo.py" 10 < "$TMP/s.csv"
+printf '%s\n0,5\n0,5\n11,5\n12,5\n' "$S" > "$TMP/s.csv"
+OUT=$(python3 "$T/scostamento_standard_effettivo.py" 10 < "$TMP/s.csv" 2>&1); RC=$?
+! grep -q Traceback <<<"$OUT" && grep -q "Trend: DATI_INSUFFICIENTI" <<<"$OUT" \
+  && ok "scostamento: prima meta' a costo 0 → trend DATI_INSUFFICIENTI, non ZeroDivisionError" \
+  || ko "scostamento: media1 = 0 → rc $RC, $(tail -1 <<<"$OUT" | cut -c1-80)"
+echo '{"categoria":{"openCosto":100,"openRival":0,"openSval":0,"yearCosto":0,"yearRival":0,"yearSval":0,"openFondo":-20,"yearFondo":-5},"cespiti":[{"isDisposed":true,"yearCessioni":1,"costo":10,"rival":0,"sval":0}]}' > "$TMP/rf.json"
+dichiara "rollforward: cespite dismesso senza fondo (KeyError)" python3 "$T/rollforward_cespiti.py" < "$TMP/rf.json"
+echo '{"categoria":{"openCosto":null,"openRival":0,"openSval":0,"yearCosto":0,"yearRival":0,"yearSval":0,"openFondo":-20,"yearFondo":-5},"cespiti":[]}' > "$TMP/rf.json"
+dichiara "rollforward: null in un campo della categoria (TypeError)" python3 "$T/rollforward_cespiti.py" < "$TMP/rf.json"
+H='tipo,data_documento,data_registrazione,nr_doc,cliente,descrizione,importo'
+printf '%s\nfattura,2026-01-01,,1,Rossi,,100\ncessione,2026-01-05,,2,Rossi,cess 25OV-000123 310226,100\n' "$H" > "$TMP/r.csv"
+dichiara "rating: data di cessione impossibile (310226)" python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
+printf '%s\nfattura,2026-01-01,,1,Rossi,,100\nnota credito,2026-01-02,,2,Rossi,,-100\n' "$H" > "$TMP/r.csv"
+OUT=$(python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv" 2>&1)
+grep -qiE "ignorat.*1|1 .*ignorat" <<<"$OUT" && ok "rating: la riga di tipo ignoto e' contata e detta, non sparisce" \
+  || ko "rating: riga «nota credito» sparita senza conteggio: $(head -1 <<<"$OUT")"
+printf 'tipo,importo,giorni\nFornitore FATTURA,1000,10\nFornitore Payment,300,10\nFornitore Fattura,200,10\n' > "$TMP/a.csv"
+OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a.csv" 2>&1)
+grep -q "ATTENZIONE" <<<"$OUT" && grep -q "FATTURA" <<<"$OUT" && grep -q "Payment" <<<"$OUT" \
+  && ok "aging: i tipi documento fornitore non riconosciuti sono DETTI (prima: entrate in silenzio)" \
+  || ko "aging: tipi fornitore ignoti presi come entrate senza avviso: $(head -2 <<<"$OUT" | tr '\n' ' ')"
+printf 'rif,data,bu,ubicazione,importo\nFT\xc2\xa0001,2026-01-01,ARRG,X,150\nFT002,2026-01-01,ARRG,X,0\n' > "$TMP/v.csv"
+printf 'rif,data,bu,fornitore,importo\nFT001,2026-01-01,ARRG,F,100\nFT002,2026-01-01,ARRG,F,100\n' > "$TMP/ac.csv"
+OUT=$(python3 "$T/margine_documento.py" "$TMP/v.csv" "$TMP/ac.csv" 2>&1)
+grep -q "FT001: vendita=150.00" <<<"$OUT" && ok "margine: il rif con NBSP si accoppia (\\s+ come il sorgente citato nel docstring)" \
+  || ko "margine: rif con NBSP non accoppiato: $(grep -i errori <<<"$OUT")"
+printf 'rif,data,bu,ubicazione,importo\nFT002,2026-01-01,ARRG,X,0\n' > "$TMP/v.csv"
+OUT=$(python3 "$T/margine_documento.py" "$TMP/v.csv" "$TMP/ac.csv" 2>&1)
+grep -q "Totale margine: -100.00 EUR (+0.0%" <<<"$OUT" && ko "margine: totale a ricavi nulli detto «+0.0%» su un margine di -100" \
+  || ok "margine: totale a ricavi nulli → percentuale n.d., non +0.0%"
+printf 'rif,data,bu,ubicazione,importo\n,2026-01-01,ARRG,X,150\n' > "$TMP/v.csv"; printf 'rif\n \n' > "$TMP/nc.csv"
+OUT=$(python3 "$T/margine_documento.py" "$TMP/v.csv" "$TMP/ac.csv" "$TMP/nc.csv" 2>&1)
+grep -q "Annullati da nota di credito: 1" <<<"$OUT" && ko "margine: una nota di credito col rif vuoto annulla le vendite senza rif" \
+  || ok "margine: il rif vuoto di una nota di credito non annulla nulla (la vendita senza rif resta ERRORE)"
+grep -q "Errori reali: .*(anomale + inesistenti + discrepanze)\")" "$T/accuratezza_fatture_acquisto.py" \
+  && ko "accuratezza: l'etichetta degli errori reali tace un addendo (ordini a importo <= 0)" \
+  || ok "accuratezza: l'etichetta degli errori reali elenca tutti gli addendi"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

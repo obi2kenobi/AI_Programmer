@@ -57,6 +57,7 @@ def main():
         return 1
     righe = list(reader)
     fatture, pagamenti = [], []
+    ignorate = []   # (Q22): righe di tipo che il rating non legge — prima sparivano senza conteggio
     for r in righe:
         tipo = (r["tipo"] or "").strip().lower()
         cliente = normalizza(r.get("cliente"))
@@ -70,8 +71,15 @@ def main():
             if tipo == "cessione":
                 m = CESSIONE_RE.search(descrizione)
                 if m:
-                    d = date(2000 + int(m.group("aa")), int(m.group("mm")), int(m.group("gg")))
+                    # (Q22): una data impossibile nella descrizione (310226) era un traceback nudo
+                    try:
+                        d = date(2000 + int(m.group("aa")), int(m.group("mm")), int(m.group("gg")))
+                    except ValueError:
+                        print(f"ERRORE: data di cessione impossibile nella descrizione {descrizione!r} (formato GGMMAA)", file=sys.stderr)
+                        return 1
             pagamenti.append({"data": d, "cliente": cliente, "descrizione": descrizione, "importo": importo})
+        else:
+            ignorate.append(tipo or "(vuoto)")
 
     # (Q22): senza fatture ne' pagamenti stampava una tabella vuota, rc 0 (le righe d'altro tipo si
     # ignorano: il vuoto e' «nessun movimento che il rating sa leggere»)
@@ -111,6 +119,8 @@ def main():
             clienti.setdefault(f["cliente"], {"pagate": 0, "somma_giorni": 0, "non_pagate": 0})["non_pagate"] += 1
 
     print(f"Fatture: {len(fatture)} · Pagamenti/cessioni: {len(pagamenti)} · Non matchati: {len(non_matchati)}")
+    if ignorate:
+        print(f"ATTENZIONE: righe ignorate (tipo non letto dal rating): {len(ignorate)} — {', '.join(sorted(set(ignorate)))}")
     print(f"{'cliente':<28} {'pagate':>6} {'DSO medio':>10} {'non pagate':>10}")
     for nome in sorted(clienti, key=lambda n: -(clienti[n]["somma_giorni"] / clienti[n]["pagate"] if clienti[n]["pagate"] else -1)):
         v = clienti[nome]

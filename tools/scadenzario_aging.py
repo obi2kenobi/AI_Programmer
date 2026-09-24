@@ -55,6 +55,13 @@ def fascia_dettaglio(giorni):
     return "LUNGO"
 
 
+# (Q22, 2026-09-23): i tipi documento fornitore che la convenzione del docstring nomina. Un tipo
+# fuori elenco (FATTURA maiuscolo, Payment, vuoto) prende +abs come la nota di credito — cioe'
+# finisce fra le ENTRATE. Il comportamento resta (se sia fedele al sistema studiato e' una domanda
+# di dominio: docs/giri/2026-09-23-notte/DOMANDE.md); da oggi lo si DICE.
+TIPI_FORNITORE_NOTI = ("Invoice", "Fattura", "Nota di credito", "Nota credito", "Credit Memo")
+
+
 def importo_fornitore(importo_bc, doc_type):
     is_uscita = doc_type in ("Invoice", "Fattura")
     return -abs(importo_bc) if is_uscita else abs(importo_bc)
@@ -99,6 +106,7 @@ def main():
         print(f"uso: scadenzario_aging.py < scadenzario.csv — colonne attese: giorni,tipo,importo"
               f" (mancano: {', '.join(mancanti)})", file=sys.stderr)
         return 1
+    non_riconosciuti = []
     for r in reader:
         giorni = r["giorni"].strip() if r["giorni"].strip() != "" else None
         tipo = r["tipo"]
@@ -116,7 +124,11 @@ def main():
         # righe Fornitore applicano la convenzione dell'uscita di cassa.
         if tipo.startswith("Fornitore"):
             doc_type = tipo[len("Fornitore"):].strip()
+            if doc_type not in TIPI_FORNITORE_NOTI:
+                non_riconosciuti.append(tipo)
             importo = importo_fornitore(importo_bc, doc_type)
+        elif tipo.strip().lower().startswith("fornitore"):
+            non_riconosciuti.append(tipo)
         else:
             importo = importo_bc
         righe.append({
@@ -128,6 +140,9 @@ def main():
     if not righe:
         print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
         return 1
+    if non_riconosciuti:
+        print(f"ATTENZIONE: {len(non_riconosciuti)} righe fornitore con tipo non riconosciuto, prese col segno +abs"
+              f" (fra le ENTRATE) — {', '.join(sorted(set(non_riconosciuti)))}. Convenzione da confermare.", file=sys.stderr)
     r = aggrega_totali(righe)
     print(f"Entrate: {r['entrate']:+.2f}€")
     print(f"Uscite: {r['uscite']:+.2f}€")
