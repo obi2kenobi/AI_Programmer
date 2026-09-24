@@ -152,6 +152,21 @@ PY
 grep -q "LA FILA DELLE PR" <<<"$PAG5" && ok "v5 pagina: la fila e' in pagina" || ko "v5 pagina senza fila"
 grep -q "#11" <<<"$PAG5" && ok "v5 pagina: la PR #11 si vede nella fila" || ko "la #11 non appare in pagina"
 
+# (2026-09-24, quinto ventaglio, R4 R2): un giorno di LENTE MUTA (il modello non risponde alle lenti) era letto
+# come «il trasformatore non applica: le forme non sono riconosciute» — la firma nuova (night-shift.sh) non la
+# contava nessuno. Quattro cicli con la riga vera del turno.
+OGGI5=$(date +%Y-%m-%d)
+for i in 1 2 3 4; do
+  echo "[$OGGI5 11:0$i:00] REPO r/x: nessuna issue — attivo la CACCIA"
+  echo "[$OGGI5 11:0$i:30] REPO r/x: caccia: ⚠ LENTE MUTA (rc 3: modello o strumento muto, o cartella assente) — NON e' 'sistema sano'"
+done > "$TMP/muta.log"
+L5=$(NIGHT_LOG="$TMP/muta.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c '
+import sys, json, importlib.util
+s = json.load(sys.stdin)
+spec = importlib.util.spec_from_file_location("d", sys.argv[1]); d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
+print(s["funnel"].get("lente_muta", "assente"), "|", d.lettura_funnel(s["funnel"]))' "$DASH")
+grep -c '^4 | .*modello non risponde' <<<"$L5" >/dev/null && ok "giorno di lente muta: contata (4) e letta come modello muto, non come forme" || ko "lente muta: [$L5]"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

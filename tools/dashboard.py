@@ -53,6 +53,7 @@ def stats():
     F = s["funnel"]
     F["finestre"] = F["trasformatore"] = F["agente_ok"] = F["agente_morto"] = 0
     F["gate"] = F["consegne"] = F["push_fail"] = F["approvate"] = F["rigettate"] = 0
+    F["lente_muta"] = 0   # (2026-09-24, R4 R2): la firma «LENTE MUTA» del turno (dal 24/9) non la contava nessuno
     ultima_apertura = -1
     rosse = []
     prev_dt = None
@@ -77,6 +78,7 @@ def stats():
             if "attivo la CACCIA" in l: F["finestre"] += 1
             if "TRASFORMATORE deterministico" in l: F["trasformatore"] += 1
             if "AGENTE FALLITO" in l: F["agente_morto"] += 1
+            if "LENTE MUTA" in l: F["lente_muta"] += 1
             if "caccia: sana e nessuna miglioria" in l: F["agente_ok"] += 1
             if "gate BOCCIA" in l or "gate BOCCIA:" in l:
                 F["gate"] += 1; s["gate_bocia"].append(l.strip()[1:150])
@@ -186,6 +188,9 @@ def verdetto(s):
         if r: motivo += f" · {r} rinviate dal censore"
         return ("#4ecca3", "🟢 STA CONSEGNANDO", motivo)
     if F["finestre"] and not F["consegne"]:
+        if F.get("lente_muta"):
+            return ("#f39c12", "🟡 GIRA MA NON CONSEGNA",
+                    f"{F['lente_muta']} lenti mute oggi: il modello non risponde alla caccia (guarda Ollama)")
         if F["agente_morto"]:
             return ("#f39c12", "🟡 GIRA MA NON CONSEGNA",
                     f"{F['agente_morto']} agenti morti oggi e nessuna consegna: il collo e' l'agente (tetto turni? contesa?)")
@@ -195,6 +200,9 @@ def verdetto(s):
 
 def lettura_funnel(F):
     """La lettura CALCOLATA: la prima anomalia vera del funnel, non un consiglio generico."""
+    # (R4 R2): prima di tutto il modello muto — un giorno di lenti mute si leggeva «le forme non sono riconosciute»
+    if F.get("lente_muta") and not F["consegne"]:
+        return f"il modello non risponde alle lenti ({F['lente_muta']} lenti mute oggi): guarda Ollama, non le forme"
     if F["finestre"] >= 3 and not F["trasformatore"] and not F["consegne"]:
         return "le finestre ci sono ma il trasformatore non applica: le forme non sono riconosciute"
     if not F["consegne"] and F["agente_morto"]:

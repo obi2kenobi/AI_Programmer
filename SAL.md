@@ -4709,3 +4709,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   e con lei il trend e il verdetto della dashboard (sezione ④); il delta si misurava contro una base
   vecchia. Ora in `night-shift/night-shift.sh` il censimento gira dopo il checkout della base. Guardia in
   `tests/test-caccia-registro.sh` (l'ordine delle righe nel turno): rossa prima (13/1), verde ora (14/0).
+- **Quinto ventaglio, R4 R2 — la dashboard leggeva un giorno di lenti mute come un difetto delle forme.**
+  La firma «⚠ LENTE MUTA» del turno (nata stamattina, V1#6a e Q3) non la contava nessuno. Con quattro cicli
+  di lente muta, `tools/dashboard.py` concludeva «il trasformatore non applica: le forme non sono
+  riconosciute». Ora il funnel conta `lente_muta`, la lettura la mette per prima («il modello non risponde
+  alle lenti: guarda Ollama, non le forme»), e il verdetto «gira ma non consegna» lo dice. La firma è
+  registrata in `docs/eventi.md`. Caso nuovo in `tests/test-dashboard.sh`, con le righe vere del turno:
+  rosso prima, verde ora (19/0). Sabotaggio (con una cache fresca): senza il conteggio, 18/1.
+  test-eventi verde.
