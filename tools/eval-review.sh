@@ -12,6 +12,10 @@ set -uo pipefail
 # (2026-09-24, merge nel ramo del giorno): `${1:?}` usciva 1, che qui vuol dire «prove mancanti»
 [ $# -ge 2 ] || { echo "uso: eval-review.sh <dir-repo> <numero-PR>" >&2; exit 2; }
 DIR="$1"; PR="$2"
+# (2026-09-24, sesto ventaglio, S5 R1): `timeout` nudo — sul Mac non c'e' (coreutils installa gtimeout), e ogni
+# riga del verify risultava rossa. ai_timeout sceglie timeout, gtimeout o perl.
+# shellcheck source=../llm/_timeout.sh
+source "$(cd "$(dirname "$0")/.." && pwd)/llm/_timeout.sh"
 cd "$DIR" 2>/dev/null || { echo "eval-review: dir $DIR" >&2; exit 2; }
 
 # il diff della PR fusa: cosa ha portato nel main
@@ -52,7 +56,7 @@ if [ -f ".night-verify" ] && [ -s ".night-verify" ]; then
     case "$riga" in \#*|"") continue ;; esac
     SEC=120; CMD="$riga"
     case "$riga" in @*) SEC="${riga%% *}"; SEC="${SEC#@}"; CMD="${riga#* }" ;; esac
-    if ! timeout "$SEC" bash -c "$CMD" >/dev/null 2>&1 </dev/null; then
+    if ! ai_timeout "$SEC" bash -c "$CMD" >/dev/null 2>&1 </dev/null; then
       PROVE_MANCANTI="$PROVE_MANCANTI verify-rossa:$CMD"
     fi
   done < .night-verify

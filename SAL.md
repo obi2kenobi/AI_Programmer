@@ -5012,3 +5012,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   in un file. Guardia nuova nello stesso banco: ogni script del repo si analizza con `/bin/bash` (sul Mac è la
   3.2) e con la bash di `BASH_MAC`, se c'è. Con la 3.2 compilata, 15/0. Sabotaggio con la forma di prima in un
   banco temporaneo: rosso («… non analizza: …(3.2)»).
+- **Sesto ventaglio, S5 R1 — sul Mac la suite si fermava al 35° file, e il fixer dell'hub restava spento ogni
+  notte.** Il giro S5 ha costruito un Mac simulato: bash 3.2.57 compilata, sed e seq di Apple compilati dai
+  sorgenti, python 3.9, un PATH senza `timeout` né `setsid`. Tre banchi aggiunti stanotte vi erano rossi:
+  - `tests/test-clasp-block-hook.sh` iniettava il crash con `sed '/re/a testo'` su una riga sola, che il sed
+    del Mac rifiuta. Ora usa awk;
+  - `tests/test-giri-avversari-isolati.sh` usava `setsid`, che sul Mac non c'è. Ora `sessione_nuova` ripiega su
+    `perl setpgrp`, con `exec`, così `$!` resta il capo della sessione (V4#4: la mia prima stesura in una
+    funzione senza `exec` l'aveva rotto, e il banco l'ha preso);
+  - `tools/eval-review.sh` usava `timeout` nudo. Ora usa `ai_timeout`.
+
+  Con i tre gate rossi, `gate_banchi` non apriva mai il cancello del fixer. Ora la suite intera, col PATH
+  «Mac», dà 184/184, come su Linux. Sabotaggio col PATH «Mac»: 99/3, 4/3, 4/1. ASSUNTO dichiarato: il Mac
+  simulato non è un Mac. awk, grep, find, stat, date e ps restano GNU, e il motore regex del sed è glibc.

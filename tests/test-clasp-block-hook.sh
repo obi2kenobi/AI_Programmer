@@ -272,7 +272,9 @@ rm -rf "$SBQ"
 # (Q5, 2026-09-24): il gancio che MUORE deve negare, non lasciar passare. Una copia con un crash iniettato
 # subito dopo la lettura dell'input (una variabile mai definita, sotto set -u — il difetto vero del giorno).
 SBX=$(mktemp -d /tmp/clasp-crash.XXXXXX)
-sed '/^trap prudente EXIT$/a echo "$VARIABILE_MAI_DEFINITA_Q5"' "$HOOK" > "$SBX/hook.sh"
+# (2026-09-24, sesto ventaglio, S5 R1): era `sed '/re/a testo'` su una riga sola — il sed del Mac lo rifiuta
+# («command a expects \ followed by text»), il crash non si iniettava e la suite si fermava qui. awk c'e' ovunque.
+awk '{print} /^trap prudente EXIT$/{print "echo \"$VARIABILE_MAI_DEFINITA_Q5\""}' "$HOOK" > "$SBX/hook.sh"
 grep -c 'VARIABILE_MAI_DEFINITA_Q5' "$SBX/hook.sh" >/dev/null || ko "premessa: crash non iniettato (la riga della trappola e' cambiata?)"
 jq -cn '{tool_name:"Bash",tool_input:{command:"npx clasp push"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; RCX=$?
 [ "$RCX" -eq 2 ] && ok "gancio morto su clasp push: nega (exit 2, modo prudente)" || ko "gancio morto su clasp push: rc $RCX — il comando passerebbe"

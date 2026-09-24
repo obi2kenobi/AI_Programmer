@@ -38,8 +38,12 @@ g -C "$T/hub" commit -qam "batteria in prova" >/dev/null 2>&1 || true
 # 1. due batterie INSIEME sullo stesso albero: nessun AGGIRA falso
 # (V4#4): `( … setsid … ) &` metteva in PIDS la subshell, non il capo della sessione nuova: la pulizia
 # uccideva un gruppo che non era quello delle batterie. Ora `$!` e' il capo della sessione.
-setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/a.out" 2>&1 & PIDS+=($!)
-setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/b.out" 2>&1 & PIDS+=($!)
+# (2026-09-24, sesto ventaglio, S5 R1): `setsid` sul Mac non c'e' — le batterie non partivano e il banco era rosso.
+# Una sessione nuova (un gruppo di processi da uccidere intero) anche con perl, che il Mac ha.
+# `exec`: lanciata con `&` la funzione gira in una subshell, e $! deve essere il capo della sessione (V4#4)
+sessione_nuova() { if command -v setsid >/dev/null 2>&1; then exec setsid "$@"; else exec perl -e 'setpgrp(0,0); exec @ARGV or die "exec: $!"' "$@"; fi; }
+sessione_nuova bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/a.out" 2>&1 & PIDS+=($!)
+sessione_nuova bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/b.out" 2>&1 & PIDS+=($!)
 wait
 for x in a b; do
   V=$(grep -m1 '^VERDETTO:' "$T/$x.out")
@@ -49,7 +53,7 @@ done
 [ -z "$(git -C "$T/hub" status --porcelain)" ] && ok "dopo due batterie l'albero e' pulito" || ko "albero sporco dopo due batterie: $(git -C "$T/hub" status --porcelain | head -3 | tr '\n' ' ')"
 
 # 2. kill -9 a meta': l'albero resta pulito
-setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/k.out" 2>&1 & KP=$!; PIDS+=($KP)
+sessione_nuova bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/k.out" 2>&1 & KP=$!; PIDS+=($KP)
 SPORCO=""
 for i in $(seq 1 40); do
   sleep 0.25
