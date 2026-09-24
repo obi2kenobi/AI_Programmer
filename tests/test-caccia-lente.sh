@@ -17,7 +17,8 @@ cp "$HERE/night-shift/caccia-lente.sh" "$T/hub/night-shift/"
 printf '#!/bin/bash\nfor i in $(seq 1 60); do echo "riga $i"; done\n' > "$T/hub/tools/giri-ignoranti.sh"
 echo 0 > "$T/hub/.caccia-rotazione"
 OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" 2>&1)
-grep -cF "comando: bash $T/hub/tools/giri-ignoranti.sh 2>&1 | tail -25" <<<"$OUT" >/dev/null \
+# (sesto ventaglio, rinviati di S3 R6): la lente scrive il percorso quotato con %q (S3 R4); il banco lo cerca uguale.
+grep -cF "comando: bash $(printf %q "$T/hub")/tools/giri-ignoranti.sh 2>&1 | tail -25" <<<"$OUT" >/dev/null \
   && ok "la lente esegue il comando intero, pipe interna compresa" || ko "comando tagliato: $(grep -m1 'comando:' <<<"$OUT")"
 ATTESO=$(for i in $(seq 36 60); do echo "riga $i"; done | wc -c | tr -d ' ')
 grep -cE "\\(($ATTESO|$((ATTESO-1))) bytes" <<<"$OUT" >/dev/null && ok "il modello riceve le ultime 25 righe ($ATTESO byte)" \

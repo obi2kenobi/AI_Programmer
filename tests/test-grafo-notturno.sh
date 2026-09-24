@@ -14,8 +14,10 @@ printf '#!/bin/bash\nsleep 20\necho pass-finito\n' > "$T/hub/tools/grafo-semanti
 printf '#!/bin/bash\nexit 0\n' > "$T/bin/graphify"; chmod +x "$T/bin/graphify"
 BLOCCO=$(sed -n '/^GRAFO_MARKER=/,/^log "=== TURNO INIZIATO/p' "$HERE/night-shift/night-shift.sh" | sed '$d')
 [ -n "$BLOCCO" ] || { ko "blocco del grafo non trovato in night-shift.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
-printf '%s\n' '#!/bin/bash' 'set -uo pipefail' "source '$HERE/night-shift/lib.sh'" 'log() { echo "LOG: $*"; }' \
-  "HERE='$T/hub/night-shift'; WORK='$T/work'; REPO_LIST=(); MODEL_TAG=x" "$BLOCCO" > "$T/night-shift-ciclo.sh"
+# (sesto ventaglio, rinviati di S3 R6): i percorsi entrano nello script quotati con %q, non fra apici
+# (un apice in $TMPDIR o nel percorso dell'hub spezzava la riga).
+printf '%s\n' '#!/bin/bash' 'set -uo pipefail' "source $(printf %q "$HERE/night-shift/lib.sh")" 'log() { echo "LOG: $*"; }' \
+  "HERE=$(printf %q "$T/hub/night-shift"); WORK=$(printf %q "$T/work"); REPO_LIST=(); MODEL_TAG=x" "$BLOCCO" > "$T/night-shift-ciclo.sh"
 # l'uscita va su file: con $( ) la sostituzione aspetterebbe la fine del pass in background (tiene la pipe)
 ciclo() { PATH="$T/bin:$PATH" bash "$T/night-shift-ciclo.sh" > "$T/out.$1" 2>&1; cat "$T/out.$1"; }
 OUT1=$(ciclo 1); sleep 1

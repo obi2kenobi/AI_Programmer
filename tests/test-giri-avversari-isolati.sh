@@ -43,9 +43,11 @@ g -C "$T/hub" commit -qam "batteria in prova" >/dev/null 2>&1 || true
 # (2026-09-24, sesto ventaglio, S5 R1): `setsid` sul Mac non c'e' — le batterie non partivano e il banco era rosso.
 # Una sessione nuova (un gruppo di processi da uccidere intero) anche con perl, che il Mac ha.
 # `exec`: lanciata con `&` la funzione gira in una subshell, e $! deve essere il capo della sessione (V4#4)
+# (rinviati di S3 R6): il percorso del clone arriva a bash -c come argomento, non fra apici: un apice in $TMPDIR
+# spezzava il comando, e le batterie non partivano.
 sessione_nuova() { if command -v setsid >/dev/null 2>&1; then exec setsid "$@"; else exec perl -e 'setpgrp(0,0); exec @ARGV or die "exec: $!"' "$@"; fi; }
-sessione_nuova bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/a.out" 2>&1 & PIDS+=($!)
-sessione_nuova bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/b.out" 2>&1 & PIDS+=($!)
+sessione_nuova bash -c 'cd "$1" && exec bash tools/giri-avversari.sh' _ "$T/hub" > "$T/a.out" 2>&1 & PIDS+=($!)
+sessione_nuova bash -c 'cd "$1" && exec bash tools/giri-avversari.sh' _ "$T/hub" > "$T/b.out" 2>&1 & PIDS+=($!)
 wait
 for x in a b; do
   V=$(grep -m1 '^VERDETTO:' "$T/$x.out")
@@ -55,7 +57,7 @@ done
 [ -z "$(git -C "$T/hub" status --porcelain)" ] && ok "dopo due batterie l'albero e' pulito" || ko "albero sporco dopo due batterie: $(git -C "$T/hub" status --porcelain | head -3 | tr '\n' ' ')"
 
 # 2. kill -9 a meta': l'albero resta pulito
-sessione_nuova bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/k.out" 2>&1 & KP=$!; PIDS+=($KP)
+sessione_nuova bash -c 'cd "$1" && exec bash tools/giri-avversari.sh' _ "$T/hub" > "$T/k.out" 2>&1 & KP=$!; PIDS+=($KP)
 SPORCO=""
 for i in $(seq 1 40); do
   sleep 0.25
