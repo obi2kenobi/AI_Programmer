@@ -1,7 +1,11 @@
 ---
 name: design-doc
-description: Trasforma un'idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilità + criteri specifici alla decisione, in una tabella opzioni×criteri — 4° ciclo, set 2 "progettare", 2026-08-23), SENZA implementare — la scelta resta sempre di chi possiede il progetto. Nato da un debito dichiarato in DEBITI.md (2026-08-21): il comando era citato in METHOD.md/docs/system.md come parte della pipeline "/brainstorming → /design-doc → commessa" ma non esisteva nessun file che lo implementasse (le fonti di verità dichiarate, .zcode/commands/ e .claude/commands/, non esistono nel repo). Usa quando l'utente chiede di progettare una feature nuova, valutare alternative architetturali, o invoca /design-doc esplicitamente — prima di scrivere codice, non dopo. Non sostituisce dev-critic (quello trova gap in codice ESISTENTE); questo struttura una decisione su codice che NON esiste ancora. Non sostituisce /nuova-commessa (quello compone l'issue finale); questo produce l'opzione scelta che /nuova-commessa cita come "da dove nasce" la commessa.
+description: Trasforma un'idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilità + criteri specifici alla decisione, in una tabella opzioni×criteri), SENZA implementare — la scelta resta sempre di chi possiede il progetto. Usa quando l'utente chiede di progettare una feature nuova, valutare alternative architetturali, o invoca /design-doc esplicitamente — prima di scrivere codice, non dopo. Non sostituisce dev-critic (quello trova gap in codice ESISTENTE); questo struttura una decisione su codice che NON esiste ancora. Non compone la commessa: produce l'opzione scelta che la commessa (issue dal template night-shift) cita come "da dove nasce".
 ---
+
+> **Provenienza** (spostata qui dalla descrizione il 2026-09-24, T6#8: la descrizione resta sotto i 1024 caratteri della specifica Agent Skills):
+> 4° ciclo, set 2 "progettare", 2026-08-23
+> Nato da un debito dichiarato in DEBITI.md (2026-08-21): il comando era citato in METHOD.md/docs/system.md come parte della pipeline "/brainstorming → /design-doc → commessa" ma non esisteva nessun file che lo implementasse (le fonti di verità dichiarate, .zcode/commands/ e .claude/commands/, non esistono nel repo).
 
 # design-doc — le opzioni prima del codice
 

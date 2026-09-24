@@ -17,24 +17,12 @@
       "source_location": "L323"
     },
     {
-      "id": "tools_bilancio_bu_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36"
-    },
-    {
       "id": "tools_scadenzario_aging_aggrega_totali",
       "label": "aggrega_totali()",
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
@@ -46,7 +34,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
@@ -58,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
@@ -70,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
@@ -125,28 +113,16 @@
       "source_location": "L42"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
-      "label": "main()",
+      "id": "tools_leasing_amministrativo_main_numero",
+      "label": "numero()",
       "_callable": true,
       "_origin": "ast",
       "community": 125,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
       "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tools_rating_dso_clienti_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "rating_dso_clienti.py",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
+      "norm_label": "numero()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L91"
     },
     {
       "id": "tools_bc_index_catalogo_mancanti",
@@ -425,18 +401,6 @@
       "source_location": "L67"
     },
     {
-      "id": "tools_leasing_amministrativo_main_numero",
-      "label": "numero()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "numero()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L91"
-    },
-    {
       "id": "tools_leasing_amministrativo_mesi_tra",
       "label": "mesi_tra()",
       "_callable": true,
@@ -447,6 +411,30 @@
       "norm_label": "mesi_tra()",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L43"
+    },
+    {
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L46"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L42"
     },
     {
       "id": "tools_valorizzazione_magazzino_applica_override",
@@ -639,6 +627,18 @@
       "norm_label": "write_md()",
       "source_file": "tools/bc_map.py",
       "source_location": "L126"
+    },
+    {
+      "id": "tools_bilancio_bu_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 84,
+      "community_name": "scostamento_standard_effettivo.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L36"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -3497,55 +3497,22 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_bilancio_bu",
-      "label": "bilancio_bu.py",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "bilancio_bu.py",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_scadenzario_aging",
       "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "scadenzario_aging.py",
       "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_bilancio_bu_rationale_3",
-      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_bilancio_bu_rationale_37",
-      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37"
-    },
-    {
       "id": "tools_scadenzario_aging_rationale_2",
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3556,7 +3523,7 @@
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3567,7 +3534,7 @@
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3578,7 +3545,7 @@
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
@@ -6511,37 +6478,88 @@
       "source_location": "L80"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
+      "label": "2026-08-28-parrocchie-giornata-completa.md",
       "_origin": "ast",
       "community": 125,
-      "community_name": "rating_dso_clienti.py",
-      "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_1_i_numeri_del_giorno",
+      "label": "1. I numeri del giorno",
       "_origin": "ast",
       "community": 125,
-      "community_name": "rating_dso_clienti.py",
-      "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. i numeri del giorno",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L12"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
+      "label": "2. Le commesse della giornata, in ordine",
       "_origin": "ast",
       "community": 125,
-      "community_name": "rating_dso_clienti.py",
-      "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. le commesse della giornata, in ordine",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L25"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_3_i_difetti_per_famiglia_il_corpus_conferma_e_si_estende",
+      "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L62"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_4_le_lezioni_di_metodo_di_oggi",
+      "label": "4. Le lezioni di metodo di oggi",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. le lezioni di metodo di oggi",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L79"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_5_consegna_e_artefatti",
+      "label": "5. Consegna e artefatti",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. consegna e artefatti",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L100"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_ai_programmer_report_lavori_del_28_08_2026_su_gestionale_parrocchie",
+      "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L1"
     },
     {
       "id": "docs_campo_2026_08_28_repo_k_dal_dossier_a_tutti_i_fix",
@@ -33798,87 +33816,14 @@
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
-      "label": "2026-08-28-parrocchie-giornata-completa.md",
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 46,
       "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_1_i_numeri_del_giorno",
-      "label": "1. I numeri del giorno",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. i numeri del giorno",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L12"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
-      "label": "2. Le commesse della giornata, in ordine",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. le commesse della giornata, in ordine",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L25"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_3_i_difetti_per_famiglia_il_corpus_conferma_e_si_estende",
-      "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L62"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_4_le_lezioni_di_metodo_di_oggi",
-      "label": "4. Le lezioni di metodo di oggi",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. le lezioni di metodo di oggi",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L79"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_5_consegna_e_artefatti",
-      "label": "5. Consegna e artefatti",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. consegna e artefatti",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L100"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_ai_programmer_report_lavori_del_28_08_2026_su_gestionale_parrocchie",
-      "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L1"
     },
     {
@@ -33924,6 +33869,28 @@
       "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L68"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_47",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
     },
     {
       "id": "docs_bc_endpoints_postedsalescreditmemolines",
@@ -35601,7 +35568,7 @@
       "node_kind": "heading",
       "norm_label": "gas-sviluppo \u2014 il parco gia pagato, portato negli agenti",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L9"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_gli_oracoli_e_i_tool_dell_hub",
@@ -35613,7 +35580,7 @@
       "node_kind": "heading",
       "norm_label": "gli oracoli e i tool dell'hub",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L53"
+      "source_location": "L56"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_i_quattro_verbi_scheda_completa_in_metodo_md",
@@ -35625,7 +35592,7 @@
       "node_kind": "heading",
       "norm_label": "i quattro verbi (scheda completa in metodo.md)",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L45"
+      "source_location": "L48"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_il_catalogo_pattern",
@@ -35637,7 +35604,7 @@
       "node_kind": "heading",
       "norm_label": "il catalogo pattern",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L67"
+      "source_location": "L70"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_il_primo_artefatto_le_domande_non_il_codice",
@@ -35649,7 +35616,7 @@
       "node_kind": "heading",
       "norm_label": "il primo artefatto: le domande, non il codice",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L57"
+      "source_location": "L60"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_le_due_modalit\u00e0_la_prima_decisione_sempre",
@@ -35661,7 +35628,7 @@
       "node_kind": "heading",
       "norm_label": "le due modalita (la prima decisione, sempre)",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L23"
+      "source_location": "L26"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_le_tre_regole_che_non_negoziano",
@@ -35673,7 +35640,7 @@
       "node_kind": "heading",
       "norm_label": "le tre regole che non negoziano",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L72"
+      "source_location": "L75"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_loading_sequence_disclosure_progressiva_non_caricare_tutto",
@@ -35685,7 +35652,7 @@
       "node_kind": "heading",
       "norm_label": "loading sequence (disclosure progressiva \u2014 non caricare tutto)",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L31"
+      "source_location": "L34"
     },
     {
       "id": "claude_skills_gas_sviluppo_skill_vedi_anche",
@@ -35697,10 +35664,10 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L81"
+      "source_location": "L84"
     },
     {
-      "id": "claude_skills_gas_sviluppo_skill_vedi_anche_86",
+      "id": "claude_skills_gas_sviluppo_skill_vedi_anche_89",
       "label": "Vedi anche",
       "_origin": "ast",
       "community": 50,
@@ -35709,7 +35676,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L86"
+      "source_location": "L89"
     },
     {
       "id": "docs_bc_endpoints_ps_powerbi_121_posted_purch_receipt_subform",
@@ -36721,7 +36688,7 @@
       "node_kind": "heading",
       "norm_label": "gas-sviluppo \u2014 il parco gia pagato, portato negli agenti",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L9"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_gli_oracoli_e_i_tool_dell_hub",
@@ -36733,7 +36700,7 @@
       "node_kind": "heading",
       "norm_label": "gli oracoli e i tool dell'hub",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L53"
+      "source_location": "L56"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_i_quattro_verbi_scheda_completa_in_metodo_md",
@@ -36745,7 +36712,7 @@
       "node_kind": "heading",
       "norm_label": "i quattro verbi (scheda completa in metodo.md)",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L45"
+      "source_location": "L48"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_il_catalogo_pattern",
@@ -36757,7 +36724,7 @@
       "node_kind": "heading",
       "norm_label": "il catalogo pattern",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L67"
+      "source_location": "L70"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_il_primo_artefatto_le_domande_non_il_codice",
@@ -36769,7 +36736,7 @@
       "node_kind": "heading",
       "norm_label": "il primo artefatto: le domande, non il codice",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L57"
+      "source_location": "L60"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_le_due_modalit\u00e0_la_prima_decisione_sempre",
@@ -36781,7 +36748,7 @@
       "node_kind": "heading",
       "norm_label": "le due modalita (la prima decisione, sempre)",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L23"
+      "source_location": "L26"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_le_tre_regole_che_non_negoziano",
@@ -36793,7 +36760,7 @@
       "node_kind": "heading",
       "norm_label": "le tre regole che non negoziano",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L72"
+      "source_location": "L75"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_loading_sequence_disclosure_progressiva_non_caricare_tutto",
@@ -36805,7 +36772,7 @@
       "node_kind": "heading",
       "norm_label": "loading sequence (disclosure progressiva \u2014 non caricare tutto)",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L31"
+      "source_location": "L34"
     },
     {
       "id": "opencode_skills_gas_sviluppo_skill_vedi_anche",
@@ -36817,10 +36784,10 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L81"
+      "source_location": "L84"
     },
     {
-      "id": "opencode_skills_gas_sviluppo_skill_vedi_anche_86",
+      "id": "opencode_skills_gas_sviluppo_skill_vedi_anche_89",
       "label": "Vedi anche",
       "_origin": "ast",
       "community": 53,
@@ -36829,7 +36796,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L86"
+      "source_location": "L89"
     },
     {
       "id": "docs_bc_endpoints_ps_powerbi_t169_job_ledger_entry",
@@ -40901,7 +40868,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "brainstorming",
-        "description": "Raffina una richiesta vaga in requisiti concreti PRIMA che qualcuno scriva codice o un design-doc \u2014 domande socratiche, una alla volta, senza proporre soluzioni finch\u00e9 il problema non \u00e8 chiaro. Nato da un incidente reale documentato in docs/test-processo-2026-08-21.md: il primo tentativo di sviluppare una feature nuova \u00e8 stato &quot;pattern-matching, non progettazione&quot; (un bottone gemello copiato invece di una domanda di dominio) perch\u00e9 l&#x27;operatore aveva saltato questo passo \u2014 citato ovunque in ME"
+        "description": "Raffina una richiesta vaga in requisiti concreti PRIMA che qualcuno scriva codice o un design-doc \u2014 domande socratiche, una alla volta, senza proporre soluzioni finch\u00e9 il problema non \u00e8 chiaro. Usa quando l&#x27;utente porta un&#x27;idea vaga (&quot;servirebbe qualcosa per X&quot;, &quot;vorrei migliorare Y&quot;) prima di passare a /design-doc o scrivere codice, o invoca /brainstorming esplicitamente. Non sostituisce /design-doc (quello struttura opzioni gi\u00e0 chiare, confrontandole su criteri espliciti); qu"
       },
       "node_kind": "page",
       "norm_label": ".claude/skills/brainstorming/skill.md",
@@ -40918,7 +40885,7 @@
       "node_kind": "heading",
       "norm_label": "0. quando si usa (e quando no)",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L14"
+      "source_location": "L17"
     },
     {
       "id": "claude_skills_brainstorming_skill_1_metodo_socratico_una_domanda_alla_volta",
@@ -40930,7 +40897,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo \u2014 socratico, una domanda alla volta",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L21"
+      "source_location": "L24"
     },
     {
       "id": "claude_skills_brainstorming_skill_1bis_il_contesto_si_seleziona_prima_di_chiedere_6_ciclo_set_2_2026_08_24",
@@ -40942,7 +40909,7 @@
       "node_kind": "heading",
       "norm_label": "1bis. il contesto si seleziona prima di chiedere (6\u00b0 ciclo, set 2, 2026-08-24)",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L56"
+      "source_location": "L59"
     },
     {
       "id": "claude_skills_brainstorming_skill_2_cosa_non_fare",
@@ -40954,7 +40921,7 @@
       "node_kind": "heading",
       "norm_label": "2. cosa non fare",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L67"
+      "source_location": "L70"
     },
     {
       "id": "claude_skills_brainstorming_skill_3_dopo_il_brainstorming",
@@ -40966,7 +40933,7 @@
       "node_kind": "heading",
       "norm_label": "3. dopo il brainstorming",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L77"
+      "source_location": "L80"
     },
     {
       "id": "claude_skills_brainstorming_skill_4_la_fase_generativa_le_dieci_provocazioni_potenziata_2026_08_29",
@@ -40978,7 +40945,7 @@
       "node_kind": "heading",
       "norm_label": "4. la fase generativa \u2014 le dieci provocazioni (potenziata 2026-08-29)",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L86"
+      "source_location": "L89"
     },
     {
       "id": "claude_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
@@ -40990,7 +40957,7 @@
       "node_kind": "heading",
       "norm_label": "brainstorming \u2014 le domande prima delle risposte",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L9"
     },
     {
       "id": "claude_skills_brainstorming_skill_quando_l_utente_dice_decidi_tu_su_tutto_dal_campo_fornitore_n_2026_09_01",
@@ -41002,7 +40969,7 @@
       "node_kind": "heading",
       "norm_label": "quando l'utente dice \u00abdecidi tu su tutto\u00bb (dal campo fornitore-n, 2026-09-01)",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L129"
+      "source_location": "L132"
     },
     {
       "id": "claude_skills_brainstorming_skill_vedi_anche",
@@ -41014,7 +40981,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L140"
+      "source_location": "L143"
     },
     {
       "id": "patterns_ambiente_censimento_dichiarato",
@@ -41265,7 +41232,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "controllo-gestione",
-        "description": "Ancora un problema matematico-contabile (contabilit\u00e0 analitica, di magazzino, controllo di gestione, margini, cespiti) ai dati e alle formule REALI di Gruppo Camarlinghi prima di scrivere codice \u2014 mai indovinare una formula di business. Nato dal Set 1 &quot;agenti&quot; del 4\u00b0 ciclo di auto-miglioramento (2026-08-23): un censimento di REPO-E (repo esterno, cartella gas-src/, ~90 progetti Google Apps Script reali) ha trovato una decina di calcoli di controllo di gestione gi\u00e0 implementati (scostamento standar"
+        "description": "Ancora un problema matematico-contabile (contabilit\u00e0 analitica, di magazzino, controllo di gestione, margini, cespiti) ai dati e alle formule REALI di Gruppo Camarlinghi prima di scrivere codice \u2014 mai indovinare una formula di business. Usa quando una richiesta implica calcolare/riconciliare/analizzare una cifra contabile o gestionale reale (non un esempio didattico) per Gruppo Camarlinghi. Non sostituisce /design-doc (quello decide un&#x27;architettura software, non tocca la correttezza di un numero); non "
       },
       "node_kind": "page",
       "norm_label": ".claude/skills/controllo-gestione/skill.md",
@@ -41282,7 +41249,7 @@
       "node_kind": "heading",
       "norm_label": "0. input \u2014 cosa serve prima di iniziare",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L17"
+      "source_location": "L20"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_1_metodo",
@@ -41294,7 +41261,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L23"
+      "source_location": "L26"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_2_dove_va_documentato_il_calcolo_mai_solo_nel_codice",
@@ -41306,7 +41273,7 @@
       "node_kind": "heading",
       "norm_label": "2. dove va documentato il calcolo (mai solo nel codice)",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L59"
+      "source_location": "L62"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_3_esempi_gi\u00e0_risolti_con_questo_metodo",
@@ -41318,7 +41285,7 @@
       "node_kind": "heading",
       "norm_label": "3. esempi gia risolti con questo metodo",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L71"
+      "source_location": "L74"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_4_regole_non_negoziabili_eredit\u00e0_da_claude_md",
@@ -41330,7 +41297,7 @@
       "node_kind": "heading",
       "norm_label": "4. regole non negoziabili (eredita da claude.md)",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L104"
+      "source_location": "L107"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_5_dopo_il_merge_non_\u00e8_pi\u00f9_compito_di_questa_skill",
@@ -41342,7 +41309,7 @@
       "node_kind": "heading",
       "norm_label": "5. dopo il merge: non e piu compito di questa skill",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L115"
+      "source_location": "L118"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_6_delega_a_un_subagent_5_ciclo_set_1_2026_08_23",
@@ -41354,7 +41321,7 @@
       "node_kind": "heading",
       "norm_label": "6. delega a un subagent (5\u00b0 ciclo, set 1, 2026-08-23)",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L127"
+      "source_location": "L130"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_controllo_gestione_la_formula_si_trova_non_si_indovina",
@@ -41366,7 +41333,7 @@
       "node_kind": "heading",
       "norm_label": "controllo-gestione \u2014 la formula si trova, non si indovina",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L9"
     },
     {
       "id": "claude_skills_controllo_gestione_skill_vedi_anche",
@@ -41378,7 +41345,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L150"
+      "source_location": "L153"
     },
     {
       "id": "patterns_contenitore_che_riscrive",
@@ -41629,7 +41596,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "dev-critic",
-        "description": "Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti \u2014 lente sicurezza sempre applicata, \u00a72bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento \u2014 lente \u00a72ter) e nuove funzionalit\u00e0 non considerate in uno script, uno strumento o un intero progetto \u2014 nel hub AI_Programmer o in un progetto onboardato (es. REPO-C) \u2014 combinando lettura critica del codice con un tentativo REALE di usarlo (dogf"
+        "description": "Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti \u2014 lente sicurezza sempre applicata, \u00a72bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento \u2014 lente \u00a72ter) e nuove funzionalit\u00e0 non considerate in uno script, uno strumento o un intero progetto, combinando lettura critica e un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Anche propositiva: scope dichiarato (PROJE"
       },
       "node_kind": "page",
       "norm_label": ".claude/skills/dev-critic/skill.md",
@@ -41646,7 +41613,7 @@
       "node_kind": "heading",
       "norm_label": "0. target",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L14"
+      "source_location": "L19"
     },
     {
       "id": "claude_skills_dev_critic_skill_1_metodo_due_fasi_in_ordine_mai_saltare_la_seconda",
@@ -41658,7 +41625,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo \u2014 due fasi, in ordine, mai saltare la seconda",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L20"
+      "source_location": "L25"
     },
     {
       "id": "claude_skills_dev_critic_skill_2_categorie_di_output_sempre_con_file_riga_mai_generiche",
@@ -41670,7 +41637,7 @@
       "node_kind": "heading",
       "norm_label": "2. categorie di output (sempre con file:riga, mai generiche)",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L31"
+      "source_location": "L36"
     },
     {
       "id": "claude_skills_dev_critic_skill_2bis_lente_sicurezza_sempre_applicata_non_solo_quando_sospetti_qualcosa",
@@ -41682,7 +41649,7 @@
       "node_kind": "heading",
       "norm_label": "2bis. lente sicurezza \u2014 sempre applicata, non solo quando sospetti qualcosa",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L58"
+      "source_location": "L63"
     },
     {
       "id": "claude_skills_dev_critic_skill_2ter_lente_matematico_finanziaria_quando_il_target_fa_calcoli_che_devono_essere_giusti",
@@ -41694,7 +41661,7 @@
       "node_kind": "heading",
       "norm_label": "2ter. lente matematico-finanziaria \u2014 quando il target fa calcoli che devono essere giusti",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L86"
+      "source_location": "L91"
     },
     {
       "id": "claude_skills_dev_critic_skill_3_regole_non_negoziabili_eredit\u00e0_da_claude_md_del_hub",
@@ -41706,7 +41673,7 @@
       "node_kind": "heading",
       "norm_label": "3. regole non negoziabili (eredita da claude.md del hub)",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L129"
+      "source_location": "L134"
     },
     {
       "id": "claude_skills_dev_critic_skill_4_output",
@@ -41718,7 +41685,7 @@
       "node_kind": "heading",
       "norm_label": "4. output",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L141"
+      "source_location": "L146"
     },
     {
       "id": "claude_skills_dev_critic_skill_dev_critic_critico_e_scopritore_di_sviluppo",
@@ -41730,7 +41697,7 @@
       "node_kind": "heading",
       "norm_label": "dev-critic \u2014 critico e scopritore di sviluppo",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L11"
     },
     {
       "id": "claude_skills_dev_critic_skill_vedi_anche",
@@ -41742,7 +41709,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L149"
+      "source_location": "L154"
     },
     {
       "id": "patterns_estrazione_per_testabilita",
@@ -42353,7 +42320,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "goal",
-        "description": "Loop di ottimizzazione diurno con un obiettivo verificabile e un tetto di tentativi \u2014 un cambiamento per tentativo, verifica dichiarata col suo livello (1-5), verifica avversariale prima di dichiarare vittoria, log di ogni tentativo in loops/. Citato in CLAUDE.md \u00a77 (&quot;/goal &lt;obiettivo verificabile&gt; | max N tentativi&quot;) e in docs/system.md e loops/README.md da quando il sistema esiste, ma senza alcun file che lo implementasse \u2014 loops/ \u00e8 rimasta vuota (solo il README) finch\u00e9 non \u00e8 stato scritto"
+        "description": "Loop di ottimizzazione diurno con un obiettivo verificabile e un tetto di tentativi \u2014 un cambiamento per tentativo, verifica dichiarata col suo livello (1-5), verifica avversariale prima di dichiarare vittoria, log di ogni tentativo in loops/. Usa quando l&#x27;utente chiede un&#x27;ottimizzazione iterativa con verifica (&quot;ottimizza X finch\u00e9...&quot;, &quot;prova a migliorare Y&quot;, esplicitamente con &quot;| max N tentativi&quot;), o invoca /goal. Diverso dal turno notturno: qui c&#x27;\u00e8 SEMPRE un te"
       },
       "node_kind": "page",
       "norm_label": ".claude/skills/goal/skill.md",
@@ -42370,7 +42337,7 @@
       "node_kind": "heading",
       "norm_label": "0. sintassi",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L8"
+      "source_location": "L12"
     },
     {
       "id": "claude_skills_goal_skill_1_prima_di_iniziare_dichiara_il_livello_di_verifica",
@@ -42382,7 +42349,7 @@
       "node_kind": "heading",
       "norm_label": "1. prima di iniziare \u2014 dichiara il livello di verifica",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L20"
+      "source_location": "L24"
     },
     {
       "id": "claude_skills_goal_skill_2_il_loop_un_cambiamento_per_tentativo",
@@ -42394,7 +42361,7 @@
       "node_kind": "heading",
       "norm_label": "2. il loop \u2014 un cambiamento per tentativo",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L28"
+      "source_location": "L32"
     },
     {
       "id": "claude_skills_goal_skill_3_verifica_avversariale_prima_della_vittoria_non_facoltativa",
@@ -42406,7 +42373,7 @@
       "node_kind": "heading",
       "norm_label": "3. verifica avversariale prima della vittoria (non facoltativa)",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L46"
+      "source_location": "L50"
     },
     {
       "id": "claude_skills_goal_skill_4_fine_del_loop",
@@ -42418,7 +42385,7 @@
       "node_kind": "heading",
       "norm_label": "4. fine del loop",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L61"
+      "source_location": "L65"
     },
     {
       "id": "claude_skills_goal_skill_5_cosa_non_\u00e8_questo_comando",
@@ -42430,7 +42397,7 @@
       "node_kind": "heading",
       "norm_label": "5. cosa non e questo comando",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L70"
+      "source_location": "L74"
     },
     {
       "id": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
@@ -42442,7 +42409,7 @@
       "node_kind": "heading",
       "norm_label": "goal \u2014 un obiettivo, un tetto, una prova ad ogni passo",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L10"
     },
     {
       "id": "claude_skills_goal_skill_vedi_anche",
@@ -42454,10 +42421,10 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L80"
+      "source_location": "L84"
     },
     {
-      "id": "claude_skills_goal_skill_vedi_anche_85",
+      "id": "claude_skills_goal_skill_vedi_anche_89",
       "label": "Vedi anche",
       "_origin": "ast",
       "community": 67,
@@ -42466,7 +42433,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L85"
+      "source_location": "L89"
     },
     {
       "id": "patterns_regola_provata_non_assunta",
@@ -45311,6 +45278,66 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_skill_descrizioni",
+      "label": "test-skill-descrizioni.sh",
+      "_origin": "ast",
+      "community": 728,
+      "community_name": "test-skill-descrizioni.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-skill-descrizioni.sh",
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_skill_descrizioni_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 728,
+      "community_name": "test-skill-descrizioni.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_skill_descrizioni_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 728,
+      "community_name": "test-skill-descrizioni.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_skill_descrizioni_sh__entry",
+      "label": "test-skill-descrizioni.sh script",
+      "_origin": "ast",
+      "community": 728,
+      "community_name": "test-skill-descrizioni.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-skill-descrizioni.sh script",
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_incidenti_esterni_registro",
       "label": "incidenti-esterni/REGISTRO.md",
       "_origin": "ast",
@@ -45544,7 +45571,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "brainstorming",
-        "description": "Raffina una richiesta vaga in requisiti concreti PRIMA che qualcuno scriva codice o un design-doc \u2014 domande socratiche, una alla volta, senza proporre soluzioni finch\u00e9 il problema non \u00e8 chiaro. Nato da un incidente reale documentato in docs/test-processo-2026-08-21.md: il primo tentativo di sviluppare una feature nuova \u00e8 stato &quot;pattern-matching, non progettazione&quot; (un bottone gemello copiato invece di una domanda di dominio) perch\u00e9 l&#x27;operatore aveva saltato questo passo \u2014 citato ovunque in ME"
+        "description": "Raffina una richiesta vaga in requisiti concreti PRIMA che qualcuno scriva codice o un design-doc \u2014 domande socratiche, una alla volta, senza proporre soluzioni finch\u00e9 il problema non \u00e8 chiaro. Usa quando l&#x27;utente porta un&#x27;idea vaga (&quot;servirebbe qualcosa per X&quot;, &quot;vorrei migliorare Y&quot;) prima di passare a /design-doc o scrivere codice, o invoca /brainstorming esplicitamente. Non sostituisce /design-doc (quello struttura opzioni gi\u00e0 chiare, confrontandole su criteri espliciti); qu"
       },
       "node_kind": "page",
       "norm_label": ".opencode/skills/brainstorming/skill.md",
@@ -45561,7 +45588,7 @@
       "node_kind": "heading",
       "norm_label": "0. quando si usa (e quando no)",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L14"
+      "source_location": "L17"
     },
     {
       "id": "opencode_skills_brainstorming_skill_1_metodo_socratico_una_domanda_alla_volta",
@@ -45573,7 +45600,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo \u2014 socratico, una domanda alla volta",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L21"
+      "source_location": "L24"
     },
     {
       "id": "opencode_skills_brainstorming_skill_1bis_il_contesto_si_seleziona_prima_di_chiedere_6_ciclo_set_2_2026_08_24",
@@ -45585,7 +45612,7 @@
       "node_kind": "heading",
       "norm_label": "1bis. il contesto si seleziona prima di chiedere (6\u00b0 ciclo, set 2, 2026-08-24)",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L56"
+      "source_location": "L59"
     },
     {
       "id": "opencode_skills_brainstorming_skill_2_cosa_non_fare",
@@ -45597,7 +45624,7 @@
       "node_kind": "heading",
       "norm_label": "2. cosa non fare",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L67"
+      "source_location": "L70"
     },
     {
       "id": "opencode_skills_brainstorming_skill_3_dopo_il_brainstorming",
@@ -45609,7 +45636,7 @@
       "node_kind": "heading",
       "norm_label": "3. dopo il brainstorming",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L77"
+      "source_location": "L80"
     },
     {
       "id": "opencode_skills_brainstorming_skill_4_la_fase_generativa_le_dieci_provocazioni_potenziata_2026_08_29",
@@ -45621,7 +45648,7 @@
       "node_kind": "heading",
       "norm_label": "4. la fase generativa \u2014 le dieci provocazioni (potenziata 2026-08-29)",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L86"
+      "source_location": "L89"
     },
     {
       "id": "opencode_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
@@ -45633,7 +45660,7 @@
       "node_kind": "heading",
       "norm_label": "brainstorming \u2014 le domande prima delle risposte",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L9"
     },
     {
       "id": "opencode_skills_brainstorming_skill_quando_l_utente_dice_decidi_tu_su_tutto_dal_campo_fornitore_n_2026_09_01",
@@ -45645,7 +45672,7 @@
       "node_kind": "heading",
       "norm_label": "quando l'utente dice \u00abdecidi tu su tutto\u00bb (dal campo fornitore-n, 2026-09-01)",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L129"
+      "source_location": "L132"
     },
     {
       "id": "opencode_skills_brainstorming_skill_vedi_anche",
@@ -45657,7 +45684,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L140"
+      "source_location": "L143"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill",
@@ -45668,7 +45695,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "controllo-gestione",
-        "description": "Ancora un problema matematico-contabile (contabilit\u00e0 analitica, di magazzino, controllo di gestione, margini, cespiti) ai dati e alle formule REALI di Gruppo Camarlinghi prima di scrivere codice \u2014 mai indovinare una formula di business. Nato dal Set 1 &quot;agenti&quot; del 4\u00b0 ciclo di auto-miglioramento (2026-08-23): un censimento di REPO-E (repo esterno, cartella gas-src/, ~90 progetti Google Apps Script reali) ha trovato una decina di calcoli di controllo di gestione gi\u00e0 implementati (scostamento standar"
+        "description": "Ancora un problema matematico-contabile (contabilit\u00e0 analitica, di magazzino, controllo di gestione, margini, cespiti) ai dati e alle formule REALI di Gruppo Camarlinghi prima di scrivere codice \u2014 mai indovinare una formula di business. Usa quando una richiesta implica calcolare/riconciliare/analizzare una cifra contabile o gestionale reale (non un esempio didattico) per Gruppo Camarlinghi. Non sostituisce /design-doc (quello decide un&#x27;architettura software, non tocca la correttezza di un numero); non "
       },
       "node_kind": "page",
       "norm_label": ".opencode/skills/controllo-gestione/skill.md",
@@ -45685,7 +45712,7 @@
       "node_kind": "heading",
       "norm_label": "0. input \u2014 cosa serve prima di iniziare",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L17"
+      "source_location": "L20"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_1_metodo",
@@ -45697,7 +45724,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L23"
+      "source_location": "L26"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_2_dove_va_documentato_il_calcolo_mai_solo_nel_codice",
@@ -45709,7 +45736,7 @@
       "node_kind": "heading",
       "norm_label": "2. dove va documentato il calcolo (mai solo nel codice)",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L59"
+      "source_location": "L62"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_3_esempi_gi\u00e0_risolti_con_questo_metodo",
@@ -45721,7 +45748,7 @@
       "node_kind": "heading",
       "norm_label": "3. esempi gia risolti con questo metodo",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L71"
+      "source_location": "L74"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_4_regole_non_negoziabili_eredit\u00e0_da_claude_md",
@@ -45733,7 +45760,7 @@
       "node_kind": "heading",
       "norm_label": "4. regole non negoziabili (eredita da claude.md)",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L104"
+      "source_location": "L107"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_5_dopo_il_merge_non_\u00e8_pi\u00f9_compito_di_questa_skill",
@@ -45745,7 +45772,7 @@
       "node_kind": "heading",
       "norm_label": "5. dopo il merge: non e piu compito di questa skill",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L115"
+      "source_location": "L118"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_6_delega_a_un_subagent_5_ciclo_set_1_2026_08_23",
@@ -45757,7 +45784,7 @@
       "node_kind": "heading",
       "norm_label": "6. delega a un subagent (5\u00b0 ciclo, set 1, 2026-08-23)",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L127"
+      "source_location": "L130"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_controllo_gestione_la_formula_si_trova_non_si_indovina",
@@ -45769,7 +45796,7 @@
       "node_kind": "heading",
       "norm_label": "controllo-gestione \u2014 la formula si trova, non si indovina",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L9"
     },
     {
       "id": "opencode_skills_controllo_gestione_skill_vedi_anche",
@@ -45781,7 +45808,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L150"
+      "source_location": "L153"
     },
     {
       "id": "opencode_skills_dev_critic_skill",
@@ -45792,7 +45819,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "dev-critic",
-        "description": "Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti \u2014 lente sicurezza sempre applicata, \u00a72bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento \u2014 lente \u00a72ter) e nuove funzionalit\u00e0 non considerate in uno script, uno strumento o un intero progetto \u2014 nel hub AI_Programmer o in un progetto onboardato (es. REPO-C) \u2014 combinando lettura critica del codice con un tentativo REALE di usarlo (dogf"
+        "description": "Trova punti deboli, debito tecnico, buchi di sicurezza (allowlist bucabili, segreti esposti \u2014 lente sicurezza sempre applicata, \u00a72bis), errori nelle formule di calcolo matematico-finanziarie (quadrature/plug che nascondono un residuo vero, non solo di arrotondamento \u2014 lente \u00a72ter) e nuove funzionalit\u00e0 non considerate in uno script, uno strumento o un intero progetto, combinando lettura critica e un tentativo REALE di usarlo (dogfooding), non solo ispezione statica. Anche propositiva: scope dichiarato (PROJE"
       },
       "node_kind": "page",
       "norm_label": ".opencode/skills/dev-critic/skill.md",
@@ -45809,7 +45836,7 @@
       "node_kind": "heading",
       "norm_label": "0. target",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L14"
+      "source_location": "L19"
     },
     {
       "id": "opencode_skills_dev_critic_skill_1_metodo_due_fasi_in_ordine_mai_saltare_la_seconda",
@@ -45821,7 +45848,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo \u2014 due fasi, in ordine, mai saltare la seconda",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L20"
+      "source_location": "L25"
     },
     {
       "id": "opencode_skills_dev_critic_skill_2_categorie_di_output_sempre_con_file_riga_mai_generiche",
@@ -45833,7 +45860,7 @@
       "node_kind": "heading",
       "norm_label": "2. categorie di output (sempre con file:riga, mai generiche)",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L31"
+      "source_location": "L36"
     },
     {
       "id": "opencode_skills_dev_critic_skill_2bis_lente_sicurezza_sempre_applicata_non_solo_quando_sospetti_qualcosa",
@@ -45845,7 +45872,7 @@
       "node_kind": "heading",
       "norm_label": "2bis. lente sicurezza \u2014 sempre applicata, non solo quando sospetti qualcosa",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L58"
+      "source_location": "L63"
     },
     {
       "id": "opencode_skills_dev_critic_skill_2ter_lente_matematico_finanziaria_quando_il_target_fa_calcoli_che_devono_essere_giusti",
@@ -45857,7 +45884,7 @@
       "node_kind": "heading",
       "norm_label": "2ter. lente matematico-finanziaria \u2014 quando il target fa calcoli che devono essere giusti",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L86"
+      "source_location": "L91"
     },
     {
       "id": "opencode_skills_dev_critic_skill_3_regole_non_negoziabili_eredit\u00e0_da_claude_md_del_hub",
@@ -45869,7 +45896,7 @@
       "node_kind": "heading",
       "norm_label": "3. regole non negoziabili (eredita da claude.md del hub)",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L129"
+      "source_location": "L134"
     },
     {
       "id": "opencode_skills_dev_critic_skill_4_output",
@@ -45881,7 +45908,7 @@
       "node_kind": "heading",
       "norm_label": "4. output",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L141"
+      "source_location": "L146"
     },
     {
       "id": "opencode_skills_dev_critic_skill_dev_critic_critico_e_scopritore_di_sviluppo",
@@ -45893,7 +45920,7 @@
       "node_kind": "heading",
       "norm_label": "dev-critic \u2014 critico e scopritore di sviluppo",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L11"
     },
     {
       "id": "opencode_skills_dev_critic_skill_vedi_anche",
@@ -45905,7 +45932,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L149"
+      "source_location": "L154"
     },
     {
       "id": "opencode_skills_gas_sviluppo_references_famiglie_difetti",
@@ -46036,7 +46063,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "goal",
-        "description": "Loop di ottimizzazione diurno con un obiettivo verificabile e un tetto di tentativi \u2014 un cambiamento per tentativo, verifica dichiarata col suo livello (1-5), verifica avversariale prima di dichiarare vittoria, log di ogni tentativo in loops/. Citato in CLAUDE.md \u00a77 (&quot;/goal &lt;obiettivo verificabile&gt; | max N tentativi&quot;) e in docs/system.md e loops/README.md da quando il sistema esiste, ma senza alcun file che lo implementasse \u2014 loops/ \u00e8 rimasta vuota (solo il README) finch\u00e9 non \u00e8 stato scritto"
+        "description": "Loop di ottimizzazione diurno con un obiettivo verificabile e un tetto di tentativi \u2014 un cambiamento per tentativo, verifica dichiarata col suo livello (1-5), verifica avversariale prima di dichiarare vittoria, log di ogni tentativo in loops/. Usa quando l&#x27;utente chiede un&#x27;ottimizzazione iterativa con verifica (&quot;ottimizza X finch\u00e9...&quot;, &quot;prova a migliorare Y&quot;, esplicitamente con &quot;| max N tentativi&quot;), o invoca /goal. Diverso dal turno notturno: qui c&#x27;\u00e8 SEMPRE un te"
       },
       "node_kind": "page",
       "norm_label": ".opencode/skills/goal/skill.md",
@@ -46053,7 +46080,7 @@
       "node_kind": "heading",
       "norm_label": "0. sintassi",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L8"
+      "source_location": "L12"
     },
     {
       "id": "opencode_skills_goal_skill_1_prima_di_iniziare_dichiara_il_livello_di_verifica",
@@ -46065,7 +46092,7 @@
       "node_kind": "heading",
       "norm_label": "1. prima di iniziare \u2014 dichiara il livello di verifica",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L20"
+      "source_location": "L24"
     },
     {
       "id": "opencode_skills_goal_skill_2_il_loop_un_cambiamento_per_tentativo",
@@ -46077,7 +46104,7 @@
       "node_kind": "heading",
       "norm_label": "2. il loop \u2014 un cambiamento per tentativo",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L28"
+      "source_location": "L32"
     },
     {
       "id": "opencode_skills_goal_skill_3_verifica_avversariale_prima_della_vittoria_non_facoltativa",
@@ -46089,7 +46116,7 @@
       "node_kind": "heading",
       "norm_label": "3. verifica avversariale prima della vittoria (non facoltativa)",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L46"
+      "source_location": "L50"
     },
     {
       "id": "opencode_skills_goal_skill_4_fine_del_loop",
@@ -46101,7 +46128,7 @@
       "node_kind": "heading",
       "norm_label": "4. fine del loop",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L61"
+      "source_location": "L65"
     },
     {
       "id": "opencode_skills_goal_skill_5_cosa_non_\u00e8_questo_comando",
@@ -46113,7 +46140,7 @@
       "node_kind": "heading",
       "norm_label": "5. cosa non e questo comando",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L70"
+      "source_location": "L74"
     },
     {
       "id": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
@@ -46125,7 +46152,7 @@
       "node_kind": "heading",
       "norm_label": "goal \u2014 un obiettivo, un tetto, una prova ad ogni passo",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L10"
     },
     {
       "id": "opencode_skills_goal_skill_vedi_anche",
@@ -46137,10 +46164,10 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L80"
+      "source_location": "L84"
     },
     {
-      "id": "opencode_skills_goal_skill_vedi_anche_85",
+      "id": "opencode_skills_goal_skill_vedi_anche_89",
       "label": "Vedi anche",
       "_origin": "ast",
       "community": 79,
@@ -46149,7 +46176,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L85"
+      "source_location": "L89"
     },
     {
       "id": "opencode_skills_graphify_skill",
@@ -47011,6 +47038,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_bilancio_bu",
+      "label": "bilancio_bu.py",
+      "_origin": "ast",
+      "community": 84,
+      "community_name": "scostamento_standard_effettivo.py",
+      "file_type": "code",
+      "norm_label": "bilancio_bu.py",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_scostamento_standard_effettivo",
       "label": "scostamento_standard_effettivo.py",
       "_origin": "ast",
@@ -47020,6 +47058,28 @@
       "norm_label": "scostamento_standard_effettivo.py",
       "source_file": "tools/scostamento_standard_effettivo.py",
       "source_location": "L1"
+    },
+    {
+      "id": "tools_bilancio_bu_rationale_3",
+      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
+      "_origin": "ast",
+      "community": 84,
+      "community_name": "scostamento_standard_effettivo.py",
+      "file_type": "rationale",
+      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_bilancio_bu_rationale_37",
+      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
+      "_origin": "ast",
+      "community": 84,
+      "community_name": "scostamento_standard_effettivo.py",
+      "file_type": "rationale",
+      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37"
     },
     {
       "id": "tools_scostamento_standard_effettivo_rationale_2",
@@ -47299,7 +47359,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "design-doc",
-        "description": "Trasforma un&#x27;idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilit\u00e0 + criteri specifici alla decisione, in una tabella opzioni\u00d7criteri \u2014 4\u00b0 ciclo, set 2 &quot;progettare&quot;, 2026-08-23), SENZA implementare \u2014 la scelta resta sempre di chi possiede il progetto. Nato da un debito dichiarato in DEBITI.md (2026-08-21): il comando era citato in METHOD.md/docs/system.md come parte della pipeline &quot;/brainstorming \u2192 /design-doc \u2192 c"
+        "description": "Trasforma un&#x27;idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilit\u00e0 + criteri specifici alla decisione, in una tabella opzioni\u00d7criteri), SENZA implementare \u2014 la scelta resta sempre di chi possiede il progetto. Usa quando l&#x27;utente chiede di progettare una feature nuova, valutare alternative architetturali, o invoca /design-doc esplicitamente \u2014 prima di scrivere codice, non dopo. Non sostituisce dev-critic (quello trova gap in"
       },
       "node_kind": "page",
       "norm_label": ".claude/skills/design-doc/skill.md",
@@ -47316,7 +47376,7 @@
       "node_kind": "heading",
       "norm_label": "0. input \u2014 cosa serve prima di iniziare",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L14"
+      "source_location": "L18"
     },
     {
       "id": "claude_skills_design_doc_skill_1_metodo",
@@ -47328,7 +47388,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L21"
+      "source_location": "L25"
     },
     {
       "id": "claude_skills_design_doc_skill_1bis_esempio_del_formato_criteri_tabella_non_narrativa_libera",
@@ -47340,7 +47400,7 @@
       "node_kind": "heading",
       "norm_label": "1bis. esempio del formato (criteri \u2192 tabella, non narrativa libera)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L106"
+      "source_location": "L110"
     },
     {
       "id": "claude_skills_design_doc_skill_2_dove_va_a_vivere_il_documento_mai_solo_in_chat",
@@ -47352,7 +47412,7 @@
       "node_kind": "heading",
       "norm_label": "2. dove va a vivere il documento (mai solo in chat)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L127"
+      "source_location": "L131"
     },
     {
       "id": "claude_skills_design_doc_skill_3_dopo_la_scelta_notte_o_giorno_non_solo_la_notte_4_ciclo_set_2_giro_10_2026_08_23",
@@ -47364,7 +47424,7 @@
       "node_kind": "heading",
       "norm_label": "3. dopo la scelta \u2014 notte o giorno, non solo la notte (4\u00b0 ciclo, set 2, giro 10, 2026-08-23)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L148"
+      "source_location": "L152"
     },
     {
       "id": "claude_skills_design_doc_skill_4_regole_non_negoziabili_eredit\u00e0_da_claude_md",
@@ -47376,7 +47436,7 @@
       "node_kind": "heading",
       "norm_label": "4. regole non negoziabili (eredita da claude.md)",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L166"
+      "source_location": "L170"
     },
     {
       "id": "claude_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
@@ -47388,7 +47448,7 @@
       "node_kind": "heading",
       "norm_label": "design-doc \u2014 le opzioni prima del codice",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L10"
     },
     {
       "id": "claude_skills_design_doc_skill_vedi_anche",
@@ -47400,7 +47460,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L178"
+      "source_location": "L182"
     },
     {
       "id": "claude_skills_graphify_references_exports",
@@ -48347,7 +48407,7 @@
       "file_type": "document",
       "frontmatter": {
         "name": "design-doc",
-        "description": "Trasforma un&#x27;idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilit\u00e0 + criteri specifici alla decisione, in una tabella opzioni\u00d7criteri \u2014 4\u00b0 ciclo, set 2 &quot;progettare&quot;, 2026-08-23), SENZA implementare \u2014 la scelta resta sempre di chi possiede il progetto. Nato da un debito dichiarato in DEBITI.md (2026-08-21): il comando era citato in METHOD.md/docs/system.md come parte della pipeline &quot;/brainstorming \u2192 /design-doc \u2192 c"
+        "description": "Trasforma un&#x27;idea o una richiesta vaga in 2-3 opzioni concrete confrontate su criteri espliciti dichiarati PRIMA (costo/rischio/reversibilit\u00e0 + criteri specifici alla decisione, in una tabella opzioni\u00d7criteri), SENZA implementare \u2014 la scelta resta sempre di chi possiede il progetto. Usa quando l&#x27;utente chiede di progettare una feature nuova, valutare alternative architetturali, o invoca /design-doc esplicitamente \u2014 prima di scrivere codice, non dopo. Non sostituisce dev-critic (quello trova gap in"
       },
       "node_kind": "page",
       "norm_label": ".opencode/skills/design-doc/skill.md",
@@ -48364,7 +48424,7 @@
       "node_kind": "heading",
       "norm_label": "0. input \u2014 cosa serve prima di iniziare",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L14"
+      "source_location": "L18"
     },
     {
       "id": "opencode_skills_design_doc_skill_1_metodo",
@@ -48376,7 +48436,7 @@
       "node_kind": "heading",
       "norm_label": "1. metodo",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L21"
+      "source_location": "L25"
     },
     {
       "id": "opencode_skills_design_doc_skill_1bis_esempio_del_formato_criteri_tabella_non_narrativa_libera",
@@ -48388,7 +48448,7 @@
       "node_kind": "heading",
       "norm_label": "1bis. esempio del formato (criteri \u2192 tabella, non narrativa libera)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L106"
+      "source_location": "L110"
     },
     {
       "id": "opencode_skills_design_doc_skill_2_dove_va_a_vivere_il_documento_mai_solo_in_chat",
@@ -48400,7 +48460,7 @@
       "node_kind": "heading",
       "norm_label": "2. dove va a vivere il documento (mai solo in chat)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L127"
+      "source_location": "L131"
     },
     {
       "id": "opencode_skills_design_doc_skill_3_dopo_la_scelta_notte_o_giorno_non_solo_la_notte_4_ciclo_set_2_giro_10_2026_08_23",
@@ -48412,7 +48472,7 @@
       "node_kind": "heading",
       "norm_label": "3. dopo la scelta \u2014 notte o giorno, non solo la notte (4\u00b0 ciclo, set 2, giro 10, 2026-08-23)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L148"
+      "source_location": "L152"
     },
     {
       "id": "opencode_skills_design_doc_skill_4_regole_non_negoziabili_eredit\u00e0_da_claude_md",
@@ -48424,7 +48484,7 @@
       "node_kind": "heading",
       "norm_label": "4. regole non negoziabili (eredita da claude.md)",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L166"
+      "source_location": "L170"
     },
     {
       "id": "opencode_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
@@ -48436,7 +48496,7 @@
       "node_kind": "heading",
       "norm_label": "design-doc \u2014 le opzioni prima del codice",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L6"
+      "source_location": "L10"
     },
     {
       "id": "opencode_skills_design_doc_skill_vedi_anche",
@@ -48448,7 +48508,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L178"
+      "source_location": "L182"
     },
     {
       "id": "opencode_skills_graphify_references_exports",
@@ -48749,30 +48809,6 @@
       "source_location": "L64"
     },
     {
-      "id": "csv",
-      "label": "csv",
-      "_origin": "semantic",
-      "community": 100,
-      "community_name": "csv",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "csv",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "datetime",
-      "label": "datetime",
-      "_origin": "semantic",
-      "community": 125,
-      "community_name": "rating_dso_clienti.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "datetime",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "glob",
       "label": "glob",
       "_origin": "semantic",
@@ -48905,11 +48941,23 @@
       "type": "external"
     },
     {
-      "id": "math",
-      "label": "math",
+      "id": "datetime",
+      "label": "datetime",
       "_origin": "semantic",
       "community": 46,
       "community_name": "leasing_amministrativo.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "datetime",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "math",
+      "label": "math",
+      "_origin": "semantic",
+      "community": 48,
+      "community_name": "valorizzazione_magazzino.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "math",
@@ -48937,6 +48985,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_parse",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "csv",
+      "label": "csv",
+      "_origin": "semantic",
+      "community": 84,
+      "community_name": "scostamento_standard_effettivo.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "csv",
       "source_file": "",
       "type": "external"
     },
@@ -54259,6 +54319,30 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_skill_descrizioni_sh__entry",
+      "target": "tests_test_skill_descrizioni_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_skill_descrizioni_sh__entry",
+      "target": "tests_test_skill_descrizioni_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_skill_n_giri_attesa",
       "target": "tests_test_skill_n_giri_ko",
       "relation": "calls",
@@ -58001,7 +58085,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -58012,18 +58096,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L129",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
-      "target": "claude_skills_brainstorming_skill_0_quando_si_usa_e_quando_no",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -58034,7 +58107,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L140",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
+      "target": "claude_skills_brainstorming_skill_0_quando_si_usa_e_quando_no",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/brainstorming/SKILL.md",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -58045,7 +58129,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L21",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -58056,7 +58140,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L56",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -58067,7 +58151,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L67",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -58078,7 +58162,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L77",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -58089,7 +58173,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/brainstorming/SKILL.md",
-      "source_location": "L86",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -58100,7 +58184,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -58111,7 +58195,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L104",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -58122,7 +58206,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L115",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -58133,7 +58217,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L127",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -58144,7 +58228,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L150",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -58155,7 +58239,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -58166,7 +58250,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L23",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -58177,7 +58261,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L59",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -58188,7 +58272,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/controllo-gestione/SKILL.md",
-      "source_location": "L71",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -58199,7 +58283,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -58210,7 +58294,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L106",
+      "source_location": "L110",
       "weight": 1.0
     },
     {
@@ -58221,18 +58305,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L127",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
-      "target": "claude_skills_design_doc_skill_0_input_cosa_serve_prima_di_iniziare",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -58243,7 +58316,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L148",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -58254,7 +58327,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L166",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
+      "target": "claude_skills_design_doc_skill_0_input_cosa_serve_prima_di_iniziare",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/design-doc/SKILL.md",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -58265,7 +58349,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L178",
+      "source_location": "L182",
       "weight": 1.0
     },
     {
@@ -58276,7 +58360,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/design-doc/SKILL.md",
-      "source_location": "L21",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -58287,7 +58371,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -58298,18 +58382,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L129",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_dev_critic_skill_dev_critic_critico_e_scopritore_di_sviluppo",
-      "target": "claude_skills_dev_critic_skill_0_target",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -58320,7 +58393,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L141",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -58331,7 +58404,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L149",
+      "source_location": "L154",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_dev_critic_skill_dev_critic_critico_e_scopritore_di_sviluppo",
+      "target": "claude_skills_dev_critic_skill_0_target",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/dev-critic/SKILL.md",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -58342,7 +58426,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L20",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -58353,7 +58437,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -58364,7 +58448,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L58",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -58375,7 +58459,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/dev-critic/SKILL.md",
-      "source_location": "L86",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -59277,7 +59361,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -59288,7 +59372,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L23",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -59299,7 +59383,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -59310,7 +59394,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -59321,7 +59405,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L53",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -59332,7 +59416,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L57",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -59343,7 +59427,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L67",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -59354,7 +59438,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L72",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -59365,18 +59449,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L81",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
       "source": "claude_skills_gas_sviluppo_skill_gas_sviluppo_il_parco_gi\u00e0_pagato_portato_negli_agenti",
-      "target": "claude_skills_gas_sviluppo_skill_vedi_anche_86",
+      "target": "claude_skills_gas_sviluppo_skill_vedi_anche_89",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L86",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -59387,62 +59471,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "claude_skills_goal_skill_1_prima_di_iniziare_dichiara_il_livello_di_verifica",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "claude_skills_goal_skill_2_il_loop_un_cambiamento_per_tentativo",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L28",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "claude_skills_goal_skill_3_verifica_avversariale_prima_della_vittoria_non_facoltativa",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L46",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "claude_skills_goal_skill_4_fine_del_loop",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L61",
-      "weight": 1.0
-    },
-    {
-      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "claude_skills_goal_skill_5_cosa_non_\u00e8_questo_comando",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L70",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -59453,7 +59482,62 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L8",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "claude_skills_goal_skill_1_prima_di_iniziare_dichiara_il_livello_di_verifica",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/goal/SKILL.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "claude_skills_goal_skill_2_il_loop_un_cambiamento_per_tentativo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/goal/SKILL.md",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "claude_skills_goal_skill_3_verifica_avversariale_prima_della_vittoria_non_facoltativa",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/goal/SKILL.md",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "claude_skills_goal_skill_4_fine_del_loop",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/goal/SKILL.md",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "claude_skills_goal_skill_5_cosa_non_\u00e8_questo_comando",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/goal/SKILL.md",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -59464,18 +59548,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L80",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
       "source": "claude_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "claude_skills_goal_skill_vedi_anche_85",
+      "target": "claude_skills_goal_skill_vedi_anche_89",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/goal/SKILL.md",
-      "source_location": "L85",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -73159,7 +73243,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -73170,18 +73254,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L129",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
-      "target": "opencode_skills_brainstorming_skill_0_quando_si_usa_e_quando_no",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -73192,7 +73265,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L140",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
+      "target": "opencode_skills_brainstorming_skill_0_quando_si_usa_e_quando_no",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/brainstorming/SKILL.md",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -73203,7 +73287,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L21",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -73214,7 +73298,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L56",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -73225,7 +73309,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L67",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -73236,7 +73320,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L77",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -73247,7 +73331,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/brainstorming/SKILL.md",
-      "source_location": "L86",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -73258,7 +73342,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -73269,7 +73353,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L104",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -73280,7 +73364,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L115",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -73291,7 +73375,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L127",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -73302,7 +73386,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L150",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -73313,7 +73397,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -73324,7 +73408,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L23",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -73335,7 +73419,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L59",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -73346,7 +73430,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
-      "source_location": "L71",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -73357,7 +73441,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -73368,7 +73452,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L106",
+      "source_location": "L110",
       "weight": 1.0
     },
     {
@@ -73379,18 +73463,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L127",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
-      "target": "opencode_skills_design_doc_skill_0_input_cosa_serve_prima_di_iniziare",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -73401,7 +73474,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L148",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -73412,7 +73485,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L166",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_design_doc_skill_design_doc_le_opzioni_prima_del_codice",
+      "target": "opencode_skills_design_doc_skill_0_input_cosa_serve_prima_di_iniziare",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/design-doc/SKILL.md",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -73423,7 +73507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L178",
+      "source_location": "L182",
       "weight": 1.0
     },
     {
@@ -73434,7 +73518,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/design-doc/SKILL.md",
-      "source_location": "L21",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -73445,7 +73529,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -73456,18 +73540,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L129",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_dev_critic_skill_dev_critic_critico_e_scopritore_di_sviluppo",
-      "target": "opencode_skills_dev_critic_skill_0_target",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -73478,7 +73551,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L141",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -73489,7 +73562,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L149",
+      "source_location": "L154",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_dev_critic_skill_dev_critic_critico_e_scopritore_di_sviluppo",
+      "target": "opencode_skills_dev_critic_skill_0_target",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/dev-critic/SKILL.md",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -73500,7 +73584,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L20",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -73511,7 +73595,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -73522,7 +73606,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L58",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -73533,7 +73617,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/dev-critic/SKILL.md",
-      "source_location": "L86",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -74435,7 +74519,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L6",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -74446,7 +74530,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L23",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -74457,7 +74541,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -74468,7 +74552,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -74479,7 +74563,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L53",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -74490,7 +74574,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L57",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -74501,7 +74585,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L67",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -74512,7 +74596,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L72",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -74523,18 +74607,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L81",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
       "source": "opencode_skills_gas_sviluppo_skill_gas_sviluppo_il_parco_gi\u00e0_pagato_portato_negli_agenti",
-      "target": "opencode_skills_gas_sviluppo_skill_vedi_anche_86",
+      "target": "opencode_skills_gas_sviluppo_skill_vedi_anche_89",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/gas-sviluppo/SKILL.md",
-      "source_location": "L86",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -74545,62 +74629,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L6",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "opencode_skills_goal_skill_1_prima_di_iniziare_dichiara_il_livello_di_verifica",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "opencode_skills_goal_skill_2_il_loop_un_cambiamento_per_tentativo",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L28",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "opencode_skills_goal_skill_3_verifica_avversariale_prima_della_vittoria_non_facoltativa",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L46",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "opencode_skills_goal_skill_4_fine_del_loop",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L61",
-      "weight": 1.0
-    },
-    {
-      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "opencode_skills_goal_skill_5_cosa_non_\u00e8_questo_comando",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L70",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -74611,7 +74640,62 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L8",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "opencode_skills_goal_skill_1_prima_di_iniziare_dichiara_il_livello_di_verifica",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/goal/SKILL.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "opencode_skills_goal_skill_2_il_loop_un_cambiamento_per_tentativo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/goal/SKILL.md",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "opencode_skills_goal_skill_3_verifica_avversariale_prima_della_vittoria_non_facoltativa",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/goal/SKILL.md",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "opencode_skills_goal_skill_4_fine_del_loop",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/goal/SKILL.md",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
+      "target": "opencode_skills_goal_skill_5_cosa_non_\u00e8_questo_comando",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/goal/SKILL.md",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -74622,18 +74706,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L80",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
       "source": "opencode_skills_goal_skill_goal_un_obiettivo_un_tetto_una_prova_ad_ogni_passo",
-      "target": "opencode_skills_goal_skill_vedi_anche_85",
+      "target": "opencode_skills_goal_skill_vedi_anche_89",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/goal/SKILL.md",
-      "source_location": "L85",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -81677,6 +81761,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_skill_descrizioni",
+      "target": "tests_test_skill_descrizioni_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_skill_n_giri",
       "target": "tests_test_skill_n_giri_sh__entry",
       "relation": "contains",
@@ -88365,6 +88460,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_skill_descrizioni",
+      "target": "tests_test_skill_descrizioni_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_skill_descrizioni",
+      "target": "tests_test_skill_descrizioni_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-skill-descrizioni.sh",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_skill_n_giri",
       "target": "tests_test_skill_n_giri_ok",
       "relation": "defines",
@@ -91910,5 +92027,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "497bb4ac0e499fc0605576223df54bfaedce6865"
+  "built_at_commit": "b8fa2899a2e41092f342941921aa2c110a8e109c"
 }

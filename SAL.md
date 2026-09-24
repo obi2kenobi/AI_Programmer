@@ -3968,3 +3968,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Sabotaggio: A tolta, verde; B tolta, verde; A e B tolte, 2 rossi. Le due difese sono ridondanti
   sui casi del banco, e restano entrambe per scelta: A dà il messaggio giusto senza creare file,
   B prende la scrittura fallita (disco pieno), che il banco non prova.
+- **T6#8 — sei skill oltre i 1024 caratteri della specifica Agent Skills.** brainstorming (1025),
+  controllo-gestione (1254), design-doc (1101), dev-critic (1436), gas-sviluppo (1105) e goal (1130).
+  Claude Code le carica, ma lo specchio `.opencode/skills/` lo legge il turno. Le frasi di
+  provenienza, che allungavano la descrizione senza aiutare a sceglierla, stanno ora parola per parola
+  in un paragrafo «Provenienza» nel corpo. dev-critic è stata anche compressa (il confine con
+  audit-commessa è nel corpo). Dalla descrizione di design-doc è uscito il rimando a
+  `/nuova-commessa`, che non esiste (T4). Cricchetto `tests/test-skill-descrizioni.sh` (name e
+  description entro 1024, due specchi): rosso sulla versione di prima (6 skill × 2 specchi), verde ora.
+  ⏳ Se OpenCode le carica tutte: voce (f) in DEBITI.
