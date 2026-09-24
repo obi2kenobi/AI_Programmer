@@ -35,6 +35,24 @@ git -C "$SRC" checkout -q main
 # la copia di lavoro del gate: clone con origin/HEAD noto (come sul Mac)
 git clone -q "$SRC" "$HOME/night-shift-work/repo-t3" && git -C "$HOME/night-shift-work/repo-t3" remote set-head origin -a >/dev/null
 
+# --- (2026-09-24, notte dei giri, T2#2): il gate lanciato a mano lavora nella stessa cartella del
+# turno ($WORK/<repo>) e non guardava nessun lock: il turno era su un ramo con una patch a meta', dopo
+# il gate era su main con la patch trascinata. Con un turno VIVO il gate non tocca la cartella.
+bash -c 'exec -a night-shift-turno-finto sleep 30' & VIVO=$!
+mkdir -p "$HOME/night-shift-work/.lock-turno"; echo "$VIVO" > "$HOME/night-shift-work/.lock-turno/pid"
+git -C "$HOME/night-shift-work/repo-t3" checkout -q -b night/lavoro-del-turno
+PRIMA=$(git -C "$HOME/night-shift-work/repo-t3" branch --show-current)
+printf '#!/bin/bash\necho "[]"\n' > "$SB/bin/gh"; chmod +x "$SB/bin/gh"
+OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1); RC=$?
+DOPO=$(git -C "$HOME/night-shift-work/repo-t3" branch --show-current)
+kill "$VIVO" 2>/dev/null; wait "$VIVO" 2>/dev/null
+[ "$DOPO" = "$PRIMA" ] && [ "$RC" -ne 0 ] && grep -c "turno" <<<"$OUT" >/dev/null \
+  && ok "T2#2: turno vivo → il gate si ferma, la cartella del turno resta sul suo ramo" \
+  || ko "T2#2: turno vivo e il gate e' entrato (rc $RC, ramo $PRIMA → $DOPO): $(tail -1 <<<"$OUT")"
+[ -f "$HOME/night-shift-work/.lock-turno/pid" ] && [ "$(cat "$HOME/night-shift-work/.lock-turno/pid")" = "$VIVO" ] \
+  && ok "T2#2: il lock del turno vivo non e' stato toccato" || ko "T2#2: il gate ha toccato il lock del turno"
+rm -rf "$HOME/night-shift-work/.lock-turno"; git -C "$HOME/night-shift-work/repo-t3" checkout -q main
+
 # --- D7: gh ROTTO (assente o non autenticato) ---------------------------------
 printf '#!/bin/bash\necho "gh: not logged in" >&2\nexit 4\n' > "$SB/bin/gh"; chmod +x "$SB/bin/gh"
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)

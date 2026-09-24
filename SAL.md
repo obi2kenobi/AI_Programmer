@@ -3880,3 +3880,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   night-shift), e ciclo-vivo la usa col suo nome. Il messaggio dice di quale PID si tratta. Banco in
   `tests/test-ciclo-vivo.sh`, in un clone: lock col PID morto ripreso, lock di un giro vivo
   rispettato. Rosso prima, rosso al sabotaggio (il `mkdir` nudo).
+- **T2#2 — il morning-gate lanciato a mano entrava nella cartella del turno vivo.** In pensione da
+  launchd, ma rilanciabile a mano, `night-shift/morning-gate.sh` lavora nella stessa
+  `$WORK/<repo>` del turno e non guardava nessun lock. Il giro T2 l'ha riprodotto: il turno era su un
+  ramo con una patch a metà, e dopo il gate la copia era su main con la patch trascinata
+  (`patterns/workdir-e-proprietario.md`). Ora il gate prende il lock del turno (`prendi_lock_turno`):
+  con un turno vivo esce 3 e dice perché. Banco in `tests/test-morning-gate-cieco.sh`: 1 rosso
+  prima, 2 al sabotaggio.

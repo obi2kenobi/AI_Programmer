@@ -26,6 +26,16 @@ GATE_LOG="$HOME/morning-gate.log"
 rotate_log_if_big "$GATE_LOG"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$GATE_LOG"; }
+# (2026-09-24, notte dei giri, T2#2): il gate lavora nella STESSA cartella del turno ($WORK/<repo>) —
+# lanciato a mano accanto al turno, spostava la copia su main trascinandosi la patch a meta' del turno
+# (patterns/workdir-e-proprietario.md). Ora prende il lock del turno: con un turno vivo non entra.
+TURN_LOCK="$WORK/.lock-turno"
+mkdir -p "$WORK"
+if ! prendi_lock_turno "$TURN_LOCK"; then
+  log "turno notturno vivo (PID $(cat "$TURN_LOCK/pid" 2>/dev/null || echo '?')) nella stessa cartella di lavoro: il gate non entra — rilancialo a turno finito"
+  exit 3
+fi
+trap 'rm -rf "$TURN_LOCK"' EXIT
 
 REPO_LIST=()
 if [ $# -gt 0 ]; then
