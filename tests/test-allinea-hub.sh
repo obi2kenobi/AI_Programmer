@@ -46,6 +46,29 @@ OUT=$(allinea_hub "$T/d" 2>&1); RC=$?
 [ "$(git -C "$T/d" rev-parse claude/y)" = "$PRIMA" ] && [ "$RC" -ne 0 ] && ok "d) main non prendibile: niente reset, il ramo del giorno intatto (rc $RC)" || ko "d) claude/y spostato o rc 0: $OUT"
 ! grep -c 'hub allineato' <<<"$OUT" >/dev/null && ok "d) il log non dice «allineato» quando non lo e'" || ko "d) il log mente: $OUT"
 
+# e) (2026-09-24, sesto ventaglio, S2 R3): sporco E main non prendibile — lo stash avveniva PRIMA di sapere se il
+# checkout sarebbe riuscito: niente allineamento, ma il lavoro spariva dal ramo del giorno a ogni ciclo
+nuovo e; git -C "$T/e" checkout -q -b giorno; echo "lavoro vivo" >> "$T/e/SAL.md"
+git -C "$T/e" worktree add -q "$T/e-wt" main 2>/dev/null
+OUT=$(allinea_hub "$T/e" 2>&1); RC=$?
+grep -c 'lavoro vivo' "$T/e/SAL.md" >/dev/null && [ -z "$(git -C "$T/e" stash list)" ] && [ "$RC" -ne 0 ] \
+  && ok "e) sporco e main non prendibile: niente allineamento, e l'albero resta com'era (nessuno stash)" || ko "e) il lavoro e' sparito dall'albero: stash=$(git -C "$T/e" stash list | grep -c .) — $OUT"
+
+# f) (2026-09-24, sesto ventaglio, S4 R2): un .git/index.lock orfano (un git ucciso con SIGKILL) — il reset falliva
+# a ogni ciclo con la causa in /dev/null, e ogni ciclo apriva un ramo salvataggio/ nuovo sullo stesso commit
+nuovo f; echo x > "$T/f/g.txt"; git -C "$T/f" add g.txt; git -C "$T/f" commit -qm "giorno non pushato"
+: > "$T/f/.git/index.lock"
+OUT1=$(allinea_hub "$T/f" 2>&1); sleep 1; OUT2=$(allinea_hub "$T/f" 2>&1); RC=$?
+NR=$(git -C "$T/f" branch --list 'salvataggio/*' | grep -c .)
+[ "$NR" -le 1 ] && [ "$RC" -ne 0 ] && grep -c 'index.lock' <<<"$OUT2" >/dev/null \
+  && ok "f) index.lock orfano: detto per nome, e due cicli non aprono due rami ($NR)" || ko "f) index.lock: $NR rami, rc $RC — $OUT2"
+rm -f "$T/f/.git/index.lock"
+# g) (S4 R2): un commit gia' salvato in un ramo salvataggio/ non ne apre un altro
+nuovo g; echo y > "$T/g/h.txt"; git -C "$T/g" add h.txt; git -C "$T/g" commit -qm "giorno"; git -C "$T/g" branch salvataggio/prima HEAD
+OUT=$(allinea_hub "$T/g" 2>&1)
+[ "$(git -C "$T/g" branch --list 'salvataggio/*' | grep -c .)" -eq 1 ] && grep -c 'gia' <<<"$OUT" >/dev/null \
+  && ok "g) il commit gia' in salvataggio/prima: nessun ramo nuovo, e lo dice" || ko "g) ramo doppio: $(git -C "$T/g" branch --list 'salvataggio/*' | tr '\n' ' ') — $OUT"
+
 # pulito: si allinea e basta
 nuovo p; OUT=$(allinea_hub "$T/p" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && [ -f "$T/p/nuovo.txt" ] && ! grep -c salvat <<<"$OUT" >/dev/null && ok "copia pulita: allineata, niente da salvare" || ko "pulita: rc=$RC $OUT"

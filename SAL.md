@@ -5045,3 +5045,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Tre casi nuovi con strace, che uccide nel punto esatto (saltati e dichiarati dove strace manca, come sul Mac):
   `tests/test-sal-indice-ancore.sh` 13/0 e `tests/test-sal-archivia.sh` 9/0, rossi prima. Sabotaggio 11/2 e 8/1.
   Dichiarato: dopo un kill resta un `SAL.md.tmp.<pid>` non tracciato, visibile, che si toglie a mano.
+- **Sesto ventaglio, S2 R3 e S4 R2 — `allinea_hub` toglieva il lavoro anche quando non allineava, e un
+  `index.lock` orfano apriva un ramo a ogni ciclo.** Due difetti nella funzione del quinto ventaglio
+  (`night-shift/lib.sh`):
+  - lo stash avveniva PRIMA di sapere se main si poteva prendere. Con main aperto in un altro worktree non si
+    allineava, ma le modifiche del giorno sparivano dal suo ramo a ogni ciclo (S2 R3). Ora si decide prima, e
+    in quel caso non si tocca l'albero;
+  - un `.git/index.lock` rimasto da un git ucciso faceva fallire stash e reset con la causa in `/dev/null`. Con un
+    commit non spinto, ogni ciclo (uno al minuto) apriva un ramo `salvataggio/` nuovo sullo stesso commit (S4 R2).
+    Ora il lock si dice per nome, con l'età, e non si fa niente finché c'è. Se toglierlo da solo è una domanda
+    (DEBITI, S4 D2);
+  - un commit già in un ramo `salvataggio/` non ne apre un altro;
+  - stash e reset falliti dicono la prima causa di git.
+
+  Tre casi nuovi in `tests/test-allinea-hub.sh` (11/0), rossi prima, verdi anche col PATH «Mac». Sabotaggio: 8/3.

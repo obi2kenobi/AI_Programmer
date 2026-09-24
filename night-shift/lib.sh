@@ -525,17 +525,32 @@ leggi_coda() {
 # log diceva «allineato». Ora: sporco → stash «salvataggio turno <ora>»; commit fuori da origin → ramo
 # salvataggio/<ora>; checkout di main fallito → niente reset, rc 1. Ogni cosa messa da parte si dice.
 allinea_hub() {
-  local d="$1" ts up br sporchi avanti
+  local d="$1" ts up br sporchi avanti gd err salvato
   ts=$(date +%Y%m%d-%H%M%S)
+  # (2026-09-24, sesto ventaglio, S4 R2): un .git/index.lock rimasto da un git ucciso (SIGKILL, Mac spento di colpo)
+  # faceva fallire stash e reset a ogni ciclo con la causa in /dev/null, e ogni ciclo apriva un ramo salvataggio/
+  # nuovo. Ora si dice per nome e non si tocca niente: toglierlo e' di chi lavora nella copia (DEBITI, S4 D2).
+  gd=$(git -C "$d" rev-parse --absolute-git-dir 2>/dev/null)
+  if [ -n "$gd" ] && [ -f "$gd/index.lock" ]; then
+    echo "NON allineato: $gd/index.lock esiste (da $(( $(date +%s) - $(mtime "$gd/index.lock" 2>/dev/null || date +%s) )) s) — un git ucciso a meta'? Niente stash ne' reset finche' c'e'; se nessun git lavora li', si toglie a mano"
+    return 1
+  fi
   git -C "$d" fetch -q origin 2>/dev/null || echo "fetch fallito: si allinea all'ultimo origin noto"
   up=$(git -C "$d" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/||'); up=${up:-origin/main}
+  br=$(git -C "$d" branch --show-current 2>/dev/null)
+  # (S2 R3): lo stash avveniva PRIMA di sapere se main si poteva prendere — col main aperto in un altro worktree
+  # niente allineamento, ma il lavoro spariva dal ramo del giorno a ogni ciclo. Prima si decide, poi si mette da parte.
+  if [ "$br" != main ] && [ "$br" != master ] \
+     && grep -cxE 'branch refs/heads/(main|master)' <<<"$(git -C "$d" worktree list --porcelain 2>/dev/null)" >/dev/null; then
+    echo "NON allineato: la copia e' sul ramo '${br:-?}' e main e' aperto in un altro worktree — niente stash ne' reset, il turno gira col metodo che c'e'"
+    return 1
+  fi
   sporchi=$(git -C "$d" status --porcelain 2>/dev/null | grep -c .)
   if [ "$sporchi" -gt 0 ]; then
-    git -C "$d" -c user.name=night-shift -c user.email=night-shift@localhost stash push -q -u -m "salvataggio turno $ts" \
-      || { echo "NON allineato: $sporchi file non committati e lo stash e' fallito — il turno gira col metodo che c'e'"; return 1; }
+    err=$(git -C "$d" -c user.name=night-shift -c user.email=night-shift@localhost stash push -q -u -m "salvataggio turno $ts" 2>&1) \
+      || { echo "NON allineato: $sporchi file non committati e lo stash e' fallito ($(tail -1 <<<"$err" | cut -c1-120)) — il turno gira col metodo che c'e'"; return 1; }
     echo "messi da parte $sporchi file non committati: git -C $d stash list («salvataggio turno $ts»)"
   fi
-  br=$(git -C "$d" branch --show-current 2>/dev/null)
   if [ "$br" != main ] && [ "$br" != master ]; then
     git -C "$d" checkout -q main 2>/dev/null || git -C "$d" checkout -q master 2>/dev/null \
       || { echo "NON allineato: la copia e' sul ramo '${br:-?}' e il checkout di main e' fallito — niente reset, il turno gira col metodo che c'e'"; return 1; }
@@ -543,9 +558,15 @@ allinea_hub() {
   fi
   avanti=$(git -C "$d" rev-list --count "$up..HEAD" 2>/dev/null || echo 0)
   if [ "$avanti" -gt 0 ]; then
-    git -C "$d" branch "salvataggio/$ts" HEAD && echo "messi da parte $avanti commit non su $up: ramo salvataggio/$ts"
+    # (S4 R2): un commit gia' salvato non apre un ramo nuovo a ogni ciclo
+    salvato=$(git -C "$d" branch --list 'salvataggio/*' --contains HEAD 2>/dev/null | head -1 | tr -d ' *')
+    if [ -n "$salvato" ]; then
+      echo "i $avanti commit non su $up sono gia' in $salvato: nessun ramo nuovo"
+    else
+      git -C "$d" branch "salvataggio/$ts" HEAD && echo "messi da parte $avanti commit non su $up: ramo salvataggio/$ts"
+    fi
   fi
-  git -C "$d" reset -q --hard "$up" 2>/dev/null || { echo "NON allineato: reset su $up fallito — il turno gira col metodo che c'e'"; return 1; }
+  err=$(git -C "$d" reset -q --hard "$up" 2>&1) || { echo "NON allineato: reset su $up fallito ($(tail -1 <<<"$err" | cut -c1-120)) — il turno gira col metodo che c'e'"; return 1; }
   echo "hub allineato a $up"
 }
 
