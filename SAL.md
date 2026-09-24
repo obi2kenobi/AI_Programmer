@@ -3651,5 +3651,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - una chiave con un refuso spariva in silenzio.
   - Ora il nome è privato; CR, commenti e spazi via; l'ultima riga si legge; la chiave ignota si
     dice.
-  - Banco: `tests/test-profilo.sh`, 6 casi, rossi prima. Sabotaggio (via la pulizia del CR):
-    rosso.
+  - Banco: `tests/test-profilo.sh`, 6 casi, rossi prima.
+  - ⚠ ERRORE MIO, corretto (E-043 nel REGISTRO). Qui avevo scritto «Sabotaggio (via la pulizia
+    del CR): rosso», e anche il commit 1a6572b lo dice. Il sabotaggio era VERDE: quella riga era
+    ridondante, perché il CR lo toglie già il taglio degli spazi. L'avevo scritto prima di leggere
+    l'uscita.
+    - Riga tolta. Sabotaggio vero (via il taglio degli spazi): 3 rossi.

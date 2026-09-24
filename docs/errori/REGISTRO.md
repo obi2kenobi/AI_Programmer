@@ -925,3 +925,27 @@
   carico la forma dava 2 rossi su 120, la cura 0 su 120.
 - Aggiramento: gli altri 248 siti nei banchi (DEBITI, famiglia E-002) finche' non sono curati.
 
+## E-043 Un sabotaggio dichiarato rosso prima di leggerne l'uscita
+
+- Data / sessione: 2026-09-24 (notte dei giri, Q28 — errore mio)
+- Famiglia: R1 (assunzione non verificata) + R2 (verde senza dati: il sabotaggio non poteva
+  mordere)
+- Chi l'ha trovato: io, rileggendo l'uscita del comando dopo il push: il sabotaggio diceva
+  «18 OK, 0 FAIL»
+- Sintomo: il SAL (voce 18°, Q28) e il messaggio del commit 1a6572b dicevano «il sabotaggio ne
+  rifa' rosso uno». Era verde.
+- Causa prossima: avevo sabotato la pulizia del CR in `tools/profilo.sh`, una riga RIDONDANTE — il
+  CR e' uno spazio per `[[:space:]]` e lo toglieva gia' il taglio degli spazi ai bordi.
+- Causa del ragionamento: nello STESSO comando ho lanciato il sabotaggio e scritto il SAL col
+  verdetto gia' deciso, prima di vedere l'uscita. Il verdetto e' stato scritto dall'aspettativa, non
+  dal banco.
+- Perché non ci ha fermati: la consegna controlla che la suite sia verde, non che il sabotaggio
+  dichiarato sia stato rosso — quello e' un'affermazione nel testo.
+- Guardia: `tests/test-profilo.sh` col sabotaggio vero (via il taglio degli spazi: 3 rossi), e la
+  riga ridondante tolta dal codice. Regola di procedura, da ora: il verdetto del sabotaggio si
+  scrive in un comando SUCCESSIVO, dopo averne letto l'uscita.
+- Verifica guardia: taglio degli spazi sabotato → «15 OK, 3 FAIL»; ripristinato → 18/0.
+- Aggiramento: la regola di procedura non ha un dente meccanico — il testo del SAL e dei commit
+  resta un'affermazione. Il commit 1a6572b non si riscrive (storia pubblicata): lo corregge questa
+  voce e il commit successivo.
+

@@ -20,11 +20,11 @@ _PROF_N=0
 _PROF_OK="MODELLO THINK SONDA_SEC SONDA_ROUND AGENTE_TIMEOUT AGENTE_MAX_TURNI CICLO_MIN_SEC GATE_MAX_RIGHE GATE_MAX_FILE CENSORE_MAX_RIGHE CENSORE_MAX_FILE CENSORE_QUARANTENA_MIN CENSORE_BUDGET_GIORNO CACCIATORIA_COOLDOWN_SEC MIGLIORIA_COOLDOWN_SEC IMPARA_ORA"
 if [ -f "$_PROF_FILE" ]; then
   while IFS= read -r _prof_riga || [ -n "$_prof_riga" ]; do
-    _prof_riga="${_prof_riga%$'\r'}"
     _prof_riga="${_prof_riga%%#*}"                      # commento (intero o a fine riga)
     case "$_prof_riga" in *=*) ;; *) continue ;; esac
     _prof_k="${_prof_riga%%=*}"; _prof_v="${_prof_riga#*=}"
     _prof_k="${_prof_k//[[:space:]]/}"
+    # spazi ai bordi via — il CR di un file CRLF e' uno di loro ([[:space:]]), non serve altro
     _prof_v="${_prof_v#"${_prof_v%%[![:space:]]*}"}"; _prof_v="${_prof_v%"${_prof_v##*[![:space:]]}"}"
     [ -z "$_prof_k" ] && continue
     # allowlist: SOLO le chiavi che il turno conosce — un refuso si dice, non si tace
