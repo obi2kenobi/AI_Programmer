@@ -35,6 +35,7 @@ Uso: python3 tools/leasing_amministrativo.py contratto.json
    "usa_stima_30": false}
 """
 import json
+import math
 import sys
 from datetime import date
 
@@ -85,22 +86,38 @@ def main():
     if mancanti:
         print(f"uso: leasing_amministrativo.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
         return 1
-    canone = float(c["canone_base"])
+    # (Q22, 2026-09-23, giro A4 della notte): «abc» o una data impossibile davano traceback; «nan»
+    # passava da `canone <= 0` (nan non e' <= 0) e dava «canone nan». Ogni numero si valida qui.
+    def numero(k):
+        """Il campo k come numero FINITO, o ValueError che lo nomina (mai nan, mai traceback)."""
+        try:
+            v = float(c[k])
+        except (TypeError, ValueError):
+            raise ValueError(f"{k} non numerico: {c[k]!r}")
+        if not math.isfinite(v):
+            raise ValueError(f"{k} non finito: {c[k]!r}")
+        return v
+    try:
+        canone = numero("canone_base")
+        spread = numero("spread")
+        euribor_stipula = numero("euribor_stipula")
+        euribor_corrente = numero("euribor_corrente") if c.get("euribor_corrente") is not None else None
+        inizio = date.fromisoformat(c["data_inizio"])
+        fine = date.fromisoformat(c["data_fine"])
+        riferimento = date.fromisoformat(c.get("data_riferimento") or date.today().isoformat())
+    except ValueError as e:
+        print(f"ERRORE: {e}", file=sys.stderr)
+        return 1
     if canone <= 0:
         print("ERRORE: canone base non valido", file=sys.stderr)
         return 1
-    inizio = date.fromisoformat(c["data_inizio"])
-    fine = date.fromisoformat(c["data_fine"])
     # giri avversari 2026-08-28 (D7): data_fine < data_inizio produceva mesi negativi
     # accettati in silenzio (durata -12). Un contratto che finisce prima di iniziare
     # è un dato marcio, non un caso limite.
     if fine < inizio:
         print("ERRORE: data_fine precedente a data_inizio", file=sys.stderr)
         return 1
-    riferimento = date.fromisoformat(c.get("data_riferimento") or date.today().isoformat())
-    spread = float(c["spread"])
-    euribor_stipula = float(c["euribor_stipula"])
-    euribor_corrente = c.get("euribor_corrente")
+    # (spread, euribor e data di riferimento: validati sopra, con gli altri numeri)
 
     if euribor_corrente is None:
         print(f"Importo previsto: {canone:.2f} EUR")
@@ -113,7 +130,7 @@ def main():
         r["quota_interessi_mensile"] = canone * 0.30
         print(" ATTENZIONE: quota interessi = 30% del canone (STIMA di ripiego del codice REPO-E, dichiarata)")
     tasso_base = euribor_stipula + spread
-    tasso_corrente = float(euribor_corrente) + spread
+    tasso_corrente = euribor_corrente + spread
     delta = tasso_corrente - tasso_base
     adeguamento_mensile = r["quota_interessi_mensile"] * (delta / 100)
     adeguamento_trimestrale = adeguamento_mensile * 3

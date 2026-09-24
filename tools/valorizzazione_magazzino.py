@@ -38,6 +38,7 @@ Ogni override: {"type": "PERCENTUALE"|"EURO", "value": numero con segno}
 """
 import csv
 import json
+import math
 import sys
 
 
@@ -50,8 +51,13 @@ def costo_base_per_codice(righe):
             continue
         raw = (r.get("costo_medio") or "").strip()
         if raw != "":
+            # (Q22, 2026-09-23): «nan»/«inf» passavano da float() e davano «nan EUR» con rc 0 —
+            # un costo non finito e' non numerico come «abc»: ignorato e dichiarato (senza costo)
             try:
-                costi[codice] = float(raw)
+                v = float(raw)
+                if not math.isfinite(v):
+                    raise ValueError("non finito")
+                costi[codice] = v
             except ValueError:
                 print(f"ATTENZIONE: costo_medio non numerico per {codice}: '{raw}' — ignorato", file=sys.stderr)
     return costi
@@ -62,7 +68,16 @@ def applica_override(costo, override):
     if not override:
         return costo
     tipo = str(override.get("type", "")).upper()
-    valore = float(override.get("value", 0))
+    # (Q22): un override SENZA value valeva 0 in silenzio — la riga risultava «valorizzata con
+    # override» senza che nessuno l'avesse deciso. Assente non e' zero: si dichiara.
+    if "value" not in override:
+        raise ValueError(f"override senza value: {override!r}")
+    try:
+        valore = float(override["value"])
+    except (TypeError, ValueError):
+        raise ValueError(f"override con value non numerico: {override!r}")
+    if not math.isfinite(valore):
+        raise ValueError(f"override con value non finito: {override!r}")
     if tipo == "PERCENTUALE":
         return costo * (1 + valore / 100.0)
     if tipo == "EURO":
@@ -99,7 +114,13 @@ def valorizza(righe, cfg):
         gruppo = (r.get("gruppo") or "").strip()
         categoria = (r.get("categoria") or "").strip()
         location = (r.get("location") or "PRINCIPALE").strip()
-        qty = float(r["qty"])
+        # (Q22): qty vuota = traceback, qty «nan» = «valore +nan EUR». Senza quantita' non si valuta.
+        try:
+            qty = float(r["qty"])
+        except (TypeError, ValueError):
+            raise ValueError(f"qty non numerica per {codice}: {r['qty']!r}")
+        if not math.isfinite(qty):
+            raise ValueError(f"qty non finita per {codice}: {r['qty']!r}")
         if location in escluse:
             base = costi_base.get(codice)
             valore_escluso = round(qty * base, 2) if base is not None else None
@@ -148,7 +169,11 @@ def main():
     if not righe:
         print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
         return 1
-    totale, dettaglio, senza_costo, negative, escluse = valorizza(righe, cfg)
+    try:
+        totale, dettaglio, senza_costo, negative, escluse = valorizza(righe, cfg)
+    except ValueError as e:
+        print(f"ERRORE: {e} — nessuna valorizzazione (Q22: prima era un traceback o un valore inventato)", file=sys.stderr)
+        return 1
 
     print(f"Righe lette: {len(righe)}")
     print(f"Valore totale (solo location considerate): {totale:.2f} EUR")

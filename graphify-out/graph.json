@@ -113,6 +113,54 @@
       "source_location": "L42"
     },
     {
+      "id": "tools_leasing_amministrativo_capitale_residuo",
+      "label": "capitale_residuo()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "capitale_residuo()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L49"
+    },
+    {
+      "id": "tools_leasing_amministrativo_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L67"
+    },
+    {
+      "id": "tools_leasing_amministrativo_main_numero",
+      "label": "numero()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "numero()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L91"
+    },
+    {
+      "id": "tools_leasing_amministrativo_mesi_tra",
+      "label": "mesi_tra()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "mesi_tra()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L43"
+    },
+    {
       "id": "tools_bc_index_catalogo_mancanti",
       "label": "catalogo_mancanti()",
       "_callable": true,
@@ -161,18 +209,6 @@
       "source_location": "L31"
     },
     {
-      "id": "tools_verifica_banco_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L34"
-    },
-    {
       "id": "tools_bilancio_bu_main",
       "label": "main()",
       "_callable": true,
@@ -185,7 +221,19 @@
       "source_location": "L36"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_margine_documento_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
@@ -193,11 +241,11 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L58"
     },
     {
-      "id": "tools_rating_dso_clienti_normalizza",
+      "id": "tools_margine_documento_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
@@ -205,8 +253,8 @@
       "community_name": "sys",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L38"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -350,7 +398,7 @@
       "file_type": "code",
       "norm_label": "applica_override()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L60"
+      "source_location": "L66"
     },
     {
       "id": "tools_valorizzazione_magazzino_costo_base_per_codice",
@@ -362,7 +410,7 @@
       "file_type": "code",
       "norm_label": "costo_base_per_codice()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L44"
+      "source_location": "L45"
     },
     {
       "id": "tools_valorizzazione_magazzino_main",
@@ -374,7 +422,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L124"
+      "source_location": "L145"
     },
     {
       "id": "tools_valorizzazione_magazzino_risolvi_costo",
@@ -386,7 +434,7 @@
       "file_type": "code",
       "norm_label": "risolvi_costo()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L73"
+      "source_location": "L88"
     },
     {
       "id": "tools_valorizzazione_magazzino_valorizza",
@@ -398,7 +446,7 @@
       "file_type": "code",
       "norm_label": "valorizza()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L86"
+      "source_location": "L101"
     },
     {
       "id": "tools_bc_map_collect_fields",
@@ -533,40 +581,40 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "margine_documento.py",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L42"
-    },
-    {
-      "id": "tools_margine_documento_main",
+      "id": "tools_rating_dso_clienti_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L58"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L46"
     },
     {
-      "id": "tools_margine_documento_normalizza",
+      "id": "tools_rating_dso_clienti_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L38"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_verifica_banco_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "re",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L34"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -627,42 +675,6 @@
       "norm_label": "valuta_alert()",
       "source_file": "tools/scostamento_standard_effettivo.py",
       "source_location": "L58"
-    },
-    {
-      "id": "tools_leasing_amministrativo_capitale_residuo",
-      "label": "capitale_residuo()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "capitale_residuo()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L48"
-    },
-    {
-      "id": "tools_leasing_amministrativo_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L66"
-    },
-    {
-      "id": "tools_leasing_amministrativo_mesi_tra",
-      "label": "mesi_tra()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "mesi_tra()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L42"
     },
     {
       "id": "tools_dashboard_barrette",
@@ -6382,11 +6394,22 @@
       "source_location": "L80"
     },
     {
+      "id": "tools_leasing_amministrativo",
+      "label": "leasing_amministrativo.py",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "leasing_amministrativo.py",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
       "label": "2026-08-28-parrocchie-giornata-completa.md",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
@@ -6398,7 +6421,7 @@
       "label": "1. I numeri del giorno",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. i numeri del giorno",
@@ -6410,7 +6433,7 @@
       "label": "2. Le commesse della giornata, in ordine",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. le commesse della giornata, in ordine",
@@ -6422,7 +6445,7 @@
       "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
@@ -6434,7 +6457,7 @@
       "label": "4. Le lezioni di metodo di oggi",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. le lezioni di metodo di oggi",
@@ -6446,7 +6469,7 @@
       "label": "5. Consegna e artefatti",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. consegna e artefatti",
@@ -6458,12 +6481,56 @@
       "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
       "_origin": "ast",
       "community": 125,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "leasing_amministrativo.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
       "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
       "source_location": "L1"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_2",
+      "label": "Controllo canoni leasing con adeguamento Euribor trimestrale arretrato. Oracolo\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "controllo canoni leasing con adeguamento euribor trimestrale arretrato. oracolo...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_44",
+      "label": "Differenza di mesi calendario SENZA aggiustamento del giorno \u2014 fedele a\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "differenza di mesi calendario senza aggiustamento del giorno \u2014 fedele a...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_50",
+      "label": "Ammortamento UNIFORME (semplificazione DICHIARATA nel sorgente REPO-E, non un\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "ammortamento uniforme (semplificazione dichiarata nel sorgente repo-e, non un...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "tools_leasing_amministrativo_rationale_68",
+      "label": "Un contratto JSON \u2192 importo previsto col canone + adeguamento Euribor\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "rationale",
+      "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L68"
     },
     {
       "id": "docs_campo_2026_08_28_repo_k_dal_dossier_a_tutti_i_fix",
@@ -11590,17 +11657,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_verifica_banco",
-      "label": "verifica_banco.py",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "verifica_banco.py",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L1"
-    },
-    {
       "id": "docs_campo_2026_08_31_repo_j_revisione_100_agenti_severit\u00e0_media_15",
       "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
@@ -11677,28 +11733,6 @@
       "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L32"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_2",
-      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_35",
-      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L35"
     },
     {
       "id": "opencode_skills_allineamento_fork_skill",
@@ -27466,14 +27500,14 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L1"
     },
     {
@@ -27510,26 +27544,37 @@
       "source_location": "L37"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "id": "tools_margine_documento_rationale_43",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "tools_margine_documento_rationale_59",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L59"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -34328,7 +34373,18 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_125",
+      "id": "tools_valorizzazione_magazzino_rationale_102",
+      "label": "Il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. Senza\u2026",
+      "_origin": "ast",
+      "community": 48,
+      "community_name": "valorizzazione_magazzino.py",
+      "file_type": "rationale",
+      "norm_label": "il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. senza...",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L102"
+    },
+    {
+      "id": "tools_valorizzazione_magazzino_rationale_146",
       "label": "Report: totale SOLO delle location considerate, dettaglio ordinato per valore,\u2026",
       "_origin": "ast",
       "community": 48,
@@ -34336,7 +34392,7 @@
       "file_type": "rationale",
       "norm_label": "report: totale solo delle location considerate, dettaglio ordinato per valore,...",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L125"
+      "source_location": "L146"
     },
     {
       "id": "tools_valorizzazione_magazzino_rationale_2",
@@ -34350,7 +34406,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_45",
+      "id": "tools_valorizzazione_magazzino_rationale_46",
       "label": "Primo costo medio non-nullo per codice, attraversando le location.",
       "_origin": "ast",
       "community": 48,
@@ -34358,10 +34414,10 @@
       "file_type": "rationale",
       "norm_label": "primo costo medio non-nullo per codice, attraversando le location.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L45"
+      "source_location": "L46"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_61",
+      "id": "tools_valorizzazione_magazzino_rationale_67",
       "label": "PERCENTUALE: costo*(1+v/100) \u00b7 EURO: costo+v. override None \u2192 costo invariato.",
       "_origin": "ast",
       "community": 48,
@@ -34369,10 +34425,10 @@
       "file_type": "rationale",
       "norm_label": "percentuale: costo*(1+v/100) \u00b7 euro: costo+v. override none \u2192 costo invariato.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L61"
+      "source_location": "L67"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_74",
+      "id": "tools_valorizzazione_magazzino_rationale_89",
       "label": "Catena articolo > categoria > gruppo: il primo override esistente vince.",
       "_origin": "ast",
       "community": 48,
@@ -34380,18 +34436,7 @@
       "file_type": "rationale",
       "norm_label": "catena articolo > categoria > gruppo: il primo override esistente vince.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L74"
-    },
-    {
-      "id": "tools_valorizzazione_magazzino_rationale_87",
-      "label": "Il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. Senza\u2026",
-      "_origin": "ast",
-      "community": 48,
-      "community_name": "valorizzazione_magazzino.py",
-      "file_type": "rationale",
-      "norm_label": "il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. senza...",
-      "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L87"
+      "source_location": "L89"
     },
     {
       "id": "docs_bc_endpoints_prezzi_vendita_excel",
@@ -39824,48 +39869,70 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "id": "tools_verifica_banco",
+      "label": "verifica_banco.py",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
+      "file_type": "code",
+      "norm_label": "verifica_banco.py",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "re",
       "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_47",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "re",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_2",
+      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
+      "_origin": "ast",
+      "community": 61,
+      "community_name": "re",
+      "file_type": "rationale",
+      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
+      "source_file": "tools/verifica_banco.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_margine_documento_rationale_43",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "id": "tools_verifica_banco_rationale_35",
+      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
       "_origin": "ast",
       "community": 61,
-      "community_name": "margine_documento.py",
+      "community_name": "re",
       "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L43"
-    },
-    {
-      "id": "tools_margine_documento_rationale_59",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
-      "_origin": "ast",
-      "community": 61,
-      "community_name": "margine_documento.py",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L59"
+      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L35"
     },
     {
       "id": "docs_bc_endpoints_workflowpurchasedocuments",
@@ -46779,61 +46846,6 @@
       "source_location": "L79"
     },
     {
-      "id": "tools_leasing_amministrativo",
-      "label": "leasing_amministrativo.py",
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "leasing_amministrativo.py",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_2",
-      "label": "Controllo canoni leasing con adeguamento Euribor trimestrale arretrato. Oracolo\u2026",
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "controllo canoni leasing con adeguamento euribor trimestrale arretrato. oracolo...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_43",
-      "label": "Differenza di mesi calendario SENZA aggiustamento del giorno \u2014 fedele a\u2026",
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "differenza di mesi calendario senza aggiustamento del giorno \u2014 fedele a...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L43"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_49",
-      "label": "Ammortamento UNIFORME (semplificazione DICHIARATA nel sorgente REPO-E, non un\u2026",
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "ammortamento uniforme (semplificazione dichiarata nel sorgente repo-e, non un...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L49"
-    },
-    {
-      "id": "tools_leasing_amministrativo_rationale_67",
-      "label": "Un contratto JSON \u2192 importo previsto col canone + adeguamento Euribor\u2026",
-      "_origin": "ast",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L67"
-    },
-    {
       "id": "tools_dashboard",
       "label": "dashboard.py",
       "_origin": "ast",
@@ -48012,6 +48024,18 @@
       "source_location": "L64"
     },
     {
+      "id": "datetime",
+      "label": "datetime",
+      "_origin": "semantic",
+      "community": 125,
+      "community_name": "leasing_amministrativo.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "datetime",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "glob",
       "label": "glob",
       "_origin": "semantic",
@@ -48044,18 +48068,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "os",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "re",
-      "label": "re",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -48156,6 +48168,18 @@
       "type": "external"
     },
     {
+      "id": "math",
+      "label": "math",
+      "_origin": "semantic",
+      "community": 48,
+      "community_name": "valorizzazione_magazzino.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "math",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "urllib_error",
       "label": "urllib_error",
       "_origin": "semantic",
@@ -48180,14 +48204,14 @@
       "type": "external"
     },
     {
-      "id": "datetime",
-      "label": "datetime",
+      "id": "re",
+      "label": "re",
       "_origin": "semantic",
-      "community": 89,
-      "community_name": "leasing_amministrativo.py",
+      "community": 61,
+      "community_name": "re",
       "external": true,
       "file_type": "concept",
-      "norm_label": "datetime",
+      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -54706,7 +54730,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -54718,7 +54742,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L111",
+      "source_location": "L128",
       "weight": 1.0
     },
     {
@@ -55126,7 +55150,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L151",
+      "source_location": "L173",
       "weight": 1.0
     },
     {
@@ -55138,19 +55162,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L82",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_valorizzazione_magazzino_valorizza",
-      "target": "tools_valorizzazione_magazzino_risolvi_costo",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L112",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -55162,7 +55174,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L92",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_valorizzazione_magazzino_valorizza",
+      "target": "tools_valorizzazione_magazzino_risolvi_costo",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -55199,6 +55223,18 @@
       "context": "call",
       "source_file": "tools/verifica-visiva.js",
       "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_leasing_amministrativo_main",
+      "target": "tools_leasing_amministrativo_main_numero",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -55671,7 +55707,7 @@
     },
     {
       "source": "tools_leasing_amministrativo",
-      "target": "sys",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -55679,6 +55715,18 @@
       "context": "import",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_leasing_amministrativo",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -55863,7 +55911,7 @@
     },
     {
       "source": "tools_valorizzazione_magazzino",
-      "target": "sys",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -55871,6 +55919,18 @@
       "context": "import",
       "source_file": "tools/valorizzazione_magazzino.py",
       "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_valorizzazione_magazzino",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -55942,7 +56002,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -81179,7 +81239,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -81190,7 +81250,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -81201,7 +81261,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L66",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -81657,13 +81717,24 @@
     },
     {
       "source": "tools_valorizzazione_magazzino",
+      "target": "tools_valorizzazione_magazzino_valorizza",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_valorizzazione_magazzino",
       "target": "tools_valorizzazione_magazzino_main",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L124",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -81674,7 +81745,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -81685,7 +81756,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L60",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -81696,18 +81767,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L73",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_valorizzazione_magazzino",
-      "target": "tools_valorizzazione_magazzino_valorizza",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L86",
+      "source_location": "L88",
       "weight": 1.0
     },
     {
@@ -88377,36 +88437,36 @@
       "weight": 1.0
     },
     {
-      "source": "tools_leasing_amministrativo_rationale_43",
+      "source": "tools_leasing_amministrativo_rationale_44",
       "target": "tools_leasing_amministrativo_mesi_tra",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
-      "source": "tools_leasing_amministrativo_rationale_49",
+      "source": "tools_leasing_amministrativo_rationale_50",
       "target": "tools_leasing_amministrativo_capitale_residuo",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
-      "source": "tools_leasing_amministrativo_rationale_67",
+      "source": "tools_leasing_amministrativo_rationale_68",
       "target": "tools_leasing_amministrativo_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L67",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -88619,14 +88679,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_125",
+      "source": "tools_valorizzazione_magazzino_rationale_102",
+      "target": "tools_valorizzazione_magazzino_valorizza",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_valorizzazione_magazzino_rationale_146",
       "target": "tools_valorizzazione_magazzino_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L125",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -88641,47 +88712,36 @@
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_45",
+      "source": "tools_valorizzazione_magazzino_rationale_46",
       "target": "tools_valorizzazione_magazzino_costo_base_per_codice",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_61",
+      "source": "tools_valorizzazione_magazzino_rationale_67",
       "target": "tools_valorizzazione_magazzino_applica_override",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L61",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_74",
+      "source": "tools_valorizzazione_magazzino_rationale_89",
       "target": "tools_valorizzazione_magazzino_risolvi_costo",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L74",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_valorizzazione_magazzino_rationale_87",
-      "target": "tools_valorizzazione_magazzino_valorizza",
-      "relation": "rationale_for",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L87",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -90072,6 +90132,18 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
+      "target": "tools_leasing_amministrativo_main_numero",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "numero()",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
       "source": "sal_2026_09_20_2_dieci_giri_di_chiusura_dal_test_del_sistema_completo_report_fable",
       "target": "tools_dashboard_page",
       "relation": "references",
@@ -90109,5 +90181,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f033070e66f1285d5f5f3160e55ad08558b99dc0"
+  "built_at_commit": "25283de035432f4240d8a19281874e3eae204de7"
 }

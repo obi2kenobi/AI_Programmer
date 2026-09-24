@@ -79,6 +79,31 @@ printf 'codice,qty\n' > "$TMP/h.csv";                          dichiara "valoriz
 printf 'tipo,data_documento,importo\n' > "$TMP/h.csv";         dichiara "rating: solo intestazione"            python3 "$T/rating_dso_clienti.py" < "$TMP/h.csv"
 printf 'costo_eff_unitario,qta_prodotta\n' > "$TMP/h.csv";     dichiara "scostamento: solo intestazione"       python3 "$T/scostamento_standard_effettivo.py" 10 < "$TMP/h.csv"
 
+# --- Q22b (2026-09-23, giro A4 della notte): la cura nan/inf (D5/D6/D20) era arrivata in 3
+#     oracoli su 11. Valorizzazione e leasing davano «nan EUR» con rc 0; in valorizzazione una qty
+#     vuota, un tipo di override sconosciuto finivano in traceback, e un override SENZA value
+#     valeva 0 in silenzio (la riga risultava «valorizzata con override»).
+V="codice,gruppo,categoria,location,qty,costo_medio"
+printf '%s\nA,,,,10,nan\nB,,,,5,2\n' "$V" > "$TMP/v.csv"
+OUT=$(python3 "$T/valorizzazione_magazzino.py" "$TMP/vuoto.json" < "$TMP/v.csv" 2>&1)
+grep -qi 'nan' <<<"$(grep -v '^ATTENZIONE' <<<"$OUT")" && ko "valorizzazione: costo_medio nan finisce nei valori: $(grep -i nan <<<"$OUT" | head -1)" \
+  || ok "valorizzazione: costo_medio nan trattato come non numerico (senza costo, dichiarato), non «nan EUR»"
+printf '%s\nA,,,,,2\n' "$V" > "$TMP/v.csv";    dichiara "valorizzazione: qty vuota"   python3 "$T/valorizzazione_magazzino.py" "$TMP/vuoto.json" < "$TMP/v.csv"
+printf '%s\nA,,,,nan,2\n' "$V" > "$TMP/v.csv"; dichiara "valorizzazione: qty nan"     python3 "$T/valorizzazione_magazzino.py" "$TMP/vuoto.json" < "$TMP/v.csv"
+printf '%s\nA,,,,10,2\n' "$V" > "$TMP/v.csv"
+echo '{"override_articoli":{"A":{"type":"SCONTO","value":5}}}' > "$TMP/ovr.json"
+dichiara "valorizzazione: tipo override sconosciuto" python3 "$T/valorizzazione_magazzino.py" "$TMP/ovr.json" < "$TMP/v.csv"
+echo '{"override_articoli":{"A":{"type":"EURO"}}}' > "$TMP/ovr.json"
+dichiara "valorizzazione: override senza value (valeva 0 in silenzio)" python3 "$T/valorizzazione_magazzino.py" "$TMP/ovr.json" < "$TMP/v.csv"
+L='"canone_base":1000,"data_inizio":"2025-01-01","data_fine":"2029-12-31","spread":1.5,"euribor_stipula":3.5,"data_riferimento":"2026-09-01"'
+echo "{$L,\"euribor_corrente\":\"nan\"}" > "$TMP/l.json";  dichiara "leasing: euribor_corrente nan" python3 "$T/leasing_amministrativo.py" "$TMP/l.json"
+echo "{${L/1000/\"nan\"}}" > "$TMP/l.json";                   dichiara "leasing: canone nan (passava canone <= 0)" python3 "$T/leasing_amministrativo.py" "$TMP/l.json"
+echo "{${L/1000/\"abc\"}}" > "$TMP/l.json";                   dichiara "leasing: canone non numerico"  python3 "$T/leasing_amministrativo.py" "$TMP/l.json"
+echo "{${L/2025-01-01/2025-13-01}}" > "$TMP/l.json";           dichiara "leasing: data non valida"      python3 "$T/leasing_amministrativo.py" "$TMP/l.json"
+echo "{$L}" > "$TMP/l.json"
+OUT=$(python3 "$T/leasing_amministrativo.py" "$TMP/l.json" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "leasing: contratto valido senza euribor corrente → rc 0" || ko "leasing: contratto valido rc=$RC — $(tail -1 <<<"$OUT")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

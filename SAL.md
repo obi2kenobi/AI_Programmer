@@ -3561,3 +3561,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Ora nessuna riga valida = ERRORE, rc 1: un estratto vuoto è un'estrazione fallita finché non
     si dimostra il contrario. Solo guardie d'ingresso: nessuna formula toccata.
   - Banco: `tests/test-oracoli-uso.sh`, 9 casi, rossi prima. Sabotaggio (via una guardia): 1 rosso.
+- **Q22b**, da A4, la cura nan/inf era arrivata in 3 oracoli su 11.
+  - `tools/valorizzazione_magazzino.py` dava «nan EUR» con rc 0, e aveva altri tre difetti:
+    - qty vuota o tipo di override sconosciuto finivano in traceback;
+    - un override senza value valeva 0 in silenzio.
+  - `tools/leasing_amministrativo.py`:
+    - «nan» passava da `canone <= 0`;
+    - «abc» e le date impossibili davano traceback.
+  - Ora ogni numero si valida (finito), e ogni rifiuto è ERRORE con rc 1. Il costo nan è trattato
+    come il costo «abc»: ignorato e dichiarato senza costo.
+  - Banco: `tests/test-oracoli-uso.sh`, 10 casi, 9 rossi prima. Sabotaggio (via isfinite nel
+    leasing): 2 rossi.
