@@ -17,12 +17,24 @@
       "source_location": "L332"
     },
     {
+      "id": "tools_bilancio_bu_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L36"
+    },
+    {
       "id": "tools_scadenzario_aging_aggrega_totali",
       "label": "aggrega_totali()",
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
@@ -34,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
@@ -46,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
@@ -58,7 +70,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
@@ -111,54 +123,6 @@
       "norm_label": "valuta_indici_crisi()",
       "source_file": "tools/indici_crisi.py",
       "source_location": "L48"
-    },
-    {
-      "id": "tools_bilancio_bu_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36"
-    },
-    {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_margine_documento_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L73"
-    },
-    {
-      "id": "tools_margine_documento_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L40"
     },
     {
       "id": "tools_bc_index_catalogo_mancanti",
@@ -267,6 +231,42 @@
       "norm_label": "siti()",
       "source_file": "tools/e002-siti.py",
       "source_location": "L59"
+    },
+    {
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_margine_documento_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L73"
+    },
+    {
+      "id": "tools_margine_documento_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L40"
     },
     {
       "id": "tools_verifica_banco_main",
@@ -3521,22 +3521,55 @@
       "source_location": "L2"
     },
     {
+      "id": "tools_bilancio_bu",
+      "label": "bilancio_bu.py",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "bilancio_bu.py",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_scadenzario_aging",
       "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "scadenzario_aging.py",
       "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
+      "id": "tools_bilancio_bu_rationale_3",
+      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_bilancio_bu_rationale_37",
+      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37"
+    },
+    {
       "id": "tools_scadenzario_aging_rationale_2",
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3547,7 +3580,7 @@
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3558,7 +3591,7 @@
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3569,7 +3602,7 @@
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
@@ -6487,81 +6520,94 @@
       "source_location": "L80"
     },
     {
-      "id": "tools_bilancio_bu",
-      "label": "bilancio_bu.py",
+      "id": "tests_test_giri_avversari_classifica",
+      "label": "test-giri-avversari-classifica.sh",
       "_origin": "ast",
       "community": 125,
-      "community_name": "csv",
+      "community_name": "test-giri-avversari-classifica.sh",
       "file_type": "code",
-      "norm_label": "bilancio_bu.py",
-      "source_file": "tools/bilancio_bu.py",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-giri-avversari-classifica.sh",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "tests_test_giri_avversari_classifica_aggirato",
+      "label": "aggirato()",
       "_origin": "ast",
       "community": 125,
-      "community_name": "csv",
+      "community_name": "test-giri-avversari-classifica.sh",
       "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "aggirato()",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_giri_avversari_classifica_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "test-giri-avversari-classifica.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_giri_avversari_classifica_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "test-giri-avversari-classifica.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_giri_avversari_classifica_sh__entry",
+      "label": "test-giri-avversari-classifica.sh script",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "test-giri-avversari-classifica.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-giri-avversari-classifica.sh script",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
       "source_location": "L1"
     },
     {
-      "id": "tools_bilancio_bu_rationale_3",
-      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
+      "id": "tests_test_giri_avversari_classifica_tiene",
+      "label": "tiene()",
       "_origin": "ast",
       "community": 125,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_bilancio_bu_rationale_37",
-      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_margine_documento_rationale_48",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L48"
-    },
-    {
-      "id": "tools_margine_documento_rationale_74",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L74"
+      "community_name": "test-giri-avversari-classifica.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "tiene()",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L14"
     },
     {
       "id": "docs_campo_2026_08_28_repo_k_dal_dossier_a_tutti_i_fix",
@@ -28448,6 +28494,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_verifica_banco",
       "label": "verifica_banco.py",
       "_origin": "ast",
@@ -28501,6 +28558,39 @@
       "norm_label": "i siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo...",
       "source_file": "tools/e002-siti.py",
       "source_location": "L60"
+    },
+    {
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_margine_documento_rationale_48",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L48"
+    },
+    {
+      "id": "tools_margine_documento_rationale_74",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L74"
     },
     {
       "id": "tools_verifica_banco_rationale_2",
@@ -50656,7 +50746,7 @@
       "id": "csv",
       "label": "csv",
       "_origin": "semantic",
-      "community": 125,
+      "community": 100,
       "community_name": "csv",
       "external": true,
       "file_type": "concept",
@@ -54420,6 +54510,30 @@
       "context": "call",
       "source_file": "tests/test-gate-tools.sh",
       "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_classifica_sh__entry",
+      "target": "tests_test_giri_avversari_classifica_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_classifica_sh__entry",
+      "target": "tests_test_giri_avversari_classifica_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -58372,18 +58486,6 @@
     },
     {
       "source": "tools_giri_avversari_classifica",
-      "target": "tools_giri_avversari_tiene",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/giri-avversari.sh",
-      "source_location": "L263",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_giri_avversari_classifica",
       "target": "tools_giri_avversari_aggirato",
       "relation": "calls",
       "_origin": "ast",
@@ -58392,6 +58494,18 @@
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
       "source_location": "L264",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_giri_avversari_classifica",
+      "target": "tools_giri_avversari_tiene",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/giri-avversari.sh",
+      "source_location": "L265",
       "weight": 1.0
     },
     {
@@ -58475,7 +58589,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L269",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -84299,6 +84413,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_giri_avversari_classifica",
+      "target": "tests_test_giri_avversari_classifica_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_giri_avversari_isolati",
       "target": "tests_test_giri_avversari_isolati_sh__entry",
       "relation": "contains",
@@ -90092,6 +90217,50 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_classifica",
+      "target": "tests_test_giri_avversari_classifica_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_classifica",
+      "target": "tests_test_giri_avversari_classifica_aggirato",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_classifica",
+      "target": "tests_test_giri_avversari_classifica_tiene",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giri-avversari-classifica.sh",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_classifica",
+      "target": "tests_test_giri_avversari_classifica_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giri-avversari-classifica.sh",
       "source_location": "L9",
       "weight": 1.0
     },
@@ -96290,5 +96459,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2292127c4ac1d39e4fd93b8c22784c9d6cd8ee25"
+  "built_at_commit": "f17b2cb4e6f943d5c6d0a3a77edc299b7580d2e3"
 }

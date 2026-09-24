@@ -4764,3 +4764,20 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Indici con `"pn": "100"` o null era già coperto dalla guardia di R3 R2. Nove casi nuovi in
   `tests/test-oracoli-uso.sh` (83/0), otto rossi prima (il nono, indici, è la prova della copertura).
   Sabotaggio con i quattro oracoli di prima: 75/8.
+- **Quinto ventaglio, R3 R5 — indici crisi: la nota promessa non si stampava, e la sonda D9 non arrivava al
+  calcolo.** In `tools/indici_crisi.py`:
+  - la docstring (LIMITE NOTO) prometteva una nota sul denominatore nullo «nel risultato», e `main()` non
+    la stampava. Ora c'è una riga `NOTA: denominatore nullo per <indice>` per ogni indice;
+  - il messaggio d'uso elencava cinque campi che il tool non legge. Ora elenca i dieci di `CAMPI`, portati
+    a livello di modulo;
+  - «Sei indici» è diventato «Cinque»;
+  - un JSON numero era un TypeError (R3 R4 rimasto).
+
+  In `tools/giri-avversari.sh`:
+  - D9 manda i dieci campi veri, e vuole la nota;
+  - `classifica` contava un traceback come «tiene»: ora è «aggira», come dice il contratto D32.
+
+  Se il tutto-zero debba essere rifiutato è una domanda (DEBITI, D-R3-1); la D-R3-3 sul leasing fuori
+  periodo è in DEBITI accanto. Banchi: `tests/test-indici-crisi.sh` 23/0 (sabotaggio 20/3),
+  `tests/test-oracoli-uso.sh` 85/0 (sabotaggio 84/1), `tests/test-giri-avversari-classifica.sh` nuovo, 4/0
+  (sabotaggio 2/2). La categoria D di giri-avversari, lanciata da sola: zero aggirati.

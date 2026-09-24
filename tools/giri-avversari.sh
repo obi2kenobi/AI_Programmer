@@ -260,7 +260,9 @@ echo "=== CAT D — input ostili agli oracoli (spazzatura silenziosa = aggirato)
 
 classifica() {
   local out="$1" rc="$2" d="$3"
-  if [ "$rc" -ne 0 ] || grep -qi "uso:\|traceback\|errore" <<<"$out"; then tiene "$d (muore/si dichiara: rc=$rc)"
+  # (2026-09-24, quinto ventaglio, R3 R5): un traceback contava come «tiene»; per il contratto D32 e' un difetto
+  if grep -qi "traceback" <<<"$out"; then aggirato "$d — traceback invece di un rifiuto dichiarato (D32): $(tail -1 <<<"$out")"
+  elif [ "$rc" -ne 0 ] || grep -qi "uso:\|errore" <<<"$out"; then tiene "$d (muore/si dichiara: rc=$rc)"
   elif grep -qi "nan\|inf" <<<"$out"; then aggirato "$d — spazzatura SILENZIOSA: $out"
   else tiene "$d (output onesto)"; fi
 }
@@ -289,8 +291,12 @@ classifica "$OUT" "$RC" "D7 leasing date invertite"
 att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l2.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l2.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D8 leasing spread con virgola italiana"
 
-att; OUT=$(echo '{"pn":0,"ricavi":0,"patrimonio":0,"debiti_tributari":0,"perdite_precedenti":0}' | python3 tools/indici_crisi.py 2>&1); RC=$?
-classifica "$OUT" "$RC" "D9 indici crisi con tutto zero"
+# (2026-09-24, quinto ventaglio, R3 R5): D9 mandava i nomi del vecchio messaggio d'uso, che il tool non legge —
+# la risposta era «campi mancanti» e il tutto-zero non arrivava mai al calcolo. Ora i dieci campi veri.
+att; OUT=$(echo '{"pn":0,"ricavi":0,"oneriFin":0,"passivoTot":0,"debPrev":0,"debTrib":0,"cashFlow":0,"attivo":0,"attCorrenti":0,"passCorrenti":0}' | python3 tools/indici_crisi.py 2>&1); RC=$?
+if grep -c '^NOTA: denominatore nullo' <<<"$OUT" >/dev/null; then tiene "D9 indici crisi con tutto zero: arriva al calcolo e dice i denominatori nulli (rc=$RC)"
+elif [ "$RC" -eq 0 ]; then aggirato "D9 indici crisi con tutto zero — un verdetto senza dire i denominatori nulli: $(tail -1 <<<"$OUT")"
+else classifica "$OUT" "$RC" "D9 indici crisi con tutto zero"; fi
 
 att; OUT=$(echo '{"categoria":"X","cespiti":[]}' | python3 tools/rollforward_cespiti.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D10 rollforward senza cespiti"
