@@ -17,17 +17,22 @@ resoconto della notte. Il morning-gate è **in pensione** dal 2026-09-23 (decisi
 `cervello/decisione-dominio-2026-09-23.md`): le PR notturne le delibera il censore
 (`night-shift/revisore.sh`); il gate resta invocabile a mano.
 
-I numeri — cosa funziona, cosa invecchia:
+Sulle PR delle issue (`night/issue-N`) trovi il **parere** del censore come commento: la fusione
+è tua.
+
+I numeri del gate sono **storici**: `metrics/gate.csv` lo scriveva solo il morning-gate, e
+l'ultima riga è del 2026-08-21. I due comandi servono se rilanci il gate a mano:
 
 ```bash
 bash night-shift/gate-summary.sh
 ```
 
-I tuoi verdetti sulle PR, uno per PR (`merge`, `chiusura` o `commessa`):
-
 ```bash
 bash night-shift/gate-esito.sh <repo> <pr> merge
 ```
+
+(`gate-esito` registra il tuo verdetto su una PR giudicata dal gate: `merge`, `chiusura` o
+`commessa`; `gate-summary` dice anche da quanti giorni il registro non ha righe.)
 
 Poi apri le PR bozza su GitHub, fondi le buone, chiudi le cattive.
 
@@ -44,10 +49,14 @@ In Claude Code (o ZCode): `/audit-commessa` verifica le commesse di stanotte.
 ## Quando vuoi delegare (giorno)
 
 In Claude Code:
-- `/qwen "riassumi questo file"` — cervello locale (gratis, privato)
+- `llm/ask-qwen.sh "riassumi questo file" < file` — cervello locale (gratis, privato)
 - `/goal "ottimizza X | max 8 tentativi"` — loop con verifica dichiarata
 - `/brainstorming <idea>` — raffina i requisiti prima del codice
-- `/nuova-commessa <descrizione>` — wizard per la notte
+- una commessa per la notte: issue dal template `.github/ISSUE_TEMPLATE/night-shift.md`
+
+(2026-09-24, T4: qui c'erano `/qwen` e `/nuova-commessa`, che in questo repo non esistono — né in
+`.claude/commands/` né in `.claude/skills/`. Se vivono nel ZCode o nel `~/.claude` del Mac, sono fuori
+dal repo e non verificati da qui.)
 
 ## Quando costruisci qualcosa di nuovo
 

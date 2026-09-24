@@ -6901,7 +6901,7 @@
       "node_kind": "heading",
       "norm_label": "checklist review umana",
       "source_file": "night-shift/README.md",
-      "source_location": "L84"
+      "source_location": "L86"
     },
     {
       "id": "night_shift_readme_come_si_usa",
@@ -6913,7 +6913,7 @@
       "node_kind": "heading",
       "norm_label": "come si usa",
       "source_file": "night-shift/README.md",
-      "source_location": "L55"
+      "source_location": "L57"
     },
     {
       "id": "night_shift_readme_gli_altri_comandi_del_turno",
@@ -6925,7 +6925,7 @@
       "node_kind": "heading",
       "norm_label": "gli altri comandi del turno",
       "source_file": "night-shift/README.md",
-      "source_location": "L129"
+      "source_location": "L131"
     },
     {
       "id": "night_shift_readme_i_cinque_livelli_di_verifica_tassonomia_2026_08_21",
@@ -6937,7 +6937,7 @@
       "node_kind": "heading",
       "norm_label": "i cinque livelli di verifica (tassonomia 2026-08-21)",
       "source_file": "night-shift/README.md",
-      "source_location": "L106"
+      "source_location": "L108"
     },
     {
       "id": "night_shift_readme_i_numeri_che_scelgono_il_modello_macbook_air_m5_24_gb_misurati_2026_08_18",
@@ -6949,7 +6949,7 @@
       "node_kind": "heading",
       "norm_label": "i numeri che scelgono il modello (macbook air m5, 24 gb, misurati 2026-08-18)",
       "source_file": "night-shift/README.md",
-      "source_location": "L41"
+      "source_location": "L43"
     },
     {
       "id": "night_shift_readme_il_gate_del_mattino_night_shift_morning_gate_sh_in_pensione_dal_2026_09_23_invocabile_a_mano",
@@ -6961,7 +6961,7 @@
       "node_kind": "heading",
       "norm_label": "il gate del mattino (`night-shift/morning-gate.sh`) \u2014 in pensione dal 2026-09-23, invocabile a mano",
       "source_file": "night-shift/README.md",
-      "source_location": "L70"
+      "source_location": "L72"
     },
     {
       "id": "night_shift_readme_il_giudizio_umano_della_pr",
@@ -6973,7 +6973,7 @@
       "node_kind": "heading",
       "norm_label": "il giudizio umano della pr",
       "source_file": "night-shift/README.md",
-      "source_location": "L119"
+      "source_location": "L121"
     },
     {
       "id": "night_shift_readme_il_principio",
@@ -6997,7 +6997,7 @@
       "node_kind": "heading",
       "norm_label": "il revisore (il censore delle pr)",
       "source_file": "night-shift/README.md",
-      "source_location": "L179"
+      "source_location": "L183"
     },
     {
       "id": "night_shift_readme_il_saldatore_deterministico_e_002_si_salda_senza_modello",
@@ -7009,7 +7009,7 @@
       "node_kind": "heading",
       "norm_label": "il saldatore deterministico (e-002 si salda senza modello)",
       "source_file": "night-shift/README.md",
-      "source_location": "L158"
+      "source_location": "L162"
     },
     {
       "id": "night_shift_readme_il_turno_di_notte_il_metodo_v2_generalizzato",
@@ -7033,7 +7033,7 @@
       "node_kind": "heading",
       "norm_label": "l'agente nostro",
       "source_file": "night-shift/README.md",
-      "source_location": "L142"
+      "source_location": "L144"
     },
     {
       "id": "night_shift_readme_l_allineamento_dello_standard_il_drift_si_dichiara",
@@ -7045,7 +7045,7 @@
       "node_kind": "heading",
       "norm_label": "l'allineamento dello standard (il drift si dichiara)",
       "source_file": "night-shift/README.md",
-      "source_location": "L168"
+      "source_location": "L172"
     },
     {
       "id": "night_shift_readme_la_caccia_che_migliora_2026_09_17",
@@ -7057,7 +7057,7 @@
       "node_kind": "heading",
       "norm_label": "la caccia che migliora (2026-09-17)",
       "source_file": "night-shift/README.md",
-      "source_location": "L202"
+      "source_location": "L206"
     },
     {
       "id": "night_shift_readme_la_caccia_del_registro_il_censimento_dei_debiti",
@@ -7069,7 +7069,7 @@
       "node_kind": "heading",
       "norm_label": "la caccia del registro (il censimento dei debiti)",
       "source_file": "night-shift/README.md",
-      "source_location": "L212"
+      "source_location": "L216"
     },
     {
       "id": "night_shift_readme_la_caccia_intelligente",
@@ -7081,7 +7081,7 @@
       "node_kind": "heading",
       "norm_label": "la caccia intelligente",
       "source_file": "night-shift/README.md",
-      "source_location": "L149"
+      "source_location": "L153"
     },
     {
       "id": "night_shift_readme_la_commessa_si_costruis_col_grafo_dal_2026_08_21",
@@ -7093,7 +7093,7 @@
       "node_kind": "heading",
       "norm_label": "la commessa si costruis col grafo (dal 2026-08-21)",
       "source_file": "night-shift/README.md",
-      "source_location": "L91"
+      "source_location": "L93"
     },
     {
       "id": "night_shift_readme_la_dashboard_finestra_di_osservazione",
@@ -7105,7 +7105,7 @@
       "node_kind": "heading",
       "norm_label": "la dashboard (finestra di osservazione)",
       "source_file": "night-shift/README.md",
-      "source_location": "L228"
+      "source_location": "L232"
     },
     {
       "id": "night_shift_readme_le_regole_vincolanti",
@@ -7117,7 +7117,7 @@
       "node_kind": "heading",
       "norm_label": "le regole vincolanti",
       "source_file": "night-shift/README.md",
-      "source_location": "L28"
+      "source_location": "L30"
     },
     {
       "id": "docs_campo_2026_09_02_repo_e_diagnosi_tre_strati",
@@ -11168,7 +11168,7 @@
       "node_kind": "heading",
       "norm_label": "feedback dal campo su repo-g processato (2026-08-24, sessione esterna)",
       "source_file": "docs/system.md",
-      "source_location": "L323"
+      "source_location": "L324"
     },
     {
       "id": "docs_system_hook_di_sistema_2026_08_24_primo_hook_di_questo_repo",
@@ -11180,7 +11180,7 @@
       "node_kind": "heading",
       "norm_label": "hook di sistema (2026-08-24 \u2014 primo hook di questo repo)",
       "source_file": "docs/system.md",
-      "source_location": "L351"
+      "source_location": "L352"
     },
     {
       "id": "docs_system_il_7_ciclo_da_prosa_a_strumenti_e_il_flusso_dogfooddato_2026_08_24",
@@ -11192,7 +11192,7 @@
       "node_kind": "heading",
       "norm_label": "il 7\u00b0 ciclo: da prosa a strumenti, e il flusso dogfooddato (2026-08-24)",
       "source_file": "docs/system.md",
-      "source_location": "L301"
+      "source_location": "L302"
     },
     {
       "id": "docs_system_il_ciclo_come_loop_engineering_2026_08_21",
@@ -11204,7 +11204,7 @@
       "node_kind": "heading",
       "norm_label": "il ciclo come loop engineering (2026-08-21)",
       "source_file": "docs/system.md",
-      "source_location": "L90"
+      "source_location": "L91"
     },
     {
       "id": "docs_system_il_ciclo_completo_come_si_chiude",
@@ -11228,7 +11228,7 @@
       "node_kind": "heading",
       "norm_label": "il ciclo guadagna il controllo di gestione (4\u00b0 ciclo, set 1 \"agenti\", 2026-08-23)",
       "source_file": "docs/system.md",
-      "source_location": "L168"
+      "source_location": "L169"
     },
     {
       "id": "docs_system_il_ciclo_guadagna_la_fase_di_audit_2026_08_21_sera",
@@ -11240,7 +11240,7 @@
       "node_kind": "heading",
       "norm_label": "il ciclo guadagna la fase di audit (2026-08-21, sera)",
       "source_file": "docs/system.md",
-      "source_location": "L143"
+      "source_location": "L144"
     },
     {
       "id": "docs_system_il_ciclo_guadagna_la_mappa_del_dominio_e_il_quarto_e_quinto_agente_6_ciclo_set_1_agenti_2026_08_24",
@@ -11252,7 +11252,7 @@
       "node_kind": "heading",
       "norm_label": "il ciclo guadagna la mappa del dominio e il quarto e quinto agente (6\u00b0 ciclo, set 1 \"agenti\", 2026-08-24)",
       "source_file": "docs/system.md",
-      "source_location": "L195"
+      "source_location": "L196"
     },
     {
       "id": "docs_system_il_design_guadagna_squalifiche_secondo_ordine_spike_e_selezione_del_contesto_6_ciclo_set_2_progettare_2026_08_24",
@@ -11264,7 +11264,7 @@
       "node_kind": "heading",
       "norm_label": "il design guadagna squalifiche, secondo ordine, spike e selezione del contesto (6\u00b0 ciclo, set 2 \"progettare\", 2026-08-24)",
       "source_file": "docs/system.md",
-      "source_location": "L220"
+      "source_location": "L221"
     },
     {
       "id": "docs_system_il_flusso_guadagna_agents_md_il_gate_la_memoria_la_notte_gli_agenti_6_ciclo_set_3_flusso_interazione_2026_08_24",
@@ -11276,7 +11276,7 @@
       "node_kind": "heading",
       "norm_label": "il flusso guadagna agents.md, il gate la memoria, la notte gli agenti (6\u00b0 ciclo, set 3 \"flusso/interazione\", 2026-08-24)",
       "source_file": "docs/system.md",
-      "source_location": "L241"
+      "source_location": "L242"
     },
     {
       "id": "docs_system_la_fabbrica",
@@ -11312,7 +11312,7 @@
       "node_kind": "heading",
       "norm_label": "la rotta corretta: il parco come corpus, non come cava (2026-08-24, 6\u00b0 ciclo, addendum)",
       "source_file": "docs/system.md",
-      "source_location": "L264"
+      "source_location": "L265"
     },
     {
       "id": "docs_system_limiti_dichiarati_cosa_il_sistema_non_fa_oggi",
@@ -11336,7 +11336,7 @@
       "node_kind": "heading",
       "norm_label": "percorso cloud/ibrido (da review 2026-08-21 \u00a74.1)",
       "source_file": "docs/system.md",
-      "source_location": "L131"
+      "source_location": "L132"
     },
     {
       "id": "docs_system_plugin_adottati_nel_tessuto_2026_08_21",
@@ -11348,7 +11348,7 @@
       "node_kind": "heading",
       "norm_label": "plugin adottati nel tessuto (2026-08-21)",
       "source_file": "docs/system.md",
-      "source_location": "L122"
+      "source_location": "L123"
     },
     {
       "id": "docs_campo_2026_09_23_revisione_dieci_giri_hub",
@@ -12272,6 +12272,66 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_bc_map",
+      "label": "test-bc-map.sh",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bc-map.sh",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_map_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_bc_map_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_bc_map_sh__entry",
+      "label": "test-bc-map.sh script",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bc-map.sh script",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_bc_tipi_metadata",
       "label": "test-bc-tipi-metadata.sh",
       "_origin": "ast",
@@ -12390,111 +12450,6 @@
       "norm_label": "test-ciclo-vivo.sh script",
       "source_file": "tests/test-ciclo-vivo.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout",
-      "label": "test-stdin-timeout.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-stdin-timeout.sh",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout_check_bounded",
-      "label": "check_bounded()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_bounded()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L39"
-    },
-    {
-      "id": "tests_test_stdin_timeout_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_stdin_timeout_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_stdin_timeout_path",
-      "label": "PATH",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L36"
-    },
-    {
-      "id": "tests_test_stdin_timeout_sh__entry",
-      "label": "test-stdin-timeout.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-stdin-timeout.sh script",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout_zhipuai_api_key",
-      "label": "ZHIPUAI_API_KEY",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "zhipuai_api_key",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L37"
     },
     {
       "id": "tools_prepara_deploy",
@@ -15752,11 +15707,101 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_agente",
+      "label": "agente.sh",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "agente.sh",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_agente_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L26"
+    },
+    {
+      "id": "night_shift_agente_sh__entry",
+      "label": "agente.sh script",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "agente.sh script",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_lib_ambiente_turno",
+      "label": "ambiente_turno()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ambiente_turno()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L85"
+    },
+    {
+      "id": "night_shift_lib_gate_allowlist_ok",
+      "label": "gate_allowlist_ok()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gate_allowlist_ok()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L96"
+    },
+    {
+      "id": "night_shift_lib_rami_da_scopare",
+      "label": "rami_da_scopare()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rami_da_scopare()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L260"
+    },
+    {
       "id": "tests_test_banco_prompt_allowlist_sync",
       "label": "test-banco-prompt-allowlist-sync.sh",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15771,7 +15816,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15786,7 +15831,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15801,7 +15846,7 @@
       "label": "test-banco-prompt-allowlist-sync.sh script",
       "_origin": "ast",
       "community": 209,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -15809,6 +15854,96 @@
       },
       "norm_label": "test-banco-prompt-allowlist-sync.sh script",
       "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib",
+      "label": "test-lib.sh",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-lib.sh",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib_check",
+      "label": "check()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_lib_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_lib_lock_da_altro",
+      "label": "lock_da_altro()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_da_altro()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L249"
+    },
+    {
+      "id": "tests_test_lib_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_lib_sh__entry",
+      "label": "test-lib.sh script",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-lib.sh script",
+      "source_file": "tests/test-lib.sh",
       "source_location": "L1"
     },
     {
@@ -19550,109 +19685,109 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_forme_prima_del_push",
-      "label": "forme_prima_del_push()",
+      "id": "tests_test_stdin_timeout",
+      "label": "test-stdin-timeout.sh",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "forme_prima_del_push()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L296"
-    },
-    {
-      "id": "tests_test_forme_prima_del_push",
-      "label": "test-forme-prima-del-push.sh",
-      "_origin": "ast",
-      "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
+      "community_name": "test-stdin-timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-forme-prima-del-push.sh",
-      "source_file": "tests/test-forme-prima-del-push.sh",
+      "norm_label": "test-stdin-timeout.sh",
+      "source_file": "tests/test-stdin-timeout.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_forme_prima_del_push_g",
-      "label": "g()",
+      "id": "tests_test_stdin_timeout_check_bounded",
+      "label": "check_bounded()",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
+      "community_name": "test-stdin-timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "g()",
-      "source_file": "tests/test-forme-prima-del-push.sh",
-      "source_location": "L13"
+      "norm_label": "check_bounded()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L39"
     },
     {
-      "id": "tests_test_forme_prima_del_push_ko",
+      "id": "tests_test_stdin_timeout_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
+      "community_name": "test-stdin-timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-forme-prima-del-push.sh",
-      "source_location": "L11"
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L16"
     },
     {
-      "id": "tests_test_forme_prima_del_push_ok",
+      "id": "tests_test_stdin_timeout_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
+      "community_name": "test-stdin-timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-forme-prima-del-push.sh",
-      "source_location": "L10"
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L15"
     },
     {
-      "id": "tests_test_forme_prima_del_push_repo",
-      "label": "repo()",
+      "id": "tests_test_stdin_timeout_path",
+      "label": "PATH",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
+      "community_name": "test-stdin-timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
-        "kind": "bash_function"
+        "kind": "code"
       },
-      "norm_label": "repo()",
-      "source_file": "tests/test-forme-prima-del-push.sh",
-      "source_location": "L17"
+      "norm_label": "path",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L36"
     },
     {
-      "id": "tests_test_forme_prima_del_push_sh__entry",
-      "label": "test-forme-prima-del-push.sh script",
+      "id": "tests_test_stdin_timeout_sh__entry",
+      "label": "test-stdin-timeout.sh script",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-forme-prima-del-push.sh",
+      "community_name": "test-stdin-timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-forme-prima-del-push.sh script",
-      "source_file": "tests/test-forme-prima-del-push.sh",
+      "norm_label": "test-stdin-timeout.sh script",
+      "source_file": "tests/test-stdin-timeout.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_test_stdin_timeout_zhipuai_api_key",
+      "label": "ZHIPUAI_API_KEY",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "zhipuai_api_key",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L37"
     },
     {
       "id": "tools_riconciliazione_magazzino",
@@ -20101,66 +20236,6 @@
       },
       "norm_label": "test-chiarezza.sh script",
       "source_file": "tests/test-chiarezza.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map",
-      "label": "test-bc-map.sh",
-      "_origin": "ast",
-      "community": 259,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bc-map.sh",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 259,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_bc_map_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 259,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_bc_map_sh__entry",
-      "label": "test-bc-map.sh script",
-      "_origin": "ast",
-      "community": 259,
-      "community_name": "test-bc-map.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bc-map.sh script",
-      "source_file": "tests/test-bc-map.sh",
       "source_location": "L1"
     },
     {
@@ -21766,51 +21841,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_agente",
-      "label": "agente.sh",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "agente.sh",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_agente_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L26"
-    },
-    {
-      "id": "night_shift_agente_sh__entry",
-      "label": "agente.sh script",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "agente.sh script",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "night_shift_lib",
       "label": "lib.sh",
       "_origin": "ast",
@@ -21824,21 +21854,6 @@
       "norm_label": "lib.sh",
       "source_file": "night-shift/lib.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "night_shift_lib_ambiente_turno",
-      "label": "ambiente_turno()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ambiente_turno()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L85"
     },
     {
       "id": "night_shift_lib_candidata_censore",
@@ -21916,8 +21931,8 @@
       "source_location": "L395"
     },
     {
-      "id": "night_shift_lib_gate_allowlist_ok",
-      "label": "gate_allowlist_ok()",
+      "id": "night_shift_lib_forme_prima_del_push",
+      "label": "forme_prima_del_push()",
       "_origin": "ast",
       "community": 28,
       "community_name": "lib.sh",
@@ -21926,9 +21941,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "gate_allowlist_ok()",
+      "norm_label": "forme_prima_del_push()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L96"
+      "source_location": "L296"
     },
     {
       "id": "night_shift_lib_lente_pr",
@@ -21989,21 +22004,6 @@
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L362"
-    },
-    {
-      "id": "night_shift_lib_rami_da_scopare",
-      "label": "rami_da_scopare()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rami_da_scopare()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L260"
     },
     {
       "id": "night_shift_lib_repo_code",
@@ -22126,8 +22126,8 @@
       "source_location": "L206"
     },
     {
-      "id": "tests_test_lib",
-      "label": "test-lib.sh",
+      "id": "tests_test_forme_prima_del_push",
+      "label": "test-forme-prima-del-push.sh",
       "_origin": "ast",
       "community": 28,
       "community_name": "lib.sh",
@@ -22136,13 +22136,13 @@
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-lib.sh",
-      "source_file": "tests/test-lib.sh",
+      "norm_label": "test-forme-prima-del-push.sh",
+      "source_file": "tests/test-forme-prima-del-push.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_lib_check",
-      "label": "check()",
+      "id": "tests_test_forme_prima_del_push_g",
+      "label": "g()",
       "_origin": "ast",
       "community": 28,
       "community_name": "lib.sh",
@@ -22151,12 +22151,12 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "check()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L16"
+      "norm_label": "g()",
+      "source_file": "tests/test-forme-prima-del-push.sh",
+      "source_location": "L13"
     },
     {
-      "id": "tests_test_lib_ko",
+      "id": "tests_test_forme_prima_del_push_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 28,
@@ -22167,26 +22167,11 @@
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L15"
+      "source_file": "tests/test-forme-prima-del-push.sh",
+      "source_location": "L11"
     },
     {
-      "id": "tests_test_lib_lock_da_altro",
-      "label": "lock_da_altro()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_da_altro()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L249"
-    },
-    {
-      "id": "tests_test_lib_ok",
+      "id": "tests_test_forme_prima_del_push_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 28,
@@ -22197,12 +22182,27 @@
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L14"
+      "source_file": "tests/test-forme-prima-del-push.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_lib_sh__entry",
-      "label": "test-lib.sh script",
+      "id": "tests_test_forme_prima_del_push_repo",
+      "label": "repo()",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "repo()",
+      "source_file": "tests/test-forme-prima-del-push.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_forme_prima_del_push_sh__entry",
+      "label": "test-forme-prima-del-push.sh script",
       "_origin": "ast",
       "community": 28,
       "community_name": "lib.sh",
@@ -22211,8 +22211,8 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-lib.sh script",
-      "source_file": "tests/test-lib.sh",
+      "norm_label": "test-forme-prima-del-push.sh script",
+      "source_file": "tests/test-forme-prima-del-push.sh",
       "source_location": "L1"
     },
     {
@@ -31297,7 +31297,7 @@
       "node_kind": "heading",
       "norm_label": "3. i cervelli disponibili (come delegare)",
       "source_file": "AGENTS.md",
-      "source_location": "L65"
+      "source_location": "L67"
     },
     {
       "id": "agents_4_i_calcoli_contabili_oracoli_e_agenti",
@@ -31309,7 +31309,7 @@
       "node_kind": "heading",
       "norm_label": "4. i calcoli contabili: oracoli e agenti",
       "source_file": "AGENTS.md",
-      "source_location": "L72"
+      "source_location": "L74"
     },
     {
       "id": "agents_5_la_verifica_come_esco_da_qui",
@@ -31321,7 +31321,7 @@
       "node_kind": "heading",
       "norm_label": "5. la verifica: come esco da qui",
       "source_file": "AGENTS.md",
-      "source_location": "L103"
+      "source_location": "L105"
     },
     {
       "id": "agents_agents_md_il_contratto_d_ingresso_per_agenti_llm_in_questo_repo",
@@ -31345,7 +31345,7 @@
       "node_kind": "heading",
       "norm_label": "il catalogo pattern",
       "source_file": "AGENTS.md",
-      "source_location": "L97"
+      "source_location": "L99"
     },
     {
       "id": "agents_portare_il_metodo_in_una_repo",
@@ -31357,7 +31357,7 @@
       "node_kind": "heading",
       "norm_label": "portare il metodo in una repo",
       "source_file": "AGENTS.md",
-      "source_location": "L91"
+      "source_location": "L93"
     },
     {
       "id": "agents_regole_graphify",
@@ -31369,7 +31369,7 @@
       "node_kind": "heading",
       "norm_label": "regole graphify",
       "source_file": "AGENTS.md",
-      "source_location": "L113"
+      "source_location": "L118"
     },
     {
       "id": "docs_bc_endpoints_componenti_ordine_produzione_excel",
@@ -39263,6 +39263,30 @@
       "norm_label": "la notte dei giri (2026-09-23)",
       "source_file": "DEBITI.md",
       "source_location": "L241"
+    },
+    {
+      "id": "debiti_la_notte_dei_giri_rinviato_risolvibile",
+      "label": "La notte dei giri \u2014 rinviato risolvibile",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DEBITI.md \u2014 il registro delle scorciatoie rimandate",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
+      "source_file": "DEBITI.md",
+      "source_location": "L254"
+    },
+    {
+      "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
+      "label": "La notte dei giri \u2014 verifiche che solo il Mac pu\u00f2 fare",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "DEBITI.md \u2014 il registro delle scorciatoie rimandate",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
+      "source_file": "DEBITI.md",
+      "source_location": "L248"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -47718,7 +47742,7 @@
       "node_kind": "heading",
       "norm_label": "configurazione (una volta sola)",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L84"
+      "source_location": "L93"
     },
     {
       "id": "docs_manuale_operativo_manuale_operativo_ai_programmer",
@@ -47754,7 +47778,7 @@
       "node_kind": "heading",
       "norm_label": "ogni sera (5 min)",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L34"
+      "source_location": "L39"
     },
     {
       "id": "docs_manuale_operativo_quando_costruisci_qualcosa_di_nuovo",
@@ -47766,7 +47790,7 @@
       "node_kind": "heading",
       "norm_label": "quando costruisci qualcosa di nuovo",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L52"
+      "source_location": "L61"
     },
     {
       "id": "docs_manuale_operativo_quando_vuoi_delegare_giorno",
@@ -47778,7 +47802,7 @@
       "node_kind": "heading",
       "norm_label": "quando vuoi delegare (giorno)",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L44"
+      "source_location": "L49"
     },
     {
       "id": "docs_manuale_operativo_se_qualcosa_non_funziona",
@@ -47790,7 +47814,7 @@
       "node_kind": "heading",
       "norm_label": "se qualcosa non funziona",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L72"
+      "source_location": "L81"
     },
     {
       "id": "docs_manuale_operativo_settimanale",
@@ -47802,7 +47826,7 @@
       "node_kind": "heading",
       "norm_label": "settimanale",
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L61"
+      "source_location": "L70"
     },
     {
       "id": "opencode_agent_sviluppatore_gas",
@@ -56656,7 +56680,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L91",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -56667,7 +56691,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L97",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -56678,7 +56702,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L103",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -56689,7 +56713,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L113",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -56733,7 +56757,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L65",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -56744,7 +56768,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L72",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -60353,6 +60377,28 @@
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
       "source_location": "L241",
+      "weight": 1.0
+    },
+    {
+      "source": "debiti_debiti_md_il_registro_delle_scorciatoie_rimandate",
+      "target": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "DEBITI.md",
+      "source_location": "L248",
+      "weight": 1.0
+    },
+    {
+      "source": "debiti_debiti_md_il_registro_delle_scorciatoie_rimandate",
+      "target": "debiti_la_notte_dei_giri_rinviato_risolvibile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "DEBITI.md",
+      "source_location": "L254",
       "weight": 1.0
     },
     {
@@ -70417,7 +70463,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L34",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -70428,7 +70474,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L44",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -70439,7 +70485,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L52",
+      "source_location": "L61",
       "weight": 1.0
     },
     {
@@ -70450,7 +70496,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L61",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -70461,7 +70507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L72",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -70472,7 +70518,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/MANUALE-OPERATIVO.md",
-      "source_location": "L84",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -71011,7 +71057,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -71022,7 +71068,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L131",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -71033,7 +71079,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L143",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -71044,7 +71090,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L168",
+      "source_location": "L169",
       "weight": 1.0
     },
     {
@@ -71055,7 +71101,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L195",
+      "source_location": "L196",
       "weight": 1.0
     },
     {
@@ -71066,7 +71112,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L220",
+      "source_location": "L221",
       "weight": 1.0
     },
     {
@@ -71088,7 +71134,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L241",
+      "source_location": "L242",
       "weight": 1.0
     },
     {
@@ -71099,7 +71145,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L264",
+      "source_location": "L265",
       "weight": 1.0
     },
     {
@@ -71110,7 +71156,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L301",
+      "source_location": "L302",
       "weight": 1.0
     },
     {
@@ -71121,7 +71167,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L323",
+      "source_location": "L324",
       "weight": 1.0
     },
     {
@@ -71143,7 +71189,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L351",
+      "source_location": "L352",
       "weight": 1.0
     },
     {
@@ -71176,7 +71222,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/system.md",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -71990,7 +72036,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L106",
+      "source_location": "L108",
       "weight": 1.0
     },
     {
@@ -72001,7 +72047,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L119",
+      "source_location": "L121",
       "weight": 1.0
     },
     {
@@ -72012,7 +72058,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L129",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -72023,7 +72069,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L142",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -72034,7 +72080,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L149",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -72045,7 +72091,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L158",
+      "source_location": "L162",
       "weight": 1.0
     },
     {
@@ -72056,7 +72102,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L168",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -72067,7 +72113,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L179",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -72078,7 +72124,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L202",
+      "source_location": "L206",
       "weight": 1.0
     },
     {
@@ -72089,7 +72135,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L212",
+      "source_location": "L216",
       "weight": 1.0
     },
     {
@@ -72100,7 +72146,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L228",
+      "source_location": "L232",
       "weight": 1.0
     },
     {
@@ -72111,7 +72157,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L28",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -72122,7 +72168,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L41",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -72133,7 +72179,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L55",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -72155,7 +72201,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L70",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -72166,7 +72212,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L84",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -72177,7 +72223,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L91",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -91246,5 +91292,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "42ea4deed3441818d28b195af93a99a561a0edd0"
+  "built_at_commit": "20b63f208f0ab90dd71ae071256ac118e950d810"
 }

@@ -243,4 +243,17 @@ scorciatoie, dichiarate:
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | 2026-09-23 | Dieci domande di dominio sugli oracoli contabili, dal giro A4: segno dei tipi documento fornitore nell'aging, abbinamento e arrotondamento del DSO, importo vuoto, BU in minuscolo, segno del fondo nel roll-forward, formula dell'accuratezza, elenco delle BU e segno per conto, soglie e denominatori degli indici di crisi, mese dell'adeguamento del leasing — tutte in `docs/giri/2026-09-23-notte/DOMANDE.md`, ognuna col perché, cosa dice il sistema e cosa solo Luca | quasi tutte sono di FEDELTA' al sistema studiato (REPO-E): o l'oracolo copia un difetto del sorgente (requisito da decidere), o e' un suo difetto — solo il sorgente, o Luca, lo dicono; il meccanico e' gia' curato (Q22a-c) | una domanda alla volta, alla riapertura (settimo patto); ogni risposta ha il suo commit |
+| 2026-09-24 | Domanda di dominio (T5#4): «nomi sì, accesso no» (CLAUDE.md §7) vale anche per i termini di `TERMINI=`/`PERSONA=` in `night-shift/repos.key` e per i fornitori di `~/.privacy-nomi`? Oggi `tools/privacy-check.sh` li blocca e da stanotte ne stampa solo l'impronta; il pre-commit dice «anonimizza» | perché conta: decide se un nome di fornitore o di persona in un documento pubblico è una perdita o no. Il sistema sa mascherarli; se siano pubblicabili lo dice solo Luca | una risposta, un commit: se «sì», il check li declassa ad avviso; se «no», resta com'è e la regola va scritta in CLAUDE.md |
+
+## La notte dei giri — verifiche che solo il Mac può fare
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-09-24 | Provare dal vivo, sul Mac: (a) le prove del censore in `sandbox-exec` (il profilo nega le scritture in `~/.npm`: un `npm test` può dare un rinvio falso); (b) quale ramo di `ai_timeout` prende il turno (riga «ambiente:» del log); (c) `ps -p <pid> -o command=` del lock col PID; (d) se `/qwen` e `/nuova-commessa` esistono nel ZCode o in `~/.claude` (nel repo no) | ⏳ IN ATTESA: una notte del turno sul Mac, con il log letto il mattino dopo | letta la riga «ambiente:» e un parere/fusione del censore in sandbox, si scrive l'esito nel SAL e si salda |
+
+## La notte dei giri — rinviato risolvibile
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-09-24 | T5#2b: i quattro punti di consegna di `night-shift/night-shift.sh` fanno `git add -A`, che prende anche un file NUOVO scritto dall'agente (ad es. un file «di passaggio» con dati letti). Proposta: `git add -u` più i soli file nuovi dichiarati dalle azioni `write` di `night-shift/agente.sh` e dal test generato di risolvi-issue | cambia la consegna in quattro punti e il contratto dell'agente; il rischio è già ridotto da stanotte (l'allowlist non legge fuori dal progetto, le forme di segreto si controllano prima del push) | un banco con un file non dichiarato che NON entra nel commit, rosso prima; poi la cura |
 

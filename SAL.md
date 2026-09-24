@@ -3887,3 +3887,19 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   (`patterns/workdir-e-proprietario.md`). Ora il gate prende il lock del turno (`prendi_lock_turno`):
   con un turno vivo esce 3 e dice perché. Banco in `tests/test-morning-gate-cieco.sh`: 1 rosso
   prima, 2 al sabotaggio.
+- **T4 — documenti contro codice, il resto.** Verificato riga per riga contro il codice:
+  - `night-shift/README.md` diceva che il censore rinvia «non mio» le PR delle issue, ma da D10 dà un
+    parere (`night-shift/revisore.sh:124`). Guardia in `tests/test-doc-non-corrotti.sh`: rossa sul
+    testo vecchio, verde ora.
+  - `docs/MANUALE-OPERATIVO.md` e `docs/system.md` davano `metrics/gate.csv` come memoria viva, ma è
+    storico: lo scriveva solo il morning-gate, e l'ultima riga è del 2026-08-21. Riscritti anche il
+    riquadro L3/L4 e il ciclo.
+  - Il README diceva che l'agente usa una denylist. Ora dice il vero: allowlist di sola lettura,
+    confine del progetto e sandbox.
+  - `docs/system.md` contava «5 agenti» della notte: sono 6.
+  - AGENTS.md: la pipeline finiva in «gate», e la regola di privacy era quella ritirata dei codici
+    anonimi. Ora c'è il censore, e la regola di CLAUDE.md §7 con la domanda aperta sui termini.
+  - Comandi citati ma assenti dal repo: `/qwen` e `/nuova-commessa` nel MANUALE, e il comando
+    globale `dashboard` nel README. Al loro posto c'è quello che esiste; se vivono sul Mac, è
+    dichiarato ⏳.
+  - DEBITI: la domanda sui termini (dominio), le verifiche Mac (⏳), T5#2b (risolvibile).

@@ -28,6 +28,12 @@ grep -qE 'Generato dal codice reale:[[:space:]]*$' "$HERE/docs/eventi.md" && ko 
 INSEGNA=$(cd "$HERE" && grep -ln '`bash \.night-verify`' AGENTS.md README.md METHOD.md PROJECT.md docs/*.md night-shift/README.md 2>/dev/null | grep -v REGISTRO || true)
 [ -z "$INSEGNA" ] && ok "nessun documento vivo insegna «bash .night-verify» come verifica" || ko "insegnano «bash .night-verify» (esce 0 senza banchi): $INSEGNA"
 
+# (2026-09-24, T4): night-shift/README.md diceva che il censore rinvia «non mio» le PR delle issue —
+# da D10 (2026-09-23) le giudica in modo parere (night-shift/revisore.sh, MODO=parere).
+NONMIO=$(cd "$HERE" && grep -ln 'rinvia «non mio»' README.md METHOD.md AGENTS.md docs/*.md night-shift/README.md 2>/dev/null || true)
+[ -z "$NONMIO" ] && ok "nessun documento vivo dice che il censore rinvia «non mio» le PR delle issue" || ko "dicono ancora «non mio» sulle PR di issue: $NONMIO"
+grep -c 'MODO="parere"' "$HERE/night-shift/revisore.sh" >/dev/null && ok "(il modo parere esiste davvero nel censore)" || ko "il modo parere non esiste piu' nel censore: il documento va rivisto"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

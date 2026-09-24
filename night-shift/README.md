@@ -20,10 +20,12 @@ MATTINA (7:30):     morning-digest.sh → email: lezioni da approvare, sospesi, 
 
 > **Il morning-gate è in pensione dal 2026-09-23** (decisione di dominio,
 > `cervello/decisione-dominio-2026-09-23.md`): non gira più da launchd, resta invocabile a mano
-> e le sezioni che lo descrivono qui sotto sono il suo contratto se lo lanci. Conseguenza da
-> sapere: le PR delle issue (`night/issue-N`, titolo non `caccia:`) non hanno più un giudice
-> automatico — il censore le rinvia «non mio», e restano alla review di Luca (debito in
-> DEBITI.md, «Dal test del sistema completo»).
+> e le sezioni che lo descrivono qui sotto sono il suo contratto se lo lanci. Le PR delle issue
+> (`night/issue-N`, titolo non `caccia:`) le giudica il censore in modo **parere** (D10, Luca
+> 2026-09-23): stesse guardie e stesse prove, poi un commento motivato sulla PR, una volta per
+> commit (`night-shift/revisore.sh:124`, chiamato da `night-shift/night-shift.sh:644-646`). Non le
+> fonde, non le rende pronte, non le chiude: la fusione resta di Luca. Lanciato a mano, il gate non
+> entra se c'è un turno vivo (prende il lock del turno, 2026-09-24).
 
 ## Le regole vincolanti
 
@@ -143,7 +145,9 @@ legge il riepilogo (lo usa `morning-digest`).
 
 `night-shift/agente.sh` <dir> <prompt> — il ciclo multi-turno bash ↔ Ollama che
 opencode non chiudeva. Il modello chiede azioni con JSON nel contenuto, lo script
-le esegue (read/write/run con confinamento e denylist), e rimanda il risultato.
+le esegue (read/write dentro la copia; run solo se passa l'allowlist di sola lettura
+`gate_allowlist_ok` — dal 2026-09-24 anche senza uscire dal progetto — e, sul Mac, dentro
+`sandbox-exec`), e rimanda il risultato.
 Tre sfide superate: bug fix, nuova funzione, ciclo di miglioramento con verifica.
 
 ## La caccia intelligente
@@ -229,6 +233,8 @@ martella. Il censimento scende, il delta lo urla, il cerchio si chiude.
 
 - `tools/dashboard.py` — pagina HTML che si aggiorna ogni 10 secondi: cicli,
   PR, fix, cacce, errori, verifiche, attività recente. Serve su localhost:8787.
-- Avvio: `dashboard` (da qualsiasi directory) oppure `python3 tools/dashboard.py`
+- Avvio: `python3 tools/dashboard.py`
 - Si ferma con Ctrl+C. Se la porta è occupata, riavvia la vecchia istanza.
-- Comando globale installato in ~/.local/bin/dashboard (symlink).
+- (2026-09-24, T4: qui si prometteva un comando globale `~/.local/bin/dashboard` che nessuno
+  strumento dell'hub installa — `night-shift/install.sh` mette in ~/.local/bin solo i cinque comandi
+  ask-*/night-shift/morning-gate. Se sul Mac l'hai creato a mano, vale quello.)

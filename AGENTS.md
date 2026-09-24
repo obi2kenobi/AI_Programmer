@@ -49,7 +49,9 @@ esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 
 ```
 /selezione-contesto → /brainstorming ⇄ /design-doc → /goal (piccolo) | commessa (grande)
-                                                              → /audit-commessa → notte → gate → review
+                                                              → /audit-commessa → notte → censore → review di Luca
+  (il censore, night-shift/revisore.sh: fonde le PR `caccia:`, lascia un parere sulle PR di issue;
+  il morning-gate è in pensione dal 2026-09-23)
 TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
   chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
   ma SENZA pipeline (dettaglio: METHOD.md) — bug reale corretto: revisione 14 lenti,
@@ -107,8 +109,11 @@ Consulta prima di reinventare; dopo averne pagato uno nuovo, scrivilo.
 (2026-09-23, notte dei giri: qui si insegnava a eseguire il file intero con bash, che esce 0 senza far girare un
 solo banco — la riga `@540 …` e' un budget che capisce solo il turno, e l'rc e' quello dell'ultima riga.) Se touchi `SAL.md`, rigenera l'indice
 (`bash tools/sal-indice.sh`) e porta le modifiche in un commit/giro prima che il
-gate giri. Privacy: REPO-E è il codice con cui riferirsi al repo esterno, MAI il
-nome di clienti o progetti reali (il privacy-check fallisce il gate su una perdita).
+gate giri. Privacy (CLAUDE.md §7, «Public repo, private work»): i nomi di repo e di persone
+possono comparire, l'ACCESSO mai (segreti, credenziali, token, push in produzione). I codici REPO-x
+restano nei testi storici, ma il loro registro è ritirato. I termini delle liste locali
+(`repos.key`, `~/.privacy-nomi`) il privacy-check li blocca ancora: se valga per loro «nomi sì» è una
+domanda aperta a Luca (DEBITI).
 
 ## Regole graphify
 
