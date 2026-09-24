@@ -135,7 +135,7 @@ gate_banchi() {
 funzione_definita_e_chiamata() {
   local f="$1" n="$2" def="function[[:space:]]+$2[[:space:]]*\\("
   grep -qE "$def" "$f" || return 1
-  grep -E "(^|[^A-Za-z0-9_\$.])$n[[:space:]]*\\(" "$f" | grep -vcE "$def" >/dev/null   # -c, non -q: E-002
+  grep -E "(^|[^A-Za-z0-9_\$.])${n}[[:space:]]*\\(" "$f" | grep -vcE "$def" >/dev/null   # -c, non -q: E-002
 }
 
 # ambiente_turno: una riga per il log — la bash, il ramo di ai_timeout, la sandbox (2026-09-23, notte dei
@@ -303,8 +303,27 @@ for raw in sys.stdin.buffer:
 # gli stessi predicati delle guardie di night-shift/revisore.sh. (Revisione 10 giri,
 # 2026-09-23): il turno prendeva la prima bozza night/* qualunque; con una PR di issue in
 # testa il censore rispondeva «non mio» a ogni ciclo e le caccia dietro non passavano mai.
+# (2026-09-24, terzo ventaglio, V1#2): gh elenca le PR piu' RECENTI prima, e si prendeva la prima — la piu'
+# nuova, in quarantena — mentre le cacce vecchie non tornavano piu' davanti al censore. Ora la piu' VECCHIA
+# (createdAt crescente; senza createdAt l'ordine resta quello di gh).
 candidata_censore() {
-  jq -r '[.[] | select(.isDraft == true and (.headRefName | startswith("night/")) and ((.title // "") | startswith("caccia:")))][0].number // empty' 2>/dev/null
+  jq -r '[.[] | select(.isDraft == true and (.headRefName | startswith("night/")) and ((.title // "") | startswith("caccia:")))] | sort_by(.createdAt // "") | .[0].number // empty' 2>/dev/null
+}
+
+# caccia_gia_aperta <dir> <base> <ramo>...: 0 se uno dei rami remoti (le cacce con una PR aperta) porta gia'
+# lo stesso diff del commit appena fatto — stesso `git patch-id`. (V1#2, 2026-09-24): il sito saldato torna
+# libero su main finche' la PR non e' fusa, il trasformatore lo risalda, e ogni ciclo apriva una PR con lo
+# stesso identico diff (4 cicli, 4 PR, misurati dal giro V1).
+caccia_gia_aperta() {
+  local dir="$1" base="$2" r mio suo; shift 2
+  mio=$(git -C "$dir" diff "$base...HEAD" 2>/dev/null | git patch-id --stable 2>/dev/null | cut -d' ' -f1)
+  [ -n "$mio" ] || return 1
+  for r in "$@"; do
+    git -C "$dir" fetch -q origin "$r" 2>/dev/null || continue
+    suo=$(git -C "$dir" diff "$base...origin/$r" 2>/dev/null | git patch-id --stable 2>/dev/null | cut -d' ' -f1)
+    [ "$suo" = "$mio" ] && { echo "$r"; return 0; }
+  done
+  return 1
 }
 
 # rami_da_scopare <ora-epoch> <soglia-ore> <file-rami> <file-pr>: i rami remoti che la scopa

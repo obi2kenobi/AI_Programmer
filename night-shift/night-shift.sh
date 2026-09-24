@@ -627,7 +627,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
   if [ -f "$HERE/revisore.sh" ]; then
     # (revisione 10 giri): la candidata si sceglie coi predicati del censore (lib.sh
     # candidata_censore) — prima una PR di issue in testa affamava le caccia dietro di lei
-    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title --limit 20 2>/dev/null \
+    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,createdAt --limit 20 2>/dev/null \
       | candidata_censore)
     if [ -n "${REVISORE_CANDIDATA:-}" ]; then
       log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
@@ -711,7 +711,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
-        ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" 2>&1 && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
+        # (V1#2, 2026-09-24): le cacce con una PR aperta — se una porta gia' lo stesso diff, niente PR doppia
+        CACCE_APERTE=$(cd "$DIR" && gh pr list --state open --json headRefName -q '.[].headRefName' 2>/dev/null | grep '^night/caccia-' || true)
+        ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" 2>&1 \
+          && { ! DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" $CACCE_APERTE) || { echo "DOPPIONE di una caccia gia' aperta ($DOPPIA): stesso diff, nessuna PR nuova"; false; }; } \
+          && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
         if [ $? -eq 0 ]; then
           grep 'NON dichiarato' <<<"$ERR_CONSEGNA" | while IFS= read -r l; do log "REPO $REPO: $l"; done   # T5#2b: detto, mai taciuto
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
@@ -719,6 +723,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
           log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
           git -C "$DIR" checkout "$DB" -q
           PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
+        elif grep -c '^DOPPIONE' <<<"$ERR_CONSEGNA" >/dev/null; then
+          log "REPO $REPO: $(grep '^DOPPIONE' <<<"$ERR_CONSEGNA" | head -1) — ramo locale buttato"
+          git -C "$DIR" reset -q --hard
+          git -C "$DIR" checkout "$DB" -q
+          git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
         else
           log "⚠ REPO $REPO: commit/push della $ORIGINE fallito — ripristino — ERRORE: $(echo "$ERR_CONSEGNA" | tail -2 | tr '\n' ' ' | cut -c1-200)"
           git -C "$DIR" reset -q --hard

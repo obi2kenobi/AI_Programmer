@@ -216,6 +216,24 @@ else
 fi
 grep -c 'funzione_definita_e_chiamata "\$TF" "\$FN"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il controllo GIA' IMPLEMENTATA usa la funzione" || ko "il controllo GIA' IMPLEMENTATA conta la definizione come chiamata"
 
+# --- (2026-09-24, terzo ventaglio, V1#2): la caccia riapriva la STESSA PR a ogni ciclo — il sito torna libero su
+# main finche' la PR non e' fusa, e il trasformatore lo risalda. caccia_gia_aperta: 0 se un ramo remoto di
+# caccia porta gia' lo stesso diff (git patch-id) del commit appena fatto.
+if command -v caccia_gia_aperta >/dev/null; then
+  CG=$(mktemp -d); g() { git -c user.email=t@t -c user.name=t -c core.hooksPath=/dev/null -c commit.gpgsign=false "$@"; }
+  g init -q --bare "$CG/o.git"; g clone -q "$CG/o.git" "$CG/w" 2>/dev/null
+  echo base > "$CG/w/a.sh"; g -C "$CG/w" add -A; g -C "$CG/w" commit -qm base; g -C "$CG/w" push -q origin HEAD:main 2>/dev/null
+  g -C "$CG/w" checkout -q -b night/caccia-1; echo "cura" >> "$CG/w/a.sh"; g -C "$CG/w" commit -qam c1; g -C "$CG/w" push -q origin night/caccia-1 2>/dev/null
+  g -C "$CG/w" checkout -q main; g -C "$CG/w" checkout -q -b night/caccia-2; echo "cura" >> "$CG/w/a.sh"; g -C "$CG/w" commit -qam c2
+  caccia_gia_aperta "$CG/w" origin/main "night/caccia-1" && ok "caccia_gia_aperta: lo stesso diff su una caccia aperta → gia' aperta" || ko "caccia_gia_aperta: il duplicato non si vede"
+  g -C "$CG/w" commit -q --amend -m c2 --allow-empty; echo "altra" >> "$CG/w/a.sh"; g -C "$CG/w" commit -qam c3
+  caccia_gia_aperta "$CG/w" origin/main "night/caccia-1" && ko "caccia_gia_aperta: un diff diverso scambiato per doppione" || ok "caccia_gia_aperta: un diff diverso non e' un doppione"
+  rm -rf "$CG"
+else
+  ko "caccia_gia_aperta assente da night-shift/lib.sh"
+fi
+grep -c 'caccia_gia_aperta "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "la consegna della caccia salta i doppioni" || ko "la consegna della caccia non guarda le PR gia' aperte"
+
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
 # (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
 # («Mask, don't omit») e del pattern segreto-come-impronta — «segreto <impronta> · N caratteri».
@@ -273,6 +291,11 @@ if declare -F candidata_censore >/dev/null; then
   [ "$C" = "8" ] && ok "candidata_censore: salta la PR di issue in testa, sceglie la prima caccia: su night/*" || ko "candidata_censore sceglie '$C' (attesa 8)"
   C=$(candidata_censore <<<'[{"number":9,"headRefName":"night/issue-4","isDraft":true,"title":"fix"}]')
   [ -z "$C" ] && ok "candidata_censore: nessuna caccia: → vuoto (nessun giudizio sprecato)" || ko "candidata_censore: '$C' senza caccia"
+  # (2026-09-24, terzo ventaglio, V1#2): gh elenca le PR piu' RECENTI prima — il censore prendeva la piu' nuova,
+  # in quarantena, e le cacce vecchie non tornavano piu' davanti a lui. Si sceglie la piu' vecchia.
+  J2='[{"number":12,"headRefName":"night/caccia-b","isDraft":true,"title":"caccia: nuova","createdAt":"2026-09-24T03:00:00Z"},{"number":11,"headRefName":"night/caccia-a","isDraft":true,"title":"caccia: vecchia","createdAt":"2026-09-24T01:00:00Z"}]'
+  C=$(candidata_censore <<<"$J2")
+  [ "$C" = "11" ] && ok "candidata_censore: fra due cacce, la piu' vecchia (la nuova e' in quarantena)" || ko "candidata_censore sceglie '$C' (attesa 11, la piu' vecchia)"
 else
   ko "candidata_censore non definita in lib.sh"
 fi

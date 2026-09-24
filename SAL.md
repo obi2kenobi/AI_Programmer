@@ -4139,3 +4139,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   banco e2e `tests/test-sync-repo.sh` guardava `settings.json` e i guardiani del commit, non gli hook.
   Ora ogni hook dichiarato (`tools/copia-hook.sh --elenco`) deve arrivare sul ramo, con modo 100755. Verde
   sul codice di oggi; S17 rimesso è rosso (6 hook mancanti).
+- **Terzo ventaglio, V1#2 — la caccia riapriva la stessa PR a ogni ciclo, e il censore guardava solo
+  la più nuova.** Il sito saldato torna libero su main finché la PR non è fusa: il trasformatore lo
+  risalda, e il giro V1 ha visto 4 cicli dare 4 PR con lo stesso diff. Il censore prendeva la prima
+  caccia della lista di gh, che elenca prima le più recenti: la più nuova, in quarantena, mentre quelle
+  vecchie non tornavano più davanti a lui. Ora `caccia_gia_aperta` (`night-shift/lib.sh`) confronta il
+  `git patch-id` del commit appena fatto con quello di ogni caccia aperta: un doppione non si spinge, e
+  il log lo dice. `candidata_censore` sceglie la caccia più vecchia (createdAt). Banchi in
+  `tests/test-lib.sh`: 3 rossi prima, 1 al sabotaggio. Errore mio di passaggio: la funzione di V1#3
+  aveva un SC1087 che shellcheck, riga di `.night-verify`, avrebbe fatto rosso ogni notte. La mia
+  consegna faceva girare solo la suite, e ora fa girare anche shellcheck, `bash -n` e py-gate.
