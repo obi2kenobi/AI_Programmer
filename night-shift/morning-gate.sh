@@ -145,7 +145,8 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
     # 9: il file c'è ma sembra dimenticato) — qui la repo DICHIARA esplicitamente, col
     # motivo, di non poter verificare in automatico. Marcatore: una riga
     # "# NON-VERIFICABILE: <motivo>" in .night-verify.
-    NV_MOTIVO=$(printf '%s' "$NIGHT_VERIFY" | grep -iE '^#\s*NON-VERIFICABILE\s*:' | head -1 | sed -E 's/^#\s*NON-VERIFICABILE\s*:\s*//I')
+    # (T3#3, 2026-09-23): classi POSIX e nessun flag I — il sed BSD del Mac legge \s come «s» e rifiuta I
+    NV_MOTIVO=$(printf '%s' "$NIGHT_VERIFY" | grep -iE '^#[[:space:]]*NON-VERIFICABILE[[:space:]]*:' | head -1 | sed -E 's/^[^:]*:[[:space:]]*//')
     if [ -n "$NV_MOTIVO" ]; then
       echo "**Verifiche dichiarate:** repo marcata \`NON-VERIFICABILE\` — $NV_MOTIVO. La verifica di livello 1-2 passa da un controllo umano/deploy, non dal gate automatico." >> "$REPORT"
       VERDICT="non-verificabile"

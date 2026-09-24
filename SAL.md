@@ -3832,3 +3832,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `ai_timeout_ramo` in `llm/_timeout.sh`). Serve a misurare dal log del Mac ciò che da qui resta
   ⏳: quale ramo di timeout prende (T3#1) e se la sandbox c'è (T3#2, T5#1). Banco
   `tests/test-lib.sh`: 3 rossi prima, 2 rossi al sabotaggio.
+- **T3#3 — un sed GNU-only nel morning-gate.** `night-shift/morning-gate.sh`, nel motivo
+  NON-VERIFICABILE, usava `\s` e il flag `I` in un'espressione sed. Il sed BSD del Mac legge `\s`
+  come una «s» e rifiuta `I` («bad flag»): il motivo usciva vuoto o intero. Ora la riga, già scelta dal
+  grep, perde tutto fino ai due punti (`s/^[^:]*:[[:space:]]*//`), e anche il grep usa le classi
+  POSIX. `tests/test-portabilita.sh` ora guarda anche questi escape nelle espressioni sed e
+  include `.githooks/`: rosso prima (un sito), rosso al sabotaggio. T3#4 (letto nei sorgenti Apple,
+  non eseguito) dice che `\b` e `\s` funzionano nel grep del Mac (REG_ENHANCED). La parte «`\b`»
+  di T6·6 non è quindi un difetto provato. Restano le classi POSIX, che valgono ovunque.

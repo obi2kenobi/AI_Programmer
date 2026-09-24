@@ -13,7 +13,7 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 # la lente non guarda se stessa: i suoi pattern contengono le forme che cerca
-FILES=$(ls "$HERE"/night-shift/*.sh "$HERE"/tools/*.sh "$HERE"/tests/*.sh "$HERE"/llm/*.sh 2>/dev/null | grep -v '/test-portabilita.sh$')
+FILES=$(ls "$HERE"/night-shift/*.sh "$HERE"/tools/*.sh "$HERE"/tests/*.sh "$HERE"/llm/*.sh "$HERE"/.githooks/* 2>/dev/null | grep -v '/test-portabilita.sh$')
 # righe di CODICE (non commenti) che contengono la forma
 righe_con() { # $1=pattern grep -E
   grep -nE "$1" $FILES 2>/dev/null | grep -vE '^[^:]*:[0-9]+:[[:space:]]*#' || true
@@ -61,6 +61,12 @@ S=$(righe_con 'grep -[a-zA-Z]*P[a-zA-Z]* ' | grep -vE 'git (grep|-C)' || true)
 # mandava al modello il path ASSOLUTO sul Mac). La via portabile e' os.path di python3.
 S=$(righe_con 'realpath --relative-to|readlink -f ' || true)
 [ -z "$S" ] && ok "nessun realpath --relative-to / readlink -f (GNU): python3 os.path" || ko "path GNU-only:"$'\n'"$S"
+
+# (2026-09-23, notte dei giri, T3#3): il sed del Mac non e' «enhanced» — `\s` `\w` `\b` dentro
+# un'espressione sed valgono lettere letterali, e il flag `I` della sostituzione e' «bad flag». Su
+# morning-gate.sh il motivo NON-VERIFICABILE usciva vuoto o intero. Le classi POSIX valgono ovunque.
+S=$(righe_con "sed [^|]*\\\\[sSwWb]|sed [^|]*s/[^/]*/[^/]*/[a-zA-Z]*I" || true)
+[ -z "$S" ] && ok "nessun \\s/\\w/\\b o flag I in un'espressione sed (BSD sed: letterali o «bad flag»)" || ko "sed GNU-only:"$'\n'"$S"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
