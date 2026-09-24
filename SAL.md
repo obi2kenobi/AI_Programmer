@@ -4628,3 +4628,7 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   escluso ancora nella storia, dove i commit vecchi portano le forme per esteso. privacy-check sull'hub:
   nessuna forma. Caso nuovo in `tests/test-privacy.sh` (un token in `tests/`): verde (22/0). Sabotaggio:
   rimessa l'esclusione, 21/1. Verdi anche test-lib (150/0) e test-pre-commit (28/0).
+- **Quinto ventaglio — il brief.** In `docs/giri/2026-09-24-quinto/00-BRIEF.md` ci sono cinque lenti
+  nuove: la memoria del sistema, il satellite end-to-end, gli oracoli come strumenti, i consumatori dei
+  log, giorno e notte sulla stessa repo. C'è anche una regola nuova dopo il `/CLAUDE.md` del quarto
+  ventaglio: mai scrivere fuori dal clone, e un TMPDIR sempre dentro il clone.
