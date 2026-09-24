@@ -4000,3 +4000,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   cartella, e dice quale. Banco `tests/test-pre-commit.sh` (tre percorsi): 3 rossi prima, 3 al
   sabotaggio. Due domande di dominio in DEBITI: la visibilità di default del bootstrap (T1#1) e cosa
   deve controllare il privacy-check in un satellite, dove è sempre DEGRADATO (T1#3).
+- **T1#4 — in un satellite gli hook mandavano l'agente a file che non ci sono.** Misurato su un
+  satellite costruito da zero: `tools/metodo-reminder-hook.sh` citava `tools/*.py`,
+  `docs/mappa-dominio-gas-src.md`, `tools/verifica_banco.py`, `docs/bc/endpoints/`,
+  `tools/bc_index.py` e `METHOD.md`, e il cancello `tools/clasp-block-hook.sh` citava
+  `tools/prepara-deploy.sh`. Vivono solo nell'hub. Ora ogni percorso passa da `dove`: se nella repo
+  non c'è, il messaggio dice «(nell'hub AI_Programmer)». Nell'hub resta com'era. Banco nuovo
+  `tests/test-hook-citazioni-satellite.sh` (satellite e hub): 7 citazioni rosse prima, 6 al
+  sabotaggio (solo metodo-reminder sabotato). Errore di prima stesura, visto dal banco:
+  `compgen -G` su un percorso senza asterisco lo dava per esistente; ora `[ -e ]` senza glob.

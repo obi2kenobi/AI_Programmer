@@ -10,6 +10,12 @@
 # Il deploy è dell'umano: questa è l'unica regola del sistema che da oggi
 # non dipende dalla memoria dell'agente.
 set -uo pipefail
+# dove <percorso>: il percorso, e se nella repo non c'e' (un satellite) la nota che vive nell'hub
+# (2026-09-24, notte dei giri, T1#4: nei satelliti i promemoria mandavano l'agente a file assenti)
+dove() {   # con un * si guarda se il glob trova qualcosa, senza si guarda il percorso
+  case "$1" in *\**) compgen -G "$PWD/$1" >/dev/null 2>&1 ;; *) [ -e "$PWD/$1" ] ;; esac \
+    && printf '%s' "$1" || printf "%s (nell'hub AI_Programmer)" "$1"
+}
 # (2026-09-23, giro A1 della notte): senza jq il cancello era APERTO (`|| exit 0`), e senza JSON
 # solo `exit 2` blocca (documentazione degli hook di Claude Code). Senza jq: MODO PRUDENTE — un
 # grep sull'input grezzo nega push/deploy/deploy-ora con exit 2; tutto il resto passa. Puo'
@@ -133,7 +139,7 @@ fi
 # comando esterno) e deploiava. Si nega l'invocazione, non la citazione: `grep deploy-ora …` passa.
 DEPLOY_ORA="${SEP}${RUN}((ba|z|da)?sh[[:space:]]+)?([A-Za-z0-9_./~-]*/)?deploy-ora(\.sh)?([[:space:]]|;|$)"
 if grep -qE "$DEPLOY_ORA" <<<"$CMD_STRIPPED"; then
-  jq -n --arg r "NEGATO (clasp-block-hook): deploy-ora e' il gesto del deploy di Luca, dal suo terminale — un agente non lo invoca (il deploy e' dell'umano). Prepara il pacchetto con tools/prepara-deploy.sh e lascialo a lui." \
+  jq -n --arg r "NEGATO (clasp-block-hook): deploy-ora e' il gesto del deploy di Luca, dal suo terminale — un agente non lo invoca (il deploy e' dell'umano). Prepara il pacchetto con $(dove tools/prepara-deploy.sh) e lascialo a lui." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
 fi

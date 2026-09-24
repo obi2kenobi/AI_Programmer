@@ -16,6 +16,12 @@ set -uo pipefail
 if ! command -v jq >/dev/null 2>&1; then exit 0; fi
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 INPUT="$(cat)"
+# dove <percorso>: il percorso, e se nella repo non c'e' (un satellite) la nota che vive nell'hub
+# (2026-09-24, notte dei giri, T1#4: nei satelliti i promemoria mandavano l'agente a file assenti)
+dove() {   # con un * si guarda se il glob trova qualcosa, senza si guarda il percorso
+  case "$1" in *\**) compgen -G "$PWD/$1" >/dev/null 2>&1 ;; *) [ -e "$PWD/$1" ] ;; esac \
+    && printf '%s' "$1" || printf "%s (nell'hub AI_Programmer)" "$1"
+}
 EVENT="$(echo "$INPUT" | jq -r '.hook_event_name // empty' 2>/dev/null)"
 PROMPT="$(echo "$INPUT" | jq -r '.prompt // empty' 2>/dev/null)"
 
@@ -49,12 +55,12 @@ if [ "$EVENT" = "SessionStart" ]; then
   fi
   jq -n --arg ctx "STANDARD DI SVILUPPO ATTIVO (AI_Programmer — non serve invocarlo, vale da sé):
 1) Esegui, non dedurre: ogni ipotesi meccanica si prova eseguendo, col comando riportato.
-2) Prima di una formula di business: oracolo in tools/*.py o formula minata file:riga — MAI indovinata (docs/mappa-dominio-gas-src.md).
-3) Prima di correggere: il banco (PARITÀ+CORREZIONE), riga-verdetto 'attese eseguite: N/M · fallite: K' (verifica con tools/verifica_banco.py).
+2) Prima di una formula di business: oracolo in $(dove 'tools/*.py') o formula minata file:riga — MAI indovinata ($(dove docs/mappa-dominio-gas-src.md)).
+3) Prima di correggere: il banco (PARITÀ+CORREZIONE), riga-verdetto 'attese eseguite: N/M · fallite: K' (verifica con $(dove tools/verifica_banco.py)).
 4) Scarto mai silenzioso, assente≠zero, clasp MAI, segreti mai (nemmeno citati).
-5) Task da una sessione: si fa e basta col metodo; territorio grande: METHOD.md dice la strada.
+5) Task da una sessione: si fa e basta col metodo; territorio grande: $(dove METHOD.md) dice la strada.
 6) Il codice parla: semplice, spiegato, OGNI PASSO LOGGATO — il silenzio non è pulizia, è invisibilità.${DEBITI_CTX}
-Il metodo in una pagina: METHOD.md. Le famiglie misurate: .claude/skills/gas-sviluppo/references/famiglie-difetti.md." \
+Il metodo in una pagina: $(dove METHOD.md). Le famiglie misurate: .claude/skills/gas-sviluppo/references/famiglie-difetti.md." \
     '{hookSpecificOutput:{hookEventName:"SessionStart",additionalContext:$ctx}}'
   exit 0
 fi
@@ -62,10 +68,10 @@ fi
 # UserPromptSubmit (default): digest minimo + aggancio se il prompt tocca calcoli/dati
 HINT=""
 if grep -qiE 'calcol|formula|fattur|magazzin|margine|scostament|cespit|scadenz|leasing|rating|bilanci|valorizz' <<<"$PROMPT"; then
-  HINT=" · questo prompt tocca un calcolo: prima gli oracoli in tools/*.py (docs/mappa-dominio-gas-src.md), la formula non si indovina"
+  HINT=" · questo prompt tocca un calcolo: prima gli oracoli in $(dove 'tools/*.py') ($(dove docs/mappa-dominio-gas-src.md)), la formula non si indovina"
 fi
 if grep -qiE '\bBC\b|business central|endpoint|campi|dati di' <<<"$PROMPT"; then
-  HINT="$HINT · la forma dei dati BC è già censita: docs/bc/endpoints/ (indice: python3 tools/bc_index.py) — non si presume, si legge"
+  HINT="$HINT · la forma dei dati BC è già censita: $(dove docs/bc/endpoints/) (indice: python3 $(dove tools/bc_index.py)) — non si presume, si legge"
 fi
 if grep -qiE 'corregg|sistem|fix|bug' <<<"$PROMPT"; then
   HINT="$HINT · prima di correggere: il banco, e la domanda di dominio in cima"
