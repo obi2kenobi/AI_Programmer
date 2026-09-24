@@ -3774,3 +3774,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-forme-prima-del-push.sh`: rosso prima (funzione assente, 4 push senza cancello).
   Sabotaggio (cancello sempre aperto, una chiamata tolta): 2 rossi. La lente completa resta dopo
   la PR, com'era.
+- **T5#2 — l'allowlist «di sola lettura» leggeva i segreti.** `gate_allowlist_ok` in
+  `night-shift/lib.sh` controllava quale strumento gira, non cosa legge: `cat ~/.git-credentials`,
+  `echo $ZHIPUAI_API_KEY` e `cat /proc/self/environ` passavano. E `night-shift/agente.sh` poteva
+  scriverne il contenuto in un file che il `git add -A` del turno spinge. Ora il confine è il
+  progetto: rifiutati un `$` fuori dagli apici singoli, un argomento che inizia con `/` o `~` (anche
+  dopo `--opzione=`) e un `..` come cartella. `HEAD~1..HEAD` resta ammesso. Banco
+  `tests/test-lib.sh`: 9 rossi prima; un caso legittimo che leggeva `/tmp/out` è ora dentro il
+  progetto (provava la pipe). Sabotaggio: 9 rossi. Rinviato: `git add -A` → i soli file dichiarati.

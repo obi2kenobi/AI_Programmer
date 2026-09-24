@@ -128,6 +128,31 @@ def split_operators(c):
     out.append("".join(buf))
     return out
 
+# (2026-09-23, notte dei giri, T5#2): l'allowlist guardava QUALE strumento gira, non COSA legge —
+# `cat ~/.git-credentials`, `echo $ZHIPUAI_API_KEY`, `cat /proc/self/environ` passavano, e agente.sh
+# poteva scriverne il contenuto in un file che il `git add -A` del turno spinge. Il confine e' il
+# progetto: un `$` fuori dagli apici singoli (espansione), un argomento che inizia con / o ~ (anche
+# dopo `--opzione=`), un `..` come cartella — si rifiuta. `HEAD~1..HEAD` resta ammesso.
+def fuori_dagli_apici_singoli(c):
+    q = None
+    for ch in c:
+        if q:
+            if ch == q: q = None
+        elif ch in "\"'":
+            q = ch
+        if ch == "$" and q != "'":
+            return True
+    return False
+if fuori_dagli_apici_singoli(cmd):
+    sys.exit(1)
+def fuori_dal_progetto(tok):
+    t = tok.strip("\"'")
+    for v in (t, t.split("=", 1)[1] if "=" in t else ""):
+        v = v.strip("\"'")
+        if v.startswith(("/", "~")) or re.search(r"(^|/)\.\.(/|$)", v):
+            return True
+    return False
+
 ALLOWED = {"grep","cat","diff","wc","head","tail","ls","test","jq","echo","git"}
 GIT_RO = {"diff","log","show","grep","status","rev-parse","ls-files","blame"}
 for seg in split_operators(cmd):
@@ -139,6 +164,8 @@ for seg in split_operators(cmd):
     if not tokens:
         continue
     if tokens[0] not in ALLOWED:
+        sys.exit(1)
+    if any(fuori_dal_progetto(t) for t in tokens[1:]):
         sys.exit(1)
     if tokens[0] == "git":
         sub = tokens[1] if len(tokens) > 1 else ""

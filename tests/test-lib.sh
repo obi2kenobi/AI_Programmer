@@ -61,6 +61,22 @@ check "& e > fra virgolette sono dati" 0 "grep -q 'a & b > c' f"
 check "2>/dev/null e 2>&1 ammessi"   0 'grep -c x f 2>/dev/null && git log --oneline -3 2>&1'
 check ">/dev/null ammesso"           0 'grep -q x f >/dev/null'
 check "> verso un file dopo /dev/null" 1 'grep x f 2>/dev/null > out.txt'
+# (2026-09-23, notte dei giri, T5#2): l'allowlist guardava QUALE strumento gira, non COSA legge —
+# 11 letture di segreti su 11 ammesse; agente.sh poi le scriveva in un file che `git add -A` spinge.
+# Il confine e' il progetto: niente percorsi assoluti, niente ~, niente .. come cartella, niente $.
+check "cat ~/.git-credentials"      1 'cat ~/.git-credentials'
+check "cat ~/.netrc (fra virgolette)" 1 'cat "~/.netrc"'
+check "cat /proc/self/environ"      1 'cat /proc/self/environ'
+check "echo \$VARIABILE"            1 'echo $ZHIPUAI_API_KEY'
+check "echo \${GH_TOKEN}"           1 'echo ${GH_TOKEN}'
+check "grep -r in ~/.config"        1 'grep -r TOKEN ~/.config'
+check "cat ../fuori"                1 'cat ../night-shift/repos.key'
+check "cat dentro/../../fuori"      1 'cat src/../../x'
+check "git -C /altrove"             1 'git -C /home/u/altro log'
+check "grep --file=/assoluto"       1 'grep --file=/etc/passwd x'
+check "git diff HEAD~1..HEAD (intervallo, legittimo)" 0 'git diff HEAD~1..HEAD'
+check "grep in src/ (legittimo)"    0 'grep -rn foo src/'
+check "\$ fra apici singoli e' un dato (legittimo)" 0 "grep -c 'fine\$' f"
 # --- I LEGITTIMI: devono PASSARE (falsi positivi = banco zoppo) ---
 check "grep semplice"               0 grep -q "AVVISO" file.js
 # caso speciale: stringa GREZZA (le virgolette devono arrivare intere alla lib)
@@ -69,7 +85,7 @@ if gate_allowlist_ok 'grep -c "a;b" file.txt'; then ok "grep con ; nelle virgole
 # la shell del test interpretava `|` e `&&` prima di check(): l'allowlist vedeva solo il primo
 # pezzo, `git diff --stat` e `tail -2 file` giravano DAVVERO nell'hub, e l'esito di «cat | wc»
 # finiva dentro wc (conteggio perso nella subshell). Tre verdi che non provavano niente.
-check "cat | wc"                    0 'cat /tmp/out | wc -l'
+check "cat | wc"                    0 'cat out.txt | wc -l'   # (T5#2: /tmp e' fuori dal progetto, il caso prova la pipe)
 check "git diff readonly"           0 git diff HEAD~1
 check "git log"                     0 git log --oneline -5
 check "git status concatenato"      0 'git status && git diff --stat'
