@@ -8,10 +8,13 @@ Non è il diario (quello è la SAL) e non è la mappa degli errori (quella è
 `docs/errori/REGISTRO.md`): è ciò che resta quando il diario è passato e gli
 errori sono diventati vaccini. Il grafo non si naviga a mano — si interroga:
 
+Nell'ordine: gli sospesi di oggi (risposta deterministica), la storia di un termine con le citazioni
+verificate, il sotto-grafo di un termine.
+
 ```bash
-bash tools/cervello-domanda.sh in-sospeso        # gli sospesi di oggi (deterministica)
-bash tools/cervello-domanda.sh archeologia wedge # la storia di un termine, con citazioni verificate
-bash tools/cervello-domanda.sh collegami e002    # il sotto-grafo di un termine
+bash tools/cervello-domanda.sh in-sospeso
+bash tools/cervello-domanda.sh archeologia wedge
+bash tools/cervello-domanda.sh collegami e002
 ```
 
 ## Come nasce una nota

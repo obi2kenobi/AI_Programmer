@@ -7,9 +7,11 @@ description: Usa questa skill quando sul repo lavorano DUE O PIÙ persone o sess
 
 ## 1. Prima di iniziare: guarda e dichiara
 
+Chi c'è adesso, e su cosa; poi la tua presenza, che scade da sé dopo 4 ore:
+
 ```
-bash tools/presidio.sh lista            # chi c'è adesso, e su cosa
-bash tools/presidio.sh claim <zona> <nota>   # la tua presenza (4h, poi scade da sé)
+bash tools/presidio.sh lista
+bash tools/presidio.sh claim <zona> <nota>
 ```
 
 La zona è il pezzo che toccherai («oracoli», «skill gas-sviluppo», «agente

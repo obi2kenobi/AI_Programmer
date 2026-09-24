@@ -304,7 +304,10 @@ ${DIFF_TXT}"
       # backtick/virgolette/$ che l'output di un comando qualunque potrebbe contenere.
       echo "" >> "$REPORT"
       echo "> ⛔ **Proposta correttiva** (il correttore — da approvare):" >> "$REPORT"
-      echo "> \`\`\`bash" >> "$REPORT"
+      # (2026-09-24, sesto ventaglio, S1 R6): il blocco si apriva DENTRO la citazione (`> ```bash`) e si chiudeva
+      # fuori: in CommonMark finisce con la citazione, e il comando usciva dal blocco. Ora il blocco sta fuori.
+      echo "" >> "$REPORT"
+      echo "\`\`\`bash" >> "$REPORT"
       echo "gh issue create -R $REPO --label night-shift --title \"correzione: PR #$NUM — verifiche o banco avversario falliti\" --body \"\$(cat <<'GATE_EOF'" >> "$REPORT"
       echo "La PR #$NUM non supera il gate del mattino (verifiche: $VERDICT, banco: $BANCO)." >> "$REPORT"
       if [ -n "$FAIL_DETAIL" ]; then

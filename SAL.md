@@ -5087,3 +5087,24 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Visto passando: gli a capo del prompt erano «\n» letterali fra virgolette doppie, ora sono veri. Se nei GAS veri
   ci sono file con lo spazio è una domanda (DEBITI). Due casi nuovi in `tests/test-risolvi-issue.sh` (27/0, anche
   col PATH «Mac»), rossi prima; sabotaggio 25/2.
+- **Sesto ventaglio, S1 R4, R5, R6 — i blocchi di comandi dati a una persona non giravano in zsh, e la regola non
+  aveva una guardia.** CLAUDE.md §3 vieta i commenti in riga nei blocchi da incollare, e solo il MANUALE era stato
+  ripulito, a mano. Il giro li ha incollati in `zsh -f -i`:
+  - in lavoro-condiviso l'apostrofo di «c'è» dentro il commento apriva una stringa, e nessuno dei due comandi del
+    presidio girava;
+  - in cervello `(deterministica)` dava «number expected»;
+  - nella skill di consegna GAS `git worktree remove X   # a PR chiusa` lasciava il worktree;
+  - llm/README e docs/bc/README avevano la stessa forma.
+
+  Ora la spiegazione sta sopra i blocchi, in prosa; per docs/bc la correzione è nel suo generatore,
+  `tools/bc_index.py`. La skill di consegna insegnava anche un ramo `fix/`, che nessun giudice vede (§4, S1 R5):
+  ora è `claude/`. Nel rapporto del morning-gate il blocco della proposta correttiva si apriva dentro una citazione
+  e si chiudeva fuori (S1 R6): ora sta fuori.
+
+  Guardia nuova, `tests/test-blocchi-operatore.sh` (3/0). Vieta:
+  - i commenti in riga nei blocchi dei `.md` tracciati;
+  - i rami `fix/`, `feature/` insegnati in un blocco;
+  - un blocco aperto dentro una citazione negli strumenti.
+
+  Fuori, dichiarati: la storia, e la skill graphify vendorizzata, che scrive per l'agente. Rossa prima (16
+  commenti, 2 rami, 1 citazione). Sabotaggio con un commento rimesso in lavoro-condiviso: 1/1.

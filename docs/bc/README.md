@@ -3,10 +3,12 @@
 Conoscenza viva sugli endpoint OData V4 di BC. Vedi `PROJECT.md` per le regole di processo.
 
 ## Come mappare un endpoint
+Un endpoint solo; poi tutti quelli del catalogo (salta i già fatti); poi l'indice di questa cartella,
+rigenerato:
 ```
-python3 tools/bc_map.py <NomeServizio> [righe_campione]   # singolo
-python3 tools/bc_map.py --catalog CATALOGO_ENDPOINT_BC.md  # tutti (salta i già fatti)
-python3 tools/bc_index.py                                  # rigenera questo indice
+python3 tools/bc_map.py <NomeServizio> [righe_campione]
+python3 tools/bc_map.py --catalog CATALOGO_ENDPOINT_BC.md
+python3 tools/bc_index.py
 ```
 Poi: compilare la colonna *Significato* e spuntare *Verificato* dopo il riscontro.
 

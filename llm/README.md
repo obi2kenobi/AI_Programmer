@@ -5,9 +5,11 @@ script, agente o turno notturno delega a qualsiasi cervello con lo stesso gesto.
 
 ## Il contratto unico
 
+La risposta arriva su stdout; il contesto lungo entra da stdin:
+
 ```bash
-llm/ask-<cervello>.sh "prompt"                # risposta su stdout
-cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"   # contesto via stdin
+llm/ask-<cervello>.sh "prompt"
+cat file.lungo | llm/ask-<cervello>.sh "cosa farne del contenuto"
 ```
 
 - Prompt come argomento, contesto lungo via stdin (mai incollato nel prompt)
