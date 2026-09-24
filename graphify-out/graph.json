@@ -28496,7 +28496,7 @@
       },
       "norm_label": "g()",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L20"
+      "source_location": "L22"
     },
     {
       "id": "tests_test_giri_avversari_isolati_ko",
@@ -28541,7 +28541,7 @@
       },
       "norm_label": "pulisci()",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L18"
+      "source_location": "L20"
     },
     {
       "id": "tests_test_giri_avversari_isolati_sessione_nuova",
@@ -28556,7 +28556,7 @@
       },
       "norm_label": "sessione_nuova()",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L44"
+      "source_location": "L46"
     },
     {
       "id": "tests_test_giri_avversari_isolati_sh__entry",
@@ -28586,7 +28586,7 @@
       },
       "norm_label": "tmpdir",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L16"
+      "source_location": "L18"
     },
     {
       "id": "docs_campo_2026_09_20_test_sistema_completo_fable",
@@ -55586,7 +55586,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L27",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -55598,7 +55598,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L27",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -55610,7 +55610,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L36",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -55622,7 +55622,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -91965,7 +91965,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -91976,7 +91976,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L18",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -91987,7 +91987,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -91998,7 +91998,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L44",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -98262,5 +98262,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "819ab0fd5a11a17d935dbe502563272adb114de8"
+  "built_at_commit": "0f0e1afe0218d9df64b073b0322c4e5fabe78da2"
 }

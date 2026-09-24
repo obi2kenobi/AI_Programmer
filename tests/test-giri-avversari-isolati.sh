@@ -13,7 +13,9 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 T=$(mktemp -d)
 # (2026-09-24, terzo ventaglio, V4#4): ogni giro del banco lasciava in /tmp il clone della batteria uccisa
 # (14 MB) e le cartelle delle altre: TMPDIR dentro la cartella del banco, e la pulizia toglie tutto
-mkdir -p "$T/tmp"; export TMPDIR="$T/tmp"
+# (2026-09-24, sesto ventaglio, S3 R5): con lo spazio — la batteria che misura le difese si misurava solo sui percorsi
+# piani, e con un TMPDIR ostile dava 6 AGGIRA falsi e TIENE per attacchi mai partiti
+mkdir -p "$T/tmp spazio"; export TMPDIR="$T/tmp spazio"
 PIDS=()
 pulisci() { for p in ${PIDS[@]+"${PIDS[@]}"}; do kill -9 -- "-$p" 2>/dev/null; done; sleep 1; rm -rf "$T"; }
 trap pulisci EXIT
@@ -63,7 +65,7 @@ done
 [ -z "$SPORCO" ] && [ -z "$(git -C "$T/hub" status --porcelain)" ] \
   && ok "durante la batteria e dopo un kill -9 l'albero resta pulito" || ko "la batteria scrive nell'albero: ${SPORCO:-$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' ')}"
 # (V4#4): il clone della batteria uccisa sta DENTRO la cartella del banco (lo toglie la pulizia), non in /tmp
-[ -n "$(find "$T/tmp" -mindepth 2 -maxdepth 2 -name hub -type d 2>/dev/null | head -1)" ] \
+[ -n "$(find "$TMPDIR" -mindepth 2 -maxdepth 2 -name hub -type d 2>/dev/null | head -1)" ] \
   && ok "il clone della batteria uccisa resta nella cartella del banco, non in /tmp" || ko "il clone della batteria uccisa non e' sotto \$TMPDIR del banco: finisce in /tmp"
 
 echo ""

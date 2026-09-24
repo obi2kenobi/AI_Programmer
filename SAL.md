@@ -5174,3 +5174,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   secondo giro riconosce il bootstrap INTERROTTO (niente remoto) e dice di togliere la cartella e rilanciare.
   Riprendere da solo non lo fa: resta un gesto di chi lancia. Due casi nuovi in `tests/test-bootstrap-app-e2e.sh`
   (17/0), col gh finto che risponde HTTP 502; rossi prima, sabotaggio 15/2.
+- **Sesto ventaglio, S3 R5 — con un TMPDIR con lo spazio, la batteria degli avversari dava AGGIRA falsi e TIENE
+  per attacchi mai partiti.** `tools/giri-avversari.sh` usava `$AVVT` (la sua cartella in TMPDIR) senza virgolette
+  in 32 punti. Con lo spazio uscivano 6 AGGIRA falsi. Gli attacchi D7-D21 non scrivevano il file d'attacco, e
+  `classifica` contava «TIENE» un attacco mai partito. D16 creava una cartella FUORI dal clone. Il ripristino di
+  G5, col percorso incollato nel sorgente python, moriva di SyntaxError con un apice. `tools/giri-ignoranti.sh`
+  passava la lista dei docs come stringa senza virgolette, e con lo spazio S6 non leggeva i documenti (G20
+  aggirato). Ora:
+  - `$AVVT` è quotato ovunque, e il percorso passa a python come argomento;
+  - la lista dei docs è un array che regge la bash 3.2.
+
+  `tests/test-giri-avversari-isolati.sh` gira ora con `TMPDIR="$T/tmp spazio"`: la batteria che misura le difese
+  si misura anche sul percorso ostile. 7/0. Sabotaggio col giri-avversari di prima: 5 aggirati. Due commit: le
+  cure prima, poi il banco, perché la batteria gira in un clone del commit.
