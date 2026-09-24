@@ -72,8 +72,16 @@ def main():
     except (OSError, ValueError) as e:
         print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — config non leggibile: {e}", file=sys.stderr)
         return 1
-    soglia = float(cfg.get("soglia_discrepanza_pct", 5))
-    obiettivo_pct = float(cfg.get("obiettivo_margine_errore_pct", 0.1))
+    # (2026-09-24, quinto ventaglio, R3 R4): una config lista o una soglia «cinque» erano un traceback
+    if not isinstance(cfg, dict):
+        print("uso: accuratezza_fatture_acquisto.py — la config deve essere un oggetto JSON {...}", file=sys.stderr)
+        return 1
+    try:
+        soglia = float(cfg.get("soglia_discrepanza_pct", 5))
+        obiettivo_pct = float(cfg.get("obiettivo_margine_errore_pct", 0.1))
+    except (ValueError, TypeError):
+        print("ERRORE: soglia_discrepanza_pct e obiettivo_margine_errore_pct devono essere numeri — nessun verdetto", file=sys.stderr)
+        return 1
     whitelist = set(cfg.get("whitelist_fornitori") or [])
 
     fatture = leggi_csv(sys.argv[2], ("nr", "importo"))

@@ -105,7 +105,8 @@ def main():
         inizio = date.fromisoformat(c["data_inizio"])
         fine = date.fromisoformat(c["data_fine"])
         riferimento = date.fromisoformat(c.get("data_riferimento") or date.today().isoformat())
-    except ValueError as e:
+    # (2026-09-24, quinto ventaglio, R3 R4): una data null o scritta come numero e' un TypeError, non un ValueError
+    except (ValueError, TypeError) as e:
         print(f"ERRORE: {e}", file=sys.stderr)
         return 1
     if canone <= 0:

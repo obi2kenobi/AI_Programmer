@@ -506,7 +506,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L145"
+      "source_location": "L148"
     },
     {
       "id": "tools_valorizzazione_magazzino_risolvi_costo",
@@ -518,7 +518,7 @@
       "file_type": "code",
       "norm_label": "risolvi_costo()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L88"
+      "source_location": "L91"
     },
     {
       "id": "tools_valorizzazione_magazzino_valorizza",
@@ -530,7 +530,7 @@
       "file_type": "code",
       "norm_label": "valorizza()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L101"
+      "source_location": "L104"
     },
     {
       "id": "tools_bc_map_collect_fields",
@@ -35487,7 +35487,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_102",
+      "id": "tools_valorizzazione_magazzino_rationale_105",
       "label": "Il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. Senza\u2026",
       "_origin": "ast",
       "community": 48,
@@ -35495,10 +35495,10 @@
       "file_type": "rationale",
       "norm_label": "il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. senza...",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L102"
+      "source_location": "L105"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_146",
+      "id": "tools_valorizzazione_magazzino_rationale_149",
       "label": "Report: totale SOLO delle location considerate, dettaglio ordinato per valore,\u2026",
       "_origin": "ast",
       "community": 48,
@@ -35506,7 +35506,7 @@
       "file_type": "rationale",
       "norm_label": "report: totale solo delle location considerate, dettaglio ordinato per valore,...",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L146"
+      "source_location": "L149"
     },
     {
       "id": "tools_valorizzazione_magazzino_rationale_2",
@@ -35542,7 +35542,7 @@
       "source_location": "L67"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_89",
+      "id": "tools_valorizzazione_magazzino_rationale_92",
       "label": "Catena articolo > categoria > gruppo: il primo override esistente vince.",
       "_origin": "ast",
       "community": 48,
@@ -35550,7 +35550,7 @@
       "file_type": "rationale",
       "norm_label": "catena articolo > categoria > gruppo: il primo override esistente vince.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L89"
+      "source_location": "L92"
     },
     {
       "id": "docs_bc_endpoints_prezzi_vendita_excel",
@@ -57815,7 +57815,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L79",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -58607,7 +58607,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L128",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -58907,7 +58907,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L90",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -59087,7 +59087,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L173",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -59099,7 +59099,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L97",
+      "source_location": "L100",
       "weight": 1.0
     },
     {
@@ -59111,7 +59111,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L107",
+      "source_location": "L110",
       "weight": 1.0
     },
     {
@@ -59123,7 +59123,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L133",
+      "source_location": "L136",
       "weight": 1.0
     },
     {
@@ -86660,7 +86660,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L101",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -86671,7 +86671,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L145",
+      "source_location": "L148",
       "weight": 1.0
     },
     {
@@ -86704,7 +86704,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L88",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -94584,25 +94584,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_102",
+      "source": "tools_valorizzazione_magazzino_rationale_105",
       "target": "tools_valorizzazione_magazzino_valorizza",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L102",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_146",
+      "source": "tools_valorizzazione_magazzino_rationale_149",
       "target": "tools_valorizzazione_magazzino_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L146",
+      "source_location": "L149",
       "weight": 1.0
     },
     {
@@ -94639,14 +94639,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_89",
+      "source": "tools_valorizzazione_magazzino_rationale_92",
       "target": "tools_valorizzazione_magazzino_risolvi_costo",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L89",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -96290,5 +96290,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "72e3583fb75da68996814be528d4f1064de0e5a2"
+  "built_at_commit": "9726f24bcb3f2413d15ed8dc50eeda2d11f08b58"
 }

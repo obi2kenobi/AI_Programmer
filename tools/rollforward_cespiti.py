@@ -84,6 +84,11 @@ def main():
     if mancanti:
         print(f"uso: rollforward_cespiti.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
         return 1
+    # (2026-09-24, quinto ventaglio, R3 R4): un cespite che non e' un oggetto era un AttributeError
+    storti = [i for i, c in enumerate(dati["cespiti"]) if not isinstance(c, dict)]
+    if storti:
+        print(f"uso: rollforward_cespiti.py — cespiti[] contiene elementi che non sono oggetti (posizioni {storti[:5]})", file=sys.stderr)
+        return 1
     # (Q22, 2026-09-23): un cespite dismesso senza «fondo» (KeyError) o un null in un campo della
     # categoria (TypeError) erano traceback nudi: il contratto D32 e' uso/ERRORE, mai traceback
     try:

@@ -4753,3 +4753,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Dieci casi nuovi in `tests/test-oracoli-uso.sh` (74/0), rossi prima. Sabotaggio con i quattro oracoli di
   prima: 64/10. I banchi propri restano verdi.
+- **Quinto ventaglio, R3 R4 — un JSON con la forma sbagliata era un traceback in cinque oracoli.** Le
+  guardie provavano che le chiavi ci fossero, non il loro tipo. Ora:
+  - `tools/leasing_amministrativo.py` prende anche il `TypeError` di una data null o scritta come numero;
+  - `tools/accuratezza_fatture_acquisto.py` e `tools/valorizzazione_magazzino.py` vogliono una config
+    oggetto, e dicono una soglia non numerica o una tabella di override che non è un oggetto;
+  - valorizzazione dice anche un override stringa («EURO+2»);
+  - `tools/rollforward_cespiti.py` dice le posizioni dei cespiti che non sono oggetti.
+
+  Indici con `"pn": "100"` o null era già coperto dalla guardia di R3 R2. Nove casi nuovi in
+  `tests/test-oracoli-uso.sh` (83/0), otto rossi prima (il nono, indici, è la prova della copertura).
+  Sabotaggio con i quattro oracoli di prima: 75/8.

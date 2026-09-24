@@ -170,6 +170,24 @@ printf 'nr,importo,ordine_nr,fornitore\nF1,100,O1,A\n' > "$TMP/fn.csv"; printf '
 dichiara "accuratezza: importo ordine vuoto" python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/fn.csv" "$TMP/on.csv"
 printf 'nr,importo,ordine_nr,fornitore\nF1,,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,100\n' > "$TMP/on.csv"
 dichiara "accuratezza: importo fattura vuoto" python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/fn.csv" "$TMP/on.csv"
+# (2026-09-24, quinto ventaglio, R3 R4): le guardie provavano che le chiavi ci fossero, non il loro tipo. Un
+# JSON con la forma sbagliata (lista, stringa, null, data scritta come numero) era un traceback in cinque oracoli.
+echo "{${L/\"2026-09-01\"/20260901}}" > "$TMP/l.json";  dichiara "leasing: data_riferimento scritta come numero" python3 "$T/leasing_amministrativo.py" "$TMP/l.json"
+echo "{${L/\"2029-12-31\"/null}}" > "$TMP/l.json";       dichiara "leasing: data_fine null"                       python3 "$T/leasing_amministrativo.py" "$TMP/l.json"
+printf 'nr,importo,ordine_nr,fornitore\nF1,100,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,100\n' > "$TMP/on.csv"
+dichiara "accuratezza: config lista"              python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/lista.json" "$TMP/fn.csv" "$TMP/on.csv"
+echo '{"soglia_discrepanza_pct":"cinque"}' > "$TMP/c.json"
+dichiara "accuratezza: soglia non numerica"       python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/c.json" "$TMP/fn.csv" "$TMP/on.csv"
+printf '%s\nA,,,,1,2\n' "$V" > "$TMP/v.csv"
+dichiara "valorizzazione: config lista"           python3 "$T/valorizzazione_magazzino.py" "$TMP/lista.json" < "$TMP/v.csv"
+echo '{"override_articoli":["A"]}' > "$TMP/c.json"
+dichiara "valorizzazione: override_articoli lista" python3 "$T/valorizzazione_magazzino.py" "$TMP/c.json" < "$TMP/v.csv"
+echo '{"override_articoli":{"A":"EURO+2"}}' > "$TMP/c.json"
+dichiara "valorizzazione: override stringa"       python3 "$T/valorizzazione_magazzino.py" "$TMP/c.json" < "$TMP/v.csv"
+echo '{"categoria":{"openCosto":100,"openRival":0,"openSval":0,"yearCosto":10,"yearRival":0,"yearSval":0,"openFondo":-20,"yearFondo":-5},"cespiti":[5]}' > "$TMP/rf.json"
+dichiara "rollforward: un cespite non oggetto"    python3 "$T/rollforward_cespiti.py" < "$TMP/rf.json"
+# indici: «"pn": "100"» e null erano un TypeError; li copre gia' la guardia di R3 R2 (numero finito, non bool)
+sed 's/"pn": NaN/"pn": "100"/' "$TMP/ic.json" > "$TMP/ic2.json"; dichiara "indici: pn stringa (gia' coperto da R3 R2)" python3 "$T/indici_crisi.py" < "$TMP/ic2.json"
 # (2026-09-24, quinto ventaglio, R3 R1): il ramo «fornitore» in minuscolo (o con uno spazio davanti) non
 # assegnava l'importo — la riga prendeva quello della riga PRIMA (Entrate +2000 invece di +1500), o, se era la
 # prima, un traceback. Il segno resta quello che l'ATTENZIONE dichiara (+abs, convenzione provvisoria: la

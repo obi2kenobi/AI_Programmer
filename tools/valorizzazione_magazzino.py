@@ -67,6 +67,9 @@ def applica_override(costo, override):
     """PERCENTUALE: costo*(1+v/100) · EURO: costo+v. override None → costo invariato."""
     if not override:
         return costo
+    # (2026-09-24, quinto ventaglio, R3 R4): un override stringa («EURO+2») era un AttributeError
+    if not isinstance(override, dict):
+        raise ValueError(f"override non e' un oggetto {{type, value}}: {override!r}")
     tipo = str(override.get("type", "")).upper()
     # (Q22): un override SENZA value valeva 0 in silenzio — la riga risultava «valorizzata con
     # override» senza che nessuno l'avesse deciso. Assente non e' zero: si dichiara.
@@ -158,6 +161,14 @@ def main():
             cfg = json.load(f)
     except (OSError, ValueError) as e:
         print(f"uso: valorizzazione_magazzino.py config.json < righe.csv — config non leggibile: {e}", file=sys.stderr)
+        return 1
+    # (2026-09-24, quinto ventaglio, R3 R4): una config lista, o una tabella di override lista, erano un traceback
+    if not isinstance(cfg, dict):
+        print("uso: valorizzazione_magazzino.py — la config deve essere un oggetto JSON {...}", file=sys.stderr)
+        return 1
+    tabelle_storte = [t for t in ("override_gruppi", "override_categorie", "override_articoli") if not isinstance(cfg.get(t) or {}, dict)]
+    if tabelle_storte:
+        print(f"uso: valorizzazione_magazzino.py — {', '.join(tabelle_storte)} deve essere un oggetto {{codice: override}}", file=sys.stderr)
         return 1
     reader = csv.DictReader(sys.stdin)
     mancanti = [c for c in ("codice", "qty") if c not in (reader.fieldnames or [])]
