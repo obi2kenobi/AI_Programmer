@@ -62,6 +62,8 @@ $STDIN_DATA"
 source "$HERE/../night-shift/lib.sh"
 PROMPT=$(mask_secrets <<<"$PROMPT")
 
+# (2026-09-24, Q2): senza python3 il wrapper usciva 127 col solo «command not found» (il contratto e' 0/1/2)
+command -v python3 >/dev/null 2>&1 || { echo "ERRORE glm: python3 assente — serve per il payload e la risposta" >&2; exit 1; }
 BASE="${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}"
 # bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
 # override universale per tutti i wrapper ask-*, ma qui era ignorato — solo
@@ -120,8 +122,16 @@ except json.JSONDecodeError:
 if "error" in r:
     print("ERRORE glm:", r["error"], file=sys.stderr); sys.exit(1)
 try:
-    print(r["choices"][0]["message"]["content"])
+    c = r["choices"][0]["message"]["content"]
 except (KeyError, IndexError, TypeError):
+    c = False
+# (2026-09-24, Q2): content null stampava «None» con rc 0; vuoto e null sono una risposta VUOTA, rc 1
+if c is None or c == "":
+    print("ERRORE glm: risposta vuota del server (content assente o vuoto) —", raw[:200], file=sys.stderr)
+    sys.exit(1)
+if c is not False:
+    print(c)
+else:
     print("ERRORE glm: risposta JSON di forma inattesa (manca choices[0].message.content) —", raw[:200], file=sys.stderr)
     sys.exit(1)
 ' || exit 1

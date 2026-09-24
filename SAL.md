@@ -4607,3 +4607,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   che si aggira per errore, l'ingresso non detto. Da fare a mano: i due file che il giro Q2 ha lasciato
   alla radice del container. Il report di campo ha la sezione del quarto ventaglio, con due proposte a
   CLAUDE.md non applicate.
+- **Quarto ventaglio, Q2 sotto il tetto — due vie del contratto «0 ok / 1 errore» dei wrapper.** Casi:
+  - `llm/ask-glm.sh`, con `content: null`, stampava «None» e usciva 0;
+  - `llm/ask-qwen.sh`, con un contenuto vuoto (`done_reason: length`), usciva 0 con lo stdout vuoto;
+  - senza python3 i wrapper uscivano 127, col solo «command not found».
+
+  Ora la risposta vuota è «ERRORE …: risposta vuota», rc 1, e python3 assente si dice subito, rc 1,
+  prima di ogni sonda. I chiamanti veri (lente-sicurezza, morning-gate) leggono solo l'uscita: il
+  verdetto non cambia. `tests/test-ask-wrappers.sh` ha quattro casi nuovi: rossi prima (4 FAIL), verdi
+  ora (35/0). Il mio primo caso di ask-qwen senza python3 usava il curl vero e moriva sulla sonda di
+  Ollama: corretto col curl finto. Sabotaggio: senza il controllo del vuoto in ask-glm, 34/1. Verdi
+  anche stdin-timeout, lente-sicurezza, i tre banchi del morning-gate e payload-da-stdin.

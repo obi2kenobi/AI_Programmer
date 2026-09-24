@@ -313,6 +313,25 @@ rm -rf "$MSKTMP"
   || ko "chiamata vera a claude senza ASK_VIVO=1: $(cat "$SENT/vere.log")"
 rm -rf "$SENT"
 
+# (2026-09-24, quarto ventaglio, Q2 sotto il tetto): due casi del contratto «0 ok / 1 errore» non tenuti —
+# ask-glm con `content: null` stampava «None» e usciva 0; ask-qwen con un contenuto vuoto usciva 0 con lo
+# stdout vuoto; e senza python3 i wrapper uscivano 127 col solo «command not found».
+VT=$(mktemp -d)
+printf '#!/bin/bash\ncat >/dev/null\necho "{\\"choices\\":[{\\"message\\":{\\"content\\":null}}]}"\n' > "$VT/curl"; chmod +x "$VT/curl"
+OUT=$(PATH="$VT:$PATH" ZHIPUAI_API_KEY=x bash "$HERE/llm/ask-glm.sh" "test" </dev/null 2>&1); RC=$?
+[ "$RC" -eq 1 ] && ! grep -cx 'None' <<<"$OUT" >/dev/null && grep -c 'vuota' <<<"$OUT" >/dev/null \
+  && ok "ask-glm con content null: rc 1 «risposta vuota», non «None» con rc 0" || ko "ask-glm content null: rc=$RC, $OUT"
+printf '#!/bin/bash\ncase "$*" in *api/version*) echo "{}" ;; *) cat >/dev/null; echo "{\\"message\\":{\\"content\\":\\"\\"},\\"done_reason\\":\\"length\\"}" ;; esac\n' > "$VT/curl"
+OUT=$(PATH="$VT:$PATH" bash "$HERE/llm/ask-qwen.sh" "test" </dev/null 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -c 'vuota' <<<"$OUT" >/dev/null && ok "ask-qwen con contenuto vuoto: rc 1 «risposta vuota»" || ko "ask-qwen contenuto vuoto: rc=$RC, $OUT"
+mkdir -p "$VT/nopy"; for b in /usr/local/bin/* /usr/bin/* /bin/*; do n=${b##*/}; case "$n" in python3*) continue ;; esac; [ -e "$VT/nopy/$n" ] || ln -s "$b" "$VT/nopy/$n" 2>/dev/null; done
+rm -f "$VT/nopy/curl"; cp "$VT/curl" "$VT/nopy/curl"   # il finto: Ollama «su», qui si giudica solo python3
+for W in ask-glm ask-qwen; do
+  OUT=$(PATH="$VT/nopy" ZHIPUAI_API_KEY=x bash "$HERE/llm/$W.sh" "test" </dev/null 2>&1); RC=$?
+  [ "$RC" -eq 1 ] && grep -c 'python3 assente' <<<"$OUT" >/dev/null && ok "$W senza python3: rc 1 e lo dice (non 127)" || ko "$W senza python3: rc=$RC, $(tail -1 <<<"$OUT")"
+done
+rm -rf "$VT"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

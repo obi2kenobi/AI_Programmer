@@ -18,6 +18,8 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 # si armonizza allo stesso ordine.
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+# (2026-09-24, Q2): senza python3 il wrapper usciva 127 col solo «command not found» (il contratto e' 0/1/2)
+command -v python3 >/dev/null 2>&1 || { echo "ERRORE ollama: python3 assente — serve per il payload e la risposta" >&2; exit 1; }
 
 # giro 10/10 (set 1 "armonizza gli agenti"): traccia locale minima — vedi llm/_usage.sh.
 source "$HERE/_usage.sh"
@@ -124,7 +126,11 @@ except json.JSONDecodeError:
 if "error" in r:
     print("ERRORE ollama:", r["error"], file=sys.stderr); sys.exit(1)
 try:
-    print(r["message"]["content"])
+    c = r["message"]["content"]
+    # (2026-09-24, Q2): un contenuto vuoto (done_reason length, un modello che pensa soltanto) usciva 0
+    if not c:
+        print("ERRORE ollama: risposta vuota (done_reason:", r.get("done_reason", "?"), ")", file=sys.stderr); sys.exit(1)
+    print(c)
 except (KeyError, TypeError):
     print("ERRORE ollama: risposta JSON di forma inattesa (manca message.content) —", raw[:200], file=sys.stderr)
     sys.exit(1)
