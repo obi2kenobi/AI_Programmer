@@ -1,8 +1,8 @@
 # SAL — il diario vivo del sistema
 
 > Diario del sistema di sviluppo (hub + cervelli + turno notturno + giudizio).
-> Ogni decisione porta la data e i fatti che l'hanno imposta. Aggiornato dal morning-gate
-> e a ogni decisione strutturale.
+> Ogni decisione porta la data e i fatti che l'hanno imposta. Aggiornato a ogni sessione e a
+> ogni decisione strutturale (lo aggiornava il morning-gate, in pensione da launchd dal 2026-09-23).
 
 <!-- SAL-INDICE: generato da tools/sal-indice.sh — non editare a mano -->
 ## Indice del diario
@@ -161,6 +161,9 @@
 cervelli richiamabili (`llm/`), turno notturno multi-repo, giudizio mattutino col banco
 avversariale, memoria (questo file + `metrics/gate.csv`).
 
+(2026-09-24, R1 R2 del quinto ventaglio) In esercizio da un mese, non più «prima installazione»: lo stato
+vivo è nell'ultima voce del log qui sotto e nei debiti aperti (`bash tools/debiti-riapertura.sh`).
+
 ## Decisioni
 
 - **2026-08-21 · Il repo chiama i vari LLM** (deciso da Luca). Wrapper uniformi `llm/ask-*`
@@ -169,11 +172,18 @@ avversariale, memoria (questo file + `metrics/gate.csv`).
   (verificato sui sorgenti, non presunto).
 - **2026-08-21 · Nessun limite di tempo per issue notturna** (deciso da Luca, mutuata da REPO-A):
   fino a che non ha finito, il tempo non esiste. Guardie: prompt anti-loop + review del mattino.
+  *Superata (annotato il 2026-09-24): dopo tre notti bruciate (DEBITI, «Il turno senza limite ha bruciato 3
+  notti») CLAUDE.md §7 dichiara un watchdog di 240 minuti per issue. Quel watchdog però vive nel ramo
+  opencode, che non gira: è la domanda V1#6d in DEBITI.md. Oggi il limite vero sono i timeout di curl e
+  dell'agente.*
 - **2026-08-21 · Config reale fuori dal repo pubblico**: `night-shift/repos.conf` è gitignored —
   i nomi delle repo private non entrano in un repo pubblico. Nel repo solo `repos.conf.example`.
 - **2026-08-21 · Il giudizio è avversariale**: il morning-gate non colleziona report, prova a
   smentire le PR (metodo del Supervisore in REPO-A, applicato al sistema). I fallimenti
   diventano proposte di commesse correttive — nulla si rifà senza il sì di Luca.
+  *Annotato il 2026-09-24: il morning-gate è in pensione da launchd dal 2026-09-23 (CLAUDE.md §4). Il
+  giudizio avversariale automatico oggi è il censore (`night-shift/revisore.sh`), che delibera solo le
+  bozze `caccia:` su `night/`.*
 - **2026-08-21 · La scoperta di gap/nuove idee diventa una skill, non un'abitudine** (deciso da
   Luca): il ruolo "cervello di giorno per giudizio/architettura" della matrice `llm/README.md`
   esisteva solo come istruzione implicita ("fallo tu quando serve"). Diventa la skill
@@ -4824,3 +4834,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   quando fu scritto. È storia congelata: ora i controlli 3 e 6 non lo guardano, come il controllo 0 già
   faceva. Due casi in `tests/test-pre-commit.sh` (30/0): l'archivio passa, la stessa citazione nel SAL vivo
   resta rossa. Sabotaggio: 29/1.
+- **Quinto ventaglio, R1 R2 — la memoria «stabile» contraddiceva sé stessa e il codice.** Le note si
+  annotano, non si riscrivono:
+  - `cervello/decisione-quarantena-censore.md` diceva «ogni PR passa dal revisore». Ora dice cosa delibera
+    davvero il censore (solo le bozze `caccia:` su `night/`), il parere D10 e i rami senza giudice;
+  - `cervello/decisione-privacy-nomi.md` e il punto 7 di `cervello/decisione-dominio-2026-09-23.md`
+    dicono due cose opposte sui nomi delle persone. La nota lo dice e rimanda alla domanda aperta T5#4,
+    senza decidere;
+  - la nota delle «otto decisioni» ora rimanda a D1-D11, decise lo stesso giorno;
+  - nella testa di questo diario, «Aggiornato dal morning-gate» e lo «Stato» del 2026-08-21 sono
+    aggiornati. Nelle «Decisioni», due voci superate portano la loro annotazione: «nessun limite di tempo»
+    (e il watchdog che la sostituisce sulla carta non gira: V1#6d) e il morning-gate.
+
+  Senza guardia: nessun banco sa leggere il senso di una nota. Il controllo che il giro proponeva (una nota
+  `decisione` più vecchia di un SALDATO sullo stesso tema) è rinviato.
