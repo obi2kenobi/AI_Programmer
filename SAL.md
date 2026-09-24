@@ -5119,3 +5119,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   argomento intero; `tests/test-install-garante.sh` (8/0) installa da un hub con lo spazio ed ESEGUE il comando
   scritto. Rossi prima; sabotaggio 12/1 e 7/1. Se sul Mac ci siano copie sotto un percorso con spazi è una domanda
   (DEBITI).
+- **Sesto ventaglio, S4 R5 — il censimento del registro, troncato da un kill, registrava una crescita falsa.**
+  `tools/caccia-registro.sh` scriveva lo stato con `echo … > ultimo`, sul posto. Il giro S4 l'ha ucciso con strace
+  durante la scrittura: `ultimo` vuoto. Al giro dopo le variabili vuote valevano 0, il delta era tutto il debito
+  («⚠ CRESCIUTO di 16»), e la storia append-only lo teneva per sempre. Ora lo stato si scrive accanto e si rinomina.
+  Uno stato presente ma illeggibile si dice («ILLEGGIBILE», baseline), e il delta è 0. Due casi nuovi in
+  `tests/test-caccia-registro.sh` (16/0), rossi prima; sabotaggio 14/2.

@@ -101,6 +101,15 @@ L_MARK=$(grep -n 'marker: sana E niente da migliorare' "$NS" | head -1 | cut -d:
 [ -n "$L_CENS" ] && [ "$L_CHK" -gt "${L_MARK:-0}" ] \
   && ok "il turno censisce DOPO il ritorno a main (riga $L_CHK < $L_CENS): la storia si scrive" || ko "il turno censisce sul ramo della caccia (censimento riga ${L_CENS:-?}, ritorno a main ${L_CHK:-?})"
 
+# (2026-09-24, sesto ventaglio, S4 R5): `echo … > ultimo` sul posto — troncato da un kill, al giro dopo le variabili
+# vuote valevano 0 e il delta era tutto il debito: «⚠ il debito e' CRESCIUTO di 16» mai avvenuto, e scritto per
+# sempre nella storia. Uno stato illeggibile non e' uno zero: si dice, e il delta non si inventa.
+: > "$SB/.git/caccia-registro/ultimo"
+OUT=$(bash "$TOOL" "$SB" 2>&1)
+grep -ci 'illeggibile' <<<"$OUT" >/dev/null && ! grep -c 'CRESCIUTO' <<<"$OUT" >/dev/null && [ "$(tail -1 "$SB/.git/caccia-registro/storia" | grep -o 'delta=[-0-9]*')" = "delta=0" ] \
+  && ok "S4 R5: ultimo censimento illeggibile: detto, nessuna crescita inventata (delta 0 nella storia)" || ko "S4 R5: stato vuoto letto come zero: $(grep -m1 'registro:' <<<"$OUT") · storia: $(tail -1 "$SB/.git/caccia-registro/storia")"
+grep -c 'ultimo\.\$\$' "$HERE/tools/caccia-registro.sh" >/dev/null && ok "S4 R5: lo stato si scrive e poi si rinomina" || ko "S4 R5: lo stato si scrive ancora sul posto"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
