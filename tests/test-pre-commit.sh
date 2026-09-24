@@ -220,6 +220,28 @@ git -C "$SB" rm -rq --cached night-shift/lib.sh patterns/lock-finto.md >/dev/nul
 # (2026-09-24, quinto ventaglio, R1 R5): SAL-ARCHIVIO.md e' storia congelata — cita file e righe che c'erano
 # quando fu scritto. Da quando sal-indice rigenera anche il suo indice il file entra in stage, e i controlli 3
 # e 6 lo bloccavano su citazioni vere all'epoca. Lo stesso testo nel SAL vivo resta rosso.
+# (2026-09-24, sesto ventaglio, rinviati di S3 R6): i file in stage vanno a git grep come pathspec. Col
+# prefisso «:» nudo, un nome che comincia con «-» e' magia sconosciuta (rc 128: «controllo glifi MORTO», commit
+# bloccato con la diagnosi sbagliata), e uno con «!» o «^» diventa un'esclusione: il file esce dal controllo.
+printf 'pulito\n' > "$SB/-n.md"; git -C "$SB" add -- -n.md
+OUT=$(gancio); RC=$?
+[ "$RC" -eq 0 ] && ok "S3 R6: un file pulito che comincia col trattino passa (niente «MORTO»)" \
+  || ko "S3 R6: un file che comincia col trattino blocca il commit (rc=$RC): $(grep '⛔' <<<"$OUT" | head -1)"
+git -C "$SB" rm -q --cached -- -n.md; rm -f -- "$SB/-n.md"
+for NOME in '!x.md' '^y.md'; do
+  printf 'test %s dentro\n' "$GLIFO" > "$SB/$NOME"; git -C "$SB" add -- "$NOME"
+  OUT=$(gancio); RC=$?
+  [ "$RC" -ne 0 ] && grep -cF -- "$NOME" <<<"$OUT" >/dev/null && ok "S3 R6: il glifo in «$NOME» si vede (il nome non si fa esclusione)" \
+    || ko "S3 R6: il glifo in «$NOME» esce dal controllo (rc=$RC)"
+  git -C "$SB" rm -q --cached -- "$NOME"; rm -f -- "$SB/$NOME"
+done
+# La forma che toglie davvero: «!x.md» pulito accanto a «x.md» col glifo. Col «:» nudo il primo diventa
+# «:!x.md», un'esclusione di x.md, e il glifo esce dal controllo in silenzio.
+printf 'test %s dentro\n' "$GLIFO" > "$SB/x.md"; printf 'pulito\n' > "$SB/!x.md"; git -C "$SB" add -- x.md '!x.md'
+OUT=$(gancio); RC=$?
+[ "$RC" -ne 0 ] && grep -cx 'x.md' <<<"$OUT" >/dev/null && ok "S3 R6: «!x.md» in stage non esclude «x.md» dal controllo glifi" \
+  || ko "S3 R6: «!x.md» ha escluso il glifo di «x.md» (rc=$RC)"
+git -C "$SB" rm -q --cached -- x.md '!x.md'; rm -f -- "$SB/x.md" "$SB/!x.md"
 printf '# A\n\nvedi `morto-da-tempo.sh` e `Cache.gs:14`\n' > "$SB/SAL-ARCHIVIO.md"; git -C "$SB" add SAL-ARCHIVIO.md
 OUT=$(gancio); RC=$?
 [ "$RC" -eq 0 ] && ok "R1 R5: l'archivio del SAL non si controlla sulle citazioni (storia)" || ko "R1 R5: l'archivio bloccato (rc=$RC): $(grep '⛔' <<<"$OUT" | head -2 | tr '\n' ' ')"

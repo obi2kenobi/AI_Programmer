@@ -88,7 +88,9 @@ fi
 CHIAVI=$(staged --diff-filter=ACMR | grep -E '(^|/)(repos\.key|\.privacy-nomi)$' || true)
 [ -n "$CHIAVI" ] && { echo "⛔ la chiave della privacy e' in stage — mai in un commit (git rm --cached):"; echo "$CHIAVI"; FALLITI=1; }
 STAGED_SPEC=()
-while IFS= read -r f; do [ -n "$f" ] && STAGED_SPEC+=(":$f"); done < <(staged --diff-filter=ACMR)
+# (2026-09-24, sesto ventaglio, rinviati di S3 R6): «:(top,literal)», non «:» nudo. Col «:» nudo un nome che comincia
+# con «-» era magia sconosciuta (rc 128, «MORTO»), e «!x.md» diventava un'esclusione di x.md: il glifo passava.
+while IFS= read -r f; do [ -n "$f" ] && STAGED_SPEC+=(":(top,literal)$f"); done < <(staged --diff-filter=ACMR)
 ALIENI_RC=0; ALIENI_RAW=""
 if [ ${#STAGED_SPEC[@]} -gt 0 ]; then
   ALIENI_RAW=$(git -c core.quotePath=false grep --cached -lP '[\x{4E00}-\x{9FFF}\x{0400}-\x{04FF}]' -- "${STAGED_SPEC[@]}" 2>/dev/null); ALIENI_RC=$?

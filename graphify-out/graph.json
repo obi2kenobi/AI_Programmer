@@ -60173,7 +60173,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/pre-commit.sh",
-      "source_location": "L121",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -98508,5 +98508,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2eabbf921b4780cbeca8d362a6c6471f9704e8c3"
+  "built_at_commit": "442d19fc7d271b15450ab78c7be861f3911c8a61"
 }
