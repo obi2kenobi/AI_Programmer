@@ -181,6 +181,21 @@ else
   echo "⚠ privacy: ~/.privacy-nomi assente — il controllo nomi e' DEGRADATO (non e' un via libera)"
 fi
 
+# 9. (2026-09-24, terzo ventaglio, V5 R3b): due fix sul codice ancorato (lock, watchdog) hanno cambiato la
+#    regola, e i pattern che la descrivono sono rimasti com'erano. Quando si tocca un file ancorato senza il
+#    suo pattern, il gancio lo chiede. Avviso, non blocco: il pattern puo' essere ancora vero.
+if [ -d "$HERE/patterns" ]; then
+  ANCORE=$(for p in patterns/*.md; do [ "$p" = patterns/README.md ] || printf '%s\t%s\n' "$p" "$(sed -n 2p "$p")"; done)
+  IN_STAGE=$(staged)
+  while IFS= read -r f; do
+    case "$f" in patterns/*|graphify-out/*|"") continue ;; esac
+    while IFS= read -r p; do
+      [ -n "$p" ] && ! grep -qxF "$p" <<<"$IN_STAGE" \
+        && echo "⚠ stai cambiando $f, ancorato da $p: il pattern dice ancora il vero?"
+    done < <(grep -F -- "$f" <<<"$ANCORE" | cut -f1)
+  done <<<"$IN_STAGE"
+fi
+
 # 8. (D1, Luca 2026-09-23: graphify spina dorsale, grafo VERSIONATO) il grafo segue il commit.
 #    Solo se i controlli sono passati, se il commit tocca qualcosa FUORI dal grafo, e se la spina
 #    e' installata qui (graphify-out/.gitattributes: la scrive tools/graphify-spina.sh alla

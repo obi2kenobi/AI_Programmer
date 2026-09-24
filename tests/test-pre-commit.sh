@@ -182,6 +182,18 @@ DORMIENTI=$(git -C "$HERE" ls-files '*.sh' '*.py' | grep -vE '^(tools/pre-commit
   | (cd "$HERE" && xargs grep -nE '(^|[^|])\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' 2>/dev/null) || true)
 [ -z "$DORMIENTI" ] && ok "nessuna riga pipe+&& dorme nell'albero (non solo nei file stage-ati)" \
   || ko "righe pipe+&& nell'albero: $(cut -d: -f1,2 <<<"$DORMIENTI" | tr '\n' ' ')"
+# (2026-09-24, terzo ventaglio, V5 R3b): due fix sul lock e sul watchdog hanno cambiato la regola del codice
+# ancorato, e i pattern che la descrivono sono rimasti com'erano — nessuno ha chiesto «il pattern dice ancora
+# il vero?». Ora il gancio lo chiede quando si tocca un file ancorato senza il suo pattern. Avviso, non blocco.
+mkdir -p "$SB/patterns" "$SB/night-shift"
+printf '# lock-finto\n**Àncora**: night-shift/lib.sh:prendi_lock · **Nato**: oggi\nregola\n' > "$SB/patterns/lock-finto.md"
+printf 'prendi_lock() { :; }\n' > "$SB/night-shift/lib.sh"; git -C "$SB" add night-shift/lib.sh
+OUT=$(gancio); RC=$?
+grep -c 'patterns/lock-finto.md' <<<"$OUT" >/dev/null && ok "file ancorato in stage senza il suo pattern: il gancio chiede se il pattern dice ancora il vero" \
+  || ko "file ancorato toccato in silenzio: $OUT"
+git -C "$SB" add patterns/lock-finto.md; OUT=$(gancio)
+! grep -c 'dice ancora il vero' <<<"$OUT" >/dev/null && ok "file ancorato e pattern insieme: nessun avviso" || ko "avviso anche col pattern in stage: $OUT"
+git -C "$SB" rm -rq --cached night-shift/lib.sh patterns/lock-finto.md >/dev/null
 [ "$(git -C "$HERE" diff --cached --name-only 2>/dev/null)" = "$INDICE_PRIMA" ] \
   && ok "Q23: l'indice dell'hub e' com'era prima del test" \
   || ko "Q23: il test ha cambiato l'indice dell'hub: $(git -C "$HERE" diff --cached --name-only | tr '\n' ' ')"

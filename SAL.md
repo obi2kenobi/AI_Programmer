@@ -4342,3 +4342,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   E-046 ed E-047. Quattro domande di dominio nuove in DEBITI.md. Il report di campo
   (`docs/campo/2026-09-24-notte-dei-giri.md`) ha la sezione del terzo ventaglio, con due proposte a
   CLAUDE.md non applicate.
+- **Terzo ventaglio, V5 R3b — un fix sul codice ancorato non chiedeva niente al pattern.** Due fix del
+  24 settembre (il lock col PID, il watchdog di gruppo) hanno cambiato la regola del codice ancorato. I
+  pattern che la descrivono sono rimasti com'erano, finché V5 non li ha letti. Ora `tools/pre-commit.sh`
+  (controllo 9), quando un file in stage è citato nella riga Àncora di un pattern che non è in stage,
+  stampa «⚠ stai cambiando X, ancorato da patterns/Y.md: il pattern dice ancora il vero?». È un
+  avviso, non un blocco; nei satelliti senza `patterns/` non gira. `tests/test-pre-commit.sh` ha due
+  casi nuovi (avviso senza il pattern, silenzio con il pattern in stage): rosso prima (1 FAIL), verde
+  ora (26/0). Sabotaggio: senza la riga dell'avviso torna rosso (25/1). Non curato: V4#3 per
+  `run_guarded` in `tests/test-lib.sh`. Il risparmio sarebbe di circa 4 s e costerebbe rimaneggiare il
+  banco più grande: dichiarato, non fatto.
