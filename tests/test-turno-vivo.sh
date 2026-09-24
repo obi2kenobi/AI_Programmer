@@ -4,7 +4,7 @@
 # (era continua): il contratto non e' piu' sull'eta' del processo (vecchio =
 # by design, 24/7) ma sul FRESCO DEL LOG — un ciclo non supera i ~15 minuti.
 # Contratti: log fresco -> rc 0; log fermo oltre soglia -> rc 1 TURNO INCASTRATO
-# e indica dove guardare; senza log -> rc 0 dichiarato; timestamp rotto -> rc 0
+# e indica dove guardare; senza log -> rc 0 dichiarato; timestamp rotto -> rc 2 (non so, dal 2026-09-24)
 # (mai un rosso su input illeggibile); soglia sovrascrivibile; cablato in
 # system-health; la pulizia scritta nell'avviso.
 set -uo pipefail
@@ -36,7 +36,9 @@ OUT=$(TURNO_VIVO_LOG="$TMP/inesistente.log" bash "$TOOL" 2>&1); RC=$?
 
 printf '[data-fantasma] === TURNO INIZIATO ===\n' > "$TMP/rotto.log"
 OUT=$(TURNO_VIVO_LOG="$TMP/rotto.log" bash "$TOOL" 2>&1); RC=$?
-[ "$RC" -eq 0 ] && ok "timestamp illeggibile: rc 0 (non urla al lupo)" || ko "timestamp rotto: rc=$RC, $OUT"
+# (2026-09-24, Q3 R6): era rc 0 «non urla al lupo» — ma 0 vuol dire «cicla», e il polso lo contava ✅. Ora 2,
+# «non so»: il polso lo segna ⚠️, che non e' un allarme e non e' un verde
+[ "$RC" -eq 2 ] && grep -c "NON SO" <<<"$OUT" >/dev/null && ok "timestamp illeggibile: rc 2 (non so), non un verde" || ko "timestamp rotto: rc=$RC, $OUT"
 
 OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" TURNO_VIVO_SOGLIA=120 bash "$TOOL" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "soglia sovrascrivibile (120min: il fermo da 90min e' sano)" || ko "soglia non rispettata: rc=$RC"
@@ -45,6 +47,13 @@ grep -q "turno-vivo.sh" "$HERE/tools/system-health.sh" \
   && ok "cablato nel polso quotidiano (system-health)" || ko "detector non cablato: invisibile"
 OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" bash "$TOOL" 2>&1)
 grep -q "pkill -f" <<<"$OUT" && ok "la pulizia consolidata e' scritta nell'avviso" || ko "avviso senza la via d'uscita"
+
+# (2026-09-24, quarto ventaglio, Q3 R6): un timestamp illeggibile usciva 0, cioe' «il turno cicla», e il polso
+# (system-health) lo contava ✅. «Non so giudicare» e' un terzo esito (2), che il polso segna ⚠️.
+printf '[24/09/2026 03:00:00] === TURNO INIZIATO ===\n' > "$TMP/illeggibile.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/illeggibile.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ok "timestamp illeggibile: esce 2 (non so), non 0 (cicla)" || ko "timestamp illeggibile: rc=$RC"
+grep -c 'turno-vivo.sh.*2)' "$HERE/tools/system-health.sh" >/dev/null && ok "system-health mappa il 2 di turno-vivo su un avviso" || ko "system-health non distingue il 2"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -4536,3 +4536,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   ereditava l'osascript finto che fallisce da un caso precedente: rimesso quello che riesce. Il ripiego
   `mail`, che su macOS forse esce 0 senza consegnare e svuoterebbe la memoria del turno, non si prova
   da qui: è la voce (g) della riga ⏳ Mac in DEBITI.md.
+- **Quarto ventaglio, Q3 R6 — «non so giudicare» passava per «il turno cicla».** `tools/turno-vivo.sh`
+  usciva 0 con un timestamp illeggibile o senza python3, e `tools/system-health.sh` lo contava ✅. Ora è
+  un terzo esito, 2 («NON SO giudicare»), che il polso segna ⚠️: non è un allarme, e non è un verde.
+  Il banco `tests/test-turno-vivo.sh` pretendeva lo 0 («non urla al lupo»): aggiornato, con il perché
+  scritto accanto. Due casi nuovi: rosso prima (2 FAIL), verde ora (11/0). Sabotaggio: di nuovo 0, 9/2.
+  Verdi anche system-health (6/0) e log-onesto (17/0).

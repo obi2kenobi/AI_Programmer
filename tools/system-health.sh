@@ -11,7 +11,7 @@ echo "== Sistema — $(date '+%Y-%m-%d %H:%M') =="
 # il turno incastrato (2026-08-31: tre notti perse così). (Q30, 2026-09-23, notte dei giri): girava
 # FUORI dai contatori — «⛔ TURNO INCASTRATO» stampato, verdetto ed exit code identici a un turno
 # sano, e quindi status-page cieca. Ora conta: incastrato = critico.
-if TV=$(bash "$(dirname "$0")/turno-vivo.sh"); then ok "$TV"; else ko "$TV"; fi
+TV=$(bash "$(dirname "$0")/turno-vivo.sh"); case $? in 0) ok "$TV" ;; 2) warn "$TV" ;; *) ko "$TV" ;; esac   # (Q3 R6): 2 = non so
 
 # 1. Ollama (il motore notturno)
 if curl -sf --max-time 3 http://localhost:11434/api/version >/dev/null 2>&1; then

@@ -15,7 +15,8 @@
 # solver appeso) — ed e' quello il turno da sciogliere.
 #
 # Uso: bash tools/turno-vivo.sh   (da system-health, dal digest, o a mano)
-# Esce 0 se il turno cicla (o non c'e') · 1 se il log e' fermo oltre soglia.
+# Esce 0 se il turno cicla (o non c'e') · 1 se il log e' fermo oltre soglia · 2 se non so giudicare
+# (timestamp illeggibile o python3 assente: 2026-09-24, Q3 R6 — prima era 0, e il polso lo contava ✅).
 set -uo pipefail
 SOGLIA_MIN=${TURNO_VIVO_SOGLIA:-30}
 LOG=${TURNO_VIVO_LOG:-$HOME/night-shift-console.log}
@@ -37,8 +38,8 @@ try:
 except ValueError:
     print(-1)" 2>/dev/null || echo -1)
 if [ "${ETA_MIN:--1}" -lt 0 ]; then
-  echo "turno-vivo: timestamp dell'ultimo ciclo illeggibile ('$ULTIMA') — niente da giudicare"
-  exit 0
+  echo "turno-vivo: timestamp dell'ultimo ciclo illeggibile ('$ULTIMA') o python3 assente — NON SO giudicare"
+  exit 2
 fi
 if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
   echo "⛔ TURNO INCASTRATO: ultimo ciclo iniziato ${ETA_MIN} minuti fa (soglia ${SOGLIA_MIN}min)."
