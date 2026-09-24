@@ -283,6 +283,7 @@ shift_repo() {
     NV_ROSSI=0
     NV_TOTALI=0
     NV_ROSSI_LISTA=""   # i comandi rossi, per il corpo dell'issue (D16)
+    NV_ROSSI_CMD=""     # (S1 R1): gli stessi, nudi, per il blocco da incollare
     # (2026-09-19, prima notte sul Magazzino): due FORMATI dichiarati. Il suo
     # .night-verify e' un PROGRAMMA di 505 righe (blocchi multi-riga, stato che
     # attraversa le righe): riga-per-riga non puo' girare, e non si riscrive
@@ -327,6 +328,8 @@ shift_repo() {
           log "REPO $REPO: verifica $NV_ESITO: $NV_CMD"
         else
           NV_ROSSI=$((NV_ROSSI+1))
+          NV_ROSSI_CMD="${NV_ROSSI_CMD:+$NV_ROSSI_CMD
+}$NV_CMD"
           NV_ROSSI_LISTA="${NV_ROSSI_LISTA:+$NV_ROSSI_LISTA
 }$NV_CMD — $NV_ESITO"
           # «VERIFICA ROSSA:» resta il prefisso: dashboard.py e cervello-impara.sh lo cercano, anche per lo sforo
@@ -351,9 +354,12 @@ shift_repo() {
         gh issue create -R "$REPO" -t "[night-verify] $NV_ROSSI verifiche rosse nell'auto-esame" -b "Il turno notturno ha eseguito i comandi in .night-verify: $NV_ROSSI su $NV_TOTALI sono rossi.
 
 Comandi rossi (eseguiti dalla radice della repo, budget 120s salvo prefisso @sec):
-$(printf '%s\n' "$NV_ROSSI_LISTA" | sed 's/^/- /')
-
-Riprodurre a mano, correggere il comando o il codice che verifica, chiudere l'issue quando tornano verdi." >/dev/null 2>&1 \
+$(printf '%s\n' "$NV_ROSSI_LISTA" | sed 's/^/- `/; s/$/`/')
+${NV_ROSSI_CMD:+
+Per riprodurli, dalla radice della repo (ognuno gira in una shell figlia, come nel turno: una riga che finisce in \`exit\` non chiude il terminale):
+$(comandi_da_incollare "$NV_ROSSI_CMD")
+}
+Correggere il comando o il codice che verifica, chiudere l'issue quando tornano verdi." >/dev/null 2>&1 \
           && log "REPO $REPO: issue [night-verify] aperta ($NV_ROSSI/$NV_TOTALI rossi)"
       else
         log "REPO $REPO: $NV_ROSSI/$NV_TOTALI rosse — issue gia' aperta"

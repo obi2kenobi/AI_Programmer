@@ -4997,3 +4997,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   termine in un file tracciato: rc 0, e l'hub è pubblico. Ora `rifila` toglie gli spazi con l'espansione dei
   parametri, sia nella ricerca sia nella maschera. Due casi nuovi in `tests/test-privacy.sh` (24/0): il leak si
   vede, e l'uscita lo maschera. Rosso prima; sabotaggio 23/1.
+- **Sesto ventaglio, S1 R1 — l'issue `[night-verify]` faceva chiudere il terminale a chi la seguiva.** Il corpo
+  che scrive il turno chiedeva di «riprodurre a mano» le righe rosse di `.night-verify` così com'erano, fuori da
+  un blocco di codice. La riga dell'indice SAL dell'hub finisce in `exit 1`: incollata, chiudeva la shell
+  dell'operatore. E il markdown si mangiava gli asterischi di `night-shift/*.sh`. Ora `comandi_da_incollare`
+  (`night-shift/lib.sh`, CLAUDE.md §3) mette le righe in un blocco, ognuna dentro `bash -c` con la quotatura di
+  `printf %q`, come le esegue il turno. Nell'elenco, ogni riga è in codice. Tre casi nuovi in `tests/test-lib.sh`
+  (162/0), rossi prima: il blocco; la riga incollata in `zsh -f` che non chiude la shell; l'issue che usa il
+  blocco. Sabotaggio: 159/2.

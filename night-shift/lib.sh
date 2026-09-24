@@ -593,6 +593,16 @@ rianima_ollama() {
   return 1
 }
 
+# comandi_da_incollare <righe> (2026-09-24, sesto ventaglio, S1 R1; CLAUDE.md §3 «What you hand to a human to run
+# is code»): le righe in un blocco di codice (il markdown non si mangia gli asterischi), ognuna dentro `bash -c`
+# con la quotatura di printf %q — come le esegue il turno. Una riga che finisce in `exit` non chiude il terminale
+# di chi la incolla, e un `#` nella riga non e' un commento per zsh senza interactive_comments.
+comandi_da_incollare() {
+  echo '```'
+  while IFS= read -r r; do [ -n "$r" ] && printf 'bash -c %q\n' "$r"; done <<<"$1"
+  echo '```'
+}
+
 # ferma_opencode_del_turno <file-pid> (2026-09-24, quinto ventaglio, R5 R6; pattern cuore-unico-proprietario):
 # la pulizia era `pkill -f "opencode run"` — uccideva anche l'opencode del GIORNO. Il turno ferma solo il PID che
 # ha scritto lui nel file, e solo se quel PID e' ancora un «opencode run» (un PID riusato da altro non si tocca).

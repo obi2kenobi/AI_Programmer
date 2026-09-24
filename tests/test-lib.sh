@@ -413,6 +413,25 @@ fi
 NUDI=$(grep -n 'pkill -f "opencode run"' "$HERE/night-shift/night-shift.sh" | grep -v '^[0-9]*:[[:space:]]*#' || true)
 [ -z "$NUDI" ] && ok "R5 R6: il turno non fa piu' pkill -f \"opencode run\"" || ko "R5 R6: pkill nudo rimasto: $NUDI"
 
+# --- (2026-09-24, sesto ventaglio, S1 R1): l'issue [night-verify] chiedeva di «riprodurre a mano» le righe di
+# .night-verify cosi' com'erano, fuori da un blocco di codice. La riga dell'indice SAL dell'hub finisce in `exit 1`:
+# incollata, chiudeva il terminale; e il markdown si mangiava gli asterischi di `night-shift/*.sh`. Ora le righe
+# arrivano in un blocco, ognuna dentro `bash -c`, come le esegue il turno.
+if declare -F comandi_da_incollare >/dev/null; then
+  BLOCCO=$(comandi_da_incollare $'bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo rosso; exit 1; }\nshellcheck night-shift/*.sh # commento')
+  [ "$(head -1 <<<"$BLOCCO")" = '```' ] && [ "$(tail -1 <<<"$BLOCCO")" = '```' ] && ok "S1 R1: i comandi da incollare stanno in un blocco di codice" || ko "S1 R1: blocco assente: $BLOCCO"
+  RIGA1=$(sed -n 2p <<<"$BLOCCO")
+  if command -v zsh >/dev/null; then
+    V=$(cd "$(mktemp -d)" && zsh -f -c "$RIGA1"$'\necho ANCORA-VIVA' 2>/dev/null)
+    grep -c 'ANCORA-VIVA' <<<"$V" >/dev/null && ok "S1 R1: incollata in zsh -f, la riga che finisce in exit non chiude la shell" || ko "S1 R1: la shell si e' chiusa: «$V»"
+  else
+    echo "⊘ S1 R1: zsh assente, la prova d'incollo e' saltata (dichiarato)"
+  fi
+else
+  ko "S1 R1: comandi_da_incollare assente da night-shift/lib.sh"
+fi
+grep -c 'comandi_da_incollare "\$NV_ROSSI_CMD"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "S1 R1: l'issue [night-verify] usa il blocco incollabile" || ko "S1 R1: l'issue [night-verify] elenca i comandi nudi"
+
 # --- commenta_una_volta (Q11, 2026-09-23, giro A5 della notte): il cancello Design/Territorio
 #     commentava l'issue a OGNI ciclo — e il turno riparte subito, a ciclo continuo: centinaia di
 #     commenti identici in una notte sulla stessa issue. Ora il commento porta un marcatore
