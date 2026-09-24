@@ -789,42 +789,31 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # stringa vuota) con un messaggio meno preciso ("troppo povera" invece di "assente").
     # I due commenti dedicati "manca la sezione" non sono MAI arrivati a un operatore
     # reale — verificato con simulazione. Ordine corretto: assenza prima, qualità dopo.
-    # (Q11, 2026-09-23): ogni commento del cancello passa da lib.sh commenta_una_volta — uno per
-    # motivo, non uno per ciclo (il turno riparte subito: era spam).
-    if ! grep -q "^## Territorio" <<<"$BODY"; then
-      log "Issue #$NUM: SENZA sezione ## Territorio — il processo la richiede, skip con commento"
-      commenta_una_volta "$NUM" "$REPO" territorio-assente "🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." || true
-      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
-    fi
-
-    if ! grep -q "^## Design" <<<"$BODY"; then
-      log "Issue #$NUM: SENZA sezione ## Design — il processo la richiede, skip con commento"
-      commenta_una_volta "$NUM" "$REPO" design-assente "🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiar il suo design prima del lavoro — aggiungila e la prossima notte riparte." || true
-      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
-    fi
-
-    DESIGN_RAW=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
-    DESIGN_BODY=$(printf '%s' "$DESIGN_RAW" | tr -d '[:space:]')
-    if [ "${#DESIGN_BODY}" -lt 80 ]; then
-      log "Issue #$NUM: sezione ## Design troppo povera (${#DESIGN_BODY} char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
-      commenta_una_volta "$NUM" "$REPO" design-povero "🌙 Saltata: la sezione \`## Design\` è troppo povera (${#DESIGN_BODY} caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." || true
-      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
-    fi
-    # bug reale (dogfooding, set 2 "capacità di progettare"): la sola lunghezza è una
-    # soglia bucabile con prosa di riempimento senza alcun DA-DOVE reale — verificato dal
-    # vivo con una frase di 87 caratteri, nessun link/SAL/issue/file, che passava il gate.
-    # Stesso pattern citazione-non-presidio già chiuso altrove nel repo (privacy-check.sh,
-    # segreto-come-impronta): una lunghezza non è una fonte. Richiede almeno UN riferimento
-    # verificabile (URL, link markdown, SAL.md, un'issue #N, o un percorso di file).
-    if ! grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' <<<"$DESIGN_RAW"; then
-      log "Issue #$NUM: ## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
-      commenta_una_volta "$NUM" "$REPO" design-senza-fonte "🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." || true
-      SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
-    fi
-    TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
-    if ! grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b' <<<"$TERR_BODY"; then
-      log "Issue #$NUM: ## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
-      commenta_una_volta "$NUM" "$REPO" territorio-vago "🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." || true
+    # (2026-09-23, notte dei giri): la sequenza del cancello vive in lib.sh cancello_design (provata
+    # da tests/test-night-shift-design-gate.sh sulla funzione VERA, non su una copia); qui restano
+    # il log e il commento di ciascun motivo. (Q11): il commento passa da commenta_una_volta —
+    # uno per motivo, non uno per ciclo.
+    MOTIVO=$(cancello_design "$BODY")
+    if [ -n "$MOTIVO" ]; then
+      case "$MOTIVO" in
+        territorio-assente)
+          LOG_M="SENZA sezione ## Territorio — il processo la richiede, skip con commento"
+          CORPO_M="🌙 Saltata: manca la sezione \`## Territorio\` (quanto codice serve leggere). La lezione dell'11 ore: la notte converge solo su territori piccoli e indicati — dichiara il territorio, o se è grande assegnala al giorno." ;;
+        design-assente)
+          LOG_M="SENZA sezione ## Design — il processo la richiede, skip con commento"
+          CORPO_M="🌙 Il turno di notte salta questa issue: manca la sezione \`## Design\` (anche solo un link o tre righe di ratio). Il processo di AI_Programmer richiede che ogni commessa dichiari il suo design prima del lavoro — aggiungila e la prossima notte riparte." ;;
+        design-povero*)
+          LOG_M="sezione ## Design troppo povera (${MOTIVO#design-povero } char < 80) — serve il DA DOVE (SAL, analisi, riferimento)"
+          CORPO_M="🌙 Saltata: la sezione \`## Design\` è troppo povera (${MOTIVO#design-povero } caratteri utili). Il design dichiara da dove nasce la commessa (link al SAL, all'analisi, o tre righe di ratio sostanziale)." ;;
+        design-senza-fonte)
+          LOG_M="## Design senza un riferimento reale (link/SAL/issue/file) — solo prosa di riempimento"
+          CORPO_M="🌙 Saltata: la sezione \`## Design\` è lunga ma non cita nulla di verificabile (un link, \`SAL.md\`, un'issue \`#N\`, o un file). Il DA-DOVE deve poter essere controllato da chi legge, non solo affermato." ;;
+        *)
+          LOG_M="## Territorio senza file/righe nominate — il territorio si dichiara con precisione"
+          CORPO_M="🌙 Saltata: la sezione \`## Territorio\` non nomina file, righe né documenti. Il territorio si dichiara con precisione (file e dimensione) — altrimenti il lavoro va al giorno." ;;
+      esac
+      log "Issue #$NUM: $LOG_M"
+      commenta_una_volta "$NUM" "$REPO" "${MOTIVO%% *}" "$CORPO_M" || true
       SKIPPED_DESIGN=$((SKIPPED_DESIGN+1)); continue
     fi
 

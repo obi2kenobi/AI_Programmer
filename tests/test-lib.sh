@@ -267,8 +267,9 @@ EOF
   [ "$RC" -ne 0 ] && [ ! -s "$CU/commenti" ] && ok "commenta_una_volta: commenti illeggibili → non commenta, e lo dice (rc=$RC)" || ko "commenta_una_volta: con gh giu' ha commentato o taciuto (rc=$RC)"
   rm -rf "$CU"
   NSH="$HERE/night-shift/night-shift.sh"
-  NUDI=$(sed -n '/if ! grep -q "^## Territorio"/,/Idempotenza: PR aperta/p' "$NSH" | grep -c 'gh issue comment')
-  [ "$NUDI" = "0" ] && ok "night-shift.sh: il cancello Design/Territorio commenta solo con commenta_una_volta" || ko "night-shift.sh: $NUDI commenti nudi nel cancello Design/Territorio"
+  REGIONE=$(sed -n '/MOTIVO=$(cancello_design "$BODY")/,/Idempotenza: PR aperta/p' "$NSH")
+  NUDI=$(grep -c 'gh issue comment' <<<"$REGIONE")
+  [ -n "$REGIONE" ] && [ "$NUDI" = "0" ] && grep -q 'commenta_una_volta' <<<"$REGIONE" && ok "night-shift.sh: il cancello Design/Territorio commenta solo con commenta_una_volta" || ko "night-shift.sh: $NUDI commenti nudi nel cancello Design/Territorio"
 else
   ko "commenta_una_volta non definita in lib.sh"
 fi

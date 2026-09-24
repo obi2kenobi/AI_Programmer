@@ -11,28 +11,29 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
+# (2026-09-23, notte dei giri — il debito «banchi che rifanno a mano»): qui c'era una COPIA della
+# sequenza del turno. Con il gate spento in night-shift/night-shift.sh il banco restava verde. Ora
+# il cancello vive in night-shift/lib.sh cancello_design e il banco chiama QUELLA funzione;
+# classify() traduce soltanto il motivo nelle etichette storiche dei casi qui sotto.
+source "$HERE/night-shift/lib.sh"
+declare -F cancello_design >/dev/null || { ko "cancello_design non definita in night-shift/lib.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 classify() {
-  local BODY="$1"
-  if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then echo "SENZA-TERRITORIO"; return; fi
-  if ! printf '%s' "$BODY" | grep -q "^## Design"; then echo "SENZA-DESIGN"; return; fi
-  local DESIGN_RAW DESIGN_BODY TERR_BODY
-  DESIGN_RAW=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
-  DESIGN_BODY=$(printf '%s' "$DESIGN_RAW" | tr -d '[:space:]')
-  [ "${#DESIGN_BODY}" -lt 80 ] && { echo "DESIGN-POVERO"; return; }
-  printf '%s' "$DESIGN_RAW" | grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' \
-    || { echo "DESIGN-SENZA-RIFERIMENTO"; return; }
-  TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
-  printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b' || { echo "TERRITORIO-SENZA-FILE"; return; }
-  echo "PASSA"
+  local M; M=$(cancello_design "$1")
+  case "$M" in
+    "") echo "PASSA" ;;
+    territorio-assente) echo "SENZA-TERRITORIO" ;;
+    design-assente) echo "SENZA-DESIGN" ;;
+    design-povero*) echo "DESIGN-POVERO" ;;
+    design-senza-fonte) echo "DESIGN-SENZA-RIFERIMENTO" ;;
+    territorio-vago) echo "TERRITORIO-SENZA-FILE" ;;
+    *) echo "IGNOTO:$M" ;;
+  esac
 }
 
-# verifica che l'ordine reale in night-shift.sh sia quello atteso: assenza PRIMA di qualità
-ORDINE=$(grep -n '^      log "Issue #\$NUM: \(SENZA sezione ## Territorio\|SENZA sezione ## Design\|sezione ## Design troppo povera\|## Territorio senza file\)' \
-  "$HERE/night-shift/night-shift.sh" | cut -d: -f1)
-readarray -t RIGHE <<< "$ORDINE"
-[ "${#RIGHE[@]}" -eq 4 ] && [ "${RIGHE[0]}" -lt "${RIGHE[2]}" ] && [ "${RIGHE[1]}" -lt "${RIGHE[3]}" ] \
-  && ok "night-shift.sh: i controlli di ASSENZA precedono quelli di QUALITÀ (ordine corretto)" \
-  || ko "night-shift.sh: ordine dei controlli non verificato: righe ${RIGHE[*]}"
+# il turno usa la funzione (non una copia sua), e l'issue scartata non va avanti
+grep -q 'MOTIVO=$(cancello_design "$BODY")' "$HERE/night-shift/night-shift.sh" \
+  && ok "night-shift.sh decide il cancello con lib.sh cancello_design (la funzione provata qui)" \
+  || ko "night-shift.sh non usa cancello_design: questo banco proverebbe una copia"
 
 RISULTATO=$(classify "## Commessa
 fai qualcosa")

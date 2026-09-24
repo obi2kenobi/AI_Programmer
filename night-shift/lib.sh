@@ -329,3 +329,27 @@ commenta_una_volta() {
 
 $marcatore" >/dev/null 2>&1
 }
+
+# cancello_design <corpo-issue>: stampa il MOTIVO per cui l'issue non parte, o niente se passa.
+# Motivi: territorio-assente · design-assente · «design-povero <caratteri>» · design-senza-fonte ·
+# territorio-vago. (2026-09-23, notte dei giri): la sequenza viveva dentro il turno e il suo banco
+# ne teneva una COPIA — con il gate spento il banco restava verde. Ora la sequenza vive qui, una
+# volta, e tests/test-night-shift-design-gate.sh prova questa funzione. L'ordine conta: i controlli
+# di ASSENZA vengono prima di quelli di QUALITA' (una sezione assente estrae una stringa vuota, che
+# il controllo di qualita' intercetterebbe col messaggio sbagliato — set 2, 2026-08-22).
+cancello_design() {
+  local corpo="$1" design_raw design_body terr_body
+  grep -q "^## Territorio" <<<"$corpo" || { echo "territorio-assente"; return 0; }
+  grep -q "^## Design" <<<"$corpo" || { echo "design-assente"; return 0; }
+  design_raw=$(printf '%s' "$corpo" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
+  design_body=$(printf '%s' "$design_raw" | tr -d '[:space:]')
+  [ "${#design_body}" -lt 80 ] && { echo "design-povero ${#design_body}"; return 0; }
+  # una lunghezza non e' una fonte: almeno UN riferimento verificabile (URL, link markdown,
+  # SAL.md, un'issue #N, o un percorso di file) — set 2, prosa di riempimento da 87 caratteri
+  grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' <<<"$design_raw" \
+    || { echo "design-senza-fonte"; return 0; }
+  terr_body=$(printf '%s' "$corpo" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
+  grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b' <<<"$terr_body" || { echo "territorio-vago"; return 0; }
+  return 0
+}
+
