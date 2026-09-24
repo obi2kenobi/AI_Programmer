@@ -4231,3 +4231,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   e il pattern è riancorato lì. Banco nuovo `tests/test-rianima-ollama.sh` (launchctl, pkill e curl
   finti): rosso prima (la funzione non c'era), verde ora (5/0). Sabotaggio: se il custode viene
   ignorato, torna rosso (4/1). ⏳ Non provato contro il launchd vero: serve il Mac.
+- **Terzo ventaglio, V2#5 — tre soglie della crisi d'impresa su cinque non avevano un giudice.**
+  `tests/test-indici-crisi.sh` toccava davvero solo le soglie di cash flow e liquidità. Ora ogni indice
+  ha due casi, uno a 3× e uno a 0,3× la soglia, con l'allarme secondo il verso. Le soglie sono scritte
+  a mano nel banco, non lette dal tool. Non sono riderivate dalla fonte CNDCEC, che da qui non si
+  raggiunge: il banco le fissa, non le certifica. Verde (20/0). Sabotaggi, uno per soglia (2.1→21,
+  6.3→63, 2.9→29, 101.4→10.14): tutti rossi, ma solo al secondo giro. Al primo, i sabotaggi 2 e 3
+  davano lo stesso FAIL del primo: Python leggeva il `.pyc` stantio (E-047, sotto).

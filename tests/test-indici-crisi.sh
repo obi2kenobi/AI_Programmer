@@ -65,6 +65,29 @@ n_allarmi = sum(1 for i in i_4su5 if i["allarme"])
 checks.append(("4 indici su 5 in allarme, PN positivo -> NESSUNA presunzione (serve 5/5)",
                 n_allarmi < 5 and crisi_presunta(quattro_su_cinque["pn"], i_4su5) is False))
 
+# (2026-09-24, terzo ventaglio, V2#5): tre soglie su cinque si potevano moltiplicare per 10 a banco verde —
+# solo cash flow e liquidita' avevano un caso che le toccava. Ogni indice ora ha un giudice su entrambi i
+# lati: valore = 3 x soglia e 0.3 x soglia, allarme secondo il verso. Le soglie sono scritte QUI a mano (i
+# valori G46 del tool, non letti da SOGLIE_G46): una soglia cambiata nel tool fa rosso. Non sono riderivate
+# dalla fonte CNDCEC, che da questa sessione non si raggiunge: il banco fissa, non certifica.
+SOGLIE_ATTESE = {"oneriFinRicavi": (2.1, "ge"), "pnDebiti": (6.3, "le"), "cashFlowAttivo": (0.6, "le"),
+                 "liquidita": (101.4, "le"), "tribPrevAttivo": (2.9, "ge")}
+INPUT_DI = {  # numeratore = v, denominatore = 100: pct = v esatto
+    "oneriFinRicavi": lambda v: {"oneriFin": v, "ricavi": 100},
+    "pnDebiti": lambda v: {"pn": v, "passivoTot": 100},
+    "cashFlowAttivo": lambda v: {"cashFlow": v, "attivo": 100},
+    "liquidita": lambda v: {"attCorrenti": v, "passCorrenti": 100},
+    "tribPrevAttivo": lambda v: {"debTrib": v, "debPrev": 0, "attivo": 100},
+}
+base = dict(sana)
+for chiave, (soglia, verso) in SOGLIE_ATTESE.items():
+    for fattore in (3, 0.3):
+        a = dict(base); a.update(INPUT_DI[chiave](soglia * fattore))
+        atteso = (fattore > 1) if verso == "ge" else (fattore < 1)
+        trovato = next(i for i in valuta_indici_crisi(a) if i["chiave"] == chiave)
+        checks.append((f"{chiave} a {fattore} x soglia {soglia} ({verso}): allarme {'si' if atteso else 'no'}",
+                       trovato["allarme"] is atteso))
+
 for nome, esito in checks:
     print(f"{'OK' if esito else 'KO'}\t{nome}")
 PY
