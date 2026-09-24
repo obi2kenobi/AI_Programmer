@@ -3591,3 +3591,29 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - `tools/accuratezza_fatture_acquisto.py`: l'etichetta degli errori reali taceva un addendo.
   - Banco: `tests/test-oracoli-uso.sh`, 13 casi, rossi prima. Sabotaggio (via l'avviso di aging):
     1 rosso.
+- **Q22d**, da A4, le domande di dominio sugli oracoli, dieci, in
+  `docs/giri/2026-09-23-notte/DOMANDE.md`, ognuna col perché, cosa dice il sistema e cosa solo
+  Luca. Quasi tutte sono di fedeltà a REPO-E: o l'oracolo copia un difetto del sorgente, o è un
+  suo difetto.
+  - Registrate in DEBITI (una sezione nuova, classe DOMINIO): il settimo patto le pone alla
+    riapertura, una alla volta.
+  - Un errore mio corretto prima del commit: la domanda 1 portava un saldo «+1300 contro −1500»;
+    il banco dava entrate +1300 e uscite −200, e il segno di Payment è proprio la domanda.
+- **Q24**, da A8/A9, banchi che rifacevano a mano ciò che dicono di provare.
+  - I dieci banchi di propagazione di bootstrap e onboard cercavano la riga di copia con grep e
+    poi ricopiavano da sé.
+  - `tests/test-bootstrap-app-e2e.sh` e `tests/test-onboard-repo.sh` ora guardano la repo NATA
+    (ogni skill, agente, specchio, pattern, template, hook).
+  - Sabotaggio: con la copia vera spenta i due banchi end-to-end diventano rossi, e i banchi-copia
+    restano verdi (10/10, 4/4). Tolti tutti e dieci; `tests/test-bootstrap-hooks-propagation.sh`
+    resta, perché prova davvero il fallimento di copia-hook.
+  - `patterns/copertura-dal-glob.md` è ri-ancorato. La riga di DEBITI è curata per bootstrap e
+    onboard; resta il gate del Design.
+- **Q25bis**, visto aggiornando DEBITI, in `tools/debiti-riapertura.sh`: «SALDAT[OA]» ovunque nella
+  riga la chiudeva, anche «NON SALDATO» o «PARZIALMENTE SALDATA». Sul DEBITI vero c'era una riga
+  così dal 2026-08-24, senza residuo vivo: la chiude la decisione di Luca sui nomi, e ora è scritta.
+  - Io stesso avevo appena scritto «in parte SALDATO» su una riga col debito residuo: sarebbe
+    sparito dal settimo patto.
+  - Ora una menzione vale saldo solo se non è negata.
+  - Banco: `tests/test-debiti-riapertura.sh`, 3 casi. Rossi sullo strumento vecchio (2), verdi
+    sulla cura.
