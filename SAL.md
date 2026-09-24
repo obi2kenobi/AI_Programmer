@@ -4703,3 +4703,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   ora lo hanno, perché «allineata» vuol dire anche hook registrati. Sabotaggio: senza il controllo, 24/1.
   Non fatti, e dichiarati: il confronto di skill, agenti, pre-commit e dell'elenco di installa-citati
   (resta a `--standard`), e il verdetto ALLINEATO con rc 1 di `--from-local --standard`.
+- **Quinto ventaglio, R4 R1 — il censimento dei debiti non scriveva più la storia.** `tools/caccia-registro.sh`
+  scrive storia e ultimo censimento solo da main (regola del 23/9). Il turno però lo lanciava mentre la
+  copia era ancora sul ramo `night/caccia-*`, prima del ritorno a main. Dal 23/9 la storia era congelata,
+  e con lei il trend e il verdetto della dashboard (sezione ④); il delta si misurava contro una base
+  vecchia. Ora in `night-shift/night-shift.sh` il censimento gira dopo il checkout della base. Guardia in
+  `tests/test-caccia-registro.sh` (l'ordine delle righe nel turno): rossa prima (13/1), verde ora (14/0).

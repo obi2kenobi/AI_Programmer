@@ -91,6 +91,16 @@ OUT3=$(bash "$TOOL" "$SB3" 2>&1)
 grep -q "E-002(pipe in grep -q)=1" <<<"$OUT3" && ok "E-002: un sito in tests/ e' contato (la caccia puo' curarlo)" || ko "E-002 in tests/ invisibile alla caccia: $(head -2 <<<"$OUT3")"
 rm -rf "$SB3"
 
+# (2026-09-24, quinto ventaglio, R4 R1): il censimento scrive la storia solo da main — e il turno lo lanciava
+# mentre la copia stava ancora sul ramo night/caccia-*, PRIMA del ritorno a main: dal 23/9 la storia (e il
+# trend della dashboard, sezione ④) era congelata. Il censimento va dopo il checkout della base.
+NS="$HERE/night-shift/night-shift.sh"
+L_CENS=$(grep -n 'CENSUS=$(bash "$HERE/../tools/caccia-registro.sh"' "$NS" | head -1 | cut -d: -f1)
+L_CHK=$(awk -v c="${L_CENS:-0}" 'NR<c && /git -C "\$DIR" checkout "\$DB" -q/ {n=NR} END{print n+0}' "$NS")
+L_MARK=$(grep -n 'marker: sana E niente da migliorare' "$NS" | head -1 | cut -d: -f1)
+[ -n "$L_CENS" ] && [ "$L_CHK" -gt "${L_MARK:-0}" ] \
+  && ok "il turno censisce DOPO il ritorno a main (riga $L_CHK < $L_CENS): la storia si scrive" || ko "il turno censisce sul ramo della caccia (censimento riga ${L_CENS:-?}, ritorno a main ${L_CHK:-?})"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
