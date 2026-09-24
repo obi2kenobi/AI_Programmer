@@ -3758,3 +3758,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   termine cercato ed era ancora rossa: il nome del file era un altro termine. Sabotaggio della maschera: 2 rossi.
   Di passaggio: `TERMINI=` era riportato anche come «NOME PRIVATO» di repo (ciclo dei nomi senza
   filtro sulle chiavi), ora no. Aperta la domanda di dominio: «nomi sì» vale anche per i termini?
+- **T5#3b — le credenziali di questo parco non erano forme di segreto.** Né le SHAPES di
+  `tools/privacy-check.sh` (che la lente sicurezza riusa) né `mask_secrets` di `night-shift/lib.sh`
+  riconoscevano Google OAuth, cioè clasp e quindi la produzione (`ya29.`, refresh `1//0`,
+  `GOCSPX-`), la password dentro un URL, la chiave Zhipu nuda, `PASSWD=`. Banco rosso: 5 forme
+  non viste dal check e 6 valori interi nella maschera. Dopo la cura tutte le forme sono viste o
+  mascherate. Zero falsi positivi nel repo, salvo il mio commento d'esempio, riformulato. Sabotaggio:
+  5 e 4 rossi. Il cancello PRIMA del push (T5#3a) è il passo dopo.

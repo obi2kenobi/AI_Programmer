@@ -169,6 +169,15 @@ M7=$(echo 'export GH_TOKEN="valoresegreto123"' | mask_secrets)
 M3=$(echo 'niente da mascherare qui' | mask_secrets)
 [ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \
   || ko "mask_secrets falso positivo: $M3"
+# (2026-09-23, notte dei giri, T5#3): le credenziali di QUESTO parco passavano intere — Google OAuth
+# (quelle di clasp, cioe' la produzione: access ya29., refresh 1//0, client GOCSPX-), l'URL con
+# credenziali, la chiave Zhipu nuda, PASSWD=. I valori finti si compongono a runtime.
+F20=ABCDEFGHIJKLMNOPQRST
+for campione in "tok ya2""9.$F20" "REFRESH=1/""/0$F20" "cliente=GOCSP""X-$F20" \
+                "remote=https://luca:$F20""@github.com/x" "glm $(printf '%032d' 7 | tr 0 a).$F20" "PASSW""D=$F20"; do
+  M=$(mask_secrets <<<"$campione")
+  grep -cF "$F20" <<<"$M" >/dev/null && ko "mask_secrets: valore intero in «${campione:0:8}…»" || ok "mask_secrets: mascherato «${campione:0:12}…»"
+done
 
 # --- candidata_censore: la PR portata al censore deve essere una che il censore accetta ---
 # (revisione 10 giri, 2026-09-23): il turno prendeva la PRIMA bozza night/* (`head -1`), il

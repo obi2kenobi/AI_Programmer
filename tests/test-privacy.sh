@@ -66,6 +66,15 @@ PFX="sk-an""t-"; printf 'chiave %sFINTOFINTOFINTOFINTOFINTO\n' "$PFX" > "$TMP/fu
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1)
 grep -q "FORMA DI SEGRETO" <<<"$OUT" && ok "chiave in forma sk-ant-… vista" || ko "chiave sk-ant-… NON vista: $OUT"
 git -C "$TMP" rm -q --cached fuga2.md; rm -f "$TMP/fuga2.md"
+# 6d) (2026-09-23, notte dei giri, T5#3): le forme di QUESTO parco — Google OAuth (clasp: la
+# produzione), l'URL con credenziali, la chiave Zhipu nuda. Valori finti composti a runtime.
+F20=ABCDEFGHIJKLMNOPQRST
+for campione in "ya2""9.$F20" "1/""/0$F20" "GOCSP""X-$F20" "https://luca:$F20""@github.com/x" "$(printf '%032d' 7 | tr 0 a).$F20"; do
+  printf 'x %s\n' "$campione" > "$TMP/fuga3.md" && git -C "$TMP" add fuga3.md
+  grep -c "FORMA DI SEGRETO" <<<"$(bash "$TMP/tools/privacy-check.sh" 2>&1)" >/dev/null \
+    && ok "forma vista: «${campione:0:8}…»" || ko "forma NON vista: «${campione:0:8}…»"
+  git -C "$TMP" rm -q --cached fuga3.md; rm -f "$TMP/fuga3.md"
+done
 
 # 7) bug reale (revisione 14 lenti, 2026-08-28): repos.key SENZA newline finale — `while
 # read` salta silenziosamente l'ultima riga, un nome sensibile su quella riga passava

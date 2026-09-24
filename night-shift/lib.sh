@@ -178,6 +178,9 @@ PY
 # portano lo STESSO (impronta = primi 8 hex di sha256). Forma 3 nuova: i token NUDI con
 # prefisso noto (ghp_, github_pat_, sk-ant-, xoxb-, AKIA...) — prima passavano interi se
 # nessuna parola chiave li precedeva. Una maschera gia' messa («...) non si rimaschera.
+# (2026-09-23, notte dei giri, T5#3): anche le credenziali di QUESTO parco — Google OAuth, cioe'
+# clasp e la produzione (ya29., 1//0, GOCSPX-), la chiave Zhipu nuda (<32 hex>.<segreto>), PASSWD,
+# e la password dentro un URL (fra «utente:» e la chiocciola dell'host). Prima passavano intere.
 mask_secrets() {
   python3 -c '
 import sys, re, hashlib
@@ -186,13 +189,15 @@ def imp(v):
 AUTH = re.compile(r"(Authorization[=: ]+(?:Bearer|Basic|Token)[= ]+)([^\s,\"«][^\s,\"]*)", re.I)
 # (revisione 10 giri): anche la chiave e il valore fra virgolette — JSON e X="y" (\x27 = apostrofo:
 # questo codice vive fra apici singoli di bash)
-KW = re.compile(r"((?:secret|token|password|key)[a-z_]*[\"\x27]?\s*[=:]\s*[\"\x27]?|(?:secret|token|password|key)[a-z_]* )([^\s,\"\x27«][^\s,\"\x27]*)", re.I)
-NUDI = re.compile(r"(?:ghp_|gho_|github_pat_|sk-ant-|sk-proj-|xox[bp]-|AKIA)[A-Za-z0-9_-]{12,}")
+KW = re.compile(r"((?:secret|token|passwd|password|key)[a-z_]*[\"\x27]?\s*[=:]\s*[\"\x27]?|(?:secret|token|passwd|password|key)[a-z_]* )([^\s,\"\x27«][^\s,\"\x27]*)", re.I)
+NUDI = re.compile(r"(?:ghp_|gho_|github_pat_|sk-ant-|sk-proj-|xox[bp]-|AKIA|ya29\.|1//0|GOCSPX-)[A-Za-z0-9_-]{12,}|[0-9a-f]{32}\.[A-Za-z0-9]{16,}")
+URL = re.compile(r"(://[^/\s:@\"\x27]+:)([^/\s@\"\x27«]{6,})(@)")
 for raw in sys.stdin.buffer:
     l = raw.decode("utf-8", "surrogateescape")
     l = AUTH.sub(lambda m: m.group(1) + imp(m.group(2)), l)
     l = KW.sub(lambda m: m.group(1) + imp(m.group(2)), l)
     l = NUDI.sub(lambda m: imp(m.group(0)), l)
+    l = URL.sub(lambda m: m.group(1) + imp(m.group(2)) + m.group(3), l)
     sys.stdout.buffer.write(l.encode("utf-8", "surrogateescape"))
     sys.stdout.buffer.flush()
 ' || echo "⛔ mask_secrets: la maschera e' MORTA (python) — output SOPPRESSO, non mostrato per sicurezza: e' un rosso, non un silenzio"
