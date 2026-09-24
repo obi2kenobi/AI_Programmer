@@ -172,6 +172,21 @@ else
   ko "Q13: nessun ramo standard per la repo con stato (rc=$RC): $(echo "$OUT" | tail -1)"
 fi
 
+# (2026-09-24, quarto ventaglio, Q2 R1): senza jq `copia-hook --elenco` esce 1, il suo rc si perdeva nel
+# `< <(…)`, e sync-repo diceva «ALLINEATO (e gli hook pure)» con un hook DIVERGENTE — il cancello clasp
+# era proprio l'hook che spariva dal confronto. Un PATH senza jq (tutto il resto c'e').
+NOJQ="$TMP/senza-jq"; mkdir -p "$NOJQ"
+for b in /usr/local/bin/* /usr/bin/* /bin/*; do n=${b##*/}; [ "$n" = jq ] || [ -e "$NOJQ/$n" ] || ln -s "$b" "$NOJQ/$n" 2>/dev/null; done
+cp -r "$TMP/allineata" "$TMP/hook-div"; echo '# refuso' >> "$TMP/hook-div/tools/clasp-block-hook.sh"
+OUT=$(PATH="$NOJQ" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/hook-div" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c 'ALLINEATO' <<<"$OUT" >/dev/null \
+  && ok "senza jq, hook divergente: niente ALLINEATO (rc $RC), e lo dice" || ko "senza jq ALLINEATO con un hook divergente (rc $RC): $OUT"
+# (Q2 R6): mktemp fallito (TMPDIR inesistente) — senza guardia i file finivano alla radice (da root, nel
+# container, /CLAUDE.md e /claude-satellite.md)
+OUT=$(TMPDIR="$TMP/non-esiste" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'mktemp' <<<"$OUT" >/dev/null && ! grep -c 'ALLINEATO\|DIVERGENTE' <<<"$OUT" >/dev/null \
+  && ok "mktemp fallito: si ferma e lo dice, senza scrivere altrove" || ko "mktemp fallito e sync-repo prosegue (rc $RC): $OUT"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

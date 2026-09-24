@@ -35,7 +35,9 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-TMP=$(mktemp -d)
+# (2026-09-24, quarto ventaglio, Q2 R6): senza guardia, un mktemp fallito (TMPDIR inesistente) lasciava TMP
+# vuoto e i file finivano alla radice — da root, nel container, /CLAUDE.md e /claude-satellite.md
+TMP=$(mktemp -d) && [ -d "$TMP" ] || { echo "sync-repo: mktemp fallito (TMPDIR=${TMPDIR:-non impostato}?) — mi fermo, nessun file scritto"; exit 1; }
 trap 'rm -rf "$TMP"' EXIT
 # (D8, Luca 2026-09-23): il CLAUDE.md che si confronta e si installa e' la versione per i
 # satelliti — senza i blocchi del solo hub (tools/claude-md-satellite.sh). Marcatori rotti: stop.
@@ -68,19 +70,24 @@ fi
 # Il confronto ora include gli hook dichiarati in settings.json: se uno diverge,
 # NON siamo allineati, e il turno aprira' il riallineo.
 HOOK_DIV=""
+# (Q2 R1): la lista si cattura PRIMA, col suo rc — senza jq `copia-hook --elenco` esce 1, dentro `< <(…)` il
+# rc si perdeva, nessun hook veniva confrontato e l'uscita diceva «e gli hook pure»
+ELENCO_HOOK=$(bash "$HERE/tools/copia-hook.sh" --elenco 2>&1) || { echo "sync-repo: hook NON derivabili ($(tail -1 <<<"$ELENCO_HOOK")) — non posso dire allineato"; exit 1; }
 while IFS= read -r H; do
   [ -n "$H" ] || continue
   if [ -n "$LOCAL_DIR" ]; then
     # da copia locale: file li', file qui — confronto diretto
     if ! diff -q "$HERE/$H" "$LOCAL_DIR/$H" >/dev/null 2>&1; then HOOK_DIV="$HOOK_DIV $H"; fi
   fi
-done < <(bash "$HERE/tools/copia-hook.sh" --elenco 2>/dev/null)  # (revisione 10 giri: una derivazione sola)
+done <<<"$ELENCO_HOOK"  # (revisione 10 giri: una derivazione sola)
 if [ -n "$HOOK_DIV" ]; then
   echo "sync-repo: DIVERGENTE — CLAUDE.md coincide ma gli HOOK no:$HOOK_DIV"
   exit 1
 fi
 if diff -q "$HUB_CLAUDE" "$TMP/CLAUDE.md" >/dev/null 2>&1; then
-  echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub (e gli hook pure)"
+  # (Q2 R1): in remoto gli hook non si confrontano (solo --from-local): lo si dice, non «e gli hook pure»
+  if [ -n "$LOCAL_DIR" ]; then HOOK_ESITO="e gli hook pure"; else HOOK_ESITO="hook NON confrontati: solo --from-local li legge"; fi
+  echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub ($HOOK_ESITO)"
   # (D12): il CLAUDE.md e' il canarino, non lo standard. Con --standard si prosegue e si
   # confronta il sistema intero (skill, agenti, hook): prima l'uscita qui rendeva
   # invisibile la deriva di tutto cio' che non e' CLAUDE.md.

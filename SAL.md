@@ -4420,3 +4420,19 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   controlli in `tests/test-caccia-lente.sh`. Rossi prima (1 + 3 FAIL), verdi ora (17/0, 8/0). Sabotaggi:
   senza il rifiuto del contenuto vuoto, 16/1; senza quello del verdetto vuoto, 7/1. Il mio primo banco A7
   cercava «completato» e prendeva «NON completato»: corretto su «✅ completato».
+- **Quarto ventaglio, Q2 R1 e R6 — sync-repo diceva «allineato» senza aver guardato, e scriveva alla
+  radice.**
+  - Senza jq, `tools/copia-hook.sh --elenco` esce 1, ma dentro `< <(…)` il rc si perdeva. Nessun hook
+    veniva confrontato, e l'uscita diceva «ALLINEATO (e gli hook pure)» con il clasp-block-hook
+    divergente (riprodotto qui, rc 0). Il turno ci credeva. Ora la lista si cattura col suo rc: senza,
+    «hook NON derivabili», rc 1. In modalità remota l'uscita dice «hook NON confrontati: solo
+    --from-local li legge».
+  - `TMP=$(mktemp -d)` era senza guardia: con un TMPDIR inesistente, da root, i file finivano in `/`.
+    È così che il giro Q2 ha lasciato `/CLAUDE.md` e `/claude-satellite.md` nel container. Il controllo
+    di sicurezza di Claude Code ha negato a me la rimozione: resta a Luca, `rm -f /CLAUDE.md
+    /claude-satellite.md`. Ora mktemp fallito vuol dire stop, e lo dice.
+
+  `tests/test-sync-repo.sh` ha due casi nuovi (PATH senza jq con un hook divergente; TMPDIR inesistente):
+  verde (23/0). Il rosso di R1 l'ho riprodotto da solo (rc 0, «ALLINEATO»), e il sabotaggio lo rifà. Il
+  rosso di R6 NON l'ho rifatto, perché riscriverebbe `/CLAUDE.md`: l'ha provato il giro Q2, e lo si legge
+  nel codice di prima. Dopo il banco `/CLAUDE.md` ha ancora l'ora delle 12:01, quindi la cura non scrive.
