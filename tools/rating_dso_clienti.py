@@ -73,6 +73,11 @@ def main():
                     d = date(2000 + int(m.group("aa")), int(m.group("mm")), int(m.group("gg")))
             pagamenti.append({"data": d, "cliente": cliente, "descrizione": descrizione, "importo": importo})
 
+    # (Q22): senza fatture ne' pagamenti stampava una tabella vuota, rc 0 (le righe d'altro tipo si
+    # ignorano: il vuoto e' «nessun movimento che il rating sa leggere»)
+    if not fatture and not pagamenti:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     clienti = {}
     non_matchati = []
     for p in pagamenti:

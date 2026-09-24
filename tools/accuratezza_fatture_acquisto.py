@@ -67,6 +67,10 @@ def main():
 
     fatture = leggi_csv(sys.argv[2], ("nr", "importo"))
     ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
+    # (Q22): con zero fatture stampava «Accuratezza 0.0% … RAGGIUNTO» — un verdetto sul nulla
+    if not fatture:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
 
     validi, discrepanze, inesistenti = [], [], []
     legittime_senza_ordine, anomale_senza_ordine = [], []

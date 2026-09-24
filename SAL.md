@@ -3553,3 +3553,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Banco: `tests/test-verifica-visiva-giudizio.sh`, 8 casi con i testi misurati, rossi prima.
     Controprova col tool vero sulle due pagine: rc=2. Sabotaggio (via ERR_): 2 rossi.
   - ASSUNTO: i percorsi di Chrome sul Mac sono quelli standard di /Applications.
+- **Q22a**, da A4, «verde senza dati» negli oracoli. La cura D32 provava il file vuoto, senza
+  intestazione. Con l'intestazione giusta e zero righe valide, 9 oracoli su 9 uscivano rc 0 con un
+  verdetto sullo zero:
+  - `tools/accuratezza_fatture_acquisto.py` «RAGGIUNTO» con 0 fatture;
+  - `tools/bilancio_bu.py` «QUADRATURA» con tutte le righe scartate.
+  - Ora nessuna riga valida = ERRORE, rc 1: un estratto vuoto è un'estrazione fallita finché non
+    si dimostra il contrario. Solo guardie d'ingresso: nessuna formula toccata.
+  - Banco: `tests/test-oracoli-uso.sh`, 9 casi, rossi prima. Sabotaggio (via una guardia): 1 rosso.

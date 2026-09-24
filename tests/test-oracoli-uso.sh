@@ -63,6 +63,22 @@ dichiara "riconciliazione: stdin vuoto"         python3 "$T/riconciliazione_maga
 dichiara "bilancio_bu: colonna amount assente"  python3 "$T/bilancio_bu.py" < "$TMP/ab.csv"
 dichiara "bilancio_bu: stdin vuoto"             python3 "$T/bilancio_bu.py" < "$TMP/niente"
 
+# --- Q22a (2026-09-23, giro A4 della notte): la cura D32 provava il file VUOTO (senza intestazione).
+#     Con l'intestazione giusta e ZERO righe valide nove oracoli su nove uscivano rc 0 con un verdetto
+#     sullo zero — accuratezza stampava «RAGGIUNTO» con 0 fatture, bilancio_bu «QUADRATURA» con tutte
+#     le righe scartate. Un estratto vuoto e' un'estrazione fallita finche' non si dimostra il
+#     contrario: nessuna riga valida = nessun verdetto (ERRORE, rc != 0).
+printf 'nr,importo\n' > "$TMP/solo-nr-importo.csv"
+dichiara "accuratezza: solo intestazione"       python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/solo-nr-importo.csv" "$TMP/solo-nr-importo.csv"
+dichiara "margine: solo intestazione"           python3 "$T/margine_documento.py" "$TMP/solo-nr-importo.csv" "$TMP/solo-nr-importo.csv"
+printf 'bu,amount\n' > "$TMP/h.csv";                          dichiara "bilancio_bu: solo intestazione"       python3 "$T/bilancio_bu.py" < "$TMP/h.csv"
+printf 'bu,amount\nARRG,abc\n' > "$TMP/h.csv";                dichiara "bilancio_bu: tutte le righe scartate" python3 "$T/bilancio_bu.py" < "$TMP/h.csv"
+printf 'codice,qty_bc,costo_finale\n' > "$TMP/h.csv";          dichiara "riconciliazione: solo intestazione"   python3 "$T/riconciliazione_magazzino.py" < "$TMP/h.csv"
+printf 'giorni,tipo,importo\n' > "$TMP/h.csv";                 dichiara "aging: solo intestazione"             python3 "$T/scadenzario_aging.py" < "$TMP/h.csv"
+printf 'codice,qty\n' > "$TMP/h.csv";                          dichiara "valorizzazione: solo intestazione"    python3 "$T/valorizzazione_magazzino.py" "$TMP/vuoto.json" < "$TMP/h.csv"
+printf 'tipo,data_documento,importo\n' > "$TMP/h.csv";         dichiara "rating: solo intestazione"            python3 "$T/rating_dso_clienti.py" < "$TMP/h.csv"
+printf 'costo_eff_unitario,qta_prodotta\n' > "$TMP/h.csv";     dichiara "scostamento: solo intestazione"       python3 "$T/scostamento_standard_effettivo.py" 10 < "$TMP/h.csv"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

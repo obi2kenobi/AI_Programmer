@@ -100,6 +100,10 @@ def main():
         {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
         for r in reader
     ]
+    # (Q22): con zero ordini stampava costo medio, scostamento e «Nessun alert», rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     media_eff = media_pesata(righe)
     scost_perc = calcola_scostamento(costo_standard, media_eff)
     trend = calcola_trend(righe)

@@ -144,6 +144,10 @@ def main():
         print(f"uso: valorizzazione_magazzino.py config.json < righe.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
         return 1
     righe = list(reader)
+    # (Q22): con zero righe stampava «Valore totale 0.00 EUR», rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     totale, dettaglio, senza_costo, negative, escluse = valorizza(righe, cfg)
 
     print(f"Righe lette: {len(righe)}")

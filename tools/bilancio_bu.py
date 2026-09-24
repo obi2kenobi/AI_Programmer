@@ -74,6 +74,10 @@ def main():
         t["ricavi"] += ricavo
         t["costi"] += costo
 
+    # (Q22): con zero righe valide (anche: tutte scartate) stampava «QUADRATURA … 0.00 = 0.00»
+    if not amounts:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23) — righe scartate: {righe_scartate}", file=sys.stderr)
+        return 1
     tot_r = sum(v["ricavi"] for v in bu_tot.values())
     tot_c = sum(v["costi"] for v in bu_tot.values())
     risultato_totale = round(tot_r - tot_c, 2)

@@ -66,6 +66,10 @@ def main():
         return 1
     vendite = leggi_csv(sys.argv[1], ("importo",))
     acquisti = leggi_csv(sys.argv[2], ("importo",))
+    # (Q22): con zero vendite stampava «Totale margine +0.00 EUR (+0.0%)»
+    if not vendite:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     note_credito = set()
     if len(sys.argv) == 4:
         note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3], ("rif",))}

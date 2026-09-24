@@ -69,6 +69,10 @@ def main():
         print(f"uso: riconciliazione_magazzino.py < inventario.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
         return 1
     righe = list(reader)
+    # (Q22): con zero righe stampava tre conteggi a zero, rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     try:
         non_contato, senza_discrepanza, con_rettifica = categorizza(righe)
     except ValueError as e:

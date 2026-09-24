@@ -124,6 +124,10 @@ def main():
             "importo": importo,
             "fascia": fascia_dettaglio(giorni),
         })
+    # (Q22): con zero righe stampava entrate, uscite e fasce a +0.00€, rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     r = aggrega_totali(righe)
     print(f"Entrate: {r['entrate']:+.2f}€")
     print(f"Uscite: {r['uscite']:+.2f}€")
