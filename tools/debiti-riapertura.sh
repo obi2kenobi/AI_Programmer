@@ -49,10 +49,17 @@ def celle_di(riga):
 # debito resta un debito solo, come prima.
 aperte = []
 sezioni_vive = 0
+# (2026-09-24, quinto ventaglio, R1 R3): una riga SALDATO spariva anche col residuo ⏳ che dichiara («fatto.
+# ⏳ NON verificato dal vivo»). I residui si raccolgono a parte: non gonfiano gli aperti, ma si vedono.
+residui = []
 for s in sezioni:
     titolo = s.split("\n")[0].strip()
     righe = s.split("\n")[1:]
     debiti = [l for l in righe if RIGA_DEBITO.match(l.strip())]
+    for l in debiti:
+        if SALDO.search(l) and "⏳" in l:
+            c = celle_di(l)
+            residui.append((f"{titolo} — {(c[1] if len(c) > 1 else '')[:70]}", re.search(r"⏳[^|]*", l).group(0).strip()))
     if debiti:
         vive = [l for l in debiti if not SALDO.search(l)]
         if not vive:
@@ -167,6 +174,12 @@ if attesa:
         print(f"  A{i}. {t}")
         for e in ev: print(f"      {e[:110]}")
         stampa_premesse(c)
+    print()
+if residui:
+    print("SALDATI CON RESIDUO ⏳ (chiusi, ma con una prova dichiarata che manca — si guarda se l'evento e' accaduto):")
+    for i, (t, e) in enumerate(residui, 1):
+        print(f"  S{i}. {t}")
+        print(f"      {e[:110]}")
     print()
 print(f"chiusi/storici: {len(sezioni) - sezioni_vive} sezioni saldate restano come memoria.")
 if not IN_GIT:

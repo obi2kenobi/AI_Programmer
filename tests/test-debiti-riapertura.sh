@@ -148,6 +148,17 @@ grep -c "R1\. Due domande nella stessa sezione (2026-01-01) — refactor della f
   && ok "R1 R1: la riga tecnica della stessa sezione e' un risolvibile, con la sua scorciatoia" || ko "R1 R1: la riga tecnica non e' R1: $(grep '^  R' <<<"$OUT6")"
 rm -rf "$SB6"
 
+# (2026-09-24, quinto ventaglio, R1 R3): una riga SALDATO usciva dalla vista per intero, anche con un residuo
+# ⏳ dichiarato («fatto. ⏳ NON verificato dal vivo»). Sul DEBITI vero sette righe cosi', e per una l'evento
+# era gia' accaduto. Ora si elencano a parte: non fra gli aperti (il conto non si gonfia), ma visibili.
+SB7=$(mktemp -d /tmp/debiti-t7.XXXXXX)
+printf '# D\n## Sezione\n| Data | S | P | Q |\n|---|---|---|---|\n| 2026-01-01 ✅ SALDATO | cosa | perche | fatto. ⏳ NON verificato dal vivo: la prova sul Mac |\n' > "$SB7/DEBITI.md"
+OUT7=$(bash "$TOOL" "$SB7" 2>&1)
+grep -c "APERTI: 0" <<<"$OUT7" >/dev/null && ok "R1 R3: il saldato con residuo non gonfia gli aperti" || ko "R1 R3: conto: $(sed -n 2p <<<"$OUT7")"
+grep -c "⏳ NON verificato dal vivo: la prova sul Mac" <<<"$OUT7" >/dev/null && grep -ci "saldati con residuo" <<<"$OUT7" >/dev/null \
+  && ok "R1 R3: il residuo ⏳ del saldato si vede, in una sezione sua" || ko "R1 R3: residuo invisibile: $(tr '\n' ' ' <<<"$OUT7")"
+rm -rf "$SB7"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

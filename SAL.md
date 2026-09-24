@@ -4799,3 +4799,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Tre casi nuovi in `tests/test-debiti-riapertura.sh` (22/0), rossi prima: una sezione con due domande e una
   riga tecnica. Sabotaggio con il tool di prima: 19/3.
+- **Quinto ventaglio, R1 R3 — i residui ⏳ dentro le righe SALDATO erano invisibili.** Una riga SALDATO
+  usciva dalla vista per intero, anche quando dichiarava «⏳ NON verificato dal vivo». Ora
+  `tools/debiti-riapertura.sh` le elenca in «SALDATI CON RESIDUO ⏳» (S1..Sn), fuori dal conto degli aperti.
+  Sul DEBITI vero erano quattro. Per una (la skill n-giri, «⏳ Mai usata dal vivo») l'evento era già accaduto:
+  ha guidato cinque ventagli. La riga è riverificata e dice dove; ne restano tre. Limite dichiarato: i
+  residui scritti senza ⏳ («resta da fare», «NON fatta»; il giro ne contava altri tre) il tool non li vede.
+  Il marcatore è la convenzione.
+
+  Due casi nuovi in `tests/test-debiti-riapertura.sh` (24/0), uno rosso prima. Sabotaggio: 23/1.
