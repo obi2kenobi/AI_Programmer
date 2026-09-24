@@ -3859,3 +3859,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   163/163 così. Per due ore i commit veri non si sono potuti fare: il lavoro è stato consegnato come
   patch via API GitHub. Alla ripresa della sessione (05:29Z) l'ambiente ha ricreato il programma di
   firma, la patch è diventata questo commit ed è stata tolta.
+- **T2#3 — il lock orfano del turno si prendeva due volte.** `prendi_lock_turno` in
+  `night-shift/lib.sh` faceva `rm -rf` e poi `mkdir` dopo aver giudicato orfano il lock. Il secondo
+  avvio poteva cancellare il lock appena preso dal primo. Il banco `tests/test-lock-turno-corsa.sh`,
+  con due avvii contro un orfano, ha trovato 10 doppie prese su 60. Ora il furto è serializzato da un
+  secondo `mkdir` (`<lock>.furto`), e dentro si rigiudica (`lock_turno_orfano`): 0 su 100. Un
+  `.furto` lasciato da un processo morto si toglie dopo 60 s. Nel banco anche il lock senza PID
+  vecchio di 2 ore. Errore di passaggio, visto dal banco: `mtime || date` stampava due righe su un
+  file assente; ora c'è `eta_secondi`. Sabotaggio (niente rigiudizio): 3 doppie su 60.

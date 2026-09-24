@@ -354,21 +354,47 @@ verifica_issue_comando() {
 # dura fino a 4h (watchdog) e il lock si rubava a un turno vivo. Ora conta il PID: vivo e del
 # turno = occupato, a qualunque eta'; morto, o riusato da un altro programma = orfano (E-026) e si
 # prende subito. Un lock senza PID (versione di prima) tiene la vecchia regola dell'ora.
+# (2026-09-24, notte dei giri, T2#3): davanti a un orfano, due avvii insieme lo prendevano ENTRAMBI
+# (32 su 200 nel giro T2, 10 su 60 nel banco): il secondo `rm -rf` cancellava il lock appena preso
+# dal primo. Ora il furto e' serializzato da un secondo mkdir (<lock>.furto), e dentro si RIGIUDICA:
+# chi arriva dopo trova il lock gia' preso da un vivo e si ferma. Un .furto lasciato da un processo
+# morto a meta' si toglie dopo 60 secondi (il furto dura millisecondi).
 prendi_lock_turno() {
-  local L="$1" pid comando
+  local L="$1" rc
   if mkdir "$L" 2>/dev/null; then echo $$ > "$L/pid"; return 0; fi
-  pid=$(cat "$L/pid" 2>/dev/null)
-  [ "$pid" = "$$" ] && return 0
+  [ "$(cat "$L/pid" 2>/dev/null)" = "$$" ] && return 0
+  lock_turno_orfano "$L" || return 1
+  if ! mkdir "$L.furto" 2>/dev/null; then
+    [ "$(eta_secondi "$L.furto")" -gt 60 ] && rm -rf "$L.furto"
+    return 1
+  fi
+  rc=1
+  if lock_turno_orfano "$L"; then
+    rm -rf "$L"
+    mkdir "$L" 2>/dev/null && echo $$ > "$L/pid" && rc=0
+  fi
+  rmdir "$L.furto" 2>/dev/null
+  return $rc
+}
+
+# lock_turno_orfano <dir-lock>: 0 se il lock non e' di nessun turno vivo — il PID dentro e' morto o di
+# un altro programma; senza PID (versione di prima), se ha piu' di un'ora.
+lock_turno_orfano() {
+  local pid comando
+  pid=$(cat "$1/pid" 2>/dev/null)
   if [ -n "$pid" ]; then
     comando=$(ps -p "$pid" -o command= 2>/dev/null)
     grep -q 'night-shift' <<<"$comando" && return 1
-  elif [ $(( $(date +%s) - $(mtime "$L") )) -lt 3600 ]; then
-    return 1
+    return 0
   fi
-  rm -rf "$L"
-  mkdir "$L" 2>/dev/null || return 1
-  echo $$ > "$L/pid"
-  return 0
+  [ "$(eta_secondi "$1")" -ge 3600 ]
+}
+
+# eta_secondi <percorso>: da quanti secondi esiste (0 se non esiste: un file sparito non e' vecchio)
+eta_secondi() {
+  local m
+  m=$(mtime "$1" 2>/dev/null) || { echo 0; return; }
+  echo $(( $(date +%s) - m ))
 }
 
 # commenta_una_volta <num> <owner/repo> <motivo> <corpo>: commenta l'issue UNA volta per motivo.
