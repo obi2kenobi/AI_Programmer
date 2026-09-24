@@ -4250,3 +4250,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Primo tentativo di consegna rosso: dentro la suite, il banco ereditava la cache fresca e il suo `.pyc`
   di prova non si formava. Ora il caso 5 toglie la variabile di fuori (`env -u`), sia per la premessa sia
   per il runner sotto prova. Sabotaggio rifatto sotto una cache esterna: rosso (12/1).
+- **Terzo ventaglio, V2#6 — tre banchi di dominio con dati che non distinguevano la formula giusta.**
+  Cinque sabotaggi di una riga restavano verdi. Ora ciascuno ha un caso che lo distingue, e ogni
+  aspettativa è calcolata a mano dalla formula scritta in testa al tool:
+  - `tests/test-riconciliazione-magazzino.sh`: una rettifica di +30 accanto a −22,50 e +1, così
+    l'ordine per |Δ valore| si separa da quello per Δ; e una quantità fisica vuota senza lo stato
+    «Non Contato».
+  - `tests/test-scostamento-standard-effettivo.sh`: uno scostamento di −27,5% (allarme «sotto»,
+    MEDIO) e una serie IN_DISCESA (−10%).
+  - `tests/test-rollforward-cespiti.sh`: un cespite dismesso in un anno precedente (yearCessioni 0).
+
+  Sabotaggi, con una cache di bytecode fresca (E-047): ordine per Δ, via il ramo della quantità
+  vuota, `abs` tolto, `< -5` → `< -50`, via `yearCessioni != 0`. Tutti e cinque rossi.

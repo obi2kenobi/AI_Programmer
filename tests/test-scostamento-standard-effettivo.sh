@@ -64,6 +64,17 @@ checks.append(("trend = IN_SALITA con 4 ordini (12.5% > 5%)", calcola_trend(odps
 stabile = calcola_trend([{"costo_eff_unitario": 10.0, "qta_prodotta": 10.0}] * 4)
 checks.append(("trend = STABILE su ordini identici", stabile == "STABILE"))
 
+# (2026-09-24, terzo ventaglio, V2#6): nessun caso aveva uno scostamento negativo, e IN_DISCESA non era mai
+# provato: `abs(scost) <= soglia` scritto `scost <= soglia`, o `< -5` scritto `< -50`, restavano verdi.
+# A mano: standard 10, media 7.25 -> (7.25 - 10) / 10 * 100 = -27.5%: allarme «sotto», MEDIO.
+alert_sotto = valuta_alert(10.0, 3, calcola_scostamento(10.0, 7.25))
+checks.append(("scostamento -27.5%: allarme anche sotto lo standard (soglia sul valore assoluto)", alert_sotto is not None))
+checks.append(("scostamento -27.5%: direzione = sotto, gravita = MEDIO",
+               bool(alert_sotto) and alert_sotto["direzione"] == "sotto" and alert_sotto["gravita"] == "MEDIO"))
+# A mano: prima meta' 12, 12 (media 12), seconda 10.8, 10.8 (media 10.8): (10.8 - 12) / 12 * 100 = -10% < -5
+discesa = [{"costo_eff_unitario": c, "qta_prodotta": 10.0} for c in (12.0, 12.0, 10.8, 10.8)]
+checks.append(("trend = IN_DISCESA con 4 ordini (-10% < -5%)", calcola_trend(discesa) == "IN_DISCESA"))
+
 for nome, esito in checks:
     print(f"{'OK' if esito else 'KO'}\t{nome}")
 PY

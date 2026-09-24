@@ -38,6 +38,21 @@ checks.append(("ART-003 non contato, mai un delta numerico", len(non_contato) ==
 checks.append(("ART-004 in con_rettifica con delta=+1, deltaValore=+1.00", con_rettifica[1]["codice"] == "ART-004" and con_rettifica[1]["delta"] == 1 and abs(con_rettifica[1]["delta_valore"] - 1.00) < 1e-9))
 checks.append(("ordinamento per |deltaValore| decrescente: 22.50 prima di 1.00", abs(con_rettifica[0]["delta_valore"]) >= abs(con_rettifica[1]["delta_valore"])))
 
+# (2026-09-24, terzo ventaglio, V2#6): i dati qui sopra (-22.50 e +1.00) davano lo stesso ordine con
+# |deltaValore| e con deltaValore, e ogni «non contato» aveva anche lo stato «Non Contato». Due casi che
+# distinguono, a mano: ART-006 10 -> 25 a 2.00 = +15, +30.00. Per |dV| decrescente: 006 (30), 001 (22.50),
+# 004 (1); per dV crescente sarebbe 001, 004, 006; per dV decrescente 006, 004, 001.
+righe2 = righe + [
+    {"codice": "ART-006", "qty_bc": "10", "costo_finale": "2.00", "qty_fisica": "25", "stato": ""},
+    # quantita' fisica vuota con uno stato qualunque: resta «non contato», mai un conteggio a zero
+    {"codice": "ART-007", "qty_bc": "8", "costo_finale": "3.00", "qty_fisica": "", "stato": ""},
+]
+nc2, _, cr2 = categorizza(righe2)
+checks.append(("ordine per |deltaValore| decrescente con segni misti: ART-006, ART-001, ART-004",
+               [r["codice"] for r in cr2] == ["ART-006", "ART-001", "ART-004"]))
+checks.append(("qty_fisica vuota senza stato «Non Contato»: non contato, nessun delta",
+               any(r["codice"] == "ART-007" and r["delta"] == "" for r in nc2)))
+
 for nome, esito in checks:
     print(f"{'OK' if esito else 'KO'}\t{nome}")
 
