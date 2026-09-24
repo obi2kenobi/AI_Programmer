@@ -4336,3 +4336,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Della tabella di V2 restano S4 (il gestore del `$metadata` di `tools/bc_tipi_metadata.py`, non
   raggiunto: il banco muore prima sulle credenziali) e S18b (la lente `echo +0` non vede la forma con
   le virgolette; nel codice di oggi non ce n'è nessuna). S21 lo prende già `tests/test-dashboard.sh`.
+- **Terzo ventaglio chiuso — consolidamento.** In `docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md`: 30
+  rilievi più 12 fuori tetto, i tre temi trasversali (il giudice che non giudica, il documento che dice
+  ieri, il tempo come bene), la tassonomia a quattro, la smentita del rapporto V2 (E-047), gli errori
+  E-046 ed E-047. Quattro domande di dominio nuove in DEBITI.md. Il report di campo
+  (`docs/campo/2026-09-24-notte-dei-giri.md`) ha la sezione del terzo ventaglio, con due proposte a
+  CLAUDE.md non applicate.

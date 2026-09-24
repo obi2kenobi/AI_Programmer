@@ -4485,21 +4485,6 @@
       "source_location": "L123"
     },
     {
-      "id": "night_shift_lib_rotate_log_if_big",
-      "label": "rotate_log_if_big()",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rotate_log_if_big()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L38"
-    },
-    {
       "id": "night_shift_night_shift",
       "label": "night-shift.sh",
       "_origin": "ast",
@@ -12158,66 +12143,6 @@
       "source_location": "L11"
     },
     {
-      "id": "llm_ask_glm",
-      "label": "ask-glm.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ask-glm.sh",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_glm_sh__entry",
-      "label": "ask-glm.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-glm.sh script",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus",
-      "label": "ask-opus.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ask-opus.sh",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus_sh__entry",
-      "label": "ask-opus.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-opus.sh script",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "llm_ask_qwen",
       "label": "ask-qwen.sh",
       "_origin": "ast",
@@ -12305,51 +12230,6 @@
       },
       "norm_label": "_timeout.sh script",
       "source_file": "llm/_timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_usage",
-      "label": "_usage.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "_usage.sh",
-      "source_file": "llm/_usage.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_usage_log_ask_usage",
-      "label": "log_ask_usage()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log_ask_usage()",
-      "source_file": "llm/_usage.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "llm_usage_sh__entry",
-      "label": "_usage.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "_usage.sh script",
-      "source_file": "llm/_usage.sh",
       "source_location": "L1"
     },
     {
@@ -12950,6 +12830,201 @@
       },
       "norm_label": "test-dashboard.sh script",
       "source_file": "tests/test-dashboard.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_deploy_assistito",
+      "label": "test-deploy-assistito.sh",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-deploy-assistito.sh",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_deploy_assistito_gesto",
+      "label": "gesto()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gesto()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L33"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_author_email",
+      "label": "GIT_AUTHOR_EMAIL",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_email",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_author_name",
+      "label": "GIT_AUTHOR_NAME",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_name",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_committer_email",
+      "label": "GIT_COMMITTER_EMAIL",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_email",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_committer_name",
+      "label": "GIT_COMMITTER_NAME",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_name",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_deploy_assistito_home",
+      "label": "HOME",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "home",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_deploy_assistito_home_bak",
+      "label": "HOME_BAK",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "home_bak",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_deploy_assistito_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_deploy_assistito_mkrepo",
+      "label": "mkrepo()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mkrepo()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L41"
+    },
+    {
+      "id": "tests_test_deploy_assistito_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_deploy_assistito_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L28"
+    },
+    {
+      "id": "tests_test_deploy_assistito_sh__entry",
+      "label": "test-deploy-assistito.sh script",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-deploy-assistito.sh script",
+      "source_file": "tests/test-deploy-assistito.sh",
       "source_location": "L1"
     },
     {
@@ -15518,198 +15593,87 @@
       "source_location": "L127"
     },
     {
-      "id": "tests_test_deploy_assistito",
-      "label": "test-deploy-assistito.sh",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento",
+      "label": "2026-09-24-terzo/99-CONSOLIDAMENTO.md",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-deploy-assistito.sh",
-      "source_file": "tests/test-deploy-assistito.sh",
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-24-terzo/99-consolidamento.md",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_deploy_assistito_gesto",
-      "label": "gesto()",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento_errori_miei_in_questo_ventaglio_registro",
+      "label": "Errori miei in questo ventaglio (REGISTRO)",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gesto()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L33"
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "errori miei in questo ventaglio (registro)",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L69"
     },
     {
-      "id": "tests_test_deploy_assistito_git_author_email",
-      "label": "GIT_AUTHOR_EMAIL",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento_esito",
+      "label": "Esito",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_author_email",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L21"
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "esito",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L9"
     },
     {
-      "id": "tests_test_deploy_assistito_git_author_name",
-      "label": "GIT_AUTHOR_NAME",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento_prerequisiti_nascosti",
+      "label": "Prerequisiti nascosti",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_author_name",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L21"
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "prerequisiti nascosti",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L64"
     },
     {
-      "id": "tests_test_deploy_assistito_git_committer_email",
-      "label": "GIT_COMMITTER_EMAIL",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento_tassonomia",
+      "label": "Tassonomia",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_committer_email",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L22"
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "tassonomia",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L31"
     },
     {
-      "id": "tests_test_deploy_assistito_git_committer_name",
-      "label": "GIT_COMMITTER_NAME",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento_temi_trasversali",
+      "label": "Temi trasversali",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_committer_name",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L22"
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "temi trasversali",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L19"
     },
     {
-      "id": "tests_test_deploy_assistito_home",
-      "label": "HOME",
+      "id": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "label": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
       "_origin": "ast",
       "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "home",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_deploy_assistito_home_bak",
-      "label": "HOME_BAK",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "home_bak",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_deploy_assistito_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_deploy_assistito_mkrepo",
-      "label": "mkrepo()",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mkrepo()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L41"
-    },
-    {
-      "id": "tests_test_deploy_assistito_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_deploy_assistito_path",
-      "label": "PATH",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L28"
-    },
-    {
-      "id": "tests_test_deploy_assistito_sh__entry",
-      "label": "test-deploy-assistito.sh script",
-      "_origin": "ast",
-      "community": 20,
-      "community_name": "test-deploy-assistito.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-deploy-assistito.sh script",
-      "source_file": "tests/test-deploy-assistito.sh",
+      "community_name": "Terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "terzo ventaglio \u2014 consolidamento (2026-09-24)",
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
       "source_location": "L1"
     },
     {
@@ -16508,21 +16472,6 @@
       "source_location": "L109"
     },
     {
-      "id": "night_shift_lib_rami_da_scopare",
-      "label": "rami_da_scopare()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "test-lib.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rami_da_scopare()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L338"
-    },
-    {
       "id": "night_shift_lib_verifica_issue_comando",
       "label": "verifica_issue_comando()",
       "_origin": "ast",
@@ -17283,13 +17232,13 @@
     },
     {
       "id": "docs_giri_2026_09_23_notte_99_consolidamento",
-      "label": "99-CONSOLIDAMENTO.md",
+      "label": "2026-09-23-notte/99-CONSOLIDAMENTO.md",
       "_origin": "ast",
       "community": 215,
       "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "99-consolidamento.md",
+      "norm_label": "2026-09-23-notte/99-consolidamento.md",
       "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
       "source_location": "L1"
     },
@@ -20519,11 +20468,41 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_lock_turno_orfano",
+      "label": "lock_turno_orfano()",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_turno_orfano()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L523"
+    },
+    {
+      "id": "night_shift_lib_prendi_lock_turno",
+      "label": "prendi_lock_turno()",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prendi_lock_turno()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L502"
+    },
+    {
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20538,7 +20517,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20553,7 +20532,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20568,7 +20547,7 @@
       "label": "test-lock-turno-corsa.sh script",
       "_origin": "ast",
       "community": 251,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20576,6 +20555,51 @@
       },
       "norm_label": "test-lock-turno-corsa.sh script",
       "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo",
+      "label": "ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ciclo-vivo.sh",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo_corpo_agent",
+      "label": "corpo_agent()",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "corpo_agent()",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L125"
+    },
+    {
+      "id": "tools_ciclo_vivo_sh__entry",
+      "label": "ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ciclo-vivo.sh script",
+      "source_file": "tools/ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -20710,81 +20734,6 @@
       },
       "norm_label": "test-night-shift-design-gate.sh script",
       "source_file": "tests/test-night-shift-design-gate.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_lib_messaggio_fix",
-      "label": "messaggio_fix()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "messaggio_fix()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L474"
-    },
-    {
-      "id": "tests_test_messaggio_fix",
-      "label": "test-messaggio-fix.sh",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-messaggio-fix.sh",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_messaggio_fix_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_messaggio_fix_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_messaggio_fix_sh__entry",
-      "label": "test-messaggio-fix.sh script",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-messaggio-fix.sh script",
-      "source_file": "tests/test-messaggio-fix.sh",
       "source_location": "L1"
     },
     {
@@ -30333,21 +30282,6 @@
       "source_location": "L5"
     },
     {
-      "id": "night_shift_lib_esegui_verifica",
-      "label": "esegui_verifica()",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "esegui_verifica()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L88"
-    },
-    {
       "id": "night_shift_lib_eta_secondi",
       "label": "eta_secondi()",
       "_origin": "ast",
@@ -30378,8 +30312,8 @@
       "source_location": "L418"
     },
     {
-      "id": "night_shift_lib_lock_turno_orfano",
-      "label": "lock_turno_orfano()",
+      "id": "night_shift_lib_messaggio_fix",
+      "label": "messaggio_fix()",
       "_origin": "ast",
       "community": 373,
       "community_name": "lib.sh",
@@ -30388,24 +30322,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "lock_turno_orfano()",
+      "norm_label": "messaggio_fix()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L523"
-    },
-    {
-      "id": "night_shift_lib_mask_secrets",
-      "label": "mask_secrets()",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mask_secrets()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L279"
+      "source_location": "L474"
     },
     {
       "id": "night_shift_lib_mtime",
@@ -30423,8 +30342,8 @@
       "source_location": "L28"
     },
     {
-      "id": "night_shift_lib_prendi_lock_turno",
-      "label": "prendi_lock_turno()",
+      "id": "night_shift_lib_rami_da_scopare",
+      "label": "rami_da_scopare()",
       "_origin": "ast",
       "community": 373,
       "community_name": "lib.sh",
@@ -30433,9 +30352,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "prendi_lock_turno()",
+      "norm_label": "rami_da_scopare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L502"
+      "source_location": "L338"
     },
     {
       "id": "night_shift_lib_repo_code",
@@ -30451,6 +30370,21 @@
       "norm_label": "repo_code()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L365"
+    },
+    {
+      "id": "night_shift_lib_rotate_log_if_big",
+      "label": "rotate_log_if_big()",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rotate_log_if_big()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L38"
     },
     {
       "id": "night_shift_lib_run_guarded",
@@ -30528,8 +30462,8 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_ciclo_vivo",
-      "label": "ciclo-vivo.sh",
+      "id": "tests_test_messaggio_fix",
+      "label": "test-messaggio-fix.sh",
       "_origin": "ast",
       "community": 373,
       "community_name": "lib.sh",
@@ -30538,13 +30472,13 @@
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "ciclo-vivo.sh",
-      "source_file": "tools/ciclo-vivo.sh",
+      "norm_label": "test-messaggio-fix.sh",
+      "source_file": "tests/test-messaggio-fix.sh",
       "source_location": "L1"
     },
     {
-      "id": "tools_ciclo_vivo_corpo_agent",
-      "label": "corpo_agent()",
+      "id": "tests_test_messaggio_fix_ko",
+      "label": "ko()",
       "_origin": "ast",
       "community": 373,
       "community_name": "lib.sh",
@@ -30553,13 +30487,28 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "corpo_agent()",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L125"
+      "norm_label": "ko()",
+      "source_file": "tests/test-messaggio-fix.sh",
+      "source_location": "L11"
     },
     {
-      "id": "tools_ciclo_vivo_sh__entry",
-      "label": "ciclo-vivo.sh script",
+      "id": "tests_test_messaggio_fix_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-messaggio-fix.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_messaggio_fix_sh__entry",
+      "label": "test-messaggio-fix.sh script",
       "_origin": "ast",
       "community": 373,
       "community_name": "lib.sh",
@@ -30568,8 +30517,8 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "ciclo-vivo.sh script",
-      "source_file": "tools/ciclo-vivo.sh",
+      "norm_label": "test-messaggio-fix.sh script",
+      "source_file": "tests/test-messaggio-fix.sh",
       "source_location": "L1"
     },
     {
@@ -45673,11 +45622,146 @@
       "source_location": "L3"
     },
     {
+      "id": "llm_ask_glm",
+      "label": "ask-glm.sh",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ask-glm.sh",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_glm_sh__entry",
+      "label": "ask-glm.sh script",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-glm.sh script",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus",
+      "label": "ask-opus.sh",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ask-opus.sh",
+      "source_file": "llm/ask-opus.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus_sh__entry",
+      "label": "ask-opus.sh script",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-opus.sh script",
+      "source_file": "llm/ask-opus.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_usage",
+      "label": "_usage.sh",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "_usage.sh",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_usage_log_ask_usage",
+      "label": "log_ask_usage()",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log_ask_usage()",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "llm_usage_sh__entry",
+      "label": "_usage.sh script",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "_usage.sh script",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_lib_esegui_verifica",
+      "label": "esegui_verifica()",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "esegui_verifica()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L88"
+    },
+    {
+      "id": "night_shift_lib_mask_secrets",
+      "label": "mask_secrets()",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "mask_secrets",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mask_secrets()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L279"
+    },
+    {
       "id": "tools_lente_sicurezza",
       "label": "lente-sicurezza.sh",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45692,7 +45776,7 @@
       "label": "log()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45707,7 +45791,7 @@
       "label": "lente-sicurezza.sh script",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45722,7 +45806,7 @@
       "label": "verdetto()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lente-sicurezza.sh",
+      "community_name": "mask_secrets",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45827,6 +45911,18 @@
       "norm_label": "aggiornamento (2026-09-24, ripresa della sessione alle 05:29z)",
       "source_file": "docs/campo/2026-09-24-notte-dei-giri.md",
       "source_location": "L41"
+    },
+    {
+      "id": "docs_campo_2026_09_24_notte_dei_giri_aggiornamento_2026_09_24_terzo_ventaglio_fino_alle_12z",
+      "label": "Aggiornamento (2026-09-24, terzo ventaglio, fino alle 12Z)",
+      "_origin": "ast",
+      "community": 724,
+      "community_name": "2026-09-24 \u2014 la notte dei giri (hub AI_Programmer, due ventagli di lenti)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "aggiornamento (2026-09-24, terzo ventaglio, fino alle 12z)",
+      "source_file": "docs/campo/2026-09-24-notte-dei-giri.md",
+      "source_location": "L51"
     },
     {
       "id": "docs_campo_2026_09_24_notte_dei_giri_cosa_ha_retto_ostacolato",
@@ -71481,6 +71577,17 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_09_24_notte_dei_giri_2026_09_24_la_notte_dei_giri_hub_ai_programmer_due_ventagli_di_lenti",
+      "target": "docs_campo_2026_09_24_notte_dei_giri_aggiornamento_2026_09_24_terzo_ventaglio_fino_alle_12z",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-24-notte-dei-giri.md",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_readme",
       "target": "docs_campo_readme_report_dal_campo_come_si_\u00e8_comportato_ai_programmer_a_ogni_uso",
       "relation": "contains",
@@ -72479,6 +72586,72 @@
       "confidence_score": 1.0,
       "source_file": "docs/giri/2026-09-24-terzo/00-BRIEF.md",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_terzo_99_consolidamento",
+      "target": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_terzo_99_consolidamento_temi_trasversali",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_terzo_99_consolidamento_tassonomia",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_terzo_99_consolidamento_prerequisiti_nascosti",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L64",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_terzo_99_consolidamento_errori_miei_in_questo_ventaglio_registro",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_terzo_99_consolidamento_terzo_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_terzo_99_consolidamento_esito",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -94237,5 +94410,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a80949bb4077a5b935fe3b64a2c15b7cd7fd3666"
+  "built_at_commit": "61c658de43c82cf9c8acd43f03a600c564b93b01"
 }

@@ -47,3 +47,19 @@
   consegna. Ha ostacolato: E-043 si è ripetuto una volta (T6#6), corretto nel SAL.
 - Proposta in più per la skill `n-giri` §2, già applicata al terzo ventaglio: il rapporto del giro va
   in una cartella del repo ignorata da git (`docs/giri/*/V*.md`), non nello scratchpad.
+
+## Aggiornamento (2026-09-24, terzo ventaglio, fino alle 12Z)
+- Usato: cinque lenti (turno eseguito, banchi come giudici, skill come istruzioni, tempo, pattern), un
+  clone ciascuna. Consolidamento in `docs/giri/2026-09-24-terzo/99-CONSOLIDAMENTO.md`: 30 rilievi più
+  12 fuori tetto, tutti curati o dichiarati, e una smentita.
+- Ha retto: leggere l'uscita del sabotaggio in un comando separato (E-043). Tre sabotaggi diversi
+  davano lo stesso FAIL, e così è venuto fuori il bytecode stantio (E-047). Senza quella regola avrei
+  scritto tre rossi veri.
+- Ha ostacolato: un banco che, dentro la suite, eredita la cache fresca della suite stessa. La prima
+  guardia di E-047 era rossa dentro e verde fuori. Il pre-commit e la suite della consegna l'hanno
+  fermata prima del push.
+- Proposte al canone (non applicate):
+  - CLAUDE.md §7 promette «a 240-min per-issue watchdog», ma il watchdog vive nel ramo opencode, che non
+    gira mai (V1#6d). La frase va corretta, dopo la risposta di Luca in DEBITI.
+  - CLAUDE.md §5: un sabotaggio di un modulo Python si esegue con una cache di bytecode fresca (E-047).
+    Già scritto nella skill `n-giri` §5, che non è canone vincolante.
