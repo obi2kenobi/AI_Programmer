@@ -79,6 +79,15 @@ run_guarded() {
   ai_timeout "$secs" "$@"
 }
 
+# ambiente_turno: una riga per il log — la bash, il ramo di ai_timeout, la sandbox (2026-09-23, notte dei
+# giri, T3#6). Il turno gira sul Mac, i banchi su Linux: senza questa riga le differenze fra i due
+# (il ramo perl del timeout, la sandbox) non si misurano dal log.
+ambiente_turno() {
+  local sb="ASSENTE (esecuzioni senza sandbox; il censore rinvia)"
+  command -v sandbox-exec >/dev/null 2>&1 && sb="sandbox-exec"
+  echo "ambiente: bash $BASH_VERSION · timeout: $(ai_timeout_ramo) · sandbox: $sb"
+}
+
 # gate_allowlist_ok(): TRUE solo se OGNI segmento del comando (split consapevole delle
 # virgolette su && || ; |) inizia con uno strumento che NON PUÒ eseguire codice via argomenti.
 # Decisione di Luca 2026-08-21 (opzione c): niente interpreti general-purpose — bash -c,

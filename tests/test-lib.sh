@@ -148,6 +148,16 @@ OUT=$( HERE="$KEYTMP" bash -c "source '$HERE/night-shift/lib.sh'; repo_code 'fin
 [ "$(echo "$OUT" | tail -1)" = "altra/qualunque" ] && ok "repo_code: nome qualunque passa invariato" || ko "repo_code ignoto: $OUT"
 rm -rf "$KEYTMP"
 
+# --- (2026-09-23, notte dei giri, T3#6): il turno scrive nel log con quale bash, quale ramo di timeout e
+# quale sandbox gira — senza, le differenze Mac/Linux (T3#1, T3#2) non si misurano dal log del Mac
+command -v ambiente_turno >/dev/null && AMB=$(ambiente_turno) || AMB=""
+grep -cE "^ambiente: bash [0-9]+\.[0-9]+.* · timeout: .+ · sandbox: .+" <<<"$AMB" >/dev/null \
+  && ok "ambiente_turno: bash, ramo di timeout e sandbox in una riga" || ko "ambiente_turno assente o incompleta: '$AMB'"
+grep -c "timeout: perl" <<<"$(AI_TIMEOUT_FORCE_PERL=1 ambiente_turno 2>/dev/null)" >/dev/null \
+  && ok "ambiente_turno: col ramo perl forzato dice perl" || ko "ambiente_turno non vede il ramo perl"
+grep -c 'log "$(ambiente_turno)"' "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "night-shift.sh scrive l'ambiente nel log" || ko "night-shift.sh non scrive l'ambiente nel log"
+
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
 # (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
 # («Mask, don't omit») e del pattern segreto-come-impronta — «segreto <impronta> · N caratteri».

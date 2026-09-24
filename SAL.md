@@ -3827,3 +3827,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   KILL al gruppo (il nipote orfano muore comunque). Rc 124 invariato. Banco
   `tests/test-ai-timeout.sh` sul ramo forzato: rosso prima, rosso al sabotaggio (KILL al posto di
   TERM). ⏳ Quale ramo usi davvero il Mac non si misura da qui (T3#6: il turno non lo scrive nel log).
+- **T3#6 — il log del turno non diceva su cosa girava.** Ora, subito dopo l'allineamento, una riga
+  «ambiente: bash … · timeout: … · sandbox: …» (`ambiente_turno` in `night-shift/lib.sh`,
+  `ai_timeout_ramo` in `llm/_timeout.sh`). Serve a misurare dal log del Mac ciò che da qui resta
+  ⏳: quale ramo di timeout prende (T3#1) e se la sandbox c'è (T3#2, T5#1). Banco
+  `tests/test-lib.sh`: 3 rossi prima, 2 rossi al sabotaggio.

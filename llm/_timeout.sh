@@ -52,3 +52,13 @@ ai_timeout() {
     exit(($? & 127) ? 128 + ($? & 127) : $? >> 8);
   ' "$secs" "$@"
 }
+
+# ai_timeout_ramo: quale dei tre rami userebbe ai_timeout qui (2026-09-23, T3#6: il turno lo scrive nel
+# log — i rami si comportavano diversamente, e dal log del Mac non si vedeva quale girava)
+ai_timeout_ramo() {
+  if [ -z "${AI_TIMEOUT_FORCE_PERL:-}" ]; then
+    command -v timeout >/dev/null 2>&1 && { echo "GNU timeout"; return; }
+    command -v gtimeout >/dev/null 2>&1 && { echo "gtimeout"; return; }
+  fi
+  echo "perl (TERM, 5 s, KILL)"
+}

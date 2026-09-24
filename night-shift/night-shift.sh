@@ -70,6 +70,7 @@ if git -C "$HERE" reset -q --hard "$(git -C "$HERE" symbolic-ref refs/remotes/or
 else
   log "ATTENZIONE: hub non allineabile — il turno gira col metodo che c'e'"
 fi
+log "$(ambiente_turno)"   # T3#6: bash, ramo di timeout, sandbox — le differenze Mac/Linux si leggono qui
 # (studio deepseek-harness profiles, 2026-09-23): la configurazione del turno
 # vive in UNA dichiarazione (profiles/notturno.conf) ricomposta a ogni ciclo —
 # il nostro exec-per-ciclo e' un hot-reload gratis. I default nel codice sono
