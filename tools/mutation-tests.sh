@@ -47,6 +47,13 @@ for t in tests/test-*.sh; do
     if [ "$nb" = "$base" ]; then tool="$cand"; break; fi
   done
   [ -z "$tool" ] && continue
+  # (2026-09-24, terzo ventaglio, V2 — E-046): il banco di QUESTO strumento su un albero pulito rilancia il
+  # run completo; col controllo «verde prima» qui sotto (Q32) la batteria si annidava senza fine (9 livelli
+  # in 15 minuti). Neutralizzare se stessi dall'interno non dimostra niente: si salta, e si dice.
+  if [ "$tool" = "tools/mutation-tests.sh" ]; then
+    echo "SALTATO: $(basename "$t") — il banco della batteria stessa non si giudica dall'interno (si anniderebbe)"
+    continue
+  fi
   # (Q32, 2026-09-23, notte dei giri): un banco GIA' rosso fallisce anche dopo la mutazione, e
   # veniva contato «reagisce» — un TIENE regalato da un banco rotto. Prima si guarda che sia verde.
   if ! bash "$t" >/dev/null 2>&1; then

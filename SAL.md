@@ -4045,3 +4045,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   skill fa girare il cancello vero, con la ricetta del comando (provata:
   `territorio-assente`). Cricchetto in `tests/test-night-shift-design-gate.sh`, due specchi: 2 rossi
   sul testo di prima.
+- **E-046 (errore mio, regressione di Q32) — mutation-tests si annidava senza fine su un albero
+  pulito.** Il controllo «ogni banco verde prima di mutare» (Q32, `d1554c0`) eseguiva anche
+  `tests/test-mutation-tests.sh`, che su un albero pulito rilancia il run completo: ricorsione. Il
+  giro V2 ha misurato 9 livelli in 15 minuti. La mia consegna non poteva vederlo: mette tutto in
+  stage PRIMA della suite, e con l'indice sporco quel banco prende il ramo veloce. Il turno gira su un
+  albero pulito, dove la ricorsione scatta. Ora la batteria salta il proprio banco, e lo dice. Banco
+  in `tests/test-mutation-tests.sh` (repo di prova, tetto 30 s): ucciso dal tetto prima, finito
+  dopo. Il ramo dell'albero pulito si misura in un clone fresco dopo la consegna (voce sotto).

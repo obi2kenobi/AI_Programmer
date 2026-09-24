@@ -46,6 +46,20 @@ OUT=$(cd "$MT" && bash tools/mutation-tests.sh 2>&1); RC=$?
   || ko "banco rotto promosso a «reagisce alla mutazione» (rc=$RC): $(tail -1 <<<"$OUT")"
 rm -rf "$MT"
 
+# (2026-09-24, terzo ventaglio, V2 — regressione mia, E-046): col controllo «verde prima di mutare»
+# mutation-tests eseguiva anche il banco di SE STESSO, che su un albero pulito rilancia il run completo:
+# ricorsione senza fine (9 livelli in 15 minuti, misurati dal giro). Si prova in una repo di prova:
+# il proprio banco rilancia mutation-tests, e il run deve finire entro il tetto.
+source "$HERE/llm/_timeout.sh"
+MR=$(mktemp -d)
+git -C "$MR" init -q; mkdir -p "$MR/tools" "$MR/tests"
+cp "$HERE/tools/mutation-tests.sh" "$MR/tools/"
+printf '#!/bin/bash\ncd "$(dirname "$0")/.." && bash tools/mutation-tests.sh >/dev/null 2>&1\necho "1 OK, 0 FAIL"\n' > "$MR/tests/test-mutation-tests.sh"
+git -C "$MR" add -A; git -C "$MR" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qm base
+OUT=$(cd "$MR" && ai_timeout 30 bash tools/mutation-tests.sh 2>&1); RC=$?
+[ "$RC" -ne 124 ] && ok "mutation-tests non si annida nel proprio banco (finito, rc $RC)" || ko "mutation-tests si annida nel proprio banco: ucciso dal tetto di 30 s"
+pkill -f "$MR/tools/mutation-tests.sh" 2>/dev/null; rm -rf "$MR"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
