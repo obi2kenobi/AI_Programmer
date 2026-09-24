@@ -80,7 +80,11 @@ def stats():
             if "caccia: sana e nessuna miglioria" in l: F["agente_ok"] += 1
             if "gate BOCCIA" in l or "gate BOCCIA:" in l:
                 F["gate"] += 1; s["gate_bocia"].append(l.strip()[1:150])
-            if "MIGLIORIA pronta" in l: F["consegne"] += 1
+            if "MIGLIORIA pronta" in l:
+                F["consegne"] += 1
+                import re as _re
+                m = _re.search(r"\((\d+)s GPU\)", l)
+                if m: s.setdefault("gpu_sec", 0); s["gpu_sec"] += int(m.group(1))
             if "commit/push" in l and "fallito" in l:
                 F["push_fail"] += 1; s["push_err"].append(l.strip()[1:200])
             if "PR di" in l and "→" in l:
@@ -268,6 +272,8 @@ def page(s):
     ver = "".join(f"<div style='color:#e74c3c'>❌ {v}</div>" for v in s["verifiche"]) or "<div style='color:#4ecca3'>✅ tutte verdi</div>"
     log = "".join(f"<div style='padding:2px 0;border-bottom:1px solid #1a1a2e;color:#8899aa'>{r}</div>" for r in reversed(s["recent"][-15:]))
     ollama = f"🧠 {s.get('modello', 'spento')}"
+    if s.get("gpu_sec"):
+        ollama += f" · <span style='color:#0af'>{s['gpu_sec']}s GPU spesi oggi</span>"
     if s["ollama_wedge"]:
         ollama += f" · <span style='color:#e74c3c'>{s['ollama_wedge']} wedge oggi</span>"
     if s["ollama_revive"]:

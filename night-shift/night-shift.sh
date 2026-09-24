@@ -657,6 +657,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       MIGLIORIA_RC=1 MIGLIORIA_OUT=""
       if [ "$CACCIA_RC" -eq 1 ] && git -C "$DIR" diff --quiet 2>/dev/null; then
         log "REPO $REPO: caccia: lente dichiara il sistema sano — provo a MIGLIORARE il codice"
+        MIGLIORIA_T0=$(date +%s)
         MIGLIORIA_OUT=$(bash "$HERE/caccia-miglioria.sh" "$DIR" 2>&1)
         MIGLIORIA_RC=$?
         # (audit 2026-09-23): "TRASFORMATORE deterministico" e "gate BOCCIA"
@@ -671,7 +672,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
       ORIGINE=""
       [ "$MIGLIORIA_RC" -eq 0 ] && ORIGINE="miglioria"
       if [ -n "$ORIGINE" ]; then
-        log "REPO $REPO: 🎯 MIGLIORIA pronta: $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
+        # (studio gsd-pi, cost-per-unit): il costo della consegna in secondi
+        # di GPU — la dashboard lo mostrera' nel funnel
+        MIGLIOREA_DURATA=$(( $(date +%s) - MIGLIORIA_T0 ))
+        log "REPO $REPO: 🎯 MIGLIORIA pronta ($(MIGLIOREA_DURATA)s GPU): $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
