@@ -35,6 +35,27 @@ esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 - **Prima regola di ogni PR**: le stesse verifiche dichiarate e lo stesso gate
   valgono per chiunque apra il branch (`claude/*`, `night/*`, `glm/*`).
 
+## 0ter. Il primo giorno (clone fresco, persona o agente)
+
+Quattro comandi, in quest'ordine: i guardiani del commit, l'identità git, il polso, la suite.
+
+```bash
+git config core.hooksPath .githooks
+git config user.name "<nome>" && git config user.email "<email>"
+bash tools/system-health.sh
+bash tools/suite.sh
+```
+
+- I guardiani del commit (`.githooks/`: pre-commit e commit-msg) non viaggiano col clone. Sul Mac del turno
+  li accende `night-shift/install.sh:51`; in ogni altro clone vanno accesi a mano, col primo comando.
+- Senza identità git la suite e `tools/bootstrap-app.sh` non possono committare (Q1, 2026-09-24).
+- Prerequisiti: git, jq, curl, python3 (senza uno di questi il turno non parte: `dipendenze_mancanti` in
+  `night-shift/lib.sh`), shellcheck (una riga di `.night-verify`), graphify (`pip install graphifyy`,
+  `tools/graphify-spina.sh:29`). gh serve solo per sync, bootstrap, onboard e il turno.
+- Rosso ATTESO: senza `night-shift/repos.key` (un collaboratore, una sessione cloud) `bash tools/privacy-check.sh`
+  esce 1 con «GATE DEGRADATO» (`tools/privacy-check.sh:29`). Non è un guasto: la chiave vive solo sul Mac di
+  Luca. Le forme di segreto si controllano lo stesso.
+
 ## 1. Le regole vincolanti e la mappa
 
 - `CLAUDE.md` — le regole (Karpathy §1-6 + §7 delega): valgono per ogni agente, non

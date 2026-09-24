@@ -54,3 +54,5 @@ per gli agenti.
   (hook Stop + `docs/campo/`).
 - Suite: `bash tools/suite.sh` (ogni `tests/test-*.sh`, riepilogo N/TOT in uscita; la notte la
   esegue dalla riga `@540 bash tools/suite.sh` di `.night-verify`).
+- **Il primo giorno** in un clone fresco (guardiani del commit, identità git, prerequisiti, rossi
+  attesi senza le chiavi locali): `AGENTS.md` §0ter.

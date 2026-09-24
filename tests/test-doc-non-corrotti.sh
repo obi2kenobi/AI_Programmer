@@ -59,6 +59,12 @@ fi
 NUDI=$(grep -n 'pkill -f "opencode run"\|pkill -f \\"night-shift/night-shift.sh' "$HERE/docs/MANUALE-OPERATIVO.md" "$HERE/tools/turno-vivo.sh" 2>/dev/null || true)
 [ -z "$NUDI" ] && ok "le pulizie da eseguire (manuale, turno-vivo) non si riconoscono da sole" || ko "pkill che uccide la propria shell: $NUDI"
 
+# (2026-09-24, quarto ventaglio, Q1 R2): nessun documento d'ingresso diceva di accendere i guardiani del commit
+# (core.hooksPath) — lo faceva solo night-shift/install.sh, sul Mac del turno. In un clone fresco un commit
+# con «999 test verdi» passava. AGENTS.md ha il «primo giorno».
+grep -c 'git config core.hooksPath .githooks' "$HERE/AGENTS.md" >/dev/null && grep -c 'GATE DEGRADATO' "$HERE/AGENTS.md" >/dev/null \
+  && ok "AGENTS.md dice il primo giorno: guardiani del commit e rossi attesi senza le chiavi locali" || ko "AGENTS.md senza il primo giorno"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

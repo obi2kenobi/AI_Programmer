@@ -4558,3 +4558,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `night-shift/night-shift.sh` restano come sono: girano nello script, non in una riga che contiene
   l'espressione. Guardia in `tests/test-doc-non-corrotti.sh`: rossa sul manuale di prima e sul turno-vivo
   di HEAD (12/1), verde ora (13/0).
+- **Quarto ventaglio, Q1 R2 — nessun documento d'ingresso diceva di accendere i guardiani del commit.**
+  `core.hooksPath` lo imposta solo `night-shift/install.sh`, sul Mac del turno. Il giro Q1, in un clone
+  fresco, ha fatto passare un commit con «999 test verdi»; coi guardiani accesi era rosso. Nessun
+  documento elencava i prerequisiti, né diceva che senza `repos.key` privacy-check esce sempre 1. Ora
+  AGENTS.md ha un §0ter «Il primo giorno»: quattro comandi (guardiani, identità, polso, suite), i
+  prerequisiti con le loro fonti, e il rosso atteso di privacy-check. Il README ci rimanda. Guardia in
+  `tests/test-doc-non-corrotti.sh`: rossa prima (13/1), verde ora (14/0).
