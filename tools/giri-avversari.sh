@@ -96,10 +96,10 @@ p='.claude/skills/gas-sviluppo/references/metodo.md'; s=open(p).read()
 open(p,'w').write(s + '\n**Meta**: ' + bt + 'pippo-rosso-finto' + bt + '\n')"
 difesa_test tests/test-canone-integrita.sh "A3 indice che cita pattern inesistente"
 
-att; mv patterns/watchdog-guardato.md $AVVT/avv-pattern.md
+att; mv patterns/watchdog-guardato.md "$AVVT"/avv-pattern.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -qE "^FIND +S7 " <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
-mv $AVVT/avv-pattern.md patterns/watchdog-guardato.md
+mv "$AVVT"/avv-pattern.md patterns/watchdog-guardato.md
 
 att; sedi 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
 difesa_test tests/test-patterns-ancore-esistono.sh "A5 àncora pattern rotta"
@@ -122,9 +122,9 @@ difesa_test tests/test-pattern-reminder-hook.sh "A9 hook rimosso da settings"
 att; chmod -x tools/pattern-reminder-hook.sh
 difesa_test tests/test-pattern-reminder-hook.sh "A10 hook non eseguibile"
 
-att; mv tools/margine_documento.py $AVVT/avv-oracolo.py
+att; mv tools/margine_documento.py "$AVVT"/avv-oracolo.py
 difesa_test tests/test-margine-documento.sh "A11 oracolo cancellato"
-mv $AVVT/avv-oracolo.py tools/margine_documento.py
+mv "$AVVT"/avv-oracolo.py tools/margine_documento.py
 
 att; sedi 's/margine = importo_v - importo_a/margine = importo_v + importo_a/' tools/margine_documento.py
 difesa_test tests/test-margine-documento.sh "A12 aritmetica oracolo invertita (riga vera)"
@@ -145,13 +145,13 @@ p='CLAUDE.md'; s=open(p).read()
 open(p,'w').write(re.sub(r'(?m)^.*clasp.*$', '', s))"
 difesa_test tests/test-claude-md-gate-conventions.sh "A15 regola clasp tolta da CLAUDE.md"
 
-att; mv docs/campo/README.md $AVVT/avv-campo-readme.md
+att; mv docs/campo/README.md "$AVVT"/avv-campo-readme.md
 difesa_test tests/test-report-campo.sh "A16 formato report campo cancellato"
-mv $AVVT/avv-campo-readme.md docs/campo/README.md
+mv "$AVVT"/avv-campo-readme.md docs/campo/README.md
 
-att; mv .gitattributes $AVVT/avv-ga
+att; mv .gitattributes "$AVVT"/avv-ga
 difesa_test tests/test-claude-md-gate-conventions.sh "A17 union merge driver rimosso"
-mv $AVVT/avv-ga .gitattributes
+mv "$AVVT"/avv-ga .gitattributes
 
 att; rm -rf .claude/skills/design-doc
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
@@ -236,9 +236,9 @@ OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -qE "^FIND +S1 " <<<"$OUT_BAT" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
 git checkout -- SAL-ARCHIVIO.md
 
-att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > $AVVT/avv-finto.sh
-head -30 $AVVT/avv-finto.sh | grep -c "flag-segreto" >/dev/null && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
-rm -f $AVVT/avv-finto.sh
+att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > "$AVVT"/avv-finto.sh
+head -30 "$AVVT"/avv-finto.sh | grep -c "flag-segreto" >/dev/null && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
+rm -f "$AVVT"/avv-finto.sh
 
 att; : > patterns/vuoto-finto.md
 bash tests/test-patterns-ancore-esistono.sh >/dev/null 2>&1 && aggirato "C8 pattern VUOTO passa il test àncore (nessun contenuto richiesto)" || tiene "C8 pattern vuoto respinto"
@@ -285,10 +285,10 @@ classifica "$OUT" "$RC" "D5 scadenzario importo=nan"
 att; OUT=$(printf 'giorni,tipo,importo\n5,Cliente,1e999\n' | python3 tools/scadenzario_aging.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D6 scadenzario importo=inf"
 
-att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2027-01-01","data_fine":"2026-01-01","data_riferimento":"2026-06-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l.json 2>&1); RC=$?
+att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2027-01-01","data_fine":"2026-01-01","data_riferimento":"2026-06-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > "$AVVT"/avv-l.json; python3 tools/leasing_amministrativo.py "$AVVT"/avv-l.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D7 leasing date invertite"
 
-att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l2.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l2.json 2>&1); RC=$?
+att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > "$AVVT"/avv-l2.json; python3 tools/leasing_amministrativo.py "$AVVT"/avv-l2.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D8 leasing spread con virgola italiana"
 
 # (2026-09-24, quinto ventaglio, R3 R5): D9 mandava i nomi del vecchio messaggio d'uso, che il tool non legge —
@@ -307,22 +307,22 @@ classifica "$OUT" "$RC" "D11 indici crisi input non-JSON"
 att; OUT=$(python3 tools/scostamento_standard_effettivo.py abc </dev/null 2>&1); RC=$?
 classifica "$OUT" "$RC" "D12 scostamento costo=abc"
 
-att; OUT=$(printf 'nr,fornitore,ordine_nr,importo\nF1,F,{},1\n' > $AVVT/avv-f.csv; printf '{}' > $AVVT/avv-c.json; python3 tools/accuratezza_fatture_acquisto.py $AVVT/avv-c.json $AVVT/avv-f.csv /dev/null 2>&1); RC=$?
+att; OUT=$(printf 'nr,fornitore,ordine_nr,importo\nF1,F,{},1\n' > "$AVVT"/avv-f.csv; printf '{}' > "$AVVT"/avv-c.json; python3 tools/accuratezza_fatture_acquisto.py "$AVVT"/avv-c.json "$AVVT"/avv-f.csv /dev/null 2>&1); RC=$?
 classifica "$OUT" "$RC" "D13 accuratezza importo={}"
 
-att; OUT=$(printf 'vendite,acquisti\n' > $AVVT/avv-v.csv; printf 'x\n' > $AVVT/avv-a.csv; python3 tools/margine_documento.py $AVVT/avv-v.csv $AVVT/avv-a.csv 2>&1); RC=$?
+att; OUT=$(printf 'vendite,acquisti\n' > "$AVVT"/avv-v.csv; printf 'x\n' > "$AVVT"/avv-a.csv; python3 tools/margine_documento.py "$AVVT"/avv-v.csv "$AVVT"/avv-a.csv 2>&1); RC=$?
 classifica "$OUT" "$RC" "D14 margine CSV con una sola colonna"
 
 att; OUT=$(printf 'a;b;c\n1;2;3\n' | python3 tools/riconciliazione_magazzino.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D15 riconciliazione CSV a punto-e-virgola"
 
-att; OUT=$(mkdir -p $AVVT/avv-vuota && python3 tools/gas_qualita.py $AVVT/avv-vuota 2>&1); RC=$?
+att; OUT=$(mkdir -p "$AVVT"/avv-vuota && python3 tools/gas_qualita.py "$AVVT"/avv-vuota 2>&1); RC=$?
 classifica "$OUT" "$RC" "D16 gas_qualita su cartella vuota"
 
-att; OUT=$(printf 'riga senza verdetto\n' > $AVVT/avv-b.txt; python3 tools/verifica_banco.py $AVVT/avv-b.txt 2>&1); RC=$?
+att; OUT=$(printf 'riga senza verdetto\n' > "$AVVT"/avv-b.txt; python3 tools/verifica_banco.py "$AVVT"/avv-b.txt 2>&1); RC=$?
 classifica "$OUT" "$RC" "D17 verifica_banco senza riga verdetto"
 
-att; OUT=$( : > $AVVT/avv-b2.txt; python3 tools/verifica_banco.py $AVVT/avv-b2.txt 2>&1); RC=$?
+att; OUT=$( : > "$AVVT"/avv-b2.txt; python3 tools/verifica_banco.py "$AVVT"/avv-b2.txt 2>&1); RC=$?
 classifica "$OUT" "$RC" "D18 verifica_banco file vuoto"
 
 att; OUT=$(printf 'cliente,importo\nA,nan\n' | python3 tools/rating_dso_clienti.py 2>&1); RC=$?
@@ -331,7 +331,7 @@ classifica "$OUT" "$RC" "D19 rating con importo nan"
 att; OUT=$(printf 'bu,amount\nX,1e999\n' | python3 tools/bilancio_bu.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D20 bilancio con inf"
 
-att; OUT=$(echo '{"canone_base":-1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > $AVVT/avv-l3.json; python3 tools/leasing_amministrativo.py $AVVT/avv-l3.json 2>&1); RC=$?
+att; OUT=$(echo '{"canone_base":-1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > "$AVVT"/avv-l3.json; python3 tools/leasing_amministrativo.py "$AVVT"/avv-l3.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D21 leasing canone negativo"
 
 att; OUT=$(echo '{"pn":"abc","ricavi":1}' | python3 tools/indici_crisi.py 2>&1); RC=$?
@@ -404,12 +404,15 @@ att; printf 'token: ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ12\n' >> llm/README.md
 bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "G4 token GitHub piantato: privacy-check non ne vede la FORMA" || tiene "G4 forma di token GitHub piantata vista (shaping)"
 git checkout -- llm/README.md
 
+# (2026-09-24, sesto ventaglio, S3 R5): il percorso passa a python come argomento, non incollato nel sorgente —
+# con un apice in TMPDIR il ripristino moriva di SyntaxError
 att; python3 -c "
+import sys
 p='night-shift/lib.sh'; s=open(p).read()
-open('$AVVT/avv-lib.bak','w').write(s)
-open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))"
+open(sys.argv[1] + '/avv-lib.bak','w').write(s)
+open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))" "$AVVT"
 [ -f tests/test-lib.sh ] && { bash tests/test-lib.sh >/dev/null 2>&1 && aggirato "G5 lib.sh allowlist rotta passa test-lib.sh" || tiene "G5 lib.sh allowlist presidiata da test-lib.sh"; } || aggirato "G5 test-lib.sh assente"
-cp $AVVT/avv-lib.bak night-shift/lib.sh
+cp "$AVVT"/avv-lib.bak night-shift/lib.sh
 
 att; sedi 's/## Registro/## RegistrX/' patterns/README.md
 # verificato a mano: nessuna difesa scatta — ma NIENTE dipende dal titolo della

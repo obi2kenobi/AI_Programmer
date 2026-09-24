@@ -123,7 +123,9 @@ done
 # docs di radice non venivano MAI controllati. L'assegnazione sta con chi usa.
 ROTTO=""
 # GRAMMATICA_DOMINIO_TEMPLATE.md cita il file che ordina di CREARE: escluso
-DOCS_MD=$(find "$HERE/docs" -maxdepth 1 -name '*.md' ! -name GRAMMATICA_DOMINIO_TEMPLATE.md)
+# (2026-09-24, sesto ventaglio, S3 R5): era una stringa usata senza virgolette — in un hub con lo spazio nel percorso
+# si spezzava, cat non leggeva i docs e S6 non vedeva il comando rotto (G20 aggirato). Un array, che regge bash 3.2.
+DOCS_MD=(); while IFS= read -r d; do DOCS_MD+=("$d"); done < <(find "$HERE/docs" -maxdepth 1 -name '*.md' ! -name GRAMMATICA_DOMINIO_TEMPLATE.md)
 while IFS= read -r ref; do
   # (2026-09-15, dall'auto-esame notturno): i path GITIGNORED sono ambiente-dipendenti
   # (repos.conf, repos.key; graphify-out/graph.json e' versionato dal D1 2026-09-23) — nella cloni mancano per costruzione e
@@ -133,7 +135,7 @@ while IFS= read -r ref; do
 # (Q17, 2026-09-23): il path doveva chiudere il backtick — un COMANDO citato con argomenti
 # (`tools/sync-repo.sh <owner/repo> --standard`, docs/benvenuto-collaboratori.md) restava fuori,
 # e un comando rotto nella porta d'ingresso era invisibile (attacco G20). Ora basta lo spazio.
-done < <(cat "$HERE/README.md" $DOCS_MD 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+[` ]' | tr -d '` ' | sort -u)
+done < <(cat "$HERE/README.md" ${DOCS_MD[@]+"${DOCS_MD[@]}"} 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+[` ]' | tr -d '` ' | sort -u)
 [ -z "$ROTTO" ] && sonda 0 "S6 tutti i path citati in README e docs di radice esistono" || sonda 1 "S6 path citati inesistenti:$ROTTO"
 
 # S7 — il registro pattern è bidirezionale (A4: cancellare un file di pattern non
