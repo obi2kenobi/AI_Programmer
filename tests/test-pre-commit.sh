@@ -33,6 +33,16 @@ cp "$HOOK" "$HERE/tools/cita-verifica.sh" "$SB/tools/"
 gancio() { ( cd "$SB" && HOME="$SB" bash tools/pre-commit.sh "$@" ); }
 trap 'rm -rf "$SB"' EXIT
 
+# (2026-09-24, notte dei giri, T1#3): la CHIAVE della privacy (repos.key: nomi, persone, termini) e la
+# lista ~/.privacy-nomi non hanno nessun guardiano al commit — l'hub si affida al .gitignore, e un
+# `git add -f`, o la chiave in un altro percorso (in un satellite), la mandava nel commit.
+for CHIAVE in night-shift/repos.key altrove/repos.key .privacy-nomi; do
+  mkdir -p "$SB/$(dirname "$CHIAVE")"; printf 'TERMINI=finto\n' > "$SB/$CHIAVE"; git -C "$SB" add -f "$CHIAVE"
+  OUT=$(gancio); RC=$?
+  [ "$RC" -ne 0 ] && grep -c "$CHIAVE" <<<"$OUT" >/dev/null && ok "$CHIAVE in stage: il gancio rifiuta e dice quale" || ko "$CHIAVE in stage e il gancio passa (rc=$RC)"
+  git -C "$SB" rm -q --cached "$CHIAVE"; rm -f "$SB/$CHIAVE"
+done
+
 # caso avverso: glifo staged → rosso (costruito a runtime, E-007)
 PROBE="$SB/docs/_probe_glifo.md"
 cleanup() { git -C "$SB" restore --staged "$PROBE" >/dev/null 2>&1; rm -f "$PROBE"; }

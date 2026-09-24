@@ -62,6 +62,12 @@ export LANG="${LANG:-${UTF_LOCALE:-en_US.UTF-8}}" LC_ALL="${LC_ALL:-${UTF_LOCALE
 staged() { git -c core.quotePath=false diff --cached --name-only "$@" 2>/dev/null; }
 indice() { git show ":$1" 2>/dev/null; }     # il contenuto che il commit porta
 nell_indice() { git cat-file -e ":$1" 2>/dev/null; }
+
+# 0. (2026-09-24, notte dei giri, T1#3): la CHIAVE della privacy (repos.key: nomi, persone, termini) e la
+#    lista dei nomi (.privacy-nomi) non entrano mai in un commit, in nessun percorso — l'hub si
+#    affidava al .gitignore, e un `git add -f` o una chiave in un altro percorso (un satellite) passavano.
+CHIAVI=$(staged --diff-filter=ACMR | grep -E '(^|/)(repos\.key|\.privacy-nomi)$' || true)
+[ -n "$CHIAVI" ] && { echo "⛔ la chiave della privacy e' in stage — mai in un commit (git rm --cached):"; echo "$CHIAVI"; FALLITI=1; }
 STAGED_SPEC=()
 while IFS= read -r f; do [ -n "$f" ] && STAGED_SPEC+=(":$f"); done < <(staged --diff-filter=ACMR)
 ALIENI_RC=0; ALIENI_RAW=""

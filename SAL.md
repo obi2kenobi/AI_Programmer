@@ -3993,3 +3993,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   comando, nelle repo installate dove non lo sono, e non li accende da sé: D13 lascia la scelta a chi
   lavora. Banchi in `tests/test-bootstrap-app-e2e.sh` e `tests/test-garante-standard.sh`: 1+1 rossi
   prima, 1+1 al sabotaggio.
+- **T1#3 — la chiave della privacy non aveva un guardiano al commit.** `repos.key` (nomi, persone,
+  termini) e `.privacy-nomi` erano protette solo dal `.gitignore` dell'hub: un `git add -f`, o la
+  chiave in un altro percorso (in un satellite, che quella riga nel `.gitignore` non ce l'ha), le
+  mandava nel commit. Ora `tools/pre-commit.sh` rifiuta ogni file con quei nomi, in qualunque
+  cartella, e dice quale. Banco `tests/test-pre-commit.sh` (tre percorsi): 3 rossi prima, 3 al
+  sabotaggio. Due domande di dominio in DEBITI: la visibilità di default del bootstrap (T1#1) e cosa
+  deve controllare il privacy-check in un satellite, dove è sempre DEGRADATO (T1#3).
