@@ -34,6 +34,14 @@ NONMIO=$(cd "$HERE" && grep -ln 'rinvia «non mio»' README.md METHOD.md AGENTS.
 [ -z "$NONMIO" ] && ok "nessun documento vivo dice che il censore rinvia «non mio» le PR delle issue" || ko "dicono ancora «non mio» sulle PR di issue: $NONMIO"
 grep -c 'MODO="parere"' "$HERE/night-shift/revisore.sh" >/dev/null && ok "(il modo parere esiste davvero nel censore)" || ko "il modo parere non esiste piu' nel censore: il documento va rivisto"
 
+# (E-045, 2026-09-24): ho scritto che `/nuova-commessa` «in questo repo non esiste» — il wizard e'
+# .zcode-commands-nuova-commessa.md (col suo banco). L'avevo cercato con `find -name 'nuova-commessa*'`.
+# Finche' il file c'e', nessun documento vivo lo dice assente.
+if [ -f "$HERE/.zcode-commands-nuova-commessa.md" ]; then
+  FALSO=$(cd "$HERE" && grep -nE 'nuova-commessa.{0,80}(non esist|assent|nel repo no)|(non esist|assent).{0,80}nuova-commessa' docs/MANUALE-OPERATIVO.md DEBITI.md AGENTS.md README.md METHOD.md 2>/dev/null || true)
+  [ -z "$FALSO" ] && ok "nessun documento vivo dice assente il wizard /nuova-commessa (che esiste)" || ko "wizard dato per assente: $(cut -c1-120 <<<"$FALSO" | tr '\n' ' ')"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

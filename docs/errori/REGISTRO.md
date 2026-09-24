@@ -981,3 +981,28 @@
 - Esito (2026-09-24, 05:29Z): alla ripresa della sessione l'ambiente ha ricreato `/tmp/code-sign` da
   sé; la patch in attesa e' diventata un commit normale, verificato con la suite, e il file della patch
   e' stato tolto.
+
+## E-045 Un file dato per assente, cercato col nome sbagliato
+
+- Data / sessione: 2026-09-24 (notte dei giri, T4 — errore mio)
+- Famiglia: R1 (assunzione non verificata: «se `find` non lo trova, non c'è») + R5 (memoria contro
+  realtà: il nome del comando preso per il nome del file)
+- Chi l'ha trovato: lente (il giro V3 del terzo ventaglio, «le skill come istruzioni»)
+- Sintomo: nel MANUALE, in DEBITI e nel SAL ho scritto che `/nuova-commessa` «in questo repo non
+  esiste», e ho tolto il suo rimando dalla descrizione della skill design-doc. Il wizard c'è:
+  `.zcode-commands-nuova-commessa.md`, col suo banco `tests/test-nuova-commessa-wizard-coerenza.sh`.
+- Causa prossima: l'ho cercato con `find -name 'nuova-commessa*'` e `ls .claude/commands .zcode`. Il
+  file si chiama `.zcode-commands-nuova-commessa.md`: nessuna delle due ricerche poteva trovarlo.
+- Causa del ragionamento: un'assenza dichiarata su una ricerca sola, col nome che avevo in testa. Per
+  dire «non esiste» serve una ricerca che troverebbe il file comunque si chiami (`git ls-files | grep`
+  sul nome nudo), non il pattern che mi aspettavo.
+- Perché non ci ha fermati: nessun banco confrontava le affermazioni di assenza nei documenti con i
+  file veri; il banco del wizard esisteva ma non guarda cosa dicono gli altri documenti.
+- Guardia: `tests/test-doc-non-corrotti.sh` — finché `.zcode-commands-nuova-commessa.md` esiste, nessun
+  documento vivo (MANUALE, DEBITI, AGENTS, README, METHOD) lo dice assente. Regola di procedura, da
+  ora: un «non esiste» si dichiara dopo `git ls-files | grep -i <nome nudo>`, non dopo un `find` col
+  nome che mi aspetto.
+- Verifica guardia: sul MANUALE e su DEBITI di prima → «8 OK, 1 FAIL» («wizard dato per assente»);
+  corretti → 9/0.
+- Aggiramento: la guardia copre questo nome solo; un'altra assenza affermata a torto non la vede. Il
+  SAL (append-only) resta com'è, e lo corregge una voce successiva.

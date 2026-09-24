@@ -129,7 +129,7 @@ sabotaggio dopo) è nel SAL, voce 18°.
   - la sandbox vera del censore (T3#2, T5#1);
   - il ramo di timeout;
   - `ps` BSD;
-  - `/qwen` e `/nuova-commessa`;
+  - `/qwen` fuori dal repo (`/nuova-commessa` invece c'è: il wizard di ZCode — E-045);
   - il promemoria di Stop (T6#4);
   - il caricamento delle skill in OpenCode (T6#8).
 - **Già coperta**: T3#5, cioè bash 3.2 (suite verde con verdetti identici, misurata dal giro).

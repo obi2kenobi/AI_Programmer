@@ -52,11 +52,13 @@ In Claude Code:
 - `llm/ask-qwen.sh "riassumi questo file" < file` — cervello locale (gratis, privato)
 - `/goal "ottimizza X | max 8 tentativi"` — loop con verifica dichiarata
 - `/brainstorming <idea>` — raffina i requisiti prima del codice
-- una commessa per la notte: issue dal template `.github/ISSUE_TEMPLATE/night-shift.md`
+- una commessa per la notte: in ZCode il wizard `/nuova-commessa` (`.zcode-commands-nuova-commessa.md`),
+  altrimenti l'issue dal template `.github/ISSUE_TEMPLATE/night-shift.md`
 
-(2026-09-24, T4: qui c'erano `/qwen` e `/nuova-commessa`, che in questo repo non esistono — né in
-`.claude/commands/` né in `.claude/skills/`. Se vivono nel ZCode o nel `~/.claude` del Mac, sono fuori
-dal repo e non verificati da qui.)
+(2026-09-24, T4: qui c'era `/qwen`, che nel repo non esiste — né in `.claude/commands/` né in
+`.claude/skills/`; il comando vero è `llm/ask-qwen.sh`. [Correzione, E-045: avevo scritto il contrario
+anche di `/nuova-commessa`, che invece c'è: è il wizard di ZCode, `.zcode-commands-nuova-commessa.md`, col suo banco
+`tests/test-nuova-commessa-wizard-coerenza.sh`. Claude Code non lo vede come comando slash.])
 
 ## Quando costruisci qualcosa di nuovo
 

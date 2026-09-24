@@ -4032,3 +4032,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - La guardia estesa ha trovato subito un'àncora morta: `pipefail-grep-sigpipe` puntava a
     `tools/ciclo-vivo.sh:lente-2`, riscritto il 2026-09-23. Riàncorata al rilevatore unico
     `tools/e002-siti.py`.
+- **E-045 (errore mio) — `/nuova-commessa` esiste.** Nelle voci T4 e T6#8 qui sopra ho scritto che
+  non esiste nel repo: è il wizard di ZCode, `.zcode-commands-nuova-commessa.md`, col suo banco.
+  L'avevo cercato con `find -name 'nuova-commessa*'`, che non lo può trovare. Corretti il MANUALE,
+  DEBITI (voce ⏳ «d»), il consolidamento, e la descrizione di design-doc (il rimando al wizard torna,
+  in tutti e due gli specchi). Guardia in `tests/test-doc-non-corrotti.sh`: rossa sui testi di prima.
+  Registro: E-045. Trovato dal giro V3.
