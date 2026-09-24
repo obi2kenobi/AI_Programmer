@@ -33,7 +33,7 @@ ORIG=$(cat "$TMP/repo/tools/foo.sh")
 PAYLOAD=$(printf '#!/bin/bash\nexit 0\n')   # $(...) strippa il newline finale: come ATTUALE
 
 # ── A. SIGKILL: il peggiore dei casi ────────────────────────────────────────
-( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
 sleep 3   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
 # (revisione 10 giri, 2026-09-23): «integro» era accettato anche se la mutazione NON era mai
@@ -57,7 +57,7 @@ chmod +x "$TMP/repo/tools/foo.sh"
 git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
 
 # ── B. SIGTERM: il caso gentile, il trap deve ripristinare ──────────────────
-( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
 sleep 3
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "B: la mutazione e' in corso al momento del colpo (prova non vuota)" \
@@ -76,7 +76,7 @@ fi
 #    trap non girava mai, e il tool restava NEUTRALIZZATO. Il test dorme 30 s: il ripristino deve arrivare
 #    prima del KILL.
 git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
-( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
 sleep 3
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "C: la mutazione e' in corso al momento del colpo (prova non vuota)" \
@@ -93,6 +93,17 @@ if ! ls "$TMP/repo/tools/" | grep -c "foo.sh.mut\|foo.sh.rest" >/dev/null; then
 else
   ko "file temporaneo .mut/.rest abbandonato in tools/"
 fi
+
+# (2026-09-24, sesto ventaglio, S4 R4): dopo un SIGKILL il tool resta NEUTRALIZZATO, e il giro dopo diceva «albero
+# sporco: committa prima di mutare» — cioe' di committare il sabotaggio. Ora il banco riconosce il proprio resto
+# (la firma esatta della mutazione) e dice il gesto giusto.
+git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null
+printf '#!/bin/bash\nexit 0\n' > "$TMP/repo/tools/foo.sh"
+OUT=$( cd "$TMP/repo" && bash tools/mutation-tests.sh 2>&1 ); RC=$?
+[ "$RC" -ne 0 ] && grep -ci 'neutralizzat' <<<"$OUT" >/dev/null && grep -c 'git checkout -- tools/foo.sh' <<<"$OUT" >/dev/null && ! grep -c 'committa prima' <<<"$OUT" >/dev/null \
+  && ok "S4 R4: il resto di un giro interrotto si riconosce, e il gesto detto e' il ripristino, non il commit" || ko "S4 R4: resto non riconosciuto (rc $RC): $OUT"
+git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null
+grep -c 'mktemp "\${TMPDIR:-/tmp}/mutation-backup' "$HERE/tools/mutation-tests.sh" >/dev/null && ok "S4 R4: il backup segue TMPDIR" || ko "S4 R4: backup in /tmp fisso"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

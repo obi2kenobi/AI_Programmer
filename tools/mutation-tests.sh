@@ -14,6 +14,21 @@ cd "$HERE"
 # il banco muta file e li ripristina con cp: si parte da albero pulito, così un
 # crash non lascia un tool neutralizzato nel repo (la lezione degli avversari)
 if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+  # (2026-09-24, sesto ventaglio, S4 R4): dopo un SIGKILL il resto e' un tool NEUTRALIZZATO, e qui si diceva
+  # «committa»: il gesto sbagliato, che mette il sabotaggio nella storia. Il resto del banco si riconosce dalla
+  # firma esatta della mutazione, e si dice come ripristinarlo.
+  RESTI=""
+  while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    c=$(cat "$f")
+    { [ "$c" = $'#!/bin/bash\nexit 0' ] || [ "$c" = $'import sys\nsys.exit(0)' ]; } && RESTI="$RESTI $f"
+  done < <(git diff --name-only 2>/dev/null)
+  if [ -n "$RESTI" ]; then
+    echo "⛔ resto di un giro interrotto: tool NEUTRALIZZATI dal banco (mai committarli):$RESTI" >&2
+    for f in $RESTI; do echo "   git checkout -- $f" >&2; done
+    ls "${TMPDIR:-/tmp}"/mutation-backup.* 2>/dev/null | sed 's/^/   backup rimasto: /' >&2
+    exit 2
+  fi
   echo "⛔ albero sporco: committa prima di mutare" >&2; exit 2
 fi
 
@@ -69,7 +84,7 @@ for t in tests/test-*.sh; do
     echo "ROSSO GIA' PRIMA: $(basename "$t") fallisce col tool intatto — la mutazione non dimostrerebbe niente"
     continue
   fi
-  BACKUP=$(mktemp /tmp/mutation-backup.XXXXXX) || continue
+  BACKUP=$(mktemp "${TMPDIR:-/tmp}/mutation-backup.XXXXXX") || continue   # (S4 R4): segue TMPDIR
   cp "$tool" "$BACKUP" || { BACKUP=""; continue; }
   MUTATO="$tool"
   case "$tool" in

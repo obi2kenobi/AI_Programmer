@@ -5125,3 +5125,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   («⚠ CRESCIUTO di 16»), e la storia append-only lo teneva per sempre. Ora lo stato si scrive accanto e si rinomina.
   Uno stato presente ma illeggibile si dice («ILLEGGIBILE», baseline), e il delta è 0. Due casi nuovi in
   `tests/test-caccia-registro.sh` (16/0), rossi prima; sabotaggio 14/2.
+- **Sesto ventaglio, S4 R4 — dopo un SIGKILL, il banco delle mutazioni diceva di committare il sabotaggio.**
+  `tools/mutation-tests.sh` dichiara che un SIGKILL lascia un tool NEUTRALIZZATO, visibile. Al giro dopo però
+  diceva «⛔ albero sporco: committa prima di mutare»: chi segue l'uscita alla lettera committa un tool da 161 righe
+  ridotto a 2. Ora il banco riconosce il proprio resto dalla firma esatta della mutazione, dice «mai committarli»,
+  dà il `git checkout --` per ogni file e nomina i backup rimasti. Il backup segue `TMPDIR`: prima era in `/tmp`
+  fisso, e `tests/test-mutation-atomico.sh`, che uccide il banco di proposito, ne lasciava uno a ogni giro (161
+  orfani in `/tmp` stasera, dichiarati e non toccati). Ora il test dà al banco la sua cartella. Due casi nuovi
+  (9/0), rossi prima; sabotaggio 7/2. La mia prima stesura del caso cercava «neutralizzato» contro
+  «NEUTRALIZZATI».
