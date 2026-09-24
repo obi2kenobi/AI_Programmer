@@ -35,6 +35,17 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+# (2026-09-24, quarto ventaglio, Q2 R6): «push fallito» e basta — il motivo finiva in 2>/dev/null, e un ramo del
+# giorno gia' spinto in un ciclo precedente (PR non creata) si ritentava a ogni ciclo senza dirlo. Ora il motivo
+# (con eventuali credenziali nell'URL mascherate) e, se il ramo e' gia' sul remoto, il gesto che manca.
+spingi() {
+  local err
+  err=$(git push -q -u origin "$1" 2>&1) && return 0
+  echo "sync-repo: push fallito — $( { grep -E '^(remote:|error:| ! )' <<<"$err" || tail -3 <<<"$err"; } | head -5 | sed 's#://[^/@[:space:]]*@#://«credenziali»@#g' | tr '\n' ' ' | cut -c1-240)"
+  git ls-remote --exit-code --heads origin "$1" >/dev/null 2>&1 \
+    && echo "  il ramo $1 e' gia' sul remoto (spinto in un ciclo precedente): se manca la PR, gh pr create --head $1"
+  return 1
+}
 # (2026-09-24, quarto ventaglio, Q2 R6): senza guardia, un mktemp fallito (TMPDIR inesistente) lasciava TMP
 # vuoto e i file finivano alla radice — da root, nel container, /CLAUDE.md e /claude-satellite.md
 TMP=$(mktemp -d) && [ -d "$TMP" ] || { echo "sync-repo: mktemp fallito (TMPDIR=${TMPDIR:-non impostato}?) — mi fermo, nessun file scritto"; exit 1; }
@@ -220,7 +231,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   BR="claude/standard-$(date +%Y%m%d)"
   git checkout -q -b "$BR"
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard"
-  git push -q -u origin "$BR" 2>/dev/null || { echo "sync-repo: push fallito"; exit 1; }
+  spingi "$BR" || exit 1
   # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
   # la PR si VERIFICA, non si dichiara
   URL_PR=$(gh pr create --head "$BR" --fill --title "chore: adotta lo standard AI_Programmer" 2>&1 | tail -1)
@@ -239,7 +250,7 @@ if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   cp "$HUB_CLAUDE" CLAUDE.md
   git add CLAUDE.md
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: riallinea CLAUDE.md all'hub (regole ereditate) — tools/sync-repo.sh"
-  git push -q -u origin "$BR" 2>/dev/null || { echo "sync-repo: push fallito"; exit 1; }
+  spingi "$BR" || exit 1
   gh pr create --head "$BR" --fill --title "chore: riallinea CLAUDE.md all'hub" 2>&1 | tail -1
 fi
 exit 1

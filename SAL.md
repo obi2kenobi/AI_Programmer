@@ -4594,3 +4594,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     «nomi sì» in DEBITI.
 
   Sul Mac, con la lista vera, possono emergere occorrenze nuove: voce (h) della riga ⏳ Mac.
+- **Quarto ventaglio, Q2 R6 (seconda metà) — il push rifiutato di sync-repo buttava il motivo.** «push
+  fallito» e basta, con lo stderr in `/dev/null`. E un ramo del giorno già spinto in un ciclo precedente
+  (con la PR non creata) veniva ritentato a ogni ciclo, senza dirlo. Ora `spingi` riporta le righe
+  `remote:`/`error:`/` ! ` del rifiuto, con le eventuali credenziali nell'URL mascherate. Se il ramo è
+  già sul remoto, dice il gesto che manca (`gh pr create --head …`). `tests/test-sync-repo.sh` ha un caso
+  nuovo, con un remoto finto che rifiuta via pre-receive: rosso prima, verde ora (24/0). Sabotaggio: senza
+  lo stderr, 23/1. Nota alla voce Q5 R5 qui sopra: la prima consegna è stata fermata dal rilevatore E-002
+  (`indice … | grep -Iq`, il mio). Corretta in `grep -Ic … >/dev/null` prima del push.

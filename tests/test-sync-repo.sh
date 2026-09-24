@@ -172,6 +172,14 @@ else
   ko "Q13: nessun ramo standard per la repo con stato (rc=$RC): $(echo "$OUT" | tail -1)"
 fi
 
+# (2026-09-24, quarto ventaglio, Q2 R6, seconda meta'): il push rifiutato diceva solo «push fallito», col motivo
+# buttato in 2>/dev/null. Un remoto che rifiuta (pre-receive che esce 1 con un messaggio): il motivo si vede.
+nuovo_bare rifiuta 1
+printf '#!/bin/sh\necho "rifiutato dal remoto finto: ramo protetto"\nexit 1\n' > "$TMP/rifiuta.git/hooks/pre-receive"; chmod +x "$TMP/rifiuta.git/hooks/pre-receive"
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/rifiuta.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuta --standard 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'push fallito' <<<"$OUT" >/dev/null && grep -c 'ramo protetto' <<<"$OUT" >/dev/null \
+  && ok "push rifiutato: il motivo del remoto arriva nell'uscita" || ko "push rifiutato senza motivo (rc $RC): $(grep -m1 'push' <<<"$OUT")"
+
 # (2026-09-24, quarto ventaglio, Q2 R1): senza jq `copia-hook --elenco` esce 1, il suo rc si perdeva nel
 # `< <(…)`, e sync-repo diceva «ALLINEATO (e gli hook pure)» con un hook DIVERGENTE — il cancello clasp
 # era proprio l'hook che spariva dal confronto. Un PATH senza jq (tutto il resto c'e').
