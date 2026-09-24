@@ -3765,3 +3765,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   non viste dal check e 6 valori interi nella maschera. Dopo la cura tutte le forme sono viste o
   mascherate. Zero falsi positivi nel repo, salvo il mio commento d'esempio, riformulato. Sabotaggio:
   5 e 4 rossi. Il cancello PRIMA del push (T5#3a) è il passo dopo.
+- **T5#3a — la lente sicurezza guardava dopo il push.** `lente_pr` gira dopo `git push` e
+  `gh pr create` in tutti e quattro i punti di consegna di `night-shift/night-shift.sh`: sull'hub
+  pubblico il segreto era già su GitHub. Ora c'è `forme_prima_del_push` in
+  `night-shift/lib.sh`, che fa girare lo strato 1 della lente (`LENTE_SOLO_FORME=1` in
+  `tools/lente-sicurezza.sh`: una definizione sola, niente cervello) fra commit e push. Una forma
+  nel diff, o un diff illeggibile, e il push non parte; il motivo, mascherato, va nel log. Banco
+  `tests/test-forme-prima-del-push.sh`: rosso prima (funzione assente, 4 push senza cancello).
+  Sabotaggio (cancello sempre aperto, una chiamata tolta): 2 rossi. La lente completa resta dopo
+  la PR, com'era.

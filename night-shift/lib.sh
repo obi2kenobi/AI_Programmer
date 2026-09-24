@@ -252,6 +252,20 @@ repo_code() {
   echo "$1"
 }
 
+# forme_prima_del_push <dir> <base>: il cancello fra commit e push (2026-09-23, notte dei giri, T5#3).
+# lente_pr gira DOPO il push: sull'hub pubblico un segreto nel diff era gia' su GitHub quando la
+# lente lo vedeva. Qui lo strato 1 della lente (le forme di segreto, deterministico, niente cervello)
+# su <base>...HEAD: rc 0 = il push puo' partire; altrimenti stampa il rapporto (valori mascherati) e
+# rc != 0 — anche DEGRADATA (diff illeggibile) ferma il push: nel dubbio, niente esce.
+forme_prima_del_push() {
+  local rap rc
+  rap=$(LENTE_SOLO_FORME=1 bash "$(dirname "${BASH_SOURCE[0]}")/../tools/lente-sicurezza.sh" "$1" "$2" HEAD 2>/dev/null); rc=$?
+  [ $rc -eq 0 ] && return 0
+  echo "⛔ forme di segreto nel diff ($2...HEAD): push NON eseguito — $(tail -1 <<<"$rap")"
+  grep '^- ' <<<"$rap" | head -5
+  return 1
+}
+
 # lente_pr <dir> <base> <head> <url-pr>: la lente sicurezza (dev-critic §2bis) su una PR appena
 # creata dalla notte — decisione di Luca, D2 2026-09-23: automatica su TUTTE le PR notturne. Il
 # rapporto (valori gia' mascherati da tools/lente-sicurezza.sh) diventa un commento della PR;

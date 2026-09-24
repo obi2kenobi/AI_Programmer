@@ -17,6 +17,8 @@
 #      INDIZI: righe aggiunte che stampano valori sensibili. graphify-out/ resta fuori dal prompt
 #      (e' generato; i segreti li cerca comunque lo strato 1).
 # Test: LENTE_STUB=<script> sostituisce il cervello ($1 = modello, prompt su stdin).
+# LENTE_SOLO_FORME=1: solo lo strato 1, senza cervello — il cancello che il turno mette fra commit e
+# push (forme_prima_del_push in night-shift/lib.sh; notte dei giri 2026-09-23, T5#3).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:?uso: lente-sicurezza.sh <dir-repo> <base> [head]}"
@@ -59,6 +61,7 @@ log "indizi: $N_IND righe"
 
 # un segreto basta: il cervello non serve a confermarlo
 [ "$N_SEG" -gt 0 ] && { echo ""; echo "Il cervello non e' stato consultato: un segreto nel diff basta a fermare la PR."; verdetto "RILIEVI ($N_SEG)" 1; }
+[ "${LENTE_SOLO_FORME:-0}" = 1 ] && { log "LENTE_SOLO_FORME: strato 2 saltato per richiesta"; verdetto "PULITA (solo lo strato delle forme: il cervello non e' stato consultato)" 0; }
 
 # ── strato 2: il cervello con la lente §2bis ─────────────────────────────────────
 DIFF_PROMPT=$(git -C "$DIR" diff "$BASE...$TESTA" -- . ':(exclude)graphify-out' 2>/dev/null | mask_secrets | head -c "$MAX_PROMPT")

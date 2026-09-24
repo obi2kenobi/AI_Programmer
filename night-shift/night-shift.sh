@@ -563,6 +563,7 @@ PYIDX
 Fix applicati dalla finestra notturna 23-06: $FIX_APPLICATI. Solo categorie
 meccaniche note; il banco veloce e' CHIUSO su questo branch; PR bozza per la
 review del giorno." 2>>"$ERR_NOTTE" \
+               && forme_prima_del_push "$DIR" "origin/$DB" >>"$ERR_NOTTE" 2>&1 \
                && git -C "$DIR" push -q -u origin "$BRANCH" 2>>"$ERR_NOTTE"; then
               PR_NOTTE=$(cd "$DIR" && gh pr create --draft --head "$BRANCH" --title "notte: auto-miglioramento meccanico del $(date +%F)" --body "Generata dalla finestra notturna 23-06. Fix meccanici di categoria nota, banco CHIUSO. La notte non decide: questa PR aspetta la review del giorno." 2>&1 | tail -1)
               log "REPO $REPO: PR bozza di auto-miglioramento → $PR_NOTTE ($FIX_APPLICATI fix, banco CHIUSO)"
@@ -712,7 +713,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
-        ERR_CONSEGNA=$(cd "$DIR" && git add -A 2>&1 && git commit -qm "$MSG_PR" 2>&1 && git push -u origin "$CACCIA_BRANCH" 2>&1)
+        ERR_CONSEGNA=$(cd "$DIR" && git add -A 2>&1 && git commit -qm "$MSG_PR" 2>&1 && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
         if [ $? -eq 0 ]; then
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
           log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
@@ -1068,7 +1069,8 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
         if ( cd "$DIR" && git add -A && git commit -qm "$CTYPE: issue #$NUM — $TITLE (risolvi-issue.sh, modello locale)${NOTA_INS}
 
-Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
+Verifica dell'issue: $VERIFICA_OUT" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
+             && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
           # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.
           # --head e --base espliciti: niente inferenze su shallow clone e upstream strani
@@ -1152,6 +1154,7 @@ Verifica dell'issue: $VERIFICA_OUT" && git push -q -u origin ${LEASE_ARGS[@]+"${
 
     git -C "$DIR" add -A
     git -C "$DIR" commit -q -m "$CTYPE: night issue #$NUM — $TITLE" || { log "Issue #$NUM: commit fallito"; FAILED=$((FAILED+1)); continue; }
+    F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; FAILED=$((FAILED+1)); continue; }  # T5#3: prima del push
     git -C "$DIR" push -q -u origin "$BRANCH" || { log "Issue #$NUM: push fallito"; FAILED=$((FAILED+1)); continue; }
 
     local PR_URL
