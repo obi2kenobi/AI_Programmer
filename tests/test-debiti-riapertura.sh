@@ -113,6 +113,19 @@ OUT2=$(bash "$TOOL" "$SB2" 2>&1)
 echo "$OUT2" | grep -q "nessun DEBITI.md: niente da bruciare (dichiarato" && ok "senza debiti lo DICE (mai muto)" || ko "silenzio senza DEBITI.md"
 rm -rf "$SB2"
 
+# (2026-09-23, notte dei giri): «SALDAT[OA]» OVUNQUE nella riga la chiudeva — anche «NON SALDATO» o
+# «PARZIALMENTE SALDATA» (sul DEBITI vero una riga cosi' era chiusa dal 2026-08-24). Visto
+# scrivendo io stesso «in parte SALDATO» su una riga col debito residuo: sarebbe sparito.
+SB5=$(mktemp -d /tmp/debiti-t5.XXXXXX)
+aperti_con() {  # $1 = la cella «Data» della sola riga della sezione → il numero di debiti APERTI
+  printf '# DEBITI\n## Una riga (2026-01-01)\n| Data | Scorciatoia | Perché | Quando |\n|---|---|---|---|\n| %s | un debito tecnico | x | y |\n' "$1" > "$SB5/DEBITI.md"
+  bash "$TOOL" "$SB5" 2>&1 | sed -n 's/^debiti APERTI: \([0-9]*\).*/\1/p'
+}
+[ "$(aperti_con '2026-01-01 NON SALDATO')" = "1" ] && ok "«NON SALDATO» resta aperto" || ko "«NON SALDATO» contato come saldato"
+[ "$(aperti_con '2026-01-01 ✅ PARZIALMENTE SALDATA')" = "1" ] && ok "«PARZIALMENTE SALDATA» resta aperta" || ko "«PARZIALMENTE SALDATA» contata come saldata"
+[ "$(aperti_con '2026-01-01 ✅ SALDATO')" = "0" ] && ok "«✅ SALDATO» si chiude" || ko "«✅ SALDATO» non si chiude piu'"
+rm -rf "$SB5"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

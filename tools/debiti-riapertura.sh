@@ -30,7 +30,16 @@ if not deb:
 # la sezione intera — 8+ righe aperte restavano invisibili perche' condividevano la sezione
 # con una riga saldata (es. l'hook clasp con codice morto, sotto «Pattern candidato»).
 RIGA_DEBITO = re.compile(r"^\|\s*\d{4}-\d{2}-\d{2}")
-SALDO = re.compile(r"SALDAT[OA]", re.I)
+SALDO_PAROLA = re.compile(r"SALDAT[OA]", re.I)
+# (2026-09-23, notte dei giri): «SALDAT[OA]» ovunque nella riga la chiudeva — anche «NON SALDATO»
+# o «PARZIALMENTE SALDATA» (sul DEBITI vero una riga cosi' era chiusa da un mese). Una menzione
+# conta come saldo solo se non e' preceduta da una negazione o da un «in parte».
+NEGA_SALDO = re.compile(r"(non|parzialmente|in parte|meta'|metà)\s+$", re.I)
+class _Saldo:
+    def search(self, testo):
+        return any(not NEGA_SALDO.search(testo[max(0, m.start() - 16):m.start()])
+                   for m in SALDO_PAROLA.finditer(testo))
+SALDO = _Saldo()
 sezioni = re.split(r"^## ", deb, flags=re.M)[1:]
 aperte = []
 for s in sezioni:
