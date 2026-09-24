@@ -21,7 +21,7 @@ for f in "$@"; do
     case "$cit" in *.md|*.sh|*.py|*.js|*.gs|*.json|*.html) ;; *) continue;; esac
     # i file delle repo di campo (dichiarati in .file-del-target) si citano ma non
     # vivono qui: la loro verifica spetta alla repo che li ospita
-    echo "$TARGET" | grep -qxF "$cit" && continue
+    grep -qxF "$cit" <<<"$TARGET" && continue
     [ -f "$cit" ] || { echo "  $f cita '$cit:$line': file inesistente"; ROSSI=$((ROSSI+1)); continue; }
     N=$(wc -l < "$cit" | tr -d ' ')
     if ! [ "$line" -le "$N" ] 2>/dev/null; then

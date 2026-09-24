@@ -24,7 +24,7 @@ FALLITI=0
 controlla_numero_test() {
   local MSG="$1" N_CLAIM N_REAL
   local TOTALE='[0-9]+ test (verdi|superati|passati|OK|in verde)'
-  if echo "$MSG" | grep -qiE "$TOTALE"; then
+  if grep -qiE "$TOTALE" <<<"$MSG"; then
     N_CLAIM=$(echo "$MSG" | grep -oiE "$TOTALE" | grep -oE '^[0-9]+' | head -1)
     N_REAL=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
     [ "$N_CLAIM" != "$N_REAL" ] && { echo "⛔ il messaggio dice \"$N_CLAIM test\" ma i file sono $N_REAL"; return 1; }
@@ -95,7 +95,7 @@ TARGET=$(grep -vE '^#|^$' "$HERE/tools/.file-del-target" 2>/dev/null || true)
 while IFS= read -r f; do
   nell_indice "$f" || continue
   while IFS= read -r m; do
-    echo "$TARGET" | grep -qxF "$m" && continue          # file-del-target: nel progetto, non qui
+    grep -qxF "$m" <<<"$TARGET" && continue          # file-del-target: nel progetto, non qui
     # (2026-09-20): un nome nudo si risolve anche nella CARTELLA del documento che lo cita
     # (docs/bc/README.md cita `CORREZIONI.md` che vive accanto a lui — l'indice BC generato
     # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)

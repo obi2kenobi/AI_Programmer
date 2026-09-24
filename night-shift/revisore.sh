@@ -179,7 +179,7 @@ N_RIGHE=$(git diff --numstat "$DB"...HEAD 2>/dev/null | awk '{a+=$1+$2} END{prin
 # (D1, 2026-09-20): chi scrive le prove non le passa. Una PR che tocca .night-verify
 # (anche solo per riscriverlo a `true`) non si giudica: le prove sotto sono lette dal
 # ramo di default, come fa il morning gate, e questa guardia chiude l'altra via.
-if printf '%s\n' "$DIFF_FILES" | grep -qx '.night-verify'; then
+if grep -qx '.night-verify' <<<"$DIFF_FILES"; then
   rinvia "guardia: la PR tocca .night-verify — le prove non si giudicano da chi le scrive"
 fi
 [ "$N_FILE" -le "$MAX_FILE" ] || rinvia "guardia: $N_FILE file (max $MAX_FILE)"

@@ -122,7 +122,7 @@ CMD_NOBT=$(printf '%s' "$CMD_UNA" | sed "s/\`[^\`]*\`//g")
 CMD_STRIPPED=$(printf '%s' "$CMD_NOBT" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
-if printf '%s' "$CMD_STRIPPED" | grep -qE "$INVOCAZIONE" || printf '%s' "$CMD_NOBT" | grep -qE "$SHC"; then
+if grep -qE "$INVOCAZIONE" <<<"$CMD_STRIPPED" || grep -qE "$SHC" <<<"$CMD_NOBT"; then
   jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). Se il push è davvero giusto, lo fa Luca a mano." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
@@ -132,18 +132,18 @@ fi
 # non lo invoca. Prima `echo si | bash tools/deploy-ora.sh X` passava questo cancello (vede solo il
 # comando esterno) e deploiava. Si nega l'invocazione, non la citazione: `grep deploy-ora …` passa.
 DEPLOY_ORA="${SEP}${RUN}((ba|z|da)?sh[[:space:]]+)?([A-Za-z0-9_./~-]*/)?deploy-ora(\.sh)?([[:space:]]|;|$)"
-if printf '%s' "$CMD_STRIPPED" | grep -qE "$DEPLOY_ORA"; then
+if grep -qE "$DEPLOY_ORA" <<<"$CMD_STRIPPED"; then
   jq -n --arg r "NEGATO (clasp-block-hook): deploy-ora e' il gesto del deploy di Luca, dal suo terminale — un agente non lo invoca (il deploy e' dell'umano). Prepara il pacchetto con tools/prepara-deploy.sh e lascialo a lui." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
 fi
 
 # H7a: la via documentata — npm run push / npm run deploy — risolta da package.json
-if [ -f "$PWD/package.json" ] && printf '%s' "$CMD_STRIPPED" | grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+'; then
+if [ -f "$PWD/package.json" ] && grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' <<<"$CMD_STRIPPED"; then
   for SCR in $(printf '%s' "$CMD_STRIPPED" | grep -oE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' | awk '{print $NF}' | sort -u); do
     RISOLTO=$(jq -r --arg s "$SCR" '.scripts[$s] // empty' "$PWD/package.json" 2>/dev/null)
     [ -z "$RISOLTO" ] && continue
-    if printf '%s' "$RISOLTO" | grep -qE "$INVOCAZIONE"; then
+    if grep -qE "$INVOCAZIONE" <<<"$RISOLTO"; then
       jq -n --arg r "NEGATO (clasp-block-hook): npm run $SCR risolve in \`$RISOLTO\` — clasp push/deploy scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I, H7: la via documentata era proprio quella non presidiata)." \
         '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
       exit 0
@@ -155,7 +155,7 @@ fi
 # che includeva directory dichiarate clone-di-sola-lettura nel CLAUDE.md del
 # repo — Luca l'ha eseguito e ha sovrascritto 2 progetti sviluppati altrove.
 # La guardia ora verifica anche il caso GENERAZIONE)
-if echo "$CMD" | grep -qE "$INVOCAZIONE"; then
+if grep -qE "$INVOCAZIONE" <<<"$CMD"; then
   MB="$PWD/.mirror-boundaries"
   if [ -f "$MB" ]; then
     jq -n --arg c "ATTENZIONE: questa directory ha .mirror-boundaries (cloni di sola lettura). Un clasp push qui sovrascriverebbe progetti sviluppati altrove. Verifica PRIMA di eseguire." \
@@ -164,9 +164,11 @@ if echo "$CMD" | grep -qE "$INVOCAZIONE"; then
   fi
 fi
 
+# (Q27, 2026-09-23): qui e sopra `grep … <<<"$X"`, mai `echo "$X" | grep -q` — sotto pipefail, su un
+# comando di molte righe il produttore moriva di SIGPIPE e l'avviso taceva (5 su 5, tests/test-e002-codice.sh)
 # ADVISORY: comandi che leggono/passano credenziali — possibili e a volte
 # legittimi, ma chi li lancia deve sapere cosa sta toccando
-if echo "$CMD" | grep -qE 'clasp\.json|credenziali|\.env|printenv|secret|token[_ =]|refresh_token'; then
+if grep -qE 'clasp\.json|credenziali|\.env|printenv|secret|token[_ =]|refresh_token' <<<"$CMD"; then
   jq -n --arg c "Questo comando tocca credenziali: mai nel diff, mai nei log, mai in chat (pattern segreto-come-impronta). Se stai solo LEGGENDO per verificare un'impronta, ok — ma l'output resta locale." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$c}}'
   exit 0

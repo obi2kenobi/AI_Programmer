@@ -60,7 +60,7 @@ sal_promemoria() {
 
 # ramo Bash: comandi che toccano/printano materiale sensibile
 if [ -n "$COMMAND" ] && [ -z "$FILE_PATH" ]; then
-  echo "$COMMAND" | grep -qiE '\.env|id_rsa|id_ed25519|\.pem|\.key|printenv|/usr/bin/security|keychain|repos\.key|Authorization:|Bearer |api[_-]?key|ZHIPUAI_API_KEY|GH_TOKEN' || exit 0
+  grep -qiE '\.env|id_rsa|id_ed25519|\.pem|\.key|printenv|/usr/bin/security|keychain|repos\.key|Authorization:|Bearer |api[_-]?key|ZHIPUAI_API_KEY|GH_TOKEN' <<<"$COMMAND" || exit 0
   HITS_B=""
   [ -f "$REGISTRO" ] && HITS_B="$(grep -E '^\| \[' "$REGISTRO" | grep -iE 'segreto|credenzial|token' | head -5)"
   if [ -n "$HITS_B" ]; then
@@ -82,7 +82,7 @@ fi
 # promemorio SAL gli si ACCODA (mai sostituisce).
 
 CTX_SENS=""
-if echo "$FILE_PATH" | grep -qiE 'auth|secret|credential|credenzial|token|login|password|segret'; then
+if grep -qiE 'auth|secret|credential|credenzial|token|login|password|segret' <<<"$FILE_PATH"; then
   HITS=""
   if [ -f "$REGISTRO" ]; then
     HITS="$(grep -E '^\| \[' "$REGISTRO" | grep -iE 'segreto|credenzial|token' | head -5)"

@@ -351,7 +351,7 @@ shift_repo() {
     fi
     if [ "$NV_ROSSI" -gt 0 ]; then
       NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if ! echo "$NV_ISSUE" | grep -qF "[night-verify]"; then
+      if ! grep -qF "[night-verify]" <<<"$NV_ISSUE"; then
         # (D16, test del sistema completo 2026-09-20): il corpo diceva «I dettagli sono nel
         # log del turno» — da remoto il giorno non poteva disporre (issue #95 aperta cosi'
         # dal 18/9). Il comando rosso va NEL corpo: e' l'unica cosa che serve per agire.
@@ -382,7 +382,7 @@ Riprodurre a mano, correggere il comando o il codice che verifica, chiudere l'is
     else
       log "REPO $REPO: standard: DIVERGENTE dall'hub — verifico se c'e' gia' una PR di riallineo"
       PR_SYNC=$(gh pr list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if printf '%s' "$PR_SYNC" | grep -qF "adotta lo standard"; then
+      if grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
         log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
       else
         SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
@@ -586,7 +586,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
     if [ "$N_FIND" -gt 0 ]; then
       CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
       ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if echo "$ISSUE_APERTE" | grep -qF "[ciclo-vivo]"; then
+      if grep -qF "[ciclo-vivo]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
       else
         echo "$CICLO_OUT" > /tmp/night-ciclo-$$.md
@@ -607,7 +607,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
     if ! echo "$BANCO_OUT" | tail -1 | grep -q "CHIUSO"; then
       ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if echo "$ISSUE_APERTE" | grep -qF "[banco]"; then
+      if grep -qF "[banco]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: banco rosso MA issue [banco] gia' aperta — niente duplicati, aspetta il giorno"
       elif true; then
         echo "$BANCO_OUT" > /tmp/night-banco-$$.md
@@ -731,7 +731,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       else
         # (2026-09-19, Ollama wedged): «nessuna trovata» e «agente morto» NON sono
         # la stessa cosa — la finestra con lo strumento rotto va detta per quello che e'
-        if echo "$MIGLIORIA_OUT" | grep -aq "agente rc=\|NESSUN rianimamento"; then
+        if grep -aq "agente rc=\|NESSUN rianimamento" <<<"$MIGLIORIA_OUT"; then
           log "REPO $REPO: caccia: ⚠ AGENTE FALLITO (Ollama?) — NON e' 'niente trovato': $(echo "$MIGLIORIA_OUT" | grep -a "rc=\|rianimamento" | head -1 | cut -c1-90)"
         else
           log "REPO $REPO: caccia: sana e nessuna miglioria trovata — repository in salute"
@@ -1002,7 +1002,7 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
         # (fase B adattiva): la nota da portare nel commit — una funzione NUOVA inserita
         # e' codice morto dichiarato: il diff reviewer cerca il collegamento che manca
         NOTA_INS=""
-        if echo "$OUT" | grep -q "ESITO: INSERITO"; then
+        if grep -q "ESITO: INSERITO" <<<"$OUT"; then
           NOTA_INS="
 
 Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento (bottone/menu/chiamata) resta da fare. Verificare il diff."

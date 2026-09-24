@@ -59,13 +59,13 @@ fi
 
 # UserPromptSubmit (default): digest minimo + aggancio se il prompt tocca calcoli/dati
 HINT=""
-if echo "$PROMPT" | grep -qiE 'calcol|formula|fattur|magazzin|margine|scostament|cespit|scadenz|leasing|rating|bilanci|valorizz'; then
+if grep -qiE 'calcol|formula|fattur|magazzin|margine|scostament|cespit|scadenz|leasing|rating|bilanci|valorizz' <<<"$PROMPT"; then
   HINT=" · questo prompt tocca un calcolo: prima gli oracoli in tools/*.py (docs/mappa-dominio-gas-src.md), la formula non si indovina"
 fi
-if echo "$PROMPT" | grep -qiE '\bBC\b|business central|endpoint|campi|dati di'; then
+if grep -qiE '\bBC\b|business central|endpoint|campi|dati di' <<<"$PROMPT"; then
   HINT="$HINT · la forma dei dati BC è già censita: docs/bc/endpoints/ (indice: python3 tools/bc_index.py) — non si presume, si legge"
 fi
-if echo "$PROMPT" | grep -qiE 'corregg|sistem|fix|bug'; then
+if grep -qiE 'corregg|sistem|fix|bug' <<<"$PROMPT"; then
   HINT="$HINT · prima di correggere: il banco, e la domanda di dominio in cima"
 fi
 jq -n --arg ctx " metodo attivo: esegui-non-dedurre · oracolo prima della formula · banco prima della correzione · SAL prima del passo successivo${HINT}" \

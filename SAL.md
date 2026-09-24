@@ -3631,3 +3631,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     - Sabotaggio del controllo di gh nel tool: rosso.
     - Non riprodotto col gh vero in /usr/bin: avrei dovuto scrivere nel sistema del container.
   - Il rapporto di riapertura ora dà 0 RISOLVIBILI.
+- **Q27**, da A1/A3, E-002 nel CODICE. Riprodotto sugli hook veri: con un comando di molte righe
+  l'avviso sulle credenziali di `tools/clasp-block-hook.sh` e il promemoria di
+  `tools/pattern-reminder-hook.sh` tacevano 5 su 5; col comando corto escono.
+  - Il divieto di clasp push invece reggeva, anche sotto carico (80/80): il comando è ridotto a
+    una riga sola prima del controllo, e grep deve leggerla tutta.
+  - Una mia misura sbagliata, dichiarata: la prima prova a 1 MB teneva, perché il riempimento
+    stava su UNA riga e grep non può uscire presto. Ripetuta a righe: rc 141.
+  - Curati 38 siti in tools/ e night-shift/ (grep … <<<"$X").
+  - Banco: `tests/test-e002-codice.sh`, 2 casi di comportamento e un cricchetto su tutto il codice
+    sotto pipefail. Sabotaggio (pattern-reminder com'era): rosso.
+  - Nel banco-passaggio: `tools/bencina-modelli.sh` e `night-shift/caccia-lente.sh` sono esclusi
+    dalla copertura col perché (chiamano il modello vero).

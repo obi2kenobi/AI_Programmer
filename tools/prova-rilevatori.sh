@@ -23,7 +23,7 @@ PASS=0; ROTTI=0
 prova() { # prova <nome-sonde> <atteso> <descrizione>
   local sonde="$1" atteso="$2" desc="$3"
   OUT=$(bash "$H/tools/giri-ignoranti.sh" 2>/dev/null)
-  if echo "$OUT" | grep -q "FIND $sonde"; then
+  if grep -q "FIND $sonde" <<<"$OUT"; then
     echo "✓ $sonde morde il suo canarino ($desc)"; PASS=$((PASS+1))
   else
     echo "⛔ $sonde NON morde il suo canarino ($desc) — RILEVATORE ROTTO, il suo verde non vale"

@@ -151,10 +151,10 @@ echo ""
 echo "=== CAT B — bypass degli hook ==="
 
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"credenziali_BC.rtf"}}' | bash tools/pattern-reminder-hook.sh)
-echo "$OUT" | grep -qi "pattern" && tiene "B1 maiuscole/underscore nel path sensibile" || aggirato "B1 path sensibile camuffato non riconosciuto"
+grep -qi "pattern" <<<"$OUT" && tiene "B1 maiuscole/underscore nel path sensibile" || aggirato "B1 path sensibile camuffato non riconosciuto"
 
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"Il mio token di accesso.txt"}}' | bash tools/pattern-reminder-hook.sh)
-echo "$OUT" | grep -qi "pattern\|secret" && tiene "B2 percorso sensibile in italiano naturale" || aggirato "B2 sensibile in italiano non riconosciuto"
+grep -qi "pattern\|secret" <<<"$OUT" && tiene "B2 percorso sensibile in italiano naturale" || aggirato "B2 sensibile in italiano non riconosciuto"
 
 att; OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"cat ~/.clasp.json | grep refresh"}}' | bash tools/clasp-block-hook.sh)
 if grep -q . <<<"$OUT"; then tiene "B3 comando bash che tocca credenziali riceve avviso"; else aggirato "B3 comando con credenziali: hook muto"; fi
@@ -166,7 +166,7 @@ att; echo '{"tool_name":"NotebookEdit","tool_input":{"file_path":"credenziali BC
   && tiene "B5 tool fuori matcher risponde comunque" || ack "B5 tool fuori matcher (NotebookEdit): l'hook non spara — gap strutturale della piattaforma, compensato dal dente clasp su Bash"
 
 att; OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"calculate the warehouse valuation please"}' | bash tools/metodo-reminder-hook.sh)
-echo "$OUT" | grep -qi "oracol\|calcol" && tiene "B6 prompt di calcolo in INGLESE aggancia lo stesso gli oracoli" || aggirato "B6 prompt inglese: aggancio oracoli non scatta"
+grep -qi "oracol\|calcol" <<<"$OUT" && tiene "B6 prompt di calcolo in INGLESE aggancia lo stesso gli oracoli" || aggirato "B6 prompt inglese: aggancio oracoli non scatta"
 
 att; echo "$(date +%s)" > .campo-rem 2>/dev/null
 OUT=$(echo '{"hook_event_name":"Stop"}' | bash tools/metodo-reminder-hook.sh)
@@ -187,24 +187,24 @@ comment = '<!-- ' + ' '.join('pattern-x' + str(i) for i in range(200)) + ' -->'
 open(p,'w').write(s + '\n' + comment + '\n')"
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 2 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "COLLEGAMENTO.*pattern-x1\b" && aggirato "C1 lente 2 non guarda nei commenti HTML (gaming possibile)" || tiene "C1 lente 2 resiste ai commenti HTML"
+grep -q "COLLEGAMENTO.*pattern-x1\b" <<<"$OUT" && aggirato "C1 lente 2 non guarda nei commenti HTML (gaming possibile)" || tiene "C1 lente 2 resiste ai commenti HTML"
 git checkout -- .claude/skills/gas-sviluppo/references/metodo.md; rm -rf .ciclo
 
 att; printf '#!/usr/bin/env python3\n' > tools/test.py
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: tool test.py" && tiene "C2 tool omonimo del prefisso test non passa gratis" || aggirato "C2 tools/test.py passa la lente copertura per coincidenza di nome"
+grep -q "ARCH: tool test.py" <<<"$OUT" && tiene "C2 tool omonimo del prefisso test non passa gratis" || aggirato "C2 tools/test.py passa la lente copertura per coincidenza di nome"
 rm tools/test.py; rm -rf .ciclo
 
 att; printf '\n`tools/` e `docs/`\n' >> DEBITI.md
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: DEBITI" && tiene "C3 DEBITI che cita directory generiche segnalato" || aggirato "C3 lente DEBITI accetta ref a directory (non a file)"
+grep -q "ARCH: DEBITI" <<<"$OUT" && tiene "C3 DEBITI che cita directory generiche segnalato" || aggirato "C3 lente DEBITI accetta ref a directory (non a file)"
 git checkout -- DEBITI.md; rm -rf .ciclo
 
 att; printf 'riga spuria che contiene la parola gate\n' > docs/campo/2026-08-28-attacco-gate.md
 OUT=$(bash tools/campo-triage.sh 2>&1)
-echo "$OUT" | grep -q "non processato" && tiene "C4 report finto con nome-parola non conta come processato" || aggirato "C4 campo-triage conta processato per coincidenza di parola in SAL"
+grep -q "non processato" <<<"$OUT" && tiene "C4 report finto con nome-parola non conta come processato" || aggirato "C4 campo-triage conta processato per coincidenza di parola in SAL"
 rm docs/campo/2026-08-28-attacco-gate.md
 
 att; printf 'Il sistema ha 999 test e 999 pattern.\n' >> METHOD.md
@@ -229,7 +229,7 @@ rm patterns/vuoto-finto.md
 att; F=$(ls docs/bc/endpoints | head -1); rm "docs/bc/endpoints/$F"; python3 tools/bc_index.py >/dev/null 2>&1
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: endpoints" && tiene "C9 endpoint cancellato + indice rigenerato: lente vede il calo" || ack "C9 endpoint cancellato E indice rigenerato insieme: i conti tornano (limite dichiarato: la lente conta, non pesa i contenuti)"
+grep -q "ARCH: endpoints" <<<"$OUT" && tiene "C9 endpoint cancellato + indice rigenerato: lente vede il calo" || ack "C9 endpoint cancellato E indice rigenerato insieme: i conti tornano (limite dichiarato: la lente conta, non pesa i contenuti)"
 git checkout -- docs/bc; rm -rf .ciclo
 
 att; printf '#!/usr/bin/env python3\nimport time\ntime.sleep(2)\nraise RuntimeError("boom ritardato")\n' > tools/_sleep_malvagio.py
@@ -242,8 +242,8 @@ echo "=== CAT D — input ostili agli oracoli (spazzatura silenziosa = aggirato)
 
 classifica() {
   local out="$1" rc="$2" d="$3"
-  if [ "$rc" -ne 0 ] || echo "$out" | grep -qi "uso:\|traceback\|errore"; then tiene "$d (muore/si dichiara: rc=$rc)"
-  elif echo "$out" | grep -qi "nan\|inf"; then aggirato "$d — spazzatura SILENZIOSA: $out"
+  if [ "$rc" -ne 0 ] || grep -qi "uso:\|traceback\|errore" <<<"$out"; then tiene "$d (muore/si dichiara: rc=$rc)"
+  elif grep -qi "nan\|inf" <<<"$out"; then aggirato "$d — spazzatura SILENZIOSA: $out"
   else tiene "$d (output onesto)"; fi
 }
 

@@ -79,7 +79,7 @@ echo "$VERDETTO"
 # se ci sono problemi reali
 # guarda la risposta alla domanda 1: YES = problemi
 PRIMA_RIGA=$(echo "$VERDETTO" | head -1)
-if echo "$PRIMA_RIGA" | grep -qiE "^1\.?\s*yes|yes.*issue"; then
+if grep -qiE "^1\.?\s*yes|yes.*issue" <<<"$PRIMA_RIGA"; then
   log "⚠ lente $(echo "$LENTE_DATA" | cut -d'|' -f1): PROBLEMI TROVATI"
   exit 0
 else

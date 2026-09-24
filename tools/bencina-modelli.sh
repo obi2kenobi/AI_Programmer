@@ -56,7 +56,7 @@ $RIGA
 Convert ONLY this line to cattura-prima: capture first, then grep the variable. HARD BUDGET: at most 4 changed lines. Reply with ONLY the new line(s), nothing else." 300)
 T1=$(date +%s); DT=$((T1-T0)); T_TOT=$((T_TOT+DT))
 OK1=0
-if echo "$R" | grep -q 'LISTA=' && echo "$R" | grep -q '<<<'; then OK1=1; SUCCESSI=$((SUCCESSI+1)); fi
+if grep -q 'LISTA=' <<<"$R" && grep -q '<<<' <<<"$R"; then OK1=1; SUCCESSI=$((SUCCESSI+1)); fi
 [ $OK1 -eq 1 ] && echo "· chirurgo: OK in ${DT}s ($(echo "$R" | head -1 | cut -c1-60))" || echo "· chirurgo: FALLITO in ${DT}s (risposta: $(echo "$R" | head -1 | cut -c1-60))"
 
 # ── 2. BUGFIX ───────────────────────────────────────────────────────────────
@@ -65,7 +65,7 @@ T0=$(date +%s)
 R=$(chiama "The sconto function in mat.js subtracts the percentage number directly. Fix: return prezzo - (prezzo * percento / 100). Reply with ONLY the fixed return line." 300)
 T1=$(date +%s); DT=$((T1-T0)); T_TOT=$((T_TOT+DT))
 OK2=0
-if echo "$R" | grep -q 'percento / 100'; then OK2=1; SUCCESSI=$((SUCCESSI+1)); fi
+if grep -q 'percento / 100' <<<"$R"; then OK2=1; SUCCESSI=$((SUCCESSI+1)); fi
 [ $OK2 -eq 1 ] && echo "· bugfix: OK in ${DT}s" || echo "· bugfix: FALLITO in ${DT}s"
 
 # ── 3. CENSORE ──────────────────────────────────────────────────────────────

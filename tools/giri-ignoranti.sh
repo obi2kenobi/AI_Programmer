@@ -88,7 +88,7 @@ done
 rm -rf "$S3D"
 # caso header spazzatura per i tool CSV a stdin
 OUT=$(printf 'a,b\n1,x\n' | python3 "$HERE/tools/scadenzario_aging.py" 2>&1)
-echo "$OUT" | grep -q "Traceback" && { echo "     · scadenzario_aging: traceback con header spazzatura"; TB=1; }
+grep -q "Traceback" <<<"$OUT" && { echo "     · scadenzario_aging: traceback con header spazzatura"; TB=1; }
 [ "$TB" -eq 0 ] && sonda 0 "S3 nessun oracolo muore di traceback su input spazzatura" || sonda 1 "S3 traceback nudi su input spazzatura"
 
 # S4 — docs di radice orfani: ogni docs/*.md deve essere citato da qualche altro
