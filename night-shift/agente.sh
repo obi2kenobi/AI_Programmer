@@ -9,8 +9,9 @@
 # Esce: 0 = lavoro completato · 1 = fallito · 2 = uso · 3 = timeout
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-DIR="${1:?uso: agente.sh <dir> <prompt>}"
-PROMPT="${2:?uso: agente.sh <dir> <prompt>}"
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
+[ $# -ge 2 ] || { echo "uso: agente.sh <dir> <prompt>" >&2; exit 2; }
+DIR="$1"; PROMPT="$2"
 MODEL="${NIGHT_MODEL:-${MODELLO:-qwen3.8-27b:iq3s}}"   # MODELLO: il profilo del turno (D11)
 # shellcheck source=lib.sh
 source "$HERE/night-shift/lib.sh"   # gate_allowlist_ok: l'allowlist di sola lettura del censore

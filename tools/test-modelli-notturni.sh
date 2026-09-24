@@ -9,7 +9,7 @@
 # dopo quante letture? il codice è corretto (node --check + contenuto)?
 #
 # Uso: bash tools/test-modelli-notturni.sh <modello1> [modello2...]
-# Esce 0 sempre: è una misura, non un gate.
+# Esce 0: è una misura, non un gate · 1 uso (nessun modello indicato).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 BANCO=/tmp/test-loop-models

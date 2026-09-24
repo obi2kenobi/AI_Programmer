@@ -35,8 +35,9 @@
 #       sostituisce i due cervelli (riceve il ruolo e il prompt, risponde eco).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-DIR="${1:?uso: revisore.sh <dir-repo> <pr>}"
-PR="${2:?uso: revisore.sh <dir-repo> <pr>}"
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «rigettata»: l'uso sbagliato e' un errore (3), come dichiarato
+[ $# -ge 2 ] || { echo "uso: revisore.sh <dir-repo> <pr>" >&2; exit 3; }
+DIR="$1"; PR="$2"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git" >&2; exit 3; }
 cd "$DIR"
 

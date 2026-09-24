@@ -6,7 +6,7 @@
 # ⚠ QUESTO TOOL NON SCRIVE: legge DEBITI.md e le domande aperte, e prepara la riapertura.
 #
 # Uso: bash tools/debiti-riapertura.sh [dir-progetto]   (default: repo corrente)
-# Esce: 0 sempre (informa, non blocca — la pressione sta nel farla visibile)
+# Esce: 0 (informa, non blocca — la pressione sta nel farla visibile) · 1 cartella inesistente
 set -uo pipefail
 DIR="${1:-.}"
 cd "$DIR" || { echo "⛔ dir inesistente: $DIR"; exit 1; }

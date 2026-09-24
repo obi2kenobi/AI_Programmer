@@ -15,7 +15,8 @@
 #           [ ... ] || grep FLAG 'PAT' <<<"$_cp"; then
 #
 # Uso: salda-e002.sh <file> <riga>
-# Esce: 0 trasformato (diff nel working tree) · 1 forma non riconosciuta (all'agente)
+# Esce: 0 trasformato (diff nel working tree) · 1 forma non riconosciuta (all'agente) · 2 uso (file
+#       inesistente o non .sh)
 #       · 2 errore d'uso
 set -uo pipefail
 FILE="${1:?uso: salda-e002.sh <file> <riga>}"

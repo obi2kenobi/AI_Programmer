@@ -9,7 +9,7 @@
 # costa il tempo della comprensione vera.
 #
 # Uso: bash tools/polilivello.sh <dir-progetto>
-# Esce 0 sempre (è uno studio, non un gate); il verdetto è il report stesso.
+# Esce 0 (è uno studio, non un gate; il verdetto è il report stesso) · 1 uso.
 set -uo pipefail
 DIR="${1:-}"
 if [ -z "$DIR" ] || [ ! -d "$DIR" ]; then

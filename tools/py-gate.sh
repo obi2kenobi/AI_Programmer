@@ -12,9 +12,10 @@
 #
 # Uso: py-gate.sh [dir]   (default: la radice del repo che lo contiene)
 # Esce: 0 = tutti i .py compilano · 1 = almeno uno non compila (nome stampato)
+#       2 = perimetro non giudicabile (cartella inesistente, non una repo git, nessun .py tracciato)
 set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
-[ -d "$DIR" ] || { echo "⛔ py-gate: dir inesistente: $DIR" >&2; exit 1; }
+[ -d "$DIR" ] || { echo "⛔ py-gate: dir inesistente: $DIR — perimetro non giudicabile (exit 2, come gas-gate)" >&2; exit 2; }
 
 ROTTI=0
 # (Q30, 2026-09-23, notte dei giri): fuori da git `git ls-files` falliva nel 2>/dev/null e il gate

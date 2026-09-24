@@ -26,7 +26,7 @@
 # Uso: caccia-registro.sh [dir]           → il censimento (stampa i conteggi)
 #       caccia-registro.sh --prossimo [dir] → il prossimo debito da saldare:
 #       «FAMIGLIA|file:riga» — il primo non saldato-VERIFICATO e non rinviato.
-# Esce: 0 sempre — il debito non e' un errore, e' un debito
+# Esce: 0 — il debito non e' un errore, e' un debito · 2 cartella inesistente (non si e' guardato niente)
 set -uo pipefail
 MODO="${1:-}"
 [ "$MODO" = "--prossimo" ] && shift

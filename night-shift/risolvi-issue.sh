@@ -14,8 +14,9 @@
 #    del 4/9 l'ha trattato come successo e ha aperto una PR di soli scarti: un .js
 #    proposto + il .night-bak dell'App.html intero, +739 righe di rumore.)
 set -uo pipefail
-DIR="${1:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
-ISSUE="${2:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
+[ $# -ge 2 ] || { echo "uso: risolvi-issue.sh <dir-progetto> <issue-md>" >&2; exit 2; }
+DIR="$1"; ISSUE="$2"
 MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 # NIGHT_API_URL: solo per i test (server mock) — di norma non si tocca
 # (T5#6, 2026-09-23): i prompt (con i sorgenti) viaggiano su stdin verso jq e curl, mai negli argomenti

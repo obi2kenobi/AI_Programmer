@@ -4565,3 +4565,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   AGENTS.md ha un §0ter «Il primo giorno»: quattro comandi (guardiani, identità, polso, suite), i
   prerequisiti con le loro fonti, e il rosso atteso di privacy-check. Il README ci rimanda. Guardia in
   `tests/test-doc-non-corrotti.sh`: rossa prima (13/1), verde ora (14/0).
+- **Quarto ventaglio, Q3 R4-R5 — i codici d'uscita dichiarati non erano quelli emessi.** `${1:?uso}`
+  esce 1, e in cinque strumenti 1 significa già altro:
+  - revisore: «rigettata»;
+  - lente-sicurezza: «RILIEVI»;
+  - agente e risolvi-issue: «fallito»;
+  - goal-issue: non dichiarato.
+
+  Ora l'uso sbagliato esce col codice dichiarato: 2, e 3 per il revisore. Sei intestazioni dicevano «0
+  sempre» o «0 · 1» ed emettevano anche 1 o 2. Sono corrette: py-gate, salda-e002, caccia-registro,
+  debiti-riapertura, test-modelli-notturni, polilivello. py-gate su una cartella inesistente esce 2, come
+  gas-gate. Banco nuovo `tests/test-contratti-uscita.sh`: rosso prima (10 FAIL), verde ora (12/0). Verdi
+  anche i banchi dei sette strumenti. Sabotaggio: l'agente di HEAD, 11/1. Q1 R5 (il job `luca.ollama`, che
+  nessun installatore crea) è una domanda di dominio in DEBITI.md.

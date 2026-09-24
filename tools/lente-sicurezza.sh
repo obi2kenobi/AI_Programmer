@@ -21,8 +21,9 @@
 # push (forme_prima_del_push in night-shift/lib.sh; notte dei giri 2026-09-23, T5#3).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-DIR="${1:?uso: lente-sicurezza.sh <dir-repo> <base> [head]}"
-BASE="${2:?uso: lente-sicurezza.sh <dir-repo> <base> [head]}"
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «RILIEVI»: l'uso sbagliato non e' giudicabile (2)
+[ $# -ge 2 ] || { echo "uso: lente-sicurezza.sh <dir-repo> <base> [head]" >&2; exit 2; }
+DIR="$1"; BASE="$2"
 TESTA="${3:-HEAD}"
 MODEL="${MODELLO:-qwen3.8-27b:iq3s}"
 MAX_PROMPT=12000   # caratteri di diff al cervello (~4 tok/s: oltre, il giudizio costa ore)
