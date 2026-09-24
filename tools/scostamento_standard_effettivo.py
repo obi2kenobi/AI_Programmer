@@ -96,6 +96,11 @@ def main():
     except ValueError:
         print(f"uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv — costo standard non numerico: {sys.argv[1]!r}", file=sys.stderr)
         return 1
+    # (2026-09-24, quinto ventaglio, R3 R2): nan/inf passavano da float() e davano «Scostamento: +nan%» con rc 0
+    # (la cura Q22 guardava solo le righe del CSV, non l'argomento)
+    if not math.isfinite(costo_standard):
+        print(f"ERRORE: costo standard non finito (nan/inf): {sys.argv[1]!r} — nessun verdetto", file=sys.stderr)
+        return 1
     reader = csv.DictReader(sys.stdin)
     mancanti = [c for c in ("costo_eff_unitario", "qta_prodotta") if c not in (reader.fieldnames or [])]
     if mancanti:

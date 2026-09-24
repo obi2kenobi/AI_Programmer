@@ -133,6 +133,26 @@ OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a.csv" 2>&1)
 grep -q "ATTENZIONE" <<<"$OUT" && grep -q "FATTURA" <<<"$OUT" && grep -q "Payment" <<<"$OUT" \
   && ok "aging: i tipi documento fornitore non riconosciuti sono DETTI (prima: entrate in silenzio)" \
   || ko "aging: tipi fornitore ignoti presi come entrate senza avviso: $(head -2 <<<"$OUT" | tr '\n' ' ')"
+# (2026-09-24, quinto ventaglio, R3 R2): la cura nan/inf non era arrivata a sei oracoli — due davano un verdetto
+# VERDE su dati marci: indici «🟢 Nessuna presunzione di crisi» con pn NaN, accuratezza «100% RAGGIUNTO» con
+# importi nan. Un numero non finito si dichiara, rc 1.
+echo '{"pn": NaN, "ricavi": 100, "oneriFin": 1, "passivoTot": 100, "debPrev": 0, "debTrib": 0, "cashFlow": 5, "attivo": 100, "attCorrenti": 200, "passCorrenti": 100}' > "$TMP/ic.json"
+dichiara "indici: pn NaN (era «nessuna presunzione di crisi», rc 0)" python3 "$T/indici_crisi.py" < "$TMP/ic.json"
+printf 'nr,importo,ordine_nr,fornitore\nF1,nan,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,100\n' > "$TMP/on.csv"
+dichiara "accuratezza: importo fattura nan (era «100% RAGGIUNTO»)" python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/fn.csv" "$TMP/on.csv"
+printf 'nr,importo,ordine_nr,fornitore\nF1,100,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,nan\n' > "$TMP/on.csv"
+dichiara "accuratezza: importo ordine nan" python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/fn.csv" "$TMP/on.csv"
+printf 'costo_eff_unitario,qta_prodotta\n10,5\n12,5\n' > "$TMP/sc.csv"
+dichiara "scostamento: costo standard nan dall'argomento" python3 "$T/scostamento_standard_effettivo.py" nan < "$TMP/sc.csv"
+dichiara "scostamento: costo standard inf dall'argomento" python3 "$T/scostamento_standard_effettivo.py" inf < "$TMP/sc.csv"
+printf 'rif,importo\nRF1,nan\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,100\n' > "$TMP/ma.csv"
+dichiara "margine: importo vendita nan (era «Totale margine: +nan»)" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
+printf 'rif,importo\nRF1,100\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,inf\n' > "$TMP/ma.csv"
+dichiara "margine: importo acquisto inf" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
+echo '{"categoria":{"openCosto":NaN,"openRival":0,"openSval":0,"yearCosto":10,"yearRival":0,"yearSval":0,"openFondo":-20,"yearFondo":-5},"cespiti":[]}' > "$TMP/rf.json"
+dichiara "rollforward: openCosto NaN (era «clClose: nan», rc 0)" python3 "$T/rollforward_cespiti.py" < "$TMP/rf.json"
+printf '%s\nfattura,2026-01-01,,1,Rossi,,nan\npagamento,2026-01-05,,2,Rossi,,nan\n' "$H" > "$TMP/r.csv"
+dichiara "rating: importo nan" python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
 # (2026-09-24, quinto ventaglio, R3 R1): il ramo «fornitore» in minuscolo (o con uno spazio davanti) non
 # assegnava l'importo — la riga prendeva quello della riga PRIMA (Entrate +2000 invece di +1500), o, se era la
 # prima, un traceback. Il segno resta quello che l'ATTENZIONE dichiara (+abs, convenzione provvisoria: la

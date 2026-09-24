@@ -32,6 +32,7 @@ acquisti.csv:   rif,data,bu,fornitore,importo
 note_credito.csv: rif (una per riga, con intestazione)
 """
 import csv
+import math
 import re
 import sys
 
@@ -81,6 +82,11 @@ def main():
 
     # primo acquisto per riferimento vince (comportamento del map originale)
     acquisti_map = {}
+    # (2026-09-24, quinto ventaglio, R3 R2): un importo nan/inf dava «Totale margine: +nan EUR», rc 0
+    marci = [r.get("rif") or "(senza rif)" for r in vendite + acquisti if not math.isfinite(float(r["importo"]))]
+    if marci:
+        print(f"ERRORE: importi non finiti (nan/inf) per {', '.join(marci[:5])} — nessun verdetto", file=sys.stderr)
+        return 1
     for a in acquisti:
         rif = normalizza(a.get("rif"))
         if rif and rif not in acquisti_map:

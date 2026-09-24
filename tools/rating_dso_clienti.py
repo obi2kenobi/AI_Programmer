@@ -31,6 +31,7 @@ tipo = "fattura" | "pagamento" | "cessione" (il tipo reale si deduce dalla
 colonna tipo documento / descrizione: la cessione contiene 'CessioneFACTOR')
 """
 import csv
+import math
 import re
 import sys
 from datetime import date
@@ -62,6 +63,10 @@ def main():
         tipo = (r["tipo"] or "").strip().lower()
         cliente = normalizza(r.get("cliente"))
         importo = float(r["importo"] or 0)
+        # (2026-09-24, quinto ventaglio, R3 R2): un importo nan passava come «NON MATCHATO … nan», rc 0
+        if not math.isfinite(importo):
+            print(f"ERRORE: importo non finito (nan/inf) nella riga {r.get('nr_doc') or '?'} — nessun rating", file=sys.stderr)
+            return 1
         descrizione = (r.get("descrizione") or "")
         if tipo == "fattura":
             fatture.append({"cliente": cliente, "data": date.fromisoformat(r["data_documento"]),

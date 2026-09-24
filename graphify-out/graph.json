@@ -17,48 +17,12 @@
       "source_location": "L332"
     },
     {
-      "id": "tools_bilancio_bu_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36"
-    },
-    {
-      "id": "tools_riconciliazione_magazzino_categorizza",
-      "label": "categorizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "categorizza()",
-      "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L20"
-    },
-    {
-      "id": "tools_riconciliazione_magazzino_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L60"
-    },
-    {
       "id": "tools_scadenzario_aging_aggrega_totali",
       "label": "aggrega_totali()",
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
@@ -70,7 +34,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
@@ -82,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
@@ -94,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
@@ -110,7 +74,7 @@
       "file_type": "code",
       "norm_label": "crisi_presunta()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L65"
+      "source_location": "L66"
     },
     {
       "id": "tools_indici_crisi_main",
@@ -122,7 +86,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L69"
+      "source_location": "L70"
     },
     {
       "id": "tools_indici_crisi_pct",
@@ -134,7 +98,7 @@
       "file_type": "code",
       "norm_label": "pct()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L38"
+      "source_location": "L39"
     },
     {
       "id": "tools_indici_crisi_valuta_indici_crisi",
@@ -146,19 +110,55 @@
       "file_type": "code",
       "norm_label": "valuta_indici_crisi()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L42"
+      "source_location": "L43"
     },
     {
-      "id": "tools_bc_map_fetch",
-      "label": "fetch()",
+      "id": "tools_bilancio_bu_main",
+      "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "community_name": "csv",
       "file_type": "code",
-      "norm_label": "fetch()",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L67"
+      "norm_label": "main()",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L36"
+    },
+    {
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_margine_documento_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L63"
+    },
+    {
+      "id": "tools_margine_documento_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L40"
     },
     {
       "id": "tools_bc_index_catalogo_mancanti",
@@ -209,28 +209,28 @@
       "source_location": "L31"
     },
     {
-      "id": "tools_rating_dso_clienti_main",
+      "id": "tools_riconciliazione_magazzino_categorizza",
+      "label": "categorizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "riconciliazione_magazzino.py",
+      "file_type": "code",
+      "norm_label": "categorizza()",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "tools_riconciliazione_magazzino_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "riconciliazione_magazzino.py",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tools_rating_dso_clienti_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "rating_dso_clienti.py",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L60"
     },
     {
       "id": "tools_e002_siti_dentro_virgolette",
@@ -269,42 +269,6 @@
       "source_location": "L59"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tools_margine_documento_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L62"
-    },
-    {
-      "id": "tools_margine_documento_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L39"
-    },
-    {
       "id": "tools_verifica_banco_main",
       "label": "main()",
       "_callable": true,
@@ -322,11 +286,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 38,
-      "community_name": "accuratezza_fatture_acquisto.py",
+      "community_name": "json",
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L34"
+      "source_location": "L35"
     },
     {
       "id": "tools_accuratezza_fatture_acquisto_main",
@@ -334,11 +298,59 @@
       "_callable": true,
       "_origin": "ast",
       "community": 38,
-      "community_name": "accuratezza_fatture_acquisto.py",
+      "community_name": "json",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L50"
+      "source_location": "L51"
+    },
+    {
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "tools_rollforward_cespiti_calcola_roll_forward",
+      "label": "calcola_roll_forward()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "calcola_roll_forward()",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L34"
+    },
+    {
+      "id": "tools_rollforward_cespiti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L68"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -543,6 +555,18 @@
       "norm_label": "cred()",
       "source_file": "tools/bc_map.py",
       "source_location": "L36"
+    },
+    {
+      "id": "tools_bc_map_fetch",
+      "label": "fetch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "code",
+      "norm_label": "fetch()",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L67"
     },
     {
       "id": "tools_bc_map_get_token",
@@ -867,30 +891,6 @@
       "norm_label": "riga_di()",
       "source_file": "tools/gas_qualita.py",
       "source_location": "L59"
-    },
-    {
-      "id": "tools_rollforward_cespiti_calcola_roll_forward",
-      "label": "calcola_roll_forward()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "file_type": "code",
-      "norm_label": "calcola_roll_forward()",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L33"
-    },
-    {
-      "id": "tools_rollforward_cespiti_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L67"
     },
     {
       "id": "sal_2026_08_27_10_trenta_giri_n_2_il_collegamento_rotto_ero_io",
@@ -3521,99 +3521,22 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_bilancio_bu",
-      "label": "bilancio_bu.py",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "bilancio_bu.py",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_riconciliazione_magazzino",
-      "label": "riconciliazione_magazzino.py",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "code",
-      "norm_label": "riconciliazione_magazzino.py",
-      "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_scadenzario_aging",
       "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
       "norm_label": "scadenzario_aging.py",
       "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_bilancio_bu_rationale_3",
-      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_bilancio_bu_rationale_37",
-      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
-      "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tools_riconciliazione_magazzino_rationale_2",
-      "label": "Riconciliazione inventario fisico di magazzino. Formula reale (oracolo, non\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "riconciliazione inventario fisico di magazzino. formula reale (oracolo, non...",
-      "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_riconciliazione_magazzino_rationale_21",
-      "label": "Il cuore della riconciliazione (formula REPO-E): delta = fisica \u2212 BC,\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "il cuore della riconciliazione (formula repo-e): delta = fisica \u2212 bc,...",
-      "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L21"
-    },
-    {
-      "id": "tools_riconciliazione_magazzino_rationale_61",
-      "label": "CSV in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto\u2026",
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "csv",
-      "file_type": "rationale",
-      "norm_label": "csv in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto...",
-      "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L61"
-    },
-    {
       "id": "tools_scadenzario_aging_rationale_2",
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3624,7 +3547,7 @@
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3635,7 +3558,7 @@
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3646,7 +3569,7 @@
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "csv",
+      "community_name": "scadenzario_aging.py",
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
@@ -5457,7 +5380,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_indici_crisi_rationale_43",
+      "id": "tools_indici_crisi_rationale_44",
       "label": "Sei indici con soglie del codice REPO-E (non leggi italiane: la presunzione di\u2026",
       "_origin": "ast",
       "community": 117,
@@ -5465,10 +5388,10 @@
       "file_type": "rationale",
       "norm_label": "sei indici con soglie del codice repo-e (non leggi italiane: la presunzione di...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
-      "id": "tools_indici_crisi_rationale_70",
+      "id": "tools_indici_crisi_rationale_71",
       "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
       "_origin": "ast",
       "community": 117,
@@ -5476,7 +5399,7 @@
       "file_type": "rationale",
       "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L70"
+      "source_location": "L71"
     },
     {
       "id": "claude",
@@ -6564,243 +6487,81 @@
       "source_location": "L80"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni",
-      "label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "id": "tools_bilancio_bu",
+      "label": "bilancio_bu.py",
       "_origin": "ast",
       "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "bilancio_bu.py",
+      "source_file": "tools/bilancio_bu.py",
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_1_la_famiglia_di_difetti_nuova_il_pezzo_che_vale_per_tutto_il_parco",
-      "label": "1. La famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. la famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L17"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2026_09_02_una_webapp_gas_morta_da_loggati_il_manifest_i_verdetti_che_mentono_la_consegna_dei_comandi",
-      "label": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-09-02 \u2014 una webapp gas morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "community_name": "csv",
+      "file_type": "code",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2_la_seconda_famiglia_il_nome_del_trigger_non_segue_la_rinomina",
-      "label": "2. La seconda famiglia: il nome del trigger non segue la rinomina",
+      "id": "tools_bilancio_bu_rationale_3",
+      "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
       "_origin": "ast",
       "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. la seconda famiglia: il nome del trigger non segue la rinomina",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L57"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_3_la_terza_l_underscore_finale_nasconde_anche_all_editor",
-      "label": "3. La terza: l'underscore finale nasconde anche all'editor",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. la terza: l'underscore finale nasconde anche all'editor",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L90"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_4_la_lezione_di_ragionamento_pi\u00f9_costosa_correlazione_al_posto_della_causa",
-      "label": "4. La lezione di ragionamento pi\u00f9 costosa: correlazione al posto della causa",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. la lezione di ragionamento piu costosa: correlazione al posto della causa",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L115"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
-      "label": "5.1 Il denominatore va provato, non stampato",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.1 il denominatore va provato, non stampato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L137"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
-      "label": "5.2 Un verde per assenza non \u00e8 un verde",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.2 un verde per assenza non e un verde",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L157"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
-      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L163"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
-      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L169"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
-      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L174"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
-      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L132"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
-      "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "6. il byte invisibile (famiglia chiusa, non due casi curati)",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L183"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_7_consegnare_comandi_a_un_umano_\u00e8_un_interfaccia_e_l_ho_rotta_quattro_volte",
-      "label": "7. Consegnare comandi a un umano \u00e8 un'interfaccia, e l'ho rotta quattro volte",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "7. consegnare comandi a un umano e un'interfaccia, e l'ho rotta quattro volte",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L205"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_8_cosa_ha_retto",
-      "label": "8. Cosa ha retto",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "8. cosa ha retto",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L245"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_9_cosa_ha_ostacolato",
-      "label": "9. Cosa ha ostacolato",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "9. cosa ha ostacolato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L267"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_il_corollario_atomico",
-      "label": "Il corollario atomico",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "il corollario atomico",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L43"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_numeri_della_giornata",
-      "label": "Numeri della giornata",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "numeri della giornata",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L321"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
-      "label": "Proposta al canone",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "proposta al canone",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L280"
-    },
-    {
-      "id": "tools_bc_map_rationale_68",
-      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
-      "_origin": "ast",
-      "community": 125,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "community_name": "csv",
       "file_type": "rationale",
-      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L68"
+      "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_bilancio_bu_rationale_37",
+      "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_margine_documento_rationale_48",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L48"
+    },
+    {
+      "id": "tools_margine_documento_rationale_64",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 125,
+      "community_name": "csv",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L64"
     },
     {
       "id": "docs_campo_2026_08_28_repo_k_dal_dossier_a_tutti_i_fix",
@@ -21201,37 +20962,48 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "tools_riconciliazione_magazzino",
+      "label": "riconciliazione_magazzino.py",
       "_origin": "ast",
       "community": 252,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "riconciliazione_magazzino.py",
       "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "norm_label": "riconciliazione_magazzino.py",
+      "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "id": "tools_riconciliazione_magazzino_rationale_2",
+      "label": "Riconciliazione inventario fisico di magazzino. Formula reale (oracolo, non\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "riconciliazione_magazzino.py",
       "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
+      "norm_label": "riconciliazione inventario fisico di magazzino. formula reale (oracolo, non...",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L2"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "id": "tools_riconciliazione_magazzino_rationale_21",
+      "label": "Il cuore della riconciliazione (formula REPO-E): delta = fisica \u2212 BC,\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "rating_dso_clienti.py",
+      "community_name": "riconciliazione_magazzino.py",
       "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
+      "norm_label": "il cuore della riconciliazione (formula repo-e): delta = fisica \u2212 bc,...",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L21"
+    },
+    {
+      "id": "tools_riconciliazione_magazzino_rationale_61",
+      "label": "CSV in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto\u2026",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "riconciliazione_magazzino.py",
+      "file_type": "rationale",
+      "norm_label": "csv in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto...",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L61"
     },
     {
       "id": "night_shift_lib_cancello_design",
@@ -28676,17 +28448,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_verifica_banco",
       "label": "verifica_banco.py",
       "_origin": "ast",
@@ -28740,39 +28501,6 @@
       "norm_label": "i siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo...",
       "source_file": "tools/e002-siti.py",
       "source_location": "L60"
-    },
-    {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_margine_documento_rationale_47",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_margine_documento_rationale_63",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L63"
     },
     {
       "id": "tools_verifica_banco_rationale_2",
@@ -31323,10 +31051,32 @@
       "label": "accuratezza_fatture_acquisto.py",
       "_origin": "ast",
       "community": 38,
-      "community_name": "accuratezza_fatture_acquisto.py",
+      "community_name": "json",
       "file_type": "code",
       "norm_label": "accuratezza_fatture_acquisto.py",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_rollforward_cespiti",
+      "label": "rollforward_cespiti.py",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "rollforward_cespiti.py",
+      "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L1"
     },
     {
@@ -31334,33 +31084,88 @@
       "label": "Accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza\u2026",
       "_origin": "ast",
       "community": 38,
-      "community_name": "accuratezza_fatture_acquisto.py",
+      "community_name": "json",
       "file_type": "rationale",
       "norm_label": "accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_35",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_36",
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 38,
-      "community_name": "accuratezza_fatture_acquisto.py",
+      "community_name": "json",
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L35"
+      "source_location": "L36"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_51",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_52",
       "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
       "_origin": "ast",
       "community": 38,
-      "community_name": "accuratezza_fatture_acquisto.py",
+      "community_name": "json",
       "file_type": "rationale",
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L51"
+      "source_location": "L52"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_48",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L48"
+    },
+    {
+      "id": "tools_rollforward_cespiti_rationale_2",
+      "label": "Roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per...",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_rollforward_cespiti_rationale_35",
+      "label": "Roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1...",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L35"
+    },
+    {
+      "id": "tools_rollforward_cespiti_rationale_69",
+      "label": "Cespiti JSON in stdin \u2192 righe roll-forward. Input non-parsabile: uso.",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "cespiti json in stdin \u2192 righe roll-forward. input non-parsabile: uso.",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L69"
     },
     {
       "id": "tools_prova_rilevatori",
@@ -36323,6 +36128,234 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni",
+      "label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_1_la_famiglia_di_difetti_nuova_il_pezzo_che_vale_per_tutto_il_parco",
+      "label": "1. La famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. la famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L17"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2026_09_02_una_webapp_gas_morta_da_loggati_il_manifest_i_verdetti_che_mentono_la_consegna_dei_comandi",
+      "label": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-02 \u2014 una webapp gas morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2_la_seconda_famiglia_il_nome_del_trigger_non_segue_la_rinomina",
+      "label": "2. La seconda famiglia: il nome del trigger non segue la rinomina",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. la seconda famiglia: il nome del trigger non segue la rinomina",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L57"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_3_la_terza_l_underscore_finale_nasconde_anche_all_editor",
+      "label": "3. La terza: l'underscore finale nasconde anche all'editor",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. la terza: l'underscore finale nasconde anche all'editor",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_4_la_lezione_di_ragionamento_pi\u00f9_costosa_correlazione_al_posto_della_causa",
+      "label": "4. La lezione di ragionamento pi\u00f9 costosa: correlazione al posto della causa",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. la lezione di ragionamento piu costosa: correlazione al posto della causa",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L115"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
+      "label": "5.1 Il denominatore va provato, non stampato",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.1 il denominatore va provato, non stampato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L137"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
+      "label": "5.2 Un verde per assenza non \u00e8 un verde",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.2 un verde per assenza non e un verde",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L157"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
+      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L163"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
+      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L169"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
+      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L174"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
+      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L132"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
+      "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. il byte invisibile (famiglia chiusa, non due casi curati)",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L183"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_7_consegnare_comandi_a_un_umano_\u00e8_un_interfaccia_e_l_ho_rotta_quattro_volte",
+      "label": "7. Consegnare comandi a un umano \u00e8 un'interfaccia, e l'ho rotta quattro volte",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. consegnare comandi a un umano e un'interfaccia, e l'ho rotta quattro volte",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L205"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_8_cosa_ha_retto",
+      "label": "8. Cosa ha retto",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "8. cosa ha retto",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L245"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_9_cosa_ha_ostacolato",
+      "label": "9. Cosa ha ostacolato",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "9. cosa ha ostacolato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L267"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_il_corollario_atomico",
+      "label": "Il corollario atomico",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il corollario atomico",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_numeri_della_giornata",
+      "label": "Numeri della giornata",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "numeri della giornata",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L321"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L280"
+    },
+    {
       "id": "tools_bc_map_rationale_104",
       "label": "Le colonne compilate a mano (Significato, Verificato) del file esistente, per\u2026",
       "_origin": "ast",
@@ -36409,6 +36442,17 @@
       "norm_label": "oauth2 client-credentials verso bc: il token vive in memoria per il processo,...",
       "source_file": "tools/bc_map.py",
       "source_location": "L44"
+    },
+    {
+      "id": "tools_bc_map_rationale_68",
+      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "rationale",
+      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L68"
     },
     {
       "id": "tools_bc_map_rationale_92",
@@ -50565,17 +50609,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rollforward_cespiti",
-      "label": "rollforward_cespiti.py",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "file_type": "code",
-      "norm_label": "rollforward_cespiti.py",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_gas_qualita_rationale_2",
       "label": "Censimento qualit\u00e0 di un progetto Google Apps Script \u2014 le famiglie misurate del\u2026",
       "_origin": "ast",
@@ -50620,43 +50653,10 @@
       "source_location": "L64"
     },
     {
-      "id": "tools_rollforward_cespiti_rationale_2",
-      "label": "Roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per\u2026",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "file_type": "rationale",
-      "norm_label": "roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per...",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_rollforward_cespiti_rationale_34",
-      "label": "Roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1\u2026",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "file_type": "rationale",
-      "norm_label": "roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1...",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L34"
-    },
-    {
-      "id": "tools_rollforward_cespiti_rationale_68",
-      "label": "Cespiti JSON in stdin \u2192 righe roll-forward. Input non-parsabile: uso.",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "file_type": "rationale",
-      "norm_label": "cespiti json in stdin \u2192 righe roll-forward. input non-parsabile: uso.",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L68"
-    },
-    {
       "id": "csv",
       "label": "csv",
       "_origin": "semantic",
-      "community": 100,
+      "community": 125,
       "community_name": "csv",
       "external": true,
       "file_type": "concept",
@@ -50725,18 +50725,6 @@
       "type": "external"
     },
     {
-      "id": "datetime",
-      "label": "datetime",
-      "_origin": "semantic",
-      "community": 252,
-      "community_name": "rating_dso_clienti.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "datetime",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "re",
       "label": "re",
       "_origin": "semantic",
@@ -50757,6 +50745,30 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "sys",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "json",
+      "label": "json",
+      "_origin": "semantic",
+      "community": 38,
+      "community_name": "json",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "json",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "math",
+      "label": "math",
+      "_origin": "semantic",
+      "community": 38,
+      "community_name": "json",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "math",
       "source_file": "",
       "type": "external"
     },
@@ -50797,14 +50809,14 @@
       "type": "external"
     },
     {
-      "id": "math",
-      "label": "math",
+      "id": "datetime",
+      "label": "datetime",
       "_origin": "semantic",
       "community": 46,
       "community_name": "leasing_amministrativo.py",
       "external": true,
       "file_type": "concept",
-      "norm_label": "math",
+      "norm_label": "datetime",
       "source_file": "",
       "type": "external"
     },
@@ -50865,18 +50877,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "time",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "json",
-      "label": "json",
-      "_origin": "semantic",
-      "community": 99,
-      "community_name": "gas_qualita.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "json",
       "source_file": "",
       "type": "external"
     }
@@ -57815,7 +57815,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L68",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -58559,7 +58559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L86",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -58571,7 +58571,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L90",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -58583,7 +58583,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L58",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -58655,7 +58655,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L71",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -58667,7 +58667,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -58883,7 +58883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L63",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -58907,7 +58907,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L89",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -58967,7 +58967,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L125",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -58979,7 +58979,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L126",
+      "source_location": "L131",
       "weight": 1.0
     },
     {
@@ -58991,7 +58991,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L127",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -59003,7 +59003,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L128",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -59248,7 +59248,7 @@
     },
     {
       "source": "tools_accuratezza_fatture_acquisto",
-      "target": "sys",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59256,6 +59256,18 @@
       "context": "import",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_accuratezza_fatture_acquisto",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -59656,7 +59668,7 @@
     },
     {
       "source": "tools_indici_crisi",
-      "target": "sys",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59664,6 +59676,18 @@
       "context": "import",
       "source_file": "tools/indici_crisi.py",
       "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_indici_crisi",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -59716,7 +59740,7 @@
     },
     {
       "source": "tools_margine_documento",
-      "target": "re",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59728,7 +59752,7 @@
     },
     {
       "source": "tools_margine_documento",
-      "target": "sys",
+      "target": "re",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59736,6 +59760,18 @@
       "context": "import",
       "source_file": "tools/margine_documento.py",
       "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_margine_documento",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -59752,7 +59788,7 @@
     },
     {
       "source": "tools_rating_dso_clienti",
-      "target": "re",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59764,7 +59800,7 @@
     },
     {
       "source": "tools_rating_dso_clienti",
-      "target": "sys",
+      "target": "re",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59772,6 +59808,18 @@
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_rating_dso_clienti",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -59812,7 +59860,7 @@
     },
     {
       "source": "tools_rollforward_cespiti",
-      "target": "sys",
+      "target": "math",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -59820,6 +59868,18 @@
       "context": "import",
       "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_rollforward_cespiti",
+      "target": "sys",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -60011,7 +60071,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -85368,7 +85428,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -85379,7 +85439,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -86039,7 +86099,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -86050,7 +86110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -86061,7 +86121,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L65",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -86072,7 +86132,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L69",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -86160,7 +86220,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -86171,7 +86231,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L46",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -86182,7 +86242,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -86325,7 +86385,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -86336,7 +86396,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -86369,7 +86429,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -86380,7 +86440,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L67",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -93842,25 +93902,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_35",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_36",
       "target": "tools_accuratezza_fatture_acquisto_leggi_csv",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_51",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_52",
       "target": "tools_accuratezza_fatture_acquisto_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L51",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -94249,25 +94309,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_43",
+      "source": "tools_indici_crisi_rationale_44",
       "target": "tools_indici_crisi_valuta_indici_crisi",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_70",
+      "source": "tools_indici_crisi_rationale_71",
       "target": "tools_indici_crisi_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L70",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -94326,25 +94386,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_47",
+      "source": "tools_margine_documento_rationale_48",
       "target": "tools_margine_documento_leggi_csv",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_63",
+      "source": "tools_margine_documento_rationale_64",
       "target": "tools_margine_documento_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L63",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -94359,14 +94419,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_rating_dso_clienti_rationale_47",
+      "source": "tools_rating_dso_clienti_rationale_48",
       "target": "tools_rating_dso_clienti_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -94414,25 +94474,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_rollforward_cespiti_rationale_34",
+      "source": "tools_rollforward_cespiti_rationale_35",
       "target": "tools_rollforward_cespiti_calcola_roll_forward",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
-      "source": "tools_rollforward_cespiti_rationale_68",
+      "source": "tools_rollforward_cespiti_rationale_69",
       "target": "tools_rollforward_cespiti_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L68",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
@@ -96230,5 +96290,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "20ee3c23f3f076e1816e23f2e29ae2416d68e662"
+  "built_at_commit": "d56372f91675ea118b87e9b9357b7619738a483c"
 }

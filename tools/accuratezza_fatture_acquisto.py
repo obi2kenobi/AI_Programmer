@@ -28,6 +28,7 @@ config.json: {"soglia_discrepanza_pct": 5, "obiettivo_margine_errore_pct": 0.1,
 """
 import csv
 import json
+import math
 import sys
 
 
@@ -67,6 +68,13 @@ def main():
 
     fatture = leggi_csv(sys.argv[2], ("nr", "importo"))
     ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
+    # (2026-09-24, quinto ventaglio, R3 R2): un importo nan rendeva falso `pct > soglia`, la fattura contava come
+    # «valida» e usciva «Accuratezza 100% RAGGIUNTO». Un importo non finito si dichiara.
+    marce = [f"fattura {f['nr']}" for f in fatture if not math.isfinite(float(f["importo"]))] + \
+            [f"ordine {k}" for k, v in ordini.items() if not math.isfinite(v)]
+    if marce:
+        print(f"ERRORE: importi non finiti (nan/inf): {', '.join(marce[:5])} — nessun verdetto", file=sys.stderr)
+        return 1
     # (Q22): con zero fatture stampava «Accuratezza 0.0% … RAGGIUNTO» — un verdetto sul nulla
     if not fatture:
         print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)

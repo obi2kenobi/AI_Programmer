@@ -24,6 +24,7 @@ non come correzione: è così anche nell'oracolo.
 Uso: python3 tools/indici_crisi.py < aggregati.json
 """
 import json
+import math
 import sys
 
 SOGLIE_G46 = {
@@ -82,6 +83,12 @@ def main():
     mancanti = [c for c in CAMPI if c not in a]
     if mancanti:
         print(f"uso: indici_crisi.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    # (2026-09-24, quinto ventaglio, R3 R2): NaN passava — `nan < 0` e' falso, e usciva «🟢 Nessuna presunzione di
+    # crisi» con rc 0. Un campo non numerico o non finito e' dato marcio: si dichiara.
+    marci = [c for c in CAMPI if not (isinstance(a[c], (int, float)) and not isinstance(a[c], bool) and math.isfinite(a[c]))]
+    if marci:
+        print(f"ERRORE: campi non numerici o non finiti (nan/inf): {', '.join(marci)} — nessun verdetto", file=sys.stderr)
         return 1
     indici = valuta_indici_crisi(a)
     for i in indici:

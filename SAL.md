@@ -4729,3 +4729,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Casi nuovi in `tests/test-caccia-miglioria.sh` (23/0) e `tests/test-rianima-ollama.sh` (6/0), rossi
   prima. Sabotaggio: senza il rilancio, 22/1. test-dashboard verde (19/0).
+- **Quinto ventaglio, R3 R2 — nan e inf arrivavano a un verdetto in sei oracoli, con rc 0.** La cura dei
+  numeri non finiti era arrivata solo a valorizzazione, leasing e riconciliazione. Due verdetti erano VERDI
+  su dati marci: indici «🟢 Nessuna presunzione di crisi» con pn NaN, accuratezza «RAGGIUNTO» con importi
+  nan. Gli altri stampavano `nan`/`inf` come cifra (margine, rollforward, rating, scostamento col costo
+  standard dall'argomento). Ora ognuno controlla con `math.isfinite` e risponde «ERRORE: … non finito
+  (nan/inf) … — nessun verdetto», rc 1:
+  - `tools/indici_crisi.py`, `tools/accuratezza_fatture_acquisto.py`, `tools/margine_documento.py`,
+    `tools/rating_dso_clienti.py` sugli ingressi;
+  - `tools/scostamento_standard_effettivo.py` sul costo standard dall'argomento;
+  - `tools/rollforward_cespiti.py` sulle righe calcolate.
+
+  Nove casi nuovi in `tests/test-oracoli-uso.sh` (64/0), rossi prima. Sabotaggio con i sei oracoli di
+  prima e un `PYTHONPYCACHEPREFIX` nuovo (E-047): 55/9, i nove casi. I banchi propri restano verdi.
