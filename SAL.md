@@ -4640,3 +4640,21 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   debba avere resta la domanda 1 di `docs/giri/2026-09-23-notte/DOMANDE.md`: qui non si decide.
   `tests/test-oracoli-uso.sh` ha due casi: rossi prima, verdi ora (55/0). Sabotaggio (con una cache
   fresca, E-047): 53/2. Verde anche `tests/test-scadenzario-aging.sh` (24/0).
+- **Quinto ventaglio, R5 R1 — il self-pull del turno buttava il lavoro del giorno, a ogni ciclo.** Nella
+  copia installata (`night-shift/night-shift.sh`, 24/7) il turno faceva `checkout main || true` e poi
+  `reset --hard origin/HEAD`. Riprodotto dal giro:
+  - una modifica non committata spariva;
+  - un commit non pushato su main usciva dalla storia;
+  - col checkout fallito, il reset colpiva il ramo del giorno, e due commit restavano fuori da ogni ramo;
+  - il log diceva «Hub allineato a main».
+
+  Ora `allinea_hub` in `night-shift/lib.sh`:
+  - mette lo sporco in uno stash «salvataggio turno <ora>»;
+  - mette i commit fuori da origin in un ramo `salvataggio/<ora>`;
+  - con main non prendibile non fa reset (rc 1);
+  - dice ogni cosa messa da parte coi numeri.
+
+  AGENTS.md §0ter dice che la copia installata è del turno. Banco nuovo `tests/test-allinea-hub.sh` (bare
+  locali: sporco, commit non pushato, main aperto in un altro worktree, copia pulita): rosso prima,
+  verde ora (8/0). Il mio primo caso d non bloccava davvero il checkout (dopo lo stash riusciva):
+  corretto con il worktree. Sabotaggio: stash e ramo tolti, l'uscita li annuncia ma non li fa, 6/2.

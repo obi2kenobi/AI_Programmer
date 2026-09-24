@@ -49,6 +49,10 @@ bash tools/suite.sh
 - I guardiani del commit (`.githooks/`: pre-commit e commit-msg) non viaggiano col clone. Sul Mac del turno
   li accende `night-shift/install.sh:51`; in ogni altro clone vanno accesi a mano, col primo comando.
 - Senza identità git la suite e `tools/bootstrap-app.sh` non possono committare (Q1, 2026-09-24).
+- Sul Mac del turno la copia dove gira `night-shift/install.sh` è DEL TURNO: a ogni ciclo si riallinea a
+  origin/main. Di giorno si lavora in un altro clone. Se ci si lavora lo stesso, il turno non butta niente:
+  lo sporco finisce in uno stash «salvataggio turno …», i commit non pushati in un ramo `salvataggio/…`, e il
+  log lo dice (`allinea_hub` in `night-shift/lib.sh`, R5 2026-09-24).
 - Prerequisiti: git, jq, curl, python3 (senza uno di questi il turno non parte: `dipendenze_mancanti` in
   `night-shift/lib.sh`), shellcheck (una riga di `.night-verify`), graphify (`pip install graphifyy`,
   `tools/graphify-spina.sh:29`). gh serve solo per sync, bootstrap, onboard e il turno.

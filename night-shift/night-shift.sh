@@ -59,17 +59,8 @@ trap 'rm -rf "$TURN_LOCK"' EXIT
 # committa e spinge): il self-pull seguiva il ramo e il turno girava col codice
 # vecchio per ore. Ora: qualunque ramo trovi, torna a main e si allinea —
 # dichiarando se ha dovuto scalare qualcosa.
-BR_ATTUALE=$(git -C "$HERE" branch --show-current 2>/dev/null || echo "?")
-if [ "$BR_ATTUALE" != "main" ] && [ "$BR_ATTUALE" != "master" ]; then
-  log "ATTENZIONE: la copia era sul ramo '$BR_ATTUALE' (esterno al turno) — torno a main e mi allineo"
-  git -C "$HERE" checkout -q main 2>/dev/null || git -C "$HERE" checkout -q master 2>/dev/null || true
-fi
-git -C "$HERE" fetch -q origin 2>/dev/null || true
-if git -C "$HERE" reset -q --hard "$(git -C "$HERE" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/||' || echo origin/main)" >/dev/null 2>&1; then
-  log "Hub allineato a main prima del turno"
-else
-  log "ATTENZIONE: hub non allineabile — il turno gira col metodo che c'e'"
-fi
+# (2026-09-24, R5 R1): il reset nudo buttava il lavoro del giorno; allinea_hub (lib.sh) lo mette da parte e lo dice
+allinea_hub "$HERE" 2>&1 | while IFS= read -r l; do log "self-pull: $l"; done
 log "$(ambiente_turno)"   # T3#6: bash, ramo di timeout, sandbox — le differenze Mac/Linux si leggono qui
 # (studio deepseek-harness profiles, 2026-09-23): la configurazione del turno
 # vive in UNA dichiarazione (profiles/notturno.conf) ricomposta a ogni ciclo —

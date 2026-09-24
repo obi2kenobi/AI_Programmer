@@ -516,6 +516,36 @@ leggi_coda() {
   rm -f "$err"; printf '%s\n' "$out"
 }
 
+# allinea_hub <dir> — porta la copia installata del turno a origin/HEAD SENZA buttare il lavoro del giorno.
+# (2026-09-24, quinto ventaglio, R5 R1): a ogni ciclo, 24/7, `checkout main || true` + `reset --hard` cancellava
+# le modifiche non committate e i commit non pushati, e col checkout fallito resettava il ramo del giorno; il
+# log diceva «allineato». Ora: sporco → stash «salvataggio turno <ora>»; commit fuori da origin → ramo
+# salvataggio/<ora>; checkout di main fallito → niente reset, rc 1. Ogni cosa messa da parte si dice.
+allinea_hub() {
+  local d="$1" ts up br sporchi avanti
+  ts=$(date +%Y%m%d-%H%M%S)
+  git -C "$d" fetch -q origin 2>/dev/null || echo "fetch fallito: si allinea all'ultimo origin noto"
+  up=$(git -C "$d" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/||'); up=${up:-origin/main}
+  sporchi=$(git -C "$d" status --porcelain 2>/dev/null | grep -c .)
+  if [ "$sporchi" -gt 0 ]; then
+    git -C "$d" -c user.name=night-shift -c user.email=night-shift@localhost stash push -q -u -m "salvataggio turno $ts" \
+      || { echo "NON allineato: $sporchi file non committati e lo stash e' fallito — il turno gira col metodo che c'e'"; return 1; }
+    echo "messi da parte $sporchi file non committati: git -C $d stash list («salvataggio turno $ts»)"
+  fi
+  br=$(git -C "$d" branch --show-current 2>/dev/null)
+  if [ "$br" != main ] && [ "$br" != master ]; then
+    git -C "$d" checkout -q main 2>/dev/null || git -C "$d" checkout -q master 2>/dev/null \
+      || { echo "NON allineato: la copia e' sul ramo '${br:-?}' e il checkout di main e' fallito — niente reset, il turno gira col metodo che c'e'"; return 1; }
+    echo "la copia era sul ramo '$br' (esterno al turno, intatto): tornata a main"
+  fi
+  avanti=$(git -C "$d" rev-list --count "$up..HEAD" 2>/dev/null || echo 0)
+  if [ "$avanti" -gt 0 ]; then
+    git -C "$d" branch "salvataggio/$ts" HEAD && echo "messi da parte $avanti commit non su $up: ramo salvataggio/$ts"
+  fi
+  git -C "$d" reset -q --hard "$up" 2>/dev/null || { echo "NON allineato: reset su $up fallito — il turno gira col metodo che c'e'"; return 1; }
+  echo "hub allineato a $up"
+}
+
 # messaggio_fix <tipo> <num> <titolo> <autore> <nota> <verifica> — il messaggio del commit di un fix d'issue.
 # (2026-09-24, terzo ventaglio, V1#6): il turno lo scriveva a mano con «(risolvi-issue.sh, modello locale)»
 # anche quando aveva risolto l'agente della cascata, e senza `Closes #N`: la PR (`gh pr create --fill`
