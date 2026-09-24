@@ -26,7 +26,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [contenitore-che-riscrive](contenitore-che-riscrive.md) | REPO-W: Foglio.gs isoDaCella_/valoreDiCella_ (report: docs/campo/2026-09-05-repo-w-quattordici-giri-revisione.md) | 2026-09-05 |
 | [copertura-dal-glob](copertura-dal-glob.md) | questo hub: tests/test-agents-structure.sh, .night-verify | 2026-08-23 |
 | [csv-con-python](csv-con-python.md) | night-shift/gate-summary.sh | 2026-08-21 |
-| [cuore-unico-proprietario](cuore-unico-proprietario.md) | night-shift/night-shift.sh (probe/kickstart) | 2026-08-21 |
+| [cuore-unico-proprietario](cuore-unico-proprietario.md) | night-shift/lib.sh:rianima_ollama | 2026-08-21 |
 | [diagnosi-differenziale-webapp-gas](diagnosi-differenziale-webapp-gas.md) | REPO-E deploy v74 | 2026-09-02 |
 | [dipendenza-tra-rami-paralleli](dipendenza-tra-rami-paralleli.md) | REPO-H: 2 occorrenze auto-corrette | 2026-08-27 |
 | [doppio-livello-escaping](doppio-livello-escaping.md) | REPO-K: Scripts.html escapeJsAttr | 2026-08-28 |

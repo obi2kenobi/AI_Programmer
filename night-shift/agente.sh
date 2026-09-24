@@ -83,12 +83,8 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
     # morta che il turno registra come «nessuna miglioria trovata».
     PING=$(curl -s --max-time 20 "$API" -d "{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":\"Say OK\"}],\"stream\":false}" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
     if [ -z "$PING" ]; then
-      log "⚠ server muto anche al ping: rianimo Ollama (kill serve — launchd lo riparte)"
-      pkill -f "ollama serve" 2>/dev/null
-      for i in 1 2 3 4 5 6 7 8; do
-        sleep 5
-        curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
-      done
+      log "⚠ server muto anche al ping: rianimo Ollama (lib.sh rianima_ollama: custode se c'e', istanza propria se no)"
+      rianima_ollama 2>&1 | while IFS= read -r l; do log "$l"; done
     fi
     # (07:22 di stamattina): una generazione puo' morire ANCHE col server sano al
     # ping — il rianimamento non basta, serve il RIENTO. Un tentativo in piu'

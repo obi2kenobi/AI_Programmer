@@ -467,6 +467,30 @@ verifica_issue_comando() {
 # dal primo. Ora il furto e' serializzato da un secondo mkdir (<lock>.furto), e dentro si RIGIUDICA:
 # chi arriva dopo trova il lock gia' preso da un vivo e si ferma. Un .furto lasciato da un processo
 # morto a meta' si toglie dopo 60 secondi (il furto dura millisecondi).
+# rianima_ollama — il SOLO gesto che riavvia il server Ollama (pattern cuore-unico-proprietario).
+# (2026-09-24, terzo ventaglio, V5 R4): tre punti lo riavviavano, e solo la sonda chiedeva al custode.
+# Il watchdog d'inizio ciclo e agente.sh facevano pkill e aspettavano launchd anche dove launchd non c'era:
+# l'istanza uccisa non la rialzava nessuno. Ora: custode launchd presente -> kickstart a lui, si aspetta
+# la SUA resurrezione; assente -> kill e istanza propria. Esce 0 se /api/version risponde entro ~60 s.
+rianima_ollama() {
+  local custode
+  custode=$(launchctl list 2>/dev/null | awk '/ollama/{print $3; exit}')
+  if [ -n "$custode" ]; then
+    echo "rianima_ollama: custode launchd $custode — kickstart a lui, attendo la sua resurrezione" >&2
+    launchctl kickstart -k "gui/$(id -u)/$custode" 2>/dev/null
+  else
+    echo "rianima_ollama: nessun custode launchd — kill del serve e istanza propria" >&2
+    pkill -f "ollama serve" 2>/dev/null; sleep 4
+    OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_KEEP_ALIVE=-1 \
+      /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
+  fi
+  for _ in $(seq 1 30); do
+    curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && return 0
+    sleep 2
+  done
+  return 1
+}
+
 prendi_lock_turno() {   # [programma]: chi e' «vivo» (default night-shift; ciclo-vivo lo usa col suo nome)
   local L="$1" prog="${2:-night-shift}" rc
   if mkdir "$L" 2>/dev/null; then echo $$ > "$L/pid"; return 0; fi

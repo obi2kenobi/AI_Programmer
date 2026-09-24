@@ -12173,21 +12173,6 @@
       "source_location": "L1"
     },
     {
-      "id": "llm_ask_glm_sh__entry",
-      "label": "ask-glm.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-glm.sh script",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "llm_ask_opus",
       "label": "ask-opus.sh",
       "_origin": "ast",
@@ -12199,21 +12184,6 @@
         "kind": "file"
       },
       "norm_label": "ask-opus.sh",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus_sh__entry",
-      "label": "ask-opus.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-opus.sh script",
       "source_file": "llm/ask-opus.sh",
       "source_location": "L1"
     },
@@ -12261,21 +12231,6 @@
       "norm_label": "_timeout.sh",
       "source_file": "llm/_timeout.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "llm_timeout_ai_timeout",
-      "label": "ai_timeout()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ai_timeout()",
-      "source_file": "llm/_timeout.sh",
-      "source_location": "L12"
     },
     {
       "id": "llm_timeout_ai_timeout_ramo",
@@ -12353,21 +12308,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_gate_banchi",
-      "label": "gate_banchi()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gate_banchi()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L109"
-    },
-    {
       "id": "tests_test_ai_timeout",
       "label": "test-ai-timeout.sh",
       "_origin": "ast",
@@ -12425,126 +12365,6 @@
       },
       "norm_label": "test-ai-timeout.sh script",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map",
-      "label": "test-bc-map.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bc-map.sh",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_bc_map_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_bc_map_sh__entry",
-      "label": "test-bc-map.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bc-map.sh script",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata",
-      "label": "test-bc-tipi-metadata.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bc-tipi-metadata.sh",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata_sh__entry",
-      "label": "test-bc-tipi-metadata.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bc-tipi-metadata.sh script",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
       "source_location": "L1"
     },
     {
@@ -15878,6 +15698,51 @@
       "source_location": "L1"
     },
     {
+      "id": "llm_ask_glm_sh__entry",
+      "label": "ask-glm.sh script",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-glm.sh script",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus_sh__entry",
+      "label": "ask-opus.sh script",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-opus.sh script",
+      "source_file": "llm/ask-opus.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_timeout_ai_timeout",
+      "label": "ai_timeout()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ai_timeout()",
+      "source_file": "llm/_timeout.sh",
+      "source_location": "L12"
+    },
+    {
       "id": "night_shift_lib",
       "label": "lib.sh",
       "_origin": "ast",
@@ -15965,7 +15830,7 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L514"
+      "source_location": "L538"
     },
     {
       "id": "night_shift_lib_default_branch",
@@ -15998,6 +15863,21 @@
       "source_location": "L88"
     },
     {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L527"
+    },
+    {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
       "_origin": "ast",
@@ -16013,8 +15893,8 @@
       "source_location": "L135"
     },
     {
-      "id": "night_shift_lib_gate_allowlist_ok",
-      "label": "gate_allowlist_ok()",
+      "id": "night_shift_lib_gate_banchi",
+      "label": "gate_banchi()",
       "_origin": "ast",
       "community": 209,
       "community_name": "lib.sh",
@@ -16023,9 +15903,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "gate_allowlist_ok()",
+      "norm_label": "gate_banchi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L155"
+      "source_location": "L109"
     },
     {
       "id": "night_shift_lib_lente_pr",
@@ -16043,21 +15923,6 @@
       "source_location": "L418"
     },
     {
-      "id": "night_shift_lib_lock_turno_orfano",
-      "label": "lock_turno_orfano()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_turno_orfano()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L491"
-    },
-    {
       "id": "night_shift_lib_mask_secrets",
       "label": "mask_secrets()",
       "_origin": "ast",
@@ -16073,8 +15938,8 @@
       "source_location": "L279"
     },
     {
-      "id": "night_shift_lib_prendi_lock_turno",
-      "label": "prendi_lock_turno()",
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
       "_origin": "ast",
       "community": 209,
       "community_name": "lib.sh",
@@ -16083,9 +15948,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "prendi_lock_turno()",
+      "norm_label": "mtime()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L470"
+      "source_location": "L28"
     },
     {
       "id": "night_shift_lib_rami_da_scopare",
@@ -16220,7 +16085,7 @@
       },
       "norm_label": "shift_repo()",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L206"
+      "source_location": "L195"
     },
     {
       "id": "tests_test_lib",
@@ -16341,111 +16206,6 @@
       "norm_label": "vi()",
       "source_file": "tests/test-lib.sh",
       "source_location": "L309"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa",
-      "label": "test-lock-turno-corsa.sh",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-lock-turno-corsa.sh",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_sh__entry",
-      "label": "test-lock-turno-corsa.sh script",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-lock-turno-corsa.sh script",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo",
-      "label": "ciclo-vivo.sh",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ciclo-vivo.sh",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo_corpo_agent",
-      "label": "corpo_agent()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "corpo_agent()",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L123"
-    },
-    {
-      "id": "tools_ciclo_vivo_sh__entry",
-      "label": "ciclo-vivo.sh script",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ciclo-vivo.sh script",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L1"
     },
     {
       "id": "docs_campo_2026_09_19_repo_i_standard_cinquanta_giri_correzioni",
@@ -20413,7 +20173,7 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L530"
+      "source_location": "L554"
     },
     {
       "id": "tests_test_night_shift_design_gate",
@@ -20491,41 +20251,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "mtime",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "eta_secondi()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L503"
-    },
-    {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "mtime",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mtime()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L28"
-    },
-    {
       "id": "tests_test_portabilita",
       "label": "test-portabilita.sh",
       "_origin": "ast",
       "community": 254,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20540,7 +20270,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 254,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20555,7 +20285,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 254,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20570,7 +20300,7 @@
       "label": "righe_con()",
       "_origin": "ast",
       "community": 254,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20585,7 +20315,7 @@
       "label": "test-portabilita.sh script",
       "_origin": "ast",
       "community": 254,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20911,6 +20641,21 @@
       "source_location": "L385"
     },
     {
+      "id": "night_shift_lib_rianima_ollama",
+      "label": "rianima_ollama()",
+      "_origin": "ast",
+      "community": 259,
+      "community_name": "test-consegna-dichiarata.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rianima_ollama()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L475"
+    },
+    {
       "id": "tests_test_consegna_dichiarata",
       "label": "test-consegna-dichiarata.sh",
       "_origin": "ast",
@@ -20983,6 +20728,66 @@
       },
       "norm_label": "test-consegna-dichiarata.sh script",
       "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_rianima_ollama",
+      "label": "test-rianima-ollama.sh",
+      "_origin": "ast",
+      "community": 259,
+      "community_name": "test-consegna-dichiarata.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-rianima-ollama.sh",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 259,
+      "community_name": "test-consegna-dichiarata.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 259,
+      "community_name": "test-consegna-dichiarata.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_rianima_ollama_sh__entry",
+      "label": "test-rianima-ollama.sh script",
+      "_origin": "ast",
+      "community": 259,
+      "community_name": "test-consegna-dichiarata.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-rianima-ollama.sh script",
+      "source_file": "tests/test-rianima-ollama.sh",
       "source_location": "L1"
     },
     {
@@ -30126,63 +29931,138 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_banco_prompt_allowlist_sync",
-      "label": "test-banco-prompt-allowlist-sync.sh",
+      "id": "night_shift_lib_lock_turno_orfano",
+      "label": "lock_turno_orfano()",
       "_origin": "ast",
       "community": 373,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_turno_orfano()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L515"
+    },
+    {
+      "id": "night_shift_lib_prendi_lock_turno",
+      "label": "prendi_lock_turno()",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prendi_lock_turno()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L494"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa",
+      "label": "test-lock-turno-corsa.sh",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-banco-prompt-allowlist-sync.sh",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "norm_label": "test-lock-turno-corsa.sh",
+      "source_file": "tests/test-lock-turno-corsa.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_banco_prompt_allowlist_sync_ko",
+      "id": "tests_test_lock_turno_corsa_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 373,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
-      "source_location": "L14"
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_banco_prompt_allowlist_sync_ok",
+      "id": "tests_test_lock_turno_corsa_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 373,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
-      "source_location": "L13"
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L9"
     },
     {
-      "id": "tests_test_banco_prompt_allowlist_sync_sh__entry",
-      "label": "test-banco-prompt-allowlist-sync.sh script",
+      "id": "tests_test_lock_turno_corsa_sh__entry",
+      "label": "test-lock-turno-corsa.sh script",
       "_origin": "ast",
       "community": 373,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-banco-prompt-allowlist-sync.sh script",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "norm_label": "test-lock-turno-corsa.sh script",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo",
+      "label": "ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ciclo-vivo.sh",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo_corpo_agent",
+      "label": "corpo_agent()",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "corpo_agent()",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L123"
+    },
+    {
+      "id": "tools_ciclo_vivo_sh__entry",
+      "label": "ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 373,
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ciclo-vivo.sh script",
+      "source_file": "tools/ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -40803,6 +40683,21 @@
       "source_location": "L155"
     },
     {
+      "id": "night_shift_lib_gate_allowlist_ok",
+      "label": "gate_allowlist_ok()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gate_allowlist_ok()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L155"
+    },
+    {
       "id": "night_shift_revisore",
       "label": "revisore.sh",
       "_origin": "ast",
@@ -40905,6 +40800,66 @@
       },
       "norm_label": "revisore.sh script",
       "source_file": "night-shift/revisore.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_banco_prompt_allowlist_sync",
+      "label": "test-banco-prompt-allowlist-sync.sh",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-banco-prompt-allowlist-sync.sh",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_banco_prompt_allowlist_sync_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_banco_prompt_allowlist_sync_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_banco_prompt_allowlist_sync_sh__entry",
+      "label": "test-banco-prompt-allowlist-sync.sh script",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-banco-prompt-allowlist-sync.sh script",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
       "source_location": "L1"
     },
     {
@@ -46141,6 +46096,126 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_bc_map",
+      "label": "test-bc-map.sh",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bc-map.sh",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_map_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_bc_map_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_bc_map_sh__entry",
+      "label": "test-bc-map.sh script",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bc-map.sh script",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata",
+      "label": "test-bc-tipi-metadata.sh",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bc-tipi-metadata.sh",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata_sh__entry",
+      "label": "test-bc-tipi-metadata.sh script",
+      "_origin": "ast",
+      "community": 733,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bc-tipi-metadata.sh script",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_lente_sicurezza",
       "label": "test-lente-sicurezza.sh",
       "_origin": "ast",
@@ -49757,7 +49832,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L201",
+      "source_location": "L197",
       "weight": 1.0
     },
     {
@@ -49769,7 +49844,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L217",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -49782,6 +49857,18 @@
       "context": "call",
       "source_file": "night-shift/agente.sh",
       "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_agente_sh__entry",
+      "target": "night_shift_lib_rianima_ollama",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -49937,7 +50024,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L505",
+      "source_location": "L529",
       "weight": 1.0
     },
     {
@@ -49961,7 +50048,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L474",
+      "source_location": "L498",
       "weight": 1.0
     },
     {
@@ -50093,7 +50180,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1319",
+      "source_location": "L1304",
       "weight": 1.0
     },
     {
@@ -50118,6 +50205,18 @@
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_sh__entry",
+      "target": "night_shift_lib_rianima_ollama",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -50165,7 +50264,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1025",
+      "source_location": "L1014",
       "weight": 1.0
     },
     {
@@ -50177,7 +50276,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L209",
+      "source_location": "L198",
       "weight": 1.0
     },
     {
@@ -50189,7 +50288,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L220",
+      "source_location": "L209",
       "weight": 1.0
     },
     {
@@ -50201,7 +50300,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L235",
+      "source_location": "L224",
       "weight": 1.0
     },
     {
@@ -50213,7 +50312,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L300",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -50225,7 +50324,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L332",
+      "source_location": "L321",
       "weight": 1.0
     },
     {
@@ -50237,7 +50336,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L543",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -50249,7 +50348,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L564",
+      "source_location": "L553",
       "weight": 1.0
     },
     {
@@ -50261,7 +50360,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L631",
+      "source_location": "L620",
       "weight": 1.0
     },
     {
@@ -50273,7 +50372,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L651",
+      "source_location": "L640",
       "weight": 1.0
     },
     {
@@ -50285,7 +50384,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L673",
+      "source_location": "L662",
       "weight": 1.0
     },
     {
@@ -50297,7 +50396,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L716",
+      "source_location": "L705",
       "weight": 1.0
     },
     {
@@ -50309,7 +50408,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L717",
+      "source_location": "L706",
       "weight": 1.0
     },
     {
@@ -50321,7 +50420,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L805",
+      "source_location": "L794",
       "weight": 1.0
     },
     {
@@ -50333,7 +50432,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L825",
+      "source_location": "L814",
       "weight": 1.0
     },
     {
@@ -50345,7 +50444,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L902",
+      "source_location": "L891",
       "weight": 1.0
     },
     {
@@ -55014,6 +55113,42 @@
       "context": "call",
       "source_file": "tests/test-revisore.sh",
       "source_location": "L345",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_rianima_ollama_sh__entry",
+      "target": "tests_test_rianima_ollama_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_rianima_ollama_sh__entry",
+      "target": "tests_test_rianima_ollama_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_rianima_ollama_sh__entry",
+      "target": "night_shift_lib_rianima_ollama",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -82828,6 +82963,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_rianima_ollama",
+      "target": "tests_test_rianima_ollama_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_riconciliazione_magazzino",
       "target": "tests_test_riconciliazione_magazzino_sh__entry",
       "relation": "contains",
@@ -84963,24 +85109,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_rianima_ollama",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L475",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_prendi_lock_turno",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L470",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_lib",
-      "target": "night_shift_lib_lock_turno_orfano",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L491",
+      "source_location": "L494",
       "weight": 1.0
     },
     {
@@ -84996,13 +85142,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_lock_turno_orfano",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L515",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_eta_secondi",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L503",
+      "source_location": "L527",
       "weight": 1.0
     },
     {
@@ -85013,7 +85170,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L514",
+      "source_location": "L538",
       "weight": 1.0
     },
     {
@@ -85024,7 +85181,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L530",
+      "source_location": "L554",
       "weight": 1.0
     },
     {
@@ -85134,7 +85291,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L206",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -89571,6 +89728,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_rianima_ollama",
+      "target": "tests_test_rianima_ollama_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_rianima_ollama",
+      "target": "tests_test_rianima_ollama_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_riconciliazione_magazzino",
       "target": "tests_test_riconciliazione_magazzino_ok",
       "relation": "defines",
@@ -93332,6 +93511,18 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_rianima_ollama",
+      "target": "night_shift_lib",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.55,
+      "context": "import",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_stdin_timeout",
       "target": "llm_timeout",
       "relation": "imports_from",
@@ -93537,5 +93728,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e51c91b2788e334942b6c2e997b732b17343b426"
+  "built_at_commit": "842ed09f470a995b484b2cfff5bc88d145a767ec"
 }

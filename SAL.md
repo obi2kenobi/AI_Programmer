@@ -4221,3 +4221,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Tutto corretto. `tests/test-patterns-ancore-esistono.sh` ora pretende che la riga del registro porti
   il percorso dell'àncora del file: rosso prima (4 FAIL; la quinta àncora è esterna e il banco non la
   giudica), verde ora (18/0). Sabotaggio: con una riga vecchia rimessa torna rosso (18/1).
+- **Terzo ventaglio, V5 R4 — due riavvii di Ollama su tre ignoravano il custode.** Il pattern
+  `patterns/cuore-unico-proprietario.md` dice: chi ha un custode launchd si riavvia chiedendo a lui.
+  La sonda di `night-shift/night-shift.sh` lo faceva. Il watchdog d'inizio ciclo dello stesso file e
+  `night-shift/agente.sh` facevano `pkill -f "ollama serve"` e aspettavano che «launchd lo riparta»,
+  anche dove launchd non c'era. Lì l'istanza uccisa non la rialzava nessuno. Ora c'è un solo gesto,
+  `rianima_ollama` in `night-shift/lib.sh`: con un custode, kickstart a lui; senza, kill e istanza
+  propria. In entrambi i casi aspetta `/api/version` e dice la scelta nel log. I tre punti lo chiamano
+  e il pattern è riancorato lì. Banco nuovo `tests/test-rianima-ollama.sh` (launchctl, pkill e curl
+  finti): rosso prima (la funzione non c'era), verde ora (5/0). Sabotaggio: se il custode viene
+  ignorato, torna rosso (4/1). ⏳ Non provato contro il launchd vero: serve il Mac.

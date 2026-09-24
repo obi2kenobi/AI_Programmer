@@ -185,19 +185,8 @@ while ! probe; do
   # avviamo uno nostro, lui resuscita e ci contende la porta: si perde la gara entrambi.
   # Strategia: se l'agente esiste, KICKSTART a lui e si aspetta la sua resurrezione;
   # solo senza agente (altre macchine) si avvia un'istanza propria.
-  AGENTI_ATTIVI=$(launchctl list 2>/dev/null)
-  if grep -q "ollama" <<<"$AGENTI_ATTIVI"; then
-    launchctl kickstart -k "gui/$(id -u)/$(launchctl list | awk '/ollama/{print $3}')" 2>/dev/null
-    for _ in $(seq 1 30); do
-      curl -sf --max-time 1 http://localhost:11434/api/version >/dev/null 2>&1 && break
-      sleep 2
-    done
-  else
-    pkill -f "ollama serve" 2>/dev/null; sleep 4
-    OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 OLLAMA_CONTEXT_LENGTH=16384 OLLAMA_KEEP_ALIVE=-1 \
-      /opt/homebrew/bin/ollama serve >> ~/ollama-server.log 2>&1 &
-    sleep 8
-  fi
+  # (2026-09-24, V5 R4): la strategia vive in lib.sh rianima_ollama, l'unico gesto di riavvio
+  rianima_ollama 2>&1 | while IFS= read -r l; do log "$l"; done
   sleep 300
 done
 [ "$PROBE_ROUND" -gt 0 ] && log "Server tornato a generare (dopo $PROBE_ROUND round di pazienza)"
@@ -1273,12 +1262,8 @@ T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 PING_JSON=$(jq -cn --arg m "$MODEL_TAG" '{model:$m, messages:[{role:"user",content:"Say OK"}], stream:false, think:false, keep_alive:-1}')
 OLLM_PING=$(curl -s --max-time 25 http://localhost:11434/api/chat -d "$PING_JSON" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
 if [ -z "$OLLM_PING" ]; then
-  log "⚠ Ollama wedged al via del turno (ping di generazione muto): kill e attesa rilancio"
-  pkill -f "ollama serve" 2>/dev/null
-  for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
-    sleep 5
-    curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
-  done
+  log "⚠ Ollama wedged al via del turno (ping di generazione muto): lo rianimo (custode se c'e', istanza propria se no)"
+  rianima_ollama 2>&1 | while IFS= read -r l; do log "$l"; done
   OLLM_PING=$(curl -s --max-time 60 http://localhost:11434/api/chat -d "$PING_JSON" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
   if [ -n "$OLLM_PING" ]; then
     log "✓ Ollama rianimato dal watchdog del turno"
