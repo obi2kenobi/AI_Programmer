@@ -60,6 +60,9 @@ git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm 
 git -C "$SB" checkout -q main
 printf '#!/bin/bash\nif [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHDIR_JSON"; fi\nexit 0\n' > "$GHDIR/gh"; chmod +x "$GHDIR/gh"
 export GHDIR_JSON="$GHDIR/pr.json"
+# (2026-09-23, T5#1): il censore esegue le prove solo in sandbox-exec; qui un finto che esegue il resto
+# (la sandbox vera si prova in tests/test-revisore.sh; questa catena prova il flusso)
+printf '#!/bin/bash\nshift 2; exec "$@"\n' > "$GHDIR/sandbox-exec"; chmod +x "$GHDIR/sandbox-exec"
 python3 - "$(git -C "$SB" rev-parse night/caccia-test)" > "$GHDIR_JSON" <<'PY'
 import json, sys
 from datetime import datetime, timezone, timedelta

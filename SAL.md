@@ -3809,3 +3809,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   siti prima, rosso al sabotaggio di un sito. I banchi con i server finti (agente, risolvi-issue,
   revisore, caccia, cervello) sono verdi. Resta da provare sul Mac, dove il tetto è ARG_MAX (1 MB):
   l'argv era un'esposizione locale più che un limite.
+- **T5#1 — il censore eseguiva il codice della PR senza sandbox.** `night-shift/revisore.sh`
+  legge `.night-verify` da main, ma lo esegue sul working tree della PR, e i file che lancia li può
+  riscrivere la PR. Il giro T5 l'ha riprodotto: una PR di un file faceva leggere al suo script di prova una
+  credenziale finta, la scriveva fuori dal repo, e il censore fondeva (in DRY). Ora le prove girano in
+  `sandbox-exec` col profilo del turno (`night-shift/sandbox.sb`, sulla copia giudicata, `TMPDIR=/tmp`).
+  Senza sandbox (Linux, o profilo assente) c'è DEGRADATO, rinvio al giorno e nessun merge.
+  `tests/test-revisore.sh` usa un sandbox-exec finto che registra le chiamate: 3 rossi prima, 3 al
+  sabotaggio. `tests/test-catena-viva.sh` ha lo stesso finto (prova il flusso). ⏳ Mac: il profilo
+  vero nega le scritture in `~/.npm`, quindi un `npm test` potrebbe dare un rosso falso, cioè un
+  rinvio e mai una fusione falsa (T3#2). Lo stesso buco resta nel `.night-verify` del
+  morning-gate, in pensione.

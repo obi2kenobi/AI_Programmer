@@ -197,6 +197,18 @@ DIFF=$(git diff "$DB"...HEAD)
 
 # ══ 2. PROVE (deterministiche) ══════════════════════════════════════════════════
 PROVE_ROTTE=""
+# (2026-09-23, notte dei giri, T5#1): .night-verify lo legge da main, ma lo esegue sul working tree
+# della PR — e i file che lancia (tests/*.sh, check.sh, npm test) la PR li puo' riscrivere. Riprodotto:
+# una PR di un file faceva leggere a check.sh una credenziale e la scriveva fuori dal repo, e il censore
+# fondeva. Ora le prove girano nella sandbox del turno (night-shift/sandbox.sb: niente rete, scritture
+# solo nella copia e in /tmp — TMPDIR punta li'). Senza sandbox il codice della PR non si esegue:
+# DEGRADATO dichiarato, e la PR va al giorno.
+command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ] \
+  || rinvia "prove: DEGRADATO — sandbox-exec o night-shift/sandbox.sb assente: il codice della PR non si esegue fuori dalla sandbox"
+PROFILO_PROVE=$(mktemp /tmp/revisore-sandbox.XXXXXX)
+sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO_PROVE"
+SANDBOX_PRE=(env TMPDIR=/tmp sandbox-exec -f "$PROFILO_PROVE")
+log "prove: in sandbox (profilo $PROFILO_PROVE)"
 # (D1, 2026-09-20): le prove sono quelle DICHIARATE DALLA REPO sul ramo di default —
 # lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
 # leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.
@@ -212,7 +224,7 @@ if [ -n "$NV_DICHIARATE" ]; then
   # (2026-09-19): due formati — script intero o riga-per-riga (contratto del turno)
   elif printf '%s\n' "$NV_DICHIARATE" | head -10 | grep -c "^# FORMATO: script" >/dev/null; then
     NV_SCRIPT=$(mktemp /tmp/revisore-nv.XXXXXX); printf '%s\n' "$NV_DICHIARATE" > "$NV_SCRIPT"
-    if ! (ai_timeout 900 bash "$NV_SCRIPT" >/dev/null 2>&1 </dev/null); then
+    if ! (ai_timeout 900 "${SANDBOX_PRE[@]}" bash "$NV_SCRIPT" >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="; .night-verify (formato script) rosso"
     fi
     rm -f "$NV_SCRIPT"
@@ -225,7 +237,7 @@ if [ -n "$NV_DICHIARATE" ]; then
     esac
     # (2026-09-19): bash -c come nel turno — i costrutti shell sono righe di
     # script valide, non comandi eseguibili (16/45 rosse false sul Magazzino)
-    if ! (ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
+    if ! (ai_timeout "$NV_SEC" "${SANDBOX_PRE[@]}" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="$PROVE_ROTTE; $NV_CMD"
     fi
   done <<< "$NV_DICHIARATE"
@@ -233,6 +245,7 @@ if [ -n "$NV_DICHIARATE" ]; then
 else
   PROVE_ROTTE="; .night-verify assente sul ramo di default ($DB)"
 fi
+rm -f "$PROFILO_PROVE"
 [ -z "$PROVE_ROTTE" ] || rinvia "prove: verifiche dichiarate rosse:$PROVE_ROTTE"
 PROVE_VERDI=1
 

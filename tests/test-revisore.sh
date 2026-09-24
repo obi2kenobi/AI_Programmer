@@ -55,6 +55,15 @@ if [ "$1" = "issue" ] && [ "$2" = "view" ]; then printf '{"title":"Titolo della 
 exit 0
 EOF
 chmod +x "$GHSTUB/gh"
+# (2026-09-23, notte dei giri, T5#1): le prove eseguono codice scritto dal modello, dentro la sandbox
+# del turno. Qui un sandbox-exec FINTO registra la chiamata (e il profilo) ed esegue il resto.
+cat > "$GHSTUB/sandbox-exec" <<'EOF'
+#!/bin/bash
+echo "$*" >> "$GHSTUB_JSON.sandbox"; [ "$1" = -f ] && cat "$2" >> "$GHSTUB_JSON.profili"; shift 2; exec "$@"
+EOF
+chmod +x "$GHSTUB/sandbox-exec"
+# una seconda cartella con il solo gh: il mondo senza sandbox-exec (Linux)
+SOLOGH=$(mktemp -d "$RADICE/sologh.XXXXXX"); ln -s "$GHSTUB/gh" "$SOLOGH/gh"
 
 nuova_pr() { # $1=dir $2=eta_min $3=branch — prepara repo+branch+json della PR
   SB="$1"
@@ -366,6 +375,19 @@ if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -c "
 else
   echo "⊘ sfida modello vero saltata (censore $CENSORE_MODEL non attivo — dichiarato, non taciuto)"
 fi
+
+# 9. (2026-09-23, notte dei giri, T5#1): le prove girano DENTRO la sandbox, col profilo della copia
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-sandbox; rm -f "$GHSTUB_JSON.sandbox" "$GHSTUB_JSON.profili"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+grep -c "bash -c true" "$GHSTUB_JSON.sandbox" >/dev/null 2>&1 && ok "le prove di .night-verify girano in sandbox-exec" \
+  || ko "prove fuori dalla sandbox (chiamate: $(cat "$GHSTUB_JSON.sandbox" 2>/dev/null | head -2))"
+grep -cF "$SB" "$GHSTUB_JSON.profili" >/dev/null 2>&1 && ! grep -c "__WORKDIR__" "$GHSTUB_JSON.profili" >/dev/null \
+  && ok "il profilo della sandbox e' quello della copia giudicata" || ko "profilo della sandbox senza la copia giudicata"
+# senza sandbox-exec: DEGRADATO dichiarato, rinvio al giorno, NESSUN merge
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-nosandbox
+OUT=$(cd "$SB" && PATH="$SOLOGH:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -c "gh pr merge" <<<"$OUT" >/dev/null && grep -c "DEGRADATO" <<<"$OUT" >/dev/null \
+  && ok "senza sandbox-exec: DEGRADATO, rc 2, nessun merge" || ko "senza sandbox: rc $RC — $(tail -1 <<<"$OUT")"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
