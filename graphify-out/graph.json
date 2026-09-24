@@ -16113,6 +16113,102 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento",
+      "label": "99-CONSOLIDAMENTO.md",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "99-consolidamento.md",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "label": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_errori_miei_dichiarati",
+      "label": "Errori miei, dichiarati",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "errori miei, dichiarati",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L62"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_non_provato_dal_vivo_serve_il_mac",
+      "label": "Non provato dal vivo (serve il Mac)",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "non provato dal vivo (serve il mac)",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L72"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_secondo_ventaglio",
+      "label": "Secondo ventaglio",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "secondo ventaglio",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L79"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_smentite_la_prova_che_la_verifica_non_\u00e8_cosmetica",
+      "label": "Smentite (la prova che la verifica non \u00e8 cosmetica)",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "smentite (la prova che la verifica non e cosmetica)",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L56"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_tassonomia",
+      "label": "Tassonomia",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "tassonomia",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L37"
+    },
+    {
+      "id": "docs_giri_2026_09_23_notte_99_consolidamento_temi_trasversali_emersi_da_soli_in_3_o_pi\u00f9_aree",
+      "label": "Temi trasversali (emersi da soli in 3 o pi\u00f9 aree)",
+      "_origin": "ast",
+      "community": 215,
+      "community_name": "Consolidamento \u2014 la notte dei giri (2026-09-23/24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "temi trasversali (emersi da soli in 3 o piu aree)",
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L9"
+    },
+    {
       "id": "tests_test_opencode_agent_sync",
       "label": "test-opencode-agent-sync.sh",
       "_origin": "ast",
@@ -18772,6 +18868,66 @@
       "norm_label": "test-bilancio-bu.sh script",
       "source_file": "tests/test-bilancio-bu.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "tests_test_bootstrap_app_percorso_cloud",
@@ -45496,54 +45652,6 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
-    },
-    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -45578,18 +45686,6 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1797"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -69100,6 +69196,83 @@
       "weight": 1.0
     },
     {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_tassonomia",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_smentite_la_prova_che_la_verifica_non_\u00e8_cosmetica",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_errori_miei_dichiarati",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_non_provato_dal_vivo_serve_il_mac",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_secondo_ventaglio",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_23_notte_99_consolidamento_consolidamento_la_notte_dei_giri_2026_09_23_24",
+      "target": "docs_giri_2026_09_23_notte_99_consolidamento_temi_trasversali_emersi_da_soli_in_3_o_pi\u00f9_aree",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-23-notte/99-CONSOLIDAMENTO.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
       "source": "docs_giri_2026_09_23_notte_domande",
       "target": "docs_giri_2026_09_23_notte_domande_domande_di_dominio_la_notte_dei_giri_2026_09_23",
       "relation": "contains",
@@ -89919,5 +90092,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6f6156a714f5596c730ac400d8c84c1bc8520e66"
+  "built_at_commit": "a3d6a756bd366a150af47556349990533f57443c"
 }
