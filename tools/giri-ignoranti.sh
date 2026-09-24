@@ -61,13 +61,31 @@ check_numero "$HERE/README.md" "test" "$N_TEST" \
 # S3 — nessun oracolo muore di Traceback con input assente/spazzatura:
 #   la famiglia dice "uso:", il traceback nudo è per gli umani una sparatoria
 TB=0
+# (Q17, 2026-09-23, giro A2 della notte): ogni oracolo si uccideva a 0.35s (fase A efficienza,
+# 2026-09-07: il sonno seriale costava 14s) — un oracolo che crasha dopo 2s passava per sano
+# (attacco C10, contato TIENE per un grep sul nome della sonda). Ora girano tutti INSIEME fino
+# alla fine, con una scadenza comune di 5s: un oracolo che su stdin vuoto non finisce entro 5s
+# e' anche lui un reperto, e il costo resta quello di prima.
+S3D=$(mktemp -d); S3P=(); S3F=()
 for f in "$HERE"/tools/*.py; do
-  # (fase A efficienza, 2026-09-07: era sleep 0.9 -> 16 oracoli = 14.4s di sonno puro.
-  #  Misurato: avvio python 0.043s, traceback di un oracolo che tracolla su stdin vuoto
-  #  visibile a 0.2s. 0.35 = margine 2x sul caso peggiore misurato. Morso provato.)
-  OUT=$(python3 "$f" </dev/null 2>&1 & PID=$!; sleep 0.35; kill $PID 2>/dev/null; wait $PID 2>/dev/null)
-  echo "$OUT" | grep -q "Traceback" && { echo "     · $(basename "$f"): traceback con input assente"; TB=1; }
+  # dashboard.py e' un SERVER (http://localhost:8787): gira per sempre per disegno, non e' un oracolo
+  case "$(basename "$f")" in dashboard.py) continue ;; esac
+  python3 "$f" </dev/null >"$S3D/$(basename "$f").out" 2>&1 &
+  S3P+=("$!"); S3F+=("$(basename "$f")")
 done
+for _ in $(seq 1 50); do
+  S3VIVI=0; for p in "${S3P[@]}"; do kill -0 "$p" 2>/dev/null && S3VIVI=1; done
+  [ "$S3VIVI" -eq 0 ] && break
+  sleep 0.1
+done
+for i in "${!S3P[@]}"; do
+  kill -0 "${S3P[$i]}" 2>/dev/null && { kill "${S3P[$i]}" 2>/dev/null; echo "     · ${S3F[$i]}: con stdin vuoto non finisce in 5s"; TB=1; }
+done
+wait 2>/dev/null
+for o in "$S3D"/*.out; do
+  grep -q "Traceback" "$o" && { echo "     · $(basename "$o" .out): traceback con input assente"; TB=1; }
+done
+rm -rf "$S3D"
 # caso header spazzatura per i tool CSV a stdin
 OUT=$(printf 'a,b\n1,x\n' | python3 "$HERE/tools/scadenzario_aging.py" 2>&1)
 echo "$OUT" | grep -q "Traceback" && { echo "     · scadenzario_aging: traceback con header spazzatura"; TB=1; }
@@ -112,7 +130,10 @@ while IFS= read -r ref; do
   # non sono porte rotte. Chi li cita dichiara un'opzione locale, non una promessa.
   git -C "$HERE" check-ignore -q "$ref" 2>/dev/null && continue
   [ -e "$HERE/$ref" ] || ROTTO="$ROTTO $ref"
-done < <(cat "$HERE/README.md" $DOCS_MD 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+`' | tr -d '`' | sort -u)
+# (Q17, 2026-09-23): il path doveva chiudere il backtick — un COMANDO citato con argomenti
+# (`tools/sync-repo.sh <owner/repo> --standard`, docs/benvenuto-collaboratori.md) restava fuori,
+# e un comando rotto nella porta d'ingresso era invisibile (attacco G20). Ora basta lo spazio.
+done < <(cat "$HERE/README.md" $DOCS_MD 2>/dev/null | grep -oE '`(docs|tools|patterns|night-shift|llm|tests)/[A-Za-z0-9_./-]+[` ]' | tr -d '` ' | sort -u)
 [ -z "$ROTTO" ] && sonda 0 "S6 tutti i path citati in README e docs di radice esistono" || sonda 1 "S6 path citati inesistenti:$ROTTO"
 
 # S7 — il registro pattern è bidirezionale (A4: cancellare un file di pattern non
@@ -130,9 +151,14 @@ PROMESSE=""
 for f in .night-verify .gitattributes DEBITI.md METHOD.md; do
   [ -e "$HERE/$f" ] || PROMESSE="$PROMESSE $f"
 done
+# (Q17, 2026-09-23): il pavimento era «>= 9» con 16 skill — sette si potevano cancellare senza
+# rosso (attacco A18, contato TIENE per un grep sul nome della sonda). Un numero scritto a mano
+# invecchia: ora si confrontano i due specchi (.claude/skills e .opencode/skills), che devono
+# avere le stesse skill. Una skill tolta da ENTRAMBI i lati resta un limite dichiarato.
 NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
-[ "$NSK" -ge 9 ] || PROMESSE="$PROMESSE (skill sottosoglia: $NSK < 9)"
-[ -z "$PROMESSE" ] && sonda 0 "S8 file promessi esistono e skill >= 9 ($NSK)" || sonda 1 "S8 promesse mancate:$PROMESSE"
+SPECCHIO=$(diff <(ls "$HERE"/.claude/skills 2>/dev/null) <(ls "$HERE"/.opencode/skills 2>/dev/null) | grep -E '^[<>]' | tr '\n' ' ')
+[ -z "$SPECCHIO" ] || PROMESSE="$PROMESSE (skill non specchiate: $SPECCHIO)"
+[ -z "$PROMESSE" ] && sonda 0 "S8 file promessi esistono e le skill sono specchiate ($NSK)" || sonda 1 "S8 promesse mancate:$PROMESSE"
 
 # S9 — repos-index: i codici sono REPO-[A-N] e basta (G7: un codice fuori schema aggiunto in
 #   silenzio non faceva diventare rosso niente)
@@ -140,8 +166,16 @@ NSK=$(ls "$HERE"/.claude/skills 2>/dev/null | wc -l | tr -d ' ')
 # (Centrale_Rischi) citabile per nome — dichiarata nel repos-index (2026-08-29)
 # schema: REPO-[A-N] private, REPO-CR pubblica di Luca, REPO-O/P assegnate 2026-08-29
 # (la tabella dei codici cresce: quando superano l'alfabeto, si dichiarano qui)
-IDX_ROTTO=$(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | grep -vE "^REPO-([A-NOPQRSTXZVW]|CR)$" | sort -u | tr '\n' ' ')
-[ -z "$IDX_ROTTO" ] && sonda 0 "S9 repos-index usa solo codici REPO-[A-N]" || sonda 1 "S9 codici fuori schema:$IDX_ROTTO"
+# (Q17, 2026-09-23): l'alfabeto ammesso era cresciuto a mano fino a comprendere Z — l'attacco G7
+# (piantare REPO-Z) passava, contato TIENE per un grep sul nome della sonda. Il registro e' in
+# pensione dal 2026-09-23 («non si assegnano codici nuovi», intestazione di repos-index.md): la
+# regola vera e' l'insieme CONGELATO dei codici di quel giorno.
+CODICI_CONGELATI="A B C D E F G H I J K L M N O P Q R S T V W X Z CR"
+IDX_ROTTO=""
+for c in $(grep -oE "REPO-[A-Za-z0-9]+" "$HERE/night-shift/repos-index.md" | sed 's/^REPO-//' | sort -u); do
+  case " $CODICI_CONGELATI " in *" $c "*) ;; *) IDX_ROTTO="$IDX_ROTTO REPO-$c" ;; esac
+done
+[ -z "$IDX_ROTTO" ] && sonda 0 "S9 repos-index: solo i codici congelati al ritiro del registro" || sonda 1 "S9 codici nuovi in un registro in pensione:$IDX_ROTTO"
 
 # S10 — link pendenti: ogni path in backtick nel canone, nelle skill e nei doc
 #   di radice deve esistere (200 giri di collegamento: 19 pendenti trovati, di

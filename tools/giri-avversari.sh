@@ -394,7 +394,8 @@ att; sedi 's/## Registro/## RegistrX/' patterns/README.md
 ack "G6 il titolo '## Registro' è prosa: la sostanza (righe della tabella) è presidiata da S7 e dall'hook"
 git checkout -- patterns/README.md
 
-att; printf 'REPO-%s\n' 'Z' >> night-shift/repos-index.md
+# (Q17): Z e' diventato un codice assegnato; il registro e' congelato — si pianta un codice nuovo
+att; printf 'REPO-%s\n' 'NUOVO' >> night-shift/repos-index.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
 grep -qE "^FIND +S9 " <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
 git checkout -- night-shift/repos-index.md

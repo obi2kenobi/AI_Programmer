@@ -3496,3 +3496,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     stessi previsti dal giro, erano aggirati davvero e contati fra i TIENE. Si curano nei passi
     seguenti.
   - Banco: `tests/test-giri-avversari-verdetto.sh` (premessa misurata + cricchetto sulla forma).
+  - Le 4 sonde curate in `tools/giri-ignoranti.sh`:
+    - S3 uccideva l'oracolo a 0,35 s: ora tutti insieme fino alla fine, con una scadenza comune
+      di 5 s (1,3 s in tutto, prima ~6). Al primo giro ha trovato `tools/dashboard.py` che non
+      finisce: è un server per disegno, escluso e dichiarato;
+    - S6 non vedeva un comando citato con argomenti;
+    - S8 aveva il pavimento «≥ 9» con 16 skill: ora confronta i due specchi;
+    - S9 aveva un alfabeto cresciuto a mano che ammetteva Z. Il registro è in pensione («non si
+      assegnano codici nuovi»): ora l'insieme congelato, e l'attacco G7 pianta un codice nuovo.
+  - Batteria nel clone: 88 TIENE, 0 AGGIRATI, stavolta con verdetti veri. Il sabotaggio
+    coincide con la misura pre-cura (4 AGGIRA).
