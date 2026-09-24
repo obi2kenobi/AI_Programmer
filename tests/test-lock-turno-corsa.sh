@@ -38,6 +38,16 @@ prendi_lock_turno "$L"; R1=$?; prendi_lock_turno "$L"; R2=$?
 L="$T/lock-vecchio"; mkdir "$L"; python3 -c "import os,sys,time; t=time.time()-7200; os.utime(sys.argv[1],(t,t))" "$L"
 prendi_lock_turno "$L" && [ "$(cat "$L/pid")" = "$$" ] && ok "lock senza PID di 2 ore: orfano, preso" || ko "lock senza PID di 2 ore non preso"
 
+# (T2#4): il lock PER REPO di night-shift.sh contava l'eta' (12 h): dopo un kill -9 il turno riavviato
+# prendeva il lock globale e poi saltava la repo scrivendo «lock attivo di un altro turno» — falso, per
+# 12 ore. Ora e' la stessa regola del PID: il blocco usa prendi_lock_turno.
+BLOCCO=$(sed -n '/local LOCK="\$WORK\/.lock-/,/trap .* RETURN/p' "$HERE/night-shift/night-shift.sh")
+grep -c 'prendi_lock_turno "\$LOCK"' <<<"$BLOCCO" >/dev/null && ! grep -c '43200' <<<"$BLOCCO" >/dev/null \
+  && ok "il lock per repo segue il PID (prendi_lock_turno), non l'eta' di 12 h" || ko "il lock per repo conta ancora l'eta': $(grep -m1 -E 'mkdir|43200' <<<"$BLOCCO")"
+# dopo un kill -9 (PID morto) il turno riavviato prende il lock della repo subito
+L="$T/lock-repo"; mkdir "$L"; echo 999999 > "$L/pid"
+prendi_lock_turno "$L" && ok "lock per repo lasciato da un turno ucciso: ripreso subito" || ko "lock per repo di un turno ucciso non ripreso"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

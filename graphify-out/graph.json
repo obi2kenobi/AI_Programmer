@@ -19118,6 +19118,66 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_lock_turno_corsa",
+      "label": "test-lock-turno-corsa.sh",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-lock-turno-corsa.sh",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_sh__entry",
+      "label": "test-lock-turno-corsa.sh script",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-lock-turno-corsa.sh script",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_bootstrap_app_percorso_cloud",
       "label": "test-bootstrap-app-percorso-cloud.sh",
       "_origin": "ast",
@@ -21646,51 +21706,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_agente",
-      "label": "agente.sh",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "agente.sh",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_agente_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L26"
-    },
-    {
-      "id": "night_shift_agente_sh__entry",
-      "label": "agente.sh script",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "agente.sh script",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "night_shift_lib",
       "label": "lib.sh",
       "_origin": "ast",
@@ -22109,111 +22124,6 @@
       "norm_label": "vi()",
       "source_file": "tests/test-lib.sh",
       "source_location": "L228"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa",
-      "label": "test-lock-turno-corsa.sh",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-lock-turno-corsa.sh",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_sh__entry",
-      "label": "test-lock-turno-corsa.sh script",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-lock-turno-corsa.sh script",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico",
-      "label": "grafo-semantico.sh",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "grafo-semantico.sh",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L18"
-    },
-    {
-      "id": "tools_grafo_semantico_sh__entry",
-      "label": "grafo-semantico.sh script",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "grafo-semantico.sh script",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
     },
     {
       "id": "tests_test_doc_citazioni",
@@ -44270,6 +44180,51 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_agente",
+      "label": "agente.sh",
+      "_origin": "ast",
+      "community": 717,
+      "community_name": "agente.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "agente.sh",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_agente_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 717,
+      "community_name": "agente.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L26"
+    },
+    {
+      "id": "night_shift_agente_sh__entry",
+      "label": "agente.sh script",
+      "_origin": "ast",
+      "community": 717,
+      "community_name": "agente.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "agente.sh script",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_doc_non_corrotti",
       "label": "test-doc-non-corrotti.sh",
       "_origin": "ast",
@@ -44940,6 +44895,51 @@
       "norm_label": "proposta al canone",
       "source_file": "docs/campo/2026-09-24-notte-dei-giri.md",
       "source_location": "L33"
+    },
+    {
+      "id": "tools_grafo_semantico",
+      "label": "grafo-semantico.sh",
+      "_origin": "ast",
+      "community": 725,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "grafo-semantico.sh",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_grafo_semantico_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 725,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L18"
+    },
+    {
+      "id": "tools_grafo_semantico_sh__entry",
+      "label": "grafo-semantico.sh script",
+      "_origin": "ast",
+      "community": 725,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "grafo-semantico.sh script",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
     },
     {
       "id": "docs_incidenti_esterni_registro",
@@ -49014,7 +49014,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1308",
+      "source_location": "L1300",
       "weight": 1.0
     },
     {
@@ -49086,7 +49086,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1018",
+      "source_location": "L1010",
       "weight": 1.0
     },
     {
@@ -49103,6 +49103,18 @@
     },
     {
       "source": "night_shift_night_shift_shift_repo",
+      "target": "night_shift_lib_prendi_lock_turno",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L220",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_shift_repo",
       "target": "night_shift_lib_default_branch",
       "relation": "calls",
       "_origin": "ast",
@@ -49110,7 +49122,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L243",
+      "source_location": "L235",
       "weight": 1.0
     },
     {
@@ -49122,7 +49134,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L308",
+      "source_location": "L300",
       "weight": 1.0
     },
     {
@@ -49134,7 +49146,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L567",
+      "source_location": "L559",
       "weight": 1.0
     },
     {
@@ -49146,7 +49158,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L634",
+      "source_location": "L626",
       "weight": 1.0
     },
     {
@@ -49158,7 +49170,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L654",
+      "source_location": "L646",
       "weight": 1.0
     },
     {
@@ -49170,7 +49182,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L676",
+      "source_location": "L668",
       "weight": 1.0
     },
     {
@@ -49182,7 +49194,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L798",
+      "source_location": "L790",
       "weight": 1.0
     },
     {
@@ -49194,7 +49206,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L818",
+      "source_location": "L810",
       "weight": 1.0
     },
     {
@@ -91174,5 +91186,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cc26f7a476c3def4a35ecefcfa82e970e2d38f07"
+  "built_at_commit": "04e0446203c5a32201699fc9c4123ab9e4cdf51a"
 }

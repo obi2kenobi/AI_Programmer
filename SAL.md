@@ -3867,3 +3867,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `.furto` lasciato da un processo morto si toglie dopo 60 s. Nel banco anche il lock senza PID
   vecchio di 2 ore. Errore di passaggio, visto dal banco: `mtime || date` stampava due righe su un
   file assente; ora c'è `eta_secondi`. Sabotaggio (niente rigiudizio): 3 doppie su 60.
+- **T2#4 — il lock per repo contava l'età (12 h).** Dopo un kill -9 il turno riavviato prendeva il
+  lock globale e poi saltava la repo per 12 ore, scrivendo «lock attivo di un altro turno». Era
+  falso. Ora il blocco di `night-shift/night-shift.sh` usa `prendi_lock_turno`, la regola del PID
+  (vivo e del turno = occupato, morto = orfano, preso subito), e il log dice di quale PID si tratta.
+  Banco in `tests/test-lock-turno-corsa.sh`: rosso prima, rosso al sabotaggio (il blocco vecchio
+  rimesso).

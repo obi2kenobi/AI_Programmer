@@ -211,25 +211,17 @@ shift_repo() {
   gh auth status >/dev/null 2>&1 || { log "ERRORE: gh non autenticato"; return 1; }
 
   # Lock per repo (finding #5, 2026-08-21): il turno manuale e quello delle 23:00 non si
-  # pestano i piedi. Lock a directory con età: un lock più vecchio di 12h è Considerato morto.
+  # pestano i piedi. (2026-08-28): mkdir semplice, atomico — `mkdir -p` non fallisce mai.
+  # (2026-09-24, notte dei giri, T2#4): contava l'ETA' (12 h): dopo un kill -9 il turno riavviato
+  # prendeva il lock globale e poi saltava la repo per 12 ore scrivendo «lock attivo di un altro
+  # turno», che era falso. Ora la regola del lock globale: il PID dentro, vivo e del turno = occupato,
+  # morto o di un altro programma = orfano, preso subito (prendi_lock_turno in lib.sh, testata).
   local LOCK="$WORK/.lock-${REPO//\//_}"
-  # bug reale (revisione 14 lenti, 2026-08-28): `mkdir -p` non fallisce mai se la directory
-  # esiste già — il vecchio controllo "-d && età" sopra era comunque non atomico (finestra
-  # fra il test e la creazione), ma la vera falla era qui: due processi in corsa passavano
-  # entrambi il controllo ed entrambi "acquisivano" il lock. Riprodotto dal vivo. `mkdir`
-  # semplice (senza -p) è l'idioma standard per un lock atomico a directory: fallisce con
-  # EEXIST se un altro processo l'ha già creata un istante prima.
-  if ! mkdir "$LOCK" 2>/dev/null; then
-    if [ -d "$LOCK" ] && [ $(( $(date +%s) - $(mtime "$LOCK") )) -ge 43200 ]; then
-      log "REPO $REPO: lock scaduto (>12h), rimosso"
-      rmdir "$LOCK" 2>/dev/null
-      mkdir "$LOCK" 2>/dev/null || { log "REPO $REPO: lock attivo di un altro turno, salto"; return 0; }
-    else
-      log "REPO $REPO: lock attivo di un altro turno, salto"
-      return 0
-    fi
+  if ! prendi_lock_turno "$LOCK"; then
+    log "REPO $REPO: lock attivo di un altro turno vivo (PID $(cat "$LOCK/pid" 2>/dev/null || echo '?')), salto"
+    return 0
   fi
-  trap 'rmdir "$LOCK" 2>/dev/null' RETURN
+  trap 'rm -rf "$LOCK"' RETURN
 
   local DIR="$WORK/${REPO##*/}"
   # review §2.2: il default branch si DETECTA (mai assumere main) e un checkout fallito
