@@ -76,5 +76,77 @@ n-giri §3). Il dettaglio di ogni cura (banco rosso prima, sabotaggio rosso dopo
 - `claude -p` col contesto su stdin.
 - Primo pass Ollama del grafo.
 
-## Secondo ventaglio
-In corso: 10-BRIEF-SECONDO-VENTAGLIO.md, sei lenti trasversali. Il suo consolidamento segue qui.
+## Secondo ventaglio (sei lenti trasversali, `10-BRIEF-SECONDO-VENTAGLIO.md`)
+Ogni giro in un clone; 35 rilievi. I rapporti grezzi T1-T6 sono andati persi con E-044: T1 è stato
+rifatto da capo, gli altri erano già curati o in lista. Il dettaglio di ogni cura (banco rosso prima,
+sabotaggio dopo) è nel SAL, voce 18°.
+
+### Temi trasversali
+1. **Il confine non dichiarato.** Uno strumento agisce oltre il perimetro che il suo nome promette.
+   - L'allowlist «di sola lettura» leggeva `~/.git-credentials` (T5#2).
+   - Il censore eseguiva il codice della PR fuori dalla sandbox (T5#1).
+   - La batteria d'attacchi mutava l'albero vero (T2#1).
+   - Il morning-gate entrava nella cartella del turno vivo (T2#2).
+   - Nel commit entravano i file nuovi non dichiarati (T5#2b).
+2. **Il segreto che esce dalla porta sbagliata.**
+   - Il termine protetto finiva nell'issue pubblica (T5#4).
+   - La lente guardava dopo il push (T5#3a).
+   - Le credenziali di clasp non erano una forma di segreto (T5#3b).
+   - Il cloud riceveva il diff senza maschera (T5#5).
+   - I prompt passavano negli argomenti (T5#6).
+   - La chiave della privacy non aveva un guardiano al commit (T1#3).
+3. **Lock che muoiono male.**
+   - Il lock orfano si prendeva due volte (T2#3).
+   - Il lock per repo contava l'età (T2#4).
+   - Il lock di ciclo-vivo non scadeva mai (T2#5).
+   - Il perl uccideva senza TERM, e i trap non giravano (T3#1).
+4. **Il satellite che presuppone l'hub.**
+   - I guardiani del commit arrivavano spenti (T1#2).
+   - Gli hook citavano file dell'hub (T1#4).
+   - Il garante si credeva l'hub (T1#5).
+   - La lente del registro era rossa dalla nascita (T1#6).
+   - I comandi installati non partivano da symlink (trovato di passaggio).
+5. **Due liste, due regex, una verità.**
+   - Due installatori scrivevano la coda con due regex sbagliate in modi opposti (T6#6).
+   - Il `cut` spezzava i comandi delle lenti (T6#2).
+   - Una dichiarazione finiva nel `.gitignore` come un residuo (T6#3).
+
+### Tassonomia
+- **Implementata** (verificata eseguendo, banco rosso prima, sabotaggio dopo):
+  - T5#1, T5#2, T5#2b, T5#3a, T5#3b, T5#4, T5#5, T5#6;
+  - T3#1, T3#3, T3#6;
+  - T2#1, T2#2, T2#3, T2#4, T2#5;
+  - T4 (AGENTS.md, README del turno, MANUALE, system.md);
+  - T6#1, T6#2, T6#3, T6#5, T6#6, T6#7, T6#8;
+  - T1#2, T1#3, T1#4, T1#5, T1#6;
+  - i comandi installati.
+- **Esclusa** (serve una decisione di dominio), con le domande in DEBITI:
+  - i termini della privacy (T5#4);
+  - opencode e i suoi file nuovi (T5#2b);
+  - la visibilità di default del bootstrap (T1#1);
+  - il privacy-check nei satelliti (T1#3).
+- **Rinviata** (⏳ serve il Mac o una sessione dal vivo), in DEBITI:
+  - la sandbox vera del censore (T3#2, T5#1);
+  - il ramo di timeout;
+  - `ps` BSD;
+  - `/qwen` e `/nuova-commessa`;
+  - il promemoria di Stop (T6#4);
+  - il caricamento delle skill in OpenCode (T6#8).
+- **Già coperta**: T3#5, cioè bash 3.2 (suite verde con verdetti identici, misurata dal giro).
+
+### Smentite e correzioni
+- T3#4: `\b` e `\s` funzionano nel grep del Mac (REG_ENHANCED, letto nei sorgenti Apple). La parte
+  «`\b`» di T6·6 non era un difetto; il confine di parola invece sì.
+- In T6#7 le due difese si sono rivelate ridondanti: sabotata una sola, il banco resta verde. È
+  dichiarato, e tenute entrambe per guasti diversi.
+
+### Errori miei, dichiarati
+- **E-044** (grave): un sabotaggio su una variabile che finiva in `rm -rf` ha svuotato `/tmp`. Due
+  ore senza firma dei commit, e i rapporti grezzi persi.
+- **E-043 ripetuto** una volta: in T6#6 il verdetto del sabotaggio era scritto prima di leggerlo (3
+  rossi dichiarati, erano 2), corretto nel SAL.
+- Prime stesure bucate, viste dal banco prima della consegna:
+  - la maschera per un solo termine (T5#4);
+  - `mtime || date` che stampava due righe (T2#3);
+  - l'esclusione mai loggata sul successo (T5#2b);
+  - `compgen -G` senza asterisco (T1#4).
