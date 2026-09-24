@@ -4091,3 +4091,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   e la premessa era in pipe sotto pipefail (E-002 al contrario). ⏳ Dopo la fusione, la prima notte
   farà girare davvero fixer, banco, censore e caccia sull'hub dopo molto tempo: il log del mattino va
   letto.
+- **Terzo ventaglio, V1#1, V1#5, V4#6 — il gate del fixer notturno giudicava la copia sbagliata, senza
+  tetto.** Il giro V1 ha fatto girare il turno intero con gh, modello e opencode finti. Il gate
+  lanciava ogni banco con `bash "$tt"`, senza timeout: con la ricorsione E-046, 9 livelli in 18
+  minuti, turno fermo per sempre, lock presi, e un tool rimasto neutralizzato nella copia viva quando
+  il processo è stato fermato. E i banchi, il banco di copertura e le sonde giravano dalla copia VIVA
+  dell'hub (`$HERE/..`), non dal ramo con i fix: su 115 lanci, nessuno sul ramo, mentre il commit
+  dichiarava «banco CHIUSO su questo branch». Ora c'è `gate_banchi <dir> [tetto]` in
+  `night-shift/lib.sh`: i banchi del ramo, ciascuno sotto tetto, secondo tentativo per i transienti,
+  sforo detto come tale, il motivo dal secondo giro (prima si rilanciava una terza volta). Banco e
+  sonde partono da `$DIR`, sotto tetto; se il ramo non li ha, il gate resta chiuso. Banco in
+  `tests/test-lib.sh`: 2 rossi prima, 2 al sabotaggio (il `night-shift/night-shift.sh` di prima). L'auto-esame
+  dell'hub (ciclo-vivo, banco veloce) resta sulla copia viva per disegno: dopo l'allineamento è main.

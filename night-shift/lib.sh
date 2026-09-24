@@ -99,6 +99,35 @@ esegui_verifica() {
   return "$rc"
 }
 
+# gate_banchi <dir> [secondi-per-banco=300]: il gate del fixer notturno — esegue i banchi di <dir>/tests
+# (la copia del ramo con i fix), ciascuno sotto tetto, con un secondo tentativo dopo 2 s per i transienti.
+# Stampa «amber <banco>» (passato al secondo), «rosso <banco> — <motivo>» (una riga FAIL, o SFORO), e
+# per ultima «TOTALE <verdi> <rossi>». I banchi che chiamano cervelli esterni restano fuori (2026-09-15).
+# (2026-09-24, terzo ventaglio, V1#1, V1#5, V4#6): il ciclo viveva in night-shift.sh e lanciava
+# $HERE/../tests — la copia VIVA, non il ramo — senza tetto: un banco che si annidava (E-046) ha fermato il
+# turno per sempre, e il commit diceva «banco CHIUSO su questo branch» senza averlo provato.
+gate_banchi() {
+  local dir="$1" sec="${2:-300}" tt nome out rc pass=0 fail=0
+  for tt in "$dir"/tests/test-*.sh; do
+    [ -f "$tt" ] || continue
+    nome=$(basename "$tt")
+    case "$nome" in test-ask-*|test-ai-timeout*|test-stdin-timeout*) continue ;; esac
+    if (cd "$dir" && ai_timeout "$sec" bash "$tt" >/dev/null 2>&1 </dev/null); then
+      pass=$((pass+1)); continue
+    fi
+    sleep 2
+    out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
+    if [ "$rc" -eq 0 ]; then
+      pass=$((pass+1)); echo "amber $nome"
+    else
+      fail=$((fail+1))
+      if [ "$rc" -eq 124 ]; then echo "rosso $nome — SFORO del tetto di ${sec}s"
+      else echo "rosso $nome — $(grep FAIL <<<"$out" | head -2 | tr '\n' ' ' | mask_secrets)"; fi
+    fi
+  done
+  echo "TOTALE $pass $fail"
+}
+
 # ambiente_turno: una riga per il log — la bash, il ramo di ai_timeout, la sandbox (2026-09-23, notte dei
 # giri, T3#6). Il turno gira sul Mac, i banchi su Linux: senza questa riga le differenze fra i due
 # (il ramo perl del timeout, la sandbox) non si misurano dal log.

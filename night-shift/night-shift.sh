@@ -533,28 +533,22 @@ PYIDX
           # (revisione 10 giri, 2026-09-23): l'esito del banco si buttava (`|| true`) e il commit
           # e la PR dicevano comunque «banco CHIUSO». Ora il banco rosso ferma il gate.
           BANCO_OK=0
-          bash "$HERE/../tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 && BANCO_OK=1
+          # (V1#5, 2026-09-24): il banco e le sonde del RAMO ($DIR), non della copia viva — questi strumenti
+          # fanno cd nella propria radice: lanciati da $HERE giudicavano la copia viva. Senza lo strumento nel
+          # ramo il gate resta chiuso (fallisce dal lato sicuro).
+          ai_timeout 300 bash "$DIR/tools/banco-passaggio.sh" --solo-copertura >/dev/null 2>&1 && BANCO_OK=1
           [ "$BANCO_OK" -eq 1 ] || log "REPO $REPO: banco di copertura ROSSO sul branch notte — gate chiuso, niente commit"
           PASS_T=0; FAIL_T=0
-          for tt in "$HERE"/../tests/test-*.sh; do
-            # i test che chiamano CERVELLI ESTERNI (claude/ollama) restano fuori dal gate
-            # notturno: sotto launchd l'auth non e' affidabile e un fix MECCANICO del canone
-            # non li tocca. Un gate deterministico per fix deterministici (test 30min, 2026-09-15)
-            case "$(basename "$tt")" in test-ask-*|test-ai-timeout*|test-stdin-timeout*) continue;; esac
-            if bash "$tt" >/dev/null 2>&1; then
-              PASS_T=$((PASS_T+1))
-            else
-              # (2026-09-16): retry dopo 2s — i transienti (DNS, locale, timing) non
-              # devono bocciare fix veri. Se passa al secondo colpo, era transitorio.
-              sleep 2
-              if bash "$tt" >/dev/null 2>&1; then
-                PASS_T=$((PASS_T+1)); log "REPO $REPO: gate-amber in $(basename "$tt") — passato al retry (transitorio)"
-              else
-                FAIL_T=$((FAIL_T+1)); log "REPO $REPO: gate-rosso in $(basename "$tt") — $(bash "$tt" 2>&1 | grep FAIL | head -2 | tr '\n' ' ')"
-              fi
-            fi
-          done
-          [ "$BANCO_OK" -eq 1 ] && [ "$FAIL_T" -eq 0 ] && bash "$HERE/../tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
+          # (V1#1, V1#5, V4#6, 2026-09-24): i banchi del RAMO con i fix ($DIR), ciascuno sotto tetto — lib.sh gate_banchi
+          GATE_OUT=$(gate_banchi "$DIR" 300)
+          read -r _ PASS_T FAIL_T <<<"$(tail -1 <<<"$GATE_OUT")"
+          while IFS= read -r l; do
+            case "$l" in
+              amber\ *) log "REPO $REPO: gate-amber in ${l#amber } — passato al retry (transitorio)" ;;
+              rosso\ *) log "REPO $REPO: gate-rosso in ${l#rosso }" ;;
+            esac
+          done <<<"$GATE_OUT"
+          [ "$BANCO_OK" -eq 1 ] && [ "$FAIL_T" -eq 0 ] && ai_timeout 300 bash "$DIR/tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
           if [ "$GATE_OK" -eq 1 ]; then
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:

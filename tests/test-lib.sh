@@ -176,6 +176,30 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-24, terzo ventaglio, V1#1 e V1#5, V4#6): gate_banchi — il gate del fixer notturno lanciava
+# ogni banco SENZA tetto (un banco che si annida ha fermato il turno per sempre, E-046) e lo lanciava sulla
+# copia VIVA dell'hub, non sul ramo con i fix: il commit diceva «banco CHIUSO su questo branch» senza averlo
+# mai provato. La funzione esegue i banchi di <dir>, ciascuno sotto tetto.
+if command -v gate_banchi >/dev/null; then
+  GB=$(mktemp -d); mkdir -p "$GB/tests"
+  printf '#!/bin/bash\ntouch "$(dirname "$0")/../girato-qui"; echo "1 OK, 0 FAIL"\n' > "$GB/tests/test-verde.sh"
+  printf '#!/bin/bash\necho "FAIL rotto davvero"; exit 1\n' > "$GB/tests/test-rosso.sh"
+  printf '#!/bin/bash\nsleep 30\n' > "$GB/tests/test-appeso.sh"
+  T0=$(date +%s); OUTG=$(gate_banchi "$GB" 2); DURG=$(( $(date +%s) - T0 ))
+  [ -f "$GB/girato-qui" ] && ok "gate_banchi: esegue i banchi della copia che giudica (non quella viva)" || ko "gate_banchi: i banchi di <dir> non sono girati"
+  grep -qx "TOTALE 1 2" <<<"$OUTG" && ok "gate_banchi: 1 verde, 2 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
+  grep -c "rosso test-appeso.sh — SFORO" <<<"$OUTG" >/dev/null && [ "$DURG" -lt 25 ] && ok "gate_banchi: il banco appeso muore al tetto e si dice sforo (${DURG}s)" || ko "gate_banchi: banco appeso non fermato (${DURG}s): $OUTG"
+  grep -c "rosso test-rosso.sh — FAIL rotto davvero" <<<"$OUTG" >/dev/null && ok "gate_banchi: il rosso dice la sua riga FAIL" || ko "gate_banchi: rosso senza motivo: $OUTG"
+  rm -rf "$GB"
+else
+  ko "gate_banchi assente da night-shift/lib.sh"
+fi
+grep -c 'gate_banchi "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il gate del fixer usa gate_banchi sulla copia del ramo" || ko "il gate del fixer lancia i banchi della copia viva, senza tetto"
+# solo nel blocco del gate del fixer: l'auto-esame dell'hub (ciclo-vivo, banco veloce) giudica la copia viva
+# PER DISEGNO — dopo l'allineamento e' main
+VIVI=$(sed -n '/IL GATE DEL FIXER/,/&& GATE_OK=1/p' "$HERE/night-shift/night-shift.sh" | grep -E 'bash "\$HERE/\.\./tools/(banco-passaggio|giri-ignoranti)\.sh"' || true)
+[ -z "$VIVI" ] && ok "il gate del fixer giudica col banco e le sonde del ramo, non della copia viva" || ko "banco/sonde del gate dalla copia viva: $VIVI"
+
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
 # (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
 # («Mask, don't omit») e del pattern segreto-come-impronta — «segreto <impronta> · N caratteri».
