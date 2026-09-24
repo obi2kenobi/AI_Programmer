@@ -3542,7 +3542,7 @@
       "node_kind": "heading",
       "norm_label": "da fare a mano (non potevo)",
       "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
-      "source_location": "L117"
+      "source_location": "L116"
     },
     {
       "id": "docs_giri_2026_09_24_quinto_99_consolidamento_errori_miei_in_questo_ventaglio",
@@ -3554,7 +3554,7 @@
       "node_kind": "heading",
       "norm_label": "errori miei in questo ventaglio",
       "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
-      "source_location": "L124"
+      "source_location": "L123"
     },
     {
       "id": "docs_giri_2026_09_24_quinto_99_consolidamento_esito",
@@ -15676,6 +15676,21 @@
       "source_location": "L88"
     },
     {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L643"
+    },
+    {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
       "_origin": "ast",
@@ -15689,21 +15704,6 @@
       "norm_label": "funzione_definita_e_chiamata()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L138"
-    },
-    {
-      "id": "night_shift_lib_gate_allowlist_ok",
-      "label": "gate_allowlist_ok()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gate_allowlist_ok()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L158"
     },
     {
       "id": "night_shift_lib_gate_banchi",
@@ -15749,6 +15749,21 @@
       "norm_label": "mask_secrets()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L307"
+    },
+    {
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L28"
     },
     {
       "id": "night_shift_lib_rami_da_scopare",
@@ -15826,21 +15841,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_verifica_issue_comando",
-      "label": "verifica_issue_comando()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "verifica_issue_comando()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L478"
-    },
-    {
       "id": "night_shift_morning_gate",
       "label": "morning-gate.sh",
       "_origin": "ast",
@@ -15901,96 +15901,6 @@
       "source_location": "L195"
     },
     {
-      "id": "tests_test_lib",
-      "label": "test-lib.sh",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-lib.sh",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lib_check",
-      "label": "check()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_lib_g",
-      "label": "g()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "g()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L254"
-    },
-    {
-      "id": "tests_test_lib_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_lib_lock_da_altro",
-      "label": "lock_da_altro()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_da_altro()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L361"
-    },
-    {
-      "id": "tests_test_lib_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L14"
-    },
-    {
       "id": "tests_test_lib_sh__entry",
       "label": "test-lib.sh script",
       "_origin": "ast",
@@ -16004,21 +15914,6 @@
       "norm_label": "test-lib.sh script",
       "source_file": "tests/test-lib.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lib_vi",
-      "label": "vi()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "vi()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L340"
     },
     {
       "id": "docs_campo_2026_09_19_repo_i_standard_cinquanta_giri_correzioni",
@@ -20237,51 +20132,6 @@
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
       "source_location": "L95"
-    },
-    {
-      "id": "tools_grafo_semantico",
-      "label": "grafo-semantico.sh",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "grafo-semantico.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "grafo-semantico.sh",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "grafo-semantico.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L18"
-    },
-    {
-      "id": "tools_grafo_semantico_sh__entry",
-      "label": "grafo-semantico.sh script",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "grafo-semantico.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "grafo-semantico.sh script",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
     },
     {
       "id": "tools_margine_documento",
@@ -40573,7 +40423,7 @@
       "label": "eventi.md",
       "_origin": "ast",
       "community": 620,
-      "community_name": "eventi.md",
+      "community_name": "Catalogo degli eventi \u2014 ogni firma, chi la scrive, chi la legge",
       "file_type": "document",
       "node_kind": "page",
       "norm_label": "eventi.md",
@@ -40585,12 +40435,24 @@
       "label": "Catalogo degli eventi \u2014 ogni firma, chi la scrive, chi la legge",
       "_origin": "ast",
       "community": 620,
-      "community_name": "eventi.md",
+      "community_name": "Catalogo degli eventi \u2014 ogni firma, chi la scrive, chi la legge",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "catalogo degli eventi \u2014 ogni firma, chi la scrive, chi la legge",
       "source_file": "docs/eventi.md",
       "source_location": "L1"
+    },
+    {
+      "id": "docs_eventi_righe_del_turno_lette_solo_dal_battito",
+      "label": "Righe \u26a0/\u26d4 del turno lette solo dal battito",
+      "_origin": "ast",
+      "community": 620,
+      "community_name": "Catalogo degli eventi \u2014 ogni firma, chi la scrive, chi la legge",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "righe \u26a0/\u26d4 del turno lette solo dal battito",
+      "source_file": "docs/eventi.md",
+      "source_location": "L44"
     },
     {
       "id": "githooks_commit_msg",
@@ -46153,6 +46015,51 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_grafo_semantico",
+      "label": "grafo-semantico.sh",
+      "_origin": "ast",
+      "community": 735,
+      "community_name": "test-leggi-coda.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "grafo-semantico.sh",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_grafo_semantico_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 735,
+      "community_name": "test-leggi-coda.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L18"
+    },
+    {
+      "id": "tools_grafo_semantico_sh__entry",
+      "label": "grafo-semantico.sh script",
+      "_origin": "ast",
+      "community": 735,
+      "community_name": "test-leggi-coda.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "grafo-semantico.sh script",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_studi_2026_09_24_superpowers_gsd",
       "label": "2026-09-24-superpowers-gsd.md",
       "_origin": "ast",
@@ -47620,41 +47527,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
-      "_origin": "ast",
-      "community": 744,
-      "community_name": "mtime",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "eta_secondi()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L643"
-    },
-    {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
-      "_origin": "ast",
-      "community": 744,
-      "community_name": "mtime",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mtime()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L28"
-    },
-    {
       "id": "tests_test_portabilita",
       "label": "test-portabilita.sh",
       "_origin": "ast",
       "community": 744,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47669,7 +47546,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 744,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47684,7 +47561,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 744,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47699,7 +47576,7 @@
       "label": "righe_con()",
       "_origin": "ast",
       "community": 744,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47714,7 +47591,7 @@
       "label": "test-portabilita.sh script",
       "_origin": "ast",
       "community": 744,
-      "community_name": "mtime",
+      "community_name": "test-portabilita.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47969,11 +47846,41 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_gate_allowlist_ok",
+      "label": "gate_allowlist_ok()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gate_allowlist_ok()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L158"
+    },
+    {
+      "id": "night_shift_lib_verifica_issue_comando",
+      "label": "verifica_issue_comando()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "verifica_issue_comando()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L478"
+    },
+    {
       "id": "tests_test_banco_prompt_allowlist_sync",
       "label": "test-banco-prompt-allowlist-sync.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47988,7 +47895,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48003,7 +47910,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48018,7 +47925,7 @@
       "label": "test-banco-prompt-allowlist-sync.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-banco-prompt-allowlist-sync.sh",
+      "community_name": "test-lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48027,6 +47934,111 @@
       "norm_label": "test-banco-prompt-allowlist-sync.sh script",
       "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib",
+      "label": "test-lib.sh",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-lib.sh",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib_check",
+      "label": "check()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_lib_g",
+      "label": "g()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L254"
+    },
+    {
+      "id": "tests_test_lib_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_lib_lock_da_altro",
+      "label": "lock_da_altro()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_da_altro()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L361"
+    },
+    {
+      "id": "tests_test_lib_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_lib_vi",
+      "label": "vi()",
+      "_origin": "ast",
+      "community": 751,
+      "community_name": "test-lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "vi()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L340"
     },
     {
       "id": "night_shift_lib_aggiungi_consegna",
@@ -54794,7 +54806,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-eventi.sh",
-      "source_location": "L55",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -74303,6 +74315,17 @@
       "weight": 1.0
     },
     {
+      "source": "docs_eventi_catalogo_degli_eventi_ogni_firma_chi_la_scrive_chi_la_legge",
+      "target": "docs_eventi_righe_del_turno_lette_solo_dal_battito",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/eventi.md",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
       "source": "docs_giri_2026_09_23_notte_00_brief",
       "target": "docs_giri_2026_09_23_notte_00_brief_brief_dei_giri_hub_ai_programmer_notte_del_2026_09_23",
       "relation": "contains",
@@ -74805,7 +74828,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
-      "source_location": "L117",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -74816,7 +74839,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
-      "source_location": "L124",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -97503,5 +97526,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "ac4d52285003ed0d2ae81268220be9f936ea0e40"
+  "built_at_commit": "5ce84a0558682e3864fa0d9c1cd38e891f1dd2f5"
 }

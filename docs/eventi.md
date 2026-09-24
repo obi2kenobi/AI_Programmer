@@ -41,7 +41,24 @@ col funnel: DELIBERA: contava zero da sempre). Scritto leggendo il codice reale 
 | `rianima_ollama: esito` | `night-shift/lib.sh` | `night-shift/night-shift.sh`, `tools/cervello-impara.sh` | test-eventi, test-rianima-ollama |
 | `SFORO DEL BUDGET` | `night-shift/lib.sh` | `tools/cervello-impara.sh` | test-eventi, test-lib |
 
+## Righe ⚠/⛔ del turno lette solo dal battito
+
+Il turno (`night-shift/night-shift.sh`) scrive queste avvertenze nel log. Nessun programma le conta: le legge
+una persona che guarda il log (il battito). Sono dichiarate qui perché `tests/test-eventi.sh` vuole che ogni
+riga ⚠/⛔ del turno sia nel catalogo o in questo elenco. Una riga nuova senza dichiarazione è rossa.
+
+- Ollama e sonde: `server non visto`, `Sonda di generazione muta`, `Ollama wedged al via del turno`,
+  `Ollama NON risponde nemmeno dopo il rilancio`.
+- Avvio: `⛔ MANCA …: il turno non parte`.
+- Coda e copie: `riclone di … fallito`, `TURNO su …: coda ILLEGGIBILE`, `riallineo NON riuscito`.
+- Auto-miglioramento dell'hub: `commit o push del branch notte FALLITI`, `stderr del commit/push`,
+  `auto-fix BOCCIATI dal banco`, `creazione issue ciclo-vivo fallita`, `banco rosso e creazione issue fallita`.
+- Censore: `censore ha RIGETTATO la PR`, `censore in errore sulla PR`, `censore in errore sul parere`.
+- Caccia: `LENTE SEGNALA`, `commit/push della … fallito`.
+- Issue: `commento della proposta fallito`, `… sul remoto ha … commit non del turno`, `PR NON creata`,
+  `commit/push FALLITO`, `WATCHDOG scattato`, `agente terminato`, `LOOP DI RIPLETTURA rilevato`.
+
 Note (2026-09-24, quinto ventaglio, R4 R6): la dashboard legge il censimento del registro dal file storia e
 mostra le righe `registro:` fra le recenti; `⛔ MANCA` lo conta fra gli errori (ogni `⛔`). Il guardiano ora
-vuole che ogni consumatore CERCHI la firma, non solo che esista. Resta fuori, dichiarato: il censimento
-inverso delle 27 righe `⚠`/`⛔` di `night-shift/night-shift.sh` contro questo catalogo.
+vuole che ogni consumatore CERCHI la firma, non solo che esista, e fa il censimento inverso delle righe
+`⚠`/`⛔` di `night-shift/night-shift.sh` contro questo catalogo (l'elenco qui sopra).

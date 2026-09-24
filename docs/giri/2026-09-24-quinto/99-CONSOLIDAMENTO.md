@@ -104,9 +104,8 @@ voce 18°, righe «Quinto ventaglio».
 
 **Rinviata**
 - R1 R2: il controllo automatico «una nota di decisione più vecchia di un SALDATO sullo stesso tema».
-- R4 R6:
-  - il censimento inverso delle 27 righe ⚠/⛔ del turno contro il catalogo;
-  - la metrica `loop-rilettura` scritta su `/dev/null` (HUB_METRICS mai impostata).
+- R4 R6: la metrica `loop-rilettura` scritta su `/dev/null` (HUB_METRICS mai impostata). Il censimento inverso
+  delle 27 righe ⚠/⛔, rinviato qui, è stato fatto dopo il consolidamento (SAL, voce 18°).
 - R5 R4: la notte che fonde da sola `origin/main` col driver prima di aprire la PR del grafo.
 - R2 R3 e R5 R4: le prove dal vivo (un gancio lanciato da Claude Code in una sottocartella, un merge dal
   bottone di GitHub).

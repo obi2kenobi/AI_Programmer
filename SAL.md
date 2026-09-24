@@ -4964,3 +4964,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Rinviata, da decidere col giorno: una notte che fonde da sola `origin/main` col driver prima di aprire la
   PR. La frase di CLAUDE.md §7 («versioned, merge driver») è una proposta nel report di campo, non applicata.
+- **Quinto ventaglio, R4 R6 (resto) — il censimento inverso delle righe ⚠/⛔ del turno.** Ognuna delle 27
+  avvertenze che `night-shift/night-shift.sh` scrive nel log ora ha una riga nel catalogo (`docs/eventi.md`), o
+  è dichiarata in «Righe ⚠/⛔ del turno lette solo dal battito». La chiave che `tests/test-eventi.sh` cerca è il
+  primo tratto letterale di almeno 8 caratteri dopo il simbolo, fino a «(». Una riga nuova senza dichiarazione
+  fa rosso. Guardia 3/0. Due sabotaggi, tutti e due 2/1: senza l'elenco, e con una riga ⚠ nuova aggiunta al turno.
