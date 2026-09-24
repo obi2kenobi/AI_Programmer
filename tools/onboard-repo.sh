@@ -29,8 +29,15 @@ gh repo view "$REPO" >/dev/null 2>&1 || { echo "repo non trovata: $REPO"; exit 1
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$REPO" >/dev/null 2>&1 \
   && echo "label night-shift creata" || echo "label già presente"
 
-WORK="$HOME/night-shift-work/${REPO##*/}"
-[ -d "$WORK/.git" ] || gh repo clone "$REPO" "$WORK" -- --depth=50 -q
+# (2026-09-24, sesto ventaglio, S2 R1 e S4 R3): si lavorava in $HOME/night-shift-work/<repo>, la copia del TURNO —
+# se c'era, niente fetch e niente ritorno su main: il turno la lascia sul ramo della PR notturna, e lo standard
+# finiva dentro quella PR; e un file rimasto non tracciato da un giro interrotto valeva «gia' presente», e non
+# arrivava mai. Ora l'onboard ha un clone suo, fresco, del ramo di default: «presente» vuol dire presente
+# sull'origin, e il push va li'. La copia del turno non si tocca.
+TMP_ONBOARD=$(mktemp -d)
+trap 'rm -rf "$TMP_ONBOARD"' EXIT
+WORK="$TMP_ONBOARD/${REPO##*/}"
+gh repo clone "$REPO" "$WORK" -- --depth=50 -q || { echo "⛔ clone di $REPO fallito"; exit 1; }
 
 if command -v gitleaks >/dev/null 2>&1; then
   if gitleaks detect --source "$WORK" --no-banner >/dev/null 2>&1; then

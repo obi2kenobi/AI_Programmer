@@ -135,6 +135,21 @@ grep -cxF 'bash tools/gas-gate.sh' "$TMP/check3/.night-verify" >/dev/null && ok 
 [ -f "$TMP/check3/PROJECT.md" ] && [ -f "$TMP/check1/PROJECT.md" ] && ok "caso 3 (R2 R6): PROJECT.md arriva anche con l'onboard" || ko "caso 3 (R2 R6): PROJECT.md assente dopo l'onboard"
 ! grep -cxF 'bash tools/gas-gate.sh' "$TMP/check1/.night-verify" >/dev/null && ok "caso 3 (R2 R6): una repo non GAS non riceve il gate GAS" || ko "caso 3 (R2 R6): gate GAS seminato su una repo senza .gs"
 
+# --- caso 4 (2026-09-24, sesto ventaglio, S2 R1 e S4 R3): la copia di lavoro c'e' gia' ---------------------
+# L'onboard lavorava in $HOME/night-shift-work/<repo>, la stessa copia del turno: se c'era, niente fetch e niente
+# ritorno su main. Il turno la lascia sul ramo della PR notturna, e lo standard finiva DENTRO quella PR. E un file
+# rimasto non tracciato da un giro interrotto valeva «gia' presente»: quella skill non arrivava mai, e diceva «Fatto».
+ORIGIN4=$(nuova_sandbox turno vuota)
+T4="$TMP/home-turno/night-shift-work/turno"; mkdir -p "$(dirname "$T4")"; git clone -q "$ORIGIN4" "$T4"
+git -C "$T4" checkout -q -b night/issue-7; echo fix > "$T4/fix.txt"; git -C "$T4" add fix.txt; git -C "$T4" commit -qm "fix issue 7"; git -C "$T4" push -q -u origin night/issue-7 2>/dev/null
+PRIMA7=$(git -C "$ORIGIN4" rev-parse night/issue-7)
+UNA=$(basename "$(ls -d "$HERE"/.claude/skills/*/ | head -1)"); mkdir -p "$T4/.claude/skills/$UNA"; cp -r "$HERE/.claude/skills/$UNA/." "$T4/.claude/skills/$UNA/"
+OUT4=$(onboard "$ORIGIN4" turno); RC4=$?
+git clone -q "$ORIGIN4" "$TMP/check4"
+[ "$(git -C "$ORIGIN4" rev-parse night/issue-7)" = "$PRIMA7" ] && ok "caso 4 (S2 R1): il ramo della PR notturna resta com'era" || ko "caso 4 (S2 R1): lo standard e' finito sul ramo della PR notturna"
+MANCA4=""; for x in "$HERE"/.claude/skills/*; do [ -e "$TMP/check4/.claude/skills/$(basename "$x")" ] || MANCA4="$MANCA4 $(basename "$x")"; done
+[ -z "$MANCA4" ] && [ "$RC4" -eq 0 ] && ok "caso 4 (S4 R3): ogni skill e' su main dell'origin, anche quella rimasta non tracciata nella copia" || ko "caso 4: su main mancano:$MANCA4 (rc $RC4)"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

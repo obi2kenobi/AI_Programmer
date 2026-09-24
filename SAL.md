@@ -5059,3 +5059,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - stash e reset falliti dicono la prima causa di git.
 
   Tre casi nuovi in `tests/test-allinea-hub.sh` (11/0), rossi prima, verdi anche col PATH «Mac». Sabotaggio: 8/3.
+- **Sesto ventaglio, S2 R1 e S4 R3 — il secondo onboard metteva lo standard nella PR della notte, o lo perdeva
+  dicendo «Fatto».** `tools/onboard-repo.sh` lavorava in `$HOME/night-shift-work/<repo>`, la stessa copia del
+  turno. Se c'era già, non faceva fetch né tornava su main. Il turno la lascia sul ramo della PR notturna
+  (`night/issue-N`), e il commit dello standard finiva dentro quella PR (S2 R1). Ogni passo si saltava se il file
+  esisteva nella cartella: un file rimasto non tracciato da un giro interrotto valeva «già presente», non
+  arrivava mai all'origin, e il giro diceva «Fatto» (S4 R3). Ora l'onboard ha un clone suo, fresco, del ramo di
+  default, in una cartella temporanea: «presente» vuol dire presente sull'origin, il push va lì, e la copia del
+  turno non si tocca. Caso nuovo in `tests/test-onboard-repo.sh` (21/0): copia del turno sul ramo di una PR, con
+  una skill non tracciata. Rosso prima; sabotaggio 19/2.
