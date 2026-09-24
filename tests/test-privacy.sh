@@ -117,9 +117,10 @@ git -C "$TMP" rm -q --cached nota-maiuscola.txt
 # pulito. Le forme di CREDENZIALE si cercano anche nella storia; i dati di contatto no (la storia e'
 # amnistiata per i dati di business, DEBITI.md). Il token si costruisce a runtime (E-007).
 TOKH="gh""p_$(printf 'B%.0s' $(seq 1 24))"
-G="git -C $TMP -c user.email=t@t -c user.name=t -c commit.gpgsign=false"
-printf 'x=%s\n' "$TOKH" > "$TMP/chiama.sh"; $G add chiama.sh; $G commit -qm "con token"
-$G rm -q chiama.sh; $G commit -qm "tolto"
+# (sesto ventaglio, rinviati di S3 R6): una funzione, non una stringa: con lo spazio in $TMP la stringa si spezzava.
+G() { git -C "$TMP" -c user.email=t@t -c user.name=t -c commit.gpgsign=false "$@"; }
+printf 'x=%s\n' "$TOKH" > "$TMP/chiama.sh"; G add chiama.sh; G commit -qm "con token"
+G rm -q chiama.sh; G commit -qm "tolto"
 OUT=$(bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && grep -c 'STORIA' <<<"$OUT" >/dev/null && ! grep -cF "$TOKH" <<<"$OUT" >/dev/null \
   && ok "credenziale tolta ma rimasta nella storia: rosso, detta per commit e file, mai il valore" \

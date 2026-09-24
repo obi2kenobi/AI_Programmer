@@ -164,7 +164,7 @@ T0=$(date +%s); run_guarded 1 bash -c 'trap "" TERM; sleep 12; true'; RCG=$?; T1
 # decisione: il nome esce invariato, anche se una repos.key residua lo mapperebbe.
 KEYTMP=$(mktemp -d)
 printf '# test\nREPO-X=finto/proprio\n' > "$KEYTMP/repos.key"
-OUT=$( HERE="$KEYTMP" bash -c "source '$HERE/night-shift/lib.sh'; repo_code 'finto/proprio'; repo_code 'altra/qualunque'" 2>/dev/null )
+OUT=$( HERE="$KEYTMP" bash -c 'source "$1/night-shift/lib.sh"; repo_code finto/proprio; repo_code altra/qualunque' _ "$HERE" 2>/dev/null )
 [ "$(echo "$OUT" | head -1)" = "finto/proprio" ] && ok "repo_code: nome invariato anche con una repos.key residua (codici ritirati)" || ko "repo_code mappa ancora: $OUT"
 [ "$(echo "$OUT" | tail -1)" = "altra/qualunque" ] && ok "repo_code: nome qualunque passa invariato" || ko "repo_code ignoto: $OUT"
 rm -rf "$KEYTMP"

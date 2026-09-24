@@ -32,7 +32,7 @@ export PATH="$TMP/bin:$PATH"
 # stessa strada con cui un agente deploiava davvero (deploy-ora leggeva il «si» dalla pipe).
 gesto() { # gesto <risposta> <repo>
   if script --version >/dev/null 2>&1; then
-    printf '%s\n' "$1" | env -u CLAUDECODE script -qec "bash '$TMP/tools/deploy-ora.sh' '$2'" /dev/null
+    printf '%s\n' "$1" | env -u CLAUDECODE script -qec "bash $(printf %q "$TMP/tools/deploy-ora.sh") $(printf %q "$2")" /dev/null
   else
     printf '%s\n' "$1" | env -u CLAUDECODE script -q /dev/null bash "$TMP/tools/deploy-ora.sh" "$2"
   fi

@@ -25658,6 +25658,21 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_privacy_g",
+      "label": "G()",
+      "_origin": "ast",
+      "community": 319,
+      "community_name": "test-privacy.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "tests/test-privacy.sh",
+      "source_location": "L121"
+    },
+    {
       "id": "tests_test_privacy_ko",
       "label": "ko()",
       "_origin": "ast",
@@ -57811,6 +57826,18 @@
     },
     {
       "source": "tests_test_privacy_sh__entry",
+      "target": "tests_test_privacy_g",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-privacy.sh",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_privacy_sh__entry",
       "target": "tests_test_privacy_ko",
       "relation": "calls",
       "_origin": "ast",
@@ -59127,6 +59154,18 @@
       "context": "call",
       "source_file": "tests/test-verifica-banco.sh",
       "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_verifica_visiva_estrai_testo_sh__entry",
+      "target": "tests_test_verifica_visiva_estrai_testo_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-verifica-visiva-estrai-testo.sh",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -93937,6 +93976,17 @@
     },
     {
       "source": "tests_test_privacy",
+      "target": "tests_test_privacy_g",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-privacy.sh",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_privacy",
       "target": "tests_test_privacy_ok",
       "relation": "defines",
       "_origin": "ast",
@@ -98458,5 +98508,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d7d836b76c478494f92c4b8b4719d36b0c3363bf"
+  "built_at_commit": "2eabbf921b4780cbeca8d362a6c6471f9704e8c3"
 }
