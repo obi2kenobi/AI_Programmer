@@ -125,6 +125,21 @@ else
   diff "$TMP/CLAUDE.md" "$HUB_CLAUDE" | head -20 | sed 's/^/  /'
 fi
 
+# righe_proprie <claude-del-satellite> <claude-dell-hub> (2026-09-24, quinto ventaglio, R2 R5): il riallineo
+# sostituisce il CLAUDE.md per intero, e una regola scritta solo nel satellite spariva dal ramo senza che
+# l'uscita lo dicesse. Qui si dicono le righe non vuote che la versione dell'hub non ha: proprie del
+# satellite, o di una versione vecchia dell'hub (da qui non si distinguono). Se spostarle in PROJECT.md o
+# fermare la PR e' una domanda di dominio (DEBITI.md); intanto si dicono, nell'uscita e nel commit.
+righe_proprie() {
+  [ -f "$1" ] || return 0
+  grep -vxFf "$2" "$1" | grep -v '^[[:space:]]*$'
+}
+avvisa_proprie() { # avvisa_proprie <righe> <repo>
+  [ -n "$1" ] || return 0
+  echo "  ⚠ $(grep -c . <<<"$1") righe del CLAUDE.md di ${2:-questo progetto} non sono nella versione dell'hub (proprie, o di un hub vecchio): la PR le toglie"
+  head -10 <<<"$1" | sed 's/^/    - /'
+}
+
 # fondi_settings <settings-del-satellite> <settings-dell-hub> (Q13): riscrive il primo con la fusione.
 # Oggetti fusi chiave per chiave (prima le chiavi del satellite), array uniti senza doppioni,
 # scalari: vince lo standard; .hooks e' tutto dell'hub. Gli hook del satellite che cadono si dicono.
@@ -172,6 +187,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   while IFS= read -r P; do
     [ -n "$P" ] && git add "$P" 2>/dev/null && COPIATI=$((COPIATI+1))
   done <<< "$SCRITTI"
+  PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"
   cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null && COPIATI=$((COPIATI+1))  # D8: versione satellite
   for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
@@ -240,7 +256,8 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   fi
   BR="claude/standard-$(date +%Y%m%d)"
   git checkout -q -b "$BR"
-  git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard"
+  git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard" \
+    ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"}
   spingi "$BR" || exit 1
   # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
   # la PR si VERIFICA, non si dichiara
@@ -257,9 +274,11 @@ if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
   cd "$TMP/work" || { echo "sync-repo: il clone non ha creato $TMP/work — mi fermo"; exit 1; }
   git checkout -q -b "$BR"
+  PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"
   cp "$HUB_CLAUDE" CLAUDE.md
   git add CLAUDE.md
-  git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: riallinea CLAUDE.md all'hub (regole ereditate) — tools/sync-repo.sh"
+  git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: riallinea CLAUDE.md all'hub (regole ereditate) — tools/sync-repo.sh" \
+    ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"}
   spingi "$BR" || exit 1
   gh pr create --head "$BR" --fill --title "chore: riallinea CLAUDE.md all'hub" 2>&1 | tail -1
 fi

@@ -4869,5 +4869,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Tre casi nuovi in `tests/test-clasp-block-hook.sh` (101/0), due rossi prima: da `src/`, e col solo campo
   `cwd` a gancio lanciato altrove. Il terzo prova che `npm test` resta consentito. Sabotaggio: 99/2.
-  ASSUNTO del giro: che Claude Code lanci il gancio nella cartella corrente dopo un `cd`. Ora non conta più,
-  perché il campo `cwd` c'è in ogni input di gancio.
+  ASSUNTO del giro: che Claude Code lanci il gancio nella cartella corrente dopo un `cd`. Ora conta meno: il
+  gancio legge il campo `cwd`, che la documentazione degli hook mette fra i campi comuni dell'input. Anche
+  questo è un ASSUNTO, non provato dal vivo.
+- **Quinto ventaglio, R2 R5 — il riallineo toglieva le regole proprie del satellite, senza dirlo.**
+  `tools/sync-repo.sh --standard` (e la PR di riallineo che il turno apre da solo) sostituisce per intero il
+  CLAUDE.md del satellite. Una regola scritta solo lì spariva dal ramo, e l'uscita mostrava le prime 20 righe
+  del diff senza dire cosa si perdeva. Ora `righe_proprie` dice «⚠ N righe del CLAUDE.md di <repo> non sono
+  nella versione dell'hub: la PR le toglie» e ne elenca fino a dieci. Le stesse righe vanno nel messaggio
+  del commit, quindi nel corpo della PR (`--fill`). Da qui non si distingue una riga propria da una di un hub
+  vecchio: lo dice il messaggio stesso. Se spostarle in PROJECT.md o fermare la PR è una domanda (DEBITI);
+  accanto c'è R2 R4, i guardiani del commit sulle skill dello standard nei satelliti.
+
+  Due casi nuovi in `tests/test-sync-repo.sh` (27/0), rossi prima. Sabotaggio: 25/2.

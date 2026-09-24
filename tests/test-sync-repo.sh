@@ -87,6 +87,19 @@ BR=$(ramo_standard vuota-remota)
 grep -q "ASSENTE" <<<"$OUT" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
   || ko "D11: assenza non dichiarata come tale: $(echo "$OUT" | head -1)"
 
+# (2026-09-24, quinto ventaglio, R2 R5): --standard sostituisce il CLAUDE.md del satellite per intero — la
+# regola locale spariva dal ramo, e l'uscita non lo diceva. Se le righe vadano spostate in PROJECT.md o la
+# PR si debba fermare e' una domanda (DEBITI); intanto si DICONO, nell'uscita e nel messaggio del commit.
+nuovo_bare proprio 0
+{ cat "$TMP/claude-sat.md"; printf '\n## Regola locale\nMai toccare il foglio MASTER a mano.\n'; } > "$TMP/proprio-seed/CLAUDE.md"
+git -C "$TMP/proprio-seed" add -A && git -C "$TMP/proprio-seed" -c user.name=t -c user.email=t@t commit -qm locale && git -C "$TMP/proprio-seed" push -q origin HEAD:main 2>/dev/null
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/proprio.git" GH_CLAUDE_MD="$TMP/proprio-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/proprio --standard 2>&1)
+BR=$(ramo_standard proprio)
+grep -c "⚠ 2 righe del CLAUDE.md" <<<"$OUT" >/dev/null && grep -c "foglio MASTER" <<<"$OUT" >/dev/null \
+  && ok "R2 R5: --standard dice quante e quali righe del CLAUDE.md del satellite la PR toglie" || ko "R2 R5: righe proprie tolte in silenzio: $(grep -c . <<<"$OUT") righe d'uscita, nessun avviso"
+[ -n "$BR" ] && git -C "$TMP/proprio.git" log -1 --format=%B "$BR" | grep -c "foglio MASTER" >/dev/null \
+  && ok "R2 R5: le righe tolte sono nel messaggio del commit (quindi nel corpo della PR, --fill)" || ko "R2 R5: il commit del ramo '$BR' non le nomina"
+
 # D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
 nuovo_bare canarino-uguale 1
 OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
