@@ -30,10 +30,25 @@ if ! command -v jq >/dev/null 2>&1; then
 fi
 
 INPUT="$(cat)"
+# (2026-09-24, quarto ventaglio, Q5): un errore interno del gancio (una variabile non inizializzata sotto
+# set -u, scritta da me lo stesso giorno) usciva 1 senza decisione — per Claude Code un errore NON
+# bloccante: il comando passava, clasp push compreso. Se il gancio muore, decide il modo prudente di
+# «jq assente»: push/deploy/deploy-ora negati con exit 2, il resto passa.
+prudente() {
+  local rc=$?; [ "$rc" -eq 0 ] && return 0
+  if grep -qE 'clasp[^"]*[^a-z](push|deploy)([^a-z]|$)|deploy-ora' <<<"$INPUT"; then
+    echo "NEGATO (clasp-block-hook, errore interno rc=$rc: modo prudente): clasp push/deploy e deploy-ora sono dell'umano." >&2
+    exit 2
+  fi
+  exit 0
+}
+trap prudente EXIT
 CMD="$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
 [ -z "$CMD" ] && exit 0
 TOOL="$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)"
-[ "$TOOL" = "Bash" ] || exit 0
+# (2026-09-24, quarto ventaglio, Q5 R4): anche Monitor esegue un comando di shell (tool_input.command) —
+# il gancio lo ignorava, e settings.json non lo registrava
+case "$TOOL" in Bash|Monitor) ;; *) exit 0 ;; esac
 
 # Che cos'è un'INVOCAZIONE di clasp (una definizione, usata da entrambi i rami sotto:
 # prima viveva copiata in due grep che potevano divergere).
@@ -51,6 +66,10 @@ TOOL="$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)"
 # `sudo`, alias di shell. Riconoscerli vorrebbe dire accettare un comando arbitrario
 # davanti a clasp, e riaprirebbe il falso positivo appena difeso. Questo è un cancello
 # contro l'errore, non contro un aggressore (attese e limiti: tests/test-clasp-block-hook.sh).
+# (2026-09-24, quarto ventaglio, Q5 R4/R6) Fuori anche, per nome: gli interpreti non shell (`python3 -c
+# "subprocess.run(['clasp','push'])"`, `node -e "execSync(…)"`), il backslash (`pu\sh`, `\clasp`), le
+# graffe (`clasp {push,}`), le variabili e le sostituzioni (`c=clasp; $c push`), `$'push'`, e su macOS le
+# maiuscole (`Clasp push` su un disco che non le distingue). Sono forme da aggressore, non da errore.
 # (revisione 10 giri, 2026-09-23): SEP accettava solo inizio riga e ; & | — undici forme
 # comuni della shell passavano: il LOOP generato (`for …; do clasp push; done`, la forma
 # dell'incidente REPO-Q), `(…)`, `{ …; }`, `if …; then …`, e i prefissi che eseguono il
@@ -61,7 +80,7 @@ TOOL="$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null)"
 # che ESEGUONO il comando che segue (if, !, while, until, timeout N, command, nice, watch, xargs con
 # opzioni, find -execdir, parallel), le opzioni di clasp PRIMA del sottocomando (`clasp -A f push`),
 # e `deploy` combaciava con `deployments`, che elenca soltanto. Tre pezzi: PREF, OPT, FINE.
-PREF='(do|then|else|elif|if|while|until|!|time|nohup|exec|command|watch([[:space:]]+-[^[:space:]]+)*|nice([[:space:]]+-n[[:space:]]*-?[0-9]+|[[:space:]]+-[0-9]+)?|timeout([[:space:]]+-[^[:space:]]+([[:space:]]+[0-9.]+[smhd]?)?)*[[:space:]]+[0-9.]+[smhd]?|xargs([[:space:]]+-[^[:space:]]+([[:space:]]+[0-9]+)?)*|-exec(dir)?|parallel([[:space:]]+-[^[:space:]]+)*)'
+PREF='(do|then|else|elif|if|while|until|!|time|nohup|exec|eval|source|command|watch([[:space:]]+-[^[:space:]]+)*|nice([[:space:]]+-n[[:space:]]*-?[0-9]+|[[:space:]]+-[0-9]+)?|timeout([[:space:]]+-[^[:space:]]+([[:space:]]+[0-9.]+[smhd]?)?)*[[:space:]]+[0-9.]+[smhd]?|xargs([[:space:]]+-[^[:space:]]+([[:space:]]+[0-9]+)?)*|-exec(dir)?|parallel([[:space:]]+-[^[:space:]]+)*)'
 SEP="(^|[;&|({][[:space:]]*|(^|[;&|({][[:space:]]*|[[:space:]])${PREF}[[:space:]]+)"
 RUN='((npx|bunx|npm[[:space:]]+exec|pnpm[[:space:]]+dlx|yarn[[:space:]]+dlx)[[:space:]]+(-{1,2}[A-Za-z0-9-]+[[:space:]]+)*)?'
 BIN='([A-Za-z0-9_./-]*/)?(@google/)?'
@@ -70,7 +89,9 @@ FINE='([[:space:];&|)"'"'"']|$)'
 INVOCAZIONE="${SEP}${RUN}${BIN}clasp${OPT}[[:space:]]+(push|deploy)${FINE}"
 # `bash -c "…"` (e sh/zsh/dash): le virgolette sono DATI per lo spoglio qui sotto, ma
 # l'interprete le ESEGUE — si guarda il comando intero, con l'invocazione dentro le virgolette.
-SHC="(^|[;&|({[:space:]])(ba|z|da)?sh[[:space:]]+(-[A-Za-z]+[[:space:]]+)*-[A-Za-z]*c[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${RUN}${BIN}clasp${OPT}[[:space:]]+(push|deploy)${FINE}"
+# (Q5 R4): la shell anche dopo `/` (/bin/bash), con opzioni lunghe o con argomento prima di -c (--norc,
+# -o pipefail), `--` dopo -c; e `eval "…"`, che esegue la stringa come bash -c
+SHC="(^|[;&|({[:space:]/])((ba|z|da)?sh[[:space:]]+(-{1,2}[A-Za-z-]+([[:space:]]+[a-z]+)?[[:space:]]+)*-[A-Za-z]*c([[:space:]]+--)?|eval)[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${RUN}${BIN}clasp${OPT}[[:space:]]+(push|deploy)${FINE}"
 
 # (report REPO-I 2026-09-19, H7 — due buchi misurati eseguendo):
 #   a) `npm run push` non contiene la stringa clasp e PASSAVA — ed e' la via che
@@ -114,7 +135,7 @@ senza_heredoc() {
         resto = substr(resto, RSTART + RLENGTH)
       }
       if (n != 1) next
-      if (riga ~ /(^|[;&|({ \t])(ba|z|da)?sh([ \t]|$)/) next
+      if (riga ~ /(^|[;&|({ \t\/])((ba|z|da)?sh|source|\.)([ \t<]|$)/) next   # (Q5 R4): anche /bin/bash, bash<<, source, .
       trattino = (substr(trovato, 3, 1) == "-")
       d = trovato; sub(/^<<-?[ \t]*/, "", d); gsub("[\"" Q "]", "", d)
       delim = d; dentro = 1; buf = ""
@@ -125,7 +146,11 @@ senza_heredoc() {
 CMD_H=$(printf '%s\n' "$CMD" | senza_heredoc)
 CMD_UNA=$(printf '%s' "$CMD_H" | tr '\n' ';')
 CMD_NOBT=$(printf '%s' "$CMD_UNA" | sed "s/\`[^\`]*\`//g")
-CMD_STRIPPED=$(printf '%s' "$CMD_NOBT" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
+# (Q5 R6): gli apici ATTACCATI a una parola senza spazi si tolgono prima dello spoglio — `clasp "push"` e
+# `clasp 'deploy'` (forme comuni negli script generati) diventavano `clasp ` e passavano. Una stringa con
+# spazi resta un dato (`grep 'npx clasp push' docs`).
+CMD_ATT=$(printf '%s' "$CMD_NOBT" | sed -E "s/\"([^\" ]*)\"/\\1/g; s/'([^' ]*)'/\\1/g")
+CMD_STRIPPED=$(printf '%s' "$CMD_ATT" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
 if grep -qE "$INVOCAZIONE" <<<"$CMD_STRIPPED" || grep -qE "$SHC" <<<"$CMD_NOBT"; then
@@ -145,16 +170,33 @@ if grep -qE "$DEPLOY_ORA" <<<"$CMD_STRIPPED"; then
 fi
 
 # H7a: la via documentata — npm run push / npm run deploy — risolta da package.json
-if [ -f "$PWD/package.json" ] && grep -qE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' <<<"$CMD_STRIPPED"; then
-  for SCR in $(printf '%s' "$CMD_STRIPPED" | grep -oE '(npm|yarn|pnpm|bun)[[:space:]]+(run|run-script)[[:space:]]+[A-Za-z0-9_.:-]+' | awk '{print $NF}' | sort -u); do
-    RISOLTO=$(jq -r --arg s "$SCR" '.scripts[$s] // empty' "$PWD/package.json" 2>/dev/null)
-    [ -z "$RISOLTO" ] && continue
-    if grep -qE "$INVOCAZIONE" <<<"$RISOLTO"; then
-      jq -n --arg r "NEGATO (clasp-block-hook): npm run $SCR risolve in \`$RISOLTO\` — clasp push/deploy scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I, H7: la via documentata era proprio quella non presidiata)." \
+# (2026-09-24, quarto ventaglio, Q5 R3): si risolveva solo `(npm|…) run <nome>` e solo nel package.json di
+# $PWD — passavano `pnpm push`, `yarn push`, `bun push` (senza run), `npm start`, le catene (`dp` → `npm run
+# push`), `npm --prefix sub …`, `cd sub && npm run …`: eseguivano davvero clasp push col clasp finto. Ora:
+# gli script di OGNI package.json sotto $PWD (profondita' 3, node_modules fuori) che arrivano a clasp
+# push/deploy, anche per catena, sono vietati per NOME a qualunque runner nello stesso segmento.
+if grep -qE '(^|[^A-Za-z0-9_-])(npm|yarn|pnpm|bun)([[:space:]]|$)' <<<"$CMD_STRIPPED"; then
+  SCRIPTS=$(find "$PWD" -maxdepth 3 -name node_modules -prune -o -name package.json -print 2>/dev/null \
+    | while IFS= read -r PJ; do jq -r --arg f "$PJ" '(.scripts // {}) | to_entries[] | "\($f)\t\(.key)\t\(.value)"' "$PJ" 2>/dev/null; done)
+  VIETATI=""; ORIGINE=""
+  for _giro in 1 2 3 4; do   # catene: fino al punto fisso, al massimo 4 anelli
+    while IFS=$'\t' read -r PJ NOME VAL; do
+      [ -n "$NOME" ] || continue
+      grep -qxF "$NOME" <<<"$VIETATI" && continue
+      if grep -qE "$INVOCAZIONE" <<<"$VAL" || { [ -n "$VIETATI" ] && grep -qE "(npm|yarn|pnpm|bun)[[:space:]]+((run|run-script)[[:space:]]+)?($(tr '\n' '|' <<<"$VIETATI" | sed 's/|$//; s/[.[*^$()+?{]/\\&/g'))([[:space:];&|]|$)" <<<"$VAL"; }; then
+        VIETATI=$(printf '%s\n%s' "$VIETATI" "$NOME" | sed '/^$/d'); ORIGINE="$ORIGINE $NOME:${PJ#"$PWD"/}"
+      fi
+    done <<<"$SCRIPTS"
+  done
+  while IFS= read -r SCR; do
+    [ -n "$SCR" ] || continue
+    SCR_RE=$(sed 's/[.[*^$()+?{|]/\\&/g' <<<"$SCR")
+    if grep -qE "(^|[^A-Za-z0-9_-])(npm|yarn|pnpm|bun)([[:space:]]+[^;&|]*)?[[:space:]]${SCR_RE}([[:space:];&|)]|$)" <<<"$CMD_STRIPPED"; then
+      jq -n --arg r "NEGATO (clasp-block-hook): lo script «$SCR» ($(tr ' ' '\n' <<<"$ORIGINE" | grep "^$SCR_RE:" | head -1 | cut -d: -f2-)) arriva a clasp push/deploy — scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I H7; quarto ventaglio Q5: runner senza run, npm start, catene, sottocartelle)." \
         '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
       exit 0
     fi
-  done
+  done <<<"$VIETATI"
 fi
 
 # (dal campo REPO-Q 2026-09-02: l'agente ha GENERATO un loop di clasp push

@@ -4436,3 +4436,39 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   verde (23/0). Il rosso di R1 l'ho riprodotto da solo (rc 0, «ALLINEATO»), e il sabotaggio lo rifà. Il
   rosso di R6 NON l'ho rifatto, perché riscriverebbe `/CLAUDE.md`: l'ha provato il giro Q2, e lo si legge
   nel codice di prima. Dopo il banco `/CLAUDE.md` ha ancora l'ora delle 12:01, quindi la cura non scrive.
+- **Quarto ventaglio, Q5 R3, R4, R6 — il cancello di clasp aveva vie normali aperte, e un gancio morto
+  lasciava passare.** Il giro Q5, con un clasp finto, ha eseguito davvero il push passando dal gancio
+  con 20 forme che un agente distratto può scrivere:
+  - `pnpm push`, `yarn push`, `bun push` (senza `run`), `npm start`;
+  - le catene di script (`dp` → `npm run push`), il `package.json` di una sottocartella (`cd sub &&`,
+    `--prefix`, `--cwd`);
+  - la shell dopo `/` o attaccata al heredoc (`bash<<EOF`), `bash -o pipefail -c`, `--norc`, `-c --`;
+  - `eval`, `source`, e il sottocomando fra virgolette (`clasp "push"`);
+  - il tool Monitor, che esegue un comando di shell ma non era guardato.
+
+  Cure in `tools/clasp-block-hook.sh`:
+  - gli script di ogni `package.json` sotto la cartella (profondità 3) che arrivano a clasp, anche
+    per catena fino al punto fisso, sono vietati per nome a qualunque runner;
+  - la shell è riconosciuta dopo `/` e prima di `<`, con opzioni lunghe o con argomento;
+  - eval e source stanno fra le parole che eseguono;
+  - gli apici attaccati a una parola senza spazi si tolgono prima dello spoglio;
+  - Monitor è guardato, e il matcher in `.claude/settings.json` è `Bash|Monitor`.
+
+  Scoperto scrivendo la cura: il mio primo tentativo aveva una variabile non inizializzata, e il gancio
+  moriva con rc 1. Per Claude Code è un errore non bloccante: TUTTO passava, `npm run push` compreso
+  (il banco H7 è diventato rosso). Ora una trappola in uscita fa decidere al modo prudente se il gancio
+  muore. `tests/test-clasp-block-hook.sh`:
+  - le 20 forme più Monitor e matcher: rosso prima (22 FAIL);
+  - le 5 forme lecite (npm test, install, run test, heredoc che cita la forma, grep) passano;
+  - il crash iniettato su una copia nega il push e lascia passare `ls`;
+  - verde ora (98/0).
+
+  Sabotaggi:
+  - Monitor tolto: 95/1;
+  - catena a un solo giro: al primo tentativo il banco restava verde, perché nel fixture `push` veniva
+    prima di `dp`. Corretto con una catena a due anelli in ordine inverso: 95/1;
+  - trappola che non decide: 96/2.
+
+  Il gancio costa 44 ms su `npm test` nell'hub. Il limite dichiarato nomina, per nome, le forme da
+  aggressore lasciate fuori (interpreti non shell, backslash, graffe, variabili, `$'…'`, maiuscole su
+  macOS).

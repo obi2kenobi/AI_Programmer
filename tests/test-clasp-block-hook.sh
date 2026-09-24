@@ -89,7 +89,7 @@ done
 # l'errore, non contro un aggressore: chi vuole aggirarlo ci riesce comunque,
 # e la regola resta scritta in CLAUDE.md per quel caso.
 
-jq -e '.hooks.PreToolUse[] | select(.matcher == "Bash") | .hooks[] | select(.command | contains("clasp-block"))' "$SETTINGS" >/dev/null 2>&1 \
+jq -e '.hooks.PreToolUse[] | select(.matcher | split("|") | index("Bash")) | .hooks[] | select(.command | contains("clasp-block"))' "$SETTINGS" >/dev/null 2>&1 \
   && ok "settings.json registra l'hook su Bash" || ko "settings.json non registra clasp-block-hook"
 
 
@@ -228,6 +228,44 @@ for FORMA in "if ${P} ${V}; then echo ok; fi" "! ${P} ${V}" "while ${P} ${V}; do
 done
 [ "$(decideh "${P} deployments")" = "consentito" ] && ok "${P} deployments (elenca soltanto): consentito" || ko "${P} deployments negato a torto (deploy combaciava con deployments)"
 [ "$(decideh "${P} pull && ${P} status")" = "consentito" ] && ok "${P} pull e status: consentiti" || ko "lettura negata a torto"
+
+# ── Q5 R3-R4-R6 (2026-09-24, quarto ventaglio, «i ganci come avversario»): forme che PASSAVANO il gancio
+# e che, col clasp finto, eseguivano davvero il push (provato dal giro). Sono le vie NORMALI di un
+# agente distratto, non di un aggressore: i runner senza `run`, `npm start`, le catene di script, il
+# package.json della sottocartella, la shell dopo `/` o attaccata al heredoc, eval e source, il
+# sottocomando fra virgolette, il tool Monitor.
+SBQ=$(mktemp -d /tmp/clasp-q5.XXXXXX); mkdir -p "$SBQ/sub"
+printf '{"scripts":{"dp":"npm run inoltra","inoltra":"npm run push","push":"clasp push","start":"clasp push","test":"echo ok"}}' > "$SBQ/package.json"   # dp → inoltra → push: la catena a due anelli, nell'ordine che un solo giro non risolve
+printf '{"scripts":{"rilascia":"clasp deploy"}}' > "$SBQ/sub/package.json"
+cp "$HOOK" "$SBQ/hook.sh"
+decideq() { # decideq <tool> <comando>
+  D=$(jq -cn --arg t "$1" --arg c "$2" '{tool_name:$t, tool_input:{command:$c}}' | (cd "$SBQ" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+  [ -n "$D" ] || D=consentito; printf '%s' "$D"; }
+NQ=0; for FORMA in 'pnpm push' 'yarn push' 'bun push' 'npm start' 'npm run dp' 'npm run "push"' \
+  'npm --prefix sub run rilascia' 'cd sub && npm run rilascia' 'yarn --cwd sub rilascia' \
+  $'bash<<EOF\nclasp push\nEOF' $'/bin/bash <<EOF\nclasp push\nEOF' $'source /dev/stdin <<EOF\nclasp push\nEOF' \
+  '/bin/bash -c "clasp push"' 'bash -o pipefail -c "clasp push"' 'bash -c -- "clasp push"' 'bash --norc -c "clasp push"' \
+  'eval clasp push' 'eval "clasp push"' 'clasp "push"' "clasp 'deploy'"; do
+  D=$(decideq Bash "$FORMA"); [ "$D" = deny ] || { NQ=$((NQ+1)); ko "Q5: passa → $(tr '\n' '~' <<<"$FORMA")"; }
+done
+[ "$NQ" -eq 0 ] && ok "Q5: 20 forme normali di clasp push/deploy (runner, catene, sottocartelle, shell, eval, virgolette) → NEGATE"
+D=$(decideq Monitor 'clasp push'); [ "$D" = deny ] && ok "Q5: il tool Monitor esegue un comando di shell: clasp push → NEGATO" || ko "Q5: Monitor clasp push passa ($D)"
+grep -c '"matcher": "Bash|Monitor"' "$SETTINGS" >/dev/null && ok "Q5: il gancio e' registrato anche per Monitor" || ko "Q5: settings.json registra il gancio solo per Bash"
+for LECITO in 'npm test' 'npm install' 'npm run test' $'cat <<EOF > note.md\nclasp push resta vietato\nEOF' "grep -rn 'clasp push' docs"; do
+  D=$(decideq Bash "$LECITO"); [ "$D" = consentito ] && ok "Q5: consentito → $(tr '\n' '~' <<<"$LECITO")" || ko "Q5: negato a torto → $(tr '\n' '~' <<<"$LECITO")"
+done
+rm -rf "$SBQ"
+
+# (Q5, 2026-09-24): il gancio che MUORE deve negare, non lasciar passare. Una copia con un crash iniettato
+# subito dopo la lettura dell'input (una variabile mai definita, sotto set -u — il difetto vero del giorno).
+SBX=$(mktemp -d /tmp/clasp-crash.XXXXXX)
+sed '/^trap prudente EXIT$/a echo "$VARIABILE_MAI_DEFINITA_Q5"' "$HOOK" > "$SBX/hook.sh"
+grep -c 'VARIABILE_MAI_DEFINITA_Q5' "$SBX/hook.sh" >/dev/null || ko "premessa: crash non iniettato (la riga della trappola e' cambiata?)"
+jq -cn '{tool_name:"Bash",tool_input:{command:"npx clasp push"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; RCX=$?
+[ "$RCX" -eq 2 ] && ok "gancio morto su clasp push: nega (exit 2, modo prudente)" || ko "gancio morto su clasp push: rc $RCX — il comando passerebbe"
+jq -cn '{tool_name:"Bash",tool_input:{command:"ls -la"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; RCX=$?
+[ "$RCX" -eq 0 ] && ok "gancio morto su un comando innocuo: passa (non blocca tutto)" || ko "gancio morto su ls: rc $RCX"
+rm -rf "$SBX"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
