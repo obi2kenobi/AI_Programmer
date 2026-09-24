@@ -71,6 +71,22 @@ if [ "$ATTUALE" = "$ORIG" ]; then
 else
   ko "B: SIGTERM ha lasciato il tool sporco (payload o monco): il trap non ripristina"
 fi
+# ── C. TERM e KILL dopo 5 s, come fa ai_timeout (2026-09-24, terzo ventaglio, V4#3): il banco girava in
+#    primo piano, e la trap aspettava la sua fine prima di ripristinare — col KILL 5 s dopo il TERM la
+#    trap non girava mai, e il tool restava NEUTRALIZZATO. Il test dorme 30 s: il ripristino deve arrivare
+#    prima del KILL.
+git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
+( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+PID=$!
+sleep 3
+[ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "C: la mutazione e' in corso al momento del colpo (prova non vuota)" \
+  || ko "C: al colpo foo.sh non era mutato — la prova sarebbe vuota"
+kill -TERM "$PID" 2>/dev/null; sleep 5; kill -KILL "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null
+wait "$PID" 2>/dev/null
+[ "$(cat "$TMP/repo/tools/foo.sh")" = "$ORIG" ] && ok "C: TERM e KILL dopo 5 s (come ai_timeout): il tool e' ripristinato prima del KILL" \
+  || ko "C: TERM e KILL dopo 5 s: il tool e' rimasto neutralizzato (la trap aspettava il banco)"
+pkill -f "$TMP/repo/tests/test-foo.sh" 2>/dev/null
+
 # il banco deve anche lasciare l'albero senza file temporanei .mut/.rest
 if ! ls "$TMP/repo/tools/" | grep -c "foo.sh.mut\|foo.sh.rest" >/dev/null; then
   ok "nessun file temporaneo .mut/.rest abbandonato"

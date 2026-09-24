@@ -4062,3 +4062,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Guardia nel banco (il clone ucciso sta sotto il suo `TMPDIR`): rossa al sabotaggio. Le cartelle
   già lasciate in `/tmp` stanotte non le cancello a mano: dopo E-044, niente `rm -rf` su cose che non
   ho creato in questo stesso script. Le toglie il container quando si chiude.
+- **Terzo ventaglio, V4#3 — mutation-tests, sotto un tetto di tempo, lasciava il tool neutralizzato.**
+  `tools/mutation-tests.sh` lanciava il banco in primo piano: un TERM aspettava la fine del banco
+  prima della trap. Con `ai_timeout` il KILL arriva 5 s dopo il TERM, quindi la trap non girava e il
+  tool restava `exit 0`. E dopo un TERM la trap ripristinava ma il ciclo passava al banco dopo, a
+  mutare ancora. Ora il banco gira in background col suo `wait`, la trap lo uccide e ripristina, e
+  TERM/INT escono. Caso C nuovo in `tests/test-mutation-atomico.sh` (TERM, poi KILL a 5 s): rosso
+  prima, rosso al sabotaggio. Il banco passa da 43 a 16 s. `tests/test-lock-turno-corsa.sh` fa le
+  prove a lotti di 20 in parallelo: da 21 a 2,5 s, e il sabotaggio del rigiudizio ora dà 22 doppie su
+  60 (prima 3).

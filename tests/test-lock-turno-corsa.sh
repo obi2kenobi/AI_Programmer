@@ -16,14 +16,17 @@ source "$HERE/night-shift/lib.sh"
 if prendi_lock_turno "\$1"; then echo "\$\$" >> "\$2"; sleep 0.3; fi
 EOF2
 N=${PROVE:-60}; DOPPIE=0
+# (V4#3, 2026-09-24): le prove sono indipendenti (un lock ciascuna): a lotti di 20 in parallelo — da 21 s a
+# pochi secondi, stesso giudizio (sabotato il rigiudizio del furto, resta rosso)
 for i in $(seq 1 "$N"); do
   L="$T/lock-$i"; mkdir "$L"; echo 999999 > "$L/pid"   # orfano: un PID che non esiste
   : > "$T/presi-$i"
-  bash "$T/night-shift-finto.sh" "$L" "$T/presi-$i" & A=$!
-  bash "$T/night-shift-finto.sh" "$L" "$T/presi-$i" & B=$!
-  wait "$A" "$B"
-  [ "$(grep -c . "$T/presi-$i")" -gt 1 ] && DOPPIE=$((DOPPIE+1))
+  bash "$T/night-shift-finto.sh" "$L" "$T/presi-$i" &
+  bash "$T/night-shift-finto.sh" "$L" "$T/presi-$i" &
+  [ $((i % 20)) -eq 0 ] && wait
 done
+wait
+for i in $(seq 1 "$N"); do [ "$(grep -c . "$T/presi-$i")" -gt 1 ] && DOPPIE=$((DOPPIE+1)); done
 [ "$DOPPIE" -eq 0 ] && ok "lock orfano conteso da due avvii: mai preso da entrambi ($N prove)" \
   || ko "lock orfano preso da ENTRAMBI gli avvii in $DOPPIE prove su $N"
 

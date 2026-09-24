@@ -26,8 +26,14 @@ fi
 # Un SIGKILL sfonda anche questo, ma ciò che resta è un tool NEUTRALIZZATO (due
 # righe piene, visibili al git diff, e l'albero sporco blocca il giro dopo) —
 # mai più il silenzio di un file monco che nessuno vede.
-MUTATO=""; BACKUP=""
+MUTATO=""; BACKUP=""; FIGLIO=""
+# (2026-09-24, terzo ventaglio, V4#3): il banco girava in PRIMO PIANO, e un TERM aspettava la sua fine
+# prima che la trap girasse — sotto ai_timeout il KILL arriva 5 s dopo il TERM, e se il banco durava di
+# piu' la trap non girava mai: il tool restava NEUTRALIZZATO. Ora il banco gira in background col suo
+# `wait` (che il segnale interrompe subito), la trap lo uccide e poi ripristina. E dopo un TERM o un INT
+# si ESCE: prima la trap ripristinava e il ciclo passava al banco dopo, a mutare ancora.
 ripristina() {
+  if [ -n "$FIGLIO" ]; then pkill -KILL -P "$FIGLIO" 2>/dev/null; kill -KILL "$FIGLIO" 2>/dev/null; FIGLIO=""; fi
   if [ -n "$MUTATO" ] && [ -f "$BACKUP" ]; then
     cp "$BACKUP" "${MUTATO}.rest.$$" 2>/dev/null \
       && chmod +x "${MUTATO}.rest.$$" 2>/dev/null \
@@ -36,7 +42,9 @@ ripristina() {
   [ -n "$BACKUP" ] && rm -f "$BACKUP" 2>/dev/null
   MUTATO=""; BACKUP=""
 }
-trap ripristina INT TERM EXIT
+trap 'ripristina; exit 143' TERM
+trap 'ripristina; exit 130' INT
+trap ripristina EXIT
 
 TENGONO=0; TEATRI=0; ROTTI=0
 for t in tests/test-*.sh; do
@@ -68,7 +76,9 @@ for t in tests/test-*.sh; do
     *.py) printf 'import sys\nsys.exit(0)\n' > "${tool}.mut.$$" && mv -f "${tool}.mut.$$" "$tool" ;;
     *.sh) printf '#!/bin/bash\nexit 0\n' > "${tool}.mut.$$" && chmod +x "${tool}.mut.$$" && mv -f "${tool}.mut.$$" "$tool" ;;
   esac
-  if bash "$t" >/dev/null 2>&1; then
+  bash "$t" >/dev/null 2>&1 & FIGLIO=$!
+  wait "$FIGLIO"; RC_T=$?; FIGLIO=""
+  if [ "$RC_T" -eq 0 ]; then
     TEATRI=$((TEATRI+1))
     echo "TEATRO: $(basename "$t") passa con $(basename "$tool") neutralizzato — non verifica il codice"
   else
