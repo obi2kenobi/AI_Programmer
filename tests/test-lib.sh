@@ -174,6 +174,11 @@ rm -rf "$KEYTMP"
 command -v ambiente_turno >/dev/null && AMB=$(ambiente_turno) || AMB=""
 grep -cE "^ambiente: bash [0-9]+\.[0-9]+.* · timeout: .+ · sandbox: .+" <<<"$AMB" >/dev/null \
   && ok "ambiente_turno: bash, ramo di timeout e sandbox in una riga" || ko "ambiente_turno assente o incompleta: '$AMB'"
+# (2026-09-24, sesto ventaglio, S5 R4): la riga diceva la bash del TURNO (/bin/bash, 3.2 sul Mac), ma i banchi partono
+# con `bash` dal PATH, dove /opt/homebrew/bin viene prima: possono essere due bash diverse, e dal log non si sapeva
+# con quale sed, timeout e setsid avevano girato i banchi (gli strumenti che al Mac hanno gia' morso).
+grep -cE 'bash dei figli: [^ ]+ [0-9]' <<<"$AMB" >/dev/null && grep -c 'sed: ' <<<"$AMB" >/dev/null && grep -c 'setsid: ' <<<"$AMB" >/dev/null \
+  && ok "S5 R4: la riga d'ambiente dice anche la bash dei banchi, il sed e setsid" || ko "S5 R4: riga d'ambiente senza la bash dei figli / sed / setsid: '$AMB'"
 grep -c "timeout: perl" <<<"$(AI_TIMEOUT_FORCE_PERL=1 ambiente_turno 2>/dev/null)" >/dev/null \
   && ok "ambiente_turno: col ramo perl forzato dice perl" || ko "ambiente_turno non vede il ramo perl"
 grep -c 'log "$(ambiente_turno)"' "$HERE/night-shift/night-shift.sh" >/dev/null \

@@ -144,10 +144,16 @@ funzione_definita_e_chiamata() {
 # ambiente_turno: una riga per il log — la bash, il ramo di ai_timeout, la sandbox (2026-09-23, notte dei
 # giri, T3#6). Il turno gira sul Mac, i banchi su Linux: senza questa riga le differenze fra i due
 # (il ramo perl del timeout, la sandbox) non si misurano dal log.
+# (2026-09-24, sesto ventaglio, S5 R4): diceva la bash del TURNO, ma i banchi partono con `bash` dal PATH (sul Mac
+# /opt/homebrew/bin viene prima di /bin): possono essere due bash diverse. E i tre strumenti che al Mac hanno gia'
+# morso (sed, timeout, setsid) non si leggevano dal log. Ora la riga dice anche loro.
 ambiente_turno() {
-  local sb="ASSENTE (esecuzioni senza sandbox; il censore rinvia)"
+  local sb="ASSENTE (esecuzioni senza sandbox; il censore rinvia)" bf sed_s ss
   command -v sandbox-exec >/dev/null 2>&1 && sb="sandbox-exec"
-  echo "ambiente: bash $BASH_VERSION · timeout: $(ai_timeout_ramo) · sandbox: $sb"
+  bf="$(command -v bash) $(bash -c 'echo $BASH_VERSION' 2>/dev/null)"
+  sed_s=$(sed --version 2>/dev/null | head -1 | cut -c1-30); sed_s=${sed_s:-BSD}
+  ss=$(command -v setsid >/dev/null 2>&1 && echo si || echo ASSENTE)
+  echo "ambiente: bash $BASH_VERSION · bash dei figli: $bf · timeout: $(ai_timeout_ramo) · sed: $sed_s · setsid: $ss · sandbox: $sb"
 }
 
 # gate_allowlist_ok(): TRUE solo se OGNI segmento del comando (split consapevole delle

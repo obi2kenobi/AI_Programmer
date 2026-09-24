@@ -5199,3 +5199,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-ai-timeout.sh` aveva il percorso dentro gli apici di una trappola, e con uno spazio in TMPDIR creava
   un file «S3» nella radice del repo; ora passa come `$0`. Due controlli nuovi nella lente della portabilità
   (19/0), rossi prima sui cinque siti; sabotaggio 17/2.
+- **Sesto ventaglio, S5 R4 — la riga d'ambiente del turno diceva la bash sbagliata.** `ambiente_turno`
+  (`night-shift/lib.sh`) scriveva la bash del turno (`/bin/bash`, 3.2 sul Mac). I banchi però partono con `bash`
+  dal PATH, dove `/opt/homebrew/bin` viene prima: due bash diverse, e dal log non si ricostruiva con quale sed,
+  timeout e setsid avevano girato. Ora la riga dice anche la bash dei figli (percorso e versione), il sed (GNU o
+  BSD) e setsid. Sul Mac simulato del giro S5 dice «3.2.57 · perl · BSD · ASSENTE». Caso nuovo in
+  `tests/test-lib.sh` (163/0), rosso prima; sabotaggio 162/1. S5 R3 (il censore nella sandbox senza rete) e il Mac
+  di riferimento sono domande in DEBITI (D1, D2).
