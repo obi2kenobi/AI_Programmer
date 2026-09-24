@@ -4199,3 +4199,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   solo in A: …». L'uscita dichiara anche che chi è avanti non si misura dal contenuto, ma lo dice la
   storia delle copie. `tests/test-fork-stato.sh` ha tre controlli nuovi: rosso prima (3 FAIL), verde
   ora (15/0). Sabotaggio: con la lista dei file di A svuotata torna rosso (14/1).
+- **Terzo ventaglio, V3 fuori tetto — un presidio rilasciato tornava vivo dopo un merge.** La skill
+  (`.claude/skills/lavoro-condiviso/SKILL.md` §2) e `.gitattributes` trattano PRESIDI.md come
+  append-only, con merge union. Ma `tools/presidio.sh rilascia` cancellava la riga. Riprodotto con
+  due cloni: in uno si rilascia l'ultima riga, nell'altro si appende un presidio. Al merge union la
+  riga rilasciata tornava, e `lista` la contava viva. Ora il rilascio appende una riga con nota
+  RILASCIO, che chiude i presidi dello stesso chi sulla stessa zona scritti prima di lei. L'ordine
+  delle righe regge il merge. La riga di rilascio scade con l'ultimo presidio che chiude.
+  `tests/test-presidio.sh` ha tre controlli nuovi (claim dopo rilascio, il rilascio non riscrive,
+  merge dopo rilascio): rosso prima (2 FAIL), verde ora (12/0). Sabotaggio: se la riga RILASCIO non
+  chiude, torna rosso (10/2).

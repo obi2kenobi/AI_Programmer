@@ -29,7 +29,7 @@ iniziare il processing, `rilascia` a fine commit.
 
 | Classe | File | Due mani insieme |
 |---|---|---|
-| **Append-only** | SAL.md, docs/campo/*.md, PRESIDI.md | SICURO: merge union — entrambe le voci sopravvivono al merge, verificato |
+| **Append-only** | SAL.md, docs/campo/*.md, PRESIDI.md | SICURO: merge union — entrambe le voci sopravvivono al merge, verificato. In PRESIDI.md anche il rilascio è una riga appesa (dal 2026-09-24: prima cancellava, e un merge riportava in vita il presidio rilasciato) |
 | **Codice** | tools/, skills/, agents/ | SU RAMI: una mano un ramo una PR; il presidio evita di partire due volte sullo stesso punto |
 | **Stato locale** | .ciclo/, .campo-rem (gitignored) | OGNI CLONE IL SUO: il ciclo di Luca non vede quello di Lavinia — e va bene così |
 

@@ -40,6 +40,26 @@ init() {
 EOF
 }
 
+# (2026-09-24, terzo ventaglio, V3): il rilascio CANCELLAVA la riga, e un file che si riscrive non regge
+# il merge union: se nell'altro clone qualcuno appendeva un presidio nello stesso punto, il merge riportava
+# in vita la riga rilasciata e `lista` la contava viva (riprodotto). Ora il rilascio APPENDE una riga con
+# nota RILASCIO, che chiude i presidii dello stesso chi sulla stessa zona scritti PRIMA di lei nel file
+# (l'ordine regge il merge: le righe comuni restano davanti). La potatura degli scaduti riscrive ancora,
+# ma una riga scaduta che un merge riporta e' scaduta anche li', e si ripota.
+vivi() { # $1 = adesso: stampa le righe dei presidii vivi (non scaduti, non chiusi da un RILASCIO dopo)
+  awk -F'|' -v ora="$1" '
+    function t(x) { gsub(/^ +| +$/, "", x); return x }
+    /^\| 20/ { n++; r[n]=$0; k[n]=t($3) "|" t($4); s[n]=t($5); nota[n]=t($6) }
+    END {
+      for (i = n; i >= 1; i--) {
+        if (nota[i] == "RILASCIO") { chiuso[k[i]] = 1; continue }
+        if ((k[i] in chiuso) || (s[i] != "?" && s[i] < ora)) continue
+        vivo[i] = 1
+      }
+      for (i = 1; i <= n; i++) if (i in vivo) print r[i]
+    }' "$FILE"
+}
+
 case "${1:-}" in
   claim)
     ZONA="${2:?uso: presidio.sh claim <zona> <nota>}"; NOTA="${3:-}"
@@ -47,7 +67,7 @@ case "${1:-}" in
     ADESSO=$(date +%Y-%m-%dT%H:%M)
     SCADE=$(date -v+${ORARIO}H +%Y-%m-%dT%H:%M 2>/dev/null || date -d "+$ORARIO hours" +%Y-%m-%dT%H:%M 2>/dev/null || echo "?")
     # contesa attuale? (presidio vivo di ALTRO sulla stessa zona)
-    VIVI=$(grep "^| " "$FILE" | grep "| $ZONA |" | grep -v "^| Dichiarato" || true)
+    VIVI=$(vivi "$ADESSO" | grep -F "| $ZONA |" || true)
     if [ -n "$VIVI" ]; then
       echo "⚠ CONTESA: sulla zona '$ZONA' c'è già:"; echo "$VIVI"
       echo "  (dichiarato lo stesso: la visibilità non è un permesso — ma avvisati a vicenda)"
@@ -59,7 +79,7 @@ case "${1:-}" in
   lista)
     [ -f "$FILE" ] || { echo "nessun presidio: il registro non esiste ancora"; exit 0; }
     ADESSO=$(date +%Y-%m-%dT%H:%M)
-    POTATI=0; VIVI=0
+    POTATI=0
     TMP=$(mktemp)
     while IFS= read -r riga; do
       case "$riga" in
@@ -70,33 +90,28 @@ case "${1:-}" in
       if [ "$SCAD" != "?" ] && [ "$SCAD" \< "$ADESSO" ]; then
         POTATI=$((POTATI+1))
       else
-        echo "$riga" >> "$TMP"; VIVI=$((VIVI+1))
+        echo "$riga" >> "$TMP"
       fi
     done < "$FILE"
     [ "$POTATI" -gt 0 ] && { mv "$TMP" "$FILE"; echo "potati $POTATI presidii scaduti (dichiarato, non in silenzio)"; } || rm -f "$TMP"
+    ELENCO=$(vivi "$ADESSO")
+    VIVI=$(grep -c . <<<"$ELENCO")
     echo "== presidii vivi: $VIVI =="
-    grep "^| 20" "$FILE" 2>/dev/null | sed 's/^/  /' || echo "  (nessuno)"
+    [ "$VIVI" -gt 0 ] && sed 's/^/  /' <<<"$ELENCO" || echo "  (nessuno)"
     # contese: stessa zona, chi diversi
     # contesa VERA: due CHI DIVERSI sulla stessa zona (il conteggio parte da 1:
     # il primo nome è sempre lì — si confrontano i nomi distinti, non gli spazi)
-    awk -F'|' '/^\| 20/ {c=$3; z=$4; gsub(/ /,"",z); nomi[z"|"c]=1} END {for (k in nomi) {split(k,p,"|"); n[p[1]]++} for (z in n) if (n[z]>1) print "  ⚠ CONTESA su " z ": " n[z] " presidii distinti"}' "$FILE" || true
+    awk -F'|' '/^\| 20/ {c=$3; z=$4; gsub(/ /,"",z); nomi[z"|"c]=1} END {for (k in nomi) {split(k,p,"|"); n[p[1]]++} for (z in n) if (n[z]>1) print "  ⚠ CONTESA su " z ": " n[z] " presidii distinti"}' <<<"$ELENCO" || true
     ;;
   rilascia)
     ZONA="${2:?uso: presidio.sh rilascia <zona>}"
     [ -f "$FILE" ] || { echo "registro assente: niente da rilasciare"; exit 0; }
-    python3 - "$FILE" "$CHI" "$ZONA" <<'EOF'
-import sys
-f, chi, zona = sys.argv[1], sys.argv[2], sys.argv[3]
-righe = open(f).read().split('\n')
-tenute, rilasciati = [], 0
-for r in righe:
-    parti = [p.strip() for p in r.split('|')]
-    if len(parti) >= 4 and parti[1].startswith('20') and parti[2] == chi and parti[3] == zona:
-        rilasciati += 1; continue
-    tenute.append(r)
-open(f, 'w').write('\n'.join(tenute))
-print(f"rilasciati {rilasciati} presidii di {chi} su '{zona}'")
-EOF
+    MIEI=$(vivi "$(date +%Y-%m-%dT%H:%M)" | awk -F'|' -v c="$CHI" -v z="$ZONA" '{a=$3; b=$4; gsub(/^ +| +$/,"",a); gsub(/^ +| +$/,"",b)} a==c && b==z')
+    [ -n "$MIEI" ] || { echo "nessun presidio vivo di $CHI su '$ZONA': niente da rilasciare"; exit 0; }
+    # la riga di rilascio scade con l'ultimo presidio che chiude: si potano insieme
+    SCADE=$(awk -F'|' '{x=$5; gsub(/ /,"",x); if (x > m) m=x} END {print m}' <<<"$MIEI")
+    printf '| %s | %s | %s | %s | RILASCIO |\n' "$(date +%Y-%m-%dT%H:%M)" "$CHI" "$ZONA" "$SCADE" >> "$FILE"
+    echo "rilasciati $(grep -c . <<<"$MIEI") presidii di $CHI su '$ZONA' (riga RILASCIO appesa: il registro resta append-only)"
     ;;
   *)
     echo "uso: presidio.sh claim <zona> <nota> | lista | rilascia <zona>" >&2
