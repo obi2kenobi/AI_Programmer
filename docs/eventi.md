@@ -2,7 +2,8 @@
 
 (ispirato a event-producer-consumer.md di deepseek-harness, studio 2026-09-23:
 una firma senza consumatori e' un contatore cieco — audit-2 ce l'ha dimostrato
-col funnel: DELIBERA: contava zero da sempre. Generato dal codice reale:
+col funnel: DELIBERA: contava zero da sempre). Scritto leggendo il codice reale e presidiato da
+`tests/test-eventi.sh`: ogni produttore contiene la firma, ogni consumatore esiste.
 
 | Firma | Produttori | Consumatori | Guardia |
 |---|---|---|---|

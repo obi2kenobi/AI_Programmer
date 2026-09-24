@@ -3522,3 +3522,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
       E-002 («ok» possibile col file ancora tracciato). Curata.
     - Cricchetto in `tests/test-pre-commit.sh`: zero sull'albero intero. Visto rosso sulla
       versione vecchia.
+- **Q19**, da A10, documenti corrotti dall'uscita di comandi: un heredoc non quotato esegue i
+  backtick.
+  - In `AGENTS.md` §0, il primo file che un agente legge, il nome del promemoria era diventato il
+    JSON che l'hook stampa, e il comando dello standard era sparito («e  lo porta tutto»).
+  - `docs/eventi.md` finiva in «Generato dal codice reale:».
+  - Ricostruiti dalle fonti che dicono la stessa cosa. La storia non ha la versione di prima: la
+    corruzione sta nel commit radice. Per eventi.md non esiste un generatore: scritto chi lo
+    presidia, non inventato un comando.
+  - Banco: `tests/test-doc-non-corrotti.sh`, con la firma generale (JSON di hook in un .md
+    tracciato), 4 rossi prima.

@@ -31265,7 +31265,7 @@
       "node_kind": "heading",
       "norm_label": "0bis. lavoro distribuito (a due o piu mani \u2014 luca, lavinia, sessioni)",
       "source_file": "AGENTS.md",
-      "source_location": "L23"
+      "source_location": "L18"
     },
     {
       "id": "agents_1_le_regole_vincolanti_e_la_mappa",
@@ -31277,7 +31277,7 @@
       "node_kind": "heading",
       "norm_label": "1. le regole vincolanti e la mappa",
       "source_file": "AGENTS.md",
-      "source_location": "L43"
+      "source_location": "L38"
     },
     {
       "id": "agents_2_la_pipeline_e_i_suoi_artefatti_chi_produce_cosa_chi_lo_cita",
@@ -31289,7 +31289,7 @@
       "node_kind": "heading",
       "norm_label": "2. la pipeline e i suoi artefatti (chi produce cosa, chi lo cita)",
       "source_file": "AGENTS.md",
-      "source_location": "L53"
+      "source_location": "L48"
     },
     {
       "id": "agents_3_i_cervelli_disponibili_come_delegare",
@@ -31301,7 +31301,7 @@
       "node_kind": "heading",
       "norm_label": "3. i cervelli disponibili (come delegare)",
       "source_file": "AGENTS.md",
-      "source_location": "L70"
+      "source_location": "L65"
     },
     {
       "id": "agents_4_i_calcoli_contabili_oracoli_e_agenti",
@@ -31313,7 +31313,7 @@
       "node_kind": "heading",
       "norm_label": "4. i calcoli contabili: oracoli e agenti",
       "source_file": "AGENTS.md",
-      "source_location": "L77"
+      "source_location": "L72"
     },
     {
       "id": "agents_5_la_verifica_come_esco_da_qui",
@@ -31325,7 +31325,7 @@
       "node_kind": "heading",
       "norm_label": "5. la verifica: come esco da qui",
       "source_file": "AGENTS.md",
-      "source_location": "L108"
+      "source_location": "L103"
     },
     {
       "id": "agents_agents_md_il_contratto_d_ingresso_per_agenti_llm_in_questo_repo",
@@ -31349,7 +31349,7 @@
       "node_kind": "heading",
       "norm_label": "il catalogo pattern",
       "source_file": "AGENTS.md",
-      "source_location": "L102"
+      "source_location": "L97"
     },
     {
       "id": "agents_portare_il_metodo_in_una_repo",
@@ -31361,7 +31361,7 @@
       "node_kind": "heading",
       "norm_label": "portare il metodo in una repo",
       "source_file": "AGENTS.md",
-      "source_location": "L96"
+      "source_location": "L91"
     },
     {
       "id": "agents_regole_graphify",
@@ -31373,7 +31373,7 @@
       "node_kind": "heading",
       "norm_label": "regole graphify",
       "source_file": "AGENTS.md",
-      "source_location": "L116"
+      "source_location": "L111"
     },
     {
       "id": "docs_bc_endpoints_componenti_ordine_produzione_excel",
@@ -44158,64 +44158,64 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "id": "tests_test_doc_non_corrotti",
+      "label": "test-doc-non-corrotti.sh",
       "_origin": "ast",
       "community": 718,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
+      "community_name": "test-doc-non-corrotti.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-doc-non-corrotti.sh",
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "id": "tests_test_doc_non_corrotti_ko",
+      "label": "ko()",
       "_origin": "ast",
       "community": 718,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
+      "community_name": "test-doc-non-corrotti.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L11"
     },
     {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "id": "tests_test_doc_non_corrotti_ok",
+      "label": "ok()",
       "_origin": "ast",
       "community": 718,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
+      "community_name": "test-doc-non-corrotti.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L10"
     },
     {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "id": "tests_test_doc_non_corrotti_sh__entry",
+      "label": "test-doc-non-corrotti.sh script",
       "_origin": "ast",
       "community": 718,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 718,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
+      "community_name": "test-doc-non-corrotti.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-doc-non-corrotti.sh script",
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L1"
     },
     {
       "id": "docs_campo_2026_09_19_budget_vendite_standard_cinquanta_giri",
@@ -45555,6 +45555,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -45589,6 +45637,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1797"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -50398,6 +50458,30 @@
       "context": "call",
       "source_file": "tests/test-doc-citazioni.sh",
       "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_doc_non_corrotti_sh__entry",
+      "target": "tests_test_doc_non_corrotti_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_doc_non_corrotti_sh__entry",
+      "target": "tests_test_doc_non_corrotti_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -55717,24 +55801,24 @@
     },
     {
       "source": "agents_4_i_calcoli_contabili_oracoli_e_agenti",
-      "target": "agents_il_catalogo_pattern",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "AGENTS.md",
-      "source_location": "L102",
-      "weight": 1.0
-    },
-    {
-      "source": "agents_4_i_calcoli_contabili_oracoli_e_agenti",
       "target": "agents_portare_il_metodo_in_una_repo",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L96",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "agents_4_i_calcoli_contabili_oracoli_e_agenti",
+      "target": "agents_il_catalogo_pattern",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -55745,7 +55829,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L108",
+      "source_location": "L103",
       "weight": 1.0
     },
     {
@@ -55756,7 +55840,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L116",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -55767,7 +55851,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L23",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -55778,7 +55862,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L43",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -55789,7 +55873,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L53",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -55800,7 +55884,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L70",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -55811,7 +55895,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L77",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -78992,6 +79076,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_doc_non_corrotti",
+      "target": "tests_test_doc_non_corrotti_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_e002_banchi_curati",
       "target": "tests_test_e002_banchi_curati_sh__entry",
       "relation": "contains",
@@ -83818,6 +83913,28 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-doc-citazioni.sh",
       "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_doc_non_corrotti",
+      "target": "tests_test_doc_non_corrotti_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_doc_non_corrotti",
+      "target": "tests_test_doc_non_corrotti_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-doc-non-corrotti.sh",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -89697,5 +89814,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "29206fb8c014006d50fd32903a59ee57c66e23db"
+  "built_at_commit": "01a5e2fbddbe3b994d3af3c9e9333d14b4fd39f1"
 }

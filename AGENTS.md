@@ -9,16 +9,11 @@
 ## 0. Lo standard (non serve invocarlo)
 
 Questo repo lavora col metodo attivo PER MECCANISMO: all'apertura di una
-sessione e a OGNI prompt, un hook inietta il promemorio del metodo
-({
-  "hookSpecificOutput": {
-    "hookEventName": "UserPromptSubmit",
-    "additionalContext": " metodo attivo: esegui-non-dedurre · oracolo prima della formula · banco prima della correzione · SAL prima del passo successivo"
-  }
-}). Se sei un agente e leggi questo file, il
+sessione e a OGNI prompt, un hook inietta il promemoria del metodo
+(`tools/metodo-reminder-hook.sh`). Se sei un agente e leggi questo file, il
 metodo è già in opera intorno a te: METHOD.md §"Lo standard" dice cosa deve
 esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
-.night-verify) e  lo porta tutto.
+.night-verify) e `tools/sync-repo.sh <owner/repo> --standard` lo porta tutto.
 
 ## 0bis. Lavoro distribuito (a due o più mani — Luca, Lavinia, sessioni)
 
