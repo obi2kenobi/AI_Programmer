@@ -4325,3 +4325,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   fratello `.provenienza`, l'esclusione per nome ESATTO (`-qxF`) e la riga letta senza badare al caso
   (`-ic`) restavano verdi a ogni sabotaggio. `tests/test-fixture-provenienza.sh` ha un caso per
   ciascuna: verde (7/0). Tutti e tre i sabotaggi ora sono rossi (6/1 ciascuno).
+- **Terzo ventaglio, V2 S23 e S12b — due promesse dei banchi che nessuno guardava.**
+  - `tests/test-cervello.sh` diceva «scrive la nota sana e aggiorna l'indice», ma guardava solo la
+    nota. Ora vuole anche la riga della nota nuova nell'indice. Sabotaggio: senza `scrivi_indice`,
+    rosso (5/1).
+  - `tests/test-morning-digest.sh` non giudicava l'escape dell'oggetto. L'oggetto viene dalla riga
+    «Totale:», e nel report del banco quella riga non aveva virgolette. Ora le ha. Sabotaggio:
+    `SUBJ_ESC=$SUBJ`, rosso (12/1).
+
+  Della tabella di V2 restano S4 (il gestore del `$metadata` di `tools/bc_tipi_metadata.py`, non
+  raggiunto: il banco muore prima sulle credenziali) e S18b (la lente `echo +0` non vede la forma con
+  le virgolette; nel codice di oggi non ce n'è nessuna). S21 lo prende già `tests/test-dashboard.sh`.

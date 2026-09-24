@@ -27,7 +27,7 @@ echo 'DIGEST_EMAIL=test@esempio.it' > "$TMP/repo/night-shift/repos.key"
 cat > "$HOME/morning-gate-report.md" <<'EOF'
 # Report
 
-Totale: 3 PR verificate
+Totale: 3 PR verificate, una "urgente"
 
 Nota con "virgolette" e un backslash \ dentro.
 EOF
@@ -56,6 +56,10 @@ grep -qF '\"virgolette\"' <<<"$CAPTURED" && ok "le virgolette nel report sono es
   || ko "virgolette non escaped: $CAPTURED"
 grep -qF '\\' <<<"$CAPTURED" && ok "il backslash nel report è escaped nello script AppleScript" \
   || ko "backslash non escaped: $CAPTURED"
+# (2026-09-24, terzo ventaglio, V2 S12b): l'oggetto viene dalla riga «Totale:» e si escapa a parte
+# (SUBJ_ESC); senza virgolette su quella riga, `SUBJ_ESC=$SUBJ` restava verde
+grep -qF '[Gate] Totale: 3 PR verificate, una \"urgente\"' <<<"$CAPTURED" && ok "le virgolette dell'oggetto sono escaped" \
+  || ko "oggetto non escaped: $(grep -o 'subject:[^,]*' <<<"$CAPTURED")"
 
 # ── (revisione 10 giri, 2026-09-23): la memoria del turno ─────────────────────────────
 # Tre difetti misurati: (a) `.sal-turni.md` si svuotava PRIMA dell'invio — se Mail e mail

@@ -79,7 +79,9 @@ else
 fi
 
 printf 'corpo che linka [[nota-sana]]\n' | bash "$TMP/tools/cervello-annota.sh" nota-ok concetto "Titolo" >/dev/null 2>&1
-if [ $? -eq 0 ] && [ -f "$TMP/cervello/nota-ok.md" ]; then
+# (2026-09-24, terzo ventaglio, V2 S23): il messaggio prometteva «aggiorna l'indice», ma si guardava solo la
+# nota — via scrivi_indice, verde lo stesso. Ora l'indice della copia deve nominare la nota nuova.
+if [ $? -eq 0 ] && [ -f "$TMP/cervello/nota-ok.md" ] && grep -cF '](nota-ok.md)' "$TMP/cervello/indice.md" >/dev/null 2>&1; then
   ok "annota scrive la nota sana e aggiorna l'indice"
 else
   ko "annota non ha scritto la nota legittima"
