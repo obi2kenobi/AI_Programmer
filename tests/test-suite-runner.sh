@@ -107,6 +107,15 @@ tail -1 <<<"$OUT" | grep -c '^Suite test hub: 1/1 file superati$' >/dev/null \
   && ok "il riepilogo resta l'ultima riga" || ko "il riepilogo non e' piu' l'ultima riga: $(tail -1 <<<"$OUT")"
 rm -rf "$SB6"
 
+# 7. (2026-09-24, quarto ventaglio, Q3 R3): `cd "$DIR"` senza guardia — con una cartella inesistente la
+# suite girava i banchi della cartella del CHIAMANTE e poteva dare verde («1/1 superati», rc 0).
+SB7=$(mktemp -d /tmp/test-suite7.XXXXXX); mkdir -p "$SB7/tests"
+printf '#!/bin/bash\necho "1 OK, 0 FAIL"\n' > "$SB7/tests/test-verde.sh"
+OUT=$(cd "$SB7" && bash "$RUNNER" "$SB7/non-esiste" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c 'superati' <<<"$OUT" >/dev/null && grep -c 'inesistente' <<<"$OUT" >/dev/null \
+  && ok "cartella inesistente: rosso e detto, non la suite di un'altra cartella" || ko "cartella inesistente: rc $RC, $(tail -1 <<<"$OUT")"
+rm -rf "$SB7"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

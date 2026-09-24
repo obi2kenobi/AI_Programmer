@@ -17,7 +17,7 @@
 # Esce: 0 = tutti i test superati · 1 = almeno un test fallito (o zero test)
 set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
-cd "$DIR"
+cd "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco eseguito"; exit 1; }   # (Q3 R3): senza guardia girava la suite del chiamante
 
 # (2026-09-24, E-047): una cache di bytecode FRESCA per ogni giro della suite. Un sabotaggio a mano della
 # stessa dimensione, nello stesso secondo, lascia valido il .pyc in tools/__pycache__: i banchi che

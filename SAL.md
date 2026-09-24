@@ -4502,3 +4502,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   finto che registra: rosso prima (4 FAIL), verde ora (4/0). Nessun pkill. Sabotaggio: senza il
   controllo nell'agente torna rosso (3/1). Il primo posto che avevo scelto nel turno (dopo il lock)
   veniva prima dell'export del PATH: spostato.
+- **Quarto ventaglio, Q3 R3 — suite.sh con una cartella inesistente dava il verde di un'altra.**
+  `cd "$DIR"` non aveva guardia (niente `-e`). Con una cartella sbagliata la suite girava i banchi della
+  cartella del chiamante: «1/1 superati», rc 0. Ora dice «dir inesistente» ed esce 1.
+  `tests/test-suite-runner.sh` caso 7: rosso con la riga di prima (16/1), verde ora (17/0). La riga del
+  riepilogo resta la 72, quella citata da AGENTS.md.
