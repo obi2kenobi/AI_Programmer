@@ -4038,3 +4038,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   DEBITI (voce ⏳ «d»), il consolidamento, e la descrizione di design-doc (il rimando al wizard torna,
   in tutti e due gli specchi). Guardia in `tests/test-doc-non-corrotti.sh`: rossa sui testi di prima.
   Registro: E-045. Trovato dal giro V3.
+- **Terzo ventaglio, V3#1 — audit-commessa promuoveva ciò che il turno respinge.** La skill
+  controllava solo `## Design` e `## Commessa`. Il cancello del turno (`cancello_design`,
+  `night-shift/lib.sh`) vuole anche il Territorio, almeno 80 caratteri di Design e una fonte. Il giro
+  V3 l'ha eseguito: una commessa promossa dalla skill esce `territorio-assente`. Ora il passo 1 della
+  skill fa girare il cancello vero, con la ricetta del comando (provata:
+  `territorio-assente`). Cricchetto in `tests/test-night-shift-design-gate.sh`, due specchi: 2 rossi
+  sul testo di prima.

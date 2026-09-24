@@ -86,6 +86,14 @@ tools/foo.js righe 1-10")
   [ "$RISULTATO" = "PASSA" ] && ok "Design $ETICHETTA: passa il gate" || ko "Design $ETICHETTA: bloccato erroneamente ($RISULTATO)"
 done
 
+# (2026-09-24, terzo ventaglio, V3): la skill audit-commessa controllava solo `## Design` e `## Commessa`,
+# e promuoveva commesse che questo cancello poi respinge (territorio-assente). La skill usa il cancello
+# vero, non una lista sua — in tutti e due gli specchi.
+for SK in "$HERE/.claude/skills/audit-commessa/SKILL.md" "$HERE/.opencode/skills/audit-commessa/SKILL.md"; do
+  grep -c 'cancello_design' "$SK" >/dev/null && ok "$(basename "$(dirname "$(dirname "$(dirname "$SK")")")")/audit-commessa usa cancello_design" \
+    || ko "$SK: la struttura si giudica con una lista sua, non col cancello del turno"
+done
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

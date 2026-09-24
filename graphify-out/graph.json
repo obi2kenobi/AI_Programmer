@@ -47618,7 +47618,7 @@
       "node_kind": "heading",
       "norm_label": "2. lente business central \u2014 quello che questa sessione ha gia pagato",
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L60"
+      "source_location": "L64"
     },
     {
       "id": "claude_skills_audit_commessa_skill_2bis_lente_controllo_gestione_quando_la_commessa_calcola_un_numero_contabile_gestionale",
@@ -47630,7 +47630,7 @@
       "node_kind": "heading",
       "norm_label": "2bis. lente controllo-gestione \u2014 quando la commessa calcola un numero contabile/gestionale",
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L85"
+      "source_location": "L89"
     },
     {
       "id": "claude_skills_audit_commessa_skill_3_regole_non_negoziabili",
@@ -47642,7 +47642,7 @@
       "node_kind": "heading",
       "norm_label": "3. regole non negoziabili",
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L105"
+      "source_location": "L109"
     },
     {
       "id": "claude_skills_audit_commessa_skill_4_output",
@@ -47654,7 +47654,7 @@
       "node_kind": "heading",
       "norm_label": "4. output",
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L115"
+      "source_location": "L119"
     },
     {
       "id": "claude_skills_audit_commessa_skill_audit_commessa_il_pre_flight_che_il_turno_non_pu\u00f2_fare_da_solo",
@@ -47678,7 +47678,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L122"
+      "source_location": "L126"
     },
     {
       "id": "claude_skills_design_doc_skill",
@@ -48666,7 +48666,7 @@
       "node_kind": "heading",
       "norm_label": "2. lente business central \u2014 quello che questa sessione ha gia pagato",
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L60"
+      "source_location": "L64"
     },
     {
       "id": "opencode_skills_audit_commessa_skill_2bis_lente_controllo_gestione_quando_la_commessa_calcola_un_numero_contabile_gestionale",
@@ -48678,7 +48678,7 @@
       "node_kind": "heading",
       "norm_label": "2bis. lente controllo-gestione \u2014 quando la commessa calcola un numero contabile/gestionale",
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L85"
+      "source_location": "L89"
     },
     {
       "id": "opencode_skills_audit_commessa_skill_3_regole_non_negoziabili",
@@ -48690,7 +48690,7 @@
       "node_kind": "heading",
       "norm_label": "3. regole non negoziabili",
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L105"
+      "source_location": "L109"
     },
     {
       "id": "opencode_skills_audit_commessa_skill_4_output",
@@ -48702,7 +48702,7 @@
       "node_kind": "heading",
       "norm_label": "4. output",
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L115"
+      "source_location": "L119"
     },
     {
       "id": "opencode_skills_audit_commessa_skill_audit_commessa_il_pre_flight_che_il_turno_non_pu\u00f2_fare_da_solo",
@@ -48726,7 +48726,7 @@
       "node_kind": "heading",
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L122"
+      "source_location": "L126"
     },
     {
       "id": "opencode_skills_design_doc_skill",
@@ -58458,7 +58458,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L105",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -58469,7 +58469,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L115",
+      "source_location": "L119",
       "weight": 1.0
     },
     {
@@ -58480,7 +58480,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L122",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -58513,7 +58513,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L60",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -58524,7 +58524,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
-      "source_location": "L85",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -73715,7 +73715,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L105",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -73726,7 +73726,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L115",
+      "source_location": "L119",
       "weight": 1.0
     },
     {
@@ -73737,7 +73737,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L122",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -73770,7 +73770,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L60",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -73781,7 +73781,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/audit-commessa/SKILL.md",
-      "source_location": "L85",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -92708,5 +92708,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "63e1c6f4a544883f633ee2b8eb3840e7c04327ad"
+  "built_at_commit": "8067293e0e688346809fd6179a3b05890fc5e749"
 }
