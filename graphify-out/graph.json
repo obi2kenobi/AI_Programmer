@@ -13642,7 +13642,7 @@
       "node_kind": "heading",
       "norm_label": "avanzamento \u2014 231 mappati (catalogo completo: `catalogo_endpoint_bc.md`, vive in questo hub)",
       "source_file": "docs/bc/README.md",
-      "source_location": "L13"
+      "source_location": "L15"
     },
     {
       "id": "docs_bc_readme_business_central_mappatura_endpoint",
@@ -13678,7 +13678,7 @@
       "node_kind": "heading",
       "norm_label": "salute del censimento",
       "source_file": "docs/bc/README.md",
-      "source_location": "L16"
+      "source_location": "L18"
     },
     {
       "id": "docs_bc_sal",
@@ -39252,7 +39252,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L271"
+      "source_location": "L272"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39264,7 +39264,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L265"
+      "source_location": "L266"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -64951,7 +64951,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L265",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
@@ -64962,7 +64962,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L271",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -67690,7 +67690,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/bc/README.md",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -67701,7 +67701,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/bc/README.md",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -97978,5 +97978,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "251a761b8beefe3899ebe296903905ee791168e3"
+  "built_at_commit": "28b88cda70f3600b85aac3c5c13309b2204bdbba"
 }

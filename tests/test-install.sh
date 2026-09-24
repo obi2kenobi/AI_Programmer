@@ -79,6 +79,16 @@ for f in "$FAKE/Library/LaunchAgents"/*.plist; do
 done
 [ "$NPLIST" -ge 1 ] && ok "almeno un LaunchAgent installato ($NPLIST)" || ko "nessun plist generato: install non ha installato niente"
 
+# (2026-09-24, sesto ventaglio, S3 R2): il plist del turno era `/bin/bash -c "caffeinate -i __HUB__/…"` — con uno
+# spazio nel percorso dell'hub bash spezzava la stringa e il turno non partiva, mentre install diceva ✓. Ora gli
+# argomenti sono separati: uno di loro e' il percorso del turno, intero, e il file esiste.
+PL=$(ls "$FAKE/Library/LaunchAgents"/*nightshift*.plist 2>/dev/null | head -1)
+if [ -n "$PL" ]; then
+  python3 -c 'import plistlib,sys,os; a=plistlib.load(open(sys.argv[1],"rb"))["ProgramArguments"]; sys.exit(0 if any(x.endswith("/night-shift/night-shift.sh") and os.path.isfile(x) for x in a) else 1)' "$PL" \
+    && ok "S3 R2: il plist del turno passa il percorso come argomento intero (regge uno spazio)" || ko "S3 R2: il percorso del turno e' dentro una stringa per bash -c: $(grep -A3 ProgramArguments "$PL" | tr -d '\n ' | cut -c1-120)"
+else
+  ko "S3 R2: plist del turno non generato"
+fi
 rm -rf "$FAKE"
 echo ""
 echo "$PASS OK, $FAIL FAIL"

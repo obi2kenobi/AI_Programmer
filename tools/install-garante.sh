@@ -17,10 +17,14 @@ fi
 jq -e . "$SETTINGS" >/dev/null 2>&1 || { echo "⛔ install-garante: $SETTINGS non e' JSON leggibile — non lo tocco, niente installato (correggilo e rilancia)" >&2; exit 1; }
 
 # aggiunge il garante come SessionStart hook (se non già presente)
+# (2026-09-24, sesto ventaglio, S3 R2): il percorso finiva NUDO nel comando (e incollato nel programma jq): da un hub
+# con uno spazio la shell dei ganci lo spezzava, rc 127, e il garante non girava mai. Ora il percorso e' quotato per
+# la shell (printf %q) e passa a jq come dato (--arg), come i ganci di progetto con "$CLAUDE_PROJECT_DIR".
+CMD_GARANTE="$(printf '%q' "$HUB")/tools/garante-standard.sh"
 if ! jq -e '.hooks.SessionStart[]?.hooks[]? | select(.command | contains("garante"))' "$SETTINGS" >/dev/null 2>&1; then
-  jq '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
+  jq --arg c "$CMD_GARANTE" '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
     "matcher": "startup|resume",
-    "hooks": [{"type": "command", "command": "'"$HUB"'/tools/garante-standard.sh", "timeout": 15}]
+    "hooks": [{"type": "command", "command": $c, "timeout": 15}]
   }])' "$SETTINGS" > "$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS" \
     || { rm -f "$SETTINGS.tmp"; echo "⛔ install-garante: scrittura di $SETTINGS fallita, niente installato" >&2; exit 1; }
   jq -e '.hooks.SessionStart[]?.hooks[]? | select(.command | contains("garante"))' "$SETTINGS" >/dev/null 2>&1 \

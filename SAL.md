@@ -5108,3 +5108,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Fuori, dichiarati: la storia, e la skill graphify vendorizzata, che scrive per l'agente. Rossa prima (16
   commenti, 2 rami, 1 citazione). Sabotaggio con un commento rimesso in lavoro-condiviso: 1/1.
+- **Sesto ventaglio, S3 R2 — da un hub con lo spazio nel percorso, il turno e il garante non partivano, e gli
+  installatori dicevano ✓.** Il plist del turno era `/bin/bash -c "caffeinate -i __HUB__/…"`: con uno spazio bash
+  spezzava la stringa. Il comando del gancio che `tools/install-garante.sh` scrive era il percorso nudo, e la shell
+  dei ganci dava rc 127. Ora:
+  - il plist ha gli argomenti separati (`/usr/bin/caffeinate`, `-i`, il percorso intero);
+  - il comando del gancio è quotato con `printf %q` e passa a jq come dato (`--arg`), come i ganci di progetto.
+
+  Due casi nuovi: `tests/test-install.sh` (13/0) legge il plist generato con plistlib e vuole il percorso come
+  argomento intero; `tests/test-install-garante.sh` (8/0) installa da un hub con lo spazio ed ESEGUE il comando
+  scritto. Rossi prima; sabotaggio 12/1 e 7/1. Se sul Mac ci siano copie sotto un percorso con spazi è una domanda
+  (DEBITI).
