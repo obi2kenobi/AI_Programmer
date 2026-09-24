@@ -3657,3 +3657,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     ridondante, perché il CR lo toglie già il taglio degli spazi. L'avevo scritto prima di leggere
     l'uscita.
     - Riga tolta. Sabotaggio vero (via il taglio degli spazi): 3 rossi.
+- **Q25**, da A9, `metrics/gate.csv`: fermo dal 2026-08-21 (lo scriveva il gate del mattino, oggi in
+  pensione), ma presentato come vivo.
+  - `METHOD.md` lo chiamava «Registro esiti (notte)».
+  - `night-shift/gate-summary.sh`, incorporato ogni mattina nel digest, lo intestava alla data di
+    OGGI.
+  - `tests/test-gate-tools.sh` sovrascriveva il file VERO con una fixture e lo rimetteva con un
+    trap, lo stesso difetto di Q23.
+  - Ora:
+    - gate-esito e gate-summary accettano `HUB_METRICS`, come il morning-gate, e il banco usa solo
+      la fixture;
+    - il riepilogo dice «ultima riga …, STORICO oltre 7 giorni»;
+    - METHOD e night-shift/README dicono «storico».
+  - Banco: 2 casi nuovi (data di modifica del file vero invariata; età dichiarata), rossi prima.
+    Sabotaggio: 4 rossi (percorso fisso) e 1 rosso (soglia).

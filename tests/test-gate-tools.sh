@@ -8,13 +8,17 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-# CSV di fixture (il gate-esito opera sul CSV REALE del hub: lo scambiamo con il fixture)
+# CSV di fixture (prima il banco sovrascriveva il CSV REALE dell'hub e lo rimetteva con un trap)
 REAL="$HERE/metrics/gate.csv"
-BACKUP=""
-if [ -f "$REAL" ]; then BACKUP=$(mktemp); cp "$REAL" "$BACKUP"; fi
-trap '[ -n "$BACKUP" ] && cp "$BACKUP" "$REAL" && rm -f "$BACKUP"; rm -rf "$TMP"' EXIT
+# (2026-09-23, notte dei giri): il banco non deve nemmeno SCRIVERE il dato vero dell'hub — si
+# fotografa la data di modifica all'inizio e si confronta alla fine
+mtime_vero() { python3 -c 'import os,sys; print(os.stat(sys.argv[1]).st_mtime_ns if os.path.exists(sys.argv[1]) else "assente")' "$REAL"; }
+MTIME_PRIMA=$(mtime_vero)
+trap 'rm -rf "$TMP"' EXIT
+# i tool lavorano sulla fixture via HUB_METRICS; il dato vero resta dov'e'
+export HUB_METRICS="$TMP/gate.csv"
 
-cat > "$REAL" <<'CSV'
+cat > "$HUB_METRICS" <<'CSV'
 data,repo,pr,issue,verifiche,banco,esito
 2026-08-20,REPO-A,#1,#1,verifiche-ok,eseguito:sopravvissuta,merge
 2026-08-21,REPO-A,#2,#2,verifiche-ok,eseguito:smentita,commessa
@@ -24,7 +28,7 @@ CSV
 # 1) gate-esito annota la riga APERTA
 OUT=$(bash "$HERE/night-shift/gate-esito.sh" REPO-B 3 merge 2>&1 | head -1)
 grep -q "esito registrato" <<<"$OUT" && ok "gate-esito registra l'ultima riga aperta" || ko "gate-esito: $OUT"
-TAIL=$(tail -1 "$REAL")
+TAIL=$(tail -1 "$HUB_METRICS")
 [ "$TAIL" = "2026-08-21,REPO-B,#3,#3,non-dichiarate,—,merge" ] && ok "gate-esito: settima colonna scritta, resto intatto" || ko "riga: $TAIL"
 
 # 2) rifiuta il doppio inserimento (il bug storico)
@@ -55,6 +59,15 @@ else
   grep -q " aging" <<<"$SUM" && ko "aging mostrato senza righe aperte" || ok "summary: nessun aging, tutte chiuse — coerente col dato"
 fi
 
+# (2026-09-23): il digest del mattino incorpora questo riepilogo ogni giorno, intestato alla data
+# di OGGI — con un registro fermo da un mese (il gate e' in pensione) i dati vecchi sembravano
+# freschi. L'intestazione dice l'ultima riga e, oltre 7 giorni, che il registro e' STORICO.
+SUM=$(bash "$HERE/night-shift/gate-summary.sh" 0)
+grep -q "ultima riga 2026-08-21" <<<"$SUM" && grep -q "STORICO" <<<"$SUM" \
+  && ok "gate-summary dice l'eta' del registro (ultima riga, STORICO oltre 7 giorni)" \
+  || ko "gate-summary presenta dati di un mese fa come freschi: $(head -1 <<<"$SUM")"
+[ "$(mtime_vero)" = "$MTIME_PRIMA" ] && ok "il metrics/gate.csv vero dell'hub non e' stato scritto dal banco" \
+  || ko "il banco ha scritto metrics/gate.csv vero (fixture al posto del dato: un SIGKILL la lascerebbe li')"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

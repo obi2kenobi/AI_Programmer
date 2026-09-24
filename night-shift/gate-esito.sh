@@ -7,7 +7,9 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
-CSV="$HERE/../metrics/gate.csv"
+# HUB_METRICS: override SOLO per i banchi, lo stesso nome di night-shift/morning-gate.sh (2026-09-23:
+# il banco sovrascriveva il dato vero dell'hub con una fixture e lo rimetteva con un trap)
+CSV="${HUB_METRICS:-$HERE/../metrics/gate.csv}"
 
 REPO="${1:?uso: gate-esito.sh owner/repo <PR> <merge|chiusura|commessa>}"
 PR="${2:?}"

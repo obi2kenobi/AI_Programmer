@@ -118,6 +118,9 @@ loop-engineering del sistema: `docs/system.md`.
 
 ## Il giudizio umano della PR
 
+> **Storico** (verificato il 2026-09-23): `metrics/gate.csv` lo scriveva il gate del mattino, in
+> pensione da launchd; l'ultima riga è del 2026-08-21. I due comandi restano per il gate lanciato a mano.
+
 `gate-esito.sh <owner/repo> <n-PR> <merge|chiusura|commessa>` — registra nella colonna `esito`
 di `metrics/gate.csv` cosa ne è stato della PR giudicata dal gate del mattino. Senza questo
 passaggio il livello memoria resta vuoto (review 2026-08-21). `gate-summary.sh [giorni]` ne

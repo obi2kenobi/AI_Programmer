@@ -8,7 +8,9 @@
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
-CSV="$HERE/../metrics/gate.csv"
+# HUB_METRICS: override SOLO per i banchi, lo stesso nome di night-shift/morning-gate.sh (2026-09-23:
+# il banco sovrascriveva il dato vero dell'hub con una fixture e lo rimetteva con un trap)
+CSV="${HUB_METRICS:-$HERE/../metrics/gate.csv}"
 # nota (revisione 14 lenti, 2026-08-28): metrics/gate.csv ha uno schema STORICO
 # disomogeneo — le righe più vecchie hanno 6 campi (manca del tutto la colonna/virgola
 # "esito", aggiunta in un secondo momento), le righe recenti ne hanno 7. Il
@@ -65,6 +67,20 @@ for r in rows:
                 s["aging_pr"][chiave] = (giorni, r["data"], r["banco"])
 
 print(f"== Gate summary — {oggi} ({len(rows)} righe, {len(stats)} repo) ==")
+# (2026-09-23, notte dei giri): il digest del mattino stampa questo riepilogo ogni giorno, con la
+# data di OGGI in testa — e il registro e' fermo dal 2026-08-21 (il gate del mattino e' in
+# pensione): i dati vecchi sembravano freschi. Si dice l'eta' dell'ultima riga.
+date_righe = []
+for r in rows:
+    try:
+        date_righe.append(date.fromisoformat(str(r.get("data", "")).strip()))
+    except ValueError:
+        pass
+if date_righe:
+    ultima = max(date_righe)
+    eta = (oggi - ultima).days
+    avviso = f" — STORICO: nessuna riga da {eta} giorni (il gate del mattino e' in pensione)" if eta > 7 else ""
+    print(f"   ultima riga {ultima}{avviso}")
 for repo, s in sorted(stats.items()):
     pct = lambda n: f"{100*n/s['righe']:.0f}%" if s["righe"] else "—"
     print(f"\n{repo}")

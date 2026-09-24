@@ -6914,7 +6914,7 @@
       "node_kind": "heading",
       "norm_label": "gli altri comandi del turno",
       "source_file": "night-shift/README.md",
-      "source_location": "L126"
+      "source_location": "L129"
     },
     {
       "id": "night_shift_readme_i_cinque_livelli_di_verifica_tassonomia_2026_08_21",
@@ -6986,7 +6986,7 @@
       "node_kind": "heading",
       "norm_label": "il revisore (il censore delle pr)",
       "source_file": "night-shift/README.md",
-      "source_location": "L176"
+      "source_location": "L179"
     },
     {
       "id": "night_shift_readme_il_saldatore_deterministico_e_002_si_salda_senza_modello",
@@ -6998,7 +6998,7 @@
       "node_kind": "heading",
       "norm_label": "il saldatore deterministico (e-002 si salda senza modello)",
       "source_file": "night-shift/README.md",
-      "source_location": "L155"
+      "source_location": "L158"
     },
     {
       "id": "night_shift_readme_il_turno_di_notte_il_metodo_v2_generalizzato",
@@ -7022,7 +7022,7 @@
       "node_kind": "heading",
       "norm_label": "l'agente nostro",
       "source_file": "night-shift/README.md",
-      "source_location": "L139"
+      "source_location": "L142"
     },
     {
       "id": "night_shift_readme_l_allineamento_dello_standard_il_drift_si_dichiara",
@@ -7034,7 +7034,7 @@
       "node_kind": "heading",
       "norm_label": "l'allineamento dello standard (il drift si dichiara)",
       "source_file": "night-shift/README.md",
-      "source_location": "L165"
+      "source_location": "L168"
     },
     {
       "id": "night_shift_readme_la_caccia_che_migliora_2026_09_17",
@@ -7046,7 +7046,7 @@
       "node_kind": "heading",
       "norm_label": "la caccia che migliora (2026-09-17)",
       "source_file": "night-shift/README.md",
-      "source_location": "L199"
+      "source_location": "L202"
     },
     {
       "id": "night_shift_readme_la_caccia_del_registro_il_censimento_dei_debiti",
@@ -7058,7 +7058,7 @@
       "node_kind": "heading",
       "norm_label": "la caccia del registro (il censimento dei debiti)",
       "source_file": "night-shift/README.md",
-      "source_location": "L209"
+      "source_location": "L212"
     },
     {
       "id": "night_shift_readme_la_caccia_intelligente",
@@ -7070,7 +7070,7 @@
       "node_kind": "heading",
       "norm_label": "la caccia intelligente",
       "source_file": "night-shift/README.md",
-      "source_location": "L146"
+      "source_location": "L149"
     },
     {
       "id": "night_shift_readme_la_commessa_si_costruis_col_grafo_dal_2026_08_21",
@@ -7094,7 +7094,7 @@
       "node_kind": "heading",
       "norm_label": "la dashboard (finestra di osservazione)",
       "source_file": "night-shift/README.md",
-      "source_location": "L225"
+      "source_location": "L228"
     },
     {
       "id": "night_shift_readme_le_regole_vincolanti",
@@ -12289,6 +12289,21 @@
       "norm_label": "_usage.sh script",
       "source_file": "llm/_usage.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "night_shift_lib_run_guarded",
+      "label": "run_guarded()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "run_guarded()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L77"
     },
     {
       "id": "tools_prepara_deploy",
@@ -21330,21 +21345,6 @@
       "source_location": "L38"
     },
     {
-      "id": "night_shift_lib_run_guarded",
-      "label": "run_guarded()",
-      "_origin": "ast",
-      "community": 28,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "run_guarded()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L77"
-    },
-    {
       "id": "night_shift_lib_sh__entry",
       "label": "lib.sh script",
       "_origin": "ast",
@@ -22560,6 +22560,21 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_gate_tools_hub_metrics",
+      "label": "HUB_METRICS",
+      "_origin": "ast",
+      "community": 289,
+      "community_name": "test-gate-tools.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "hub_metrics",
+      "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L19"
+    },
+    {
       "id": "tests_test_gate_tools_ko",
       "label": "ko()",
       "_origin": "ast",
@@ -22573,6 +22588,21 @@
       "norm_label": "ko()",
       "source_file": "tests/test-gate-tools.sh",
       "source_location": "L9"
+    },
+    {
+      "id": "tests_test_gate_tools_mtime_vero",
+      "label": "mtime_vero()",
+      "_origin": "ast",
+      "community": 289,
+      "community_name": "test-gate-tools.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime_vero()",
+      "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L15"
     },
     {
       "id": "tests_test_gate_tools_ok",
@@ -50430,6 +50460,18 @@
     },
     {
       "source": "tests_test_gate_tools_sh__entry",
+      "target": "tests_test_gate_tools_mtime_vero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_gate_tools_sh__entry",
       "target": "tests_test_gate_tools_ko",
       "relation": "calls",
       "_origin": "ast",
@@ -50437,7 +50479,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-gate-tools.sh",
-      "source_location": "L26",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -50449,7 +50491,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-gate-tools.sh",
-      "source_location": "L26",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -70584,7 +70626,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L126",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -70595,7 +70637,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L139",
+      "source_location": "L142",
       "weight": 1.0
     },
     {
@@ -70606,7 +70648,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L146",
+      "source_location": "L149",
       "weight": 1.0
     },
     {
@@ -70617,7 +70659,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L155",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -70628,7 +70670,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L165",
+      "source_location": "L168",
       "weight": 1.0
     },
     {
@@ -70639,7 +70681,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L176",
+      "source_location": "L179",
       "weight": 1.0
     },
     {
@@ -70650,7 +70692,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L199",
+      "source_location": "L202",
       "weight": 1.0
     },
     {
@@ -70661,7 +70703,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L209",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -70672,7 +70714,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/README.md",
-      "source_location": "L225",
+      "source_location": "L228",
       "weight": 1.0
     },
     {
@@ -83866,6 +83908,28 @@
     },
     {
       "source": "tests_test_gate_tools",
+      "target": "tests_test_gate_tools_mtime_vero",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_gate_tools",
+      "target": "tests_test_gate_tools_hub_metrics",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_gate_tools",
       "target": "tests_test_gate_tools_ok",
       "relation": "defines",
       "_origin": "ast",
@@ -89361,5 +89425,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1a6572b7e91baa07a55e48899f9690bcb317491a"
+  "built_at_commit": "b8853552f4c37f82eec2ad695fbc258339566b6c"
 }
