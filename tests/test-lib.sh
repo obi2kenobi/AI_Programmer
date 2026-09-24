@@ -51,6 +51,12 @@ check "git grep --open-files= (abbreviata)" 1 'git grep --open-files=touch x'
 check "git grep --open= (abbreviata)" 1 'git grep --open=touch x'
 check "git diff --out= (abbreviata)" 1 'git diff --out=/tmp/x'
 check "git diff --ext (abbreviata)" 1 'git diff --ext HEAD~1'
+# (2026-09-24, terzo ventaglio, V2 S24a): aggiungere `config` a GIT_RO restava verde qui — e `git config
+# core.fsmonitor "touch …"` seguito da un `git status` ESEGUE il comando (provato dal giro). Anche le
+# configurazioni passate da riga di comando (-c, --config-env) e il cambio di cartella (-C .) si rifiutano.
+check "git config (scrive la config)" 1 'git config core.fsmonitor "touch x"'
+check "git -c (config da riga di comando)" 1 'git -c core.fsmonitor=touch status'
+check "git --config-env"            1 'git --config-env=core.pager=X status'
 check "git log --textc (abbreviata)" 1 'git log --textc -p'
 check "git grep -i -e (legittimo)"  0 'git grep -i -e foo'
 check "git log --oneline (legittimo)" 0 'git log --oneline -3'

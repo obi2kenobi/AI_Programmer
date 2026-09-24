@@ -4308,3 +4308,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   file d'esito, e i verdetti si contano alla fine: da 19,3 a 7,0 s, 9/0. Sabotaggio: il ramo perl manda
   KILL al posto di TERM, e torna rosso (8/1: il trap EXIT non gira). Resta in fila solo `run_guarded` in
   `tests/test-lib.sh`.
+- **Terzo ventaglio, V2 S24a — nessun banco giudicava `git config` nell'allowlist di sola lettura.**
+  Il giro V2 ha aggiunto `config` a GIT_RO (`night-shift/lib.sh`) e i banchi sono rimasti verdi. Eppure
+  `git config core.fsmonitor "touch …"` seguito da `git status` esegue il comando: l'avversario del
+  censore avrebbe avuto una via per eseguire codice. Oggi l'allowlist lo rifiuta. Ho provato a mano che
+  rifiuta anche `-c`, `--config-env` e `-C .`; `git blame --contents` resta ammesso, perché legge e
+  basta. `tests/test-lib.sh` ha tre casi nuovi (config, `-c`, `--config-env`): verde (139/0). Il
+  sabotaggio di V2 (config in GIT_RO) ora è rosso (138/1).
