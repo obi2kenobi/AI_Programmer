@@ -3977,3 +3977,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `/nuova-commessa`, che non esiste (T4). Cricchetto `tests/test-skill-descrizioni.sh` (name e
   description entro 1024, due specchi): rosso sulla versione di prima (6 skill × 2 specchi), verde ora.
   ⏳ Se OpenCode le carica tutte: voce (f) in DEBITI.
+- **T1#5 — il garante copiato in un satellite si credeva l'hub.** `tools/garante-standard.sh`
+  sceglieva come hub la cartella da cui gira, se ha `.claude/skills`: ce l'ha anche ogni satellite, e
+  `tools/installa-citati.sh` porta il garante nei satelliti. Dentro il satellite taceva («sono
+  l'hub»). Su un'altra repo installava dal satellite, che non ha `claude-md-satellite.sh` né
+  `copia-hook.sh`: niente CLAUDE.md, niente hook. Ora l'hub è la cartella che ha ciò che il garante
+  usa (`e_hub`). Banco `tests/test-garante-standard.sh`: rosso prima, rosso al sabotaggio. (T1 è
+  rifatto da capo in questa sessione: il rapporto grezzo è andato perso con E-044.)

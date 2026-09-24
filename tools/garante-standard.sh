@@ -21,12 +21,17 @@ set -uo pipefail
 # il metodo della copia workspace, non aggiornata — falso DIVERGE che bocciava i fix del
 # turno. L'HUB e' la copia DA CUI il garante stesso vive: dirname $0/.. Il fisso resta
 # solo come ripiego se chi lo invoca non e' dentro un hub (SessionStart utente).
+# (2026-09-24, notte dei giri, T1#5): «ha .claude/skills» non basta — ce l'ha anche ogni satellite, e la
+# copia del garante che vive in un satellite (tools/installa-citati.sh ce la porta) si credeva l'hub:
+# dentro il satellite taceva, su un'altra repo installava dal satellite, che non ha gli strumenti per
+# farlo. L'hub e' la cartella che ha cio' che il garante usa: claude-md-satellite.sh e copia-hook.sh.
+e_hub() { [ -d "$1/.claude/skills" ] && [ -f "$1/tools/claude-md-satellite.sh" ] && [ -f "$1/tools/copia-hook.sh" ]; }
 SELF_HUB="$(cd "$(dirname "$0")/.." && pwd)"
-[ -d "$SELF_HUB/.claude/skills" ] && HUB="$SELF_HUB" || HUB="${AI_PROGRAMMER_HUB:-$HOME/.zcode/workspace/default/AI_Programmer}"
+e_hub "$SELF_HUB" && HUB="$SELF_HUB" || HUB="${AI_PROGRAMMER_HUB:-$HOME/.zcode/workspace/default/AI_Programmer}"
 CWD="${CLAUDE_PROJECT_DIR:-$PWD}"
 
 # l'hub deve esistere: se no, silenzio (non possiamo installare da dove non c'è)
-[ -d "$HUB/.claude/skills" ] || exit 0
+e_hub "$HUB" || exit 0
 
 # il repo corrente È l'hub? non installare su se stesso
 [ "$(cd "$CWD" 2>/dev/null && pwd)" = "$(cd "$HUB" 2>/dev/null && pwd)" ] && exit 0

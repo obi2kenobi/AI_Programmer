@@ -29881,66 +29881,6 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2870"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2928"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2972"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L3025"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2836"
-    },
-    {
       "id": "tools_copia_hook",
       "label": "copia-hook.sh",
       "_origin": "ast",
@@ -43366,6 +43306,21 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_garante_standard_e_hub",
+      "label": "e_hub()",
+      "_origin": "ast",
+      "community": 695,
+      "community_name": "garante-standard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "e_hub()",
+      "source_file": "tools/garante-standard.sh",
+      "source_location": "L28"
+    },
+    {
       "id": "tools_garante_standard_sh__entry",
       "label": "garante-standard.sh script",
       "_origin": "ast",
@@ -46495,6 +46450,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2870"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2928"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2972"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L3025"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -46529,6 +46532,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1797"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2836"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -55528,6 +55543,18 @@
       "context": "call",
       "source_file": "tools/fork-stato.sh",
       "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_garante_standard_sh__entry",
+      "target": "tools_garante_standard_e_hub",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/garante-standard.sh",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -89340,6 +89367,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_garante_standard",
+      "target": "tools_garante_standard_e_hub",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/garante-standard.sh",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
       "source": "tools_giri_avversari",
       "target": "tools_giri_avversari_classifica",
       "relation": "defines",
@@ -92027,5 +92065,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b8fa2899a2e41092f342941921aa2c110a8e109c"
+  "built_at_commit": "1b6ccc8d5fef58baac79573f99167d2bafa12314"
 }

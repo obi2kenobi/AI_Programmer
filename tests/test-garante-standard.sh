@@ -74,6 +74,17 @@ OUT5=$(cd "$SB5" && bash "$GARANTE" 2>&1)
   && ok "settings.json proprio: avviso e nessuna modifica (prima il garante lo sovrascriveva)" \
   || ko "settings.json proprio: toccato o avviso assente — $(head -1 <<<"$OUT5")"
 
+# (2026-09-24, notte dei giri, T1#5): la COPIA del garante che vive in un satellite (ce la porta
+# tools/installa-citati.sh) prendeva il satellite per l'hub, perche' ha .claude/skills: dentro il
+# satellite taceva («sono l'hub»), e su un'altra repo installava dal satellite — che non ha
+# claude-md-satellite.sh ne' copia-hook.sh. L'hub e' la cartella che ha gli strumenti che servono.
+SAT=$(mktemp -d); NUOVA=$(mktemp -d)
+mkdir -p "$SAT/tools" "$SAT/.claude/skills"; cp "$GARANTE" "$SAT/tools/"
+OUT5=$(cd "$NUOVA" && AI_PROGRAMMER_HUB="$HERE" CLAUDE_PROJECT_DIR="$NUOVA" bash "$SAT/tools/garante-standard.sh" 2>&1)
+[ -f "$NUOVA/CLAUDE.md" ] && [ -x "$NUOVA/tools/clasp-block-hook.sh" ] \
+  && ok "la copia nel satellite installa dall'hub vero (CLAUDE.md e hook presenti)" || ko "la copia nel satellite si crede l'hub: $(tr '\n' ' ' <<<"$OUT5" | cut -c1-160)"
+rm -rf "$SAT" "$NUOVA"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
