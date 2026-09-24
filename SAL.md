@@ -4667,3 +4667,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   una PR aperta vecchia usciva dalla lista e il suo ramo sembrava orfano. `tests/test-lib.sh`: due
   controlli, rossi prima (2 FAIL), verdi ora (152/0). Non fatto: il ramo con PR fusa e commit più recenti
   del merge. Con il filtro sui soli rami del turno il caso diventa raro, ed è dichiarato qui.
+- **Quinto ventaglio, R5 R3 — il «lease» del push era un force-push.** Prima del push `night-shift/night-shift.sh`
+  rifaceva il fetch di `origin/night/issue-N` e usava come valore atteso lo sha APPENA letto. Il lease
+  quindi non proteggeva niente. Riprodotto dal giro: due correzioni a mano sul ramo sparivano dal remoto,
+  e il log diceva «fix committato e pushato». Ora `commit_altrui` in `night-shift/lib.sh` conta i commit
+  del ramo remoto il cui autore non è quello del turno. Se ce ne sono, niente forzatura: il push viene
+  rifiutato come non fast-forward, il lavoro del giorno resta, e il log dice «N commit non del turno: non
+  lo sovrascrivo». Banco nuovo `tests/test-commit-altrui.sh`: rosso prima, verde ora (4/0). Sabotaggio:
+  conta tutti i commit, 2/2.

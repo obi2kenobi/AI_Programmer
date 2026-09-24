@@ -1004,7 +1004,14 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
         git -C "$DIR" fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" -q 2>/dev/null || true
         LEASE_ARGS=()
         if EXPECTED=$(git -C "$DIR" rev-parse -q --verify "refs/remotes/origin/$BRANCH"); then
-          LEASE_ARGS=(--force-with-lease="$BRANCH:$EXPECTED")
+          # (2026-09-24, R5 R3): il ramo remoto con commit del GIORNO (autore diverso dal turno) non si forza —
+          # senza lease il push viene rifiutato, il lavoro del giorno resta, e il log dice perche'
+          ALTRUI=$(commit_altrui "$DIR" "origin/$DB" "refs/remotes/origin/$BRANCH")
+          if [ "${ALTRUI:-0}" -gt 0 ]; then
+            log "⚠ Issue #$NUM: $BRANCH sul remoto ha $ALTRUI commit non del turno: non lo sovrascrivo (push senza forzatura, verra' rifiutato)"
+          else
+            LEASE_ARGS=(--force-with-lease="$BRANCH:$EXPECTED")
+          fi
         fi
         # (fase B adattiva): la nota da portare nel commit — una funzione NUOVA inserita
         # e' codice morto dichiarato: il diff reviewer cerca il collegamento che manca

@@ -22,7 +22,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bilancio_bu.py",
@@ -34,7 +34,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "categorizza()",
       "source_file": "tools/riconciliazione_magazzino.py",
@@ -46,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/riconciliazione_magazzino.py",
@@ -58,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
@@ -70,7 +70,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
@@ -82,7 +82,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
@@ -94,7 +94,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
@@ -209,16 +209,64 @@
       "source_location": "L31"
     },
     {
-      "id": "tools_leasing_amministrativo_main_numero",
-      "label": "numero()",
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "rating_dso_clienti.py",
       "file_type": "code",
-      "norm_label": "numero()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L91"
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L46"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_e002_siti_dentro_virgolette",
+      "label": "dentro_virgolette()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "dentro_virgolette()",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L18"
+    },
+    {
+      "id": "tools_e002_siti_incluse_sotto_pipefail",
+      "label": "incluse_sotto_pipefail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "incluse_sotto_pipefail()",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "tools_e002_siti_siti",
+      "label": "siti()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "siti()",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L59"
     },
     {
       "id": "tools_margine_documento_leggi_csv",
@@ -226,7 +274,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/margine_documento.py",
@@ -238,7 +286,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
@@ -250,7 +298,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/margine_documento.py",
@@ -262,7 +310,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/verifica_banco.py",
@@ -274,7 +322,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 38,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
@@ -286,35 +334,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 38,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L50"
-    },
-    {
-      "id": "tools_rollforward_cespiti_calcola_roll_forward",
-      "label": "calcola_roll_forward()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "calcola_roll_forward()",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L33"
-    },
-    {
-      "id": "tools_rollforward_cespiti_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L67"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -413,6 +437,18 @@
       "source_location": "L67"
     },
     {
+      "id": "tools_leasing_amministrativo_main_numero",
+      "label": "numero()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "numero()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L91"
+    },
+    {
       "id": "tools_leasing_amministrativo_mesi_tra",
       "label": "mesi_tra()",
       "_callable": true,
@@ -423,30 +459,6 @@
       "norm_label": "mesi_tra()",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L43"
-    },
-    {
-      "id": "tools_rating_dso_clienti_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
-    },
-    {
-      "id": "tools_rating_dso_clienti_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L42"
     },
     {
       "id": "tools_valorizzazione_magazzino_applica_override",
@@ -627,42 +639,6 @@
       "norm_label": "write_md()",
       "source_file": "tools/bc_map.py",
       "source_location": "L126"
-    },
-    {
-      "id": "tools_e002_siti_dentro_virgolette",
-      "label": "dentro_virgolette()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "dentro_virgolette()",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L18"
-    },
-    {
-      "id": "tools_e002_siti_incluse_sotto_pipefail",
-      "label": "incluse_sotto_pipefail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "incluse_sotto_pipefail()",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L43"
-    },
-    {
-      "id": "tools_e002_siti_siti",
-      "label": "siti()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "siti()",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L59"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -891,6 +867,30 @@
       "norm_label": "riga_di()",
       "source_file": "tools/gas_qualita.py",
       "source_location": "L59"
+    },
+    {
+      "id": "tools_rollforward_cespiti_calcola_roll_forward",
+      "label": "calcola_roll_forward()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "calcola_roll_forward()",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L33"
+    },
+    {
+      "id": "tools_rollforward_cespiti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L67"
     },
     {
       "id": "sal_2026_08_27_10_trenta_giri_n_2_il_collegamento_rotto_ero_io",
@@ -3525,7 +3525,7 @@
       "label": "bilancio_bu.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "bilancio_bu.py",
       "source_file": "tools/bilancio_bu.py",
@@ -3536,7 +3536,7 @@
       "label": "riconciliazione_magazzino.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "riconciliazione_magazzino.py",
       "source_file": "tools/riconciliazione_magazzino.py",
@@ -3547,7 +3547,7 @@
       "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "code",
       "norm_label": "scadenzario_aging.py",
       "source_file": "tools/scadenzario_aging.py",
@@ -3558,7 +3558,7 @@
       "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
       "source_file": "tools/bilancio_bu.py",
@@ -3569,7 +3569,7 @@
       "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
@@ -3580,7 +3580,7 @@
       "label": "Riconciliazione inventario fisico di magazzino. Formula reale (oracolo, non\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "riconciliazione inventario fisico di magazzino. formula reale (oracolo, non...",
       "source_file": "tools/riconciliazione_magazzino.py",
@@ -3591,7 +3591,7 @@
       "label": "Il cuore della riconciliazione (formula REPO-E): delta = fisica \u2212 BC,\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "il cuore della riconciliazione (formula repo-e): delta = fisica \u2212 bc,...",
       "source_file": "tools/riconciliazione_magazzino.py",
@@ -3602,7 +3602,7 @@
       "label": "CSV in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "csv in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto...",
       "source_file": "tools/riconciliazione_magazzino.py",
@@ -3613,7 +3613,7 @@
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3624,7 +3624,7 @@
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3635,7 +3635,7 @@
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
@@ -3646,7 +3646,7 @@
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
@@ -4527,36 +4527,6 @@
       "norm_label": "proposta al canone",
       "source_file": "docs/campo/2026-09-07-repo-v-asse-sbagliato-fixture-che-mentono.md",
       "source_location": "L123"
-    },
-    {
-      "id": "night_shift_lib_allinea_hub",
-      "label": "allinea_hub()",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "allinea_hub()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L524"
-    },
-    {
-      "id": "night_shift_lib_rotate_log_if_big",
-      "label": "rotate_log_if_big()",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rotate_log_if_big()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L38"
     },
     {
       "id": "night_shift_night_shift",
@@ -9277,7 +9247,7 @@
       },
       "norm_label": "rianima_ollama()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L562"
+      "source_location": "L570"
     },
     {
       "id": "tests_test_dipendenze_turno",
@@ -16650,11 +16620,26 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib",
+      "label": "lib.sh",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "lib.sh",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "night_shift_lib_ambiente_turno",
       "label": "ambiente_turno()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16669,7 +16654,7 @@
       "label": "caccia_gia_aperta()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16684,7 +16669,7 @@
       "label": "candidata_censore()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16699,7 +16684,7 @@
       "label": "candidata_parere()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16714,7 +16699,7 @@
       "label": "commenta_una_volta()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16722,14 +16707,59 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L625"
+      "source_location": "L633"
+    },
+    {
+      "id": "night_shift_lib_default_branch",
+      "label": "default_branch()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "default_branch()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L5"
+    },
+    {
+      "id": "night_shift_lib_esegui_verifica",
+      "label": "esegui_verifica()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "esegui_verifica()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L88"
+    },
+    {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L622"
     },
     {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16744,7 +16774,7 @@
       "label": "gate_allowlist_ok()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16759,7 +16789,7 @@
       "label": "gate_banchi()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16770,11 +16800,56 @@
       "source_location": "L109"
     },
     {
+      "id": "night_shift_lib_lente_pr",
+      "label": "lente_pr()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lente_pr()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L443"
+    },
+    {
+      "id": "night_shift_lib_mask_secrets",
+      "label": "mask_secrets()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mask_secrets()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L304"
+    },
+    {
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L28"
+    },
+    {
       "id": "night_shift_lib_rami_da_scopare",
       "label": "rami_da_scopare()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16785,11 +16860,71 @@
       "source_location": "L363"
     },
     {
+      "id": "night_shift_lib_repo_code",
+      "label": "repo_code()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "repo_code()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L390"
+    },
+    {
+      "id": "night_shift_lib_rotate_log_if_big",
+      "label": "rotate_log_if_big()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rotate_log_if_big()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L38"
+    },
+    {
+      "id": "night_shift_lib_run_guarded",
+      "label": "run_guarded()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "run_guarded()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L77"
+    },
+    {
+      "id": "night_shift_lib_sh__entry",
+      "label": "lib.sh script",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "lib.sh script",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "night_shift_lib_verifica_issue_comando",
       "label": "verifica_issue_comando()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16800,11 +16935,56 @@
       "source_location": "L475"
     },
     {
+      "id": "night_shift_morning_gate",
+      "label": "morning-gate.sh",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "morning-gate.sh",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_morning_gate_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L28"
+    },
+    {
+      "id": "night_shift_morning_gate_sh__entry",
+      "label": "morning-gate.sh script",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "morning-gate.sh script",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "night_shift_night_shift_shift_repo",
       "label": "shift_repo()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16819,7 +16999,7 @@
       "label": "test-lib.sh",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16834,7 +17014,7 @@
       "label": "check()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16849,7 +17029,7 @@
       "label": "g()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16864,7 +17044,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16879,7 +17059,7 @@
       "label": "lock_da_altro()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16894,7 +17074,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16909,7 +17089,7 @@
       "label": "test-lib.sh script",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -16924,7 +17104,7 @@
       "label": "vi()",
       "_origin": "ast",
       "community": 209,
-      "community_name": "shift_repo",
+      "community_name": "lib.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -20394,108 +20574,123 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
+      "id": "night_shift_lib_commit_altrui",
+      "label": "commit_altrui()",
       "_origin": "ast",
       "community": 248,
-      "community_name": "mtime",
+      "community_name": "test-commit-altrui.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "eta_secondi()",
+      "norm_label": "commit_altrui()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L614"
+      "source_location": "L552"
     },
     {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
+      "id": "tests_test_commit_altrui",
+      "label": "test-commit-altrui.sh",
       "_origin": "ast",
       "community": 248,
-      "community_name": "mtime",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mtime()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L28"
-    },
-    {
-      "id": "tests_test_portabilita",
-      "label": "test-portabilita.sh",
-      "_origin": "ast",
-      "community": 248,
-      "community_name": "mtime",
+      "community_name": "test-commit-altrui.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-portabilita.sh",
-      "source_file": "tests/test-portabilita.sh",
+      "norm_label": "test-commit-altrui.sh",
+      "source_file": "tests/test-commit-altrui.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_portabilita_ko",
+      "id": "tests_test_commit_altrui_git_config_count",
+      "label": "GIT_CONFIG_COUNT",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-commit-altrui.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_config_count",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_commit_altrui_git_config_key_0",
+      "label": "GIT_CONFIG_KEY_0",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-commit-altrui.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_config_key_0",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_commit_altrui_git_config_value_0",
+      "label": "GIT_CONFIG_VALUE_0",
+      "_origin": "ast",
+      "community": 248,
+      "community_name": "test-commit-altrui.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_config_value_0",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_commit_altrui_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 248,
-      "community_name": "mtime",
+      "community_name": "test-commit-altrui.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L13"
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L11"
     },
     {
-      "id": "tests_test_portabilita_ok",
+      "id": "tests_test_commit_altrui_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 248,
-      "community_name": "mtime",
+      "community_name": "test-commit-altrui.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L12"
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_portabilita_righe_con",
-      "label": "righe_con()",
+      "id": "tests_test_commit_altrui_sh__entry",
+      "label": "test-commit-altrui.sh script",
       "_origin": "ast",
       "community": 248,
-      "community_name": "mtime",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "righe_con()",
-      "source_file": "tests/test-portabilita.sh",
-      "source_location": "L18"
-    },
-    {
-      "id": "tests_test_portabilita_sh__entry",
-      "label": "test-portabilita.sh script",
-      "_origin": "ast",
-      "community": 248,
-      "community_name": "mtime",
+      "community_name": "test-commit-altrui.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-portabilita.sh script",
-      "source_file": "tests/test-portabilita.sh",
+      "norm_label": "test-commit-altrui.sh script",
+      "source_file": "tests/test-commit-altrui.sh",
       "source_location": "L1"
     },
     {
@@ -20811,6 +21006,21 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_allinea_hub",
+      "label": "allinea_hub()",
+      "_origin": "ast",
+      "community": 251,
+      "community_name": "test-allinea-hub.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "allinea_hub()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L524"
+    },
+    {
       "id": "tests_test_allinea_hub",
       "label": "test-allinea-hub.sh",
       "_origin": "ast",
@@ -20991,88 +21201,37 @@
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
-      "label": "2026-08-28-parrocchie-giornata-completa.md",
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_1_i_numeri_del_giorno",
-      "label": "1. I numeri del giorno",
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. i numeri del giorno",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L12"
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
-      "label": "2. Le commesse della giornata, in ordine",
+      "id": "tools_rating_dso_clienti_rationale_47",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. le commesse della giornata, in ordine",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L25"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_3_i_difetti_per_famiglia_il_corpus_conferma_e_si_estende",
-      "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L62"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_4_le_lezioni_di_metodo_di_oggi",
-      "label": "4. Le lezioni di metodo di oggi",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. le lezioni di metodo di oggi",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L79"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_5_consegna_e_artefatti",
-      "label": "5. Consegna e artefatti",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. consegna e artefatti",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L100"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_ai_programmer_report_lavori_del_28_08_2026_su_gestionale_parrocchie",
-      "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L1"
+      "community_name": "rating_dso_clienti.py",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
     },
     {
       "id": "night_shift_lib_cancello_design",
@@ -21087,7 +21246,82 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L641"
+      "source_location": "L649"
+    },
+    {
+      "id": "night_shift_lib_messaggio_fix",
+      "label": "messaggio_fix()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "messaggio_fix()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L561"
+    },
+    {
+      "id": "tests_test_messaggio_fix",
+      "label": "test-messaggio-fix.sh",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-messaggio-fix.sh",
+      "source_file": "tests/test-messaggio-fix.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_messaggio_fix_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-messaggio-fix.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_messaggio_fix_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-messaggio-fix.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_messaggio_fix_sh__entry",
+      "label": "test-messaggio-fix.sh script",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-messaggio-fix.sh script",
+      "source_file": "tests/test-messaggio-fix.sh",
+      "source_location": "L1"
     },
     {
       "id": "tests_test_night_shift_design_gate",
@@ -21162,6 +21396,81 @@
       },
       "norm_label": "test-night-shift-design-gate.sh script",
       "source_file": "tests/test-night-shift-design-gate.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_portabilita",
+      "label": "test-portabilita.sh",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-portabilita.sh",
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_portabilita_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_portabilita_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_portabilita_righe_con",
+      "label": "righe_con()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "righe_con()",
+      "source_file": "tests/test-portabilita.sh",
+      "source_location": "L18"
+    },
+    {
+      "id": "tests_test_portabilita_sh__entry",
+      "label": "test-portabilita.sh script",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "test-night-shift-design-gate.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-portabilita.sh script",
+      "source_file": "tests/test-portabilita.sh",
       "source_location": "L1"
     },
     {
@@ -28356,11 +28665,22 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_e002_siti",
+      "label": "e002-siti.py",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "e002-siti.py",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_margine_documento",
       "label": "margine_documento.py",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "margine_documento.py",
       "source_file": "tools/margine_documento.py",
@@ -28371,18 +28691,62 @@
       "label": "verifica_banco.py",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "verifica_banco.py",
       "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
     },
     {
+      "id": "tools_e002_siti_rationale_19",
+      "label": "True se la posizione pos della riga sta dentro '\u2026' o \"\u2026\" (le barre rovesciate\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "true se la posizione pos della riga sta dentro '...' o \"...\" (le barre rovesciate...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L19"
+    },
+    {
+      "id": "tools_e002_siti_rationale_2",
+      "label": "e002-siti.py \u2014 elenca i siti della famiglia E-002 nei file bash sotto pipefail:\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "e002-siti.py \u2014 elenca i siti della famiglia e-002 nei file bash sotto pipefail:...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_e002_siti_rationale_44",
+      "label": "I nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "i nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "tools_e002_siti_rationale_60",
+      "label": "I siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo\u2026",
+      "_origin": "ast",
+      "community": 34,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "i siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L60"
+    },
+    {
       "id": "tools_margine_documento_rationale_2",
       "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
       "source_file": "tools/margine_documento.py",
@@ -28393,7 +28757,7 @@
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/margine_documento.py",
@@ -28404,7 +28768,7 @@
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
@@ -28415,7 +28779,7 @@
       "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
       "source_file": "tools/verifica_banco.py",
@@ -28426,7 +28790,7 @@
       "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
       "_origin": "ast",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
       "source_file": "tools/verifica_banco.py",
@@ -30625,81 +30989,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_messaggio_fix",
-      "label": "messaggio_fix()",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "messaggio_fix()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L553"
-    },
-    {
-      "id": "tests_test_messaggio_fix",
-      "label": "test-messaggio-fix.sh",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-messaggio-fix.sh",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_messaggio_fix_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_messaggio_fix_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_messaggio_fix_sh__entry",
-      "label": "test-messaggio-fix.sh script",
-      "_origin": "ast",
-      "community": 373,
-      "community_name": "test-messaggio-fix.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-messaggio-fix.sh script",
-      "source_file": "tests/test-messaggio-fix.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_copia_hook",
       "label": "copia-hook.sh",
       "_origin": "ast",
@@ -31034,21 +31323,10 @@
       "label": "accuratezza_fatture_acquisto.py",
       "_origin": "ast",
       "community": 38,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "accuratezza_fatture_acquisto.py",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_rollforward_cespiti",
-      "label": "rollforward_cespiti.py",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "rollforward_cespiti.py",
-      "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L1"
     },
     {
@@ -31056,7 +31334,7 @@
       "label": "Accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza\u2026",
       "_origin": "ast",
       "community": 38,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
@@ -31067,7 +31345,7 @@
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 38,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
@@ -31078,44 +31356,11 @@
       "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
       "_origin": "ast",
       "community": 38,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L51"
-    },
-    {
-      "id": "tools_rollforward_cespiti_rationale_2",
-      "label": "Roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "json",
-      "file_type": "rationale",
-      "norm_label": "roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per...",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_rollforward_cespiti_rationale_34",
-      "label": "Roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "json",
-      "file_type": "rationale",
-      "norm_label": "roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1...",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L34"
-    },
-    {
-      "id": "tools_rollforward_cespiti_rationale_68",
-      "label": "Cespiti JSON in stdin \u2192 righe roll-forward. Input non-parsabile: uso.",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "json",
-      "file_type": "rationale",
-      "norm_label": "cespiti json in stdin \u2192 righe roll-forward. input non-parsabile: uso.",
-      "source_file": "tools/rollforward_cespiti.py",
-      "source_location": "L68"
     },
     {
       "id": "tools_prova_rilevatori",
@@ -34638,14 +34883,87 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
+      "label": "2026-08-28-parrocchie-giornata-completa.md",
       "_origin": "ast",
       "community": 46,
       "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_1_i_numeri_del_giorno",
+      "label": "1. I numeri del giorno",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. i numeri del giorno",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
+      "label": "2. Le commesse della giornata, in ordine",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. le commesse della giornata, in ordine",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L25"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_3_i_difetti_per_famiglia_il_corpus_conferma_e_si_estende",
+      "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L62"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_4_le_lezioni_di_metodo_di_oggi",
+      "label": "4. Le lezioni di metodo di oggi",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. le lezioni di metodo di oggi",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L79"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_5_consegna_e_artefatti",
+      "label": "5. Consegna e artefatti",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. consegna e artefatti",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L100"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_ai_programmer_report_lavori_del_28_08_2026_su_gestionale_parrocchie",
+      "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
       "source_location": "L1"
     },
     {
@@ -34691,28 +35009,6 @@
       "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L68"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_47",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
     },
     {
       "id": "docs_bc_endpoints_postedsalescreditmemolines",
@@ -45714,71 +46010,11 @@
       "source_location": "L3"
     },
     {
-      "id": "night_shift_lib",
-      "label": "lib.sh",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "lib.sh",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_lib_default_branch",
-      "label": "default_branch()",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "default_branch()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L5"
-    },
-    {
-      "id": "night_shift_lib_esegui_verifica",
-      "label": "esegui_verifica()",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "esegui_verifica()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L88"
-    },
-    {
-      "id": "night_shift_lib_lente_pr",
-      "label": "lente_pr()",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lente_pr()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L443"
-    },
-    {
       "id": "night_shift_lib_lock_turno_orfano",
       "label": "lock_turno_orfano()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45786,29 +46022,14 @@
       },
       "norm_label": "lock_turno_orfano()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L602"
-    },
-    {
-      "id": "night_shift_lib_mask_secrets",
-      "label": "mask_secrets()",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mask_secrets()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L304"
+      "source_location": "L610"
     },
     {
       "id": "night_shift_lib_prendi_lock_turno",
       "label": "prendi_lock_turno()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45816,96 +46037,66 @@
       },
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L581"
+      "source_location": "L589"
     },
     {
-      "id": "night_shift_lib_repo_code",
-      "label": "repo_code()",
+      "id": "tests_test_lock_turno_corsa",
+      "label": "test-lock-turno-corsa.sh",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "repo_code()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L390"
-    },
-    {
-      "id": "night_shift_lib_run_guarded",
-      "label": "run_guarded()",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "run_guarded()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L77"
-    },
-    {
-      "id": "night_shift_lib_sh__entry",
-      "label": "lib.sh script",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "lib.sh script",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_morning_gate",
-      "label": "morning-gate.sh",
-      "_origin": "ast",
-      "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "morning-gate.sh",
-      "source_file": "night-shift/morning-gate.sh",
+      "norm_label": "test-lock-turno-corsa.sh",
+      "source_file": "tests/test-lock-turno-corsa.sh",
       "source_location": "L1"
     },
     {
-      "id": "night_shift_morning_gate_log",
-      "label": "log()",
+      "id": "tests_test_lock_turno_corsa_ko",
+      "label": "ko()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "log()",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L28"
+      "norm_label": "ko()",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L10"
     },
     {
-      "id": "night_shift_morning_gate_sh__entry",
-      "label": "morning-gate.sh script",
+      "id": "tests_test_lock_turno_corsa_ok",
+      "label": "ok()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_sh__entry",
+      "label": "test-lock-turno-corsa.sh script",
+      "_origin": "ast",
+      "community": 722,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "morning-gate.sh script",
-      "source_file": "night-shift/morning-gate.sh",
+      "norm_label": "test-lock-turno-corsa.sh script",
+      "source_file": "tests/test-lock-turno-corsa.sh",
       "source_location": "L1"
     },
     {
@@ -45913,7 +46104,7 @@
       "label": "ciclo-vivo.sh",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45928,7 +46119,7 @@
       "label": "corpo_agent()",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -45943,7 +46134,7 @@
       "label": "ciclo-vivo.sh script",
       "_origin": "ast",
       "community": 722,
-      "community_name": "lib.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46905,66 +47096,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_lock_turno_corsa",
-      "label": "test-lock-turno-corsa.sh",
-      "_origin": "ast",
-      "community": 736,
-      "community_name": "test-lock-turno-corsa.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-lock-turno-corsa.sh",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 736,
-      "community_name": "test-lock-turno-corsa.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 736,
-      "community_name": "test-lock-turno-corsa.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_sh__entry",
-      "label": "test-lock-turno-corsa.sh script",
-      "_origin": "ast",
-      "community": 736,
-      "community_name": "test-lock-turno-corsa.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-lock-turno-corsa.sh script",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "night_shift_lib_aggiungi_consegna",
       "label": "aggiungi_consegna()",
       "_origin": "ast",
@@ -47053,61 +47184,6 @@
       "norm_label": "test-consegna-dichiarata.sh script",
       "source_file": "tests/test-consegna-dichiarata.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "tools_e002_siti",
-      "label": "e002-siti.py",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "e002-siti.py",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_e002_siti_rationale_19",
-      "label": "True se la posizione pos della riga sta dentro '\u2026' o \"\u2026\" (le barre rovesciate\u2026",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "true se la posizione pos della riga sta dentro '...' o \"...\" (le barre rovesciate...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L19"
-    },
-    {
-      "id": "tools_e002_siti_rationale_2",
-      "label": "e002-siti.py \u2014 elenca i siti della famiglia E-002 nei file bash sotto pipefail:\u2026",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "e002-siti.py \u2014 elenca i siti della famiglia e-002 nei file bash sotto pipefail:...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_e002_siti_rationale_44",
-      "label": "I nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano\u2026",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "i nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L44"
-    },
-    {
-      "id": "tools_e002_siti_rationale_60",
-      "label": "I siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo\u2026",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "i siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L60"
     },
     {
       "id": "tools_lente_sicurezza",
@@ -50489,6 +50565,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_rollforward_cespiti",
+      "label": "rollforward_cespiti.py",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "rollforward_cespiti.py",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_gas_qualita_rationale_2",
       "label": "Censimento qualit\u00e0 di un progetto Google Apps Script \u2014 le famiglie misurate del\u2026",
       "_origin": "ast",
@@ -50533,26 +50620,47 @@
       "source_location": "L64"
     },
     {
+      "id": "tools_rollforward_cespiti_rationale_2",
+      "label": "Roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per...",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_rollforward_cespiti_rationale_34",
+      "label": "Roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1...",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L34"
+    },
+    {
+      "id": "tools_rollforward_cespiti_rationale_68",
+      "label": "Cespiti JSON in stdin \u2192 righe roll-forward. Input non-parsabile: uso.",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "cespiti json in stdin \u2192 righe roll-forward. input non-parsabile: uso.",
+      "source_file": "tools/rollforward_cespiti.py",
+      "source_location": "L68"
+    },
+    {
       "id": "csv",
       "label": "csv",
       "_origin": "semantic",
       "community": 100,
-      "community_name": "sys",
+      "community_name": "csv",
       "external": true,
       "file_type": "concept",
       "norm_label": "csv",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "sys",
-      "label": "sys",
-      "_origin": "semantic",
-      "community": 100,
-      "community_name": "sys",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     },
@@ -50617,11 +50725,23 @@
       "type": "external"
     },
     {
+      "id": "datetime",
+      "label": "datetime",
+      "_origin": "semantic",
+      "community": 252,
+      "community_name": "rating_dso_clienti.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "datetime",
+      "source_file": "",
+      "type": "external"
+    },
+    {
       "id": "re",
       "label": "re",
       "_origin": "semantic",
       "community": 34,
-      "community_name": "re",
+      "community_name": "sys",
       "external": true,
       "file_type": "concept",
       "norm_label": "re",
@@ -50629,14 +50749,14 @@
       "type": "external"
     },
     {
-      "id": "json",
-      "label": "json",
+      "id": "sys",
+      "label": "sys",
       "_origin": "semantic",
-      "community": 38,
-      "community_name": "json",
+      "community": 34,
+      "community_name": "sys",
       "external": true,
       "file_type": "concept",
-      "norm_label": "json",
+      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     },
@@ -50677,23 +50797,11 @@
       "type": "external"
     },
     {
-      "id": "datetime",
-      "label": "datetime",
-      "_origin": "semantic",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "datetime",
-      "source_file": "",
-      "type": "external"
-    },
-    {
       "id": "math",
       "label": "math",
       "_origin": "semantic",
-      "community": 48,
-      "community_name": "valorizzazione_magazzino.py",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "math",
@@ -50757,6 +50865,18 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "time",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "json",
+      "label": "json",
+      "_origin": "semantic",
+      "community": 99,
+      "community_name": "gas_qualita.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "json",
       "source_file": "",
       "type": "external"
     }
@@ -51035,7 +51155,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L616",
+      "source_location": "L624",
       "weight": 1.0
     },
     {
@@ -51059,7 +51179,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L585",
+      "source_location": "L593",
       "weight": 1.0
     },
     {
@@ -51203,7 +51323,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1311",
+      "source_location": "L1318",
       "weight": 1.0
     },
     {
@@ -51292,6 +51412,18 @@
     },
     {
       "source": "night_shift_night_shift_shift_repo",
+      "target": "night_shift_lib_commit_altrui",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L1009",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_shift_repo",
       "target": "night_shift_lib_verifica_issue_comando",
       "relation": "calls",
       "_origin": "ast",
@@ -51299,7 +51431,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1023",
+      "source_location": "L1030",
       "weight": 1.0
     },
     {
@@ -53136,6 +53268,42 @@
       "context": "call",
       "source_file": "tests/test-claude-md-snello.sh",
       "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui_sh__entry",
+      "target": "tests_test_commit_altrui_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui_sh__entry",
+      "target": "tests_test_commit_altrui_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui_sh__entry",
+      "target": "night_shift_lib_commit_altrui",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -83653,6 +83821,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_commit_altrui",
+      "target": "tests_test_commit_altrui_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_consegna_dichiarata",
       "target": "tests_test_consegna_dichiarata_sh__entry",
       "relation": "contains",
@@ -86987,13 +87166,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_commit_altrui",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L552",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_messaggio_fix",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L553",
+      "source_location": "L561",
       "weight": 1.0
     },
     {
@@ -87004,7 +87194,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L562",
+      "source_location": "L570",
       "weight": 1.0
     },
     {
@@ -87015,7 +87205,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L581",
+      "source_location": "L589",
       "weight": 1.0
     },
     {
@@ -87026,7 +87216,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L602",
+      "source_location": "L610",
       "weight": 1.0
     },
     {
@@ -87037,7 +87227,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L614",
+      "source_location": "L622",
       "weight": 1.0
     },
     {
@@ -87048,7 +87238,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L625",
+      "source_location": "L633",
       "weight": 1.0
     },
     {
@@ -87059,7 +87249,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L641",
+      "source_location": "L649",
       "weight": 1.0
     },
     {
@@ -88677,6 +88867,61 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-claude-md-snello.sh",
       "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui",
+      "target": "tests_test_commit_altrui_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui",
+      "target": "tests_test_commit_altrui_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui",
+      "target": "tests_test_commit_altrui_git_config_count",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui",
+      "target": "tests_test_commit_altrui_git_config_key_0",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_commit_altrui",
+      "target": "tests_test_commit_altrui_git_config_value_0",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -95612,6 +95857,18 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_commit_altrui",
+      "target": "night_shift_lib",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.55,
+      "context": "import",
+      "source_file": "tests/test-commit-altrui.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_consegna_dichiarata",
       "target": "night_shift_lib",
       "relation": "imports_from",
@@ -95973,5 +96230,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bdc1532089fdfa25b502b71443168c6e498a161b"
+  "built_at_commit": "0af04917d969122afcb475b06f7b924fbd7aa078"
 }

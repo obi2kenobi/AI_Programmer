@@ -546,6 +546,14 @@ allinea_hub() {
   echo "hub allineato a $up"
 }
 
+# commit_altrui <dir> <base> <ref> — quanti commit di <base>..<ref> NON sono dell'autore configurato in <dir>
+# (il turno). (2026-09-24, quinto ventaglio, R5 R3): il «lease» del turno prendeva come atteso lo sha appena
+# letto dal remoto, cioe' non proteggeva niente, e le correzioni del giorno su night/issue-N sparivano.
+commit_altrui() {
+  local io; io=$(git -C "$1" config user.email 2>/dev/null)
+  git -C "$1" log --format=%ae "$2..$3" 2>/dev/null | grep -vcxF -- "${io:-night-shift@localhost}"
+}
+
 # messaggio_fix <tipo> <num> <titolo> <autore> <nota> <verifica> — il messaggio del commit di un fix d'issue.
 # (2026-09-24, terzo ventaglio, V1#6): il turno lo scriveva a mano con «(risolvi-issue.sh, modello locale)»
 # anche quando aveva risolto l'agente della cascata, e senza `Closes #N`: la PR (`gh pr create --fill`
