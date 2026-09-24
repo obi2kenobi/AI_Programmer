@@ -50,6 +50,19 @@ C_FERMO=$(critici "$TV/fermo.log"); C_NESSUNO=$(critici "$TV/nessuno.log")
   || ko "turno incastrato non conta nel verdetto (critici: senza log $C_NESSUNO, log fermo ${C_FERMO:-?})"
 rm -rf "$TV"
 
+# (2026-09-24, quarto ventaglio, Q1 R6): fuori dal Mac lo swap non misurato (sysctl senza vm.swapusage)
+# diventava «✅ swap: M (sotto controllo)», e dopo «launchctl assente: non verificabile» seguiva comunque
+# «launchd: … NON caricato». Una misura mancata si dice «non misurabile», e una voce non verificabile non
+# riceve un verdetto. (Qui, in Linux, launchctl e vm.swapusage mancano davvero.)
+if ! command -v launchctl >/dev/null 2>&1; then
+  OUT=$(bash "$HERE/tools/system-health.sh" 2>/dev/null)
+  ! grep -c '✅ swap' <<<"$OUT" >/dev/null && grep -c 'swap: non misurabile' <<<"$OUT" >/dev/null \
+    && ok "swap non misurato: detto «non misurabile», non verde" || ko "swap non misurato e verde: $(grep swap <<<"$OUT")"
+  ! grep -c 'NON caricato' <<<"$OUT" >/dev/null && ok "senza launchctl nessun «NON caricato» inventato" || ko "senza launchctl: $(grep 'NON caricato' <<<"$OUT" | head -1)"
+else
+  echo "SALTO: qui c'e' launchctl (un Mac), il caso «fuori dal Mac» non si esercita"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

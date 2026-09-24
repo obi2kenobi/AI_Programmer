@@ -4542,3 +4542,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Il banco `tests/test-turno-vivo.sh` pretendeva lo 0 («non urla al lupo»): aggiornato, con il perché
   scritto accanto. Due casi nuovi: rosso prima (2 FAIL), verde ora (11/0). Sabotaggio: di nuovo 0, 9/2.
   Verdi anche system-health (6/0) e log-onesto (17/0).
+- **Quarto ventaglio, Q1 R6 — fuori dal Mac, system-health dava un verde senza misura.** Lo swap non
+  misurato (sysctl senza `vm.swapusage`) era letto come 0: «✅ swap: M (sotto controllo)». Subito dopo
+  «launchctl assente: non verificabile», il polso stampava comunque «launchd: … NON caricato». Ora lo
+  swap non misurato è «⚠️ non misurabile qui», e i job launchd si giudicano solo se launchctl c'è.
+  `tests/test-system-health.sh` ha due casi (girano solo dove launchctl manca, altrimenti SALTO
+  dichiarato): rosso prima (2 FAIL), verde ora (8/0). Sabotaggio: senza il ramo del non misurato, 7/1.
