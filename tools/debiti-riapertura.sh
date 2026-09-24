@@ -9,6 +9,7 @@
 # Esce: 0 (informa, non blocca — la pressione sta nel farla visibile) · 1 cartella inesistente
 set -uo pipefail
 DIR="${1:-.}"
+SE="$(cd "$(dirname "$0")" && pwd)"
 cd "$DIR" || { echo "⛔ dir inesistente: $DIR"; exit 1; }
 echo "== RIAPERTURA: il debito si brucia qui =="
 
@@ -185,3 +186,10 @@ print(f"chiusi/storici: {len(sezioni) - sezioni_vive} sezioni saldate restano co
 if not IN_GIT:
     print("premesse: la cartella non e' una repo git — l'invecchiamento delle premesse NON e' controllato (dichiarato)")
 PY
+
+# (2026-09-24, quinto ventaglio, R1 R6): le citazioni file:riga della memoria scivolano col codice (nove su
+# dieci). Qui se ne dice solo il conto; l'elenco lo da' cita-verifica. Un avviso: la riapertura non si ferma.
+if [ -f DEBITI.md ] && [ -f "$SE/cita-verifica.sh" ]; then
+  DOCS=(DEBITI.md); [ -f docs/errori/REGISTRO.md ] && DOCS+=(docs/errori/REGISTRO.md)
+  echo "$(bash "$SE/cita-verifica.sh" --deriva "${DOCS[@]}" 2>&1 | tail -1) — l'elenco: bash tools/cita-verifica.sh --deriva ${DOCS[*]}"
+fi

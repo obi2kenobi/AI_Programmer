@@ -4848,3 +4848,14 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Senza guardia: nessun banco sa leggere il senso di una nota. Il controllo che il giro proponeva (una nota
   `decisione` più vecchia di un SALDATO sullo stesso tema) è rinviato.
+- **Quinto ventaglio, R1 R6 — le citazioni `file:riga` della memoria scivolavano, e nessuno lo diceva.**
+  DEBITI e REGISTRO motivano i saldi con numeri di riga, e il REGISTRO è append-only. `tools/cita-verifica.sh`
+  guardava solo che la riga esistesse. Ora `--deriva` prende, con `git blame`, il commit che ha scritto la
+  riga del documento, e confronta la riga citata di allora con quella di oggi. Se è diversa la dice
+  «scivolata», con la riga dove è andata. È un avviso, rc 0: la memoria non si riscrive. La riapertura
+  (`tools/debiti-riapertura.sh`) ne stampa il conto. Sul vero: 9 su 10, come aveva misurato il giro (per
+  esempio `DEBITI.md:171` cita `night-shift/night-shift.sh:1042`, e il watchdog ora è a 1126). Limite
+  dichiarato: se la riga del documento è stata ritoccata dopo, il confronto parte da quel ritocco.
+
+  Quattro casi nuovi in `tests/test-cita-verifica.sh` (10/0), rossi prima: la citazione scivolata, quella
+  ferma, rc 0, il richiamo dalla riapertura. Sabotaggio: 8/2.
