@@ -3506,3 +3506,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
       assegnano codici nuovi»): ora l'insieme congelato, e l'attacco G7 pianta un codice nuovo.
   - Batteria nel clone: 88 TIENE, 0 AGGIRATI, stavolta con verdetti veri. Il sabotaggio
     coincide con la misura pre-cura (4 AGGIRA).
+- **Q18**, da A2, `tools/fork-stato.sh` (la mossa M3 della skill allineamento-fork): tre ALLINEATE
+  falsi, riprodotti:
+  - Index.html o appsscript.json diversi (clasp li porta, la misura no);
+  - due copie vuote (un clasp clone fallito);
+  - nessun `shasum` (impronte vuote, quindi uguali).
+  - Ora si misura ciò che clasp porta, l'hash ripiega su sha1sum o python3, e una copia senza
+    codice è DEGRADATO (exit 2). Il marcatore porta il percorso relativo, non il basename.
+  - Banco: `tests/test-fork-stato.sh`, 4 casi, rossi prima. Sabotaggio (via .html e manifest):
+    2 rossi.

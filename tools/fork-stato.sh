@@ -11,20 +11,36 @@
 #
 # Uso: bash tools/fork-stato.sh <dir1> <dir2> [<dir3>...]
 #      (una delle copie può essere un clasp clone fresco del vivo: M2 della skill)
-# Esce 0 se tutte uguali · 1 se c'è deriva (con verdetto) · 2 uso errato.
+# Esce 0 se tutte uguali · 1 se c'è deriva (con verdetto) · 2 uso errato o DEGRADATO (non so misurare).
 set -uo pipefail
 [ $# -ge 2 ] || { echo "uso: fork-stato.sh <dir1> <dir2> [<dir3>...]" >&2; exit 2; }
 
-impronta() { # hash normalizzato del codice della copia
-  local d="$1"
-  find "$d" -type f \( -name '*.gs' -o -name '*.js' \) ! -name '.clasp*' 2>/dev/null | sort \
-    | while IFS= read -r f; do
-        sed 's/[[:space:]]*$//' "$f" | grep -v '^$'
-        echo "---FILE---$(basename "$f")"
-      done | shasum | awk '{print $1}'
+# (Q18, 2026-09-23, giro A2 della notte): tre ALLINEATE falsi, riprodotti. (a) Si misuravano solo
+# .gs/.js: l'Index.html di una webapp e appsscript.json (scope, fuso, runtime) — che clasp porta —
+# restavano fuori. (b) Due copie VUOTE (un clasp clone fallito) davano ALLINEATE. (c) Senza shasum
+# le impronte erano vuote, quindi uguali. Ora: si misura cio' che clasp porta; una copia senza
+# codice o un hash che non si puo' calcolare e' DEGRADATO (exit 2), mai un verdetto.
+codice() { # i file di codice della copia, in ordine stabile (.git e node_modules fuori)
+  find "$1" -type f \( -name '*.gs' -o -name '*.js' -o -name '*.html' -o -name 'appsscript.json' \) \
+    ! -name '.clasp*' ! -path '*/.git/*' ! -path '*/node_modules/*' 2>/dev/null | sort
 }
-conta() { find "$1" -type f \( -name '*.gs' -o -name '*.js' \) ! -name '.clasp*' 2>/dev/null | wc -l | tr -d ' '; }
-righe() { find "$1" -type f \( -name '*.gs' -o -name '*.js' \) ! -name '.clasp*' -exec cat {} + 2>/dev/null | wc -l | tr -d ' '; }
+# lo strumento di hash: shasum (Mac), sha1sum (Linux), python3 in ultima istanza
+if command -v shasum >/dev/null 2>&1; then HASHER="shasum"
+elif command -v sha1sum >/dev/null 2>&1; then HASHER="sha1sum"
+elif command -v python3 >/dev/null 2>&1; then HASHER="python3 -c 'import hashlib,sys; print(hashlib.sha1(sys.stdin.buffer.read()).hexdigest())'"
+else
+  echo "VERDETTO: DEGRADATO — nessuno strumento di hash (shasum, sha1sum, python3): non so misurare la deriva" >&2
+  exit 2
+fi
+impronta() { # hash normalizzato del codice della copia (il marcatore porta il percorso relativo:
+  local d="$1"   # lo stesso nome in due cartelle diverse non si confonde)
+  codice "$d" | while IFS= read -r f; do
+      sed 's/[[:space:]]*$//' "$f" | grep -v '^$'
+      echo "---FILE---${f#"$d"/}"
+    done | eval "$HASHER" | awk '{print $1}'
+}
+conta() { codice "$1" | wc -l | tr -d ' '; }
+righe() { codice "$1" | while IFS= read -r f; do cat "$f"; done | wc -l | tr -d ' '; }
 
 # array INDICIZZATI (bash 3.2 di macOS non ha declare -A: gli indici qui sono
 # numerici 0..N-1, l'associativo non serve e il -A fa solo sputare errori)
@@ -40,6 +56,13 @@ done
 echo "== fork-stato — $(date +%F) =="
 for i in $(seq 0 $((N-1))); do
   echo "  ${NOMI[$i]}: ${FILES[$i]} file · ${RIGHE[$i]} righe · impronta ${HASH[$i]:0:12}"
+done
+for i in $(seq 0 $((N-1))); do
+  if [ "${FILES[$i]}" -eq 0 ] || [ -z "${HASH[$i]}" ]; then
+    echo ""
+    echo "VERDETTO: DEGRADATO — la copia ${NOMI[$i]} non ha codice misurabile (clone fallito? cartella sbagliata?): nessun verdetto sulla deriva"
+    exit 2
+  fi
 done
 
 # matrice: quante copie differiscono da quante
