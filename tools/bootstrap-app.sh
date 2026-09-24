@@ -27,6 +27,9 @@ DEST="$HOME/night-shift-work/$NAME"
 
 [ -d "$DEST" ] && { echo "esiste già: $DEST"; exit 1; }
 gh auth status >/dev/null 2>&1 || { echo "gh non autenticato"; exit 1; }
+# (2026-09-24, quarto ventaglio, Q1 R1): senza identita' git il commit iniziale moriva (rc 128) DOPO aver
+# creato la cartella, e il secondo lancio si fermava su «esiste già». La precondizione si chiede prima.
+git var GIT_AUTHOR_IDENT >/dev/null 2>&1 || { echo "bootstrap-app: git non sa chi sei (user.email) — prima: git config --global user.name \"<nome>\" && git config --global user.email <email>"; exit 1; }
 # (Q14): il dry-run prometteva «nessuna scrittura» e creava la repo locale intera (e un secondo
 # lancio vero moriva su «esiste già»). Ora costruisce in una cartella temporanea — cosi' prova
 # davvero ogni copia — dice cosa creerebbe, e la cancella.

@@ -28,7 +28,7 @@ chmod +x "$TMP/repo/tools/foo.sh"
 # rosso non prova niente): il test passa subito col tool sano e dorme solo col tool mutato
 printf '#!/bin/bash\ngrep -q "riga 3" "$(dirname "$0")/../tools/foo.sh" && exit 0\nsleep 30\nexit 1\n' > "$TMP/repo/tests/test-foo.sh"
 cp "$HERE/tools/mutation-tests.sh" "$TMP/repo/tools/"
-git -C "$TMP/repo" add -A && git -C "$TMP/repo" commit -qm base
+git -C "$TMP/repo" add -A && git -C "$TMP/repo" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qm base   # identita' propria: una HOME vuota non ne ha (Q1 R1)
 ORIG=$(cat "$TMP/repo/tools/foo.sh")
 PAYLOAD=$(printf '#!/bin/bash\nexit 0\n')   # $(...) strippa il newline finale: come ATTUALE
 

@@ -4392,3 +4392,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-lib.sh` ha 11 casi nuovi: 9 rossi prima, verde ora (150/0), e i due legittimi (`jq -s
   length`, `grep -cE "a{2}"`) passano. Sabotaggio: senza il rifiuto dei caratteri di controllo, rosso
   (147/3). Verdi anche i banchi fratelli: agente, revisore, gate-tools.
+- **Quarto ventaglio, Q1 R1 — il primo giorno, senza identità git, la verifica prescritta era rossa per
+  finta.** In una HOME vuota `bash tools/suite.sh` (AGENTS.md, «come esco da qui») si fermava a 101/174:
+  `tests/test-mutation-atomico.sh` faceva un commit senza identità, e 73 banchi non giravano mai.
+  Riprodotto qui: tutti i banchi, uno per uno, in una HOME vuota. L'unico rosso era quello, mentre
+  `tests/test-mutation-tests.sh` era solo lento (178 s, verde). E `tools/bootstrap-app.sh` moriva (rc
+  128) DOPO aver creato la cartella, che poi bloccava il secondo lancio. Cure:
+  - il banco porta la sua identità;
+  - il bootstrap chiede `git var GIT_AUTHOR_IDENT` prima di scrivere, e dice il comando che manca.
+    `git config user.email` non bastava: non vede `GIT_AUTHOR_EMAIL`, e il mio primo tentativo ha rotto
+    l'e2e, 4/13.
+
+  Banco nuovo `tests/test-banchi-identita.sh`: un cricchetto sui banchi che fanno un commit senza
+  identità (escluso per nome quello col git finto) e il bootstrap in una HOME vuota. Rosso prima (2
+  FAIL), verde ora (3/0). Il bootstrap di HEAD resta rosso (1/2); l'e2e è 14/0, come su HEAD.
