@@ -3873,3 +3873,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   (vivo e del turno = occupato, morto = orfano, preso subito), e il log dice di quale PID si tratta.
   Banco in `tests/test-lock-turno-corsa.sh`: rosso prima, rosso al sabotaggio (il blocco vecchio
   rimesso).
+- **T2#5 — il lock di ciclo-vivo non scadeva mai.** Dopo un kill -9 `.ciclo/lock` restava per
+  sempre. Ogni giro di `tools/ciclo-vivo.sh` usciva 1 dopo 10 s («lock occupato da troppi giri») senza
+  che girasse nessun altro, e il banco di passaggio era rosso senza dire perché. Ora il lock porta il
+  PID: `prendi_lock_turno` ha un secondo argomento, il programma da considerare vivo (default
+  night-shift), e ciclo-vivo la usa col suo nome. Il messaggio dice di quale PID si tratta. Banco in
+  `tests/test-ciclo-vivo.sh`, in un clone: lock col PID morto ripreso, lock di un giro vivo
+  rispettato. Rosso prima, rosso al sabotaggio (il `mkdir` nudo).

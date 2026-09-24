@@ -359,17 +359,17 @@ verifica_issue_comando() {
 # dal primo. Ora il furto e' serializzato da un secondo mkdir (<lock>.furto), e dentro si RIGIUDICA:
 # chi arriva dopo trova il lock gia' preso da un vivo e si ferma. Un .furto lasciato da un processo
 # morto a meta' si toglie dopo 60 secondi (il furto dura millisecondi).
-prendi_lock_turno() {
-  local L="$1" rc
+prendi_lock_turno() {   # [programma]: chi e' «vivo» (default night-shift; ciclo-vivo lo usa col suo nome)
+  local L="$1" prog="${2:-night-shift}" rc
   if mkdir "$L" 2>/dev/null; then echo $$ > "$L/pid"; return 0; fi
   [ "$(cat "$L/pid" 2>/dev/null)" = "$$" ] && return 0
-  lock_turno_orfano "$L" || return 1
+  lock_turno_orfano "$L" "$prog" || return 1
   if ! mkdir "$L.furto" 2>/dev/null; then
     [ "$(eta_secondi "$L.furto")" -gt 60 ] && rm -rf "$L.furto"
     return 1
   fi
   rc=1
-  if lock_turno_orfano "$L"; then
+  if lock_turno_orfano "$L" "$prog"; then
     rm -rf "$L"
     mkdir "$L" 2>/dev/null && echo $$ > "$L/pid" && rc=0
   fi
@@ -377,14 +377,15 @@ prendi_lock_turno() {
   return $rc
 }
 
-# lock_turno_orfano <dir-lock>: 0 se il lock non e' di nessun turno vivo — il PID dentro e' morto o di
-# un altro programma; senza PID (versione di prima), se ha piu' di un'ora.
+# lock_turno_orfano <dir-lock> [programma]: 0 se il lock non e' di nessun processo vivo di quel
+# programma — il PID dentro e' morto o di un altro programma; senza PID (versione di prima), se ha piu'
+# di un'ora.
 lock_turno_orfano() {
   local pid comando
   pid=$(cat "$1/pid" 2>/dev/null)
   if [ -n "$pid" ]; then
     comando=$(ps -p "$pid" -o command= 2>/dev/null)
-    grep -q 'night-shift' <<<"$comando" && return 1
+    grep -qF -- "${2:-night-shift}" <<<"$comando" && return 1
     return 0
   fi
   [ "$(eta_secondi "$1")" -ge 3600 ]

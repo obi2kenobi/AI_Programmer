@@ -24,13 +24,19 @@ mkdir -p "$MEMORIA"
 # entrambi scrivevano N+1 — un giro PERSO. La memoria del ciclo è una risorsa
 # condivisa: il lock è mkdir (atomico), chi lo trova occupato aspetta e riparte.
 # È il pattern lock-per-risorsa, applicato dall'autore del pattern a se stesso.
+# (2026-09-24, notte dei giri, T2#5): dopo un kill -9 il lock restava PER SEMPRE: ogni giro usciva 1
+# dopo 10 s senza che girasse nessun altro. Ora il lock porta il PID (prendi_lock_turno di
+# night-shift/lib.sh, la regola del turno): PID morto = orfano, ripreso subito; PID di un ciclo-vivo
+# vivo = si aspetta come prima.
+# shellcheck source=../night-shift/lib.sh
+source "$HERE/night-shift/lib.sh"
 LOCK="$MEMORIA/lock"
 I=0
-until mkdir "$LOCK" 2>/dev/null; do
-  I=$((I+1)); [ $I -gt 50 ] && { echo "ciclo-vivo: lock occupato da troppi giri — esco senza toccare la memoria" >&2; exit 1; }
+until prendi_lock_turno "$LOCK" ciclo-vivo; do
+  I=$((I+1)); [ $I -gt 50 ] && { echo "ciclo-vivo: lock occupato da troppi giri (PID $(cat "$LOCK/pid" 2>/dev/null || echo '?')) — esco senza toccare la memoria" >&2; exit 1; }
   sleep 0.2
 done
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+trap 'rm -rf "$LOCK"' EXIT
 
 GIRO=$(cat "$MEMORIA/giro" 2>/dev/null || echo 0)
 GIRO=$((GIRO + 1))
