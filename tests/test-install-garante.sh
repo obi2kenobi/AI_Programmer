@@ -26,6 +26,17 @@ rm -f "$H/.claude/settings.json"
 HOME="$H" bash "$TOOL" >/dev/null 2>&1
 jq -e '.hooks.SessionStart[]?.hooks[]? | select(.command | contains("garante-standard"))' "$H/.claude/settings.json" >/dev/null 2>&1 \
   && ok "settings.json assente: creato col garante" || ko "settings.json assente: garante non installato"
+# (2026-09-24, notte dei giri, T6#7): con settings.json ROTTO, o senza jq, l'installatore stampava
+# «✅ Garante installato» ed usciva 0 senza aver installato niente — un verde senza verdetto.
+printf '{"hooks": rotto' > "$H/.claude/settings.json"; PRIMA=$(cat "$H/.claude/settings.json")
+OUT=$(HOME="$H" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c "✅" <<<"$OUT" >/dev/null && [ "$(cat "$H/.claude/settings.json")" = "$PRIMA" ] \
+  && ok "settings.json rotto: rc $RC, nessun ✅, il file resta com'era" || ko "settings.json rotto: rc $RC — «$(head -1 <<<"$OUT")»"
+SENZAJQ="$H/bin"; mkdir -p "$SENZAJQ"; for c in bash dirname mkdir mv cat rm; do ln -sf "$(command -v $c)" "$SENZAJQ/$c"; done
+OUT=$(HOME="$H" PATH="$SENZAJQ" "$SENZAJQ/bash" "$TOOL" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c "✅" <<<"$OUT" >/dev/null && grep -c "jq" <<<"$OUT" >/dev/null \
+  && ok "senza jq: rc $RC, nessun ✅, lo dice" || ko "senza jq: rc $RC — «$(head -1 <<<"$OUT")»"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

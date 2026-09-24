@@ -3961,3 +3961,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   qui avevo scritto «3 rossi», nello stesso comando che leggeva l'uscita e prima di vederla — E-043
   ripetuto. Da qui il verdetto si scrive solo in un comando successivo.] Il `\b` in
   sé non era il difetto (T3#4: il grep del Mac lo capisce); lo era il confine di parola.
+- **T6#7 — install-garante stampava ✅ senza aver installato niente.** Con `settings.json` rotto,
+  o senza jq, `tools/install-garante.sh` diceva «✅ Garante installato» ed usciva 0. Ora jq e un JSON
+  leggibile sono condizioni dichiarate prima di toccare il file (A). La scrittura fallita e l'hook
+  assente dopo la scrittura escono 1 (B). Banco `tests/test-install-garante.sh`: 2 rossi prima.
+  Sabotaggio: A tolta, verde; B tolta, verde; A e B tolte, 2 rossi. Le due difese sono ridondanti
+  sui casi del banco, e restano entrambe per scelta: A dà il messaggio giusto senza creare file,
+  B prende la scrittura fallita (disco pieno), che il banco non prova.

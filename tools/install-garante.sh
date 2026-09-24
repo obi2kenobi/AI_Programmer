@@ -6,17 +6,25 @@ set -uo pipefail
 HUB="$(cd "$(dirname "$0")/.." && pwd)"
 SETTINGS="$HOME/.claude/settings.json"
 
+# (2026-09-24, notte dei giri, T6#7): con settings.json ROTTO, o senza jq, qui si stampava «✅ Garante
+# installato» e si usciva 0 senza aver installato niente. Ora: jq e un JSON leggibile sono condizioni
+# dichiarate, e il ✅ si stampa solo se l'hook c'e' davvero dopo la scrittura.
+command -v jq >/dev/null 2>&1 || { echo "⛔ install-garante: jq assente — non posso leggere ne' scrivere $SETTINGS, niente installato" >&2; exit 1; }
 mkdir -p "$HOME/.claude"
 if [ ! -f "$SETTINGS" ]; then
   echo '{}' > "$SETTINGS"
 fi
+jq -e . "$SETTINGS" >/dev/null 2>&1 || { echo "⛔ install-garante: $SETTINGS non e' JSON leggibile — non lo tocco, niente installato (correggilo e rilancia)" >&2; exit 1; }
 
 # aggiunge il garante come SessionStart hook (se non già presente)
 if ! jq -e '.hooks.SessionStart[]?.hooks[]? | select(.command | contains("garante"))' "$SETTINGS" >/dev/null 2>&1; then
   jq '.hooks.SessionStart = ((.hooks.SessionStart // []) + [{
     "matcher": "startup|resume",
     "hooks": [{"type": "command", "command": "'"$HUB"'/tools/garante-standard.sh", "timeout": 15}]
-  }])' "$SETTINGS" > "$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS"
+  }])' "$SETTINGS" > "$SETTINGS.tmp" && mv "$SETTINGS.tmp" "$SETTINGS" \
+    || { rm -f "$SETTINGS.tmp"; echo "⛔ install-garante: scrittura di $SETTINGS fallita, niente installato" >&2; exit 1; }
+  jq -e '.hooks.SessionStart[]?.hooks[]? | select(.command | contains("garante"))' "$SETTINGS" >/dev/null 2>&1 \
+    || { echo "⛔ install-garante: dopo la scrittura l'hook non c'e' in $SETTINGS" >&2; exit 1; }
   echo "✅ Garante installato: da ora ogni sessione verifica e installa lo standard"
   echo "   su qualunque repo, senza che nessuno debba ricordarselo."
   echo "   Per disattivarlo: rimuovi l'hook da $SETTINGS"
