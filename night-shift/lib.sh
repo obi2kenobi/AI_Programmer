@@ -502,6 +502,20 @@ dipendenze_mancanti() {
   [ -z "$m" ]
 }
 
+# leggi_coda <owner/repo> — le issue night-shift aperte, in JSON su stdout. rc 1 col motivo su stderr se gh
+# fallisce o non risponde JSON. (2026-09-24, quarto ventaglio, Q2 R5): senza guardia, un blip di GitHub
+# dopo l'auth diventava «TURNO su X:  issue in coda» e una notte senza commesse; «0 issue» non e' «non so».
+leggi_coda() {
+  local out err rc
+  err=$(mktemp "${TMPDIR:-/tmp}/leggi-coda.XXXXXX") || { echo "leggi_coda: mktemp fallito" >&2; return 1; }
+  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body --limit 50 2>"$err"); rc=$?
+  if [ "$rc" -ne 0 ] || ! jq -e 'type == "array"' >/dev/null 2>&1 <<<"$out"; then
+    echo "gh rc=$rc: $(tail -1 "$err" | cut -c1-120)${out:+ · risposta: $(head -c 60 <<<"$out")}" >&2
+    rm -f "$err"; return 1
+  fi
+  rm -f "$err"; printf '%s\n' "$out"
+}
+
 # messaggio_fix <tipo> <num> <titolo> <autore> <nota> <verifica> — il messaggio del commit di un fix d'issue.
 # (2026-09-24, terzo ventaglio, V1#6): il turno lo scriveva a mano con «(risolvi-issue.sh, modello locale)»
 # anche quando aveva risolto l'agente della cascata, e senza `Closes #N`: la PR (`gh pr create --fill`

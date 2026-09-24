@@ -4507,3 +4507,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   cartella del chiamante: «1/1 superati», rc 0. Ora dice «dir inesistente» ed esce 1.
   `tests/test-suite-runner.sh` caso 7: rosso con la riga di prima (16/1), verde ora (17/0). La riga del
   riepilogo resta la 72, quella citata da AGENTS.md.
+- **Quarto ventaglio, Q2 R5 — una coda illeggibile passava per una coda vuota.** Col `gh issue list` in
+  errore dopo l'auth, il conteggio restava vuoto, `[ "" -ge 50 ]` dava un errore su stderr, e il log
+  diceva «TURNO su X:  issue in coda». Il turno andava avanti come senza commesse. Ora `leggi_coda` in
+  `night-shift/lib.sh` restituisce il JSON, o rc 1 col motivo se gh fallisce o non risponde un array (un
+  avviso di gh su stderr non sporca il JSON). Il turno scrive «⚠ coda ILLEGGIBILE (…) — non «0 issue»»
+  e salta la repo per questo ciclo: il lock si libera col `trap RETURN`. Banco nuovo
+  `tests/test-leggi-coda.sh`: rosso prima (la funzione non c'era), verde ora (6/0). Sabotaggio: senza la
+  validazione, 4/2.

@@ -262,7 +262,12 @@ shift_repo() {
   git -C "$DIR" config user.email >/dev/null 2>&1 || git -C "$DIR" config user.email "night-shift@localhost"
 
   local ISSUES COUNT
-  ISSUES=$(gh issue list -R "$REPO" --label night-shift --state open --json number,title,body --limit 50)
+  # (2026-09-24, Q2 R5): «0 issue» e «non so» non sono la stessa cosa — con la coda illeggibile la repo si
+  # salta in questo ciclo (niente caccia al posto delle commesse), e il log lo dice
+  if ! ISSUES=$(leggi_coda "$REPO" 2>"$WORK/.coda-errore"); then
+    log "⚠ TURNO su $REPO: coda ILLEGGIBILE ($(cat "$WORK/.coda-errore")) — non «0 issue»: la repo si salta in questo ciclo"
+    return 0
+  fi
   COUNT=$(echo "$ISSUES" | jq 'length')
   [ "$COUNT" -ge 50 ] && log "ATTENZIONE: limite 50 issue raggiunto in $REPO — possibile troncamento silenzioso (review §5)"
   log "TURNO su $REPO: $COUNT issue in coda"
