@@ -220,7 +220,7 @@ fi
 # --- 6. salva il codice in un file di patch (l'umano o il turno lo applica) ---
 PATCH_FILE="$DIR/.night-patch-$(date +%s).js"
 echo "$CODE" > "$PATCH_FILE"
-log "Codice salvato in $(basename $PATCH_FILE) ($(echo "$CODE" | wc -l | tr -d ' ') righe)"
+log "Codice salvato in $(basename "$PATCH_FILE") ($(echo "$CODE" | wc -l | tr -d ' ') righe)"
 
 # --- 7. se c'è UN solo file e UN solo blocco di codice: applica direttamente ---
 N_FILES=$(echo "$TERRitorio" | wc -w | tr -d ' ')
@@ -304,7 +304,7 @@ PYINS
     log "⚠ inserzione non verificata: rollback, resta la proposta"
   fi
   if [ -n "$TARGET_FN" ] && grep -q "function $TARGET_FN" "$TARGET_FILE"; then
-    log "Applicando: sostituisco $TARGET_FN in $(basename $TARGET_FILE)"
+    log "Applicando: sostituisco $TARGET_FN in $(basename "$TARGET_FILE")"
     # backup
     cp "$TARGET_FILE" "$TARGET_FILE.night-bak"
     # sostituzione: rimuovi la vecchia funzione, inserisci la nuova
@@ -353,7 +353,7 @@ PYEOF
         fi
         rm -f "$TARGET_FILE.night-bak"
         rm -f "$PATCH_FILE"
-        echo "ESITO: APPLICATO $(basename $TARGET_FILE) $TARGET_FN ${ELAPSED}s"
+        echo "ESITO: APPLICATO $(basename "$TARGET_FILE") $TARGET_FN ${ELAPSED}s"
         exit 0
       else
         log "⛔ node --check fallisce sul file modificato: rollback"
@@ -368,6 +368,6 @@ fi
 # se non può applicare direttamente: il codice è una PROPOSTA (funzione nuova o
 # bersaglio assente) — non un fix consegnato. Exit 3: il turno la pubblica come
 # commento all'issue, NON come PR (la notte del 4/9 ha aperto la PR #16 di scarti)
-log "Codice pronto in $(basename $PATCH_FILE) — proposta, applicazione a carico del giorno"
-echo "ESITO: PATCH $(basename $PATCH_FILE) ${ELAPSED}s"
+log "Codice pronto in $(basename "$PATCH_FILE") — proposta, applicazione a carico del giorno"
+echo "ESITO: PATCH $(basename "$PATCH_FILE") ${ELAPSED}s"
 exit 3

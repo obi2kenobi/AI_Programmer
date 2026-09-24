@@ -108,6 +108,14 @@ S=$(righe_con '(^|[ (;&|=!])setsid ' | grep -v 'command -v setsid' || true)
 S=$(righe_con "sed( -[a-zA-Z]+)* '[^']*/[aic] [^\\]" || true)
 [ -z "$S" ] && ok "S5 R5: nessun sed a/i/c su una riga sola (il sed del Mac lo rifiuta)" || ko "S5 R5: sed a/i/c GNU-only:"$'\n'"$S"
 
+# (2026-09-24, sesto ventaglio, S3 R6): due forme che si rompono in un percorso ostile. Un percorso incollato DENTRO il
+# sorgente di `python3 -c` (open('$f')): con un apice nel percorso e' un SyntaxError — ciclo-vivo dava 18 falsi «ROTT
+# py», accumulati nella sua memoria. E `basename $f` senza virgolette: con uno spazio, «extra operand» e il nome perso.
+S=$(righe_con "python3 -c .*open\\('\\\$" || true)
+[ -z "$S" ] && ok "S3 R6: nessun percorso incollato nel sorgente di python3 -c (si passa in sys.argv)" || ko "S3 R6: percorso nel sorgente python:"$'\n'"$S"
+S=$(righe_con 'basename \$[A-Za-z_]' || true)
+[ -z "$S" ] && ok "S3 R6: nessun basename su una variabile senza virgolette" || ko "S3 R6: basename senza virgolette:"$'\n'"$S"
+
 # (2026-09-24, sesto ventaglio, S5 R2): nessuno lanciava `bash -n` con la bash del Mac — questo stesso banco non si
 # analizzava con la 3.2 e nessuno lo vedeva. Ogni script del repo si analizza con /bin/bash (sul Mac e' la 3.2.57) e
 # con la bash di BASH_MAC, se c'e' (una 3.2 compilata, per provarlo fuori dal Mac).

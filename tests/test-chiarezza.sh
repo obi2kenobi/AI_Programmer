@@ -17,10 +17,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 # S1 — l'intenzione in testa: un trattone narrativo, un perché, o un Uso:
 SENZA_INTENT=""
 for f in "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/llm/*.sh; do
-  head -12 "$f" | grep -Ec "—|perch|Uso:|uso:|il contrato|contratto" >/dev/null || SENZA_INTENT="$SENZA_INTENT $(basename $f)"
+  head -12 "$f" | grep -Ec "—|perch|Uso:|uso:|il contrato|contratto" >/dev/null || SENZA_INTENT="$SENZA_INTENT $(basename "$f")"
 done
 for f in "$HERE"/tools/*.py; do
-  head -20 "$f" | grep -Ec '"""|—|perch' >/dev/null || SENZA_INTENT="$SENZA_INTENT $(basename $f)"
+  head -20 "$f" | grep -Ec '"""|—|perch' >/dev/null || SENZA_INTENT="$SENZA_INTENT $(basename "$f")"
 done
 [ -z "$SENZA_INTENT" ] && ok "S1 ogni file di codice dichiara la sua intenzione in testa" \
   || ko "S1 file senza intenzione dichiarata:$SENZA_INTENT"

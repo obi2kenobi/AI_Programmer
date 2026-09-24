@@ -112,7 +112,9 @@ for l in sys.stdin:
   while IFS= read -r f; do
     case "$f" in
       *.sh)  bash -n "$f" 2>/dev/null || { log "gate BOCCIA: sintassi bash — $f"; return 1; } ;;
-      *.py)  python3 -c "compile(open('$f').read(), '$f', 'exec')" 2>/dev/null || { log "gate BOCCIA: sintassi py — $f"; return 1; } ;;
+      # (2026-09-24, sesto ventaglio, S3 R6): il percorso passa a python come argomento — incollato nel sorgente, un
+      # apice nel percorso era un SyntaxError e il gate bocciava un file sano
+      *.py)  python3 -c "import sys; compile(open(sys.argv[1]).read(), sys.argv[1], 'exec')" "$f" 2>/dev/null || { log "gate BOCCIA: sintassi py — $f"; return 1; } ;;
       *.js|*.gs)
         command -v node >/dev/null 2>&1 && ! node --check "$f" 2>/dev/null \
           && { log "gate BOCCIA: sintassi js — $f"; return 1; } ;;

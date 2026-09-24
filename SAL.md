@@ -5187,3 +5187,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-giri-avversari-isolati.sh` gira ora con `TMPDIR="$T/tmp spazio"`: la batteria che misura le difese
   si misura anche sul percorso ostile. 7/0. Sabotaggio col giri-avversari di prima: 5 aggirati. Due commit: le
   cure prima, poi il banco, perché la batteria gira in un clone del commit.
+- **Sesto ventaglio, S3 R6 — percorsi incollati nel sorgente e `basename` senza virgolette.** Due forme che si
+  rompono in un percorso ostile:
+  - `python3 -c "…open('$f')…"`: con un apice è un SyntaxError. `tools/ciclo-vivo.sh` dava 18 falsi «ROTT py»,
+    accumulati nella sua memoria e con lo zero-streak azzerato. Il gate sintattico di
+    `night-shift/caccia-miglioria.sh` avrebbe bocciato un file sano;
+  - `basename $f` senza virgolette: con uno spazio dà «extra operand» e perde il nome. Succedeva in
+    `tools/campo-triage.sh`, `night-shift/risolvi-issue.sh` e in due banchi.
+
+  Ora il percorso passa a python come argomento, e `basename` è quotato. Visto nello stesso rilievo:
+  `tests/test-ai-timeout.sh` aveva il percorso dentro gli apici di una trappola, e con uno spazio in TMPDIR creava
+  un file «S3» nella radice del repo; ora passa come `$0`. Due controlli nuovi nella lente della portabilità
+  (19/0), rossi prima sui cinque siti; sabotaggio 17/2.

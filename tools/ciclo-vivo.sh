@@ -66,7 +66,8 @@ FINDINGS=()
 # classe d'errore del zsh parse error capitata davvero durante un fix.
 if [ "$LIVELLO" -le 2 ]; then
   for f in "$HERE"/tools/*.py; do
-    python3 -c "import ast; ast.parse(open('$f').read())" 2>/dev/null || FINDINGS+=("ROTT py: $f non compila")
+    # (2026-09-24, sesto ventaglio, S3 R6): percorso come argomento — incollato nel sorgente, un apice dava 18 falsi ROTT
+    python3 -c "import ast, sys; ast.parse(open(sys.argv[1]).read())" "$f" 2>/dev/null || FINDINGS+=("ROTT py: $f non compila")
   done
   for f in "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/llm/*.sh; do
     bash -n "$f" 2>/dev/null || FINDINGS+=("ROTT sh: $f non compila (bash -n)")

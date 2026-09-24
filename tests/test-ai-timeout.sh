@@ -71,7 +71,9 @@ fi
 # KILL dopo 5s; il perl (il Mac senza coreutils) mandava KILL subito — i trap EXIT dei comandi
 # interrotti non giravano mai sul Mac (un lock lasciato sporco). Stesso comando, due rami.
 caso7a() {
-AI_TIMEOUT_FORCE_PERL=1 ai_timeout 2 bash -c "trap 'touch $MK/perl' EXIT; sleep 30" >/dev/null 2>&1; RC7=$?
+# (2026-09-24, sesto ventaglio, S3 R6): il percorso stava dentro gli apici della trappola — con uno spazio in TMPDIR
+# `touch` creava un file «S3» nella radice del repo. Ora passa come argomento ($0 di bash -c).
+AI_TIMEOUT_FORCE_PERL=1 ai_timeout 2 bash -c 'trap "touch \"\$0/perl\"" EXIT; sleep 30' "$MK" >/dev/null 2>&1; RC7=$?
 [ -f "$MK/perl" ] && ok "ramo perl: TERM prima del KILL, il trap EXIT del comando gira (rc=$RC7)" \
   || ko "ramo perl: KILL diretto, il trap EXIT del comando NON gira (rc=$RC7)"
 [ "$RC7" -eq 124 ] && ok "ramo perl: allo scadere rc 124 come GNU" || ko "ramo perl: rc $RC7 (atteso 124)"

@@ -4733,7 +4733,7 @@
       },
       "norm_label": "corpo_agent()",
       "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L125"
+      "source_location": "L126"
     },
     {
       "id": "tools_ciclo_vivo_sh__entry",
@@ -16189,7 +16189,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L124"
+      "source_location": "L126"
     },
     {
       "id": "night_shift_caccia_miglioria_sh__entry",
@@ -46247,7 +46247,7 @@
       },
       "norm_label": "caso7c()",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L79"
+      "source_location": "L81"
     },
     {
       "id": "tests_test_ai_timeout_ko",
@@ -52058,7 +52058,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L140",
+      "source_location": "L142",
       "weight": 1.0
     },
     {
@@ -52070,7 +52070,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L157",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -52082,7 +52082,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L172",
+      "source_location": "L174",
       "weight": 1.0
     },
     {
@@ -52094,7 +52094,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L239",
+      "source_location": "L241",
       "weight": 1.0
     },
     {
@@ -52106,7 +52106,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L254",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -53066,7 +53066,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L74",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -53078,7 +53078,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L75",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -53090,7 +53090,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L76",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -53102,7 +53102,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L80",
+      "source_location": "L82",
       "weight": 1.0
     },
     {
@@ -53114,7 +53114,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L81",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -53126,7 +53126,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L81",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -53198,7 +53198,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L83",
+      "source_location": "L85",
       "weight": 1.0
     },
     {
@@ -53210,7 +53210,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L84",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -59354,7 +59354,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L131",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -88588,7 +88588,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L124",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -89435,7 +89435,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L79",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -95254,7 +95254,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L125",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -98262,5 +98262,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0f0e1afe0218d9df64b073b0322c4e5fabe78da2"
+  "built_at_commit": "84343228a445e47b670abd62098f94fd363dca12"
 }

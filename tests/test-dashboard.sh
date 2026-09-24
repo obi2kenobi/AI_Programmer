@@ -13,7 +13,7 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-python3 -c "compile(open('$DASH').read(),'dashboard.py','exec')" && ok "compila (E-028: prima non compilava)" || { ko "non compila"; exit 1; }
+python3 -c "import sys; compile(open(sys.argv[1]).read(),'dashboard.py','exec')" "$DASH" && ok "compila (E-028: prima non compilava)" || { ko "non compila"; exit 1; }
 
 OGGI=$(date '+%Y-%m-%d')
 TMP=$(mktemp -d /tmp/test-dashboard.XXXXXX); trap 'rm -rf "$TMP"' EXIT
