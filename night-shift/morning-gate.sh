@@ -161,7 +161,7 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
       CMD_ESEGUITI=0
       # (2026-09-19): FORMATO script dichiarato — il file e' un programma intero
       # (Magazzino, 505 righe): una verifica sola, non riga-per-riga
-      if printf '%s\n' "$NIGHT_VERIFY" | head -10 | grep -q "^# FORMATO: script"; then
+      if printf '%s\n' "$NIGHT_VERIFY" | head -10 | grep -c "^# FORMATO: script" >/dev/null; then
         CMD_ESEGUITI=1
         echo "- \`.night-verify\` (formato script, eseguito intero):" >> "$REPORT"
         # (D41, giro 28 2026-09-20): l'output delle verifiche entrava nel report e nella proposta

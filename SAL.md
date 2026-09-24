@@ -3725,3 +3725,22 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     e la prova resta non vuota.
   - Banco: `tests/test-mutation-tests.sh`, 1 caso in una repo di prova, rosso prima. Sabotaggio
     (via il controllo preliminare): rosso.
+- **Voci piccole della coda, verificate una alla volta.**
+  - `tools/claude-md-satellite.sh`: con uno spazio finale o un CRLF sul marcatore, il blocco
+    solo-hub arrivava ai satelliti con rc 0. Riprodotto. Ora la riga si confronta ripulita, e un
+    commento che nomina solo-hub senza essere esatto è un errore.
+    - Banco: `tests/test-claude-md-snello.sh`, 1 caso rosso prima, più 1 caso già preso dal
+      bilanciamento (dichiarato). Sabotaggio: rosso.
+- **Q31bis**, visto consegnando: la suite rossa su `tests/test-suite-meta-audit.sh`, verde da solo.
+  Non l'ho trattato come flake.
+  - Causa: `grep -vE … | grep -qE` sotto pipefail, cioè E-002 con un produttore che NON è echo.
+    Rosso 18 volte su 20 sotto carico (4 in parallelo).
+  - Era una dei 72 siti `comando | grep -q` rimasti, gli stessi che avevo appena scritto come
+    «raggiungibili dalla caccia»: aspettarla era sbagliato.
+  - Cura di tutta la forma: `| grep -q ARGS` → `| grep -c ARGS >/dev/null`. `-c` legge tutto
+    l'input, il produttore non muore, l'esito è identico. (`-q` con `>/dev/null` da solo no: GNU
+    grep esce presto anche verso /dev/null.) Le corrispondenze dentro le virgolette sono escluse.
+  - 45 siti in 23 banchi e 17 nel codice. Sotto carico: 0 rossi su 20 (prima 18).
+  - Un rilevatore unico, `tools/e002-siti.py` (virgolette e commenti compresi), per i due
+    cricchetti: `tests/test-e002-codice.sh` e `tests/test-e002-banchi-curati.sh`. Sabotaggio:
+    rosso. Zero siti nel repo.

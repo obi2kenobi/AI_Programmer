@@ -53,7 +53,7 @@ C=$(chiama test-sr-4 "$P/gas/Codice.gs")
 [ -z "$C" ] && ok "skill assente nella repo: nessun suggerimento a vuoto" || ko "suggerita una skill che qui non c'e': '$C'"
 
 # viaggia: e' un hook dichiarato (copia-hook --elenco lo porta nelle repo installate)
-bash "$HERE/tools/copia-hook.sh" --elenco | grep -qx 'tools/skill-reminder-hook.sh' \
+bash "$HERE/tools/copia-hook.sh" --elenco | grep -xc 'tools/skill-reminder-hook.sh' >/dev/null \
   && ok "skill-reminder-hook e' un hook dichiarato" || ko "skill-reminder-hook non dichiarato in settings.json"
 
 echo ""

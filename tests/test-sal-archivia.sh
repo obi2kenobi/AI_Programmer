@@ -43,7 +43,7 @@ grep -q "voce vecchissima" "$SB/SAL.md" && ko "la vecchia resta anche nel SAL (d
 # idempotenza: rigirare non archivia altro
 OUT2=$(SAL="$SB/SAL.md" ARCHIVIO="$SB/ARCHIVIO.md" bash "$HERE/tools/sal-archivia.sh" 30)
 grep -q "nessuna voce" <<<"$OUT2" && ok "secondo giro: nulla da archiviare (idempotente)" || ko "secondo giro archivia ancora: $OUT2"
-grep -c "voce vecchissima" "$SB/ARCHIVIO.md" | grep -q "^1$" && ok "nessun doppione in archivio" || ko "doppione in archivio"
+grep -c "voce vecchissima" "$SB/ARCHIVIO.md" | grep -c "^1$" >/dev/null && ok "nessun doppione in archivio" || ko "doppione in archivio"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

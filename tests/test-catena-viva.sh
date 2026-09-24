@@ -28,7 +28,7 @@ printf '# Verifiche dichiarate\nbash -n tools/vendite.sh\n' > "$SB/.night-verify
 git -C "$SB" init -q -b main && git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm base
 
 # ── 1. il censimento VEDE il debito ────────────────────────────────────────────
-bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB" | grep -q "E-002|tools/vendite.sh:3" \
+bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB" | grep -c "E-002|tools/vendite.sh:3" >/dev/null \
   && ok "1. censimento: il debito è in coda (E-002|tools/vendite.sh:3)" \
   || ko "1. censimento non vede il debito"
 

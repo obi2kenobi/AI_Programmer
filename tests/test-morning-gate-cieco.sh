@@ -77,7 +77,7 @@ aggiorna_verify() { # $1 = contenuto di .night-verify su main
 }
 aggiorna_verify 'grep -qv "^#" calc.js'
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
-tail -1 "$HUB_METRICS" | grep -q "verifiche-ok" \
+tail -1 "$HUB_METRICS" | grep -c "verifiche-ok" >/dev/null \
   && ok "D40: una riga con # fra virgolette passa intera a bash -c (verifiche-ok, come turno e censore)" \
   || ko "D40: riga troncata al # — verdetto $(tail -1 "$HUB_METRICS" | cut -d, -f5): $(grep -A1 'grep -qv' "$REPORT" | tail -1 | cut -c1-90)"
 

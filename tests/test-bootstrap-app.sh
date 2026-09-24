@@ -73,7 +73,7 @@ grep -q "git-commit-ok" <<<"$OUT_SANA" && grep -q "script-arrivato-alla-fine" <<
 # reale — il fix poteva sparire da bootstrap-app.sh senza rosso. Si presidia la
 # struttura portante: comandi separati, non la catena &&/|| che non si fermava.
 grep -q 'git add -A' "$HERE/tools/bootstrap-app.sh" \
-  && ! grep -vE '^[[:space:]]*#' "$HERE/tools/bootstrap-app.sh" | grep -qE 'git add -A *&&' \
+  && ! grep -vE '^[[:space:]]*#' "$HERE/tools/bootstrap-app.sh" | grep -Ec 'git add -A *&&' >/dev/null \
   && ok "bootstrap-app.sh: git add e commit separati (la catena fatale non è tornata)" \
   || ko "bootstrap-app.sh: struttura git add/commit degradata (torna la catena che non si ferma?)"
 

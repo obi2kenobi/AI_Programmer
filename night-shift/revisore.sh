@@ -208,7 +208,7 @@ if [ -n "$NV_DICHIARATE" ]; then
   if [ "${NV_N_CMD:-0}" -eq 0 ]; then
     PROVE_ROTTE="; .night-verify senza comandi (verifiche-vuote)"
   # (2026-09-19): due formati — script intero o riga-per-riga (contratto del turno)
-  elif printf '%s\n' "$NV_DICHIARATE" | head -10 | grep -q "^# FORMATO: script"; then
+  elif printf '%s\n' "$NV_DICHIARATE" | head -10 | grep -c "^# FORMATO: script" >/dev/null; then
     NV_SCRIPT=$(mktemp /tmp/revisore-nv.XXXXXX); printf '%s\n' "$NV_DICHIARATE" > "$NV_SCRIPT"
     if ! (ai_timeout 900 bash "$NV_SCRIPT" >/dev/null 2>&1 </dev/null); then
       PROVE_ROTTE="; .night-verify (formato script) rosso"

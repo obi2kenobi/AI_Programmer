@@ -19,7 +19,7 @@ jq -e '.hooks.UserPromptSubmit and .hooks.SessionStart' "$HERE/.claude/settings.
 
 # 2. SessionStart: la porta d'ingresso
 OUT=$(echo '{"hook_event_name":"SessionStart"}' | bash "$HOOK" 2>/dev/null)
-echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -q "non serve invocarlo" \
+echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -c "non serve invocarlo" >/dev/null \
   && ok "SessionStart: il metodo entra da solo, senza invocazione" \
   || ko "SessionStart non produce il digest"
 
@@ -34,12 +34,12 @@ grep -q "oracolo prima della formula" <<<"$CTX" \
 
 # 4. l'aggancio dinamico ai calcoli
 OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"calcolami il margine di magazzino"}' | bash "$HOOK" 2>/dev/null)
-echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -q "tocca un calcolo" \
+echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -c "tocca un calcolo" >/dev/null \
   && ok "prompt che parla di calcoli: aggancio agli oracoli" || ko "aggancio calcoli mancante"
 
 # 4bis. l'aggancio agli endpoint BC (il buco trovato rivedendo l'uso di docs/bc)
 OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"prendi i dati di BC per le fatture"}' | bash "$HOOK" 2>/dev/null)
-echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -q "docs/bc/endpoints" \
+echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -c "docs/bc/endpoints" >/dev/null \
   && ok "prompt che parla di BC/dati: aggancio al censimento endpoint (non si presume, si legge)" \
   || ko "aggancio BC mancante nel promemorio"
 

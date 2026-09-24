@@ -61,7 +61,7 @@ cp "$HERE/night-shift/repos.conf" "$H/night-shift/repos.conf" 2>/dev/null || tru
 cp "$HERE/night-shift/repos.key" "$H/night-shift/repos.key" 2>/dev/null || true
 (cd "$H" && git checkout -q -- . 2>/dev/null || true)
 OUT=$(bash "$H/tools/giri-ignoranti.sh" 2>/dev/null)
-if echo "$OUT" | tail -1 | grep -q "0 finding"; then
+if echo "$OUT" | tail -1 | grep -c "0 finding" >/dev/null; then
   echo "✓ clone pulito: batteria verde (nessun morso a vuoto)"; PASS=$((PASS+1))
 else
   echo "⛔ clone pulito MA batteria rossa: morso a vuoto — $(echo "$OUT" | grep FIND | head -2)"; ROTTI=$((ROTTI+1))

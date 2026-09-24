@@ -47,8 +47,8 @@ PY
 [ "$(echo "$VER" | awk '{print $5}')" = "1" ] && ok "errori oggi = 1" || ko "errori: $(echo "$VER" | awk '{print $5}')"
 NRO=$(echo "$VER" | tail -1 | grep -o "VERIFICA ROSSA" | wc -l | tr -d ' ')
 [ "$NRO" = "1" ] && ok "solo la verifica rossa dell'ULTIMO ciclo (v3)" || ko "verifiche rosse contate: $NRO (atteso 1)"
-echo "$VER" | tail -1 | grep -q "NUOVA" && ok "restata la rossa nuova" || ko "restata la rossa sbagliata"
-echo "$VER" | tail -1 | grep -q "VECCHIA" && ko "la rossa del ciclo vecchio non sparisce" || ok "sparita la rossa del ciclo vecchio"
+echo "$VER" | tail -1 | grep -c "NUOVA" >/dev/null && ok "restata la rossa nuova" || ko "restata la rossa sbagliata"
+echo "$VER" | tail -1 | grep -c "VECCHIA" >/dev/null && ko "la rossa del ciclo vecchio non sparisce" || ok "sparita la rossa del ciclo vecchio"
 
 # la pagina si costruisce con i numeri veri e cita le sezioni
 PAG=$(NIGHT_LOG="$TMP/finto.log" python3 - "$DASH" <<'PY'

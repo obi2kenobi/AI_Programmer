@@ -61,8 +61,8 @@ saldati_verificati() { # $1 = famiglia
     f="${m%:*}"; n="${m##*:}"
     [ -f "$f" ] || continue
     case "$1" in
-      E-002) sed -n "${n}p" "$f" 2>/dev/null | grep -q "[|] gre[p] -q" || printf '%s\n' "$m" ;;
-      E-032) sed -n "${n}p" "$f" 2>/dev/null | grep -qE '>> "\$HERE|> "\$HERE|sed -i.*"\$HERE' || printf '%s\n' "$m" ;;
+      E-002) sed -n "${n}p" "$f" 2>/dev/null | grep -c "[|] gre[p] -q" >/dev/null || printf '%s\n' "$m" ;;
+      E-032) sed -n "${n}p" "$f" 2>/dev/null | grep -Ec '>> "\$HERE|> "\$HERE|sed -i.*"\$HERE' >/dev/null || printf '%s\n' "$m" ;;
     esac
   done < "$SALDATI"
 }

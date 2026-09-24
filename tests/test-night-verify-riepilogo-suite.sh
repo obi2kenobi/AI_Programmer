@@ -45,7 +45,7 @@ EOF
 chmod +x "$TMP/tests/test-a.sh" "$TMP/tests/test-b.sh"
 
 OUT_OK=$(bash "$HERE/tools/suite.sh" "$TMP" 2>&1)
-echo "$OUT_OK" | tail -1 | grep -q "2/2" \
+echo "$OUT_OK" | tail -1 | grep -c "2/2" >/dev/null \
   && ok "successo: il tail riporta il conteggio reale (2/2), non l'output dell'ultimo test" \
   || ko "successo: il tail non riporta il conteggio — mostra invece: $(echo "$OUT_OK" | tail -1)"
 

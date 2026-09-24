@@ -21,7 +21,7 @@ jq -e '.hooks.Stop' "$HERE/.claude/settings.json" >/dev/null 2>&1 \
 
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 OUT=$(cd "$TMP" && echo '{"hook_event_name":"Stop"}' | bash "$HOOK")
-echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -q "report dal campo" \
+echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | grep -c "report dal campo" >/dev/null \
   && ok "fine sessione senza report di oggi: promemoria emesso (meccanico, non mnemonico)" \
   || ko "nessun promemoria: $OUT"
 mkdir -p "$TMP/docs/campo"; touch "$TMP/docs/campo/$(date +%F)-x.md"

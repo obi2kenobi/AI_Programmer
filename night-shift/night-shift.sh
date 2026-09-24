@@ -302,7 +302,7 @@ shift_repo() {
     # il lavoro altrui per comodita' del parser. Chi dichiara
     # `# FORMATO: script` nelle prime righe viene eseguito INTERO (una verifica,
     # budget 900s); senza marcatura resta riga-per-riga come sempre.
-    if head -10 "$DIR/.night-verify" 2>/dev/null | grep -q "^# FORMATO: script"; then
+    if head -10 "$DIR/.night-verify" 2>/dev/null | grep -c "^# FORMATO: script" >/dev/null; then
       NV_TOTALI=1
       if (cd "$DIR" && ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null); then
         log "REPO $REPO: .night-verify (formato script): VERDE"
@@ -605,7 +605,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       fi
     fi
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
-    if ! echo "$BANCO_OUT" | tail -1 | grep -q "CHIUSO"; then
+    if ! echo "$BANCO_OUT" | tail -1 | grep -c "CHIUSO" >/dev/null; then
       ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if grep -qF "[banco]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: banco rosso MA issue [banco] gia' aperta — niente duplicati, aspetta il giorno"

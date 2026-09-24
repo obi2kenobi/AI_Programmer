@@ -101,11 +101,11 @@ cat > "$SB4/DEBITI.md" <<'FIN'
 | 2026-02-01 | `tools/vecchio.sh` (riverificato 2026-03-05: ancora vero) | decisione di Luca | quando si decide |
 FIN
 OUT4=$(bash "$TOOL" "$SB4" 2>&1)
-echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -q "premessa da riverificare: tools/vecchio.sh" \
+echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -c "premessa da riverificare: tools/vecchio.sh" >/dev/null \
   && ok "file citato cambiato DOPO la voce: premessa da riverificare" || ko "premessa scaduta non segnalata: $(echo "$OUT4" | grep -A3 'Premessa scaduta' | tr '\n' ' ')"
-echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -q "2026-03-01" && ok "la segnalazione dice QUANDO e' cambiato" || ko "manca la data del cambio"
-echo "$OUT4" | grep -A2 "Premessa ferma" | grep -q "riverificare" && ko "file fermo o inesistente segnalato a vuoto" || ok "file fermo o inesistente: nessuna segnalazione"
-echo "$OUT4" | grep -A2 "Premessa riverificata" | grep -q "riverificare" && ko "la data di riverifica nella riga non e' contata" || ok "una data piu' recente nella riga (riverifica) azzera l'orologio"
+echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -c "2026-03-01" >/dev/null && ok "la segnalazione dice QUANDO e' cambiato" || ko "manca la data del cambio"
+echo "$OUT4" | grep -A2 "Premessa ferma" | grep -c "riverificare" >/dev/null && ko "file fermo o inesistente segnalato a vuoto" || ok "file fermo o inesistente: nessuna segnalazione"
+echo "$OUT4" | grep -A2 "Premessa riverificata" | grep -c "riverificare" >/dev/null && ko "la data di riverifica nella riga non e' contata" || ok "una data piu' recente nella riga (riverifica) azzera l'orologio"
 rm -rf "$SB4"
 
 SB2=$(mktemp -d /tmp/debiti-t2.XXXXXX)

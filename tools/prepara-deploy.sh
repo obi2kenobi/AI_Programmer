@@ -39,7 +39,7 @@ DATA=$(date '+%Y-%m-%d %H:%M')
 # scriveva «.night-verify verde» anche senza .night-verify o con soli commenti.
 [ -f .night-verify ] || { echo "⛔ nessun .night-verify: niente da verificare, niente pacchetto (il manifest non firma il vuoto)" >&2; exit 1; }
 N_VERIFICHE=0
-if head -10 .night-verify | grep -q "^# FORMATO: script"; then
+if head -10 .night-verify | grep -c "^# FORMATO: script" >/dev/null; then
   ai_timeout 900 bash .night-verify >/dev/null 2>&1 </dev/null || { echo "⛔ verifica rossa (formato script), niente pacchetto" >&2; exit 1; }
   N_VERIFICHE=1
 else

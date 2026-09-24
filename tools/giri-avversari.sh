@@ -162,7 +162,7 @@ if grep -q . <<<"$OUT"; then tiene "B3 comando bash che tocca credenziali riceve
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"README.md"}}' | bash tools/pattern-reminder-hook.sh)
 [ -z "$OUT" ] && tiene "B4 path innocuo: silenzio corretto" || aggirato "B4 path innocuo produce rumore"
 
-att; echo '{"tool_name":"NotebookEdit","tool_input":{"file_path":"credenziali BC.rtf"}}' | bash tools/pattern-reminder-hook.sh | grep -q . \
+att; echo '{"tool_name":"NotebookEdit","tool_input":{"file_path":"credenziali BC.rtf"}}' | bash tools/pattern-reminder-hook.sh | grep -c . >/dev/null \
   && tiene "B5 tool fuori matcher risponde comunque" || ack "B5 tool fuori matcher (NotebookEdit): l'hook non spara — gap strutturale della piattaforma, compensato dal dente clasp su Bash"
 
 att; OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"calculate the warehouse valuation please"}' | bash tools/metodo-reminder-hook.sh)
@@ -219,7 +219,7 @@ grep -qE "^FIND +S1 " <<<"$OUT_BAT" && tiene "C6 carattere alieno in archivio pr
 git checkout -- SAL-ARCHIVIO.md
 
 att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > /tmp/avv-finto.sh
-head -30 /tmp/avv-finto.sh | grep -q "flag-segreto" && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
+head -30 /tmp/avv-finto.sh | grep -c "flag-segreto" >/dev/null && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
 rm -f /tmp/avv-finto.sh
 
 att; : > patterns/vuoto-finto.md
@@ -337,11 +337,11 @@ att; _cp=$(awk -F, 'NR>1 && $2 !~ /^REPO-[A-Za-z0-9]+$/ {print $2}' metrics/gate
 
 att; _cp=$(grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQRSTXZVW]|CR)$" | head -1); if grep -q . <<<"$_cp"; then aggirato "E4 repos-index con codici fuori schema"; else tiene "E4 repos-index solo codici REPO-[A-N]"; fi
 
-att; git ls-files | grep -qE '\.(env|key|pem)$|id_rsa|^\.env' && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
+att; git ls-files | grep -Ec '\.(env|key|pem)$|id_rsa|^\.env' >/dev/null && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
 
 att; _cp=$(grep -rnE 'sk-ANTHROPIC|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN [A-Z ]*PRIVATE KEY' llm/ tools/ 2>/dev/null | grep -vE "privacy-check.sh|giri-avversari.sh" | head -1); if grep -q . <<<"$_cp"; then aggirato "E6 letterale segreto negli script"; else tiene "E6 nessun letterale segreto negli script"; fi
 
-att; git log --all --oneline | wc -l | tr -d ' ' | grep -q "^0$" && aggirato "E7 storia git assente?" || tiene "E7 storia git presente (privacy-check la presidia con pickaxe)"
+att; git log --all --oneline | wc -l | tr -d ' ' | grep -c "^0$" >/dev/null && aggirato "E7 storia git assente?" || tiene "E7 storia git presente (privacy-check la presidia con pickaxe)"
 
 echo ""
 echo "=== CAT F — regole senza denti ==="
@@ -354,7 +354,7 @@ import json
 s = json.load(open('.claude/settings.json'))
 print(any('clasp-block' in h.get('command','') for m in s['hooks'].get('PreToolUse',[]) for h in m.get('hooks',[])))"); if grep -q True <<<"$_cp"; then tiene "F2 il dente è registrato in settings.json"; else aggirato "F2 clasp ignorato dagli hook"; fi
 
-att; git ls-files | grep -q "^gas-src/" && aggirato "F3 cartella gas-src tracciata nell'hub" || tiene "F3 nessuna cartella gas-src tracciata"
+att; git ls-files | grep -c "^gas-src/" >/dev/null && aggirato "F3 cartella gas-src tracciata nell'hub" || tiene "F3 nessuna cartella gas-src tracciata"
 
 att; grep -q "merge=union" .gitattributes && tiene "F4 union merge driver dichiarato per SAL e campo" || aggirato "F4 union merge driver assente"
 

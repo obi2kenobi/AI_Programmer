@@ -124,7 +124,7 @@ if [ "$RC" -eq 1 ] && grep -q "cooldown" <<<"$OUT"; then
 else
   # (audit-2): questo ramo non puo' piu' dire ok a gratis — PROVA che utils.js
   # e' intatto: se il cooldown fosse rotto, la caccia avrebbe ritoccato lui
-  if git -C "$SB" diff --quiet 2>/dev/null || ! git -C "$SB" diff --name-only 2>/dev/null | grep -q "utils.js"; then
+  if git -C "$SB" diff --quiet 2>/dev/null || ! git -C "$SB" diff --name-only 2>/dev/null | grep -c "utils.js" >/dev/null; then
     FILE_PROMPT=$(MIGLIORIA_AGENT="$STUB_MUTO" MIGLIORIA_CAT=docs bash "$CM" "$SB" 2>&1 | grep -o "su [^ ]*" | head -1)
     echo "  (nota: rotazione caduta su $FILE_PROMPT)"
     ok "cooldown: utils.js non ritoccato in docs (albero o diff verificati)"

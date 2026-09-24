@@ -34,7 +34,7 @@ grep -q "criteri diversi.*posteriori\|criteri diversi per ogni opzione" "$DD" \
   || ko "non vieta più il confronto truccato con criteri a posteriori"
 
 # l'esempio in §1bis deve essere una tabella markdown reale (non solo prosa che ne parla)
-grep -c '^|.*|.*|.*|.*|$' "$DD" | grep -q '^[1-9]' \
+grep -c '^|.*|.*|.*|.*|$' "$DD" | grep -c '^[1-9]' >/dev/null \
   && ok "esiste almeno una tabella markdown reale nell'esempio (non solo descritta)" \
   || ko "nessuna tabella markdown trovata — l'esempio resta solo prosa"
 

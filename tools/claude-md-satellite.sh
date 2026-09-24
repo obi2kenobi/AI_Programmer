@@ -15,9 +15,14 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="${1:-$HERE/CLAUDE.md}"
 [ -f "$SRC" ] || { echo "claude-md-satellite: $SRC assente" >&2; exit 1; }
+# (2026-09-23, notte dei giri): con uno spazio finale o un CRLF sulla riga del marcatore la regex non
+# combaciava e il blocco solo-hub arrivava ai satelliti, rc 0. Ora la riga si confronta ripulita, e
+# un commento che nomina solo-hub senza essere un marcatore esatto e' un errore, non un testo.
 OUT=$(awk '
-  /^<!-- solo-hub -->$/  { if (dentro) { print "annidato alla riga " NR > "/dev/stderr"; exit 3 } dentro=1; n++; next }
-  /^<!-- \/solo-hub -->$/ { if (!dentro) { print "chiusura senza apertura alla riga " NR > "/dev/stderr"; exit 3 } dentro=0; next }
+  { l = $0; sub(/[ \t\r]+$/, "", l) }
+  l == "<!-- solo-hub -->"  { if (dentro) { print "annidato alla riga " NR > "/dev/stderr"; exit 3 } dentro=1; n++; next }
+  l == "<!-- /solo-hub -->" { if (!dentro) { print "chiusura senza apertura alla riga " NR > "/dev/stderr"; exit 3 } dentro=0; next }
+  l ~ /<!--.*solo-hub/      { print "marcatore solo-hub non esatto alla riga " NR ": " l > "/dev/stderr"; exit 3 }
   !dentro { print }
   END { if (dentro) { print "blocco aperto e mai chiuso" > "/dev/stderr"; exit 3 } }
 ' "$SRC") || { echo "claude-md-satellite: marcatori solo-hub sbilanciati in $SRC — nessuna uscita" >&2; exit 1; }

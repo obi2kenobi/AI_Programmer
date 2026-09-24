@@ -18,14 +18,14 @@ bash "$G" "$TMP/repo" create 42 "doppio" >/dev/null 2>&1 && ko "create duplicato
 
 bash "$G" "$TMP/repo" update 42 "solver rc=1 al primo giro" >/dev/null 2>&1
 bash "$G" "$TMP/repo" update 42 "PR bozza aperta: fix applicato" >/dev/null 2>&1
-bash "$G" "$TMP/repo" show 42 | grep -q "PR bozza" \
+bash "$G" "$TMP/repo" show 42 | grep -c "PR bozza" >/dev/null \
   && ok "update+show: i progressi si accumulano e si leggono" || ko "show non mostra i progressi"
 
-bash "$G" "$TMP/repo" list | grep -q "#42" \
+bash "$G" "$TMP/repo" list | grep -c "#42" >/dev/null \
   && ok "list: il goal aperto si vede" || ko "list vuota"
 
 bash "$G" "$TMP/repo" close 42 ok >/dev/null 2>&1
-bash "$G" "$TMP/repo" list | grep -q "#42" && ko "close non ha chiuso" || ok "close: il goal sparisce dagli aperti"
+bash "$G" "$TMP/repo" list | grep -c "#42" >/dev/null && ko "close non ha chiuso" || ok "close: il goal sparisce dagli aperti"
 grep -q "esito: ok" "$TMP/repo/.git/goals/done-42" \
   && ok "l'esito e' registrato nello storico" || ko "done senza esito"
 

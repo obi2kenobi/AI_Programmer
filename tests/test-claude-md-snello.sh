@@ -64,6 +64,20 @@ done
 grep -qE 'cp "\$(HERE|HUB)/CLAUDE.md"' "$HERE/tools/bootstrap-app.sh" "$HERE/tools/garante-standard.sh" \
   && ko "resta un cp del CLAUDE.md intero dell'hub" || ok "nessun installatore copia piu' il CLAUDE.md intero"
 
+# (2026-09-23, notte dei giri): con uno spazio finale o un CRLF sulla riga del marcatore la regex non
+# combaciava — il blocco solo-hub arrivava ai satelliti, rc 0, senza errore. Ora il marcatore regge
+# gli spazi e il CR, e una riga che somiglia a un marcatore ma non lo e' e' un errore, non un testo.
+SAT=$(mktemp -d)
+printf 'regola comune\n<!-- solo-hub --> \nSOLO DELL HUB\n<!-- /solo-hub -->\r\nfine\n' > "$SAT/spazi.md"
+OUT=$(bash "$HERE/tools/claude-md-satellite.sh" "$SAT/spazi.md" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ! grep -q "SOLO DELL HUB" <<<"$OUT" && ok "marcatore con spazio finale o CRLF: il blocco solo-hub non esce" \
+  || ko "marcatore con spazio/CRLF: il blocco arriva al satellite (rc=$RC)"
+printf 'regola comune\n<!--solo-hub-->\nSOLO DELL HUB\n<!-- /solo-hub -->\n' > "$SAT/storto.md"
+OUT=$(bash "$HERE/tools/claude-md-satellite.sh" "$SAT/storto.md" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -q "SOLO DELL HUB" <<<"$OUT" && ok "marcatore storto (<!--solo-hub-->): errore, nessuna uscita" \
+  || ko "marcatore storto passato come testo (rc=$RC)"
+rm -rf "$SAT"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

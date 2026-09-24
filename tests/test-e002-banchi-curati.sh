@@ -21,8 +21,11 @@ FORMA='(echo|printf)[^|]*\| *grep -q'
 # con continuazione comprese); il cricchetto ora vale per OGNI banco sotto pipefail. Fuori, dichiarati:
 # i due banchi E-002, che citano la forma nei loro messaggi.
 CURATI=$(cd "$HERE" && grep -lE pipefail tests/*.sh | grep -vE '^tests/test-e002-(banchi-curati|codice)\.sh$')
+# (2026-09-23, notte dei giri): la forma cercata ora e' quella GENERALE — qualunque produttore, non solo
+# echo/printf (tests/test-suite-meta-audit.sh, `grep -vE … | grep -qE`, era rosso 18 volte su 20 sotto
+# carico) — con il rilevatore unico tools/e002-siti.py, che non si fa ingannare dalle stringhe
 for f in $CURATI; do
-  N=$(grep -vE '^[[:space:]]*#' "$HERE/$f" | grep -cE "$FORMA")   # i commenti che la citano non mordono
+  N=$(cd "$HERE" && python3 tools/e002-siti.py "$f" | grep -c . || true)
   [ "$N" -eq 0 ] && ok "$f: nessun «echo | grep -q» (curato, E-042)" || ko "$f: $N siti «echo | grep -q» sotto pipefail — la forma che dava il rosso a caso"
 done
 

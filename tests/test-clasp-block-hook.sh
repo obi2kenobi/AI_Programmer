@@ -17,7 +17,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"cd repo && clasp push"}}' | bash "$HOOK")
 echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
   && ok "clasp push → permissionDecision deny" || ko "clasp push NON negato"
-echo "$OUT" | jq -r '.hookSpecificOutput.permissionDecisionReason' | grep -qi "produzione\|NEGATO" \
+echo "$OUT" | jq -r '.hookSpecificOutput.permissionDecisionReason' | grep -ic "produzione\|NEGATO" >/dev/null \
   && ok "il deny dice perché" || ko "il deny non spiega"
 
 OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"clasp deploy -P xxx"}}' | bash "$HOOK")

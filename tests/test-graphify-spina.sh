@@ -34,7 +34,7 @@ diff -rq "$HERE/.opencode/skills/graphify" "$HERE/.claude/skills/graphify" >/dev
   && ok ".claude/skills/graphify = .opencode/skills/graphify" || ko "skill graphify assente o divergente in .claude/skills"
 
 # 3. la spina viaggia: e' un hook dichiarato, quindi copia-hook --elenco la porta ovunque
-bash "$HERE/tools/copia-hook.sh" --elenco | grep -qx 'tools/graphify-spina.sh' \
+bash "$HERE/tools/copia-hook.sh" --elenco | grep -xc 'tools/graphify-spina.sh' >/dev/null \
   && ok "graphify-spina.sh e' nell'elenco degli hook (lo copiano i quattro installatori)" \
   || ko "graphify-spina.sh non e' un hook dichiarato: non raggiunge le repo installate"
 grep -q 'graphify-spina.sh" .*--stage' "$HERE/tools/pre-commit.sh" \
@@ -51,11 +51,11 @@ if command -v graphify >/dev/null 2>&1; then
   R="$T/r"; mkdir -p "$R" && g -C "$R" init -q -b main
   printf 'def base():\n    pass\n' > "$R/a.py" && g -C "$R" add a.py && g -C "$R" commit -qm init
   OUT=$(bash "$SPINA" "$R" --stage 2>&1)
-  [ -s "$R/graphify-out/graph.json" ] && g -C "$R" diff --cached --name-only | grep -qx 'graphify-out/graph.json' \
+  [ -s "$R/graphify-out/graph.json" ] && g -C "$R" diff --cached --name-only | grep -xc 'graphify-out/graph.json' >/dev/null \
     && ok "spina --stage: grafo costruito e messo in stage" || ko "spina --stage non ha costruito/staged il grafo: $OUT"
-  g -C "$R" config --get merge.graphify.driver | grep -q 'merge-driver %O %A %B' \
+  g -C "$R" config --get merge.graphify.driver | grep -c 'merge-driver %O %A %B' >/dev/null \
     && ok "merge-driver di graphify registrato nella config della repo" || ko "merge-driver non registrato"
-  g -C "$R" diff --cached --name-only | grep -qx 'graphify-out/cache/stat-index.json' \
+  g -C "$R" diff --cached --name-only | grep -xc 'graphify-out/cache/stat-index.json' >/dev/null \
     && ko "la cache del grafo e' finita in stage" || ok "la cache resta fuori dallo stage"
   g -C "$R" commit -qm grafo
   g -C "$R" checkout -q -b ramo
@@ -99,7 +99,7 @@ chmod +x "$S/gh" "$S/graphify"
 GS() { PATH="$S:$PATH" GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t \
   MODELLO=modello-prova bash "$HERE/tools/grafo-semantico.sh" own/repo "$W" 2>&1; }
 OUT=$(GRAFO_FINTO='{"nodes":[{"id":"semantico"}]}' GS); RC=$?
-[ $RC -eq 0 ] && grep -q -- '--draft' "$T/pr.log" 2>/dev/null && g -C "$B" branch --list 'night/grafo-*' | grep -q night/grafo- \
+[ $RC -eq 0 ] && grep -q -- '--draft' "$T/pr.log" 2>/dev/null && g -C "$B" branch --list 'night/grafo-*' | grep -c night/grafo- >/dev/null \
   && ok "grafo cambiato: ramo night/grafo-* spinto e PR in bozza" || ko "grafo cambiato ma niente ramo/PR (rc=$RC): $OUT"
 grep -q -- '--model modello-prova' "$T/graphify.log" 2>/dev/null \
   && ok "il modello e' quello del turno (MODELLO)" || ko "il modello del turno non arriva a graphify"

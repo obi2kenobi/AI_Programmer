@@ -48,7 +48,7 @@ Modifica SOLO scaricaPDF(). Verifica con node --check."
     LETTURE_TOTALI=$((LETTURE_TOTALI + READS))
 
     # converge: ha modificato il file?
-    if git -C $BANCO diff --stat | grep -q "App.html"; then
+    if git -C $BANCO diff --stat | grep -c "App.html" >/dev/null; then
       # corretto: node --check + contiene la colonna Stato
       if node --check <(sed -n '/<script>/,/<\/script>/p' $BANCO/app/App.html 2>/dev/null || cat $BANCO/app/App.html) 2>/dev/null; then
         if grep -q "Stato\|attivo" <(git -C $BANCO diff | grep "^+"); then

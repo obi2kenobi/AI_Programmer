@@ -72,7 +72,7 @@ else
   ko "B: SIGTERM ha lasciato il tool sporco (payload o monco): il trap non ripristina"
 fi
 # il banco deve anche lasciare l'albero senza file temporanei .mut/.rest
-if ! ls "$TMP/repo/tools/" | grep -q "foo.sh.mut\|foo.sh.rest"; then
+if ! ls "$TMP/repo/tools/" | grep -c "foo.sh.mut\|foo.sh.rest" >/dev/null; then
   ok "nessun file temporaneo .mut/.rest abbandonato"
 else
   ko "file temporaneo .mut/.rest abbandonato in tools/"

@@ -79,7 +79,7 @@ ramo_standard() { git -C "$TMP/$1.git" branch --list 'claude/standard-*' | tr -d
 nuovo_bare vuota-remota 0
 OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/vuota-remota.git" GH_CLAUDE_MD="" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/vuota-remota --standard 2>&1); RC=$?
 BR=$(ramo_standard vuota-remota)
-[ "$RC" -eq 0 ] && [ -n "$BR" ] && git -C "$TMP/vuota-remota.git" ls-tree --name-only "$BR" | grep -qx CLAUDE.md \
+[ "$RC" -eq 0 ] && [ -n "$BR" ] && git -C "$TMP/vuota-remota.git" ls-tree --name-only "$BR" | grep -xc CLAUDE.md >/dev/null \
   && ok "D11: repo senza CLAUDE.md → --standard apre il ramo con CLAUDE.md (onboarding da zero)" \
   || ko "D11: repo vuota non onboardabile (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
 grep -q "ASSENTE" <<<"$OUT" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
@@ -89,13 +89,13 @@ grep -q "ASSENTE" <<<"$OUT" && ok "D11: il verdetto dice che CLAUDE.md era ASSEN
 nuovo_bare canarino-uguale 1
 OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
 BR=$(ramo_standard canarino-uguale)
-[ -n "$BR" ] && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -q '^\.claude/settings.json$' \
+[ -n "$BR" ] && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -c '^\.claude/settings.json$' >/dev/null \
   && ok "D12: CLAUDE.md uguale ma standard mancante → il ramo porta lo standard (skill, hook)" \
   || ko "D12: CLAUDE.md uguale e --standard si e' fermato ad ALLINEATO (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
 # D13: i guardiani del commit viaggiano con lo standard
 if [ -n "$BR" ]; then
-  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -qx 'tools/pre-commit.sh' \
-    && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -qx '.githooks/commit-msg' \
+  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -xc 'tools/pre-commit.sh' >/dev/null \
+    && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -xc '.githooks/commit-msg' >/dev/null \
     && ok "D13: tools/pre-commit.sh e .githooks/ viaggiano con --standard" \
     || ko "D13: i guardiani del commit non viaggiano: $(git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -E 'githooks|pre-commit' | tr '\n' ' ')"
 fi
@@ -106,7 +106,7 @@ if [ -n "$BR" ]; then
   OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
   grep -q "GIÀ A STANDARD" <<<"$OUT" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
     || ko "riallineo: atteso GIÀ A STANDARD, avuto (rc=$RC): $(echo "$OUT" | tail -1)"
-  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -q '\.claude/skills/skills/' \
+  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -c '\.claude/skills/skills/' >/dev/null \
     && ko "riallineo: lo standard si e' ANNIDATO (.claude/skills/skills)" \
     || ok "riallineo: nessun annidamento delle directory dello standard"
 fi
@@ -148,9 +148,9 @@ git -C "$TMP/con-stato-seed" add -A && git -C "$TMP/con-stato-seed" -c user.name
 OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/con-stato.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/con-stato --standard 2>&1); RC=$?
 BRS=$(ramo_standard con-stato)
 if [ -n "$BRS" ]; then
-  git -C "$TMP/con-stato.git" show "$BRS:DEBITI.md" | grep -q 'debito-del-satellite' \
+  git -C "$TMP/con-stato.git" show "$BRS:DEBITI.md" | grep -c 'debito-del-satellite' >/dev/null \
     && ok "Q13: i DEBITI del satellite restano i suoi" || ko "Q13: i DEBITI del satellite sovrascritti da quelli dell'hub"
-  git -C "$TMP/con-stato.git" show "$BRS:docs/errori/REGISTRO.md" | grep -q 'errore-del-satellite' \
+  git -C "$TMP/con-stato.git" show "$BRS:docs/errori/REGISTRO.md" | grep -c 'errore-del-satellite' >/dev/null \
     && ok "Q13: il REGISTRO del satellite resta il suo" || ko "Q13: il REGISTRO del satellite sovrascritto da quello dell'hub"
   SET=$(git -C "$TMP/con-stato.git" show "$BRS:.claude/settings.json")
   jq -e '(.permissions.allow | index("Bash(npm run lint)")) and .model == "scelta-del-satellite"' <<<"$SET" >/dev/null 2>&1 \

@@ -34,7 +34,7 @@ edit "SAL.md" >/dev/null 2>&1
 edit "src/F.js" >/dev/null 2>&1; edit "src/G.js" >/dev/null 2>&1; edit "src/H.js" >/dev/null 2>&1; edit "src/I.js" >/dev/null 2>&1
 OUT=$(edit "src/L.js" 2>/dev/null)
 echo "$OUT" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
-  && echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' | grep -q "Hai fatto 5 edit" \
+  && echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' | grep -c "Hai fatto 5 edit" >/dev/null \
   && ok "edit di SAL.md resetta il contatore (il conteggio ricomincia: dice 5, non 10)" \
   || ko "reset non funzionante: $(echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | head -1)"
 

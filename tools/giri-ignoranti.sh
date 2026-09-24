@@ -110,7 +110,7 @@ FLAG=0
 for s in "$HERE"/tools/*.sh; do
   while IFS= read -r fl; do
     [ -z "$fl" ] && continue
-    head -30 "$s" | grep -q -- "$fl" || { echo "     · $(basename "$s"): $fl implementato ma non nell'uso"; FLAG=1; }
+    head -30 "$s" | grep -c -- "$fl" >/dev/null || { echo "     · $(basename "$s"): $fl implementato ma non nell'uso"; FLAG=1; }
   done < <(grep -oE '^\s+--[a-z-]+\)' "$s" | tr -d ' \)' | sort -u)
 done
 [ "$FLAG" -eq 0 ] && sonda 0 "S5 ogni flag implementato è documentato nell'uso" || sonda 1 "S5 flag implementati non documentati"

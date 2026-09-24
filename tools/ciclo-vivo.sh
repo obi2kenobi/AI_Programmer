@@ -135,7 +135,7 @@ if [ "$LIVELLO" -ge 4 ]; then
     # dedicati al tool anche con suffisso descrittivo (test-bc-map-leggi-curati.sh
     # presidia bc_map.py) ma non i match casuali — la versione "esatta" del giorno
     # dopo era troppo stretta e rompeva la copertura legittima (il battito l'ha vista).
-    ls "$HERE"/tests/ | tr '_' '-' | grep -q "^test-$b" || \
+    ls "$HERE"/tests/ | tr '_' '-' | grep -c "^test-$b" >/dev/null || \
       FINDINGS+=("ARCH: tool $(basename "$t") senza un test dedicato (cerco test-$b*)")
   done
   # 4d. indice pattern: ogni file sta nel registro patterns/README.md e viceversa

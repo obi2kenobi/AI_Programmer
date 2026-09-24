@@ -26,15 +26,18 @@ N=0; for i in 1 2 3; do grep -q sensibile <<<"$(bash "$HERE/tools/pattern-remind
 [ "$N" -eq 3 ] && ok "pattern-reminder-hook: il promemoria sul materiale sensibile esce anche su un comando lungo (3/3)" \
   || ko "pattern-reminder-hook: promemoria perso su un comando lungo ($N/3)"
 
-# il cricchetto: nessun `echo|printf … | grep -q` nei file sotto pipefail di tools/ night-shift/ llm/
-SITI=""
-while IFS= read -r f; do
-  grep -q 'pipefail' "$f" || continue
-  while IFS= read -r r; do SITI="$SITI $f:${r%%:*}"; done \
-    < <(grep -nE '(^|[^#]*[;&|(![:space:]])(echo|printf)[^|]*\|[[:space:]]*grep -[a-zA-Z]*q' "$f" | grep -vE '^[0-9]+:[[:space:]]*#' || true)
-done < <(cd "$HERE" && git ls-files 'tools/*.sh' 'night-shift/*.sh' 'llm/*.sh' | sed "s|^|$HERE/|")
-[ -z "$SITI" ] && ok "nessun echo/printf | grep -q sotto pipefail in tools/, night-shift/, llm/" \
-  || ko "siti E-002 nel codice:$(sed "s|$HERE/||g" <<<"$SITI")"
+# il cricchetto: nessun `… | grep -q` sotto pipefail in tools/, night-shift/, llm/ e nei ganci git —
+# qualunque produttore (echo, head, git, jq…), fuori dalle virgolette e dai commenti. Il rilevatore e'
+# uno solo, tools/e002-siti.py, lo stesso di tests/test-e002-banchi-curati.sh.
+SITI=$(cd "$HERE" && python3 tools/e002-siti.py $(git ls-files 'tools/*.sh' 'night-shift/*.sh' 'llm/*.sh' .githooks/pre-commit .githooks/commit-msg))
+[ -z "$SITI" ] && ok "nessun «… | grep -q» sotto pipefail in tools/, night-shift/, llm/, .githooks/" \
+  || ko "siti E-002 nel codice: $(tr '\n' ' ' <<<"$SITI")"
+# il rilevatore riconosce la forma, e non la confonde con una stringa
+# (la fixture si costruisce a pezzi: il dente pipe+&& del pre-commit legge il sorgente, non le intenzioni)
+PQ="| gre""p -q"
+printf '#!/bin/bash\nset -o pipefail\nhead -3 f %s x %s echo si\necho "testo %s dentro un messaggio"\n' "$PQ" '&&' "$PQ" > "$TMP/forma.sh"
+[ "$(python3 "$HERE/tools/e002-siti.py" "$TMP/forma.sh")" = "$TMP/forma.sh:3" ] \
+  && ok "il rilevatore prende «head | grep -q» e non il testo di un messaggio" || ko "rilevatore: $(python3 "$HERE/tools/e002-siti.py" "$TMP/forma.sh")"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
