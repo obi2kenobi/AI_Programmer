@@ -3922,3 +3922,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-revisore.sh` (8bis): rosso prima, rosso al sabotaggio. L'helper del banco e
   `tests/test-catena-viva.sh` ora datano il commit con l'età della PR, altrimenti ogni PR sarebbe
   in quarantena.
+- **T6#2 — quattro lenti su cinque della caccia giravano senza il loro filtro.** In
+  `night-shift/caccia-lente.sh` le lenti sono «nome|comando|parole», e il comando contiene a sua
+  volta una pipe (`… | tail -25`). `cut -d'|' -f2` lo tagliava alla prima pipe: il modello leggeva le
+  prime 50 righe al posto delle ultime 25 (banco: 391 byte al posto di 200). Le «parole da cercare»
+  ricevevano il filtro, e nessuno le usava; nemmeno `LENTE_NOME` era usato. Ora il nome è il primo
+  campo, le parole l'ultimo, il comando tutto il mezzo. Comando e parole-spia vanno nel log, e le
+  parole nel prompt. Banco nuovo `tests/test-caccia-lente.sh` (hub finto): 3 rossi prima, 2 al
+  sabotaggio. Di passaggio, per il banco: `NIGHT_API_URL`, come negli altri script del turno.

@@ -5,7 +5,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:-.}"
 MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
-API="http://localhost:11434/api/chat"
+API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"   # NIGHT_API_URL: solo per i test, come negli altri script
 cd "$DIR" || exit 2
 log() { echo "[lente $(date '+%H:%M:%S')] $*" >&2; }
 
@@ -25,11 +25,18 @@ IDX=$((RR % ${#LENTI[@]}))
 echo $((RR+1)) > "$HERE/.caccia-rotazione"
 LENTE_DATA="${LENTI[$IDX]}"
 
-LENTE_NOME=$(echo "$LENTE_DATA" | cut -d'|' -f2 | xargs basename 2>/dev/null || echo "$LENTE_DATA" | cut -d'|' -f1)
-LENTE_CMD=$(echo "$LENTE_DATA" | cut -d'|' -f2)
-LENTE_CERCA=$(echo "$LENTE_DATA" | cut -d'|' -f3)
+# (2026-09-24, notte dei giri, T6#2): il comando contiene a sua volta una pipe (`… | tail -25`): con
+# `cut -d'|' -f2` si tagliava alla prima, e quattro lenti su cinque giravano senza il loro filtro — il
+# modello leggeva le prime 50 righe invece delle ultime 25 — mentre le parole-spia ricevevano il filtro.
+# Ora: il nome e' il PRIMO campo, le parole-spia l'ULTIMO, il comando tutto cio' che sta in mezzo.
+LENTE_NOME="${LENTE_DATA%%|*}"
+LENTE_RESTO="${LENTE_DATA#*|}"
+LENTE_CERCA="${LENTE_RESTO##*|}"
+LENTE_CMD="${LENTE_RESTO%|*}"
 
-log "lente: $(echo "$LENTE_DATA" | cut -d'|' -f1)"
+log "lente: $LENTE_NOME"
+log "comando: $LENTE_CMD"
+log "parole-spia: $LENTE_CERCA"
 
 # --- ESEGUI lo strumento (deterministico, veloce, affidabile) ------------------------
 TOOL_OUT=$(eval "$LENTE_CMD" 2>&1 | head -50)
@@ -46,6 +53,8 @@ PROMPT="You are a code quality analyst. A tool just ran on this project and prod
 === TOOL OUTPUT ===
 $TOOL_OUT
 === END ===
+
+Words that usually signal a problem in this tool's output: $LENTE_CERCA
 
 Questions:
 1. Are there any real issues in this output? (YES/NO)
