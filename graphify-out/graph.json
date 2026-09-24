@@ -17108,7 +17108,7 @@
       },
       "norm_label": "cleanup()",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L48"
+      "source_location": "L52"
     },
     {
       "id": "tests_test_pre_commit_gancio",
@@ -17123,7 +17123,7 @@
       },
       "norm_label": "gancio()",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L33"
+      "source_location": "L37"
     },
     {
       "id": "tests_test_pre_commit_ko",
@@ -17168,7 +17168,7 @@
       },
       "norm_label": "q9()",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L147"
+      "source_location": "L151"
     },
     {
       "id": "tests_test_pre_commit_q9_pulisci",
@@ -17183,7 +17183,7 @@
       },
       "norm_label": "q9_pulisci()",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L148"
+      "source_location": "L152"
     },
     {
       "id": "tests_test_pre_commit_sh__entry",
@@ -31057,6 +31057,18 @@
       "norm_label": "e-047 due sabotaggi diversi, lo stesso fail: python leggeva il bytecode stantio",
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L1031"
+    },
+    {
+      "id": "docs_errori_registro_e_048_un_file_sovrascritto_senza_guardarlo_il_gancio_git_era_un_rimando_non_una_copia",
+      "label": "E-048 Un file sovrascritto senza guardarlo: il gancio git era un rimando, non una copia",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-048 un file sovrascritto senza guardarlo: il gancio git era un rimando, non una copia",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1058"
     },
     {
       "id": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
@@ -57002,7 +57014,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L154",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -57038,7 +57050,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L41",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -57050,7 +57062,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L56",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -73675,6 +73687,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L1031",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_048_un_file_sovrascritto_senza_guardarlo_il_gancio_git_era_un_rimando_non_una_copia",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1058",
       "weight": 1.0
     },
     {
@@ -92737,7 +92760,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L147",
+      "source_location": "L151",
       "weight": 1.0
     },
     {
@@ -92748,7 +92771,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L148",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -92759,7 +92782,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L33",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -92770,7 +92793,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-pre-commit.sh",
-      "source_location": "L48",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -97307,5 +97330,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3fcdcbf1cb138724735c6e73826327b47858da99"
+  "built_at_commit": "4794de0639ea4c75e071d7893dac57730b862d09"
 }

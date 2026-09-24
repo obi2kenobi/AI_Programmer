@@ -16,6 +16,10 @@ INDICE_PRIMA=$(git -C "$HERE" diff --cached --name-only 2>/dev/null)
 
 bash -n "$HOOK" && ok "sintassi" || ko "sintassi rotta"
 [ -x "$HERE/.githooks/pre-commit" ] && ok "il gancio git esiste ed è eseguibile" || ko ".githooks/pre-commit assente"
+# (2026-09-24, E-048): il gancio git e' un RIMANDO a tools/pre-commit.sh, non una sua copia — l'ho sovrascritto con
+# `cp tools/pre-commit.sh .githooks/pre-commit` senza guardarlo. Una copia invecchia al primo cambio del vero.
+[ "$(grep -c . "$HERE/.githooks/pre-commit")" -le 6 ] && grep -c 'exec bash .*tools/pre-commit.sh' "$HERE/.githooks/pre-commit" >/dev/null \
+  && ok "E-048: .githooks/pre-commit delega a tools/pre-commit.sh (non ne e' una copia)" || ko "E-048: .githooks/pre-commit non e' piu' il rimando a tools/pre-commit.sh"
 grep -qE "git .*grep --cached -lP" "$HOOK" && ok "usa git grep -P (il grep BSD non ha -P: falso verde storico)" || ko "usa grep -P nudo: muore in silenzio su macOS"
 
 # (Q23, 2026-09-23, giro A9 della notte): i casi col gancio giravano nell'INDICE DELL'HUB — il

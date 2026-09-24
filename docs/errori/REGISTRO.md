@@ -1054,3 +1054,26 @@
   stantio»); con la cura, 13/0.
 - Aggiramento: un sabotaggio di un modulo Python lanciato FUORI dalla suite si esegue con
   `PYTHONPYCACHEPREFIX=$(mktemp -d)`, oppure dopo aver tolto il `__pycache__` del file.
+
+## E-048 Un file sovrascritto senza guardarlo: il gancio git era un rimando, non una copia
+
+- Data / sessione: 2026-09-24 (quinto ventaglio, R1 R5, esenzione dell'archivio nel pre-commit)
+- Famiglia: R1 (assunzione non verificata: «.githooks/pre-commit è una copia di tools/pre-commit.sh»)
+- Chi l'ha trovato: io, dall'uscita di `diff -q` che non diceva niente e da `git diff --stat` (233 righe in più
+  su un file di 4)
+- Sintomo: dopo aver cambiato `tools/pre-commit.sh` ho lanciato `cp tools/pre-commit.sh .githooks/pre-commit`
+  per «tenerli allineati». Il file di destinazione era un rimando di quattro righe
+  (`exec bash …/tools/pre-commit.sh ""`): la copia lo sostituiva con il gancio intero, che al primo cambio del
+  vero sarebbe invecchiato in silenzio. Ripristinato con `git checkout HEAD --` prima di ogni commit: nessun
+  danno pubblicato.
+- Causa prossima: un `cp` su un file che non avevo letto, contro la regola «Before deleting or overwriting,
+  look at the target».
+- Causa del ragionamento: ho dato per buona una struttura (due copie da allineare) invece di leggerla. Il nome
+  della cartella (`.githooks/`) suggeriva una copia; il contenuto diceva un rimando.
+- Perché non ci ha fermati: nessun banco guardava la forma del gancio git; `tests/test-pre-commit.sh`
+  controllava solo che esistesse e fosse eseguibile.
+- Guardia: `tests/test-pre-commit.sh`, caso E-048 — `.githooks/pre-commit` ha al più 6 righe e contiene
+  `exec bash …tools/pre-commit.sh`.
+- Verifica guardia: con la copia rifatta (`cp tools/pre-commit.sh .githooks/pre-commit`) «30 OK, 1 FAIL»;
+  col rimando ripristinato, 31/0.
+- Aggiramento: prima di un `cp` sopra un file tracciato, `git show HEAD:<file> | head` o un `Read`.
