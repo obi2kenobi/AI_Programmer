@@ -11,12 +11,15 @@ log() { echo "[lente $(date '+%H:%M:%S')] $*" >&2; }
 
 # --- GLI STRUMENTI DELL'HUB che già esistono e funzionano ------------------------
 # Ogni lente: nome|comando da eseguire|cosa cercare nell'output
+# (2026-09-24, sesto ventaglio, S3 R4): il comando va a `eval`, e $HERE era nudo — in un percorso con lo spazio lo
+# strumento non girava, e con un apice la riga non si analizzava. Il percorso entra quotato (printf %q).
+HQ=$(printf '%q' "$HERE")
 LENTI=(
-  "sonde|bash $HERE/tools/giri-ignoranti.sh 2>&1 | tail -25|FIND finding"
-  "health|bash $HERE/tools/system-health.sh 2>&1 | head -25|ROSSO DOWN WARN"
-  "banco|bash $HERE/tools/banco-passaggio.sh --solo-copertura 2>&1 | tail -10|NON CHIUDERE scoperto rosso"
-  "ciclo|bash $HERE/tools/ciclo-vivo.sh 2>&1 | tail -20|finding COLLEGAMENTO FLUSSO"
-  "registro|grep -c '^## E-' $HERE/docs/errori/REGISTRO.md 2>&1|zero vuoto"
+  "sonde|bash $HQ/tools/giri-ignoranti.sh 2>&1 | tail -25|FIND finding"
+  "health|bash $HQ/tools/system-health.sh 2>&1 | head -25|ROSSO DOWN WARN"
+  "banco|bash $HQ/tools/banco-passaggio.sh --solo-copertura 2>&1 | tail -10|NON CHIUDERE scoperto rosso"
+  "ciclo|bash $HQ/tools/ciclo-vivo.sh 2>&1 | tail -20|finding COLLEGAMENTO FLUSSO"
+  "registro|grep -c '^## E-' $HQ/docs/errori/REGISTRO.md 2>&1|zero vuoto"
 )
 
 # --- Rotazione ---------------------------------------------------------------------------
@@ -42,6 +45,12 @@ log "parole-spia: $LENTE_CERCA"
 TOOL_OUT=$(eval "$LENTE_CMD" 2>&1 | head -50)
 TOOL_RC=$?
 
+# (S3 R4): uno strumento che non e' partito (rc 126: non eseguibile / una cartella; 127: non trovato) ha un'uscita
+# — l'errore della shell — e il modello la leggeva come se fosse il suo risultato: poteva dire «sistema sano».
+if [ "$TOOL_RC" -eq 126 ] || [ "$TOOL_RC" -eq 127 ]; then
+  log "lo strumento non ha girato (rc $TOOL_RC: $(tail -1 <<<"$TOOL_OUT" | cut -c1-100)): la lente e' MUTA (rc 3), il modello non si chiama"
+  exit 3
+fi
 if [ -z "$TOOL_OUT" ]; then
   # (2026-09-24, Q3 R2): usciva 1 (sana) — uno strumento morto senza output non ha detto niente
   log "strumento non ha prodotto output: la lente e' MUTA (rc 3), ne' sana ne' malata"

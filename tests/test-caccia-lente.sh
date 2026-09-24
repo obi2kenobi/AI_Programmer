@@ -45,6 +45,20 @@ PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/de
 [ "$RC" -eq 3 ] && ok "verdetto vuoto (200 senza contenuto): muta (rc 3), non sana" || ko "verdetto vuoto: rc=$RC"
 grep -c '"$CACCIA_RC" -eq 2' "$NS" >/dev/null && ok "il turno ha un ramo per la cartella assente (rc 2), non la salute" || ko "rc 2 cade nella salute"
 
+# (2026-09-24, sesto ventaglio, S3 R4): le lenti erano stringhe con $HERE nudo, eseguite con eval — in un percorso
+# con lo spazio lo strumento non girava («Is a directory», rc 126) e il modello leggeva quell'errore: poteva dire
+# «sistema sano». Ora il percorso e' quotato, e uno strumento che non gira (rc 126/127) e' una lente MUTA.
+mkdir -p "$T/hub con spazio/night-shift" "$T/hub con spazio/tools"
+cp "$HERE/night-shift/caccia-lente.sh" "$T/hub con spazio/night-shift/"
+printf '#!/bin/bash\nfor i in $(seq 1 60); do echo "riga $i"; done\n' > "$T/hub con spazio/tools/giri-ignoranti.sh"; echo 0 > "$T/hub con spazio/.caccia-rotazione"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$T/hub con spazio/night-shift/caccia-lente.sh" "$T/progetto" 2>&1)
+grep -cE "\(($ATTESO|$((ATTESO-1))) bytes" <<<"$OUT" >/dev/null && ok "S3 R4: con lo spazio nel percorso lo strumento gira e il modello riceve le sue 25 righe" \
+  || ko "S3 R4: col percorso con lo spazio il modello riceve altro: $(grep -m1 'bytes\|TOOL' <<<"$OUT")"
+rm -f "$T/hub con spazio/tools/giri-ignoranti.sh"; echo 0 > "$T/hub con spazio/.caccia-rotazione"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$T/hub con spazio/night-shift/caccia-lente.sh" "$T/progetto" 2>&1); RC=$?
+[ "$RC" -eq 3 ] && grep -ci "non ha girato" <<<"$OUT" >/dev/null && ok "S3 R4: lo strumento assente (rc 127) e' una lente MUTA, detta prima del modello" \
+  || ko "S3 R4: strumento non eseguito passato al modello (rc $RC): $(grep -m2 'strumento\|STRUMENTO' <<<"$OUT" | tr '\n' ' ')"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -5068,3 +5068,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   default, in una cartella temporanea: «presente» vuol dire presente sull'origin, il push va lì, e la copia del
   turno non si tocca. Caso nuovo in `tests/test-onboard-repo.sh` (21/0): copia del turno sul ramo di una PR, con
   una skill non tracciata. Rosso prima; sabotaggio 19/2.
+- **Sesto ventaglio, S3 R4 — con lo spazio nel percorso, la caccia-lente leggeva un errore della shell e poteva
+  dirlo «sano».** `night-shift/caccia-lente.sh` costruiva le lenti come stringhe con `$HERE` nudo, e le eseguiva con
+  `eval`. In un percorso con lo spazio lo strumento non girava («Is a directory», rc 126); con un apice la riga non
+  si analizzava. Il modello riceveva l'errore come se fosse l'uscita dello strumento, e il giro S3, col server
+  finto che risponde «healthy», ha avuto «sistema sano». Ora il percorso entra quotato (`printf %q`). Uno strumento
+  che non è partito (rc 126 o 127) è una lente MUTA, detta prima di chiamare il modello. Due casi nuovi in
+  `tests/test-caccia-lente.sh` (10/0), rossi prima; sabotaggio 8/2.
