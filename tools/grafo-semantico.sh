@@ -51,8 +51,10 @@ BR="night/grafo-$(date +%F)"
 git checkout -q -B "$BR"
 git commit -qm "chore: grafo semantico notturno $(date +%F) (graphify extract, $MODEL)" || { log "commit fallito"; exit 1; }
 git push -q origin "$BR" 2>/dev/null || { log "push di $BR fallito (ramo gia' esistente? mai forzato)"; exit 1; }
+# (2026-09-24, quinto ventaglio, R5 R4): il corpo prometteva «il merge unisce i grafi» — vero solo dove la spina
+# ha registrato il driver in .git/config; un clone nuovo o il bottone di GitHub vanno in conflitto (provato: rc 1)
 URL=$(gh pr create --draft --head "$BR" --title "chore: grafo semantico $(date +%F)" \
-  --body "Pass semantico notturno del grafo (graphify extract --backend ollama, modello $MODEL). Solo graphify-out/. Il merge unisce i grafi (merge=graphify)." 2>&1 | tail -1)
+  --body "Pass semantico notturno del grafo (graphify extract --backend ollama, modello $MODEL). Solo graphify-out/. Il merge unisce i grafi (merge=graphify) SOLO in una copia dove tools/graphify-spina.sh ha registrato il driver (git config merge.graphify.driver): fondila li' con git merge, non dal bottone di GitHub, che il driver non lo conosce e da' conflitto su graph.json." 2>&1 | tail -1)
 case "$URL" in
   https://*) log "PR in bozza: $URL"; log "$(lente_pr "$W" "$BASE_REF" "$BR" "$URL")" ;;  # D2: lente sicurezza automatica
   *) log "ramo $BR spinto MA la PR non e' stata creata ($URL)"; exit 1 ;;

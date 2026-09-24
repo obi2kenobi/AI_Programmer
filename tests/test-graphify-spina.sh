@@ -25,6 +25,11 @@ git -C "$HERE" ls-files --error-unmatch graphify-out/graph.json >/dev/null 2>&1 
 grep -qx 'graph.json merge=graphify linguist-generated=true' "$HERE/graphify-out/.gitattributes" 2>/dev/null \
   && ok "graphify-out/.gitattributes: merge=graphify (unione dei grafi) e diff compresso nelle PR" \
   || ko "graphify-out/.gitattributes assente o senza merge=graphify"
+# (2026-09-24, quinto ventaglio, R5 R4): il driver vive in .git/config, e lo registra la spina alla SessionStart.
+# Un clone nuovo o il merge dal bottone di GitHub non lo conoscono: graph.json va in conflitto (provato dal giro
+# senza driver: rc 1). La PR notturna del grafo prometteva «il merge unisce i grafi» senza dire dove.
+grep -c 'non dal bottone' "$HERE/tools/grafo-semantico.sh" >/dev/null && ok "R5 R4: la PR del grafo dice dove il merge unisce davvero i grafi" \
+  || ko "R5 R4: la PR del grafo promette l'unione senza dire che vale solo dove la spina ha registrato il driver"
 git -C "$HERE" check-ignore -q graphify-out/cache/x && git -C "$HERE" check-ignore -q graphify-out/graph.html \
   && ! git -C "$HERE" check-ignore -q graphify-out/graph.json \
   && ok "cache e graph.html restano locali, graph.json no" || ko "regole di ignore del grafo sbagliate"

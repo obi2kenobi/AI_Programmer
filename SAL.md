@@ -4954,3 +4954,13 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Sei casi nuovi in `tests/test-lib.sh` (159/0): quello del turno si ferma, quello del giorno resta, il PID
   riusato resta, senza file non si ferma niente, e il pkill nudo non torna. Il controllo sull'ordine del lock
   ora guarda la chiamata nuova. Sabotaggio: 153/3.
+- **Quinto ventaglio, R5 R4 — la PR del grafo prometteva un merge che funziona solo dove la spina è passata.**
+  Il driver `merge=graphify` vive in `.git/config`, e lo registra `tools/graphify-spina.sh` alla SessionStart.
+  Un clone nuovo, la copia del turno o il bottone di GitHub non lo conoscono, e `graph.json` va in conflitto
+  (il giro, senza driver: rc 1; con il driver: rc 0). Il corpo della PR notturna di `tools/grafo-semantico.sh`
+  diceva «il merge unisce i grafi» e basta. Ora dice dove: in una copia con il driver, con `git merge`, non dal
+  bottone. Guardia sul testo in `tests/test-graphify-spina.sh` (19/0): rossa prima, sabotaggio 18/1. Vale anche
+  per questa PR, che tocca `graph.json` a ogni commit: lo dice il suo corpo.
+
+  Rinviata, da decidere col giorno: una notte che fonde da sola `origin/main` col driver prima di aprire la
+  PR. La frase di CLAUDE.md §7 («versioned, merge driver») è una proposta nel report di campo, non applicata.

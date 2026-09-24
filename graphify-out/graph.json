@@ -12831,7 +12831,7 @@
       },
       "norm_label": "gs()",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L102"
+      "source_location": "L107"
     },
     {
       "id": "tests_test_graphify_spina_ko",
@@ -55178,7 +55178,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L104",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -55214,7 +55214,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L47",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -91208,7 +91208,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L102",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -97307,5 +97307,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "eb02d7c8812940da5dd0c34abaa8c11b725f1b1d"
+  "built_at_commit": "3fcdcbf1cb138724735c6e73826327b47858da99"
 }
