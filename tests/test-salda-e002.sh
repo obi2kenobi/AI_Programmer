@@ -86,6 +86,28 @@ fi
 done
 
 cd "$HERE"; rm -rf "${MIE[@]}"
+# Q16 (2026-09-23, giro A7 della notte): la trasformazione deve dare lo STESSO esito eseguendo, non
+# solo compilare. Due vie per cui non lo dava, con bash -n verde (e la caccia la applica da sola):
+#  (a) sotto `set -e`, `_cp=$(PROD)` fuori dall'if fa MORIRE lo script quando PROD fallisce — dentro
+#      l'if il fallimento era solo un «falso»;
+#  (b) `grep -v` su un output vuoto: il here-string porta una riga vuota che -v accetta, e la
+#      condizione si ribalta. Queste forme vanno all'agente, non al trasformatore.
+nuova
+PDQ="| gre""p -q"
+printf '#!/bin/bash\nset -euo pipefail\nif false %s x; then\n  echo si\nfi\necho dopo\n' "$PDQ" > e.sh
+PRIMA=$(bash e.sh 2>/dev/null)
+bash "$SALDA" e.sh 3 >/dev/null 2>&1
+DOPO=$(bash e.sh 2>/dev/null)
+[ "$PRIMA" = "$DOPO" ] && ok "Q16a: sotto set -e un produttore che fallisce non uccide lo script trasformato" \
+  || ko "Q16a: esito cambiato dopo la trasformazione: prima «$PRIMA», dopo «$DOPO»"
+PDV="| gre""p -qv"
+printf '#!/bin/bash\nif true %s ok; then\n  echo PROBLEMA\nelse\n  echo tutto-ok\nfi\n' "$PDV" > v.sh
+PRIMA=$(bash v.sh 2>/dev/null)
+bash "$SALDA" v.sh 2 >/dev/null 2>&1; RC=$?
+DOPO=$(bash v.sh 2>/dev/null)
+[ "$RC" -eq 1 ] && [ "$PRIMA" = "$DOPO" ] && ok "Q16b: grep -v rifiutato (all'agente): la logica non si ribalta" \
+  || ko "Q16b: grep -v trasformato (rc=$RC): prima «$PRIMA», dopo «$DOPO»"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

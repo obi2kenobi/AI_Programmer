@@ -3481,3 +3481,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - Banco: in `tests/test-bootstrap-app-e2e.sh`, un cricchetto: ogni percorso citato dal CLAUDE.md
     dei satelliti esiste nella repo nuova, oppure è dichiarato «solo nell'hub» col perché.
     `tests/test-onboard-repo.sh` ha 2 casi nuovi. Sabotaggio (via la chiamata): 4 + 1 rossi.
+- **Q16**, da A7, `tools/salda-e002.sh` (la caccia lo applica da sola): il trasformato compilava
+  ma non faceva la stessa cosa, e `bash -n` restava verde. Riprodotte entrambe le vie:
+  - sotto `set -e`, `_cp=$(PROD)` fuori dall'if uccideva lo script quando PROD falliva;
+  - con `grep -v` su output vuoto, il here-string portava una riga vuota e ribaltava l'esito.
+  - Ora la cattura porta `|| true`, e le forme `-v` vanno all'agente.
+  - Banco: `tests/test-salda-e002.sh`, 2 casi che ESEGUONO prima e dopo e confrontano l'esito.
+    Sabotaggio (via `|| true`): 1 rosso.
