@@ -22,6 +22,7 @@ PROMPT="$(echo "$INPUT" | jq -r '.prompt // empty' 2>/dev/null)"
 if [ "$EVENT" = "Stop" ]; then
   # fine sessione: il report dal campo va scritto (o dichiarato "nessuna proposta")
   OGGI=$(date +%F)
+  # residuo: .campo-rem
   ST="$PWD/.campo-rem"; ULT=$(cat "$ST" 2>/dev/null || echo 0); ORA=$(date +%s)
   if [ $((ORA - ULT)) -lt 3600 ]; then exit 0; fi
   if ! ls "$PWD"/docs/campo/"${OGGI}"-*.md >/dev/null 2>&1; then echo "$ORA" > "$ST" 2>/dev/null

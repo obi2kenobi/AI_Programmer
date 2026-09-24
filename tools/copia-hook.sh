@@ -68,14 +68,25 @@ done <<< "$DICHIARATI"
 
 # (report REPO-I 2026-09-19, H1): l'hook copiato ma non la riga che ne nasconde il
 # residuo — ogni repo portata a standard restava con l'albero sporco per sempre.
-# Le righe si DERIVANO dai path che gli hook scrivono ($PWD/.qualcosa nei sorgenti):
-# stessa disciplina della lista hook, estesa al residuo.
-RESIDUI=$(grep -ohE '\$PWD/\.[A-Za-z0-9_.-]+' $DICHIARATI 2>/dev/null | sed 's|^\$PWD/||' | sort -u)
+# Le righe si DERIVANO dagli hook stessi: stessa disciplina della lista hook, estesa al residuo.
+# (2026-09-24, notte dei giri, T6#3): prima si prendeva ogni `$PWD/.x` nominato — anche
+# .mirror-boundaries, che e' una DICHIARAZIONE letta dall'hook clasp: ignorata, non si versionava e chi
+# clona perdeva il cancello. E i sorgenti si cercavano relativi alla cartella CORRENTE: da un'altra
+# cartella, nessun residuo, in silenzio. Ora un hook dichiara cio' che SCRIVE con una riga
+# `# residuo: <file>`, e i sorgenti si leggono dall'hub.
+RESIDUI=$(while IFS= read -r H; do sed -n 's/^[[:space:]]*# residuo: \([A-Za-z0-9_.-]*\)[[:space:]]*$/\1/p' "$HERE/$H"; done <<< "$DICHIARATI" | sort -u)
 if [ -n "$RESIDUI" ]; then
   touch "$DEST/.gitignore"
   while IFS= read -r R; do
     [ -n "$R" ] || continue
     grep -qxF "$R" "$DEST/.gitignore" || echo "$R" >> "$DEST/.gitignore"
   done <<< "$RESIDUI"
+  # (T6#3): i satelliti nati prima hanno la riga .mirror-boundaries, messa dal metodo per errore — la
+  # dichiarazione dei cloni di sola lettura va versionata. Si toglie la sola riga esatta, e lo si dice.
+  if grep -qxF '.mirror-boundaries' "$DEST/.gitignore"; then
+    grep -vxF '.mirror-boundaries' "$DEST/.gitignore" > "$DEST/.gitignore.copia-hook" && cat "$DEST/.gitignore.copia-hook" > "$DEST/.gitignore"
+    rm -f "$DEST/.gitignore.copia-hook"
+    echo "copia-hook: tolta la riga .mirror-boundaries dalla .gitignore — e' una dichiarazione da versionare, non un residuo (T6#3)" >&2
+  fi
   echo ".gitignore"
 fi

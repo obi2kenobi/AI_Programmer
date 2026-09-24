@@ -3930,3 +3930,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   campo, le parole l'ultimo, il comando tutto il mezzo. Comando e parole-spia vanno nel log, e le
   parole nel prompt. Banco nuovo `tests/test-caccia-lente.sh` (hub finto): 3 rossi prima, 2 al
   sabotaggio. Di passaggio, per il banco: `NIGHT_API_URL`, come negli altri script del turno.
+- **T6#3 — copia-hook ignorava una dichiarazione e cercava i sorgenti nel posto sbagliato.**
+  `tools/copia-hook.sh` derivava la `.gitignore` dei residui da ogni `$PWD/.x` nominato dagli hook.
+  Così prendeva anche `.mirror-boundaries`: è la dichiarazione dei cloni di sola lettura, che
+  scrive l'utente e legge `tools/clasp-block-hook.sh`. Ignorata, non si versionava, e chi clonava
+  perdeva il cancello (incidente REPO-Q). Inoltre i sorgenti si cercavano relativi alla cartella
+  corrente: lanciato da un'altra cartella, nessun residuo, in silenzio. Ora un hook dichiara ciò che
+  scrive (`# residuo: <file>`) e i sorgenti si leggono dall'hub. Nei satelliti nati prima, la riga
+  `.mirror-boundaries` si toglie alla prossima copia, dicendolo. Banco in
+  `tests/test-bootstrap-hooks-propagation.sh`: 2 rossi prima, 2 al sabotaggio.

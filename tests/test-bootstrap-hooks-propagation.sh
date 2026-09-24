@@ -69,6 +69,23 @@ grep -q '^\.gitignore$' <<<"$COPIATI" \
   && ok "copia-hook.sh porta anche la .gitignore dei residui (cura H1)" \
   || ko "la .gitignore dei residui non viaggia (H1)"
 
+# (2026-09-24, notte dei giri, T6#3): la .gitignore dei residui prendeva ogni `$PWD/.x` nominato dagli
+# hook — anche .mirror-boundaries, che e' una DICHIARAZIONE (i cloni di sola lettura: la scrive
+# l'utente, la LEGGE tools/clasp-block-hook.sh). Ignorata, non si versiona, e chi clona perde il
+# cancello. E i sorgenti degli hook si cercavano relativi alla cartella corrente: lanciato da
+# un'altra cartella, nessun residuo, in silenzio.
+D2="$TMP/da-altrove"; mkdir -p "$D2"
+( cd / && bash "$HERE/tools/copia-hook.sh" "$D2" >/dev/null 2>&1 )
+grep -qxF '.campo-rem' "$D2/.gitignore" 2>/dev/null && ok "lanciato da un'altra cartella: il residuo .campo-rem va nella .gitignore" \
+  || ko "lanciato da un'altra cartella: residui persi ($(cat "$D2/.gitignore" 2>/dev/null | tr '\n' ' '))"
+grep -qxF '.mirror-boundaries' "$D2/.gitignore" 2>/dev/null && ko ".mirror-boundaries (dichiarazione, non residuo) finisce nella .gitignore" \
+  || ok ".mirror-boundaries resta versionabile: non e' un residuo"
+# un satellite nato prima ha la riga sbagliata: la prossima copia la toglie, e lo dice
+D3="$TMP/satellite-vecchio"; mkdir -p "$D3"; printf 'node_modules\n.mirror-boundaries\n.campo-rem\n' > "$D3/.gitignore"
+OUT3=$(bash "$HERE/tools/copia-hook.sh" "$D3" 2>&1)
+! grep -qxF '.mirror-boundaries' "$D3/.gitignore" && grep -qxF 'node_modules' "$D3/.gitignore" && grep -c "mirror-boundaries" <<<"$OUT3" >/dev/null \
+  && ok "satellite vecchio: la riga .mirror-boundaries si toglie (dichiarato), il resto resta" || ko "satellite vecchio: .gitignore = $(tr '\n' ' ' < "$D3/.gitignore")"
+
 # Il guardiano si prova quando deve fallire: un hook dichiarato ma ASSENTE dall'hub deve
 # far uscire copia-hook.sh in errore, non copiare il resto e tacere — è esattamente il
 # modo in cui il bug originale è passato inosservato (cp che falliva sotto `|| true`).
