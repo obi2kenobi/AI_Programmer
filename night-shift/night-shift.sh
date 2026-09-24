@@ -1288,7 +1288,7 @@ fi
 RAMI_TSV=$(mktemp); PR_TSV=$(mktemp)
 if git -C "$HERE" fetch -q --prune origin 2>/dev/null \
    && git -C "$HERE" for-each-ref refs/remotes/origin --format='%(refname:lstrip=3)%09%(committerdate:unix)' 2>/dev/null | grep -v '^HEAD' > "$RAMI_TSV" \
-   && gh pr list -R obi2kenobi/AI_Programmer --state all --limit 200 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' > "$PR_TSV" 2>/dev/null; then
+   && gh pr list -R obi2kenobi/AI_Programmer --state all --limit 1000 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' > "$PR_TSV" 2>/dev/null; then
   SCOPA_OK=1
 else
   SCOPA_OK=0
@@ -1347,7 +1347,10 @@ fi
 # chiudendola. Le regole vivono in lib.sh rami_da_scopare (testata in tests/test-lib.sh).
 if command -v gh >/dev/null 2>&1 && [ "${SCOPA_OK:-0}" -eq 1 ]; then
   N_SCOPA=0
-  for B in $(rami_da_scopare "$(date +%s)" 48 "$RAMI_TSV" "$PR_TSV"); do
+  # (2026-09-24, quinto ventaglio, R5 R2): solo i rami DEL TURNO. Prima si cancellavano anche claude/* e glm/*
+  # senza PR (il ramo di una sessione web chiusa, di cui non resta copia): scelta provvisoria dichiarata, la
+  # domanda (quali prefissi) e' in DEBITI.md
+  for B in $(rami_da_scopare "$(date +%s)" 48 "$RAMI_TSV" "$PR_TSV" | grep -E '^(night|notte)/'); do
     gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
       && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: '$B' cancellato (PR fusa/chiusa, o orfano oltre 48h)"
   done

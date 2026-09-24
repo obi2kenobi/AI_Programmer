@@ -443,6 +443,13 @@ if declare -F rami_da_scopare >/dev/null; then
 else
   ko "rami_da_scopare non definita in lib.sh"
 fi
+# (2026-09-24, quinto ventaglio, R5 R2): la scopa delle 48h cancellava sul remoto dell'hub anche i rami del
+# GIORNO (claude/*, glm/*) senza PR — per esempio il ramo di una sessione web gia' chiusa, di cui non resta
+# copia. Scelta provvisoria dichiarata (la domanda e' in DEBITI): la scopa tocca solo i rami del turno.
+NSH_SC="$HERE/night-shift/night-shift.sh"
+RIGA_48=$(grep -n 'rami_da_scopare "$(date +%s)" 48' "$NSH_SC" | head -1)
+grep -cE "grep -E '\^\(night\|notte\)/'" <<<"$RIGA_48" >/dev/null && ok "scopa 48h: solo rami del turno (night/, notte/), mai claude/ o glm/" || ko "scopa 48h senza filtro di prefisso: $RIGA_48"
+grep -c 'gh pr list -R obi2kenobi/AI_Programmer --state all --limit 1000' "$NSH_SC" >/dev/null && ok "scopa: la lista delle PR arriva a 1000 (con 200 una PR aperta vecchia usciva dalla lista)" || ko "scopa: PR lette solo fino a 200"
 
 # --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
 LOGTMP=$(mktemp -d)

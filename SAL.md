@@ -4658,3 +4658,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   locali: sporco, commit non pushato, main aperto in un altro worktree, copia pulita): rosso prima,
   verde ora (8/0). Il mio primo caso d non bloccava davvero il checkout (dopo lo stash riusciva):
   corretto con il worktree. Sabotaggio: stash e ramo tolti, l'uscita li annuncia ma non li fa, 6/2.
+- **Quinto ventaglio, R5 R2 — la scopa dei rami cancellava sul remoto anche i rami del giorno.** La scopa
+  delle 48 h di `night-shift/night-shift.sh` toglieva ogni ramo senza PR oltre 48 h, e ogni ramo con PR
+  fusa o chiusa, qualunque fosse il prefisso: anche `claude/*` e `glm/*`. Per esempio il ramo di una
+  sessione web già chiusa, di cui non resta copia. La cancellazione di un ramo remoto non si annulla.
+  Scelta provvisoria dichiarata: la scopa tocca solo `night/` e `notte/`, i rami del turno; la domanda
+  (quali prefissi, e con che regola) è in DEBITI.md. In più la lista delle PR arriva a 1000: con 200,
+  una PR aperta vecchia usciva dalla lista e il suo ramo sembrava orfano. `tests/test-lib.sh`: due
+  controlli, rossi prima (2 FAIL), verdi ora (152/0). Non fatto: il ramo con PR fusa e commit più recenti
+  del merge. Con il filtro sui soli rami del turno il caso diventa raro, ed è dichiarato qui.
