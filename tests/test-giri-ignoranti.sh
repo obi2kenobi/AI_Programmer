@@ -13,9 +13,9 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 bash -n "$BAT" && ok "sintassi" || ko "sintassi rotta"
 
 OUT=$(bash "$BAT" 2>&1); RC=$?
-echo "$OUT" | grep -q "VERDETTO: 0 finding" && ok "su repo integro: 0 finding" || ko "finding su repo integro: $(echo "$OUT" | grep -c '^FIND')"
+grep -q "VERDETTO: 0 finding" <<<"$OUT" && ok "su repo integro: 0 finding" || ko "finding su repo integro: $(echo "$OUT" | grep -c '^FIND')"
 for s in S1 S2 S3 S4 S5 S6 S7 S8 S9; do
-  echo "$OUT" | grep -q "OK   $s " && ok "sonda $s presente e verde" || ko "sonda $s assente o rossa"
+  grep -q "OK   $s " <<<"$OUT" && ok "sonda $s presente e verde" || ko "sonda $s assente o rossa"
 done
 
 # caso negativo S1: glifo costruito a runtime (il nome letterale qui dentro
@@ -34,7 +34,7 @@ if git clone -q --local "$HERE" "$QT/hub" 2>/dev/null; then
   GLIFO=$(python3 -c "print(chr(0x9633)+chr(0x53f0))")
   printf 'parola con %s dentro\n' "$GLIFO" >> "$QT/hub/DEBITI.md"
   OUT2=$(bash "$QT/hub/tools/giri-ignoranti.sh" 2>&1); RC2=$?
-  [ $RC2 -ne 0 ] && echo "$OUT2" | grep -q "FIND S1" \
+  [ $RC2 -ne 0 ] && grep -q "FIND S1" <<<"$OUT2" \
     && ok "glifo in quarantena: S1 lo prende e la batteria esce rossa" \
     || ko "glifo piantato NON visto (rc=$RC2)"
   rm -rf "$QT"

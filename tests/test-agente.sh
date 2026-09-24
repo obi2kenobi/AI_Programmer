@@ -65,7 +65,7 @@ scenario a1 "$SB" "fix sconto" \
 [ "$RC" -eq 0 ] && grep -q 'p \* x / 100' "$SB/mat.js" && [ "$(wc -l < "$SB/mat.js")" -eq 3 ] \
   && ok "A1: read → edit esatto → finish (rc 0, una riga cambiata, le altre byte-identiche)" \
   || ko "A1: rc=$RC file: $(tr '\n' '|' < "$SB/mat.js") out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
-echo "$OUT" | grep -q "completato in 3 turni" && ok "A1: tre turni contati" || ko "A1: conteggio turni: $(echo "$OUT" | grep completato)"
+grep -q "completato in 3 turni" <<<"$OUT" && ok "A1: tre turni contati" || ko "A1: conteggio turni: $(echo "$OUT" | grep completato)"
 
 # A2: edit con old ASSENTE → errore al modello, file intatto; poi old AMBIGUO → errore
 SB="$SB_ROOT/a2"; mkdir -p "$SB"; printf 'a\nb\na\n' > "$SB/f.txt"
@@ -74,7 +74,7 @@ scenario a2 "$SB" "edit" \
   "$(azione '{"action":"edit","path":"f.txt","old":"a","new":"y"}')" \
   "$(azione 'stop')"
 [ "$(cat "$SB/f.txt" | tr '\n' '|')" = "a|b|a|" ] && ok "A2: old assente e old ambiguo → file INTATTO" || ko "A2: file toccato: $(tr '\n' '|' < "$SB/f.txt")"
-echo "$OUT" | grep -q "vecchio non trovato" && echo "$OUT" | grep -q "ambiguo" && ok "A2: entrambi gli errori dichiarati nel log" || ko "A2: errori non loggati: $(echo "$OUT" | grep edit | tr '\n' ' ')"
+grep -q "vecchio non trovato" <<<"$OUT" && grep -q "ambiguo" <<<"$OUT" && ok "A2: entrambi gli errori dichiarati nel log" || ko "A2: errori non loggati: $(echo "$OUT" | grep edit | tr '\n' ' ')"
 
 # A3: confinamento — read e write FUORI dal progetto rifiutati, il segreto non passa
 SB="$SB_ROOT/a3"; mkdir -p "$SB"; printf 'SEGRETO-XYZ\n' > "$MOCK_DIR/segreto.txt"
@@ -89,7 +89,7 @@ scenario a3 "$SB" "leggi" \
   "$(azione '{"action":"write","path":"'"$MOCK_DIR"'/fuori.txt","content":"x"}')" \
   "$(azione '{"action":"read","path":"../segreto.txt"}')" \
   "$(azione 'fine')"
-echo "$OUT" | grep -q "SEGRETO-XYZ" && ko "A3: file ESTERNO letto (confinamento rotto!)" || ok "A3: il contenuto esterno non arriva al modello"
+grep -q "SEGRETO-XYZ" <<<"$OUT" && ko "A3: file ESTERNO letto (confinamento rotto!)" || ok "A3: il contenuto esterno non arriva al modello"
 [ -f "$MOCK_DIR/fuori.txt" ] && ko "A3: write FUORI dal progetto eseguito" || ok "A3: write fuori dal progetto rifiutato"
 [ "$(echo "$OUT" | grep -c 'FUORI (rifiutato)')" -ge 3 ] && ok "A3: tre rifiuti dichiarati nel log (read, write, ../)" || ko "A3: rifiuti loggati: $(echo "$OUT" | grep -c FUORI)"
 
@@ -101,7 +101,7 @@ scenario a4 "$SB" "run" \
   "$(azione '{"action":"run","command":"echo ciao-dal-run"}')" \
   "$(azione 'fine')"
 [ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 2 ] && ok "A4: curl e push RIFIUTATI (denylist)" || ko "A4: rifiuti: $(echo "$OUT" | grep -c RIFIUTATO) (attesi 2)"
-echo "$OUT" | grep -q 'run: echo ciao-dal-run' && ok "A4: il comando innocuo gira" || ko "A4: comando innocuo non eseguito"
+grep -q 'run: echo ciao-dal-run' <<<"$OUT" && ok "A4: il comando innocuo gira" || ko "A4: comando innocuo non eseguito"
 
 # A4bis (2026-09-23, giro A6 della notte): la denylist a sottostringhe si aggirava — `git p""ush`,
 # wget, un interprete, un touch: tutto andava in eval, fuori sandbox. Ora il run passa dalla STESSA
@@ -116,7 +116,7 @@ scenario a4bis "$SB" "run" \
   "$(azione 'fine')"
 [ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 4 ] && ok "A4bis: push camuffato, wget, interprete e touch RIFIUTATI" || ko "A4bis: rifiuti $(echo "$OUT" | grep -c 'run: RIFIUTATO') su 4 attesi"
 [ ! -e "$SB/PWN" ] && [ ! -e "$SB/PWN2" ] && ok "A4bis: nessun file scritto dal run" || ko "A4bis: il run ha SCRITTO nel progetto"
-echo "$OUT" | grep -q 'run: grep -c uno f.txt' && ok "A4bis: la lettura (grep) gira ancora" || ko "A4bis: anche la lettura e' bloccata"
+grep -q 'run: grep -c uno f.txt' <<<"$OUT" && ok "A4bis: la lettura (grep) gira ancora" || ko "A4bis: anche la lettura e' bloccata"
 
 # A5: write crea SOLO file nuovi — su un file esistente rifiuta (edit e' l'unica via)
 SB="$SB_ROOT/a5"; mkdir -p "$SB"; printf 'originale\n' > "$SB/c.txt"
@@ -133,7 +133,7 @@ MAX_T=2 scenario a6 "$SB" "loop" \
   "$(azione '{"action":"read","path":"x.txt"}')" \
   "$(azione '{"action":"read","path":"x.txt"}')" \
   "$(azione '{"action":"read","path":"x.txt"}')"
-[ "$RC" -eq 1 ] && echo "$OUT" | grep -q "max turni" && ok "A6: tetto dei turni → rc 1 dichiarato (niente loop infinito)" || ko "A6: rc=$RC: $(echo "$OUT" | tail -1)"
+[ "$RC" -eq 1 ] && grep -q "max turni" <<<"$OUT" && ok "A6: tetto dei turni → rc 1 dichiarato (niente loop infinito)" || ko "A6: rc=$RC: $(echo "$OUT" | tail -1)"
 
 # ── Parte B: le sfide col modello VERO (skip dichiarato senza Ollama) ───────────────
 if curl -sf --max-time 2 http://localhost:11434/api/tags >/dev/null 2>&1; then

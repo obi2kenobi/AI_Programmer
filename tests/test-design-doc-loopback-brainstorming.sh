@@ -16,11 +16,11 @@ grep -q '4bis\. \*\*Se NESSUNA opzione' "$DD" \
   || ko "il passo §4bis non esiste"
 
 SEZ=$(awk '/^4bis\./{f=1} /^5\./{f=0} f' "$DD")
-echo "$SEZ" | grep -q "brainstorming" \
+grep -q "brainstorming" <<<"$SEZ" \
   && ok "§4bis rimanda a /brainstorming invece di forzare una scelta scadente" \
   || ko "§4bis non rimanda a /brainstorming"
 
-echo "$SEZ" | grep -qi "non forzare" \
+grep -qi "non forzare" <<<"$SEZ" \
   && ok "§4bis dice esplicitamente di non forzare la scelta" \
   || ko "§4bis non è esplicito sul non forzare"
 

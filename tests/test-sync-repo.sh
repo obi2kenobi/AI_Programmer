@@ -27,10 +27,10 @@ head -50 "$HERE/CLAUDE.md" > "$TMP/divergente/CLAUDE.md"
 mkdir -p "$TMP/divergente/tools"
 while IFS= read -r H; do cp "$HERE/$H" "$TMP/divergente/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
 OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/divergente" 2>&1); RC=$?
-[ $RC -eq 1 ] && echo "$OUT" | grep -q "DIVERGENTE" \
+[ $RC -eq 1 ] && grep -q "DIVERGENTE" <<<"$OUT" \
   && ok "repo divergente: exit 1 col verdetto DIVERGENTE dichiarato" \
   || ko "divergente rc=$RC: $OUT"
-echo "$OUT" | grep -qE "dista [0-9]+ righe" \
+grep -qE "dista [0-9]+ righe" <<<"$OUT" \
   && ok "il verdetto porta il conteggio delle righe di distanza" \
   || ko "conteggio righe mancante"
 # bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
@@ -38,7 +38,7 @@ echo "$OUT" | grep -qE "dista [0-9]+ righe" \
 # righe" (che il check sopra, con una regex troppo permissiva, non distingueva da un
 # conteggio vero) e il blocco di dettaglio sotto restava vuoto. Verifica esplicita che il
 # conteggio sia REALMENTE positivo e che il blocco di dettaglio non sia vuoto.
-echo "$OUT" | grep -qE "dista [1-9][0-9]* righe" \
+grep -qE "dista [1-9][0-9]* righe" <<<"$OUT" \
   && ok "il conteggio delle righe è realmente positivo, non sempre 0" \
   || ko "conteggio righe fermo a 0 nonostante una divergenza vera — output: $OUT"
 DETTAGLIO=$(echo "$OUT" | grep -c '^  [<>]')
@@ -82,7 +82,7 @@ BR=$(ramo_standard vuota-remota)
 [ "$RC" -eq 0 ] && [ -n "$BR" ] && git -C "$TMP/vuota-remota.git" ls-tree --name-only "$BR" | grep -qx CLAUDE.md \
   && ok "D11: repo senza CLAUDE.md → --standard apre il ramo con CLAUDE.md (onboarding da zero)" \
   || ko "D11: repo vuota non onboardabile (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
-echo "$OUT" | grep -q "ASSENTE" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
+grep -q "ASSENTE" <<<"$OUT" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
   || ko "D11: assenza non dichiarata come tale: $(echo "$OUT" | head -1)"
 
 # D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
@@ -104,7 +104,7 @@ fi
 if [ -n "$BR" ]; then
   git -C "$TMP/canarino-uguale-seed" fetch -q origin && git -C "$TMP/canarino-uguale-seed" merge -q --no-edit "origin/$BR" && git -C "$TMP/canarino-uguale-seed" push -q origin HEAD:main 2>/dev/null
   OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
-  echo "$OUT" | grep -q "GIÀ A STANDARD" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
+  grep -q "GIÀ A STANDARD" <<<"$OUT" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
     || ko "riallineo: atteso GIÀ A STANDARD, avuto (rc=$RC): $(echo "$OUT" | tail -1)"
   git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -q '\.claude/skills/skills/' \
     && ko "riallineo: lo standard si e' ANNIDATO (.claude/skills/skills)" \

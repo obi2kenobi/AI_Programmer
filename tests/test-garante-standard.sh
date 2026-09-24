@@ -19,9 +19,9 @@ mkdir -p "$SB/.claude/skills/gas-sviluppo/references"
 echo '{"hooks":{"SessionStart":[{"hooks":[{"command":"x"}]}]}}' > "$SB/.claude/settings.json"
 echo "metodo vecchio" > "$SB/.claude/skills/gas-sviluppo/references/metodo.md"
 OUT=$(cd "$SB" && bash "$GARANTE" 2>&1)
-if echo "$OUT" | grep -q "DIVERGE"; then
+if grep -q "DIVERGE" <<<"$OUT"; then
   ok "metodo installato vecchio → avviso deriva (con il comando per aggiornare)"
-  echo "$OUT" | grep -q "sync-repo" && ok "l'avviso dice COME aggiornare" || ko "avviso senza rimedio"
+  grep -q "sync-repo" <<<"$OUT" && ok "l'avviso dice COME aggiornare" || ko "avviso senza rimedio"
 else
   ko "deriva del metodo NON vista — il garante e' tornato una-tantum"
 fi

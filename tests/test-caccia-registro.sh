@@ -26,21 +26,21 @@ printf '#!/bin/bash\nprintf hi >> "$HERE/vivo.md"\n' > "$SB/tests/test-vivo.sh"
 git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm base
 
 OUT=$(bash "$TOOL" "$SB" 2>&1)
-echo "$OUT" | grep -q "E-002(pipe in grep -q)=2" && ok "E-002: conta i 2 esemplari" || ko "E-002 conta male: $OUT"
-echo "$OUT" | grep -q "E-032(fixture nel vivo)=1" && ok "E-032: conta la fixture viva" || ko "E-032 conta male: $OUT"
-echo "$OUT" | grep -q "baseline" && ok "primo censimento: baseline (non urla al lupo)" || ko "primo censimento: $OUT"
+grep -q "E-002(pipe in grep -q)=2" <<<"$OUT" && ok "E-002: conta i 2 esemplari" || ko "E-002 conta male: $OUT"
+grep -q "E-032(fixture nel vivo)=1" <<<"$OUT" && ok "E-032: conta la fixture viva" || ko "E-032 conta male: $OUT"
+grep -q "baseline" <<<"$OUT" && ok "primo censimento: baseline (non urla al lupo)" || ko "primo censimento: $OUT"
 
 # secondo censimento dopo cura di UN esemplare: delta -1
 PIPEG="| gre""p"   # il tubo curato (senza -q): anche questo a pezzi, stessa regola
 printf '#!/bin/bash\nX=$(ls %s foo && echo y)\n' "$PIPEG" > "$SB/tools/uno.sh"
 OUT=$(bash "$TOOL" "$SB" 2>&1)
-echo "$OUT" | grep -q "censimento: -1" && echo "$OUT" | grep -q "debito sceso" && ok "cura di un esemplare: delta -1 e lo dichiara" || ko "delta dopo cura: $OUT"
+grep -q "censimento: -1" <<<"$OUT" && grep -q "debito sceso" <<<"$OUT" && ok "cura di un esemplare: delta -1 e lo dichiara" || ko "delta dopo cura: $OUT"
 
 # e se il debito CRESCIE: +1 nuovo esemplare → delta +1 con l'avviso
 printf '#!/bin/bash\nZ=$(cat x %s new)\n' "$PIPEQ" > "$SB/llm/tre.sh"
 OUT=$(bash "$TOOL" "$SB" 2>&1)
-echo "$OUT" | grep -q "censimento: 1" && ok "debito cresciuto: delta +1" || ko "delta crescita: $OUT"
-echo "$OUT" | grep -q "CRESCIUTO" && ok "la crescita viene urlata" || ko "crescita silenziosa"
+grep -q "censimento: 1" <<<"$OUT" && ok "debito cresciuto: delta +1" || ko "delta crescita: $OUT"
+grep -q "CRESCIUTO" <<<"$OUT" && ok "la crescita viene urlata" || ko "crescita silenziosa"
 
 # --prossimo con un rinviato (revisione 10 giri, 2026-09-23): `paste` affiancava la colonna
 # delle famiglie di TUTTE le righe ai siti gia' filtrati — con un rinviato le righe
@@ -73,13 +73,23 @@ VIVO_PRIMA=$(cat "$HERE/.git/caccia-registro/storia" 2>/dev/null | wc -l | tr -d
 PRIMA=$(git -C "$QT/hub" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
 OUT=$(bash "$QT/hub/tools/caccia-registro.sh" "$QT/hub" 2>&1); RC=$?
 DOPO=$(git -C "$QT/hub" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
-[ "$RC" -eq 0 ] && echo "$OUT" | grep -qE "E-002.*=[0-9]+" && ok "repo vero (clone): censimento onesto senza rompere (rc 0)" || ko "repo vero: rc=$RC, $OUT"
+[ "$RC" -eq 0 ] && grep -qE "E-002.*=[0-9]+" <<<"$OUT" && ok "repo vero (clone): censimento onesto senza rompere (rc 0)" || ko "repo vero: rc=$RC, $OUT"
 [ "$DOPO" -le "$PRIMA" ] && ok "il censimento non aggiunge sporco ($PRIMA -> $DOPO)" || ko "sporcato l'albero: $PRIMA -> $DOPO"
 # lo stato vive in .git (mai committato)
 [ -d "$QT/hub/.git/caccia-registro" ] && ok "lo stato del censimento vive in .git (mai committato)" || ko "stato fuori posto"
 VIVO_DOPO=$(cat "$HERE/.git/caccia-registro/storia" 2>/dev/null | wc -l | tr -d ' ')
 [ "$VIVO_PRIMA" = "$VIVO_DOPO" ] && ok "la storia del censimento dell'hub VIVO non e' toccata dal test" || ko "il test ha scritto nella storia viva ($VIVO_PRIMA -> $VIVO_DOPO)"
 rm -rf "$QT"
+
+# (Q31, 2026-09-23, notte dei giri): la caccia non guardava tests/ — la voce di DEBITI che le affidava
+# i siti E-002 dei banchi aspettava per sempre. Un sito in un banco dev'essere contato.
+SB3=$(mktemp -d /tmp/test-cregistro3.XXXXXX)
+git -C "$SB3" init -q -b main; mkdir -p "$SB3/tests"
+printf '#!/bin/bash\nset -uo pipefail\nbash x.sh %s foo && echo y\n' "$PIPEQ" > "$SB3/tests/test-tre.sh"
+git -C "$SB3" add -A && git -C "$SB3" -c user.name=t -c user.email=t@t commit -qm base
+OUT3=$(bash "$TOOL" "$SB3" 2>&1)
+grep -q "E-002(pipe in grep -q)=1" <<<"$OUT3" && ok "E-002: un sito in tests/ e' contato (la caccia puo' curarlo)" || ko "E-002 in tests/ invisibile alla caccia: $(head -2 <<<"$OUT3")"
+rm -rf "$SB3"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -21,11 +21,11 @@ RIGA=$(grep -n "PERCORSO CLOUD/IBRIDO" "$SCRIPT" | head -1 | cut -d: -f1)
   || ko "nessun avviso vicino alla testa (riga ${RIGA:-assente})"
 
 BLOCCO=$(sed -n "${RIGA:-1},$(( ${RIGA:-1} + 10 ))p" "$SCRIPT")
-echo "$BLOCCO" | grep -q "repo create" \
+grep -q "repo create" <<<"$BLOCCO" \
   && ok "l'avviso nomina la chiamata gh repo create presente nello script" \
   || ko "l'avviso non nomina le chiamate gh reali"
 
-echo "$BLOCCO" | grep -q "repos.conf" \
+grep -q "repos.conf" <<<"$BLOCCO" \
   && ok "l'avviso nomina repos.conf (l'altra scrittura locale-del-Mac)" \
   || ko "l'avviso non nomina repos.conf"
 

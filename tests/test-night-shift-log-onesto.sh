@@ -19,10 +19,10 @@ bash -n "$NS" && ok "sintassi" || { ko "sintassi rotta"; exit 1; }
 
 # D15: la riga «PR di riallineo aperta» e' condizionata alla URL della PR
 BLOCCO=$(awk '/SYNC_OUT=\$\(bash .*sync-repo.sh/{f=1} f{print} f&&/esac/{exit}' "$NS")
-echo "$BLOCCO" | grep -q 'case "$SYNC_OUT" in' && echo "$BLOCCO" | grep -q '"PR aperta https://"' \
+grep -q 'case "$SYNC_OUT" in' <<<"$BLOCCO" && grep -q '"PR aperta https://"' <<<"$BLOCCO" \
   && ok "D15: «PR di riallineo aperta» solo quando sync-repo restituisce la URL della PR" \
   || ko "D15: il log dichiara la PR aperta su qualunque uscita di sync-repo"
-echo "$BLOCCO" | grep -q "riallineo NON riuscito" \
+grep -q "riallineo NON riuscito" <<<"$BLOCCO" \
   && ok "D15: l'uscita non-PR viene loggata come riallineo NON riuscito" \
   || ko "D15: nessun ramo per il riallineo fallito"
 
@@ -31,9 +31,9 @@ ISSUE=$(grep -n '\[night-verify\] \$NV_ROSSI verifiche rosse' "$NS" | head -1 | 
 [ -n "$ISSUE" ] || { ko "D16: la creazione dell'issue [night-verify] non si trova"; }
 if [ -n "$ISSUE" ]; then
   CORPO=$(sed -n "${ISSUE},$((ISSUE+6))p" "$NS")
-  echo "$CORPO" | grep -q 'NV_ROSSI_LISTA' && ok "D16: il corpo dell'issue elenca i comandi rossi (NV_ROSSI_LISTA)" \
+  grep -q 'NV_ROSSI_LISTA' <<<"$CORPO" && ok "D16: il corpo dell'issue elenca i comandi rossi (NV_ROSSI_LISTA)" \
     || ko "D16: il corpo dell'issue non nomina i comandi rossi"
-  echo "$CORPO" | grep -q "I dettagli sono nel log del turno" && ko "D16: il corpo rimanda ancora al log locale" \
+  grep -q "I dettagli sono nel log del turno" <<<"$CORPO" && ko "D16: il corpo rimanda ancora al log locale" \
     || ok "D16: nessun rimando al solo log locale"
 fi
 grep -q 'NV_ROSSI_LISTA=""' "$NS" && grep -c 'NV_ROSSI_LISTA=' "$NS" | awk '{exit !($1>=3)}' \
@@ -43,7 +43,7 @@ grep -q 'NV_ROSSI_LISTA=""' "$NS" && grep -c 'NV_ROSSI_LISTA=' "$NS" | awk '{exi
 # D17: la pausa dei cicli a vuoto — forma e aritmetica
 grep -q 'T_CICLO_INIZIO=\$(date +%s)' "$NS" && ok "D17: l'inizio del ciclo e' misurato" || ko "D17: nessuna misura dell'inizio ciclo"
 CODA=$(awk '/^CICLO_SEC=/{f=1} f{print} /^exec "\$0"/{exit}' "$NS")
-echo "$CODA" | grep -q 'NIGHT_CICLO_MIN_SEC' && echo "$CODA" | grep -q 'sleep "\$PAUSA"' \
+grep -q 'NIGHT_CICLO_MIN_SEC' <<<"$CODA" && grep -q 'sleep "\$PAUSA"' <<<"$CODA" \
   && ok "D17: il ciclo a vuoto sotto la soglia dorme il resto (NIGHT_CICLO_MIN_SEC) prima dell'exec" \
   || ko "D17: nessuna pausa prima di exec \$0"
 # l'aritmetica, eseguita: ciclo di 12s con soglia 60 → pausa 48; ciclo di 70s → nessuna pausa

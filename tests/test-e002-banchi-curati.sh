@@ -15,7 +15,12 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 FORMA='(echo|printf)[^|]*\| *grep -q'
 
-CURATI="tests/test-errori.sh tests/test-suite-runner.sh"
+# (Q31, 2026-09-23, notte dei giri): erano due banchi nominati; la voce di DEBITI aspettava «la
+# caccia notturna, un banco per finestra» — ma tools/caccia-registro.sh non guardava tests/: i 253
+# siti non sarebbero stati curati MAI. Curati tutti stanotte (lo stesso trasformatore di Q27, righe
+# con continuazione comprese); il cricchetto ora vale per OGNI banco sotto pipefail. Fuori, dichiarati:
+# i due banchi E-002, che citano la forma nei loro messaggi.
+CURATI=$(cd "$HERE" && grep -lE pipefail tests/*.sh | grep -vE '^tests/test-e002-(banchi-curati|codice)\.sh$')
 for f in $CURATI; do
   N=$(grep -vE '^[[:space:]]*#' "$HERE/$f" | grep -cE "$FORMA")   # i commenti che la citano non mordono
   [ "$N" -eq 0 ] && ok "$f: nessun «echo | grep -q» (curato, E-042)" || ko "$f: $N siti «echo | grep -q» sotto pipefail — la forma che dava il rosso a caso"
@@ -23,7 +28,7 @@ done
 
 # la guardia della guardia: la forma che cerca e' proprio quella che mordeva
 PROVA=$(mktemp); trap 'rm -f "$PROVA"' EXIT
-printf 'echo "$BLOCCO" | grep -q "^- Guardia:" || MANCA=1\n' > "$PROVA"
+printf 'echo "$BLOCCO" | grep -q "^- Guardia:" || MANCA=1\n' > "$PROVA"   # la fixture: resta la forma che morde
 [ "$(grep -cE "$FORMA" "$PROVA")" -eq 1 ] && ok "la forma cercata riconosce la riga che ha dato il rosso" || ko "la forma cercata non riconosce il caso reale"
 
 echo ""

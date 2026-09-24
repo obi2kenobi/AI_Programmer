@@ -23,7 +23,7 @@ edit "src/C.js" >/dev/null 2>&1; edit "src/D.js" >/dev/null 2>&1
 OUT4=$(edit "src/E.js" 2>/dev/null); RC=$?
 echo "$OUT4" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 && CONTESTO=$(echo "$OUT4" | jq -r '.hookSpecificOutput.additionalContext') \
   || CONTESTO=""
-[ -n "$CONTESTO" ] && echo "$CONTESTO" | grep -q "PRIMA del passo successivo" \
+[ -n "$CONTESTO" ] && grep -q "PRIMA del passo successivo" <<<"$CONTESTO" \
   && ok "al 5° edit senza SAL: promemoria 'prima del passo successivo'" \
   || ko "5° edit: nessun promemoria (OUT=$OUT4)"
 [ "$RC" -eq 0 ] && ok "il promemoria non blocca (exit 0, allow)" || ko "rc=$RC"

@@ -50,7 +50,7 @@ if [ $RC -eq 0 ] && [ -n "$NOTA" ] \
    && grep -q "stato: da approvare" "$NOTA" \
    && grep -q "concetto-teatro" "$NOTA" \
    && ! grep -q "nota-che-non-esiste" "$NOTA" \
-   && echo "$OUT" | grep -q "nota-che-non-esiste"; then
+   && grep -q "nota-che-non-esiste" <<<"$OUT"; then
   ok "lezione valida → nota creata (da approvare), link buono tenuto, rotto scartato e dichiarato"
 else
   ko "lezione valida: rc=$RC nota=[$NOTA] out=[$OUT]"
@@ -63,7 +63,7 @@ avvia "$TMP/risp2.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
 N_LEZIONI=$(ls "$TMP/repo/cervello/"lezione-*.md 2>/dev/null | wc -l | tr -d ' ')
-if [ $RC -eq 0 ] && [ "$N_LEZIONI" = "1" ] && echo "$OUT" | grep -q "onesto niente"; then
+if [ $RC -eq 0 ] && [ "$N_LEZIONI" = "1" ] && grep -q "onesto niente" <<<"$OUT"; then
   ok "onesto niente → nessuna nuova nota, dichiarato"
 else
   ko "onesto niente: rc=$RC lezioni=$N_LEZIONI out=[$OUT]"
@@ -78,7 +78,7 @@ avvia "$TMP/risp3.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
 N_LEZIONI=$(ls "$TMP/repo/cervello/"lezione-*.md 2>/dev/null | wc -l | tr -d ' ')
-if [ $RC -eq 0 ] && [ "$N_LEZIONI" = "1" ] && echo "$OUT" | grep -q "gia' presente"; then
+if [ $RC -eq 0 ] && [ "$N_LEZIONI" = "1" ] && grep -q "gia' presente" <<<"$OUT"; then
   ok "stessa lezione riproposta → nessun doppione, dichiarato"
 else
   ko "doppioni: rc=$RC lezioni=$N_LEZIONI out=[$OUT]"

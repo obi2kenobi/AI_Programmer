@@ -159,7 +159,7 @@ done
 # Revisione 10 giri 2026-09-23: la guardia della lezione REPO-Q non aveva un'attesa.
 touch "$SB7/.mirror-boundaries"
 CTX=$(echo '{"tool_name":"Bash","tool_input":{"command":"echo '"'"'cd x && clasp push'"'"' > deploy.sh"}}' | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.additionalContext // empty' 2>/dev/null)
-echo "$CTX" | grep -q "mirror-boundaries" && ok "REPO-Q: push GENERATO in un mirror → avviso mirror-boundaries" || ko "REPO-Q: nessun avviso mirror sul push generato"
+grep -q "mirror-boundaries" <<<"$CTX" && ok "REPO-Q: push GENERATO in un mirror → avviso mirror-boundaries" || ko "REPO-Q: nessun avviso mirror sul push generato"
 D=$(decide7 'clasp push')
 [ "$D" = "deny" ] && ok "REPO-Q: nel mirror la forma nuda resta NEGATA (il deny vince sull'avviso)" || ko "REPO-Q: forma nuda nel mirror passa ($D)"
 rm -f "$SB7/.mirror-boundaries"

@@ -105,10 +105,10 @@ fi
 # DOPO l'exit: «command not found» a ogni fix, REVIEW vuota, e questo test passava lo
 # stesso perche' non pretendeva la riga. Ora la pretende: il verdetto e' una delle tre
 # parole, mai vuoto (col mock la risposta e' codice, quindi UNCLEAR — ma detto).
-echo "$OUT" | grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' \
+grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' <<<"$OUT" \
   && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
   || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
-echo "$OUT" | grep -q "command not found" \
+grep -q "command not found" <<<"$OUT" \
   && ko "funzioni chiamate prima della definizione: $(echo "$OUT" | grep 'command not found' | head -1)" \
   || ok "nessuna funzione chiamata prima della definizione"
 # (D6): il turno legge $ISSUE_FILE per il check «gia' implementata» PRIMA di scriverlo —
@@ -135,7 +135,7 @@ File: a.js e b.js
 node --check
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB2" "$SB2/issue.md" 2>&1); RC=$?
-if [ $RC -eq 3 ] && echo "$OUT" | grep -q "ESITO: PATCH" && [ "$(cat "$SB2/a.js")" = 'function uno() { return 1; }' ]; then
+if [ $RC -eq 3 ] && grep -q "ESITO: PATCH" <<<"$OUT" && [ "$(cat "$SB2/a.js")" = 'function uno() { return 1; }' ]; then
   ok "PATCH: exit 3 (proposta), file originali intatti (N_FILES=2)"
 else
   ko "PATCH: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
@@ -161,7 +161,7 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\n```\n"}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB4" "$SB4/issue.md" 2>&1); RC=$?
-if [ $RC -eq 0 ] && grep -q "a + b \* 2" "$SB4/calc2.js" && [ ! -f "$SB4/calc2.js.night-bak" ] && echo "$OUT" | grep -q "APPLICATO"; then
+if [ $RC -eq 0 ] && grep -q "a + b \* 2" "$SB4/calc2.js" && [ ! -f "$SB4/calc2.js.night-bak" ] && grep -q "APPLICATO" <<<"$OUT"; then
   ok "INDENTATA: la funzione a 2 spazi viene sostituita (il caso #10 vero)"
 else
   ko "INDENTATA: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
@@ -185,7 +185,7 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"```javascript\nfunction raddoppia(x) {\n  return x * 2;\n}\n```\n"}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB5" "$SB5/issue.md" 2>&1); RC=$?
-if [ $RC -eq 0 ] && grep -q "function raddoppia" "$SB5/altro.js" && echo "$OUT" | grep -q "INSERITO" && echo "$OUT" | grep -qi "wiring\|chiama"; then
+if [ $RC -eq 0 ] && grep -q "function raddoppia" "$SB5/altro.js" && grep -q "INSERITO" <<<"$OUT" && grep -qi "wiring\|chiama" <<<"$OUT"; then
   ok "INSERITO: funzione nuova aggiunta al file, wiring mancante DICHIARATO"
 else
   ko "INSERITO: rc=$RC out: $(echo "$OUT" | tail -3 | tr '\n' ' ')"
@@ -212,7 +212,7 @@ SB7=$(mktemp -d /tmp/risolvi-sb7.XXXXXX)
 printf '<html><body><p>nessuno script qui</p></body></html>\n' > "$SB7/solo.html"
 sed 's/altro\.js/solo.html/' "$SB5/issue.md" > "$SB7/issue.md"
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB7" "$SB7/issue.md" 2>&1); RC=$?
-if [ $RC -eq 3 ] && ! grep -q "function raddoppia" "$SB7/solo.html" && echo "$OUT" | grep -q "ESITO: PATCH"; then
+if [ $RC -eq 3 ] && ! grep -q "function raddoppia" "$SB7/solo.html" && grep -q "ESITO: PATCH" <<<"$OUT"; then
   ok "RIFIUTO-HTML: senza punto dichiarato resta proposta (mai inserzione alla cieca)"
 else
   ko "RIFIUTO-HTML: rc=$RC"
@@ -226,7 +226,7 @@ printf 'function fuori() { return 1; }\n' > "$MOCK_DIR/segreto-fuori.js"   # FUO
 printf 'function dentro() { return 1; }\n' > "$SB8/dentro.js"
 { echo "## Commessa"; echo "usa i file indicati."; echo ""; echo "## Territorio"; echo "File: $MOCK_DIR/segreto-fuori.js e dentro.js"; echo ""; echo "## Verifica"; echo "node --check"; } > "$SB8/issue.md"
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB8" "$SB8/issue.md" 2>&1); RC=$?
-if echo "$OUT" | grep -q "FUORI dal progetto" && [ $RC -ne 2 ]; then
+if grep -q "FUORI dal progetto" <<<"$OUT" && [ $RC -ne 2 ]; then
   ok "sicurezza: path fuori dal progetto rifiutato e DICHIARATO (mai letto, mai scritto)"
 else
   ko "sicurezza: file esterno non confinato (rc=$RC)"
@@ -237,7 +237,7 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"Mi dispiace, non ho capito la richiesta."}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB2" "$SB2/issue.md" 2>&1); RC=$?
-if [ $RC -ne 0 ] && echo "$OUT" | grep -q "non passa node --check"; then
+if [ $RC -ne 0 ] && grep -q "non passa node --check" <<<"$OUT"; then
   ok "RIFIUTO: prosa senza codice — il solver esce 1 e non tocca nulla"
 else
   ko "RIFIUTO: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"

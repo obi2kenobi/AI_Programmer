@@ -12,11 +12,11 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SEZ6=$(awk '/^## 6\./{f=1} /^## 7\./{f=0} f' "$CLAUDE")
 
-echo "$SEZ6" | grep -qi 'first-touch trigger' && ok "§6 dichiara il trigger di primo tocco" \
+grep -qi 'first-touch trigger' <<<"$SEZ6" && ok "§6 dichiara il trigger di primo tocco" \
   || ko "§6 non dichiara alcun trigger"
-echo "$SEZ6" | grep -qi 'before the first edit or command run' && ok "il trigger scatta PRIMA della modifica, non dopo" \
+grep -qi 'before the first edit or command run' <<<"$SEZ6" && ok "il trigger scatta PRIMA della modifica, non dopo" \
   || ko "il trigger non è dichiarato come precondizione"
-echo "$SEZ6" | grep -qi 'add its section' && ok "richiede esplicitamente di aggiungere la sezione" \
+grep -qi 'add its section' <<<"$SEZ6" && ok "richiede esplicitamente di aggiungere la sezione" \
   || ko "non richiede di aggiungere la sezione"
 
 echo ""

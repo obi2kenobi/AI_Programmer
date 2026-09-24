@@ -50,8 +50,8 @@ grep -q "tools/vendite.sh:3" "$SB/.git/caccia-registro/saldati" \
 
 # ── 4. il censimento SCENDE e il delta lo urla ─────────────────────────────────
 OUT=$(bash "$HERE/tools/caccia-registro.sh" "$SB" 2>&1)
-echo "$OUT" | grep -q "tot=0" && ok "7. censimento dopo: debito a zero" || ko "7. censimento non sceso: $OUT"
-echo "$OUT" | grep -q "debito sceso" && ok "8. il delta urla: 'debito sceso'" || ko "8. delta muto: $OUT"
+grep -q "tot=0" <<<"$OUT" && ok "7. censimento dopo: debito a zero" || ko "7. censimento non sceso: $OUT"
+grep -q "debito sceso" <<<"$OUT" && ok "8. il delta urla: 'debito sceso'" || ko "8. delta muto: $OUT"
 
 # ── 5. il CENSORE delibera sul diff (guardie + prove + verdetto) ────────────────
 # la miglioria committata su un ramo night/ VERO: il censore ci fa checkout
@@ -79,7 +79,7 @@ esac
 STUBEOF
 chmod +x "$STUBC"
 OUT=$(cd "$SB" && PATH="$GHDIR:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUBC" bash "$HERE/night-shift/revisore.sh" "$SB" 9 2>&1); RC=$?
-[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "APPROVA" \
+[ "$RC" -eq 0 ] && grep -q "APPROVA" <<<"$OUT" \
   && ok "9. censore: guardie, banco e verdetto — APPROVA (deliberazione DRY)" \
   || ko "9. censore rc=$RC: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 

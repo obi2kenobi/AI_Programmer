@@ -119,7 +119,7 @@ M=$(ls "$SB/.git/miglioria"/clean.docs.utils* 2>/dev/null | head -1)
 
 # 4. il cooldown: stesso file+categoria saltato, si passa al prossimo della rotazione
 OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=docs bash "$CM" "$SB" 2>/dev/null); RC=$?
-if [ "$RC" -eq 1 ] && echo "$OUT" | grep -q "cooldown"; then
+if [ "$RC" -eq 1 ] && grep -q "cooldown" <<<"$OUT"; then
   ok "cooldown rispettato (docs|utils.js saltato)"
 else
   # (audit-2): questo ramo non puo' piu' dire ok a gratis — PROVA che utils.js

@@ -17,7 +17,7 @@ grep -q 'NOOPEN' "$HERE/tools/status-page.sh" && ok "esiste la via senza browser
 # temporanea, pagina che non esiste prima: se c'e' dopo, l'ha scritta questo giro.
 HOME_T=$(mktemp -d); trap 'rm -rf "$HOME_T"' EXIT
 OUT=$(HOME="$HOME_T" NOOPEN=1 bash "$HERE/tools/status-page.sh" 2>&1)
-echo "$OUT" | grep -q "no browser" && ok "NOOPEN genera senza aprire" || ko "NOOPEN ignorato"
+grep -q "no browser" <<<"$OUT" && ok "NOOPEN genera senza aprire" || ko "NOOPEN ignorato"
 PAGINA="$HOME_T/ai-programmer-status.html"
 [ -f "$PAGINA" ] && ok "la pagina viene generata" || ko "pagina assente"
 grep -q "Salute" "$PAGINA" && grep -q "Metriche" "$PAGINA" \

@@ -30,10 +30,10 @@ python3 "$TOOL" "$TMP/vuota.txt" >/dev/null 2>&1;   [ $? -eq 1 ] && ok "uscita v
 python3 "$TOOL" "$TMP/controtorno.txt" >/dev/null 2>&1; [ $? -eq 2 ] && ok "eseguite>dichiarate 9/8: forma rotta (exit 2)" || ko "controtorno non colto"
 
 OUT=$(python3 "$TOOL" "$TMP/saltate.txt")
-echo "$OUT" | grep -q "2 attese sono SPARITE in silenzio" \
+grep -q "2 attese sono SPARITE in silenzio" <<<"$OUT" \
   && ok "il verdetto dice QUANTE attese sono sparite (il conto sta scritto)" || ko "il conteggio delle sparite manca"
 OUT=$(python3 "$TOOL" "$TMP/verde.txt")
-echo "$OUT" | grep -q "resta una prova solo se un sabotaggio l'ha visto cadere" \
+grep -q "resta una prova solo se un sabotaggio l'ha visto cadere" <<<"$OUT" \
   && ok "il verde ricorda che senza sabotaggio il banco non è una prova" || ko "il verde si accontenta"
 
 echo ""

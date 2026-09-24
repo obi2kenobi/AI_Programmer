@@ -33,7 +33,7 @@ SAL
 : > "$SB/ARCHIVIO.md"
 
 OUT=$(SAL="$SB/SAL.md" ARCHIVIO="$SB/ARCHIVIO.md" bash "$HERE/tools/sal-archivia.sh" 30)
-echo "$OUT" | grep -q "archiviate 2 voci" && ok "2 voci vecchie archiviate (di 4)" || ko "conteggio archiviate: $OUT"
+grep -q "archiviate 2 voci" <<<"$OUT" && ok "2 voci vecchie archiviate (di 4)" || ko "conteggio archiviate: $OUT"
 grep -q "voce vecchissima" "$SB/ARCHIVIO.md" && ok "l'archivio riceve in APPEND le vecchie" || ko "archivio vuoto"
 grep -q "voce recente" "$SB/SAL.md" && ok "le recenti restano nel SAL" || ko "recente archiviata per errore"
 grep -q "SENZA DATA" "$SB/SAL.md" && ok "voce senza data resta nel vivo (regex non golosa)" || ko "voce senza data archiviata"
@@ -42,7 +42,7 @@ grep -q "voce vecchissima" "$SB/SAL.md" && ko "la vecchia resta anche nel SAL (d
 
 # idempotenza: rigirare non archivia altro
 OUT2=$(SAL="$SB/SAL.md" ARCHIVIO="$SB/ARCHIVIO.md" bash "$HERE/tools/sal-archivia.sh" 30)
-echo "$OUT2" | grep -q "nessuna voce" && ok "secondo giro: nulla da archiviare (idempotente)" || ko "secondo giro archivia ancora: $OUT2"
+grep -q "nessuna voce" <<<"$OUT2" && ok "secondo giro: nulla da archiviare (idempotente)" || ko "secondo giro archivia ancora: $OUT2"
 grep -c "voce vecchissima" "$SB/ARCHIVIO.md" | grep -q "^1$" && ok "nessun doppione in archivio" || ko "doppione in archivio"
 
 echo ""

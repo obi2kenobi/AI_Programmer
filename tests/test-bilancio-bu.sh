@@ -16,17 +16,17 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 # Caso 1 — normale: quadratura pulita, nessuna riga scartata.
 OUT1=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARRG,50\n' | python3 "$HERE/tools/bilancio_bu.py")
-echo "$OUT1" | grep -q "^QUADRATURA: " \
+grep -q "^QUADRATURA: " <<<"$OUT1" \
   && ok "caso normale: quadratura pulita (nessun ROTTA)" \
   || ko "caso normale: quadratura inattesa — output: $OUT1"
-echo "$OUT1" | grep -qE "TOTALE.*50\.00\s*$" \
+grep -qE "TOTALE.*50\.00\s*$" <<<"$OUT1" \
   && ok "caso normale: margine totale = 50.00 (ricavo 100 - costo 50)" \
   || ko "margine totale atteso non trovato — output: $OUT1"
 
 # Caso 2 — bug reale: amount vuoto non deve diventare un costo zero silenzioso, deve
 # essere scartato e CONTATO.
 OUT2=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,\n1,2026-01-01,ARRG,-100\n' | python3 "$HERE/tools/bilancio_bu.py")
-echo "$OUT2" | grep -q "ATTENZIONE: 1 riga/e scartata/e per amount vuoto" \
+grep -q "ATTENZIONE: 1 riga/e scartata/e per amount vuoto" <<<"$OUT2" \
   && ok "amount vuoto: scartato e segnalato (non zero silenzioso)" \
   || ko "amount vuoto non segnalato — output: $OUT2"
 
@@ -46,7 +46,7 @@ open(dst, "w").write(s)
 PY
 OUT_BUG=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARRG,50\n' | python3 "$BUGGED")
 rm -f "$BUGGED"
-echo "$OUT_BUG" | grep -q "^QUADRATURA ROTTA: " \
+grep -q "^QUADRATURA ROTTA: " <<<"$OUT_BUG" \
   && ok "watchdog-guardato: un doppio conteggio iniettato fa scattare QUADRATURA ROTTA" \
   || ko "watchdog-guardato: la quadratura non ha rilevato il doppio conteggio iniettato — output: $OUT_BUG"
 

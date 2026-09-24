@@ -32,10 +32,10 @@ mkdir -p "$TMP/night-shift" "$TMP/tools"
 cp "$HERE/tools/system-health.sh" "$TMP/tools/"
 printf '# solo commenti\n\n' > "$TMP/night-shift/repos.conf"
 OUT=$(bash "$TMP/tools/system-health.sh" 2>&1)
-echo "$OUT" | grep -qi "integer expression" \
+grep -qi "integer expression" <<<"$OUT" \
   && ko "coda con solo commenti: errore di shell — output: $OUT" \
   || ok "coda con solo commenti: nessun errore di shell"
-echo "$OUT" | grep -q "repos.conf vuoto o assente" \
+grep -q "repos.conf vuoto o assente" <<<"$OUT" \
   && ok "coda con solo commenti: segnalata correttamente come vuota" \
   || ko "coda con solo commenti: non segnalata come vuota — output: $OUT"
 

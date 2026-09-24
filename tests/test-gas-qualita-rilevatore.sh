@@ -61,43 +61,43 @@ EOF
 OUT=$(python3 "$HERE/tools/gas_qualita.py" "$TMP/progetto")
 
 # 1. le regole del tool stesso (le sette regole del banco, applicate qui)
-echo "$OUT" | grep -q "Cartella letta:" \
+grep -q "Cartella letta:" <<<"$OUT" \
   && ok "stampa la cartella letta (regola 1 del banco)" || ko "non dichiara la cartella"
-echo "$OUT" | grep -q "Vecchio.gs" \
+grep -q "Vecchio.gs" <<<"$OUT" \
   && ok "accetta .js E .gs (regola 3: 11 banchi su 16 filtravano solo .js)" \
   || ko "non considera i .gs"
-echo "$OUT" | grep -q "QUESTO NON È UN VERDETTO" \
+grep -q "QUESTO NON È UN VERDETTO" <<<"$OUT" \
   && ok "dichiara di non essere un verdetto (il censimento apre i casi)" \
   || ko "si spaccia per verdetto"
 
 # 2. le famiglie presenti: contate
-echo "$OUT" | grep -q "test che non possono fallire — 1" \
+grep -q "test che non possono fallire — 1" <<<"$OUT" \
   && ok "test finto: 1 (testParser senza esito; testConEsito con throw NON contato)" \
   || ko "test finti: $(echo "$OUT" | grep 'non possono fallire')"
-echo "$OUT" | grep -q "nomi globali in ombra — 1" && echo "$OUT" | grep -q "aggregaDati.*DIVERGENTI" \
+grep -q "nomi globali in ombra — 1" <<<"$OUT" && grep -q "aggregaDati.*DIVERGENTI" <<<"$OUT" \
   && ok "nome in ombra DIVERGENTE: aggregaDati con corpi diversi in 2 file" \
   || ko "ombre: $(echo "$OUT" | grep 'ombra')"
-echo "$OUT" | grep -q "catch vuoto (muto) — 1" \
+grep -q "catch vuoto (muto) — 1" <<<"$OUT" \
   && ok "catch vuoto: 1" || ko "catch: $(echo "$OUT" | grep 'catch vuoto')"
-echo "$OUT" | grep -q "clearContents + setValues nella stessa funzione — 1" \
+grep -q "clearContents + setValues nella stessa funzione — 1" <<<"$OUT" \
   && ok "clear-poi-scrivi: 1 (funzione sincronizza)" \
   || ko "clear-poi-scrivi: $(echo "$OUT" | grep clearContents)"
-echo "$OUT" | grep -q "paginazione chiusa sull'indizio.*— 1" \
+grep -q "paginazione chiusa sull'indizio.*— 1" <<<"$OUT" \
   && ok "paginazione indizio: 1 (!json.value → break)" \
   || ko "paginazione: $(echo "$OUT" | grep indizio)"
-echo "$OUT" | grep -q "webapp anonima nel manifest — 1" \
+grep -q "webapp anonima nel manifest — 1" <<<"$OUT" \
   && ok "webapp anonima: 1 col caveat deployment" || ko "webapp: $(echo "$OUT" | grep anonima)"
 
 # 3. i falsi positivi NON accusano (il discriminante, non la forma)
-echo "$OUT" | grep -q "fuso come offset fisso 'GMT+N' — 0" \
+grep -q "fuso come offset fisso 'GMT+N' — 0" <<<"$OUT" \
   && ok "fuso Europe/Rome NON accusato (il falso positivo atteso resta chiuso)" \
   || ko "fuso: accusa il legittimo"
-echo "$OUT" | grep -q "segreti hardcoded.*— 0" \
+grep -q "segreti hardcoded.*— 0" <<<"$OUT" \
   && ok "nessun segreto nel sintetico: 0 (e mai un valore stampato)" \
   || ko "segreti: $(echo "$OUT" | grep segreti)"
 
 # 4. la domanda discriminante accompagna ogni famiglia
-echo "$OUT" | grep -q "domanda: " \
+grep -q "domanda: " <<<"$OUT" \
   && ok "ogni famiglia porta la sua domanda discriminante" || ko "domande mancanti"
 
 # 5. guardia di robustezza: cartella inesistente → errore esplicito, non silenzio

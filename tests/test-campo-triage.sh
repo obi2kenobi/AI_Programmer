@@ -25,15 +25,15 @@ printf 'report MAI processato\n' > "$SB/docs/campo/2026-08-28-dimenticato.md"
 printf 'uno html che conta\n' > "$SB/docs/campo/2026-08-28-vecchio.html"
 
 OUT=$(bash "$SB/tools/campo-triage.sh" 2>&1); RC=$?
-echo "$OUT" | grep -q "3 report" && ok "conta 3 report (md+html, README escluso)" || ko "conteggio: attesi 3, avuto: $(echo "$OUT" | head -1)"
-echo "$OUT" | grep -q "1 non processati" && ok "dichiara 1 non processato" || ko "non processati: atteso 1"
-echo "$OUT" | grep -q "dimenticato" && ok "il colpevole è NOMINATO" || ko "il report dimenticato non è nominato"
+grep -q "3 report" <<<"$OUT" && ok "conta 3 report (md+html, README escluso)" || ko "conteggio: attesi 3, avuto: $(echo "$OUT" | head -1)"
+grep -q "1 non processati" <<<"$OUT" && ok "dichiara 1 non processato" || ko "non processati: atteso 1"
+grep -q "dimenticato" <<<"$OUT" && ok "il colpevole è NOMINATO" || ko "il report dimenticato non è nominato"
 [ $RC -ne 0 ] && ok "esce diverso da 0 con report pendenti" || ko "esce 0 con report pendenti: chi lo chiuderebbe?"
 
 # rimosso il report pendente: pulito e verde
 rm "$SB/docs/campo/2026-08-28-dimenticato.md"
 OUT=$(bash "$SB/tools/campo-triage.sh" 2>&1); RC=$?
-echo "$OUT" | grep -q "2 report" && ok "dopo la lavorazione: 2 report" || ko "conteggio post: attesi 2"
+grep -q "2 report" <<<"$OUT" && ok "dopo la lavorazione: 2 report" || ko "conteggio post: attesi 2"
 [ $RC -eq 0 ] && ok "esce 0 quando tutto è processato" || ko "esce $RC con tutto processato"
 
 echo ""

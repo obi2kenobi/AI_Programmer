@@ -18,8 +18,8 @@ grep -q "stato.json" "$HERE/tools/ciclo-vivo.sh" && grep -q "MAI ESISTIT" "$HERE
 
 # un giro reale: la memoria è disposable (.ciclo gitignored), il giro è sicuro
 OUT=$(bash "$HERE/tools/ciclo-vivo.sh" 2>&1); RC=$?
-echo "$OUT" | grep -q "^=== CICLO VIVO" && ok "un giro parte e si presenta" || ko "il giro non parte"
-echo "$OUT" | grep -q "^Finding questo giro: " && ok "il verdetto è sempre visibile" || ko "verdetto assente"
+grep -q "^=== CICLO VIVO" <<<"$OUT" && ok "un giro parte e si presenta" || ko "il giro non parte"
+grep -q "^Finding questo giro: " <<<"$OUT" && ok "il verdetto è sempre visibile" || ko "verdetto assente"
 [ -f "$HERE/.ciclo/giro" ] && [ -f "$HERE/.ciclo/livello" ] \
   && ok "memoria in file piatti leggibili (giro, livello)" \
   || ko "memoria assente: i file piatti promessi dall'header non ci sono"

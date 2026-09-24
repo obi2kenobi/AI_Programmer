@@ -35,13 +35,13 @@ OUT=$(bash "$TOOL" "$SB/vivo" "$SB/fork" 2>&1); RC=$?
 printf 'function main() { return calcolo(12); }\nfunction calcolo(n) { return n * 3; }\n' > "$SB/fork/Codice.js"
 OUT=$(bash "$TOOL" "$SB/vivo" "$SB/fork" 2>&1); RC=$?
 [ $RC -eq 1 ] && grep -q DIVERGENTI <<<"$OUT" && ok "deriva vera: DIVERGENTI, exit 1" || ko "deriva non vista (rc=$RC)"
-echo "$OUT" | grep -q "VIVO È DEFINITIVO" && ok "il verdetto ricorda la regola del vivo" || ko "verdetto senza la regola del vivo"
-echo "$OUT" | grep -q "FORK-STATO" && ok "il verdetto ordina di scrivere lo stato" || ko "verdetto senza FORK-STATO"
+grep -q "VIVO È DEFINITIVO" <<<"$OUT" && ok "il verdetto ricorda la regola del vivo" || ko "verdetto senza la regola del vivo"
+grep -q "FORK-STATO" <<<"$OUT" && ok "il verdetto ordina di scrivere lo stato" || ko "verdetto senza FORK-STATO"
 
 # tre copie con la vecchia indietro: la matrice la mostra
 printf 'function main() { return 0; }\n' > "$SB/vecchia/Codice.js"
 OUT=$(bash "$TOOL" "$SB/vivo" "$SB/fork" "$SB/vecchia" 2>&1); RC=$?
-[ $RC -eq 1 ] && echo "$OUT" | grep -q "vecchia ≠ vivo" && ok "tre copie: l'indietro è nominato nella matrice" || ko "matrice a tre incompleta"
+[ $RC -eq 1 ] && grep -q "vecchia ≠ vivo" <<<"$OUT" && ok "tre copie: l'indietro è nominato nella matrice" || ko "matrice a tre incompleta"
 
 # copia inesistente → uso, exit 2
 bash "$TOOL" "$SB/vivo" /non/esiste >/dev/null 2>&1; RC=$?

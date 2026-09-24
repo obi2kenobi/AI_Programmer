@@ -30,7 +30,7 @@ N_DICHIARATI=$(echo "$DICHIARATI" | grep -c .)
   || ko "settings.json dichiara solo $N_DICHIARATI hook: la derivazione non legge niente"
 
 # La guardia sul buco specifico: il cancello tecnico deve essere fra i dichiarati.
-echo "$DICHIARATI" | grep -q '^tools/clasp-block-hook\.sh$' \
+grep -q '^tools/clasp-block-hook\.sh$' <<<"$DICHIARATI" \
   && ok "clasp-block-hook.sh è fra gli hook dichiarati" \
   || ko "clasp-block-hook.sh NON dichiarato in settings.json"
 
@@ -65,7 +65,7 @@ N_HOOK_COPIATI=$(echo "$COPIATI" | grep -c '^tools/.*\.sh$')
 [ "$N_HOOK_COPIATI" -eq "$N_DICHIARATI" ] \
   && ok "copia-hook.sh riporta $N_DICHIARATI hook copiati, quanti sono i dichiarati" \
   || ko "copia-hook.sh copia $N_HOOK_COPIATI hook contro $N_DICHIARATI dichiarati"
-echo "$COPIATI" | grep -q '^\.gitignore$' \
+grep -q '^\.gitignore$' <<<"$COPIATI" \
   && ok "copia-hook.sh porta anche la .gitignore dei residui (cura H1)" \
   || ko "la .gitignore dei residui non viaggia (H1)"
 

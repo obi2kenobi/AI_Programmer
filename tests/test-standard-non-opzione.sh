@@ -29,7 +29,7 @@ CTX=$(echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null)
 [ -n "$CTX" ] && [ "${#CTX}" -lt 400 ] \
   && ok "UserPromptSubmit: promemorio presente e compatto (${#CTX} caratteri)" \
   || ko "promemorio assente o troppo lungo (${#CTX})"
-echo "$CTX" | grep -q "oracolo prima della formula" \
+grep -q "oracolo prima della formula" <<<"$CTX" \
   && ok "il promemorio contiene le regole-ancora" || ko "regole mancanti nel promemorio"
 
 # 4. l'aggancio dinamico ai calcoli

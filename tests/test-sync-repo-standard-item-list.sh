@@ -16,7 +16,7 @@ LINEA=$(grep -n 'for ITEM in' "$HERE/tools/sync-repo.sh" | head -1)
 # (mancava .opencode/plugins) e non presidiava il flag --standard
 # (D13, test del sistema completo 2026-09-20): i guardiani del commit viaggiano
 for item in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
-  echo "$LINEA" | grep -qF "$item" \
+  grep -qF "$item" <<<"$LINEA" \
     && ok "ITEM list di sync-repo.sh --standard include: $item" \
     || ko "ITEM list di sync-repo.sh --standard NON include: $item"
 done
@@ -42,7 +42,7 @@ grep -qF 'cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md' "$HERE/tools/sync-rep
 # REPO (il sync aveva sovrascritto quello di un satellite: 12 ancore morte, 14 rossi, 7 PR
 # bloccate). Questa lente pretendeva ancora il contrario ed era rossa sul codice giusto
 # (revisione 10 giri, 2026-09-23): ora presidia la decisione.
-echo "$LINEA" | grep -qE '[[:space:]]patterns([[:space:]]|/)' \
+grep -qE '[[:space:]]patterns([[:space:]]|/)' <<<"$LINEA" \
   && ko "ITEM list di sync-repo.sh --standard copia patterns/ (registro per repo: non deve viaggiare)" \
   || ok "ITEM list di sync-repo.sh --standard NON copia patterns/ (registro per repo, decisione 2026-09-23)"
 

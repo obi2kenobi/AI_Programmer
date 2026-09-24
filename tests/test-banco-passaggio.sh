@@ -24,7 +24,7 @@ grep -q -- "--solo-copertura" "$BANCO" && ok "esiste la via rapida --solo-copert
 PROBE="tools/_scoperto_$$_prova.py"
 printf '#!/usr/bin/env python3\nprint("prova")\n' > "$HERE/$PROBE"
 OUT=$(bash "$BANCO" --solo-copertura 2>&1); RC=$?
-[ $RC -ne 0 ] && echo "$OUT" | grep -qF "$PROBE" \
+[ $RC -ne 0 ] && grep -qF "$PROBE" <<<"$OUT" \
   && ok "tool nuovo non coperto: visto e dichiarato, il banco non chiude" \
   || ko "tool nuovo non coperto NON visto (rc=$RC)"
 rm -f "$HERE/$PROBE"

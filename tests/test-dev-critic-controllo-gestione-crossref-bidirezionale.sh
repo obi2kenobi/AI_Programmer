@@ -23,7 +23,7 @@ grep -q 'revisore-calcoli-critici' "$DC" \
   || ko "dev-critic non cita revisore-calcoli-critici — cross-reference ancora mono-direzionale"
 
 SEZ_2TER=$(awk '/^## 2ter\./{f=1} /^## 3\./{f=0} f' "$DC")
-echo "$SEZ_2TER" | grep -qi "refresh del roster" \
+grep -qi "refresh del roster" <<<"$SEZ_2TER" \
   && ok "§2ter ricorda la nota sull'invocabilità dell'agente, non solo il nome" \
   || ko "§2ter cita l'agente senza ricordare il limite noto"
 

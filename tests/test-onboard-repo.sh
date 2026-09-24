@@ -109,7 +109,7 @@ git clone -q "$ORIGIN2" "$TMP/check2"
   && ok "caso 2: la skill personalizzata del progetto (claude e opencode) NON e' stata sovrascritta" \
   || ko "caso 2: skill personalizzata sovrascritta dall'onboarding"
 [ -f "$TMP/check2/.claude/skills/gas-sviluppo/SKILL.md" ] && ok "caso 2: le skill dell'hub mancanti sono arrivate" || ko "caso 2: skill dell'hub mancanti non propagate"
-echo "$OUT2" | grep -q "agenti del hub già tutti presenti" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
+grep -q "agenti del hub già tutti presenti" <<<"$OUT2" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
 
 # (Q15, 2026-09-23): gli strumenti che lo standard CITA arrivano (settimo patto, guardiani del
 # commit), e lo stato del progetto resta suo

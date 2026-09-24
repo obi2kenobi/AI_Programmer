@@ -21,9 +21,9 @@ Refactor della funzione X: si può fare da soli.
 | 2026-01-01 ✅ SALDATO | cosa vecchia | perché | come |
 FIN
 OUT=$(bash "$TOOL" "$SB" 2>&1)
-echo "$OUT" | grep -q "APERTI: 2 — di DOMINIO: 1" && ok "conta 2 aperti, 1 di dominio (il saldato escluso)" || ko "conto sbagliato: $(echo "$OUT" | sed -n 2p)"
-echo "$OUT" | grep -q "D1. Da decidere col dominio" && ok "il debito di dominio diventa DOMANDA singola (D1)" || ko "dominio non fra le domande"
-echo "$OUT" | grep -q "R1. Lavoro tecnico" && ok "il risolvibile finisce in DA FARE SUBITO" || ko "risolvibile non elencato"
+grep -q "APERTI: 2 — di DOMINIO: 1" <<<"$OUT" && ok "conta 2 aperti, 1 di dominio (il saldato escluso)" || ko "conto sbagliato: $(echo "$OUT" | sed -n 2p)"
+grep -q "D1. Da decidere col dominio" <<<"$OUT" && ok "il debito di dominio diventa DOMANDA singola (D1)" || ko "dominio non fra le domande"
+grep -q "R1. Lavoro tecnico" <<<"$OUT" && ok "il risolvibile finisce in DA FARE SUBITO" || ko "risolvibile non elencato"
 OUT0=$(bash "$TOOL" "$SB" >/dev/null 2>&1; echo $?)
 [ "$OUT0" = "0" ] && ok "esce 0: informa e non blocca (la pressione e' la visibilita')" || ko "esce $OUT0"
 # (D21, test del sistema completo 2026-09-20): due difetti visti sul DEBITI vero.
@@ -44,11 +44,11 @@ $RIEMPI
 La scelta finale spetta a Luca: e' una decisione di acquisto hardware.
 FIN
 OUT3=$(bash "$TOOL" "$SB3" 2>&1)
-echo "$OUT3" | grep -q "perché conta: | Data" && ko "D21a: il «perché conta» e' l'intestazione della tabella" \
+grep -q "perché conta: | Data" <<<"$OUT3" && ko "D21a: il «perché conta» e' l'intestazione della tabella" \
   || ok "D21a: il «perché conta» non e' l'intestazione della tabella"
-echo "$OUT3" | grep -q "perché conta: .*decisione di Luca" && ok "D21a: il «perché conta» e' la riga vera della tabella" \
+grep -q "perché conta: .*decisione di Luca" <<<"$OUT3" && ok "D21a: il «perché conta» e' la riga vera della tabella" \
   || ko "D21a: il perché vero non compare: $(echo "$OUT3" | grep 'perché conta' | head -1)"
-echo "$OUT3" | grep -q "APERTI: 2 — di DOMINIO: 2" && ok "D21b: la parola chiave oltre i 600 caratteri classifica comunque DOMINIO" \
+grep -q "APERTI: 2 — di DOMINIO: 2" <<<"$OUT3" && ok "D21b: la parola chiave oltre i 600 caratteri classifica comunque DOMINIO" \
   || ko "D21b: classificazione su finestra corta: $(echo "$OUT3" | sed -n 2p)"
 rm -rf "$SB3"
 
@@ -70,11 +70,11 @@ cat > "$SB4/DEBITI.md" <<'FIN'
 | 2026-01-03 | provare sul Mac | serve il Mac | ⏳ IN ATTESA: primo giro sul Mac |
 FIN
 OUT4=$(bash "$TOOL" "$SB4" 2>&1)
-echo "$OUT4" | grep -q "R1. Mista" && ok "riga viva in sezione con una saldata: la sezione resta APERTA" \
+grep -q "R1. Mista" <<<"$OUT4" && ok "riga viva in sezione con una saldata: la sezione resta APERTA" \
   || ko "la riga saldata nasconde la viva: $(echo "$OUT4" | sed -n 2p)"
-echo "$OUT4" | grep -q "A1. Solo in attesa" && ok "riga ⏳: classe IN ATTESA, non «da fare subito»" \
+grep -q "A1. Solo in attesa" <<<"$OUT4" && ok "riga ⏳: classe IN ATTESA, non «da fare subito»" \
   || ko "riga ⏳ non in attesa: $(echo "$OUT4" | sed -n 2p)"
-echo "$OUT4" | grep -q "IN ATTESA: primo giro sul Mac" && ok "l'evento dichiarato si vede" || ko "evento ⏳ non mostrato"
+grep -q "IN ATTESA: primo giro sul Mac" <<<"$OUT4" && ok "l'evento dichiarato si vede" || ko "evento ⏳ non mostrato"
 rm -rf "$SB4"
 
 # senza DEBITI.md: dichiarato, non muto (sesto patto)
@@ -110,7 +110,7 @@ rm -rf "$SB4"
 
 SB2=$(mktemp -d /tmp/debiti-t2.XXXXXX)
 OUT2=$(bash "$TOOL" "$SB2" 2>&1)
-echo "$OUT2" | grep -q "nessun DEBITI.md: niente da bruciare (dichiarato" && ok "senza debiti lo DICE (mai muto)" || ko "silenzio senza DEBITI.md"
+grep -q "nessun DEBITI.md: niente da bruciare (dichiarato" <<<"$OUT2" && ok "senza debiti lo DICE (mai muto)" || ko "silenzio senza DEBITI.md"
 rm -rf "$SB2"
 
 # (2026-09-23, notte dei giri): «SALDAT[OA]» OVUNQUE nella riga la chiudeva — anche «NON SALDATO» o

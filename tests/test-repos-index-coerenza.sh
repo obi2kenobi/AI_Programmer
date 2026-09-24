@@ -41,7 +41,7 @@ done <<< "$USATI"
 # caso, non il nome del file (la prosa dell'indice non ripete i basename esatti).
 RIGA_E=$(grep '^| REPO-E' "$IDX")
 for chiave in "scostamento" "riconciliazione magazzino" "roll-forward cespiti" "indici di crisi" "scadenzario aging"; do
-  echo "$RIGA_E" | grep -qi "$chiave" \
+  grep -qi "$chiave" <<<"$RIGA_E" \
     && ok "REPO-E indicizzato cita il caso '$chiave'" \
     || ko "REPO-E non cita più il caso '$chiave' — la riga dell'indice è rimasta indietro"
 done

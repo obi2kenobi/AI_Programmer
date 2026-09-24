@@ -27,15 +27,15 @@ cat > "$TMP/caso.json" <<'EOF'
 EOF
 OUT=$(python3 "$TOOL" "$TMP/caso.json" 2>&1)
 
-echo "$OUT" | grep -q "Durata 23 mesi" && ok "durata 23 mesi (calendario, giorno ignorato)" || ko "durata: attesa 23 mesi"
-echo "$OUT" | grep -q "rimanenti 14" && ok "rimanenti 14" || ko "rimanenti: attesi 14"
-echo "$OUT" | grep -q "Capitale residuo stimato: 14000.00" && ok "residuo 14000.00 (23000 × 14/23)" || ko "residuo: atteso 14000.00"
-echo "$OUT" | grep -q "Quota interessi mensile: 29.17" && ok "quota interessi 29.17 (14000×2,5%/12)" || ko "quota interessi: attesa 29.17"
-echo "$OUT" | grep -q "delta +1.000 punti" && ok "delta tasso +1.000" || ko "delta tasso: atteso +1.000"
-echo "$OUT" | grep -q "trimestrale ARRETRATO: +0.88" && ok "adeguamento trimestrale 0.88" || ko "adeguamento: atteso +0.88"
-echo "$OUT" | grep -q "Importo previsto: 1000.88" && ok "importo previsto 1000.88 (1000 + 0.875)" || ko "importo: atteso 1000.88"
-echo "$OUT" | grep -q "STIMATO" && ok "la stima 2,5% è DICHIARATA nell'output" || ko "la stima non è dichiarata"
-echo "$OUT" | grep -qi "arretrato" && ok "la regola arretrato è dichiarata" || ko "regola arretrato assente"
+grep -q "Durata 23 mesi" <<<"$OUT" && ok "durata 23 mesi (calendario, giorno ignorato)" || ko "durata: attesa 23 mesi"
+grep -q "rimanenti 14" <<<"$OUT" && ok "rimanenti 14" || ko "rimanenti: attesi 14"
+grep -q "Capitale residuo stimato: 14000.00" <<<"$OUT" && ok "residuo 14000.00 (23000 × 14/23)" || ko "residuo: atteso 14000.00"
+grep -q "Quota interessi mensile: 29.17" <<<"$OUT" && ok "quota interessi 29.17 (14000×2,5%/12)" || ko "quota interessi: attesa 29.17"
+grep -q "delta +1.000 punti" <<<"$OUT" && ok "delta tasso +1.000" || ko "delta tasso: atteso +1.000"
+grep -q "trimestrale ARRETRATO: +0.88" <<<"$OUT" && ok "adeguamento trimestrale 0.88" || ko "adeguamento: atteso +0.88"
+grep -q "Importo previsto: 1000.88" <<<"$OUT" && ok "importo previsto 1000.88 (1000 + 0.875)" || ko "importo: atteso 1000.88"
+grep -q "STIMATO" <<<"$OUT" && ok "la stima 2,5% è DICHIARATA nell'output" || ko "la stima non è dichiarata"
+grep -qi "arretrato" <<<"$OUT" && ok "la regola arretrato è dichiarata" || ko "regola arretrato assente"
 
 python3 - "$TMP" <<'EOF'
 import json, sys
@@ -43,8 +43,8 @@ c = json.load(open(sys.argv[1] + "/caso.json")); del c["euribor_corrente"]
 json.dump(c, open(sys.argv[1] + "/no-euribor.json", "w"))
 EOF
 OUT2=$(python3 "$TOOL" "$TMP/no-euribor.json" 2>&1)
-echo "$OUT2" | grep -q "Importo previsto: 1000.00" && ok "Euribor assente: importo = canone" || ko "Euribor assente: importo atteso 1000.00"
-echo "$OUT2" | grep -q "Euribor corrente mancante" && ok "dato assente dichiarato, non zero in silenzio" || ko "il dato assente non dichiara se stesso"
+grep -q "Importo previsto: 1000.00" <<<"$OUT2" && ok "Euribor assente: importo = canone" || ko "Euribor assente: importo atteso 1000.00"
+grep -q "Euribor corrente mancante" <<<"$OUT2" && ok "dato assente dichiarato, non zero in silenzio" || ko "il dato assente non dichiara se stesso"
 
 python3 "$TOOL" >/dev/null 2>&1; RC=$?
 [ "$RC" -eq 1 ] && ok "senza argomenti esce 1" || ko "senza argomenti: atteso exit 1, avuto $RC"

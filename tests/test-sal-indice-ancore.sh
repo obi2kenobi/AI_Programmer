@@ -18,7 +18,7 @@ cp "$HERE/tools/sal-indice.sh" "$TMP/tools/"
 printf '# Titolo\n\nintro\n\n### Terzo giro: nuova funzionalità\n\ncontenuto\n\n### Perché è così\n\naltro\n' > "$TMP/SAL.md"
 
 OUT=$(bash "$TMP/tools/sal-indice.sh" 2>&1)
-echo "$OUT" | grep -q "indice rigenerato: 2 voci" \
+grep -q "indice rigenerato: 2 voci" <<<"$OUT" \
   && ok "indice rigenerato con 2 voci" \
   || ko "rigenerazione indice fallita: $OUT"
 

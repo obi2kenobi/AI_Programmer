@@ -17151,7 +17151,7 @@
       },
       "norm_label": "saldati_verificati()",
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L54"
+      "source_location": "L56"
     },
     {
       "id": "tools_caccia_registro_sh__entry",
@@ -17181,7 +17181,7 @@
       },
       "norm_label": "siti_e002()",
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L45"
+      "source_location": "L47"
     },
     {
       "id": "tools_caccia_registro_siti_e032",
@@ -17196,7 +17196,7 @@
       },
       "norm_label": "siti_e032()",
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L48"
+      "source_location": "L50"
     },
     {
       "id": "tools_fork_stato",
@@ -50284,7 +50284,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-e002-banchi-curati.sh",
-      "source_location": "L21",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -50296,7 +50296,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-e002-banchi-curati.sh",
-      "source_location": "L21",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -53740,7 +53740,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L69",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -53752,7 +53752,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L74",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -53764,7 +53764,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L76",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -86972,7 +86972,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -86983,7 +86983,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L48",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -86994,7 +86994,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/caccia-registro.sh",
-      "source_location": "L54",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -89656,5 +89656,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0d86cd33da76d3db73d539eae56f0f548cb4428f"
+  "built_at_commit": "c2b2a6af5c53b9ac87c4d08a55628dbec8e7cd6d"
 }

@@ -25,10 +25,10 @@ function autentica() {
 EOF
 
 OUT=$(python3 "$HERE/tools/gas_qualita.py" "$TMP" 2>&1)
-echo "$OUT" | grep -q "segreti hardcoded (valore MAI riportato) — 1" \
+grep -q "segreti hardcoded (valore MAI riportato) — 1" <<<"$OUT" \
   && ok "securityCodePrefix hardcoded: rilevato (1 sito)" \
   || ko "securityCodePrefix hardcoded NON rilevato — output: $OUT"
-echo "$OUT" | grep -q "ABC1234XYZ" \
+grep -q "ABC1234XYZ" <<<"$OUT" \
   && ko "il valore del segreto è finito nell'output (violazione 'mai il valore')" \
   || ok "il valore del segreto NON è riportato nell'output (per design)"
 

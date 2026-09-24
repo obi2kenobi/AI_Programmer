@@ -20,13 +20,13 @@ bash -n "$MUTA" && ok "sintassi" || ko "sintassi rotta"
 # del banco, e in suite costa quanto due test lenti — accettato)
 if git -C "$HERE" diff --quiet 2>/dev/null && git -C "$HERE" diff --cached --quiet 2>/dev/null; then
   OUT=$(bash "$MUTA" 2>&1); RC=$?
-  [ $RC -eq 0 ] && echo "$OUT" | grep -qE "[0-9]+ test reagiscono alla mutazione, 0 teatri verdi" \
+  [ $RC -eq 0 ] && grep -qE "[0-9]+ test reagiscono alla mutazione, 0 teatri verdi" <<<"$OUT" \
     && ok "run completo: tutti i test reagiscono, nessun teatro" \
     || { echo "$OUT" | tail -3 | sed 's/^/    /'; ko "run completo non pulito (rc=$RC)"; }
 else
   # albero sporco: la guardia deve FERMARE (exit 2) — mai mutare lavoro vivo
   OUT=$(bash "$MUTA" 2>&1); RC=$?
-  [ $RC -eq 2 ] && echo "$OUT" | grep -q "albero sporco" \
+  [ $RC -eq 2 ] && grep -q "albero sporco" <<<"$OUT" \
     && ok "albero sporco: il banco si ferma prima di mutare (exit 2)" \
     || ko "la guardia non scatta (rc=$RC): muterebbe lavoro non committato"
 fi

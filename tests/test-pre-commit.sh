@@ -40,7 +40,7 @@ GLIFO=$(python3 -c "print(chr(0x81ea))")
 printf 'test %s dentro\n' "$GLIFO" > "$PROBE"
 git -C "$SB" add "$PROBE"
 OUT=$(gancio); RC=$?
-[ "$RC" -ne 0 ] && echo "$OUT" | grep -qi "alieni" \
+[ "$RC" -ne 0 ] && grep -qi "alieni" <<<"$OUT" \
   && ok "glifo staged: l'hook diventa rosso e dice perché" \
   || ko "glifo staged NON visto (rc=$RC) — falso verde"
 cleanup
@@ -63,7 +63,7 @@ printf '#!/bin/bash\ncmd | tail -1 %s git commit -m x\n' '&&' > "$PROBE3"
 chmod +x "$PROBE3"
 git -C "$SB" add "$PROBE3"
 OUT=$(gancio); RC=$?
-[ "$RC" -ne 0 ] && echo "$OUT" | grep -q "pipeline" && ok "pipe+&& staged: il dente morde" \
+[ "$RC" -ne 0 ] && grep -q "pipeline" <<<"$OUT" && ok "pipe+&& staged: il dente morde" \
   || ko "pipe+&& NON visto (rc=$RC) — la regola del 3/9 è ancora sola prosa"
 git -C "$SB" restore --staged "$PROBE3" >/dev/null 2>&1; rm -f "$PROBE3"
 
@@ -91,7 +91,7 @@ OUT=$(LC_ALL=C LANG=C gancio 2>/dev/null); RC=$?
 if git -C "$SB" grep -lP '[\x{4E00}]' -- :docs/_probe_morto.md >/dev/null 2>&1 || [ "$(LC_ALL=C LANG=C git -C "$SB" grep -lP '[\x{4E00}]' -- :docs/_probe_morto.md >/dev/null 2>&1; echo $?)" -lt 2 ]; then
   echo "· D9: su questa macchina git grep -P non muore sotto LC_ALL=C — il caso «morto» non e' forzabile qui (dichiarato)"
 else
-  [ "$RC" -ne 0 ] && echo "$OUT" | grep -q "MORTO" \
+  [ "$RC" -ne 0 ] && grep -q "MORTO" <<<"$OUT" \
     && ok "D9: rilevatore glifi morto (rc 128) → l'hook e' ROSSO e lo dice" \
     || ko "D9: rilevatore morto e l'hook e' verde (rc=$RC) — falso verde: $(echo "$OUT" | tail -1)"
 fi
@@ -103,7 +103,7 @@ git -C "$SB" restore --staged "$PROBE5" >/dev/null 2>&1; rm -f "$PROBE5"
 [ -x "$HERE/.githooks/commit-msg" ] && ok "D10: il gancio commit-msg esiste ed e' eseguibile" || ko "D10: .githooks/commit-msg assente"
 MSGF=$(mktemp); printf 'test: 999 test verdi\n' > "$MSGF"
 OUT=$(bash "$HOOK" --commit-msg "$MSGF" 2>/dev/null); RC=$?
-[ "$RC" -ne 0 ] && echo "$OUT" | grep -q "999 test" \
+[ "$RC" -ne 0 ] && grep -q "999 test" <<<"$OUT" \
   && ok "D10: messaggio con numero-test sbagliato → rosso dal gancio commit-msg" \
   || ko "D10: «999 test» passa ancora (rc=$RC): $(echo "$OUT" | tail -1)"
 printf 'docs: aggiorna il diario\n' > "$MSGF"

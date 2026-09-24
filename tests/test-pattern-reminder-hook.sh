@@ -30,7 +30,7 @@ echo "$OUT_SENSIBILE" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null
 echo "$OUT_SENSIBILE" | jq -e '.hookSpecificOutput | has("permissionDecision") | not' >/dev/null 2>&1 \
   && ok "path sensibile: nessuna permissionDecision (non blocca e non auto-approva)" \
   || ko "path sensibile: il promemoria DECIDE il permesso ($(echo "$OUT_SENSIBILE" | jq -r '.hookSpecificOutput.permissionDecision // empty'))"
-echo "$OUT_SENSIBILE" | grep -qi 'segreto-come-impronta' \
+grep -qi 'segreto-come-impronta' <<<"$OUT_SENSIBILE" \
   && ok "cita il pattern segreto-come-impronta nel reminder" \
   || ko "non cita il pattern segreto-come-impronta"
 

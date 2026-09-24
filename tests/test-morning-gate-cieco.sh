@@ -62,7 +62,7 @@ chmod +x "$SB/bin/gh"
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
 grep -q "PR #7" "$REPORT" && ok "D8: la PR #7 e' nel report" || { ko "D8: PR #7 assente dal report"; echo "$OUT" | tail -3; }
 DIFF_RIGA=$(awk '/^\*\*Diff:\*\*/{getline; print}' "$REPORT")
-echo "$DIFF_RIGA" | grep -q "calc.js" \
+grep -q "calc.js" <<<"$DIFF_RIGA" \
   && ok "D8: la sezione Diff mostra il file cambiato (calc.js)" \
   || ko "D8: la sezione Diff e' vuota al primo passaggio (riga dopo Diff: '$DIFF_RIGA')"
 grep -q "verifiche-ok" "$HUB_METRICS" && ok "D8: le verifiche dichiarate girano sul ramo della PR (verifiche-ok)" \

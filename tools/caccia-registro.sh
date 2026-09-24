@@ -42,7 +42,9 @@ mkdir -p "$STATO"; touch "$SALDATI" "$RINVIA"
 # due verita' sullo stesso debito, audit-1 finding 12)
 # (revisione 10 giri, 2026-09-23): -H — con UN solo file nel glob grep non stampa il nome, e
 # il sito usciva «2:…» (in una repo satellite con un test solo, misurato)
-siti_e002() { grep -rnH "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
+# (Q31, 2026-09-23): anche tests/ — i banchi sono il posto dove E-002 ha morso (E-042), e la caccia
+# non li guardava: la voce di DEBITI che le affidava i 253 siti aspettava per sempre
+siti_e002() { grep -rnH "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ tests/ 2>/dev/null \
               | grep -v "^[^:]*:[0-9]*: *#" | grep -v "cattura-prima" \
               | sed 's/^\([^:]*\):\([0-9]*\):.*/\1:\2/'; }
 siti_e032() { grep -rnH '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \

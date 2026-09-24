@@ -97,8 +97,8 @@ trap 'rm -rf "$RADICE"' EXIT
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ok
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "APPROVA → rc 0" || ko "rc $RC (atteso 0): $(echo "$OUT" | tail -2)"
-echo "$OUT" | grep -q "\[DRY\] gh pr merge 7 --squash" && ok "delibera: squash-merge della PR #7" || ko "non ha delibera il merge"
-if echo "$OUT" | grep -q "budget\|deliberazione 1/"; then ok "budget registrato"; else ko "budget non scritto (audit 2026-09-23: il ko era irraggiungibile)"; fi
+grep -q "\[DRY\] gh pr merge 7 --squash" <<<"$OUT" && ok "delibera: squash-merge della PR #7" || ko "non ha delibera il merge"
+if grep -q "budget\|deliberazione 1/" <<<"$OUT"; then ok "budget registrato"; else ko "budget non scritto (audit 2026-09-23: il ko era irraggiungibile)"; fi
 B=$(cat "$SB"/.git/revisore/mergi-* 2>/dev/null | head -1)
 [ "$B" = "1" ] && ok "budget a 1/5 sul file" || ko "file budget: '$B'"
 BR_FIN=$(git -C "$SB" branch --show-current)
@@ -108,14 +108,14 @@ BR_FIN=$(git -C "$SB" branch --show-current)
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ko
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "RIGETTA → rc 1" || ko "rc $RC (atteso 1)"
-echo "$OUT" | grep -q "\[DRY\] gh pr close 7" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
-echo "$OUT" | grep -q "gh pr merge" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
+grep -q "\[DRY\] gh pr close 7" <<<"$OUT" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
+grep -q "gh pr merge" <<<"$OUT" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
 
 # 2bis. (D2, 2026-09-23) la lente sicurezza trova un rilievo → rc 2 al giorno, NESSUN merge
 #       anche col censore pronto ad APPROVARE (un segreto fuso resta nella storia)
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-lente
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && echo "$OUT" | grep -q "LENTE SICUREZZA: RILIEVI" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" && grep -q "LENTE SICUREZZA: RILIEVI" <<<"$OUT" \
   && ok "lente sicurezza con rilievi → rc 2, nessun merge" || ko "lente con rilievi: rc $RC — $(echo "$OUT" | tail -1)"
 
 # 2ter. (2026-09-23, giro A6) si giudica il commit DELLA PR, non il ramo locale con lo stesso nome,
@@ -123,7 +123,7 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-punta
 C2=$(git -C "$SB" rev-parse night/test-punta)
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-echo "$OUT" | grep -q "gh pr merge 7 --squash --delete-branch --match-head-commit $C2" \
+grep -q "gh pr merge 7 --squash --delete-branch --match-head-commit $C2" <<<"$OUT" \
   && ok "la fusione e' legata al commit giudicato (--match-head-commit)" || ko "fusione non legata al commit giudicato: $(echo "$OUT" | grep 'gh pr merge')"
 # il ramo locale e' rimasto INDIETRO (c1) mentre la PR punta a un commit piu' nuovo che rompe le prove
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vecchio
@@ -138,7 +138,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "ramo locale vecchio: si giudica il commit della PR (c2, che rompe) — nessuna fusione" || ko "giudicato il ramo locale vecchio (rc $RC): $(echo "$OUT" | tail -1)"
 # il commit della PR non e' leggibile qui: fail-closed
 python3 > "$GHSTUB_JSON" <<'PY'
@@ -148,7 +148,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -ne 0 ] && [ "$RC" -ne 1 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -ne 0 ] && [ "$RC" -ne 1 ] && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "commit della PR sconosciuto: nessun giudizio, nessuna fusione (rc $RC)" || ko "commit sconosciuto: rc $RC"
 
 # 3. quarantena: PR troppo giovane → skip (rc 2), nessun giudizio speso
@@ -247,7 +247,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "D1: PR che tocca .night-verify → rinvio, nessun merge (le prove sono del ramo di default)" \
   || ko "D1: rc $RC — una PR che addomestica le proprie prove e' stata deliberata: $(echo "$OUT" | tail -1)"
 
@@ -278,7 +278,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": "ieri"}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D3: data illeggibile → rinvio (quarantena fail-closed)" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" && ok "D3: data illeggibile → rinvio (quarantena fail-closed)" \
   || ko "D3: rc $RC — data illeggibile e la PR e' stata deliberata"
 
 # 12. D4: diff VUOTO (ramo identico al default) → niente da giudicare, rc 2
@@ -291,7 +291,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D4: diff vuoto → rinvio, nessun merge del nulla" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" && ok "D4: diff vuoto → rinvio, nessun merge del nulla" \
   || ko "D4: rc $RC — un diff vuoto e' stato deliberato"
 rm -f "$STUB_LS"
 
@@ -303,7 +303,7 @@ SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vuote
 printf '# solo commenti\n\n# nessuna verifica\n' > "$SB/.night-verify"
 git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm vuote
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "verifiche-vuote" && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -eq 2 ] && grep -q "verifiche-vuote" <<<"$OUT" && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "verifiche-vuote sulla base → rc 2, mai al censore" \
   || ko "verifiche-vuote NON rilevate (rc $RC): $(echo "$OUT" | grep -iE 'prove|integer|merge' | head -2)"
 
@@ -332,22 +332,22 @@ STUBPAR
 chmod +x "$STUB_PAR"
 SB=$(nuova_repo); pr_issue "$SB" 30
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 4 ] && echo "$OUT" | grep -q "\[DRY\] gh pr comment 7" \
+[ "$RC" -eq 4 ] && grep -q "\[DRY\] gh pr comment 7" <<<"$OUT" \
   && ok "PR di issue: parere APPROVA → commento motivato, rc 4 (parere dato)" || ko "PR di issue: rc $RC, nessun commento di parere: $(echo "$OUT" | tail -1)"
-echo "$OUT" | grep -qE "\[DRY\] gh pr (merge|ready|close)" \
+grep -qE "\[DRY\] gh pr (merge|ready|close)" <<<"$OUT" \
   && ko "PR di issue: il censore ha provato a FONDERE/chiudere — il patto lo vieta" || ok "PR di issue: nessun merge, ready o close (la fusione resta di Luca)"
 grep -q "Titolo della issue 4" "$RADICE/prompt-censore.txt" 2>/dev/null \
   && ok "il censore giudica la PR contro il testo della ISSUE (non contro la categoria della caccia)" || ko "il prompt del censore non porta la issue"
 [ -n "$(ls "$SB"/.git/revisore/parere-7-* 2>/dev/null)" ] && ok "il parere dato si ricorda per quel commit (non si rifa' a ogni ciclo)" || ko "nessuna traccia del parere dato"
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr comment" && ok "stesso commit, secondo passaggio: nessun parere ripetuto" || ko "parere ripetuto sullo stesso commit (rc $RC)"
+[ "$RC" -eq 2 ] && ! grep -q "gh pr comment" <<<"$OUT" && ok "stesso commit, secondo passaggio: nessun parere ripetuto" || ko "parere ripetuto sullo stesso commit (rc $RC)"
 SB=$(nuova_repo); pr_issue "$SB" 30
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 4 ] && echo "$OUT" | grep -q "\[DRY\] gh pr comment 7" && ! echo "$OUT" | grep -qE "\[DRY\] gh pr (merge|close)" \
+[ "$RC" -eq 4 ] && grep -q "\[DRY\] gh pr comment 7" <<<"$OUT" && ! grep -qE "\[DRY\] gh pr (merge|close)" <<<"$OUT" \
   && ok "parere RIGETTA → commento motivato, la PR resta aperta" || ko "parere RIGETTA: rc $RC o PR chiusa"
 SB=$(nuova_repo); pr_issue "$SB" 30
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "\[DRY\] gh pr comment 7" \
+[ "$RC" -eq 2 ] && grep -q "\[DRY\] gh pr comment 7" <<<"$OUT" \
   && ok "PR di issue con la lente sicurezza non pulita: parere negativo scritto, niente verdetto del censore" || ko "lente non pulita su PR di issue: rc $RC, nessun commento"
 rm -f "$STUB_PAR"
 
@@ -355,7 +355,7 @@ rm -f "$STUB_PAR"
 # PR (1 riga) che passa col default viene rinviata per taglia — con 0 — la chiave cambia davvero il comportamento
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-profilo
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" CENSORE_MAX_RIGHE=0 bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "(max 0)" && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -eq 2 ] && grep -q "(max 0)" <<<"$OUT" && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "CENSORE_MAX_RIGHE=0 dal profilo: la PR va al giorno per taglia (il profilo comanda)" || ko "CENSORE_MAX_RIGHE ignorato (rc $RC): $(echo "$OUT" | tail -1)"
 
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;

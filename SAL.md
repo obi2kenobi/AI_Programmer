@@ -3701,3 +3701,17 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     - `tests/test-banco-passaggio.sh`, 3, in una repo di prova;
     - `tests/test-cervello-domanda.sh`, nuovo, curl finto, 3.
   - Sabotaggi rossi: 4, 1, 3 (sul vecchio), 1.
+- **Q31**, da A9, un'attesa che non poteva finire. La voce di DEBITI affidava i siti E-002 dei banchi
+  a «la caccia notturna, un banco per finestra», ma `tools/caccia-registro.sh` cercava solo in
+  tools/ night-shift/ llm/, e lì dopo Q27 i siti sono zero.
+  - Curati i 253 siti `echo/printf … | grep -q` di 66 banchi, con lo stesso trasformatore di Q27.
+  - Due errori miei presi prima del commit:
+    - le righe con `\` di continuazione: here-string dopo la barra, sintassi rotta in 40 file.
+      Visto con bash -n, tutto annullato, trasformatore corretto e rilanciato;
+    - un `echo | grep` dentro la stringa di una fixture, riscritto: visto dal cricchetto, rimesso
+      a mano. Il controllo sulle virgolette, rifatto con la regex esatta del trasformatore, ne
+      trova 1 solo.
+  - Il cricchetto `tests/test-e002-banchi-curati.sh` ora vale per OGNI banco sotto pipefail
+    (sabotaggio: rosso), e la caccia guarda anche tests/ (`tests/test-caccia-registro.sh`, rosso
+    sullo strumento vecchio).
+  - Restano 72 siti `comando | grep -q`, un'altra forma: ora la caccia li vede.

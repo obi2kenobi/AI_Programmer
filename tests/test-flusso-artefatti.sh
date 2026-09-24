@@ -67,7 +67,7 @@ NOMI_PORTA=$(cat night-shift/README.md README.md CLAUDE.md 2>/dev/null)
 ORFANI=""
 for f in night-shift/*.sh; do
   case "$(basename "$f")" in night-shift.sh) continue;; esac
-  echo "$NOMI_PORTA" | grep -q "$(basename "$f")" || ORFANI="$ORFANI $(basename "$f")"
+  grep -q "$(basename "$f")" <<<"$NOMI_PORTA" || ORFANI="$ORFANI $(basename "$f")"
 done
 [ -z "$ORFANI" ] && ok "night-shift: ogni tool ha una porta che lo nomina" \
   || ko "night-shift: tool senza porta:$ORFANI"

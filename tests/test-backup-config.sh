@@ -20,7 +20,7 @@ for c in /usr/bin/* /bin/*; do n=$(basename "$c"); [ "$n" = gh ] || [ -e "$NOGH/
 [ ! -e "$NOGH/gh" ] && [ -e "$NOGH/bash" ] && ok "il PATH di prova ha i comandi ma non gh" || ko "il PATH di prova non esclude gh"
 out=$(PATH="$NOGH" bash "$HERE/tools/backup-config.sh" 2>&1); rc=$?
 rm -rf "$NOGH"
-[ $rc -ne 0 ] && echo "$out" | grep -qi "gh\|gist" && ok "senza gh: errore pulito" || ko "senza gh: crash o silenzio poco chiaro (rc=$rc)"
+[ $rc -ne 0 ] && grep -qi "gh\|gist" <<<"$out" && ok "senza gh: errore pulito" || ko "senza gh: crash o silenzio poco chiaro (rc=$rc)"
 
 # IE-003 GitLab (2026-08-31): CINQUE backup, nessuno provato col ripristino — 6 ore
 # di dati perse. Il backup che non si sa leggere NON è un backup. Con gh attivo
@@ -29,7 +29,7 @@ rm -rf "$NOGH"
 if command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
   GIST_ID=$(cat "$HERE/.gist-backup-id" 2>/dev/null || echo "")
   if [ -n "$GIST_ID" ]; then
-    OUT=$(gh gist view "$GIST_ID" 2>&1) && echo "$OUT" | grep -q "repos.conf" \
+    OUT=$(gh gist view "$GIST_ID" 2>&1) && grep -q "repos.conf" <<<"$OUT" \
       && ok "backup LEGGIBILE e contiene repos.conf (l'antidoto GitLab)" \
       || ko "backup illeggibile o incompleto: sarebbe il sesto backup-che-non-funziona"
   else

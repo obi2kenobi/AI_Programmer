@@ -15,11 +15,11 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 # la riga deve stare in ## 2 (dove va a vivere), non solo nel metodo del punto 3
 SEZ2=$(awk '/^## 2\./{f=1} /^## 3\./{f=0} f' "$DD")
-echo "$SEZ2" | grep -q "tabella opzioni×criteri" \
+grep -q "tabella opzioni×criteri" <<<"$SEZ2" \
   && ok "§2 (persistenza) richiede esplicitamente la tabella opzioni×criteri" \
   || ko "§2 non menziona la tabella — potrebbe restare solo in chat"
 
-echo "$SEZ2" | grep -qi "non solo la scelta finale in prosa\|non solo\b" \
+grep -qi "non solo la scelta finale in prosa\|non solo\b" <<<"$SEZ2" \
   && ok "§2 esclude esplicitamente 'solo la scelta in prosa' come persistenza sufficiente" \
   || ko "§2 non esclude la persistenza minimale (solo prosa)"
 

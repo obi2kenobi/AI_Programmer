@@ -24,15 +24,15 @@ VECCHIO=$(python3 -c "from datetime import datetime, timedelta; print((datetime.
 
 printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n' "$ADESSO" > "$TMP/fresco.log"
 OUT=$(TURNO_VIVO_LOG="$TMP/fresco.log" bash "$TOOL" 2>&1); RC=$?
-[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "cicla" && ok "log fresco: rc 0, il turno cicla" || ko "log fresco: rc=$RC, $OUT"
+[ "$RC" -eq 0 ] && grep -q "cicla" <<<"$OUT" && ok "log fresco: rc 0, il turno cicla" || ko "log fresco: rc=$RC, $OUT"
 
 printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n[un passo qualsiasi]\n' "$VECCHIO" > "$TMP/fermo.log"
 OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" bash "$TOOL" 2>&1); RC=$?
-[ "$RC" -eq 1 ] && echo "$OUT" | grep -q "TURNO INCASTRATO" && ok "log fermo 90min: rc 1 INCASTRATO" || ko "log fermo: rc=$RC, $OUT"
-echo "$OUT" | grep -q "ultima riga" && ok "dice DOVE guardare (ultima riga del log)" || ko "non dice dove guardare"
+[ "$RC" -eq 1 ] && grep -q "TURNO INCASTRATO" <<<"$OUT" && ok "log fermo 90min: rc 1 INCASTRATO" || ko "log fermo: rc=$RC, $OUT"
+grep -q "ultima riga" <<<"$OUT" && ok "dice DOVE guardare (ultima riga del log)" || ko "non dice dove guardare"
 
 OUT=$(TURNO_VIVO_LOG="$TMP/inesistente.log" bash "$TOOL" 2>&1); RC=$?
-[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "niente da giudicare" && ok "senza log: rc 0 dichiarato" || ko "senza log: rc=$RC, $OUT"
+[ "$RC" -eq 0 ] && grep -q "niente da giudicare" <<<"$OUT" && ok "senza log: rc 0 dichiarato" || ko "senza log: rc=$RC, $OUT"
 
 printf '[data-fantasma] === TURNO INIZIATO ===\n' > "$TMP/rotto.log"
 OUT=$(TURNO_VIVO_LOG="$TMP/rotto.log" bash "$TOOL" 2>&1); RC=$?
@@ -44,7 +44,7 @@ OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" TURNO_VIVO_SOGLIA=120 bash "$TOOL" 2>&1); 
 grep -q "turno-vivo.sh" "$HERE/tools/system-health.sh" \
   && ok "cablato nel polso quotidiano (system-health)" || ko "detector non cablato: invisibile"
 OUT=$(TURNO_VIVO_LOG="$TMP/fermo.log" bash "$TOOL" 2>&1)
-echo "$OUT" | grep -q "pkill -f" && ok "la pulizia consolidata e' scritta nell'avviso" || ko "avviso senza la via d'uscita"
+grep -q "pkill -f" <<<"$OUT" && ok "la pulizia consolidata e' scritta nell'avviso" || ko "avviso senza la via d'uscita"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

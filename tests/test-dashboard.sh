@@ -60,9 +60,9 @@ dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
 print(dash.page(dash.stats()))
 PY
 )
-echo "$PAG" | grep -q "CICLI OGGI" && ok "pagina: cards presenti" || ko "pagina senza cards"
-echo "$PAG" | grep -q "Attività" && ok "pagina: feed attività" || ko "pagina senza attività"
-echo "$PAG" | grep -q "NUOVA" && ok "pagina: la rossa corrente visibile" || ko "la rossa corrente non appare in pagina"
+grep -q "CICLI OGGI" <<<"$PAG" && ok "pagina: cards presenti" || ko "pagina senza cards"
+grep -q "Attività" <<<"$PAG" && ok "pagina: feed attività" || ko "pagina senza attività"
+grep -q "NUOVA" <<<"$PAG" && ok "pagina: la rossa corrente visibile" || ko "la rossa corrente non appare in pagina"
 
 # ── v4: il FUNNEL conta gli stadi dalle righe firmate ──────────────────────────
 # (D19, test del sistema completo 2026-09-20): questo blocco stava DOPO il cancello finale
@@ -149,8 +149,8 @@ dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
 print(dash.page(dash.stats()))
 PY
 )
-echo "$PAG5" | grep -q "LA FILA DELLE PR" && ok "v5 pagina: la fila e' in pagina" || ko "v5 pagina senza fila"
-echo "$PAG5" | grep -q "#11" && ok "v5 pagina: la PR #11 si vede nella fila" || ko "la #11 non appare in pagina"
+grep -q "LA FILA DELLE PR" <<<"$PAG5" && ok "v5 pagina: la fila e' in pagina" || ko "v5 pagina senza fila"
+grep -q "#11" <<<"$PAG5" && ok "v5 pagina: la PR #11 si vede nella fila" || ko "la #11 non appare in pagina"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

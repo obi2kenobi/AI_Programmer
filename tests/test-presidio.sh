@@ -50,7 +50,7 @@ s = re.sub(r'\| \d{4}-\d\d-\d\dT\d\d:\d\d \| bob \| oracoli \| \d{4}-\d\d-\d\dT\
 open(f, 'w').write(s)
 PY
 OUT=$(bash "$TOOL" lista 2>/dev/null)
-echo "$OUT" | grep -q "potati 1" && ok "presidio scaduto: potato E dichiarato" || ko "potatura non dichiarata"
+grep -q "potati 1" <<<"$OUT" && ok "presidio scaduto: potato E dichiarato" || ko "potatura non dichiarata"
 # grep -c esce 1 quando conta ZERO: con pipefail la pipeline fallisce proprio
 # quando l'asserzione è vera — si usa ! grep -q, che esce 0 sul non-trovato
 ! grep -q "| bob |" "$HERE/PRESIDI.md" && ok "lo scaduto non resta nel registro" || ko "scaduto sopravvissuto"

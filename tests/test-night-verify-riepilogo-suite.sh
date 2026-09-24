@@ -58,10 +58,10 @@ EOF
 chmod +x "$TMP/tests/test-c-fallisce.sh"
 
 OUT_KO=$(bash "$HERE/tools/suite.sh" "$TMP" 2>&1) || true
-echo "$OUT_KO" | grep -q "FALLITO.*test-c-fallisce.sh" \
+grep -q "FALLITO.*test-c-fallisce.sh" <<<"$OUT_KO" \
   && ok "fallimento: il tail indica il file esatto che ha fatto fallire la suite" \
   || ko "fallimento: nessuna indicazione di quale file sia fallito"
-echo "$OUT_KO" | grep -qE "FALLITO \([0-9]+/[0-9]+\)" \
+grep -qE "FALLITO \([0-9]+/[0-9]+\)" <<<"$OUT_KO" \
   && ok "fallimento: la posizione (N/TOT) è riportata" \
   || ko "fallimento: nessuna posizione N/TOT riportata"
 
