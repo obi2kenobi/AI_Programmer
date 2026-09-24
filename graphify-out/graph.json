@@ -12215,111 +12215,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_revisore",
-      "label": "revisore.sh",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "revisore.sh",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_revisore_azione_gh",
-      "label": "azione_gh()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "azione_gh()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L93"
-    },
-    {
-      "id": "night_shift_revisore_chiedi",
-      "label": "chiedi()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "chiedi()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L75"
-    },
-    {
-      "id": "night_shift_revisore_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L59"
-    },
-    {
-      "id": "night_shift_revisore_rinvia",
-      "label": "rinvia()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rinvia()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L101"
-    },
-    {
-      "id": "night_shift_revisore_ripristina",
-      "label": "ripristina()",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ripristina()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L176"
-    },
-    {
-      "id": "night_shift_revisore_sh__entry",
-      "label": "revisore.sh script",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "_timeout.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "revisore.sh script",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_test_ai_timeout",
       "label": "test-ai-timeout.sh",
       "_origin": "ast",
@@ -12497,6 +12392,126 @@
       },
       "norm_label": "test-bc-tipi-metadata.sh script",
       "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ciclo_vivo",
+      "label": "test-ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-ciclo-vivo.sh",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ciclo_vivo_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_ciclo_vivo_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_ciclo_vivo_sh__entry",
+      "label": "test-ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-ciclo-vivo.sh script",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_mutation_tests",
+      "label": "test-mutation-tests.sh",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-mutation-tests.sh",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_mutation_tests_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_mutation_tests_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_mutation_tests_sh__entry",
+      "label": "test-mutation-tests.sh script",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "_timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-mutation-tests.sh script",
+      "source_file": "tests/test-mutation-tests.sh",
       "source_location": "L1"
     },
     {
@@ -24802,66 +24817,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_mutation_tests",
-      "label": "test-mutation-tests.sh",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-mutation-tests.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-mutation-tests.sh",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_mutation_tests_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-mutation-tests.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_mutation_tests_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-mutation-tests.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_mutation_tests_sh__entry",
-      "label": "test-mutation-tests.sh script",
-      "_origin": "ast",
-      "community": 303,
-      "community_name": "test-mutation-tests.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-mutation-tests.sh script",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_test_night_shift_sal",
       "label": "test-night-shift-sal.sh",
       "_origin": "ast",
@@ -28920,7 +28875,7 @@
       },
       "norm_label": "g()",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L17"
+      "source_location": "L20"
     },
     {
       "id": "tests_test_giri_avversari_isolati_ko",
@@ -28965,7 +28920,7 @@
       },
       "norm_label": "pulisci()",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L15"
+      "source_location": "L18"
     },
     {
       "id": "tests_test_giri_avversari_isolati_sh__entry",
@@ -28981,6 +28936,21 @@
       "norm_label": "test-giri-avversari-isolati.sh script",
       "source_file": "tests/test-giri-avversari-isolati.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_test_giri_avversari_isolati_tmpdir",
+      "label": "TMPDIR",
+      "_origin": "ast",
+      "community": 359,
+      "community_name": "test-giri-avversari-isolati.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "tmpdir",
+      "source_file": "tests/test-giri-avversari-isolati.sh",
+      "source_location": "L16"
     },
     {
       "id": "docs_campo_2026_09_20_test_sistema_completo_fable",
@@ -40450,63 +40420,108 @@
       "source_location": "L155"
     },
     {
-      "id": "tests_test_ciclo_vivo",
-      "label": "test-ciclo-vivo.sh",
+      "id": "night_shift_revisore",
+      "label": "revisore.sh",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-ciclo-vivo.sh",
+      "community_name": "revisore.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-ciclo-vivo.sh",
-      "source_file": "tests/test-ciclo-vivo.sh",
+      "norm_label": "revisore.sh",
+      "source_file": "night-shift/revisore.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_ciclo_vivo_ko",
-      "label": "ko()",
+      "id": "night_shift_revisore_azione_gh",
+      "label": "azione_gh()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-ciclo-vivo.sh",
+      "community_name": "revisore.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "ko()",
-      "source_file": "tests/test-ciclo-vivo.sh",
-      "source_location": "L12"
+      "norm_label": "azione_gh()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L93"
     },
     {
-      "id": "tests_test_ciclo_vivo_ok",
-      "label": "ok()",
+      "id": "night_shift_revisore_chiedi",
+      "label": "chiedi()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-ciclo-vivo.sh",
+      "community_name": "revisore.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "ok()",
-      "source_file": "tests/test-ciclo-vivo.sh",
-      "source_location": "L11"
+      "norm_label": "chiedi()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L75"
     },
     {
-      "id": "tests_test_ciclo_vivo_sh__entry",
-      "label": "test-ciclo-vivo.sh script",
+      "id": "night_shift_revisore_log",
+      "label": "log()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-ciclo-vivo.sh",
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L59"
+    },
+    {
+      "id": "night_shift_revisore_rinvia",
+      "label": "rinvia()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rinvia()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L101"
+    },
+    {
+      "id": "night_shift_revisore_ripristina",
+      "label": "ripristina()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ripristina()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L176"
+    },
+    {
+      "id": "night_shift_revisore_sh__entry",
+      "label": "revisore.sh script",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "revisore.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-ciclo-vivo.sh script",
-      "source_file": "tests/test-ciclo-vivo.sh",
+      "norm_label": "revisore.sh script",
+      "source_file": "night-shift/revisore.sh",
       "source_location": "L1"
     },
     {
@@ -52341,7 +52356,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L24",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -52353,7 +52368,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L24",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -52365,7 +52380,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L33",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -86888,13 +86903,24 @@
     },
     {
       "source": "tests_test_giri_avversari_isolati",
+      "target": "tests_test_giri_avversari_isolati_tmpdir",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giri-avversari-isolati.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giri_avversari_isolati",
       "target": "tests_test_giri_avversari_isolati_pulisci",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L15",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
@@ -86905,7 +86931,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-giri-avversari-isolati.sh",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -92732,5 +92758,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b036dcf496a500ce2e49e30c8d08a9ce6628873f"
+  "built_at_commit": "3335c3887572409d16e7f5e2831b9dca0d8cf823"
 }

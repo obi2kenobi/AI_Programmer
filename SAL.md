@@ -4053,3 +4053,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   albero pulito, dove la ricorsione scatta. Ora la batteria salta il proprio banco, e lo dice. Banco
   in `tests/test-mutation-tests.sh` (repo di prova, tetto 30 s): ucciso dal tetto prima, finito
   dopo. Il ramo dell'albero pulito si misura in un clone fresco dopo la consegna (voce sotto).
+- **Terzo ventaglio, V4#4 — il mio banco `test-giri-avversari-isolati` sporcava /tmp.** A ogni giro
+  della suite lasciava il clone della batteria uccisa (14 MB): il suo `rm -rf` non gira dopo un
+  kill -9. Riprodotto: 8 cartelle nuove in `/tmp` per un giro. In più le batterie, partite con
+  `( … setsid … ) &`, restavano vive dopo il tetto di tempo: la pulizia uccideva il gruppo sbagliato.
+  Ora `TMPDIR` punta dentro la cartella del banco e le batterie partono con `setsid` diretto (`$!` è il
+  capo della sessione). Il kill -9 va al gruppo. Dopo: 0 cartelle nuove, nessun processo superstite.
+  Guardia nel banco (il clone ucciso sta sotto il suo `TMPDIR`): rossa al sabotaggio. Le cartelle
+  già lasciate in `/tmp` stanotte non le cancello a mano: dopo E-044, niente `rm -rf` su cose che non
+  ho creato in questo stesso script. Le toglie il container quando si chiude.

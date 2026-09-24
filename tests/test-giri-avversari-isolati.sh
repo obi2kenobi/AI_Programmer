@@ -11,6 +11,9 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 T=$(mktemp -d)
+# (2026-09-24, terzo ventaglio, V4#4): ogni giro del banco lasciava in /tmp il clone della batteria uccisa
+# (14 MB) e le cartelle delle altre: TMPDIR dentro la cartella del banco, e la pulizia toglie tutto
+mkdir -p "$T/tmp"; export TMPDIR="$T/tmp"
 PIDS=()
 pulisci() { for p in ${PIDS[@]+"${PIDS[@]}"}; do kill -9 -- "-$p" 2>/dev/null; done; sleep 1; rm -rf "$T"; }
 trap pulisci EXIT
@@ -33,8 +36,10 @@ cp "$HERE/tools/giri-avversari.sh" "$T/hub/tools/giri-avversari.sh"
 g -C "$T/hub" commit -qam "batteria in prova" >/dev/null 2>&1 || true
 
 # 1. due batterie INSIEME sullo stesso albero: nessun AGGIRA falso
-( cd "$T/hub" && setsid bash tools/giri-avversari.sh > "$T/a.out" 2>&1 ) & PIDS+=($!)
-( cd "$T/hub" && setsid bash tools/giri-avversari.sh > "$T/b.out" 2>&1 ) & PIDS+=($!)
+# (V4#4): `( … setsid … ) &` metteva in PIDS la subshell, non il capo della sessione nuova: la pulizia
+# uccideva un gruppo che non era quello delle batterie. Ora `$!` e' il capo della sessione.
+setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/a.out" 2>&1 & PIDS+=($!)
+setsid bash -c "cd '$T/hub' && exec bash tools/giri-avversari.sh" > "$T/b.out" 2>&1 & PIDS+=($!)
 wait
 for x in a b; do
   V=$(grep -m1 '^VERDETTO:' "$T/$x.out")
@@ -50,9 +55,12 @@ for i in $(seq 1 40); do
   sleep 0.25
   [ -n "$(git -C "$T/hub" status --porcelain)" ] && { SPORCO=$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' '); break; }
 done
-{ kill -9 "$KP"; wait "$KP"; } 2>/dev/null; sleep 1
+{ kill -9 -- "-$KP"; wait "$KP"; } 2>/dev/null; sleep 1   # il GRUPPO: anche la batteria nel clone
 [ -z "$SPORCO" ] && [ -z "$(git -C "$T/hub" status --porcelain)" ] \
   && ok "durante la batteria e dopo un kill -9 l'albero resta pulito" || ko "la batteria scrive nell'albero: ${SPORCO:-$(git -C "$T/hub" status --porcelain | head -2 | tr '\n' ' ')}"
+# (V4#4): il clone della batteria uccisa sta DENTRO la cartella del banco (lo toglie la pulizia), non in /tmp
+[ -n "$(find "$T/tmp" -mindepth 2 -maxdepth 2 -name hub -type d 2>/dev/null | head -1)" ] \
+  && ok "il clone della batteria uccisa resta nella cartella del banco, non in /tmp" || ko "il clone della batteria uccisa non e' sotto \$TMPDIR del banco: finisce in /tmp"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
