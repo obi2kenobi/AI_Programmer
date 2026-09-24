@@ -3515,3 +3515,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     codice è DEGRADATO (exit 2). Il marcatore porta il percorso relativo, non il basename.
   - Banco: `tests/test-fork-stato.sh`, 4 casi, rossi prima. Sabotaggio (via .html e manifest):
     2 rossi.
+  - Visto consegnando: il dente pipe+&& del pre-commit ha morso due righe VECCHIE di
+    `tests/test-fork-stato.sh`. Guarda solo i file stage-ati, e le righe dormono finché qualcuno
+    tocca il loro file.
+    - Censimento sull'albero: ne restava una, in `tests/test-privacy-storia.sh`, anche lei
+      E-002 («ok» possibile col file ancora tracciato). Curata.
+    - Cricchetto in `tests/test-pre-commit.sh`: zero sull'albero intero. Visto rosso sulla
+      versione vecchia.

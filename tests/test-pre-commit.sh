@@ -165,6 +165,13 @@ printf '#!/bin/bash\necho pulito\n' > "$Q9/tools/p.sh"
   || ko "Q9: pipe+&& nell'indice non visto — falso verde"
 rm -rf "$Q9"
 
+# (2026-09-23, notte): il dente pipe+&& guarda solo i file stage-ati — le righe vecchie dormono
+# finche' qualcuno tocca il loro file (due in tests/test-fork-stato.sh, una in
+# tests/test-privacy-storia.sh). Cricchetto sull'albero intero: zero, e resta zero.
+DORMIENTI=$(git -C "$HERE" ls-files '*.sh' '*.py' | grep -vE '^(tools/pre-commit.sh|\.githooks/pre-commit)$' \
+  | (cd "$HERE" && xargs grep -nE '(^|[^|])\|[[:space:]]*[A-Za-z][a-zA-Z0-9 ._-]*&&' 2>/dev/null) || true)
+[ -z "$DORMIENTI" ] && ok "nessuna riga pipe+&& dorme nell'albero (non solo nei file stage-ati)" \
+  || ko "righe pipe+&& nell'albero: $(cut -d: -f1,2 <<<"$DORMIENTI" | tr '\n' ' ')"
 [ "$(git -C "$HERE" diff --cached --name-only 2>/dev/null)" = "$INDICE_PRIMA" ] \
   && ok "Q23: l'indice dell'hub e' com'era prima del test" \
   || ko "Q23: il test ha cambiato l'indice dell'hub: $(git -C "$HERE" diff --cached --name-only | tr '\n' ' ')"

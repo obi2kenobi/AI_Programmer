@@ -27,7 +27,8 @@ git -c user.email=t@t -c user.name=t commit -q -m "oops: commit col nome vero"
 git rm -q leak.md
 git -c user.email=t@t -c user.name=t commit -q -m "fix: rimosso il nome (ma resta nella storia)"
 
-! git ls-files | grep -q leak && ok "il file col leak non è più tracciato oggi" \
+TRACCIATI=$(git ls-files)   # (E-002: `git ls-files | grep -q` sotto pipefail puo' morire di SIGPIPE)
+! grep -q leak <<<"$TRACCIATI" && ok "il file col leak non è più tracciato oggi" \
   || ko "il file dovrebbe essere già rimosso"
 
 OUT=$(bash tools/privacy-check.sh 2>&1); RC=$?
