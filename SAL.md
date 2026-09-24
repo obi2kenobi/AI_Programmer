@@ -4149,3 +4149,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-lib.sh`: 3 rossi prima, 1 al sabotaggio. Errore mio di passaggio: la funzione di V1#3
   aveva un SC1087 che shellcheck, riga di `.night-verify`, avrebbe fatto rosso ogni notte. La mia
   consegna faceva girare solo la suite, e ora fa girare anche shellcheck, `bash -n` e py-gate.
+- **Terzo ventaglio, V3#2 — a Claude arrivava la skill graphify per OpenCode.**
+  `.claude/skills/graphify/SKILL.md` era identica alla variante OpenCode del pacchetto graphify 0.9.66:
+  lancio dei subagenti con `@agent`, che Claude Code non ha. E `tests/test-opencode-skills-sync.sh`
+  pretendeva l'identità fra le due cartelle, blindando l'errore. sync-repo, bootstrap e onboard la
+  portavano in ogni satellite. Ora `.claude` porta la variante per Claude del pacchetto (
+  strumento Agent) e `.opencode` resta con la sua. Il banco confronta graphify per variante, con i
+  references identici: rosso prima (variante OpenCode in `.claude`), verde ora.

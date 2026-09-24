@@ -29,9 +29,12 @@ git -C "$HERE" check-ignore -q graphify-out/cache/x && git -C "$HERE" check-igno
   && ! git -C "$HERE" check-ignore -q graphify-out/graph.json \
   && ok "cache e graph.html restano locali, graph.json no" || ko "regole di ignore del grafo sbagliate"
 
-# 2. la skill vive anche dove Claude Code la vede (specchio identico)
-diff -rq "$HERE/.opencode/skills/graphify" "$HERE/.claude/skills/graphify" >/dev/null 2>&1 \
-  && ok ".claude/skills/graphify = .opencode/skills/graphify" || ko "skill graphify assente o divergente in .claude/skills"
+# 2. la skill vive anche dove Claude Code la vede — nella SUA variante (2026-09-24, V3#2: qui si pretendeva
+# l'identita' con lo specchio OpenCode, che dispatcha con @agent; il confronto per variante e' in
+# tests/test-opencode-skills-sync.sh)
+[ -f "$HERE/.claude/skills/graphify/SKILL.md" ] && ! grep -c '@agent Chunk' "$HERE/.claude/skills/graphify/SKILL.md" >/dev/null \
+  && diff -rq "$HERE/.opencode/skills/graphify/references" "$HERE/.claude/skills/graphify/references" >/dev/null 2>&1 \
+  && ok ".claude/skills/graphify c'e', nella variante per Claude, coi references dello specchio" || ko "skill graphify assente in .claude/skills, o nella variante OpenCode"
 
 # 3. la spina viaggia: e' un hook dichiarato, quindi copia-hook --elenco la porta ovunque
 bash "$HERE/tools/copia-hook.sh" --elenco | grep -xc 'tools/graphify-spina.sh' >/dev/null \

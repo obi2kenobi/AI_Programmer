@@ -13089,7 +13089,7 @@
       },
       "norm_label": "gs()",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L99"
+      "source_location": "L102"
     },
     {
       "id": "tests_test_graphify_spina_ko",
@@ -43807,7 +43807,7 @@
       "node_kind": "heading",
       "norm_label": "for /graphify add and --watch",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L687"
+      "source_location": "L695"
     },
     {
       "id": "claude_skills_graphify_skill_for_graphify_query",
@@ -43819,7 +43819,7 @@
       "node_kind": "heading",
       "norm_label": "for /graphify query",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L675"
+      "source_location": "L683"
     },
     {
       "id": "claude_skills_graphify_skill_for_the_commit_hook_and_native_claude_md_integration",
@@ -43831,7 +43831,7 @@
       "node_kind": "heading",
       "norm_label": "for the commit hook and native claude.md integration",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L693"
+      "source_location": "L701"
     },
     {
       "id": "claude_skills_graphify_skill_for_update_and_cluster_only",
@@ -43843,7 +43843,7 @@
       "node_kind": "heading",
       "norm_label": "for --update and --cluster-only",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L669"
+      "source_location": "L677"
     },
     {
       "id": "claude_skills_graphify_skill_graphify",
@@ -43867,7 +43867,7 @@
       "node_kind": "heading",
       "norm_label": "honesty rules",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L699"
+      "source_location": "L707"
     },
     {
       "id": "claude_skills_graphify_skill_interpreter_guard_for_subcommands",
@@ -43879,7 +43879,7 @@
       "node_kind": "heading",
       "norm_label": "interpreter guard for subcommands",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L651"
+      "source_location": "L659"
     },
     {
       "id": "claude_skills_graphify_skill_part_a_structural_extraction_for_code_files",
@@ -43915,7 +43915,7 @@
       "node_kind": "heading",
       "norm_label": "part c - merge ast + semantic into final extraction",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L351"
+      "source_location": "L359"
     },
     {
       "id": "claude_skills_graphify_skill_step_0_github_repos_and_multi_path_merge_only_if_a_url_or_several_paths",
@@ -43987,7 +43987,7 @@
       "node_kind": "heading",
       "norm_label": "step 4.5 - graph health check (read-only integrity gate)",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L448"
+      "source_location": "L456"
     },
     {
       "id": "claude_skills_graphify_skill_step_4_build_graph_cluster_analyze_generate_outputs",
@@ -43999,7 +43999,7 @@
       "node_kind": "heading",
       "norm_label": "step 4 - build graph, cluster, analyze, generate outputs",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L385"
+      "source_location": "L393"
     },
     {
       "id": "claude_skills_graphify_skill_step_5_label_communities",
@@ -44011,7 +44011,7 @@
       "node_kind": "heading",
       "norm_label": "step 5 - label communities",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L474"
+      "source_location": "L482"
     },
     {
       "id": "claude_skills_graphify_skill_step_6_generate_obsidian_vault_opt_in_html",
@@ -44023,7 +44023,7 @@
       "node_kind": "heading",
       "norm_label": "step 6 - generate obsidian vault (opt-in) + html",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L523"
+      "source_location": "L531"
     },
     {
       "id": "claude_skills_graphify_skill_step_9_save_manifest_update_cost_tracker_clean_up_and_report",
@@ -44035,7 +44035,7 @@
       "node_kind": "heading",
       "norm_label": "step 9 - save manifest, update cost tracker, clean up, and report",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L549"
+      "source_location": "L557"
     },
     {
       "id": "claude_skills_graphify_skill_steps_6b_8_wiki_neo4j_falkordb_svg_graphml_mcp_benchmark_only_on_their_flags",
@@ -44047,7 +44047,7 @@
       "node_kind": "heading",
       "norm_label": "steps 6b-8 - wiki, neo4j, falkordb, svg, graphml, mcp, benchmark (only on their flags)",
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L543"
+      "source_location": "L551"
     },
     {
       "id": "claude_skills_graphify_skill_usage",
@@ -52670,7 +52670,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L101",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -52706,7 +52706,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L44",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -60630,7 +60630,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L651",
+      "source_location": "L659",
       "weight": 1.0
     },
     {
@@ -60641,7 +60641,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L669",
+      "source_location": "L677",
       "weight": 1.0
     },
     {
@@ -60652,7 +60652,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L675",
+      "source_location": "L683",
       "weight": 1.0
     },
     {
@@ -60663,7 +60663,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L687",
+      "source_location": "L695",
       "weight": 1.0
     },
     {
@@ -60674,7 +60674,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L693",
+      "source_location": "L701",
       "weight": 1.0
     },
     {
@@ -60685,7 +60685,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L699",
+      "source_location": "L707",
       "weight": 1.0
     },
     {
@@ -60718,7 +60718,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L351",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -60762,7 +60762,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L385",
+      "source_location": "L393",
       "weight": 1.0
     },
     {
@@ -60773,7 +60773,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L448",
+      "source_location": "L456",
       "weight": 1.0
     },
     {
@@ -60784,7 +60784,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L474",
+      "source_location": "L482",
       "weight": 1.0
     },
     {
@@ -60795,7 +60795,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L523",
+      "source_location": "L531",
       "weight": 1.0
     },
     {
@@ -60806,7 +60806,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L543",
+      "source_location": "L551",
       "weight": 1.0
     },
     {
@@ -60817,7 +60817,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/graphify/SKILL.md",
-      "source_location": "L549",
+      "source_location": "L557",
       "weight": 1.0
     },
     {
@@ -87321,6 +87321,17 @@
     },
     {
       "source": "tests_test_graphify_spina",
+      "target": "tests_test_graphify_spina_gs",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-graphify-spina.sh",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_graphify_spina",
       "target": "tests_test_graphify_spina_ok",
       "relation": "defines",
       "_origin": "ast",
@@ -87350,17 +87361,6 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-graphify-spina.sh",
       "source_location": "L20",
-      "weight": 1.0
-    },
-    {
-      "source": "tests_test_graphify_spina",
-      "target": "tests_test_graphify_spina_gs",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -93077,5 +93077,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1ecfa0c768d46870898c01505907206e84c13e65"
+  "built_at_commit": "1d75e17ca7cb1c60893cf0e435a34e63b3b7a152"
 }
