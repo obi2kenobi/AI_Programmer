@@ -30,6 +30,11 @@ for f in "$HERE"/patterns/*.md; do
   CHECKED=$((CHECKED+1))
   [ -e "$HERE/$REF" ] && ok "$nome: l'ancora ($REF) esiste davvero" \
     || { ko "$nome: l'ancora cita $REF ma il file non esiste — ancora morta"; continue; }
+  # (2026-09-24, terzo ventaglio, V5 R6): il registro patterns/README.md — quello che legge
+  # tools/pattern-reminder-hook.sh — citava per quattro pattern un'ancora diversa da quella del file
+  # (percorsi vecchi, cartelle non versionate). Una sola ancora: la riga del registro porta il percorso del file.
+  grep -F "[$nome]($nome.md)" "$HERE/patterns/README.md" | grep -cF "$REF" >/dev/null \
+    || ko "$nome: il registro patterns/README.md non cita l'ancora del file ($REF)"
   # (2026-09-24, terzo ventaglio, V5): il file esisteva, ma il SIMBOLO no — rinominata run_guarded o
   # gate_allowlist_ok, questo banco restava verde. Un'ancora «file:simbolo» vuole il simbolo nel file.
   SIMBOLO=$(printf '%s' "$ANCORA" | grep -oE "$(printf '%s' "$REF" | sed 's/[.]/\\./g'):[A-Za-z_][A-Za-z0-9_-]*" | head -1 | cut -d: -f2)

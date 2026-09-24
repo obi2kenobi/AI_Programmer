@@ -4209,3 +4209,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-presidio.sh` ha tre controlli nuovi (claim dopo rilascio, il rilascio non riscrive,
   merge dopo rilascio): rosso prima (2 FAIL), verde ora (12/0). Sabotaggio: se la riga RILASCIO non
   chiude, torna rosso (10/2).
+- **Terzo ventaglio, V5 R5-R6 — due pattern e il registro dicevano un hub che non c'è più.**
+  - `patterns/itera-su-array.md` vietava il `while read` «su pipe». E-030 era lo stesso difetto con
+    `done < .night-verify`. Ora la regola copre pipe e file, e nomina la seconda cura (`</dev/null`
+    su ogni comando del corpo). Misurato: 1 giro su 3 senza la cura, 3 su 3 con.
+  - `patterns/README.md` (il registro che legge `tools/pattern-reminder-hook.sh`) citava per cinque
+    pattern un'àncora diversa da quella del file: percorsi vecchi e cartelle non versionate.
+  - `patterns/workdir-e-proprietario.md` metteva il workdir della notte sotto `~/.zcode/`. Il codice
+    usa `$HOME/night-shift-work`.
+
+  Tutto corretto. `tests/test-patterns-ancore-esistono.sh` ora pretende che la riga del registro porti
+  il percorso dell'àncora del file: rosso prima (4 FAIL; la quinta àncora è esterna e il banco non la
+  giudica), verde ora (18/0). Sabotaggio: con una riga vecchia rimessa torna rosso (18/1).
