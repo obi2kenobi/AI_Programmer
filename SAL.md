@@ -4578,3 +4578,19 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   gas-gate. Banco nuovo `tests/test-contratti-uscita.sh`: rosso prima (10 FAIL), verde ora (12/0). Verdi
   anche i banchi dei sette strumenti. Sabotaggio: l'agente di HEAD, 11/1. Q1 R5 (il job `luca.ollama`, che
   nessun installatore crea) è una domanda di dominio in DEBITI.md.
+- **Quarto ventaglio, Q5 R5 — i nomi della lista passavano fuori dai `.md`, e in maiuscolo.** Il
+  pre-commit guardava solo i `.md` in stage e stampava il nome in chiaro. privacy-check usava `grep -F`,
+  che distingue le maiuscole: il nome in MAIUSCOLO passava lì e non nel pre-commit. Ora:
+  - il pre-commit guarda ogni file di TESTO in stage (i binari fuori) e stampa l'impronta del nome;
+  - privacy-check usa `-i`, come il pre-commit.
+
+  Casi nuovi: `tests/test-pre-commit.sh` (28/0) e `tests/test-privacy.sh` (21/0), rossi prima.
+  Sabotaggi: privacy-check senza `-i`, 20/1; pre-commit di nuovo solo `.md`, 27/1. Lasciati, e
+  dichiarati:
+  - `tests/` resta escluso dalle forme di segreto: test-lib e test-privacy portano forme sintetiche
+    scritte per esteso, e toglierle vuol dire riscrivere due banchi;
+  - un segreto spezzato su due righe è una forma da aggressore, non da errore;
+  - la chiave riconosciuta per contenuto anziché per nome richiede prima la risposta alla domanda
+    «nomi sì» in DEBITI.
+
+  Sul Mac, con la lista vera, possono emergere occorrenze nuove: voce (h) della riga ⏳ Mac.

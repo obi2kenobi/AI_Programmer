@@ -192,6 +192,15 @@ OUT=$(gancio); RC=$?
   && ok "forma di segreto in stage: il gancio rifiuta, nomina il file e non stampa il valore" || ko "token in stage e il gancio passa o lo stampa (rc=$RC)"
 git -C "$SB" rm -q --cached tools/chiama.sh; rm -f "$SB/tools/chiama.sh"
 
+# (2026-09-24, quarto ventaglio, Q5 R5): il controllo dei nomi guardava solo i .md — un nome della lista in
+# uno script o in un .txt passava. Ora ogni file di testo in stage; e il nome si maschera nell'uscita.
+printf 'NomeFintoQcinque\n' > "$SB/.privacy-nomi"
+printf 'echo NomeFintoQcinque\n' > "$SB/tools/nomi.sh"; git -C "$SB" add tools/nomi.sh
+OUT=$(gancio); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'tools/nomi.sh' <<<"$OUT" >/dev/null && ! grep -c 'NomeFintoQcinque' <<<"$OUT" >/dev/null \
+  && ok "nome della lista in uno .sh: rifiutato, e il nome non si stampa" || ko "nome in uno .sh: rc=$RC, $(grep -m1 'nomi' <<<"$OUT")"
+git -C "$SB" rm -q --cached tools/nomi.sh; rm -f "$SB/tools/nomi.sh" "$SB/.privacy-nomi"
+
 # (2026-09-24, terzo ventaglio, V5 R3b): due fix sul lock e sul watchdog hanno cambiato la regola del codice
 # ancorato, e i pattern che la descrivono sono rimasti com'erano — nessuno ha chiesto «il pattern dice ancora
 # il vero?». Ora il gancio lo chiede quando si tocca un file ancorato senza il suo pattern. Avviso, non blocco.

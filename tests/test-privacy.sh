@@ -105,6 +105,13 @@ grep -c "NOME PRIVATO NEL REPO" <<<"$OUT" >/dev/null && ko "un TERMINE riportato
   || ok "un termine si riporta come TERMINE, non anche come nome di repo"
 git -C "$TMP" rm -q --cached SuperSegretoAziendale.md
 
+# (2026-09-24, quarto ventaglio, Q5 R5): `grep -F` era case-SENSITIVE — il nome scritto in MAIUSCOLO passava il
+# check (il pre-commit lo vedeva, perche' lui e' -i). Stessa regola nei due.
+printf 'contattare FORNITORERISERVATO\n' > "$TMP/nota-maiuscola.txt" && git -C "$TMP" add nota-maiuscola.txt
+OUT=$(HOME="$TMP/casa" bash "$TMP/tools/privacy-check.sh" 2>&1)
+grep -c 'nota-maiuscola.txt' <<<"$OUT" >/dev/null && ok "nome della lista in MAIUSCOLO: visto (grep senza badare al caso)" || ko "nome in maiuscolo non visto: $(tail -2 <<<"$OUT")"
+git -C "$TMP" rm -q --cached nota-maiuscola.txt
+
 # (2026-09-24, quarto ventaglio, Q5 R2, caso A2): un token committato e poi tolto nel commit dopo — la
 # storia sull'hub pubblico lo porta ancora, e privacy-check (che guardava solo i file di oggi) diceva
 # pulito. Le forme di CREDENZIALE si cercano anche nella storia; i dati di contatto no (la storia e'

@@ -95,7 +95,8 @@ scan_termine() {
   local termine="$1" etichetta="$2"
   [ -z "$termine" ] && return 0
   local FILES HIST MSG ALL
-  FILES=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$termine" 2>/dev/null) | grep -v "repos.key" || true)
+  # (2026-09-24, Q5 R5): -i — il nome in MAIUSCOLO passava qui e non nel pre-commit (che e' -i)
+  FILES=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F "$termine" 2>/dev/null) | grep -v "repos.key" || true)
   HIST=$( (cd "$HERE" && git log --all --oneline -S"$termine" -- . 2>/dev/null) | sed 's/^/storia: /' || true)
   MSG=$( (cd "$HERE" && git log --all --oneline --grep="$termine" -F 2>/dev/null) | sed 's/^/messaggio: /' || true)
   ALL=$(printf '%s\n%s\n%s\n' "$FILES" "$HIST" "$MSG" | grep -v '^$' || true)
@@ -141,7 +142,7 @@ if [ -s "$NOMI_LOCALI" ]; then
   # non oblio. Il tripwire e' per cio' che entra ADESSO.
   while IFS= read -r n || [ -n "$n" ]; do
     case "$n" in \#*|"") continue ;; esac
-    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -F "$n" 2>/dev/null) | grep -v "repos.key" || true)
+    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F "$n" 2>/dev/null) | grep -v "repos.key" || true)
     if [ -n "$FILES_N" ]; then
       maschera "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
       maschera "$(head -5 <<<"$FILES_N")" >&2

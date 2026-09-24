@@ -185,12 +185,15 @@ if [ -f "$HOME/.privacy-nomi" ]; then
     # delle entita' (es. le estensioni del gruppo) sono FATTI, rinominarli mentirebbe
     # sulla documentazione. La prosa nei report resta protetta.
     case "$f" in docs/bc/*) continue;; esac
+    # (2026-09-24, quarto ventaglio, Q5 R5): si guardavano solo i .md — un nome in uno script o in un .txt
+    # passava. Ora ogni file di TESTO in stage (i binari fuori), e il nome nell'uscita e' la sua impronta.
+    indice "$f" | grep -Ic . >/dev/null || continue   # -c legge tutto: niente SIGPIPE sotto pipefail (E-002)
     CONTENUTO=$(indice "$f")
     while IFS= read -r nome; do
       [ -n "$nome" ] || continue
-      grep -qi -- "$nome" <<<"$CONTENUTO" && LEAK="$LEAK\n  $f contiene '$nome'"
+      grep -qiF -- "$nome" <<<"$CONTENUTO" && LEAK="$LEAK\n  $f contiene «nome $(printf '%s' "$nome" | { shasum -a 256 2>/dev/null || sha256sum; } | cut -c1-8) · ${#nome} caratteri»"
     done < "$HOME/.privacy-nomi"
-  done < <(staged | grep -E '\.md$' || true)
+  done < <(staged --diff-filter=ACMR || true)
   if [ -n "$LEAK" ]; then
     echo "⛔ nomi veri in file in committa (repo pubblica, lavoro privato):$LEAK"
     echo "   anonimizza (codici REPO-*, [partner], [operatore]) oppure rimuovi il nome da ~/.privacy-nomi SE e' pubblico per contratto"
