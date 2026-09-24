@@ -74,6 +74,20 @@ OUT5=$(cd "$SB5" && bash "$GARANTE" 2>&1)
   && ok "settings.json proprio: avviso e nessuna modifica (prima il garante lo sovrascriveva)" \
   || ko "settings.json proprio: toccato o avviso assente — $(head -1 <<<"$OUT5")"
 
+# (2026-09-24, notte dei giri, T1#2): una repo installata con i guardiani del commit presenti ma SPENTI
+# (core.hooksPath non impostato): il garante lo dice, col comando — non li accende da se' (D13:
+# l'attivazione resta una scelta di chi lavora sulla repo).
+SP=$(mktemp -d); git -C "$SP" init -q; mkdir -p "$SP/.githooks" "$SP/.claude/skills/gas-sviluppo/references"
+echo '{"hooks":{"SessionStart":[{"hooks":[{"command":"x"}]}]}}' > "$SP/.claude/settings.json"
+cp "$HERE/.claude/skills/gas-sviluppo/references/metodo.md" "$SP/.claude/skills/gas-sviluppo/references/"
+OUT6=$(cd "$SP" && CLAUDE_PROJECT_DIR="$SP" bash "$GARANTE" 2>&1)
+grep -c "core.hooksPath .githooks" <<<"$OUT6" >/dev/null && [ -z "$(git -C "$SP" config core.hooksPath)" ] \
+  && ok "guardiani presenti ma spenti: il garante lo dice (col comando) e non li accende da se'" || ko "guardiani spenti taciuti: «$OUT6»"
+git -C "$SP" config core.hooksPath .githooks
+OUT7=$(cd "$SP" && CLAUDE_PROJECT_DIR="$SP" bash "$GARANTE" 2>&1)
+[ -z "$OUT7" ] && ok "guardiani accesi: silenzio" || ko "falso allarme coi guardiani accesi: «$OUT7»"
+rm -rf "$SP"
+
 # (2026-09-24, notte dei giri, T1#5): la COPIA del garante che vive in un satellite (ce la porta
 # tools/installa-citati.sh) prendeva il satellite per l'hub, perche' ha .claude/skills: dentro il
 # satellite taceva («sono l'hub»), e su un'altra repo installava dal satellite — che non ha

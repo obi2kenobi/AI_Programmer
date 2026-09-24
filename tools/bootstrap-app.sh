@@ -152,6 +152,10 @@ else
   git add -A
   git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
   gh repo create "$NAME" $VIS --source . --push -q
+  # (2026-09-24, notte dei giri, T1#2): i guardiani del commit arrivano con lo standard ma core.hooksPath
+  # non viaggia col clone. Nella copia che crea lui, il bootstrap li accende — DOPO il primo commit e
+  # push (lo stesso gesto di night-shift/install.sh per l'hub). Negli altri cloni lo ricorda il garante.
+  git config core.hooksPath .githooks && echo "guardiani del commit accesi (core.hooksPath .githooks)"
 fi
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
 

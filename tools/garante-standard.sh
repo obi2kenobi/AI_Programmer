@@ -47,6 +47,12 @@ if [ -f "$CWD/.claude/settings.json" ]; then
       echo "⚠ AI_Programmer: il metodo installato qui DIVERGE da quello dell'hub (regole nuove mancate)." >&2
       echo "  per aggiornare: bash $HUB/tools/sync-repo.sh --standard (dall'hub, scelta consapevole)" >&2
     fi
+    # (2026-09-24, notte dei giri, T1#2): i guardiani del commit arrivano con lo standard, ma
+    # core.hooksPath e' configurazione LOCALE (non viaggia col clone): spenti, il pre-commit che il
+    # CLAUDE.md cita non gira. Si dice, col comando; accenderli resta una scelta (D13).
+    if [ -d "$CWD/.githooks" ] && [ "$(git -C "$CWD" config core.hooksPath 2>/dev/null)" != ".githooks" ]; then
+      echo "⚠ AI_Programmer: i guardiani del commit (.githooks) qui sono SPENTI — per accenderli: git config core.hooksPath .githooks" >&2
+    fi
     exit 0
   fi
 fi

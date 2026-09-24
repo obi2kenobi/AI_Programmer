@@ -47,6 +47,11 @@ D="$TMP/home/night-shift-work/prova-vera"
 grep -q '^repo create prova-vera --private' "$TMP/gh.log" && ok "vero: gh repo create chiamato, privata" || ko "vero: repo create assente o non privata: $(grep '^repo' "$TMP/gh.log")"
 grep -q '^label create night-shift' "$TMP/gh.log" && ok "vero: la label night-shift si crea" || ko "vero: label non creata"
 grep -q '^tester/prova-vera feat$' "$TMP/repos.conf" && ok "vero: iscritta nella coda (NIGHT_REPOS_CONF)" || ko "vero: non iscritta nella coda di prova"
+# (2026-09-24, notte dei giri, T1#2): i guardiani del commit (.githooks) arrivavano nel satellite ma
+# spenti — nessuno impostava core.hooksPath, e il CLAUDE.md del satellite parla del pre-commit come
+# se girasse. Il bootstrap li accende nella copia che crea lui (come night-shift/install.sh per l'hub).
+[ "$(git -C "$D" config core.hooksPath 2>/dev/null)" = ".githooks" ] && ok "vero: i guardiani del commit sono accesi (core.hooksPath)" \
+  || ko "vero: guardiani del commit spenti (core.hooksPath='$(git -C "$D" config core.hooksPath 2>/dev/null)')"
 # Q15 (2026-09-23, giro A8): il CLAUDE.md che il satellite riceve CITA strumenti e file (il settimo
 # patto: `bash tools/debiti-riapertura.sh`; il registro errori con la sua guardia; il formato del
 # report di campo) — e il bootstrap non li portava: 43 citazioni su 62 al nulla, lo stesso difetto

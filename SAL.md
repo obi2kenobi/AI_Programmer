@@ -3984,3 +3984,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `copia-hook.sh`: niente CLAUDE.md, niente hook. Ora l'hub è la cartella che ha ciò che il garante
   usa (`e_hub`). Banco `tests/test-garante-standard.sh`: rosso prima, rosso al sabotaggio. (T1 è
   rifatto da capo in questa sessione: il rapporto grezzo è andato perso con E-044.)
+- **T1#2 — i guardiani del commit arrivavano nei satelliti spenti.** `.githooks/` e
+  `tools/pre-commit.sh` viaggiano con lo standard (D13), ma `core.hooksPath` è configurazione locale
+  e non viaggia col clone. Nessuno lo impostava, e il CLAUDE.md del satellite parla del pre-commit come
+  se girasse. Provato prima di toccare niente: in un satellite costruito da zero il pre-commit regge
+  (commit passato, rc 0), quindi accenderlo non blocca il lavoro. Ora `tools/bootstrap-app.sh` lo
+  accende nella copia che crea, dopo il primo push. `tools/garante-standard.sh` dice «spenti», col
+  comando, nelle repo installate dove non lo sono, e non li accende da sé: D13 lascia la scelta a chi
+  lavora. Banchi in `tests/test-bootstrap-app-e2e.sh` e `tests/test-garante-standard.sh`: 1+1 rossi
+  prima, 1+1 al sabotaggio.
