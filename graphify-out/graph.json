@@ -17,54 +17,6 @@
       "source_location": "L353"
     },
     {
-      "id": "tools_scadenzario_aging_aggrega_totali",
-      "label": "aggrega_totali()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "code",
-      "norm_label": "aggrega_totali()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L70"
-    },
-    {
-      "id": "tools_scadenzario_aging_fascia_dettaglio",
-      "label": "fascia_dettaglio()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "code",
-      "norm_label": "fascia_dettaglio()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tools_scadenzario_aging_importo_fornitore",
-      "label": "importo_fornitore()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "code",
-      "norm_label": "importo_fornitore()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L65"
-    },
-    {
-      "id": "tools_scadenzario_aging_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L94"
-    },
-    {
       "id": "tools_indici_crisi_crisi_presunta",
       "label": "crisi_presunta()",
       "_callable": true,
@@ -118,7 +70,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "catalogo_mancanti()",
       "source_file": "tools/bc_index.py",
@@ -130,7 +82,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_index.py",
@@ -142,7 +94,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "parse()",
       "source_file": "tools/bc_index.py",
@@ -154,11 +106,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L31"
+    },
+    {
+      "id": "tools_verifica_banco_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "re",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L34"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -171,30 +135,6 @@
       "norm_label": "main()",
       "source_file": "tools/bilancio_bu.py",
       "source_location": "L36"
-    },
-    {
-      "id": "tools_rating_dso_clienti_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_rating_dso_clienti_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L43"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -221,12 +161,60 @@
       "source_location": "L60"
     },
     {
+      "id": "tools_scadenzario_aging_aggrega_totali",
+      "label": "aggrega_totali()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "aggrega_totali()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L70"
+    },
+    {
+      "id": "tools_scadenzario_aging_fascia_dettaglio",
+      "label": "fascia_dettaglio()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "fascia_dettaglio()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "tools_scadenzario_aging_importo_fornitore",
+      "label": "importo_fornitore()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "importo_fornitore()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L65"
+    },
+    {
+      "id": "tools_scadenzario_aging_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L94"
+    },
+    {
       "id": "tools_margine_documento_leggi_csv",
       "label": "leggi_csv()",
       "_callable": true,
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/margine_documento.py",
@@ -238,7 +226,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
@@ -250,23 +238,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/margine_documento.py",
       "source_location": "L40"
-    },
-    {
-      "id": "tools_verifica_banco_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L34"
     },
     {
       "id": "tools_e002_siti_dentro_virgolette",
@@ -327,6 +303,30 @@
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L61"
+    },
+    {
+      "id": "tools_rating_dso_clienti_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_rating_dso_clienti_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L43"
     },
     {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
@@ -3521,59 +3521,88 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_scadenzario_aging",
-      "label": "scadenzario_aging.py",
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento",
+      "label": "2026-09-24-quinto/99-CONSOLIDAMENTO.md",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "code",
-      "norm_label": "scadenzario_aging.py",
-      "source_file": "tools/scadenzario_aging.py",
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-24-quinto/99-consolidamento.md",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
       "source_location": "L1"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_2",
-      "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento_da_fare_a_mano_non_potevo",
+      "label": "Da fare a mano (non potevo)",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "rationale",
-      "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L2"
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "da fare a mano (non potevo)",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L117"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_38",
-      "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento_errori_miei_in_questo_ventaglio",
+      "label": "Errori miei in questo ventaglio",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "rationale",
-      "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38"
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "errori miei in questo ventaglio",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L124"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_71",
-      "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento_esito",
+      "label": "Esito",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "rationale",
-      "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L71"
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "esito",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L13"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_95",
-      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "label": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
       "_origin": "ast",
       "community": 100,
-      "community_name": "scadenzario_aging.py",
-      "file_type": "rationale",
-      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L95"
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento_tassonomia",
+      "label": "Tassonomia",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "tassonomia",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L72"
+    },
+    {
+      "id": "docs_giri_2026_09_24_quinto_99_consolidamento_temi_trasversali",
+      "label": "Temi trasversali",
+      "_origin": "ast",
+      "community": 100,
+      "community_name": "Quinto ventaglio \u2014 consolidamento (2026-09-24)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "temi trasversali",
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L36"
     },
     {
       "id": "claude_skills_lavoro_condiviso_skill",
@@ -11803,7 +11832,7 @@
       "label": "bc_index.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "bc_index.py",
       "source_file": "tools/bc_index.py",
@@ -11814,10 +11843,21 @@
       "label": "bc_tipi_metadata.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "code",
       "norm_label": "bc_tipi_metadata.py",
       "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_verifica_banco",
+      "label": "verifica_banco.py",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "re",
+      "file_type": "code",
+      "norm_label": "verifica_banco.py",
+      "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
     },
     {
@@ -11825,7 +11865,7 @@
       "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "severita media (15)",
@@ -11837,7 +11877,7 @@
       "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
       "source_file": "tools/bc_index.py",
@@ -11848,7 +11888,7 @@
       "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
       "source_file": "tools/bc_index.py",
@@ -11859,7 +11899,7 @@
       "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
       "source_file": "tools/bc_index.py",
@@ -11870,7 +11910,7 @@
       "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
       "source_file": "tools/bc_index.py",
@@ -11881,7 +11921,7 @@
       "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
       "source_file": "tools/bc_tipi_metadata.py",
@@ -11892,11 +11932,33 @@
       "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "file_type": "rationale",
       "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L32"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_2",
+      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "re",
+      "file_type": "rationale",
+      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_35",
+      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
+      "_origin": "ast",
+      "community": 174,
+      "community_name": "re",
+      "file_type": "rationale",
+      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L35"
     },
     {
       "id": "opencode_skills_allineamento_fork_skill",
@@ -15614,21 +15676,6 @@
       "source_location": "L88"
     },
     {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "eta_secondi()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L643"
-    },
-    {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
       "_origin": "ast",
@@ -15642,6 +15689,21 @@
       "norm_label": "funzione_definita_e_chiamata()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L138"
+    },
+    {
+      "id": "night_shift_lib_gate_allowlist_ok",
+      "label": "gate_allowlist_ok()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gate_allowlist_ok()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L158"
     },
     {
       "id": "night_shift_lib_gate_banchi",
@@ -15687,21 +15749,6 @@
       "norm_label": "mask_secrets()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L307"
-    },
-    {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
-      "_origin": "ast",
-      "community": 209,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mtime()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L28"
     },
     {
       "id": "night_shift_lib_rami_da_scopare",
@@ -15779,6 +15826,21 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_verifica_issue_comando",
+      "label": "verifica_issue_comando()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "verifica_issue_comando()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L478"
+    },
+    {
       "id": "night_shift_morning_gate",
       "label": "morning-gate.sh",
       "_origin": "ast",
@@ -15839,6 +15901,96 @@
       "source_location": "L195"
     },
     {
+      "id": "tests_test_lib",
+      "label": "test-lib.sh",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-lib.sh",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib_check",
+      "label": "check()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_lib_g",
+      "label": "g()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L254"
+    },
+    {
+      "id": "tests_test_lib_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_lib_lock_da_altro",
+      "label": "lock_da_altro()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_da_altro()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L361"
+    },
+    {
+      "id": "tests_test_lib_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L14"
+    },
+    {
       "id": "tests_test_lib_sh__entry",
       "label": "test-lib.sh script",
       "_origin": "ast",
@@ -15852,6 +16004,21 @@
       "norm_label": "test-lib.sh script",
       "source_file": "tests/test-lib.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lib_vi",
+      "label": "vi()",
+      "_origin": "ast",
+      "community": 209,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "vi()",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L340"
     },
     {
       "id": "docs_campo_2026_09_19_repo_i_standard_cinquanta_giri_correzioni",
@@ -19951,17 +20118,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_riconciliazione_magazzino",
       "label": "riconciliazione_magazzino.py",
       "_origin": "ast",
@@ -19970,6 +20126,17 @@
       "file_type": "code",
       "norm_label": "riconciliazione_magazzino.py",
       "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_scadenzario_aging",
+      "label": "scadenzario_aging.py",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "scadenzario_aging.py",
+      "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
@@ -19993,28 +20160,6 @@
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
       "source_location": "L37"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_48",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -20050,25 +20195,103 @@
       "source_location": "L61"
     },
     {
+      "id": "tools_scadenzario_aging_rationale_2",
+      "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_38",
+      "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L38"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_71",
+      "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L71"
+    },
+    {
+      "id": "tools_scadenzario_aging_rationale_95",
+      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L95"
+    },
+    {
+      "id": "tools_grafo_semantico",
+      "label": "grafo-semantico.sh",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "grafo-semantico.sh",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_grafo_semantico_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L18"
+    },
+    {
+      "id": "tools_grafo_semantico_sh__entry",
+      "label": "grafo-semantico.sh script",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "grafo-semantico.sh script",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_margine_documento",
       "label": "margine_documento.py",
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "code",
       "norm_label": "margine_documento.py",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_verifica_banco",
-      "label": "verifica_banco.py",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "verifica_banco.py",
-      "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
     },
     {
@@ -20076,7 +20299,7 @@
       "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "rationale",
       "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
       "source_file": "tools/margine_documento.py",
@@ -20087,7 +20310,7 @@
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/margine_documento.py",
@@ -20098,33 +20321,11 @@
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 254,
-      "community_name": "re",
+      "community_name": "margine_documento.py",
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
       "source_location": "L74"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_2",
-      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_35",
-      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
-      "_origin": "ast",
-      "community": 254,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L35"
     },
     {
       "id": "tests_test_campo_triage",
@@ -29801,6 +30002,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "code",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_rollforward_cespiti",
       "label": "rollforward_cespiti.py",
       "_origin": "ast",
@@ -29843,6 +30055,28 @@
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L62"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
+    },
+    {
+      "id": "tools_rating_dso_clienti_rationale_48",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "json",
+      "file_type": "rationale",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L48"
     },
     {
       "id": "tools_rollforward_cespiti_rationale_2",
@@ -45052,6 +45286,18 @@
       "source_location": "L67"
     },
     {
+      "id": "docs_campo_2026_09_24_notte_dei_giri_aggiornamento_2026_09_24_quinto_ventaglio_fino_alle_19z",
+      "label": "Aggiornamento (2026-09-24, quinto ventaglio, fino alle 19Z)",
+      "_origin": "ast",
+      "community": 724,
+      "community_name": "2026-09-24 \u2014 la notte dei giri (hub AI_Programmer, due ventagli di lenti)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "aggiornamento (2026-09-24, quinto ventaglio, fino alle 19z)",
+      "source_file": "docs/campo/2026-09-24-notte-dei-giri.md",
+      "source_location": "L82"
+    },
+    {
       "id": "docs_campo_2026_09_24_notte_dei_giri_aggiornamento_2026_09_24_ripresa_della_sessione_alle_05_29z",
       "label": "Aggiornamento (2026-09-24, ripresa della sessione alle 05:29Z)",
       "_origin": "ast",
@@ -45904,51 +46150,6 @@
       },
       "norm_label": "test-leggi-coda.sh script",
       "source_file": "tests/test-leggi-coda.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico",
-      "label": "grafo-semantico.sh",
-      "_origin": "ast",
-      "community": 735,
-      "community_name": "test-leggi-coda.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "grafo-semantico.sh",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 735,
-      "community_name": "test-leggi-coda.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L18"
-    },
-    {
-      "id": "tools_grafo_semantico_sh__entry",
-      "label": "grafo-semantico.sh script",
-      "_origin": "ast",
-      "community": 735,
-      "community_name": "test-leggi-coda.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "grafo-semantico.sh script",
-      "source_file": "tools/grafo-semantico.sh",
       "source_location": "L1"
     },
     {
@@ -47419,11 +47620,41 @@
       "source_location": "L1"
     },
     {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 744,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L643"
+    },
+    {
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
+      "_origin": "ast",
+      "community": 744,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L28"
+    },
+    {
       "id": "tests_test_portabilita",
       "label": "test-portabilita.sh",
       "_origin": "ast",
       "community": 744,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47438,7 +47669,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 744,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47453,7 +47684,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 744,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47468,7 +47699,7 @@
       "label": "righe_con()",
       "_origin": "ast",
       "community": 744,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47483,7 +47714,7 @@
       "label": "test-portabilita.sh script",
       "_origin": "ast",
       "community": 744,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47738,41 +47969,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_gate_allowlist_ok",
-      "label": "gate_allowlist_ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gate_allowlist_ok()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L158"
-    },
-    {
-      "id": "night_shift_lib_verifica_issue_comando",
-      "label": "verifica_issue_comando()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "verifica_issue_comando()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L478"
-    },
-    {
       "id": "tests_test_banco_prompt_allowlist_sync",
       "label": "test-banco-prompt-allowlist-sync.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-lib.sh",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47787,7 +47988,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-lib.sh",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47802,7 +48003,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-lib.sh",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47817,7 +48018,7 @@
       "label": "test-banco-prompt-allowlist-sync.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "test-lib.sh",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47826,111 +48027,6 @@
       "norm_label": "test-banco-prompt-allowlist-sync.sh script",
       "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lib",
-      "label": "test-lib.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-lib.sh",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lib_check",
-      "label": "check()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_lib_g",
-      "label": "g()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "g()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L254"
-    },
-    {
-      "id": "tests_test_lib_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_lib_lock_da_altro",
-      "label": "lock_da_altro()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_da_altro()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L361"
-    },
-    {
-      "id": "tests_test_lib_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_lib_vi",
-      "label": "vi()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "vi()",
-      "source_file": "tests/test-lib.sh",
-      "source_location": "L340"
     },
     {
       "id": "night_shift_lib_aggiungi_consegna",
@@ -51176,7 +51272,7 @@
       "label": "glob",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "external": true,
       "file_type": "concept",
       "norm_label": "glob",
@@ -51188,7 +51284,7 @@
       "label": "importlib_util",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "external": true,
       "file_type": "concept",
       "norm_label": "importlib_util",
@@ -51200,10 +51296,22 @@
       "label": "os",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "external": true,
       "file_type": "concept",
       "norm_label": "os",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "re",
+      "label": "re",
+      "_origin": "semantic",
+      "community": 174,
+      "community_name": "re",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -51212,7 +51320,7 @@
       "label": "urllib_request",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_request",
@@ -51224,7 +51332,7 @@
       "label": "xml_etree_elementtree",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "re",
       "external": true,
       "file_type": "concept",
       "norm_label": "xml_etree_elementtree",
@@ -51252,18 +51360,6 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "sys",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "re",
-      "label": "re",
-      "_origin": "semantic",
-      "community": 254,
-      "community_name": "re",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -73569,6 +73665,17 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_09_24_notte_dei_giri_2026_09_24_la_notte_dei_giri_hub_ai_programmer_due_ventagli_di_lenti",
+      "target": "docs_campo_2026_09_24_notte_dei_giri_aggiornamento_2026_09_24_quinto_ventaglio_fino_alle_19z",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-24-notte-dei-giri.md",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_readme",
       "target": "docs_campo_readme_report_dal_campo_come_si_\u00e8_comportato_ai_programmer_a_ogni_uso",
       "relation": "contains",
@@ -74677,6 +74784,72 @@
       "confidence_score": 1.0,
       "source_file": "docs/giri/2026-09-24-quinto/00-BRIEF.md",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_quinto_99_consolidamento",
+      "target": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_quinto_99_consolidamento_da_fare_a_mano_non_potevo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_quinto_99_consolidamento_errori_miei_in_questo_ventaglio",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_quinto_99_consolidamento_esito",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_quinto_99_consolidamento_temi_trasversali",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_giri_2026_09_24_quinto_99_consolidamento_quinto_ventaglio_consolidamento_2026_09_24",
+      "target": "docs_giri_2026_09_24_quinto_99_consolidamento_tassonomia",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -97330,5 +97503,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "4794de0639ea4c75e071d7893dac57730b862d09"
+  "built_at_commit": "ac4d52285003ed0d2ae81268220be9f936ea0e40"
 }

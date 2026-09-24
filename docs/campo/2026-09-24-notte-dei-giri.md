@@ -78,3 +78,20 @@
     (`"$(…)"`, `<(…)`, `trap`) e sulla conferma con `grep -rn` prima di dire morta una funzione (Q4 R1).
   - CLAUDE.md §2 «Deploy is the human's»: il gancio nega anche quando muore (modo prudente). È una
     proprietà da pretendere da ogni guardiano, non solo da questo.
+
+## Aggiornamento (2026-09-24, quinto ventaglio, fino alle 19Z)
+- Usato: cinque lenti nuove (la memoria, il satellite end-to-end, gli oracoli come strumenti, i
+  consumatori dei log, giorno e notte sulla stessa repo). Consolidamento in
+  `docs/giri/2026-09-24-quinto/99-CONSOLIDAMENTO.md`: 30 rilievi, 29 curati (4 in parte), 1 escluso, otto
+  domande di dominio nuove in DEBITI. In mezzo, un merge di main che ha portato tre difetti, curati nel merge.
+- Ha retto: il settimo patto, ora che conta le righe. Chi riapre vede 14 domande di dominio invece di una,
+  più tre saldati con un residuo ⏳ e il conto delle citazioni scivolate (9 su 10).
+- Ha ostacolato, per colpa mia: un `cp` sopra un file che non avevo letto (E-048, con la guardia). Poi il mio
+  aiuto di consegna, che su un rosso faceva `git reset` anche durante un merge.
+- Proposte al canone (non applicate):
+  - CLAUDE.md §7, la frase sul grafo («versioned, merge driver `merge=graphify`»): aggiungere «il driver
+    vive in `.git/config` e lo registra la spina; un clone nuovo o il bottone di GitHub non lo conoscono»
+    (R5 R4).
+  - CLAUDE.md §1 «Before deleting or overwriting, look at the target» ha retto come regola, ma non come
+    abitudine: è E-048. Proposta per la skill `post-mortem` o per §2: «un `cp` sopra un file tracciato si fa
+    solo dopo averne letto la testa».
