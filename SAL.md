@@ -4374,3 +4374,21 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-graphify-spina.sh` ha due controlli nuovi: rosso prima (2 FAIL), verde ora (18/0).
   Sabotaggio: con la vecchia riga d'avvio torna rosso (17/1). Proposta a CLAUDE.md §7, non applicata:
   la stessa frase accanto a «trust the graph for orientation».
+- **Quarto ventaglio, Q5 R1 — l'allowlist di sola lettura si scavalcava con un a capo.** Il giro Q5
+  l'ha provato eseguendo, in un progetto finto con un segreto sintetico nella cartella sopra. Tre vie
+  aperte in `gate_allowlist_ok` (`night-shift/lib.sh`):
+  - un A CAPO separa i comandi per la shell ma non per `split_operators`: la seconda riga girava senza
+    esame, e in `night-shift/agente.sh` passa da un `eval` senza sandbox su Linux;
+  - il `..` si scriveva senza scriverlo: `.{.,}/`, `'.''.'/`, `\../` e `"."."/` sono ricomposti dalla
+    shell, e leggevano il file fuori dal progetto;
+  - `jq -n env` e `jq -n '$ENV'` leggevano l'ambiente, cioè il caso T5#2 riaperto senza un `$`.
+
+  Ora si rifiuta:
+  - qualunque carattere di controllo;
+  - le graffe di espansione fuori dalle virgolette (una regex fra virgolette resta un dato);
+  - un token che, tolti tutti gli apici e i backslash, esce dal progetto;
+  - `env`, `$ENV` e `input_filename` in jq.
+
+  `tests/test-lib.sh` ha 11 casi nuovi: 9 rossi prima, verde ora (150/0), e i due legittimi (`jq -s
+  length`, `grep -cE "a{2}"`) passano. Sabotaggio: senza il rifiuto dei caratteri di controllo, rosso
+  (147/3). Verdi anche i banchi fratelli: agente, revisore, gate-tools.

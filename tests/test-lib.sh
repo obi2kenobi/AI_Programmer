@@ -57,6 +57,21 @@ check "git diff --ext (abbreviata)" 1 'git diff --ext HEAD~1'
 check "git config (scrive la config)" 1 'git config core.fsmonitor "touch x"'
 check "git -c (config da riga di comando)" 1 'git -c core.fsmonitor=touch status'
 check "git --config-env"            1 'git --config-env=core.pager=X status'
+# (2026-09-24, quarto ventaglio, Q5 R1): tre vie ancora aperte, provate eseguendo dal giro — un A CAPO
+# separa i comandi ma non i segmenti (la seconda riga girava senza esame, in agente.sh con eval); il `..`
+# si scriveva senza scriverlo (apici, backslash, graffe: la shell lo ricompone); `jq env` leggeva
+# l'ambiente senza un `$` (il caso T5#2 riaperto).
+check "a capo: seconda riga python3"   1 $'echo ok\npython3 -c "print(42)"'
+check "a capo: seconda riga touch"     1 $'grep x f.txt\ntouch scritto'
+check "carattere di controllo (CR)"    1 $'grep x f.txt\rtouch scritto'
+check "graffe che fanno ..: .{.,}/"    1 'cat .{.,}/fuori.txt'
+check "apici che fanno ..: '.''.'/"   1 "cat '.''.'/fuori.txt"
+check "backslash che fa ..: \\../"      1 'cat \../fuori.txt'
+check "virgolette che fanno ..: \".\".\"/\"" 1 'cat "."."/fuori.txt"'
+check "jq env (l'ambiente senza \$)"    1 'jq -n env.QUALCOSA'
+check "jq '\$ENV' fra apici singoli"   1 "jq -n '\$ENV'"
+check "jq -s length (legittimo)"       0 'jq -s length out.json'
+check "grep di una regex con graffe (legittimo)" 0 'grep -cE "a{2}" f.txt'
 check "git log --textc (abbreviata)" 1 'git log --textc -p'
 check "git grep -i -e (legittimo)"  0 'git grep -i -e foo'
 check "git log --oneline (legittimo)" 0 'git log --oneline -3'

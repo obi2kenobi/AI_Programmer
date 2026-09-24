@@ -166,6 +166,25 @@ cmd = sys.argv[1]
 # avversariale, non un interprete shell general-purpose).
 if "$(" in cmd or "`" in cmd or "<(" in cmd or ">(" in cmd:
     sys.exit(1)
+# (2026-09-24, quarto ventaglio, Q5 R1): un A CAPO separa i comandi per la shell ma non per
+# split_operators — `grep x f<a capo>touch …` faceva girare la seconda riga senza esame (in agente.sh,
+# con eval). Un comando del banco sta su una riga: qualunque carattere di controllo si rifiuta.
+if re.search(r"[\x00-\x1f\x7f]", cmd):
+    sys.exit(1)
+# (Q5 R1): l'espansione delle graffe (`.{.,}/` diventa `../`) si rifiuta fuori dalle virgolette; una
+# regex fra virgolette (`grep -E "a{2}"`) resta un dato
+def fuori_dalle_virgolette(c):
+    out, q = [], None
+    for ch in c:
+        if q:
+            if ch == q: q = None
+        elif ch in "\"'":
+            q = ch
+        else:
+            out.append(ch)
+    return "".join(out)
+if re.search(r"\{[^}]*(,|\.\.)[^}]*\}", fuori_dalle_virgolette(cmd)):
+    sys.exit(1)
 # le sole redirezioni ammesse: verso /dev/null e 2>&1 (non scrivono niente) — tolte PRIMA del
 # controllo sulle redirezioni in split_operators (revisione 10 giri)
 cmd = re.sub(r"(?<![\w&])[12]?>>?\s*/dev/null", " ", cmd).replace("2>&1", " ")
@@ -214,7 +233,9 @@ def fuori_dagli_apici_singoli(c):
 if fuori_dagli_apici_singoli(cmd):
     sys.exit(1)
 def fuori_dal_progetto(tok):
-    t = tok.strip("\"'")
+    # (Q5 R1): apici e backslash si tolgono TUTTI, non solo ai bordi — `'.''.'/`, `\../` e `"."."/`
+    # la shell li ricompone in `../`
+    t = re.sub(r"[\"'\\]", "", tok)
     for v in (t, t.split("=", 1)[1] if "=" in t else ""):
         v = v.strip("\"'")
         if v.startswith(("/", "~")) or re.search(r"(^|/)\.\.(/|$)", v):
@@ -234,6 +255,10 @@ for seg in split_operators(cmd):
     if tokens[0] not in ALLOWED:
         sys.exit(1)
     if any(fuori_dal_progetto(t) for t in tokens[1:]):
+        sys.exit(1)
+    # (Q5 R1): jq ha il builtin `env` e `$ENV` — l'ambiente (le chiavi comprese) senza scrivere un `$`
+    # fuori dagli apici singoli
+    if tokens[0] == "jq" and re.search(r"\benv\b|\$ENV|input_filename|\$__loc__", seg):
         sys.exit(1)
     if tokens[0] == "git":
         sub = tokens[1] if len(tokens) > 1 else ""
