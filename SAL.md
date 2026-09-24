@@ -4172,3 +4172,11 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   esclude. Banco nuovo `tests/test-verifica-visiva-prima.sh`, con un Chromium finto via
   CHROME_PATH: era rosso prima (3 FAIL), ora è verde (4/0). Sabotaggio: senza la chiamata torna
   rosso (2/2).
+- **Terzo ventaglio, V3#6 — nella ricetta della densità il filtro dei commenti non filtrava niente.**
+  Il passo 2 di `.claude/skills/selezione-contesto/SKILL.md` §3bis era `grep -nE … | grep -v "^\s*//"`.
+  Con `-n` e più file, ogni riga comincia con `file:N:`, quindi il filtro non combaciava mai. I
+  commenti contavano come aritmetica di dominio e la densità gonfiata spingeva verso l'oracolo.
+  Ora il passo è `grep -hE … | grep -vE '^[[:space:]]*//' | wc -l`: `-h` toglie il prefisso e la
+  classe POSIX vale anche col grep del Mac. Banco nuovo `tests/test-selezione-contesto-densita.sh`: estrae il
+  comando dalla skill e lo lancia su un progetto di prova (due commenti, una riga di aritmetica).
+  Era rosso prima (3 righe contate), ora è verde (1). Sabotaggio: rimesso `-n`, torna rosso (3).
