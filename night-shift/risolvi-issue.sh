@@ -93,7 +93,12 @@ Write the test:"
 }
 
 # --- 1. individua i file da leggere (dal Territorio dell'issue, o tutti i .gs/.js) ---
-TERRitorio=$(sed -n '/^## Territorio/,/^## /p' "$ISSUE" | grep -oE '[a-zA-Z0-9_/.-]+\.(gs|js|html|py)' | sort -u | head -5)
+# (2026-09-24, sesto ventaglio, S3 R3): l'estrazione non ammetteva lo spazio — «Codice Principale.gs» diventava
+# «Principale.gs», che non esiste, e si saltava in silenzio. Un percorso fra backtick si prende intero; se non ce ne
+# sono, la forma senza spazi di prima.
+SEZ_TERR=$(sed -n '/^## Territorio/,/^## /p' "$ISSUE")
+TERRitorio=$(grep -oE '`[^`]+\.(gs|js|html|py)`' <<<"$SEZ_TERR" | tr -d '`' | sort -u | head -5)
+[ -n "$TERRitorio" ] || TERRitorio=$(grep -oE '[a-zA-Z0-9_/.-]+\.(gs|js|html|py)' <<<"$SEZ_TERR" | sort -u | head -5)
 if [ -z "$TERRitorio" ]; then
   # fallback: i file più piccoli del progetto (il territorio piccolo è quello fattibile)
   TERRitorio=$(find "$DIR" -type f \( -name '*.gs' -o -name '*.js' \) -size -50k | sort | head -3)
@@ -113,7 +118,10 @@ dentro_il_progetto() {
 }
 
 FILES_CONTENT=""
-for F in $TERRitorio; do
+N_LETTI=0
+# (S3 R3): era `for F in $TERRitorio` — un percorso con lo spazio (anche quelli del ripiego find) si spezzava
+while IFS= read -r F; do
+  [ -n "$F" ] || continue
   # il chiamante (night-shift.sh) NON cd-a dentro $DIR: i percorsi del Territorio
   # vanno risolti contro $DIR, non contro la CWD di chi lancia (bug colto dal test
   # di suite 2026-09-04: i 20 test manuali giravano da dentro la dir e non lo vedevano)
@@ -133,11 +141,19 @@ for F in $TERRitorio; do
   CORPO=$(head -c 24000 "$F")
   N_CHAR=$(wc -c < "$F" | tr -d ' ')
   if [ "$N_CHAR" -gt 24000 ]; then
-    CORPO="$CORPO\n[... TRONCATO: mostrati i primi 24000 caratteri su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
+    CORPO="$CORPO"$'\n'"[... TRONCATO: mostrati i primi 24000 caratteri su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
     log "⚠ $REL_PATH troncato a 24000/$N_CHAR caratteri (dichiarato nel prompt)"
   fi
-  FILES_CONTENT+="=== FILE: $REL_PATH ===\n$CORPO\n\n"
-done
+  # (S3 R3): gli a capo erano «\n» letterali fra virgolette doppie: il modello leggeva una barra e una n
+  FILES_CONTENT+="=== FILE: $REL_PATH ==="$'\n'"$CORPO"$'\n\n'
+  N_LETTI=$((N_LETTI+1))
+done <<<"$TERRitorio"
+# (S3 R3): nessun file letto = nessun codice da mostrare. Prima il modello riceveva un SOURCE vuoto, alla cieca.
+if [ "$N_LETTI" -eq 0 ]; then
+  log "⛔ nessun file del Territorio letto (${TERRitorio:-nessuno trovato}): il modello non si chiama senza il codice"
+  exit 1
+fi
+log "letti $N_LETTI file (${#FILES_CONTENT} caratteri) per il prompt"
 
 # (set sicurezza G3, 2026-09-07): il limite da 24k valeva per i FILE, non per il corpo
 #  dell'issue: un body gigante gonfiava il prompt senza limite. Stesso patto: troncato

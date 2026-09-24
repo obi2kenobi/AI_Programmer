@@ -7941,7 +7941,7 @@
       },
       "norm_label": "dentro_il_progetto()",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L109"
+      "source_location": "L114"
     },
     {
       "id": "night_shift_risolvi_issue_genera_test",
@@ -39285,7 +39285,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L270"
+      "source_location": "L271"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39297,7 +39297,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L264"
+      "source_location": "L265"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -52571,7 +52571,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L101",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -52583,7 +52583,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L122",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -52595,7 +52595,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L325",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -52607,7 +52607,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L329",
+      "source_location": "L345",
       "weight": 1.0
     },
     {
@@ -64867,7 +64867,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L264",
+      "source_location": "L265",
       "weight": 1.0
     },
     {
@@ -64878,7 +64878,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L270",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -88869,7 +88869,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L109",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -97861,5 +97861,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "502125727fd880da3fed615ccdd4f41059f74c6a"
+  "built_at_commit": "f88c748aa407616f8e2d22acbb33e9ab5cc6eddc"
 }

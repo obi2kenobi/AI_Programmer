@@ -243,6 +243,20 @@ else
   ko "RIFIUTO: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 fi
 
+# --- (2026-09-24, sesto ventaglio, S3 R3): uno spazio nel NOME di un file del Territorio — l'estrazione non ammetteva
+# lo spazio («Codice Principale.gs» diventava «Principale.gs»), il ripiego con find si spezzava nel `for`, ogni pezzo
+# si saltava in silenzio e il modello riceveva un SOURCE vuoto. E gli a capo del prompt erano «\n» letterali.
+SB9=$(mktemp -d /tmp/risolvi-sb9.XXXXXX)
+printf 'function principale() {\n  return 1;\n}\n' > "$SB9/Codice Principale.gs"
+printf '## Commessa\nprincipale deve restituire 2.\n\n## Territorio\nFile: `Codice Principale.gs`\n' > "$SB9/issue.md"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$SOLVER" "$SB9" "$SB9/issue.md" 2>&1)
+grep -c 'letti 1 file' <<<"$OUT" >/dev/null && ok "S3 R3: il file con lo spazio nel nome si legge (letti 1 file)" || ko "S3 R3: file con lo spazio non letto: $(grep -m2 'File da leggere\|letti\|nessun' <<<"$OUT" | tr '\n' ' ')"
+printf '## Commessa\nx\n\n## Territorio\nFile: `non-esiste.gs`\n' > "$SB9/issue2.md"; rm -f "$SB9/Codice Principale.gs"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$SOLVER" "$SB9" "$SB9/issue2.md" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -ci 'nessun file' <<<"$OUT" >/dev/null && ! grep -c 'Chiamando' <<<"$OUT" >/dev/null \
+  && ok "S3 R3: nessun file letto → il modello non si chiama, e lo dice (rc 1)" || ko "S3 R3: SOURCE vuoto mandato al modello (rc $RC): $(grep -m1 'Chiamando\|nessun' <<<"$OUT")"
+rm -rf "$SB9"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

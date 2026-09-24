@@ -5075,3 +5075,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   finto che risponde «healthy», ha avuto «sistema sano». Ora il percorso entra quotato (`printf %q`). Uno strumento
   che non è partito (rc 126 o 127) è una lente MUTA, detta prima di chiamare il modello. Due casi nuovi in
   `tests/test-caccia-lente.sh` (10/0), rossi prima; sabotaggio 8/2.
+- **Sesto ventaglio, S3 R3 — il risolutore mandava al modello un sorgente vuoto, senza dirlo.**
+  `night-shift/risolvi-issue.sh` estraeva il Territorio con una forma senza spazi: «Codice Principale.gs»
+  diventava «Principale.gs», che non esiste. Il ripiego con find si spezzava nel `for`. Ogni pezzo si saltava in
+  silenzio, e il prompt partiva con `=== SOURCE CODE ===` vuoto: il modello risolveva alla cieca. Ora:
+  - un percorso fra backtick si prende intero;
+  - il Territorio si legge una riga per volta;
+  - senza nessun file letto il modello non si chiama (⛔ e rc 1);
+  - il log dice quanti file e quanti caratteri vanno nel prompt.
+
+  Visto passando: gli a capo del prompt erano «\n» letterali fra virgolette doppie, ora sono veri. Se nei GAS veri
+  ci sono file con lo spazio è una domanda (DEBITI). Due casi nuovi in `tests/test-risolvi-issue.sh` (27/0, anche
+  col PATH «Mac»), rossi prima; sabotaggio 25/2.
