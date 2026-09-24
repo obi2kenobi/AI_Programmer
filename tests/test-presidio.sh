@@ -94,6 +94,17 @@ OUT=$(cd "$U/a" && bash tools/presidio.sh lista 2>/dev/null)
   && ok "merge dopo un rilascio: il presidio rilasciato resta chiuso, quello nuovo c'e'" \
   || ko "merge dopo un rilascio (rc=$RC_M): il rilasciato e' risorto o il nuovo e' perso: $OUT"
 
+# (2026-09-24, sesto ventaglio, S2 R6): lo stesso autore sulla stessa zona, due volte, era una «CONTESA» con se'
+# stesso, e `lista` contava due presidii identici. Un secondo claim di chi c'e' gia' e' un RINNOVO.
+rm -f "$HERE/PRESIDI.md"
+PRESIDIO_USER=carla bash "$TOOL" claim diario "prima" >/dev/null 2>&1
+OUTR=$(PRESIDIO_USER=carla bash "$TOOL" claim diario "rinnovo" 2>&1)
+! grep -c CONTESA <<<"$OUTR" >/dev/null && grep -ci 'rinnov' <<<"$OUTR" >/dev/null && ok "S2 R6: il secondo claim della stessa persona e' un rinnovo, non una contesa" || ko "S2 R6: contesa con se' stessi: $OUTR"
+OUTL2=$(bash "$TOOL" lista 2>/dev/null)
+grep -c '== presidii vivi: 1 ==' <<<"$OUTL2" >/dev/null && ok "S2 R6: dopo il rinnovo, un presidio vivo solo" || ko "S2 R6: presidii doppi: $(grep 'vivi' <<<"$OUTL2")"
+OUTD=$(PRESIDIO_USER=dario bash "$TOOL" claim diario "anche io" 2>&1)
+grep -c CONTESA <<<"$OUTD" >/dev/null && ok "S2 R6: un'altra persona sulla stessa zona resta una CONTESA" || ko "S2 R6: la contesa vera non si vede piu'"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

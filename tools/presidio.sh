@@ -54,6 +54,10 @@ vivi() { # $1 = adesso: stampa le righe dei presidii vivi (non scaduti, non chiu
       for (i = n; i >= 1; i--) {
         if (nota[i] == "RILASCIO") { chiuso[k[i]] = 1; continue }
         if ((k[i] in chiuso) || (s[i] != "?" && s[i] < ora)) continue
+        # (2026-09-24, sesto ventaglio, S2 R6): la riga più recente di chi|zona è il presidio; le prime sono
+        # rinnovi superati, non presidii in più (niente apostrofi qui: siamo dentro gli apici della shell)
+        if (k[i] in visto) continue
+        visto[k[i]] = 1
         vivo[i] = 1
       }
       for (i = 1; i <= n; i++) if (i in vivo) print r[i]
@@ -68,6 +72,10 @@ case "${1:-}" in
     SCADE=$(date -v+${ORARIO}H +%Y-%m-%dT%H:%M 2>/dev/null || date -d "+$ORARIO hours" +%Y-%m-%dT%H:%M 2>/dev/null || echo "?")
     # contesa attuale? (presidio vivo di ALTRO sulla stessa zona)
     VIVI=$(vivi "$ADESSO" | grep -F "| $ZONA |" || true)
+    # (S2 R6): lo stesso autore sulla stessa zona era una «CONTESA» con se' stesso — e' un rinnovo
+    MIO=$(grep -F "| $CHI | $ZONA |" <<<"$VIVI" || true)
+    VIVI=$(grep -vF "| $CHI | $ZONA |" <<<"$VIVI" || true)
+    [ -n "$MIO" ] && echo "rinnovo: la tua presenza su '$ZONA' c'era gia' — la scadenza si sposta"
     if [ -n "$VIVI" ]; then
       echo "⚠ CONTESA: sulla zona '$ZONA' c'è già:"; echo "$VIVI"
       echo "  (dichiarato lo stesso: la visibilità non è un permesso — ma avvisati a vicenda)"

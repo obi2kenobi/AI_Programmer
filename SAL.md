@@ -5155,3 +5155,9 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   nel commit)», contati dal diff in stage. Il contatore `COPIATI`, rimasto senza lettori, è tolto. Banco nuovo
   `tests/test-installa-citati.sh` (3/0) e un caso in `tests/test-sync-repo.sh` (28/0), rossi prima; sabotaggio
   2/1 e 27/1.
+- **Sesto ventaglio, S2 R6 (presidio) — rinnovare la propria presenza era una «CONTESA» con sé stessi.**
+  `tools/presidio.sh claim` lanciato due volte dalla stessa persona sulla stessa zona diceva «⚠ CONTESA», e `lista`
+  contava due presidii identici. Ora lo stesso autore sulla stessa zona è un rinnovo: si dice, e la scadenza si
+  sposta. Fra le righe vive conta la più recente di chi|zona. Un'altra persona resta una contesa. Tre casi nuovi
+  in `tests/test-presidio.sh` (15/0), rossi prima; sabotaggio 13/2. La prima stesura aveva un apostrofo in un
+  commento dentro il programma awk fra apici: chiudeva l'apice, e shellcheck e il banco l'hanno preso subito.
