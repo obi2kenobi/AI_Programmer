@@ -25,7 +25,17 @@ if [ $DRY_RUN -eq 1 ]; then echo "== DRY RUN: tutto what-if, nessuna scrittura =
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/night-shift-work/$NAME"
 
-[ -d "$DEST" ] && { echo "esiste già: $DEST"; exit 1; }
+# (2026-09-24, sesto ventaglio, S2 R5): «esiste già» valeva anche per un bootstrap interrotto (cartella col commit,
+# nessun remoto: `gh repo create` fallito) — un vicolo cieco senza un gesto. Si distingue, e si dice cosa fare.
+if [ -d "$DEST" ]; then
+  if [ -d "$DEST/.git" ] && [ -z "$(git -C "$DEST" remote 2>/dev/null)" ]; then
+    echo "esiste già: $DEST — ma è un bootstrap INTERROTTO (nessun remoto: la creazione su GitHub non è riuscita)."
+    echo "  per riprendere da capo: togli quella cartella e rilancia bootstrap-app (dentro c'è solo lo standard generato)"
+  else
+    echo "esiste già: $DEST"
+  fi
+  exit 1
+fi
 gh auth status >/dev/null 2>&1 || { echo "gh non autenticato"; exit 1; }
 # (2026-09-24, quarto ventaglio, Q1 R1): senza identita' git il commit iniziale moriva (rc 128) DOPO aver
 # creato la cartella, e il secondo lancio si fermava su «esiste già». La precondizione si chiede prima.
@@ -154,7 +164,10 @@ else
   # &&/||, e git commit veniva eseguito comunque (verificato con simulazione).
   git add -A
   git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
-  gh repo create "$NAME" $VIS --source . --push -q
+  # (S2 R5): se GitHub non risponde, la copia locale ha il commit e nessun remoto — si dice, col gesto per riprendere
+  gh repo create "$NAME" $VIS --source . --push -q \
+    || { echo "⛔ gh repo create fallito: $DEST ha il commit dello standard ma nessun remoto, niente label, niente coda."
+         echo "   per riprendere: cd $DEST && gh repo create $NAME $VIS --source . --push — oppure togli la cartella e rilancia bootstrap-app"; exit 1; }
   # (2026-09-24, notte dei giri, T1#2): i guardiani del commit arrivano con lo standard ma core.hooksPath
   # non viaggia col clone. Nella copia che crea lui, il bootstrap li accende — DOPO il primo commit e
   # push (lo stesso gesto di night-shift/install.sh per l'hub). Negli altri cloni lo ricorda il garante.

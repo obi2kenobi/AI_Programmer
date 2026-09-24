@@ -93,6 +93,15 @@ grep -q 'Da review Opus 2026-08-21' "$D/DEBITI.md" 2>/dev/null && ko "Q15: la re
 lancia prova-ordine --dry-run --private
 grep -q 'privata' "$TMP/out" && ok "--private vale anche dopo --dry-run (l'ordine dei flag non conta)" || ko "--private ignorato se non e' il secondo argomento"
 
+# (2026-09-24, sesto ventaglio, S2 R5): `gh repo create` che fallisce (rete, 5xx, nome preso) lasciava la cartella col
+# commit e nessun remoto, senza dire come riprendere; il secondo giro si fermava su «esiste già» come per una repo
+# finita. Il fallimento dice cosa c'e' e il gesto; il secondo giro riconosce il bootstrap interrotto.
+printf '#!/bin/bash\necho "$*" >> "$GH_LOG"\ncase "$1 $2" in "auth status") exit 0 ;; "api user") echo tester ;; "repo create") echo "HTTP 502" >&2; exit 1 ;; *) exit 0 ;; esac\n' > "$TMP/bin/gh"
+lancia prova-502; RC1=$?; O1=$(cat "$TMP/out")
+lancia prova-502; RC2=$?; O2=$(cat "$TMP/out")
+[ "$RC1" -ne 0 ] && grep -ci 'riprendere\|riprendi' <<<"$O1" >/dev/null && ok "S2 R5: gh repo create fallito: lo dice, col gesto per riprendere" || ko "S2 R5: fallimento muto (rc $RC1): $(tail -2 <<<"$O1" | tr '\n' ' ')"
+[ "$RC2" -ne 0 ] && grep -ci 'interrott' <<<"$O2" >/dev/null && ok "S2 R5: il secondo giro riconosce il bootstrap interrotto (niente remoto)" || ko "S2 R5: il secondo giro dice solo «esiste già»: $(tail -1 <<<"$O2")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -5167,3 +5167,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   rc diverso da 0 porta l'rc nel messaggio di fallimento. Caso nuovo in `tests/test-sync-repo.sh` (29/0), col gh
   finto che risponde «already exists»; rosso prima, sabotaggio 28/1. Se una PR chiusa senza fonderla vada
   riproposta è la domanda D-S2-1 (DEBITI).
+- **Sesto ventaglio, S2 R5 — un bootstrap interrotto era un vicolo cieco.** In `tools/bootstrap-app.sh` il commit
+  locale viene prima di `gh repo create`. Se la creazione falliva (rete, 5xx, nome preso), restava la cartella col
+  commit, senza remoto, senza label e senza coda, e nessun messaggio diceva come riprendere. Il secondo giro si
+  fermava su «esiste già», come per una repo finita. Ora il fallimento dice cosa c'è e il gesto per riprendere. Il
+  secondo giro riconosce il bootstrap INTERROTTO (niente remoto) e dice di togliere la cartella e rilanciare.
+  Riprendere da solo non lo fa: resta un gesto di chi lancia. Due casi nuovi in `tests/test-bootstrap-app-e2e.sh`
+  (17/0), col gh finto che risponde HTTP 502; rossi prima, sabotaggio 15/2.
