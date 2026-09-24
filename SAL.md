@@ -4303,3 +4303,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 
   Restano da fare, come stime del giro, `tests/test-ai-timeout.sh` e i casi di `run_guarded` in
   `tests/test-lib.sh`, dove l'attesa è proprio il caso da provare.
+- **Terzo ventaglio, V4#3 (seguito) — `tests/test-ai-timeout.sh` aspettava i suoi timeout in fila.** I
+  casi 1, 6 e 7 aspettano tutti un timeout vero, e sono indipendenti. Ora girano insieme, ognuno col suo
+  file d'esito, e i verdetti si contano alla fine: da 19,3 a 7,0 s, 9/0. Sabotaggio: il ramo perl manda
+  KILL al posto di TERM, e torna rosso (8/1: il trap EXIT non gira). Resta in fila solo `run_guarded` in
+  `tests/test-lib.sh`.

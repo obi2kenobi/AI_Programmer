@@ -15,12 +15,18 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 # 1. il ramo perl FORZATO uccide il gruppo a tempo: il nipote (sleep dentro bash -c)
 #    NON deve sopravvivere tenendo aperta la pipe della command substitution
 #    (regressione "sleep orfano", già pagata da run_guarded in tests/test-lib.sh)
+# (2026-09-24, terzo ventaglio, V4#3): i casi che aspettano un timeout vero (1, 6, 7) sono indipendenti:
+# in fila costavano 19 s, ora girano insieme e i verdetti si contano alla fine (MK: gli esiti, uno per caso)
+MK=$(mktemp -d); trap 'rm -rf "$MK"' EXIT
+caso1() {
 T0=$(date +%s)
 OUT=$(AI_TIMEOUT_FORCE_PERL=1 ai_timeout 3 bash -c 'echo partito; sleep 100' 2>&1); RC=$?
 T1=$(date +%s); DUR=$((T1-T0))
 [ "$RC" -eq 124 ] && [ "$DUR" -le 8 ] \
   && ok "timeout di gruppo (ramo perl): ucciso in ${DUR}s con rc=124, nipote compreso" \
   || ko "timeout perl: rc=$RC durata=${DUR}s — il gruppo non viene ucciso"
+}
+( caso1 ) > "$MK/esito1" 2>&1 &
 
 # 2. exit code del comando preservato (7, non 0 e non 124)
 AI_TIMEOUT_FORCE_PERL=1 ai_timeout 10 bash -c 'exit 7'; RC2=$?
@@ -46,6 +52,7 @@ grep -q "^ai_timeout()" "$HERE/llm/_timeout.sh" \
 # coreutils presenti) non era mai esercitato su un comando che ignora SIGTERM. Senza "-k",
 # GNU timeout manda TERM e poi ASPETTA che il comando termini da solo — un comando con
 # trap '' TERM non veniva mai forzato a chiudere. Questo caso NON forza il ramo perl.
+caso6() {
 if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; then
   T2=$(date +%s)
   ai_timeout 2 bash -c 'trap "" TERM; sleep 20'
@@ -57,17 +64,28 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
 else
   echo "SKIP: né timeout né gtimeout disponibili in questo ambiente, ramo primario non esercitabile"
 fi
+}
+( caso6 ) > "$MK/esito6" 2>&1 &
 
 # 7. (2026-09-23, notte dei giri, T3#1): i due rami davano garanzie DIVERSE. GNU manda TERM al gruppo e
 # KILL dopo 5s; il perl (il Mac senza coreutils) mandava KILL subito — i trap EXIT dei comandi
 # interrotti non giravano mai sul Mac (un lock lasciato sporco). Stesso comando, due rami.
-MK=$(mktemp -d); trap 'rm -rf "$MK"' EXIT
+caso7a() {
 AI_TIMEOUT_FORCE_PERL=1 ai_timeout 2 bash -c "trap 'touch $MK/perl' EXIT; sleep 30" >/dev/null 2>&1; RC7=$?
 [ -f "$MK/perl" ] && ok "ramo perl: TERM prima del KILL, il trap EXIT del comando gira (rc=$RC7)" \
   || ko "ramo perl: KILL diretto, il trap EXIT del comando NON gira (rc=$RC7)"
 [ "$RC7" -eq 124 ] && ok "ramo perl: allo scadere rc 124 come GNU" || ko "ramo perl: rc $RC7 (atteso 124)"
+}
+caso7c() {
 T4=$(date +%s); AI_TIMEOUT_FORCE_PERL=1 ai_timeout 2 bash -c 'trap "" TERM; sleep 20' >/dev/null 2>&1; DUR7=$(( $(date +%s) - T4 ))
 [ "$DUR7" -le 10 ] && ok "ramo perl: chi ignora TERM muore di KILL entro ${DUR7}s" || ko "ramo perl: chi ignora TERM vive ${DUR7}s"
+}
+( caso7a ) > "$MK/esito7a" 2>&1 &
+( caso7c ) > "$MK/esito7c" 2>&1 &
+wait
+for e in 1 6 7a 7c; do cat "$MK/esito$e"; done
+PASS=$((PASS + $(cat "$MK"/esito* | grep -c '^OK')))
+FAIL=$((FAIL + $(cat "$MK"/esito* | grep -c '^FAIL')))
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
