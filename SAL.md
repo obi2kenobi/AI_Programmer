@@ -4941,3 +4941,16 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   toccato. È lo stesso errore già curato per il banco del fixer (V1#5). Ora lo strumento è quello del ramo,
   `"$DIR/tools/sal-indice.sh"`. Guardia in `tests/test-lib.sh` (154/0), sul modello di quella del gate:
   rossa prima, sabotaggio 153/1.
+- **Quinto ventaglio, R5 R6 — la pulizia d'inizio ciclo uccideva anche l'opencode del giorno.** A ogni ciclo
+  `night-shift/night-shift.sh` faceva `pkill -f "opencode run"`, e lo rifaceva dopo ogni issue. Il commento
+  diceva «il turno è l'unico proprietario legittimo mentre gira», ma il turno gira sempre.
+  `tools/test-modelli-notturni.sh` usa `opencode run` di giorno, e avrebbe letto l'uscita vuota come «il
+  modello non risponde». Per di più il ramo che lancia opencode nel turno non gira (V1#6d). Ora:
+  - `ferma_opencode_del_turno` (`night-shift/lib.sh`, pattern cuore-unico-proprietario) ferma solo il PID che
+    il turno ha scritto nel file;
+  - lo ferma solo se quel PID è ancora un «opencode run»: un PID riusato da altro non si tocca;
+  - il ramo opencode lancia con `exec`, così il PID è quello di opencode stesso.
+
+  Sei casi nuovi in `tests/test-lib.sh` (159/0): quello del turno si ferma, quello del giorno resta, il PID
+  riusato resta, senza file non si ferma niente, e il pkill nudo non torna. Il controllo sull'ordine del lock
+  ora guarda la chiamata nuova. Sabotaggio: 153/3.

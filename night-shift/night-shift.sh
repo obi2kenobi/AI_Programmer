@@ -11,7 +11,7 @@
 #   - bash 3.2 (niente mapfile) e cd nel subshell (l'agente lavorava nella directory sbagliata)
 #   - idempotenza completa (PR aperta → skip; PR fusa → chiude l'issue rimasta aperta)
 #   - WATCHDOG per-issue (Luca, 2026-08-31): TIMEOUT_MINUTI default 240, override con NIGHT_SHIFT_TIMEOUT. Il no-limit è costato 3 notti.
-#     Guardia anti-loop: pkill -f "opencode run" libera il Mac.
+#     Guardia anti-loop: ferma_opencode_del_turno (lib.sh) ferma il SUO opencode e libera il Mac (R5 R6).
 #   - keyword inglese "Closes #N" (l'italiana non auto-chiude le issue al merge)
 #   - git clean per issue (un fallimento non lascia rifiuti al commit successivo)
 #
@@ -162,7 +162,10 @@ LISTA_MODELLI=$(ollama list 2>/dev/null)
 grep -qi "$MODEL_TAG" <<<"$LISTA_MODELLI" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
 # Finding #3 (2026-08-21): opencode orfani di ore rubano il modello e inquinano i turni.
 # Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
-pkill -f "opencode run" 2>/dev/null && log "Puliti processi opencode orfani" && sleep 2 || true
+# (2026-09-24, quinto ventaglio, R5 R6): ma solo del SUO — `pkill -f "opencode run"` uccideva anche quello del
+# giorno. Il PID lo scrive il ramo opencode qui sotto; l'orfano vero di un turno morto e' il file rimasto.
+OPENCODE_PID_FILE="$WORK/.opencode-turno.pid"
+ferma_opencode_del_turno "$OPENCODE_PID_FILE" && log "Puliti processi opencode orfani (del turno: il PID nel file)" && sleep 2 || true
 
 # (2026-09-22, seconda metà della cura dopo le 11 ore buie): ANCHE questa sonda
 # di generazione uccideva il turno al secondo colpo (23:09, 10:24) — l'exit a
@@ -1126,8 +1129,10 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
     # al turno stesso: l'agente ha TIMEOUT_MINUTI (default 240 = 4h), la review del
     # mattino resta l'appello. NON è un limite alla qualità: è il limite al loop.
     TIMEOUT_MINUTI="${NIGHT_SHIFT_TIMEOUT:-240}"
-    ( cd "$DIR" && opencode run --model "$OCPROVIDER" "$PROMPT" ) >> "$LOG" 2>&1 &
+    # (R5 R6): `exec` — il PID e' quello di opencode stesso, e si scrive: la pulizia ferma solo lui
+    ( cd "$DIR" && exec opencode run --model "$OCPROVIDER" "$PROMPT" ) >> "$LOG" 2>&1 &
     AGENTE_PID=$!
+    echo "$AGENTE_PID" > "$OPENCODE_PID_FILE"
     ( sleep $((TIMEOUT_MINUTI * 60)); kill $AGENTE_PID 2>/dev/null && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — ucciso, il piano nel log resta la ripartenza" ) &
     WATCHDOG_PID=$!
     wait $AGENTE_PID 2>/dev/null
@@ -1155,7 +1160,7 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
     # sempre 0: il ramo «OpenCode fallito» (commento sull'issue, regola dell'A/B) era MORTO.
     # L'esito dell'agente e' RC, letto dal `wait` qui sopra.
     local OP_RC=$RC
-    pkill -f "opencode run" 2>/dev/null
+    ferma_opencode_del_turno "$OPENCODE_PID_FILE" || true
 
     if [ "$OP_RC" -ne 0 ]; then
       log "Issue #$NUM: OpenCode fallito, skip"

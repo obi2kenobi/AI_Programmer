@@ -593,6 +593,20 @@ rianima_ollama() {
   return 1
 }
 
+# ferma_opencode_del_turno <file-pid> (2026-09-24, quinto ventaglio, R5 R6; pattern cuore-unico-proprietario):
+# la pulizia era `pkill -f "opencode run"` — uccideva anche l'opencode del GIORNO. Il turno ferma solo il PID che
+# ha scritto lui nel file, e solo se quel PID e' ancora un «opencode run» (un PID riusato da altro non si tocca).
+# Il file si toglie comunque. rc 0 = fermato qualcosa; 1 = niente da fermare.
+ferma_opencode_del_turno() {
+  local f="$1" pid
+  [ -f "$f" ] || return 1
+  pid=$(cat "$f" 2>/dev/null); rm -f "$f"
+  { [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; } || return 1
+  ps -p "$pid" -o command= 2>/dev/null | grep -c 'opencode run' >/dev/null || return 1
+  pkill -P "$pid" 2>/dev/null; kill "$pid" 2>/dev/null
+  return 0
+}
+
 prendi_lock_turno() {   # [programma]: chi e' «vivo» (default night-shift; ciclo-vivo lo usa col suo nome)
   local L="$1" prog="${2:-night-shift}" rc
   if mkdir "$L" 2>/dev/null; then echo $$ > "$L/pid"; return 0; fi
