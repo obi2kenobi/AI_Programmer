@@ -242,11 +242,8 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   if [ ! -f "$PWD/.night-verify" ]; then
     echo "# Verifiche dichiarate del turno di notte (una riga per comando, eseguite dal morning-gate)." > "$PWD/.night-verify"
     echo "# VUOTO = il gate lo dice. Dichiara i comandi appena puoi." >> "$PWD/.night-verify"
-    # (report Budget Vendite): il repo GAS parte col suo gate di sintassi seminato
-    _cp=$(git ls-files '*.gs' '*.html' 2>/dev/null)
-    if grep -q . <<<"$_cp"; then
-      echo "bash tools/gas-gate.sh" >> "$PWD/.night-verify"
-    fi
+    # (report Budget Vendite): il gate GAS seminato — da stanotte lo fa tools/installa-citati.sh, chiamato
+    # sopra, anche quando .night-verify c'e' ma non ha comandi (quinto ventaglio, R2 R6)
     git add .night-verify 2>/dev/null || true
   fi
 

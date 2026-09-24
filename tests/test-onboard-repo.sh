@@ -119,6 +119,22 @@ grep -q "agenti del hub già tutti presenti" <<<"$OUT2" && ok "caso 2: agenti ri
 [ "$(cat "$TMP/check2/DEBITI.md" 2>/dev/null)" = "# DEBITI del progetto" ] \
   && ok "caso 2 (Q15): i DEBITI del progetto NON sono stati toccati" || ko "caso 2 (Q15): DEBITI del progetto sovrascritti"
 
+# --- caso 3 (2026-09-24, quinto ventaglio, R2 R6): una repo GAS -----------------------------
+# L'onboard copiava gli hook da solo, senza la seconda meta' di copia-hook: le righe «residuo» della
+# .gitignore (il primo Stop lasciava «?? .campo-rem»). Seminava un .night-verify di soli commenti anche su una
+# repo GAS, e il sync non seminava piu' il gate perche' il file c'era: la prima notte, «verifiche-vuote».
+# E PROJECT.md, che il CLAUDE.md del satellite cita, lo creava solo il bootstrap.
+gas() { printf 'function onOpen(){}\n' > Code.gs; }
+ORIGIN3=$(nuova_sandbox gasrepo gas)
+OUT3=$(onboard "$ORIGIN3" gasrepo); RC3=$?
+git clone -q "$ORIGIN3" "$TMP/check3"
+grep -qxF '.campo-rem' "$TMP/check3/.gitignore" 2>/dev/null && ok "caso 3 (R2 R6): il residuo degli hook e' nella .gitignore sull'origin" \
+  || ko "caso 3 (R2 R6): .gitignore senza i residui degli hook (rc $RC3)"
+grep -cxF 'bash tools/gas-gate.sh' "$TMP/check3/.night-verify" >/dev/null && ok "caso 3 (R2 R6): la repo GAS ha il suo gate seminato in .night-verify" \
+  || ko "caso 3 (R2 R6): .night-verify senza comandi su una repo GAS: $(grep -vc '^#' "$TMP/check3/.night-verify" 2>/dev/null) righe non commentate"
+[ -f "$TMP/check3/PROJECT.md" ] && [ -f "$TMP/check1/PROJECT.md" ] && ok "caso 3 (R2 R6): PROJECT.md arriva anche con l'onboard" || ko "caso 3 (R2 R6): PROJECT.md assente dopo l'onboard"
+! grep -cxF 'bash tools/gas-gate.sh' "$TMP/check1/.night-verify" >/dev/null && ok "caso 3 (R2 R6): una repo non GAS non riceve il gate GAS" || ko "caso 3 (R2 R6): gate GAS seminato su una repo senza .gs"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

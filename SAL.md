@@ -4882,3 +4882,19 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   accanto c'è R2 R4, i guardiani del commit sulle skill dello standard nei satelliti.
 
   Due casi nuovi in `tests/test-sync-repo.sh` (27/0), rossi prima. Sabotaggio: 25/2.
+- **Quinto ventaglio, R2 R6 — l'onboard lasciava l'albero sporco e seminava una prima notte rossa.**
+  `tools/onboard-repo.sh` copiava gli hook da solo, per non sovrascrivere quelli del progetto. Così perdeva la
+  seconda metà di `tools/copia-hook.sh`, le righe «residuo» della `.gitignore`, e il primo Stop lasciava
+  `?? .campo-rem`. Scriveva poi un `.night-verify` di soli commenti anche su una repo GAS. Il sync seminava il
+  gate solo se il file mancava, e la prima notte il turno apriva «verifiche-vuote». PROJECT.md, che il
+  CLAUDE.md del satellite cita, lo creava solo il bootstrap. Ora:
+  - `copia-hook.sh --residui <dir>` fa solo la seconda metà, e l'onboard la chiama;
+  - `tools/installa-citati.sh`, la lista unica dei tre installatori, porta lo scheletro di PROJECT.md se
+    manca;
+  - installa-citati semina `bash tools/gas-gate.sh` su una repo GAS senza comandi dichiarati, a meno che una
+    persona non abbia scritto `# NON-VERIFICABILE: <motivo>`;
+  - il seme doppio in `tools/sync-repo.sh` è tolto.
+
+  Visto curando, ed è una domanda: il turno tratta come rosso anche un `.night-verify` che dichiara
+  NON-VERIFICABILE, cioè proprio la forma che il modello chiede di scrivere. Quattro casi nuovi in
+  `tests/test-onboard-repo.sh` (19/0), tre rossi prima. Sabotaggio: 16/3.

@@ -53,5 +53,22 @@ for P in $LENTI $CITATI $GUARDIANI $FORMATI; do
     echo "$P"; N=$((N+1))
   fi
 done
+# (2026-09-24, quinto ventaglio, R2 R6): PROJECT.md — il CLAUDE.md del satellite lo cita (§6), ma lo creava
+# solo il bootstrap. Da onboard e sync arriva lo stesso scheletro, se manca; mai sopra quello del progetto.
+if [ ! -e "$DEST/PROJECT.md" ]; then
+  printf '# PROJECT.md — contesto specifico di %s\n\nSezione per progetto: comandi, validation artifact (regola "Done means proven"),\nconvenzioni locali. Le regole universali stanno in CLAUDE.md (ereditate dal hub\nAI_Programmer: aggiornale LÌ, non qui).\n' "$(basename "$(cd "$DEST" && pwd)")" > "$DEST/PROJECT.md"
+  echo "PROJECT.md"; N=$((N+1))
+fi
+# (R2 R6): il gate GAS si seminava solo se .night-verify MANCAVA (sync-repo) — l'onboard ne scrive uno di
+# soli commenti, e la prima notte il turno apriva «verifiche-vuote» su una repo che ha il suo gate. Ora: repo
+# GAS (file .gs/.html in git) e nessun comando dichiarato → la riga del gate. Una dichiarazione vera
+# («# NON-VERIFICABILE: <motivo>» a inizio riga, non l'esempio del modello) e' la scelta di una persona: resta.
+NV="$DEST/.night-verify"
+if [ -n "$(git -C "$DEST" ls-files '*.gs' '*.html' 2>/dev/null)" ] && ! grep -qvE '^[[:space:]]*(#|$)' "$NV" 2>/dev/null \
+   && ! grep -qE '^#[[:space:]]*NON-VERIFICABILE:[[:space:]]*[^<[:space:]]' "$NV" 2>/dev/null; then
+  [ -f "$NV" ] || printf '# Verifiche dichiarate del turno di notte (una riga per comando).\n# VUOTO = il gate lo dice. Dichiara i comandi appena puoi.\n' > "$NV"
+  echo "bash tools/gas-gate.sh" >> "$NV"
+  echo ".night-verify"; N=$((N+1))
+fi
 echo "installa-citati: $N file scritti in $DEST$([ "$SOLO_MANCANTI" -eq 1 ] && echo ' (solo i mancanti: quelli già presenti restano intatti)')" >&2
 exit 0

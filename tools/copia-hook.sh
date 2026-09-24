@@ -13,6 +13,7 @@
 # BASTA: nessun secondo posto da ricordare.
 #
 # Uso:   copia-hook.sh <dir-destinazione>
+#        copia-hook.sh --residui <dir-destinazione>  solo le righe «residuo» nella .gitignore (R2 R6)
 #        copia-hook.sh --elenco [settings.json]  stampa soltanto gli hook dichiarati (un
 #        percorso relativo per riga) — l'UNICA derivazione: sync-repo, onboard-repo e i banchi
 #        la chiamano invece di rifarla (erano sette copie della stessa pipeline).
@@ -44,7 +45,12 @@ if [ "${1:-}" = "--elenco" ]; then
   exit 0
 fi
 
-DEST="${1:?uso: copia-hook.sh <dir-destinazione> | --elenco [settings.json]}"
+# --residui <dir> (2026-09-24, quinto ventaglio, R2 R6): solo la seconda meta' — le righe «residuo» nella
+# .gitignore, senza toccare gli hook. Per l'onboard, che copia gli hook da se' (quelli gia' presenti nel
+# progetto restano suoi) e perdeva le righe: il primo Stop lasciava l'albero sporco.
+SOLO_RESIDUI=0
+[ "${1:-}" = "--residui" ] && { SOLO_RESIDUI=1; shift; }
+DEST="${1:?uso: copia-hook.sh <dir-destinazione> | --residui <dir-destinazione> | --elenco [settings.json]}"
 SETTINGS="$HERE/.claude/settings.json"
 [ -f "$SETTINGS" ] || { echo "copia-hook: $SETTINGS assente" >&2; exit 1; }
 [ -d "$DEST" ] || { echo "copia-hook: destinazione inesistente: $DEST" >&2; exit 1; }
@@ -53,18 +59,19 @@ DICHIARATI=$(hook_dichiarati "$SETTINGS")
 
 [ -n "$DICHIARATI" ] || { echo "copia-hook: nessun hook dichiarato in $SETTINGS — sospetto, non copio niente" >&2; exit 1; }
 
-N=0
-while IFS= read -r H; do
-  [ -n "$H" ] || continue
-  [ -f "$HERE/$H" ] || { echo "copia-hook: $H è dichiarato in settings.json ma non esiste nell'hub" >&2; exit 1; }
-  mkdir -p "$DEST/$(dirname "$H")" || exit 1
-  cp "$HERE/$H" "$DEST/$H" || { echo "copia-hook: copia fallita: $H" >&2; exit 1; }
-  chmod +x "$DEST/$H"
-  echo "$H"
-  N=$((N+1))
-done <<< "$DICHIARATI"
-
-[ "$N" -gt 0 ] || { echo "copia-hook: zero hook copiati" >&2; exit 1; }
+if [ "$SOLO_RESIDUI" -eq 0 ]; then
+  N=0
+  while IFS= read -r H; do
+    [ -n "$H" ] || continue
+    [ -f "$HERE/$H" ] || { echo "copia-hook: $H è dichiarato in settings.json ma non esiste nell'hub" >&2; exit 1; }
+    mkdir -p "$DEST/$(dirname "$H")" || exit 1
+    cp "$HERE/$H" "$DEST/$H" || { echo "copia-hook: copia fallita: $H" >&2; exit 1; }
+    chmod +x "$DEST/$H"
+    echo "$H"
+    N=$((N+1))
+  done <<< "$DICHIARATI"
+  [ "$N" -gt 0 ] || { echo "copia-hook: zero hook copiati" >&2; exit 1; }
+fi
 
 # (report REPO-I 2026-09-19, H1): l'hook copiato ma non la riga che ne nasconde il
 # residuo — ogni repo portata a standard restava con l'albero sporco per sempre.

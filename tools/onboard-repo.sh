@@ -175,6 +175,8 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
       cp "$HERE/$H" "$WORK/$H" && chmod +x "$WORK/$H" && git -C "$WORK" add "$H" && HOOK_AGGIUNTI=$((HOOK_AGGIUNTI+1))
     fi
   done < <(bash "$HERE/tools/copia-hook.sh" --elenco 2>/dev/null)  # (revisione 10 giri: una derivazione sola)
+  # (2026-09-24, quinto ventaglio, R2 R6): e la seconda meta' di copia-hook — i residui nella .gitignore
+  bash "$HERE/tools/copia-hook.sh" --residui "$WORK" | while IFS= read -r P; do git -C "$WORK" add "$P"; done
   git -C "$WORK" commit -q -m "chore: settings.json e $HOOK_AGGIUNTI hook del metodo (onboarding sistema)"
   git -C "$WORK" push -q
   echo "settings.json e $HOOK_AGGIUNTI hook aggiunti e spinti (gli hook gia' presenti nel progetto: intoccati)"
