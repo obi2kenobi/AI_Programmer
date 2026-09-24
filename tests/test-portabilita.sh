@@ -79,7 +79,11 @@ else
   ok "premessa: su questa bash ($BASH_VERSION) la forma non rompe — il cricchetto resta, perche' su 5.2 si'"
 fi
 rm -f "${TMPDIR:-/tmp}/premessa-heredoc.$$"
-S=$(python3 - $FILES <<'PYHD'
+# (2026-09-24, sesto ventaglio, S5 R2): era `S=$(python3 - $FILES <<'PYHD' … PYHD )` — la bash 3.2 del Mac non
+# analizza un heredoc con apici e parentesi sbilanciati DENTRO $( ): il banco intero usciva rc 2 («unexpected
+# EOF»), e la lente della portabilita' non girava proprio sul Mac. L'heredoc sta fuori, l'uscita in un file.
+USCITA_PY=$(mktemp)
+python3 - $FILES > "$USCITA_PY" <<'PYHD'
 import re, sys
 # dentro $( … ) sulla stessa riga: <<[-] DELIMITATORE (anche fra apici) seguito da qualcosa che non e' nulla
 pat = re.compile(r"""(?<!\\)\$\([^)]*<<-?\s*(['"]?)([A-Za-z_]\w*)\1(.*)$""")   # \$( e' testo, non una sostituzione
@@ -91,8 +95,20 @@ for f in sys.argv[1:]:
         if m and m.group(3).strip():
             print(f"{f}:{n}:{riga.strip()[:120]}")
 PYHD
-)
+S=$(cat "$USCITA_PY"); rm -f "$USCITA_PY"
 [ -z "$S" ] && ok "nessun heredoc dentro \$( ) con altro dopo il delimitatore (errore a runtime su bash 5.2)" || ko "heredoc in \$( ) con redirezione/operatore dopo il delimitatore:"$'\n'"$S"
+
+# (2026-09-24, sesto ventaglio, S5 R2): nessuno lanciava `bash -n` con la bash del Mac — questo stesso banco non si
+# analizzava con la 3.2 e nessuno lo vedeva. Ogni script del repo si analizza con /bin/bash (sul Mac e' la 3.2.57) e
+# con la bash di BASH_MAC, se c'e' (una 3.2 compilata, per provarlo fuori dal Mac).
+ROTTI=""
+for B in /bin/bash ${BASH_MAC:-}; do
+  [ -x "$B" ] || continue
+  for f in "$HERE"/tests/*.sh "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/llm/*.sh "$HERE"/.githooks/*; do
+    "$B" -n "$f" 2>/dev/null || ROTTI="$ROTTI ${f#"$HERE"/}($("$B" -c 'echo $BASH_VERSION' | cut -d. -f1-2))"
+  done
+done
+[ -z "$ROTTI" ] && ok "S5 R2: ogni script si analizza con /bin/bash$([ -n "${BASH_MAC:-}" ] && echo " e con $BASH_MAC")" || ko "S5 R2: script che la bash non analizza:$ROTTI"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

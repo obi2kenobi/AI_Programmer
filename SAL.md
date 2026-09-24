@@ -5005,3 +5005,10 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `printf %q`, come le esegue il turno. Nell'elenco, ogni riga è in codice. Tre casi nuovi in `tests/test-lib.sh`
   (162/0), rossi prima: il blocco; la riga incollata in `zsh -f` che non chiude la shell; l'issue che usa il
   blocco. Sabotaggio: 159/2.
+- **Sesto ventaglio, S5 R2 — la lente della portabilità non si analizzava con la bash del Mac.**
+  `tests/test-portabilita.sh` aveva `S=$(python3 - $FILES <<'PYHD' … PYHD)`: un heredoc con apici e parentesi
+  sbilanciati dentro `$( )`. La bash 3.2 del Mac non lo analizza: «unexpected EOF», rc 2, e il banco intero non
+  gira. Il giro S5 l'ha provato con una bash 3.2.57 compilata dal sorgente. Ora l'heredoc sta fuori e l'uscita va
+  in un file. Guardia nuova nello stesso banco: ogni script del repo si analizza con `/bin/bash` (sul Mac è la
+  3.2) e con la bash di `BASH_MAC`, se c'è. Con la 3.2 compilata, 15/0. Sabotaggio con la forma di prima in un
+  banco temporaneo: rosso («… non analizza: …(3.2)»).
