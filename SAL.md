@@ -5309,3 +5309,34 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   del giorno dopo la recupera sul log di ieri (se ieri il turno ha scritto), e lo dice. Banco nuovo
   `tests/test-impara-recupero.sh` sul blocco vero (4/0), rosso prima; sabotaggio 3/1. V3 R5 (gli orologi del censore) è
   rinviato: tocca la domanda del budget di calendario o mobile.
+- **Settimo ventaglio, V1 R4 — il morning-gate, in formato script, si faceva giudicare dalla PR.** Leggeva
+  `.night-verify` da main ma eseguiva `bash .night-verify` dal ramo della PR. Ora esegue il contenuto di main da un file
+  temporaneo, come il censore. Caso in `tests/test-morning-gate-cieco.sh` (12/0), rosso prima; sabotaggio 11/1.
+- **Settimo ventaglio, V1 R6 — `gate_banchi` saltava quattro banchi con un motivo non più vero, e zero banchi era
+  verde.** I quattro (`test-ask-*`, ai-timeout, stdin-timeout) sono ermetici; ora li giudica, e zero banchi è rosso come
+  nella suite. Due casi in `tests/test-lib.sh`, rossi prima; sabotaggio rosso.
+- **Settimo ventaglio, V1 R5 — tre regole su cosa è una riga vuota di `.night-verify`.** Il turno contava «3/3 verdi»
+  righe di soli spazi. Ora `riga_verifica_vuota` (`night-shift/lib.sh`) è la regola del turno, del censore e di
+  eval-review. Quattro casi in `tests/test-lib.sh`, rossi prima; sabotaggio 4 rossi.
+- **Settimo ventaglio, V4 R2 — privacy-check ereditava il locale.** Con `LC_ALL=C`, «ZANETTÒ» (inventato) passava, e il
+  pre-commit lo fermava. Ora privacy-check sceglie un locale UTF-8 fra quelli installati, e senza lo dice. Caso in
+  `tests/test-privacy.sh` (25/0), rosso prima. I dieci banchi col locale `en_US.UTF-8` a nome fisso restano (rinviati).
+- **Settimo ventaglio, V4 R4 — un CSV Windows-1252 era un traceback.** `tools/margine_documento.py` e
+  `tools/accuratezza_fatture_acquisto.py` ora dicono «non è UTF-8: salvalo come CSV UTF-8». Due casi in
+  `tests/test-oracoli-uso.sh` (93/0); sabotaggio 2 rossi (cache fresca, E-047). Leggere il cp1252 è una domanda in DEBITI.
+- **Settimo ventaglio, V4 R5 — lo slug delle lezioni con `tr`.** Sul GNU «Perché è così» diventava «perchuu-ui-cosuu», e
+  la chiave anti-doppione cambiava con la piattaforma. Ora python (NFKD, per l'ASCII identico). Caso in
+  `tests/test-cervello-impara.sh`, rosso prima; sabotaggio 4/1.
+- **Settimo ventaglio, V4 R3 — il cancello del Design contava byte o caratteri secondo il locale.** Ora python. Caso
+  accentato in `tests/test-night-shift-design-gate.sh`, in C e in UTF-8, rosso prima; sabotaggio 11/1. La mia prima
+  stesura del caso aveva tre `$NOME` attaccati a «»: presi dalla sonda di V4 R1, nata stanotte.
+- **Settimo ventaglio, V4 R6 (in parte) — i motivi del censore si tagliavano in byte.** Un carattere spezzato arrivava
+  nei commenti delle PR come «�». Ora `taglia_caratteri` (`night-shift/lib.sh`); e il risolutore dice «byte» dove taglia
+  con `head -c`. Tre casi in `tests/test-lib.sh`, rossi prima. Gli altri `cut -c` e `head -c` restano (rinviati).
+- **Settimo ventaglio, V5 R1 — un quarto del banco più pesante era fork.** L'abbinamento banco-strumento di
+  `tools/mutation-tests.sh` faceva `basename` ed `echo | tr` 188×85 volte. Ora espansioni di bash: stesse 66 coppie
+  (confrontate, anche con la bash 3.2.57), `tests/test-mutation-tests.sh` da 184 a 141 s nello stesso clone, stesso
+  verdetto. Il commit porta il tipo `perf`, che CLAUDE.md §4 non prevede: errore mio, dichiarato nel consolidamento.
+- **Settimo ventaglio, V5 R5 — tre `sleep 3` fissi in `tests/test-mutation-atomico.sh`.** Ora un'attesa condizionata
+  (mutazione fatta e banco vivo): da 16 a circa 5 s, 5 verdi su 5, e il sabotaggio della regressione V4#3 resta rosso
+  (8/1). La lente `grep -P` di `tests/test-portabilita.sh` prendeva `pgrep -P` (il PID del padre, portabile): corretta.
