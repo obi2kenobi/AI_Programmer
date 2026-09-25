@@ -39,7 +39,9 @@ labels: ["night-shift"]
      Regola dell'11 ore (2026-08-22): la notte non converge sui territori grandi —
      file da centinaia di righe da esplorare = GIORNO. Notturno solo se: file piccoli,
      righe indicate, nessuna esplorazione. Se il territorio è grande, NON scrivere questa
-     commessa: passa il lavoro al giorno. -->
+     commessa: passa il lavoro al giorno.
+     Ogni file fra backtick, per esempio `Codice Principale.gs` (40 righe): un nome con lo spazio si legge
+     solo cosi' (D19, 2026-09-25). -->
 
 ## Commessa (contesto precaricato)
 
