@@ -55,6 +55,20 @@ OUT=$(TURNO_VIVO_LOG="$TMP/illeggibile.log" bash "$TOOL" 2>&1); RC=$?
 [ "$RC" -eq 2 ] && ok "timestamp illeggibile: esce 2 (non so), non 0 (cicla)" || ko "timestamp illeggibile: rc=$RC"
 grep -c 'turno-vivo.sh.*2)' "$HERE/tools/system-health.sh" >/dev/null && ok "system-health mappa il 2 di turno-vivo su un avviso" || ko "system-health non distingue il 2"
 
+
+# (2026-09-25, settimo ventaglio, V3 R4): l'eta' si calcolava fra due ore locali «ingenue». Al cambio dell'ora di
+# primavera 15 minuti veri diventavano 75 (e un pkill da incollare contro un turno sano); in autunno l'eta' veniva
+# negativa e il messaggio diceva «illeggibile». L'ora «adesso» si finge con un sitecustomize (time.time), nel fuso di Roma.
+mkdir -p "$TMP/py"; printf 'import os, time\nf = os.environ.get("FAKE_NOW")\nif f:\n    time.time = lambda: float(f)\n' > "$TMP/py/sitecustomize.py"
+ORA=$(TZ=Europe/Rome python3 -c 'import time; print(time.mktime(time.strptime("2027-03-28 03:05:00", "%Y-%m-%d %H:%M:%S")))')
+echo "[2027-03-28 01:50:00] === TURNO INIZIATO" > "$TMP/primavera.log"
+OUT=$(TZ=Europe/Rome FAKE_NOW="$ORA" PYTHONPATH="$TMP/py" TURNO_VIVO_LOG="$TMP/primavera.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ! grep -c 'INCASTRATO' <<<"$OUT" >/dev/null && ok "V3 R4: al cambio dell'ora di primavera 15 minuti veri restano 15 (niente ⛔)" \
+  || ko "V3 R4: primavera: rc=$RC, $(head -1 <<<"$OUT")"
+ORA=$(TZ=Europe/Rome python3 -c 'import time; print(time.mktime(time.strptime("2026-10-25 02:50:00", "%Y-%m-%d %H:%M:%S")) + 1200)')
+echo "[2026-10-25 02:50:00] === TURNO INIZIATO" > "$TMP/autunno.log"
+OUT=$(TZ=Europe/Rome FAKE_NOW="$ORA" PYTHONPATH="$TMP/py" TURNO_VIVO_LOG="$TMP/autunno.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "V3 R4: nell'ora ripetuta d'autunno l'eta' non e' negativa (niente «illeggibile»)" || ko "V3 R4: autunno: rc=$RC, $(head -1 <<<"$OUT")"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
