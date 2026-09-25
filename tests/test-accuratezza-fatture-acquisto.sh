@@ -108,6 +108,16 @@ grep -q "Errori reali: 1" <<<"$OUT3" \
   && ok "ordine a 0€: contato negli errori reali" \
   || ko "errori reali attesi 1: $OUT3"
 
+# (2026-09-25, D31, risposta delegata): un export di Excel in Windows-1252 si legge (UTF-8 prima, poi cp1252) e lo si dice;
+# un file che non e' nemmeno cp1252 resta rifiutato
+sed 's/FORN-B/FORN-CITTÀ/' "$TMP/fatture.csv" | iconv -f UTF-8 -t CP1252 > "$TMP/f1252.csv"
+OUT5=$(python3 "$HERE/tools/accuratezza_fatture_acquisto.py" "$TMP/config.json" "$TMP/f1252.csv" "$TMP/ordini.csv" 2>&1); RC5=$?
+[ "$RC5" -eq 0 ] && grep -c 'Windows-1252' <<<"$OUT5" >/dev/null && grep -q "Accuratezza: 60.0%" <<<"$OUT5" \
+  && ok "D31: CSV in Windows-1252: letto, detto, stesso risultato" || ko "D31: CSV in Windows-1252: rc=$RC5 — $(head -1 <<<"$OUT5")"
+printf 'nr,fornitore,ordine_nr,importo\nF01,A\201B,O1,1000\n' > "$TMP/fmarcio.csv"
+OUT5=$(python3 "$HERE/tools/accuratezza_fatture_acquisto.py" "$TMP/config.json" "$TMP/fmarcio.csv" "$TMP/ordini.csv" 2>&1); RC5=$?
+[ "$RC5" -eq 1 ] && grep -c "non e' UTF-8" <<<"$OUT5" >/dev/null && ok "D31: un file ne' UTF-8 ne' cp1252 resta rifiutato" || ko "D31: file marcio: rc=$RC5 — $(head -1 <<<"$OUT5")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

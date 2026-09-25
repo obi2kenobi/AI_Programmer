@@ -56,7 +56,8 @@ dichiara "accuratezza: file inesistenti"        python3 "$T/accuratezza_fatture_
 dichiara "accuratezza: colonne sbagliate"       python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/ab.csv" "$TMP/ab.csv"
 # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 (Excel) era un UnicodeDecodeError nudo, cioe' il traceback
 # che D32 aveva curato; la codifica non era nel banco
-printf 'a,b\nSedia citt\340 \200 promo,2\n' > "$TMP/cp1252.csv"
+# (D31, 2026-09-25): un file cp1252 ora si legge; il rifiuto si prova con un byte che nemmeno cp1252 definisce (0x81)
+printf 'a,b\nSedia citt\340 \201 promo,2\n' > "$TMP/cp1252.csv"
 dichiara "margine: CSV non UTF-8"               python3 "$T/margine_documento.py" "$TMP/cp1252.csv" "$TMP/ab.csv"
 dichiara "accuratezza: CSV non UTF-8"           python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/cp1252.csv" "$TMP/ab.csv"
 dichiara "rating: colonne sbagliate"            python3 "$T/rating_dso_clienti.py" < "$TMP/ab.csv"

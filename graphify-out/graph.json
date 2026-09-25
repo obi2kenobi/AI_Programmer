@@ -254,7 +254,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L66"
+      "source_location": "L72"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -290,7 +290,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L78"
+      "source_location": "L84"
     },
     {
       "id": "tools_margine_documento_normalizza",
@@ -30542,7 +30542,7 @@
       "source_location": "L36"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_67",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_73",
       "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30550,7 +30550,7 @@
       "file_type": "rationale",
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L67"
+      "source_location": "L73"
     },
     {
       "id": "tools_bilancio_bu_rationale_3",
@@ -30597,7 +30597,7 @@
       "source_location": "L48"
     },
     {
-      "id": "tools_margine_documento_rationale_79",
+      "id": "tools_margine_documento_rationale_85",
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30605,7 +30605,7 @@
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L79"
+      "source_location": "L85"
     },
     {
       "id": "tools_rating_dso_clienti_rationale_3",
@@ -60494,7 +60494,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L92",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -61375,18 +61375,6 @@
     },
     {
       "source": "tools_margine_documento_main",
-      "target": "tools_margine_documento_leggi_csv",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L87",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_margine_documento_main",
       "target": "tools_margine_documento_normalizza",
       "relation": "calls",
       "_origin": "ast",
@@ -61394,7 +61382,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L96",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_margine_documento_main",
+      "target": "tools_margine_documento_leggi_csv",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -89074,7 +89074,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L66",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -89888,7 +89888,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L78",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
@@ -98131,14 +98131,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_67",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_73",
       "target": "tools_accuratezza_fatture_acquisto_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L67",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -98615,14 +98615,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_79",
+      "source": "tools_margine_documento_rationale_85",
       "target": "tools_margine_documento_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L79",
+      "source_location": "L85",
       "weight": 1.0
     },
     {
@@ -100520,5 +100520,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6a92e31e1514ee4db2365c92fb6750792bca65dc"
+  "built_at_commit": "91fbdf93bc6392b8f9720df3fb0004a19be1f528"
 }

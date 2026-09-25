@@ -47,22 +47,28 @@ def normalizza(ref):
 def leggi_csv(path, colonne=()):
     """(giro 21, 2026-09-20 — D32): file inesistente o colonna mancante = traceback nudo.
     Si dichiara cosa manca e si esce 1, come scadenzario_aging."""
-    try:
-        with open(path, encoding="utf-8-sig", newline="") as f:
-            reader = csv.DictReader(f)
-            mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
-            if mancanti:
-                print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+    # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo. (D31, risposta delegata del
+    # 2026-09-25): UTF-8 prima, poi cp1252 — l'Excel italiano salva il «CSV» in cp1252 — e lo si dice. Un file che non e'
+    # nemmeno cp1252 (un byte che cp1252 non definisce) resta rifiutato.
+    for codifica in ("utf-8-sig", "cp1252"):
+        try:
+            with open(path, encoding=codifica, newline="") as f:
+                reader = csv.DictReader(f)
+                mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
+                if mancanti:
+                    print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+                    sys.exit(1)
+                righe = list(reader)
+            break
+        except UnicodeDecodeError:
+            if codifica == "cp1252":
+                print(f"uso: margine_documento.py — {path} non e' UTF-8 e nemmeno Windows-1252: salvalo come «CSV UTF-8»", file=sys.stderr)
                 sys.exit(1)
-            righe = list(reader)
-    except UnicodeDecodeError:
-        # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo (il caso che D32 aveva
-        # curato). Si dice; leggerlo in cp1252 e' una scelta di dominio (DEBITI, V4 D4).
-        print(f"uso: margine_documento.py — {path} non e' UTF-8 (un export di Excel in Windows-1252?): salvalo come «CSV UTF-8»" , file=sys.stderr)
-        sys.exit(1)
-    except OSError as e:
-        print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
-        sys.exit(1)
+        except OSError as e:
+            print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
+            sys.exit(1)
+    if codifica == "cp1252":
+        print(f"ATTENZIONE: {path} non e' UTF-8: letto come Windows-1252 (l'export di Excel)", file=sys.stderr)
     # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
     # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
     for n, r in enumerate(righe, start=2):
