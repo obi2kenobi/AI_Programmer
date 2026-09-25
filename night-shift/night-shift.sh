@@ -1358,8 +1358,15 @@ fi
 if [ ! -f "$GRAFO_MARKER" ] && [ -f "$HERE/../tools/grafo-semantico.sh" ] && command -v graphify >/dev/null 2>&1 \
    && mkdir "$GRAFO_LOCK" 2>/dev/null; then
   GRAFO_REPO=("obi2kenobi/AI_Programmer"); for E in "${REPO_LIST[@]}"; do [ "${E%% *}" = "${GRAFO_REPO[0]}" ] || GRAFO_REPO+=("${E%% *}"); done
-  ( for R in "${GRAFO_REPO[@]}"; do GRAFO_DATA="$GRAFO_DATA" MODELLO="$MODEL_TAG" bash "$HERE/../tools/grafo-semantico.sh" "$R" "$WORK"; done \
-      >> "$WORK/grafo-semantico.log" 2>&1; touch "$GRAFO_MARKER"; rm -rf "$GRAFO_LOCK" ) &
+  # (2026-09-25, D25, risposta delegata): il segno del giorno solo se ogni pass esce 0. Un fallimento lascia il segno
+  # «tentato» e il ciclo dopo riprova; al secondo fallimento il giorno si chiude (le ore di GPU hanno un tetto) e il log
+  # lo dice. Prima il segno seguiva il ciclo con «;»: un pass morto contava come fatto, in silenzio.
+  ( GRAFO_OK=1
+    for R in "${GRAFO_REPO[@]}"; do GRAFO_DATA="$GRAFO_DATA" MODELLO="$MODEL_TAG" bash "$HERE/../tools/grafo-semantico.sh" "$R" "$WORK" || { GRAFO_OK=0; echo "grafo semantico: pass su $R FALLITO"; }; done
+    if [ "$GRAFO_OK" -eq 1 ]; then touch "$GRAFO_MARKER"
+    elif [ -f "$WORK/.grafo-tentato-$GRAFO_DATA" ]; then touch "$GRAFO_MARKER"; echo "grafo semantico: fallito due volte oggi — niente altro tentativo fino a domani"
+    else touch "$WORK/.grafo-tentato-$GRAFO_DATA"; echo "grafo semantico: fallito — il ciclo dopo riprova una volta"; fi
+    rm -rf "$GRAFO_LOCK" ) >> "$WORK/grafo-semantico.log" 2>&1 &
   echo $! > "$GRAFO_LOCK/pid"
   log "grafo semantico: avviato in background su ${#GRAFO_REPO[@]} repo (PID $!, log: $WORK/grafo-semantico.log)"
 elif [ ! -f "$GRAFO_MARKER" ] && ! command -v graphify >/dev/null 2>&1; then
