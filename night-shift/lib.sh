@@ -686,13 +686,36 @@ leggi_coda() {
 # le modifiche non committate e i commit non pushati, e col checkout fallito resettava il ramo del giorno; il
 # log diceva «allineato». Ora: sporco → stash «salvataggio turno <ora>»; commit fuori da origin → ramo
 # salvataggio/<ora>; checkout di main fallito → niente reset, rc 1. Ogni cosa messa da parte si dice.
+# git_vivo_in <dir>: 0 se un processo git lavora dentro <dir> (la sua cartella corrente e' li'). Un git di cui non si sa
+# dire la cartella conta come vivo: nel dubbio il lock non si tocca. (D18, 2026-09-25)
+git_vivo_in() {
+  local dir pid cwd
+  dir=$(cd "$1" 2>/dev/null && pwd -P) || return 0
+  for pid in $(pgrep -x git 2>/dev/null); do
+    case "$(ps -o stat= -p "$pid" 2>/dev/null)" in Z*|"") continue ;; esac   # uno zombie (o gia' finito) non lavora
+    cwd=$(readlink "/proc/$pid/cwd" 2>/dev/null || lsof -a -d cwd -p "$pid" -Fn 2>/dev/null | sed -n 's/^n//p')
+    # cartella illeggibile: se il git e' ancora vivo nel dubbio conta, se e' gia' finito (un git di un attimo) no
+    [ -n "$cwd" ] || { kill -0 "$pid" 2>/dev/null && return 0; continue; }
+    case "$cwd" in "$dir"|"$dir"/*) return 0 ;; esac
+  done
+  return 1
+}
+
 allinea_hub() {
-  local d="$1" ts up br sporchi avanti gd err salvato
+  local d="$1" ts up br sporchi avanti gd err salvato eta_lock
   ts=$(date +%Y%m%d-%H%M%S)
   # (2026-09-24, sesto ventaglio, S4 R2): un .git/index.lock rimasto da un git ucciso (SIGKILL, Mac spento di colpo)
   # faceva fallire stash e reset a ogni ciclo con la causa in /dev/null, e ogni ciclo apriva un ramo salvataggio/
   # nuovo. Ora si dice per nome e non si tocca niente: toglierlo e' di chi lavora nella copia (DEBITI, S4 D2).
   gd=$(git -C "$d" rev-parse --absolute-git-dir 2>/dev/null)
+  # (2026-09-25, D18, risposta delegata): ma se ha piu' di 60 minuti e nessun git lavora in quella copia, e' un orfano
+  # vero, e si toglie da solo (e' la cura che git stesso suggerisce) — prima restava finche' una persona non arrivava.
+  if [ -n "$gd" ] && [ -f "$gd/index.lock" ]; then
+    eta_lock=$(( $(date +%s) - $(mtime "$gd/index.lock" 2>/dev/null || date +%s) ))
+    if [ "$eta_lock" -ge 3600 ] && ! git_vivo_in "$d"; then
+      rm -f "$gd/index.lock" && echo "index.lock orfano tolto ($gd, da $eta_lock s, nessun git vivo nella copia)"
+    fi
+  fi
   if [ -n "$gd" ] && [ -f "$gd/index.lock" ]; then
     echo "NON allineato: $gd/index.lock esiste (da $(( $(date +%s) - $(mtime "$gd/index.lock" 2>/dev/null || date +%s) )) s) — un git ucciso a meta'? Niente stash ne' reset finche' c'e'; se nessun git lavora li', si toglie a mano"
     return 1
