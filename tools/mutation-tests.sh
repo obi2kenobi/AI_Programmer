@@ -64,10 +64,12 @@ trap ripristina EXIT
 
 TENGONO=0; TEATRI=0; ROTTI=0
 for t in tests/test-*.sh; do
-  base=$(basename "$t" .sh); base=${base#test-}
+  # (2026-09-25, settimo ventaglio, V5 R1): le espansioni di bash, non basename/echo|tr — 188 banchi x 85 candidati x 3
+  # processi erano ~40 s di fork su ~190 del banco piu' pesante della suite. Stesse 66 coppie (misurato, anche con la 3.2).
+  base=${t##*/}; base=${base%.sh}; base=${base#test-}
   tool=""
   for cand in tools/*.py tools/*.sh night-shift/*.sh; do
-    nb=$(basename "$cand"); nb=${nb%.*}; nb=$(echo "$nb" | tr '_' '-')
+    nb=${cand##*/}; nb=${nb%.*}; nb=${nb//_/-}
     if [ "$nb" = "$base" ]; then tool="$cand"; break; fi
   done
   [ -z "$tool" ] && continue
