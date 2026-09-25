@@ -688,6 +688,39 @@ grep -q 'ruota_log_aperto "${NIGHT_LOG:-$HOME/night-shift-console.log}"' "$HERE/
 grep -qF 'if [ "$PR_STATE" = "OPEN" ]; then log "Issue #$NUM: PR già aperta, skip"; continue; fi' "$HERE/night-shift/night-shift.sh" \
   && ok "D45: una PR di issue aperta non si riscrive (il turno salta l'issue)" || ko "D45: il salto dell'issue con PR aperta non c'e' piu'"
 
+# --- (2026-09-25, D44, risposta delegata): un'issue d'allarme ([night-verify], [ciclo-vivo], [banco]) restava aperta dopo il
+# verde e diceva il falso; e un rosso NUOVO con l'issue gia' aperta finiva solo nel log. Ora: al verde si chiude col suo
+# perche'; un rosso diverso dall'ultimo detto si commenta, una volta (non a ogni ciclo).
+if command -v allarme_verde >/dev/null && command -v allarme_rosso_nuovo >/dev/null; then
+  AL=$(mktemp -d); mkdir -p "$AL/bin"
+  cat > "$AL/bin/gh" <<'GHA'
+#!/bin/bash
+echo "$*" >> "$GH_LOG"
+case "$1 $2" in
+  "issue list") [ "${GH_ROTTO:-0}" = 1 ] && exit 1; echo '[{"number":5,"title":"[night-verify] 2 verifiche rosse"},{"number":6,"title":"altro"}]' ;;
+esac
+exit 0
+GHA
+  chmod +x "$AL/bin/gh"
+  PATH="$AL/bin:$PATH" GH_LOG="$AL/log" allarme_verde o/r "[night-verify]" >/dev/null 2>&1
+  grep -c '^issue close 5 ' "$AL/log" >/dev/null && ! grep -c '^issue close 6' "$AL/log" >/dev/null \
+    && ok "D44: al verde l'issue d'allarme si chiude (solo quella)" || ko "D44: al verde: $(grep '^issue' "$AL/log" | tr '\n' ';')"
+  : > "$AL/log"; PATH="$AL/bin:$PATH" GH_LOG="$AL/log" GH_ROTTO=1 allarme_verde o/r "[night-verify]" >/dev/null 2>&1; RCA=$?
+  [ "$RCA" -eq 2 ] && ! grep -c '^issue close' "$AL/log" >/dev/null && ok "D44: gh che non risponde: niente chiusura, rc 2" || ko "D44: gh rotto: rc $RCA"
+  : > "$AL/log"
+  for i in 1 2; do PATH="$AL/bin:$PATH" GH_LOG="$AL/log" WORK="$AL" allarme_rosso_nuovo o/r "[night-verify]" "- \`bash a.sh\`" >/dev/null 2>&1; done
+  PATH="$AL/bin:$PATH" GH_LOG="$AL/log" WORK="$AL" allarme_rosso_nuovo o/r "[night-verify]" "- \`bash b.sh\`" >/dev/null 2>&1
+  [ "$(grep -c '^issue comment 5 ' "$AL/log")" -eq 2 ] && ok "D44: un rosso nuovo si commenta una volta, lo stesso rosso no" \
+    || ko "D44: commenti del rosso: $(grep -c '^issue comment 5 ' "$AL/log") (attesi 2)"
+  rm -rf "$AL"
+else
+  ko "D44: allarme_verde o allarme_rosso_nuovo assenti in lib.sh"
+fi
+NS_T="$HERE/night-shift/night-shift.sh"
+[ "$(grep -c 'allarme_verde "$REPO"' "$NS_T")" -ge 3 ] && [ "$(grep -c 'allarme_rosso_nuovo "$REPO"' "$NS_T")" -ge 3 ] \
+  && ok "D44: il turno chiude al verde e commenta i rossi nuovi per [night-verify], [ciclo-vivo] e [banco]" \
+  || ko "D44: il turno chiama allarme_verde $(grep -c 'allarme_verde "$REPO"' "$NS_T") volte e allarme_rosso_nuovo $(grep -c 'allarme_rosso_nuovo "$REPO"' "$NS_T")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

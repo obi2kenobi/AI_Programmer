@@ -133,6 +133,36 @@ stato_pr_ramo() {
   printf '%s\n' "$out"
 }
 
+# Le issue d'allarme del turno ([night-verify], [ciclo-vivo], [banco]). (2026-09-25, D44, risposta delegata): restavano
+# aperte dopo il verde e dicevano il falso, e un rosso nuovo con l'issue gia' aperta finiva solo nel log.
+# numeri_allarme <owner/repo> <prefisso>: i numeri delle issue aperte il cui titolo inizia col prefisso; rc 2 se gh tace.
+numeri_allarme() {
+  local out
+  out=$(gh issue list -R "$1" --state open --limit 1000 --json number,title 2>/dev/null) || return 2
+  jq -r --arg p "$2" '.[] | select(.title | startswith($p)) | .number' <<<"$out" 2>/dev/null || return 2
+}
+# allarme_verde <owner/repo> <prefisso>: il rosso e' sparito — le issue d'allarme si chiudono, col perche'.
+allarme_verde() {
+  local nums n
+  nums=$(numeri_allarme "$1" "$2") || return 2
+  for n in $nums; do
+    gh issue close "$n" -R "$1" --comment "Tornato verde nel ciclo delle $(date '+%F %H:%M'): chiusa dal turno notturno. Se il rosso torna, il turno ne apre una nuova." >/dev/null 2>&1 \
+      && echo "issue #$n $2 chiusa: tornato verde"
+  done
+}
+# allarme_rosso_nuovo <owner/repo> <prefisso> <rossi>: con l'issue gia' aperta, un rosso DIVERSO dall'ultimo detto si
+# commenta, una volta; lo stesso rosso no (53 cicli a notte). L'impronta dell'ultimo detto sta in $WORK.
+allarme_rosso_nuovo() {
+  local nums n imp f
+  nums=$(numeri_allarme "$1" "$2") || return 2
+  n=$(head -1 <<<"$nums"); [ -n "$n" ] || return 0
+  imp=$(printf '%s' "$3" | cksum | cut -d' ' -f1)
+  f="${WORK:-/tmp}/.allarme-$(printf '%s' "$1$2" | tr -c 'A-Za-z0-9' '_')"
+  [ "$(cat "$f" 2>/dev/null)" = "$imp" ] && return 0
+  gh issue comment "$n" -R "$1" --body "Rosso nuovo nel ciclo delle $(date '+%F %H:%M'):
+$3" >/dev/null 2>&1 && echo "$imp" > "$f" && echo "issue #$n $2: rosso nuovo commentato"
+}
+
 # taglia_caratteri <n>: i primi n CARATTERI dello stdin (non byte). (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del
 # GNU taglia in byte anche in UTF-8, e un carattere spezzato arrivava nei commenti delle PR come «�» (jq e gh lo
 # sostituiscono). Per il testo che finisce in un commento, in un'issue o nel log.

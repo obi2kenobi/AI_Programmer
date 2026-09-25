@@ -367,9 +367,13 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
           && log "REPO $REPO: issue [night-verify] aperta ($NV_ROSSI/$NV_TOTALI rossi)"
       else
         log "REPO $REPO: $NV_ROSSI/$NV_TOTALI rosse — issue gia' aperta"
+        # (D44): un rosso diverso dall'ultimo detto si commenta sull'issue, una volta
+        AL_M=$(allarme_rosso_nuovo "$REPO" "[night-verify]" "$NV_ROSSI_LISTA") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"
       fi
     else
       log "REPO $REPO: .night-verify $NV_TOTALI/$NV_TOTALI verdi"
+      # (D44): al verde l'issue d'allarme si chiude — aperta, diceva il falso e copriva i rossi nuovi
+      AL_M=$(allarme_verde "$REPO" "[night-verify]") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"
     fi
   fi
 
@@ -608,6 +612,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         log "REPO $REPO: ⚠ gh non ha risposto (issue aperte): il rilievo [ciclo-vivo] non si apre in questo ciclo — non al buio"
       elif grep -qF "[ciclo-vivo]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
+        AL_M=$(allarme_rosso_nuovo "$REPO" "[ciclo-vivo]" "$(grep -E '^FIND' <<<"$CICLO_OUT" || true)") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"   # (D44)
       else
         echo "$CICLO_OUT" > /tmp/night-ciclo-$$.md
         if gh issue create -R "$REPO" -t "$CICLO_TITOLO" -F /tmp/night-ciclo-$$.md >/dev/null 2>&1; then
@@ -623,6 +628,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       else
         log "REPO $REPO: ciclo-vivo pulito (0 finding)"
       fi
+      AL_M=$(allarme_verde "$REPO" "[ciclo-vivo]") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"   # (D44)
     fi
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
     if ! echo "$BANCO_OUT" | tail -1 | grep -c "CHIUSO" >/dev/null; then
@@ -631,6 +637,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         log "REPO $REPO: ⚠ gh non ha risposto (issue aperte): l'issue [banco] non si apre in questo ciclo — non al buio"
       elif grep -qF "[banco]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: banco rosso MA issue [banco] gia' aperta — niente duplicati, aspetta il giorno"
+        AL_M=$(allarme_rosso_nuovo "$REPO" "[banco]" "$(tail -1 <<<"$BANCO_OUT")") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"   # (D44)
       elif true; then
         echo "$BANCO_OUT" > /tmp/night-banco-$$.md
         gh issue create -R "$REPO" -t "[banco] rosso nell'auto-esame notturno" -F /tmp/night-banco-$$.md >/dev/null 2>&1           && log "REPO $REPO: banco ROSSO — issue aperta per il giorno"           || log "⚠ REPO $REPO: banco rosso e creazione issue fallita — verdetto nel log"
@@ -638,6 +645,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       fi
     else
       log "REPO $REPO: banco veloce CHIUSO"
+      AL_M=$(allarme_verde "$REPO" "[banco]") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"   # (D44)
     fi
   fi
 
