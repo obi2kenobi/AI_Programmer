@@ -163,6 +163,15 @@ allarme_rosso_nuovo() {
 $3" >/dev/null 2>&1 && echo "$imp" > "$f" && echo "issue #$n $2: rosso nuovo commentato"
 }
 
+# pr_chiusa_ferma <stato della PR del ramo> <etichette dell'issue, separate da virgola>: 0 se l'issue va FERMATA.
+# (2026-09-25, D44, risposta delegata): una PR di issue chiusa senza fonderla e' il «no» di una persona, e si rifaceva al
+# ciclo dopo. Ora ferma l'issue; l'etichetta `rifai` la sblocca (riaprire la PR la renderebbe intoccabile, D45).
+pr_chiusa_ferma() {
+  [ "$1" = "CLOSED" ] || return 1
+  case ",$2," in *,rifai,*) return 1 ;; esac
+  return 0
+}
+
 # taglia_caratteri <n>: i primi n CARATTERI dello stdin (non byte). (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del
 # GNU taglia in byte anche in UTF-8, e un carattere spezzato arrivava nei commenti delle PR come «�» (jq e gh lo
 # sostituiscono). Per il testo che finisce in un commento, in un'issue o nel log.
@@ -654,7 +663,7 @@ dipendenze_mancanti() {
 leggi_coda() {
   local out err rc
   err=$(mktemp "${TMPDIR:-/tmp}/leggi-coda.XXXXXX") || { echo "leggi_coda: mktemp fallito" >&2; return 1; }
-  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body --limit 200 2>"$err"); rc=$?
+  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body,labels --limit 200 2>"$err"); rc=$?
   if [ "$rc" -ne 0 ] || ! jq -e 'type == "array"' >/dev/null 2>&1 <<<"$out"; then
     echo "gh rc=$rc: $(tail -1 "$err" | cut -c1-120)${out:+ · risposta: $(head -c 60 <<<"$out")}" >&2
     rm -f "$err"; return 1

@@ -721,6 +721,19 @@ NS_T="$HERE/night-shift/night-shift.sh"
   && ok "D44: il turno chiude al verde e commenta i rossi nuovi per [night-verify], [ciclo-vivo] e [banco]" \
   || ko "D44: il turno chiama allarme_verde $(grep -c 'allarme_verde "$REPO"' "$NS_T") volte e allarme_rosso_nuovo $(grep -c 'allarme_rosso_nuovo "$REPO"' "$NS_T")"
 
+# --- (2026-09-25, D44 seconda parte, risposta delegata): una PR di issue che Luca chiude SENZA fonderla si rifaceva al ciclo
+# dopo — il «no» durava un ciclo. Ora una PR CLOSED ferma l'issue. Per farla rifare si mette all'issue l'etichetta
+# `rifai` (riaprire la PR la renderebbe intoccabile, D45).
+if command -v pr_chiusa_ferma >/dev/null; then
+  pr_chiusa_ferma CLOSED "night-shift" && ok "D44: PR chiusa senza fusione: l'issue si ferma" || ko "D44: PR chiusa: l'issue si rifa'"
+  ! pr_chiusa_ferma CLOSED "night-shift,rifai" && ok "D44: con l'etichetta rifai l'issue si rifa'" || ko "D44: l'etichetta rifai non sblocca"
+  ! pr_chiusa_ferma NESSUNA "night-shift" && ok "D44: senza PR l'issue si lavora" || ko "D44: senza PR l'issue si ferma"
+else
+  ko "D44: pr_chiusa_ferma assente in lib.sh"
+fi
+grep -q 'pr_chiusa_ferma "$PR_STATE" "$ETICHETTE"' "$HERE/night-shift/night-shift.sh" && grep -q -- '--json number,title,body,labels' "$HERE/night-shift/lib.sh" \
+  && ok "D44: il turno legge le etichette dell'issue e ferma quella con la PR chiusa" || ko "D44: il turno non guarda la PR chiusa, o non legge le etichette"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

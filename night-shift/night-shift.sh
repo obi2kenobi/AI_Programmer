@@ -847,10 +847,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
 
   while [ "$IDX" -lt "${#ROWS[@]}" ]; do
     local row="${ROWS[$IDX]}"; IDX=$((IDX+1))
-    local NUM TITLE BODY BRANCH
+    local NUM TITLE BODY BRANCH ETICHETTE
     NUM=$(echo "$row" | jq -r '.number')
     TITLE=$(echo "$row" | jq -r '.title')
     BODY=$(echo "$row" | jq -r '.body // ""')
+    ETICHETTE=$(echo "$row" | jq -r '[.labels[]?.name] | join(",")')   # (D44, D4)
     [ -z "$NUM" ] || [ "$NUM" = "null" ] && continue
 
     # Miglioramento #1 (analisi processo 2026-08-21): il processo non dipende più dalla
@@ -905,6 +906,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
       continue
     fi
     if [ "$PR_STATE" = "OPEN" ]; then log "Issue #$NUM: PR già aperta, skip"; continue; fi
+    if pr_chiusa_ferma "$PR_STATE" "$ETICHETTE"; then
+      log "Issue #$NUM: la sua PR e' stata chiusa senza fonderla — il no resta: skip (per rifarla, l'etichetta «rifai» sull'issue)"
+      continue
+    fi
     if [ "$PR_STATE" = "MERGED" ]; then
       log "Issue #$NUM: PR già fusa, chiudo l'issue e skip"
       gh issue close "$NUM" -R "$REPO" --comment "Chiusa automaticamente: la PR sul branch night/issue-$NUM è stata fusa." >/dev/null 2>&1
