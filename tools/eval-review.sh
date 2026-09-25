@@ -16,6 +16,8 @@ DIR="$1"; PR="$2"
 # riga del verify risultava rossa. ai_timeout sceglie timeout, gtimeout o perl.
 # shellcheck source=../llm/_timeout.sh
 source "$(cd "$(dirname "$0")/.." && pwd)/llm/_timeout.sh"
+# shellcheck source=../night-shift/lib.sh
+source "$(cd "$(dirname "$0")/.." && pwd)/night-shift/lib.sh"   # riga_verifica_vuota (V1 R5)
 cd "$DIR" 2>/dev/null || { echo "eval-review: dir $DIR" >&2; exit 2; }
 
 # il diff della PR fusa: cosa ha portato nel main
@@ -53,7 +55,7 @@ fi
 # 3. il .night-verify GIRA e passa? (una prova che non gira non e' una prova)
 if [ -f ".night-verify" ] && [ -s ".night-verify" ]; then
   while IFS= read -r riga; do
-    case "$riga" in \#*|"") continue ;; esac
+    riga_verifica_vuota "$riga" && continue   # (settimo ventaglio, V1 R5): la regola dei lettori di .night-verify
     SEC=120; CMD="$riga"
     case "$riga" in @*) SEC="${riga%% *}"; SEC="${SEC#@}"; CMD="${riga#* }" ;; esac
     if ! ai_timeout "$SEC" bash -c "$CMD" >/dev/null 2>&1 </dev/null; then

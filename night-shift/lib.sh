@@ -102,6 +102,15 @@ esegui_verifica() {
   return "$rc"
 }
 
+# riga_verifica_vuota <riga>: 0 se la riga di .night-verify non e' un comando — vuota, soli spazi o TAB, un commento
+# anche indentato. (2026-09-25, settimo ventaglio, V1 R5): la regola UNICA dei lettori di .night-verify. Il turno saltava
+# solo "" e «#» in prima colonna: una riga di spazi era `bash -c "   "`, rc 0, «verifica VERDE».
+riga_verifica_vuota() {
+  local t="${1#"${1%%[![:space:]]*}"}"
+  case "$t" in ""|\#*) return 0 ;; esac
+  return 1
+}
+
 # verdetto_verifica <rc> <comando>: la parola che il commit porta per la `## Verifica` dell'issue. (2026-09-25, settimo
 # ventaglio, V2 R3): ogni rc diverso da 0 era «ROTTA» — anche 127 (il comando non c'e': node fuori dal PATH del plist)
 # e 124 (il tetto di 60 s). Un finto rosso insegna a ignorare i rossi (D2 2026-09-07).

@@ -206,6 +206,22 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, settimo ventaglio, V1 R5): sei lettori di .night-verify, tre regole su cosa e' una riga vuota. Il turno
+# saltava solo "" e «#» in prima colonna: una riga di soli spazi o un commento indentato era `bash -c "   "`, rc 0,
+# «verifica VERDE» — e «3/3 verdi» dove il censore e il gate dicevano «verifiche-vuote».
+if command -v riga_verifica_vuota >/dev/null; then
+  N_VUOTE=0; for R in "" "   " "	" "  # commento indentato" "# commento"; do riga_verifica_vuota "$R" && N_VUOTE=$((N_VUOTE+1)); done
+  { [ "$N_VUOTE" -eq 5 ] && ! riga_verifica_vuota "  node x.js" && ! riga_verifica_vuota "@300 bash tools/suite.sh"; } \
+    && ok "V1 R5: riga_verifica_vuota: spazi, TAB e commenti indentati sono vuoti; un comando indentato no" \
+    || ko "V1 R5: riga_verifica_vuota: $N_VUOTE vuote su 5"
+else
+  ko "V1 R5: riga_verifica_vuota assente da night-shift/lib.sh"
+fi
+for F in night-shift/night-shift.sh night-shift/revisore.sh tools/eval-review.sh; do
+  grep -c 'riga_verifica_vuota' "$HERE/$F" >/dev/null && ! grep -cE 'case "\$(NV_CMD|riga)" in (""\|\\#\*|\\#\*\|"")\) continue' "$HERE/$F" >/dev/null \
+    && ok "V1 R5: $F salta le righe vuote con riga_verifica_vuota" || ko "V1 R5: $F ha ancora il filtro suo delle righe vuote"
+done
+
 # --- (2026-09-25, settimo ventaglio, V2 R3): la verifica dell'issue distingue il comando assente e lo sforo dal rosso
 if command -v verdetto_verifica >/dev/null; then
   [ "$(verdetto_verifica 0 'node x.js')" = "PASSA" ] && [ "$(verdetto_verifica 1 'node x.js')" = "ROTTA: node x.js" ] \

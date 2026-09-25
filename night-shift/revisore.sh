@@ -239,7 +239,7 @@ if [ -n "$NV_DICHIARATE" ]; then
     rm -f "$NV_SCRIPT"
   elif true; then
   while IFS= read -r NV_CMD; do
-    case "$NV_CMD" in ""|\#*) continue;; esac
+    riga_verifica_vuota "$NV_CMD" && continue   # (V1 R5): la regola del conteggio qui sopra, non una sua
     NV_SEC=120
     case "$NV_CMD" in
       @*" "*) NV_SEC="${NV_CMD%% *}"; NV_SEC="${NV_SEC#@}"; NV_CMD="${NV_CMD#* }" ;;

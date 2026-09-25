@@ -302,7 +302,7 @@ shift_repo() {
     fi
     if [ "$NV_TOTALI" -eq 0 ]; then
     while IFS= read -r NV_CMD; do
-      case "$NV_CMD" in ""|\#*) continue;; esac
+      riga_verifica_vuota "$NV_CMD" && continue   # (V1 R5): anche spazi, TAB e commenti indentati
       # (E-029, seconda lezione): ogni riga ha budget 120s di default. La riga
       # puo' dichiararne uno suo con il prefisso `@<sec> ` — la suite completa
       # dura ~300s e con il budget standard moriva a meta' (era ROSSA stabile:
