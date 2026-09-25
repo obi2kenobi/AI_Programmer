@@ -17,6 +17,7 @@ col funnel: DELIBERA: contava zero da sempre). Scritto leggendo il codice reale 
 | `caccia: sana e nessuna miglioria` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi |
 | `AGENTE FALLITO` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi |
 | `LENTE MUTA` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi, test-dashboard |
+| `non dichiarato` | `night-shift/night-shift.sh` | `night-shift-console.log` (battito) | test-eventi, test-caccia-smistamento |
 | `TRASFORMATORE deterministico` | `night-shift/night-shift.sh`, `night-shift/caccia-miglioria.sh` | `tools/dashboard.py`, `night-shift/night-shift.sh` | test-eventi |
 | `gate BOCCIA` | `night-shift/night-shift.sh`, `night-shift/caccia-miglioria.sh` | `tools/dashboard.py`, `night-shift/night-shift.sh` | test-eventi |
 | `MIGLIORIA pronta` | `night-shift/night-shift.sh` | `tools/dashboard.py` | test-eventi |

@@ -40450,7 +40450,7 @@
       "node_kind": "heading",
       "norm_label": "righe \u26a0/\u26d4 del turno lette solo dal battito",
       "source_file": "docs/eventi.md",
-      "source_location": "L44"
+      "source_location": "L45"
     },
     {
       "id": "githooks_commit_msg",
@@ -49149,6 +49149,81 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_caccia_smistamento",
+      "label": "test-caccia-smistamento.sh",
+      "_origin": "ast",
+      "community": 764,
+      "community_name": "test-caccia-smistamento.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-caccia-smistamento.sh",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_caccia_smistamento_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 764,
+      "community_name": "test-caccia-smistamento.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_caccia_smistamento_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 764,
+      "community_name": "test-caccia-smistamento.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_caccia_smistamento_prova",
+      "label": "prova()",
+      "_origin": "ast",
+      "community": 764,
+      "community_name": "test-caccia-smistamento.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prova()",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L30"
+    },
+    {
+      "id": "tests_test_caccia_smistamento_sh__entry",
+      "label": "test-caccia-smistamento.sh script",
+      "_origin": "ast",
+      "community": 764,
+      "community_name": "test-caccia-smistamento.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-caccia-smistamento.sh script",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "opencode_skills_dev_critic_skill",
       "label": ".opencode/skills/dev-critic/SKILL.md",
       "_origin": "ast",
@@ -52784,7 +52859,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1273",
+      "source_location": "L1286",
       "weight": 1.0
     },
     {
@@ -52808,7 +52883,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1342",
+      "source_location": "L1355",
       "weight": 1.0
     },
     {
@@ -52916,7 +52991,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1026",
+      "source_location": "L1039",
       "weight": 1.0
     },
     {
@@ -52928,7 +53003,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1047",
+      "source_location": "L1060",
       "weight": 1.0
     },
     {
@@ -52940,7 +53015,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1169",
+      "source_location": "L1182",
       "weight": 1.0
     },
     {
@@ -53084,7 +53159,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L722",
+      "source_location": "L723",
       "weight": 1.0
     },
     {
@@ -53096,7 +53171,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L723",
+      "source_location": "L724",
       "weight": 1.0
     },
     {
@@ -53108,7 +53183,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L819",
+      "source_location": "L832",
       "weight": 1.0
     },
     {
@@ -53120,7 +53195,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L839",
+      "source_location": "L852",
       "weight": 1.0
     },
     {
@@ -53132,7 +53207,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L916",
+      "source_location": "L929",
       "weight": 1.0
     },
     {
@@ -54381,6 +54456,42 @@
       "context": "call",
       "source_file": "tests/test-caccia-registro.sh",
       "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_caccia_smistamento_sh__entry",
+      "target": "tests_test_caccia_smistamento_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_caccia_smistamento_sh__entry",
+      "target": "tests_test_caccia_smistamento_prova",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_caccia_smistamento_sh__entry",
+      "target": "tests_test_caccia_smistamento_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -75581,7 +75692,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/eventi.md",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -86189,6 +86300,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_caccia_smistamento",
+      "target": "tests_test_caccia_smistamento_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_campo_triage",
       "target": "tests_test_campo_triage_sh__entry",
       "relation": "contains",
@@ -91080,6 +91202,39 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-caccia-registro.sh",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_caccia_smistamento",
+      "target": "tests_test_caccia_smistamento_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_caccia_smistamento",
+      "target": "tests_test_caccia_smistamento_prova",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-caccia-smistamento.sh",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_caccia_smistamento",
+      "target": "tests_test_caccia_smistamento_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-caccia-smistamento.sh",
       "source_location": "L9",
       "weight": 1.0
     },
@@ -99269,5 +99424,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5d068f2aa9c89d9d258fe3c4fe17104b188c81c9"
+  "built_at_commit": "421c25b64313db90ba6d5a9061034851cad32496"
 }
