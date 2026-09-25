@@ -1286,9 +1286,16 @@ GRAFO_DATA=$(date +%F); GRAFO_MARKER="$WORK/.grafo-$GRAFO_DATA"; GRAFO_LOCK="$WO
 # (2026-09-24, sesto ventaglio, S4 R6): il segno del giorno si scriveva PRIMA del pass, e il lock non aveva il PID —
 # un turno ucciso a meta' pass lasciava segno e lock, e il pass mancava in silenzio fino a 24 ore. Ora il lock porta
 # il PID del pass (la regola di lock_turno_orfano: PID morto = lock orfano), e il segno si scrive a pass finito.
-if [ -d "$GRAFO_LOCK" ] && { { [ -f "$GRAFO_LOCK/pid" ] && lock_turno_orfano "$GRAFO_LOCK" night-shift; } \
-     || [ $(( $(date +%s) - $(mtime "$GRAFO_LOCK") )) -ge 86400 ]; }; then
-  rm -rf "$GRAFO_LOCK" && log "grafo semantico: lock di un pass morto (PID $(cat "$GRAFO_LOCK/pid" 2>/dev/null || echo '?'), o oltre 24h) rimosso — il pass riparte"
+# (2026-09-25, settimo ventaglio, V3 R3): col PID nel lock decide solo il PID — vivo, il lock resta a qualunque eta'
+# (prima oltre le 24 ore si toglieva anche col pass vivo: due extract sulla stessa copia). Le 24 ore valgono per i lock
+# senza PID (versione vecchia). Il PID si legge prima di cancellare: il messaggio diceva sempre «PID ?».
+if [ -d "$GRAFO_LOCK" ]; then
+  GRAFO_PID=$(cat "$GRAFO_LOCK/pid" 2>/dev/null); GRAFO_ETA=$(( $(date +%s) - $(mtime "$GRAFO_LOCK") ))
+  if { [ -n "$GRAFO_PID" ] && lock_turno_orfano "$GRAFO_LOCK" night-shift; } || { [ -z "$GRAFO_PID" ] && [ "$GRAFO_ETA" -ge 86400 ]; }; then
+    rm -rf "$GRAFO_LOCK" && log "grafo semantico: lock di un pass morto (PID ${GRAFO_PID:-assente, oltre 24h}) rimosso — il pass riparte"
+  elif [ -n "$GRAFO_PID" ] && [ "$GRAFO_ETA" -ge 86400 ]; then
+    log "grafo semantico: ⚠ pass VIVO da oltre 24 ore (PID $GRAFO_PID) — non si tocca e non se ne avvia un secondo"
+  fi
 fi
 if [ ! -f "$GRAFO_MARKER" ] && [ -f "$HERE/../tools/grafo-semantico.sh" ] && command -v graphify >/dev/null 2>&1 \
    && mkdir "$GRAFO_LOCK" 2>/dev/null; then

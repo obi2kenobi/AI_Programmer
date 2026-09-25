@@ -35,6 +35,13 @@ grep -c 'avviato in background' <<<"$OUT2" >/dev/null && grep -ci 'morto' <<<"$O
 OUT3=$(ciclo 3)
 ! grep -c 'avviato in background' <<<"$OUT3" >/dev/null && ! grep -ci 'morto' <<<"$OUT3" >/dev/null \
   && ok "pass vivo: il ciclo dopo non lo tocca e non ne avvia un secondo" || ko "pass vivo trattato da morto: $OUT3"
+# (2026-09-25, settimo ventaglio, V3 R3): un lock oltre le 24 ore si toglieva anche col pass VIVO — due extract sulla
+# stessa copia, e il primo a finire toglieva il lock del secondo. E il messaggio leggeva il PID dopo averlo cancellato
+# («PID ?»). Ora il PID vivo tiene il lock a qualunque eta', e il turno lo dice. Qui il pass del ciclo 3 e' vivo.
+python3 -c 'import os,sys,time; t=time.time()-25*3600; os.utime(sys.argv[1],(t,t))' "$T/work/.lock-grafo"
+OUT4=$(ciclo 4)
+! grep -c 'avviato in background' <<<"$OUT4" >/dev/null && ! grep -ci 'rimosso' <<<"$OUT4" >/dev/null && grep -c 'oltre 24' <<<"$OUT4" >/dev/null \
+  && ok "V3 R3: pass vivo da oltre 24 ore: il lock resta, nessun secondo pass, e lo dice" || ko "V3 R3: pass vivo oltre 24h: $(grep LOG <<<"$OUT4" | head -2 | tr '\n' ' ')"
 # E-049 (guardia): chi uccide un albero di processi ferma il padre con STOP prima di ucciderne i figli. Figli prima:
 # il padre vivo un attimo prosegue (qui scriveva il segno del giorno). Padre prima: i figli restano orfani.
 NUDI=$(grep -n 'pkill -KILL -P "\$[A-Za-z_]*"' "$HERE"/tests/*.sh "$HERE/tools/mutation-tests.sh" | grep -v ':[[:space:]]*#' \

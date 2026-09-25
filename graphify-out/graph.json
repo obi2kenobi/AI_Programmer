@@ -20162,51 +20162,6 @@
       "source_location": "L195"
     },
     {
-      "id": "tools_grafo_semantico",
-      "label": "grafo-semantico.sh",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "grafo-semantico.sh",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_grafo_semantico_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L22"
-    },
-    {
-      "id": "tools_grafo_semantico_sh__entry",
-      "label": "grafo-semantico.sh script",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "grafo-semantico.sh script",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "docs_giri_2026_09_25_settimo_00_brief",
       "label": "2026-09-25-settimo/00-BRIEF.md",
       "_origin": "ast",
@@ -39495,7 +39450,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L279"
+      "source_location": "L280"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39507,7 +39462,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L273"
+      "source_location": "L274"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -40572,7 +40527,7 @@
       "node_kind": "heading",
       "norm_label": "righe \u26a0/\u26d4 del turno lette solo dal battito",
       "source_file": "docs/eventi.md",
-      "source_location": "L45"
+      "source_location": "L46"
     },
     {
       "id": "githooks_commit_msg",
@@ -49239,6 +49194,51 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_grafo_semantico",
+      "label": "grafo-semantico.sh",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "grafo-semantico.sh",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_grafo_semantico_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tools_grafo_semantico_sh__entry",
+      "label": "grafo-semantico.sh script",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "grafo-semantico.sh script",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "opencode_skills_dev_critic_skill",
       "label": ".opencode/skills/dev-critic/SKILL.md",
       "_origin": "ast",
@@ -52867,6 +52867,18 @@
     },
     {
       "source": "night_shift_night_shift_sh__entry",
+      "target": "night_shift_lib_mtime",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L1293",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_sh__entry",
       "target": "night_shift_lib_lock_turno_orfano",
       "relation": "calls",
       "_origin": "ast",
@@ -52874,7 +52886,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1289",
+      "source_location": "L1294",
       "weight": 1.0
     },
     {
@@ -52898,7 +52910,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1358",
+      "source_location": "L1365",
       "weight": 1.0
     },
     {
@@ -65962,7 +65974,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L273",
+      "source_location": "L274",
       "weight": 1.0
     },
     {
@@ -65973,7 +65985,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L279",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -75719,7 +75731,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/eventi.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -99462,5 +99474,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2a1fa9d69d613d0151a93e384945c3e9d9d7a8e8"
+  "built_at_commit": "a6289900dfe642402fc7c92c9727be0ee7674c8e"
 }
