@@ -18,7 +18,8 @@ printf '#!/bin/bash\nfor i in $(seq 1 60); do echo "riga $i"; done\n' > "$T/hub/
 echo 0 > "$T/hub/.caccia-rotazione"
 OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" 2>&1)
 # (sesto ventaglio, rinviati di S3 R6): la lente scrive il percorso quotato con %q (S3 R4); il banco lo cerca uguale.
-grep -cF "comando: bash $(printf %q "$T/hub")/tools/giri-ignoranti.sh 2>&1 | tail -25" <<<"$OUT" >/dev/null \
+# (ottavo ventaglio, O3 R6): la lente ora passa prima le righe FIND, poi la coda — il comando intero, pipe comprese
+grep -cF "comando: bash $(printf %q "$T/hub")/tools/giri-ignoranti.sh 2>&1 | { t=\$(cat); grep -A3 '^FIND' <<<\"\$t\"; tail -25 <<<\"\$t\"; }" <<<"$OUT" >/dev/null \
   && ok "la lente esegue il comando intero, pipe interna compresa" || ko "comando tagliato: $(grep -m1 'comando:' <<<"$OUT")"
 ATTESO=$(for i in $(seq 36 60); do echo "riga $i"; done | wc -c | tr -d ' ')
 grep -cE "\\(($ATTESO|$((ATTESO-1))) bytes" <<<"$OUT" >/dev/null && ok "il modello riceve le ultime 25 righe ($ATTESO byte)" \
@@ -55,6 +56,15 @@ printf '#!/bin/bash\necho "sonda 2: FINDING grep -c muto"; exit 1\n' > "$T/hub/t
 OUT=$(PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && grep -c 'vince lo strumento' <<<"$OUT" >/dev/null && ok "V2 R1: strumento rc 1 e modello «NO»: problemi (rc 0), e lo dice" \
   || ko "V2 R1: strumento rc 1 e modello «NO»: rc=$RC ($(grep -m1 'sano\|PROBLEMI' <<<"$OUT"))"
+# (2026-09-25, ottavo ventaglio, O3 R6): la lente «sonde» passava al modello le ultime 25 righe: una sonda rossa in testa
+# (con i suoi file sotto) spariva, restava «1 finding». Il curl finto conserva il prompt.
+printf '#!/bin/bash\ncat > %q; echo %s\n' "$T/prompt-sonde" "'{\"message\":{\"content\":\"1. YES\"}}'" > "$T/bin/curl"; chmod +x "$T/bin/curl"
+{ printf '#!/bin/bash\necho "FIND S1 caratteri alieni: docs/a.md"\n'; for i in $(seq 1 30); do printf 'echo "OK   S%s sonda verde"\n' "$i"; done; printf 'echo "VERDETTO: 1 finding"; exit 1\n'; } > "$T/hub/tools/giri-ignoranti.sh"
+echo 0 > "$T/hub/.caccia-rotazione"
+PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/dev/null 2>&1
+grep -c 'FIND S1 caratteri alieni' "$T/prompt-sonde" >/dev/null 2>&1 && grep -c 'VERDETTO: 1 finding' "$T/prompt-sonde" >/dev/null \
+  && ok "O3 R6: la sonda rossa in testa arriva al modello, col verdetto" || ko "O3 R6: al modello non arriva la riga FIND (solo la coda)"
+printf '#!/bin/bash\ncat >/dev/null; echo %s\n' "'{\"message\":{\"content\":\"1. NO\"}}'" > "$T/bin/curl"; chmod +x "$T/bin/curl"
 printf '#!/bin/bash\necho "tutto ok"; exit 0\n' > "$T/hub/tools/giri-ignoranti.sh"; echo 0 > "$T/hub/.caccia-rotazione"
 PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/dev/null 2>&1; RC=$?
 [ "$RC" -eq 1 ] && ok "strumento rc 0 e modello «NO»: sana (invariato)" || ko "strumento rc 0 e modello «NO»: rc=$RC"

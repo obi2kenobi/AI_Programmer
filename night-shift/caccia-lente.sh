@@ -14,8 +14,10 @@ log() { echo "[lente $(date '+%H:%M:%S')] $*" >&2; }
 # (2026-09-24, sesto ventaglio, S3 R4): il comando va a `eval`, e $HERE era nudo — in un percorso con lo spazio lo
 # strumento non girava, e con un apice la riga non si analizzava. Il percorso entra quotato (printf %q).
 HQ=$(printf '%q' "$HERE")
+# (2026-09-25, ottavo ventaglio, O3 R6): per le sonde, prima le righe FIND col loro dettaglio, poi la coda. Con la sola
+# coda (tail -25) una sonda rossa in testa spariva, e al modello restava «1 finding» senza sapere quale.
 LENTI=(
-  "sonde|bash $HQ/tools/giri-ignoranti.sh 2>&1 | tail -25|FIND finding"
+  "sonde|bash $HQ/tools/giri-ignoranti.sh 2>&1 | { t=\$(cat); grep -A3 '^FIND' <<<\"\$t\"; tail -25 <<<\"\$t\"; }|FIND finding"
   "health|bash $HQ/tools/system-health.sh 2>&1 | head -25|ROSSO DOWN WARN"
   "banco|bash $HQ/tools/banco-passaggio.sh --solo-copertura 2>&1 | tail -10|NON CHIUDERE scoperto rosso"
   "ciclo|bash $HQ/tools/ciclo-vivo.sh 2>&1 | tail -20|finding COLLEGAMENTO FLUSSO"
