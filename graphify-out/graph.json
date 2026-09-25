@@ -26120,7 +26120,7 @@
       },
       "norm_label": "g()",
       "source_file": "tests/test-privacy.sh",
-      "source_location": "L121"
+      "source_location": "L129"
     },
     {
       "id": "tests_test_privacy_ko",
@@ -30353,7 +30353,7 @@
       },
       "norm_label": "maschera()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L106"
+      "source_location": "L112"
     },
     {
       "id": "tools_privacy_check_nomi_locali",
@@ -30368,7 +30368,7 @@
       },
       "norm_label": "nomi_locali()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L33"
+      "source_location": "L39"
     },
     {
       "id": "tools_privacy_check_rifila",
@@ -30383,7 +30383,7 @@
       },
       "norm_label": "rifila()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L27"
+      "source_location": "L33"
     },
     {
       "id": "tools_privacy_check_scan_termine",
@@ -30398,7 +30398,7 @@
       },
       "norm_label": "scan_termine()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L118"
+      "source_location": "L124"
     },
     {
       "id": "tools_privacy_check_sh__entry",
@@ -58559,7 +58559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-privacy.sh",
-      "source_location": "L122",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -61091,7 +61091,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L36",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -61103,43 +61103,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L128",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_privacy_check_sh__entry",
-      "target": "tools_privacy_check_scan_termine",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/privacy-check.sh",
-      "source_location": "L142",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_privacy_check_sh__entry",
-      "target": "tools_privacy_check_maschera",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/privacy-check.sh",
-      "source_location": "L170",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_privacy_check_sh__entry",
-      "target": "tools_privacy_check_nomi_locali",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/privacy-check.sh",
-      "source_location": "L44",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -61151,7 +61115,43 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L98",
+      "source_location": "L104",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_privacy_check_sh__entry",
+      "target": "tools_privacy_check_scan_termine",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_privacy_check_sh__entry",
+      "target": "tools_privacy_check_maschera",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_privacy_check_sh__entry",
+      "target": "tools_privacy_check_nomi_locali",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/privacy-check.sh",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -95148,7 +95148,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-privacy.sh",
-      "source_location": "L121",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -97161,7 +97161,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L106",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -97172,7 +97172,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L118",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -97183,7 +97183,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L27",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -97194,7 +97194,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L33",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -99729,5 +99729,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "03b44437504b0943d88dd74d46b3d1c478fcb1b4"
+  "built_at_commit": "144a4ee75fda9e5d9914d8dcd13081d04f9fa92a"
 }

@@ -111,6 +111,14 @@ printf 'contattare FORNITORERISERVATO\n' > "$TMP/nota-maiuscola.txt" && git -C "
 OUT=$(HOME="$TMP/casa" bash "$TMP/tools/privacy-check.sh" 2>&1)
 grep -c 'nota-maiuscola.txt' <<<"$OUT" >/dev/null && ok "nome della lista in MAIUSCOLO: visto (grep senza badare al caso)" || ko "nome in maiuscolo non visto: $(tail -2 <<<"$OUT")"
 git -C "$TMP" rm -q --cached nota-maiuscola.txt
+# (2026-09-25, settimo ventaglio, V4 R2): privacy-check ereditava il locale del chiamante. In C `grep -i` non ripiega le
+# maiuscole accentate: «ZANETTÒ» passava, e il pre-commit (che sceglie un locale UTF-8) lo fermava. Nome inventato.
+cp "$TMP/casa/.privacy-nomi" "$TMP/casa/.privacy-nomi.prima"
+printf 'Zanett\303\262\n' >> "$TMP/casa/.privacy-nomi"
+printf 'contattare ZANETT\303\222 domani\n' > "$TMP/nota-accento.txt" && git -C "$TMP" add nota-accento.txt
+OUT=$(HOME="$TMP/casa" LC_ALL=C LANG=C bash "$TMP/tools/privacy-check.sh" 2>&1)
+grep -c 'nota-accento.txt' <<<"$OUT" >/dev/null && ok "V4 R2: con LC_ALL=C il nome accentato in MAIUSCOLO si vede lo stesso" || ko "V4 R2: con LC_ALL=C «ZANETTÒ» passa"
+git -C "$TMP" rm -q --cached nota-accento.txt; rm -f "$TMP/nota-accento.txt"; mv "$TMP/casa/.privacy-nomi.prima" "$TMP/casa/.privacy-nomi"
 
 # (2026-09-24, quarto ventaglio, Q5 R2, caso A2): un token committato e poi tolto nel commit dopo — la
 # storia sull'hub pubblico lo porta ancora, e privacy-check (che guardava solo i file di oggi) diceva

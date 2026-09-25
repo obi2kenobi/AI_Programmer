@@ -12,6 +12,12 @@
 # (--grep), su TUTTI i branch (--all), non solo quello corrente.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# (2026-09-25, settimo ventaglio, V4 R2): il locale si SCEGLIE fra quelli installati, come in tools/pre-commit.sh, e non
+# si eredita. In C `grep -i` non ripiega le maiuscole accentate: «ZANETTÒ» passava qui e il pre-commit lo fermava. Qui
+# vince sempre l'UTF-8 (un LC_ALL=C del chiamante indeboliva il controllo senza dirlo); senza, lo si dichiara.
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+if [ -n "$UTF_LOCALE" ]; then export LANG="$UTF_LOCALE" LC_ALL="$UTF_LOCALE"
+else echo "⚠ privacy-check: nessun locale UTF-8 installato — le maiuscole accentate non si ripiegano (controllo nomi DEGRADATO)" >&2; fi
 KEY="$HERE/night-shift/repos.key"
 # v4 (2026-08-24, report dal campo su REPO-G): senza chiave il gate è CIECO — e usciva 0,
 # cioè "promosso", proprio nelle sessioni cloud dove la chiave non esiste per disegno.
