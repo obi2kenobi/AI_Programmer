@@ -107,6 +107,11 @@ OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/c
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
 [ $RC -eq 0 ] && [ -f "$TMP/repo/cervello/lezione-perche-e-cosi-la-citta.md" ] \
   && ok "V4 R5: titolo accentato → slug «perche-e-cosi-la-citta»" || ko "V4 R5: slug: $(ls "$TMP/repo/cervello/" | grep perch | head -1)"
+
+# (2026-09-25, ottavo ventaglio, O3 R5): le lezioni gia' note si prendevano con `grep "^## E-0"` — da E-100 in poi nessuna
+# voce nuova del REGISTRO sarebbe entrata nel prompt (oggi siamo a E-049). Il numero della voce non ha un tetto.
+! grep -c '\^## E-0"' "$HERE/tools/cervello-impara.sh" >/dev/null && grep -c '\^## E-\[0-9\]' "$HERE/tools/cervello-impara.sh" >/dev/null \
+  && ok "O3 R5: le lezioni note si leggono per ogni numero di voce (anche E-100 e oltre)" || ko "O3 R5: le lezioni note si fermano a E-099"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

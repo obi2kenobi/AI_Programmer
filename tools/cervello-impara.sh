@@ -36,7 +36,8 @@ CTX=$(grep -a "^\[$OGGI" "$LOG" 2>/dev/null \
       | tail -80 | cut -c1-150)
 
 # la scaletta di quello che il sistema GIA' sa: non si reimpara l'alfa
-SAPEVOLI=$(grep -a "^## E-0" "$HERE/docs/errori/REGISTRO.md" 2>/dev/null | tail -12 | cut -c1-80)
+# (ottavo ventaglio, O3 R5): «E-[0-9]», non «E-0» — da E-100 in poi le voci nuove non entravano nel prompt
+SAPEVOLI=$(grep -a "^## E-[0-9]" "$HERE/docs/errori/REGISTRO.md" 2>/dev/null | tail -12 | cut -c1-80)
 
 read -r -d '' PROMPT <<FINE || true
 Sei la memoria di un sistema di sviluppo autonomo (AI_Programmer) che gira 24/7.
