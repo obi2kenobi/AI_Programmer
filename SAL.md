@@ -5375,3 +5375,42 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 - **Ottavo ventaglio, O3 R4 — un `head -200` nascosto nella sonda S16.** Da 197 voci diceva «indice FERMO» a indice
   appena rigenerato. Tolto; caso permanente in `tests/test-giri-ignoranti.sh` (SAL vero più 60 voci), rosso con la
   versione di prima. Qui ho scritto la cura prima del banco: rimediato col banco e il sabotaggio subito dopo.
+- **Ottavo ventaglio, O1 R4 — per l'agente un'azione JSON rotta era la risposta finale.** Un'azione troncata dal tetto
+  dei token, o preceduta da una frase, non si leggeva: rc 0, e la caccia dichiarava pulito il file. Ora
+  `night-shift/agente.sh` prende il primo oggetto con «action» anche dopo la prosa; un'azione illeggibile torna al modello
+  come errore di formato, e due di fila danno rc 1. Un campo mancante non diventa più `null` (`.path // empty`). Tre
+  scenari in `tests/test-agente.sh`; sabotaggio 19/4.
+- **Ottavo ventaglio, O3 R6 — la lente «sonde» passava al modello solo le ultime 25 righe.** Una sonda rossa in testa
+  spariva, e restava il verdetto senza il perché. Ora `night-shift/caccia-lente.sh` passa prima le righe FIND, poi la
+  coda. Caso in `tests/test-caccia-lente.sh` (il curl finto conserva il prompt); sabotaggio 11/2.
+- **Ottavo ventaglio, O2 R4 e R5 — la PR di caccia si contava creata anche con gh in errore, e i titoli di GitHub
+  passavano da `echo -e`.** Il log e il SAL mentivano, e il freno del rate limit non scattava. Un `C:\cartelle` in un
+  titolo chiudeva l'uscita a `\c`, e la lista ASPETTA IL GIORNO perdeva le voci dopo. Ora la PR si conta solo se gh dà un
+  URL, e la lista si accumula con a capo veri e si stampa con `printf '%s'`. Guardie in `tests/test-lib.sh`; sabotaggio
+  182/3.
+- **Ottavo ventaglio, O2 R3 — le guardie anti-doppione leggevano un errore di gh come «non c'è».** Con
+  `$(gh … 2>/dev/null || true)` il turno riapriva issue, PR e commenti a ogni ciclo in cui la lettura cadeva e la
+  scrittura no. Ora gh che non risponde dà `GH_NON_SO` (`night-shift/lib.sh`), usato in otto punti di
+  `night-shift/night-shift.sh`: la scrittura esterna si salta in quel ciclo, e `docs/eventi.md` ha la riga «gh non ha
+  risposto». Guardia statica in `tests/test-lib.sh`; sabotaggio 184/1. Copre anche O5 R6.
+- **Ottavo ventaglio, O2 R6 — la domanda del giorno diceva «(nessuna)» con gh in errore, e contava al più 10 PR per
+  repo.** Ora `tools/cervello-domanda.sh` dice «gh non ha risposto per» la repo, e i totali «(almeno…)»; `--limit 200`,
+  dieci mostrate per repo. Due casi in `tests/test-cervello-domanda.sh`; sabotaggio 3/2.
+- **Ottavo ventaglio, O4 R3 — senza `origin/HEAD`, `default_branch` diceva sempre «main».** Il ripiego era
+  `gh repo view -R …`, che il gh vero rifiuta. Ora chiede prima al remoto (`git ls-remote --symref origin HEAD`), poi gh
+  nella forma posizionale. Caso con una repo `master` vera in `tests/test-lib.sh`; sabotaggio 183/2.
+- **Ottavo ventaglio, O4 R6 — il log del Mac non diceva le versioni degli strumenti.** Ora `versioni_turno`
+  (`night-shift/lib.sh`) aggiunge alla riga d'ambiente del turno le versioni di git (con PCRE sì/NO/?, che il pre-commit
+  presume), gh, jq, python3 e graphify. Guardia in `tests/test-lib.sh`; sabotaggio 184/1. La sonda PCRE diceva «NO» a
+  torto finché il file stava fuori da una repo: corretta prima del commit.
+- **Ottavo ventaglio, O5 R2 — il digest diceva «inviato (via mail)» quando mail(1) l'aveva solo messo in coda.** E
+  svuotava la memoria del turno. Ora dice «coda locale… consegna NON verificata», la memoria resta (`SOLO_CODA=1`), e
+  lo stderr va in `~/morning-digest.log`. Caso in `tests/test-morning-digest.sh`; sabotaggio 19/1. Il ripiego vero è una
+  domanda in DEBITI.
+- **Ottavo ventaglio, O5 R3 — il censore diceva «chiusa» anche quando la chiusura falliva.** La PR tornava al giudizio a
+  ogni ciclo, e una fusione fallita la lasciava «pronta», fuori dalle guardie. Ora `night-shift/revisore.sh` lo dice,
+  scrive il segno `rigetto-<PR>-<commit>` e non rigiudica quella PR su quel commit; a fusione fallita la PR torna bozza
+  (`gh pr ready --undo`) con un commento, rc 2. `REVISORE_DRY_FALLISCE` fa fallire un'azione nel DRY. Tre casi in
+  `tests/test-revisore.sh`; sabotaggio 37/3.
+- **Ottavo ventaglio, i sabotaggi riletti.** Le nove cure qui sopra, rifatte a fine ventaglio in un worktree pulito:
+  col sorgente del commit padre il banco è rosso, con la cura verde (i numeri sono quelli di questa rilettura).
