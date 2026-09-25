@@ -46,6 +46,19 @@ PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/de
 [ "$RC" -eq 3 ] && ok "verdetto vuoto (200 senza contenuto): muta (rc 3), non sana" || ko "verdetto vuoto: rc=$RC"
 grep -c '"$CACCIA_RC" -eq 2' "$NS" >/dev/null && ok "il turno ha un ramo per la cartella assente (rc 2), non la salute" || ko "rc 2 cade nella salute"
 
+# (2026-09-25, settimo ventaglio, V2 R1): lo strumento dice il suo verdetto nell'rc (giri-ignoranti esce 1 con almeno un
+# finding), ma la lente lo guardava solo per 126/127: un «NO» del modello faceva «sistema sano», e il turno apriva la
+# finestra delle migliorie su codice appena dichiarato malato. Scelta provvisoria (DEBITI, V2 D1): il verdetto
+# deterministico e' il pavimento — il modello non puo' dire «sano» sopra un rc di finding.
+printf '#!/bin/bash\ncat >/dev/null; echo %s\n' "'{\"message\":{\"content\":\"1. NO\"}}'" > "$T/bin/curl"; chmod +x "$T/bin/curl"
+printf '#!/bin/bash\necho "sonda 2: FINDING grep -c muto"; exit 1\n' > "$T/hub/tools/giri-ignoranti.sh"; echo 0 > "$T/hub/.caccia-rotazione"
+OUT=$(PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -c 'vince lo strumento' <<<"$OUT" >/dev/null && ok "V2 R1: strumento rc 1 e modello «NO»: problemi (rc 0), e lo dice" \
+  || ko "V2 R1: strumento rc 1 e modello «NO»: rc=$RC ($(grep -m1 'sano\|PROBLEMI' <<<"$OUT"))"
+printf '#!/bin/bash\necho "tutto ok"; exit 0\n' > "$T/hub/tools/giri-ignoranti.sh"; echo 0 > "$T/hub/.caccia-rotazione"
+PATH="$T/bin:$PATH" bash "$T/hub/night-shift/caccia-lente.sh" "$T/progetto" >/dev/null 2>&1; RC=$?
+[ "$RC" -eq 1 ] && ok "strumento rc 0 e modello «NO»: sana (invariato)" || ko "strumento rc 0 e modello «NO»: rc=$RC"
+
 # (2026-09-24, sesto ventaglio, S3 R4): le lenti erano stringhe con $HERE nudo, eseguite con eval — in un percorso
 # con lo spazio lo strumento non girava («Is a directory», rc 126) e il modello leggeva quell'errore: poteva dire
 # «sistema sano». Ora il percorso e' quotato, e uno strumento che non gira (rc 126/127) e' una lente MUTA.

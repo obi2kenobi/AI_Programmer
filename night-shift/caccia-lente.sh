@@ -58,7 +58,7 @@ if [ -z "$TOOL_OUT" ]; then
 fi
 
 # --- Il modello INTERPRETA l'output (contesto piccolo, domanda precisa) --------------
-PROMPT="You are a code quality analyst. A tool just ran on this project and produced this output:
+PROMPT="You are a code quality analyst. A tool just ran on this project, exited with code $TOOL_RC (for these tools 0 means clean, non-zero means it found something), and produced this output:
 
 === TOOL OUTPUT ===
 $TOOL_OUT
@@ -105,6 +105,13 @@ echo "$VERDETTO"
 PRIMA_RIGA=$(echo "$VERDETTO" | head -1)
 if grep -qiE "^1\.?\s*yes|yes.*issue" <<<"$PRIMA_RIGA"; then
   log "⚠ lente $(echo "$LENTE_DATA" | cut -d'|' -f1): PROBLEMI TROVATI"
+  exit 0
+elif [ "$TOOL_RC" -ne 0 ] && [ "$TOOL_RC" -ne 141 ]; then
+  # (2026-09-25, settimo ventaglio, V2 R1): il verdetto dello strumento e' nell'rc (giri-ignoranti, system-health e
+  # banco-passaggio escono diverso da 0 quando trovano). Il modello diceva NO e la lente «sistema sano»: il turno
+  # migliorava codice appena dichiarato malato. Scelta provvisoria (DEBITI, V2 D1): il deterministico e' il pavimento.
+  # 141 = SIGPIPE dal taglio a 50 righe, non un verdetto.
+  log "⚠ lente $(echo "$LENTE_DATA" | cut -d'|' -f1): lo strumento esce $TOOL_RC (ha trovato) e il modello dice no — vince lo strumento: PROBLEMI"
   exit 0
 else
   log "lente $(echo "$LENTE_DATA" | cut -d'|' -f1): sistema sano"
