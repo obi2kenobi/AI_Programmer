@@ -48236,7 +48236,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L182"
+      "source_location": "L185"
     },
     {
       "id": "night_shift_revisore_sh__entry",
@@ -50967,7 +50967,7 @@
       },
       "norm_label": "pr_issue()",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L339"
+      "source_location": "L348"
     },
     {
       "id": "tests_test_revisore_sh__entry",
@@ -53849,7 +53849,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L200",
+      "source_location": "L203",
       "weight": 1.0
     },
     {
@@ -53861,7 +53861,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L247",
+      "source_location": "L250",
       "weight": 1.0
     },
     {
@@ -53873,7 +53873,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L253",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -53885,7 +53885,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L277",
+      "source_location": "L280",
       "weight": 1.0
     },
     {
@@ -53897,7 +53897,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L288",
+      "source_location": "L291",
       "weight": 1.0
     },
     {
@@ -53909,7 +53909,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L367",
+      "source_location": "L370",
       "weight": 1.0
     },
     {
@@ -59333,7 +59333,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L340",
+      "source_location": "L349",
       "weight": 1.0
     },
     {
@@ -59393,7 +59393,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L360",
+      "source_location": "L369",
       "weight": 1.0
     },
     {
@@ -91246,7 +91246,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L182",
+      "source_location": "L185",
       "weight": 1.0
     },
     {
@@ -96317,7 +96317,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L339",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -100558,5 +100558,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8c61b4a3bbf7b54b8ee17861e0da89dd59c10653"
+  "built_at_commit": "7d6b2ebce9804eb12df5f97c3b7f5c6168db33b0"
 }
