@@ -683,6 +683,11 @@ fi
 grep -q 'ruota_log_aperto "${NIGHT_LOG:-$HOME/night-shift-console.log}"' "$HERE/night-shift/night-shift.sh" \
   && ok "D39: il turno ruota la console a ogni ciclo" || ko "D39: il turno non ruota la console"
 
+# (2026-09-25, D45, risposta delegata): una PR di issue APERTA e' intoccabile — il turno salta l'issue, non spinge sul suo
+# ramo (riscriverla sposterebbe il terreno sotto chi la sta leggendo). Guardia sul comportamento che c'e' gia'.
+grep -qF 'if [ "$PR_STATE" = "OPEN" ]; then log "Issue #$NUM: PR già aperta, skip"; continue; fi' "$HERE/night-shift/night-shift.sh" \
+  && ok "D45: una PR di issue aperta non si riscrive (il turno salta l'issue)" || ko "D45: il salto dell'issue con PR aperta non c'e' piu'"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
