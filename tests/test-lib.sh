@@ -179,6 +179,10 @@ grep -cE "^ambiente: bash [0-9]+\.[0-9]+.* · timeout: .+ · sandbox: .+" <<<"$A
 # con quale sed, timeout e setsid avevano girato i banchi (gli strumenti che al Mac hanno gia' morso).
 grep -cE 'bash dei figli: [^ ]+ [0-9]' <<<"$AMB" >/dev/null && grep -c 'sed: ' <<<"$AMB" >/dev/null && grep -c 'setsid: ' <<<"$AMB" >/dev/null \
   && ok "S5 R4: la riga d'ambiente dice anche la bash dei banchi, il sed e setsid" || ko "S5 R4: riga d'ambiente senza la bash dei figli / sed / setsid: '$AMB'"
+# (2026-09-25, ottavo ventaglio, O4 R6): le versioni che contano — git (e se ha PCRE, che il pre-commit presume), gh (le
+# forme di flag cambiano), jq, python3, graphify — non si leggevano dal log del Mac
+grep -cE "git: [^·]+ \(PCRE: (si|NO|\?)\) · gh: [^·]+ · jq: [^·]+ · python3: [^·]+ · graphify: [^·]+" <<<"$AMB" >/dev/null \
+  && ok "O4 R6: la riga d'ambiente dice le versioni di git (con PCRE), gh, jq, python3 e graphify" || ko "O4 R6: riga d'ambiente senza le versioni: '$AMB'"
 grep -c "timeout: perl" <<<"$(AI_TIMEOUT_FORCE_PERL=1 ambiente_turno 2>/dev/null)" >/dev/null \
   && ok "ambiente_turno: col ramo perl forzato dice perl" || ko "ambiente_turno non vede il ramo perl"
 grep -c 'log "$(ambiente_turno)"' "$HERE/night-shift/night-shift.sh" >/dev/null \

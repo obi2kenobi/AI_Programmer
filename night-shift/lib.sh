@@ -213,7 +213,26 @@ ambiente_turno() {
   bf="$(command -v bash) $(bash -c 'echo $BASH_VERSION' 2>/dev/null)"
   sed_s=$(sed --version 2>/dev/null | head -1 | cut -c1-30); sed_s=${sed_s:-BSD}
   ss=$(command -v setsid >/dev/null 2>&1 && echo si || echo ASSENTE)
-  echo "ambiente: bash $BASH_VERSION · bash dei figli: $bf · timeout: $(ai_timeout_ramo) · sed: $sed_s · setsid: $ss · sandbox: $sb"
+  echo "ambiente: bash $BASH_VERSION · bash dei figli: $bf · timeout: $(ai_timeout_ramo) · sed: $sed_s · setsid: $ss · sandbox: $sb · $(versioni_turno)"
+}
+
+# versioni_turno: le versioni che contano, in una riga. (2026-09-25, ottavo ventaglio, O4 R6): le forme di flag di gh
+# cambiano fra versioni, il pre-commit presume un git con PCRE, graphify vuole python >= 3.10 — e nessuna si leggeva dal
+# log del Mac. Uno strumento assente si dice ASSENTE.
+versioni_turno() {
+  local g pc t gh_v jq_v py_v gf_v
+  g=$(git --version 2>/dev/null | sed 's/^git version //'); g=${g:-ASSENTE}
+  # PCRE: `git grep --no-index` dalla cartella del file (da dentro un repo, un file fuori e' «outside repository»); un
+  # errore che non parla di Perl non e' un «no»: e' un «?»
+  t=$(mktemp -d "${TMPDIR:-/tmp}/pcre.XXXXXX"); echo x > "$t/f"
+  if pc=$(cd "$t" && git grep --no-index -qP 'x' -- f 2>&1); then pc=si
+  else case "$pc" in *[Pp]erl*|*PCRE*) pc=NO ;; *) pc="?" ;; esac; fi
+  case "$t" in */pcre.??????) rm -rf "$t" ;; esac
+  gh_v=$(gh --version 2>/dev/null | head -1 | awk '{print $3}'); gh_v=${gh_v:-ASSENTE}
+  jq_v=$(jq --version 2>/dev/null); jq_v=${jq_v:-ASSENTE}
+  py_v=$(python3 -c 'import sys; print(sys.version.split()[0])' 2>/dev/null); py_v=${py_v:-ASSENTE}
+  gf_v=ASSENTE; command -v graphify >/dev/null 2>&1 && { gf_v=$(graphify --version 2>/dev/null | head -1 | cut -c1-30); gf_v=${gf_v:-presente}; }
+  echo "versioni: git: $g (PCRE: $pc) · gh: $gh_v · jq: $jq_v · python3: $py_v · graphify: $gf_v"
 }
 
 # gate_allowlist_ok(): TRUE solo se OGNI segmento del comando (split consapevole delle
