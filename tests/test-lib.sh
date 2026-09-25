@@ -206,6 +206,18 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, settimo ventaglio, V2 R3): la verifica dell'issue distingue il comando assente e lo sforo dal rosso
+if command -v verdetto_verifica >/dev/null; then
+  [ "$(verdetto_verifica 0 'node x.js')" = "PASSA" ] && [ "$(verdetto_verifica 1 'node x.js')" = "ROTTA: node x.js" ] \
+    && grep -c '^NON ESEGUITA' <<<"$(verdetto_verifica 127 'node x.js')" >/dev/null && grep -c '^SFORO' <<<"$(verdetto_verifica 124 'node x.js')" >/dev/null \
+    && ok "verdetto_verifica: 0 PASSA · 1 ROTTA · 127 NON ESEGUITA · 124 SFORO" \
+    || ko "verdetto_verifica: 127 → «$(verdetto_verifica 127 x)», 124 → «$(verdetto_verifica 124 x)»"
+else
+  ko "verdetto_verifica assente da night-shift/lib.sh"
+fi
+grep -c 'VERIFICA_OUT=$(verdetto_verifica' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh scrive la verifica dell'issue con verdetto_verifica" \
+  || ko "night-shift.sh scrive ROTTA per ogni rc diverso da 0"
+
 # --- (2026-09-24, terzo ventaglio, V1#1 e V1#5, V4#6): gate_banchi — il gate del fixer notturno lanciava
 # ogni banco SENZA tetto (un banco che si annida ha fermato il turno per sempre, E-046) e lo lanciava sulla
 # copia VIVA dell'hub, non sul ramo con i fix: il commit diceva «banco CHIUSO su questo branch» senza averlo

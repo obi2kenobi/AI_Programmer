@@ -108,6 +108,20 @@ fi
 grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' <<<"$OUT" \
   && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
   || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
+# (2026-09-25, settimo ventaglio, V2 R3): senza node sul PATH (il plist del turno ne da' uno fisso) `node --check`
+# esce 127, e il solver lo leggeva come «il codice non passa»: un fix giusto buttato con due diagnosi false, e la
+# cascata all'agente. Ora: rc 2, «MANCA node», prima di chiamare il modello, e il file non si tocca.
+SENZA_NODE=$(printf '%s' "$PATH" | tr ':' '\n' | while IFS= read -r d; do [ -x "$d/node" ] || printf '%s:' "$d"; done); SENZA_NODE=${SENZA_NODE%:}
+if PATH="$SENZA_NODE" command -v python3 >/dev/null && PATH="$SENZA_NODE" command -v curl >/dev/null && ! PATH="$SENZA_NODE" command -v node >/dev/null; then
+  printf 'function calc(a, b) {\n  return a + b;\n}\n' > "$SB/calc.js"
+  OUT=$(PATH="$SENZA_NODE" NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB" "$SB/issue.md" 2>&1); RC=$?
+  [ $RC -eq 2 ] && grep -c 'MANCA node' <<<"$OUT" >/dev/null && grep -c 'return a + b;' "$SB/calc.js" >/dev/null \
+    && ok "V2 R3: senza node, rc 2 «MANCA node» e il file intatto (non «codice rotto»)" \
+    || ko "V2 R3: senza node: rc=$RC — $(grep -E '⛔|⚠' <<<"$OUT" | head -2 | tr '\n' ' ')"
+  printf 'function calc(a, b) {\n  return a + b * 2;\n}\n' > "$SB/calc.js"
+else
+  echo "SKIP V2 R3: qui non si toglie node dal PATH senza togliere anche python3 o curl"
+fi
 grep -q "command not found" <<<"$OUT" \
   && ko "funzioni chiamate prima della definizione: $(echo "$OUT" | grep 'command not found' | head -1)" \
   || ok "nessuna funzione chiamata prima della definizione"

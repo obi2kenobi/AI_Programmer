@@ -23,6 +23,10 @@ MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 [ -f "$ISSUE" ] || { echo "⛔ issue inesistente: $ISSUE" >&2; exit 2; }
+# (2026-09-25, settimo ventaglio, V2 R3): node e' il verificatore di ogni fix (node --check). Senza, l'rc 127 si leggeva
+# «il codice non passa»: un fix giusto buttato con due diagnosi false. Il plist del turno ha un PATH fisso, e un node
+# di nvm non c'e'. Si dice prima di chiamare il modello: niente GPU spesa per un fix che non si potrebbe verificare.
+command -v node >/dev/null 2>&1 || { echo "⛔ MANCA node sul PATH: il fix non si puo' verificare (node --check) — non e' codice rotto, nessun tentativo" >&2; exit 2; }
 
 log() { echo "[$(date '+%H:%M:%S')] $*" >&2; }
 

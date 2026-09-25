@@ -102,6 +102,18 @@ esegui_verifica() {
   return "$rc"
 }
 
+# verdetto_verifica <rc> <comando>: la parola che il commit porta per la `## Verifica` dell'issue. (2026-09-25, settimo
+# ventaglio, V2 R3): ogni rc diverso da 0 era «ROTTA» — anche 127 (il comando non c'e': node fuori dal PATH del plist)
+# e 124 (il tetto di 60 s). Un finto rosso insegna a ignorare i rossi (D2 2026-09-07).
+verdetto_verifica() {
+  case "$1" in
+    0) echo "PASSA" ;;
+    124) echo "SFORO del tetto (60 s): $2" ;;
+    126|127) echo "NON ESEGUITA (comando assente o non eseguibile, rc $1): $2" ;;
+    *) echo "ROTTA: $2" ;;
+  esac
+}
+
 # gate_banchi <dir> [secondi-per-banco=300]: il gate del fixer notturno — esegue i banchi di <dir>/tests
 # (la copia del ramo con i fix), ciascuno sotto tetto, con un secondo tentativo dopo 2 s per i transienti.
 # Stampa «amber <banco>» (passato al secondo), «rosso <banco> — <motivo>» (una riga FAIL, o SFORO), e

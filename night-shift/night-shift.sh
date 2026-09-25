@@ -965,7 +965,9 @@ $BODY"
       # converge, l'agente multi-turno prova strade che il solver non vede.
       # Previene 33 cicli di retry su qualcosa che non può matchare il pattern.
       AUTORE_FIX="risolvi-issue.sh, modello locale"   # chi ha scritto il fix: lo dice il commit (V1#6)
-      if [ "$RC" -ne 0 ] && [ "$RC" -ne 3 ] && [ -f "$HERE/agente.sh" ]; then
+      # (2026-09-25, settimo ventaglio, V2 R3): rc 2 (uso errato, o node assente) non va all'agente: non saprebbe
+      # verificare nemmeno lui, e il motivo vero si perderebbe dietro un «agente fallito».
+      if [ "$RC" -ne 0 ] && [ "$RC" -ne 3 ] && [ "$RC" -ne 2 ] && [ -f "$HERE/agente.sh" ]; then
         log "Issue #$NUM: solver rc=$RC — provo l'AGENTE (cascade)"
         AGENTE_OUT=$(bash "$HERE/agente.sh" "$DIR" \
           "Fix this GitHub issue. Read the relevant files, understand the problem, fix it.
@@ -1072,7 +1074,8 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
             SANDBOX_PRE=(sandbox-exec -f "$SANDBOX_PROF")
           fi
           # shellcheck disable=SC2086  # VERIFICA_CMD va diviso in parole: e' un comando validato
-          VERIFICA_OUT=$(cd "$DIR" && ai_timeout 60 ${SANDBOX_PRE[@]+"${SANDBOX_PRE[@]}"} $VERIFICA_CMD >/dev/null 2>&1 && echo "PASSA" || echo "ROTTA: $VERIFICA_CMD")
+          VERIFICA_RC=0; (cd "$DIR" && ai_timeout 60 ${SANDBOX_PRE[@]+"${SANDBOX_PRE[@]}"} $VERIFICA_CMD >/dev/null 2>&1) || VERIFICA_RC=$?
+          VERIFICA_OUT=$(verdetto_verifica "$VERIFICA_RC" "$VERIFICA_CMD")
           [ -n "${SANDBOX_PROF:-}" ] && rm -f "$SANDBOX_PROF"
           log "Issue #$NUM: verifica dell'issue eseguita: $VERIFICA_OUT"
         fi
