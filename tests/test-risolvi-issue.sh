@@ -108,6 +108,26 @@ fi
 grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' <<<"$OUT" \
   && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
   || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
+# (2026-09-25, D42, risposta delegata): il solver verificava il BLOCCO del modello, non quello che scriveva. Un blocco che
+# ridefinisce due funzioni esistenti, o aggiunge codice fuori dalla funzione, sostituiva la funzione chiesta con tutto il
+# blocco ed usciva APPLICATO. Ora oltre una funzione e' una PROPOSTA (rc 3), e il file non si tocca. Un commento davanti
+# alla funzione non conta.
+SBM=$(mktemp -d /tmp/risolvi-multi.XXXXXX)
+printf 'function calc(a, b) {\n  return a + b;\n}\nfunction aiuto(x) {\n  return x;\n}\n' > "$SBM/calc.js"; cp "$SBM/calc.js" "$SBM/prima.js"
+cp "$SB/issue.md" "$SBM/issue.md"
+printf '%s\n' '{"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\nfunction aiuto(x) {\n  return x * 3;\n}\n```\n"}}' > "$MOCK_BODY_FILE"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SBM" "$SBM/issue.md" 2>&1); RC=$?
+[ "$RC" -eq 3 ] && cmp -s "$SBM/calc.js" "$SBM/prima.js" && grep -ci 'oltre una funzione' <<<"$OUT" >/dev/null \
+  && ok "D42: blocco con due funzioni esistenti: proposta, file intatto" || ko "D42: blocco con due funzioni: rc=$RC, file $(cmp -s "$SBM/calc.js" "$SBM/prima.js" && echo intatto || echo CAMBIATO)"
+printf '%s\n' '{"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\nvar contatore = 0;\n```\n"}}' > "$MOCK_BODY_FILE"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SBM" "$SBM/issue.md" 2>&1); RC=$?
+[ "$RC" -eq 3 ] && cmp -s "$SBM/calc.js" "$SBM/prima.js" \
+  && ok "D42: codice a livello di file dopo la funzione: proposta, file intatto" || ko "D42: codice di file in piu': rc=$RC"
+printf '%s\n' '{"message":{"content":"```javascript\n// moltiplica b per 2 (issue)\nfunction calc(a, b) {\n  return a + b * 2;\n}\n```\n"}}' > "$MOCK_BODY_FILE"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SBM" "$SBM/issue.md" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q 'a + b \* 2' "$SBM/calc.js" && grep -q 'return x;' "$SBM/calc.js" \
+  && ok "D42: un commento davanti all'unica funzione non ferma il fix" || ko "D42: commento davanti: rc=$RC — $(tail -1 <<<"$OUT")"
+rm -rf "$SBM"
 # (2026-09-25, ottavo ventaglio, O1 R1): il Territorio di un'issue e' input esterno, e `.git/config` sta dentro il progetto:
 # il confine lo ammetteva (lettura mandata al modello, e un bersaglio di scrittura). Ora un .git e' fuori.
 SBG=$(mktemp -d /tmp/risolvi-git.XXXXXX); git -C "$SBG" init -q; cp "$SBG/.git/config" "$SBG/config-prima"

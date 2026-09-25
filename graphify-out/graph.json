@@ -54007,7 +54007,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L347",
+      "source_location": "L359",
       "weight": 1.0
     },
     {
@@ -54019,7 +54019,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/risolvi-issue.sh",
-      "source_location": "L351",
+      "source_location": "L363",
       "weight": 1.0
     },
     {
@@ -100677,5 +100677,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3af3bf4f845fc0b9f4b2dc0955a365d7356bf23e"
+  "built_at_commit": "95665edc3f601aa2c111d35bd29bb8591ca771d4"
 }
