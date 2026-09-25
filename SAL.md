@@ -5216,7 +5216,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - `tests/test-caccia-lente.sh` (cercava nudo il percorso che la lente scrive con `%q`);
   - `tests/test-verifica-visiva-estrai-testo.sh`: con l'apice node non partiva e il banco diceva «0 OK, 0 FAIL»
     **con rc 0**. Ora il percorso va a node come `process.argv[1]`, e se non arrivano i tre esiti è rosso
-    (sabotaggio: 0/1).
+    (sabotaggio: 0/1). *Correzione a questa nota:* dentro `tools/suite.sh` quel verde sarebbe stato preso
+    («verde senza verdetto»); era muto solo da solo, e nel gate del fixer (riga sotto).
 - **Sesto ventaglio, S3 R6 — il pre-commit si faceva togliere un file dal controllo glifi.** I file in stage andavano
   a `git grep` come pathspec col «:» nudo. Un «-n.md» era magia sconosciuta: rc 128, «controllo glifi MORTO», commit
   bloccato con la diagnosi sbagliata. E un «!x.md» in stage diventava «:!x.md», un'esclusione: il glifo di «x.md»
@@ -5231,3 +5232,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `polilivello.sh` e `fork-stato.sh` andavano avanti con `basename` vuoto. Ora `cd --`, e dove l'argomento si usa
   in molti comandi diventa «./-sat» una volta sola. Banco nuovo `tests/test-trattino-iniziale.sh` (7/0), rosso
   prima 0/7; sabotaggio 0/7.
+- **Settimo ventaglio (in apertura) — due giudici, due regole.** `tools/suite.sh` pretende «N OK, 0 FAIL» con N ≥ 1;
+  `gate_banchi` (`night-shift/lib.sh`), il gate del fixer notturno sull'hub, contava verde ogni rc 0. Un banco senza
+  asserzioni, o che muore verde dentro un `source`, passava il gate della notte. Ora la stessa regola, e il muto è
+  rosso subito (non è un transitorio). Caso nuovo in `tests/test-lib.sh` (164/0), rosso prima (162/2); sabotaggio
+  162/2.
