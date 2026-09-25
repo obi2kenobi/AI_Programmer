@@ -974,6 +974,13 @@ $BODY"
       # chiamata, il turno NON decide: lo dice e aspetta il giorno.
       FN_NOMINATA=$(sed -n '/^## Commessa/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '[a-zA-Z_][a-zA-Z0-9_]*\(' | sort -u | head -3 | tr -d '(')
       TERR_FILE=$(sed -n '/^## Territorio/,/^## /p' "$ISSUE_FILE" 2>/dev/null | grep -oE '[a-zA-Z0-9_./-]+\.(gs|js|html|py)' | head -1)
+      # (2026-09-25, D4, risposta delegata): il controllo e' nato per le FEATURE gia' consegnate; su un'issue di CORREZIONE la
+      # funzione esiste ed e' chiamata per definizione, e il controllo fermava proprio il lavoro chiesto. Il segnale e'
+      # l'etichetta `correzione` (gh la da' in JSON, niente testo libero da interpretare).
+      case ",$ETICHETTE," in *,correzione,*)
+        [ -n "$FN_NOMINATA" ] && log "Issue #$NUM: etichetta «correzione» — il controllo GIA' IMPLEMENTATA non si applica"
+        FN_NOMINATA="" ;;
+      esac
       if [ -n "$TERR_FILE" ] && [ -n "$FN_NOMINATA" ]; then
         TF="$DIR/$TERR_FILE"; [ -f "$TF" ] || TF="$TERR_FILE"
         if [ -f "$TF" ]; then

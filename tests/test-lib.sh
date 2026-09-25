@@ -734,6 +734,12 @@ fi
 grep -q 'pr_chiusa_ferma "$PR_STATE" "$ETICHETTE"' "$HERE/night-shift/night-shift.sh" && grep -q -- '--json number,title,body,labels' "$HERE/night-shift/lib.sh" \
   && ok "D44: il turno legge le etichette dell'issue e ferma quella con la PR chiusa" || ko "D44: il turno non guarda la PR chiusa, o non legge le etichette"
 
+# (2026-09-25, D4, risposta delegata): un'issue di CORREZIONE su una funzione esistente e cablata veniva saltata dal
+# controllo «GIA' IMPLEMENTATA?», nato per le feature gia' consegnate. Il segnale e' l'etichetta `correzione`.
+grep -q 'case ",$ETICHETTE," in \*,correzione,\*)' "$HERE/night-shift/night-shift.sh" && grep -q 'correzione' "$HERE/.github/ISSUE_TEMPLATE/night-shift.md" \
+  && ok "D4: con l'etichetta correzione il controllo GIA' IMPLEMENTATA non ferma l'issue, e il modello di issue lo dice" \
+  || ko "D4: l'etichetta correzione non e' letta dal turno o non e' nel modello di issue"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

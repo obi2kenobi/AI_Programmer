@@ -4,6 +4,10 @@ about: Lavoro meccanico per il turno di notte (modello locale) — richiede il d
 labels: ["night-shift"]
 ---
 
+<!-- Se la commessa CORREGGE una funzione che esiste gia' (non ne aggiunge una nuova), metti all'issue anche l'etichetta
+     `correzione`: senza, il turno la salta come «GIA' IMPLEMENTATA?» quando la funzione nominata esiste ed e' chiamata.
+     (D4, 2026-09-25) -->
+
 ## Design
 
 <!-- OBBLIGATORIO (il turno salta le issue senza questa sezione): link al documento di
