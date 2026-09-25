@@ -57,10 +57,19 @@ if command -v timeout >/dev/null 2>&1 || command -v gtimeout >/dev/null 2>&1; th
   T2=$(date +%s)
   ai_timeout 2 bash -c 'trap "" TERM; sleep 20'
   RC6=$?
+  ai_timeout 5 bash -c 'kill -KILL $$'; RC6B=$?
+  [ "$RC6B" -eq 137 ] && ok "ramo primario: un comando ucciso da KILL prima del tetto resta 137 (non e' uno sforo)" \
+    || ko "ramo primario: KILL prima del tetto letto come $RC6B (atteso 137)"
   T3=$(date +%s); DUR6=$((T3-T2))
   [ "$DUR6" -le 10 ] \
     && ok "ramo primario (GNU timeout): comando che ignora TERM ucciso entro ${DUR6}s, non atteso per 20s (rc=$RC6)" \
     || ko "ramo primario: comando che ignora TERM NON forzato — durata=${DUR6}s (atteso <=10s)"
+  # (2026-09-25, settimo ventaglio, V2 R4): il contratto dice 124 allo scadere, qualunque ramo. GNU timeout esce 137
+  # quando serve il KILL: esegui_verifica scriveva «ROSSA (rc 137)» invece di «SFORO», gate_banchi un rosso senza motivo.
+  [ "$RC6" -eq 124 ] && ok "ramo primario: chi ignora TERM, allo scadere, esce 124 come promette il contratto" \
+    || ko "ramo primario: allo scadere rc $RC6 (atteso 124, come il ramo perl)"
+  RC6E=$(bash -ec 'source "$1"; ai_timeout 2 bash -c "trap \"\" TERM; sleep 20"' _ "$HERE/llm/_timeout.sh" >/dev/null 2>&1; echo $?)
+  [ "$RC6E" -eq 124 ] && ok "ramo primario sotto set -e: 124 anche li' (non esce prima di normalizzare)" || ko "ramo primario sotto set -e: rc $RC6E"
 else
   echo "SKIP: né timeout né gtimeout disponibili in questo ambiente, ramo primario non esercitabile"
 fi
