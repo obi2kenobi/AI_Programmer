@@ -78,7 +78,12 @@ jq -e '.titolo and .problema and .soluzione' <<<"$R" >/dev/null 2>&1 \
 
 TITOLO=$(jq -r '.titolo' <<<"$R"); PROBLEMA=$(jq -r '.problema' <<<"$R")
 SOLUZIONE=$(jq -r '.soluzione' <<<"$R"); QUANDO=$(jq -r '.quando' <<<"$R")
-SLUG=$(printf '%s' "$TITOLO" | tr 'àèéìòù' 'aeeiou' | tr 'A-Z' 'a-z' | tr -cs 'a-z0-9' '-' | sed 's/^-//;s/-$//' | cut -c1-40)
+# (2026-09-25, settimo ventaglio, V4 R5): lo slug in python. Con `tr` il GNU lavorava in byte («Perché è così» diventava
+# «perchuu-ui-cosuu»), il Mac per caratteri: la chiave anti-doppione cambiava con la piattaforma. Per l'ASCII e' identico.
+SLUG=$(python3 -c '
+import re, sys, unicodedata
+t = unicodedata.normalize("NFKD", sys.argv[1]).encode("ascii", "ignore").decode().lower()
+print(re.sub(r"[^a-z0-9]+", "-", t).strip("-")[:40].strip("-"))' "$TITOLO")
 
 # una lezione al giorno e niente doppioni di slug
 NOTA="$CERVELLO/lezione-$SLUG.md"

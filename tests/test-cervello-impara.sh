@@ -96,6 +96,17 @@ kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
 [ $RC -eq 0 ] && ls "$TMP/repo/cervello/"lezione-default-con-le-graffe*.md >/dev/null 2>&1 \
   && ok "lezione con \${VAR:-x} dentro → estratta intera, nota creata" || ko "lezione con graffe persa: rc=$RC out=[$OUT]"
 
+
+# ── 5. (2026-09-25, settimo ventaglio, V4 R5): lo slug si faceva con `tr`, che sul GNU lavora in byte: «Perché è così»
+# diventava «perchuu-ui-cosuu» (il byte comune delle vocali accentate finiva su «u»), e la chiave anti-doppione cambiava
+# con la piattaforma. Ora python, senza accenti e senza maiuscole, come le ancore di sal-indice.
+mkmock
+printf '%s\n' "$(risposta '{"titolo":"Perché È così: la città","problema":"x","soluzione":"y","quando":"z","link":[]}')" > "$TMP/risp5.txt"
+avvia "$TMP/risp5.txt"
+OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
+kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
+[ $RC -eq 0 ] && [ -f "$TMP/repo/cervello/lezione-perche-e-cosi-la-citta.md" ] \
+  && ok "V4 R5: titolo accentato → slug «perche-e-cosi-la-citta»" || ko "V4 R5: slug: $(ls "$TMP/repo/cervello/" | grep perch | head -1)"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
