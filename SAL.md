@@ -5271,3 +5271,41 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   Letto il verdetto, A20 è diventato AGGIRA ad albero pulito: la sua pianta non era una forma, e non lo era mai stata.
   Ora è una forma vera. Nel clone: pulito 0 aggirati; con le SHAPES sabotate, 2 aggirati (A20 e G4). Banco:
   `tests/test-giri-avversari-verdetto.sh` (6/0), rosso prima.
+- **Settimo ventaglio, V4 R1 (c) — il modo prudente del gancio di clasp conosceva solo la parola clasp.** Quando il
+  gancio muore (o manca jq), `npm run pubblica` con uno script che fa `clasp push` passava. Ora `prudente_nega`, una
+  funzione sola per i due rami, nega anche un runner di script quando un `package.json` qui, sopra o nel progetto ha
+  uno script con clasp push/deploy. Tre casi in `tests/test-clasp-block-hook.sh` (104/0, anche sul Mac simulato), rossi
+  prima; sabotaggio 102/2.
+- **Settimo ventaglio, V2 R2 — «sana» era il ramo di default dello smistamento della caccia.** Un rc non dichiarato
+  (127: lo script assente in un riallineo; 143: un kill) e l'albero sporco scrivevano «repository in salute» e 30 minuti
+  di cooldown. Ora un ramo per «sana ma albero sporco» e un default che non dice né sana né malata. Banco nuovo
+  `tests/test-caccia-smistamento.sh` sul blocco vero (6/0), rosso prima 2/4; evento nuovo in `docs/eventi.md`.
+- **Settimo ventaglio, V2 R5 — `$(MIGLIOREA_DURATA)` era un comando, non una variabile.** Il log diceva «(s GPU)» e la
+  dashboard non ha mai ricevuto il costo della miglioria. Ora `${…}`, e una forma nuova in `tests/test-portabilita.sh`
+  (nessun `$(NOME_MAIUSCOLO)`), rossa prima.
+- **Settimo ventaglio, V2 R4 — `ai_timeout` usciva 137 sul ramo GNU quando serviva il KILL.** Il contratto promette 124:
+  `esegui_verifica` scriveva «ROSSA (rc 137)» invece di «SFORO», `gate_banchi` un rosso senza motivo. Ora un 137 a tetto
+  scaduto torna 124 (un KILL da fuori, prima del tetto, resta 137), anche sotto `set -e`. Tre casi in
+  `tests/test-ai-timeout.sh` (12/0), rosso prima; sabotaggio rosso.
+- **Settimo ventaglio, V2 R3 — senza node, «codice rotto».** Il risolutore leggeva l'rc 127 di `node --check` come «il
+  fix non passa» e lo buttava, poi la cascata all'agente. Ora esce 2 «MANCA node» prima di chiamare il modello, la
+  cascata salta l'rc 2, e la `## Verifica` dell'issue dice «NON ESEGUITA» o «SFORO» invece di «ROTTA»
+  (`verdetto_verifica` in `night-shift/lib.sh`). Casi in `tests/test-risolvi-issue.sh` e `tests/test-lib.sh`, rossi
+  prima; sabotaggio rosso. Dove sta node sul Mac è una domanda in DEBITI.
+- **Settimo ventaglio, V2 R1 — un «NO» del modello sopra un finding faceva «sistema sano».** La lente della caccia
+  guardava l'rc dello strumento solo per 126/127. Scelta provvisoria dichiarata (DEBITI, V2 D1): il deterministico è il
+  pavimento, e l'rc entra nel prompt. Due casi in `tests/test-caccia-lente.sh` (12/0), rosso prima; sabotaggio 11/1.
+- **Settimo ventaglio, V3 R3 — il lock del grafo si toglieva dopo 24 ore anche col pass vivo.** Due extract sulla
+  stessa copia. Ora col PID decide solo il PID, e il messaggio dice il PID vero (prima «PID ?»). Caso in
+  `tests/test-grafo-notturno.sh` (7/0), rosso prima (partiva davvero un secondo pass); sabotaggio rosso.
+- **Settimo ventaglio, V3 R1 — il digest allegava un report del gate di un mese prima, e ne faceva l'oggetto.** Scelta
+  provvisoria (DEBITI, D-V3-1): si allega solo se ha meno di 24 ore; e i sospesi del cervello di un altro giorno si
+  dicono per data. Due casi in `tests/test-morning-digest.sh` (19/0), rossi prima; sabotaggio 17/2.
+- **Settimo ventaglio, V3 R4 — `turno-vivo` calcolava l'età fra due ore locali.** Al cambio dell'ora di primavera 15
+  minuti veri erano 75 (e un pkill da incollare), in autunno l'età veniva negativa («illeggibile»). Ora in epoch, col
+  timestamp come argomento. Due casi con l'ora finta in `tests/test-turno-vivo.sh` (13/0); sabotaggio 11/2. Una mia
+  prima stesura del caso d'autunno metteva l'«adesso» un'ora troppo avanti: preso dal banco stesso.
+- **Settimo ventaglio, V3 R6 — la lezione del giorno saltava se nessun ciclo partiva dopo le 22.** Ora il primo ciclo
+  del giorno dopo la recupera sul log di ieri (se ieri il turno ha scritto), e lo dice. Banco nuovo
+  `tests/test-impara-recupero.sh` sul blocco vero (4/0), rosso prima; sabotaggio 3/1. V3 R5 (gli orologi del censore) è
+  rinviato: tocca la domanda del budget di calendario o mobile.
