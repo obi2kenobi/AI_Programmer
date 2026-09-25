@@ -359,7 +359,7 @@ PYEOF
         RV=$(auto_review "$CODE" "$(cat "$ISSUE" | head -30)")
         log "auto-review: $RV"
         echo "REVIEW: $RV"
-        # GENERATORE DI TEST: terza domanda (il fix arriva presidiato)
+        # GENERATORE DI TEST: terza domanda — una BOZZA di test, che nessuno esegue (D9, 2026-09-25)
         TG=$(genera_test "$TARGET_FN" "$CODE" "$(cat "$ISSUE" | head -30)")
         # (revisione 10 giri, 2026-09-23): il test ha PIU' righe e il protocollo era una riga
         # («TEST-GENERATO: $TG»): il turno ne salvava solo la prima (`function test_fix() {`) e

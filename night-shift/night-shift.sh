@@ -1158,22 +1158,24 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
             log "Issue #$NUM: auto-review CORRECT"
           fi
         fi
-        # GENERATORE DI TEST (2026-09-17): il fix arriva col test che lo presidia.
-        # Terza chiamata Ollama, stesso patto: prompt → codice → applicazione.
+        # GENERATORE DI TEST (2026-09-17): terza chiamata Ollama, stesso patto: prompt → codice → applicazione.
+        # (2026-09-25, D9, risposta delegata): il test entra nel commit ma NESSUNO lo esegue (non c'e' un runner per progetto):
+        # e' una BOZZA da rivedere, non il presidio del fix. Il nome del file e la sua prima riga lo dicono.
         if [ "$RC" -eq 0 ] && [ "$REVIEW_RIGA" != "REVIEW: WRONG" ]; then
-          TEST_FILE="$DIR/tests/night/test_$(date +%s)_issue_$NUM.js"
+          TEST_FILE="$DIR/tests/night/bozza_test_$(date +%s)_issue_$NUM.js"
           mkdir -p "$DIR/tests/night"
           # chiediamo al modello (tramite il solver) di scrivere il test
           # (revisione 10 giri): il test intero fra i marcatori del solver (prima: la sola
           # prima riga di un test multi-riga finiva nel file e nel commit)
           TEST_GEN=$(sed -n '/^TEST-GENERATO-INIZIO$/,/^TEST-GENERATO-FINE$/p' <<<"$OUT" | sed '1d;$d')
           if [ -n "$TEST_GEN" ] && [ "${#TEST_GEN}" -gt 20 ]; then
-            echo "$TEST_GEN" > "$TEST_FILE"
-            log "Issue #$NUM: test generato → tests/night/$(basename "$TEST_FILE")"
+            { echo "// BOZZA generata dal turno notturno per l'issue #$NUM: MAI eseguita. Rivederla e lanciarla a mano prima di contarla come prova."
+              echo "$TEST_GEN"; } > "$TEST_FILE"
+            log "Issue #$NUM: bozza di test (non eseguita) → tests/night/$(basename "$TEST_FILE")"
           fi
         fi
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
-        # T5#2b: nel commit le modifiche, il test generato e i file nuovi dichiarati da agente.sh
+        # T5#2b: nel commit le modifiche, la bozza di test e i file nuovi dichiarati da agente.sh
         if ( cd "$DIR" && aggiungi_consegna "$DIR" "${TEST_FILE:+${TEST_FILE#"$DIR"/}}" | while IFS= read -r l; do log "Issue #$NUM: $l"; done \
              && git commit -qm "$(messaggio_fix "$CTYPE" "$NUM" "$TITLE" "$AUTORE_FIX" "$NOTA_INS" "$VERIFICA_OUT")" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
              && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then

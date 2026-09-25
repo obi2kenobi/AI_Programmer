@@ -743,6 +743,12 @@ AGENTE_BLOCCO=$(grep -A3 'AGENTE_OUT=$(' "$NS_T")
 grep -q 'MIRROR_NOTE' "$NS_T" && grep -q 'MIRROR_NOTE' <<<"$AGENTE_BLOCCO" \
   && ok "D8: le cartelle specchio (.night-mirror) arrivano al prompt dell'agente" || ko "D8: .night-mirror non arriva a nessuno"
 
+# (2026-09-25, D9, risposta delegata): il test generato per un fix entrava nel commit e nessuno lo eseguiva, ma il codice
+# lo chiamava «il test che presidia». E' una bozza: il nome del file e la sua prima riga lo dicono.
+grep -q 'TEST_FILE="$DIR/tests/night/bozza_test_' "$HERE/night-shift/night-shift.sh" && grep -q 'BOZZA generata dal turno notturno' "$HERE/night-shift/night-shift.sh" \
+  && ! grep -q 'col test che lo presidia' "$HERE/night-shift/night-shift.sh" \
+  && ok "D9: il test generato si chiama bozza, e la sua prima riga dice che nessuno l'ha eseguito" || ko "D9: il test generato si presenta ancora come presidio"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
