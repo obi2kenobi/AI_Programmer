@@ -43,9 +43,25 @@ pr tok tools/x.sh "curl -H \"Authorization: token $TOK\" https://api.github.com"
 OUT=$(LENTE_RISPOSTA="$SICURO" lente tok); RC=$?
 [ $RC -eq 1 ] && tail -1 <<<"$OUT" | grep -c '^LENTE SICUREZZA: RILIEVI' >/dev/null \
   && ok "token nel diff: RILIEVI (exit 1) anche col cervello che dice sicuro" || ko "token nel diff non bloccato (rc=$RC): $(tail -1 <<<"$OUT")"
+
 grep -q "$TOK" <<<"$OUT" && ko "il token compare IN CHIARO nel rapporto" || ok "il token non compare in chiaro nel rapporto"
 grep -q '«segreto' <<<"$OUT" && grep -q 'tools/x.sh:1' <<<"$OUT" \
   && ok "il rilievo e' mascherato («segreto …») e ha file:riga" || ko "rilievo senza maschera o senza file:riga"
+
+# 1b. (2026-09-25, settimo ventaglio, V1 R2): il rilevatore (le SHAPES) e la maschera (mask_secrets) non sono la stessa
+# regola. Quattro forme che lo strato 1 trova e la maschera non conosce tornavano nel rapporto IN CHIARO, e il rapporto
+# finisce nel commento pubblico della PR. Ora lo strato 1 stampa file:riga e l'impronta della riga. Valori composti a
+# runtime (E-007), finti.
+V1="xox""b-$(printf 'q%.0s' $(seq 1 10))"
+V2="pa'ssword""Fin"
+V3="nome.cognome.finto""@gmail.com"
+V4="+3""9 333 0001111"
+pr quattro docs/contatti.md "$(printf 'slack %s\nurl https://u:%s@h.example/x\nmail %s\ntel %s' "$V1" "$V2" "$V3" "$V4")"
+OUT=$(LENTE_RISPOSTA="$SICURO" lente quattro); RC=$?
+CHIARI=0; for V in "$V1" "$V2" "$V3" "$V4"; do grep -cF -- "$V" <<<"$OUT" >/dev/null && CHIARI=$((CHIARI+1)); done
+[ $RC -eq 1 ] && [ "$CHIARI" -eq 0 ] && [ "$(grep -c '^- docs/contatti.md:[0-9]*: «segreto [0-9a-f]\{8\} · [0-9]* caratteri»$' <<<"$OUT")" -eq 4 ] \
+  && ok "V1 R2: quattro forme che la maschera non conosce: nel rapporto solo file:riga e impronta, nessun valore" \
+  || ko "V1 R2: rc=$RC, $CHIARI valori in chiaro nel rapporto su 4"
 
 # 2. credenziale letterale assegnata nel codice
 pr lett gas/Config.js 'const API_KEY = "s3gr3t1ss1m0-v4l0r3";'

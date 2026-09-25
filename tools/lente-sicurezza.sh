@@ -45,7 +45,9 @@ AGG=$(awk '/^\+\+\+ /{f=substr($2,3); next} /^@@/{split($3,a,","); n=substr(a[1]
 SHAPES=$(sed -n "s/^SHAPES='\(.*\)'$/\1/p" "$HERE/tools/privacy-check.sh")
 [ -n "$SHAPES" ] || verdetto "DEGRADATA (forme di segreto illeggibili da tools/privacy-check.sh)" 2
 LETTERALE='(secret|token|password|passwd|api[_-]?key|client[_-]?secret)[A-Za-z_]*["'"'"']?[[:space:]]*[:=][[:space:]]*["'"'"'][^"'"'"'$[:space:]]{8,}["'"'"']'
-SEGRETI=$( { grep -E "$SHAPES" <<<"$AGG"; grep -iE "$LETTERALE" <<<"$AGG"; } | sort -u | mask_secrets)
+# (settimo ventaglio, V1 R2): impronta_righe, non mask_secrets — il rilevatore sa gia' che e' un segreto, e la maschera
+# non conosce ogni forma che le SHAPES trovano (tornavano in chiaro nel commento della PR)
+SEGRETI=$( { grep -E "$SHAPES" <<<"$AGG"; grep -iE "$LETTERALE" <<<"$AGG"; } | sort -u | impronta_righe)
 N_SEG=$(grep -c . <<<"$SEGRETI")
 echo "**Segreti e credenziali letterali nel diff: $N_SEG**"
 [ "$N_SEG" -gt 0 ] && sed 's/^/- /' <<<"$SEGRETI"

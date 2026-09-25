@@ -4493,7 +4493,7 @@
       },
       "norm_label": "ferma_opencode_del_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L646"
+      "source_location": "L662"
     },
     {
       "id": "night_shift_lib_lock_turno_orfano",
@@ -4508,7 +4508,7 @@
       },
       "norm_label": "lock_turno_orfano()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L677"
+      "source_location": "L693"
     },
     {
       "id": "night_shift_lib_prendi_lock_turno",
@@ -4523,7 +4523,7 @@
       },
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L656"
+      "source_location": "L672"
     },
     {
       "id": "night_shift_night_shift",
@@ -4643,66 +4643,6 @@
       },
       "norm_label": "night-shift.sh script",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa",
-      "label": "test-lock-turno-corsa.sh",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-lock-turno-corsa.sh",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_lock_turno_corsa_sh__entry",
-      "label": "test-lock-turno-corsa.sh script",
-      "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-lock-turno-corsa.sh script",
-      "source_file": "tests/test-lock-turno-corsa.sh",
       "source_location": "L1"
     },
     {
@@ -9170,7 +9110,7 @@
       },
       "norm_label": "dichiara_file_nuovo()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L428"
+      "source_location": "L444"
     },
     {
       "id": "night_shift_lib_dipendenze_mancanti",
@@ -9185,7 +9125,7 @@
       },
       "norm_label": "dipendenze_mancanti()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L516"
+      "source_location": "L532"
     },
     {
       "id": "night_shift_lib_rianima_ollama",
@@ -9200,7 +9140,7 @@
       },
       "norm_label": "rianima_ollama()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L609"
+      "source_location": "L625"
     },
     {
       "id": "tests_test_dipendenze_turno",
@@ -15703,7 +15643,7 @@
       },
       "norm_label": "messaggio_fix()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L600"
+      "source_location": "L616"
     },
     {
       "id": "tests_test_messaggio_fix",
@@ -19237,7 +19177,7 @@
       },
       "norm_label": "commit_altrui()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L591"
+      "source_location": "L607"
     },
     {
       "id": "tests_test_commit_altrui",
@@ -19669,7 +19609,7 @@
       },
       "norm_label": "allinea_hub()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L542"
+      "source_location": "L558"
     },
     {
       "id": "tests_test_allinea_hub",
@@ -19985,7 +19925,7 @@
       },
       "norm_label": "aggiungi_consegna()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L439"
+      "source_location": "L455"
     },
     {
       "id": "tests_test_consegna_dichiarata",
@@ -22067,7 +22007,7 @@
       },
       "norm_label": "forme_prima_del_push()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L417"
+      "source_location": "L433"
     },
     {
       "id": "tests_test_forme_prima_del_push",
@@ -45920,7 +45860,7 @@
       },
       "norm_label": "leggi_coda()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L526"
+      "source_location": "L542"
     },
     {
       "id": "tests_test_leggi_coda",
@@ -46130,11 +46070,41 @@
       "source_location": "L3"
     },
     {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L705"
+    },
+    {
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L28"
+    },
+    {
       "id": "tests_test_portabilita",
       "label": "test-portabilita.sh",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46149,7 +46119,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46164,7 +46134,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46179,7 +46149,7 @@
       "label": "righe_con()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46194,7 +46164,7 @@
       "label": "test-portabilita.sh script",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46202,6 +46172,66 @@
       },
       "norm_label": "test-portabilita.sh script",
       "source_file": "tests/test-portabilita.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_glm",
+      "label": "ask-glm.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ask-glm.sh",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_glm_sh__entry",
+      "label": "ask-glm.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-glm.sh script",
+      "source_file": "llm/ask-glm.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus",
+      "label": "ask-opus.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ask-opus.sh",
+      "source_file": "llm/ask-opus.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_ask_opus_sh__entry",
+      "label": "ask-opus.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ask-opus.sh script",
+      "source_file": "llm/ask-opus.sh",
       "source_location": "L1"
     },
     {
@@ -46292,6 +46322,51 @@
       },
       "norm_label": "_timeout.sh script",
       "source_file": "llm/_timeout.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_usage",
+      "label": "_usage.sh",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "_usage.sh",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_usage_log_ask_usage",
+      "label": "log_ask_usage()",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log_ask_usage()",
+      "source_file": "llm/_usage.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "llm_usage_sh__entry",
+      "label": "_usage.sh script",
+      "_origin": "ast",
+      "community": 738,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "_usage.sh script",
+      "source_file": "llm/_usage.sh",
       "source_location": "L1"
     },
     {
@@ -46895,201 +46970,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_deploy_assistito",
-      "label": "test-deploy-assistito.sh",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-deploy-assistito.sh",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_deploy_assistito_gesto",
-      "label": "gesto()",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gesto()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L33"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_author_email",
-      "label": "GIT_AUTHOR_EMAIL",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_author_email",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L21"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_author_name",
-      "label": "GIT_AUTHOR_NAME",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_author_name",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L21"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_committer_email",
-      "label": "GIT_COMMITTER_EMAIL",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_committer_email",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L22"
-    },
-    {
-      "id": "tests_test_deploy_assistito_git_committer_name",
-      "label": "GIT_COMMITTER_NAME",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "git_committer_name",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L22"
-    },
-    {
-      "id": "tests_test_deploy_assistito_home",
-      "label": "HOME",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "home",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_deploy_assistito_home_bak",
-      "label": "HOME_BAK",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "home_bak",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_deploy_assistito_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_deploy_assistito_mkrepo",
-      "label": "mkrepo()",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mkrepo()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L41"
-    },
-    {
-      "id": "tests_test_deploy_assistito_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_deploy_assistito_path",
-      "label": "PATH",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L28"
-    },
-    {
-      "id": "tests_test_deploy_assistito_sh__entry",
-      "label": "test-deploy-assistito.sh script",
-      "_origin": "ast",
-      "community": 738,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-deploy-assistito.sh script",
-      "source_file": "tests/test-deploy-assistito.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_test_mutation_tests",
       "label": "test-mutation-tests.sh",
       "_origin": "ast",
@@ -47689,7 +47569,7 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L716"
+      "source_location": "L732"
     },
     {
       "id": "tests_test_night_shift_design_gate",
@@ -47917,6 +47797,201 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_deploy_assistito",
+      "label": "test-deploy-assistito.sh",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-deploy-assistito.sh",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_deploy_assistito_gesto",
+      "label": "gesto()",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gesto()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L33"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_author_email",
+      "label": "GIT_AUTHOR_EMAIL",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_email",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_author_name",
+      "label": "GIT_AUTHOR_NAME",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_name",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_committer_email",
+      "label": "GIT_COMMITTER_EMAIL",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_email",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_deploy_assistito_git_committer_name",
+      "label": "GIT_COMMITTER_NAME",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_name",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_deploy_assistito_home",
+      "label": "HOME",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "home",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_deploy_assistito_home_bak",
+      "label": "HOME_BAK",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "home_bak",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_deploy_assistito_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_deploy_assistito_mkrepo",
+      "label": "mkrepo()",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mkrepo()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L41"
+    },
+    {
+      "id": "tests_test_deploy_assistito_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_deploy_assistito_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L28"
+    },
+    {
+      "id": "tests_test_deploy_assistito_sh__entry",
+      "label": "test-deploy-assistito.sh script",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "test-deploy-assistito.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-deploy-assistito.sh script",
+      "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_roadmap_repo",
       "label": "test-roadmap-repo.sh",
       "_origin": "ast",
@@ -47974,6 +48049,66 @@
       },
       "norm_label": "test-roadmap-repo.sh script",
       "source_file": "tests/test-roadmap-repo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa",
+      "label": "test-lock-turno-corsa.sh",
+      "_origin": "ast",
+      "community": 748,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-lock-turno-corsa.sh",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 748,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 748,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_lock_turno_corsa_sh__entry",
+      "label": "test-lock-turno-corsa.sh script",
+      "_origin": "ast",
+      "community": 748,
+      "community_name": "test-lock-turno-corsa.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-lock-turno-corsa.sh script",
+      "source_file": "tests/test-lock-turno-corsa.sh",
       "source_location": "L1"
     },
     {
@@ -48203,7 +48338,7 @@
       },
       "norm_label": "caccia_gia_aperta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L360"
+      "source_location": "L376"
     },
     {
       "id": "night_shift_lib_candidata_censore",
@@ -48218,7 +48353,7 @@
       },
       "norm_label": "candidata_censore()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L352"
+      "source_location": "L368"
     },
     {
       "id": "night_shift_lib_candidata_parere",
@@ -48233,7 +48368,7 @@
       },
       "norm_label": "candidata_parere()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L477"
+      "source_location": "L493"
     },
     {
       "id": "night_shift_lib_comandi_da_incollare",
@@ -48248,7 +48383,7 @@
       },
       "norm_label": "comandi_da_incollare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L636"
+      "source_location": "L652"
     },
     {
       "id": "night_shift_lib_commenta_una_volta",
@@ -48263,7 +48398,7 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L700"
+      "source_location": "L716"
     },
     {
       "id": "night_shift_lib_default_branch",
@@ -48281,8 +48416,8 @@
       "source_location": "L5"
     },
     {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
+      "id": "night_shift_lib_esegui_verifica",
+      "label": "esegui_verifica()",
       "_origin": "ast",
       "community": 751,
       "community_name": "lib.sh",
@@ -48291,9 +48426,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "eta_secondi()",
+      "norm_label": "esegui_verifica()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L689"
+      "source_location": "L88"
     },
     {
       "id": "night_shift_lib_funzione_definita_e_chiamata",
@@ -48353,11 +48488,11 @@
       },
       "norm_label": "lente_pr()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L461"
+      "source_location": "L477"
     },
     {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
+      "id": "night_shift_lib_mask_secrets",
+      "label": "mask_secrets()",
       "_origin": "ast",
       "community": 751,
       "community_name": "lib.sh",
@@ -48366,9 +48501,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "mtime()",
+      "norm_label": "mask_secrets()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L28"
+      "source_location": "L322"
     },
     {
       "id": "night_shift_lib_rami_da_scopare",
@@ -48383,7 +48518,7 @@
       },
       "norm_label": "rami_da_scopare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L381"
+      "source_location": "L397"
     },
     {
       "id": "night_shift_lib_repo_code",
@@ -48398,7 +48533,7 @@
       },
       "norm_label": "repo_code()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L408"
+      "source_location": "L424"
     },
     {
       "id": "night_shift_lib_rotate_log_if_big",
@@ -48458,7 +48593,7 @@
       },
       "norm_label": "verifica_issue_comando()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L493"
+      "source_location": "L509"
     },
     {
       "id": "night_shift_morning_gate",
@@ -48713,146 +48848,26 @@
       "source_location": "L22"
     },
     {
-      "id": "llm_ask_glm",
-      "label": "ask-glm.sh",
+      "id": "night_shift_lib_impronta_righe",
+      "label": "impronta_righe()",
       "_origin": "ast",
       "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ask-glm.sh",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_glm_sh__entry",
-      "label": "ask-glm.sh script",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-glm.sh script",
-      "source_file": "llm/ask-glm.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus",
-      "label": "ask-opus.sh",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ask-opus.sh",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_ask_opus_sh__entry",
-      "label": "ask-opus.sh script",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ask-opus.sh script",
-      "source_file": "llm/ask-opus.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_usage",
-      "label": "_usage.sh",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "_usage.sh",
-      "source_file": "llm/_usage.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "llm_usage_log_ask_usage",
-      "label": "log_ask_usage()",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
+      "community_name": "lente-sicurezza.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "log_ask_usage()",
-      "source_file": "llm/_usage.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "llm_usage_sh__entry",
-      "label": "_usage.sh script",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "_usage.sh script",
-      "source_file": "llm/_usage.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_lib_esegui_verifica",
-      "label": "esegui_verifica()",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "esegui_verifica()",
+      "norm_label": "impronta_righe()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L88"
-    },
-    {
-      "id": "night_shift_lib_mask_secrets",
-      "label": "mask_secrets()",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "mask_secrets",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mask_secrets()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L322"
+      "source_location": "L348"
     },
     {
       "id": "tools_lente_sicurezza",
       "label": "lente-sicurezza.sh",
       "_origin": "ast",
       "community": 756,
-      "community_name": "mask_secrets",
+      "community_name": "lente-sicurezza.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48867,7 +48882,7 @@
       "label": "log()",
       "_origin": "ast",
       "community": 756,
-      "community_name": "mask_secrets",
+      "community_name": "lente-sicurezza.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48882,7 +48897,7 @@
       "label": "lente-sicurezza.sh script",
       "_origin": "ast",
       "community": 756,
-      "community_name": "mask_secrets",
+      "community_name": "lente-sicurezza.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48897,7 +48912,7 @@
       "label": "verdetto()",
       "_origin": "ast",
       "community": 756,
-      "community_name": "mask_secrets",
+      "community_name": "lente-sicurezza.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -52586,7 +52601,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L691",
+      "source_location": "L707",
       "weight": 1.0
     },
     {
@@ -52610,7 +52625,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L660",
+      "source_location": "L676",
       "weight": 1.0
     },
     {
@@ -60475,6 +60490,18 @@
     },
     {
       "source": "tools_lente_sicurezza_sh__entry",
+      "target": "night_shift_lib_impronta_righe",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/lente-sicurezza.sh",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_lente_sicurezza_sh__entry",
       "target": "night_shift_lib_mask_secrets",
       "relation": "calls",
       "_origin": "ast",
@@ -60482,7 +60509,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/lente-sicurezza.sh",
-      "source_location": "L48",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -89544,13 +89571,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_impronta_righe",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L348",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_candidata_censore",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L352",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -89561,7 +89599,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L360",
+      "source_location": "L376",
       "weight": 1.0
     },
     {
@@ -89583,7 +89621,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L381",
+      "source_location": "L397",
       "weight": 1.0
     },
     {
@@ -89594,7 +89632,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L408",
+      "source_location": "L424",
       "weight": 1.0
     },
     {
@@ -89605,7 +89643,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L417",
+      "source_location": "L433",
       "weight": 1.0
     },
     {
@@ -89616,7 +89654,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L428",
+      "source_location": "L444",
       "weight": 1.0
     },
     {
@@ -89627,7 +89665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L439",
+      "source_location": "L455",
       "weight": 1.0
     },
     {
@@ -89638,23 +89676,12 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L461",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_lib",
-      "target": "night_shift_lib_candidata_parere",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "night-shift/lib.sh",
       "source_location": "L477",
       "weight": 1.0
     },
     {
       "source": "night_shift_lib",
-      "target": "night_shift_lib_verifica_issue_comando",
+      "target": "night_shift_lib_candidata_parere",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -89676,13 +89703,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_verifica_issue_comando",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L509",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_dipendenze_mancanti",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L516",
+      "source_location": "L532",
       "weight": 1.0
     },
     {
@@ -89693,7 +89731,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L526",
+      "source_location": "L542",
       "weight": 1.0
     },
     {
@@ -89704,7 +89742,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L542",
+      "source_location": "L558",
       "weight": 1.0
     },
     {
@@ -89715,7 +89753,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L591",
+      "source_location": "L607",
       "weight": 1.0
     },
     {
@@ -89726,7 +89764,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L600",
+      "source_location": "L616",
       "weight": 1.0
     },
     {
@@ -89737,7 +89775,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L609",
+      "source_location": "L625",
       "weight": 1.0
     },
     {
@@ -89748,7 +89786,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L636",
+      "source_location": "L652",
       "weight": 1.0
     },
     {
@@ -89759,7 +89797,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L646",
+      "source_location": "L662",
       "weight": 1.0
     },
     {
@@ -89770,7 +89808,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L656",
+      "source_location": "L672",
       "weight": 1.0
     },
     {
@@ -89781,7 +89819,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L677",
+      "source_location": "L693",
       "weight": 1.0
     },
     {
@@ -89792,7 +89830,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L689",
+      "source_location": "L705",
       "weight": 1.0
     },
     {
@@ -89803,7 +89841,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L700",
+      "source_location": "L716",
       "weight": 1.0
     },
     {
@@ -89814,7 +89852,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L716",
+      "source_location": "L732",
       "weight": 1.0
     },
     {
@@ -99158,5 +99196,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a3cfc6f23a57e910064c2cb89302d4b7db5bdcd6"
+  "built_at_commit": "71c3982d7092839651929f8ef01a7f0b6d3b93d0"
 }

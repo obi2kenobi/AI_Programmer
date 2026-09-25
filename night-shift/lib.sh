@@ -341,6 +341,22 @@ for raw in sys.stdin.buffer:
 ' || echo "⛔ mask_secrets: la maschera e' MORTA (python) — output SOPPRESSO, non mostrato per sicurezza: e' un rosso, non un silenzio"
 }
 
+# impronta_righe: righe «file:riga: contenuto» → «file:riga: «segreto <impronta> · N caratteri»», la riga intera.
+# (2026-09-25, settimo ventaglio, V1 R2): per chi SA gia' che la riga e' un segreto (lo strato 1 della lente, che la
+# trova con le SHAPES di privacy-check). mask_secrets ha regole sue e non conosce ogni forma (email, telefoni, xoxb
+# corti, password in URL con l'apice): passate da li', tornavano in chiaro nel commento pubblico della PR.
+impronta_righe() {
+  python3 -c '
+import sys, re, hashlib
+for raw in sys.stdin.buffer:
+    l = raw.decode("utf-8", "surrogateescape").rstrip("\n")
+    m = re.match(r"^(.*?:[0-9]+): ?(.*)$", l)
+    pre, v = (m.group(1) + ": ", m.group(2)) if m else ("", l)
+    imp = hashlib.sha256(v.encode("utf-8", "surrogateescape")).hexdigest()[:8]
+    sys.stdout.write("%s«segreto %s · %d caratteri»\n" % (pre, imp, len(v)))
+' || echo "⛔ impronta_righe: MORTA (python) — righe SOPPRESSE, non mostrate: e' un rosso, non un silenzio"
+}
+
 # candidata_censore(): dal JSON di `gh pr list --json number,headRefName,isDraft,title` (stdin)
 # il numero della prima PR che il censore ACCETTA — bozza, branch night/*, titolo `caccia:`:
 # gli stessi predicati delle guardie di night-shift/revisore.sh. (Revisione 10 giri,
