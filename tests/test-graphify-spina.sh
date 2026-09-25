@@ -81,7 +81,8 @@ fi
 
 # 8. la notte: una volta al giorno, in background, lo strumento semantico con Ollama
 NS="$HERE/night-shift/night-shift.sh"
-grep -q 'grafo-semantico.sh' "$NS" && grep -q '\.grafo-\$(date +%F)' "$NS" \
+# (settimo ventaglio, V3 R2): la data del giorno sta in GRAFO_DATA, calcolata una volta e passata al pass
+grep -q 'grafo-semantico.sh' "$NS" && grep -q 'GRAFO_DATA=\$(date +%F); GRAFO_MARKER="\$WORK/\.grafo-\$GRAFO_DATA"' "$NS" \
   && ok "il turno lancia grafo-semantico.sh una volta al giorno" || ko "il turno non lancia la semantica del grafo"
 grep -q -- '--backend ollama' "$HERE/tools/grafo-semantico.sh" 2>/dev/null && grep -q -- '--max-concurrency 1' "$HERE/tools/grafo-semantico.sh" \
   && ok "grafo-semantico: backend ollama, una richiesta alla volta" || ko "grafo-semantico non usa ollama a concorrenza 1"

@@ -12,7 +12,7 @@ T=$(mktemp -d); trap 'kill $(cat "$T/work/.lock-grafo/pid" 2>/dev/null) 2>/dev/n
 mkdir -p "$T/hub/night-shift" "$T/hub/tools" "$T/bin" "$T/work"
 printf '#!/bin/bash\nsleep 20\necho pass-finito\n' > "$T/hub/tools/grafo-semantico.sh"
 printf '#!/bin/bash\nexit 0\n' > "$T/bin/graphify"; chmod +x "$T/bin/graphify"
-BLOCCO=$(sed -n '/^GRAFO_MARKER=/,/^log "=== TURNO INIZIATO/p' "$HERE/night-shift/night-shift.sh" | sed '$d')
+BLOCCO=$(sed -n '/^GRAFO_DATA=/,/^log "=== TURNO INIZIATO/p' "$HERE/night-shift/night-shift.sh" | sed '$d')
 [ -n "$BLOCCO" ] || { ko "blocco del grafo non trovato in night-shift.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 # (sesto ventaglio, rinviati di S3 R6): i percorsi entrano nello script quotati con %q, non fra apici
 # (un apice in $TMPDIR o nel percorso dell'hub spezzava la riga).

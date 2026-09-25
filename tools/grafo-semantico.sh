@@ -14,6 +14,10 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 REPO="${1:?uso: grafo-semantico.sh <owner/repo> <cartella-di-lavoro>}"
 BASE="${2:?uso: grafo-semantico.sh <owner/repo> <cartella-di-lavoro>}"
 MODEL="${MODELLO:-qwen3.8-27b:iq3s}"
+# (2026-09-25, settimo ventaglio, V3 R2): UNA data per pass, quella del segno del turno (GRAFO_DATA). Ramo, commit e
+# titolo la prendevano ciascuno a fine pass: un pass partito il 25 e finito dopo mezzanotte apriva il ramo del 26,
+# e il pass del 26 moriva al push. Lanciato a mano, senza turno, vale la data di adesso.
+DATA="${GRAFO_DATA:-$(date +%F)}"
 W="$BASE/grafo-${REPO##*/}"
 log() { echo "[$(date '+%F %T')] grafo-semantico $REPO: $*"; }
 
@@ -47,13 +51,13 @@ if git diff --cached --quiet; then
   log "grafo invariato: nessuna PR"
   exit 0
 fi
-BR="night/grafo-$(date +%F)"
+BR="night/grafo-$DATA"
 git checkout -q -B "$BR"
-git commit -qm "chore: grafo semantico notturno $(date +%F) (graphify extract, $MODEL)" || { log "commit fallito"; exit 1; }
+git commit -qm "chore: grafo semantico notturno $DATA (graphify extract, $MODEL)" || { log "commit fallito"; exit 1; }
 git push -q origin "$BR" 2>/dev/null || { log "push di $BR fallito (ramo gia' esistente? mai forzato)"; exit 1; }
 # (2026-09-24, quinto ventaglio, R5 R4): il corpo prometteva «il merge unisce i grafi» — vero solo dove la spina
 # ha registrato il driver in .git/config; un clone nuovo o il bottone di GitHub vanno in conflitto (provato: rc 1)
-URL=$(gh pr create --draft --head "$BR" --title "chore: grafo semantico $(date +%F)" \
+URL=$(gh pr create --draft --head "$BR" --title "chore: grafo semantico $DATA" \
   --body "Pass semantico notturno del grafo (graphify extract --backend ollama, modello $MODEL). Solo graphify-out/. Il merge unisce i grafi (merge=graphify) SOLO in una copia dove tools/graphify-spina.sh ha registrato il driver (git config merge.graphify.driver): fondila li' con git merge, non dal bottone di GitHub, che il driver non lo conosce e da' conflitto su graph.json." 2>&1 | tail -1)
 case "$URL" in
   https://*) log "PR in bozza: $URL"; log "$(lente_pr "$W" "$BASE_REF" "$BR" "$URL")" ;;  # D2: lente sicurezza automatica

@@ -1265,7 +1265,8 @@ fi
 # BACKGROUND — un pass sui documenti a ~4 tok/s dura ore e il ciclo non lo aspetta. Hub + ogni
 # repo del turno; ogni grafo cambiato diventa una PR in bozza (tools/grafo-semantico.sh). Il lock
 # evita due pass insieme; un lock oltre le 24h e' un pass morto: si toglie e si dichiara.
-GRAFO_MARKER="$WORK/.grafo-$(date +%F)"; GRAFO_LOCK="$WORK/.lock-grafo"
+# (settimo ventaglio, V3 R2): la data si calcola una volta e va al pass, che la usa per ramo, commit e titolo.
+GRAFO_DATA=$(date +%F); GRAFO_MARKER="$WORK/.grafo-$GRAFO_DATA"; GRAFO_LOCK="$WORK/.lock-grafo"
 # (2026-09-24, sesto ventaglio, S4 R6): il segno del giorno si scriveva PRIMA del pass, e il lock non aveva il PID —
 # un turno ucciso a meta' pass lasciava segno e lock, e il pass mancava in silenzio fino a 24 ore. Ora il lock porta
 # il PID del pass (la regola di lock_turno_orfano: PID morto = lock orfano), e il segno si scrive a pass finito.
@@ -1276,7 +1277,7 @@ fi
 if [ ! -f "$GRAFO_MARKER" ] && [ -f "$HERE/../tools/grafo-semantico.sh" ] && command -v graphify >/dev/null 2>&1 \
    && mkdir "$GRAFO_LOCK" 2>/dev/null; then
   GRAFO_REPO=("obi2kenobi/AI_Programmer"); for E in "${REPO_LIST[@]}"; do [ "${E%% *}" = "${GRAFO_REPO[0]}" ] || GRAFO_REPO+=("${E%% *}"); done
-  ( for R in "${GRAFO_REPO[@]}"; do MODELLO="$MODEL_TAG" bash "$HERE/../tools/grafo-semantico.sh" "$R" "$WORK"; done \
+  ( for R in "${GRAFO_REPO[@]}"; do GRAFO_DATA="$GRAFO_DATA" MODELLO="$MODEL_TAG" bash "$HERE/../tools/grafo-semantico.sh" "$R" "$WORK"; done \
       >> "$WORK/grafo-semantico.log" 2>&1; touch "$GRAFO_MARKER"; rm -rf "$GRAFO_LOCK" ) &
   echo $! > "$GRAFO_LOCK/pid"
   log "grafo semantico: avviato in background su ${#GRAFO_REPO[@]} repo (PID $!, log: $WORK/grafo-semantico.log)"
