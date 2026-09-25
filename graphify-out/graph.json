@@ -39730,7 +39730,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L288"
+      "source_location": "L289"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39742,7 +39742,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L282"
+      "source_location": "L283"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -66466,7 +66466,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L282",
+      "source_location": "L283",
       "weight": 1.0
     },
     {
@@ -66477,7 +66477,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L288",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -100220,5 +100220,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fb2cd7b382227563bfa66abc22e4ae3ada957f64"
+  "built_at_commit": "03e624c7ee07a917cdd72595776462dde2884de9"
 }

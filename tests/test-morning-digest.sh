@@ -157,6 +157,15 @@ C4=$(cat "$TMP/captured.txt" 2>/dev/null)
   || ko "V3 R1: report vecchio: rc=$RC, $(grep -o 'subject:"[^"]*"' <<<"$C4" | head -1)"
 grep -c 'sospesi del 2026-01-01' <<<"$C4" >/dev/null && ok "V3 R1: i sospesi di un altro giorno si dicono per data" || ko "V3 R1: i sospesi vecchi entrano come di oggi"
 rm -f "$HOME/night-shift-work/.cervello-2026-01-01" "$HOME/morning-gate-report.md"
+
+# (2026-09-25, ottavo ventaglio, O5 R2): con Mail che non parte e `mail` che accetta, il digest diceva «inviato (via mail)»
+# e svuotava la memoria del turno. L'rc 0 di mail(1) vuol dire «in coda locale», non «arrivato»: sul Mac senza relay il
+# messaggio resta li'. Ora lo dice, e la memoria resta.
+cp "$TMP/salt.orig" "$SALT"
+printf '#!/bin/bash\nexit 1\n' > "$TMP/bin/osascript"; printf '#!/bin/bash\ncat >/dev/null; echo "postdrop: warning: unable to look up public/pickup" >&2; exit 0\n' > "$TMP/bin/mail"; chmod +x "$TMP/bin/osascript" "$TMP/bin/mail"
+OUT5=$(bash "$TMP/repo/night-shift/morning-digest.sh" 2>&1); RC5=$?
+cmp -s "$SALT" "$TMP/salt.orig" && grep -ci 'coda locale' <<<"$OUT5" >/dev/null \
+  && ok "O5 R2: via mail(1) il digest dice «in coda locale» e la memoria del turno resta" || ko "O5 R2: via mail(1): rc=$RC5, memoria $(cmp -s "$SALT" "$TMP/salt.orig" && echo intatta || echo SVUOTATA), «$(tail -1 <<<"$OUT5")»"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

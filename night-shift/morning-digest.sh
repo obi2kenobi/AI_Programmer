@@ -107,14 +107,18 @@ tell application \"Mail\"
   end tell
   send newMsg
 end tell" 2>/dev/null && INVIATO="Digest inviato a $DEST" || {
-  # fallback: mail CLI
-  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>/dev/null && INVIATO="Digest inviato a $DEST (via mail)" || INVIATO=""
+  # fallback: mail CLI. (2026-09-25, ottavo ventaglio, O5 R2): il suo rc 0 vuol dire «accettato nella coda LOCALE», non
+  # «arrivato» — sul Mac senza relay il messaggio resta li'. Si dice cosi', la memoria del turno non si svuota, e lo
+  # stderr di mail va nel log invece che nel vuoto. Se il ripiego vada tenuto e' una domanda in DEBITI.
+  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>>"$HOME/morning-digest.log" \
+    && { INVIATO="Digest messo nella coda locale di mail(1) per $DEST — consegna NON verificata (Mail non e' partito); la memoria del turno resta"; SOLO_CODA=1; } \
+    || INVIATO=""
 }
 # (revisione 10 giri): la memoria del turno si svuota SOLO a invio riuscito; un invio fallito
 # e' un rosso (rc 1), non un «ERRORE invio» con esito 0 — e la memoria resta per domani
 if [ -n "${INVIATO:-}" ]; then
   echo "$INVIATO"
-  if [ -f "$SAL_TURNI" ]; then : > "$SAL_TURNI"; fi
+  if [ -f "$SAL_TURNI" ] && [ "${SOLO_CODA:-0}" != 1 ]; then : > "$SAL_TURNI"; fi
 else
   echo "ERRORE invio: digest NON consegnato — la memoria del turno resta in $SAL_TURNI" >&2
   exit 1
