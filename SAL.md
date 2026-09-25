@@ -5206,3 +5206,28 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   BSD) e setsid. Sul Mac simulato del giro S5 dice «3.2.57 · perl · BSD · ASSENTE». Caso nuovo in
   `tests/test-lib.sh` (163/0), rosso prima; sabotaggio 162/1. S5 R3 (il censore nella sandbox senza rete) e il Mac
   di riferimento sono domande in DEBITI (D1, D2).
+- **Sesto ventaglio, rinviati di S3 R6 — la suite intera da un hub con spazio e apice nel percorso.** Misura:
+  un clone dell'hub in `…/hub d'apice spazio`, con `TMPDIR` ostile, ogni banco da solo. Cadevano otto banchi:
+  - `tests/test-privacy.sh` (`git -C $TMP` in una stringa: lo spazio la spezzava; ora una funzione `G`);
+  - `tests/test-deploy-assistito.sh` (`script -qec` con i percorsi fra apici; ora `printf %q`);
+  - `tests/test-lib.sh`, `tests/test-morning-gate-adversary.sh`, `tests/test-giri-avversari-isolati.sh` (il
+    percorso fra apici dentro `bash -c`; ora arriva come argomento);
+  - `tests/test-grafo-notturno.sh` (mio di stanotte, S4 R6: percorsi fra apici nello script generato);
+  - `tests/test-caccia-lente.sh` (cercava nudo il percorso che la lente scrive con `%q`);
+  - `tests/test-verifica-visiva-estrai-testo.sh`: con l'apice node non partiva e il banco diceva «0 OK, 0 FAIL»
+    **con rc 0**. Ora il percorso va a node come `process.argv[1]`, e se non arrivano i tre esiti è rosso
+    (sabotaggio: 0/1).
+- **Sesto ventaglio, S3 R6 — il pre-commit si faceva togliere un file dal controllo glifi.** I file in stage andavano
+  a `git grep` come pathspec col «:» nudo. Un «-n.md» era magia sconosciuta: rc 128, «controllo glifi MORTO», commit
+  bloccato con la diagnosi sbagliata. E un «!x.md» in stage diventava «:!x.md», un'esclusione: il glifo di «x.md»
+  passava con rc 0. Il giro l'aveva detto per lettura su «!x.md» da solo, e lì è smentito (quel file si vede): il
+  danno c'è quando accanto c'è «x.md». Ora `:(top,literal)`. Quattro casi nuovi in `tests/test-pre-commit.sh`
+  (35/0), rossi prima (33/2); sabotaggio 33/2. Scrivendo questa riga ne è uscito un altro: il controllo delle
+  citazioni passava il nome citato a `grep -qxF` senza `--`, e un file del target col trattino non si riconosceva
+  (commit bloccato). Caso nuovo (36/0), rosso prima e al sabotaggio (35/1).
+- **Sesto ventaglio, S3 R6 — la cartella relativa che comincia col trattino.** `suite.sh`, `gas-gate.sh`,
+  `debiti-riapertura.sh` e `night-shift/caccia-lente.sh` facevano `cd "$DIR"` senza `--`: «dir inesistente» per una cartella che
+  c'è, e `gas-gate.sh` proseguiva a giudicare la cartella del chiamante. `copia-hook.sh` moriva su `mkdir`;
+  `polilivello.sh` e `fork-stato.sh` andavano avanti con `basename` vuoto. Ora `cd --`, e dove l'argomento si usa
+  in molti comandi diventa «./-sat» una volta sola. Banco nuovo `tests/test-trattino-iniziale.sh` (7/0), rosso
+  prima 0/7; sabotaggio 0/7.

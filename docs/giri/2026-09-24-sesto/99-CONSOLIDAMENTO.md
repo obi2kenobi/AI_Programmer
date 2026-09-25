@@ -25,8 +25,8 @@ righe «Sesto ventaglio».
 - **Curati**: 29. Di questi, 3 sono solo in parte, e il resto è dichiarato:
   - S2 R4: il «no» di Luca a una PR non è memoria (D-S2-1);
   - S3 R2: solo il plist del turno e il gancio del garante;
-  - S3 R6: i banchi col percorso fra apici dentro `python -c`, `bash -c` o `node -e` restano, tranne dashboard e
-    ai-timeout.
+  - S3 R6: i banchi col percorso fra apici dentro `python -c`, `bash -c` o `node -e` restavano, tranne dashboard e
+    ai-timeout. Curati dopo il consolidamento (sezione più sotto): ora S3 R6 è intero.
 
   Ogni cura ha il suo banco rosso prima e il sabotaggio rosso dopo.
 - **Esclusi** (domanda di dominio): S5 R3, il censore nella sandbox senza rete. Serve prima la misura sul Mac.
@@ -123,20 +123,22 @@ righe «Sesto ventaglio».
 - S5 R3: il censore nella sandbox senza rete (D1). Prima la misura sul Mac.
 
 **Rinviata**
-- S3 R6: i banchi che mettono un percorso fra apici dentro `python -c`, `bash -c`, `node -e` o `script -qec`:
-  - `tests/test-lib.sh:167`;
-  - `test-morning-gate-adversary.sh`;
-  - `test-verifica-visiva-estrai-testo.sh`;
-  - `test-deploy-assistito.sh`;
-  - `tests/test-privacy.sh:120` (qui `git -C $TMP` senza apici, non un `-c`).
-
-  Rompono la suite solo in un hub col percorso ostile, che è la domanda S3 R2.
-- S3 R6: il trattino iniziale (`cd` senza `--`, pathspec `:-n.md`).
 - S2 R4: la memoria del «no» di Luca (D-S2-1).
 - La prova dal vivo sul Mac vero di tutto S5.
 
 **Già coperta**
 - Nessuna.
+
+## Dopo il consolidamento: i rinviati di S3 R6
+
+- **La suite intera da un hub con spazio e apice.** Ho misurato un clone dell'hub in `…/hub d'apice spazio`, con un
+  `TMPDIR` ostile e ogni banco da solo. Cadevano otto banchi, e uno era muto: `tests/test-verifica-visiva-estrai-testo.sh`
+  diceva «0 OK, 0 FAIL» con rc 0. Curati tutti (dettagli nel SAL), e ora il banco muto conta i suoi esiti. La prova
+  resta a mano: una riga della notte che la rifaccia costa una seconda suite intera, e il tempo della notte è di Luca.
+- **Il pre-commit** si faceva togliere un file dal controllo glifi con un «!x.md» in stage accanto a «x.md» (rc 0, glifo
+  passato). La lettura del giro, su «!x.md» da solo, è smentita: il danno c'è solo con la coppia. Ora `:(top,literal)`.
+- **Il trattino iniziale**, in sei strumenti: `tests/test-trattino-iniziale.sh`. `gas-gate.sh` proseguiva a giudicare la
+  cartella del chiamante.
 
 ## Da fare a mano (non potevo)
 
