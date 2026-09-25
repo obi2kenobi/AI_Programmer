@@ -1,5 +1,6 @@
 #!/bin/bash
 # test-risolvi-issue.sh — il risolutore notturno senza agente, contro un server mock.
+# rete: localhost (un server finto sulla macchina: fuori dalle prove del censore, che nega la rete — D22)
 # Nato dal banco di passaggio del 2026-09-04 (copertura): il solver era nato con 20
 # prove manuali e nessun presidio di suite. Qui si provano i tre esiti che promette:
 # APPLICATO (sostituzione verificata), PATCH (territorio non applicabile direttamente),

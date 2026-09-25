@@ -1,5 +1,6 @@
 #!/bin/bash
 # test-cervello-impara.sh — il /learn del sistema sotto banco. Tre prove con un
+# rete: localhost (un server finto sulla macchina: fuori dalle prove del censore, che nega la rete — D22)
 # modello FINTO (mock /api/chat, stesso contratto): una lezione valida diventa
 # nota da approvare (link rotti scartati e dichiarati), l'onesto niente non crea
 # niente, e nessun doppione. L'ispirazione (everything-claude-code) salva le

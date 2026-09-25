@@ -230,8 +230,10 @@ command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ]
   || rinvia "prove: DEGRADATO — sandbox-exec o night-shift/sandbox.sb assente: il codice della PR non si esegue fuori dalla sandbox"
 PROFILO_PROVE=$(mktemp /tmp/revisore-sandbox.XXXXXX)
 sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO_PROVE"
-SANDBOX_PRE=(env TMPDIR=/tmp sandbox-exec -f "$PROFILO_PROVE")
-log "prove: in sandbox (profilo $PROFILO_PROVE)"
+# (2026-09-25, D22, risposta delegata): la sandbox nega la rete, localhost compreso, e resta cosi' (aprirla riaprirebbe
+# la porta che T5#1 ha chiuso). La suite salta i banchi che dichiarano «# rete: localhost», e lo dice.
+SANDBOX_PRE=(env TMPDIR=/tmp SUITE_SENZA_RETE=1 sandbox-exec -f "$PROFILO_PROVE")
+log "prove: in sandbox (profilo $PROFILO_PROVE; i banchi di rete si saltano, dichiarati)"
 # (D1, 2026-09-20): le prove sono quelle DICHIARATE DALLA REPO sul ramo di default —
 # lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
 # leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.
