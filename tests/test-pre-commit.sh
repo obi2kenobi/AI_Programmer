@@ -204,6 +204,28 @@ OUT=$(gancio); RC=$?
 [ "$RC" -ne 0 ] && grep -c 'tools/nomi.sh' <<<"$OUT" >/dev/null && ! grep -c 'NomeFintoQcinque' <<<"$OUT" >/dev/null \
   && ok "nome della lista in uno .sh: rifiutato, e il nome non si stampa" || ko "nome in uno .sh: rc=$RC, $(grep -m1 'nomi' <<<"$OUT")"
 git -C "$SB" rm -q --cached tools/nomi.sh; rm -f "$SB/tools/nomi.sh" "$SB/.privacy-nomi"
+# (2026-09-25, settimo ventaglio, V1 R1): la lista ha due lettori, e il pre-commit la leggeva con regole sue. L'ultima
+# riga senza a capo saltava (un nome passava al commit e al push, e solo la notte diventava rosso), e una riga «#»
+# valeva come nome. Ora il pre-commit chiede la lista a privacy-check (--elenca-nomi): una regola, un lettore.
+printf 'AltroNome\nNomeFintoUltimo' > "$SB/.privacy-nomi"
+printf 'echo NomeFintoUltimo\n' > "$SB/tools/nomi.sh"; git -C "$SB" add tools/nomi.sh
+OUT=$(gancio); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'tools/nomi.sh' <<<"$OUT" >/dev/null && ok "V1 R1: il nome sull'ultima riga senza a capo si vede" \
+  || ko "V1 R1: il nome sull'ultima riga senza a capo passa il commit (rc=$RC)"
+git -C "$SB" rm -q --cached tools/nomi.sh; rm -f "$SB/tools/nomi.sh"
+# senza il lettore (privacy-check assente in un satellite), la lista non si legge: e' un controllo morto, non un verde
+printf 'NomeFintoQcinque\n' > "$SB/.privacy-nomi"; mv "$SB/tools/privacy-check.sh" "$SB/tools/privacy-check.via"
+printf 'echo pulito\n' > "$SB/tools/nomi.sh"; git -C "$SB" add tools/nomi.sh
+OUT=$(gancio); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'controllo MORTO' <<<"$OUT" >/dev/null && ok "V1 R1: senza privacy-check la lista dei nomi e' un controllo MORTO, rosso" \
+  || ko "V1 R1: senza privacy-check il controllo dei nomi tace (rc=$RC)"
+mv "$SB/tools/privacy-check.via" "$SB/tools/privacy-check.sh"
+git -C "$SB" rm -q --cached tools/nomi.sh; rm -f "$SB/tools/nomi.sh"
+printf '#\nNomeFintoQcinque\n' > "$SB/.privacy-nomi"
+printf '# un commento qualunque\n' > "$SB/tools/nomi.sh"; git -C "$SB" add tools/nomi.sh
+OUT=$(gancio); RC=$?
+[ "$RC" -eq 0 ] && ok "V1 R1: una riga «#» della lista non e' un nome" || ko "V1 R1: la riga «#» della lista blocca il commit (rc=$RC): $(grep -m1 '⛔' <<<"$OUT")"
+git -C "$SB" rm -q --cached tools/nomi.sh; rm -f "$SB/tools/nomi.sh" "$SB/.privacy-nomi"
 
 # (2026-09-24, terzo ventaglio, V5 R3b): due fix sul lock e sul watchdog hanno cambiato la regola del codice
 # ancorato, e i pattern che la descrivono sono rimasti com'erano — nessuno ha chiesto «il pattern dice ancora

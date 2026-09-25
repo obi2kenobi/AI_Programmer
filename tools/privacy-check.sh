@@ -21,6 +21,29 @@ KEY="$HERE/night-shift/repos.key"
 # «le SHAPES girano nel repo») davano per sempre attive. Senza chiave nessuna forma di
 # segreto veniva cercata. Ora: degradato dichiarato e rc=1 come prima, ma le shapes e la
 # lista locale girano comunque; saltano solo i passaggi che la chiave alimenta.
+# rifila <testo>: toglie gli spazi in testa e in coda. (2026-09-24, sesto ventaglio, S3 R1): era `xargs`, che su
+# un apostrofo («Dell'Orto») esce in errore e non stampa niente — il termine vuoto valeva «pulito», e un leak
+# vero di un nome con l'apice passava con rc 0.
+rifila() { local t="$1"; t="${t#"${t%%[![:space:]]*}"}"; printf '%s' "${t%"${t##*[![:space:]]}"}"; }
+
+# nomi_locali <lista>: i nomi della lista locale, uno per riga — la regola UNICA di cosa e' un nome (2026-09-25,
+# settimo ventaglio, V1 R1). Anche l'ultima riga senza a capo (revisione 14 lenti, 2026-08-28), mai le righe «#»
+# o vuote, spazi rifilati. La usa questo check e, via --elenca-nomi, il pre-commit: prima il pre-commit leggeva
+# la lista con regole sue, saltava l'ultima riga e prendeva un «#» per un nome.
+nomi_locali() {
+  local n
+  while IFS= read -r n || [ -n "$n" ]; do
+    n=$(rifila "$n")
+    case "$n" in \#*|"") continue ;; esac
+    printf '%s\n' "$n"
+  done < "$1"
+}
+# --elenca-nomi <lista>: stampa i nomi (per chi li confronta in memoria, mai per stamparli) ed esce.
+if [ "${1:-}" = "--elenca-nomi" ]; then
+  [ -f "${2:-}" ] || exit 0
+  nomi_locali "$2"; exit 0
+fi
+
 RC=0
 if [ -f "$KEY" ]; then
   HA_KEY=1
@@ -63,10 +86,6 @@ if [ -n "$CRED_STORIA" ]; then
   RC=1
 fi
 
-# rifila <testo>: toglie gli spazi in testa e in coda. (2026-09-24, sesto ventaglio, S3 R1): era `xargs`, che su
-# un apostrofo («Dell'Orto») esce in errore e non stampa niente — il termine vuoto valeva «pulito», e un leak
-# vero di un nome con l'apice passava con rc 0.
-rifila() { local t="$1"; t="${t#"${t%%[![:space:]]*}"}"; printf '%s' "${t%"${t##*[![:space:]]}"}"; }
 
 # (2026-09-23, notte dei giri, T5#4): l'uscita di questo check finisce nell'issue «[banco]» del repo
 # PUBBLICO (banco-passaggio.sh -> night-shift.sh). Stampava il termine che proteggeva. Ora ne stampa
@@ -145,15 +164,14 @@ if [ -s "$NOMI_LOCALI" ]; then
   # sorveglianza sui FILE CORRENTI soltanto: la storia coi nomi e' coperta
   # dalla decisione di dominio (nomi-si, accesso-no) — amnistia dichiarata,
   # non oblio. Il tripwire e' per cio' che entra ADESSO.
-  while IFS= read -r n || [ -n "$n" ]; do
-    case "$n" in \#*|"") continue ;; esac
-    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F "$n" 2>/dev/null) | grep -v "repos.key" || true)
+  while IFS= read -r n; do
+    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F -- "$n" 2>/dev/null) | grep -v "repos.key" || true)
     if [ -n "$FILES_N" ]; then
       maschera "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
       maschera "$(head -5 <<<"$FILES_N")" >&2
       RC=1
     fi
-  done < "$NOMI_LOCALI"
+  done < <(nomi_locali "$NOMI_LOCALI")
 else
   echo "privacy-check: lista locale ~/.privacy-nomi assente — passaggio saltato (gate degradato, regola F3)" >&2
 fi

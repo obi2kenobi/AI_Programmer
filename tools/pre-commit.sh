@@ -183,6 +183,13 @@ fi
 #    (HOME: sopravvive ai cloni, non entra nel repo). Assente = DEGRADATO FORTE, mai muto.
 if [ -f "$HOME/.privacy-nomi" ]; then
   LEAK=""
+  # (2026-09-25, settimo ventaglio, V1 R1): la lista si legge con la regola di privacy-check (nomi_locali), non con
+  # una copia sua: la copia saltava l'ultima riga senza a capo e prendeva un «#» per un nome.
+  NOMI=$(bash "$HERE/tools/privacy-check.sh" --elenca-nomi "$HOME/.privacy-nomi" 2>/dev/null)
+  if [ -z "$NOMI" ] && grep -c '[^[:space:]#]' "$HOME/.privacy-nomi" >/dev/null 2>&1; then
+    echo "⛔ nomi: la lista ha righe ma tools/privacy-check.sh non l'ha letta (assente o rotto) — controllo MORTO, rosso"
+    FALLITI=1
+  fi
   while IFS= read -r f; do
     nell_indice "$f" || continue
     # eccezione DICHIARATA (2026-09-14): docs/bc/ documenta lo SCHEMA del tenant — i nomi
@@ -196,7 +203,7 @@ if [ -f "$HOME/.privacy-nomi" ]; then
     while IFS= read -r nome; do
       [ -n "$nome" ] || continue
       grep -qiF -- "$nome" <<<"$CONTENUTO" && LEAK="$LEAK\n  $f contiene «nome $(printf '%s' "$nome" | { shasum -a 256 2>/dev/null || sha256sum; } | cut -c1-8) · ${#nome} caratteri»"
-    done < "$HOME/.privacy-nomi"
+    done <<<"$NOMI"
   done < <(staged --diff-filter=ACMR || true)
   if [ -n "$LEAK" ]; then
     echo "⛔ nomi veri in file in committa (repo pubblica, lavoro privato):$LEAK"
