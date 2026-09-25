@@ -95,6 +95,10 @@ for skill_dir in "$HERE"/.claude/skills/*/; do
     cp -r "$skill_dir" "$WORK/.claude/skills/$skill_name"
     git -C "$WORK" add ".claude/skills/$skill_name"
     SKILLS_AGGIUNTE=$((SKILLS_AGGIUNTE+1))
+  elif ! diff -rq "$skill_dir" "$WORK/.claude/skills/$skill_name" >/dev/null 2>&1; then
+    # (2026-09-25, D16, risposta delegata): le skill dello standard sono dell'hub. Qui non si tocca, ma si dice:
+    # il prossimo sync --standard la riscrive, e le regole proprie del progetto vivono in PROJECT.md
+    echo "⚠ skill $skill_name: qui diversa da quella dell'hub, lasciata com'e'. Le skill sono dell'hub (il prossimo sync --standard la riscrive): le regole locali vanno in PROJECT.md"
   fi
 done
 if [ "$SKILLS_AGGIUNTE" -gt 0 ]; then
