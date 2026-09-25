@@ -59,17 +59,25 @@ if [ "$1" = "in-sospeso" ]; then
   # invisibile al mattino. Se il conf manca o e' vuoto, le due storiche.
   REPO_CAND=$(grep -vE '^#|^$' "$HERE/night-shift/repos.conf" 2>/dev/null | awk '{print $1}' | tr '\n' ' ')
   [ -z "$REPO_CAND" ] && REPO_CAND="obi2kenobi/AI_Programmer obi2kenobi/Sistema-Gestione-Magazzino"
+  # (2026-09-25, ottavo ventaglio, O2 R6): gh in errore stampava «(nessuna)» con rc 0, e si contavano al piu' 10 PR per
+  # repo. Ora un repo senza risposta si dice, il totale conta tutte le aperte (fino a 200), e se ne mostrano 10 per repo.
+  GH_CIECO=0
   for REPO in $REPO_CAND; do
+    if ! LISTA_PR=$(gh pr list -R "$REPO" --state open --limit 200 \
+             --json number,isDraft,title -q '.[] | [.number, (if .isDraft then "bozza" else "pronta" end), .title] | @tsv' 2>/dev/null); then
+      echo "  ⛔ gh non ha risposto per $REPO: le sue PR aperte non si sanno (non e' «nessuna»)"; GH_CIECO=1; continue
+    fi
+    N_REPO_PR=0
     while IFS=$'\t' read -r num stato titolo; do
       [ -z "$num" ] && continue
-      PR_TROVATE=$((PR_TROVATE+1))
-      echo "  - #$num [$stato] $titolo ($REPO)"
-    done < <(gh pr list -R "$REPO" --state open --limit 10 \
-             --json number,isDraft,title -q '.[] | [.number, (if .isDraft then "bozza" else "pronta" end), .title] | @tsv' 2>/dev/null)
+      PR_TROVATE=$((PR_TROVATE+1)); N_REPO_PR=$((N_REPO_PR+1))
+      [ "$N_REPO_PR" -le 10 ] && echo "  - #$num [$stato] $titolo ($REPO)"
+    done <<<"$LISTA_PR"
+    [ "$N_REPO_PR" -gt 10 ] && echo "  … e altre $((N_REPO_PR - 10)) in $REPO"
   done
-  [ "$PR_TROVATE" -eq 0 ] && echo "  (nessuna)"
+  [ "$PR_TROVATE" -eq 0 ] && [ "$GH_CIECO" -eq 0 ] && echo "  (nessuna)"
   echo
-  echo "totale: $TROVATE sospesi + $LEZ lezioni + $DEP deploy pronti + $PR_TROVATE PR aperte"
+  echo "totale: $TROVATE sospesi + $LEZ lezioni + $DEP deploy pronti + $PR_TROVATE PR aperte$([ "$GH_CIECO" -eq 1 ] && echo " (almeno: gh non ha risposto per qualche repo)")"
   exit 0
 fi
 
