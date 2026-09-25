@@ -1464,8 +1464,8 @@ fi
 if command -v gh >/dev/null 2>&1 && [ "${SCOPA_OK:-0}" -eq 1 ]; then
   N_SCOPA=0
   # (2026-09-24, quinto ventaglio, R5 R2): solo i rami DEL TURNO. Prima si cancellavano anche claude/* e glm/*
-  # senza PR (il ramo di una sessione web chiusa, di cui non resta copia): scelta provvisoria dichiarata, la
-  # domanda (quali prefissi) e' in DEBITI.md
+  # senza PR (il ramo di una sessione web chiusa, di cui non resta copia). Regola (D11, 2026-09-25): i rami del
+  # giorno non si toccano mai — la cancellazione di un ramo remoto non si annulla
   for B in $(rami_da_scopare "$(date +%s)" 48 "$RAMI_TSV" "$PR_TSV" | grep -E '^(night|notte)/'); do
     gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
       && N_SCOPA=$((N_SCOPA+1)) && log "scopa-rami: '$B' cancellato (PR fusa/chiusa, o orfano oltre 48h)"
