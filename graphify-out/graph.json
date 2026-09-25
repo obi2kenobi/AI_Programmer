@@ -39730,7 +39730,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L289"
+      "source_location": "L296"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39742,7 +39742,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L283"
+      "source_location": "L290"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -66460,13 +66460,24 @@
     },
     {
       "source": "debiti_debiti_md_il_registro_delle_scorciatoie_rimandate",
+      "target": "debiti_dal_giro_1_dei_3_giri_autonomi_2026_08_21_notte",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "DEBITI.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "debiti_debiti_md_il_registro_delle_scorciatoie_rimandate",
       "target": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L283",
+      "source_location": "L290",
       "weight": 1.0
     },
     {
@@ -66477,18 +66488,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L289",
-      "weight": 1.0
-    },
-    {
-      "source": "debiti_debiti_md_il_registro_delle_scorciatoie_rimandate",
-      "target": "debiti_dal_giro_1_dei_3_giri_autonomi_2026_08_21_notte",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "DEBITI.md",
-      "source_location": "L29",
+      "source_location": "L296",
       "weight": 1.0
     },
     {
@@ -100220,5 +100220,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8ce4a5ee26a38e333e59b969b3a248bd4fe38abc"
+  "built_at_commit": "5baa711d350f4b91a7421593e218b5c95f889036"
 }
