@@ -265,10 +265,23 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # (2026-09-24, sesto ventaglio, S2 R6): il conto della PR erano le copie («24 gruppi aggiornati» per un diff di un
   # file); ora sono i file che il commit cambia davvero
   NFILE=$(git diff --cached --name-only | grep -c .)
+  # (2026-09-25, D21, risposta delegata): una PR di riallineo chiusa da una persona SENZA fonderla si riproponeva ogni
+  # notte con un ramo nuovo. L'impronta del contenuto (patch-id) va nel commit, quindi nel corpo della PR (--fill): se una
+  # PR chiusa e non fusa porta la stessa, il no resta finche' lo standard (o il satellite) cambia.
+  IMPRONTA=$(git diff --cached | git patch-id --stable 2>/dev/null | cut -d' ' -f1)
+  if [ -n "$IMPRONTA" ]; then
+    CHIUSE=$(gh pr list -R "$REPO" --state closed --limit 100 --search "$IMPRONTA in:body" --json number,mergedAt,body 2>/dev/null) \
+      || { echo "sync-repo --standard: ⚠ gh non ha detto le PR chiuse di $REPO — non apro la PR al buio (una rifiutata si riproporrebbe)"; exit 1; }
+    RIFIUTATA=$(jq -r --arg i "$IMPRONTA" '[.[] | select(.mergedAt == null and ((.body // "") | contains($i)))][0].number // empty' <<<"$CHIUSE" 2>/dev/null)
+    if [ -n "$RIFIUTATA" ]; then
+      echo "sync-repo --standard: la PR #$RIFIUTATA con lo stesso contenuto e' stata chiusa senza fonderla — il no resta finche' lo standard cambia (D21)"
+      exit 0
+    fi
+  fi
   BR="claude/standard-$(date +%Y%m%d)"
   git checkout -q -b "$BR"
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard" \
-    ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"}
+    ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"} ${IMPRONTA:+-m "Impronta dello standard: $IMPRONTA (una PR chiusa senza fonderla con questa impronta non si ripropone)"}
   spingi "$BR" || exit 1
   # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
   # la PR si VERIFICA, non si dichiara

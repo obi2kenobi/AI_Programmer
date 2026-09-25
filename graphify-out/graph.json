@@ -13380,7 +13380,7 @@
       },
       "norm_label": "nuovo_bare()",
       "source_file": "tests/test-sync-repo.sh",
-      "source_location": "L72"
+      "source_location": "L73"
     },
     {
       "id": "tests_test_sync_repo_ok",
@@ -13410,7 +13410,7 @@
       },
       "norm_label": "ramo_standard()",
       "source_file": "tests/test-sync-repo.sh",
-      "source_location": "L79"
+      "source_location": "L80"
     },
     {
       "id": "tests_test_sync_repo_sh__entry",
@@ -60424,7 +60424,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-sync-repo.sh",
-      "source_location": "L82",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -60436,7 +60436,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-sync-repo.sh",
-      "source_location": "L84",
+      "source_location": "L85",
       "weight": 1.0
     },
     {
@@ -62176,7 +62176,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L272",
+      "source_location": "L285",
       "weight": 1.0
     },
     {
@@ -97454,7 +97454,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-sync-repo.sh",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -97465,7 +97465,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-sync-repo.sh",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -100991,5 +100991,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bbc7e1d59ec05b83cee25d15ea50ada7843fb1fb"
+  "built_at_commit": "8721b02e8738368cd0c653adb4274f4ece2fcfaf"
 }

@@ -63,7 +63,8 @@ cat > "$TMP/bin/gh" <<'EOF'
 case "$1 $2" in
   "api "*) [ -f "${GH_CLAUDE_MD:-}" ] && base64 < "$GH_CLAUDE_MD" || { echo "gh: HTTP 404" >&2; exit 1; } ;;
   "repo clone") git clone -q "${GH_CLONE_SRC:?}" "$4" ;;
-  "pr create") if [ -n "${GH_PR_ESISTE:-}" ]; then echo 'a pull request for branch "x" into branch "main" already exists:'; echo "https://github.invalid/stub/pull/9"; exit 1; fi
+  "pr list") [ -n "${GH_PR_LIST_ROTTO:-}" ] && { echo "HTTP 502" >&2; exit 1; }; printf '%s\n' "${GH_PR_CHIUSE:-[]}" ;;
+  "pr create") echo create >> "${GH_LOG:-/dev/null}"; if [ -n "${GH_PR_ESISTE:-}" ]; then echo 'a pull request for branch "x" into branch "main" already exists:'; echo "https://github.invalid/stub/pull/9"; exit 1; fi
                echo "https://github.invalid/stub/pull/1" ;;
   *) exit 0 ;;
 esac
@@ -120,6 +121,24 @@ NVERI=$(git -C "$TMP/$S2R6_REPO.git" diff --name-only "$BR~1" "$BR" 2>/dev/null 
 else
   echo "SALTO: S2 R6 senza la prova «hub vecchio» (clone superficiale)"
 fi
+# (2026-09-25, D21, risposta delegata): una PR di riallineo che Luca chiude SENZA fonderla si riproponeva ogni notte con un
+# ramo nuovo. Ora il commit porta l'impronta del contenuto (patch-id): se una PR chiusa e non fusa ha la stessa, il no
+# resta finche' lo standard (o il satellite) cambia. gh che non risponde: non si apre al buio.
+nuovo_bare rifiuto 1
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+IMPR=$(git -C "$TMP/rifiuto.git" log -1 --format=%B "$(ramo_standard rifiuto)" 2>/dev/null | sed -n 's/^Impronta dello standard: \([0-9a-f]*\).*/\1/p')
+[ -n "$IMPR" ] && ok "D21: il commit del riallineo porta l'impronta del contenuto" || ko "D21: nessuna impronta nel commit: $(tail -1 <<<"$OUT")"
+git -C "$TMP/rifiuto.git" branch -q -D "$(ramo_standard rifiuto)" 2>/dev/null
+: > "$TMP/gh-create.log"
+OUT=$(cd "$TMP" && GH_PR_CHIUSE="[{\"number\":7,\"mergedAt\":null,\"body\":\"Impronta dello standard: $IMPR\"}]" GH_LOG="$TMP/gh-create.log" GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ! grep -c create "$TMP/gh-create.log" >/dev/null && grep -c '#7' <<<"$OUT" >/dev/null \
+  && ok "D21: stesso contenuto di una PR chiusa senza fusione: niente PR nuova, e lo dice" || ko "D21: la rifiutata si ripropone: rc $RC — $(tail -1 <<<"$OUT")"
+OUT=$(cd "$TMP" && GH_PR_CHIUSE='[{"number":7,"mergedAt":null,"body":"Impronta dello standard: 0000"}]' GH_LOG="$TMP/gh-create.log" GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+grep -c create "$TMP/gh-create.log" >/dev/null && ok "D21: contenuto cambiato dal rifiuto: la PR si ripropone" || ko "D21: contenuto nuovo, nessuna PR: $(tail -1 <<<"$OUT")"
+git -C "$TMP/rifiuto.git" branch -q -D "$(ramo_standard rifiuto)" 2>/dev/null; : > "$TMP/gh-create.log"
+OUT=$(cd "$TMP" && GH_PR_LIST_ROTTO=1 GH_LOG="$TMP/gh-create.log" GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c create "$TMP/gh-create.log" >/dev/null && ok "D21: gh che non dice le PR chiuse: niente PR al buio, rc $RC" || ko "D21: gh rotto, PR aperta lo stesso (rc $RC)"
+
 
 # (2026-09-24, sesto ventaglio, S2 R4): l'rc di `gh pr create` non si guardava — con la PR gia' aperta gh esce 1 e
 # stampa la sua URL, e sync diceva «PR aperta», un fatto detto due volte. Una PR che c'e' si dice per quello che e'.
