@@ -141,6 +141,22 @@ bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out2.log" 2>&1; RC=$?
 [ "$RC" -eq 0 ] && [ -f "$TMP/captured.txt" ] && grep -c 'Mattina del sistema' "$TMP/captured.txt" >/dev/null \
   && ok "senza il report del gate il digest parte lo stesso, con l'oggetto di ripiego" || ko "senza report del gate: rc=$RC, $(tail -1 "$TMP/out2.log")"
 
+
+# (2026-09-25, settimo ventaglio, V3 R1): il gate e' in pensione, e il suo ultimo report resta sul disco per sempre. Il
+# digest lo allegava a ogni mattina, di qualunque eta', e ne faceva l'OGGETTO della mail; i «sospesi» del cervello erano
+# il file piu' recente, di qualunque giorno. Scelta provvisoria (DEBITI, D-V3-1): il report entra solo se ha meno di 24
+# ore, e i sospesi di un altro giorno si dicono per data.
+printf '# Report\n\nTotale: VECCHIO-DI-UN-MESE\n' > "$HOME/morning-gate-report.md"
+python3 -c 'import os,sys,time; t=time.time()-30*86400; os.utime(sys.argv[1],(t,t))' "$HOME/morning-gate-report.md"
+mkdir -p "$HOME/night-shift-work"; printf 'IN SOSPESO (vecchi)\n' > "$HOME/night-shift-work/.cervello-2026-01-01"
+rm -f "$TMP/captured.txt"
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out4.log" 2>&1; RC=$?
+C4=$(cat "$TMP/captured.txt" 2>/dev/null)
+[ "$RC" -eq 0 ] && grep -c 'Mattina del sistema' <<<"$C4" >/dev/null && ! grep -c 'VECCHIO-DI-UN-MESE' <<<"$C4" >/dev/null && grep -c 'non allegato' <<<"$C4" >/dev/null \
+  && ok "V3 R1: un report del gate di 30 giorni fa non e' l'oggetto della mail, non si allega, e si dice" \
+  || ko "V3 R1: report vecchio: rc=$RC, $(grep -o 'subject:"[^"]*"' <<<"$C4" | head -1)"
+grep -c 'sospesi del 2026-01-01' <<<"$C4" >/dev/null && ok "V3 R1: i sospesi di un altro giorno si dicono per data" || ko "V3 R1: i sospesi vecchi entrano come di oggi"
+rm -f "$HOME/night-shift-work/.cervello-2026-01-01" "$HOME/morning-gate-report.md"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -21,16 +21,30 @@ fi
 # sono le lezioni da approvare, gli sospesi e il resoconto della notte.
 REPORT="$HOME/morning-gate-report.md"
 CORPO_GATE=""
+# eta_giorni <file>: giorni interi dall'ultima modifica (python3: stat -f/-c si scrivono solo in lib.sh)
+eta_giorni() { python3 -c 'import os,sys,time; print(int((time.time()-os.path.getmtime(sys.argv[1]))//86400))' "$1" 2>/dev/null || echo 0; }
+# (2026-09-25, settimo ventaglio, V3 R1): il gate e' in pensione e il suo ultimo report resta sul disco per sempre: la
+# mail del 26/9 usciva con l'oggetto del report del 28/8. Scelta provvisoria (DEBITI, D-V3-1): si allega, e da' l'oggetto,
+# solo se ha meno di 24 ore; altrimenti una riga lo dice.
+REPORT_FRESCO=0
 if [ -f "$REPORT" ]; then
-  CORPO_GATE="$(cat "$REPORT")
+  if [ "$(eta_giorni "$REPORT")" -lt 1 ]; then
+    REPORT_FRESCO=1
+    CORPO_GATE="$(cat "$REPORT")
 
 ---"
+  else
+    CORPO_GATE="(report del morning-gate di $(eta_giorni "$REPORT") giorni fa: non allegato — il gate e' in pensione)
+
+---"
+  fi
 fi
 
 # subject: la riga del totale dal report
 # (2026-09-24, Q2 R3): senza il report (il gate e' in pensione) grep esce 2, e sotto set -e + pipefail il
 # digest moriva qui, rc 2, senza una riga — il contrario di quanto dice il commento sopra
-SUBJ=$( { grep "Totale:" "$REPORT" 2>/dev/null || true; } | head -1 | sed 's/[*\`]//g' | head -c 120)
+SUBJ=""
+[ "$REPORT_FRESCO" -eq 1 ] && SUBJ=$( { grep "Totale:" "$REPORT" 2>/dev/null || true; } | head -1 | sed 's/[*\`]//g' | head -c 120)
 [ -z "$SUBJ" ] && SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
 # corpo: il report + il summary numerico
@@ -69,6 +83,10 @@ if ls "$HOME"/deploy-pronto/*/MANIFEST.md >/dev/null 2>&1; then
 fi
 CERVMARK=$({ ls -t "$HOME"/night-shift-work/.cervello-????-??-?? 2>/dev/null || true; } | head -1)
 if [ -n "$CERVMARK" ]; then
+  # (settimo ventaglio, V3 R1): il segno piu' recente puo' essere di un altro giorno (il turno giu', il Mac spento):
+  # allora i sospesi si dicono per data, non come quelli di stamattina
+  CERV_DATA="${CERVMARK##*.cervello-}"
+  [ "$CERV_DATA" = "$(date +%F)" ] || BODY="$(printf '%s\n\n---\n(sospesi del %s, non di oggi: il turno non ha fatto la domanda del giorno)' "$BODY" "$CERV_DATA")"
   BODY="$(printf '%s\n\n---\n%s' "$BODY" "$(cat "$CERVMARK")")"
 fi
 
