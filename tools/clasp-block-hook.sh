@@ -200,7 +200,7 @@ if grep -qE '(^|[^A-Za-z0-9_-])(npm|yarn|pnpm|bun)([[:space:]]|$)' <<<"$CMD_STRI
     [ -n "$SCR" ] || continue
     SCR_RE=$(sed 's/[.[*^$()+?{|]/\\&/g' <<<"$SCR")
     if grep -qE "(^|[^A-Za-z0-9_-])(npm|yarn|pnpm|bun)([[:space:]]+[^;&|]*)?[[:space:]]${SCR_RE}([[:space:];&|)]|$)" <<<"$CMD_STRIPPED"; then
-      jq -n --arg r "NEGATO (clasp-block-hook): lo script «$SCR» ($(tr ' ' '\n' <<<"$ORIGINE" | grep "^$SCR_RE:" | head -1 | cut -d: -f2-)) arriva a clasp push/deploy — scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I H7; quarto ventaglio Q5: runner senza run, npm start, catene, sottocartelle)." \
+      jq -n --arg r "NEGATO (clasp-block-hook): lo script «${SCR}» ($(tr ' ' '\n' <<<"$ORIGINE" | grep "^$SCR_RE:" | head -1 | cut -d: -f2-)) arriva a clasp push/deploy — scrive in PRODUZIONE senza staging né rollback. Il deploy è dell'umano (report REPO-I H7; quarto ventaglio Q5: runner senza run, npm start, catene, sottocartelle)." \
         '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
       exit 0
     fi

@@ -580,7 +580,7 @@ allinea_hub() {
   if [ "$sporchi" -gt 0 ]; then
     err=$(git -C "$d" -c user.name=night-shift -c user.email=night-shift@localhost stash push -q -u -m "salvataggio turno $ts" 2>&1) \
       || { echo "NON allineato: $sporchi file non committati e lo stash e' fallito ($(tail -1 <<<"$err" | cut -c1-120)) — il turno gira col metodo che c'e'"; return 1; }
-    echo "messi da parte $sporchi file non committati: git -C $d stash list («salvataggio turno $ts»)"
+    echo "messi da parte $sporchi file non committati: git -C $d stash list («salvataggio turno ${ts}»)"
   fi
   if [ "$br" != main ] && [ "$br" != master ]; then
     git -C "$d" checkout -q main 2>/dev/null || git -C "$d" checkout -q master 2>/dev/null \

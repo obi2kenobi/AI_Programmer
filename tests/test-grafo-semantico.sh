@@ -29,11 +29,11 @@ OUT=$(cd "$T" && HOME="$T/home" GIT_CONFIG_GLOBAL=/dev/null PATH="$T/bin:$PATH" 
 RAMI=$(git -C "$T/remoto.git" branch --format='%(refname:short)' | tr '\n' ' ')
 grep -cw 'night/grafo-2026-09-25' <<<"$RAMI" >/dev/null && ! grep -cw 'night/grafo-2026-09-26' <<<"$RAMI" >/dev/null \
   && ok "V3 R2: il ramo prende la data del segno (GRAFO_DATA), non quella di fine pass" \
-  || ko "V3 R2: rami sul remoto «$RAMI» (rc=$RC): $(tail -2 <<<"$OUT" | tr '\n' ' ')"
+  || ko "V3 R2: rami sul remoto «${RAMI}» (rc=$RC): $(tail -2 <<<"$OUT" | tr '\n' ' ')"
 grep -cF 'grafo semantico 2026-09-25' "$T/gh.log" >/dev/null 2>&1 && ok "V3 R2: il titolo della PR dice la stessa data" \
   || ko "V3 R2: titolo della PR: $(cat "$T/gh.log" 2>/dev/null | head -1 | cut -c1-120)"
 MSG=$(git -C "$T/remoto.git" log -1 --format=%s night/grafo-2026-09-25 2>/dev/null)
-grep -cF 'notturno 2026-09-25' <<<"$MSG" >/dev/null && ok "V3 R2: il commit dice la stessa data" || ko "V3 R2: messaggio del commit «$MSG»"
+grep -cF 'notturno 2026-09-25' <<<"$MSG" >/dev/null && ok "V3 R2: il commit dice la stessa data" || ko "V3 R2: messaggio del commit «${MSG}»"
 # il turno passa la data del segno
 grep -cE 'GRAFO_DATA="\$GRAFO_DATA"[^#]*grafo-semantico\.sh' "$HERE/night-shift/night-shift.sh" >/dev/null \
   && grep -cF 'GRAFO_MARKER="$WORK/.grafo-$GRAFO_DATA"' "$HERE/night-shift/night-shift.sh" >/dev/null \
@@ -50,7 +50,7 @@ OUT=$(cd "$T" && HOME="$T/home" GIT_CONFIG_GLOBAL=/dev/null PATH="$T/bin:$PATH" 
 RAMI=$(git -C "$T/remoto.git" branch --format='%(refname:short)' | tr '\n' ' ')
 [ "$RC" -ne 0 ] && ! grep -cw 'night/grafo-2026-09-27' <<<"$RAMI" >/dev/null \
   && ok "V1 R3: una forma di segreto nel grafo ferma il push (il ramo non arriva al remoto)" \
-  || ko "V1 R3: grafo con una forma di segreto: rc=$RC, rami «$RAMI»"
+  || ko "V1 R3: grafo con una forma di segreto: rc=$RC, rami «${RAMI}»"
 ! grep -cF "$TOK" <<<"$OUT" >/dev/null && ok "V1 R3: il valore non compare nell'uscita" || ko "V1 R3: il valore compare nell'uscita"
 
 echo ""

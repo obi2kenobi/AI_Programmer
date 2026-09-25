@@ -47,5 +47,5 @@ echo "$SKILL" >> "$STATO" 2>/dev/null
 
 DESC="$(sed -n 's/^description: //p' "$MD" | head -1 | cut -c1-300)"
 CTX="Stai toccando $FILE: e' il terreno della skill \`$SKILL\` — invocala con lo strumento Skill prima di procedere, se non l'hai gia' fatto (promemoria, non un blocco; D3 2026-09-23).
-$SKILL: $DESC…"
+$SKILL: ${DESC}…"
 jq -n --arg ctx "$CTX" '{hookSpecificOutput:{hookEventName:"PreToolUse",additionalContext:$ctx}}'

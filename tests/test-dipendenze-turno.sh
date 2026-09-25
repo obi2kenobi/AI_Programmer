@@ -20,7 +20,7 @@ chmod +x "$T/nojq/pkill" "$T/nojq/curl"
 source "$HERE/night-shift/lib.sh"
 type dipendenze_mancanti >/dev/null 2>&1 && ok "dipendenze_mancanti e' definita in night-shift/lib.sh" || ko "dipendenze_mancanti non esiste"
 M=$(PATH="$T/nojq" dipendenze_mancanti jq curl git 2>/dev/null)
-[ "$M" = "jq" ] && ok "dipendenze_mancanti nomina solo quella che manca (jq)" || ko "dipendenze_mancanti: «$M»"
+[ "$M" = "jq" ] && ok "dipendenze_mancanti nomina solo quella che manca (jq)" || ko "dipendenze_mancanti: «${M}»"
 
 OUT=$(PATH="$T/nojq" bash "$HERE/night-shift/agente.sh" "$T/prog" "correggi" 2>&1); RC=$?
 [ "$RC" -eq 2 ] && grep -c 'MANCA jq' <<<"$OUT" >/dev/null && [ ! -s "$T/pkill.log" ] \

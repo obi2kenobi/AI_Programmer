@@ -99,14 +99,14 @@ PRIMA=$(bash e.sh 2>/dev/null)
 bash "$SALDA" e.sh 3 >/dev/null 2>&1
 DOPO=$(bash e.sh 2>/dev/null)
 [ "$PRIMA" = "$DOPO" ] && ok "Q16a: sotto set -e un produttore che fallisce non uccide lo script trasformato" \
-  || ko "Q16a: esito cambiato dopo la trasformazione: prima «$PRIMA», dopo «$DOPO»"
+  || ko "Q16a: esito cambiato dopo la trasformazione: prima «${PRIMA}», dopo «${DOPO}»"
 PDV="| gre""p -qv"
 printf '#!/bin/bash\nif true %s ok; then\n  echo PROBLEMA\nelse\n  echo tutto-ok\nfi\n' "$PDV" > v.sh
 PRIMA=$(bash v.sh 2>/dev/null)
 bash "$SALDA" v.sh 2 >/dev/null 2>&1; RC=$?
 DOPO=$(bash v.sh 2>/dev/null)
 [ "$RC" -eq 1 ] && [ "$PRIMA" = "$DOPO" ] && ok "Q16b: grep -v rifiutato (all'agente): la logica non si ribalta" \
-  || ko "Q16b: grep -v trasformato (rc=$RC): prima «$PRIMA», dopo «$DOPO»"
+  || ko "Q16b: grep -v trasformato (rc=$RC): prima «${PRIMA}», dopo «${DOPO}»"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

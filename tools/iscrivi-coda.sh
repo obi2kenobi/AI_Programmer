@@ -14,7 +14,7 @@ REPO="${2:?uso: iscrivi-coda.sh <repos.conf> <owner/repo> <tipo>}"
 TIPO="${3:?uso: iscrivi-coda.sh <repos.conf> <owner/repo> <tipo>}"
 # (2026-09-24, quarto ventaglio, Q2 R4): col login GitHub illeggibile il bootstrap passava «/nome», e il turno
 # poi falliva il clone ogni notte, lontano dalla causa. Si iscrive solo la forma owner/repo.
-[[ "$REPO" =~ ^[^/[:space:]]+/[^/[:space:]]+$ ]] || { echo "coda: «$REPO» non e' owner/repo — non iscritta" >&2; exit 1; }
+[[ "$REPO" =~ ^[^/[:space:]]+/[^/[:space:]]+$ ]] || { echo "coda: «${REPO}» non e' owner/repo — non iscritta" >&2; exit 1; }
 
 if [ -f "$CONF" ] && awk -v r="$REPO" '$1 !~ /^#/ && $1 == r {trovata=1} END {exit !trovata}' "$CONF"; then
   echo "coda: $REPO gia' iscritta in $CONF — niente da aggiungere"

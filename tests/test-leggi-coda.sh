@@ -18,16 +18,16 @@ finto_gh() { printf '#!/bin/bash\n%s\n' "$1" > "$T/bin/gh"; chmod +x "$T/bin/gh"
 finto_gh 'echo "error connecting to api.github.com" >&2; exit 1'
 OUT=$(PATH="$T/bin:$PATH" leggi_coda o/r 2>"$T/err"); RC=$?
 [ "$RC" -ne 0 ] && [ -z "$OUT" ] && grep -c 'api.github.com' "$T/err" >/dev/null \
-  && ok "gh in errore: rc $RC e il motivo (non una coda vuota)" || ko "gh in errore: rc=$RC, out=«$OUT», err=$(cat "$T/err")"
+  && ok "gh in errore: rc $RC e il motivo (non una coda vuota)" || ko "gh in errore: rc=$RC, out=«${OUT}», err=$(cat "$T/err")"
 finto_gh 'echo "<html>502</html>"'
 PATH="$T/bin:$PATH" leggi_coda o/r >/dev/null 2>&1; RC=$?
 [ "$RC" -ne 0 ] && ok "risposta non JSON: rc $RC" || ko "risposta non JSON presa per buona"
 finto_gh 'echo "[]"'
 OUT=$(PATH="$T/bin:$PATH" leggi_coda o/r 2>/dev/null); RC=$?
-[ "$RC" -eq 0 ] && [ "$(jq length <<<"$OUT")" = 0 ] && ok "coda davvero vuota: rc 0, lista vuota" || ko "coda vuota: rc=$RC «$OUT»"
+[ "$RC" -eq 0 ] && [ "$(jq length <<<"$OUT")" = 0 ] && ok "coda davvero vuota: rc 0, lista vuota" || ko "coda vuota: rc=$RC «${OUT}»"
 finto_gh 'echo "[{\"number\":7,\"title\":\"t\",\"body\":\"b\"}]"; echo "A new release of gh is available" >&2'
 OUT=$(PATH="$T/bin:$PATH" leggi_coda o/r 2>/dev/null); RC=$?
-[ "$RC" -eq 0 ] && [ "$(jq length <<<"$OUT")" = 1 ] && ok "un avviso di gh su stderr non sporca il JSON" || ko "avviso su stderr: rc=$RC «$OUT»"
+[ "$RC" -eq 0 ] && [ "$(jq length <<<"$OUT")" = 1 ] && ok "un avviso di gh su stderr non sporca il JSON" || ko "avviso su stderr: rc=$RC «${OUT}»"
 
 NS="$HERE/night-shift/night-shift.sh"
 grep -c 'ISSUES=$(leggi_coda "$REPO"' "$NS" >/dev/null && grep -c 'coda ILLEGGIBILE' "$NS" >/dev/null \

@@ -90,10 +90,10 @@ cp "$HERE/.claude/settings.json" "$SP/.claude/settings.json"; bash "$HERE/tools/
 cp "$HERE/.claude/skills/gas-sviluppo/references/metodo.md" "$SP/.claude/skills/gas-sviluppo/references/"
 OUT6=$(cd "$SP" && CLAUDE_PROJECT_DIR="$SP" bash "$GARANTE" 2>&1)
 grep -c "core.hooksPath .githooks" <<<"$OUT6" >/dev/null && [ -z "$(git -C "$SP" config core.hooksPath)" ] \
-  && ok "guardiani presenti ma spenti: il garante lo dice (col comando) e non li accende da se'" || ko "guardiani spenti taciuti: «$OUT6»"
+  && ok "guardiani presenti ma spenti: il garante lo dice (col comando) e non li accende da se'" || ko "guardiani spenti taciuti: «${OUT6}»"
 git -C "$SP" config core.hooksPath .githooks
 OUT7=$(cd "$SP" && CLAUDE_PROJECT_DIR="$SP" bash "$GARANTE" 2>&1)
-[ -z "$OUT7" ] && ok "guardiani accesi: silenzio" || ko "falso allarme coi guardiani accesi: «$OUT7»"
+[ -z "$OUT7" ] && ok "guardiani accesi: silenzio" || ko "falso allarme coi guardiani accesi: «${OUT7}»"
 rm -rf "$SP"
 
 # (2026-09-24, notte dei giri, T1#5): la COPIA del garante che vive in un satellite (ce la porta

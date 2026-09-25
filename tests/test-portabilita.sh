@@ -128,6 +128,28 @@ for B in /bin/bash ${BASH_MAC:-}; do
 done
 [ -z "$ROTTI" ] && ok "S5 R2: ogni script si analizza con /bin/bash$([ -n "${BASH_MAC:-}" ] && echo " e con $BASH_MAC")" || ko "S5 R2: script che la bash non analizza:$ROTTI"
 
+# (2026-09-25, settimo ventaglio, V4 R1): la bash 3.2 del Mac, in un locale UTF-8, legge il primo byte di «»·—…
+# come parte del NOME della variabile: `$X»` diventa una variabile non legata, e sotto `set -u` lo script muore
+# (visto sul campo, docs/campo/2026-09-10-repo-v-giri-e-scoperte.md:69). Il gancio di clasp moriva cosi' nel ramo
+# che nega `npm run <script-con-clasp-push>`. La regola: `${X}` davanti a un carattere non ASCII. Python sui byte.
+S=$(python3 - $FILES <<'PYMB'
+import re, sys
+pat = re.compile(rb'(?<![\\$])\$[A-Za-z_][A-Za-z0-9_]*[\x80-\xff]')
+for f in sys.argv[1:]:
+    try:
+        righe = open(f, 'rb').read().split(b'\n')
+    except OSError:
+        continue
+    for n, l in enumerate(righe, 1):
+        if l.lstrip().startswith(b'#'):
+            continue
+        if pat.search(l):
+            print('%s:%d' % (f, n))
+PYMB
+)
+[ -z "$S" ] && ok "V4 R1: nessun \$NOME attaccato a un carattere non ASCII (sul Mac e' una variabile non legata)" \
+  || ko "V4 R1: \$NOME seguito da un carattere non ASCII — scrivere \${NOME}:"$'\n'"$S"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

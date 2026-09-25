@@ -31,7 +31,7 @@ if [ -n "$FN" ]; then
               "incorrect|WRONG" "wrong. the fix is not correct|WRONG" "not correct: missing null check|WRONG" \
               "scorretto|WRONG" "non corretto|WRONG" "sbagliato|WRONG" "boh|UNCLEAR" "|UNCLEAR"; do
     IN="${CASO%%|*}"; ATTESO="${CASO##*|}"
-    [ "$(classifica_verdetto "$IN")" = "$ATTESO" ] && ok "verdetto «$IN» → $ATTESO" || ko "verdetto «$IN» → $(classifica_verdetto "$IN") (atteso $ATTESO)"
+    [ "$(classifica_verdetto "$IN")" = "$ATTESO" ] && ok "verdetto «${IN}» → $ATTESO" || ko "verdetto «${IN}» → $(classifica_verdetto "$IN") (atteso $ATTESO)"
   done
 else
   ko "classifica_verdetto() non trovata in risolvi-issue.sh"

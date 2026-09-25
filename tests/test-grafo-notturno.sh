@@ -24,7 +24,7 @@ OUT1=$(ciclo 1); sleep 1
 grep -c 'avviato in background' <<<"$OUT1" >/dev/null && ok "ciclo 1: il pass parte" || ko "ciclo 1: il pass non parte: $OUT1"
 [ ! -f "$T/work/.grafo-$(date +%F)" ] && ok "il segno del giorno NON c'e' mentre il pass gira" || ko "il segno del giorno si scrive prima del pass"
 P=$(cat "$T/work/.lock-grafo/pid" 2>/dev/null)
-[ -n "$P" ] && kill -0 "$P" 2>/dev/null && ok "il lock porta il PID del pass ($P)" || ko "il lock non ha un PID vivo: «$P»"
+[ -n "$P" ] && kill -0 "$P" 2>/dev/null && ok "il lock porta il PID del pass ($P)" || ko "il lock non ha un PID vivo: «${P}»"
 [ -n "$P" ] && { pkill -KILL -P "$P" 2>/dev/null; kill -KILL "$P" 2>/dev/null; }; sleep 1
 OUT2=$(ciclo 2); sleep 1
 grep -c 'avviato in background' <<<"$OUT2" >/dev/null && grep -ci 'morto' <<<"$OUT2" >/dev/null \

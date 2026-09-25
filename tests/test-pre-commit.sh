@@ -253,8 +253,8 @@ git -C "$SB" rm -q --cached -- -n.md; rm -f -- "$SB/-n.md"
 for NOME in '!x.md' '^y.md'; do
   printf 'test %s dentro\n' "$GLIFO" > "$SB/$NOME"; git -C "$SB" add -- "$NOME"
   OUT=$(gancio); RC=$?
-  [ "$RC" -ne 0 ] && grep -cF -- "$NOME" <<<"$OUT" >/dev/null && ok "S3 R6: il glifo in «$NOME» si vede (il nome non si fa esclusione)" \
-    || ko "S3 R6: il glifo in «$NOME» esce dal controllo (rc=$RC)"
+  [ "$RC" -ne 0 ] && grep -cF -- "$NOME" <<<"$OUT" >/dev/null && ok "S3 R6: il glifo in «${NOME}» si vede (il nome non si fa esclusione)" \
+    || ko "S3 R6: il glifo in «${NOME}» esce dal controllo (rc=$RC)"
   git -C "$SB" rm -q --cached -- "$NOME"; rm -f -- "$SB/$NOME"
 done
 # Il controllo delle citazioni: un nome citato che comincia col trattino andava a grep come opzione. Il nome

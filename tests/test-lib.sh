@@ -192,14 +192,14 @@ if command -v esegui_verifica >/dev/null; then
   E1=$(esegui_verifica "$VD" 5 'echo tutto bene' "$VD/v.log"); R1=$?
   E2=$(esegui_verifica "$VD" 5 'echo banco rotto >&2; exit 1' "$VD/r.log"); R2=$?
   E3=$(esegui_verifica "$VD" 1 'echo "▶ tests/test-lento.sh" >&2; sleep 5' "$VD/s.log"); R3=$?
-  [ "$R1" -eq 0 ] && grep -cE '^VERDE in [0-9]+ s$' <<<"$E1" >/dev/null && ok "esegui_verifica: verde, con la durata («$E1»)" || ko "esegui_verifica verde: rc $R1 «$E1»"
-  [ "$R2" -eq 1 ] && grep -c 'ROSSA (rc 1)' <<<"$E2" >/dev/null && grep -c 'banco rotto' <<<"$E2" >/dev/null && ok "esegui_verifica: rosso, con rc e ultima riga («$E2»)" || ko "esegui_verifica rosso: rc $R2 «$E2»"
-  [ "$R3" -eq 124 ] && grep -c 'SFORO DEL BUDGET (1 s)' <<<"$E3" >/dev/null && grep -c 'test-lento' <<<"$E3" >/dev/null && ok "esegui_verifica: sforo distinto dal rosso, e dice dove («$E3»)" || ko "esegui_verifica sforo: rc $R3 «$E3»"
+  [ "$R1" -eq 0 ] && grep -cE '^VERDE in [0-9]+ s$' <<<"$E1" >/dev/null && ok "esegui_verifica: verde, con la durata («${E1}»)" || ko "esegui_verifica verde: rc $R1 «${E1}»"
+  [ "$R2" -eq 1 ] && grep -c 'ROSSA (rc 1)' <<<"$E2" >/dev/null && grep -c 'banco rotto' <<<"$E2" >/dev/null && ok "esegui_verifica: rosso, con rc e ultima riga («${E2}»)" || ko "esegui_verifica rosso: rc $R2 «${E2}»"
+  [ "$R3" -eq 124 ] && grep -c 'SFORO DEL BUDGET (1 s)' <<<"$E3" >/dev/null && grep -c 'test-lento' <<<"$E3" >/dev/null && ok "esegui_verifica: sforo distinto dal rosso, e dice dove («${E3}»)" || ko "esegui_verifica sforo: rc $R3 «${E3}»"
   [ -s "$VD/r.log" ] && ok "esegui_verifica: l'uscita resta in un file, non in /dev/null" || ko "esegui_verifica: uscita buttata"
   # (2026-09-24, quinto ventaglio, R4 R6): con la verifica verde nel log arrivava solo «VERDE in N s» — la
   # «⚠ SENTINELLA» della suite (budget oltre il 70%) restava nel file d'uscita, sovrascritto al ciclo dopo
   E4=$(esegui_verifica "$VD" 5 'echo "⚠ SENTINELLA: la suite ha usato il 81% del budget"; echo "Suite: 3/3"' "$VD/t.log")
-  grep -c '^VERDE in [0-9]* s — ⚠ SENTINELLA: la suite ha usato il 81%' <<<"$E4" >/dev/null && ok "R4 R6: la sentinella della suite arriva nella riga VERDE («$E4»)" || ko "R4 R6: sentinella persa: «$E4»"
+  grep -c '^VERDE in [0-9]* s — ⚠ SENTINELLA: la suite ha usato il 81%' <<<"$E4" >/dev/null && ok "R4 R6: la sentinella della suite arriva nella riga VERDE («${E4}»)" || ko "R4 R6: sentinella persa: «${E4}»"
   rm -rf "$VD"
 else
   ko "esegui_verifica assente da night-shift/lib.sh"
@@ -433,7 +433,7 @@ if declare -F comandi_da_incollare >/dev/null; then
   RIGA1=$(sed -n 2p <<<"$BLOCCO")
   if command -v zsh >/dev/null; then
     V=$(cd "$(mktemp -d)" && zsh -f -c "$RIGA1"$'\necho ANCORA-VIVA' 2>/dev/null)
-    grep -c 'ANCORA-VIVA' <<<"$V" >/dev/null && ok "S1 R1: incollata in zsh -f, la riga che finisce in exit non chiude la shell" || ko "S1 R1: la shell si e' chiusa: «$V»"
+    grep -c 'ANCORA-VIVA' <<<"$V" >/dev/null && ok "S1 R1: incollata in zsh -f, la riga che finisce in exit non chiude la shell" || ko "S1 R1: la shell si e' chiusa: «${V}»"
   else
     echo "⊘ S1 R1: zsh assente, la prova d'incollo e' saltata (dichiarato)"
   fi

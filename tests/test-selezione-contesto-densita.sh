@@ -21,7 +21,7 @@ printf '// calcola la somma delle vendite\n  // tasso di sconto applicato qui so
 printf 'function leggi() { return foglio.getRange(1, 1).getValues(); }\n' > "$T/progetto/b.js"
 OUT=$(cd "$T" && bash -c "$CMD" 2>&1 | tr -d ' ')
 [ "$OUT" = "1" ] && ok "la ricetta conta 1 riga di aritmetica (i due commenti restano fuori)" \
-  || ko "la ricetta conta i commenti: uscita «$OUT», attesa 1"
+  || ko "la ricetta conta i commenti: uscita «${OUT}», attesa 1"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

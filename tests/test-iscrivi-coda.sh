@@ -19,7 +19,7 @@ grep -qx 'luca/app feat' "$T/c" && ok "luca/app entra anche se c'e' luca/app-v2 
 bash "$ISCRIVI" "$T/c" luca/app.v2 feat >/dev/null
 grep -qx 'luca/app.v2 feat' "$T/c" && ok "il punto nel nome e' un punto, non un jolly" || ko "luca/app.v2 non iscritta (il punto ha combaciato con appXv2)"
 OUT=$(bash "$ISCRIVI" "$T/c" luca/app feat)
-[ "$(grep -c '^luca/app ' "$T/c")" -eq 1 ] && grep -c "gia'" <<<"$OUT" >/dev/null && ok "gia' presente: nessun doppione, e lo dice" || ko "doppione o silenzio: $(grep -c '^luca/app ' "$T/c") righe, «$OUT»"
+[ "$(grep -c '^luca/app ' "$T/c")" -eq 1 ] && grep -c "gia'" <<<"$OUT" >/dev/null && ok "gia' presente: nessun doppione, e lo dice" || ko "doppione o silenzio: $(grep -c '^luca/app ' "$T/c") righe, «${OUT}»"
 printf '# luca/zeta feat (commentata)\n' > "$T/d"; bash "$ISCRIVI" "$T/d" luca/zeta feat >/dev/null
 grep -qx 'luca/zeta feat' "$T/d" && ok "una riga commentata non conta come iscrizione" || ko "la riga commentata ha contato"
 
@@ -34,7 +34,7 @@ done
 Q=$(mktemp -d); printf '# coda\n' > "$Q/repos.conf"
 for SBAGLIATA in "/prova" "prova" "a/b/c" "a b/c"; do
   bash "$HERE/tools/iscrivi-coda.sh" "$Q/repos.conf" "$SBAGLIATA" feat >/dev/null 2>&1; RC=$?
-  [ "$RC" -ne 0 ] && ! grep -cF -- "$SBAGLIATA feat" "$Q/repos.conf" >/dev/null && ok "iscrivi-coda rifiuta «$SBAGLIATA» (non e' owner/repo)" || ko "iscrivi-coda ha iscritto «$SBAGLIATA» (rc $RC)"
+  [ "$RC" -ne 0 ] && ! grep -cF -- "$SBAGLIATA feat" "$Q/repos.conf" >/dev/null && ok "iscrivi-coda rifiuta «${SBAGLIATA}» (non e' owner/repo)" || ko "iscrivi-coda ha iscritto «${SBAGLIATA}» (rc $RC)"
 done
 mkdir -p "$Q/bin" "$Q/home"
 printf '#!/bin/bash\ncase "$1 $2" in "api user") echo "error connecting to api.github.com" >&2; exit 1 ;; "label create") exit 1 ;; esac\nexit 0\n' > "$Q/bin/gh"; chmod +x "$Q/bin/gh"

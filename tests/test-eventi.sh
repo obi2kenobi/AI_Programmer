@@ -50,7 +50,7 @@ done < <(grep '^| `' "$HERE/docs/eventi.md")
 
 # (R4 R6): le firme nate il 24/9 non erano nel catalogo, e il guardiano restava verde
 for F in 'coda ILLEGGIBILE' '⛔ MANCA' 'SENTINELLA' 'rianima_ollama: esito' 'SFORO DEL BUDGET'; do
-  grep -qF "| \`$F" "$HERE/docs/eventi.md" || ko "R4 R6: la firma «$F» non e' nel catalogo"
+  grep -qF "| \`$F" "$HERE/docs/eventi.md" || ko "R4 R6: la firma «${F}» non e' nel catalogo"
 done
 # (2026-09-24, quinto ventaglio, R4 R6 — il censimento inverso): ogni riga «⚠»/«⛔» che il turno scrive nel log ha
 # una riga nel catalogo, o e' dichiarata fra quelle che legge solo il battito (una persona che guarda il log).
