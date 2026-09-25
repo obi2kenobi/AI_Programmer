@@ -206,6 +206,13 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, ottavo ventaglio, O5 R1): l'auto-miglioramento dell'hub apriva una PR nuova e identica a ogni ciclo (il
+# ramo cambia nome a ogni minuto). Provato nel laboratorio del giro (tre cicli, tre PR, stesso patch-id; con la cura:
+# «DOPPIONE», nessuna PR). Qui la guardia: prima del push, lo stesso controllo delle cacce sui rami notte/auto-*.
+grep -c 'NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE' "$HERE/night-shift/night-shift.sh" >/dev/null && grep -c "grep '^notte/auto-'" "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "O5 R1: l'auto-miglioramento non riapre una PR con lo stesso diff (caccia_gia_aperta sui notte/auto-*)" \
+  || ko "O5 R1: l'auto-miglioramento apre una PR a ogni ciclo, senza guardare quelle aperte"
+
 # --- (2026-09-25, ottavo ventaglio, O2 R2 e R3): `gh pr list` e `gh issue list` tornano 30 elementi se non si dice altro
 # (e il censore ne chiedeva 20): con 20 PR piu' nuove davanti nessuna caccia arrivava al giudizio, e le guardie
 # anti-doppione oltre 30 issue non vedevano il doppione. Ogni lista del turno dichiara un limite di almeno 100.

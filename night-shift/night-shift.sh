@@ -553,6 +553,10 @@ PYIDX
           [ "$BANCO_OK" -eq 1 ] && [ "$FAIL_T" -eq 0 ] && ai_timeout 300 bash "$DIR/tools/giri-ignoranti.sh" >/dev/null 2>&1 && GATE_OK=1
           if [ "$GATE_OK" -eq 1 ]; then
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
+            # (ottavo ventaglio, O5 R1): i rami notte/auto-* con una PR aperta, per il controllo del doppione qui sotto
+            APERTE_NOTTE=()
+            while IFS= read -r _r; do [ -n "$_r" ] && APERTE_NOTTE+=("$_r"); done \
+              < <(cd "$DIR" && gh pr list --state open --limit 1000 --json headRefName -q '.[].headRefName' 2>/dev/null | grep '^notte/auto-' || true)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
             # il commit moriva nel pre-commit hook e l'stderr andava nel vuoto)
             # (T5#2b, 2026-09-24): qui resta `add -A` per scelta — i fix sono deterministici (nessun
@@ -563,11 +567,18 @@ PYIDX
 Fix applicati dalla finestra notturna 23-06: $FIX_APPLICATI. Solo categorie
 meccaniche note; il banco veloce e' CHIUSO su questo branch; PR bozza per la
 review del giorno." 2>>"$ERR_NOTTE" \
+               && { ! NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE[@]+"${APERTE_NOTTE[@]}"}) \
+                    || { echo "DOPPIONE: lo stesso diff e' gia' in una PR aperta ($NOTTE_DOPPIA)" >>"$ERR_NOTTE"; false; }; } \
                && forme_prima_del_push "$DIR" "origin/$DB" >>"$ERR_NOTTE" 2>&1 \
                && git -C "$DIR" push -q -u origin "$BRANCH" 2>>"$ERR_NOTTE"; then
               PR_NOTTE=$(cd "$DIR" && gh pr create --draft --head "$BRANCH" --title "notte: auto-miglioramento meccanico del $(date +%F)" --body "Generata dalla finestra notturna 23-06. Fix meccanici di categoria nota, banco CHIUSO. La notte non decide: questa PR aspetta la review del giorno." 2>&1 | tail -1)
               log "REPO $REPO: PR bozza di auto-miglioramento → $PR_NOTTE ($FIX_APPLICATI fix, banco CHIUSO)"
               log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$BRANCH" "$PR_NOTTE")"  # D2: lente sicurezza automatica
+            elif grep -c '^DOPPIONE' "$ERR_NOTTE" >/dev/null 2>&1; then
+              # (2026-09-25, ottavo ventaglio, O5 R1): il ramo cambia nome a ogni minuto, e ogni ciclo apriva una PR nuova e
+              # identica finche' la prima non era fusa (3 cicli, 3 PR, stesso patch-id). Come per le cacce (V1#2).
+              log "REPO $REPO: auto-miglioramento: $(grep -m1 '^DOPPIONE' "$ERR_NOTTE") — nessuna PR nuova, ramo locale buttato"
+              git -C "$DIR" reset -q --hard "origin/${DB:-main}"
             else
               log "⚠ REPO $REPO: commit o push del branch notte FALLITI — albero ripristinato, il rilievo resta nell'issue"
               log "⚠ stderr del commit/push: $(head -c 400 "$ERR_NOTTE" | tr '\n' ' ')"
