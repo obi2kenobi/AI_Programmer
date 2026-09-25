@@ -740,6 +740,22 @@ grep -q 'case ",$ETICHETTE," in \*,correzione,\*)' "$HERE/night-shift/night-shif
   && ok "D4: con l'etichetta correzione il controllo GIA' IMPLEMENTATA non ferma l'issue, e il modello di issue lo dice" \
   || ko "D4: l'etichetta correzione non e' letta dal turno o non e' nel modello di issue"
 
+# (2026-09-25, D17, risposta delegata): il modello di .night-verify chiede «# NON-VERIFICABILE: <motivo>» a chi non ha
+# verifiche automatiche, e il turno la puniva: zero comandi = ROSSO e un'issue ogni notte. Ora la dichiarazione vale.
+if command -v motivo_non_verificabile >/dev/null; then
+  NVD=$(mktemp -d)
+  printf '# NON-VERIFICABILE: solo fogli Google, niente codice eseguibile\n' > "$NVD/si"
+  printf '# NON-VERIFICABILE: <motivo>\n' > "$NVD/modello"; printf 'bash x.sh\n' > "$NVD/cmd"
+  [ "$(motivo_non_verificabile "$NVD/si")" = "solo fogli Google, niente codice eseguibile" ] \
+    && ! motivo_non_verificabile "$NVD/modello" >/dev/null && ! motivo_non_verificabile "$NVD/cmd" >/dev/null \
+    && ok "D17: la dichiarazione NON-VERIFICABILE si legge col motivo (l'esempio del modello no)" || ko "D17: motivo_non_verificabile sbaglia"
+  rm -rf "$NVD"
+else
+  ko "D17: motivo_non_verificabile assente in lib.sh"
+fi
+grep -q 'NV_MOTIVO=$(motivo_non_verificabile "$DIR/.night-verify")' "$HERE/night-shift/night-shift.sh" \
+  && ok "D17: il turno legge la dichiarazione prima di dire verifiche-vuote" || ko "D17: il turno punisce ancora la dichiarazione"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

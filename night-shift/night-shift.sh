@@ -341,7 +341,13 @@ shift_repo() {
     # (report BusinessPlan): zero comandi dichiarati NON e' verde — l'assenza di
     # verifiche non si puo' confondere col loro successo. La forma piu' pura del
     # difetto che il metodo combatte.
-    if [ "$NV_TOTALI" -eq 0 ]; then
+    # (2026-09-25, D17, risposta delegata): «# NON-VERIFICABILE: <motivo>» e' la forma che il modello chiede a chi non ha
+    # verifiche automatiche — vale come esito a se', dichiarato nel log, senza issue. Senza la dichiarazione resta ROSSO.
+    NV_MOTIVO=""
+    [ "$NV_TOTALI" -eq 0 ] && NV_MOTIVO=$(motivo_non_verificabile "$DIR/.night-verify")
+    if [ "$NV_TOTALI" -eq 0 ] && [ -n "$NV_MOTIVO" ]; then
+      log "REPO $REPO: NON VERIFICABILE, dichiarato: $NV_MOTIVO (nessuna verifica automatica, nessuna issue)"
+    elif [ "$NV_TOTALI" -eq 0 ]; then
       NV_ROSSI=1
       NV_ROSSI_LISTA="verifiche-vuote (.night-verify senza comandi)"
       log "REPO $REPO: VERIFICA ROSSA: verifiche-vuote (.night-verify senza comandi)"
@@ -371,7 +377,7 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
         AL_M=$(allarme_rosso_nuovo "$REPO" "[night-verify]" "$NV_ROSSI_LISTA") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"
       fi
     else
-      log "REPO $REPO: .night-verify $NV_TOTALI/$NV_TOTALI verdi"
+      [ -n "$NV_MOTIVO" ] || log "REPO $REPO: .night-verify $NV_TOTALI/$NV_TOTALI verdi"
       # (D44): al verde l'issue d'allarme si chiude — aperta, diceva il falso e copriva i rossi nuovi
       AL_M=$(allarme_verde "$REPO" "[night-verify]") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"
     fi

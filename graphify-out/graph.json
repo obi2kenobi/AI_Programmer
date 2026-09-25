@@ -101,19 +101,7 @@
       "source_location": "L72"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_margine_documento_main",
+      "id": "tools_rating_dso_clienti_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
@@ -121,11 +109,11 @@
       "community_name": "json",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L84"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L47"
     },
     {
-      "id": "tools_margine_documento_normalizza",
+      "id": "tools_rating_dso_clienti_normalizza",
       "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
@@ -133,8 +121,8 @@
       "community_name": "json",
       "file_type": "code",
       "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L40"
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L43"
     },
     {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
@@ -257,6 +245,42 @@
       "source_location": "L36"
     },
     {
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "tools_margine_documento_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L84"
+    },
+    {
+      "id": "tools_margine_documento_normalizza",
+      "label": "normalizza()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "normalizza()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L40"
+    },
+    {
       "id": "tools_riconciliazione_magazzino_categorizza",
       "label": "categorizza()",
       "_callable": true,
@@ -279,54 +303,6 @@
       "norm_label": "main()",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L60"
-    },
-    {
-      "id": "tools_scadenzario_aging_aggrega_totali",
-      "label": "aggrega_totali()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "aggrega_totali()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L70"
-    },
-    {
-      "id": "tools_scadenzario_aging_fascia_dettaglio",
-      "label": "fascia_dettaglio()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "fascia_dettaglio()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L37"
-    },
-    {
-      "id": "tools_scadenzario_aging_importo_fornitore",
-      "label": "importo_fornitore()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "importo_fornitore()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L65"
-    },
-    {
-      "id": "tools_scadenzario_aging_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L94"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -425,6 +401,18 @@
       "source_location": "L67"
     },
     {
+      "id": "tools_leasing_amministrativo_main_numero",
+      "label": "numero()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "code",
+      "norm_label": "numero()",
+      "source_file": "tools/leasing_amministrativo.py",
+      "source_location": "L91"
+    },
+    {
       "id": "tools_leasing_amministrativo_mesi_tra",
       "label": "mesi_tra()",
       "_callable": true,
@@ -434,30 +422,6 @@
       "file_type": "code",
       "norm_label": "mesi_tra()",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L43"
-    },
-    {
-      "id": "tools_rating_dso_clienti_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
-    },
-    {
-      "id": "tools_rating_dso_clienti_normalizza",
-      "label": "normalizza()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L43"
     },
     {
@@ -543,6 +507,18 @@
       "norm_label": "cred()",
       "source_file": "tools/bc_map.py",
       "source_location": "L36"
+    },
+    {
+      "id": "tools_bc_map_fetch",
+      "label": "fetch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "code",
+      "norm_label": "fetch()",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L67"
     },
     {
       "id": "tools_bc_map_get_token",
@@ -641,28 +617,52 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_bc_map_fetch",
-      "label": "fetch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "code",
-      "norm_label": "fetch()",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L67"
-    },
-    {
-      "id": "tools_leasing_amministrativo_main_numero",
-      "label": "numero()",
+      "id": "tools_scadenzario_aging_aggrega_totali",
+      "label": "aggrega_totali()",
       "_callable": true,
       "_origin": "ast",
       "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "community_name": "scadenzario_aging.py",
       "file_type": "code",
-      "norm_label": "numero()",
-      "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L91"
+      "norm_label": "aggrega_totali()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L70"
+    },
+    {
+      "id": "tools_scadenzario_aging_fascia_dettaglio",
+      "label": "fascia_dettaglio()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "fascia_dettaglio()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L37"
+    },
+    {
+      "id": "tools_scadenzario_aging_importo_fornitore",
+      "label": "importo_fornitore()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "importo_fornitore()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L65"
+    },
+    {
+      "id": "tools_scadenzario_aging_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L94"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -4505,7 +4505,7 @@
       },
       "norm_label": "allinea_hub()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L679"
+      "source_location": "L689"
     },
     {
       "id": "night_shift_lib_ferma_opencode_del_turno",
@@ -4520,7 +4520,37 @@
       },
       "norm_label": "ferma_opencode_del_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L783"
+      "source_location": "L793"
+    },
+    {
+      "id": "night_shift_lib_lock_turno_orfano",
+      "label": "lock_turno_orfano()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_turno_orfano()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L824"
+    },
+    {
+      "id": "night_shift_lib_prendi_lock_turno",
+      "label": "prendi_lock_turno()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prendi_lock_turno()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L803"
     },
     {
       "id": "night_shift_lib_ruota_log_aperto",
@@ -4655,6 +4685,51 @@
       },
       "norm_label": "night-shift.sh script",
       "source_file": "night-shift/night-shift.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo",
+      "label": "ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ciclo-vivo.sh",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo_corpo_agent",
+      "label": "corpo_agent()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "corpo_agent()",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L126"
+    },
+    {
+      "id": "tools_ciclo_vivo_sh__entry",
+      "label": "ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ciclo-vivo.sh script",
+      "source_file": "tools/ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -5444,21 +5519,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_gate_allowlist_ok",
-      "label": "gate_allowlist_ok()",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gate_allowlist_ok()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L294"
-    },
-    {
       "id": "night_shift_lib_verifica_issue_comando",
       "label": "verifica_issue_comando()",
       "_origin": "ast",
@@ -5471,67 +5531,7 @@
       },
       "norm_label": "verifica_issue_comando()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L630"
-    },
-    {
-      "id": "tests_test_banco_prompt_allowlist_sync",
-      "label": "test-banco-prompt-allowlist-sync.sh",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-banco-prompt-allowlist-sync.sh",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_banco_prompt_allowlist_sync_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_banco_prompt_allowlist_sync_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_banco_prompt_allowlist_sync_sh__entry",
-      "label": "test-banco-prompt-allowlist-sync.sh script",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "test-lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-banco-prompt-allowlist-sync.sh script",
-      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
-      "source_location": "L1"
+      "source_location": "L640"
     },
     {
       "id": "tests_test_lib",
@@ -9243,7 +9243,7 @@
       },
       "norm_label": "dichiara_file_nuovo()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L565"
+      "source_location": "L575"
     },
     {
       "id": "night_shift_lib_dipendenze_mancanti",
@@ -9258,7 +9258,7 @@
       },
       "norm_label": "dipendenze_mancanti()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L653"
+      "source_location": "L663"
     },
     {
       "id": "night_shift_lib_rianima_ollama",
@@ -9273,7 +9273,7 @@
       },
       "norm_label": "rianima_ollama()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L746"
+      "source_location": "L756"
     },
     {
       "id": "tests_test_dipendenze_turno",
@@ -15776,7 +15776,7 @@
       },
       "norm_label": "messaggio_fix()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L737"
+      "source_location": "L747"
     },
     {
       "id": "tests_test_messaggio_fix",
@@ -19310,7 +19310,7 @@
       },
       "norm_label": "commit_altrui()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L728"
+      "source_location": "L738"
     },
     {
       "id": "tests_test_commit_altrui",
@@ -19921,14 +19921,14 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "tools_rating_dso_clienti",
+      "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "rating_dso_clienti.py",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L1"
     },
     {
@@ -19976,37 +19976,26 @@
       "source_location": "L73"
     },
     {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "id": "tools_rating_dso_clienti_rationale_3",
+      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L2"
+      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L3"
     },
     {
-      "id": "tools_margine_documento_rationale_48",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "id": "tools_rating_dso_clienti_rationale_48",
+      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
+      "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L48"
-    },
-    {
-      "id": "tools_margine_documento_rationale_85",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L85"
     },
     {
       "id": "tools_rollforward_cespiti_rationale_2",
@@ -20099,7 +20088,7 @@
       },
       "norm_label": "ambiente_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L261"
+      "source_location": "L271"
     },
     {
       "id": "night_shift_lib_caccia_gia_aperta",
@@ -20114,7 +20103,7 @@
       },
       "norm_label": "caccia_gia_aperta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L497"
+      "source_location": "L507"
     },
     {
       "id": "night_shift_lib_candidata_censore",
@@ -20129,7 +20118,7 @@
       },
       "norm_label": "candidata_censore()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L489"
+      "source_location": "L499"
     },
     {
       "id": "night_shift_lib_candidata_parere",
@@ -20144,7 +20133,7 @@
       },
       "norm_label": "candidata_parere()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L614"
+      "source_location": "L624"
     },
     {
       "id": "night_shift_lib_comandi_da_incollare",
@@ -20159,7 +20148,7 @@
       },
       "norm_label": "comandi_da_incollare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L773"
+      "source_location": "L783"
     },
     {
       "id": "night_shift_lib_commenta_una_volta",
@@ -20174,22 +20163,7 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L837"
-    },
-    {
-      "id": "night_shift_lib_default_branch",
-      "label": "default_branch()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "default_branch()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L5"
+      "source_location": "L847"
     },
     {
       "id": "night_shift_lib_esegui_verifica",
@@ -20219,7 +20193,7 @@
       },
       "norm_label": "funzione_definita_e_chiamata()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L249"
+      "source_location": "L259"
     },
     {
       "id": "night_shift_lib_gate_banchi",
@@ -20234,7 +20208,7 @@
       },
       "norm_label": "gate_banchi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L210"
+      "source_location": "L220"
     },
     {
       "id": "night_shift_lib_lente_pr",
@@ -20249,7 +20223,7 @@
       },
       "norm_label": "lente_pr()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L598"
+      "source_location": "L608"
     },
     {
       "id": "night_shift_lib_mask_secrets",
@@ -20264,7 +20238,22 @@
       },
       "norm_label": "mask_secrets()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L443"
+      "source_location": "L453"
+    },
+    {
+      "id": "night_shift_lib_motivo_non_verificabile",
+      "label": "motivo_non_verificabile()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "motivo_non_verificabile()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L178"
     },
     {
       "id": "night_shift_lib_numeri_allarme",
@@ -20309,7 +20298,7 @@
       },
       "norm_label": "rami_da_scopare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L518"
+      "source_location": "L528"
     },
     {
       "id": "night_shift_lib_repo_code",
@@ -20324,7 +20313,7 @@
       },
       "norm_label": "repo_code()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L545"
+      "source_location": "L555"
     },
     {
       "id": "night_shift_lib_riga_verifica_vuota",
@@ -20339,37 +20328,7 @@
       },
       "norm_label": "riga_verifica_vuota()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L185"
-    },
-    {
-      "id": "night_shift_lib_rotate_log_if_big",
-      "label": "rotate_log_if_big()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rotate_log_if_big()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L54"
-    },
-    {
-      "id": "night_shift_lib_run_guarded",
-      "label": "run_guarded()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "run_guarded()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L93"
+      "source_location": "L195"
     },
     {
       "id": "night_shift_lib_sh__entry",
@@ -20414,7 +20373,7 @@
       },
       "norm_label": "taglia_caratteri()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L178"
+      "source_location": "L188"
     },
     {
       "id": "night_shift_lib_verdetto_verifica",
@@ -20429,7 +20388,7 @@
       },
       "norm_label": "verdetto_verifica()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L194"
+      "source_location": "L204"
     },
     {
       "id": "night_shift_lib_versioni_turno",
@@ -20444,52 +20403,7 @@
       },
       "norm_label": "versioni_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L273"
-    },
-    {
-      "id": "night_shift_morning_gate",
-      "label": "morning-gate.sh",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "morning-gate.sh",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_morning_gate_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L28"
-    },
-    {
-      "id": "night_shift_morning_gate_sh__entry",
-      "label": "morning-gate.sh script",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "morning-gate.sh script",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L1"
+      "source_location": "L283"
     },
     {
       "id": "night_shift_night_shift_shift_repo",
@@ -22480,7 +22394,7 @@
       },
       "norm_label": "forme_prima_del_push()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L554"
+      "source_location": "L564"
     },
     {
       "id": "tests_test_forme_prima_del_push",
@@ -30465,6 +30379,17 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_riconciliazione_magazzino",
       "label": "riconciliazione_magazzino.py",
       "_origin": "ast",
@@ -30473,17 +30398,6 @@
       "file_type": "code",
       "norm_label": "riconciliazione_magazzino.py",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_scadenzario_aging",
-      "label": "scadenzario_aging.py",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "scadenzario_aging.py",
-      "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
@@ -30507,6 +30421,39 @@
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
       "source_location": "L37"
+    },
+    {
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_margine_documento_rationale_48",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L48"
+    },
+    {
+      "id": "tools_margine_documento_rationale_85",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L85"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -30540,50 +30487,6 @@
       "norm_label": "csv in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto...",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L61"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_2",
-      "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_38",
-      "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_71",
-      "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L71"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_95",
-      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L95"
     },
     {
       "id": "tools_prova_rilevatori",
@@ -34130,14 +34033,87 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_rating_dso_clienti",
-      "label": "rating_dso_clienti.py",
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
+      "label": "2026-08-28-parrocchie-giornata-completa.md",
       "_origin": "ast",
       "community": 46,
       "community_name": "leasing_amministrativo.py",
-      "file_type": "code",
-      "norm_label": "rating_dso_clienti.py",
-      "source_file": "tools/rating_dso_clienti.py",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_1_i_numeri_del_giorno",
+      "label": "1. I numeri del giorno",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. i numeri del giorno",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
+      "label": "2. Le commesse della giornata, in ordine",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. le commesse della giornata, in ordine",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L25"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_3_i_difetti_per_famiglia_il_corpus_conferma_e_si_estende",
+      "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L62"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_4_le_lezioni_di_metodo_di_oggi",
+      "label": "4. Le lezioni di metodo di oggi",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. le lezioni di metodo di oggi",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L79"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_5_consegna_e_artefatti",
+      "label": "5. Consegna e artefatti",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. consegna e artefatti",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "source_location": "L100"
+    },
+    {
+      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_ai_programmer_report_lavori_del_28_08_2026_su_gestionale_parrocchie",
+      "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
+      "_origin": "ast",
+      "community": 46,
+      "community_name": "leasing_amministrativo.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
+      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
       "source_location": "L1"
     },
     {
@@ -34183,28 +34159,6 @@
       "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
       "source_file": "tools/leasing_amministrativo.py",
       "source_location": "L68"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_3",
-      "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L3"
-    },
-    {
-      "id": "tools_rating_dso_clienti_rationale_48",
-      "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
-      "_origin": "ast",
-      "community": 46,
-      "community_name": "leasing_amministrativo.py",
-      "file_type": "rationale",
-      "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
-      "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48"
     },
     {
       "id": "docs_bc_endpoints_postedsalescreditmemolines",
@@ -35534,6 +35488,234 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni",
+      "label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_1_la_famiglia_di_difetti_nuova_il_pezzo_che_vale_per_tutto_il_parco",
+      "label": "1. La famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. la famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L17"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2026_09_02_una_webapp_gas_morta_da_loggati_il_manifest_i_verdetti_che_mentono_la_consegna_dei_comandi",
+      "label": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-02 \u2014 una webapp gas morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2_la_seconda_famiglia_il_nome_del_trigger_non_segue_la_rinomina",
+      "label": "2. La seconda famiglia: il nome del trigger non segue la rinomina",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. la seconda famiglia: il nome del trigger non segue la rinomina",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L57"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_3_la_terza_l_underscore_finale_nasconde_anche_all_editor",
+      "label": "3. La terza: l'underscore finale nasconde anche all'editor",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. la terza: l'underscore finale nasconde anche all'editor",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L90"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_4_la_lezione_di_ragionamento_pi\u00f9_costosa_correlazione_al_posto_della_causa",
+      "label": "4. La lezione di ragionamento pi\u00f9 costosa: correlazione al posto della causa",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. la lezione di ragionamento piu costosa: correlazione al posto della causa",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L115"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
+      "label": "5.1 Il denominatore va provato, non stampato",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.1 il denominatore va provato, non stampato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L137"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
+      "label": "5.2 Un verde per assenza non \u00e8 un verde",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.2 un verde per assenza non e un verde",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L157"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
+      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L163"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
+      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L169"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
+      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L174"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
+      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L132"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
+      "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. il byte invisibile (famiglia chiusa, non due casi curati)",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L183"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_7_consegnare_comandi_a_un_umano_\u00e8_un_interfaccia_e_l_ho_rotta_quattro_volte",
+      "label": "7. Consegnare comandi a un umano \u00e8 un'interfaccia, e l'ho rotta quattro volte",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. consegnare comandi a un umano e un'interfaccia, e l'ho rotta quattro volte",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L205"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_8_cosa_ha_retto",
+      "label": "8. Cosa ha retto",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "8. cosa ha retto",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L245"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_9_cosa_ha_ostacolato",
+      "label": "9. Cosa ha ostacolato",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "9. cosa ha ostacolato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L267"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_il_corollario_atomico",
+      "label": "Il corollario atomico",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il corollario atomico",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_numeri_della_giornata",
+      "label": "Numeri della giornata",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "numeri della giornata",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L321"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L280"
+    },
+    {
       "id": "tools_bc_map_rationale_104",
       "label": "Le colonne compilate a mano (Significato, Verificato) del file esistente, per\u2026",
       "_origin": "ast",
@@ -35620,6 +35802,17 @@
       "norm_label": "oauth2 client-credentials verso bc: il token vive in memoria per il processo,...",
       "source_file": "tools/bc_map.py",
       "source_location": "L44"
+    },
+    {
+      "id": "tools_bc_map_rationale_68",
+      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "bc_map.py",
+      "file_type": "rationale",
+      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L68"
     },
     {
       "id": "tools_bc_map_rationale_92",
@@ -40570,243 +40763,169 @@
       "source_location": "L155"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni",
-      "label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "id": "night_shift_lib_default_branch",
+      "label": "default_branch()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "default_branch()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L5"
+    },
+    {
+      "id": "night_shift_lib_gate_allowlist_ok",
+      "label": "gate_allowlist_ok()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "gate_allowlist_ok()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L304"
+    },
+    {
+      "id": "night_shift_lib_rotate_log_if_big",
+      "label": "rotate_log_if_big()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rotate_log_if_big()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L54"
+    },
+    {
+      "id": "night_shift_lib_run_guarded",
+      "label": "run_guarded()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "run_guarded()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L93"
+    },
+    {
+      "id": "night_shift_morning_gate",
+      "label": "morning-gate.sh",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "morning-gate.sh",
+      "source_file": "night-shift/morning-gate.sh",
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_1_la_famiglia_di_difetti_nuova_il_pezzo_che_vale_per_tutto_il_parco",
-      "label": "1. La famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
+      "id": "night_shift_morning_gate_log",
+      "label": "log()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. la famiglia di difetti nuova (il pezzo che vale per tutto il parco)",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L17"
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L28"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2026_09_02_una_webapp_gas_morta_da_loggati_il_manifest_i_verdetti_che_mentono_la_consegna_dei_comandi",
-      "label": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
+      "id": "night_shift_morning_gate_sh__entry",
+      "label": "morning-gate.sh script",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-09-02 \u2014 una webapp gas morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "morning-gate.sh script",
+      "source_file": "night-shift/morning-gate.sh",
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_2_la_seconda_famiglia_il_nome_del_trigger_non_segue_la_rinomina",
-      "label": "2. La seconda famiglia: il nome del trigger non segue la rinomina",
+      "id": "tests_test_banco_prompt_allowlist_sync",
+      "label": "test-banco-prompt-allowlist-sync.sh",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. la seconda famiglia: il nome del trigger non segue la rinomina",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L57"
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-banco-prompt-allowlist-sync.sh",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_3_la_terza_l_underscore_finale_nasconde_anche_all_editor",
-      "label": "3. La terza: l'underscore finale nasconde anche all'editor",
+      "id": "tests_test_banco_prompt_allowlist_sync_ko",
+      "label": "ko()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. la terza: l'underscore finale nasconde anche all'editor",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L90"
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L14"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_4_la_lezione_di_ragionamento_pi\u00f9_costosa_correlazione_al_posto_della_causa",
-      "label": "4. La lezione di ragionamento pi\u00f9 costosa: correlazione al posto della causa",
+      "id": "tests_test_banco_prompt_allowlist_sync_ok",
+      "label": "ok()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. la lezione di ragionamento piu costosa: correlazione al posto della causa",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L115"
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L13"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
-      "label": "5.1 Il denominatore va provato, non stampato",
+      "id": "tests_test_banco_prompt_allowlist_sync_sh__entry",
+      "label": "test-banco-prompt-allowlist-sync.sh script",
       "_origin": "ast",
       "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.1 il denominatore va provato, non stampato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L137"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
-      "label": "5.2 Un verde per assenza non \u00e8 un verde",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.2 un verde per assenza non e un verde",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L157"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
-      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L163"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
-      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L169"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
-      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L174"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
-      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L132"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
-      "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "6. il byte invisibile (famiglia chiusa, non due casi curati)",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L183"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_7_consegnare_comandi_a_un_umano_\u00e8_un_interfaccia_e_l_ho_rotta_quattro_volte",
-      "label": "7. Consegnare comandi a un umano \u00e8 un'interfaccia, e l'ho rotta quattro volte",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "7. consegnare comandi a un umano e un'interfaccia, e l'ho rotta quattro volte",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L205"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_8_cosa_ha_retto",
-      "label": "8. Cosa ha retto",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "8. cosa ha retto",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L245"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_9_cosa_ha_ostacolato",
-      "label": "9. Cosa ha ostacolato",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "9. cosa ha ostacolato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L267"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_il_corollario_atomico",
-      "label": "Il corollario atomico",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "il corollario atomico",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L43"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_numeri_della_giornata",
-      "label": "Numeri della giornata",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "numeri della giornata",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L321"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
-      "label": "Proposta al canone",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "proposta al canone",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L280"
-    },
-    {
-      "id": "tools_bc_map_rationale_68",
-      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
-      "_origin": "ast",
-      "community": 62,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "rationale",
-      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L68"
+      "community_name": "morning-gate.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-banco-prompt-allowlist-sync.sh script",
+      "source_file": "tests/test-banco-prompt-allowlist-sync.sh",
+      "source_location": "L1"
     },
     {
       "id": "docs_eventi",
@@ -46315,7 +46434,7 @@
       },
       "norm_label": "leggi_coda()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L663"
+      "source_location": "L673"
     },
     {
       "id": "tests_test_leggi_coda",
@@ -46537,7 +46656,7 @@
       },
       "norm_label": "eta_secondi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L826"
+      "source_location": "L836"
     },
     {
       "id": "night_shift_lib_mtime",
@@ -46837,7 +46956,7 @@
       },
       "norm_label": "aggiungi_consegna()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L576"
+      "source_location": "L586"
     },
     {
       "id": "tests_test_consegna_dichiarata",
@@ -47275,7 +47394,7 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L853"
+      "source_location": "L863"
     },
     {
       "id": "tests_test_night_shift_design_gate",
@@ -47518,41 +47637,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_lock_turno_orfano",
-      "label": "lock_turno_orfano()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_turno_orfano()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L814"
-    },
-    {
-      "id": "night_shift_lib_prendi_lock_turno",
-      "label": "prendi_lock_turno()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "prendi_lock_turno()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L793"
-    },
-    {
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47567,7 +47656,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47582,7 +47671,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47597,7 +47686,7 @@
       "label": "test-lock-turno-corsa.sh script",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47605,51 +47694,6 @@
       },
       "norm_label": "test-lock-turno-corsa.sh script",
       "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo",
-      "label": "ciclo-vivo.sh",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ciclo-vivo.sh",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo_corpo_agent",
-      "label": "corpo_agent()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "corpo_agent()",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L126"
-    },
-    {
-      "id": "tools_ciclo_vivo_sh__entry",
-      "label": "ciclo-vivo.sh script",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ciclo-vivo.sh script",
-      "source_file": "tools/ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -47969,7 +48013,7 @@
       },
       "norm_label": "impronta_righe()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L469"
+      "source_location": "L479"
     },
     {
       "id": "tools_lente_sicurezza",
@@ -49292,88 +49336,59 @@
       "source_location": "L48"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa",
-      "label": "2026-08-28-parrocchie-giornata-completa.md",
+      "id": "tools_scadenzario_aging",
+      "label": "scadenzario_aging.py",
       "_origin": "ast",
       "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "2026-08-28-parrocchie-giornata-completa.md",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
+      "community_name": "scadenzario_aging.py",
+      "file_type": "code",
+      "norm_label": "scadenzario_aging.py",
+      "source_file": "tools/scadenzario_aging.py",
       "source_location": "L1"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_1_i_numeri_del_giorno",
-      "label": "1. I numeri del giorno",
+      "id": "tools_scadenzario_aging_rationale_2",
+      "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
       "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "1. i numeri del giorno",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L12"
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L2"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
-      "label": "2. Le commesse della giornata, in ordine",
+      "id": "tools_scadenzario_aging_rationale_38",
+      "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2. le commesse della giornata, in ordine",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L25"
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L38"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_3_i_difetti_per_famiglia_il_corpus_conferma_e_si_estende",
-      "label": "3. I difetti per famiglia (il corpus conferma e si estende)",
+      "id": "tools_scadenzario_aging_rationale_71",
+      "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "3. i difetti per famiglia (il corpus conferma e si estende)",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L62"
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L71"
     },
     {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_4_le_lezioni_di_metodo_di_oggi",
-      "label": "4. Le lezioni di metodo di oggi",
+      "id": "tools_scadenzario_aging_rationale_95",
+      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "4. le lezioni di metodo di oggi",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L79"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_5_consegna_e_artefatti",
-      "label": "5. Consegna e artefatti",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. consegna e artefatti",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L100"
-    },
-    {
-      "id": "docs_campo_2026_08_28_parrocchie_giornata_completa_ai_programmer_report_lavori_del_28_08_2026_su_gestionale_parrocchie",
-      "label": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "AI_Programmer \u2014 Report lavori del 28/08/2026 su gestionale-parrocchie",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "ai_programmer \u2014 report lavori del 28/08/2026 su gestionale-parrocchie",
-      "source_file": "docs/campo/2026-08-28-parrocchie-giornata-completa.md",
-      "source_location": "L1"
+      "community_name": "scadenzario_aging.py",
+      "file_type": "rationale",
+      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L95"
     },
     {
       "id": "tests_test_impara_recupero",
@@ -53359,7 +53374,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L828",
+      "source_location": "L838",
       "weight": 1.0
     },
     {
@@ -53371,7 +53386,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L221",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -53383,7 +53398,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L797",
+      "source_location": "L807",
       "weight": 1.0
     },
     {
@@ -53539,7 +53554,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1372",
+      "source_location": "L1378",
       "weight": 1.0
     },
     {
@@ -53551,7 +53566,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1373",
+      "source_location": "L1379",
       "weight": 1.0
     },
     {
@@ -53563,7 +53578,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1451",
+      "source_location": "L1457",
       "weight": 1.0
     },
     {
@@ -53683,7 +53698,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1106",
+      "source_location": "L1112",
       "weight": 1.0
     },
     {
@@ -53695,7 +53710,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1127",
+      "source_location": "L1133",
       "weight": 1.0
     },
     {
@@ -53707,7 +53722,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1143",
+      "source_location": "L1149",
       "weight": 1.0
     },
     {
@@ -53719,7 +53734,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1250",
+      "source_location": "L1256",
       "weight": 1.0
     },
     {
@@ -53808,6 +53823,18 @@
     },
     {
       "source": "night_shift_night_shift_shift_repo",
+      "target": "night_shift_lib_motivo_non_verificabile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L347",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_shift_repo",
       "target": "night_shift_lib_allarme_rosso_nuovo",
       "relation": "calls",
       "_origin": "ast",
@@ -53815,7 +53842,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L371",
+      "source_location": "L377",
       "weight": 1.0
     },
     {
@@ -53827,7 +53854,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L376",
+      "source_location": "L382",
       "weight": 1.0
     },
     {
@@ -53839,7 +53866,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L555",
+      "source_location": "L561",
       "weight": 1.0
     },
     {
@@ -53851,7 +53878,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L580",
+      "source_location": "L586",
       "weight": 1.0
     },
     {
@@ -53863,7 +53890,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L582",
+      "source_location": "L588",
       "weight": 1.0
     },
     {
@@ -53875,7 +53902,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L664",
+      "source_location": "L670",
       "weight": 1.0
     },
     {
@@ -53887,7 +53914,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L684",
+      "source_location": "L690",
       "weight": 1.0
     },
     {
@@ -53899,7 +53926,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L706",
+      "source_location": "L712",
       "weight": 1.0
     },
     {
@@ -53911,7 +53938,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L759",
+      "source_location": "L765",
       "weight": 1.0
     },
     {
@@ -53923,7 +53950,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L876",
+      "source_location": "L882",
       "weight": 1.0
     },
     {
@@ -53935,7 +53962,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L896",
+      "source_location": "L902",
       "weight": 1.0
     },
     {
@@ -53947,7 +53974,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L904",
+      "source_location": "L910",
       "weight": 1.0
     },
     {
@@ -53959,7 +53986,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L909",
+      "source_location": "L915",
       "weight": 1.0
     },
     {
@@ -53971,7 +53998,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L989",
+      "source_location": "L995",
       "weight": 1.0
     },
     {
@@ -58088,6 +58115,18 @@
       "context": "call",
       "source_file": "tests/test-lib.sh",
       "source_location": "L728",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_lib_sh__entry",
+      "target": "night_shift_lib_motivo_non_verificabile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-lib.sh",
+      "source_location": "L750",
       "weight": 1.0
     },
     {
@@ -91009,7 +91048,7 @@
     },
     {
       "source": "night_shift_lib",
-      "target": "night_shift_lib_taglia_caratteri",
+      "target": "night_shift_lib_motivo_non_verificabile",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -91020,13 +91059,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_taglia_caratteri",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_riga_verifica_vuota",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L185",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -91037,7 +91087,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L194",
+      "source_location": "L204",
       "weight": 1.0
     },
     {
@@ -91048,7 +91098,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L210",
+      "source_location": "L220",
       "weight": 1.0
     },
     {
@@ -91059,7 +91109,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L249",
+      "source_location": "L259",
       "weight": 1.0
     },
     {
@@ -91070,7 +91120,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L261",
+      "source_location": "L271",
       "weight": 1.0
     },
     {
@@ -91081,7 +91131,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L273",
+      "source_location": "L283",
       "weight": 1.0
     },
     {
@@ -91092,7 +91142,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L294",
+      "source_location": "L304",
       "weight": 1.0
     },
     {
@@ -91114,7 +91164,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L443",
+      "source_location": "L453",
       "weight": 1.0
     },
     {
@@ -91136,7 +91186,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L469",
+      "source_location": "L479",
       "weight": 1.0
     },
     {
@@ -91147,18 +91197,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L489",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_lib",
-      "target": "night_shift_lib_caccia_gia_aperta",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L497",
+      "source_location": "L499",
       "weight": 1.0
     },
     {
@@ -91174,13 +91213,24 @@
     },
     {
       "source": "night_shift_lib",
+      "target": "night_shift_lib_caccia_gia_aperta",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L507",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
       "target": "night_shift_lib_rami_da_scopare",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L518",
+      "source_location": "L528",
       "weight": 1.0
     },
     {
@@ -91202,7 +91252,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L545",
+      "source_location": "L555",
       "weight": 1.0
     },
     {
@@ -91213,7 +91263,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L554",
+      "source_location": "L564",
       "weight": 1.0
     },
     {
@@ -91224,7 +91274,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L565",
+      "source_location": "L575",
       "weight": 1.0
     },
     {
@@ -91235,7 +91285,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L576",
+      "source_location": "L586",
       "weight": 1.0
     },
     {
@@ -91246,7 +91296,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L598",
+      "source_location": "L608",
       "weight": 1.0
     },
     {
@@ -91257,7 +91307,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L614",
+      "source_location": "L624",
       "weight": 1.0
     },
     {
@@ -91268,7 +91318,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L630",
+      "source_location": "L640",
       "weight": 1.0
     },
     {
@@ -91279,7 +91329,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L653",
+      "source_location": "L663",
       "weight": 1.0
     },
     {
@@ -91290,7 +91340,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L663",
+      "source_location": "L673",
       "weight": 1.0
     },
     {
@@ -91301,7 +91351,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L679",
+      "source_location": "L689",
       "weight": 1.0
     },
     {
@@ -91312,7 +91362,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L728",
+      "source_location": "L738",
       "weight": 1.0
     },
     {
@@ -91323,7 +91373,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L737",
+      "source_location": "L747",
       "weight": 1.0
     },
     {
@@ -91334,7 +91384,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L746",
+      "source_location": "L756",
       "weight": 1.0
     },
     {
@@ -91345,7 +91395,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L773",
+      "source_location": "L783",
       "weight": 1.0
     },
     {
@@ -91356,7 +91406,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L783",
+      "source_location": "L793",
       "weight": 1.0
     },
     {
@@ -91367,7 +91417,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L793",
+      "source_location": "L803",
       "weight": 1.0
     },
     {
@@ -91378,7 +91428,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L814",
+      "source_location": "L824",
       "weight": 1.0
     },
     {
@@ -91389,7 +91439,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L826",
+      "source_location": "L836",
       "weight": 1.0
     },
     {
@@ -91400,7 +91450,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L837",
+      "source_location": "L847",
       "weight": 1.0
     },
     {
@@ -91411,7 +91461,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L853",
+      "source_location": "L863",
       "weight": 1.0
     },
     {
@@ -100877,5 +100927,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1c0bd3a91616f121d67a27d95f4e18a043126884"
+  "built_at_commit": "ee12abd0fd2dced5b41e7d959e652ac37ba46e70"
 }

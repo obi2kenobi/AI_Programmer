@@ -172,6 +172,16 @@ pr_chiusa_ferma() {
   return 0
 }
 
+# motivo_non_verificabile <.night-verify>: stampa il motivo di «# NON-VERIFICABILE: <motivo>» a inizio riga, rc 0; rc 1 se
+# la dichiarazione non c'e' o e' l'esempio del modello («<motivo>»). Stessa regola di tools/installa-citati.sh.
+# (2026-09-25, D17, risposta delegata): il turno contava zero comandi e faceva ROSSO anche con la dichiarazione.
+motivo_non_verificabile() {
+  local riga
+  riga=$(grep -E '^#[[:space:]]*NON-VERIFICABILE:[[:space:]]*[^<[:space:]]' "$1" 2>/dev/null | head -1) || return 1
+  [ -n "$riga" ] || return 1
+  printf '%s\n' "$riga" | sed -E 's/^#[[:space:]]*NON-VERIFICABILE:[[:space:]]*//'
+}
+
 # taglia_caratteri <n>: i primi n CARATTERI dello stdin (non byte). (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del
 # GNU taglia in byte anche in UTF-8, e un carattere spezzato arrivava nei commenti delle PR come «�» (jq e gh lo
 # sostituiscono). Per il testo che finisce in un commento, in un'issue o nel log.
