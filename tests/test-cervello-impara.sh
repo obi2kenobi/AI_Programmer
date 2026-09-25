@@ -112,6 +112,16 @@ kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
 # voce nuova del REGISTRO sarebbe entrata nel prompt (oggi siamo a E-049). Il numero della voce non ha un tetto.
 ! grep -c '\^## E-0"' "$HERE/tools/cervello-impara.sh" >/dev/null && grep -c '\^## E-\[0-9\]' "$HERE/tools/cervello-impara.sh" >/dev/null \
   && ok "O3 R5: le lezioni note si leggono per ogni numero di voce (anche E-100 e oltre)" || ko "O3 R5: le lezioni note si fermano a E-099"
+# (2026-09-25, D39): la console ruota; le righe di oggi scritte prima della rotazione stanno nel .1, e la lezione le vede.
+# Un curl finto conserva il prompt.
+mkdir -p "$TMP/cbin" "$TMP/rot"
+printf '#!/bin/bash\ncat > %q\necho %s\n' "$TMP/prompt-rot" "'{\"message\":{\"content\":\"{\\\"niente\\\":true,\\\"perche\\\":\\\"x\\\"}\"}}'" > "$TMP/cbin/curl"; chmod +x "$TMP/cbin/curl"
+echo "[$OGGI 09:00:00] REPO r/x: caccia: ⚠ AGENTE FALLITO prima della rotazione" > "$TMP/rot/log.1"
+echo "[$OGGI 13:00:00] REPO r/x: MIGLIORIA pronta: dopo la rotazione" > "$TMP/rot/log"
+(cd "$TMP/repo" && PATH="$TMP/cbin:$PATH" NIGHT_LOG="$TMP/rot/log" bash tools/cervello-impara.sh >/dev/null 2>&1)
+grep -c 'prima della rotazione' "$TMP/prompt-rot" >/dev/null 2>&1 && grep -c 'dopo la rotazione' "$TMP/prompt-rot" >/dev/null 2>&1 \
+  && ok "D39: la lezione legge anche le righe di oggi nel file ruotato" || ko "D39: la lezione non vede il .1: $(grep -c rotazione "$TMP/prompt-rot" 2>/dev/null) righe"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

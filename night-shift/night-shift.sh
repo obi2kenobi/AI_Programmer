@@ -35,6 +35,7 @@ LOG="$HOME/night-shift.log"
 # né console né $LOG — l'esito dell'aggiornamento dell'hub era INVISIBILE.
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$LOG"; }
 rotate_log_if_big "$LOG"
+ruota_log_aperto "${NIGHT_LOG:-$HOME/night-shift-console.log}"   # (D39): la console, che il turno tiene aperta
 
 # --- Lock GLOBALE del turno (2026-09-15, finestra oraria; Q10, 2026-09-23, giro A5 della notte):
 # si prende PRIMA di tutto. Stava dopo il self-pull (reset --hard dell'hub sotto il turno vivo)
@@ -1316,7 +1317,7 @@ fi
 # intero di ieri — solo se ieri il turno ha scritto qualcosa.
 IMPRA_IERI=$(date -v-1d +%F 2>/dev/null || date -d yesterday +%F 2>/dev/null)
 if [ -n "$IMPRA_IERI" ] && [ ! -f "$WORK/.impara-$IMPRA_IERI" ] && [ -f "$HERE/../tools/cervello-impara.sh" ] \
-   && grep -ac "^\[$IMPRA_IERI" "${NIGHT_LOG:-$HOME/night-shift-console.log}" >/dev/null 2>&1; then
+   && { [ -f "${NIGHT_LOG:-$HOME/night-shift-console.log}.1" ] && cat "${NIGHT_LOG:-$HOME/night-shift-console.log}.1"; cat "${NIGHT_LOG:-$HOME/night-shift-console.log}"; } 2>/dev/null | grep -ac "^\[$IMPRA_IERI" >/dev/null; then   # .1: D39
   log "impara: la lezione di ieri ($IMPRA_IERI) manca — nessun ciclo e' partito dopo le ${IMPARA_ORA:-22}: la faccio ora, sul log di ieri"
   if IMP_OUT=$(IMPARA_DATA="$IMPRA_IERI" bash "$HERE/../tools/cervello-impara.sh" 2>&1); then
     printf '%s\n' "$IMP_OUT" > "$WORK/.impara-$IMPRA_IERI"

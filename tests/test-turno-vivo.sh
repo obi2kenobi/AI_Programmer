@@ -69,6 +69,13 @@ ORA=$(TZ=Europe/Rome python3 -c 'import time; print(time.mktime(time.strptime("2
 echo "[2026-10-25 02:50:00] === TURNO INIZIATO" > "$TMP/autunno.log"
 OUT=$(TZ=Europe/Rome FAKE_NOW="$ORA" PYTHONPATH="$TMP/py" TURNO_VIVO_LOG="$TMP/autunno.log" bash "$TOOL" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "V3 R4: nell'ora ripetuta d'autunno l'eta' non e' negativa (niente «illeggibile»)" || ko "V3 R4: autunno: rc=$RC, $(head -1 <<<"$OUT")"
+# (2026-09-25, D39): la console ruota (copia e tronca) all'inizio del ciclo — per qualche minuto il file nuovo non ha
+# ancora il suo TURNO INIZIATO, che sta nel .1. L'ultimo ciclo si cerca in tutti e due.
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n' "$ADESSO" > "$TMP/ruotato.log.1"
+printf '[%s] REPO r/x: un passo\n' "$ADESSO" > "$TMP/ruotato.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/ruotato.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "cicla" <<<"$OUT" && ok "D39: console appena ruotata: l'ultimo ciclo si trova nel .1" || ko "D39: console ruotata: rc=$RC, $(head -1 <<<"$OUT")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

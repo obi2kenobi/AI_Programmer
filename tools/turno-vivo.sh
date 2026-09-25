@@ -25,7 +25,8 @@ if [ ! -f "$LOG" ]; then
   echo "turno-vivo: nessun log del turno ($LOG) — niente da giudicare"
   exit 0
 fi
-ULTIMA=$(grep -a "TURNO INIZIATO" "$LOG" | tail -1 | awk -F'[][]' '{print $2}')
+# (2026-09-25, D39): la console ruota a inizio ciclo — il TURNO INIZIATO di questo ciclo puo' essere ancora solo nel .1
+ULTIMA=$( { [ -f "$LOG.1" ] && cat "$LOG.1"; cat "$LOG"; } 2>/dev/null | grep -a "TURNO INIZIATO" | tail -1 | awk -F'[][]' '{print $2}')
 if [ -z "$ULTIMA" ]; then
   echo "turno-vivo: il log non contiene nessun TURNO INIZIATO — niente da giudicare"
   exit 0

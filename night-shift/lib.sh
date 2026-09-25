@@ -39,6 +39,18 @@ mtime() {
 # (file → file.1, sovrascrivendo un .1 precedente: non serve di più per un log locale
 # di debug, non un archivio). Debito aperto dal 2026-08-21 ("nessun limite raggiunto");
 # night-shift.log e morning-gate.log crescono senza limite da allora.
+# ruota_log_aperto <file> [soglia_mb=10]: come rotate_log_if_big, ma per un log che qualcuno tiene APERTO in append
+# (la console del turno: launchd la apre, e il turno rilancia se stesso con exec). Un mv lo farebbe continuare a scrivere
+# nel .1; qui si copia e si tronca, e chi scrive in append riparte dall'inizio del file nuovo. Le righe scritte fra la
+# copia e il troncamento si perdono: una finestra di millisecondi, dichiarata (D39, 2026-09-25).
+ruota_log_aperto() {
+  local file="$1" soglia_mb="${2:-10}" size_bytes
+  [ -f "$file" ] || return 0
+  size_bytes=$(wc -c < "$file" 2>/dev/null) || return 0
+  [ "$size_bytes" -ge $((soglia_mb * 1024 * 1024)) ] || return 0
+  cp -p "$file" "$file.1" && : > "$file"
+}
+
 rotate_log_if_big() {
   local file="$1" soglia_mb="${2:-10}"
   [ -f "$file" ] || return 0

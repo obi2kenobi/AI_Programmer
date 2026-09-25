@@ -662,6 +662,27 @@ rotate_log_if_big "$LOGTMP/assente.log" 1; RC_ASSENTE=$?
   || ko "rotate_log_if_big: file assente non gestito pulito (rc=$RC_ASSENTE)"
 rm -rf "$LOGTMP"
 
+# --- (2026-09-25, D39, risposta delegata): la console del turno non ruotava mai. Il turno la tiene APERTA (launchd la apre
+# in append, e il turno rilancia se stesso con exec): un mv mandava tutta la notte nel .1 e la dashboard restava cieca.
+# ruota_log_aperto copia e tronca: chi scrive in append continua nel file nuovo, dall'inizio.
+if command -v ruota_log_aperto >/dev/null; then
+  RLA=$(mktemp -d)
+  ( exec >>"$RLA/console.log"; echo prima; sleep 1; echo dopo ) &
+  RLA_PID=$!; sleep 0.3
+  head -c 2048 /dev/zero | tr '\0' x >> "$RLA/console.log"; echo >> "$RLA/console.log"
+  ruota_log_aperto "$RLA/console.log" 0
+  wait "$RLA_PID"
+  grep -qx 'prima' "$RLA/console.log.1" && grep -qx 'dopo' "$RLA/console.log" && ! grep -qx 'prima' "$RLA/console.log" \
+    && [ "$(wc -c < "$RLA/console.log" | tr -d ' ')" -lt 100 ] \
+    && ok "D39: ruota_log_aperto: il vecchio nel .1, chi scrive in append continua nel file nuovo" \
+    || ko "D39: ruota_log_aperto: .1=«$(head -c 40 "$RLA/console.log.1" 2>/dev/null)» nuovo=$(wc -c < "$RLA/console.log") byte"
+  rm -rf "$RLA"
+else
+  ko "D39: ruota_log_aperto assente in lib.sh"
+fi
+grep -q 'ruota_log_aperto "${NIGHT_LOG:-$HOME/night-shift-console.log}"' "$HERE/night-shift/night-shift.sh" \
+  && ok "D39: il turno ruota la console a ogni ciclo" || ko "D39: il turno non ruota la console"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
