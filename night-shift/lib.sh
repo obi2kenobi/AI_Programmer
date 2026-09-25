@@ -102,6 +102,13 @@ esegui_verifica() {
   return "$rc"
 }
 
+# taglia_caratteri <n>: i primi n CARATTERI dello stdin (non byte). (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del
+# GNU taglia in byte anche in UTF-8, e un carattere spezzato arrivava nei commenti delle PR come «�» (jq e gh lo
+# sostituiscono). Per il testo che finisce in un commento, in un'issue o nel log.
+taglia_caratteri() {
+  python3 -c 'import sys; sys.stdout.write(sys.stdin.buffer.read().decode("utf-8", "replace")[:int(sys.argv[1])])' "$1"
+}
+
 # riga_verifica_vuota <riga>: 0 se la riga di .night-verify non e' un comando — vuota, soli spazi o TAB, un commento
 # anche indentato. (2026-09-25, settimo ventaglio, V1 R5): la regola UNICA dei lettori di .night-verify. Il turno saltava
 # solo "" e «#» in prima colonna: una riga di spazi era `bash -c "   "`, rc 0, «verifica VERDE».

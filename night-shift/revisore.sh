@@ -352,7 +352,7 @@ if [ "$MODO" = "parere" ]; then
   log "PARERE: $VERDETTO PR #$PR ($N_RIGHE righe, $N_FILE file) — la fusione resta di Luca"
   PAR_FILE=$(mktemp /tmp/revisore-parere.XXXXXX)
   printf 'Parere del censore notturno: %s (rischio %s).\nGiudicata contro la issue #%s (censore: %s, autore: %s).\nProve: verifiche dichiarate verdi · banco avversario superato · lente sicurezza pulita · %s righe/%s file.\nMotivi: %s\nIl censore NON fonde le PR delle issue: la fusione e la decisione sono di Luca (D10, 2026-09-23).\n' \
-    "$VERDETTO" "$(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')" "$ISSUE_N" "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-400)" > "$PAR_FILE"
+    "$VERDETTO" "$(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')" "$ISSUE_N" "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$PAR_FILE"
   azione_gh gh pr comment "$PR" --body-file "$PAR_FILE" || true
   rm -f "$PAR_FILE"; touch "$PARERE_FILE"
   exit 4
@@ -362,7 +362,7 @@ if [ "$VERDETTO" = "APPROVA" ]; then
   log "DELIBERA: APPROVA PR #$PR ($N_RIGHE righe, $N_FILE file) — rischio: $(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')"
   CERT_FILE=$(mktemp /tmp/revisore-cert.XXXXXX)
   printf 'Deliberata dal revisore notturno (censore: %s, autore: %s).\nProve: verifiche dichiarate verdi · banco avversario superato · guardie diff (%s righe/%s file).\nMotivazioni: %s\nIl veto resta umano: il mattino puo sempre fare revert.\n' \
-    "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-300)" > "$CERT_FILE"
+    "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 300)" > "$CERT_FILE"
   azione_gh gh pr ready "$PR" || true
   if azione_gh gh pr merge "$PR" --squash --delete-branch --match-head-commit "$HEAD_OID"; then
     echo $(( N_MERGI + 1 )) > "$BUDGET_FILE"
@@ -379,7 +379,7 @@ else
   log "DELIBERA: RIGETTA PR #$PR — $MOTIVI"
   RIG_FILE=$(mktemp /tmp/revisore-rig.XXXXXX)
   printf 'RIGETTATA dal censore notturno (censore: %s).\nMotivi: %s\n' \
-    "$GIUDICE_MODEL" "$(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-400)" > "$RIG_FILE"
+    "$GIUDICE_MODEL" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$RIG_FILE"
   azione_gh gh pr comment "$PR" --body-file "$RIG_FILE" || true
   rm -f "$RIG_FILE"
   azione_gh gh pr close "$PR"

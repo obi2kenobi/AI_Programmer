@@ -206,6 +206,17 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del GNU taglia in byte anche in UTF-8. I motivi del censore finivano
+# nei commenti delle PR con un carattere spezzato, che jq e gh rendono «�».
+if command -v taglia_caratteri >/dev/null; then
+  TG=$(printf 'abc\303\250def' | taglia_caratteri 4)
+  [ "$TG" = "$(printf 'abc\303\250')" ] && ok "V4 R6: taglia_caratteri 4 tiene «è» intero (niente byte spezzato)" || ko "V4 R6: taglia_caratteri: $(printf '%s' "$TG" | od -An -c | tr -s ' ')"
+else
+  ko "V4 R6: taglia_caratteri assente da night-shift/lib.sh"
+fi
+! grep -cE 'MOTIVI" \| tr .* \| cut -c' "$HERE/night-shift/revisore.sh" >/dev/null && ok "V4 R6: i motivi del censore si tagliano per caratteri" || ko "V4 R6: i motivi del censore si tagliano ancora con cut -c"
+! grep -c '24000 caratteri' "$HERE/night-shift/risolvi-issue.sh" >/dev/null && ok "V4 R6: il risolutore dice byte dove taglia a byte (head -c)" || ko "V4 R6: il risolutore chiama «caratteri» i byte di head -c"
+
 # --- (2026-09-25, settimo ventaglio, V1 R5): sei lettori di .night-verify, tre regole su cosa e' una riga vuota. Il turno
 # saltava solo "" e «#» in prima colonna: una riga di soli spazi o un commento indentato era `bash -c "   "`, rc 0,
 # «verifica VERDE» — e «3/3 verdi» dove il censore e il gate dicevano «verifiche-vuote».

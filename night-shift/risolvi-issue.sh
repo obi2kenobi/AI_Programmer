@@ -139,14 +139,14 @@ while IFS= read -r F; do
   # falliva e il prompt riceveva il path ASSOLUTO. os.path.relpath e' ovunque.
   REL_PATH=$(python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$F" "$DIR" 2>/dev/null || echo "$F")
   # (fase A efficienza, 2026-09-07): App.html intera = 41KB = 262s di inferenza.
-  #  Limite per file 24000 caratteri (~6-8K token), TRONCATO DICHIARATO nel prompt —
+  #  Limite per file 24000 byte (~6-8K token; head -c conta byte, settimo ventaglio V4 R6), TRONCATO DICHIARATO nel prompt —
   #  mai taglio silenzioso: il modello sa che non vede tutto e lavora da quello che
   #  l'issue nomina. I file piccoli (il caso normale: 9s) non cambiano di una virgola.
   CORPO=$(head -c 24000 "$F")
   N_CHAR=$(wc -c < "$F" | tr -d ' ')
   if [ "$N_CHAR" -gt 24000 ]; then
-    CORPO="$CORPO"$'\n'"[... TRONCATO: mostrati i primi 24000 caratteri su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
-    log "⚠ $REL_PATH troncato a 24000/$N_CHAR caratteri (dichiarato nel prompt)"
+    CORPO="$CORPO"$'\n'"[... TRONCATO: mostrati i primi 24000 byte su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
+    log "⚠ $REL_PATH troncato a 24000/$N_CHAR byte (dichiarato nel prompt)"
   fi
   # (S3 R3): gli a capo erano «\n» letterali fra virgolette doppie: il modello leggeva una barra e una n
   FILES_CONTENT+="=== FILE: $REL_PATH ==="$'\n'"$CORPO"$'\n\n'
@@ -164,9 +164,9 @@ log "letti $N_LETTI file (${#FILES_CONTENT} caratteri) per il prompt"
 #  DICHIARATO, mai taglio silenzioso.
 COMMESSA=$(head -c 24000 "$ISSUE")
 if [ "$(wc -c < "$ISSUE" | tr -d ' ')" -gt 24000 ]; then
-  log "⚠ issue troncata a 24000 caratteri (dichiarato nel prompt)"
+  log "⚠ issue troncata a 24000 byte (dichiarato nel prompt)"
   COMMESSA="$COMMESSA
-[... ISSUE TRONCATA: mostrati i primi 24000 caratteri su $(wc -c < "$ISSUE" | tr -d ' ').]"
+[... ISSUE TRONCATA: mostrati i primi 24000 byte su $(wc -c < "$ISSUE" | tr -d ' ').]"
 fi
 
 PROMPT=$(cat <<EOF
