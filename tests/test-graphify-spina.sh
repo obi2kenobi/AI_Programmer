@@ -96,6 +96,7 @@ cat > "$S/gh" <<EOF
 #!/bin/bash
 [ "\$1 \$2" = "repo clone" ] && exec git clone -q "$B" "\$4"
 [ "\$1 \$2" = "pr create" ] && { echo "\$*" >> "$T/pr.log"; echo https://example.invalid/pr/1; exit 0; }
+[ "\$1 \$2" = "pr list" ] && exit 0   # (D35): nessuna PR del grafo aperta
 exit 1
 EOF
 cat > "$S/graphify" <<EOF

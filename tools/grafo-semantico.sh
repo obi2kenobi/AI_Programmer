@@ -51,14 +51,30 @@ if git diff --cached --quiet; then
   log "grafo invariato: nessuna PR"
   exit 0
 fi
-BR="night/grafo-$DATA"
-git checkout -q -B "$BR"
+# (2026-09-25, D35, risposta delegata): una PR del grafo al giorno, senza guardare quella di ieri, si accumulavano. Se una
+# PR del grafo e' aperta, il grafo nuovo va sul SUO ramo (un commit in piu', mai forzato) e non se ne apre un'altra.
+APERTE=$(gh pr list --state open --limit 100 --json headRefName -q '.[].headRefName' 2>/dev/null) \
+  || { log "gh non ha detto le PR aperte — non apro una PR del grafo al buio (dichiarato)"; exit 1; }
+APERTA=$(grep '^night/grafo-' <<<"$APERTE" | head -1 || true)
+if [ -n "$APERTA" ]; then
+  GRAFO_NUOVO=$(mktemp); cp graphify-out/graph.json "$GRAFO_NUOVO"
+  git fetch -q origin "$APERTA" 2>/dev/null && git checkout -q -f -B "$APERTA" "origin/$APERTA" \
+    || { rm -f "$GRAFO_NUOVO"; log "ramo della PR aperta $APERTA non raggiungibile — salto (dichiarato)"; exit 1; }
+  cp "$GRAFO_NUOVO" graphify-out/graph.json; rm -f "$GRAFO_NUOVO"
+  git add graphify-out/graph.json
+  git diff --cached --quiet && { log "grafo uguale a quello della PR aperta ($APERTA): niente da aggiungere"; exit 0; }
+  BR="$APERTA"
+else
+  BR="night/grafo-$DATA"
+  git checkout -q -B "$BR"
+fi
 git commit -qm "chore: grafo semantico notturno $DATA (graphify extract, $MODEL)" || { log "commit fallito"; exit 1; }
 # (2026-09-25, settimo ventaglio, V1 R3): il cancello delle forme PRIMA del push, come gli altri quattro push della
 # notte (lib.sh forme_prima_del_push, T5#3). graph.json lo scrive un modello: una forma di segreto arrivava sul remoto
 # e la lente la vedeva solo dopo. Nel log la sola riga di sintesi, mai le righe del reperto.
 FORME=$(forme_prima_del_push "$W" "$BASE_REF") || { log "$(head -1 <<<"$FORME")"; exit 1; }
 git push -q origin "$BR" 2>/dev/null || { log "push di $BR fallito (ramo gia' esistente? mai forzato)"; exit 1; }
+[ -n "$APERTA" ] && { log "PR del grafo gia' aperta ($APERTA): il grafo del $DATA e' un commit in piu' sul suo ramo, nessuna PR nuova"; exit 0; }
 # (2026-09-24, quinto ventaglio, R5 R4): il corpo prometteva «il merge unisce i grafi» — vero solo dove la spina
 # ha registrato il driver in .git/config; un clone nuovo o il bottone di GitHub vanno in conflitto (provato: rc 1)
 URL=$(gh pr create --draft --head "$BR" --title "chore: grafo semantico $DATA" \

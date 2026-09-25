@@ -13095,7 +13095,7 @@
       },
       "norm_label": "gs()",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L108"
+      "source_location": "L109"
     },
     {
       "id": "tests_test_graphify_spina_ko",
@@ -57256,7 +57256,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -61588,7 +61588,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L60",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -94715,7 +94715,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-graphify-spina.sh",
-      "source_location": "L108",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -100991,5 +100991,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "de1ec9e6ec5cd91384a865b2baa5f5457bc94e24"
+  "built_at_commit": "f3a378ab4163c811fe47efa669b252969632e35e"
 }
