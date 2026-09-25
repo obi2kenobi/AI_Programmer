@@ -19,7 +19,8 @@ LIMITE NOTO dell'oracolo (non un difetto di questo tool): con un denominatore a 
 pct() restituisce 0, e i due indici "ge" non possono mai scattare in quel caso — un
 azzeramento per un motivo diverso da "dato assente" (es. una lettura vuota) renderebbe
 la presunzione di crisi impossibile invece che incerta. Vale come nota nel risultato,
-non come correzione: è così anche nell'oracolo.
+non come correzione: è così anche nell'oracolo. Con TUTTI i denominatori nulli, invece, l'oracolo
+rifiuta (ERRORE, rc 1): non c'e' niente da misurare (D13, 2026-09-25).
 
 Uso: python3 tools/indici_crisi.py < aggregati.json
 """
@@ -103,6 +104,12 @@ def main():
         print(f"ERRORE: campi non numerici o non finiti (nan/inf): {', '.join(marci)} — nessun verdetto", file=sys.stderr)
         return 1
     indici = valuta_indici_crisi(a)
+    # (2026-09-25, D13, risposta delegata): con TUTTI i denominatori nulli non c'e' niente da misurare — quasi sempre una
+    # lettura vuota. «Nessuna presunzione di crisi» sarebbe un verde senza dati: si rifiuta, come l'estratto vuoto (Q22).
+    if all(i["denominatore_nullo"] for i in indici):
+        print("ERRORE: tutti i denominatori sono nulli (ricavi, passivo, attivo, passivo corrente) — bilancio vuoto? "
+              "nessun verdetto", file=sys.stderr)
+        return 1
     for i in indici:
         marcatore = "🔴" if i["allarme"] else "🟢"
         print(f"{marcatore} {i['nome']}: {i['valore']:.1f}% (soglia {i['soglia']} {i['verso']})")

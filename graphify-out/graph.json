@@ -26,7 +26,7 @@
       "file_type": "code",
       "norm_label": "crisi_presunta()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L72"
+      "source_location": "L73"
     },
     {
       "id": "tools_indici_crisi_main",
@@ -38,7 +38,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L76"
+      "source_location": "L77"
     },
     {
       "id": "tools_indici_crisi_pct",
@@ -50,7 +50,7 @@
       "file_type": "code",
       "norm_label": "pct()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L44"
+      "source_location": "L45"
     },
     {
       "id": "tools_indici_crisi_valuta_indici_crisi",
@@ -62,7 +62,7 @@
       "file_type": "code",
       "norm_label": "valuta_indici_crisi()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L48"
+      "source_location": "L49"
     },
     {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
@@ -5435,7 +5435,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_indici_crisi_rationale_49",
+      "id": "tools_indici_crisi_rationale_50",
       "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
       "_origin": "ast",
       "community": 117,
@@ -5443,10 +5443,10 @@
       "file_type": "rationale",
       "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L49"
+      "source_location": "L50"
     },
     {
-      "id": "tools_indici_crisi_rationale_77",
+      "id": "tools_indici_crisi_rationale_78",
       "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
       "_origin": "ast",
       "community": 117,
@@ -5454,7 +5454,7 @@
       "file_type": "rationale",
       "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L77"
+      "source_location": "L78"
     },
     {
       "id": "tools_rollforward_cespiti_rationale_2",
@@ -61274,7 +61274,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L105",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -61286,7 +61286,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L113",
+      "source_location": "L120",
       "weight": 1.0
     },
     {
@@ -61298,7 +61298,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L64",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -62462,7 +62462,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -62474,7 +62474,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -62486,7 +62486,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L28",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -89745,7 +89745,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -89756,7 +89756,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -89767,7 +89767,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0
     },
     {
@@ -89778,7 +89778,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L76",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -98527,25 +98527,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_49",
+      "source": "tools_indici_crisi_rationale_50",
       "target": "tools_indici_crisi_valuta_indici_crisi",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_77",
+      "source": "tools_indici_crisi_rationale_78",
       "target": "tools_indici_crisi_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L77",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -100520,5 +100520,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "64f8f1e880989662f6b3e315f10555c052077a86"
+  "built_at_commit": "6a92e31e1514ee4db2365c92fb6750792bca65dc"
 }

@@ -108,10 +108,16 @@ grep -q "CNDCEC" "$HERE/tools/indici_crisi.py" \
 # risultato», che main() non stampava; il messaggio d'uso elencava campi che non esistono (patrimonio netto,
 # perdite esercizi precedenti); la docstring di valuta_indici_crisi diceva «Sei indici» (sono cinque).
 ZERI='{"pn":0,"ricavi":0,"oneriFin":0,"passivoTot":0,"debPrev":0,"debTrib":0,"cashFlow":0,"attivo":0,"attCorrenti":0,"passCorrenti":0}'
-OUT=$(python3 "$HERE/tools/indici_crisi.py" <<<"$ZERI" 2>&1)
-[ "$(grep -c '^NOTA: denominatore nullo' <<<"$OUT")" -eq 5 ] \
-  && ok "tutto zero: una NOTA per ciascuno dei cinque indici a denominatore nullo" \
-  || ko "tutto zero: le note promesse dalla docstring mancano — $(grep -c '^NOTA' <<<"$OUT") righe NOTA"
+# (2026-09-25, D13, risposta delegata): tutti i denominatori nulli sono una lettura vuota, non «nessuna crisi»: si
+# rifiuta come gli altri oracoli rifiutano l'estratto vuoto (Q22). La NOTA resta per il denominatore nullo singolo.
+OUT=$(python3 "$HERE/tools/indici_crisi.py" <<<"$ZERI" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -c '^ERRORE' <<<"$OUT" >/dev/null && ! grep -c 'Nessuna presunzione' <<<"$OUT" >/dev/null \
+  && ok "D13: tutto zero: ERRORE e rc 1, nessun verdetto" || ko "D13: tutto zero: rc=$RC — $(tail -1 <<<"$OUT")"
+UNO='{"pn":10,"ricavi":0,"oneriFin":0,"passivoTot":100,"debPrev":1,"debTrib":1,"cashFlow":5,"attivo":100,"attCorrenti":50,"passCorrenti":40}'
+OUT=$(python3 "$HERE/tools/indici_crisi.py" <<<"$UNO" 2>&1)
+[ "$(grep -c '^NOTA: denominatore nullo' <<<"$OUT")" -eq 1 ] && grep -c 'presunzione\|PRESUNTA' <<<"$OUT" >/dev/null \
+  && ok "un solo denominatore nullo: la NOTA per quell'indice, e il verdetto" \
+  || ko "un solo denominatore nullo: $(grep -c '^NOTA' <<<"$OUT") righe NOTA — $(tail -1 <<<"$OUT")"
 USO=$(python3 "$HERE/tools/indici_crisi.py" <<<"non json" 2>&1)
 grep -c 'oneriFin' <<<"$USO" >/dev/null && ! grep -c 'perdite esercizi' <<<"$USO" >/dev/null \
   && ok "il messaggio d'uso elenca i campi veri" || ko "il messaggio d'uso elenca campi inesistenti: $USO"
