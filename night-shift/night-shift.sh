@@ -855,7 +855,12 @@ review del giorno." 2>>"$ERR_NOTTE" \
 
     # Idempotenza: PR aperta → skip; PR fusa → chiude l'issue e skip
     local PR_STATE
-    PR_STATE=$(gh pr view "night/issue-$NUM" -R "$REPO" --json state -q .state 2>/dev/null)
+    # (2026-09-25, ottavo ventaglio, O2 R1): gh in errore non e' «nessuna PR» — si salta l'issue in questo ciclo, invece di
+    # rifarla e forzare il ramo di una PR che forse e' aperta
+    if ! PR_STATE=$(stato_pr_ramo "$REPO" "night/issue-$NUM"); then
+      log "Issue #$NUM: ⚠ gh non ha detto lo stato della PR di night/issue-$NUM — salto l'issue in questo ciclo (non la rifaccio al buio)"
+      continue
+    fi
     if [ "$PR_STATE" = "OPEN" ]; then log "Issue #$NUM: PR già aperta, skip"; continue; fi
     if [ "$PR_STATE" = "MERGED" ]; then
       log "Issue #$NUM: PR già fusa, chiudo l'issue e skip"

@@ -206,6 +206,25 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, ottavo ventaglio, O2 R1): lo stato della PR di un ramo si chiedeva con `gh pr view … 2>/dev/null`, e un
+# errore di gh (rate limit, rete) era vuoto = «nessuna PR»: il turno rifaceva l'issue e forzava il ramo di una PR APERTA.
+if command -v stato_pr_ramo >/dev/null; then
+  GHD=$(mktemp -d)
+  printf '#!/bin/bash\n[ -n "${GH_FINTO_ROTTO:-}" ] && { echo "API rate limit exceeded" >&2; exit 1; }\nq=""; while [ $# -gt 0 ]; do case "$1" in -q|--jq) q="$2"; shift;; esac; shift; done\nprintf "%%s" "${GH_FINTO_JSON:-[]}" | jq -r "$q"\n' > "$GHD/gh"; chmod +x "$GHD/gh"
+  S1=$(PATH="$GHD:$PATH" GH_FINTO_ROTTO=1 stato_pr_ramo o/r night/issue-7); R1=$?
+  S2=$(PATH="$GHD:$PATH" GH_FINTO_JSON='[]' stato_pr_ramo o/r night/issue-7); R2=$?
+  S3=$(PATH="$GHD:$PATH" GH_FINTO_JSON='[{"state":"CLOSED"},{"state":"OPEN"}]' stato_pr_ramo o/r night/issue-7)
+  S4=$(PATH="$GHD:$PATH" GH_FINTO_JSON='[{"state":"CLOSED"},{"state":"MERGED"}]' stato_pr_ramo o/r night/issue-7)
+  [ "$R1" -eq 2 ] && [ -z "$S1" ] && [ "$R2" -eq 0 ] && [ "$S2" = NESSUNA ] && [ "$S3" = OPEN ] && [ "$S4" = MERGED ] \
+    && ok "O2 R1: stato_pr_ramo: gh in errore rc 2 · nessuna PR «NESSUNA» · una aperta fra altre «OPEN» · fusa «MERGED»" \
+    || ko "O2 R1: stato_pr_ramo: errore rc=$R1 «${S1}» · vuota «${S2}» · aperta «${S3}» · fusa «${S4}»"
+  rm -rf "$GHD"
+else
+  ko "O2 R1: stato_pr_ramo assente da night-shift/lib.sh"
+fi
+grep -c 'stato_pr_ramo "$REPO" "night/issue-$NUM"' "$HERE/night-shift/night-shift.sh" >/dev/null && ! grep -c 'PR_STATE=$(gh pr view' "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "O2 R1: il turno chiede lo stato della PR a stato_pr_ramo" || ko "O2 R1: il turno legge ancora un errore di gh come «nessuna PR»"
+
 # --- (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del GNU taglia in byte anche in UTF-8. I motivi del censore finivano
 # nei commenti delle PR con un carattere spezzato, che jq e gh rendono «�».
 if command -v taglia_caratteri >/dev/null; then

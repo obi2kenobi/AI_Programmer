@@ -102,6 +102,17 @@ esegui_verifica() {
   return "$rc"
 }
 
+# stato_pr_ramo <owner/repo> <ramo>: OPEN, MERGED, CLOSED o NESSUNA; rc 2 se gh non ha risposto. (2026-09-25, ottavo
+# ventaglio, O2 R1): era `gh pr view … 2>/dev/null` — un errore (rate limit, rete) era vuoto, cioe' «nessuna PR», e il turno
+# rifaceva l'issue e forzava il ramo di una PR APERTA. Con piu' PR sullo stesso ramo vince quella aperta, poi la fusa.
+stato_pr_ramo() {
+  local out
+  out=$(gh pr list -R "$1" --head "$2" --state all --limit 100 --json state \
+        -q 'map(.state) | if index("OPEN") then "OPEN" elif index("MERGED") then "MERGED" elif length > 0 then .[0] else "NESSUNA" end' 2>/dev/null) || return 2
+  [ -n "$out" ] || return 2
+  printf '%s\n' "$out"
+}
+
 # taglia_caratteri <n>: i primi n CARATTERI dello stdin (non byte). (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del
 # GNU taglia in byte anche in UTF-8, e un carattere spezzato arrivava nei commenti delle PR come «�» (jq e gh lo
 # sostituiscono). Per il testo che finisce in un commento, in un'issue o nel log.
