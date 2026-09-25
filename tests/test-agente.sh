@@ -168,6 +168,27 @@ else
   echo "⊘ Ollama non attivo: sfide col modello vero saltate (la meccanica e' provata sopra col mock)"
 fi
 
+
+# (2026-09-25, ottavo ventaglio, O1 R4): un'azione JSON rotta (troncata da un tetto sui token) o preceduta da una frase
+# era «non e' un'azione, quindi ho finito»: rc 0, e la caccia dichiarava il file pulito per 6 ore. Ora un'azione che non
+# si legge torna al modello come errore di formato; due di fila sono rc 1. La prosa prima del JSON non basta a perderla.
+SB="$SB_ROOT/o1r4"; mkdir -p "$SB"; printf 'uno\n' > "$SB/f.txt"
+scenario o1r4a "$SB" "tronca" \
+  "$(azione '{"action":"edit","path":"f.txt","old":"uno","new":"')" \
+  "$(azione '{"action":"edit","path":"f.txt","old":"uno","new":"')"
+[ "$RC" -ne 0 ] && grep -ci 'illeggibil' <<<"$OUT" >/dev/null && ok "O1 R4: azione troncata due volte: rc $RC, non «completato»" || ko "O1 R4: azione troncata: rc $RC ($(grep -m1 'completato\|illeggib' <<<"$OUT"))"
+scenario o1r4b "$SB" "frase" \
+  "$(azione 'Leggo prima il file: {"action":"read","path":"f.txt"}')" \
+  "$(azione 'Fatto.')"
+[ "$RC" -eq 0 ] && grep -c 'read: f.txt' <<<"$OUT" >/dev/null && ok "O1 R4: una frase prima del JSON non perde l'azione (read eseguito)" || ko "O1 R4: frase prima del JSON: rc $RC, read $(grep -c 'read: f.txt' <<<"$OUT")"
+scenario o1r4c "$SB" "riprende" \
+  "$(azione '{"action":"read","path":"f.t')" \
+  "$(azione 'Fatto.')"
+[ "$RC" -eq 0 ] && grep -ci 'formato' <<<"$OUT" >/dev/null && ok "O1 R4: un troncato e poi la risposta finale: l'errore di formato torna al modello, poi rc 0" || ko "O1 R4: ripresa dopo un troncato: rc $RC"
+scenario o1r4d "$SB" "senza percorso" \
+  "$(azione '{"action":"write","content":"x"}')" \
+  "$(azione 'Fatto.')"
+[ ! -e "$SB/null" ] && [ ! -e "$PWD/null" ] && ok "O1 R4: un write senza path non crea un file «null»" || ko "O1 R4: un write senza path ha creato un file «null»"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

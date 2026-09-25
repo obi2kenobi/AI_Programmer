@@ -132,6 +132,33 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
 
 ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
 
+  # (2026-09-25, ottavo ventaglio, O1 R4): una frase prima del JSON («Leggo prima il file: {…}») perdeva l'azione. Si
+  # cerca il primo oggetto con "action" dentro il testo.
+  if [ -z "$ACTION" ] && grep -c '"action"' <<<"$STRIPPED" >/dev/null; then
+    ESTRATTO=$(python3 -c '
+import json, sys
+t = sys.argv[1]; d = json.JSONDecoder(); i = t.find("{")
+while i != -1:
+    try:
+        o, _ = d.raw_decode(t[i:])
+        if isinstance(o, dict) and "action" in o:
+            print(json.dumps(o)); break
+    except ValueError:
+        pass
+    i = t.find("{", i + 1)' "$STRIPPED" 2>/dev/null)
+    if [ -n "$ESTRATTO" ]; then STRIPPED="$ESTRATTO"; ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null); fi
+  fi
+  # (ottavo ventaglio, O1 R4): un'azione che non si legge (JSON troncato da un tetto sui token) NON e' la risposta finale:
+  # era «completato», rc 0, e la caccia dichiarava il file pulito per 6 ore. Torna al modello come errore di formato;
+  # due di fila sono rc 1.
+  if [ -z "$ACTION" ] && grep -c '"action"' <<<"$STRIPPED" >/dev/null; then
+    FORMATO_ROTTO=$(( ${FORMATO_ROTTO:-0} + 1 ))
+    [ "$FORMATO_ROTTO" -ge 2 ] && { log "⛔ azione illeggibile per $FORMATO_ROTTO turni di fila (JSON troncato o rotto) — NON completato: agente rc=1"; exit 1; }
+    ACTION="__formato__"
+  else
+    FORMATO_ROTTO=0
+  fi
+
   if [ -z "$ACTION" ]; then
     # non è un'action: il modello ha finito
     log "✅ completato in $TURNO turni (${ELAPSED}s)"
@@ -147,7 +174,7 @@ ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
       # (516 righe per un tubo). edit = sostituzione ESATTA vecchio→nuovo:
       # fallisce se la stringa non c'e', quindi il modello DEVE leggere prima,
       # e il diff minimale non e' una preghiera nel prompt — e' strutturale.
-      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       FOLD=$(echo "$STRIPPED" | jq -r '.old')
       FNEW=$(echo "$STRIPPED" | jq -r '.new')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
@@ -179,7 +206,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       esac ;;
 
     read)
-      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
@@ -196,7 +223,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       esac ;;
 
     write)
-      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       FCONTENT=$(echo "$STRIPPED" | jq -r '.content')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
@@ -241,6 +268,9 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         log "  run: $CMD"
       fi ;;
 
+    __formato__)
+      RESULT="ERROR: your action is not valid JSON (truncated or malformed). Send ONE complete JSON object on one line, or your final answer as plain text."
+      log "  azione illeggibile (JSON troncato o rotto): errore di formato rimandato al modello" ;;
     *)
       RESULT="ERROR: unknown action: $ACTION"
       log "  azione sconosciuta: $ACTION" ;;
