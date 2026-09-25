@@ -346,8 +346,11 @@ shift_repo() {
       log "REPO $REPO: VERIFICA ROSSA: verifiche-vuote (.night-verify senza comandi)"
     fi
     if [ "$NV_ROSSI" -gt 0 ]; then
-      NV_ISSUE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if ! grep -qF "[night-verify]" <<<"$NV_ISSUE"; then
+      # (2026-09-25, ottavo ventaglio, O2 R3): gh che non risponde e' GH_NON_SO, non «non c'e'»: la scrittura si salta
+      NV_ISSUE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null) || NV_ISSUE="$GH_NON_SO"
+      if [ "$NV_ISSUE" = "$GH_NON_SO" ]; then
+        log "REPO $REPO: ⚠ gh non ha risposto (issue aperte): l'issue [night-verify] non si apre in questo ciclo — non al buio"
+      elif ! grep -qF "[night-verify]" <<<"$NV_ISSUE"; then
         # (D16, test del sistema completo 2026-09-20): il corpo diceva «I dettagli sono nel
         # log del turno» — da remoto il giorno non poteva disporre (issue #95 aperta cosi'
         # dal 18/9). Il comando rosso va NEL corpo: e' l'unica cosa che serve per agire.
@@ -380,8 +383,10 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
       log "REPO $REPO: standard: ALLINEATO all'hub"
     else
       log "REPO $REPO: standard: DIVERGENTE dall'hub — verifico se c'e' gia' una PR di riallineo"
-      PR_SYNC=$(gh pr list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
+      PR_SYNC=$(gh pr list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null) || PR_SYNC="$GH_NON_SO"   # (O2 R3)
+      if [ "$PR_SYNC" = "$GH_NON_SO" ]; then
+        log "REPO $REPO: ⚠ gh non ha risposto (PR aperte): il riallineo allo standard non si propone in questo ciclo — non al buio"
+      elif grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
         log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
       else
         SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
@@ -554,9 +559,8 @@ PYIDX
           if [ "$GATE_OK" -eq 1 ]; then
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
             # (ottavo ventaglio, O5 R1): i rami notte/auto-* con una PR aperta, per il controllo del doppione qui sotto
-            APERTE_NOTTE=()
-            while IFS= read -r _r; do [ -n "$_r" ] && APERTE_NOTTE+=("$_r"); done \
-              < <(cd "$DIR" && gh pr list --state open --limit 1000 --json headRefName -q '.[].headRefName' 2>/dev/null | grep '^notte/auto-' || true)
+            APERTE_NOTTE=(); NOTTE_LISTA=$(cd "$DIR" && gh pr list --state open --limit 1000 --json headRefName -q '.[].headRefName' 2>/dev/null) || NOTTE_LISTA="$GH_NON_SO"
+            while IFS= read -r _r; do [ -n "$_r" ] && APERTE_NOTTE+=("$_r"); done < <(grep '^notte/auto-' <<<"$NOTTE_LISTA" || true)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
             # il commit moriva nel pre-commit hook e l'stderr andava nel vuoto)
             # (T5#2b, 2026-09-24): qui resta `add -A` per scelta — i fix sono deterministici (nessun
@@ -567,6 +571,7 @@ PYIDX
 Fix applicati dalla finestra notturna 23-06: $FIX_APPLICATI. Solo categorie
 meccaniche note; il banco veloce e' CHIUSO su questo branch; PR bozza per la
 review del giorno." 2>>"$ERR_NOTTE" \
+               && { [ "$NOTTE_LISTA" != "$GH_NON_SO" ] || { echo "DOPPIONE non verificabile: gh non ha risposto sulle PR aperte (riprovo al ciclo dopo)" >>"$ERR_NOTTE"; false; }; } \
                && { ! NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE[@]+"${APERTE_NOTTE[@]}"}) \
                     || { echo "DOPPIONE: lo stesso diff e' gia' in una PR aperta ($NOTTE_DOPPIA)" >>"$ERR_NOTTE"; false; }; } \
                && forme_prima_del_push "$DIR" "origin/$DB" >>"$ERR_NOTTE" 2>&1 \
@@ -597,8 +602,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # ── fine auto-miglioramento sicuro ────────────────────────────────────────
     if [ "$N_FIND" -gt 0 ]; then
       CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
-      ISSUE_APERTE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if grep -qF "[ciclo-vivo]" <<<"$ISSUE_APERTE"; then
+      ISSUE_APERTE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null) || ISSUE_APERTE="$GH_NON_SO"   # (O2 R3)
+      if [ "$ISSUE_APERTE" = "$GH_NON_SO" ]; then
+        log "REPO $REPO: ⚠ gh non ha risposto (issue aperte): il rilievo [ciclo-vivo] non si apre in questo ciclo — non al buio"
+      elif grep -qF "[ciclo-vivo]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
       else
         echo "$CICLO_OUT" > /tmp/night-ciclo-$$.md
@@ -618,8 +625,10 @@ review del giorno." 2>>"$ERR_NOTTE" \
     fi
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
     if ! echo "$BANCO_OUT" | tail -1 | grep -c "CHIUSO" >/dev/null; then
-      ISSUE_APERTE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
-      if grep -qF "[banco]" <<<"$ISSUE_APERTE"; then
+      ISSUE_APERTE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null) || ISSUE_APERTE="$GH_NON_SO"   # (O2 R3)
+      if [ "$ISSUE_APERTE" = "$GH_NON_SO" ]; then
+        log "REPO $REPO: ⚠ gh non ha risposto (issue aperte): l'issue [banco] non si apre in questo ciclo — non al buio"
+      elif grep -qF "[banco]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: banco rosso MA issue [banco] gia' aperta — niente duplicati, aspetta il giorno"
       elif true; then
         echo "$BANCO_OUT" > /tmp/night-banco-$$.md
@@ -732,8 +741,14 @@ review del giorno." 2>>"$ERR_NOTTE" \
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
         # (V1#2, 2026-09-24): le cacce con una PR aperta — se una porta gia' lo stesso diff, niente PR doppia
-        CACCE_APERTE=$(cd "$DIR" && gh pr list --limit 1000 --state open --json headRefName -q '.[].headRefName' 2>/dev/null | grep '^night/caccia-' || true)
+        # (O2 R3): gh che non risponde non e' «nessuna caccia aperta» — la consegna si ferma come un doppione non verificabile
+        if CACCE_LISTA=$(cd "$DIR" && gh pr list --limit 1000 --state open --json headRefName -q '.[].headRefName' 2>/dev/null); then
+          CACCE_APERTE=$(grep '^night/caccia-' <<<"$CACCE_LISTA" || true)
+        else
+          CACCE_APERTE="$GH_NON_SO"
+        fi
         ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" 2>&1 \
+          && { [ "$CACCE_APERTE" != "$GH_NON_SO" ] || { echo "DOPPIONE non verificabile: gh non ha risposto sulle PR aperte (riprovo al ciclo dopo)"; false; }; } \
           && { ! DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" $CACCE_APERTE) || { echo "DOPPIONE di una caccia gia' aperta ($DOPPIA): stesso diff, nessuna PR nuova"; false; }; } \
           && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
         if [ $? -eq 0 ]; then
@@ -959,8 +974,9 @@ $BODY"
             log "Issue #$NUM: $GIA_FATTO esiste ed e' chiamata in $TERR_FILE — GIA' IMPLEMENTATA? Il turno non decide: lo chiede al giorno"
             CORPO_GIA="/tmp/night-giafatto-$NUM.md"
             { echo "🌙 Il turno legge nel codice che \`$GIA_FATTO\` esiste ed è chiamata in \`$TERR_FILE\` — la commessa sembra GIA' IMPLEMENTATA (il tracker e il codice divergevano). Se manca qualcosa di specifico, riscrivi l'issue col difetto preciso; se è tutto lì, questa nota basta a chiuderla."; } > "$CORPO_GIA"
-            COMMENTI_GIA=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
-            grep -q "GIA' IMPLEMENTATA" <<<"$COMMENTI_GIA" || gh issue comment "$NUM" -R "$REPO" --body-file "$CORPO_GIA" >/dev/null 2>&1
+            COMMENTI_GIA=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null) || COMMENTI_GIA="$GH_NON_SO"   # (O2 R3)
+            if [ "$COMMENTI_GIA" = "$GH_NON_SO" ]; then log "Issue #$NUM: ⚠ gh non ha risposto (commenti): la nota GIA' IMPLEMENTATA non si scrive in questo ciclo"
+            else grep -q "GIA' IMPLEMENTATA" <<<"$COMMENTI_GIA" || gh issue comment "$NUM" -R "$REPO" --body-file "$CORPO_GIA" >/dev/null 2>&1; fi
             rm -f "$CORPO_GIA"
             ASPETTA_GIORNO="$ASPETTA_GIORNO"$'\n'"  $REPO #$NUM: gia' implementata? (chiede il giorno)"
             rm -f "$ISSUE_FILE"
@@ -1024,8 +1040,10 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
         # non era idempotente. Il flusso PR ha la sua guardia, questa e' quella della
         # proposta: una per issue finche' il giorno non decide. E-002: cattura prima,
         # MAI pipe in grep -q sotto pipefail)
-        COMMENTI=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
-        if grep -q "Proposta notturna" <<<"$COMMENTI"; then
+        COMMENTI=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null) || COMMENTI="$GH_NON_SO"   # (O2 R3)
+        if [ "$COMMENTI" = "$GH_NON_SO" ]; then
+          log "Issue #$NUM: ⚠ gh non ha risposto (commenti): la proposta non si pubblica in questo ciclo — niente doppioni al buio"
+        elif grep -q "Proposta notturna" <<<"$COMMENTI"; then
           log "Issue #$NUM: proposta gia pubblicata in un turno precedente — niente duplicati, aspetta il giorno"
           PROPOSTE=$((PROPOSTE+1))
           rm -f "$ISSUE_FILE"

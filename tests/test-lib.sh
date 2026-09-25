@@ -206,6 +206,15 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, ottavo ventaglio, O2 R3): le guardie anti-doppione leggevano «gh in errore» come «non c'e'» —
+# `$(gh … 2>/dev/null || true)` — e il turno riapriva issue, PR e commenti a ogni ciclo in cui la lettura cadeva e la
+# scrittura no. Ora gh che non risponde e' GH_NON_SO, e la scrittura esterna si salta in quel ciclo.
+NS_T="$HERE/night-shift/night-shift.sh"
+CIECHE=$(grep -nE '\$\(.*gh (issue|pr) (list|view).*2>/dev/null (\| grep [^)]*)?\|\| true\)' "$NS_T" | grep -v ':[[:space:]]*#' || true)
+[ -z "$CIECHE" ] && [ "$(grep -c 'GH_NON_SO' "$NS_T")" -ge 8 ] \
+  && ok "O2 R3: nessuna guardia anti-doppione legge un errore di gh come «non c'e'»" \
+  || ko "O2 R3: guardie che leggono l'errore di gh come vuoto: $(cut -d: -f1 <<<"$CIECHE" | tr '\n' ' ')(GH_NON_SO usato $(grep -c GH_NON_SO "$NS_T") volte)"
+
 # --- (2026-09-25, ottavo ventaglio, O2 R4 e R5)
 # R4: la PR di caccia si contava «creata» anche con gh in errore (log e SAL mentivano, e il freno del rate limit non
 # scattava). R5: i titoli delle issue (testo di GitHub) si accumulavano con «\n» e si stampavano con `echo -e`: un

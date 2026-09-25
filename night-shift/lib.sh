@@ -102,6 +102,10 @@ esegui_verifica() {
   return "$rc"
 }
 
+# GH_NON_SO: il segno di «gh non ha risposto» per le guardie anti-doppione del turno (2026-09-25, ottavo ventaglio, O2 R3).
+# Era `$(gh … || true)`: l'errore era vuoto, cioe' «non c'e'», e la scrittura (issue, PR, commento) si rifaceva.
+GH_NON_SO="__gh_non_ha_risposto__"
+
 # stato_pr_ramo <owner/repo> <ramo>: OPEN, MERGED, CLOSED o NESSUNA; rc 2 se gh non ha risposto. (2026-09-25, ottavo
 # ventaglio, O2 R1): era `gh pr view … 2>/dev/null` — un errore (rate limit, rete) era vuoto, cioe' «nessuna PR», e il turno
 # rifaceva l'issue e forzava il ramo di una PR APERTA. Con piu' PR sullo stesso ramo vince quella aperta, poi la fusa.
