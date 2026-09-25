@@ -5237,3 +5237,37 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   asserzioni, o che muore verde dentro un `source`, passava il gate della notte. Ora la stessa regola, e il muto è
   rosso subito (non è un transitorio). Caso nuovo in `tests/test-lib.sh` (164/0), rosso prima (162/2); sabotaggio
   162/2.
+- **Settimo ventaglio, V3 R2 — un pass del grafo a cavallo della mezzanotte prendeva la data del giorno dopo.** Il
+  segno del giorno si calcolava all'avvio, ramo, commit e titolo a fine pass: il pass del 25 apriva
+  `night/grafo-2026-09-26`, e quello del 26 moriva al push. Ora il turno calcola `GRAFO_DATA` una volta e la passa a
+  `tools/grafo-semantico.sh`. Banco nuovo `tests/test-grafo-semantico.sh` (una `date` finta che dice sempre 26), rosso
+  prima 0/4; sabotaggio 0/4.
+- **Settimo ventaglio, V1 R1 — la lista dei nomi privati aveva due lettori con tre regole.** Il pre-commit saltava
+  l'ultima riga senza a capo (il nome passava il commit e il push, e solo la notte era rosso) e prendeva un «#» per un
+  nome. Ora `nomi_locali` in `tools/privacy-check.sh` è l'unica regola, e il pre-commit la chiede con `--elenca-nomi`;
+  senza privacy-check, «controllo MORTO», rosso. Tre casi in `tests/test-pre-commit.sh` (39/0), rossi prima; sabotaggio
+  36/3. L'esenzione di `docs/bc/`, che vale solo di giorno, è una domanda in DEBITI (V1 R1).
+- **Settimo ventaglio, V1 R3 — il quinto push della notte non aveva il cancello delle forme.** `tools/grafo-semantico.sh`
+  spingeva un grafo scritto da un modello senza `forme_prima_del_push`. Ora c'è, e la guardia di
+  `tests/test-forme-prima-del-push.sh` copre ogni `git push` di `night-shift/` e il pass del grafo (prima solo
+  `night-shift/night-shift.sh`). Caso in `tests/test-grafo-semantico.sh`, rosso prima; sabotaggi rossi tutti e due.
+- **Settimo ventaglio, V1 R2 — il rilevatore e la maschera non erano la stessa regola.** Lo strato 1 della lente
+  trovava con le SHAPES e ristampava la riga passata da `mask_secrets`, che non conosce email, telefoni, `xoxb` corti e
+  password in URL con l'apice: in chiaro nel commento pubblico della PR. Ora `impronta_righe` (`night-shift/lib.sh`):
+  file:riga e l'impronta della riga intera. Caso in `tests/test-lente-sicurezza.sh` (17/0), rosso prima (4 valori in
+  chiaro su 4); sabotaggio 16/1. Il pre-commit ha fermato una mia prima stesura del banco: il prefisso telefonico
+  intero combaciava già con la forma.
+- **Settimo ventaglio, V4 R1 — `$NOME` davanti a un carattere non ASCII.** La bash 3.2 del Mac, in un locale UTF-8,
+  legge il primo byte di «»·—… come parte del nome (visto sul campo il 10/9); sotto `set -u` lo script muore. Il gancio
+  di clasp moriva così nel ramo che nega `npm run <script-con-clasp-push>`. Graffe in 28 siti (4 negli strumenti), e
+  una sonda nuova in `tests/test-portabilita.sh` (python sui byte), rossa prima sui 28; sabotaggio sul gancio: rossa.
+  Qui non si riproduce (glibc, anche con la bash 3.2.57 compilata): la prova del difetto resta quella del Mac.
+- **Settimo ventaglio, V5 R2 — il mio banco del grafo era rosso a caso (E-049).** Uccidevo i figli prima del padre, e
+  il padre vivo un attimo scriveva il segno del giorno. Ora STOP al padre, poi i figli, poi il padre; la stessa forma
+  corretta in `tests/test-mutation-atomico.sh` (padre prima: figli orfani) e in `tools/mutation-tests.sh`. Guardia
+  E-049 in `tests/test-grafo-notturno.sh`. Il segno scritto anche per un pass fallito è la domanda D-V5-1 in DEBITI.
+- **Settimo ventaglio, V5 R3 — due attacchi della batteria tenevano con privacy-check cieco.** A20 e G4 giudicavano
+  dall'rc, e nel clone della batteria (senza `repos.key`) privacy-check esce sempre 1. Ora leggono «FORMA DI SEGRETO».
+  Letto il verdetto, A20 è diventato AGGIRA ad albero pulito: la sua pianta non era una forma, e non lo era mai stata.
+  Ora è una forma vera. Nel clone: pulito 0 aggirati; con le SHAPES sabotate, 2 aggirati (A20 e G4). Banco:
+  `tests/test-giri-avversari-verdetto.sh` (6/0), rosso prima.
