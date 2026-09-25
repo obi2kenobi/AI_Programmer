@@ -25,13 +25,21 @@ grep -c 'avviato in background' <<<"$OUT1" >/dev/null && ok "ciclo 1: il pass pa
 [ ! -f "$T/work/.grafo-$(date +%F)" ] && ok "il segno del giorno NON c'e' mentre il pass gira" || ko "il segno del giorno si scrive prima del pass"
 P=$(cat "$T/work/.lock-grafo/pid" 2>/dev/null)
 [ -n "$P" ] && kill -0 "$P" 2>/dev/null && ok "il lock porta il PID del pass ($P)" || ko "il lock non ha un PID vivo: «${P}»"
-[ -n "$P" ] && { pkill -KILL -P "$P" 2>/dev/null; kill -KILL "$P" 2>/dev/null; }; sleep 1
+# (2026-09-25, settimo ventaglio, V5 R2; E-049): prima si fermava il padre con STOP. Uccisi prima i figli, la subshell del
+# pass restava viva un attimo e scriveva il segno del giorno: rosso a caso (6 su 19 sotto carico). Con una pausa di
+# mezzo secondo fra i due colpi era rosso sempre (3 su 3), con lo STOP davanti mai (0 su 3).
+[ -n "$P" ] && { kill -STOP "$P" 2>/dev/null; pkill -KILL -P "$P" 2>/dev/null; kill -KILL "$P" 2>/dev/null; }; sleep 1
 OUT2=$(ciclo 2); sleep 1
 grep -c 'avviato in background' <<<"$OUT2" >/dev/null && grep -ci 'morto' <<<"$OUT2" >/dev/null \
   && ok "pass ucciso a meta': il ciclo dopo toglie il lock morto, lo dice, e riparte" || ko "pass ucciso: il ciclo dopo non riparte: $OUT2"
 OUT3=$(ciclo 3)
 ! grep -c 'avviato in background' <<<"$OUT3" >/dev/null && ! grep -ci 'morto' <<<"$OUT3" >/dev/null \
   && ok "pass vivo: il ciclo dopo non lo tocca e non ne avvia un secondo" || ko "pass vivo trattato da morto: $OUT3"
+# E-049 (guardia): chi uccide un albero di processi ferma il padre con STOP prima di ucciderne i figli. Figli prima:
+# il padre vivo un attimo prosegue (qui scriveva il segno del giorno). Padre prima: i figli restano orfani.
+NUDI=$(grep -n 'pkill -KILL -P "\$[A-Za-z_]*"' "$HERE"/tests/*.sh "$HERE/tools/mutation-tests.sh" | grep -v ':[[:space:]]*#' \
+  | grep -v 'kill -STOP "\$[A-Za-z_]*" 2>/dev/null; pkill -KILL -P' || true)
+[ -z "$NUDI" ] && ok "E-049: ogni pkill -KILL -P ha lo STOP al padre davanti" || ko "E-049: albero ucciso senza STOP al padre: $NUDI"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -48,7 +48,8 @@ MUTATO=""; BACKUP=""; FIGLIO=""
 # `wait` (che il segnale interrompe subito), la trap lo uccide e poi ripristina. E dopo un TERM o un INT
 # si ESCE: prima la trap ripristinava e il ciclo passava al banco dopo, a mutare ancora.
 ripristina() {
-  if [ -n "$FIGLIO" ]; then pkill -KILL -P "$FIGLIO" 2>/dev/null; kill -KILL "$FIGLIO" 2>/dev/null; FIGLIO=""; fi
+  # (settimo ventaglio, E-049): STOP al banco prima di ucciderne i figli — vivo un attimo, proseguiva col comando dopo
+  if [ -n "$FIGLIO" ]; then kill -STOP "$FIGLIO" 2>/dev/null; pkill -KILL -P "$FIGLIO" 2>/dev/null; kill -KILL "$FIGLIO" 2>/dev/null; FIGLIO=""; fi
   if [ -n "$MUTATO" ] && [ -f "$BACKUP" ]; then
     cp "$BACKUP" "${MUTATO}.rest.$$" 2>/dev/null \
       && chmod +x "${MUTATO}.rest.$$" 2>/dev/null \

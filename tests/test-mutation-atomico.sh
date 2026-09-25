@@ -41,8 +41,9 @@ sleep 3   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
 # dev'essere IN CORSO — altrimenti la prova e' vuota, non verde.
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "A: la mutazione e' in corso al momento del colpo (prova non vuota)" \
   || ko "A: al colpo foo.sh non era mutato — la prova di atomicita' sarebbe vuota"
-kill -KILL "$PID" 2>/dev/null
-pkill -KILL -P "$PID" 2>/dev/null
+# (settimo ventaglio, E-049): STOP al padre, poi i figli, poi il padre. Ucciso prima il padre, i figli passavano a
+# init e `pkill -P` non li trovava piu': restavano orfani.
+kill -STOP "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null; kill -KILL "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
 sleep 1
 ATTUALE=$(cat "$TMP/repo/tools/foo.sh")
@@ -81,7 +82,7 @@ PID=$!
 sleep 3
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "C: la mutazione e' in corso al momento del colpo (prova non vuota)" \
   || ko "C: al colpo foo.sh non era mutato — la prova sarebbe vuota"
-kill -TERM "$PID" 2>/dev/null; sleep 5; kill -KILL "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null
+kill -TERM "$PID" 2>/dev/null; sleep 5; kill -STOP "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null; kill -KILL "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$ORIG" ] && ok "C: TERM e KILL dopo 5 s (come ai_timeout): il tool e' ripristinato prima del KILL" \
   || ko "C: TERM e KILL dopo 5 s: il tool e' rimasto neutralizzato (la trap aspettava il banco)"

@@ -1077,3 +1077,26 @@
 - Verifica guardia: con la copia rifatta (`cp tools/pre-commit.sh .githooks/pre-commit`) «30 OK, 1 FAIL»;
   col rimando ripristinato, 31/0.
 - Aggiramento: prima di un `cp` sopra un file tracciato, `git show HEAD:<file> | head` o un `Read`.
+
+## E-049 Un banco rosso a caso: uccidevo i figli prima del padre, e il padre vivo scriveva il segno
+
+- Data / sessione: 2026-09-25 (settimo ventaglio, V5 R2). Il banco è mio: `tests/test-grafo-notturno.sh`, nato nel
+  sesto ventaglio (S4 R6).
+- Famiglia: R3 (una prova che non misura ciò che dice: il verde e il rosso dipendevano dallo scheduler)
+- Chi l'ha trovato: il giro V5, misurando la suite banco per banco con altri quattro giri in corsa: rosso 6 volte su 19.
+- Sintomo: «pass ucciso: il ciclo dopo non riparte». Il banco uccideva il pass con `pkill -KILL -P "$P"; kill -KILL
+  "$P"`. Morto il figlio, la subshell del pass restava viva un attimo e proseguiva con `touch "$GRAFO_MARKER"`: il
+  segno del giorno per un pass ucciso, e il ciclo dopo non ripartiva. A macchina scarica non si vede: 0 su 8, e 0 su
+  10 con sei processi di carico. Con mezzo secondo di pausa fra i due colpi, 3 su 3 rossi.
+- Causa prossima: l'ordine dei colpi. Ho ucciso un albero di processi dai rami, lasciando il tronco libero di agire.
+- Causa del ragionamento: ho pensato ai due `kill` come a un gesto solo, istantaneo. In mezzo c'è una finestra, e il
+  padre ci esegue del codice. L'ordine inverso (prima il padre) ha l'altro difetto: i figli passano a init e `pkill
+  -P` non li trova più. La stessa forma stava anche in `tests/test-mutation-atomico.sh` (padre prima: figli orfani) e
+  in `tools/mutation-tests.sh` (figli prima).
+- Perché non ci ha fermati: il banco era verde a ogni mia consegna (suite in sequenza, macchina scarica). La suite
+  si ferma al primo rosso e non ripete: un rosso a caso nella notte sarebbe sembrato un difetto del turno.
+- Guardia: `tests/test-grafo-notturno.sh`, caso E-049. Ogni `pkill -KILL -P "$X"` nei banchi e in
+  `tools/mutation-tests.sh` ha `kill -STOP "$X"` davanti, sulla stessa riga.
+- Verifica guardia: con il kill di ieri rimesso, «5 OK, 1 FAIL» (E-049 nomina la riga); con lo STOP, 6/0. Il banco
+  con lo STOP: 0 rossi su 5 a macchina scarica, 0 su 3 anche a finestra larga.
+- Aggiramento: per uccidere un albero, `kill -STOP padre; pkill -KILL -P padre; kill -KILL padre`.
