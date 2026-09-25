@@ -115,13 +115,22 @@ gate_banchi() {
     [ -f "$tt" ] || continue
     nome=$(basename "$tt")
     case "$nome" in test-ask-*|test-ai-timeout*|test-stdin-timeout*) continue ;; esac
-    if (cd "$dir" && ai_timeout "$sec" bash "$tt" >/dev/null 2>&1 </dev/null); then
+    # (2026-09-25, settimo ventaglio): rc 0 non basta, come in tools/suite.sh — un banco senza asserzioni (o
+    # che muore VERDE dentro un `source`) esce 0 lo stesso. Si pretende «N OK, 0 FAIL» con N >= 1; il muto e'
+    # rosso subito, senza secondo tentativo (non e' un transitorio).
+    out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
+    if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
       pass=$((pass+1)); continue
+    fi
+    if [ "$rc" -eq 0 ]; then
+      fail=$((fail+1)); echo "rosso $nome — verde senza verdetto (manca «N OK, 0 FAIL» con N >= 1)"; continue
     fi
     sleep 2
     out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
-    if [ "$rc" -eq 0 ]; then
+    if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
       pass=$((pass+1)); echo "amber $nome"
+    elif [ "$rc" -eq 0 ]; then
+      fail=$((fail+1)); echo "rosso $nome — verde senza verdetto (manca «N OK, 0 FAIL» con N >= 1)"
     else
       fail=$((fail+1))
       if [ "$rc" -eq 124 ]; then echo "rosso $nome — SFORO del tetto di ${sec}s"

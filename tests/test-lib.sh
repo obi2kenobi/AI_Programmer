@@ -215,9 +215,14 @@ if command -v gate_banchi >/dev/null; then
   printf '#!/bin/bash\ntouch "$(dirname "$0")/../girato-qui"; echo "1 OK, 0 FAIL"\n' > "$GB/tests/test-verde.sh"
   printf '#!/bin/bash\necho "FAIL rotto davvero"; exit 1\n' > "$GB/tests/test-rosso.sh"
   printf '#!/bin/bash\nsleep 30\n' > "$GB/tests/test-appeso.sh"
+  # (settimo ventaglio): un banco che esce 0 senza asserzioni. La suite lo rifiuta («verde senza verdetto»),
+  # il gate del fixer lo contava verde: due giudici, due regole.
+  printf '#!/bin/bash\necho "0 OK, 0 FAIL"\n' > "$GB/tests/test-muto.sh"
   T0=$(date +%s); OUTG=$(gate_banchi "$GB" 2); DURG=$(( $(date +%s) - T0 ))
   [ -f "$GB/girato-qui" ] && ok "gate_banchi: esegue i banchi della copia che giudica (non quella viva)" || ko "gate_banchi: i banchi di <dir> non sono girati"
-  grep -qx "TOTALE 1 2" <<<"$OUTG" && ok "gate_banchi: 1 verde, 2 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
+  grep -qx "TOTALE 1 3" <<<"$OUTG" && ok "gate_banchi: 1 verde, 3 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
+  grep -c "rosso test-muto.sh — verde senza verdetto" <<<"$OUTG" >/dev/null && ok "gate_banchi: il banco muto (rc 0, «0 OK») e' rosso, come nella suite" \
+    || ko "gate_banchi: il banco muto passa il gate: $(grep muto <<<"$OUTG")"
   grep -c "rosso test-appeso.sh — SFORO" <<<"$OUTG" >/dev/null && [ "$DURG" -lt 25 ] && ok "gate_banchi: il banco appeso muore al tetto e si dice sforo (${DURG}s)" || ko "gate_banchi: banco appeso non fermato (${DURG}s): $OUTG"
   grep -c "rosso test-rosso.sh — FAIL rotto davvero" <<<"$OUTG" >/dev/null && ok "gate_banchi: il rosso dice la sua riga FAIL" || ko "gate_banchi: rosso senza motivo: $OUTG"
   rm -rf "$GB"
