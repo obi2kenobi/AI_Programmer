@@ -268,7 +268,9 @@ echo ""
 #   stanze che non ci sono piu' (G9 2026-09-09: trovato a 107 voci rigenerate a mano).
 {
   ULTIMA=$(grep -E "^### " "$HERE/SAL.md" | tail -1 | sed 's/^### //')
-  BLOCCO_INDICE=$(sed -n '/SAL-INDICE/,/^## [^I]/p' "$HERE/SAL.md" | head -200)
+  # (2026-09-25, ottavo ventaglio, O3 R4): senza `| head -200` — da 197 voci l'ultima usciva dalla finestra e la sonda
+  # diceva «FERMO» a indice appena rigenerato. Il blocco e' gia' limitato dal sed.
+  BLOCCO_INDICE=$(sed -n '/SAL-INDICE/,/^## [^I]/p' "$HERE/SAL.md")
   if grep -qF "$(echo "$ULTIMA" | cut -c1-40)" <<<"$BLOCCO_INDICE"; then
     sonda 0 "S16 indice del SAL fresco (contiene l'ultima voce)"
   else

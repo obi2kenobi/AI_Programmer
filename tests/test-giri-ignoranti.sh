@@ -46,6 +46,16 @@ fi
 # l'esclusione del registro è DICHIARATA nel commento della sonda
 grep -q "REGISTRO.md" "$BAT" && ok "l'esclusione del registro è dichiarata, non silenziosa" || ko "esclusione non dichiarata"
 
+
+# (2026-09-25, ottavo ventaglio, O3 R4): S16 leggeva l'indice del SAL con un `head -200` nascosto — da 197 voci diceva
+# «indice FERMO» a indice appena rigenerato (e la cura suggerita non curava). Qui il SAL vero piu' 60 voci.
+T16=$(mktemp -d); mkdir -p "$T16/tools"; cp "$HERE/tools/giri-ignoranti.sh" "$HERE/tools/sal-indice.sh" "$T16/tools/"
+cp "$HERE/SAL.md" "$T16/"; [ -f "$HERE/SAL-ARCHIVIO.md" ] && cp "$HERE/SAL-ARCHIVIO.md" "$T16/"
+for i in $(seq 1 60); do printf '\n### 2026-10-05 — voce gonfiata numero %s\nx\n' "$i" >> "$T16/SAL.md"; done
+(cd "$T16" && bash tools/sal-indice.sh >/dev/null 2>&1)
+S16=$(cd "$T16" && bash tools/giri-ignoranti.sh 2>/dev/null | grep 'S16')
+grep -c '^OK .*S16' <<<"$S16" >/dev/null && ok "O3 R4: S16 con oltre 200 voci, indice rigenerato: fresco (niente falso FERMO)" || ko "O3 R4: S16 con oltre 200 voci: «${S16}»"
+rm -rf "$T16"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
