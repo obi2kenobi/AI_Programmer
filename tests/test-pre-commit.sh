@@ -235,6 +235,16 @@ for NOME in '!x.md' '^y.md'; do
     || ko "S3 R6: il glifo in «$NOME» esce dal controllo (rc=$RC)"
   git -C "$SB" rm -q --cached -- "$NOME"; rm -f -- "$SB/$NOME"
 done
+# Il controllo delle citazioni: un nome citato che comincia col trattino andava a grep come opzione. Il nome
+# elencato in tools/.file-del-target (vive nel progetto, non qui) non si riconosceva, e il commit si bloccava.
+printf 'vedi `-z.md`\n' > "$SB/cita-trattino.md"; git -C "$SB" add cita-trattino.md
+printf -- '-z.md\n' > "$SB/tools/.file-del-target"
+OUT=$(gancio 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ! grep -c 'invalid option' <<<"$OUT" >/dev/null \
+  && ok "S3 R6: «-z.md» elencato fra i file del target si riconosce (grep non lo legge come opzione)" \
+  || ko "S3 R6: «-z.md» fra i file del target (rc=$RC): $(grep -m1 -E 'invalid option|⛔' <<<"$OUT")"
+rm -f "$SB/tools/.file-del-target"
+git -C "$SB" rm -q --cached cita-trattino.md; rm -f "$SB/cita-trattino.md"
 # La forma che toglie davvero: «!x.md» pulito accanto a «x.md» col glifo. Col «:» nudo il primo diventa
 # «:!x.md», un'esclusione di x.md, e il glifo esce dal controllo in silenzio.
 printf 'test %s dentro\n' "$GLIFO" > "$SB/x.md"; printf 'pulito\n' > "$SB/!x.md"; git -C "$SB" add -- x.md '!x.md'

@@ -122,7 +122,7 @@ TARGET=$(grep -vE '^#|^$' "$HERE/tools/.file-del-target" 2>/dev/null || true)
 while IFS= read -r f; do
   nell_indice "$f" || continue
   while IFS= read -r m; do
-    grep -qxF "$m" <<<"$TARGET" && continue          # file-del-target: nel progetto, non qui
+    grep -qxF -- "$m" <<<"$TARGET" && continue       # file-del-target: nel progetto, non qui («--»: un nome col trattino non e' un'opzione)
     # (2026-09-20): un nome nudo si risolve anche nella CARTELLA del documento che lo cita
     # (docs/bc/README.md cita `CORREZIONI.md` che vive accanto a lui — l'indice BC generato
     # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)
