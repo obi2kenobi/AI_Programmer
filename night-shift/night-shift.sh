@@ -1309,7 +1309,7 @@ if [ ! -f "$GRAFO_MARKER" ] && [ -f "$HERE/../tools/grafo-semantico.sh" ] && com
   echo $! > "$GRAFO_LOCK/pid"
   log "grafo semantico: avviato in background su ${#GRAFO_REPO[@]} repo (PID $!, log: $WORK/grafo-semantico.log)"
 elif [ ! -f "$GRAFO_MARKER" ] && ! command -v graphify >/dev/null 2>&1; then
-  log "grafo semantico: graphify ASSENTE — pass saltato (DEGRADATO; pip install graphifyy)"
+  log "grafo semantico: graphify ASSENTE — pass saltato (DEGRADATO; pipx install --python python3.12 graphifyy==0.9.66)"
 fi
 
 log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="

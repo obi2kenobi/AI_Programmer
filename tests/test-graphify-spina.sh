@@ -131,6 +131,16 @@ grep -c 'graphify affected' <<<"$A" >/dev/null && grep -c 'grep -rn' <<<"$A" >/d
 grep -c 'affected' "$SPINA" >/dev/null && ok "la riga d'avvio della spina nomina affected e il limite" \
   || ko "la spina all'avvio insegna solo query"
 
+# (2026-09-25, D41, risposta delegata): `pip install graphifyy` fallisce su tutti e due i python del Mac (3.9 di sistema;
+# Homebrew, PEP 668), e la versione non era fissata. La riga d'installazione e' una sola, con pipx, python 3.12 e la
+# versione che l'hub prova; e il rifiuto «meno nodi» che la spina prometteva la 0.9.66 non lo fa: si dice.
+RIGA='pipx install --python python3.12 graphifyy==0.9.66'
+VECCHIE=$(grep -rn 'pip install graphifyy' "$HERE/AGENTS.md" "$HERE/tools/graphify-spina.sh" "$HERE/night-shift/night-shift.sh" "$HERE/docs/MANUALE-OPERATIVO.md" 2>/dev/null || true)
+N_RIGA=$(grep -lF "$RIGA" "$HERE/AGENTS.md" "$HERE/tools/graphify-spina.sh" "$HERE/night-shift/night-shift.sh" "$HERE/docs/MANUALE-OPERATIVO.md" 2>/dev/null | grep -c .)
+[ -z "$VECCHIE" ] && [ "$N_RIGA" -eq 4 ] && ok "D41: una riga d'installazione sola, fissata (pipx, python 3.12, 0.9.66), in tutti e quattro i posti" \
+  || ko "D41: installazione non fissata o diversa: $N_RIGA posti su 4, vecchie: $(cut -d: -f1 <<<"$VECCHIE" | tr '\n' ' ')"
+grep -q '0.9.66 non lo fa' "$HERE/tools/graphify-spina.sh" && ok "D41: la spina dice che la 0.9.66 non rifiuta per «meno nodi»" || ko "D41: la spina promette ancora il rifiuto"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

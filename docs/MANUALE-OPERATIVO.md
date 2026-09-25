@@ -102,4 +102,6 @@ tail -5 ~/night-shift.log
 - `night-shift/repos.key` — PERSONA=, TERMINI=, DIGEST_EMAIL= (i codici anonimi che ospitava
   sono ritirati dal 2026-09-23)
 - `~/.config/wayfinder-router/` — il router
-- `~/.config/opencode/opencode.json` — l'harness notturno
+- `~/.config/opencode/opencode.json` — OpenCode, usato di giorno (via Wayfinder): il turno non lo lancia piu' (D8)
+- graphify: `pipx install --python python3.12 graphifyy==0.9.66` — pip e' rifiutato su tutti e due i python del Mac (3.9 di sistema, e Homebrew con PEP 668), e la
+  versione e' quella che l'hub prova (D41). gh si aggiorna liberamente: la riga d'ambiente del turno dice quale gira
