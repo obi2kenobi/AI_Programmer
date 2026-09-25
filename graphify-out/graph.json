@@ -30402,7 +30402,7 @@
       },
       "norm_label": "maschera()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L112"
+      "source_location": "L117"
     },
     {
       "id": "tools_privacy_check_nomi_locali",
@@ -30447,7 +30447,7 @@
       },
       "norm_label": "scan_termine()",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L124"
+      "source_location": "L129"
     },
     {
       "id": "tools_privacy_check_sh__entry",
@@ -61574,7 +61574,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L134",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -61586,7 +61586,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L104",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -61598,7 +61598,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L148",
+      "source_location": "L153",
       "weight": 1.0
     },
     {
@@ -61610,7 +61610,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L176",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
@@ -97940,7 +97940,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L112",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -97951,7 +97951,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/privacy-check.sh",
-      "source_location": "L124",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -100520,5 +100520,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2555c23cf11746018f0f033f42c62f92288287a6"
+  "built_at_commit": "74d0b0ab0ae9a952bdaadf3d44448ce67560b8bb"
 }

@@ -53,6 +53,11 @@ fi
 RC=0
 if [ -f "$KEY" ]; then
   HA_KEY=1
+elif [ ! -d "$HERE/night-shift" ]; then
+  # (2026-09-25, D6, risposta delegata): un satellite (nessuna cartella night-shift/) non ha mai una repos.key, che e'
+  # dell'hub: la sua assenza qui non e' un degrado. Si controllano le forme di segreto e la lista locale dei nomi.
+  HA_KEY=0
+  echo "privacy-check: satellite (nessuna night-shift/): repos.key e' dell'hub — qui le forme di segreto e ~/.privacy-nomi (D6)" >&2
 else
   HA_KEY=0
   echo "⛔ privacy-check: GATE DEGRADATO — repos.key assente: nomi/persone/termini della chiave NON controllati (né file, né storia git). Non è un verdetto di pulizia. Le forme di segreto e ~/.privacy-nomi si controllano comunque, qui sotto." >&2

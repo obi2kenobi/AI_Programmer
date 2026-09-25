@@ -156,6 +156,17 @@ OUT=$(HOME="$TMP/vuota" bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 grep -c "Dell'Ortolano" <<<"$OUT" >/dev/null && ko "S3 R1: l'uscita porta il termine con l'apostrofo in chiaro" || ok "S3 R1: e l'uscita lo maschera"
 git -C "$TMP" rm -q --cached apice.md
 
+# (2026-09-25, D6, risposta delegata): in un satellite (nessuna cartella night-shift/) repos.key e' dell'hub, e la sua
+# assenza non e' un degrado: si controllano le forme di segreto (e la lista locale dei nomi, se c'e').
+SAT=$(mktemp -d); mkdir -p "$SAT/tools"; cp "$HERE/tools/privacy-check.sh" "$SAT/tools/"
+git -C "$SAT" init -q && git -C "$SAT" add tools/ && git -C "$SAT" -c user.email=t@t -c user.name=t commit -qm tools
+OUT=$(HOME="$SAT/casa" bash "$SAT/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 0 ] && ! grep -q "GATE DEGRADATO" <<<"$OUT" && grep -q "satellite" <<<"$OUT" \
+  && ok "D6: satellite senza repos.key: pulito, non degradato, e lo dice" || ko "D6: satellite senza repos.key: rc=$RC — $(head -2 <<<"$OUT")"
+echo "token gh""p_ABCDEFGHIJKLMNOPQRSTUVWX" > "$SAT/fuga.md" && git -C "$SAT" add fuga.md
+OUT=$(HOME="$SAT/casa" bash "$SAT/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -q "FORMA DI SEGRETO" <<<"$OUT" && ok "D6: nel satellite le forme di segreto si vedono ancora" || ko "D6: satellite, forma non vista: rc=$RC"
+rm -rf "$SAT"
 rm -rf "$TMP"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
