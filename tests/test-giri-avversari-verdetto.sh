@@ -24,6 +24,20 @@ N_FIND=$(grep -cE 'grep -[a-zA-Z]*[qc][a-zA-Z]* +"\^FIND \+\(?S[0-9]' "$AVV")
 [ "$N_FIND" -ge 9 ] && ok "gli attacchi sulle sonde leggono «^FIND +S…» ($N_FIND)" \
   || ko "attacchi che leggono il verdetto FIND: $N_FIND, attesi almeno 9"
 
+
+# (2026-09-25, settimo ventaglio, V5 R3): A20 e G4 giudicavano dall'RC di privacy-check. La batteria gira in un clone,
+# senza night-shift/repos.key (gitignored): li' privacy-check esce 1 («GATE DEGRADATO») anche ad albero pulito, e
+# l'attacco diceva TIENE con le forme di segreto sabotate. Il verdetto e' la riga «FORMA DI SEGRETO».
+C=$(mktemp -d); trap 'rm -rf "$C"' EXIT
+git clone -q "$HERE" "$C/hub" 2>/dev/null
+PC=$(cd "$C/hub" && bash tools/privacy-check.sh 2>&1 >/dev/null); PRC=$?
+[ "$PRC" -ne 0 ] && ! grep -c 'FORMA DI SEGRETO' <<<"$PC" >/dev/null \
+  && ok "premessa: nel clone della batteria privacy-check esce $PRC ad albero pulito (l'rc non e' un verdetto)" \
+  || ko "premessa cambiata: nel clone privacy-check esce $PRC — rivedere questo banco"
+RC_NUDI=$(grep -n 'bash tools/privacy-check.sh >/dev/null 2>&1 &&' "$AVV" || true)
+[ -z "$RC_NUDI" ] && ok "V5 R3: nessun attacco giudica privacy-check dal suo rc" || ko "V5 R3: attacchi che leggono l'rc di privacy-check: $(cut -d: -f1 <<<"$RC_NUDI" | tr '\n' ' ')"
+N_FORMA=$(grep -c "grep -c 'FORMA DI SEGRETO'" "$AVV")
+[ "$N_FORMA" -ge 2 ] && ok "V5 R3: A20 e G4 leggono «FORMA DI SEGRETO» ($N_FORMA)" || ko "V5 R3: attacchi che leggono «FORMA DI SEGRETO»: $N_FORMA, attesi 2"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

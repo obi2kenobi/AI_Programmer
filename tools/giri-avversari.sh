@@ -161,8 +161,12 @@ git checkout -- .claude/skills 2>/dev/null; true
 att; sedi 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
 difesa_test tests/test-sal-indice-ancore.sh "A19 marker indice SAL sostituito"
 
-att; printf 'sk-ANTHROP%s-FAKE1234567890abcd\n' 'IC' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
-bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "A20 segreto generico piantato: privacy-check non ne vede la FORMA" || tiene "A20 forma di segreto piantata vista (shaping)"
+# (2026-09-25, settimo ventaglio, V5 R3): A20 e G4 leggono la riga «FORMA DI SEGRETO», non l'rc. Nel clone della batteria
+# manca repos.key e privacy-check esce 1 («GATE DEGRADATO») anche pulito: con le forme sabotate diceva TIENE lo stesso.
+# La pianta di A20 era «sk-ANTHROPIC-FAKE…», che non e' una forma (le SHAPES cercano sk-ant- con 20 caratteri): l'rc
+# nascondeva che privacy-check non l'aveva mai vista. Ora una forma vera, composta a runtime.
+att; printf 'sk-an%s-%s\n' 't' 'FINTAfintaFINTAfinta0123' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
+PC=$(bash tools/privacy-check.sh 2>&1 >/dev/null); grep -c 'FORMA DI SEGRETO' <<<"$PC" >/dev/null && tiene "A20 forma di segreto piantata vista (shaping)" || aggirato "A20 segreto generico piantato: privacy-check non ne vede la FORMA"
 git checkout -- docs/campo/2026-08-28-sd-dashboard-dossier.md 2>/dev/null; true
 
 echo ""
@@ -401,7 +405,7 @@ att; sedi 's/attese eseguite/attese fatte/' tools/verifica_banco.py
 difesa_test tests/test-verifica-banco.sh "G3 parser verdetto banco rotto"
 
 att; printf 'token: ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ12\n' >> llm/README.md
-bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "G4 token GitHub piantato: privacy-check non ne vede la FORMA" || tiene "G4 forma di token GitHub piantata vista (shaping)"
+PC=$(bash tools/privacy-check.sh 2>&1 >/dev/null); grep -c 'FORMA DI SEGRETO' <<<"$PC" >/dev/null && tiene "G4 forma di token GitHub piantata vista (shaping)" || aggirato "G4 token GitHub piantato: privacy-check non ne vede la FORMA"
 git checkout -- llm/README.md
 
 # (2026-09-24, sesto ventaglio, S3 R5): il percorso passa a python come argomento, non incollato nel sorgente —
