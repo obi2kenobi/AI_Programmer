@@ -12,11 +12,11 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SEZ=$(awk '/^6\. \*\*Verifica con un riscontro/{f=1} /^## 2\./{f=0} f' "$CG")
-echo "$SEZ" | grep -q "livelli di verifica" \
+grep -q "livelli di verifica" <<<"$SEZ" \
   && ok "il passo 6 (riscontro) cita la tassonomia condivisa dei 5 livelli" \
   || ko "il passo 6 non cita la tassonomia — vocabolario isolato dal resto del sistema"
 
-echo "$SEZ" | grep -q "docs/system.md" \
+grep -q "docs/system.md" <<<"$SEZ" \
   && ok "cita la fonte di verità reale (docs/system.md), non a memoria" \
   || ko "non cita la fonte della tassonomia"
 

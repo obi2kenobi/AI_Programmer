@@ -26,7 +26,7 @@
 # Uso: caccia-registro.sh [dir]           → il censimento (stampa i conteggi)
 #       caccia-registro.sh --prossimo [dir] → il prossimo debito da saldare:
 #       «FAMIGLIA|file:riga» — il primo non saldato-VERIFICATO e non rinviato.
-# Esce: 0 sempre — il debito non e' un errore, e' un debito
+# Esce: 0 — il debito non e' un errore, e' un debito · 2 cartella inesistente (non si e' guardato niente)
 set -uo pipefail
 MODO="${1:-}"
 [ "$MODO" = "--prossimo" ] && shift
@@ -42,7 +42,9 @@ mkdir -p "$STATO"; touch "$SALDATI" "$RINVIA"
 # due verita' sullo stesso debito, audit-1 finding 12)
 # (revisione 10 giri, 2026-09-23): -H — con UN solo file nel glob grep non stampa il nome, e
 # il sito usciva «2:…» (in una repo satellite con un test solo, misurato)
-siti_e002() { grep -rnH "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ 2>/dev/null \
+# (Q31, 2026-09-23): anche tests/ — i banchi sono il posto dove E-002 ha morso (E-042), e la caccia
+# non li guardava: la voce di DEBITI che le affidava i 253 siti aspettava per sempre
+siti_e002() { grep -rnH "[|] gre[p] -q" --include="*.sh" tools/ night-shift/ llm/ tests/ 2>/dev/null \
               | grep -v "^[^:]*:[0-9]*: *#" | grep -v "cattura-prima" \
               | sed 's/^\([^:]*\):\([0-9]*\):.*/\1:\2/'; }
 siti_e032() { grep -rnH '>> "\$HERE\|> "\$HERE\|sed -i.*"\$HERE' tests/*.sh 2>/dev/null \
@@ -59,8 +61,8 @@ saldati_verificati() { # $1 = famiglia
     f="${m%:*}"; n="${m##*:}"
     [ -f "$f" ] || continue
     case "$1" in
-      E-002) sed -n "${n}p" "$f" 2>/dev/null | grep -q "[|] gre[p] -q" || printf '%s\n' "$m" ;;
-      E-032) sed -n "${n}p" "$f" 2>/dev/null | grep -qE '>> "\$HERE|> "\$HERE|sed -i.*"\$HERE' || printf '%s\n' "$m" ;;
+      E-002) sed -n "${n}p" "$f" 2>/dev/null | grep -c "[|] gre[p] -q" >/dev/null || printf '%s\n' "$m" ;;
+      E-032) sed -n "${n}p" "$f" 2>/dev/null | grep -Ec '>> "\$HERE|> "\$HERE|sed -i.*"\$HERE' >/dev/null || printf '%s\n' "$m" ;;
     esac
   done < "$SALDATI"
 }
@@ -98,8 +100,13 @@ rm -f "$VER_E002" "$VER_E032"
 TOT=$(( E002 + E032 ))
 OGGI=$(date '+%Y-%m-%d %H:%M')
 BR=$(git branch --show-current 2>/dev/null || echo "?")
-if [ -f "$STATO/ultimo" ]; then
-  PREC=$(cat "$STATO/ultimo")
+# (2026-09-24, sesto ventaglio, S4 R5): uno stato illeggibile (vuoto, troncato da un kill) valeva zero — il delta
+# era tutto il debito, e la storia registrava per sempre una crescita mai avvenuta. Si dice, e il delta e' 0.
+PREC=$(cat "$STATO/ultimo" 2>/dev/null)
+if [ -f "$STATO/ultimo" ] && ! grep -qE '^[0-9]+ [0-9]+$' <<<"$PREC"; then
+  DELTA=0
+  NOTE="baseline: l'ultimo censimento e' ILLEGGIBILE («$(head -c 40 <<<"$PREC")») — nessun delta"
+elif [ -f "$STATO/ultimo" ]; then
   P002=$(echo "$PREC" | awk '{print $1}'); P032=$(echo "$PREC" | awk '{print $2}')
   DELTA=$(( TOT - (P002 + P032) ))
   NOTE="delta vs ultimo censimento: $DELTA"
@@ -108,7 +115,8 @@ else
   NOTE="baseline (primo censimento)"
 fi
 if [ "$BR" = "main" ] || [ "$BR" = "master" ]; then
-  echo "$E002 $E032" > "$STATO/ultimo"
+  # (S4 R5): si scrive accanto e si rinomina — un kill a meta' non lascia uno stato troncato
+  echo "$E002 $E032" > "$STATO/ultimo.$$" && mv -f "$STATO/ultimo.$$" "$STATO/ultimo"
 fi
 # (audit-2): la storia si scrive SOLO dal main — la caccia gira su rami di
 # lavoro e i censimenti di ramo producevano delta falsi (pagamenti fantasma)

@@ -17,17 +17,22 @@ resoconto della notte. Il morning-gate è **in pensione** dal 2026-09-23 (decisi
 `cervello/decisione-dominio-2026-09-23.md`): le PR notturne le delibera il censore
 (`night-shift/revisore.sh`); il gate resta invocabile a mano.
 
-I numeri — cosa funziona, cosa invecchia:
+Sulle PR delle issue (`night/issue-N`) trovi il **parere** del censore come commento: la fusione
+è tua.
+
+I numeri del gate sono **storici**: `metrics/gate.csv` lo scriveva solo il morning-gate, e
+l'ultima riga è del 2026-08-21. I due comandi servono se rilanci il gate a mano:
 
 ```bash
 bash night-shift/gate-summary.sh
 ```
 
-I tuoi verdetti sulle PR, uno per PR (`merge`, `chiusura` o `commessa`):
-
 ```bash
 bash night-shift/gate-esito.sh <repo> <pr> merge
 ```
+
+(`gate-esito` registra il tuo verdetto su una PR giudicata dal gate: `merge`, `chiusura` o
+`commessa`; `gate-summary` dice anche da quanti giorni il registro non ha righe.)
 
 Poi apri le PR bozza su GitHub, fondi le buone, chiudi le cattive.
 
@@ -44,10 +49,16 @@ In Claude Code (o ZCode): `/audit-commessa` verifica le commesse di stanotte.
 ## Quando vuoi delegare (giorno)
 
 In Claude Code:
-- `/qwen "riassumi questo file"` — cervello locale (gratis, privato)
+- `llm/ask-qwen.sh "riassumi questo file" < file` — cervello locale (gratis, privato)
 - `/goal "ottimizza X | max 8 tentativi"` — loop con verifica dichiarata
 - `/brainstorming <idea>` — raffina i requisiti prima del codice
-- `/nuova-commessa <descrizione>` — wizard per la notte
+- una commessa per la notte: in ZCode il wizard `/nuova-commessa` (`.zcode-commands-nuova-commessa.md`),
+  altrimenti l'issue dal template `.github/ISSUE_TEMPLATE/night-shift.md`
+
+(2026-09-24, T4: qui c'era `/qwen`, che nel repo non esiste — né in `.claude/commands/` né in
+`.claude/skills/`; il comando vero è `llm/ask-qwen.sh`. [Correzione, E-045: avevo scritto il contrario
+anche di `/nuova-commessa`, che invece c'è: è il wizard di ZCode, `.zcode-commands-nuova-commessa.md`, col suo banco
+`tests/test-nuova-commessa-wizard-coerenza.sh`. Claude Code non lo vede come comando slash.])
 
 ## Quando costruisci qualcosa di nuovo
 
@@ -72,12 +83,14 @@ bash tools/status-page.sh
 ## Se qualcosa non funziona
 
 Nell'ordine: cosa è giù; il motore si resuscita così; un agente impantanato si libera così;
-il turno dice cosa sta facendo.
+il turno dice cosa sta facendo. La pulizia scrive `[o]pencode run` e non `opencode run`: la classe trova il
+processo ma non la riga di comando che la contiene, così un agente che la esegue alla lettera non uccide
+la propria shell (provato con pgrep, 2026-09-24, Q1 R4).
 
 ```bash
 bash tools/system-health.sh
 launchctl kickstart -k gui/$(id -u)/luca.ollama
-pkill -f "opencode run"
+pkill -f "[o]pencode run"
 tail -5 ~/night-shift.log
 ```
 

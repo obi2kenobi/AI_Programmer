@@ -44,12 +44,60 @@ check "git grep --open-files-in-pager" 1 'git grep --open-files-in-pager=vim x'
 check "git diff --output"           1 'git diff --output=/tmp/x'
 check "git log --output"            1 'git log --output=../x'
 check "git diff --ext-diff"         1 'git diff --ext-diff HEAD~1'
+# (2026-09-23, giro A6 della notte): due vie ancora aperte, riprodotte prima della cura — le
+# opzioni corte RAGGRUPPATE (-iO) e le lunghe ABBREVIATE, che git accetta se non ambigue
+check "git grep -iO raggruppata"    1 "git grep -iO'touch /tmp/PWN1' x"
+check "git grep --open-files= (abbreviata)" 1 'git grep --open-files=touch x'
+check "git grep --open= (abbreviata)" 1 'git grep --open=touch x'
+check "git diff --out= (abbreviata)" 1 'git diff --out=/tmp/x'
+check "git diff --ext (abbreviata)" 1 'git diff --ext HEAD~1'
+# (2026-09-24, terzo ventaglio, V2 S24a): aggiungere `config` a GIT_RO restava verde qui — e `git config
+# core.fsmonitor "touch …"` seguito da un `git status` ESEGUE il comando (provato dal giro). Anche le
+# configurazioni passate da riga di comando (-c, --config-env) e il cambio di cartella (-C .) si rifiutano.
+check "git config (scrive la config)" 1 'git config core.fsmonitor "touch x"'
+check "git -c (config da riga di comando)" 1 'git -c core.fsmonitor=touch status'
+check "git --config-env"            1 'git --config-env=core.pager=X status'
+# (2026-09-24, quarto ventaglio, Q5 R1): tre vie ancora aperte, provate eseguendo dal giro — un A CAPO
+# separa i comandi ma non i segmenti (la seconda riga girava senza esame, in agente.sh con eval); il `..`
+# si scriveva senza scriverlo (apici, backslash, graffe: la shell lo ricompone); `jq env` leggeva
+# l'ambiente senza un `$` (il caso T5#2 riaperto).
+check "a capo: seconda riga python3"   1 $'echo ok\npython3 -c "print(42)"'
+check "a capo: seconda riga touch"     1 $'grep x f.txt\ntouch scritto'
+check "carattere di controllo (CR)"    1 $'grep x f.txt\rtouch scritto'
+check "graffe che fanno ..: .{.,}/"    1 'cat .{.,}/fuori.txt'
+check "apici che fanno ..: '.''.'/"   1 "cat '.''.'/fuori.txt"
+check "backslash che fa ..: \\../"      1 'cat \../fuori.txt'
+check "virgolette che fanno ..: \".\".\"/\"" 1 'cat "."."/fuori.txt"'
+check "jq env (l'ambiente senza \$)"    1 'jq -n env.QUALCOSA'
+check "jq '\$ENV' fra apici singoli"   1 "jq -n '\$ENV'"
+check "jq -s length (legittimo)"       0 'jq -s length out.json'
+check "grep di una regex con graffe (legittimo)" 0 'grep -cE "a{2}" f.txt'
+check "git log --textc (abbreviata)" 1 'git log --textc -p'
+check "git grep -i -e (legittimo)"  0 'git grep -i -e foo'
+check "git log --oneline (legittimo)" 0 'git log --oneline -3'
+check "git diff --stat (legittimo)" 0 'git diff --stat HEAD~1'
 check "redirezione >"               1 'grep x f > out.txt'
 check "redirezione >>"              1 'cat f >> g'
 check "& e > fra virgolette sono dati" 0 "grep -q 'a & b > c' f"
 check "2>/dev/null e 2>&1 ammessi"   0 'grep -c x f 2>/dev/null && git log --oneline -3 2>&1'
 check ">/dev/null ammesso"           0 'grep -q x f >/dev/null'
 check "> verso un file dopo /dev/null" 1 'grep x f 2>/dev/null > out.txt'
+# (2026-09-23, notte dei giri, T5#2): l'allowlist guardava QUALE strumento gira, non COSA legge —
+# 11 letture di segreti su 11 ammesse; agente.sh poi le scriveva in un file che `git add -A` spinge.
+# Il confine e' il progetto: niente percorsi assoluti, niente ~, niente .. come cartella, niente $.
+check "cat ~/.git-credentials"      1 'cat ~/.git-credentials'
+check "cat ~/.netrc (fra virgolette)" 1 'cat "~/.netrc"'
+check "cat /proc/self/environ"      1 'cat /proc/self/environ'
+check "echo \$VARIABILE"            1 'echo $ZHIPUAI_API_KEY'
+check "echo \${GH_TOKEN}"           1 'echo ${GH_TOKEN}'
+check "grep -r in ~/.config"        1 'grep -r TOKEN ~/.config'
+check "cat ../fuori"                1 'cat ../night-shift/repos.key'
+check "cat dentro/../../fuori"      1 'cat src/../../x'
+check "git -C /altrove"             1 'git -C /home/u/altro log'
+check "grep --file=/assoluto"       1 'grep --file=/etc/passwd x'
+check "git diff HEAD~1..HEAD (intervallo, legittimo)" 0 'git diff HEAD~1..HEAD'
+check "grep in src/ (legittimo)"    0 'grep -rn foo src/'
+check "\$ fra apici singoli e' un dato (legittimo)" 0 "grep -c 'fine\$' f"
 # --- I LEGITTIMI: devono PASSARE (falsi positivi = banco zoppo) ---
 check "grep semplice"               0 grep -q "AVVISO" file.js
 # caso speciale: stringa GREZZA (le virgolette devono arrivare intere alla lib)
@@ -58,7 +106,7 @@ if gate_allowlist_ok 'grep -c "a;b" file.txt'; then ok "grep con ; nelle virgole
 # la shell del test interpretava `|` e `&&` prima di check(): l'allowlist vedeva solo il primo
 # pezzo, `git diff --stat` e `tail -2 file` giravano DAVVERO nell'hub, e l'esito di «cat | wc»
 # finiva dentro wc (conteggio perso nella subshell). Tre verdi che non provavano niente.
-check "cat | wc"                    0 'cat /tmp/out | wc -l'
+check "cat | wc"                    0 'cat out.txt | wc -l'   # (T5#2: /tmp e' fuori dal progetto, il caso prova la pipe)
 check "git diff readonly"           0 git diff HEAD~1
 check "git log"                     0 git log --oneline -5
 check "git status concatenato"      0 'git status && git diff --stat'
@@ -116,10 +164,237 @@ T0=$(date +%s); run_guarded 1 bash -c 'trap "" TERM; sleep 12; true'; RCG=$?; T1
 # decisione: il nome esce invariato, anche se una repos.key residua lo mapperebbe.
 KEYTMP=$(mktemp -d)
 printf '# test\nREPO-X=finto/proprio\n' > "$KEYTMP/repos.key"
-OUT=$( HERE="$KEYTMP" bash -c "source '$HERE/night-shift/lib.sh'; repo_code 'finto/proprio'; repo_code 'altra/qualunque'" 2>/dev/null )
+OUT=$( HERE="$KEYTMP" bash -c 'source "$1/night-shift/lib.sh"; repo_code finto/proprio; repo_code altra/qualunque' _ "$HERE" 2>/dev/null )
 [ "$(echo "$OUT" | head -1)" = "finto/proprio" ] && ok "repo_code: nome invariato anche con una repos.key residua (codici ritirati)" || ko "repo_code mappa ancora: $OUT"
 [ "$(echo "$OUT" | tail -1)" = "altra/qualunque" ] && ok "repo_code: nome qualunque passa invariato" || ko "repo_code ignoto: $OUT"
 rm -rf "$KEYTMP"
+
+# --- (2026-09-23, notte dei giri, T3#6): il turno scrive nel log con quale bash, quale ramo di timeout e
+# quale sandbox gira — senza, le differenze Mac/Linux (T3#1, T3#2) non si misurano dal log del Mac
+command -v ambiente_turno >/dev/null && AMB=$(ambiente_turno) || AMB=""
+grep -cE "^ambiente: bash [0-9]+\.[0-9]+.* · timeout: .+ · sandbox: .+" <<<"$AMB" >/dev/null \
+  && ok "ambiente_turno: bash, ramo di timeout e sandbox in una riga" || ko "ambiente_turno assente o incompleta: '$AMB'"
+# (2026-09-24, sesto ventaglio, S5 R4): la riga diceva la bash del TURNO (/bin/bash, 3.2 sul Mac), ma i banchi partono
+# con `bash` dal PATH, dove /opt/homebrew/bin viene prima: possono essere due bash diverse, e dal log non si sapeva
+# con quale sed, timeout e setsid avevano girato i banchi (gli strumenti che al Mac hanno gia' morso).
+grep -cE 'bash dei figli: [^ ]+ [0-9]' <<<"$AMB" >/dev/null && grep -c 'sed: ' <<<"$AMB" >/dev/null && grep -c 'setsid: ' <<<"$AMB" >/dev/null \
+  && ok "S5 R4: la riga d'ambiente dice anche la bash dei banchi, il sed e setsid" || ko "S5 R4: riga d'ambiente senza la bash dei figli / sed / setsid: '$AMB'"
+# (2026-09-25, ottavo ventaglio, O4 R6): le versioni che contano — git (e se ha PCRE, che il pre-commit presume), gh (le
+# forme di flag cambiano), jq, python3, graphify — non si leggevano dal log del Mac
+grep -cE "git: [^·]+ \(PCRE: (si|NO|\?)\) · gh: [^·]+ · jq: [^·]+ · python3: [^·]+ · graphify: [^·]+" <<<"$AMB" >/dev/null \
+  && ok "O4 R6: la riga d'ambiente dice le versioni di git (con PCRE), gh, jq, python3 e graphify" || ko "O4 R6: riga d'ambiente senza le versioni: '$AMB'"
+grep -c "timeout: perl" <<<"$(AI_TIMEOUT_FORCE_PERL=1 ambiente_turno 2>/dev/null)" >/dev/null \
+  && ok "ambiente_turno: col ramo perl forzato dice perl" || ko "ambiente_turno non vede il ramo perl"
+grep -c 'log "$(ambiente_turno)"' "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "night-shift.sh scrive l'ambiente nel log" || ko "night-shift.sh non scrive l'ambiente nel log"
+
+# --- (2026-09-24, terzo ventaglio, V4#1): esegui_verifica — lo sforo del budget non e' un rosso qualunque.
+# Il turno scriveva «VERIFICA ROSSA» per ogni rc != 0 e buttava l'uscita: uno sforo (124) e un banco rotto
+# erano lo stesso evento, e nessuno sapeva dove la suite si era fermata.
+if command -v esegui_verifica >/dev/null; then
+  VD=$(mktemp -d)
+  E1=$(esegui_verifica "$VD" 5 'echo tutto bene' "$VD/v.log"); R1=$?
+  E2=$(esegui_verifica "$VD" 5 'echo banco rotto >&2; exit 1' "$VD/r.log"); R2=$?
+  E3=$(esegui_verifica "$VD" 1 'echo "▶ tests/test-lento.sh" >&2; sleep 5' "$VD/s.log"); R3=$?
+  [ "$R1" -eq 0 ] && grep -cE '^VERDE in [0-9]+ s$' <<<"$E1" >/dev/null && ok "esegui_verifica: verde, con la durata («${E1}»)" || ko "esegui_verifica verde: rc $R1 «${E1}»"
+  [ "$R2" -eq 1 ] && grep -c 'ROSSA (rc 1)' <<<"$E2" >/dev/null && grep -c 'banco rotto' <<<"$E2" >/dev/null && ok "esegui_verifica: rosso, con rc e ultima riga («${E2}»)" || ko "esegui_verifica rosso: rc $R2 «${E2}»"
+  [ "$R3" -eq 124 ] && grep -c 'SFORO DEL BUDGET (1 s)' <<<"$E3" >/dev/null && grep -c 'test-lento' <<<"$E3" >/dev/null && ok "esegui_verifica: sforo distinto dal rosso, e dice dove («${E3}»)" || ko "esegui_verifica sforo: rc $R3 «${E3}»"
+  [ -s "$VD/r.log" ] && ok "esegui_verifica: l'uscita resta in un file, non in /dev/null" || ko "esegui_verifica: uscita buttata"
+  # (2026-09-24, quinto ventaglio, R4 R6): con la verifica verde nel log arrivava solo «VERDE in N s» — la
+  # «⚠ SENTINELLA» della suite (budget oltre il 70%) restava nel file d'uscita, sovrascritto al ciclo dopo
+  E4=$(esegui_verifica "$VD" 5 'echo "⚠ SENTINELLA: la suite ha usato il 81% del budget"; echo "Suite: 3/3"' "$VD/t.log")
+  grep -c '^VERDE in [0-9]* s — ⚠ SENTINELLA: la suite ha usato il 81%' <<<"$E4" >/dev/null && ok "R4 R6: la sentinella della suite arriva nella riga VERDE («${E4}»)" || ko "R4 R6: sentinella persa: «${E4}»"
+  rm -rf "$VD"
+else
+  ko "esegui_verifica assente da night-shift/lib.sh"
+fi
+grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
+
+# --- (2026-09-25, ottavo ventaglio, O4 R3): senza origin/HEAD, default_branch ripiegava su `gh repo view -R …`, che il gh
+# vero rifiuta («unknown shorthand flag: 'R'»): diceva sempre «main», anche per una repo `master`.
+if command -v default_branch >/dev/null; then
+  DBT=$(mktemp -d); git init -q --bare -b master "$DBT/r.git"
+  git clone -q "$DBT/r.git" "$DBT/seme" 2>/dev/null; echo x > "$DBT/seme/a"
+  git -C "$DBT/seme" add a; git -C "$DBT/seme" -c user.email=t@t -c user.name=t commit -qm a; git -C "$DBT/seme" push -q origin master 2>/dev/null
+  git clone -q "$DBT/r.git" "$DBT/c" 2>/dev/null; git -C "$DBT/c" remote set-head origin -d 2>/dev/null
+  DBR=$(default_branch "$DBT/c" 2>/dev/null); DBRC=$?
+  [ "$DBR" = master ] && [ "$DBRC" -eq 0 ] && ok "O4 R3: senza origin/HEAD default_branch chiede al remoto (master, non «main»)" || ko "O4 R3: senza origin/HEAD: «${DBR}» rc $DBRC"
+  rm -rf "$DBT"
+else
+  ko "O4 R3: default_branch assente"
+fi
+
+# --- (2026-09-25, ottavo ventaglio, O2 R3): le guardie anti-doppione leggevano «gh in errore» come «non c'e'» —
+# `$(gh … 2>/dev/null || true)` — e il turno riapriva issue, PR e commenti a ogni ciclo in cui la lettura cadeva e la
+# scrittura no. Ora gh che non risponde e' GH_NON_SO, e la scrittura esterna si salta in quel ciclo.
+NS_T="$HERE/night-shift/night-shift.sh"
+CIECHE=$(grep -nE '\$\(.*gh (issue|pr) (list|view).*2>/dev/null (\| grep [^)]*)?\|\| true\)' "$NS_T" | grep -v ':[[:space:]]*#' || true)
+[ -z "$CIECHE" ] && [ "$(grep -c 'GH_NON_SO' "$NS_T")" -ge 8 ] \
+  && ok "O2 R3: nessuna guardia anti-doppione legge un errore di gh come «non c'e'»" \
+  || ko "O2 R3: guardie che leggono l'errore di gh come vuoto: $(cut -d: -f1 <<<"$CIECHE" | tr '\n' ' ')(GH_NON_SO usato $(grep -c GH_NON_SO "$NS_T") volte)"
+
+# --- (2026-09-25, ottavo ventaglio, O2 R4 e R5)
+# R4: la PR di caccia si contava «creata» anche con gh in errore (log e SAL mentivano, e il freno del rate limit non
+# scattava). R5: i titoli delle issue (testo di GitHub) si accumulavano con «\n» e si stampavano con `echo -e`: un
+# `C:\cartelle` nel titolo chiudeva l'uscita a \c, e la lista ASPETTA IL GIORNO perdeva le voci dopo.
+NS_T="$HERE/night-shift/night-shift.sh"
+awk '/PR_CACCIA=\$\(cd "\$DIR" && gh pr create/{p=1} p&&/PR_CREATED=\$\(\(PR_CREATED\+1\)\)/{print; exit} p' "$NS_T" | grep -c 'case "$PR_CACCIA" in' >/dev/null \
+  && ok "O2 R4: la PR di caccia si conta solo se gh ha dato un URL" || ko "O2 R4: la PR di caccia si conta anche quando gh fallisce"
+! grep -c 'echo -e "$ASPETTA_GIORNO"' "$NS_T" >/dev/null && ! grep -cE 'ASPETTA_GIORNO="\$ASPETTA_GIORNO\\n' "$NS_T" >/dev/null \
+  && ok "O2 R5: la lista ASPETTA IL GIORNO si accumula con a capo veri e si stampa senza interpretare i titoli" \
+  || ko "O2 R5: i titoli di GitHub passano ancora da echo -e"
+AG=""; TITLE='Percorso C:\cartelle\nuove'; AG="$AG"$'\n'"  o/r #12: $TITLE"; AG="$AG"$'\n'"  o/r #13: dopo"
+[ "$(printf '%s' "$AG" | grep -c 'o/r #13')" -eq 1 ] && [ "$(printf '%s' "$AG" | grep -cF 'C:\cartelle')" -eq 1 ] \
+  && ok "O2 R5: printf '%s' tiene intero un titolo con «\\c» e le voci dopo" || ko "O2 R5: la forma nuova perde le voci"
+
+# --- (2026-09-25, ottavo ventaglio, O5 R1): l'auto-miglioramento dell'hub apriva una PR nuova e identica a ogni ciclo (il
+# ramo cambia nome a ogni minuto). Provato nel laboratorio del giro (tre cicli, tre PR, stesso patch-id; con la cura:
+# «DOPPIONE», nessuna PR). Qui la guardia: prima del push, lo stesso controllo delle cacce sui rami notte/auto-*.
+grep -c 'NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE' "$HERE/night-shift/night-shift.sh" >/dev/null && grep -c "grep '^notte/auto-'" "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "O5 R1: l'auto-miglioramento non riapre una PR con lo stesso diff (caccia_gia_aperta sui notte/auto-*)" \
+  || ko "O5 R1: l'auto-miglioramento apre una PR a ogni ciclo, senza guardare quelle aperte"
+
+# --- (2026-09-25, ottavo ventaglio, O2 R2 e R3): `gh pr list` e `gh issue list` tornano 30 elementi se non si dice altro
+# (e il censore ne chiedeva 20): con 20 PR piu' nuove davanti nessuna caccia arrivava al giudizio, e le guardie
+# anti-doppione oltre 30 issue non vedevano il doppione. Ogni lista del turno dichiara un limite di almeno 100.
+CORTE=$(grep -nE 'gh (pr|issue) list' "$HERE/night-shift/night-shift.sh" "$HERE/night-shift/lib.sh" | grep -v ':[[:space:]]*#' \
+  | awk '{ if (match($0, /--limit [0-9]+/)) { n = substr($0, RSTART+8, RLENGTH-8) + 0; if (n < 100) print } else print }' || true)
+[ -z "$CORTE" ] && ok "O2 R2: ogni gh pr/issue list del turno dichiara un limite di almeno 100" \
+  || ko "O2 R2: liste del turno col limite di default (30) o corto: $(cut -d: -f1,2 <<<"$CORTE" | sed "s#$HERE/##" | tr '\n' ' ')"
+
+# --- (2026-09-25, ottavo ventaglio, O2 R1): lo stato della PR di un ramo si chiedeva con `gh pr view … 2>/dev/null`, e un
+# errore di gh (rate limit, rete) era vuoto = «nessuna PR»: il turno rifaceva l'issue e forzava il ramo di una PR APERTA.
+if command -v stato_pr_ramo >/dev/null; then
+  GHD=$(mktemp -d)
+  printf '#!/bin/bash\n[ -n "${GH_FINTO_ROTTO:-}" ] && { echo "API rate limit exceeded" >&2; exit 1; }\nq=""; while [ $# -gt 0 ]; do case "$1" in -q|--jq) q="$2"; shift;; esac; shift; done\nprintf "%%s" "${GH_FINTO_JSON:-[]}" | jq -r "$q"\n' > "$GHD/gh"; chmod +x "$GHD/gh"
+  S1=$(PATH="$GHD:$PATH" GH_FINTO_ROTTO=1 stato_pr_ramo o/r night/issue-7); R1=$?
+  S2=$(PATH="$GHD:$PATH" GH_FINTO_JSON='[]' stato_pr_ramo o/r night/issue-7); R2=$?
+  S3=$(PATH="$GHD:$PATH" GH_FINTO_JSON='[{"state":"CLOSED"},{"state":"OPEN"}]' stato_pr_ramo o/r night/issue-7)
+  S4=$(PATH="$GHD:$PATH" GH_FINTO_JSON='[{"state":"CLOSED"},{"state":"MERGED"}]' stato_pr_ramo o/r night/issue-7)
+  [ "$R1" -eq 2 ] && [ -z "$S1" ] && [ "$R2" -eq 0 ] && [ "$S2" = NESSUNA ] && [ "$S3" = OPEN ] && [ "$S4" = MERGED ] \
+    && ok "O2 R1: stato_pr_ramo: gh in errore rc 2 · nessuna PR «NESSUNA» · una aperta fra altre «OPEN» · fusa «MERGED»" \
+    || ko "O2 R1: stato_pr_ramo: errore rc=$R1 «${S1}» · vuota «${S2}» · aperta «${S3}» · fusa «${S4}»"
+  rm -rf "$GHD"
+else
+  ko "O2 R1: stato_pr_ramo assente da night-shift/lib.sh"
+fi
+grep -c 'stato_pr_ramo "$REPO" "night/issue-$NUM"' "$HERE/night-shift/night-shift.sh" >/dev/null && ! grep -c 'PR_STATE=$(gh pr view' "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "O2 R1: il turno chiede lo stato della PR a stato_pr_ramo" || ko "O2 R1: il turno legge ancora un errore di gh come «nessuna PR»"
+
+# --- (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del GNU taglia in byte anche in UTF-8. I motivi del censore finivano
+# nei commenti delle PR con un carattere spezzato, che jq e gh rendono «�».
+if command -v taglia_caratteri >/dev/null; then
+  TG=$(printf 'abc\303\250def' | taglia_caratteri 4)
+  [ "$TG" = "$(printf 'abc\303\250')" ] && ok "V4 R6: taglia_caratteri 4 tiene «è» intero (niente byte spezzato)" || ko "V4 R6: taglia_caratteri: $(printf '%s' "$TG" | od -An -c | tr -s ' ')"
+else
+  ko "V4 R6: taglia_caratteri assente da night-shift/lib.sh"
+fi
+! grep -cE 'MOTIVI" \| tr .* \| cut -c' "$HERE/night-shift/revisore.sh" >/dev/null && ok "V4 R6: i motivi del censore si tagliano per caratteri" || ko "V4 R6: i motivi del censore si tagliano ancora con cut -c"
+! grep -c '24000 caratteri' "$HERE/night-shift/risolvi-issue.sh" >/dev/null && ok "V4 R6: il risolutore dice byte dove taglia a byte (head -c)" || ko "V4 R6: il risolutore chiama «caratteri» i byte di head -c"
+
+# --- (2026-09-25, settimo ventaglio, V1 R5): sei lettori di .night-verify, tre regole su cosa e' una riga vuota. Il turno
+# saltava solo "" e «#» in prima colonna: una riga di soli spazi o un commento indentato era `bash -c "   "`, rc 0,
+# «verifica VERDE» — e «3/3 verdi» dove il censore e il gate dicevano «verifiche-vuote».
+if command -v riga_verifica_vuota >/dev/null; then
+  N_VUOTE=0; for R in "" "   " "	" "  # commento indentato" "# commento"; do riga_verifica_vuota "$R" && N_VUOTE=$((N_VUOTE+1)); done
+  { [ "$N_VUOTE" -eq 5 ] && ! riga_verifica_vuota "  node x.js" && ! riga_verifica_vuota "@300 bash tools/suite.sh"; } \
+    && ok "V1 R5: riga_verifica_vuota: spazi, TAB e commenti indentati sono vuoti; un comando indentato no" \
+    || ko "V1 R5: riga_verifica_vuota: $N_VUOTE vuote su 5"
+else
+  ko "V1 R5: riga_verifica_vuota assente da night-shift/lib.sh"
+fi
+for F in night-shift/night-shift.sh night-shift/revisore.sh tools/eval-review.sh; do
+  grep -c 'riga_verifica_vuota' "$HERE/$F" >/dev/null && ! grep -cE 'case "\$(NV_CMD|riga)" in (""\|\\#\*|\\#\*\|"")\) continue' "$HERE/$F" >/dev/null \
+    && ok "V1 R5: $F salta le righe vuote con riga_verifica_vuota" || ko "V1 R5: $F ha ancora il filtro suo delle righe vuote"
+done
+
+# --- (2026-09-25, settimo ventaglio, V2 R3): la verifica dell'issue distingue il comando assente e lo sforo dal rosso
+if command -v verdetto_verifica >/dev/null; then
+  [ "$(verdetto_verifica 0 'node x.js')" = "PASSA" ] && [ "$(verdetto_verifica 1 'node x.js')" = "ROTTA: node x.js" ] \
+    && grep -c '^NON ESEGUITA' <<<"$(verdetto_verifica 127 'node x.js')" >/dev/null && grep -c '^SFORO' <<<"$(verdetto_verifica 124 'node x.js')" >/dev/null \
+    && ok "verdetto_verifica: 0 PASSA · 1 ROTTA · 127 NON ESEGUITA · 124 SFORO" \
+    || ko "verdetto_verifica: 127 → «$(verdetto_verifica 127 x)», 124 → «$(verdetto_verifica 124 x)»"
+else
+  ko "verdetto_verifica assente da night-shift/lib.sh"
+fi
+grep -c 'VERIFICA_OUT=$(verdetto_verifica' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh scrive la verifica dell'issue con verdetto_verifica" \
+  || ko "night-shift.sh scrive ROTTA per ogni rc diverso da 0"
+
+# --- (2026-09-24, terzo ventaglio, V1#1 e V1#5, V4#6): gate_banchi — il gate del fixer notturno lanciava
+# ogni banco SENZA tetto (un banco che si annida ha fermato il turno per sempre, E-046) e lo lanciava sulla
+# copia VIVA dell'hub, non sul ramo con i fix: il commit diceva «banco CHIUSO su questo branch» senza averlo
+# mai provato. La funzione esegue i banchi di <dir>, ciascuno sotto tetto.
+if command -v gate_banchi >/dev/null; then
+  GB=$(mktemp -d); mkdir -p "$GB/tests"
+  printf '#!/bin/bash\ntouch "$(dirname "$0")/../girato-qui"; echo "1 OK, 0 FAIL"\n' > "$GB/tests/test-verde.sh"
+  printf '#!/bin/bash\necho "FAIL rotto davvero"; exit 1\n' > "$GB/tests/test-rosso.sh"
+  printf '#!/bin/bash\nsleep 30\n' > "$GB/tests/test-appeso.sh"
+  # (settimo ventaglio): un banco che esce 0 senza asserzioni. La suite lo rifiuta («verde senza verdetto»),
+  # il gate del fixer lo contava verde: due giudici, due regole.
+  printf '#!/bin/bash\necho "0 OK, 0 FAIL"\n' > "$GB/tests/test-muto.sh"
+  T0=$(date +%s); OUTG=$(gate_banchi "$GB" 2); DURG=$(( $(date +%s) - T0 ))
+  [ -f "$GB/girato-qui" ] && ok "gate_banchi: esegue i banchi della copia che giudica (non quella viva)" || ko "gate_banchi: i banchi di <dir> non sono girati"
+  grep -qx "TOTALE 1 3" <<<"$OUTG" && ok "gate_banchi: 1 verde, 3 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
+  grep -c "rosso test-muto.sh — verde senza verdetto" <<<"$OUTG" >/dev/null && ok "gate_banchi: il banco muto (rc 0, «0 OK») e' rosso, come nella suite" \
+    || ko "gate_banchi: il banco muto passa il gate: $(grep muto <<<"$OUTG")"
+  # (settimo ventaglio, V1 R6): zero banchi era «TOTALE 0 0», letto verde dal fixer; la suite con zero banchi e' rossa.
+  # E quattro banchi ermetici (test-ask-*, ai-timeout, stdin-timeout: nessun cervello, misurato) restavano fuori.
+  GB0=$(mktemp -d); mkdir -p "$GB0/tests"
+  grep -qx "TOTALE 0 1" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi senza banchi e' rosso (come la suite)" || ko "V1 R6: gate_banchi senza banchi: $(gate_banchi "$GB0" 2 | tail -1)"
+  printf '#!/bin/bash\necho "1 OK, 0 FAIL"\n' > "$GB0/tests/test-ask-ermetico.sh"
+  grep -qx "TOTALE 1 0" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi giudica anche test-ask-* (ermetici, come nella suite)" || ko "V1 R6: test-ask-* ancora escluso: $(gate_banchi "$GB0" 2 | tail -1)"
+  rm -rf "$GB0"
+  grep -c "rosso test-appeso.sh — SFORO" <<<"$OUTG" >/dev/null && [ "$DURG" -lt 25 ] && ok "gate_banchi: il banco appeso muore al tetto e si dice sforo (${DURG}s)" || ko "gate_banchi: banco appeso non fermato (${DURG}s): $OUTG"
+  grep -c "rosso test-rosso.sh — FAIL rotto davvero" <<<"$OUTG" >/dev/null && ok "gate_banchi: il rosso dice la sua riga FAIL" || ko "gate_banchi: rosso senza motivo: $OUTG"
+  rm -rf "$GB"
+else
+  ko "gate_banchi assente da night-shift/lib.sh"
+fi
+grep -c 'gate_banchi "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il gate del fixer usa gate_banchi sulla copia del ramo" || ko "il gate del fixer lancia i banchi della copia viva, senza tetto"
+# solo nel blocco del gate del fixer: l'auto-esame dell'hub (ciclo-vivo, banco veloce) giudica la copia viva
+# PER DISEGNO — dopo l'allineamento e' main
+VIVI=$(sed -n '/IL GATE DEL FIXER/,/&& GATE_OK=1/p' "$HERE/night-shift/night-shift.sh" | grep -E 'bash "\$HERE/\.\./tools/(banco-passaggio|giri-ignoranti)\.sh"' || true)
+[ -z "$VIVI" ] && ok "il gate del fixer giudica col banco e le sonde del ramo, non della copia viva" || ko "banco/sonde del gate dalla copia viva: $VIVI"
+
+# (2026-09-24, quinto ventaglio, R5 R5): lo stesso errore, nell'auto-fix «indice del SAL»: rigenerava il SAL della
+# COPIA VIVA (dove lavora il giorno) e poi guardava il diff della copia del ramo, intatta — il fix non arrivava
+# mai nel ramo e il SAL del giorno veniva toccato. Ora lo strumento e il SAL sono quelli del ramo.
+grep -c 'bash "\$HERE/\.\./tools/sal-indice\.sh"' "$HERE/night-shift/night-shift.sh" >/dev/null && ko "R5 R5: l'auto-fix del SAL riscrive il SAL della copia viva" \
+  || { grep -c 'bash "\$DIR/tools/sal-indice\.sh"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "R5 R5: l'auto-fix del SAL lavora sul SAL del ramo" || ko "R5 R5: l'auto-fix del SAL non c'e' piu'"; }
+
+# --- (2026-09-24, terzo ventaglio, V1#3): «GIA' IMPLEMENTATA?» — la funzione «e' chiamata» se `nome(` compare
+# nel file: vero gia' sulla riga che la DEFINISCE. Ogni issue che nomina foo() veniva saltata per sempre.
+if command -v funzione_definita_e_chiamata >/dev/null; then
+  FC=$(mktemp -d)
+  printf 'function foo(a) {\n  return a;\n}\nfunction fooBar() {}\n' > "$FC/solo-def.gs"
+  printf 'function foo(a) {\n  return a;\n}\nfunction usa() { return foo(1); }\n' > "$FC/chiamata.gs"
+  printf 'function fooBar() {}\nvar x = fooBar();\n' > "$FC/altra.gs"
+  funzione_definita_e_chiamata "$FC/solo-def.gs" foo && ko "funzione solo definita data per chiamata (la riga della definizione conta come chiamata)" || ok "funzione solo definita: non «chiamata»"
+  funzione_definita_e_chiamata "$FC/chiamata.gs" foo && ok "funzione definita e chiamata altrove: si'" || ko "funzione definita e chiamata non riconosciuta"
+  funzione_definita_e_chiamata "$FC/altra.gs" foo && ko "fooBar scambiata per foo" || ok "fooBar non e' foo"
+  rm -rf "$FC"
+else
+  ko "funzione_definita_e_chiamata assente da night-shift/lib.sh"
+fi
+grep -c 'funzione_definita_e_chiamata "\$TF" "\$FN"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il controllo GIA' IMPLEMENTATA usa la funzione" || ko "il controllo GIA' IMPLEMENTATA conta la definizione come chiamata"
+
+# --- (2026-09-24, terzo ventaglio, V1#2): la caccia riapriva la STESSA PR a ogni ciclo — il sito torna libero su
+# main finche' la PR non e' fusa, e il trasformatore lo risalda. caccia_gia_aperta: 0 se un ramo remoto di
+# caccia porta gia' lo stesso diff (git patch-id) del commit appena fatto.
+if command -v caccia_gia_aperta >/dev/null; then
+  CG=$(mktemp -d); g() { git -c user.email=t@t -c user.name=t -c core.hooksPath=/dev/null -c commit.gpgsign=false "$@"; }
+  g init -q --bare "$CG/o.git"; g clone -q "$CG/o.git" "$CG/w" 2>/dev/null
+  echo base > "$CG/w/a.sh"; g -C "$CG/w" add -A; g -C "$CG/w" commit -qm base; g -C "$CG/w" push -q origin HEAD:main 2>/dev/null
+  g -C "$CG/w" checkout -q -b night/caccia-1; echo "cura" >> "$CG/w/a.sh"; g -C "$CG/w" commit -qam c1; g -C "$CG/w" push -q origin night/caccia-1 2>/dev/null
+  g -C "$CG/w" checkout -q main; g -C "$CG/w" checkout -q -b night/caccia-2; echo "cura" >> "$CG/w/a.sh"; g -C "$CG/w" commit -qam c2
+  caccia_gia_aperta "$CG/w" origin/main "night/caccia-1" && ok "caccia_gia_aperta: lo stesso diff su una caccia aperta → gia' aperta" || ko "caccia_gia_aperta: il duplicato non si vede"
+  g -C "$CG/w" commit -q --amend -m c2 --allow-empty; echo "altra" >> "$CG/w/a.sh"; g -C "$CG/w" commit -qam c3
+  caccia_gia_aperta "$CG/w" origin/main "night/caccia-1" && ko "caccia_gia_aperta: un diff diverso scambiato per doppione" || ok "caccia_gia_aperta: un diff diverso non e' un doppione"
+  rm -rf "$CG"
+else
+  ko "caccia_gia_aperta assente da night-shift/lib.sh"
+fi
+grep -c 'caccia_gia_aperta "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "la consegna della caccia salta i doppioni" || ko "la consegna della caccia non guarda le PR gia' aperte"
 
 # --- mask_secrets: forme di segreto note devono uscire mascherate (giro 6/10, nuovo ciclo) ---
 # (revisione 10 giri, 2026-09-23): il formato e' quello della regola vincolante di CLAUDE.md
@@ -141,8 +416,8 @@ M2b=$(echo 'curl -H "Authorization: Token abcdefghijklmnop"' | mask_secrets)
 [ "$(grep -o '«segreto' <<<"$M2b" | wc -l | tr -d ' ')" = "1" ] && ok "mask_secrets: schema Token mascherato UNA volta (la maschera non si rimaschera)" || ko "mask_secrets doppia maschera: $M2b"
 
 # (revisione 10 giri): un token NUDO, senza parola chiave davanti, passava intero
-M4=$(echo 'risposta: ghp_ABCDEFGHIJKLMNOPQRST1234 fine' | mask_secrets)
-grep -qE "$IMPRONTA" <<<"$M4" && ! grep -q 'ghp_ABCDEFGHIJKLMNOPQRST1234' <<<"$M4" \
+M4=$(echo 'risposta: gh''p_ABCDEFGHIJKLMNOPQRST1234 fine' | mask_secrets)
+grep -qE "$IMPRONTA" <<<"$M4" && ! grep -q 'gh''p_ABCDEFGHIJKLMNOPQRST1234' <<<"$M4" \
   && ok "mask_secrets: token nudo (ghp_...) mascherato" || ko "mask_secrets token nudo: $M4"
 M5=$( (echo 'x token=AAAABBBBCCCC'; echo 'y token=AAAABBBBCCCC') | mask_secrets | grep -oE '[0-9a-f]{8} ·' | sort -u | wc -l | tr -d ' ')
 [ "$M5" = "1" ] && ok "mask_secrets: stesso segreto → stessa impronta (confrontabile senza vederlo)" || ko "mask_secrets impronta instabile ($M5 impronte)"
@@ -158,6 +433,15 @@ M7=$(echo 'export GH_TOKEN="valoresegreto123"' | mask_secrets)
 M3=$(echo 'niente da mascherare qui' | mask_secrets)
 [ "$M3" = "niente da mascherare qui" ] && ok "mask_secrets: testo senza segreti passa invariato" \
   || ko "mask_secrets falso positivo: $M3"
+# (2026-09-23, notte dei giri, T5#3): le credenziali di QUESTO parco passavano intere — Google OAuth
+# (quelle di clasp, cioe' la produzione: access ya29., refresh 1//0, client GOCSPX-), l'URL con
+# credenziali, la chiave Zhipu nuda, PASSWD=. I valori finti si compongono a runtime.
+F20=ABCDEFGHIJKLMNOPQRST
+for campione in "tok ya2""9.$F20" "REFRESH=1/""/0$F20" "cliente=GOCSP""X-$F20" \
+                "remote=https:/""/luca:$F20""@github.com/x" "glm $(printf '%032d' 7 | tr 0 a).$F20" "PASSW""D=$F20"; do
+  M=$(mask_secrets <<<"$campione")
+  grep -cF "$F20" <<<"$M" >/dev/null && ko "mask_secrets: valore intero in «${campione:0:8}…»" || ok "mask_secrets: mascherato «${campione:0:12}…»"
+done
 
 # --- candidata_censore: la PR portata al censore deve essere una che il censore accetta ---
 # (revisione 10 giri, 2026-09-23): il turno prendeva la PRIMA bozza night/* (`head -1`), il
@@ -169,8 +453,166 @@ if declare -F candidata_censore >/dev/null; then
   [ "$C" = "8" ] && ok "candidata_censore: salta la PR di issue in testa, sceglie la prima caccia: su night/*" || ko "candidata_censore sceglie '$C' (attesa 8)"
   C=$(candidata_censore <<<'[{"number":9,"headRefName":"night/issue-4","isDraft":true,"title":"fix"}]')
   [ -z "$C" ] && ok "candidata_censore: nessuna caccia: → vuoto (nessun giudizio sprecato)" || ko "candidata_censore: '$C' senza caccia"
+  # (2026-09-24, terzo ventaglio, V1#2): gh elenca le PR piu' RECENTI prima — il censore prendeva la piu' nuova,
+  # in quarantena, e le cacce vecchie non tornavano piu' davanti a lui. Si sceglie la piu' vecchia.
+  J2='[{"number":12,"headRefName":"night/caccia-b","isDraft":true,"title":"caccia: nuova","createdAt":"2026-09-24T03:00:00Z"},{"number":11,"headRefName":"night/caccia-a","isDraft":true,"title":"caccia: vecchia","createdAt":"2026-09-24T01:00:00Z"}]'
+  C=$(candidata_censore <<<"$J2")
+  [ "$C" = "11" ] && ok "candidata_censore: fra due cacce, la piu' vecchia (la nuova e' in quarantena)" || ko "candidata_censore sceglie '$C' (attesa 11, la piu' vecchia)"
 else
   ko "candidata_censore non definita in lib.sh"
+fi
+
+# --- verifica_issue_comando (2026-09-23, giro A5 della notte): la «## Verifica» di un'issue e' testo
+#     ESTERNO (l'autore puo' modificarlo dopo la label) che il turno esegue. Prima la regex accettava
+#     `npm install <pacchetto>`, `npm exec`, `python3 -m pip install`: codice arbitrario installato.
+#     Ora si esegue solo un FILE del progetto (node|python3 <file.js|py> [argomenti]) o `npm test`.
+if declare -F verifica_issue_comando >/dev/null; then
+  VI=$(mktemp)
+  vi() { printf '## Richiesta\nx\n## Verifica\n%s\n## Altro\n' "$1" > "$VI"; verifica_issue_comando "$VI"; }
+  for C in "node tests/test-sconto.js" "python3 tools/oracolo.py dati.csv" "npm test"; do
+    [ "$(vi "$C")" = "$C" ] && ok "verifica ammessa: $C" || ko "verifica legittima rifiutata: $C ('$(vi "$C")')"
+  done
+  for C in "npm install leftpad-evil" "npm exec cowsay" "npm i x" "python3 -m pip install x" "node -e 1" "node --eval 1" "python3 -c 1" "npm run deploy" "node x.js; rm -rf ~"; do
+    [ -z "$(vi "$C")" ] && ok "verifica RIFIUTATA: $C" || ko "verifica pericolosa ammessa: $C"
+  done
+  rm -f "$VI"
+else
+  ko "verifica_issue_comando non definita in lib.sh"
+fi
+
+# --- prendi_lock_turno (Q10, 2026-09-23, giro A5 della notte): il lock globale del turno si
+#     prendeva DOPO il self-pull (reset --hard dell'hub sotto un turno vivo) e il pkill degli
+#     opencode (l'agente del turno vivo): un secondo turno — quello manuale accanto a quello
+#     delle 23:00, patterns/lock-per-risorsa.md — faceva il danno e solo dopo usciva. E il lock
+#     «scadeva» a 1h mentre un ciclo con l'issue lenta dura fino a 4h (watchdog): rubato a un
+#     turno vivo. Ora conta il PID: vivo e del turno = occupato, a qualunque eta'; morto = orfano
+#     (E-026) e si prende subito; lo stesso PID (il ciclo dopo l'exec) = suo.
+if declare -F prendi_lock_turno >/dev/null; then
+  LT=$(mktemp -d)
+  lock_da_altro() { bash -c 'source "$1/night-shift/lib.sh"; prendi_lock_turno "$2"' _ "$HERE" "$1"; }
+  lock_da_altro "$LT/l1"; RC=$?
+  [ "$RC" -eq 0 ] && [ -s "$LT/l1/pid" ] && ok "lock turno: libero → preso, col PID dentro" || ko "lock turno: libero non preso (rc=$RC)"
+  ( exec -a night-shift-finto sleep 30 ) & VIVO=$!
+  mkdir "$LT/l2"; echo "$VIVO" > "$LT/l2/pid"; python3 -c 'import os,sys,time; t=time.time()-7200; os.utime(sys.argv[1],(t,t))' "$LT/l2"
+  lock_da_altro "$LT/l2"; RC=$?
+  [ "$RC" -eq 1 ] && [ "$(cat "$LT/l2/pid")" = "$VIVO" ] && ok "lock turno: tenuto da un turno VIVO da 2h → occupato (non si ruba per eta')" || ko "lock turno: rubato a un turno vivo (rc=$RC)"
+  kill "$VIVO" 2>/dev/null; wait "$VIVO" 2>/dev/null
+  lock_da_altro "$LT/l2"; RC=$?
+  [ "$RC" -eq 0 ] && [ "$(cat "$LT/l2/pid")" != "$VIVO" ] && ok "lock turno: PID morto (orfano, E-026) → preso subito" || ko "lock turno: orfano di un turno morto non preso (rc=$RC)"
+  sleep 30 & ALTRO=$!
+  mkdir "$LT/l3"; echo "$ALTRO" > "$LT/l3/pid"
+  lock_da_altro "$LT/l3"; RC=$?
+  [ "$RC" -eq 0 ] && ok "lock turno: PID vivo ma NON del turno (PID riusato) → orfano, preso" || ko "lock turno: un PID riusato blocca il turno (rc=$RC)"
+  kill "$ALTRO" 2>/dev/null; wait "$ALTRO" 2>/dev/null
+  RC=$(bash -c 'source "$1/night-shift/lib.sh"; prendi_lock_turno "$2"; a=$?; prendi_lock_turno "$2"; echo "$a$?"' _ "$HERE" "$LT/l4")
+  [ "$RC" = "00" ] && ok "lock turno: stesso PID (il ciclo dopo exec) → e' suo" || ko "lock turno: il turno non riconosce il proprio lock dopo l'exec ($RC)"
+  mkdir "$LT/l5"; lock_da_altro "$LT/l5"; RC=$?
+  [ "$RC" -eq 1 ] && ok "lock turno: senza PID (versione vecchia) e fresco → occupato" || ko "lock turno: lock senza PID fresco rubato (rc=$RC)"
+  rm -rf "$LT"
+  NSH="$HERE/night-shift/night-shift.sh"
+  R_LOCK=$(grep -n 'prendi_lock_turno "' "$NSH" | head -1 | cut -d: -f1)
+  R_RESET=$(grep -n 'reset -q --hard' "$NSH" | head -1 | cut -d: -f1)
+  R_PKILL=$(grep -n 'ferma_opencode_del_turno "' "$NSH" | grep -v '^[0-9]*:[[:space:]]*#' | head -1 | cut -d: -f1)
+  [ -n "$R_LOCK" ] && [ "$R_LOCK" -lt "${R_RESET:-0}" ] && [ "$R_LOCK" -lt "${R_PKILL:-0}" ]     && ok "night-shift.sh: il lock del turno si prende PRIMA del self-pull e del pkill"     || ko "night-shift.sh: lock (riga ${R_LOCK:-assente}) dopo reset (${R_RESET:-?}) o pkill (${R_PKILL:-?})"
+else
+  ko "prendi_lock_turno non definita in lib.sh"
+fi
+
+# --- (2026-09-24, quinto ventaglio, R5 R6): la pulizia d'inizio ciclo era `pkill -f "opencode run"` — uccideva
+# anche l'opencode del GIORNO (tools/test-modelli-notturni.sh lo usa), che leggeva l'uscita vuota come «il
+# modello non risponde». E il ramo che lancia opencode nel turno non gira nemmeno (DEBITI, V1#6d). Ora il turno
+# ferma solo il PID che ha scritto lui, e solo se quel PID e' ancora un «opencode run» (un PID riusato no).
+if declare -F ferma_opencode_del_turno >/dev/null; then
+  OC=$(mktemp -d); mkdir -p "$OC/bin"
+  printf '#!/bin/bash\nsleep 30\n' > "$OC/bin/opencode"; chmod +x "$OC/bin/opencode"
+  PATH="$OC/bin:$PATH" opencode run del-giorno & GIORNO=$!
+  PATH="$OC/bin:$PATH" opencode run del-turno & TURNO=$!
+  sleep 30 & RIUSATO=$!
+  sleep 0.3
+  echo "$TURNO" > "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_T=$?
+  echo "$RIUSATO" > "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_R=$?
+  rm -f "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_N=$?
+  sleep 0.3
+  [ "$RC_T" -eq 0 ] && ! kill -0 "$TURNO" 2>/dev/null && ok "R5 R6: l'opencode del turno (PID nel file) si ferma" || ko "R5 R6: opencode del turno vivo (rc $RC_T)"
+  kill -0 "$GIORNO" 2>/dev/null && ok "R5 R6: l'opencode del giorno resta vivo" || ko "R5 R6: la pulizia ha ucciso l'opencode del giorno"
+  [ "$RC_R" -ne 0 ] && kill -0 "$RIUSATO" 2>/dev/null && ok "R5 R6: un PID riusato (non piu' opencode) non si tocca" || ko "R5 R6: ucciso un PID riusato"
+  [ "$RC_N" -ne 0 ] && ok "R5 R6: senza file di PID non si ferma niente" || ko "R5 R6: senza file, rc 0"
+  kill "$GIORNO" "$RIUSATO" "$TURNO" 2>/dev/null; wait "$GIORNO" "$RIUSATO" "$TURNO" 2>/dev/null; rm -rf "$OC"
+else
+  ko "R5 R6: ferma_opencode_del_turno assente da night-shift/lib.sh"
+fi
+NUDI=$(grep -n 'pkill -f "opencode run"' "$HERE/night-shift/night-shift.sh" | grep -v '^[0-9]*:[[:space:]]*#' || true)
+[ -z "$NUDI" ] && ok "R5 R6: il turno non fa piu' pkill -f \"opencode run\"" || ko "R5 R6: pkill nudo rimasto: $NUDI"
+
+# --- (2026-09-24, sesto ventaglio, S1 R1): l'issue [night-verify] chiedeva di «riprodurre a mano» le righe di
+# .night-verify cosi' com'erano, fuori da un blocco di codice. La riga dell'indice SAL dell'hub finisce in `exit 1`:
+# incollata, chiudeva il terminale; e il markdown si mangiava gli asterischi di `night-shift/*.sh`. Ora le righe
+# arrivano in un blocco, ognuna dentro `bash -c`, come le esegue il turno.
+if declare -F comandi_da_incollare >/dev/null; then
+  BLOCCO=$(comandi_da_incollare $'bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo rosso; exit 1; }\nshellcheck night-shift/*.sh # commento')
+  [ "$(head -1 <<<"$BLOCCO")" = '```' ] && [ "$(tail -1 <<<"$BLOCCO")" = '```' ] && ok "S1 R1: i comandi da incollare stanno in un blocco di codice" || ko "S1 R1: blocco assente: $BLOCCO"
+  RIGA1=$(sed -n 2p <<<"$BLOCCO")
+  if command -v zsh >/dev/null; then
+    V=$(cd "$(mktemp -d)" && zsh -f -c "$RIGA1"$'\necho ANCORA-VIVA' 2>/dev/null)
+    grep -c 'ANCORA-VIVA' <<<"$V" >/dev/null && ok "S1 R1: incollata in zsh -f, la riga che finisce in exit non chiude la shell" || ko "S1 R1: la shell si e' chiusa: «${V}»"
+  else
+    echo "⊘ S1 R1: zsh assente, la prova d'incollo e' saltata (dichiarato)"
+  fi
+else
+  ko "S1 R1: comandi_da_incollare assente da night-shift/lib.sh"
+fi
+grep -c 'comandi_da_incollare "\$NV_ROSSI_CMD"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "S1 R1: l'issue [night-verify] usa il blocco incollabile" || ko "S1 R1: l'issue [night-verify] elenca i comandi nudi"
+
+# --- commenta_una_volta (Q11, 2026-09-23, giro A5 della notte): il cancello Design/Territorio
+#     commentava l'issue a OGNI ciclo — e il turno riparte subito, a ciclo continuo: centinaia di
+#     commenti identici in una notte sulla stessa issue. Ora il commento porta un marcatore
+#     invisibile e non si ripete; se i commenti non si leggono (gh giu'), non si commenta.
+if declare -F commenta_una_volta >/dev/null; then
+  CU=$(mktemp -d)
+  cat > "$CU/gh" <<'EOF'
+#!/bin/bash
+D=$(dirname "$0")
+[ -f "$D/rotto" ] && exit 1
+case "$1 $2" in
+  "issue view")    cat "$D/commenti" 2>/dev/null; exit 0 ;;
+  "issue comment") shift 2; while [ $# -gt 0 ]; do [ "$1" = "--body" ] && { printf '%s\n---\n' "$2" >> "$D/commenti"; }; shift; done; exit 0 ;;
+esac
+EOF
+  chmod +x "$CU/gh"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r territorio-assente "🌙 Saltata: manca Territorio"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r territorio-assente "🌙 Saltata: manca Territorio"
+  N=$(grep -c 'Saltata: manca Territorio' "$CU/commenti" 2>/dev/null)
+  [ "$N" = "1" ] && ok "commenta_una_volta: due cicli, UN commento" || ko "commenta_una_volta: $N commenti per due cicli"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r design-povero "🌙 Saltata: Design povero"
+  grep -q 'Design povero' "$CU/commenti" && ok "commenta_una_volta: un motivo NUOVO si commenta" || ko "commenta_una_volta: il motivo nuovo non e' stato commentato"
+  : > "$CU/commenti"; touch "$CU/rotto"
+  PATH="$CU:$PATH" commenta_una_volta 7 o/r territorio-assente "🌙 Saltata: manca Territorio"; RC=$?
+  [ "$RC" -ne 0 ] && [ ! -s "$CU/commenti" ] && ok "commenta_una_volta: commenti illeggibili → non commenta, e lo dice (rc=$RC)" || ko "commenta_una_volta: con gh giu' ha commentato o taciuto (rc=$RC)"
+  rm -rf "$CU"
+  NSH="$HERE/night-shift/night-shift.sh"
+  REGIONE=$(sed -n '/MOTIVO=$(cancello_design "$BODY")/,/Idempotenza: PR aperta/p' "$NSH")
+  NUDI=$(grep -c 'gh issue comment' <<<"$REGIONE")
+  [ -n "$REGIONE" ] && [ "$NUDI" = "0" ] && grep -q 'commenta_una_volta' <<<"$REGIONE" && ok "night-shift.sh: il cancello Design/Territorio commenta solo con commenta_una_volta" || ko "night-shift.sh: $NUDI commenti nudi nel cancello Design/Territorio"
+else
+  ko "commenta_una_volta non definita in lib.sh"
+fi
+
+# --- candidata_parere (D10, Luca 2026-09-23: «b»): la PR di ISSUE che il censore giudica col solo
+#     parere — bozza su night/issue-*, e mai due volte lo stesso commit (il parere dato si ricorda)
+if declare -F candidata_parere >/dev/null; then
+  SP=$(mktemp -d)
+  J='[{"number":8,"headRefName":"night/caccia-x","isDraft":true,"title":"caccia: m","headRefOid":"aaa"},{"number":9,"headRefName":"night/issue-4","isDraft":true,"title":"fix","headRefOid":"bbb"},{"number":10,"headRefName":"night/issue-5","isDraft":true,"title":"fix","headRefOid":"ccc"}]'
+  C=$(candidata_parere "$SP" <<<"$J")
+  [ "$C" = "9" ] && ok "candidata_parere: la prima PR di issue (la caccia resta al censore che fonde)" || ko "candidata_parere sceglie '$C' (attesa 9)"
+  touch "$SP/parere-9-bbb"
+  C=$(candidata_parere "$SP" <<<"$J")
+  [ "$C" = "10" ] && ok "candidata_parere: salta la PR col parere gia' dato su quel commit" || ko "candidata_parere: '$C' (attesa 10: la 9 ha gia' il parere)"
+  touch "$SP/parere-10-ccc"
+  C=$(candidata_parere "$SP" <<<"$J")
+  [ -z "$C" ] && ok "candidata_parere: tutte giudicate → vuoto" || ko "candidata_parere: '$C' con tutti i pareri dati"
+  rm -rf "$SP"
+else
+  ko "candidata_parere non definita in lib.sh"
 fi
 
 # --- rami_da_scopare: la scopa del turno non tocca il lavoro vivo (revisione 10 giri) ---
@@ -187,6 +629,13 @@ if declare -F rami_da_scopare >/dev/null; then
 else
   ko "rami_da_scopare non definita in lib.sh"
 fi
+# (2026-09-24, quinto ventaglio, R5 R2): la scopa delle 48h cancellava sul remoto dell'hub anche i rami del
+# GIORNO (claude/*, glm/*) senza PR — per esempio il ramo di una sessione web gia' chiusa, di cui non resta
+# copia. Scelta provvisoria dichiarata (la domanda e' in DEBITI): la scopa tocca solo i rami del turno.
+NSH_SC="$HERE/night-shift/night-shift.sh"
+RIGA_48=$(grep -n 'rami_da_scopare "$(date +%s)" 48' "$NSH_SC" | head -1)
+grep -cE "grep -E '\^\(night\|notte\)/'" <<<"$RIGA_48" >/dev/null && ok "scopa 48h: solo rami del turno (night/, notte/), mai claude/ o glm/" || ko "scopa 48h senza filtro di prefisso: $RIGA_48"
+grep -c 'gh pr list -R obi2kenobi/AI_Programmer --state all --limit 1000' "$NSH_SC" >/dev/null && ok "scopa: la lista delle PR arriva a 1000 (con 200 una PR aperta vecchia usciva dalla lista)" || ko "scopa: PR lette solo fino a 200"
 
 # --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
 LOGTMP=$(mktemp -d)

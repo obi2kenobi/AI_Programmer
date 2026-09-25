@@ -16,11 +16,11 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 # la riga deve stare nella categoria "Nuove funzionalità non considerate", non altrove
 SEZ=$(awk '/Nuove funzionalità non considerate/{f=1} /^$/{if(f)exit} f' "$DC")
 
-echo "$SEZ" | grep -q "brainstorming" \
+grep -q "brainstorming" <<<"$SEZ" \
   && ok "il rimando a /brainstorming è nella sezione giusta (idea ancora vaga)" \
   || ko "nessun rimando a /brainstorming nella sezione nuove funzionalità"
 
-echo "$SEZ" | grep -q "design-doc" \
+grep -q "design-doc" <<<"$SEZ" \
   && ok "il rimando a /design-doc è nella sezione giusta (2+ approcci già visibili)" \
   || ko "nessun rimando a /design-doc nella sezione nuove funzionalità"
 
@@ -30,11 +30,11 @@ echo "$SEZ" | grep -q "design-doc" \
 
 # 5° ciclo, set 2 giro 6: quando emergono 3+ idee distinte, come si scelgono? Prima
 # nessun punto lo diceva — riusa i criteri di design-doc, non ne inventa di nuovi.
-echo "$SEZ" | grep -q "3+ idee distinte" \
+grep -q "3+ idee distinte" <<<"$SEZ" \
   && ok "la sezione dice come ordinare 3+ idee distinte nello stesso report" \
   || ko "nessuna guida su come scegliere tra più idee proposte insieme"
 
-echo "$SEZ" | grep -q "costo/rischio/reversibilità" \
+grep -q "costo/rischio/reversibilità" <<<"$SEZ" \
   && ok "riusa i criteri già esistenti di /design-doc, non ne inventa di nuovi" \
   || ko "non riusa il vocabolario esistente — rischio di criteri duplicati/incoerenti"
 

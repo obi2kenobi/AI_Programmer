@@ -23,7 +23,7 @@ edit "src/C.js" >/dev/null 2>&1; edit "src/D.js" >/dev/null 2>&1
 OUT4=$(edit "src/E.js" 2>/dev/null); RC=$?
 echo "$OUT4" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 && CONTESTO=$(echo "$OUT4" | jq -r '.hookSpecificOutput.additionalContext') \
   || CONTESTO=""
-[ -n "$CONTESTO" ] && echo "$CONTESTO" | grep -q "PRIMA del passo successivo" \
+[ -n "$CONTESTO" ] && grep -q "PRIMA del passo successivo" <<<"$CONTESTO" \
   && ok "al 5° edit senza SAL: promemoria 'prima del passo successivo'" \
   || ko "5° edit: nessun promemoria (OUT=$OUT4)"
 [ "$RC" -eq 0 ] && ok "il promemoria non blocca (exit 0, allow)" || ko "rc=$RC"
@@ -34,9 +34,26 @@ edit "SAL.md" >/dev/null 2>&1
 edit "src/F.js" >/dev/null 2>&1; edit "src/G.js" >/dev/null 2>&1; edit "src/H.js" >/dev/null 2>&1; edit "src/I.js" >/dev/null 2>&1
 OUT=$(edit "src/L.js" 2>/dev/null)
 echo "$OUT" | jq -e '.hookSpecificOutput.additionalContext' >/dev/null 2>&1 \
-  && echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' | grep -q "Hai fatto 5 edit" \
+  && echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' | grep -c "Hai fatto 5 edit" >/dev/null \
   && ok "edit di SAL.md resetta il contatore (il conteggio ricomincia: dice 5, non 10)" \
   || ko "reset non funzionante: $(echo "$OUT" | jq -r '.hookSpecificOutput.additionalContext' 2>/dev/null | head -1)"
+
+# (2026-09-24, notte dei giri, T6#5): l'avvio di una sessione (metodo-reminder, SessionStart) cancellava
+# i contatori di TUTTE le cartelle: una sessione aperta in un'altra repo azzerava quella in corso qui.
+# Ora il contatore e' della sessione (session_id dell'input): un'altra sessione non lo tocca, e una
+# sessione nuova nella stessa cartella riparte da zero.
+edit_s() { echo "{\"tool_name\":\"Edit\",\"session_id\":\"$1\",\"tool_input\":{\"file_path\":\"$2\"}}" | (cd "$TMP/con-sal" && bash "$HOOK"); }
+edit "SAL.md" >/dev/null 2>&1
+for f in a b c; do edit_s SESS-A "src/$f.js" >/dev/null 2>&1; done
+mkdir -p "$TMP/altra-repo"; echo '{"hook_event_name":"SessionStart","session_id":"SESS-B"}' | (cd "$TMP/altra-repo" && bash "$HERE/tools/metodo-reminder-hook.sh") >/dev/null 2>&1
+edit_s SESS-A "src/d.js" >/dev/null 2>&1
+OUT=$(edit_s SESS-A "src/e.js" 2>/dev/null)
+jq -r '.hookSpecificOutput.additionalContext // empty' <<<"$OUT" 2>/dev/null | grep -c "Hai fatto 5 edit" >/dev/null \
+  && ok "una sessione aperta in un'altra repo non azzera il contatore di questa" || ko "contatore azzerato da un'altra sessione (OUT=$(head -c 120 <<<"$OUT"))"
+for f in f g h i; do edit_s SESS-C "src/$f.js" >/dev/null 2>&1; done
+OUT=$(edit_s SESS-C "src/j.js" 2>/dev/null)
+jq -r '.hookSpecificOutput.additionalContext // empty' <<<"$OUT" 2>/dev/null | grep -c "Hai fatto 5 edit" >/dev/null \
+  && ok "una sessione nuova nella stessa cartella riparte da zero (5 suoi edit, non 11)" || ko "sessione nuova: il conteggio non riparte (OUT=$(head -c 160 <<<"$OUT"))"
 
 # senza SAL.md nel progetto: mai promemoria
 edit_ns() { echo "{\"tool_name\":\"Edit\",\"tool_input\":{\"file_path\":\"$1\"}}" | (cd "$TMP/senza-sal" && bash "$HOOK"); }

@@ -44,36 +44,36 @@ EOF
 OUT=$(python3 "$HERE/tools/valorizzazione_magazzino.py" "$TMP/config.json" < "$TMP/righe.csv")
 
 # 1. il totale è esattamente quello derivato a mano
-echo "$OUT" | grep -q "Valore totale (solo location considerate): 1274.00 EUR" \
+grep -q "Valore totale (solo location considerate): 1274.00 EUR" <<<"$OUT" \
   && ok "totale 1274.00 EUR come da aritmetica a mano" \
   || ko "totale errato: $(echo "$OUT" | grep 'Valore totale')"
 
 # 2. catena override: articolo batte categoria che batte gruppo
-echo "$OUT" | grep -q "ART-1: qty=+10 costo=99.0000 (override_categorie:PANNELLI)" \
+grep -q "ART-1: qty=+10 costo=99.0000 (override_categorie:PANNELLI)" <<<"$OUT" \
   && ok "ART-1: override categoria (−1€) applicato sul base 100 → 99" \
   || ko "ART-1: $(echo "$OUT" | grep ART-1)"
-echo "$OUT" | grep -q "ART-2: qty=+4 costo=52.5000 (override_gruppi:LEGNO)" \
+grep -q "ART-2: qty=+4 costo=52.5000 (override_gruppi:LEGNO)" <<<"$OUT" \
   && ok "ART-2: override gruppo (+5%) applicato sul base 50 → 52.50" \
   || ko "ART-2: $(echo "$OUT" | grep ART-2)"
-echo "$OUT" | grep -q "ART-3: qty=+2 costo=22.0000 (override_articoli:ART-3)" \
+grep -q "ART-3: qty=+2 costo=22.0000 (override_articoli:ART-3)" <<<"$OUT" \
   && ok "ART-3: override articolo (+2€) vince su categoria e gruppo" \
   || ko "ART-3: $(echo "$OUT" | grep ART-3)"
 
 # 3. "senza costo" è anomalia, NON valore zero: ART-4 non è nel totale
-echo "$OUT" | grep -q "ANOMALIA senza costo.*ART-4" \
+grep -q "ANOMALIA senza costo.*ART-4" <<<"$OUT" \
   && ok "ART-4 senza costo: anomalia dichiarata, non trattato a zero" \
   || ko "ART-4: anomalia senza costo mancante"
-echo "$OUT" | grep -vq "ART-4: qty" \
+grep -vq "ART-4: qty" <<<"$OUT" \
   && ok "ART-4 non compare tra i valorizzati" \
   || ko "ART-4 valorizzato per errore"
 
 # 4. location esclusa: scarto mai silenzioso
-echo "$OUT" | grep -q "Location escluse.*ART-5@SD (valore non valorizzato: 210.00 EUR)" \
+grep -q "Location escluse.*ART-5@SD (valore non valorizzato: 210.00 EUR)" <<<"$OUT" \
   && ok "ART-5@SD escluso ma riportato col suo valore (7×30=210)" \
   || ko "esclusione SD: $(echo "$OUT" | grep 'escluse')"
 
 # 5. giacenza negativa: valutata e flaggata
-echo "$OUT" | grep -q "ANOMALIA giacenza negativa: 1 righe, -5 pz" \
+grep -q "ANOMALIA giacenza negativa: 1 righe, -5 pz" <<<"$OUT" \
   && ok "ART-6 negativa: valutata (−10 nel totale) e flaggata" \
   || ko "anomalia negativa: $(echo "$OUT" | grep negativa)"
 
@@ -85,7 +85,7 @@ N7=$(echo "$OUT" | grep -c "ART-7: qty=+[0-9]* costo=10.0000 (costo_base)")
   || ko "ART-7: attese 2 righe a costo 10, trovate $N7 — $(echo "$OUT" | grep ART-7)"
 
 # 7. costi generali: configurati ma NON applicati (formula non provata in REPO-E)
-echo "$OUT" | grep -q "costi_generali_percent=10% configurato ma NON applicato" \
+grep -q "costi_generali_percent=10% configurato ma NON applicato" <<<"$OUT" \
   && ok "costi generali 10% dichiarati non applicati (formula non provata)" \
   || ko "costi generali: mancata dichiarazione o applicati per errore"
 
@@ -95,7 +95,7 @@ cat > "$TMP/config_bad.json" <<'EOF'
 EOF
 OUT_BAD=$(python3 "$HERE/tools/valorizzazione_magazzino.py" "$TMP/config_bad.json" < "$TMP/righe.csv" 2>&1)
 RC_BAD=$?
-[ "$RC_BAD" -ne 0 ] && echo "$OUT_BAD" | grep -qi "sconosciuto" \
+[ "$RC_BAD" -ne 0 ] && grep -qi "sconosciuto" <<<"$OUT_BAD" \
   && ok "override di tipo ignoto: errore esplicito, non silenzioso" \
   || ko "override ignoto accettato in silenzio: rc=$RC_BAD"
 

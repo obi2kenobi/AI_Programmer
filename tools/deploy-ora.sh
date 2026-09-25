@@ -1,16 +1,27 @@
 #!/usr/bin/env bash
 # deploy-ora.sh — IL GESTO del deploy assistito (dominio, Luca 2026-09-23).
 #
-# Questo script lo lancia LUCA, dal SUO terminale. Nessun agente puo' arrivarci:
-# l'hook clasp-block continua a bloccare clasp dentro ogni sessione agente, e
-# questo script non fa parte di nessun flusso autonomo — sta nel registro dei
-# comandi umani, come il morning-gate di una volta.
+# Questo script lo lancia LUCA, dal SUO terminale.
+# (2026-09-23, giro A7 della notte): qui c'era scritto «nessun agente puo' arrivarci», ed era
+# FALSO — `echo si | bash tools/deploy-ora.sh X` da una sessione agente deploiava: il cancello
+# clasp vede solo il comando esterno, e il «si» arrivava dalla pipe. Ora tre strati, provati in
+# tests/test-deploy-assistito.sh e tests/test-clasp-block-hook.sh:
+#   1. tools/clasp-block-hook.sh nega l'invocazione di deploy-ora da una sessione agente;
+#   2. qui: dentro una sessione Claude Code (CLAUDECODE impostata) si rifiuta;
+#   3. qui: la conferma deve venire da un TERMINALE — un «si» in pipe non vale.
+# E' un cancello contro l'errore, non contro un aggressore (un agente che si toglie la variabile
+# e si finge un terminale e' fuori dal patto, come per il cancello clasp).
 #
 # Mostra il manifest preparato da prepara-deploy.sh (commit esatto, checksum,
 # verifica verde), chiede conferma A VOCE (si/no battuto a mano), esegue
 # clasp push SOLO se il pacchetto e' fresco (<24h) e il commit corrisponde.
 # Rifiuta tutto il resto. Logga l'esito in ~/deploy-pronto/<repo>/STORICO.
 set -euo pipefail
+if [ -n "${CLAUDECODE:-}" ]; then
+  echo "⛔ deploy-ora gira solo nel terminale di Luca, non in una sessione agente (CLAUDECODE e' impostata): il deploy e' dell'umano" >&2
+  exit 1
+fi
+[ -t 0 ] || { echo "⛔ la conferma va battuta in un terminale: lo stdin non e' un terminale, e un «si» in pipe non vale" >&2; exit 1; }
 REPO="${1:?uso: deploy-ora <repo> (il pacchetto lo prepara prepara-deploy.sh)}"
 STAGE="$HOME/deploy-pronto/$REPO"
 

@@ -29,6 +29,23 @@ if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null || 
   echo "⛔ albero sporco: committa (o stash) prima di attaccare" >&2
   exit 2
 fi
+# (2026-09-23, notte dei giri, T2#1): gli attacchi mutavano l'ALBERO VERO e usavano percorsi fissi in
+# /tmp — due batterie insieme davano AGGIRA falsi (una si riprendeva il file dell'altra), un kill -9 a
+# meta' lasciava gli attacchi nel repo. Ora la batteria si rilancia in un CLONE usa e getta dell'albero
+# (pulito: e' uguale a HEAD), con una cartella temporanea sua; la memoria di ciclo-vivo (.ciclo, non
+# versionata) ci entra in copia. L'albero vero non si tocca mai.
+if [ -z "${GIRI_AVVERSARI_NEL_CLONE:-}" ]; then
+  CLONE=$(mktemp -d)
+  git clone -q "$HERE" "$CLONE/hub" || { echo "⛔ clone per la batteria non riuscito" >&2; rm -rf "$CLONE"; exit 2; }
+  [ -d .ciclo ] && cp -a .ciclo "$CLONE/hub/"
+  echo "(batteria in un clone usa e getta: $CLONE/hub — l'albero vero non si tocca)"
+  GIRI_AVVERSARI_NEL_CLONE=1 bash "$CLONE/hub/tools/giri-avversari.sh" "$@"; RC=$?
+  rm -rf "$CLONE"
+  exit $RC
+fi
+# i file di passaggio degli attacchi: una cartella per batteria, mai /tmp condivisa. Si cancella SOLO se
+# porta il nome che le da' questa riga (E-044: un sabotaggio con AVVT=/tmp ha fatto rm -rf /tmp)
+AVVT=$(mktemp -d "${TMPDIR:-/tmp}/giri-avversari.XXXXXX")
 # (revisione 10 giri, 2026-09-23): l'uscita faceva `rm -rf .ciclo` — cioe' cancellava la
 # memoria PERSISTENTE di tools/ciclo-vivo.sh (livello, serie di giri puliti, storico dei
 # finding) a ogni giro d'attacchi. Si salva prima e si rimette com'era.
@@ -37,7 +54,8 @@ CICLO_BAK=$(mktemp -d)
 restore_tutto() {
   git checkout -- . 2>/dev/null
   chmod +x tools/*.sh 2>/dev/null
-  rm -f .campo-rem tools/_sleep_malvagio.py /tmp/avv-*.md /tmp/avv-*.py /tmp/avv-*.sh /tmp/avv-*.json /tmp/avv-*.csv /tmp/avv-*.txt /tmp/avv-*.bak /tmp/avv-lib.bak 2>/dev/null
+  rm -f .campo-rem tools/_sleep_malvagio.py 2>/dev/null
+  case "$AVVT" in */giri-avversari.??????) rm -rf "$AVVT" ;; esac
   rm -rf .ciclo 2>/dev/null
   [ -d "$CICLO_BAK/.ciclo" ] && cp -a "$CICLO_BAK/.ciclo" .ciclo
   rm -rf "$CICLO_BAK"
@@ -78,10 +96,10 @@ p='.claude/skills/gas-sviluppo/references/metodo.md'; s=open(p).read()
 open(p,'w').write(s + '\n**Meta**: ' + bt + 'pippo-rosso-finto' + bt + '\n')"
 difesa_test tests/test-canone-integrita.sh "A3 indice che cita pattern inesistente"
 
-att; mv patterns/watchdog-guardato.md /tmp/avv-pattern.md
+att; mv patterns/watchdog-guardato.md "$AVVT"/avv-pattern.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S7" <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
-mv /tmp/avv-pattern.md patterns/watchdog-guardato.md
+grep -qE "^FIND +S7 " <<<"$OUT_BAT" && tiene "A4 pattern file cancellato (S7 lo vede)" || aggirato "A4 pattern cancellato, nessuna difesa rosso"
+mv "$AVVT"/avv-pattern.md patterns/watchdog-guardato.md
 
 att; sedi 's|night-shift/lib.sh:run_guarded|night-shift/INESISTENTE:run_guarded|' patterns/watchdog-guardato.md
 difesa_test tests/test-patterns-ancore-esistono.sh "A5 àncora pattern rotta"
@@ -104,9 +122,9 @@ difesa_test tests/test-pattern-reminder-hook.sh "A9 hook rimosso da settings"
 att; chmod -x tools/pattern-reminder-hook.sh
 difesa_test tests/test-pattern-reminder-hook.sh "A10 hook non eseguibile"
 
-att; mv tools/margine_documento.py /tmp/avv-oracolo.py
+att; mv tools/margine_documento.py "$AVVT"/avv-oracolo.py
 difesa_test tests/test-margine-documento.sh "A11 oracolo cancellato"
-mv /tmp/avv-oracolo.py tools/margine_documento.py
+mv "$AVVT"/avv-oracolo.py tools/margine_documento.py
 
 att; sedi 's/margine = importo_v - importo_a/margine = importo_v + importo_a/' tools/margine_documento.py
 difesa_test tests/test-margine-documento.sh "A12 aritmetica oracolo invertita (riga vera)"
@@ -127,34 +145,38 @@ p='CLAUDE.md'; s=open(p).read()
 open(p,'w').write(re.sub(r'(?m)^.*clasp.*$', '', s))"
 difesa_test tests/test-claude-md-gate-conventions.sh "A15 regola clasp tolta da CLAUDE.md"
 
-att; mv docs/campo/README.md /tmp/avv-campo-readme.md
+att; mv docs/campo/README.md "$AVVT"/avv-campo-readme.md
 difesa_test tests/test-report-campo.sh "A16 formato report campo cancellato"
-mv /tmp/avv-campo-readme.md docs/campo/README.md
+mv "$AVVT"/avv-campo-readme.md docs/campo/README.md
 
-att; mv .gitattributes /tmp/avv-ga
+att; mv .gitattributes "$AVVT"/avv-ga
 difesa_test tests/test-claude-md-gate-conventions.sh "A17 union merge driver rimosso"
-mv /tmp/avv-ga .gitattributes
+mv "$AVVT"/avv-ga .gitattributes
 
 att; rm -rf .claude/skills/design-doc
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S8" <<<"$OUT_BAT" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
+grep -qE "^FIND +S8 " <<<"$OUT_BAT" && tiene "A18 skill cancellata (pavimento S8)" || aggirato "A18 skill cancellata invisibile"
 git checkout -- .claude/skills 2>/dev/null; true
 
 att; sedi 's/<!-- SAL-INDICE: generato/<!-- MARKER-SOSTITUITO: generato/' SAL.md
 difesa_test tests/test-sal-indice-ancore.sh "A19 marker indice SAL sostituito"
 
-att; printf 'sk-ANTHROP%s-FAKE1234567890abcd\n' 'IC' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
-bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "A20 segreto generico piantato: privacy-check non ne vede la FORMA" || tiene "A20 forma di segreto piantata vista (shaping)"
+# (2026-09-25, settimo ventaglio, V5 R3): A20 e G4 leggono la riga «FORMA DI SEGRETO», non l'rc. Nel clone della batteria
+# manca repos.key e privacy-check esce 1 («GATE DEGRADATO») anche pulito: con le forme sabotate diceva TIENE lo stesso.
+# La pianta di A20 era «sk-ANTHROPIC-FAKE…», che non e' una forma (le SHAPES cercano sk-ant- con 20 caratteri): l'rc
+# nascondeva che privacy-check non l'aveva mai vista. Ora una forma vera, composta a runtime.
+att; printf 'sk-an%s-%s\n' 't' 'FINTAfintaFINTAfinta0123' >> docs/campo/2026-08-28-sd-dashboard-dossier.md
+PC=$(bash tools/privacy-check.sh 2>&1 >/dev/null); grep -c 'FORMA DI SEGRETO' <<<"$PC" >/dev/null && tiene "A20 forma di segreto piantata vista (shaping)" || aggirato "A20 segreto generico piantato: privacy-check non ne vede la FORMA"
 git checkout -- docs/campo/2026-08-28-sd-dashboard-dossier.md 2>/dev/null; true
 
 echo ""
 echo "=== CAT B — bypass degli hook ==="
 
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"credenziali_BC.rtf"}}' | bash tools/pattern-reminder-hook.sh)
-echo "$OUT" | grep -qi "pattern" && tiene "B1 maiuscole/underscore nel path sensibile" || aggirato "B1 path sensibile camuffato non riconosciuto"
+grep -qi "pattern" <<<"$OUT" && tiene "B1 maiuscole/underscore nel path sensibile" || aggirato "B1 path sensibile camuffato non riconosciuto"
 
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"Il mio token di accesso.txt"}}' | bash tools/pattern-reminder-hook.sh)
-echo "$OUT" | grep -qi "pattern\|secret" && tiene "B2 percorso sensibile in italiano naturale" || aggirato "B2 sensibile in italiano non riconosciuto"
+grep -qi "pattern\|secret" <<<"$OUT" && tiene "B2 percorso sensibile in italiano naturale" || aggirato "B2 sensibile in italiano non riconosciuto"
 
 att; OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"cat ~/.clasp.json | grep refresh"}}' | bash tools/clasp-block-hook.sh)
 if grep -q . <<<"$OUT"; then tiene "B3 comando bash che tocca credenziali riceve avviso"; else aggirato "B3 comando con credenziali: hook muto"; fi
@@ -162,11 +184,11 @@ if grep -q . <<<"$OUT"; then tiene "B3 comando bash che tocca credenziali riceve
 att; OUT=$(echo '{"tool_name":"Edit","tool_input":{"file_path":"README.md"}}' | bash tools/pattern-reminder-hook.sh)
 [ -z "$OUT" ] && tiene "B4 path innocuo: silenzio corretto" || aggirato "B4 path innocuo produce rumore"
 
-att; echo '{"tool_name":"NotebookEdit","tool_input":{"file_path":"credenziali BC.rtf"}}' | bash tools/pattern-reminder-hook.sh | grep -q . \
+att; echo '{"tool_name":"NotebookEdit","tool_input":{"file_path":"credenziali BC.rtf"}}' | bash tools/pattern-reminder-hook.sh | grep -c . >/dev/null \
   && tiene "B5 tool fuori matcher risponde comunque" || ack "B5 tool fuori matcher (NotebookEdit): l'hook non spara — gap strutturale della piattaforma, compensato dal dente clasp su Bash"
 
 att; OUT=$(echo '{"hook_event_name":"UserPromptSubmit","prompt":"calculate the warehouse valuation please"}' | bash tools/metodo-reminder-hook.sh)
-echo "$OUT" | grep -qi "oracol\|calcol" && tiene "B6 prompt di calcolo in INGLESE aggancia lo stesso gli oracoli" || aggirato "B6 prompt inglese: aggancio oracoli non scatta"
+grep -qi "oracol\|calcol" <<<"$OUT" && tiene "B6 prompt di calcolo in INGLESE aggancia lo stesso gli oracoli" || aggirato "B6 prompt inglese: aggancio oracoli non scatta"
 
 att; echo "$(date +%s)" > .campo-rem 2>/dev/null
 OUT=$(echo '{"hook_event_name":"Stop"}' | bash tools/metodo-reminder-hook.sh)
@@ -187,39 +209,40 @@ comment = '<!-- ' + ' '.join('pattern-x' + str(i) for i in range(200)) + ' -->'
 open(p,'w').write(s + '\n' + comment + '\n')"
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 2 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "COLLEGAMENTO.*pattern-x1\b" && aggirato "C1 lente 2 non guarda nei commenti HTML (gaming possibile)" || tiene "C1 lente 2 resiste ai commenti HTML"
+grep -q "COLLEGAMENTO.*pattern-x1\b" <<<"$OUT" && aggirato "C1 lente 2 non guarda nei commenti HTML (gaming possibile)" || tiene "C1 lente 2 resiste ai commenti HTML"
 git checkout -- .claude/skills/gas-sviluppo/references/metodo.md; rm -rf .ciclo
 
 att; printf '#!/usr/bin/env python3\n' > tools/test.py
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: tool test.py" && tiene "C2 tool omonimo del prefisso test non passa gratis" || aggirato "C2 tools/test.py passa la lente copertura per coincidenza di nome"
+grep -q "ARCH: tool test.py" <<<"$OUT" && tiene "C2 tool omonimo del prefisso test non passa gratis" || aggirato "C2 tools/test.py passa la lente copertura per coincidenza di nome"
 rm tools/test.py; rm -rf .ciclo
 
 att; printf '\n`tools/` e `docs/`\n' >> DEBITI.md
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: DEBITI" && tiene "C3 DEBITI che cita directory generiche segnalato" || aggirato "C3 lente DEBITI accetta ref a directory (non a file)"
+grep -q "ARCH: DEBITI" <<<"$OUT" && tiene "C3 DEBITI che cita directory generiche segnalato" || aggirato "C3 lente DEBITI accetta ref a directory (non a file)"
 git checkout -- DEBITI.md; rm -rf .ciclo
 
 att; printf 'riga spuria che contiene la parola gate\n' > docs/campo/2026-08-28-attacco-gate.md
 OUT=$(bash tools/campo-triage.sh 2>&1)
-echo "$OUT" | grep -q "non processato" && tiene "C4 report finto con nome-parola non conta come processato" || aggirato "C4 campo-triage conta processato per coincidenza di parola in SAL"
+grep -q "non processato" <<<"$OUT" && tiene "C4 report finto con nome-parola non conta come processato" || aggirato "C4 campo-triage conta processato per coincidenza di parola in SAL"
 rm docs/campo/2026-08-28-attacco-gate.md
 
 att; printf 'Il sistema ha 999 test e 999 pattern.\n' >> METHOD.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S2" <<<"$OUT_BAT" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
+grep -qE "^FIND +S2 " <<<"$OUT_BAT" && tiene "C5 numero marcio in METHOD.md preso da S2" || aggirato "C5 S2 non legge METHOD.md: numero marcio invisibile"
 git checkout -- METHOD.md
 
 att; CJK=$(python3 -c "print(chr(0x81ea)+chr(0x8eab)+chr(0x7684))")
 printf '%s\n' "$CJK" >> SAL-ARCHIVIO.md
-bash tools/giri-ignoranti.sh 2>/dev/null | grep -q "S1" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
+OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
+grep -qE "^FIND +S1 " <<<"$OUT_BAT" && tiene "C6 carattere alieno in archivio preso" || ack "C6 S1 esclude SAL-ARCHIVIO.md (scelta: l'archivio è storico, bonificato alla rotazione)"
 git checkout -- SAL-ARCHIVIO.md
 
-att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > /tmp/avv-finto.sh
-head -30 /tmp/avv-finto.sh | grep -q "flag-segreto" && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
-rm -f /tmp/avv-finto.sh
+att; printf '#!/bin/bash\n# finto tool per attacco\nx=1\nwhile [ -z "$1" ]; do :; done\ncase "$1" in\n  --flag-segreto) : ;;\nesac\n' > "$AVVT"/avv-finto.sh
+head -30 "$AVVT"/avv-finto.sh | grep -c "flag-segreto" >/dev/null && ack "C7 S5 legge 30 righe: il campione rientra (limite dichiarato: uso oltre riga 30 non visto)" || aggirato "C7 S5 finestra uso sbagliata"
+rm -f "$AVVT"/avv-finto.sh
 
 att; : > patterns/vuoto-finto.md
 bash tests/test-patterns-ancore-esistono.sh >/dev/null 2>&1 && aggirato "C8 pattern VUOTO passa il test àncore (nessun contenuto richiesto)" || tiene "C8 pattern vuoto respinto"
@@ -228,11 +251,11 @@ rm patterns/vuoto-finto.md
 att; F=$(ls docs/bc/endpoints | head -1); rm "docs/bc/endpoints/$F"; python3 tools/bc_index.py >/dev/null 2>&1
 rm -rf .ciclo; mkdir -p .ciclo; echo 3 > .ciclo/giro; echo 4 > .ciclo/livello
 OUT=$(bash tools/ciclo-vivo.sh 2>&1)
-echo "$OUT" | grep -q "ARCH: endpoints" && tiene "C9 endpoint cancellato + indice rigenerato: lente vede il calo" || ack "C9 endpoint cancellato E indice rigenerato insieme: i conti tornano (limite dichiarato: la lente conta, non pesa i contenuti)"
+grep -q "ARCH: endpoints" <<<"$OUT" && tiene "C9 endpoint cancellato + indice rigenerato: lente vede il calo" || ack "C9 endpoint cancellato E indice rigenerato insieme: i conti tornano (limite dichiarato: la lente conta, non pesa i contenuti)"
 git checkout -- docs/bc; rm -rf .ciclo
 
 att; printf '#!/usr/bin/env python3\nimport time\ntime.sleep(2)\nraise RuntimeError("boom ritardato")\n' > tools/_sleep_malvagio.py
-OUT=$(bash tools/giri-ignoranti.sh 2>/dev/null | grep -c "S3")
+OUT=$(bash tools/giri-ignoranti.sh 2>/dev/null | grep -cE "^FIND +S3 ")
 [ "${OUT:-0}" -ge 1 ] && tiene "C10 oracolo lento-che-crasha preso lo stesso" || aggirato "C10 S3 uccide a 0.9s: un oracolo che crasha dopo 2s passerebbe"
 rm tools/_sleep_malvagio.py
 
@@ -241,8 +264,10 @@ echo "=== CAT D — input ostili agli oracoli (spazzatura silenziosa = aggirato)
 
 classifica() {
   local out="$1" rc="$2" d="$3"
-  if [ "$rc" -ne 0 ] || echo "$out" | grep -qi "uso:\|traceback\|errore"; then tiene "$d (muore/si dichiara: rc=$rc)"
-  elif echo "$out" | grep -qi "nan\|inf"; then aggirato "$d — spazzatura SILENZIOSA: $out"
+  # (2026-09-24, quinto ventaglio, R3 R5): un traceback contava come «tiene»; per il contratto D32 e' un difetto
+  if grep -qi "traceback" <<<"$out"; then aggirato "$d — traceback invece di un rifiuto dichiarato (D32): $(tail -1 <<<"$out")"
+  elif [ "$rc" -ne 0 ] || grep -qi "uso:\|errore" <<<"$out"; then tiene "$d (muore/si dichiara: rc=$rc)"
+  elif grep -qi "nan\|inf" <<<"$out"; then aggirato "$d — spazzatura SILENZIOSA: $out"
   else tiene "$d (output onesto)"; fi
 }
 
@@ -264,14 +289,18 @@ classifica "$OUT" "$RC" "D5 scadenzario importo=nan"
 att; OUT=$(printf 'giorni,tipo,importo\n5,Cliente,1e999\n' | python3 tools/scadenzario_aging.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D6 scadenzario importo=inf"
 
-att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2027-01-01","data_fine":"2026-01-01","data_riferimento":"2026-06-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > /tmp/avv-l.json; python3 tools/leasing_amministrativo.py /tmp/avv-l.json 2>&1); RC=$?
+att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2027-01-01","data_fine":"2026-01-01","data_riferimento":"2026-06-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > "$AVVT"/avv-l.json; python3 tools/leasing_amministrativo.py "$AVVT"/avv-l.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D7 leasing date invertite"
 
-att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > /tmp/avv-l2.json; python3 tools/leasing_amministrativo.py /tmp/avv-l2.json 2>&1); RC=$?
+att; OUT=$(echo '{"canone_base":1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":"1,5","euribor_stipula":0.5,"euribor_corrente":1.5}' > "$AVVT"/avv-l2.json; python3 tools/leasing_amministrativo.py "$AVVT"/avv-l2.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D8 leasing spread con virgola italiana"
 
-att; OUT=$(echo '{"pn":0,"ricavi":0,"patrimonio":0,"debiti_tributari":0,"perdite_precedenti":0}' | python3 tools/indici_crisi.py 2>&1); RC=$?
-classifica "$OUT" "$RC" "D9 indici crisi con tutto zero"
+# (2026-09-24, quinto ventaglio, R3 R5): D9 mandava i nomi del vecchio messaggio d'uso, che il tool non legge —
+# la risposta era «campi mancanti» e il tutto-zero non arrivava mai al calcolo. Ora i dieci campi veri.
+att; OUT=$(echo '{"pn":0,"ricavi":0,"oneriFin":0,"passivoTot":0,"debPrev":0,"debTrib":0,"cashFlow":0,"attivo":0,"attCorrenti":0,"passCorrenti":0}' | python3 tools/indici_crisi.py 2>&1); RC=$?
+if grep -c '^NOTA: denominatore nullo' <<<"$OUT" >/dev/null; then tiene "D9 indici crisi con tutto zero: arriva al calcolo e dice i denominatori nulli (rc=$RC)"
+elif [ "$RC" -eq 0 ]; then aggirato "D9 indici crisi con tutto zero — un verdetto senza dire i denominatori nulli: $(tail -1 <<<"$OUT")"
+else classifica "$OUT" "$RC" "D9 indici crisi con tutto zero"; fi
 
 att; OUT=$(echo '{"categoria":"X","cespiti":[]}' | python3 tools/rollforward_cespiti.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D10 rollforward senza cespiti"
@@ -282,22 +311,22 @@ classifica "$OUT" "$RC" "D11 indici crisi input non-JSON"
 att; OUT=$(python3 tools/scostamento_standard_effettivo.py abc </dev/null 2>&1); RC=$?
 classifica "$OUT" "$RC" "D12 scostamento costo=abc"
 
-att; OUT=$(printf 'nr,fornitore,ordine_nr,importo\nF1,F,{},1\n' > /tmp/avv-f.csv; printf '{}' > /tmp/avv-c.json; python3 tools/accuratezza_fatture_acquisto.py /tmp/avv-c.json /tmp/avv-f.csv /dev/null 2>&1); RC=$?
+att; OUT=$(printf 'nr,fornitore,ordine_nr,importo\nF1,F,{},1\n' > "$AVVT"/avv-f.csv; printf '{}' > "$AVVT"/avv-c.json; python3 tools/accuratezza_fatture_acquisto.py "$AVVT"/avv-c.json "$AVVT"/avv-f.csv /dev/null 2>&1); RC=$?
 classifica "$OUT" "$RC" "D13 accuratezza importo={}"
 
-att; OUT=$(printf 'vendite,acquisti\n' > /tmp/avv-v.csv; printf 'x\n' > /tmp/avv-a.csv; python3 tools/margine_documento.py /tmp/avv-v.csv /tmp/avv-a.csv 2>&1); RC=$?
+att; OUT=$(printf 'vendite,acquisti\n' > "$AVVT"/avv-v.csv; printf 'x\n' > "$AVVT"/avv-a.csv; python3 tools/margine_documento.py "$AVVT"/avv-v.csv "$AVVT"/avv-a.csv 2>&1); RC=$?
 classifica "$OUT" "$RC" "D14 margine CSV con una sola colonna"
 
 att; OUT=$(printf 'a;b;c\n1;2;3\n' | python3 tools/riconciliazione_magazzino.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D15 riconciliazione CSV a punto-e-virgola"
 
-att; OUT=$(mkdir -p /tmp/avv-vuota && python3 tools/gas_qualita.py /tmp/avv-vuota 2>&1); RC=$?
+att; OUT=$(mkdir -p "$AVVT"/avv-vuota && python3 tools/gas_qualita.py "$AVVT"/avv-vuota 2>&1); RC=$?
 classifica "$OUT" "$RC" "D16 gas_qualita su cartella vuota"
 
-att; OUT=$(printf 'riga senza verdetto\n' > /tmp/avv-b.txt; python3 tools/verifica_banco.py /tmp/avv-b.txt 2>&1); RC=$?
+att; OUT=$(printf 'riga senza verdetto\n' > "$AVVT"/avv-b.txt; python3 tools/verifica_banco.py "$AVVT"/avv-b.txt 2>&1); RC=$?
 classifica "$OUT" "$RC" "D17 verifica_banco senza riga verdetto"
 
-att; OUT=$( : > /tmp/avv-b2.txt; python3 tools/verifica_banco.py /tmp/avv-b2.txt 2>&1); RC=$?
+att; OUT=$( : > "$AVVT"/avv-b2.txt; python3 tools/verifica_banco.py "$AVVT"/avv-b2.txt 2>&1); RC=$?
 classifica "$OUT" "$RC" "D18 verifica_banco file vuoto"
 
 att; OUT=$(printf 'cliente,importo\nA,nan\n' | python3 tools/rating_dso_clienti.py 2>&1); RC=$?
@@ -306,7 +335,7 @@ classifica "$OUT" "$RC" "D19 rating con importo nan"
 att; OUT=$(printf 'bu,amount\nX,1e999\n' | python3 tools/bilancio_bu.py 2>&1); RC=$?
 classifica "$OUT" "$RC" "D20 bilancio con inf"
 
-att; OUT=$(echo '{"canone_base":-1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > /tmp/avv-l3.json; python3 tools/leasing_amministrativo.py /tmp/avv-l3.json 2>&1); RC=$?
+att; OUT=$(echo '{"canone_base":-1000,"data_inizio":"2026-01-01","data_fine":"2027-01-01","spread":1,"euribor_stipula":0.5,"euribor_corrente":1.5}' > "$AVVT"/avv-l3.json; python3 tools/leasing_amministrativo.py "$AVVT"/avv-l3.json 2>&1); RC=$?
 classifica "$OUT" "$RC" "D21 leasing canone negativo"
 
 att; OUT=$(echo '{"pn":"abc","ricavi":1}' | python3 tools/indici_crisi.py 2>&1); RC=$?
@@ -336,11 +365,11 @@ att; _cp=$(awk -F, 'NR>1 && $2 !~ /^REPO-[A-Za-z0-9]+$/ {print $2}' metrics/gate
 
 att; _cp=$(grep -oE "REPO-[A-Za-z0-9]+" night-shift/repos-index.md | grep -vE "^REPO-([A-NOPQRSTXZVW]|CR)$" | head -1); if grep -q . <<<"$_cp"; then aggirato "E4 repos-index con codici fuori schema"; else tiene "E4 repos-index solo codici REPO-[A-N]"; fi
 
-att; git ls-files | grep -qE '\.(env|key|pem)$|id_rsa|^\.env' && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
+att; git ls-files | grep -Ec '\.(env|key|pem)$|id_rsa|^\.env' >/dev/null && aggirato "E5 file segreto tracciato (nome)" || tiene "E5 nessun file segreto tracciato"
 
 att; _cp=$(grep -rnE 'sk-ANTHROPIC|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN [A-Z ]*PRIVATE KEY' llm/ tools/ 2>/dev/null | grep -vE "privacy-check.sh|giri-avversari.sh" | head -1); if grep -q . <<<"$_cp"; then aggirato "E6 letterale segreto negli script"; else tiene "E6 nessun letterale segreto negli script"; fi
 
-att; git log --all --oneline | wc -l | tr -d ' ' | grep -q "^0$" && aggirato "E7 storia git assente?" || tiene "E7 storia git presente (privacy-check la presidia con pickaxe)"
+att; git log --all --oneline | wc -l | tr -d ' ' | grep -c "^0$" >/dev/null && aggirato "E7 storia git assente?" || tiene "E7 storia git presente (privacy-check la presidia con pickaxe)"
 
 echo ""
 echo "=== CAT F — regole senza denti ==="
@@ -353,7 +382,7 @@ import json
 s = json.load(open('.claude/settings.json'))
 print(any('clasp-block' in h.get('command','') for m in s['hooks'].get('PreToolUse',[]) for h in m.get('hooks',[])))"); if grep -q True <<<"$_cp"; then tiene "F2 il dente è registrato in settings.json"; else aggirato "F2 clasp ignorato dagli hook"; fi
 
-att; git ls-files | grep -q "^gas-src/" && aggirato "F3 cartella gas-src tracciata nell'hub" || tiene "F3 nessuna cartella gas-src tracciata"
+att; git ls-files | grep -c "^gas-src/" >/dev/null && aggirato "F3 cartella gas-src tracciata nell'hub" || tiene "F3 nessuna cartella gas-src tracciata"
 
 att; grep -q "merge=union" .gitattributes && tiene "F4 union merge driver dichiarato per SAL e campo" || aggirato "F4 union merge driver assente"
 
@@ -376,15 +405,18 @@ att; sedi 's/attese eseguite/attese fatte/' tools/verifica_banco.py
 difesa_test tests/test-verifica-banco.sh "G3 parser verdetto banco rotto"
 
 att; printf 'token: ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZ12\n' >> llm/README.md
-bash tools/privacy-check.sh >/dev/null 2>&1 && aggirato "G4 token GitHub piantato: privacy-check non ne vede la FORMA" || tiene "G4 forma di token GitHub piantata vista (shaping)"
+PC=$(bash tools/privacy-check.sh 2>&1 >/dev/null); grep -c 'FORMA DI SEGRETO' <<<"$PC" >/dev/null && tiene "G4 forma di token GitHub piantata vista (shaping)" || aggirato "G4 token GitHub piantato: privacy-check non ne vede la FORMA"
 git checkout -- llm/README.md
 
+# (2026-09-24, sesto ventaglio, S3 R5): il percorso passa a python come argomento, non incollato nel sorgente —
+# con un apice in TMPDIR il ripristino moriva di SyntaxError
 att; python3 -c "
+import sys
 p='night-shift/lib.sh'; s=open(p).read()
-open('/tmp/avv-lib.bak','w').write(s)
-open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))"
+open(sys.argv[1] + '/avv-lib.bak','w').write(s)
+open(p,'w').write(s.replace('gate_allowlist_ok', 'gate_allowlist_BROKEN'))" "$AVVT"
 [ -f tests/test-lib.sh ] && { bash tests/test-lib.sh >/dev/null 2>&1 && aggirato "G5 lib.sh allowlist rotta passa test-lib.sh" || tiene "G5 lib.sh allowlist presidiata da test-lib.sh"; } || aggirato "G5 test-lib.sh assente"
-cp /tmp/avv-lib.bak night-shift/lib.sh
+cp "$AVVT"/avv-lib.bak night-shift/lib.sh
 
 att; sedi 's/## Registro/## RegistrX/' patterns/README.md
 # verificato a mano: nessuna difesa scatta — ma NIENTE dipende dal titolo della
@@ -393,9 +425,10 @@ att; sedi 's/## Registro/## RegistrX/' patterns/README.md
 ack "G6 il titolo '## Registro' è prosa: la sostanza (righe della tabella) è presidiata da S7 e dall'hook"
 git checkout -- patterns/README.md
 
-att; printf 'REPO-%s\n' 'Z' >> night-shift/repos-index.md
+# (Q17): Z e' diventato un codice assegnato; il registro e' congelato — si pianta un codice nuovo
+att; printf 'REPO-%s\n' 'NUOVO' >> night-shift/repos-index.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S9" <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
+grep -qE "^FIND +S9 " <<<"$OUT_BAT" && tiene "G7 codice REPO fuori schema visto da S9" || aggirato "G7 repos-index senza presidio dello schema"
 git checkout -- night-shift/repos-index.md
 
 att; sedi 's/ .opencode\/plugins//' tools/sync-repo.sh
@@ -442,19 +475,19 @@ git checkout -- tools/campo-triage.sh
 
 att; rm .night-verify
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S8" <<<"$OUT_BAT" && tiene "G17 .night-verify cancellato visto da S8" || aggirato "G17 .night-verify senza presidio"
+grep -qE "^FIND +S8 " <<<"$OUT_BAT" && tiene "G17 .night-verify cancellato visto da S8" || aggirato "G17 .night-verify senza presidio"
 git checkout -- .night-verify 2>/dev/null; true
 
 att; ack "G18 il PROSA di AGENTS.md non ha guardia riga-per-rigola: presidiati i numeri (S2), i file promessi (S8) e le convenzioni gate — la prosa vive di revisione"
 
 att; rm docs/MANUALE-OPERATIVO.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -qE "S4|S6" <<<"$OUT_BAT" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
+grep -qE "^FIND +(S4|S6) " <<<"$OUT_BAT" && tiene "G19 manuale cancellato visto (S4/S6)" || aggirato "G19 manuale tornato orfano/invisibile"
 git checkout -- docs/MANUALE-OPERATIVO.md
 
 att; sedi 's/sync-repo.sh/sync-repX.sh/g' docs/benvenuto-collaboratori.md
 OUT_BAT=$(bash tools/giri-ignoranti.sh 2>/dev/null || true)
-grep -q "S6" <<<"$OUT_BAT" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
+grep -qE "^FIND +S6 " <<<"$OUT_BAT" && tiene "G20 comando rotto nel benvenuto visto da S6" || aggirato "G20 comando rotto nel benvenuto invisibile"
 git checkout -- docs/benvenuto-collaboratori.md
 
 echo ""

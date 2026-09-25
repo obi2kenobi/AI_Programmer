@@ -28,7 +28,7 @@ printf '# Verifiche dichiarate\nbash -n tools/vendite.sh\n' > "$SB/.night-verify
 git -C "$SB" init -q -b main && git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm base
 
 # ── 1. il censimento VEDE il debito ────────────────────────────────────────────
-bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB" | grep -q "E-002|tools/vendite.sh:3" \
+bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB" | grep -c "E-002|tools/vendite.sh:3" >/dev/null \
   && ok "1. censimento: il debito è in coda (E-002|tools/vendite.sh:3)" \
   || ko "1. censimento non vede il debito"
 
@@ -50,21 +50,26 @@ grep -q "tools/vendite.sh:3" "$SB/.git/caccia-registro/saldati" \
 
 # ── 4. il censimento SCENDE e il delta lo urla ─────────────────────────────────
 OUT=$(bash "$HERE/tools/caccia-registro.sh" "$SB" 2>&1)
-echo "$OUT" | grep -q "tot=0" && ok "7. censimento dopo: debito a zero" || ko "7. censimento non sceso: $OUT"
-echo "$OUT" | grep -q "debito sceso" && ok "8. il delta urla: 'debito sceso'" || ko "8. delta muto: $OUT"
+grep -q "tot=0" <<<"$OUT" && ok "7. censimento dopo: debito a zero" || ko "7. censimento non sceso: $OUT"
+grep -q "debito sceso" <<<"$OUT" && ok "8. il delta urla: 'debito sceso'" || ko "8. delta muto: $OUT"
 
 # ── 5. il CENSORE delibera sul diff (guardie + prove + verdetto) ────────────────
 # la miglioria committata su un ramo night/ VERO: il censore ci fa checkout
 git -C "$SB" checkout -q -b night/caccia-test
-git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: test" >/dev/null
+# (T6#1): il commit della PR ha l'eta' della PR — la quarantena del censore conta anche il commit
+QUANDO=$(python3 -c "import datetime; print((datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(minutes=30)).isoformat())")
+git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: test" >/dev/null
 git -C "$SB" checkout -q main
 printf '#!/bin/bash\nif [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHDIR_JSON"; fi\nexit 0\n' > "$GHDIR/gh"; chmod +x "$GHDIR/gh"
 export GHDIR_JSON="$GHDIR/pr.json"
-python3 - > "$GHDIR_JSON" <<'PY'
-import json
+# (2026-09-23, T5#1): il censore esegue le prove solo in sandbox-exec; qui un finto che esegue il resto
+# (la sandbox vera si prova in tests/test-revisore.sh; questa catena prova il flusso)
+printf '#!/bin/bash\nshift 2; exec "$@"\n' > "$GHDIR/sandbox-exec"; chmod +x "$GHDIR/sandbox-exec"
+python3 - "$(git -C "$SB" rev-parse night/caccia-test)" > "$GHDIR_JSON" <<'PY'
+import json, sys
 from datetime import datetime, timezone, timedelta
 print(json.dumps({"number": 9, "title": "caccia: miglioria al codice dall'agente notturno",
-  "headRefName": "night/caccia-test", "isDraft": True, "state": "OPEN",
+  "headRefName": "night/caccia-test", "headRefOid": sys.argv[1], "isDraft": True, "state": "OPEN",
   "createdAt": (datetime.now(timezone.utc)-timedelta(minutes=40)).isoformat()}))
 PY
 # stub censore per ruolo (il modello unico non si distingue per nome)
@@ -72,13 +77,14 @@ cat > "$STUBC" <<'STUBEOF'
 #!/bin/bash
 M="$1"; shift; P=$(cat)
 case "$P" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":[]}\n' ;;  # D2: la lente fra le prove del censore
   *SMASCHERA*) printf '%s\n' '```' 'grep -c _cp tools/vendite.sh' '```' ;;
   *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["conversione meccanica, comportamento identico"]}\n' ;;
 esac
 STUBEOF
 chmod +x "$STUBC"
 OUT=$(cd "$SB" && PATH="$GHDIR:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUBC" bash "$HERE/night-shift/revisore.sh" "$SB" 9 2>&1); RC=$?
-[ "$RC" -eq 0 ] && echo "$OUT" | grep -q "APPROVA" \
+[ "$RC" -eq 0 ] && grep -q "APPROVA" <<<"$OUT" \
   && ok "9. censore: guardie, banco e verdetto — APPROVA (deliberazione DRY)" \
   || ko "9. censore rc=$RC: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 

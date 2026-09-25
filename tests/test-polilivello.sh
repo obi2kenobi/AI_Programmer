@@ -24,11 +24,11 @@ function analizzaVenditeMensili() {
 JS
 
 OUT=$(bash "$TOOL" "$SB" 2>&1)
-echo "$OUT" | grep -q "analizzaVenditeMensili" && ok "entrypoint verbo italiano colto" || ko "entrypoint di dominio mancato"
-echo "$OUT" | grep -q "folderInputId" && ok "ID in const colto" || ko "ID in const mancato"
-echo "$OUT" | grep -q "1000 \* 60 \* 60 \* 24\|1000\*60" && ok "costante magica in espressione colta" || ko "costante magica mancata"
-echo "$OUT" | grep -q "L1 Identità" && ok "il scaffold ricorda i livelli da compilare a mano" || ko "scaffold senza i livelli"
-echo "$OUT" | grep -q "verbi di dominio" && ok "il perché del grep sta nel tool (chiarezza)" || ko "grep senza intent dichiarato"
+grep -q "analizzaVenditeMensili" <<<"$OUT" && ok "entrypoint verbo italiano colto" || ko "entrypoint di dominio mancato"
+grep -q "folderInputId" <<<"$OUT" && ok "ID in const colto" || ko "ID in const mancato"
+grep -q "1000 \* 60 \* 60 \* 24\|1000\*60" <<<"$OUT" && ok "costante magica in espressione colta" || ko "costante magica mancata"
+grep -q "L1 Identità" <<<"$OUT" && ok "il scaffold ricorda i livelli da compilare a mano" || ko "scaffold senza i livelli"
+grep -q "verbi di dominio" <<<"$OUT" && ok "il perché del grep sta nel tool (chiarezza)" || ko "grep senza intent dichiarato"
 
 # su directory inesistente: uso, non traceback
 # output catturato PRIMA: il tool esce 1 per contratto e sotto pipefail

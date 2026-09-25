@@ -24,6 +24,7 @@ non come correzione: è così anche nell'oracolo.
 Uso: python3 tools/indici_crisi.py < aggregati.json
 """
 import json
+import math
 import sys
 
 SOGLIE_G46 = {
@@ -35,12 +36,17 @@ SOGLIE_G46 = {
 }
 
 
+# i dieci aggregati che il tool legge (le chiavi del JSON in ingresso)
+CAMPI = ("pn", "ricavi", "oneriFin", "passivoTot", "debPrev", "debTrib",
+         "cashFlow", "attivo", "attCorrenti", "passCorrenti")
+
+
 def pct(n, d):
     return (n / d) * 100 if d else 0
 
 
 def valuta_indici_crisi(a):
-    """Sei indici con soglie del codice REPO-E (non leggi italiane: la
+    """Cinque indici con soglie del codice REPO-E (non leggi italiane: la
     presunzione di crisi è dell'algoritmo originario, soglie incluse). Ogni
     indice porta la sua soglia e il verso (> o <) nell'output: un allarme
     senza soglia visibile non è controllabile da chi legge.
@@ -58,7 +64,8 @@ def valuta_indici_crisi(a):
         valore = pct(n, d)
         allarme = valore >= s["soglia"] if s["verso"] == "ge" else valore <= s["soglia"]
         indici.append({"chiave": chiave, "nome": s["nome"], "valore": valore,
-                        "soglia": s["soglia"], "verso": s["verso"], "allarme": allarme})
+                        "soglia": s["soglia"], "verso": s["verso"], "allarme": allarme,
+                        "denominatore_nullo": not d})
     return indici
 
 
@@ -70,23 +77,39 @@ def main():
     """Bilancio JSON in stdin → verdetti per indice + presunzione finale.
     Input non-parsabile: uso, non traceback.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: indici_crisi.py < bilancio.json — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     try:
         a = json.load(sys.stdin)
     except (json.JSONDecodeError, EOFError):
-        print("uso: indici_crisi.py < bilancio.json (pn, ricavi, patrimonio netto, debiti tributari, perdite esercizi precedenti)", file=sys.stderr)
+        # (2026-09-24, quinto ventaglio, R3 R5): elencava cinque campi che il tool non legge
+        print(f"uso: indici_crisi.py < bilancio.json (oggetto con i campi: {', '.join(CAMPI)})", file=sys.stderr)
         return 1
     # i campi mancanti si DICHIARANO, non si muore di KeyError (giri di accuratezza
     # 2026-09-01: input senza oneriFin produceva traceback nudo)
-    CAMPI = ("pn", "ricavi", "oneriFin", "passivoTot", "debPrev", "debTrib",
-             "cashFlow", "attivo", "attCorrenti", "passCorrenti")
-    mancanti = [c for c in CAMPI if c not in a]
+    # (2026-09-24, quinto ventaglio, R3 R4): un JSON numero era un TypeError; una lista che contiene i nomi
+    # dei campi passava la presenza. Il bilancio e' un oggetto.
+    mancanti = [c for c in CAMPI if c not in a] if isinstance(a, dict) else list(CAMPI)
     if mancanti:
         print(f"uso: indici_crisi.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
+        return 1
+    # (2026-09-24, quinto ventaglio, R3 R2): NaN passava — `nan < 0` e' falso, e usciva «🟢 Nessuna presunzione di
+    # crisi» con rc 0. Un campo non numerico o non finito e' dato marcio: si dichiara.
+    marci = [c for c in CAMPI if not (isinstance(a[c], (int, float)) and not isinstance(a[c], bool) and math.isfinite(a[c]))]
+    if marci:
+        print(f"ERRORE: campi non numerici o non finiti (nan/inf): {', '.join(marci)} — nessun verdetto", file=sys.stderr)
         return 1
     indici = valuta_indici_crisi(a)
     for i in indici:
         marcatore = "🔴" if i["allarme"] else "🟢"
         print(f"{marcatore} {i['nome']}: {i['valore']:.1f}% (soglia {i['soglia']} {i['verso']})")
+    # (2026-09-24, quinto ventaglio, R3 R5): la docstring (LIMITE NOTO) promette questa nota; non era stampata
+    for i in indici:
+        if i["denominatore_nullo"]:
+            print(f"NOTA: denominatore nullo per {i['nome']} — valore 0 per convenzione del sorgente, non misurato")
     presunta = crisi_presunta(a["pn"], indici)
     print("🔴 CRISI PRESUNTA" if presunta else "🟢 Nessuna presunzione di crisi")
 

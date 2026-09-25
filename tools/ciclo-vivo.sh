@@ -24,13 +24,21 @@ mkdir -p "$MEMORIA"
 # entrambi scrivevano N+1 — un giro PERSO. La memoria del ciclo è una risorsa
 # condivisa: il lock è mkdir (atomico), chi lo trova occupato aspetta e riparte.
 # È il pattern lock-per-risorsa, applicato dall'autore del pattern a se stesso.
+# (2026-09-24, notte dei giri, T2#5): dopo un kill -9 il lock restava PER SEMPRE: ogni giro usciva 1
+# dopo 10 s senza che girasse nessun altro. Ora il lock porta il PID (prendi_lock_turno di
+# night-shift/lib.sh, la regola del turno): PID morto = orfano, ripreso subito; PID di un ciclo-vivo
+# vivo = si aspetta come prima.
+# shellcheck source=../night-shift/lib.sh
+source "$HERE/night-shift/lib.sh"
 LOCK="$MEMORIA/lock"
 I=0
-until mkdir "$LOCK" 2>/dev/null; do
-  I=$((I+1)); [ $I -gt 50 ] && { echo "ciclo-vivo: lock occupato da troppi giri — esco senza toccare la memoria" >&2; exit 1; }
+# (2026-09-24, terzo ventaglio, V4#3): i tentativi da variabile — il banco del lock vivo ne chiede 2 e non
+# paga 10 s di attesa a ogni suite; il turno usa il default, 50 x 0,2 s
+until prendi_lock_turno "$LOCK" ciclo-vivo; do
+  I=$((I+1)); [ $I -gt "${CICLO_LOCK_TENTATIVI:-50}" ] && { echo "ciclo-vivo: lock occupato da troppi giri (PID $(cat "$LOCK/pid" 2>/dev/null || echo '?')) — esco senza toccare la memoria" >&2; exit 1; }
   sleep 0.2
 done
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+trap 'rm -rf "$LOCK"' EXIT
 
 GIRO=$(cat "$MEMORIA/giro" 2>/dev/null || echo 0)
 GIRO=$((GIRO + 1))
@@ -58,7 +66,8 @@ FINDINGS=()
 # classe d'errore del zsh parse error capitata davvero durante un fix.
 if [ "$LIVELLO" -le 2 ]; then
   for f in "$HERE"/tools/*.py; do
-    python3 -c "import ast; ast.parse(open('$f').read())" 2>/dev/null || FINDINGS+=("ROTT py: $f non compila")
+    # (2026-09-24, sesto ventaglio, S3 R6): percorso come argomento — incollato nel sorgente, un apice dava 18 falsi ROTT
+    python3 -c "import ast, sys; ast.parse(open(sys.argv[1]).read())" "$f" 2>/dev/null || FINDINGS+=("ROTT py: $f non compila")
   done
   for f in "$HERE"/tools/*.sh "$HERE"/night-shift/*.sh "$HERE"/llm/*.sh; do
     bash -n "$f" 2>/dev/null || FINDINGS+=("ROTT sh: $f non compila (bash -n)")
@@ -101,10 +110,11 @@ fi
 # frattempo gli specchi agenti driftavano davvero mentre il test anti-drift
 # confrontava due stream vuoti (pattern confronto-non-vuoto).
 if [ "$LIVELLO" -ge 4 ]; then
-  # 4a. specchio skills: ogni skill di .claude vive anche in .opencode (graphify
-  #     esclusa: è nativa di OpenCode) e nessuna orfana vive solo nello specchio
+  # 4a. specchio skills: ogni skill di .claude vive anche in .opencode e nessuna orfana
+  #     vive solo nello specchio (D1 2026-09-23: graphify non e' piu' un'eccezione — e' la
+  #     spina dorsale, la vede anche Claude Code)
   for d in "$HERE"/.claude/skills/*/; do
-    n=$(basename "$d"); [ "$n" = "graphify" ] && continue
+    n=$(basename "$d")
     [ -d "$HERE/.opencode/skills/$n" ] || FINDINGS+=("ARCH: skill $n assente dallo specchio .opencode")
   done
   for d in "$HERE"/.opencode/skills/*/; do
@@ -134,7 +144,7 @@ if [ "$LIVELLO" -ge 4 ]; then
     # dedicati al tool anche con suffisso descrittivo (test-bc-map-leggi-curati.sh
     # presidia bc_map.py) ma non i match casuali — la versione "esatta" del giorno
     # dopo era troppo stretta e rompeva la copertura legittima (il battito l'ha vista).
-    ls "$HERE"/tests/ | tr '_' '-' | grep -q "^test-$b" || \
+    ls "$HERE"/tests/ | tr '_' '-' | grep -c "^test-$b" >/dev/null || \
       FINDINGS+=("ARCH: tool $(basename "$t") senza un test dedicato (cerco test-$b*)")
   done
   # 4d. indice pattern: ogni file sta nel registro patterns/README.md e viceversa

@@ -9,7 +9,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 for t in "$HERE"/tests/test-*.sh; do
   # (audit-2): prima matchava lo scaffold stesso (153/154 passavano per
   # costruzione). Ora serve un ko IN CODICE: la chiamata ko( non commentata
-  if grep -vE '^\s*#' "$t" | grep -qE '\bko |\bko\(' ; then
+  if grep -vE '^\s*#' "$t" | grep -Ec '\bko |\bko\(' >/dev/null ; then
     ok "$(basename "$t") ha una via di fallimento (ko in codice)"
   else
     ko "$(basename "$t") non puo' mai fallire (nessun ko eseguibile)"

@@ -21,14 +21,30 @@ fi
 # sono le lezioni da approvare, gli sospesi e il resoconto della notte.
 REPORT="$HOME/morning-gate-report.md"
 CORPO_GATE=""
+# eta_giorni <file>: giorni interi dall'ultima modifica (python3: stat -f/-c si scrivono solo in lib.sh)
+eta_giorni() { python3 -c 'import os,sys,time; print(int((time.time()-os.path.getmtime(sys.argv[1]))//86400))' "$1" 2>/dev/null || echo 0; }
+# (2026-09-25, settimo ventaglio, V3 R1): il gate e' in pensione e il suo ultimo report resta sul disco per sempre: la
+# mail del 26/9 usciva con l'oggetto del report del 28/8. Scelta provvisoria (DEBITI, D-V3-1): si allega, e da' l'oggetto,
+# solo se ha meno di 24 ore; altrimenti una riga lo dice.
+REPORT_FRESCO=0
 if [ -f "$REPORT" ]; then
-  CORPO_GATE="$(cat "$REPORT")
+  if [ "$(eta_giorni "$REPORT")" -lt 1 ]; then
+    REPORT_FRESCO=1
+    CORPO_GATE="$(cat "$REPORT")
 
 ---"
+  else
+    CORPO_GATE="(report del morning-gate di $(eta_giorni "$REPORT") giorni fa: non allegato — il gate e' in pensione)
+
+---"
+  fi
 fi
 
 # subject: la riga del totale dal report
-SUBJ=$(grep "Totale:" "$REPORT" 2>/dev/null | head -1 | sed 's/[*\`]//g' | head -c 120)
+# (2026-09-24, Q2 R3): senza il report (il gate e' in pensione) grep esce 2, e sotto set -e + pipefail il
+# digest moriva qui, rc 2, senza una riga — il contrario di quanto dice il commento sopra
+SUBJ=""
+[ "$REPORT_FRESCO" -eq 1 ] && SUBJ=$( { grep "Totale:" "$REPORT" 2>/dev/null || true; } | head -1 | sed 's/[*\`]//g' | head -c 120)
 [ -z "$SUBJ" ] && SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
 # corpo: il report + il summary numerico
@@ -41,9 +57,12 @@ SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"
 BODY="${CORPO_GATE}$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
 $([ -f "$SAL_TURNI" ] && {
   # (revisione 10 giri): `grep -c … || echo 0` stampava «0» due volte a conteggio zero
-  CICLI=$(grep -c "TURNO INIZIATO" "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
+  # (2026-09-24, quinto ventaglio, R4 R4): cicli e fix si contavano nelle code di log che ogni turno accoda,
+  # finestre sovrapposte (un ciclo corto contato due volte, uno lungo zero). Un'intestazione = un ciclo; i fix
+  # sono il numero dell'intestazione (le intestazioni di prima non lo portano: contano 0, e lo si sa).
+  CICLI=$(grep -c '^### .*turno automatico' "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
   PR=$(grep -oE '[0-9]+ PR bozza' "$SAL_TURNI" 2>/dev/null | awk '{s+=$1} END{print s+0}')
-  FIX=$(grep -c "auto-fix" "$SAL_TURNI" 2>/dev/null || true); FIX=${FIX:-0}
+  FIX=$(grep '^### .*turno automatico' "$SAL_TURNI" 2>/dev/null | grep -oE '[0-9]+ auto-fix' | awk '{s+=$1} END{print s+0}')
   echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
   ASPETTA=$(awk '/ASPETTA IL GIORNO/{dentro=1; next} /^### /{dentro=0} dentro && /^  [^ ]/{n++} END{print n+0}' "$SAL_TURNI" 2>/dev/null); ASPETTA=${ASPETTA:-0}
   [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"
@@ -64,6 +83,10 @@ if ls "$HOME"/deploy-pronto/*/MANIFEST.md >/dev/null 2>&1; then
 fi
 CERVMARK=$({ ls -t "$HOME"/night-shift-work/.cervello-????-??-?? 2>/dev/null || true; } | head -1)
 if [ -n "$CERVMARK" ]; then
+  # (settimo ventaglio, V3 R1): il segno piu' recente puo' essere di un altro giorno (il turno giu', il Mac spento):
+  # allora i sospesi si dicono per data, non come quelli di stamattina
+  CERV_DATA="${CERVMARK##*.cervello-}"
+  [ "$CERV_DATA" = "$(date +%F)" ] || BODY="$(printf '%s\n\n---\n(sospesi del %s, non di oggi: il turno non ha fatto la domanda del giorno)' "$BODY" "$CERV_DATA")"
   BODY="$(printf '%s\n\n---\n%s' "$BODY" "$(cat "$CERVMARK")")"
 fi
 
@@ -84,14 +107,18 @@ tell application \"Mail\"
   end tell
   send newMsg
 end tell" 2>/dev/null && INVIATO="Digest inviato a $DEST" || {
-  # fallback: mail CLI
-  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>/dev/null && INVIATO="Digest inviato a $DEST (via mail)" || INVIATO=""
+  # fallback: mail CLI. (2026-09-25, ottavo ventaglio, O5 R2): il suo rc 0 vuol dire «accettato nella coda LOCALE», non
+  # «arrivato» — sul Mac senza relay il messaggio resta li'. Si dice cosi', la memoria del turno non si svuota, e lo
+  # stderr di mail va nel log invece che nel vuoto. Se il ripiego vada tenuto e' una domanda in DEBITI.
+  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>>"$HOME/morning-digest.log" \
+    && { INVIATO="Digest messo nella coda locale di mail(1) per $DEST — consegna NON verificata (Mail non e' partito); la memoria del turno resta"; SOLO_CODA=1; } \
+    || INVIATO=""
 }
 # (revisione 10 giri): la memoria del turno si svuota SOLO a invio riuscito; un invio fallito
 # e' un rosso (rc 1), non un «ERRORE invio» con esito 0 — e la memoria resta per domani
 if [ -n "${INVIATO:-}" ]; then
   echo "$INVIATO"
-  if [ -f "$SAL_TURNI" ]; then : > "$SAL_TURNI"; fi
+  if [ -f "$SAL_TURNI" ] && [ "${SOLO_CODA:-0}" != 1 ]; then : > "$SAL_TURNI"; fi
 else
   echo "ERRORE invio: digest NON consegnato — la memoria del turno resta in $SAL_TURNI" >&2
   exit 1

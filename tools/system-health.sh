@@ -6,10 +6,12 @@ GREEN=0; YELLOW=0; RED=0
 ok()    { GREEN=$((GREEN+1));  echo "✅ $1"; }
 warn()  { YELLOW=$((YELLOW+1)); echo "⚠️  $1"; }
 ko()    { RED=$((RED+1));      echo "⛔ $1"; }
-# il turno incastrato (2026-08-31: tre notti perse così) — visibilità, non watchdog
-bash "$(dirname "$0")/turno-vivo.sh"
-
 echo "== Sistema — $(date '+%Y-%m-%d %H:%M') =="
+
+# il turno incastrato (2026-08-31: tre notti perse così). (Q30, 2026-09-23, notte dei giri): girava
+# FUORI dai contatori — «⛔ TURNO INCASTRATO» stampato, verdetto ed exit code identici a un turno
+# sano, e quindi status-page cieca. Ora conta: incastrato = critico.
+TV=$(bash "$(dirname "$0")/turno-vivo.sh"); case $? in 0) ok "$TV" ;; 2) warn "$TV" ;; *) ko "$TV" ;; esac   # (Q3 R6): 2 = non so
 
 # 1. Ollama (il motore notturno)
 if curl -sf --max-time 3 http://localhost:11434/api/version >/dev/null 2>&1; then
@@ -56,14 +58,18 @@ fi
 # (E-002 di nuovo, stesso giorno): launchctl list | grep -q con pipefail —
 # grep -q chiude stdin al primo match, launchctl prende SIGPIPE (rc 141) e la
 # pipeline 'fallisce' anche quando il job c'e'. Cattura-prima, come da canone.
-LAUNCHD_LIST=$(launchctl list 2>/dev/null)
-for AG in luca.ollama luca.nightshift; do
-  if grep -q "$AG" <<<"$LAUNCHD_LIST"; then
-    ok "launchd: $AG caricato"
-  else
-    warn "launchd: $AG NON caricato"
-  fi
-done
+# (2026-09-24, Q1 R6): senza launchctl si era appena detto «non verificabile», e poi si dava il verdetto lo
+# stesso («NON caricato»): la voce non verificabile non riceve un verdetto
+if command -v launchctl >/dev/null 2>&1; then
+  LAUNCHD_LIST=$(launchctl list 2>/dev/null)
+  for AG in luca.ollama luca.nightshift; do
+    if grep -q "$AG" <<<"$LAUNCHD_LIST"; then
+      ok "launchd: $AG caricato"
+    else
+      warn "launchd: $AG NON caricato"
+    fi
+  done
+fi
 
 # 4. Tool CLI
 for CMD in gh opencode graphify ollama jq; do
@@ -73,7 +79,10 @@ done
 # 5. Memoria (il collo di bottiglia notturno)
 SWAP=$(sysctl -n vm.swapusage 2>/dev/null | grep -o 'used = [0-9.]*' | awk '{print $3}')
 FREEMB=$(memory_pressure -Q 2>/dev/null | grep -o '[0-9]*' | head -1)
-if python3 -c "exit(0 if float('${SWAP:-0}') < 4000 else 1)" 2>/dev/null; then
+# (Q1 R6): lo swap non misurato (sysctl senza vm.swapusage, fuori dal Mac) era letto come 0, cioe' verde
+if [ -z "$SWAP" ]; then
+  warn "swap: non misurabile qui (vm.swapusage assente)"
+elif python3 -c "exit(0 if float('$SWAP') < 4000 else 1)" 2>/dev/null; then
   ok "swap: ${SWAP}M (sotto controllo)"
 else
   warn "swap: ${SWAP}M — chiudi le app pesanti prima del turno"

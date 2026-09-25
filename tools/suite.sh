@@ -17,13 +17,24 @@
 # Esce: 0 = tutti i test superati · 1 = almeno un test fallito (o zero test)
 set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
-cd "$DIR"
+cd -- "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco eseguito"; exit 1; }   # (Q3 R3): senza guardia girava la suite del chiamante
 
-N=0
+# (2026-09-24, E-047): una cache di bytecode FRESCA per ogni giro della suite. Un sabotaggio a mano della
+# stessa dimensione, nello stesso secondo, lascia valido il .pyc in tools/__pycache__: i banchi che
+# importano il modulo giudicavano il codice di prima. Con PYTHONPYCACHEPREFIX Python legge e scrive il
+# bytecode solo qui dentro, mai nei __pycache__ del sorgente.
+PYTHONPYCACHEPREFIX=$(mktemp -d "${TMPDIR:-/tmp}/suite-pyc.XXXXXX"); export PYTHONPYCACHEPREFIX
+trap 'case "$PYTHONPYCACHEPREFIX" in */suite-pyc.??????) rm -rf "$PYTHONPYCACHEPREFIX" ;; esac' EXIT
+
+N=0; SUPERATI=0
 TOT=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
 [ "$TOT" -eq 0 ] && { echo "⛔ suite: nessun tests/test-*.sh trovato"; exit 1; }
+T0=$(date +%s)
 for t in tests/test-*.sh; do
   N=$((N+1))
+  # (2026-09-24, terzo ventaglio, V4#1): il banco in corso, su stderr — se un budget taglia la suite,
+  # l'ultima riga dice dove si e' fermata
+  echo "▶ $t" >&2
   OUT=$(bash "$t" 2>&1) || {
     echo "FALLITO ($N/$TOT): $t"
     echo "$OUT" | tail -10
@@ -37,5 +48,25 @@ for t in tests/test-*.sh; do
     echo "$OUT" | tail -5
     exit 1
   fi
+  SUPERATI=$((SUPERATI+1))
 done
-echo "Suite test hub: $N/$TOT file superati"
+# (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo (N), non i banchi superati — un
+# ciclo che saltava banchi stampava lo stesso «TOT/TOT». Si conta dopo il verdetto, e mancarne uno e' rosso.
+if [ "$SUPERATI" -ne "$TOT" ]; then
+  echo "FALLITO: superati $SUPERATI banchi su $TOT — il runner ne ha saltati $((TOT - SUPERATI))"
+  exit 1
+fi
+DURATA=$(( $(date +%s) - T0 ))
+echo "Durata della suite: $DURATA s"
+# (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. Il budget di .night-verify si scopriva solo
+# allo sforo, di notte; ora la suite dice la quota usata, e dal 70% avvisa. Avvisa, non boccia: se la soglia
+# debba far rosso il turno e' una domanda aperta in DEBITI.md.
+BUDGET=$(sed -n 's/^@\([0-9][0-9]*\) bash tools\/suite\.sh.*/\1/p' .night-verify 2>/dev/null | head -1)
+if [ -n "$BUDGET" ] && [ "$BUDGET" -gt 0 ]; then
+  PERC=$(( DURATA * 100 / BUDGET ))
+  echo "Budget della suite: $DURATA s su $BUDGET s dichiarati in .night-verify ($PERC%)"
+  [ "$PERC" -ge 70 ] && echo "⚠ SENTINELLA: la suite ha usato il $PERC% del budget (soglia 70%) — il margine si chiude: banchi lenti o budget da rivedere PRIMA dello sforo"
+else
+  echo "Budget della suite: non dichiarato in .night-verify — nessuna sentinella del margine"
+fi
+echo "Suite test hub: $SUPERATI/$TOT file superati"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono

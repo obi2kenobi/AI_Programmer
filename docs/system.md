@@ -13,10 +13,10 @@
 │              nominate @route/night @route/digest                       │
 │ L2 LAVORO    giorno: sessioni dirette + deleghe llm/ask-*              │
 │              notte: night-shift 23:00 multi-repo (repos.conf LOCALE)   │
-│ L3 GIUDIZIO  censore nel ciclo (revisore.sh, PR caccia:) + digest 7:30 │
-│              (morning-gate in pensione dal 2026-09-23; veto umano)     │
-│ L4 MEMORIA   SAL.md + metrics/gate.csv → le decisioni future le        │
-│              decidono i dati accumulati, non le opinioni               │
+│ L3 GIUDIZIO  censore nel ciclo (revisore.sh): fonde le caccia:, parere │
+│              sulle PR di issue; digest 7:30; morning-gate in pensione  │
+│ L4 MEMORIA   SAL.md + DEBITI + REGISTRO (metrics/gate.csv: storico)    │
+│              → le decisioni le decidono i dati, non le opinioni        │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -29,7 +29,7 @@
 | Braccia notturne | qwen3.8-27b:iq3s via Ollama (un solo modello, decisione 2026-09-21 — `cervello/decisione-modello-unico.md`) | bencina 2026-09-21: 3/3 in 48 s con think:false (il 14b 1/3 in 22 s); dal 19 al 21/9 qui stava qwen2.5-coder:14b, prima il Qwen3.8-27B Q4_K_M (misure 2026-08-18: 3,7-5,9 tok/s). Default in `night-shift/night-shift.sh` (`MODEL_TAG`), presidiato da `tests/test-un-solo-modello.sh` |
 | Tessuto di routing | WayfinderRouter 2026.8.0 | solo-locale per scelta (Luca 2026-08-21); il turno notturno NON dipende dal router — garanzia «nessun punto di failure singolo» |
 | Giudice/censore/correttore | REPO-A + censore (`night-shift/revisore.sh`; il morning-gate è in pensione dal 2026-09-23) | il metodo del Supervisore (banco che smentisce) applicato alle PR del sistema |
-| Memoria | SAL.md + metrics/gate.csv | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
+| Memoria | SAL.md + DEBITI.md + `docs/errori/REGISTRO.md` (`metrics/gate.csv` è storico: lo scriveva il morning-gate, ultima riga 2026-08-21) | regola del repo: ciò che un giro insegna si scrive prima del giro successivo |
 
 ## Limiti dichiarati (cosa il sistema NON fa, oggi)
 
@@ -80,9 +80,10 @@
 ## Il ciclo completo (come si chiude)
 
 ```
-commessa (issue night-shift) → notte (PR bozza) → gate (verifiche + smentita)
-   → esito: merge (tuo sì) | chiusura | commessa correttiva (da approvare)
-   → lezione scritta in SAL.md + riga in metrics/gate.csv → il ciclo migliora
+commessa (issue night-shift) → notte (PR bozza) → censore nel ciclo (guardie + prove + lente)
+   → caccia: fusa dal censore | issue: parere sulla PR, la fusione è tua
+   → lezione scritta in SAL.md → il ciclo migliora
+   (fino al 2026-09-23 qui c'era il morning-gate, con una riga in metrics/gate.csv per PR)
 ```
 
 ---
@@ -258,7 +259,7 @@ citava solo "l'onboarding", non il bootstrap).
   ogni anello (selezione-contesto → brainstorming → design-doc → commessa → notte →
   gate → SAL) dichiara la consegna al successivo, e la catena è circolare (il SAL è
   la fonte #1 di selezione-contesto).
-- **La notte ha gli stessi 5 agenti del giorno**: `.opencode/agent/` specchiato,
+- **La notte ha gli stessi agenti del giorno** (oggi 6): `.opencode/agent/` specchiato,
   propagato a bootstrap/onboard, con guardia anti-drift sul corpo identico.
 
 ## La rotta corretta: il parco come corpus, non come cava (2026-08-24, 6° ciclo, addendum)

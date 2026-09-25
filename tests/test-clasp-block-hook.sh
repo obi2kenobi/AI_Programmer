@@ -17,7 +17,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"cd repo && clasp push"}}' | bash "$HOOK")
 echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
   && ok "clasp push → permissionDecision deny" || ko "clasp push NON negato"
-echo "$OUT" | jq -r '.hookSpecificOutput.permissionDecisionReason' | grep -qi "produzione\|NEGATO" \
+echo "$OUT" | jq -r '.hookSpecificOutput.permissionDecisionReason' | grep -ic "produzione\|NEGATO" >/dev/null \
   && ok "il deny dice perché" || ko "il deny non spiega"
 
 OUT=$(echo '{"tool_name":"Bash","tool_input":{"command":"clasp deploy -P xxx"}}' | bash "$HOOK")
@@ -89,7 +89,7 @@ done
 # l'errore, non contro un aggressore: chi vuole aggirarlo ci riesce comunque,
 # e la regola resta scritta in CLAUDE.md per quel caso.
 
-jq -e '.hooks.PreToolUse[] | select(.matcher == "Bash") | .hooks[] | select(.command | contains("clasp-block"))' "$SETTINGS" >/dev/null 2>&1 \
+jq -e '.hooks.PreToolUse[] | select(.matcher | split("|") | index("Bash")) | .hooks[] | select(.command | contains("clasp-block"))' "$SETTINGS" >/dev/null 2>&1 \
   && ok "settings.json registra l'hook su Bash" || ko "settings.json non registra clasp-block-hook"
 
 
@@ -159,10 +159,142 @@ done
 # Revisione 10 giri 2026-09-23: la guardia della lezione REPO-Q non aveva un'attesa.
 touch "$SB7/.mirror-boundaries"
 CTX=$(echo '{"tool_name":"Bash","tool_input":{"command":"echo '"'"'cd x && clasp push'"'"' > deploy.sh"}}' | (cd "$SB7" && bash hook.sh) | jq -r '.hookSpecificOutput.additionalContext // empty' 2>/dev/null)
-echo "$CTX" | grep -q "mirror-boundaries" && ok "REPO-Q: push GENERATO in un mirror → avviso mirror-boundaries" || ko "REPO-Q: nessun avviso mirror sul push generato"
+grep -q "mirror-boundaries" <<<"$CTX" && ok "REPO-Q: push GENERATO in un mirror → avviso mirror-boundaries" || ko "REPO-Q: nessun avviso mirror sul push generato"
 D=$(decide7 'clasp push')
 [ "$D" = "deny" ] && ok "REPO-Q: nel mirror la forma nuda resta NEGATA (il deny vince sull'avviso)" || ko "REPO-Q: forma nuda nel mirror passa ($D)"
 rm -f "$SB7/.mirror-boundaries"
+
+# ── (2026-09-23, sì di Luca) il corpo di un HEREDOC e' dato, non comando ─────────────────────────
+# Il falso positivo, misurato due volte in una sessione: un heredoc che scriveva un file (python
+# che riscrive CLAUDE.md, un `cat >> SAL.md`) citava la regola «(clasp push/deploy MAI…)» e veniva
+# NEGATO — l'a capo diventa `;`, la `(` conta come separatore, e il testo del file sembrava un
+# comando. Il corpo si toglie prima del confronto; ma se il heredoc NUTRE una shell
+# (`bash <<EOF`, `cat <<EOF | sh`) e' codice eseguito, e si guarda come prima.
+decideh() { # decideh <comando multi-riga> → deny | consentito
+  local D
+  D=$(jq -n --arg c "$1" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK" | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+  [ -n "$D" ] || D=consentito; printf '%s' "$D"
+}
+P='clasp'; V='push'   # la forma vietata si compone: il sorgente del banco non la contiene nuda
+[ "$(decideh "python3 - <<'PY'
+s = '''l'hub: il deploy e' dell'umano (${P} ${V}/deploy MAI)'''
+PY")" = "consentito" ] && ok "heredoc di python che CITA la regola fra parentesi: consentito (era il falso positivo)" || ko "heredoc di python che cita la regola: ancora negato"
+[ "$(decideh "cat >> SAL.md <<'EOF'
+- riga universale aggiunta (${P} ${V} MAI dall'agente)
+EOF")" = "consentito" ] && ok "cat >> file <<EOF con la regola nel testo: consentito" || ko "heredoc verso un file: ancora negato"
+[ "$(decideh "cat > note.md <<-FINE
+	poi a mano (${P} ${V}) dal Mac
+	FINE")" = "consentito" ] && ok "heredoc <<- (delimitatore con tab): corpo tolto, consentito" || ko "heredoc <<- non riconosciuto"
+# ... ma dove il heredoc e' codice, resta negato
+[ "$(decideh "bash <<'EOF'
+cd x
+${P} ${V}
+EOF")" = "deny" ] && ok "bash <<EOF col push nel corpo: NEGATO (la shell lo esegue)" || ko "bash <<EOF col push: passa"
+[ "$(decideh "cat <<EOF | sh
+${P} ${V}
+EOF")" = "deny" ] && ok "cat <<EOF | sh: NEGATO (il corpo va a una shell)" || ko "heredoc in pipe verso sh: passa"
+[ "$(decideh "cat > x.txt <<EOF
+dato
+EOF
+${P} ${V}")" = "deny" ] && ok "push DOPO la fine del heredoc: NEGATO" || ko "push dopo il heredoc: passa"
+[ "$(decideh "cat > x.txt <<EOF
+${P} ${V}")" = "deny" ] && ok "heredoc senza chiusura: il corpo non si toglie (prudenza), NEGATO" || ko "heredoc aperto: passa"
+[ "$(decideh "grep -c x <<<\"testo\"
+${P} ${V}")" = "deny" ] && ok "<<< (herestring) non e' un heredoc: il push sotto resta NEGATO" || ko "herestring scambiata per heredoc"
+
+# ── (2026-09-23, giro A7 della notte) deploy-ora e' il gesto di LUCA: l'agente non lo invoca ──────
+[ "$(decideh "bash tools/deploy-ora.sh repo")" = "deny" ] && ok "bash tools/deploy-ora.sh: NEGATO (il deploy assistito e' dell'umano)" || ko "l'agente puo' invocare deploy-ora"
+[ "$(decideh "echo si | bash tools/deploy-ora.sh repo")" = "deny" ] && ok "echo si | deploy-ora: NEGATO" || ko "il si in pipe verso deploy-ora passa il cancello"
+[ "$(decideh "./tools/deploy-ora.sh repo")" = "deny" ] && ok "./tools/deploy-ora.sh: NEGATO" || ko "deploy-ora col percorso relativo passa"
+[ "$(decideh "grep -n deploy-ora tools/prepara-deploy.sh")" = "consentito" ] && ok "cercare deploy-ora con grep: consentito (e' un argomento, non un'invocazione)" || ko "grep su deploy-ora negato a torto"
+[ "$(decideh "bash tools/prepara-deploy.sh repo")" = "consentito" ] && ok "prepara-deploy (solo il pacchetto): consentito" || ko "prepara-deploy negato a torto"
+
+# ── (2026-09-23, giro A1 della notte) SENZA jq il cancello era APERTO: `command -v jq || exit 0` ──
+# Solo `exit 2` blocca senza JSON (documentazione degli hook di Claude Code). Senza jq: modo prudente.
+NOJQ=$(mktemp -d); for b in bash sh cat printf tr sed grep awk head tail env; do ln -s "$(command -v "$b")" "$NOJQ/$b" 2>/dev/null; done
+senza_jq() { printf '%s' "$1" | PATH="$NOJQ" bash "$HOOK" >/dev/null 2>&1; echo $?; }
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"clasp push"}}')" = "2" ] && ok "senza jq: clasp push NEGATO (exit 2, modo prudente)" || ko "senza jq il cancello e' aperto"
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"bash tools/deploy-ora.sh r"}}')" = "2" ] && ok "senza jq: deploy-ora NEGATO" || ko "senza jq deploy-ora passa"
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"ls -la"}}')" = "0" ] && ok "senza jq: un comando innocuo passa" || ko "senza jq tutto e' bloccato"
+[ "$(senza_jq '{"tool_name":"Bash","tool_input":{"command":"clasp deployments"}}')" = "0" ] && ok "senza jq: clasp deployments (sola lettura) passa" || ko "senza jq clasp deployments negato"
+rm -rf "$NOJQ"
+
+# ── (2026-09-23, giro A1 della notte) le forme della shell che scavalcavano il cancello, provate ─
+for FORMA in "if ${P} ${V}; then echo ok; fi" "! ${P} ${V}" "while ${P} ${V}; do sleep 1; done" "until ${P} ${V}; do sleep 1; done" \
+             "timeout 600 ${P} ${V}" "timeout -k 5 60 ${P} ${V}" "command ${P} ${V}" "nice ${P} ${V}" "nice -n 10 ${P} ${V}" "watch ${P} ${V}" \
+             "cat x | xargs -I{} ${P} ${V}" "xargs -n 1 ${P} ${V}" "find . -name .clasp.json -execdir ${P} ${V} \\;" "parallel ${P} ${V} ::: a b" \
+             "${P} -A creds.json ${V}" "${P} --auth creds.json ${V}" "cd x && ${P} -P ./src deploy"; do
+  [ "$(decideh "$FORMA")" = "deny" ] && ok "NEGATO: $FORMA" || ko "passa il cancello: $FORMA"
+done
+[ "$(decideh "${P} deployments")" = "consentito" ] && ok "${P} deployments (elenca soltanto): consentito" || ko "${P} deployments negato a torto (deploy combaciava con deployments)"
+[ "$(decideh "${P} pull && ${P} status")" = "consentito" ] && ok "${P} pull e status: consentiti" || ko "lettura negata a torto"
+
+# ── Q5 R3-R4-R6 (2026-09-24, quarto ventaglio, «i ganci come avversario»): forme che PASSAVANO il gancio
+# e che, col clasp finto, eseguivano davvero il push (provato dal giro). Sono le vie NORMALI di un
+# agente distratto, non di un aggressore: i runner senza `run`, `npm start`, le catene di script, il
+# package.json della sottocartella, la shell dopo `/` o attaccata al heredoc, eval e source, il
+# sottocomando fra virgolette, il tool Monitor.
+SBQ=$(mktemp -d /tmp/clasp-q5.XXXXXX); mkdir -p "$SBQ/sub"
+printf '{"scripts":{"dp":"npm run inoltra","inoltra":"npm run push","push":"clasp push","start":"clasp push","test":"echo ok"}}' > "$SBQ/package.json"   # dp → inoltra → push: la catena a due anelli, nell'ordine che un solo giro non risolve
+printf '{"scripts":{"rilascia":"clasp deploy"}}' > "$SBQ/sub/package.json"
+cp "$HOOK" "$SBQ/hook.sh"
+decideq() { # decideq <tool> <comando>
+  D=$(jq -cn --arg t "$1" --arg c "$2" '{tool_name:$t, tool_input:{command:$c}}' | (cd "$SBQ" && bash hook.sh) | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null)
+  [ -n "$D" ] || D=consentito; printf '%s' "$D"; }
+NQ=0; for FORMA in 'pnpm push' 'yarn push' 'bun push' 'npm start' 'npm run dp' 'npm run "push"' \
+  'npm --prefix sub run rilascia' 'cd sub && npm run rilascia' 'yarn --cwd sub rilascia' \
+  $'bash<<EOF\nclasp push\nEOF' $'/bin/bash <<EOF\nclasp push\nEOF' $'source /dev/stdin <<EOF\nclasp push\nEOF' \
+  '/bin/bash -c "clasp push"' 'bash -o pipefail -c "clasp push"' 'bash -c -- "clasp push"' 'bash --norc -c "clasp push"' \
+  'eval clasp push' 'eval "clasp push"' 'clasp "push"' "clasp 'deploy'"; do
+  D=$(decideq Bash "$FORMA"); [ "$D" = deny ] || { NQ=$((NQ+1)); ko "Q5: passa → $(tr '\n' '~' <<<"$FORMA")"; }
+done
+[ "$NQ" -eq 0 ] && ok "Q5: 20 forme normali di clasp push/deploy (runner, catene, sottocartelle, shell, eval, virgolette) → NEGATE"
+D=$(decideq Monitor 'clasp push'); [ "$D" = deny ] && ok "Q5: il tool Monitor esegue un comando di shell: clasp push → NEGATO" || ko "Q5: Monitor clasp push passa ($D)"
+grep -c '"matcher": "Bash|Monitor"' "$SETTINGS" >/dev/null && ok "Q5: il gancio e' registrato anche per Monitor" || ko "Q5: settings.json registra il gancio solo per Bash"
+# (2026-09-24, quinto ventaglio, R2 R3): npm risale fino al package.json piu' vicino; il gancio cercava solo da
+# $PWD in giu'. In un progetto clasp (package.json alla radice, sorgenti in src/) `cd src && npm run push`
+# passava, e npm eseguiva clasp push. Qui: da una sottocartella senza package.json, e col solo campo cwd.
+mkdir -p "$SBQ/src"
+dsub() { jq -cn --arg c "$1" --arg w "$2" '{tool_name:"Bash", cwd:$w, tool_input:{command:$c}}' \
+  | (cd "$3" && env -u CLAUDE_PROJECT_DIR bash "$SBQ/hook.sh") | jq -r '.hookSpecificOutput.permissionDecision // empty' 2>/dev/null; }
+[ "$(dsub 'npm run push' "$SBQ/src" "$SBQ/src")" = deny ] && ok "R2 R3: da src/ senza package.json, npm run push (quello della radice) → NEGATO" \
+  || ko "R2 R3: da una sottocartella npm run push passa"
+ALTROVE=$(mktemp -d /tmp/clasp-altrove.XXXXXX)
+[ "$(dsub 'npm start' "$SBQ/src" "$ALTROVE")" = deny ] && ok "R2 R3: la cartella della sessione si legge dal campo cwd dell'input" \
+  || ko "R2 R3: col campo cwd e il gancio lanciato altrove, npm start passa"
+[ -z "$(dsub 'npm test' "$SBQ/src" "$SBQ/src")" ] && ok "R2 R3: da src/, npm test resta consentito" || ko "R2 R3: npm test negato a torto da src/"
+rmdir "$ALTROVE"
+for LECITO in 'npm test' 'npm install' 'npm run test' $'cat <<EOF > note.md\nclasp push resta vietato\nEOF' "grep -rn 'clasp push' docs"; do
+  D=$(decideq Bash "$LECITO"); [ "$D" = consentito ] && ok "Q5: consentito → $(tr '\n' '~' <<<"$LECITO")" || ko "Q5: negato a torto → $(tr '\n' '~' <<<"$LECITO")"
+done
+rm -rf "$SBQ"
+
+# (Q5, 2026-09-24): il gancio che MUORE deve negare, non lasciar passare. Una copia con un crash iniettato
+# subito dopo la lettura dell'input (una variabile mai definita, sotto set -u — il difetto vero del giorno).
+SBX=$(mktemp -d /tmp/clasp-crash.XXXXXX)
+# (2026-09-24, sesto ventaglio, S5 R1): era `sed '/re/a testo'` su una riga sola — il sed del Mac lo rifiuta
+# («command a expects \ followed by text»), il crash non si iniettava e la suite si fermava qui. awk c'e' ovunque.
+awk '{print} /^trap prudente EXIT$/{print "echo \"$VARIABILE_MAI_DEFINITA_Q5\""}' "$HOOK" > "$SBX/hook.sh"
+grep -c 'VARIABILE_MAI_DEFINITA_Q5' "$SBX/hook.sh" >/dev/null || ko "premessa: crash non iniettato (la riga della trappola e' cambiata?)"
+jq -cn '{tool_name:"Bash",tool_input:{command:"npx clasp push"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; RCX=$?
+[ "$RCX" -eq 2 ] && ok "gancio morto su clasp push: nega (exit 2, modo prudente)" || ko "gancio morto su clasp push: rc $RCX — il comando passerebbe"
+jq -cn '{tool_name:"Bash",tool_input:{command:"ls -la"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; RCX=$?
+[ "$RCX" -eq 0 ] && ok "gancio morto su un comando innocuo: passa (non blocca tutto)" || ko "gancio morto su ls: rc $RCX"
+# (2026-09-25, settimo ventaglio, V4 R1): il ramo che nega `npm run <script-con-clasp-push>` e' proprio quello che moriva
+# sul Mac (una variabile attaccata a «). Il modo prudente conosceva solo la parola clasp nel comando: `npm run pubblica`
+# passava. Ora nega un runner di script quando un package.json vicino ha uno script che fa clasp push/deploy.
+mkdir -p "$SBX/gas/src" "$SBX/web"
+printf '{"scripts":{"pubblica":"clasp push -f"},"devDependencies":{"@google/clasp":"^2.4"}}\n' > "$SBX/gas/package.json"
+printf '{"scripts":{"test":"node t.js"}}\n' > "$SBX/web/package.json"
+RCX=$(cd "$SBX/gas/src" && jq -cn '{tool_name:"Bash",tool_input:{command:"npm run pubblica"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; echo $?)
+[ "$RCX" -eq 2 ] && ok "V4 R1: gancio morto, npm run di uno script che fa clasp push: nega" || ko "V4 R1: gancio morto, npm run pubblica passa (rc $RCX)"
+RCX=$(cd "$SBX/web" && jq -cn '{tool_name:"Bash",tool_input:{command:"npm run test"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; echo $?)
+[ "$RCX" -eq 0 ] && ok "V4 R1: gancio morto, npm run in un progetto senza clasp: passa" || ko "V4 R1: gancio morto, npm run test negato (rc $RCX)"
+NOJQ=$(mktemp -d); for b in bash sh cat printf tr sed grep awk head tail env; do ln -s "$(command -v "$b")" "$NOJQ/$b" 2>/dev/null; done
+RCX=$(cd "$SBX/gas/src" && printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm run pubblica"}}' | PATH="$NOJQ" bash "$HOOK" >/dev/null 2>&1; echo $?)
+[ "$RCX" -eq 2 ] && ok "V4 R1: senza jq, npm run di uno script che fa clasp push: nega" || ko "V4 R1: senza jq, npm run pubblica passa (rc $RCX)"
+rm -rf "$NOJQ"
+rm -rf "$SBX"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

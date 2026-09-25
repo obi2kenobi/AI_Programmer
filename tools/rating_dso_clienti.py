@@ -31,6 +31,7 @@ tipo = "fattura" | "pagamento" | "cessione" (il tipo reale si deduce dalla
 colonna tipo documento / descrizione: la cessione contiene 'CessioneFACTOR')
 """
 import csv
+import math
 import re
 import sys
 from datetime import date
@@ -48,6 +49,11 @@ def main():
     del progetto reale (regola 1-2 del docstring); i clienti senza fatture
     pagate restano «n.d.»: la forma del numero dichiara cosa contiene.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: rating_dso_clienti.py < movimenti.csv — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     # (giro 21, 2026-09-20 — D32): colonne sbagliate = KeyError nudo; stdin vuoto = tabella
     # vuota con rc 0 (verde senza dati). Si dichiara cosa manca, come scadenzario_aging.
     reader = csv.DictReader(sys.stdin)
@@ -57,22 +63,47 @@ def main():
         return 1
     righe = list(reader)
     fatture, pagamenti = [], []
-    for r in righe:
+    ignorate = []   # (Q22): righe di tipo che il rating non legge — prima sparivano senza conteggio
+    for n, r in enumerate(righe, start=2):
         tipo = (r["tipo"] or "").strip().lower()
         cliente = normalizza(r.get("cliente"))
-        importo = float(r["importo"] or 0)
+        # (2026-09-24, quinto ventaglio, R3 R3): una data vuota o «24/09/2026», o un importo «1.234,56»,
+        # erano un traceback. La data si legge solo dove il rating la usa (fatture, pagamenti, cessioni).
+        try:
+            importo = float(r["importo"] or 0)
+            data = date.fromisoformat(r["data_documento"]) if tipo in ("fattura", "pagamento", "cessione") else None
+        except (ValueError, TypeError):
+            print(f"ERRORE: riga {n}: importo o data non leggibili (importo={r['importo']!r}, data_documento={r['data_documento']!r};"
+                  f" attesi importo col punto decimale e data AAAA-MM-GG) — nessun rating", file=sys.stderr)
+            return 1
+        # (2026-09-24, quinto ventaglio, R3 R2): un importo nan passava come «NON MATCHATO … nan», rc 0
+        if not math.isfinite(importo):
+            print(f"ERRORE: importo non finito (nan/inf) nella riga {r.get('nr_doc') or '?'} — nessun rating", file=sys.stderr)
+            return 1
         descrizione = (r.get("descrizione") or "")
         if tipo == "fattura":
-            fatture.append({"cliente": cliente, "data": date.fromisoformat(r["data_documento"]),
+            fatture.append({"cliente": cliente, "data": data,
                             "descrizione": descrizione, "importo": importo, "matched": False})
         elif tipo in ("pagamento", "cessione"):
-            d = date.fromisoformat(r["data_documento"])
+            d = data
             if tipo == "cessione":
                 m = CESSIONE_RE.search(descrizione)
                 if m:
-                    d = date(2000 + int(m.group("aa")), int(m.group("mm")), int(m.group("gg")))
+                    # (Q22): una data impossibile nella descrizione (310226) era un traceback nudo
+                    try:
+                        d = date(2000 + int(m.group("aa")), int(m.group("mm")), int(m.group("gg")))
+                    except ValueError:
+                        print(f"ERRORE: data di cessione impossibile nella descrizione {descrizione!r} (formato GGMMAA)", file=sys.stderr)
+                        return 1
             pagamenti.append({"data": d, "cliente": cliente, "descrizione": descrizione, "importo": importo})
+        else:
+            ignorate.append(tipo or "(vuoto)")
 
+    # (Q22): senza fatture ne' pagamenti stampava una tabella vuota, rc 0 (le righe d'altro tipo si
+    # ignorano: il vuoto e' «nessun movimento che il rating sa leggere»)
+    if not fatture and not pagamenti:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     clienti = {}
     non_matchati = []
     for p in pagamenti:
@@ -106,6 +137,8 @@ def main():
             clienti.setdefault(f["cliente"], {"pagate": 0, "somma_giorni": 0, "non_pagate": 0})["non_pagate"] += 1
 
     print(f"Fatture: {len(fatture)} · Pagamenti/cessioni: {len(pagamenti)} · Non matchati: {len(non_matchati)}")
+    if ignorate:
+        print(f"ATTENZIONE: righe ignorate (tipo non letto dal rating): {len(ignorate)} — {', '.join(sorted(set(ignorate)))}")
     print(f"{'cliente':<28} {'pagate':>6} {'DSO medio':>10} {'non pagate':>10}")
     for nome in sorted(clienti, key=lambda n: -(clienti[n]["somma_giorni"] / clienti[n]["pagate"] if clienti[n]["pagate"] else -1)):
         v = clienti[nome]

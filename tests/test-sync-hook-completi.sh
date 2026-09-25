@@ -19,8 +19,8 @@ done < <(jq -r '.hooks.PreToolUse[]?.hooks[]?.command' "$HERE/.claude/settings.j
 
 for script in tools/sync-repo.sh tools/onboard-repo.sh tools/bootstrap-app.sh; do
   grep -q 'settings.json' "$HERE/$script" \
-    && ok "$(basename $script) deriva da settings.json" \
-    || ko "$(basename $script) usa lista fissa"
+    && ok "$(basename "$script") deriva da settings.json" \
+    || ko "$(basename "$script") usa lista fissa"
 done
 
 echo ""

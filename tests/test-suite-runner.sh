@@ -21,14 +21,14 @@ printf '#!/bin/bash\necho "vero due"\necho "2 OK, 0 FAIL — con un suffisso"\n'
 # 1. tutti verdi: rc 0, riepilogo 2/2
 OUT=$(bash "$RUNNER" "$SB" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "tutti verdi: rc 0" || ko "rc $RC con suite tutta verde"
-echo "$OUT" | grep -q "2/2 file superati" && ok "riepilogo N/TOT presente" || ko "riepilogo mancante: $OUT"
+grep -q "2/2 file superati" <<<"$OUT" && ok "riepilogo N/TOT presente" || ko "riepilogo mancante: $OUT"
 
 # 2. uno rosso: rc 1, NOME del file e suo output (la lezione del giro 7)
 printf '#!/bin/bash\necho "dettaglio importante del fallimento"\nexit 7\n' > "$SB/tests/test-tre.sh"
 OUT=$(bash "$RUNNER" "$SB" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "uno rosso: rc 1" || ko "rc $RC con un test rosso"
-echo "$OUT" | grep -q "test-tre.sh" && ok "il file fallito viene nominato" || ko "non nomina il file fallito"
-echo "$OUT" | grep -q "dettaglio importante" && ok "l'output del fallito si vede" || ko "output del fallito perso"
+grep -q "test-tre.sh" <<<"$OUT" && ok "il file fallito viene nominato" || ko "non nomina il file fallito"
+grep -q "dettaglio importante" <<<"$OUT" && ok "l'output del fallito si vede" || ko "output del fallito perso"
 
 # 3. zero test: rosso dichiarato (verifiche-vuote non passano inosservate)
 SB2=$(mktemp -d /tmp/test-suite2.XXXXXX)
@@ -54,6 +54,67 @@ rm -rf "$SB3"
 # 4. il runner e' dichiarato in .night-verify come UN COMANDO per riga
 grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify" && ok "dichiarato in .night-verify" \
   || ko ".night-verify non invoca suite.sh"
+
+# (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo, non i banchi eseguiti — col
+# ciclo sabotato (`[ "$N" -gt 5 ] && continue`) stampava «170/170 superati» avendone eseguiti 5. Qui 7
+# banchi lasciano ognuno un segno, e il runner deve eseguirli tutti; e un runner che ne salta uno e' rosso.
+SB3=$(mktemp -d /tmp/test-suite3.XXXXXX); mkdir -p "$SB3/tests"
+for i in 1 2 3 4 5 6 7; do printf '#!/bin/bash\ntouch "%s/segno-%s"\necho "1 OK, 0 FAIL"\n' "$SB3" "$i" > "$SB3/tests/test-s$i.sh"; done
+OUT=$(bash "$RUNNER" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && [ "$(ls "$SB3"/segno-* 2>/dev/null | wc -l | tr -d ' ')" -eq 7 ] && grep -c "7/7 file superati" <<<"$OUT" >/dev/null \
+  && ok "7 banchi: tutti eseguiti (7 segni) e «7/7»" || ko "banchi eseguiti: $(ls "$SB3"/segno-* 2>/dev/null | wc -l | tr -d ' ') su 7, uscita: $(tail -1 <<<"$OUT")"
+# il runner sabotato come nel giro: salta dal sesto in poi — deve dirlo, non stampare 7/7
+sed 's/^  N=\$((N+1))$/  N=$((N+1)); [ "$N" -gt 5 ] \&\& continue/' "$RUNNER" > "$SB3/runner-saltante.sh"
+grep -c 'N" -gt 5' "$SB3/runner-saltante.sh" >/dev/null || ko "il sabotaggio del runner non si e' applicato: la riga N=… e' cambiata"
+OUT=$(bash "$SB3/runner-saltante.sh" "$SB3" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c "7/7 file superati" <<<"$OUT" >/dev/null && ok "un runner che salta banchi e' rosso, non «7/7»" || ko "runner che salta 2 banchi: rc $RC — $(tail -1 <<<"$OUT")"
+rm -rf "$SB3"
+
+# 5. (2026-09-24, E-047): il bytecode stantio. Un sabotaggio a mano che cambia 2.1 in «21 » lascia il file
+# della stessa dimensione, e nello stesso secondo il .pyc in tools/__pycache__ resta «valido»: il banco che
+# importa il modulo gira col codice di PRIMA. Due sabotaggi diversi davano lo stesso FAIL. La suite deve
+# giudicare il sorgente, non la cache.
+SB5=$(mktemp -d /tmp/test-suite5.XXXXXX); mkdir -p "$SB5/tools" "$SB5/tests"
+printf 'X = 2.1\n' > "$SB5/tools/m.py"
+# fuori dalla cache della suite che sta girando questo banco: qui serve il __pycache__ vero, e il runner
+# sotto prova deve crearsi la SUA cache, non ereditare quella di fuori
+(cd "$SB5" && env -u PYTHONPYCACHEPREFIX python3 -c 'import sys; sys.path.insert(0, "tools"); import m') 2>/dev/null
+touch -r "$SB5/tools/m.py" "$SB5/rif"; printf 'X = 21 \n' > "$SB5/tools/m.py"; touch -r "$SB5/rif" "$SB5/tools/m.py"
+printf '#!/bin/bash\ncd "$(dirname "$0")/.."\npython3 -c "import sys; sys.path.insert(0, \\"tools\\"); import m; sys.exit(0 if m.X == 21 else 1)" && echo "1 OK, 0 FAIL" || { echo "0 OK, 1 FAIL"; exit 1; }\n' > "$SB5/tests/test-m.sh"
+if ls "$SB5"/tools/__pycache__/m.*.pyc >/dev/null 2>&1; then
+  OUT=$(env -u PYTHONPYCACHEPREFIX bash "$RUNNER" "$SB5" 2>&1); RC=$?
+  [ "$RC" -eq 0 ] && ok "la suite legge il sorgente, non un .pyc stantio della stessa dimensione" \
+    || ko "la suite ha giudicato il bytecode stantio (rc $RC): $(tail -2 <<<"$OUT")"
+else
+  ko "premessa: il .pyc di prova non si e' formato"
+fi
+rm -rf "$SB5"
+
+# 6. (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. La suite cresceva (136 -> 170 banchi in
+# sei giorni) e il budget di .night-verify si scopriva solo allo sforo, di notte. Ora la suite dice che
+# quota del budget dichiarato ha usato, e avvisa dal 70%.
+SB6=$(mktemp -d /tmp/test-suite6.XXXXXX); mkdir -p "$SB6/tests"
+printf '#!/bin/bash\nsleep 1\necho "1 OK, 0 FAIL"\n' > "$SB6/tests/test-lento.sh"
+echo '@1 bash tools/suite.sh' > "$SB6/.night-verify"
+OUT=$(bash "$RUNNER" "$SB6" 2>&1)
+grep -c 'SENTINELLA' <<<"$OUT" >/dev/null && ok "oltre il 70% del budget di .night-verify: la sentinella avvisa" \
+  || ko "suite oltre il budget dichiarato e nessun avviso: $OUT"
+echo '@1000 bash tools/suite.sh' > "$SB6/.night-verify"
+OUT=$(bash "$RUNNER" "$SB6" 2>&1)
+grep -c 'su 1000 s dichiarati' <<<"$OUT" >/dev/null && ! grep -c 'SENTINELLA' <<<"$OUT" >/dev/null \
+  && ok "sotto il 70%: la quota si dice, nessun avviso" || ko "sotto soglia: $OUT"
+tail -1 <<<"$OUT" | grep -c '^Suite test hub: 1/1 file superati$' >/dev/null \
+  && ok "il riepilogo resta l'ultima riga" || ko "il riepilogo non e' piu' l'ultima riga: $(tail -1 <<<"$OUT")"
+rm -rf "$SB6"
+
+# 7. (2026-09-24, quarto ventaglio, Q3 R3): `cd "$DIR"` senza guardia — con una cartella inesistente la
+# suite girava i banchi della cartella del CHIAMANTE e poteva dare verde («1/1 superati», rc 0).
+SB7=$(mktemp -d /tmp/test-suite7.XXXXXX); mkdir -p "$SB7/tests"
+printf '#!/bin/bash\necho "1 OK, 0 FAIL"\n' > "$SB7/tests/test-verde.sh"
+OUT=$(cd "$SB7" && bash "$RUNNER" "$SB7/non-esiste" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c 'superati' <<<"$OUT" >/dev/null && grep -c 'inesistente' <<<"$OUT" >/dev/null \
+  && ok "cartella inesistente: rosso e detto, non la suite di un'altra cartella" || ko "cartella inesistente: rc $RC, $(tail -1 <<<"$OUT")"
+rm -rf "$SB7"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

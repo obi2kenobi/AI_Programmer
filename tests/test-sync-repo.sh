@@ -13,10 +13,11 @@ trap 'rm -rf "$TMP"' EXIT
 
 # repo finta ALLINEATA
 mkdir -p "$TMP/allineata"
-cp "$HERE/CLAUDE.md" "$TMP/allineata/CLAUDE.md"
+bash "$HERE/tools/claude-md-satellite.sh" > "$TMP/allineata/CLAUDE.md"  # D8: allineata = la versione per i satelliti
 # (canarino v2, audit 2026-09-23): allineata vuol dire ANCHE gli hook uguali
 mkdir -p "$TMP/allineata/tools"
-for H in clasp-block-hook metodo-reminder-hook pattern-reminder-hook; do cp "$HERE/tools/$H.sh" "$TMP/allineata/tools/"; done
+while IFS= read -r H; do cp "$HERE/$H" "$TMP/allineata/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
+mkdir -p "$TMP/allineata/.claude"; cp "$HERE/.claude/settings.json" "$TMP/allineata/.claude/settings.json"   # (R2 R2): allineata = hook anche REGISTRATI
 bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" >/dev/null 2>&1
 [ $? -eq 0 ] && ok "repo allineata: exit 0" || ko "allineata non riconosciuta"
 
@@ -25,12 +26,13 @@ mkdir -p "$TMP/divergente"
 head -50 "$HERE/CLAUDE.md" > "$TMP/divergente/CLAUDE.md"
 # (canarino v2): gli hook allineati, cosi' la divergenza misurata e' quella del CLAUDE
 mkdir -p "$TMP/divergente/tools"
-for H in clasp-block-hook metodo-reminder-hook pattern-reminder-hook; do cp "$HERE/tools/$H.sh" "$TMP/divergente/tools/"; done
+while IFS= read -r H; do cp "$HERE/$H" "$TMP/divergente/tools/"; done < <(bash "$HERE/tools/copia-hook.sh" --elenco)  # (D1: derivata, non scritta a mano)
+mkdir -p "$TMP/divergente/.claude"; cp "$HERE/.claude/settings.json" "$TMP/divergente/.claude/settings.json"   # (R2 R2): hook registrati, la divergenza e' del solo CLAUDE
 OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/divergente" 2>&1); RC=$?
-[ $RC -eq 1 ] && echo "$OUT" | grep -q "DIVERGENTE" \
+[ $RC -eq 1 ] && grep -q "DIVERGENTE" <<<"$OUT" \
   && ok "repo divergente: exit 1 col verdetto DIVERGENTE dichiarato" \
   || ko "divergente rc=$RC: $OUT"
-echo "$OUT" | grep -qE "dista [0-9]+ righe" \
+grep -qE "dista [0-9]+ righe" <<<"$OUT" \
   && ok "il verdetto porta il conteggio delle righe di distanza" \
   || ko "conteggio righe mancante"
 # bug reale (revisione 14 lenti, 2026-08-28): "$HUB_CLAUDE.md" invece di "$HUB_CLAUDE"
@@ -38,7 +40,7 @@ echo "$OUT" | grep -qE "dista [0-9]+ righe" \
 # righe" (che il check sopra, con una regex troppo permissiva, non distingueva da un
 # conteggio vero) e il blocco di dettaglio sotto restava vuoto. Verifica esplicita che il
 # conteggio sia REALMENTE positivo e che il blocco di dettaglio non sia vuoto.
-echo "$OUT" | grep -qE "dista [1-9][0-9]* righe" \
+grep -qE "dista [1-9][0-9]* righe" <<<"$OUT" \
   && ok "il conteggio delle righe è realmente positivo, non sempre 0" \
   || ko "conteggio righe fermo a 0 nonostante una divergenza vera — output: $OUT"
 DETTAGLIO=$(echo "$OUT" | grep -c '^  [<>]')
@@ -55,12 +57,14 @@ bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/vuota" >/dev/null 2>&1
 # gh e' uno stub: `api contents/CLAUDE.md` risponde dal file $GH_CLAUDE_MD (o 404 se
 # assente), `repo clone` clona dal bare $GH_CLONE_SRC, `pr create` stampa una URL.
 mkdir -p "$TMP/bin"
+bash "$HERE/tools/claude-md-satellite.sh" > "$TMP/claude-sat.md"   # D8: il CLAUDE.md che un satellite allineato ha
 cat > "$TMP/bin/gh" <<'EOF'
 #!/bin/bash
 case "$1 $2" in
   "api "*) [ -f "${GH_CLAUDE_MD:-}" ] && base64 < "$GH_CLAUDE_MD" || { echo "gh: HTTP 404" >&2; exit 1; } ;;
   "repo clone") git clone -q "${GH_CLONE_SRC:?}" "$4" ;;
-  "pr create") echo "https://github.invalid/stub/pull/1" ;;
+  "pr create") if [ -n "${GH_PR_ESISTE:-}" ]; then echo 'a pull request for branch "x" into branch "main" already exists:'; echo "https://github.invalid/stub/pull/9"; exit 1; fi
+               echo "https://github.invalid/stub/pull/1" ;;
   *) exit 0 ;;
 esac
 EOF
@@ -78,34 +82,70 @@ ramo_standard() { git -C "$TMP/$1.git" branch --list 'claude/standard-*' | tr -d
 nuovo_bare vuota-remota 0
 OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/vuota-remota.git" GH_CLAUDE_MD="" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/vuota-remota --standard 2>&1); RC=$?
 BR=$(ramo_standard vuota-remota)
-[ "$RC" -eq 0 ] && [ -n "$BR" ] && git -C "$TMP/vuota-remota.git" ls-tree --name-only "$BR" | grep -qx CLAUDE.md \
+[ "$RC" -eq 0 ] && [ -n "$BR" ] && git -C "$TMP/vuota-remota.git" ls-tree --name-only "$BR" | grep -xc CLAUDE.md >/dev/null \
   && ok "D11: repo senza CLAUDE.md → --standard apre il ramo con CLAUDE.md (onboarding da zero)" \
   || ko "D11: repo vuota non onboardabile (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
-echo "$OUT" | grep -q "ASSENTE" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
+grep -q "ASSENTE" <<<"$OUT" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
   || ko "D11: assenza non dichiarata come tale: $(echo "$OUT" | head -1)"
+
+# (2026-09-24, quinto ventaglio, R2 R5): --standard sostituisce il CLAUDE.md del satellite per intero — la
+# regola locale spariva dal ramo, e l'uscita non lo diceva. Se le righe vadano spostate in PROJECT.md o la
+# PR si debba fermare e' una domanda (DEBITI); intanto si DICONO, nell'uscita e nel messaggio del commit.
+nuovo_bare proprio 0
+{ cat "$TMP/claude-sat.md"; printf '\n## Regola locale\nMai toccare il foglio MASTER a mano.\n'; } > "$TMP/proprio-seed/CLAUDE.md"
+git -C "$TMP/proprio-seed" add -A && git -C "$TMP/proprio-seed" -c user.name=t -c user.email=t@t commit -qm locale && git -C "$TMP/proprio-seed" push -q origin HEAD:main 2>/dev/null
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/proprio.git" GH_CLAUDE_MD="$TMP/proprio-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/proprio --standard 2>&1)
+BR=$(ramo_standard proprio)
+grep -c "⚠ 2 righe del CLAUDE.md" <<<"$OUT" >/dev/null && grep -c "foglio MASTER" <<<"$OUT" >/dev/null \
+  && ok "R2 R5: --standard dice quante e quali righe del CLAUDE.md del satellite la PR toglie" || ko "R2 R5: righe proprie tolte in silenzio: $(grep -c . <<<"$OUT") righe d'uscita, nessun avviso"
+[ -n "$BR" ] && git -C "$TMP/proprio.git" log -1 --format=%B "$BR" | grep -c "foglio MASTER" >/dev/null \
+  && ok "R2 R5: le righe tolte sono nel messaggio del commit (quindi nel corpo della PR, --fill)" || ko "R2 R5: il commit del ramo '$BR' non le nomina"
+
+# (2026-09-24, sesto ventaglio, S2 R6): «PR aperta … (24 gruppi di file aggiornati)» contava le copie, non il diff —
+# il numero finiva nel log del turno come misura della PR. Ora e' il numero di file del commit.
+NDICH=$(grep -oE '\(([0-9]+) file nel commit\)' <<<"$OUT" | grep -oE '[0-9]+')
+NVERI=$(git -C "$TMP/proprio.git" diff --name-only "$BR~1" "$BR" 2>/dev/null | grep -c .)
+[ -n "$NDICH" ] && [ "$NDICH" = "$NVERI" ] && ok "S2 R6: la PR dice quanti file cambia davvero ($NVERI)" || ko "S2 R6: la PR dichiara «${NDICH:-?}», il commit ne cambia $NVERI: $(grep -m1 'PR aperta' <<<"$OUT")"
+
+# (2026-09-24, sesto ventaglio, S2 R4): l'rc di `gh pr create` non si guardava — con la PR gia' aperta gh esce 1 e
+# stampa la sua URL, e sync diceva «PR aperta», un fatto detto due volte. Una PR che c'e' si dice per quello che e'.
+nuovo_bare esiste 0
+OUT=$(cd "$TMP" && GH_PR_ESISTE=1 GH_CLONE_SRC="$TMP/esiste.git" GH_CLAUDE_MD="" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/esiste --standard 2>&1); RC=$?
+grep -ci 'gia.* aperta' <<<"$OUT" >/dev/null && ! grep -c 'PR aperta https' <<<"$OUT" >/dev/null && ok "S2 R4: PR gia' aperta: detta come tale, non «PR aperta»" || ko "S2 R4: PR esistente annunciata come nuova (rc $RC): $(tail -1 <<<"$OUT")"
 
 # D12: CLAUDE.md IDENTICO ma senza skill/hook → --standard NON deve dire ALLINEATO e fermarsi
 nuovo_bare canarino-uguale 1
-OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
 BR=$(ramo_standard canarino-uguale)
-[ -n "$BR" ] && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -q '^\.claude/settings.json$' \
+[ -n "$BR" ] && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -c '^\.claude/settings.json$' >/dev/null \
   && ok "D12: CLAUDE.md uguale ma standard mancante → il ramo porta lo standard (skill, hook)" \
   || ko "D12: CLAUDE.md uguale e --standard si e' fermato ad ALLINEATO (rc=$RC, ramo='$BR'): $(echo "$OUT" | tail -1)"
 # D13: i guardiani del commit viaggiano con lo standard
 if [ -n "$BR" ]; then
-  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -qx 'tools/pre-commit.sh' \
-    && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -qx '.githooks/commit-msg' \
+  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -xc 'tools/pre-commit.sh' >/dev/null \
+    && git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -xc '.githooks/commit-msg' >/dev/null \
     && ok "D13: tools/pre-commit.sh e .githooks/ viaggiano con --standard" \
     || ko "D13: i guardiani del commit non viaggiano: $(git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only "$BR" | grep -E 'githooks|pre-commit' | tr '\n' ' ')"
+  # (2026-09-24, terzo ventaglio, V2#4): gli HOOK dichiarati da settings.json — il cancello clasp compreso —
+  # arrivano sul ramo, eseguibili. Prima si guardava solo settings.json: con la copia degli hook spenta in
+  # sync-repo.sh la suite intera restava verde (0 rossi su 170), e la repo riceveva un settings.json che
+  # punta a script inesistenti.
+  ALBERO=$(git -C "$TMP/canarino-uguale.git" ls-tree -r "$BR")
+  MANCANTI=""
+  while IFS= read -r H; do
+    [ -n "$H" ] || continue
+    grep -qE "^100755 blob [0-9a-f]+[[:space:]]$H$" <<<"$ALBERO" || MANCANTI="$MANCANTI $H"
+  done < <(bash "$HERE/tools/copia-hook.sh" --elenco)
+  [ -z "$MANCANTI" ] && ok "V2#4: ogni hook dichiarato (clasp compreso) arriva sul ramo, eseguibile" || ko "V2#4: hook dichiarati assenti o non eseguibili sul ramo:$MANCANTI"
 fi
 # riallineo su repo GIA' onboardata: niente annidamento (.claude/skills/skills) e verdetto
 # «GIÀ A STANDARD» se non c'e' nulla da portare (misurato nell'hub durante il test del sistema)
 if [ -n "$BR" ]; then
   git -C "$TMP/canarino-uguale-seed" fetch -q origin && git -C "$TMP/canarino-uguale-seed" merge -q --no-edit "origin/$BR" && git -C "$TMP/canarino-uguale-seed" push -q origin HEAD:main 2>/dev/null
-  OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
-  echo "$OUT" | grep -q "GIÀ A STANDARD" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
+  OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/canarino-uguale.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/canarino-uguale --standard 2>&1); RC=$?
+  grep -q "GIÀ A STANDARD" <<<"$OUT" && ok "riallineo su repo a standard: «GIÀ A STANDARD», nessun ramo nuovo" \
     || ko "riallineo: atteso GIÀ A STANDARD, avuto (rc=$RC): $(echo "$OUT" | tail -1)"
-  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -q '\.claude/skills/skills/' \
+  git -C "$TMP/canarino-uguale.git" ls-tree -r --name-only main | grep -c '\.claude/skills/skills/' >/dev/null \
     && ko "riallineo: lo standard si e' ANNIDATO (.claude/skills/skills)" \
     || ok "riallineo: nessun annidamento delle directory dello standard"
 fi
@@ -114,13 +154,82 @@ fi
 mkdir -p "$TMP/bin-rotto"; cp "$TMP/bin/gh" "$TMP/bin-rotto/gh"
 sed -i 's|git clone -q "${GH_CLONE_SRC:?}" "$4"|exit 0|' "$TMP/bin-rotto/gh"
 mkdir -p "$TMP/cwd-pulita"
-OUT=$(cd "$TMP/cwd-pulita" && GH_CLAUDE_MD="$HERE/CLAUDE.md" PATH="$TMP/bin-rotto:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/fantasma --standard 2>&1); RC=$?
+OUT=$(cd "$TMP/cwd-pulita" && GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin-rotto:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/fantasma --standard 2>&1); RC=$?
 [ "$RC" -ne 0 ] && [ -z "$(ls -A "$TMP/cwd-pulita")" ] \
   && ok "D14: clone senza directory → errore detto, la CWD resta intatta" \
   || ko "D14: rc=$RC e la CWD contiene: $(ls -A "$TMP/cwd-pulita" | tr '\n' ' ')"
 [ -z "$(git -C "$HERE" status --porcelain -- .claude patterns .opencode tools 2>/dev/null | grep '^??')" ] \
   && ok "D14: l'hub non ha file NUOVI dopo il test (nessuna copia dello standard finita qui)" \
   || ko "D14: l'hub ha file nuovi dopo il test: $(git -C "$HERE" status --porcelain -- .claude patterns .opencode tools | grep '^??' | head -3 | tr '\n' ' ')"
+
+# --- Q13 (2026-09-23, giro A8 della notte): --standard copiava DEBITI.md e il REGISTRO DELL'HUB
+#     sopra quelli del satellite (i debiti e gli errori del satellite sparivano nella PR, e il
+#     REGISTRO dell'hub cita guardie che li' non esistono), e sovrascriveva .claude/settings.json
+#     intero (i permessi del satellite persi). Ora lo stato del satellite non si tocca, e da zero
+#     arriva lo scheletro vuoto; settings.json si FONDE: gli hook dello standard + il resto suo.
+if [ -n "$(ramo_standard vuota-remota)" ]; then
+  BRV=$(ramo_standard vuota-remota)
+  DEB_V=$(git -C "$TMP/vuota-remota.git" show "$BRV:DEBITI.md" 2>/dev/null)
+  [ -n "$DEB_V" ] && ! grep -q 'Da review Opus 2026-08-21' <<<"$DEB_V" \
+    && ok "Q13: repo da zero → DEBITI.md e' lo scheletro, non i debiti dell'hub" \
+    || ko "Q13: repo da zero → DEBITI.md assente o coi debiti dell'hub"
+  REG_V=$(git -C "$TMP/vuota-remota.git" show "$BRV:docs/errori/REGISTRO.md" 2>/dev/null)
+  [ -n "$REG_V" ] && ! grep -q '^## E-001' <<<"$REG_V" \
+    && ok "Q13: repo da zero → il REGISTRO e' lo scheletro, non gli errori dell'hub" \
+    || ko "Q13: repo da zero → REGISTRO assente o con gli errori dell'hub"
+fi
+nuovo_bare con-stato 1
+mkdir -p "$TMP/con-stato-seed/docs/errori" "$TMP/con-stato-seed/.claude"
+printf '# DEBITI.md\n\n| 2026-09-01 | debito-del-satellite | x | y |\n' > "$TMP/con-stato-seed/DEBITI.md"
+printf '# Registro\n\n## E-001 errore-del-satellite\n' > "$TMP/con-stato-seed/docs/errori/REGISTRO.md"
+printf '{"permissions":{"allow":["Bash(npm run lint)"]},"model":"scelta-del-satellite"}\n' > "$TMP/con-stato-seed/.claude/settings.json"
+git -C "$TMP/con-stato-seed" add -A && git -C "$TMP/con-stato-seed" -c user.name=t -c user.email=t@t commit -qm stato && git -C "$TMP/con-stato-seed" push -q origin HEAD:main 2>/dev/null
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/con-stato.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/con-stato --standard 2>&1); RC=$?
+BRS=$(ramo_standard con-stato)
+if [ -n "$BRS" ]; then
+  git -C "$TMP/con-stato.git" show "$BRS:DEBITI.md" | grep -c 'debito-del-satellite' >/dev/null \
+    && ok "Q13: i DEBITI del satellite restano i suoi" || ko "Q13: i DEBITI del satellite sovrascritti da quelli dell'hub"
+  git -C "$TMP/con-stato.git" show "$BRS:docs/errori/REGISTRO.md" | grep -c 'errore-del-satellite' >/dev/null \
+    && ok "Q13: il REGISTRO del satellite resta il suo" || ko "Q13: il REGISTRO del satellite sovrascritto da quello dell'hub"
+  SET=$(git -C "$TMP/con-stato.git" show "$BRS:.claude/settings.json")
+  jq -e '(.permissions.allow | index("Bash(npm run lint)")) and .model == "scelta-del-satellite"' <<<"$SET" >/dev/null 2>&1 \
+    && ok "Q13: settings.json tiene i permessi e le scelte del satellite" || ko "Q13: settings.json del satellite sovrascritto: $(head -c 120 <<<"$SET")"
+  grep -q 'clasp-block-hook' <<<"$SET" \
+    && ok "Q13: settings.json porta comunque gli hook dello standard" || ko "Q13: la fusione ha perso gli hook dello standard"
+else
+  ko "Q13: nessun ramo standard per la repo con stato (rc=$RC): $(echo "$OUT" | tail -1)"
+fi
+
+# (2026-09-24, quinto ventaglio, R2 R2): --from-local confrontava i FILE degli hook, non chi li registra — un
+# satellite con settings.json senza PreToolUse (clasp-block non registrato) dava «ALLINEATO … (e gli hook
+# pure)», e il turno non apriva il riallineo.
+cp -r "$TMP/allineata" "$TMP/non-reg"; mkdir -p "$TMP/non-reg/.claude"
+jq 'del(.hooks.PreToolUse)' "$HERE/.claude/settings.json" > "$TMP/non-reg/.claude/settings.json"
+OUT=$(bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/non-reg" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'NON registrat' <<<"$OUT" >/dev/null && ok "settings.json senza il cancello: DIVERGENTE, hook non registrati detti" || ko "hook non registrati e ALLINEATO (rc $RC): $OUT"
+
+# (2026-09-24, quarto ventaglio, Q2 R6, seconda meta'): il push rifiutato diceva solo «push fallito», col motivo
+# buttato in 2>/dev/null. Un remoto che rifiuta (pre-receive che esce 1 con un messaggio): il motivo si vede.
+nuovo_bare rifiuta 1
+printf '#!/bin/sh\necho "rifiutato dal remoto finto: ramo protetto"\nexit 1\n' > "$TMP/rifiuta.git/hooks/pre-receive"; chmod +x "$TMP/rifiuta.git/hooks/pre-receive"
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/rifiuta.git" GH_CLAUDE_MD="$TMP/claude-sat.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuta --standard 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'push fallito' <<<"$OUT" >/dev/null && grep -c 'ramo protetto' <<<"$OUT" >/dev/null \
+  && ok "push rifiutato: il motivo del remoto arriva nell'uscita" || ko "push rifiutato senza motivo (rc $RC): $(grep -m1 'push' <<<"$OUT")"
+
+# (2026-09-24, quarto ventaglio, Q2 R1): senza jq `copia-hook --elenco` esce 1, il suo rc si perdeva nel
+# `< <(…)`, e sync-repo diceva «ALLINEATO (e gli hook pure)» con un hook DIVERGENTE — il cancello clasp
+# era proprio l'hook che spariva dal confronto. Un PATH senza jq (tutto il resto c'e').
+NOJQ="$TMP/senza-jq"; mkdir -p "$NOJQ"
+for b in /usr/local/bin/* /usr/bin/* /bin/*; do n=${b##*/}; [ "$n" = jq ] || [ -e "$NOJQ/$n" ] || ln -s "$b" "$NOJQ/$n" 2>/dev/null; done
+cp -r "$TMP/allineata" "$TMP/hook-div"; echo '# refuso' >> "$TMP/hook-div/tools/clasp-block-hook.sh"
+OUT=$(PATH="$NOJQ" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/hook-div" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c 'ALLINEATO' <<<"$OUT" >/dev/null \
+  && ok "senza jq, hook divergente: niente ALLINEATO (rc $RC), e lo dice" || ko "senza jq ALLINEATO con un hook divergente (rc $RC): $OUT"
+# (Q2 R6): mktemp fallito (TMPDIR inesistente) — senza guardia i file finivano alla radice (da root, nel
+# container, /CLAUDE.md e /claude-satellite.md)
+OUT=$(TMPDIR="$TMP/non-esiste" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'mktemp' <<<"$OUT" >/dev/null && ! grep -c 'ALLINEATO\|DIVERGENTE' <<<"$OUT" >/dev/null \
+  && ok "mktemp fallito: si ferma e lo dice, senza scrivere altrove" || ko "mktemp fallito e sync-repo prosegue (rc $RC): $OUT"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

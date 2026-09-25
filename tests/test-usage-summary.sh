@@ -28,21 +28,21 @@ EOF
 OUT=$(bash "$HERE/llm/usage-summary.sh" "$TMP/usage.log")
 
 # a mano: ask-opus 3 chiamate, 2 successi (rc=0) -> 66.7%; durata media (3+5+1)/3 = 3.0
-echo "$OUT" | grep -qE '^ask-opus\s+3\s+2\s+66\.7%\s+3\.0s' \
+grep -qE '^ask-opus\s+3\s+2\s+66\.7%\s+3\.0s' <<<"$OUT" \
   && ok "ask-opus: 3 chiamate, 2 successi (66.7%), durata media 3.0s" \
   || ko "ask-opus: riga inattesa — $(echo "$OUT" | grep ask-opus)"
 
 # ask-glm: 1 chiamata, 1 successo -> 100.0%, durata media 10.0
-echo "$OUT" | grep -qE '^ask-glm\s+1\s+1\s+100\.0%\s+10\.0s' \
+grep -qE '^ask-glm\s+1\s+1\s+100\.0%\s+10\.0s' <<<"$OUT" \
   && ok "ask-glm: 1 chiamata, 1 successo (100.0%), durata media 10.0s" \
   || ko "ask-glm: riga inattesa — $(echo "$OUT" | grep ask-glm)"
 
 # ask-qwen: 1 chiamata, 0 successi (rc=2, non configurato) -> 0.0%
-echo "$OUT" | grep -qE '^ask-qwen\s+1\s+0\s+0\.0%\s+0\.0s' \
+grep -qE '^ask-qwen\s+1\s+0\s+0\.0%\s+0\.0s' <<<"$OUT" \
   && ok "ask-qwen: 1 chiamata, 0 successi (rc=2 non configurato -> 0.0%)" \
   || ko "ask-qwen: riga inattesa — $(echo "$OUT" | grep ask-qwen)"
 
-echo "$OUT" | grep -q "1 riga/e nel log non riconosciute" \
+grep -q "1 riga/e nel log non riconosciute" <<<"$OUT" \
   && ok "la riga malformata è dichiarata scartata, non fa fallire il riepilogo" \
   || ko "nessuna dichiarazione sulla riga malformata"
 

@@ -59,17 +59,25 @@ if [ "$1" = "in-sospeso" ]; then
   # invisibile al mattino. Se il conf manca o e' vuoto, le due storiche.
   REPO_CAND=$(grep -vE '^#|^$' "$HERE/night-shift/repos.conf" 2>/dev/null | awk '{print $1}' | tr '\n' ' ')
   [ -z "$REPO_CAND" ] && REPO_CAND="obi2kenobi/AI_Programmer obi2kenobi/Sistema-Gestione-Magazzino"
+  # (2026-09-25, ottavo ventaglio, O2 R6): gh in errore stampava «(nessuna)» con rc 0, e si contavano al piu' 10 PR per
+  # repo. Ora un repo senza risposta si dice, il totale conta tutte le aperte (fino a 200), e se ne mostrano 10 per repo.
+  GH_CIECO=0
   for REPO in $REPO_CAND; do
+    if ! LISTA_PR=$(gh pr list -R "$REPO" --state open --limit 200 \
+             --json number,isDraft,title -q '.[] | [.number, (if .isDraft then "bozza" else "pronta" end), .title] | @tsv' 2>/dev/null); then
+      echo "  ⛔ gh non ha risposto per $REPO: le sue PR aperte non si sanno (non e' «nessuna»)"; GH_CIECO=1; continue
+    fi
+    N_REPO_PR=0
     while IFS=$'\t' read -r num stato titolo; do
       [ -z "$num" ] && continue
-      PR_TROVATE=$((PR_TROVATE+1))
-      echo "  - #$num [$stato] $titolo ($REPO)"
-    done < <(gh pr list -R "$REPO" --state open --limit 10 \
-             --json number,isDraft,title -q '.[] | [.number, (if .isDraft then "bozza" else "pronta" end), .title] | @tsv' 2>/dev/null)
+      PR_TROVATE=$((PR_TROVATE+1)); N_REPO_PR=$((N_REPO_PR+1))
+      [ "$N_REPO_PR" -le 10 ] && echo "  - #$num [$stato] $titolo ($REPO)"
+    done <<<"$LISTA_PR"
+    [ "$N_REPO_PR" -gt 10 ] && echo "  … e altre $((N_REPO_PR - 10)) in $REPO"
   done
-  [ "$PR_TROVATE" -eq 0 ] && echo "  (nessuna)"
+  [ "$PR_TROVATE" -eq 0 ] && [ "$GH_CIECO" -eq 0 ] && echo "  (nessuna)"
   echo
-  echo "totale: $TROVATE sospesi + $LEZ lezioni + $DEP deploy pronti + $PR_TROVATE PR aperte"
+  echo "totale: $TROVATE sospesi + $LEZ lezioni + $DEP deploy pronti + $PR_TROVATE PR aperte$([ "$GH_CIECO" -eq 1 ] && echo " (almeno: gh non ha risposto per qualche repo)")"
   exit 0
 fi
 
@@ -127,25 +135,32 @@ CONTESTO (percorso:riga:testo):
 $CTX
 FINE
 
-  RISPOSTA=$(curl -sf --max-time 120 "$API" -d "$(jq -cn --arg m "$MODEL" --arg p "$PROMPT" \
-    '{model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null \
+  RISPOSTA=$(printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
+    '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
+    | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null \
     | jq -r '.message.content // empty' 2>/dev/null)
 
   [ -z "$RISPOSTA" ] && { echo "il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }
   echo "$RISPOSTA"
   echo
-  # verifica meccanica delle citazioni percorso:riga
+  # verifica meccanica delle citazioni percorso:riga. (Q30, 2026-09-23, notte dei giri): bastava che
+  # la riga ESISTESSE — «(CLAUDE.md:1)», il titolo, contava verificata — e una risposta senza nessuna
+  # citazione usciva 0. Il contesto dato al modello sono SOLO righe che contengono il termine: una
+  # citazione fedele cade su una riga col termine. Zero verificate = risposta non ancorata.
   VERIFICATE=0; ROTTE=0; ROTTE_LIST=""
   while IFS= read -r cita; do
+    [ -n "$cita" ] || continue
     FILE="${cita%:*}"; RIGA="${cita##*:}"
-    if [ -f "$HERE/$FILE" ] && [ "$RIGA" -le "$(wc -l < "$HERE/$FILE")" ] 2>/dev/null; then
+    if [ -f "$HERE/$FILE" ] && [ "$RIGA" -le "$(wc -l < "$HERE/$FILE")" ] 2>/dev/null \
+       && grep -qiF -- "$TERMINE" <<<"$(sed -n "${RIGA}p" "$HERE/$FILE")"; then
       VERIFICATE=$((VERIFICATE+1))
     else
       ROTTE=$((ROTTE+1)); ROTTE_LIST="$ROTTE_LIST $cita"
     fi
-  done < <(echo "$RISPOSTA" | grep -oE '[a-zA-Z0-9_./-]+\.[a-z]+:[0-9]+' | sort -u)
-  echo "— citazioni verificate: $VERIFICATE, rotte: $ROTTE"
-  [ -n "$ROTTE_LIST" ] && { echo "⚠ ROTTE (il modello ha citato cose che non esistono):$ROTTE_LIST" >&2; exit 3; }
+  done < <(grep -oE '[a-zA-Z0-9_./-]+\.[a-z]+:[0-9]+' <<<"$RISPOSTA" | sort -u)
+  echo "— citazioni verificate: $VERIFICATE, rotte o estranee: $ROTTE"
+  [ -n "$ROTTE_LIST" ] && { echo "⚠ ROTTE o ESTRANEE (righe inesistenti, o che non parlano di '$TERMINE'):$ROTTE_LIST" >&2; exit 3; }
+  [ "$VERIFICATE" -eq 0 ] && { echo "⚠ nessuna citazione verificata: la risposta non e' ancorata alle fonti — non e' storia, e' racconto" >&2; exit 3; }
   exit 0
 fi
 

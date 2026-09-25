@@ -14,3 +14,9 @@ rosse: al giorno') e' un verdetto, non un fallimento — la PR #100 e' stata
 rinviata per la suite rossa e fusa quando e' tornata verde.
 
 Il perche' sta in [[concetto-teatro]]: chi scrive non puo' certificare se stesso.
+
+Aggiornamento (2026-09-24, R1 R2 del quinto ventaglio): «ogni PR» non e' piu' vero. Il censore
+delibera, e puo' fondere, solo le bozze su `night/` col titolo `caccia:`; per le altre
+`night-shift/revisore.sh` logga «non mio». Sulle PR delle issue lascia solo un parere (D10,
+decisione di Luca del 2026-09-23, in DEBITI.md). Le PR su `claude/` e `glm/` non hanno un giudice
+automatico (CLAUDE.md §4).

@@ -74,9 +74,13 @@ RIGA_SKIP_DICH=$(grep -n '^TOT_SKIPPED_DESIGN=0$' "$REAL_NS" | cut -d: -f1)
 [ -n "$RIGA_SKIP_DICH" ] && [ "$RIGA_SKIP_DICH" -lt "$RIGA_FOR" ] \
   && ok "night-shift.sh dichiara TOT_SKIPPED_DESIGN prima del for" \
   || ko "TOT_SKIPPED_DESIGN non dichiarato prima del for"
-N_INCREMENTI=$(grep -c 'SKIPPED_DESIGN=\$((SKIPPED_DESIGN+1))' "$REAL_NS")
-[ "$N_INCREMENTI" -eq 5 ] && ok "i 5 punti di skip Design/Territorio incrementano tutti il contatore" \
-  || ko "trovati $N_INCREMENTI incrementi invece di 5 — un punto di skip non conta più?"
+# (2026-09-23, notte dei giri): i cinque motivi passano ora da UN solo ramo (lib.sh cancello_design
+# decide il motivo): l'incremento dev'essere uno, dentro il ramo del MOTIVO, prima del continue
+RAMO=$(sed -n '/MOTIVO=$(cancello_design "$BODY")/,/^    fi$/p' "$REAL_NS")
+N_INCREMENTI=$(grep -c 'SKIPPED_DESIGN=\$((SKIPPED_DESIGN+1)); continue' <<<"$RAMO")
+[ "$N_INCREMENTI" -eq 1 ] && [ "$(grep -c 'SKIPPED_DESIGN=\$((SKIPPED_DESIGN+1))' "$REAL_NS")" -eq 1 ] \
+  && ok "ogni motivo del cancello Design/Territorio incrementa il contatore (un ramo solo, un incremento)" \
+  || ko "incrementi del contatore nel ramo del cancello: $N_INCREMENTI (atteso 1, e nessuno altrove)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

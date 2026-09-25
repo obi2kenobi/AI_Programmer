@@ -33,12 +33,23 @@ run_install() {
 # argomenti avrebbe letto). Si ricorda se c'era, e a fine test si rimuove se l'ha creato lui.
 CONF_PRIMA=0; [ -f "$HERE/night-shift/repos.conf" ] && CONF_PRIMA=1
 trap '[ "$CONF_PRIMA" -eq 0 ] && rm -f "$HERE/night-shift/repos.conf"; rm -rf "$FAKE"' EXIT
+# un'installazione VECCHIA ha lasciato symlink: scrivere il lanciatore attraverso il link
+# riscriverebbe il file a cui punta (nell'installazione vera: il file dell'hub)
+mkdir -p "$FAKE/.local/bin"; echo "bersaglio" > "$FAKE/bersaglio.sh"; ln -s "$FAKE/bersaglio.sh" "$FAKE/.local/bin/ask-qwen"
 OUT1=$(run_install)
+[ "$(cat "$FAKE/bersaglio.sh")" = "bersaglio" ] && ok "un symlink vecchio si sostituisce, il file a cui puntava resta intatto" \
+  || ko "il lanciatore e' stato scritto ATTRAVERSO il symlink vecchio (sull'hub vero: file sovrascritto)"
 # (audit-2): un install che esplode a meta' non puo' passare come 'parziale'
-echo "$OUT1" | grep -q "Fatto" && ok "prima esecuzione: completa" || ko "prima esecuzione incompleta: $(echo "$OUT1" | tail -1 | cut -c1-80)"
+grep -q "Fatto" <<<"$OUT1" && ok "prima esecuzione: completa" || ko "prima esecuzione incompleta: $(echo "$OUT1" | tail -1 | cut -c1-80)"
 # symlinks creati? (mutation-testing 2026-08-28: prima era ok||ok — un install
 # rotto che non fa NIENTE passava lo stesso; ora l'artefatto è obbligatorio)
-[ -L "$FAKE/.local/bin/ask-qwen" ] && ok "symlink ask-qwen creato" || ko "install non ha creato ~/.local/bin/ask-qwen"
+[ -x "$FAKE/.local/bin/ask-qwen" ] && ok "comando ask-qwen creato" || ko "install non ha creato ~/.local/bin/ask-qwen"
+# (2026-09-23, notte dei giri): il comando installato deve GIRARE, non solo esistere. Da symlink,
+# i cinque comandi risolvevano HERE nella cartella del link e morivano al primo `source` («_usage.sh:
+# No such file or directory», rc 1). ask-glm senza chiave deve dare il suo rc 2 documentato.
+OUT_GLM=$(env -u ZHIPUAI_API_KEY "$FAKE/.local/bin/ask-glm" ping 2>&1); RC_GLM=$?
+[ $RC_GLM -eq 2 ] && grep -c "non configurata" <<<"$OUT_GLM" >/dev/null && ok "ask-glm installato gira (rc 2: via non configurata)" \
+  || ko "ask-glm installato non gira (rc $RC_GLM): $(head -1 <<<"$OUT_GLM")"
 LS1=$(ls "$FAKE/.local/bin" 2>/dev/null | wc -l | tr -d ' ')
 # seconda esecuzione: idempotente
 OUT2=$(run_install)
@@ -68,6 +79,16 @@ for f in "$FAKE/Library/LaunchAgents"/*.plist; do
 done
 [ "$NPLIST" -ge 1 ] && ok "almeno un LaunchAgent installato ($NPLIST)" || ko "nessun plist generato: install non ha installato niente"
 
+# (2026-09-24, sesto ventaglio, S3 R2): il plist del turno era `/bin/bash -c "caffeinate -i __HUB__/…"` — con uno
+# spazio nel percorso dell'hub bash spezzava la stringa e il turno non partiva, mentre install diceva ✓. Ora gli
+# argomenti sono separati: uno di loro e' il percorso del turno, intero, e il file esiste.
+PL=$(ls "$FAKE/Library/LaunchAgents"/*nightshift*.plist 2>/dev/null | head -1)
+if [ -n "$PL" ]; then
+  python3 -c 'import plistlib,sys,os; a=plistlib.load(open(sys.argv[1],"rb"))["ProgramArguments"]; sys.exit(0 if any(x.endswith("/night-shift/night-shift.sh") and os.path.isfile(x) for x in a) else 1)' "$PL" \
+    && ok "S3 R2: il plist del turno passa il percorso come argomento intero (regge uno spazio)" || ko "S3 R2: il percorso del turno e' dentro una stringa per bash -c: $(grep -A3 ProgramArguments "$PL" | tr -d '\n ' | cut -c1-120)"
+else
+  ko "S3 R2: plist del turno non generato"
+fi
 rm -rf "$FAKE"
 echo ""
 echo "$PASS OK, $FAIL FAIL"

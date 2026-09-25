@@ -19,9 +19,15 @@ mkdir -p "$SB/.claude/skills/gas-sviluppo/references"
 echo '{"hooks":{"SessionStart":[{"hooks":[{"command":"x"}]}]}}' > "$SB/.claude/settings.json"
 echo "metodo vecchio" > "$SB/.claude/skills/gas-sviluppo/references/metodo.md"
 OUT=$(cd "$SB" && bash "$GARANTE" 2>&1)
-if echo "$OUT" | grep -q "DIVERGE"; then
+if grep -q "DIVERGE" <<<"$OUT"; then
   ok "metodo installato vecchio → avviso deriva (con il comando per aggiornare)"
-  echo "$OUT" | grep -q "sync-repo" && ok "l'avviso dice COME aggiornare" || ko "avviso senza rimedio"
+  grep -q "sync-repo" <<<"$OUT" && ok "l'avviso dice COME aggiornare" || ko "avviso senza rimedio"
+  # (2026-09-24, sesto ventaglio, S1): il rimedio era «sync-repo.sh --standard» senza owner/repo — incollato,
+  # sync-repo rispondeva con la riga d'uso ed usciva 1. Senza origin si dice il segnaposto; con, il nome vero.
+  grep -c 'sync-repo.sh <owner/repo> --standard' <<<"$OUT" >/dev/null && ok "S1: il rimedio ha l'argomento che sync-repo vuole" || ko "S1: rimedio senza owner/repo: $(grep -o 'sync-repo.sh[^)]*' <<<"$OUT" | head -1)"
+  git -C "$SB" init -q 2>/dev/null; git -C "$SB" remote add origin https://github.com/luca/satellite.git
+  OUTR=$(cd "$SB" && bash "$GARANTE" 2>&1)
+  grep -c 'sync-repo.sh luca/satellite --standard' <<<"$OUTR" >/dev/null && ok "S1: con un origin GitHub il rimedio porta il nome vero" || ko "S1: origin non letto: $(grep -o 'sync-repo.sh[^)]*' <<<"$OUTR" | head -1)"
 else
   ko "deriva del metodo NON vista — il garante e' tornato una-tantum"
 fi
@@ -29,7 +35,9 @@ fi
 # caso 2: installazione esistente con metodo UGUALE → silenzio (nessun falso allarme)
 SB2=$(mktemp -d /tmp/garante-t2.XXXXXX)
 mkdir -p "$SB2/.claude/skills/gas-sviluppo/references"
-echo '{"hooks":{"SessionStart":[{"hooks":[{"command":"x"}]}]}}' > "$SB2/.claude/settings.json"
+# (2026-09-24, R2 R1): «allineato» vuol dire anche settings e hook veri — prima qui bastava un SessionStart
+# fittizio («x»), cioe' il satellite senza cancello che il garante non vedeva
+cp "$HERE/.claude/settings.json" "$SB2/.claude/settings.json"; bash "$HERE/tools/copia-hook.sh" "$SB2" >/dev/null
 cp "$HERE/.claude/skills/gas-sviluppo/references/metodo.md" "$SB2/.claude/skills/gas-sviluppo/references/metodo.md"
 OUT2=$(cd "$SB2" && bash "$GARANTE" 2>&1)
 if [ -z "$OUT2" ]; then
@@ -73,6 +81,49 @@ OUT5=$(cd "$SB5" && bash "$GARANTE" 2>&1)
 [ "$(impronta "$SB5")" = "$P5" ] && grep -q "non lo sovrascrivo" <<<"$OUT5" \
   && ok "settings.json proprio: avviso e nessuna modifica (prima il garante lo sovrascriveva)" \
   || ko "settings.json proprio: toccato o avviso assente — $(head -1 <<<"$OUT5")"
+
+# (2026-09-24, notte dei giri, T1#2): una repo installata con i guardiani del commit presenti ma SPENTI
+# (core.hooksPath non impostato): il garante lo dice, col comando — non li accende da se' (D13:
+# l'attivazione resta una scelta di chi lavora sulla repo).
+SP=$(mktemp -d); git -C "$SP" init -q; mkdir -p "$SP/.githooks" "$SP/.claude/skills/gas-sviluppo/references"
+cp "$HERE/.claude/settings.json" "$SP/.claude/settings.json"; bash "$HERE/tools/copia-hook.sh" "$SP" >/dev/null   # (R2 R1): satellite completo
+cp "$HERE/.claude/skills/gas-sviluppo/references/metodo.md" "$SP/.claude/skills/gas-sviluppo/references/"
+OUT6=$(cd "$SP" && CLAUDE_PROJECT_DIR="$SP" bash "$GARANTE" 2>&1)
+grep -c "core.hooksPath .githooks" <<<"$OUT6" >/dev/null && [ -z "$(git -C "$SP" config core.hooksPath)" ] \
+  && ok "guardiani presenti ma spenti: il garante lo dice (col comando) e non li accende da se'" || ko "guardiani spenti taciuti: «${OUT6}»"
+git -C "$SP" config core.hooksPath .githooks
+OUT7=$(cd "$SP" && CLAUDE_PROJECT_DIR="$SP" bash "$GARANTE" 2>&1)
+[ -z "$OUT7" ] && ok "guardiani accesi: silenzio" || ko "falso allarme coi guardiani accesi: «${OUT7}»"
+rm -rf "$SP"
+
+# (2026-09-24, notte dei giri, T1#5): la COPIA del garante che vive in un satellite (ce la porta
+# tools/installa-citati.sh) prendeva il satellite per l'hub, perche' ha .claude/skills: dentro il
+# satellite taceva («sono l'hub»), e su un'altra repo installava dal satellite — che non ha
+# claude-md-satellite.sh ne' copia-hook.sh. L'hub e' la cartella che ha gli strumenti che servono.
+SAT=$(mktemp -d); NUOVA=$(mktemp -d)
+mkdir -p "$SAT/tools" "$SAT/.claude/skills"; cp "$GARANTE" "$SAT/tools/"
+OUT5=$(cd "$NUOVA" && AI_PROGRAMMER_HUB="$HERE" CLAUDE_PROJECT_DIR="$NUOVA" bash "$SAT/tools/garante-standard.sh" 2>&1)
+[ -f "$NUOVA/CLAUDE.md" ] && [ -x "$NUOVA/tools/clasp-block-hook.sh" ] \
+  && ok "la copia nel satellite installa dall'hub vero (CLAUDE.md e hook presenti)" || ko "la copia nel satellite si crede l'hub: $(tr '\n' ' ' <<<"$OUT5" | cut -c1-160)"
+rm -rf "$SAT" "$NUOVA"
+
+# (2026-09-24, quinto ventaglio, R2 R1): il garante taceva (rc 0, nessuna riga) su un satellite SENZA
+# cancello clasp — lo script tolto, o PreToolUse tolto da settings.json. E installando da zero saltava
+# tools/installa-citati.sh: mancavano 18 file che gli altri installatori portano.
+SB6=$(mktemp -d /tmp/garante-t6.XXXXXX); mkdir -p "$SB6/.claude/skills/gas-sviluppo/references"
+cp "$HERE/.claude/skills/gas-sviluppo/references/metodo.md" "$SB6/.claude/skills/gas-sviluppo/references/"
+cp "$HERE/.claude/settings.json" "$SB6/.claude/settings.json"; bash "$HERE/tools/copia-hook.sh" "$SB6" >/dev/null
+rm -f "$SB6/tools/clasp-block-hook.sh"
+OUT6=$(cd "$SB6" && bash "$GARANTE" 2>&1)
+grep -c 'hook dichiarato e ASSENTE: tools/clasp-block-hook.sh' <<<"$OUT6" >/dev/null && ok "cancello clasp cancellato: il garante lo dice" || ko "cancello clasp cancellato e il garante tace: $OUT6"
+jq 'del(.hooks.PreToolUse)' "$HERE/.claude/settings.json" > "$SB6/.claude/settings.json"
+OUT6=$(cd "$SB6" && bash "$GARANTE" 2>&1)
+grep -c 'cancello clasp NON registrato' <<<"$OUT6" >/dev/null && ok "PreToolUse tolto: «cancello clasp NON registrato»" || ko "PreToolUse tolto e il garante tace: $OUT6"
+SB7=$(mktemp -d /tmp/garante-t7.XXXXXX); git -C "$SB7" init -q
+(cd "$SB7" && bash "$GARANTE" >/dev/null 2>&1)
+[ -f "$SB7/tools/privacy-check.sh" ] && [ -f "$SB7/docs/errori/REGISTRO.md" ] && [ -f "$SB7/tools/pre-commit.sh" ] \
+  && ok "installazione da zero: arrivano anche i file citati (installa-citati.sh)" || ko "installazione da zero senza i file citati: $(ls "$SB7/tools" 2>/dev/null | tr '\n' ' ')"
+rm -rf "$SB6" "$SB7"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -15,10 +15,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 # prima del fix spariva anche dal conteggio "non matchati".
 OUT1=$(printf 'tipo,data_documento,data_registrazione,nr_doc,cliente,descrizione,importo\nfattura,2026-01-10,2026-01-10,1,Mario Rossi,,1000\npagamento,2026-01-01,2026-01-01,2,Mario Rossi,,1000\n' \
   | python3 "$HERE/tools/rating_dso_clienti.py")
-echo "$OUT1" | grep -q "Non matchati: 1" \
+grep -q "Non matchati: 1" <<<"$OUT1" \
   && ok "pagamento scartato dalla guardia anti-falsi-match: contato in non matchati" \
   || ko "pagamento scartato sparito dal conteggio — output: $OUT1"
-echo "$OUT1" | grep -q "NON MATCHATO: 2026-01-01 1000.00" \
+grep -q "NON MATCHATO: 2026-01-01 1000.00" <<<"$OUT1" \
   && ok "pagamento scartato: riga NON MATCHATO stampata con data/importo" \
   || ko "riga NON MATCHATO mancante — output: $OUT1"
 
@@ -26,10 +26,10 @@ echo "$OUT1" | grep -q "NON MATCHATO: 2026-01-01 1000.00" \
 # confronto cliente+importo+data): deve continuare a funzionare come prima.
 OUT2=$(printf 'tipo,data_documento,data_registrazione,nr_doc,cliente,descrizione,importo\nfattura,2026-01-01,2026-01-01,1,Anna Bianchi,,500\npagamento,2026-01-06,2026-01-06,2,Anna Bianchi,,500\n' \
   | python3 "$HERE/tools/rating_dso_clienti.py")
-echo "$OUT2" | grep -q "Non matchati: 0" \
+grep -q "Non matchati: 0" <<<"$OUT2" \
   && ok "matching normale: nessun falso 'non matchato'" \
   || ko "matching normale rotto — output: $OUT2"
-echo "$OUT2" | grep -qE "anna bianchi\s+1\s+5 gg" \
+grep -qE "anna bianchi\s+1\s+5 gg" <<<"$OUT2" \
   && ok "matching normale: DSO = 5 giorni per anna bianchi" \
   || ko "DSO atteso non trovato — output: $OUT2"
 
@@ -38,7 +38,7 @@ echo "$OUT2" | grep -qE "anna bianchi\s+1\s+5 gg" \
 # corretto).
 OUT3=$(printf 'tipo,data_documento,data_registrazione,nr_doc,cliente,descrizione,importo\npagamento,2026-01-01,2026-01-01,2,Sconosciuto,,999\n' \
   | python3 "$HERE/tools/rating_dso_clienti.py")
-echo "$OUT3" | grep -q "Non matchati: 1" \
+grep -q "Non matchati: 1" <<<"$OUT3" \
   && ok "pagamento senza candidati: resta non matchato (invariato)" \
   || ko "pagamento senza candidati rotto — output: $OUT3"
 

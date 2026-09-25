@@ -75,7 +75,7 @@ grep -q "REPO-E" "$HERE/tools/scadenzario_aging.py" \
 
 # Riscontro anche via CLI (main() che legge CSV da stdin) sulle prime due righe clienti
 CLI_OUT=$(printf 'tipo,importo,giorni\nCLIENTE,1000,-90\nCLIENTE,500,-45\n' | python3 "$HERE/tools/scadenzario_aging.py")
-echo "$CLI_OUT" | grep -q "Entrate: +1500.00€" \
+grep -q "Entrate: +1500.00€" <<<"$CLI_OUT" \
   && ok "CLI: entrate = 1500.00€ su due righe cliente" \
   || ko "CLI: entrate inattese — output: $CLI_OUT"
 
@@ -84,7 +84,7 @@ echo "$CLI_OUT" | grep -q "Entrate: +1500.00€" \
 # col segno grezzo di BC, finendo in "entrate" invece che in "uscite". Il test CLI sopra
 # non lo prendeva: usava solo righe cliente. Questo caso esercita il percorso vero.
 CLI_OUT_FORN=$(printf 'tipo,importo,giorni\nFornitore Fattura,1000,10\n' | python3 "$HERE/tools/scadenzario_aging.py")
-echo "$CLI_OUT_FORN" | grep -q "Uscite: -1000.00€" \
+grep -q "Uscite: -1000.00€" <<<"$CLI_OUT_FORN" \
   && ok "CLI: fattura fornitore = uscita -1000.00€ (non entrata)" \
   || ko "CLI: segno fornitore non applicato — output: $CLI_OUT_FORN"
 

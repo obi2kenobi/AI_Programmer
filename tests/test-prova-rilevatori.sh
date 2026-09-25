@@ -10,7 +10,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 bash -n "$HERE/tools/prova-rilevatori.sh" || { echo "FAIL sintassi"; exit 1; }
 OUT=$(bash "$HERE/tools/prova-rilevatori.sh" 2>&1); RC=$?
-echo "$OUT" | grep -q "4 canarini tenuti, 0 rilevatori rotti" && ok "antivirus: 4/4 canarini, clone pulito verde" || { ko "antivirus (rc=$RC): $(echo "$OUT" | tail -2 | tr "\n" " " | cut -c1-100)"; }
+grep -q "4 canarini tenuti, 0 rilevatori rotti" <<<"$OUT" && ok "antivirus: 4/4 canarini, clone pulito verde" || { ko "antivirus (rc=$RC): $(echo "$OUT" | tail -2 | tr "\n" " " | cut -c1-100)"; }
 # e il morso dell'antivirus STESSO: un canarino disattivato deve renderlo rosso
 # (proof sintetico: il conteggio atteso cambia se un canarino non morde — verificato
 #  dal tool stesso col suo exit; qui si prova la catena: skip simulato)

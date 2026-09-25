@@ -15,7 +15,8 @@
 # solver appeso) — ed e' quello il turno da sciogliere.
 #
 # Uso: bash tools/turno-vivo.sh   (da system-health, dal digest, o a mano)
-# Esce 0 se il turno cicla (o non c'e') · 1 se il log e' fermo oltre soglia.
+# Esce 0 se il turno cicla (o non c'e') · 1 se il log e' fermo oltre soglia · 2 se non so giudicare
+# (timestamp illeggibile o python3 assente: 2026-09-24, Q3 R6 — prima era 0, e il polso lo contava ✅).
 set -uo pipefail
 SOGLIA_MIN=${TURNO_VIVO_SOGLIA:-30}
 LOG=${TURNO_VIVO_LOG:-$HOME/night-shift-console.log}
@@ -29,22 +30,31 @@ if [ -z "$ULTIMA" ]; then
   echo "turno-vivo: il log non contiene nessun TURNO INIZIATO — niente da giudicare"
   exit 0
 fi
-ETA_MIN=$(python3 -c "
-from datetime import datetime
+# (2026-09-25, settimo ventaglio, V3 R4): l'eta' si prende in epoch — il timestamp locale del log passa da mktime, che
+# conosce il fuso e l'ora legale. Prima si sottraevano due ore locali «ingenue»: in primavera 15 minuti veri diventavano
+# 75 (e un pkill da incollare), in autunno l'eta' veniva negativa («illeggibile»). Nell'ora ripetuta d'autunno mktime
+# puo' scegliere la seconda passata: un'eta' negativa entro un'ora vale 0. Il timestamp arriva come argomento.
+ETA_MIN=$(python3 -c '
+import sys, time
 try:
-    d = datetime.strptime('$ULTIMA'.strip(), '%Y-%m-%d %H:%M:%S')
-    print(int((datetime.now() - d).total_seconds() // 60))
+    d = time.mktime(time.strptime(sys.argv[1].strip(), "%Y-%m-%d %H:%M:%S"))
+    m = int((time.time() - d) // 60)
+    print(0 if -60 <= m < 0 else m)
 except ValueError:
-    print(-1)" 2>/dev/null || echo -1)
+    print(-1)' "$ULTIMA" 2>/dev/null || echo -1)
 if [ "${ETA_MIN:--1}" -lt 0 ]; then
-  echo "turno-vivo: timestamp dell'ultimo ciclo illeggibile ('$ULTIMA') — niente da giudicare"
-  exit 0
+  echo "turno-vivo: timestamp dell'ultimo ciclo illeggibile ('$ULTIMA') o python3 assente — NON SO giudicare"
+  exit 2
 fi
 if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
   echo "⛔ TURNO INCASTRATO: ultimo ciclo iniziato ${ETA_MIN} minuti fa (soglia ${SOGLIA_MIN}min)."
   echo "   Nel continuo un ciclo non supera i ~15 minuti: qualcosa dentro sta hangando."
   echo "   Dove si e' fermato: l'ultima riga di $LOG."
-  echo "   Pulizia consolidata: pkill -f \"night-shift/night-shift.sh\" — launchd lo riparte da solo."
+  # (Q12, 2026-09-23): prometteva un riavvio automatico di launchd — il plist parte alle 23:00 e non ha
+  # KeepAlive (night-shift/plist/com.luca.nightshift.plist): dopo il pkill il turno resta giu'.
+  # (2026-09-24, Q1 R4): `[n]ight-shift` — la forma nuda, eseguita da un agente, uccide anche la sua shell
+  echo "   Pulizia: pkill -f \"[n]ight-shift/night-shift.sh\", poi riavvialo — launchd da solo lo riparte solo alle 23:00:"
+  echo "   launchctl kickstart gui/\$(id -u)/\$(launchctl list | awk '/nightshift/{print \$3}')"
   exit 1
 fi
 echo "turno-vivo: il turno cicla (ultimo iniziato ${ETA_MIN}min fa, soglia ${SOGLIA_MIN}min)"

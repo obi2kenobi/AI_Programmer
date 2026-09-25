@@ -20,16 +20,45 @@ bash -n "$MUTA" && ok "sintassi" || ko "sintassi rotta"
 # del banco, e in suite costa quanto due test lenti — accettato)
 if git -C "$HERE" diff --quiet 2>/dev/null && git -C "$HERE" diff --cached --quiet 2>/dev/null; then
   OUT=$(bash "$MUTA" 2>&1); RC=$?
-  [ $RC -eq 0 ] && echo "$OUT" | grep -qE "[0-9]+ test reagiscono alla mutazione, 0 teatri verdi" \
+  [ $RC -eq 0 ] && grep -qE "[0-9]+ test reagiscono alla mutazione, 0 teatri verdi" <<<"$OUT" \
     && ok "run completo: tutti i test reagiscono, nessun teatro" \
     || { echo "$OUT" | tail -3 | sed 's/^/    /'; ko "run completo non pulito (rc=$RC)"; }
 else
   # albero sporco: la guardia deve FERMARE (exit 2) — mai mutare lavoro vivo
   OUT=$(bash "$MUTA" 2>&1); RC=$?
-  [ $RC -eq 2 ] && echo "$OUT" | grep -q "albero sporco" \
+  [ $RC -eq 2 ] && grep -q "albero sporco" <<<"$OUT" \
     && ok "albero sporco: il banco si ferma prima di mutare (exit 2)" \
     || ko "la guardia non scatta (rc=$RC): muterebbe lavoro non committato"
 fi
+
+# (Q32, 2026-09-23, notte dei giri): un banco GIA' rosso prima della mutazione fallisce anche dopo,
+# e veniva contato «reagisce alla mutazione» — un TIENE regalato da un banco rotto. Si prova in una
+# repo di prova: tool sano, banco che fallisce sempre.
+MT=$(mktemp -d)
+git -C "$MT" init -q; mkdir -p "$MT/tools" "$MT/tests"
+cp "$HERE/tools/mutation-tests.sh" "$MT/tools/"
+printf '#!/bin/bash\necho sano\n' > "$MT/tools/soggetto.sh"
+printf '#!/bin/bash\nexit 1\n' > "$MT/tests/test-soggetto.sh"
+git -C "$MT" add -A; git -C "$MT" -c user.name=t -c user.email=t@t commit -qm base
+OUT=$(cd "$MT" && bash tools/mutation-tests.sh 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -qi "rosso gia' prima" <<<"$OUT" && ! grep -q "^VERDETTO: 1 test reagiscono" <<<"$OUT" \
+  && ok "banco gia' rosso prima della mutazione: detto, e non contato fra quelli che reagiscono" \
+  || ko "banco rotto promosso a «reagisce alla mutazione» (rc=$RC): $(tail -1 <<<"$OUT")"
+rm -rf "$MT"
+
+# (2026-09-24, terzo ventaglio, V2 — regressione mia, E-046): col controllo «verde prima di mutare»
+# mutation-tests eseguiva anche il banco di SE STESSO, che su un albero pulito rilancia il run completo:
+# ricorsione senza fine (9 livelli in 15 minuti, misurati dal giro). Si prova in una repo di prova:
+# il proprio banco rilancia mutation-tests, e il run deve finire entro il tetto.
+source "$HERE/llm/_timeout.sh"
+MR=$(mktemp -d)
+git -C "$MR" init -q; mkdir -p "$MR/tools" "$MR/tests"
+cp "$HERE/tools/mutation-tests.sh" "$MR/tools/"
+printf '#!/bin/bash\ncd "$(dirname "$0")/.." && bash tools/mutation-tests.sh >/dev/null 2>&1\necho "1 OK, 0 FAIL"\n' > "$MR/tests/test-mutation-tests.sh"
+git -C "$MR" add -A; git -C "$MR" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qm base
+OUT=$(cd "$MR" && ai_timeout 30 bash tools/mutation-tests.sh 2>&1); RC=$?
+[ "$RC" -ne 124 ] && ok "mutation-tests non si annida nel proprio banco (finito, rc $RC)" || ko "mutation-tests si annida nel proprio banco: ucciso dal tetto di 30 s"
+pkill -f "$MR/tools/mutation-tests.sh" 2>/dev/null; rm -rf "$MR"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

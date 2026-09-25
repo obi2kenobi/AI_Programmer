@@ -10,9 +10,9 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 OUT=$(bash "$HERE/tools/help.sh")
-echo "$OUT" | grep -q "ALLA CHIUSURA" && echo "$OUT" | grep -q "LO STUDIO" && echo "$OUT" | grep -q "LE BATTERIE" \
+grep -q "ALLA CHIUSURA" <<<"$OUT" && grep -q "LO STUDIO" <<<"$OUT" && grep -q "LE BATTERIE" <<<"$OUT" \
   && ok "le sezioni per momento d'uso ci sono" || ko "sezioni mancanti"
-echo "$OUT" | grep -q "banco-passaggio.sh" && ok "il banco di fine passaggio è in menu" || ko "banco assente dal menu"
+grep -q "banco-passaggio.sh" <<<"$OUT" && ok "il banco di fine passaggio è in menu" || ko "banco assente dal menu"
 
 # ogni tools/<nome>.sh citato nel menu deve esistere
 ROTTI=""

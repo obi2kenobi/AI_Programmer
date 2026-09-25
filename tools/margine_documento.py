@@ -32,11 +32,16 @@ acquisti.csv:   rif,data,bu,fornitore,importo
 note_credito.csv: rif (una per riga, con intestazione)
 """
 import csv
+import math
+import re
 import sys
 
 
 def normalizza(ref):
-    return (ref or "").strip().upper().replace(" ", "").replace("\t", "")
+    # (Q22, 2026-09-23): toglieva solo spazio e tab; il sorgente citato qui sopra usa /\s+/g, che
+    # toglie anche NBSP e gli altri spazi Unicode — un rif esportato con NBSP non si accoppiava.
+    # In Python 3 \s su str copre gli stessi spazi Unicode.
+    return re.sub(r"\s+", "", (ref or "").strip().upper())
 
 
 def leggi_csv(path, colonne=()):
@@ -49,10 +54,25 @@ def leggi_csv(path, colonne=()):
             if mancanti:
                 print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
                 sys.exit(1)
-            return list(reader)
+            righe = list(reader)
+    except UnicodeDecodeError:
+        # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo (il caso che D32 aveva
+        # curato). Si dice; leggerlo in cp1252 e' una scelta di dominio (DEBITI, V4 D4).
+        print(f"uso: margine_documento.py — {path} non e' UTF-8 (un export di Excel in Windows-1252?): salvalo come «CSV UTF-8»" , file=sys.stderr)
+        sys.exit(1)
     except OSError as e:
         print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
         sys.exit(1)
+    # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
+    # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
+    for n, r in enumerate(righe, start=2):
+        if "importo" in colonne:
+            try:
+                float(r["importo"])
+            except (ValueError, TypeError):
+                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso col punto decimale, es. 1234.56) — nessun verdetto", file=sys.stderr)
+                sys.exit(1)
+    return righe
 
 
 def main():
@@ -66,12 +86,22 @@ def main():
         return 1
     vendite = leggi_csv(sys.argv[1], ("importo",))
     acquisti = leggi_csv(sys.argv[2], ("importo",))
+    # (Q22): con zero vendite stampava «Totale margine +0.00 EUR (+0.0%)»
+    if not vendite:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     note_credito = set()
     if len(sys.argv) == 4:
-        note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3], ("rif",))}
+        # (Q22): un rif vuoto (anche solo " ") entrava come "" e annullava ogni vendita senza rif
+        note_credito = {normalizza(r["rif"]) for r in leggi_csv(sys.argv[3], ("rif",))} - {""}
 
     # primo acquisto per riferimento vince (comportamento del map originale)
     acquisti_map = {}
+    # (2026-09-24, quinto ventaglio, R3 R2): un importo nan/inf dava «Totale margine: +nan EUR», rc 0
+    marci = [r.get("rif") or "(senza rif)" for r in vendite + acquisti if not math.isfinite(float(r["importo"]))]
+    if marci:
+        print(f"ERRORE: importi non finiti (nan/inf) per {', '.join(marci[:5])} — nessun verdetto", file=sys.stderr)
+        return 1
     for a in acquisti:
         rif = normalizza(a.get("rif"))
         if rif and rif not in acquisti_map:
@@ -106,9 +136,11 @@ def main():
         print(f"  {rif}: vendita={importo_v:.2f} acquisto={importo_a:.2f}"
               f" margine={margine:+.2f} ({perc_txt} sui ricavi){avviso}")
 
-    perc_tot = totale_margine / totale_ricavi if totale_ricavi else 0.0
+    # (Q22): la cura del 2026-08-28 per la riga (percentuale n.d. a ricavi nulli) non era arrivata
+    # al totale: «-100.00 EUR (+0.0% sui ricavi)»
+    perc_tot_txt = f"{totale_margine / totale_ricavi:+.1%}" if totale_ricavi else "n.d. (ricavi a zero)"
     print(f"Totale ricavi accoppiati: {totale_ricavi:.2f} EUR")
-    print(f"Totale margine: {totale_margine:+.2f} EUR ({perc_tot:+.1%} sui ricavi)")
+    print(f"Totale margine: {totale_margine:+.2f} EUR ({perc_tot_txt} sui ricavi)")
     if annullati:
         print(f"Annullati da nota di credito: {len(annullati)} — "
               + ", ".join(f"{x['rif']} ({x['importo']:.2f} EUR esclusi)" for x in annullati))

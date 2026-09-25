@@ -45,7 +45,8 @@ grep -q "^## Forma dei dati" "$TMPL" \
   || ko "template: manca ## Forma dei dati"
 
 # 5. la notte presidia il gate del Design (l'anello meccanico)
-grep -q 'grep -q "\^## Design"' "$NS" \
+# (2026-09-23, notte dei giri): la sequenza del cancello vive in night-shift/lib.sh cancello_design
+grep -q 'MOTIVO=$(cancello_design "$BODY")' "$NS" && grep -q 'grep -q "^## Design"' "$(dirname "$NS")/lib.sh" \
   && ok "night-shift: la issue senza ## Design viene saltata col commento (il presidio esiste)" \
   || ko "night-shift: il controllo ## Design non trovato"
 
@@ -66,7 +67,7 @@ NOMI_PORTA=$(cat night-shift/README.md README.md CLAUDE.md 2>/dev/null)
 ORFANI=""
 for f in night-shift/*.sh; do
   case "$(basename "$f")" in night-shift.sh) continue;; esac
-  echo "$NOMI_PORTA" | grep -q "$(basename "$f")" || ORFANI="$ORFANI $(basename "$f")"
+  grep -q "$(basename "$f")" <<<"$NOMI_PORTA" || ORFANI="$ORFANI $(basename "$f")"
 done
 [ -z "$ORFANI" ] && ok "night-shift: ogni tool ha una porta che lo nomina" \
   || ko "night-shift: tool senza porta:$ORFANI"

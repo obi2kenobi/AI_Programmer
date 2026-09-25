@@ -48,11 +48,12 @@ check_bounded() {
   # comportamento (stdin apribile senza EOF) ma il PID del sleep resta noto e viene ucciso
   # subito dopo, non lasciato scadere da solo.
   FIFO="$TMP/fifo_${nome//[^A-Za-z0-9]/_}"
+  local OUTF="$TMP/stdintest_${nome//[^A-Za-z0-9]/_}.out"   # uno per wrapper: i tre girano insieme
   mkfifo "$FIFO"
   sleep 100 > "$FIFO" &
   SLEEP_PID=$!
   T0=$(date +%s)
-  ai_timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >/tmp/stdintest.out 2>&1
+  ai_timeout 20 bash "$HERE/llm/$script" "$@" < "$FIFO" >"$OUTF" 2>&1
   RC=$?
   T1=$(date +%s); DUR=$((T1-T0))
   kill "$SLEEP_PID" 2>/dev/null
@@ -62,11 +63,11 @@ check_bounded() {
     ko "$nome: bloccato oltre 20s con stdin aperto senza EOF (bug NON corretto)"
   elif [ "$DUR" -gt 10 ]; then
     ko "$nome: ${DUR}s — troppo lento, il timeout sullo stdin non sta limitando l'attesa"
-  elif ! grep -qE "content|non è arrivato tutto entro|non e' arrivato tutto entro" /tmp/stdintest.out 2>/dev/null; then
+  elif ! grep -qE "content|non è arrivato tutto entro|non e' arrivato tutto entro" "$OUTF" 2>/dev/null; then
     # (audit-2): serve la prova che il wrapper ha LAVORATO lo stdin — o la risposta
     # del mock ("content"), o la sua dichiarazione di bounded-bail ("stdin non
     # arrivato entro"): prima qualunque rc!=124 veloce passava, anche un crash
-    ko "$nome: rapido ma sordo — ne' risposta ne' dichiarazione di timeout (contratto rotto: $(head -c 60 /tmp/stdintest.out 2>/dev/null))"
+    ko "$nome: rapido ma sordo — ne' risposta ne' dichiarazione di timeout (contratto rotto: $(head -c 60 "$OUTF" 2>/dev/null))"
   else
     ok "$nome: completa in ${DUR}s con stdin aperto senza EOF (limite rispettato, risposta consumata)"
   fi
@@ -79,11 +80,17 @@ check_bounded() {
   fi
 }
 
-check_bounded "ask-opus.sh" "ask-opus.sh" "test"
-check_bounded "ask-glm.sh"  "ask-glm.sh"  "test"
 # ask-qwen.sh: puntare a un Ollama "già su" evitando i 30s del probe di avvio —
 # il finto curl risponde subito a /api/version, quindi il probe passa al primo colpo.
-check_bounded "ask-qwen.sh" "ask-qwen.sh" "test"
+# (2026-09-24, terzo ventaglio, V4#3): i tre wrapper aspettano ciascuno la finestra intera di 5 s, in fila
+# 15 s: ora girano insieme, ognuno col suo file d'esito, e i verdetti si contano dopo.
+for w in ask-opus.sh ask-glm.sh ask-qwen.sh; do
+  ( check_bounded "$w" "$w" "test" ) > "$TMP/esito_$w" 2>&1 &
+done
+wait
+for w in ask-opus.sh ask-glm.sh ask-qwen.sh; do cat "$TMP/esito_$w"; done
+PASS=$((PASS + $(cat "$TMP"/esito_* | grep -c '^OK')))
+FAIL=$((FAIL + $(cat "$TMP"/esito_* | grep -c '^FAIL')))
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

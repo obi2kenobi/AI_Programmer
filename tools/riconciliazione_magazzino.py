@@ -61,6 +61,11 @@ def main():
     """CSV in stdin → conteggi per categoria, rettifiche ordinate per impatto
     economico (il più costoso in cima: è l'ordine in cui si interviene).
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: riconciliazione_magazzino.py < righe.csv — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     # (giro 21, 2026-09-20 — D32): colonne sbagliate = KeyError nudo; stdin vuoto = tre zeri
     # con rc 0 (verde senza dati). Si dichiara cosa manca, come scadenzario_aging.
     reader = csv.DictReader(sys.stdin)
@@ -69,6 +74,10 @@ def main():
         print(f"uso: riconciliazione_magazzino.py < inventario.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
         return 1
     righe = list(reader)
+    # (Q22): con zero righe stampava tre conteggi a zero, rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
     try:
         non_contato, senza_discrepanza, con_rettifica = categorizza(righe)
     except ValueError as e:

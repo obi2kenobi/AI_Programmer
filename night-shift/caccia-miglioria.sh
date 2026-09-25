@@ -37,10 +37,10 @@ cd "$DIR"
 
 STATE="$DIR/.git/miglioria"
 mkdir -p "$STATE"
-COOLDOWN=21600  # 6h: un file dichiarato 'niente da migliorare' in una categoria non si ritocca
+COOLDOWN="${MIGLIORIA_COOLDOWN_SEC:-21600}"  # profilo (D11) — 6h: un file dichiarato 'niente da migliorare' in una categoria non si ritocca
 AGENT_CMD="${MIGLIORIA_AGENT:-$HERE/night-shift/agente.sh}"
-MAX_RIGHE_DIFF=40
-MAX_FILE=2
+MAX_RIGHE_DIFF="${GATE_MAX_RIGHE:-40}"   # profilo (D11)
+MAX_FILE="${GATE_MAX_FILE:-2}"
 
 log() { echo "[miglioria $(date '+%H:%M:%S')] $*" >&2; }
 
@@ -112,7 +112,9 @@ for l in sys.stdin:
   while IFS= read -r f; do
     case "$f" in
       *.sh)  bash -n "$f" 2>/dev/null || { log "gate BOCCIA: sintassi bash — $f"; return 1; } ;;
-      *.py)  python3 -c "compile(open('$f').read(), '$f', 'exec')" 2>/dev/null || { log "gate BOCCIA: sintassi py — $f"; return 1; } ;;
+      # (2026-09-24, sesto ventaglio, S3 R6): il percorso passa a python come argomento — incollato nel sorgente, un
+      # apice nel percorso era un SyntaxError e il gate bocciava un file sano
+      *.py)  python3 -c "import sys; compile(open(sys.argv[1]).read(), sys.argv[1], 'exec')" "$f" 2>/dev/null || { log "gate BOCCIA: sintassi py — $f"; return 1; } ;;
       *.js|*.gs)
         command -v node >/dev/null 2>&1 && ! node --check "$f" 2>/dev/null \
           && { log "gate BOCCIA: sintassi js — $f"; return 1; } ;;
@@ -204,7 +206,7 @@ Rules:
 - Change code ONLY with the edit action (exact old→new replacement). Never rewrite a file you did not create.
 - If nothing fits honestly, change nothing and say so: inventing work is worse than finding none.
 - Any comment you write must be ASCII only (English, or Italian without accented letters).
-- BRAINSTORM FIRST: before your first edit, state in one line: "I am about to [action] because [reason]". If you cannot fill that line, you are not ready to edit.
+- BRAINSTORM FIRST: before your first edit, state in one line: 'I am about to [action] because [reason]'. If you cannot fill that line, you are not ready to edit.
 - After writing, read the file back and verify your edit. Evidence before claims, always."
 
 AGENTE_RC=0
@@ -218,7 +220,12 @@ if [ "$TRANSFORMED" -eq 0 ]; then
   if [ -n "${SECONDO_COLPO:-}" ] && [ -n "$PROMPT_SECONDO" ]; then
     PROMPT="$PROMPT_SECONDO"
   fi
-  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>/dev/null || AGENTE_RC=$?
+  # (2026-09-24, R4 R3): lo stderr dell'agente andava in /dev/null — i wedge DENTRO la finestra (server muto,
+  # rianima_ollama, «NESSUN rianimamento») non arrivavano al log. Le righe che contano si rilanciano.
+  ERR_AGENTE=$(mktemp "${TMPDIR:-/tmp}/miglioria-agente.XXXXXX")
+  AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>"$ERR_AGENTE" || AGENTE_RC=$?
+  while IFS= read -r _r; do log "agente: $_r"; done < <(grep -aE '⚠|⛔|rianima_ollama' "$ERR_AGENTE" | head -8)
+  rm -f "$ERR_AGENTE"
 fi
 
 # il debito e' un tentativo solo — marcato ALL'ATTEMPT, prima di ogni uscita:

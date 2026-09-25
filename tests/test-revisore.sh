@@ -30,6 +30,7 @@ cat > "$STUB" <<'EOF'
 # distinguono dal RUOLO nel prompt: l'avversario SMASCHERA, il censore delibera.
 MODELLO="$1"; shift; PROMPT=$(cat)
 case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
   *CENSORE*) printf '{"verdetto":"%s","rischio":"basso","motivi":["il diff fa quello che dichiara","nessun danno collaterale"]}\n' "${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
   *) printf '' ;;
@@ -45,10 +46,24 @@ mkdir -p "$GHSTUB"
 cat > "$GHSTUB/gh" <<'EOF'
 #!/bin/bash
 # minimale: `gh pr view N --json ...` risponde dal file $GHSTUB_JSON
-if [ "$1" = "pr" ] && [ "$2" = "view" ]; then cat "$GHSTUB_JSON"; exit 0; fi
+# (2026-09-23, giro A6): come il gh vero, la PR porta il suo commit (headRefOid) — se il caso non lo
+# fissa, e' la punta del ramo nominato nel repo corrente
+if [ "$1" = "pr" ] && [ "$2" = "view" ]; then
+  jq --arg o "$(git rev-parse -q --verify "$(jq -r .headRefName "$GHSTUB_JSON")" 2>/dev/null)" 'if has("headRefOid") then . else . + {headRefOid:$o} end' "$GHSTUB_JSON"; exit 0
+fi
+if [ "$1" = "issue" ] && [ "$2" = "view" ]; then printf '{"title":"Titolo della issue %s","body":"Documenta il raddoppio."}\n' "$3"; exit 0; fi
 exit 0
 EOF
 chmod +x "$GHSTUB/gh"
+# (2026-09-23, notte dei giri, T5#1): le prove eseguono codice scritto dal modello, dentro la sandbox
+# del turno. Qui un sandbox-exec FINTO registra la chiamata (e il profilo) ed esegue il resto.
+cat > "$GHSTUB/sandbox-exec" <<'EOF'
+#!/bin/bash
+echo "$*" >> "$GHSTUB_JSON.sandbox"; [ "$1" = -f ] && cat "$2" >> "$GHSTUB_JSON.profili"; shift 2; exec "$@"
+EOF
+chmod +x "$GHSTUB/sandbox-exec"
+# una seconda cartella con il solo gh: il mondo senza sandbox-exec (Linux)
+SOLOGH=$(mktemp -d "$RADICE/sologh.XXXXXX"); ln -s "$GHSTUB/gh" "$SOLOGH/gh"
 
 nuova_pr() { # $1=dir $2=eta_min $3=branch — prepara repo+branch+json della PR
   SB="$1"
@@ -65,7 +80,10 @@ function viva(x) {
   return x * 2;
 }
 EOF
-  git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: docs"
+  # (T6#1, 2026-09-24): il commit della PR porta l'eta' dichiarata (la quarantena conta anche lui);
+  # ${4:-$2}: l'eta' del commit, se diversa da quella della PR
+  local QUANDO; QUANDO=$(python3 -c "import datetime,sys; print((datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(minutes=int(sys.argv[1]))).isoformat())" "${4:-$2}")
+  git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: docs"
   git -C "$SB" checkout -q main
   python3 - "$2" "$3" > "$GHSTUB_JSON" <<'PY'
 import sys, json
@@ -91,8 +109,8 @@ trap 'rm -rf "$RADICE"' EXIT
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ok
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "APPROVA → rc 0" || ko "rc $RC (atteso 0): $(echo "$OUT" | tail -2)"
-echo "$OUT" | grep -q "\[DRY\] gh pr merge 7 --squash" && ok "delibera: squash-merge della PR #7" || ko "non ha delibera il merge"
-if echo "$OUT" | grep -q "budget\|deliberazione 1/"; then ok "budget registrato"; else ko "budget non scritto (audit 2026-09-23: il ko era irraggiungibile)"; fi
+grep -q "\[DRY\] gh pr merge 7 --squash" <<<"$OUT" && ok "delibera: squash-merge della PR #7" || ko "non ha delibera il merge"
+if grep -q "budget\|deliberazione 1/" <<<"$OUT"; then ok "budget registrato"; else ko "budget non scritto (audit 2026-09-23: il ko era irraggiungibile)"; fi
 B=$(cat "$SB"/.git/revisore/mergi-* 2>/dev/null | head -1)
 [ "$B" = "1" ] && ok "budget a 1/5 sul file" || ko "file budget: '$B'"
 BR_FIN=$(git -C "$SB" branch --show-current)
@@ -102,8 +120,63 @@ BR_FIN=$(git -C "$SB" branch --show-current)
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ko
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "RIGETTA → rc 1" || ko "rc $RC (atteso 1)"
-echo "$OUT" | grep -q "\[DRY\] gh pr close 7" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
-echo "$OUT" | grep -q "gh pr merge" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
+grep -q "\[DRY\] gh pr close 7" <<<"$OUT" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
+grep -q "gh pr merge" <<<"$OUT" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
+
+# 2ter. (2026-09-25, ottavo ventaglio, O5 R3): un rigetto la cui chiusura fallisce diceva «chiusa» lo stesso, e la PR
+#       tornava al censore a ogni ciclo (tre rigetti, e al quarto una fusione). E una fusione fallita lasciava la PR
+#       «pronta», fuori dalla bozza e dalle guardie per sempre. REVISORE_DRY_FALLISCE fa fallire un'azione nel DRY.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ko2
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_DRY_FALLISCE="gh pr close" REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
+grep -ci 'chiusura fallita' <<<"$OUT" >/dev/null && ! grep -c 'chiusa col parere' <<<"$OUT" >/dev/null \
+  && ok "O5 R3: rigetto con la chiusura fallita: detto, non «chiusa»" || ko "O5 R3: rigetto, chiusura fallita: $(grep -m1 'PR #7' <<<"$OUT")"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=APPROVA bash "$REV" "$SB" 7 2>&1); RC=$?
+! grep -c 'gh pr merge' <<<"$OUT" >/dev/null && grep -ci 'gia.* rigettata' <<<"$OUT" >/dev/null \
+  && ok "O5 R3: una PR rigettata su quel commit non torna al giudizio (niente fusione al ciclo dopo)" || ko "O5 R3: la rigettata torna al giudizio: rc $RC, $(grep -m1 -E 'MERGE|merge|rigett' <<<"$OUT")"
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ok2
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_DRY_FALLISCE="gh pr merge" REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && grep -c '\[DRY\] gh pr ready 7 --undo' <<<"$OUT" >/dev/null \
+  && ok "O5 R3: fusione fallita: la PR torna bozza (ready --undo), rc 2" || ko "O5 R3: fusione fallita: rc $RC, ready --undo $(grep -c 'ready 7 --undo' <<<"$OUT")"
+
+# 2bis. (D2, 2026-09-23) la lente sicurezza trova un rilievo → rc 2 al giorno, NESSUN merge
+#       anche col censore pronto ad APPROVARE (un segreto fuso resta nella storia)
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-lente
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" && grep -q "LENTE SICUREZZA: RILIEVI" <<<"$OUT" \
+  && ok "lente sicurezza con rilievi → rc 2, nessun merge" || ko "lente con rilievi: rc $RC — $(echo "$OUT" | tail -1)"
+
+# 2ter. (2026-09-23, giro A6) si giudica il commit DELLA PR, non il ramo locale con lo stesso nome,
+#       e la fusione e' legata a quel commit (--match-head-commit): nessuna PR fusa senza giudizio
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-punta
+C2=$(git -C "$SB" rev-parse night/test-punta)
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+grep -q "gh pr merge 7 --squash --delete-branch --match-head-commit $C2" <<<"$OUT" \
+  && ok "la fusione e' legata al commit giudicato (--match-head-commit)" || ko "fusione non legata al commit giudicato: $(echo "$OUT" | grep 'gh pr merge')"
+# il ramo locale e' rimasto INDIETRO (c1) mentre la PR punta a un commit piu' nuovo che rompe le prove
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vecchio
+git -C "$SB" checkout -q night/test-vecchio
+printf 'function morta() {}\n' > "$SB/utils.js"   # c2 toglie la funzione viva: l'avversario la smaschera
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "c2 che rompe"
+C2=$(git -C "$SB" rev-parse HEAD); git -C "$SB" reset -q --hard HEAD~1; git -C "$SB" checkout -q main
+python3 - "$C2" > "$GHSTUB_JSON" <<'PY'
+import sys, json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-vecchio", "headRefOid": sys.argv[1],
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" \
+  && ok "ramo locale vecchio: si giudica il commit della PR (c2, che rompe) — nessuna fusione" || ko "giudicato il ramo locale vecchio (rc $RC): $(echo "$OUT" | tail -1)"
+# il commit della PR non e' leggibile qui: fail-closed
+python3 > "$GHSTUB_JSON" <<'PY'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "night/test-vecchio", "headRefOid": "0123456789abcdef0123456789abcdef01234567",
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
+PY
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -ne 0 ] && [ "$RC" -ne 1 ] && ! grep -q "gh pr merge" <<<"$OUT" \
+  && ok "commit della PR sconosciuto: nessun giudizio, nessuna fusione (rc $RC)" || ko "commit sconosciuto: rc $RC"
 
 # 3. quarantena: PR troppo giovane → skip (rc 2), nessun giudizio speso
 SB=$(nuova_repo); nuova_pr "$SB" 5 night/test-giovane
@@ -177,6 +250,7 @@ cat > "$STUB_LS" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; PROMPT=$(cat)
 case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\nls .night-verify\n```\n' ;;
   *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["x"]}\n' ;;
 esac
@@ -200,7 +274,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "D1: PR che tocca .night-verify → rinvio, nessun merge (le prove sono del ramo di default)" \
   || ko "D1: rc $RC — una PR che addomestica le proprie prove e' stata deliberata: $(echo "$OUT" | tail -1)"
 
@@ -210,6 +284,7 @@ cat > "$STUB_SCRIVE" <<'EOF'
 #!/bin/bash
 MODELLO="$1"; shift; PROMPT=$(cat)
 case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\necho pwned > utils.js\n```\n' ;;
   *CENSORE*) printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["x"]}\n' ;;
 esac
@@ -230,7 +305,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": "ieri"}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D3: data illeggibile → rinvio (quarantena fail-closed)" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" && ok "D3: data illeggibile → rinvio (quarantena fail-closed)" \
   || ko "D3: rc $RC — data illeggibile e la PR e' stata deliberata"
 
 # 12. D4: diff VUOTO (ramo identico al default) → niente da giudicare, rc 2
@@ -243,7 +318,7 @@ print(json.dumps({"number": 7, "title": "caccia: miglioria", "headRefName": "nig
   "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=60)).isoformat()}))
 PY
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_LS" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && ! echo "$OUT" | grep -q "gh pr merge" && ok "D4: diff vuoto → rinvio, nessun merge del nulla" \
+[ "$RC" -eq 2 ] && ! grep -q "gh pr merge" <<<"$OUT" && ok "D4: diff vuoto → rinvio, nessun merge del nulla" \
   || ko "D4: rc $RC — un diff vuoto e' stato deliberato"
 rm -f "$STUB_LS"
 
@@ -255,18 +330,89 @@ SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-vuote
 printf '# solo commenti\n\n# nessuna verifica\n' > "$SB/.night-verify"
 git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm vuote
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
-[ "$RC" -eq 2 ] && echo "$OUT" | grep -q "verifiche-vuote" && ! echo "$OUT" | grep -q "gh pr merge" \
+[ "$RC" -eq 2 ] && grep -q "verifiche-vuote" <<<"$OUT" && ! grep -q "gh pr merge" <<<"$OUT" \
   && ok "verifiche-vuote sulla base → rc 2, mai al censore" \
   || ko "verifiche-vuote NON rilevate (rc $RC): $(echo "$OUT" | grep -iE 'prove|integer|merge' | head -2)"
+
+# ── (D10, decisione di Luca 2026-09-23: «b») le PR delle ISSUE: il censore le giudica e lascia
+#    un PARERE motivato come commento, ma NON FONDE MAI — la fusione resta di Luca. ──────────────
+pr_issue() { # pr_issue <dir> <eta_min>: PR night/issue-4 col titolo del solver
+  nuova_pr "$1" "$2" night/issue-4
+  python3 - "$2" > "$GHSTUB_JSON" <<'PY'
+import sys, json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "fix: raddoppio documentato (issue 4)", "headRefName": "night/issue-4",
+  "isDraft": True, "state": "OPEN", "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=int(sys.argv[1]))).isoformat()}))
+PY
+}
+STUB_PAR=$(mktemp "$RADICE/stub-parere.XXXXXX")
+cat > "$STUB_PAR" <<STUBPAR
+#!/bin/bash
+MODELLO="\$1"; shift; PROMPT=\$(cat)
+case "\$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":[]}\n' ;;
+  *SMASCHERA*) printf '\`\`\`\ngrep -c "function viva" utils.js\n\`\`\`\n' ;;
+  *CENSORE*) printf '%s' "\$PROMPT" > "$RADICE/prompt-censore.txt"
+             printf '{"verdetto":"%s","rischio":"basso","motivi":["fa quello che chiede la issue"]}\n' "\${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
+esac
+STUBPAR
+chmod +x "$STUB_PAR"
+SB=$(nuova_repo); pr_issue "$SB" 30
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 4 ] && grep -q "\[DRY\] gh pr comment 7" <<<"$OUT" \
+  && ok "PR di issue: parere APPROVA → commento motivato, rc 4 (parere dato)" || ko "PR di issue: rc $RC, nessun commento di parere: $(echo "$OUT" | tail -1)"
+grep -qE "\[DRY\] gh pr (merge|ready|close)" <<<"$OUT" \
+  && ko "PR di issue: il censore ha provato a FONDERE/chiudere — il patto lo vieta" || ok "PR di issue: nessun merge, ready o close (la fusione resta di Luca)"
+grep -q "Titolo della issue 4" "$RADICE/prompt-censore.txt" 2>/dev/null \
+  && ok "il censore giudica la PR contro il testo della ISSUE (non contro la categoria della caccia)" || ko "il prompt del censore non porta la issue"
+[ -n "$(ls "$SB"/.git/revisore/parere-7-* 2>/dev/null)" ] && ok "il parere dato si ricorda per quel commit (non si rifa' a ogni ciclo)" || ko "nessuna traccia del parere dato"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -q "gh pr comment" <<<"$OUT" && ok "stesso commit, secondo passaggio: nessun parere ripetuto" || ko "parere ripetuto sullo stesso commit (rc $RC)"
+SB=$(nuova_repo); pr_issue "$SB" 30
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB_PAR" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 4 ] && grep -q "\[DRY\] gh pr comment 7" <<<"$OUT" && ! grep -qE "\[DRY\] gh pr (merge|close)" <<<"$OUT" \
+  && ok "parere RIGETTA → commento motivato, la PR resta aperta" || ko "parere RIGETTA: rc $RC o PR chiusa"
+SB=$(nuova_repo); pr_issue "$SB" 30
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_LENTE=false bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && grep -q "\[DRY\] gh pr comment 7" <<<"$OUT" \
+  && ok "PR di issue con la lente sicurezza non pulita: parere negativo scritto, niente verdetto del censore" || ko "lente non pulita su PR di issue: rc $RC, nessun commento"
+rm -f "$STUB_PAR"
+
+# (D11, Luca 2026-09-23) il limite del censore segue il profilo: con CENSORE_MAX_RIGHE=0 la stessa
+# PR (1 riga) che passa col default viene rinviata per taglia — con 0 — la chiave cambia davvero il comportamento
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-profilo
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" CENSORE_MAX_RIGHE=0 bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && grep -q "(max 0)" <<<"$OUT" && ! grep -q "gh pr merge" <<<"$OUT" \
+  && ok "CENSORE_MAX_RIGHE=0 dal profilo: la PR va al giorno per taglia (il profilo comanda)" || ko "CENSORE_MAX_RIGHE ignorato (rc $RC): $(echo "$OUT" | tail -1)"
 
 # 8. sfida coi cervelli VERI (skip dichiarato se Ollama non gira o il modello del censore manca;
 #    giro 19 2026-09-20: cercava il 27b abbandonato il 2026-09-19 — sarebbe stata saltata per sempre)
 CENSORE_MODEL="${REVISORE_MODEL:-qwen3.8-27b:iq3s}"
-if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -q "$CENSORE_MODEL"; then
+if curl -sf --max-time 2 http://localhost:11434/api/tags 2>/dev/null | grep -c "$CENSORE_MODEL" >/dev/null; then
   echo "· sfida modello vero: fatta girare a mano nel turno (il censore e' lento: fuori dalla suite)"
 else
   echo "⊘ sfida modello vero saltata (censore $CENSORE_MODEL non attivo — dichiarato, non taciuto)"
 fi
+
+# 8bis. (2026-09-24, T6#1): la quarantena contava solo la CREAZIONE della PR — un commit spinto un
+# minuto fa su una PR di 30 minuti si giudicava (e si fondeva) subito. Ora conta anche il commit.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-fresco 1
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -c "gh pr merge" <<<"$OUT" >/dev/null && grep -c "quarantena" <<<"$OUT" >/dev/null \
+  && ok "PR vecchia ma commit di 1 minuto: quarantena, rc 2, nessun merge" || ko "commit fresco giudicato subito (rc $RC): $(tail -1 <<<"$OUT")"
+
+# 9. (2026-09-23, notte dei giri, T5#1): le prove girano DENTRO la sandbox, col profilo della copia
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-sandbox; rm -f "$GHSTUB_JSON.sandbox" "$GHSTUB_JSON.profili"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+grep -c "bash -c true" "$GHSTUB_JSON.sandbox" >/dev/null 2>&1 && ok "le prove di .night-verify girano in sandbox-exec" \
+  || ko "prove fuori dalla sandbox (chiamate: $(cat "$GHSTUB_JSON.sandbox" 2>/dev/null | head -2))"
+grep -cF "$SB" "$GHSTUB_JSON.profili" >/dev/null 2>&1 && ! grep -c "__WORKDIR__" "$GHSTUB_JSON.profili" >/dev/null \
+  && ok "il profilo della sandbox e' quello della copia giudicata" || ko "profilo della sandbox senza la copia giudicata"
+# senza sandbox-exec: DEGRADATO dichiarato, rinvio al giorno, NESSUN merge
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-nosandbox
+OUT=$(cd "$SB" && PATH="$SOLOGH:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -c "gh pr merge" <<<"$OUT" >/dev/null && grep -c "DEGRADATO" <<<"$OUT" >/dev/null \
+  && ok "senza sandbox-exec: DEGRADATO, rc 2, nessun merge" || ko "senza sandbox: rc $RC — $(tail -1 <<<"$OUT")"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

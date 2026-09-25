@@ -50,14 +50,23 @@ s = re.sub(r'\| \d{4}-\d\d-\d\dT\d\d:\d\d \| bob \| oracoli \| \d{4}-\d\d-\d\dT\
 open(f, 'w').write(s)
 PY
 OUT=$(bash "$TOOL" lista 2>/dev/null)
-echo "$OUT" | grep -q "potati 1" && ok "presidio scaduto: potato E dichiarato" || ko "potatura non dichiarata"
+grep -q "potati 1" <<<"$OUT" && ok "presidio scaduto: potato E dichiarato" || ko "potatura non dichiarata"
 # grep -c esce 1 quando conta ZERO: con pipefail la pipeline fallisce proprio
 # quando l'asserzione è vera — si usa ! grep -q, che esce 0 sul non-trovato
 ! grep -q "| bob |" "$HERE/PRESIDI.md" && ok "lo scaduto non resta nel registro" || ko "scaduto sopravvissuto"
 
-# rilascio: chiude solo il proprio
+# rilascio: chiude solo il proprio (lo giudica la lista: dal 2026-09-24 il rilascio e' una riga appesa)
 PRESIDIO_USER=alice bash "$TOOL" rilascia oracoli >/dev/null 2>&1
-! grep -q "| alice | oracoli" "$HERE/PRESIDI.md" && ok "rilascio: il proprio presidio chiuso" || ko "rilascio non funzionante"
+OUT=$(bash "$TOOL" lista 2>/dev/null)
+! grep -c "| alice | oracoli" <<<"$OUT" >/dev/null && ok "rilascio: il proprio presidio chiuso" || ko "rilascio non funzionante: $OUT"
+# (2026-09-24, terzo ventaglio, V3): il rilascio cancellava la riga — un file che si riscrive non e'
+# append-only, e ne' la skill lavoro-condiviso ne' il gitattributes lo sapevano
+PRESIDIO_USER=alice bash "$TOOL" claim oracoli "di nuovo" >/dev/null 2>&1
+OUT=$(bash "$TOOL" lista 2>/dev/null)
+grep -c "| alice | oracoli | .* | di nuovo |" <<<"$OUT" >/dev/null && ok "un claim dopo il rilascio e' vivo" || ko "claim dopo il rilascio non vivo: $OUT"
+cp "$HERE/PRESIDI.md" "$QT/prima-del-rilascio"; PRESIDIO_USER=alice bash "$TOOL" rilascia oracoli >/dev/null 2>&1
+[ "$(head -n "$(wc -l < "$QT/prima-del-rilascio")" "$HERE/PRESIDI.md")" = "$(cat "$QT/prima-del-rilascio")" ] \
+  && ok "il rilascio non riscrive il registro: appende" || ko "il rilascio ha riscritto righe esistenti del registro"
 
 # UNION con un merge VERO (revisione 10 giri): prima il python «simulava» il merge, stampava
 # union-ok/union-persa e nessuno leggeva il verdetto (stampava union-persa e il test era verde).
@@ -73,6 +82,28 @@ git clone -q "$U/base" "$U/a" && git clone -q "$U/base" "$U/b"
 [ "$RC_M" -eq 0 ] && grep -q "| alice | zona-x" "$U/a/PRESIDI.md" && grep -q "| bob | zona-y" "$U/a/PRESIDI.md" && ! grep -q '^<<<<<<<' "$U/a/PRESIDI.md" \
   && ok "merge vero di due cloni: entrambe le presenze, zero conflitti (union)" \
   || ko "merge union: rc=$RC_M, $(grep -c '|' "$U/a/PRESIDI.md" 2>/dev/null) righe, conflitti: $(grep -c '^<<<<<<<' "$U/a/PRESIDI.md" 2>/dev/null)"
+# il rilascio attraverso il merge: in a si rilascia l'ULTIMA riga (bob, zona-y), in b alice appende
+# zona-z subito dopo, si fondono. Prima il merge union riportava in vita la riga cancellata, e la lista
+# la contava viva (riprodotto: le due modifiche toccano lo stesso punto del file, e union le tiene tutte).
+( cd "$U/b" && $G pull -q --no-rebase --no-edit "$U/a" main ) >/dev/null 2>&1
+( cd "$U/a" && PRESIDIO_USER=bob bash tools/presidio.sh rilascia zona-y >/dev/null 2>&1 && $G commit -qam ril ) >/dev/null 2>&1
+( cd "$U/b" && PRESIDIO_USER=alice bash tools/presidio.sh claim zona-z terza >/dev/null 2>&1 && $G commit -qam z ) >/dev/null 2>&1
+( cd "$U/a" && $G pull -q --no-rebase --no-edit "$U/b" main ) >/dev/null 2>&1; RC_M=$?
+OUT=$(cd "$U/a" && bash tools/presidio.sh lista 2>/dev/null)
+[ "$RC_M" -eq 0 ] && ! grep -c "| bob | zona-y" <<<"$OUT" >/dev/null && grep -c "| alice | zona-z" <<<"$OUT" >/dev/null \
+  && ok "merge dopo un rilascio: il presidio rilasciato resta chiuso, quello nuovo c'e'" \
+  || ko "merge dopo un rilascio (rc=$RC_M): il rilasciato e' risorto o il nuovo e' perso: $OUT"
+
+# (2026-09-24, sesto ventaglio, S2 R6): lo stesso autore sulla stessa zona, due volte, era una «CONTESA» con se'
+# stesso, e `lista` contava due presidii identici. Un secondo claim di chi c'e' gia' e' un RINNOVO.
+rm -f "$HERE/PRESIDI.md"
+PRESIDIO_USER=carla bash "$TOOL" claim diario "prima" >/dev/null 2>&1
+OUTR=$(PRESIDIO_USER=carla bash "$TOOL" claim diario "rinnovo" 2>&1)
+! grep -c CONTESA <<<"$OUTR" >/dev/null && grep -ci 'rinnov' <<<"$OUTR" >/dev/null && ok "S2 R6: il secondo claim della stessa persona e' un rinnovo, non una contesa" || ko "S2 R6: contesa con se' stessi: $OUTR"
+OUTL2=$(bash "$TOOL" lista 2>/dev/null)
+grep -c '== presidii vivi: 1 ==' <<<"$OUTL2" >/dev/null && ok "S2 R6: dopo il rinnovo, un presidio vivo solo" || ko "S2 R6: presidii doppi: $(grep 'vivi' <<<"$OUTL2")"
+OUTD=$(PRESIDIO_USER=dario bash "$TOOL" claim diario "anche io" 2>&1)
+grep -c CONTESA <<<"$OUTD" >/dev/null && ok "S2 R6: un'altra persona sulla stessa zona resta una CONTESA" || ko "S2 R6: la contesa vera non si vede piu'"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -23,7 +23,7 @@ PASS=0; ROTTI=0
 prova() { # prova <nome-sonde> <atteso> <descrizione>
   local sonde="$1" atteso="$2" desc="$3"
   OUT=$(bash "$H/tools/giri-ignoranti.sh" 2>/dev/null)
-  if echo "$OUT" | grep -q "FIND $sonde"; then
+  if grep -q "FIND $sonde" <<<"$OUT"; then
     echo "✓ $sonde morde il suo canarino ($desc)"; PASS=$((PASS+1))
   else
     echo "⛔ $sonde NON morde il suo canarino ($desc) — RILEVATORE ROTTO, il suo verde non vale"
@@ -59,12 +59,9 @@ prova S17 "tool senza narrazione" "sal-indice privato di TUTTE le print"
 # pendenti e la batteria sarebbe rossa A VUOTO. Si portano in quarantena i due file locali.
 cp "$HERE/night-shift/repos.conf" "$H/night-shift/repos.conf" 2>/dev/null || true
 cp "$HERE/night-shift/repos.key" "$H/night-shift/repos.key" 2>/dev/null || true
-# graphify-out/graph.json: generato da graphify, gitignored, citato da SKILL/CLAUDE —
-# in quarantena basta che ESISTA (il controllo e' di esistenza, non di contenuto)
-mkdir -p "$H/graphify-out" && echo '{}' > "$H/graphify-out/graph.json"
 (cd "$H" && git checkout -q -- . 2>/dev/null || true)
 OUT=$(bash "$H/tools/giri-ignoranti.sh" 2>/dev/null)
-if echo "$OUT" | tail -1 | grep -q "0 finding"; then
+if echo "$OUT" | tail -1 | grep -c "0 finding" >/dev/null; then
   echo "✓ clone pulito: batteria verde (nessun morso a vuoto)"; PASS=$((PASS+1))
 else
   echo "⛔ clone pulito MA batteria rossa: morso a vuoto — $(echo "$OUT" | grep FIND | head -2)"; ROTTI=$((ROTTI+1))

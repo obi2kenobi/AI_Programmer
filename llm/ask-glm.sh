@@ -54,6 +54,16 @@ fi
 ---
 $STDIN_DATA"
 
+# (2026-09-23, notte dei giri, T5#5): verso un cervello CLOUD domanda e contesto partono mascherati
+# (mask_secrets di night-shift/lib.sh, la stessa maschera dei log): il morning-gate con
+# ADVERSARY=glm|opus manda il diff delle repo private, e un token nel diff arrivava intero. Se la
+# maschera muore, il testo diventa il suo avviso: nel dubbio non esce niente.
+# shellcheck source=../night-shift/lib.sh
+source "$HERE/../night-shift/lib.sh"
+PROMPT=$(mask_secrets <<<"$PROMPT")
+
+# (2026-09-24, Q2): senza python3 il wrapper usciva 127 col solo «command not found» (il contratto e' 0/1/2)
+command -v python3 >/dev/null 2>&1 || { echo "ERRORE glm: python3 assente — serve per il payload e la risposta" >&2; exit 1; }
 BASE="${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}"
 # bug reale (set 1 "armonizza gli agenti"): llm/README.md dichiara ASK_MODEL un
 # override universale per tutti i wrapper ask-*, ma qui era ignorato — solo
@@ -62,15 +72,18 @@ BASE="${GLM_BASE_URL:-https://open.bigmodel.cn/api/paas/v4}"
 MODEL="${GLM_MODEL:-${ASK_MODEL:-glm-5.3}}"
 TIMEOUT="${ASK_TIMEOUT:-600}"
 
-PAYLOAD=$(python3 - "$MODEL" "$PROMPT" <<'PY'
+# (2026-09-23, giro A1 della notte): il prompt col suo stdin passava come ARGOMENTO a python3
+# e il payload come argomento a curl: oltre 128 KB (MAX_ARG_STRLEN di Linux) il wrapper moriva
+# con «Argument list too long», rc=126 — proprio il contesto lungo via stdin. Ora viaggiano su
+# stdin (here-string: il suo "\n" finale si toglie qui sotto).
+PAYLOAD=$(python3 -c '
 import json, sys
+p = sys.stdin.read()
 print(json.dumps({
     "model": sys.argv[1],
-    "messages": [{"role": "user", "content": sys.argv[2]}],
+    "messages": [{"role": "user", "content": p[:-1] if p.endswith("\n") else p}],
     "stream": False,
-}))
-PY
-)
+}))' "$MODEL" <<<"$PROMPT")
 
 # bug reale (revisione 14 lenti, 2026-08-28): questa command substitution non era protetta
 # come la sua analoga in ask-opus.sh (stesso "tranello" già documentato là) — se curl
@@ -78,9 +91,13 @@ PY
 # dice di gestire), `set -e` fa uscire lo script SUBITO qui, prima di raggiungere il
 # parsing che produce "ERRORE glm: ...". Verificato dal vivo: rc=7, zero output su
 # stderr, nessuna diagnosi. set +e locale per leggere l'exit code senza farlo esplodere.
+# (2026-09-23, giro A1 della notte): la chiave stava negli argomenti di curl, leggibile da `ps`
+# per tutta la chiamata (fino a ASK_TIMEOUT=600s). Ora l'header arriva da un file descrittore
+# (printf e' un builtin: nessun processo la porta in argv) e il payload da stdin.
 set +e
 RESP=$(curl -s --max-time "$TIMEOUT" "$BASE/chat/completions" \
-  -H "Authorization: Bearer $ZHIPUAI_API_KEY" -H "Content-Type: application/json" -d "$PAYLOAD")
+  -H @<(printf 'Authorization: Bearer %s\n' "$ZHIPUAI_API_KEY") -H "Content-Type: application/json" \
+  --data-binary @- <<<"$PAYLOAD")
 CURL_RC=$?
 set -e
 if [ "$CURL_RC" -ne 0 ]; then
@@ -105,8 +122,16 @@ except json.JSONDecodeError:
 if "error" in r:
     print("ERRORE glm:", r["error"], file=sys.stderr); sys.exit(1)
 try:
-    print(r["choices"][0]["message"]["content"])
+    c = r["choices"][0]["message"]["content"]
 except (KeyError, IndexError, TypeError):
+    c = False
+# (2026-09-24, Q2): content null stampava «None» con rc 0; vuoto e null sono una risposta VUOTA, rc 1
+if c is None or c == "":
+    print("ERRORE glm: risposta vuota del server (content assente o vuoto) —", raw[:200], file=sys.stderr)
+    sys.exit(1)
+if c is not False:
+    print(c)
+else:
     print("ERRORE glm: risposta JSON di forma inattesa (manca choices[0].message.content) —", raw[:200], file=sys.stderr)
     sys.exit(1)
 ' || exit 1

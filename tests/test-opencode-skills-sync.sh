@@ -26,6 +26,16 @@ for dir in "${CLAUDE_SKILLS[@]}"; do
     ko "$nome: nessuno specchio in .opencode/skills/"
     continue
   fi
+  # (2026-09-24, terzo ventaglio, V3#2): graphify ha DUE varianti nel pacchetto — skill.md per Claude (strumento
+  # Agent) e skill-opencode.md (dispatch @agent). Qui c'era la variante OpenCode in tutte e due le cartelle, e
+  # questo banco pretendeva l'identita': blindava l'errore. graphify si confronta per variante (sotto).
+  if [ "$nome" = "graphify" ]; then
+    diff -rq "$dir/references" "$specchio/references" >/dev/null 2>&1 && ok "graphify: references identici nei due specchi" || ko "graphify: references divergono"
+    grep -c '@agent Chunk' "$dir/SKILL.md" >/dev/null && ko "graphify: in .claude/skills c'e' la variante OpenCode (@agent), non quella per Claude" \
+      || { grep -c 'subagent_type="general-purpose"' "$dir/SKILL.md" >/dev/null && ok "graphify: .claude/skills porta la variante per Claude (strumento Agent)" || ko "graphify: .claude/skills senza la variante per Claude"; }
+    grep -c '@agent Chunk' "$specchio/SKILL.md" >/dev/null && ok "graphify: .opencode/skills porta la variante OpenCode (@agent)" || ko "graphify: .opencode/skills senza la variante OpenCode"
+    continue
+  fi
   if diff -rq "$dir" "$specchio" >/dev/null 2>&1; then
     ok "$nome: identica fra .claude/skills e .opencode/skills (no drift)"
   else
@@ -33,12 +43,10 @@ for dir in "${CLAUDE_SKILLS[@]}"; do
   fi
 done
 
-# skill OpenCode orfana (presente lì, non in Claude): drift anch'essa, TRANNE graphify
-# — plugin/hook opencode-only dichiarato tale (nessuna controparte prevista in .claude,
-# non un'omissione: AGENTS.md la cita come reminder specifico di quel framework).
+# skill OpenCode orfana (presente lì, non in Claude): drift anch'essa. (D1, 2026-09-23:
+# graphify era l'eccezione opencode-only — ora e' la spina dorsale, specchiata in .claude.)
 for o in "$HERE"/.opencode/skills/*/; do
   nome="$(basename "$o")"
-  [ "$nome" = "graphify" ] && continue
   [ -d "$HERE/.claude/skills/$nome" ] || ko "$nome: orfana in .opencode/skills senza origine Claude"
 done
 

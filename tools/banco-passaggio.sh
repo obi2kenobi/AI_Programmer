@@ -26,13 +26,25 @@ VELOCE=0; SOLO=0
 FALLITI=0
 
 step() { echo ""; echo "== $1 =="; }
+# cambiati: i file di CODICE toccati — i SPORCHI (modificati e nuovi) UNITI ai commit del ramo su
+# origin/main. (Q30, 2026-09-23, notte dei giri): era un'alternativa — con un solo file sporco i
+# commit del ramo non si guardavano piu' — e senza origin/main il diff falliva nel 2>/dev/null:
+# «0 file cambiati, tutti presidiati» con un tool nuovo committato e senza test. Ora e' l'unione, e
+# origin/main assente si dichiara DEGRADATO (si giudicano solo i file sporchi).
+cambiati() {
+  local filtro='^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' sporchi ramo=""
+  sporchi=$(git -c core.quotePath=false status --porcelain 2>/dev/null | awk '{print $NF}')
+  if git rev-parse -q --verify origin/main >/dev/null 2>&1; then
+    ramo=$(git diff --name-only origin/main...HEAD 2>/dev/null)
+  else
+    echo "  DEGRADATO: origin/main assente — la copertura giudica solo i file sporchi, non i commit del ramo" >&2
+  fi
+  printf '%s\n%s\n' "$sporchi" "$ramo" | grep -E "$filtro" | sort -u || true
+}
 
 if [ "$SOLO" -eq 1 ]; then
   # solo il banco 7: per il test di se stesso e per i controlli rapidi a metà giro
-  CAMBIATI=$(git status --porcelain 2>/dev/null | awk '{print $2}' | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
-  if [ -z "$CAMBIATI" ]; then
-    CAMBIATI=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
-  fi
+  CAMBIATI=$(cambiati)
   SCOPERTI=0
   while IFS= read -r f; do
     [ -z "$f" ] && continue
@@ -97,7 +109,14 @@ OUT=$(bash tools/ciclo-vivo.sh 2>&1) || true
 N=$(echo "$OUT" | grep -m1 "^Finding questo giro:" | awk '{print $4}')
 L=$(cat .ciclo/livello 2>/dev/null || echo 1)
 echo "  livello $L · finding: ${N:-?}"
-[ "${N:-0}" -eq 0 ] 2>/dev/null || { echo "$OUT" | grep "^  · " | head -5 | sed 's/^/  /'; FALLITI=$((FALLITI+1)); }
+# (Q30, 2026-09-23): se ciclo-vivo muore senza la riga «Finding questo giro:», N e' vuoto e
+# `${N:-0}` lo faceva valere 0 — verde. Senza verdetto non c'e' verde.
+if [ -z "$N" ]; then
+  echo "  ⛔ ciclo-vivo non ha dato il verdetto (morto? ultima riga: $(tail -1 <<<"$OUT" | cut -c1-80))"
+  FALLITI=$((FALLITI+1))
+elif [ "$N" -ne 0 ] 2>/dev/null; then
+  grep "^  · " <<<"$OUT" | head -5 | sed 's/^/  /'; FALLITI=$((FALLITI+1))
+fi
 
 step "7/7 copertura delle modifiche (il codice appena scritto)"
 # i file di CODICE cambiati rispetto a origin/main; SAL, DEBITI, docs e report
@@ -106,10 +125,7 @@ step "7/7 copertura delle modifiche (il codice appena scritto)"
 # git diff NON vede i file non tracciati — che sono il codice appena scritto
 # per antonomasi (provato a mano: un tools/nuovo.py non compariva). Si usa
 # status --porcelain: modificati + nuovi, tutto in una lista.
-CAMBIATI=$(git status --porcelain 2>/dev/null | awk '{print $2}' | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
-if [ -z "$CAMBIATI" ]; then
-  CAMBIATI=$(git diff --name-only origin/main...HEAD 2>/dev/null | grep -E '^(tools|night-shift|llm)/[a-zA-Z0-9_.-]+\.(sh|py|js)$' || true)
-fi
+CAMBIATI=$(cambiati)
 SCOPERTI=0
 while IFS= read -r f; do
   [ -z "$f" ] && continue

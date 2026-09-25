@@ -14,13 +14,19 @@
 #    del 4/9 l'ha trattato come successo e ha aperto una PR di soli scarti: un .js
 #    proposto + il .night-bak dell'App.html intero, +739 righe di rumore.)
 set -uo pipefail
-DIR="${1:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
-ISSUE="${2:?uso: risolvi-issue.sh <dir-progetto> <issue-md>}"
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
+[ $# -ge 2 ] || { echo "uso: risolvi-issue.sh <dir-progetto> <issue-md>" >&2; exit 2; }
+DIR="$1"; ISSUE="$2"
 MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
 # NIGHT_API_URL: solo per i test (server mock) — di norma non si tocca
+# (T5#6, 2026-09-23): i prompt (con i sorgenti) viaggiano su stdin verso jq e curl, mai negli argomenti
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
 [ -f "$ISSUE" ] || { echo "⛔ issue inesistente: $ISSUE" >&2; exit 2; }
+# (2026-09-25, settimo ventaglio, V2 R3): node e' il verificatore di ogni fix (node --check). Senza, l'rc 127 si leggeva
+# «il codice non passa»: un fix giusto buttato con due diagnosi false. Il plist del turno ha un PATH fisso, e un node
+# di nvm non c'e'. Si dice prima di chiamare il modello: niente GPU spesa per un fix che non si potrebbe verificare.
+command -v node >/dev/null 2>&1 || { echo "⛔ MANCA node sul PATH: il fix non si puo' verificare (node --check) — non e' codice rotto, nessun tentativo" >&2; exit 2; }
 
 log() { echo "[$(date '+%H:%M:%S')] $*" >&2; }
 
@@ -65,7 +71,7 @@ $CODE
 
 Is this fix correct? Answer CORRECT or WRONG:"
   local RESPONSE VERDETTO
-  RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}')" 2>/dev/null)
+  RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:2048}}' | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   VERDETTO=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | head -1)
   classifica_verdetto "$VERDETTO"
 }
@@ -85,13 +91,18 @@ $CODE
 
 Write the test:"
   local RESPONSE TEST
-  RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}')" 2>/dev/null)
+  RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0}}' | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   TEST=$(echo "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null | sed -n '/^```/,/^```/p' | sed '/^```/d')
   [ -n "$TEST" ] && echo "$TEST" || return 1
 }
 
 # --- 1. individua i file da leggere (dal Territorio dell'issue, o tutti i .gs/.js) ---
-TERRitorio=$(sed -n '/^## Territorio/,/^## /p' "$ISSUE" | grep -oE '[a-zA-Z0-9_/.-]+\.(gs|js|html|py)' | sort -u | head -5)
+# (2026-09-24, sesto ventaglio, S3 R3): l'estrazione non ammetteva lo spazio — «Codice Principale.gs» diventava
+# «Principale.gs», che non esiste, e si saltava in silenzio. Un percorso fra backtick si prende intero; se non ce ne
+# sono, la forma senza spazi di prima.
+SEZ_TERR=$(sed -n '/^## Territorio/,/^## /p' "$ISSUE")
+TERRitorio=$(grep -oE '`[^`]+\.(gs|js|html|py)`' <<<"$SEZ_TERR" | tr -d '`' | sort -u | head -5)
+[ -n "$TERRitorio" ] || TERRitorio=$(grep -oE '[a-zA-Z0-9_/.-]+\.(gs|js|html|py)' <<<"$SEZ_TERR" | sort -u | head -5)
 if [ -z "$TERRitorio" ]; then
   # fallback: i file più piccoli del progetto (il territorio piccolo è quello fattibile)
   TERRitorio=$(find "$DIR" -type f \( -name '*.gs' -o -name '*.js' \) -size -50k | sort | head -3)
@@ -107,11 +118,16 @@ log "File da leggere: $TERRitorio"
 dentro_il_progetto() {
   RP_F=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null)
   RP_D=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$2" 2>/dev/null)
+  # (2026-09-25, ottavo ventaglio, O1 R1): mai dentro un .git — una voce di .git/config puo' essere un comando che git esegue
+  case "$RP_F" in */.git|*/.git/*) return 1;; esac
   case "$RP_F" in "$RP_D"|"$RP_D"/*) return 0;; *) return 1;; esac
 }
 
 FILES_CONTENT=""
-for F in $TERRitorio; do
+N_LETTI=0
+# (S3 R3): era `for F in $TERRitorio` — un percorso con lo spazio (anche quelli del ripiego find) si spezzava
+while IFS= read -r F; do
+  [ -n "$F" ] || continue
   # il chiamante (night-shift.sh) NON cd-a dentro $DIR: i percorsi del Territorio
   # vanno risolti contro $DIR, non contro la CWD di chi lancia (bug colto dal test
   # di suite 2026-09-04: i 20 test manuali giravano da dentro la dir e non lo vedevano)
@@ -125,26 +141,34 @@ for F in $TERRitorio; do
   # falliva e il prompt riceveva il path ASSOLUTO. os.path.relpath e' ovunque.
   REL_PATH=$(python3 -c 'import os,sys; print(os.path.relpath(sys.argv[1], sys.argv[2]))' "$F" "$DIR" 2>/dev/null || echo "$F")
   # (fase A efficienza, 2026-09-07): App.html intera = 41KB = 262s di inferenza.
-  #  Limite per file 24000 caratteri (~6-8K token), TRONCATO DICHIARATO nel prompt —
+  #  Limite per file 24000 byte (~6-8K token; head -c conta byte, settimo ventaglio V4 R6), TRONCATO DICHIARATO nel prompt —
   #  mai taglio silenzioso: il modello sa che non vede tutto e lavora da quello che
   #  l'issue nomina. I file piccoli (il caso normale: 9s) non cambiano di una virgola.
   CORPO=$(head -c 24000 "$F")
   N_CHAR=$(wc -c < "$F" | tr -d ' ')
   if [ "$N_CHAR" -gt 24000 ]; then
-    CORPO="$CORPO\n[... TRONCATO: mostrati i primi 24000 caratteri su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
-    log "⚠ $REL_PATH troncato a 24000/$N_CHAR caratteri (dichiarato nel prompt)"
+    CORPO="$CORPO"$'\n'"[... TRONCATO: mostrati i primi 24000 byte su $N_CHAR. Le funzioni NON mostrate vanno ricostruite dal contesto dell'issue e dichiarate.]"
+    log "⚠ $REL_PATH troncato a 24000/$N_CHAR byte (dichiarato nel prompt)"
   fi
-  FILES_CONTENT+="=== FILE: $REL_PATH ===\n$CORPO\n\n"
-done
+  # (S3 R3): gli a capo erano «\n» letterali fra virgolette doppie: il modello leggeva una barra e una n
+  FILES_CONTENT+="=== FILE: $REL_PATH ==="$'\n'"$CORPO"$'\n\n'
+  N_LETTI=$((N_LETTI+1))
+done <<<"$TERRitorio"
+# (S3 R3): nessun file letto = nessun codice da mostrare. Prima il modello riceveva un SOURCE vuoto, alla cieca.
+if [ "$N_LETTI" -eq 0 ]; then
+  log "⛔ nessun file del Territorio letto (${TERRitorio:-nessuno trovato}): il modello non si chiama senza il codice"
+  exit 1
+fi
+log "letti $N_LETTI file (${#FILES_CONTENT} caratteri) per il prompt"
 
 # (set sicurezza G3, 2026-09-07): il limite da 24k valeva per i FILE, non per il corpo
 #  dell'issue: un body gigante gonfiava il prompt senza limite. Stesso patto: troncato
 #  DICHIARATO, mai taglio silenzioso.
 COMMESSA=$(head -c 24000 "$ISSUE")
 if [ "$(wc -c < "$ISSUE" | tr -d ' ')" -gt 24000 ]; then
-  log "⚠ issue troncata a 24000 caratteri (dichiarato nel prompt)"
+  log "⚠ issue troncata a 24000 byte (dichiarato nel prompt)"
   COMMESSA="$COMMESSA
-[... ISSUE TRONCATA: mostrati i primi 24000 caratteri su $(wc -c < "$ISSUE" | tr -d ' ').]"
+[... ISSUE TRONCATA: mostrati i primi 24000 byte su $(wc -c < "$ISSUE" | tr -d ' ').]"
 fi
 
 PROMPT=$(cat <<EOF
@@ -165,7 +189,7 @@ EOF
 # --- 3. chiamata a Ollama (LOCALE) ---
 log "Chiamando $MODEL su localhost..."
 START=$(date +%s)
-RESPONSE=$(curl -sf --max-time 300 "$API" -d "$(jq -n --arg m "$MODEL" --arg p "$PROMPT" '{model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}')" 2>&1)
+RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}' | curl -sf --max-time 300 "$API" --data-binary @- 2>&1)
 RC=$?
 ELAPSED=$(( $(date +%s) - START ))
 if [ $RC -ne 0 ]; then
@@ -202,7 +226,7 @@ fi
 # --- 6. salva il codice in un file di patch (l'umano o il turno lo applica) ---
 PATCH_FILE="$DIR/.night-patch-$(date +%s).js"
 echo "$CODE" > "$PATCH_FILE"
-log "Codice salvato in $(basename $PATCH_FILE) ($(echo "$CODE" | wc -l | tr -d ' ') righe)"
+log "Codice salvato in $(basename "$PATCH_FILE") ($(echo "$CODE" | wc -l | tr -d ' ') righe)"
 
 # --- 7. se c'è UN solo file e UN solo blocco di codice: applica direttamente ---
 N_FILES=$(echo "$TERRitorio" | wc -w | tr -d ' ')
@@ -286,7 +310,7 @@ PYINS
     log "⚠ inserzione non verificata: rollback, resta la proposta"
   fi
   if [ -n "$TARGET_FN" ] && grep -q "function $TARGET_FN" "$TARGET_FILE"; then
-    log "Applicando: sostituisco $TARGET_FN in $(basename $TARGET_FILE)"
+    log "Applicando: sostituisco $TARGET_FN in $(basename "$TARGET_FILE")"
     # backup
     cp "$TARGET_FILE" "$TARGET_FILE.night-bak"
     # sostituzione: rimuovi la vecchia funzione, inserisci la nuova
@@ -335,7 +359,7 @@ PYEOF
         fi
         rm -f "$TARGET_FILE.night-bak"
         rm -f "$PATCH_FILE"
-        echo "ESITO: APPLICATO $(basename $TARGET_FILE) $TARGET_FN ${ELAPSED}s"
+        echo "ESITO: APPLICATO $(basename "$TARGET_FILE") $TARGET_FN ${ELAPSED}s"
         exit 0
       else
         log "⛔ node --check fallisce sul file modificato: rollback"
@@ -350,6 +374,6 @@ fi
 # se non può applicare direttamente: il codice è una PROPOSTA (funzione nuova o
 # bersaglio assente) — non un fix consegnato. Exit 3: il turno la pubblica come
 # commento all'issue, NON come PR (la notte del 4/9 ha aperto la PR #16 di scarti)
-log "Codice pronto in $(basename $PATCH_FILE) — proposta, applicazione a carico del giorno"
-echo "ESITO: PATCH $(basename $PATCH_FILE) ${ELAPSED}s"
+log "Codice pronto in $(basename "$PATCH_FILE") — proposta, applicazione a carico del giorno"
+echo "ESITO: PATCH $(basename "$PATCH_FILE") ${ELAPSED}s"
 exit 3

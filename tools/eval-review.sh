@@ -9,7 +9,15 @@
 # Uso: eval-review.sh <dir-repo> <numero-PR>
 # Esce: 0 prove vere · 1 prove mancanti · 2 uso
 set -uo pipefail
-DIR="${1:?uso: eval-review.sh <dir> <pr>}"; PR="${2:?pr}"
+# (2026-09-24, merge nel ramo del giorno): `${1:?}` usciva 1, che qui vuol dire «prove mancanti»
+[ $# -ge 2 ] || { echo "uso: eval-review.sh <dir-repo> <numero-PR>" >&2; exit 2; }
+DIR="$1"; PR="$2"
+# (2026-09-24, sesto ventaglio, S5 R1): `timeout` nudo — sul Mac non c'e' (coreutils installa gtimeout), e ogni
+# riga del verify risultava rossa. ai_timeout sceglie timeout, gtimeout o perl.
+# shellcheck source=../llm/_timeout.sh
+source "$(cd "$(dirname "$0")/.." && pwd)/llm/_timeout.sh"
+# shellcheck source=../night-shift/lib.sh
+source "$(cd "$(dirname "$0")/.." && pwd)/night-shift/lib.sh"   # riga_verifica_vuota (V1 R5)
 cd "$DIR" 2>/dev/null || { echo "eval-review: dir $DIR" >&2; exit 2; }
 
 # il diff della PR fusa: cosa ha portato nel main
@@ -47,10 +55,10 @@ fi
 # 3. il .night-verify GIRA e passa? (una prova che non gira non e' una prova)
 if [ -f ".night-verify" ] && [ -s ".night-verify" ]; then
   while IFS= read -r riga; do
-    case "$riga" in \#*|"") continue ;; esac
+    riga_verifica_vuota "$riga" && continue   # (settimo ventaglio, V1 R5): la regola dei lettori di .night-verify
     SEC=120; CMD="$riga"
     case "$riga" in @*) SEC="${riga%% *}"; SEC="${SEC#@}"; CMD="${riga#* }" ;; esac
-    if ! timeout "$SEC" bash -c "$CMD" >/dev/null 2>&1 </dev/null; then
+    if ! ai_timeout "$SEC" bash -c "$CMD" >/dev/null 2>&1 </dev/null; then
       PROVE_MANCANTI="$PROVE_MANCANTI verify-rossa:$CMD"
     fi
   done < .night-verify

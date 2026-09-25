@@ -12,10 +12,11 @@
 #           if grep FLAG 'PAT' <<<"$_cp"; then
 #   B) [ ... ] || PRODUCER | grep FLAG 'PAT'; then   (condizione composta)
 #        →  _cp=$(PRODUCER)
-#           [ ... ] || grep FLAG 'PAT' <<<"_cp"; then
+#           [ ... ] || grep FLAG 'PAT' <<<"$_cp"; then
 #
 # Uso: salda-e002.sh <file> <riga>
-# Esce: 0 trasformato (diff nel working tree) · 1 forma non riconosciuta (all'agente)
+# Esce: 0 trasformato (diff nel working tree) · 1 forma non riconosciuta (all'agente) · 2 uso (file
+#       inesistente o non .sh)
 #       · 2 errore d'uso
 set -uo pipefail
 FILE="${1:?uso: salda-e002.sh <file> <riga>}"
@@ -65,6 +66,17 @@ elif mA:
     nuovo = [f"{ind}{v}=$({prod})\n", f'{ind}if {neg}grep {resto} <<<"${v}"; then\n']
 else:
     print("forma non riconosciuta — all'agente", file=sys.stderr); sys.exit(1)
+
+# (Q16, 2026-09-23, giro A7 della notte): due vie per cui il trasformato compilava ma non faceva
+# la stessa cosa. (a) Fuori dall'if, sotto `set -e`, un produttore che fallisce UCCIDE lo script
+# (dentro l'if era solo un «falso»): la cattura porta `|| true`, e l'esito resta quello del grep.
+# (b) `grep -v` su un output vuoto: il here-string porta una riga vuota che -v accetta e la
+# condizione si ribalta — quelle forme vanno all'agente.
+flag = (mB.group(4) if mB else mA.group(3)).split()
+if any(t.startswith("-") and not t.startswith("--") and "v" in t for t in flag) or "--invert-match" in flag:
+    print("grep -v: col here-string un output vuoto diventa una riga vuota e l'esito si ribalta — all'agente", file=sys.stderr)
+    sys.exit(1)
+nuovo[0] = nuovo[0].rstrip("\n") + " || true\n"
 
 righe[i:i+1] = nuovo
 open(f, "w").writelines(righe)

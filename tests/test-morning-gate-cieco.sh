@@ -35,6 +35,24 @@ git -C "$SRC" checkout -q main
 # la copia di lavoro del gate: clone con origin/HEAD noto (come sul Mac)
 git clone -q "$SRC" "$HOME/night-shift-work/repo-t3" && git -C "$HOME/night-shift-work/repo-t3" remote set-head origin -a >/dev/null
 
+# --- (2026-09-24, notte dei giri, T2#2): il gate lanciato a mano lavora nella stessa cartella del
+# turno ($WORK/<repo>) e non guardava nessun lock: il turno era su un ramo con una patch a meta', dopo
+# il gate era su main con la patch trascinata. Con un turno VIVO il gate non tocca la cartella.
+bash -c 'exec -a night-shift-turno-finto sleep 30' & VIVO=$!
+mkdir -p "$HOME/night-shift-work/.lock-turno"; echo "$VIVO" > "$HOME/night-shift-work/.lock-turno/pid"
+git -C "$HOME/night-shift-work/repo-t3" checkout -q -b night/lavoro-del-turno
+PRIMA=$(git -C "$HOME/night-shift-work/repo-t3" branch --show-current)
+printf '#!/bin/bash\necho "[]"\n' > "$SB/bin/gh"; chmod +x "$SB/bin/gh"
+OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1); RC=$?
+DOPO=$(git -C "$HOME/night-shift-work/repo-t3" branch --show-current)
+kill "$VIVO" 2>/dev/null; wait "$VIVO" 2>/dev/null
+[ "$DOPO" = "$PRIMA" ] && [ "$RC" -ne 0 ] && grep -c "turno" <<<"$OUT" >/dev/null \
+  && ok "T2#2: turno vivo → il gate si ferma, la cartella del turno resta sul suo ramo" \
+  || ko "T2#2: turno vivo e il gate e' entrato (rc $RC, ramo $PRIMA → $DOPO): $(tail -1 <<<"$OUT")"
+[ -f "$HOME/night-shift-work/.lock-turno/pid" ] && [ "$(cat "$HOME/night-shift-work/.lock-turno/pid")" = "$VIVO" ] \
+  && ok "T2#2: il lock del turno vivo non e' stato toccato" || ko "T2#2: il gate ha toccato il lock del turno"
+rm -rf "$HOME/night-shift-work/.lock-turno"; git -C "$HOME/night-shift-work/repo-t3" checkout -q main
+
 # --- D7: gh ROTTO (assente o non autenticato) ---------------------------------
 printf '#!/bin/bash\necho "gh: not logged in" >&2\nexit 4\n' > "$SB/bin/gh"; chmod +x "$SB/bin/gh"
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
@@ -62,7 +80,7 @@ chmod +x "$SB/bin/gh"
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
 grep -q "PR #7" "$REPORT" && ok "D8: la PR #7 e' nel report" || { ko "D8: PR #7 assente dal report"; echo "$OUT" | tail -3; }
 DIFF_RIGA=$(awk '/^\*\*Diff:\*\*/{getline; print}' "$REPORT")
-echo "$DIFF_RIGA" | grep -q "calc.js" \
+grep -q "calc.js" <<<"$DIFF_RIGA" \
   && ok "D8: la sezione Diff mostra il file cambiato (calc.js)" \
   || ko "D8: la sezione Diff e' vuota al primo passaggio (riga dopo Diff: '$DIFF_RIGA')"
 grep -q "verifiche-ok" "$HUB_METRICS" && ok "D8: le verifiche dichiarate girano sul ramo della PR (verifiche-ok)" \
@@ -77,7 +95,7 @@ aggiorna_verify() { # $1 = contenuto di .night-verify su main
 }
 aggiorna_verify 'grep -qv "^#" calc.js'
 OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
-tail -1 "$HUB_METRICS" | grep -q "verifiche-ok" \
+tail -1 "$HUB_METRICS" | grep -c "verifiche-ok" >/dev/null \
   && ok "D40: una riga con # fra virgolette passa intera a bash -c (verifiche-ok, come turno e censore)" \
   || ko "D40: riga troncata al # — verdetto $(tail -1 "$HUB_METRICS" | cut -d, -f5): $(grep -A1 'grep -qv' "$REPORT" | tail -1 | cut -c1-90)"
 
@@ -94,6 +112,19 @@ else
     || ko "D41: ne' il valore ne' la maschera nel report: l'output e' stato OMESSO (mask, don't omit)"
 fi
 
+
+# --- (2026-09-25, settimo ventaglio, V1 R4): in FORMATO script il gate leggeva .night-verify da main ma eseguiva
+# `bash .night-verify` dal ramo della PR: la PR si giudicava con le prove scritte da lei. Il censore esegue il contenuto
+# di main da un file temporaneo. Qui main dice exit 1, la PR riscrive exit 0.
+aggiorna_verify "$(printf '# FORMATO: script\nexit 1')"
+git -C "$SRC" checkout -q night/issue-7
+printf '# FORMATO: script\nexit 0\n' > "$SRC/.night-verify"
+git -C "$SRC" -c user.name=t -c user.email=t@t commit -qam "la PR riscrive le prove"
+git -C "$SRC" checkout -q main; git -C "$HOME/night-shift-work/repo-t3" fetch -q origin
+OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
+! tail -1 "$HUB_METRICS" | grep -c "verifiche-ok" >/dev/null \
+  && ok "V1 R4: formato script, la PR che riscrive .night-verify non si promuove: girano le prove di main" \
+  || ko "V1 R4: formato script, la PR si giudica con le prove sue (verdetto $(tail -1 "$HUB_METRICS" | cut -d, -f5))"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

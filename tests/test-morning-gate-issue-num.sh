@@ -11,12 +11,14 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
+# (2026-09-23, notte dei giri): qui c'era una COPIA del blocco — spento nel sorgente, il banco restava
+# verde. Ora si estrae ed ESEGUE il blocco vero di night-shift/morning-gate.sh (lo stesso gesto di
+# tests/test-night-shift-log-onesto.sh: la riga del sorgente, non una copia ridigitata).
+BLOCCO=$(sed -n '/^    case "\$BRANCH" in$/,/^    esac$/p' "$HERE/night-shift/morning-gate.sh")
+[ -n "$BLOCCO" ] || ko "il blocco case \$BRANCH non si trova in night-shift/morning-gate.sh"
 estrai_issue_num() {
   local BRANCH="$1" ISSUE_NUM
-  case "$BRANCH" in
-    night/issue-*) ISSUE_NUM="${BRANCH#night/issue-}" ;;
-    *) ISSUE_NUM="—" ;;
-  esac
+  eval "$BLOCCO"
   echo "$ISSUE_NUM"
 }
 

@@ -29,8 +29,15 @@ gh repo view "$REPO" >/dev/null 2>&1 || { echo "repo non trovata: $REPO"; exit 1
 gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$REPO" >/dev/null 2>&1 \
   && echo "label night-shift creata" || echo "label già presente"
 
-WORK="$HOME/night-shift-work/${REPO##*/}"
-[ -d "$WORK/.git" ] || gh repo clone "$REPO" "$WORK" -- --depth=50 -q
+# (2026-09-24, sesto ventaglio, S2 R1 e S4 R3): si lavorava in $HOME/night-shift-work/<repo>, la copia del TURNO —
+# se c'era, niente fetch e niente ritorno su main: il turno la lascia sul ramo della PR notturna, e lo standard
+# finiva dentro quella PR; e un file rimasto non tracciato da un giro interrotto valeva «gia' presente», e non
+# arrivava mai. Ora l'onboard ha un clone suo, fresco, del ramo di default: «presente» vuol dire presente
+# sull'origin, e il push va li'. La copia del turno non si tocca.
+TMP_ONBOARD=$(mktemp -d)
+trap 'rm -rf "$TMP_ONBOARD"' EXIT
+WORK="$TMP_ONBOARD/${REPO##*/}"
+gh repo clone "$REPO" "$WORK" -- --depth=50 -q || { echo "⛔ clone di $REPO fallito"; exit 1; }
 
 if command -v gitleaks >/dev/null 2>&1; then
   if gitleaks detect --source "$WORK" --no-banner >/dev/null 2>&1; then
@@ -175,6 +182,8 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
       cp "$HERE/$H" "$WORK/$H" && chmod +x "$WORK/$H" && git -C "$WORK" add "$H" && HOOK_AGGIUNTI=$((HOOK_AGGIUNTI+1))
     fi
   done < <(bash "$HERE/tools/copia-hook.sh" --elenco 2>/dev/null)  # (revisione 10 giri: una derivazione sola)
+  # (2026-09-24, quinto ventaglio, R2 R6): e la seconda meta' di copia-hook — i residui nella .gitignore
+  bash "$HERE/tools/copia-hook.sh" --residui "$WORK" | while IFS= read -r P; do git -C "$WORK" add "$P"; done
   git -C "$WORK" commit -q -m "chore: settings.json e $HOOK_AGGIUNTI hook del metodo (onboarding sistema)"
   git -C "$WORK" push -q
   echo "settings.json e $HOOK_AGGIUNTI hook aggiunti e spinti (gli hook gia' presenti nel progetto: intoccati)"
@@ -213,11 +222,26 @@ else
   echo "agenti del hub già tutti presenti, intoccati"
 fi
 
+# (Q15, 2026-09-23, giro A8 della notte): gli strumenti che lo standard CITA (settimo patto,
+# REGISTRO, guardiani del commit, formato del report di campo) non arrivavano mai a una repo
+# onboardata. Stessa lista di sync-repo e bootstrap (tools/installa-citati.sh), col merge
+# prudente di questo script: solo i mancanti, niente sovrascritto. Commit e push propri.
+CITATI_SCRITTI=$(bash "$HERE/tools/installa-citati.sh" "$WORK" --solo-mancanti) \
+  || { echo "⛔ installazione degli strumenti citati fallita"; exit 1; }
+if [ -n "$CITATI_SCRITTI" ]; then
+  while IFS= read -r P; do git -C "$WORK" add "$P"; done <<< "$CITATI_SCRITTI"
+  git -C "$WORK" commit -q -m "chore: strumenti citati dallo standard (onboarding sistema)"
+  git -C "$WORK" push -q
+  echo "$(grep -c . <<< "$CITATI_SCRITTI") strumento/i citato/i dallo standard aggiunto/i e spinto/i (i gia' presenti: intoccati)"
+else
+  echo "strumenti citati dallo standard gia' tutti presenti, intoccati"
+fi
+
 # NIGHT_REPOS_CONF: override per i banchi (giro 20 — la prima prova end-to-end ha iscritto due
 # repo finte nella coda VERA dell'hub; stesso gesto di HUB_METRICS nel morning-gate)
 CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
 [ -f "$CONF" ] || cp "$HERE/night-shift/repos.conf.example" "$CONF"
-grep -q "^$REPO\b" "$CONF" || { echo "$REPO $TYPE" >> "$CONF"; echo "aggiunta a repos.conf"; }
+bash "$HERE/tools/iscrivi-coda.sh" "$CONF" "$REPO" "$TYPE"   # T6#6: confronto esatto, un gesto solo
 
 echo ""
 echo "Fatto: $REPO è nel sistema. Prima issue con label night-shift e la notte lavora."

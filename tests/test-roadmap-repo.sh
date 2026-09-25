@@ -16,14 +16,14 @@ bash "$R" "$TMP/repo" get >/dev/null 2>&1 && ko "get senza roadmap dovrebbe usci
 bash "$R" "$TMP/repo" set "saldare E-002 su tools/" >/dev/null 2>&1 \
   && ok "set: passo impostato" || ko "set fallito"
 
-bash "$R" "$TMP/repo" get | grep -q "saldare" \
+bash "$R" "$TMP/repo" get | grep -c "saldare" >/dev/null \
   && ok "get: il passo si legge" || ko "get non legge"
 
 bash "$R" "$TMP/repo" advance >/dev/null 2>&1
 grep -q "DONE" "$TMP/repo/.git/roadmap.done" 2>/dev/null \
   && ok "advance: il passo completato va nello storico" || ko "advance non storicizza"
 
-bash "$R" "$TMP/repo" get | grep -q "prossimo" \
+bash "$R" "$TMP/repo" get | grep -c "prossimo" >/dev/null \
   && ok "dopo advance il passo corrente e' pronto per il prossimo" || ko "advance non resetta"
 
 echo ""

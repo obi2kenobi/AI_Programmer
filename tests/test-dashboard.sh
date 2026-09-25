@@ -13,7 +13,7 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-python3 -c "compile(open('$DASH').read(),'dashboard.py','exec')" && ok "compila (E-028: prima non compilava)" || { ko "non compila"; exit 1; }
+python3 -c "import sys; compile(open(sys.argv[1]).read(),'dashboard.py','exec')" "$DASH" && ok "compila (E-028: prima non compilava)" || { ko "non compila"; exit 1; }
 
 OGGI=$(date '+%Y-%m-%d')
 TMP=$(mktemp -d /tmp/test-dashboard.XXXXXX); trap 'rm -rf "$TMP"' EXIT
@@ -47,8 +47,8 @@ PY
 [ "$(echo "$VER" | awk '{print $5}')" = "1" ] && ok "errori oggi = 1" || ko "errori: $(echo "$VER" | awk '{print $5}')"
 NRO=$(echo "$VER" | tail -1 | grep -o "VERIFICA ROSSA" | wc -l | tr -d ' ')
 [ "$NRO" = "1" ] && ok "solo la verifica rossa dell'ULTIMO ciclo (v3)" || ko "verifiche rosse contate: $NRO (atteso 1)"
-echo "$VER" | tail -1 | grep -q "NUOVA" && ok "restata la rossa nuova" || ko "restata la rossa sbagliata"
-echo "$VER" | tail -1 | grep -q "VECCHIA" && ko "la rossa del ciclo vecchio non sparisce" || ok "sparita la rossa del ciclo vecchio"
+echo "$VER" | tail -1 | grep -c "NUOVA" >/dev/null && ok "restata la rossa nuova" || ko "restata la rossa sbagliata"
+echo "$VER" | tail -1 | grep -c "VECCHIA" >/dev/null && ko "la rossa del ciclo vecchio non sparisce" || ok "sparita la rossa del ciclo vecchio"
 
 # la pagina si costruisce con i numeri veri e cita le sezioni
 PAG=$(NIGHT_LOG="$TMP/finto.log" python3 - "$DASH" <<'PY'
@@ -60,9 +60,9 @@ dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
 print(dash.page(dash.stats()))
 PY
 )
-echo "$PAG" | grep -q "CICLI OGGI" && ok "pagina: cards presenti" || ko "pagina senza cards"
-echo "$PAG" | grep -q "Attività" && ok "pagina: feed attività" || ko "pagina senza attività"
-echo "$PAG" | grep -q "NUOVA" && ok "pagina: la rossa corrente visibile" || ko "la rossa corrente non appare in pagina"
+grep -q "CICLI OGGI" <<<"$PAG" && ok "pagina: cards presenti" || ko "pagina senza cards"
+grep -q "Attività" <<<"$PAG" && ok "pagina: feed attività" || ko "pagina senza attività"
+grep -q "NUOVA" <<<"$PAG" && ok "pagina: la rossa corrente visibile" || ko "la rossa corrente non appare in pagina"
 
 # ── v4: il FUNNEL conta gli stadi dalle righe firmate ──────────────────────────
 # (D19, test del sistema completo 2026-09-20): questo blocco stava DOPO il cancello finale
@@ -149,8 +149,50 @@ dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
 print(dash.page(dash.stats()))
 PY
 )
-echo "$PAG5" | grep -q "LA FILA DELLE PR" && ok "v5 pagina: la fila e' in pagina" || ko "v5 pagina senza fila"
-echo "$PAG5" | grep -q "#11" && ok "v5 pagina: la PR #11 si vede nella fila" || ko "la #11 non appare in pagina"
+grep -q "LA FILA DELLE PR" <<<"$PAG5" && ok "v5 pagina: la fila e' in pagina" || ko "v5 pagina senza fila"
+grep -q "#11" <<<"$PAG5" && ok "v5 pagina: la PR #11 si vede nella fila" || ko "la #11 non appare in pagina"
+
+# (2026-09-24, quinto ventaglio, R4 R2): un giorno di LENTE MUTA (il modello non risponde alle lenti) era letto
+# come «il trasformatore non applica: le forme non sono riconosciute» — la firma nuova (night-shift.sh) non la
+# contava nessuno. Quattro cicli con la riga vera del turno.
+OGGI5=$(date +%Y-%m-%d)
+for i in 1 2 3 4; do
+  echo "[$OGGI5 11:0$i:00] REPO r/x: nessuna issue — attivo la CACCIA"
+  echo "[$OGGI5 11:0$i:30] REPO r/x: caccia: ⚠ LENTE MUTA (rc 3: modello o strumento muto, o cartella assente) — NON e' 'sistema sano'"
+done > "$TMP/muta.log"
+L5=$(NIGHT_LOG="$TMP/muta.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c '
+import sys, json, importlib.util
+s = json.load(sys.stdin)
+spec = importlib.util.spec_from_file_location("d", sys.argv[1]); d = importlib.util.module_from_spec(spec); spec.loader.exec_module(d)
+print(s["funnel"].get("lente_muta", "assente"), "|", d.lettura_funnel(s["funnel"]))' "$DASH")
+grep -c '^4 | .*modello non risponde' <<<"$L5" >/dev/null && ok "giorno di lente muta: contata (4) e letta come modello muto, non come forme" || ko "lente muta: [$L5]"
+
+# (2026-09-24, quinto ventaglio, R4 R5): il FERMO prometteva «KeepAlive lo riscatta entro 30s» — il plist del
+# turno non ha KeepAlive (lo aveva gia' tolto la Q12 da turno-vivo). Gli errori del giorno si contavano e non si
+# mostravano; un giorno di «coda ILLEGGIBILE» col PID vivo restava «IN OSSERVAZIONE — il lavoro arrivera'».
+OGGI6=$(date '+%Y-%m-%d')
+{
+  echo "[$OGGI6 10:00:00] === TURNO INIZIATO (1 repo in coda) ==="
+  echo "[$OGGI6 10:00:01] ⚠ TURNO su r/x: coda ILLEGGIBILE (gh: HTTP 502) — non «0 issue»: la repo si salta in questo ciclo"
+  echo "[$OGGI6 10:30:00] ⛔ MANCA jq: il turno non parte — ogni diagnosi (Ollama, suite, PR) sarebbe falsa"
+} > "$TMP/finto6.log"
+R6=$(NIGHT_LOG="$TMP/finto6.log" python3 - "$DASH" <<'PY'
+import sys, importlib.util
+spec = importlib.util.spec_from_file_location("dash", sys.argv[1])
+dash = importlib.util.module_from_spec(spec); spec.loader.exec_module(dash)
+s = dash.stats()
+fermo = dash.verdetto({**s, "attivo": 0})
+vivo = dash.verdetto({**s, "attivo": 1, "battito_min": 1.0})
+pag = dash.page({**s, "attivo": 1})
+print("KA" if "KeepAlive" in fermo[2] else "noKA", "|", "kick" if "kickstart" in fermo[2] else "nokick", "|",
+      "manca" if "MANCA jq" in fermo[2] else "nomanca", "|", vivo[1], "|", vivo[2], "|",
+      "errori-visti" if "errori oggi" in pag else "errori-nascosti")
+PY
+)
+grep -c '^noKA | kick | manca |' <<<"$R6" >/dev/null && ok "R4 R5: FERMO dice il gesto vero (kickstart, niente KeepAlive) e l'ultimo ⛔ del log" || ko "R4 R5: FERMO: [$R6]"
+grep -ci 'coda illeggibile' <<<"$(cut -d'|' -f4,5 <<<"$R6")" >/dev/null && ! grep -c 'IN OSSERVAZIONE' <<<"$R6" >/dev/null \
+  && ok "R4 R5: la coda illeggibile e' il motivo del verdetto, non «il lavoro arrivera'»" || ko "R4 R5: coda illeggibile invisibile: [$R6]"
+grep -c 'errori-visti' <<<"$R6" >/dev/null && ok "R4 R5: gli errori del giorno si vedono nella pagina" || ko "R4 R5: il contatore degli errori resta nascosto"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

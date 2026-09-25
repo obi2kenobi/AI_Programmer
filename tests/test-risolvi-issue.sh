@@ -31,7 +31,7 @@ if [ -n "$FN" ]; then
               "incorrect|WRONG" "wrong. the fix is not correct|WRONG" "not correct: missing null check|WRONG" \
               "scorretto|WRONG" "non corretto|WRONG" "sbagliato|WRONG" "boh|UNCLEAR" "|UNCLEAR"; do
     IN="${CASO%%|*}"; ATTESO="${CASO##*|}"
-    [ "$(classifica_verdetto "$IN")" = "$ATTESO" ] && ok "verdetto «$IN» → $ATTESO" || ko "verdetto «$IN» → $(classifica_verdetto "$IN") (atteso $ATTESO)"
+    [ "$(classifica_verdetto "$IN")" = "$ATTESO" ] && ok "verdetto «${IN}» → $ATTESO" || ko "verdetto «${IN}» → $(classifica_verdetto "$IN") (atteso $ATTESO)"
   done
 else
   ko "classifica_verdetto() non trovata in risolvi-issue.sh"
@@ -69,7 +69,8 @@ srv.serve_forever()
 PYEOF
 python3 "$MOCK_DIR/serve.py" "$MOCK_BODY_FILE" > "$MOCK_DIR/port" 2>/dev/null &
 MOCK_PID=$!
-for _ in $(seq 1 20); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done
+for _ in $(seq 1 150); do [ -s "$MOCK_DIR/port" ] && break; sleep 0.1; done # (2026-09-23): 15 s, non 2-3 — sotto carico python parte piu' lento, la porta restava vuota e il tool diceva «il modello non ha risposto» (rosso a caso, catturato su test-cervello-impara)
+[ -s "$MOCK_DIR/port" ] || echo "⚠ il server finto non e' partito in 15 s: i FAIL che seguono sono dell'ambiente" >&2
 MOCK_PORT=$(cat "$MOCK_DIR/port")
 trap '{ kill $MOCK_PID 2>/dev/null; wait $MOCK_PID 2>/dev/null; } 2>/dev/null; rm -rf "$MOCK_DIR" "$SB" "$SB2" "$SB4" "$SB5" "$SB6" "$SB7" "$SB8"' EXIT
 ok "server mock su porta $MOCK_PORT"
@@ -104,10 +105,32 @@ fi
 # DOPO l'exit: «command not found» a ogni fix, REVIEW vuota, e questo test passava lo
 # stesso perche' non pretendeva la riga. Ora la pretende: il verdetto e' una delle tre
 # parole, mai vuoto (col mock la risposta e' codice, quindi UNCLEAR — ma detto).
-echo "$OUT" | grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' \
+grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' <<<"$OUT" \
   && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
   || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
-echo "$OUT" | grep -q "command not found" \
+# (2026-09-25, ottavo ventaglio, O1 R1): il Territorio di un'issue e' input esterno, e `.git/config` sta dentro il progetto:
+# il confine lo ammetteva (lettura mandata al modello, e un bersaglio di scrittura). Ora un .git e' fuori.
+SBG=$(mktemp -d /tmp/risolvi-git.XXXXXX); git -C "$SBG" init -q; cp "$SBG/.git/config" "$SBG/config-prima"
+printf '## Commessa\nsistema la config\n\n## Territorio\nFile: `.git/config`\n' > "$SBG/issue.md"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SBG" "$SBG/issue.md" 2>&1); RC=$?
+cmp -s "$SBG/.git/config" "$SBG/config-prima" && [ "$RC" -ne 0 ] && ! grep -c 'letti [1-9]' <<<"$OUT" >/dev/null \
+  && ok "O1 R1: un Territorio che nomina .git/config non si legge e non si scrive (modello non chiamato)" || ko "O1 R1: .git/config nel Territorio: rc=$RC, $(grep -m1 -E '⛔|letti' <<<"$OUT")"
+rm -rf "$SBG"
+# (2026-09-25, settimo ventaglio, V2 R3): senza node sul PATH (il plist del turno ne da' uno fisso) `node --check`
+# esce 127, e il solver lo leggeva come «il codice non passa»: un fix giusto buttato con due diagnosi false, e la
+# cascata all'agente. Ora: rc 2, «MANCA node», prima di chiamare il modello, e il file non si tocca.
+SENZA_NODE=$(printf '%s' "$PATH" | tr ':' '\n' | while IFS= read -r d; do [ -x "$d/node" ] || printf '%s:' "$d"; done); SENZA_NODE=${SENZA_NODE%:}
+if PATH="$SENZA_NODE" command -v python3 >/dev/null && PATH="$SENZA_NODE" command -v curl >/dev/null && ! PATH="$SENZA_NODE" command -v node >/dev/null; then
+  printf 'function calc(a, b) {\n  return a + b;\n}\n' > "$SB/calc.js"
+  OUT=$(PATH="$SENZA_NODE" NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB" "$SB/issue.md" 2>&1); RC=$?
+  [ $RC -eq 2 ] && grep -c 'MANCA node' <<<"$OUT" >/dev/null && grep -c 'return a + b;' "$SB/calc.js" >/dev/null \
+    && ok "V2 R3: senza node, rc 2 «MANCA node» e il file intatto (non «codice rotto»)" \
+    || ko "V2 R3: senza node: rc=$RC — $(grep -E '⛔|⚠' <<<"$OUT" | head -2 | tr '\n' ' ')"
+  printf 'function calc(a, b) {\n  return a + b * 2;\n}\n' > "$SB/calc.js"
+else
+  echo "SKIP V2 R3: qui non si toglie node dal PATH senza togliere anche python3 o curl"
+fi
+grep -q "command not found" <<<"$OUT" \
   && ko "funzioni chiamate prima della definizione: $(echo "$OUT" | grep 'command not found' | head -1)" \
   || ok "nessuna funzione chiamata prima della definizione"
 # (D6): il turno legge $ISSUE_FILE per il check «gia' implementata» PRIMA di scriverlo —
@@ -134,7 +157,7 @@ File: a.js e b.js
 node --check
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB2" "$SB2/issue.md" 2>&1); RC=$?
-if [ $RC -eq 3 ] && echo "$OUT" | grep -q "ESITO: PATCH" && [ "$(cat "$SB2/a.js")" = 'function uno() { return 1; }' ]; then
+if [ $RC -eq 3 ] && grep -q "ESITO: PATCH" <<<"$OUT" && [ "$(cat "$SB2/a.js")" = 'function uno() { return 1; }' ]; then
   ok "PATCH: exit 3 (proposta), file originali intatti (N_FILES=2)"
 else
   ko "PATCH: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
@@ -160,7 +183,7 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\n```\n"}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB4" "$SB4/issue.md" 2>&1); RC=$?
-if [ $RC -eq 0 ] && grep -q "a + b \* 2" "$SB4/calc2.js" && [ ! -f "$SB4/calc2.js.night-bak" ] && echo "$OUT" | grep -q "APPLICATO"; then
+if [ $RC -eq 0 ] && grep -q "a + b \* 2" "$SB4/calc2.js" && [ ! -f "$SB4/calc2.js.night-bak" ] && grep -q "APPLICATO" <<<"$OUT"; then
   ok "INDENTATA: la funzione a 2 spazi viene sostituita (il caso #10 vero)"
 else
   ko "INDENTATA: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
@@ -184,7 +207,7 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"```javascript\nfunction raddoppia(x) {\n  return x * 2;\n}\n```\n"}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB5" "$SB5/issue.md" 2>&1); RC=$?
-if [ $RC -eq 0 ] && grep -q "function raddoppia" "$SB5/altro.js" && echo "$OUT" | grep -q "INSERITO" && echo "$OUT" | grep -qi "wiring\|chiama"; then
+if [ $RC -eq 0 ] && grep -q "function raddoppia" "$SB5/altro.js" && grep -q "INSERITO" <<<"$OUT" && grep -qi "wiring\|chiama" <<<"$OUT"; then
   ok "INSERITO: funzione nuova aggiunta al file, wiring mancante DICHIARATO"
 else
   ko "INSERITO: rc=$RC out: $(echo "$OUT" | tail -3 | tr '\n' ' ')"
@@ -211,7 +234,7 @@ SB7=$(mktemp -d /tmp/risolvi-sb7.XXXXXX)
 printf '<html><body><p>nessuno script qui</p></body></html>\n' > "$SB7/solo.html"
 sed 's/altro\.js/solo.html/' "$SB5/issue.md" > "$SB7/issue.md"
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB7" "$SB7/issue.md" 2>&1); RC=$?
-if [ $RC -eq 3 ] && ! grep -q "function raddoppia" "$SB7/solo.html" && echo "$OUT" | grep -q "ESITO: PATCH"; then
+if [ $RC -eq 3 ] && ! grep -q "function raddoppia" "$SB7/solo.html" && grep -q "ESITO: PATCH" <<<"$OUT"; then
   ok "RIFIUTO-HTML: senza punto dichiarato resta proposta (mai inserzione alla cieca)"
 else
   ko "RIFIUTO-HTML: rc=$RC"
@@ -225,7 +248,7 @@ printf 'function fuori() { return 1; }\n' > "$MOCK_DIR/segreto-fuori.js"   # FUO
 printf 'function dentro() { return 1; }\n' > "$SB8/dentro.js"
 { echo "## Commessa"; echo "usa i file indicati."; echo ""; echo "## Territorio"; echo "File: $MOCK_DIR/segreto-fuori.js e dentro.js"; echo ""; echo "## Verifica"; echo "node --check"; } > "$SB8/issue.md"
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB8" "$SB8/issue.md" 2>&1); RC=$?
-if echo "$OUT" | grep -q "FUORI dal progetto" && [ $RC -ne 2 ]; then
+if grep -q "FUORI dal progetto" <<<"$OUT" && [ $RC -ne 2 ]; then
   ok "sicurezza: path fuori dal progetto rifiutato e DICHIARATO (mai letto, mai scritto)"
 else
   ko "sicurezza: file esterno non confinato (rc=$RC)"
@@ -236,11 +259,25 @@ cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"Mi dispiace, non ho capito la richiesta."}}
 EOF
 OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB2" "$SB2/issue.md" 2>&1); RC=$?
-if [ $RC -ne 0 ] && echo "$OUT" | grep -q "non passa node --check"; then
+if [ $RC -ne 0 ] && grep -q "non passa node --check" <<<"$OUT"; then
   ok "RIFIUTO: prosa senza codice — il solver esce 1 e non tocca nulla"
 else
   ko "RIFIUTO: rc=$RC out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
 fi
+
+# --- (2026-09-24, sesto ventaglio, S3 R3): uno spazio nel NOME di un file del Territorio — l'estrazione non ammetteva
+# lo spazio («Codice Principale.gs» diventava «Principale.gs»), il ripiego con find si spezzava nel `for`, ogni pezzo
+# si saltava in silenzio e il modello riceveva un SOURCE vuoto. E gli a capo del prompt erano «\n» letterali.
+SB9=$(mktemp -d /tmp/risolvi-sb9.XXXXXX)
+printf 'function principale() {\n  return 1;\n}\n' > "$SB9/Codice Principale.gs"
+printf '## Commessa\nprincipale deve restituire 2.\n\n## Territorio\nFile: `Codice Principale.gs`\n' > "$SB9/issue.md"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$SOLVER" "$SB9" "$SB9/issue.md" 2>&1)
+grep -c 'letti 1 file' <<<"$OUT" >/dev/null && ok "S3 R3: il file con lo spazio nel nome si legge (letti 1 file)" || ko "S3 R3: file con lo spazio non letto: $(grep -m2 'File da leggere\|letti\|nessun' <<<"$OUT" | tr '\n' ' ')"
+printf '## Commessa\nx\n\n## Territorio\nFile: `non-esiste.gs`\n' > "$SB9/issue2.md"; rm -f "$SB9/Codice Principale.gs"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$SOLVER" "$SB9" "$SB9/issue2.md" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -ci 'nessun file' <<<"$OUT" >/dev/null && ! grep -c 'Chiamando' <<<"$OUT" >/dev/null \
+  && ok "S3 R3: nessun file letto → il modello non si chiama, e lo dice (rc 1)" || ko "S3 R3: SOURCE vuoto mandato al modello (rc $RC): $(grep -m1 'Chiamando\|nessun' <<<"$OUT")"
+rm -rf "$SB9"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

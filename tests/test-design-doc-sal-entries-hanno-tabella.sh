@@ -15,8 +15,8 @@ while IFS= read -r START; do
   END=$(awk -v s="$START" 'NR>s && /^## /{print NR; exit}' "$SAL")
   [ -z "$END" ] && END=$(wc -l < "$SAL")
   BODY=$(sed -n "$((START+1)),${END}p" "$SAL")
-  echo "$BODY" | grep -qi 'criteri dichiarat' && N_OK=$((N_OK+1)) || ko "\"$TITOLO\": nessun criterio"
-  echo "$BODY" | grep -qE '^\| ?Opzione' && N_OK=$((N_OK+1)) || ko "\"$TITOLO\": NESSUNA tabella"
+  grep -qi 'criteri dichiarat' <<<"$BODY" && N_OK=$((N_OK+1)) || ko "\"$TITOLO\": nessun criterio"
+  grep -qE '^\| ?Opzione' <<<"$BODY" && N_OK=$((N_OK+1)) || ko "\"$TITOLO\": NESSUNA tabella"
 done < <(grep -n '^### .*— design:' "$SAL" | cut -d: -f1)
 
 if [ "$N_TROVATE" -eq 0 ]; then

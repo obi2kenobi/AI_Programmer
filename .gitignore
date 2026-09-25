@@ -1,11 +1,9 @@
 # Cache Python degli strumenti BC
 # Config locale del turno notturno: contiene i nomi delle repo private.
-# grafo graphify: artefatto locale
 *.pyc
 .campo-rem
 __pycache__/
 credenziali BC.rtf
-graphify-out/
 night-shift/repos.conf
 night-shift/repos.key
 .ciclo/
@@ -20,3 +18,11 @@ night-shift/.sal-turni.md.1
 
 # l'ID del gist SEGRETO di tools/backup-config.sh e' la sua URL: accesso al backup (revisione 10 giri, 2026-09-23)
 .gist-backup-id
+.gist-backup-id.prima
+
+# i GREZZI dei giri (n-giri): materiale di lavoro dei sottoagenti, con citazioni non verificate
+# (notte del 2026-09-23: 123 citazioni file:riga rotte). Nel repo entrano il brief e il
+# consolidamento verificato; i grezzi restano locali.
+docs/giri/*/A*-L*.md
+docs/giri/*/V[0-9]*.md
+docs/giri/*/grezzi/

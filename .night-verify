@@ -34,4 +34,4 @@ bash tools/privacy-check.sh
 # dichiarare il suo con il prefisso `@<sec>`. La suite completa dura ~300s —
 # sotto il budget standard moriva a meta' e dava un rosso stabile ogni notte.)
 @540 bash tools/suite.sh
-bash tools/sal-indice.sh && git diff --quiet SAL.md || { echo ⛔ indice SAL non rigenerato; exit 1; }
+bash tools/sal-indice.sh && git diff --quiet SAL.md SAL-ARCHIVIO.md || { echo ⛔ indice SAL non rigenerato; exit 1; }

@@ -12,11 +12,20 @@
 #
 # Uso: py-gate.sh [dir]   (default: la radice del repo che lo contiene)
 # Esce: 0 = tutti i .py compilano · 1 = almeno uno non compila (nome stampato)
+#       2 = perimetro non giudicabile (cartella inesistente, non una repo git, nessun .py tracciato)
 set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
-[ -d "$DIR" ] || { echo "⛔ py-gate: dir inesistente: $DIR" >&2; exit 1; }
+[ -d "$DIR" ] || { echo "⛔ py-gate: dir inesistente: $DIR — perimetro non giudicabile (exit 2, come gas-gate)" >&2; exit 2; }
 
 ROTTI=0
+# (Q30, 2026-09-23, notte dei giri): fuori da git `git ls-files` falliva nel 2>/dev/null e il gate
+# diceva «tutti i .py compilano (0 file)», rc 0, con un .py rotto nella cartella. Zero giudicati
+# non e' verde: come tools/gas-gate.sh, perimetro non giudicabile, exit 2.
+if ! FILE_PY=$(cd "$DIR" && git ls-files '*.py' 2>/dev/null); then
+  echo "py-gate: $DIR non e' una repo git — perimetro non giudicabile (exit 2)"; exit 2
+fi
+N_PY=$(grep -c . <<<"$FILE_PY")
+[ "$N_PY" -eq 0 ] && { echo "py-gate: nessun .py tracciato in $DIR — perimetro non giudicabile (exit 2)"; exit 2; }
 while IFS= read -r f; do
   # compile() esegue la sintassi senza scrivere __pycache__ (py_compile lo scrive)
   # (revisione 10 giri): i path di git ls-files sono relativi a DIR — si aprono da DIR, non
@@ -25,10 +34,10 @@ while IFS= read -r f; do
     echo "⛔ python non compila: $f"
     ROTTI=$((ROTTI+1))
   fi
-done < <(cd "$DIR" && git ls-files '*.py' 2>/dev/null)
+done <<< "$FILE_PY"
 
 if [ "$ROTTI" -ne 0 ]; then
   echo "py-gate: $ROTTI file rotti"
   exit 1
 fi
-echo "Sintassi python: tutti i .py compilano ($(cd "$DIR" && git ls-files '*.py' | wc -l | tr -d ' ') file)"
+echo "Sintassi python: tutti i .py compilano ($N_PY file)"

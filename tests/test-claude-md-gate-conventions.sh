@@ -23,8 +23,26 @@ REGEX_REALE=$(grep -oE '\^night/\|\^claude/\|\^glm/' "$HERE/night-shift/morning-
 [ "$REGEX_REALE" = '^night/|^claude/|^glm/' ] && ok "il filtro reale in morning-gate.sh è ancora night/|claude/|glm/ (coerente con CLAUDE.md)" \
   || ko "il filtro reale è cambiato ($REGEX_REALE) — CLAUDE.md andrebbe aggiornato"
 
+# (2026-09-23, sì di Luca): il morning-gate e' in pensione — il giudice automatico delle PR
+# notturne e' il censore, che guarda SOLO night/* con titolo «caccia:». CLAUDE.md §4 deve dirlo,
+# e il filtro citato deve essere quello vero di night-shift/revisore.sh.
+grep -q "in pensione" "$HERE/CLAUDE.md" && grep -q "revisore.sh" "$HERE/CLAUDE.md" \
+  && ok "CLAUDE.md §4 dice chi giudica oggi (censore) e che il morning-gate e' in pensione" \
+  || ko "CLAUDE.md §4 descrive ancora il morning-gate come il giudice delle PR"
+grep -q 'case "$BRANCH" in night/\*)' "$HERE/night-shift/revisore.sh" && grep -qx '  caccia:\*) ;;' "$HERE/night-shift/revisore.sh" \
+  && grep -q '`night/`.*`caccia:`\|`caccia:`.*`night/`' "$HERE/CLAUDE.md" \
+  && ok "il filtro del censore citato in CLAUDE.md (night/ + caccia:) e' quello del codice" \
+  || ko "filtro del censore e CLAUDE.md divergono"
+
+# (D10, Luca 2026-09-23: «b») le PR delle issue ricevono il PARERE del censore, mai la fusione:
+# CLAUDE.md §4 lo dice, e il codice ha davvero il modo parere su night/issue-*
+grep -q 'night/issue-\*) MODO="parere"' "$HERE/night-shift/revisore.sh" && grep -q 'parere' "$HERE/CLAUDE.md" \
+  && grep -q 'never merges' "$HERE/CLAUDE.md" \
+  && ok "CLAUDE.md §4 dice che le PR delle issue ricevono un parere, mai la fusione (e il codice lo fa)" \
+  || ko "CLAUDE.md §4 e il modo parere del censore divergono"
+
 # CLAUDE.md viaggia davvero verso i progetti nuovi (altrimenti la documentazione non arriva)
-grep -q 'cp "\$HERE/CLAUDE.md" CLAUDE.md' "$HERE/tools/bootstrap-app.sh" \
+grep -q 'claude-md-satellite.sh" > CLAUDE.md' "$HERE/tools/bootstrap-app.sh" \
   && ok "CLAUDE.md (con le nuove convenzioni) viene copiato nei progetti bootstrappati" \
   || ko "bootstrap-app.sh non copia più CLAUDE.md — la documentazione non arriverebbe"
 

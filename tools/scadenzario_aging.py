@@ -55,6 +55,13 @@ def fascia_dettaglio(giorni):
     return "LUNGO"
 
 
+# (Q22, 2026-09-23): i tipi documento fornitore che la convenzione del docstring nomina. Un tipo
+# fuori elenco (FATTURA maiuscolo, Payment, vuoto) prende +abs come la nota di credito — cioe'
+# finisce fra le ENTRATE. Il comportamento resta (se sia fedele al sistema studiato e' una domanda
+# di dominio: docs/giri/2026-09-23-notte/DOMANDE.md); da oggi lo si DICE.
+TIPI_FORNITORE_NOTI = ("Invoice", "Fattura", "Nota di credito", "Nota credito", "Credit Memo")
+
+
 def importo_fornitore(importo_bc, doc_type):
     is_uscita = doc_type in ("Invoice", "Fattura")
     return -abs(importo_bc) if is_uscita else abs(importo_bc)
@@ -89,6 +96,11 @@ def main():
     Header incompleto o importo non finito: uso/errore esplicito, mai nan
     silenzioso (giri avversari D5/D6).
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: scadenzario_aging.py < scadenzario.csv — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     righe = []
     reader = csv.DictReader(sys.stdin)
     # le colonne attese si DICHIARANO prima di usarle: un header sbagliato o mancante
@@ -99,10 +111,18 @@ def main():
         print(f"uso: scadenzario_aging.py < scadenzario.csv — colonne attese: giorni,tipo,importo"
               f" (mancano: {', '.join(mancanti)})", file=sys.stderr)
         return 1
+    non_riconosciuti = []
     for r in reader:
         giorni = r["giorni"].strip() if r["giorni"].strip() != "" else None
         tipo = r["tipo"]
-        importo_bc = float(r["importo"])
+        # (2026-09-24, quinto ventaglio, R3 R3): una cella vuota, «1.234,56» o giorni «1.5» erano un traceback
+        try:
+            importo_bc = float(r["importo"])
+            fascia = fascia_dettaglio(giorni)
+        except (ValueError, TypeError):
+            print(f"ERRORE: riga {reader.line_num}: importo o giorni non numerici (importo={r['importo']!r}, giorni={r['giorni']!r};"
+                  f" attesi importo col punto decimale e giorni interi) — nessun verdetto", file=sys.stderr)
+            return 1
         # giri avversari 2026-08-28 (D5/D6): nan/inf passavano e producevano totali
         # "+nan€" in silenzio. Un importo non finito è dato marcio: si dichiara.
         import math
@@ -116,14 +136,30 @@ def main():
         # righe Fornitore applicano la convenzione dell'uscita di cassa.
         if tipo.startswith("Fornitore"):
             doc_type = tipo[len("Fornitore"):].strip()
+            if doc_type not in TIPI_FORNITORE_NOTI:
+                non_riconosciuti.append(tipo)
             importo = importo_fornitore(importo_bc, doc_type)
+        elif tipo.strip().lower().startswith("fornitore"):
+            non_riconosciuti.append(tipo)
+            # (2026-09-24, quinto ventaglio, R3 R1): qui l'importo non si assegnava — la riga prendeva quello
+            # della riga PRIMA (o, se prima, un traceback). Il segno e' quello che l'ATTENZIONE qui sotto
+            # dichiara per i tipi non riconosciuti (+abs): convenzione provvisoria, la domanda 1 di
+            # docs/giri/2026-09-23-notte/DOMANDE.md resta aperta.
+            importo = abs(importo_bc)
         else:
             importo = importo_bc
         righe.append({
             "tipo": tipo,
             "importo": importo,
-            "fascia": fascia_dettaglio(giorni),
+            "fascia": fascia,
         })
+    # (Q22): con zero righe stampava entrate, uscite e fasce a +0.00€, rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
+    if non_riconosciuti:
+        print(f"ATTENZIONE: {len(non_riconosciuti)} righe fornitore con tipo non riconosciuto, prese col segno +abs"
+              f" (fra le ENTRATE) — {', '.join(sorted(set(non_riconosciuti)))}. Convenzione da confermare.", file=sys.stderr)
     r = aggrega_totali(righe)
     print(f"Entrate: {r['entrate']:+.2f}€")
     print(f"Uscite: {r['uscite']:+.2f}€")

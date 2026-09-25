@@ -19,6 +19,7 @@ Uso: python3 tools/scostamento_standard_effettivo.py < ordini.csv
 CSV con colonne (ordinate per data crescente): costo_eff_unitario,qta_prodotta
 """
 import csv
+import math
 import sys
 
 
@@ -47,6 +48,10 @@ def calcola_trend(righe_ordinate):
         return "DATI_INSUFFICIENTI"
     media1 = media_pesata(prima)
     media2 = media_pesata(seconda)
+    # (Q22, 2026-09-23): con la prima meta' a costo 0 si divideva per zero (traceback nudo); la
+    # variazione relativa da zero non e' definita: dati insufficienti, detto
+    if media1 == 0:
+        return "DATI_INSUFFICIENTI"
     variazione = ((media2 - media1) / media1) * 100
     if variazione > 5:
         return "IN_SALITA"
@@ -91,15 +96,37 @@ def main():
     except ValueError:
         print(f"uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv — costo standard non numerico: {sys.argv[1]!r}", file=sys.stderr)
         return 1
+    # (2026-09-24, quinto ventaglio, R3 R2): nan/inf passavano da float() e davano «Scostamento: +nan%» con rc 0
+    # (la cura Q22 guardava solo le righe del CSV, non l'argomento)
+    if not math.isfinite(costo_standard):
+        print(f"ERRORE: costo standard non finito (nan/inf): {sys.argv[1]!r} — nessun verdetto", file=sys.stderr)
+        return 1
     reader = csv.DictReader(sys.stdin)
     mancanti = [c for c in ("costo_eff_unitario", "qta_prodotta") if c not in (reader.fieldnames or [])]
     if mancanti:
         print(f"uso: scostamento_standard_effettivo.py <costo_standard> < ordini.csv — colonne mancanti: {', '.join(mancanti)}", file=sys.stderr)
         return 1
-    righe = [
-        {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
-        for r in reader
-    ]
+    # (Q22, 2026-09-23, giro A4 della notte): «abc» era un traceback, «nan» un ALERT MEDIO «sotto»
+    # (abs(nan) <= soglia e' falso), e una quantita' prodotta nulla dava costo medio 0 → «-100%
+    # ALERT ALTO»: il dato assente trattato come zero, cio' che il docstring vieta. Si dichiara.
+    righe = []
+    for n, r in enumerate(reader, start=2):
+        try:
+            riga = {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
+        except (TypeError, ValueError):
+            print(f"ERRORE: riga {n} non numerica: {dict(r)!r}", file=sys.stderr)
+            return 1
+        if not all(math.isfinite(v) for v in riga.values()):
+            print(f"ERRORE: riga {n} con un valore non finito (nan/inf): {dict(r)!r}", file=sys.stderr)
+            return 1
+        righe.append(riga)
+    # (Q22): con zero ordini stampava costo medio, scostamento e «Nessun alert», rc 0
+    if not righe:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
+    if righe and sum(r["qta_prodotta"] for r in righe) <= 0:
+        print("ERRORE: quantita' prodotta totale nulla — costo medio effettivo n.d. (non zero: nessuno scostamento calcolabile)", file=sys.stderr)
+        return 1
     media_eff = media_pesata(righe)
     scost_perc = calcola_scostamento(costo_standard, media_eff)
     trend = calcola_trend(righe)

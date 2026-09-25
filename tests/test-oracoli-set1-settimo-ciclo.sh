@@ -23,18 +23,18 @@ cat > "$TMP/leasing.json" <<'EOF'
  "data_inizio": "2024-01-01", "data_fine": "2026-12-31", "data_riferimento": "2025-07-01"}
 EOF
 OUT=$(python3 "$HERE/tools/leasing_amministrativo.py" "$TMP/leasing.json")
-echo "$OUT" | grep -q "Durata 35 mesi · trascorsi 18 · rimanenti 17 (48.6%)" \
+grep -q "Durata 35 mesi · trascorsi 18 · rimanenti 17 (48.6%)" <<<"$OUT" \
   && ok "leasing: durata 35 mesi (differenza, non inclusiva), 17 rimanenti" || ko "leasing durata: $(echo "$OUT" | grep Durata)"
-echo "$OUT" | grep -q "Capitale residuo stimato: 17000.00 EUR" \
+grep -q "Capitale residuo stimato: 17000.00 EUR" <<<"$OUT" \
   && ok "leasing: residuo 35000x17/35 = 17000 (ammortamento uniforme dichiarato)" \
   || ko "leasing residuo: $(echo "$OUT" | grep residuo)"
-echo "$OUT" | grep -q "Quota interessi mensile: 35.42 EUR" \
+grep -q "Quota interessi mensile: 35.42 EUR" <<<"$OUT" \
   && ok "leasing: interessi 17000x2,5%/12 = 35,42 (stima dichiarata)" \
   || ko "leasing interessi: $(echo "$OUT" | grep interessi)"
-echo "$OUT" | grep -q "Adeguamento mensile: +0.35 EUR · trimestrale ARRETRATO: +1.06 EUR" \
+grep -q "Adeguamento mensile: +0.35 EUR · trimestrale ARRETRATO: +1.06 EUR" <<<"$OUT" \
   && ok "leasing: adeguamento 0,354 mensile, 1,0625 trimestrale" \
   || ko "leasing adeguamento: $(echo "$OUT" | grep Adeguamento)"
-echo "$OUT" | grep -q "Importo previsto: 1001.06 EUR" \
+grep -q "Importo previsto: 1001.06 EUR" <<<"$OUT" \
   && ok "leasing: previsto 1000 + 1,06 = 1001,06" || ko "leasing previsto: $(echo "$OUT" | grep previsto)"
 # Euribor assente: NESSUN adeguamento dichiarato (assente ≠ zero in silenzio)
 python3 - <<PY
@@ -43,7 +43,7 @@ c = json.load(open("$TMP/leasing.json")); c["euribor_corrente"] = None
 json.dump(c, open("$TMP/leasing_noeuribor.json", "w"))
 PY
 OUT2=$(python3 "$HERE/tools/leasing_amministrativo.py" "$TMP/leasing_noeuribor.json")
-echo "$OUT2" | grep -q "NESSUNO — Euribor corrente mancante" \
+grep -q "NESSUNO — Euribor corrente mancante" <<<"$OUT2" \
   && ok "leasing: Euribor assente = NESSUN adeguamento dichiarato (non zero in silenzio)" \
   || ko "leasing assenza: $OUT2"
 
@@ -65,17 +65,17 @@ pagamento,2026-05-20,P2,gamma,pagamento sconosciuto,300
 fattura,2026-05-05,F4,delta,fattura 25CORR-7,700
 EOF
 OUT=$(python3 "$HERE/tools/rating_dso_clienti.py" < "$TMP/mov.csv")
-echo "$OUT" | grep -q "alfa.*30 gg.*1" \
+grep -q "alfa.*30 gg.*1" <<<"$OUT" \
   && ok "rating: alfa DSO 30 gg, 1 non pagata" || ko "rating alfa: $(echo "$OUT" | grep alfa)"
-echo "$OUT" | grep -q "beta .*1 *10 gg" \
+grep -q "beta .*1 *10 gg" <<<"$OUT" \
   && ok "rating: beta cessione FACTOR al 11/05 = DSO 10 gg" || ko "rating beta: $(echo "$OUT" | grep beta)"
-echo "$OUT" | grep -q "delta.*0 *n\.d\. *1" \
+grep -q "delta.*0 *n\.d\. *1" <<<"$OUT" \
   && ok "rating: delta solo non pagate → DSO 'n.d.' (il confine 0≠'paga subito' è dichiarato)" \
   || ko "rating delta: $(echo "$OUT" | grep delta)"
-echo "$OUT" | grep -q "NOTA confine: 1 cliente/i con DSO 'n.d.'" \
+grep -q "NOTA confine: 1 cliente/i con DSO 'n.d.'" <<<"$OUT" \
   && ok "rating: la nota confine elenca chi non è misurabile" \
   || ko "rating: nota confine mancante"
-echo "$OUT" | grep -q "NON MATCHATO: 2026-05-20 300.00" \
+grep -q "NON MATCHATO: 2026-05-20 300.00" <<<"$OUT" \
   && ok "rating: pagamento senza fattura elencato (scarto mai silenzioso)" \
   || ko "rating: non matchati non elencati"
 # guardia falsi matching: pagamento 400 giorni dopo la fattura → scartato, non DSO 400
@@ -85,7 +85,7 @@ fattura,2025-01-01,F1,alfa,fattura,100
 pagamento,2026-02-05,P1,alfa,pagamento,100
 EOF
 OUT2=$(python3 "$HERE/tools/rating_dso_clienti.py" < "$TMP/mov2.csv")
-echo "$OUT2" | grep -q "alfa.*0 *n\.d\." \
+grep -q "alfa.*0 *n\.d\." <<<"$OUT2" \
   && ok "rating: pagamento >365gg scartato dalla guardia (DSO resta n.d., non 400)" \
   || ko "rating: guardia 365 non applicata: $OUT2"
 
@@ -105,18 +105,18 @@ conto,posting_date,bu,amount
 610000,2026-03-15,,100
 EOF
 OUT=$(python3 "$HERE/tools/bilancio_bu.py" < "$TMP/gl.csv")
-echo "$OUT" | grep -q "CONVENZIONE G/L: amount < 0 = ricavo" \
+grep -q "CONVENZIONE G/L: amount < 0 = ricavo" <<<"$OUT" \
   && ok "bilancio: convenzione dei segni dichiarata in testa" || ko "bilancio: convenzione mancante"
-echo "$OUT" | grep -q "BIOC *1000.00 *600.00 *400.00" \
+grep -q "BIOC *1000.00 *600.00 *400.00" <<<"$OUT" \
   && ok "bilancio BIOC: −1000→ricavo 1000, margine +400" || ko "bilancio BIOC: $(echo "$OUT" | grep BIOC)"
-echo "$OUT" | grep -q "EDIL *500.00 *700.00 *-200.00" \
+grep -q "EDIL *500.00 *700.00 *-200.00" <<<"$OUT" \
   && ok "bilancio EDIL: margine negativo −200 visibile (segno non invertito)" \
   || ko "bilancio EDIL: $(echo "$OUT" | grep EDIL)"
-echo "$OUT" | grep -q "NOBU (movimenti non attribuiti a BU): ricavi 200.00 · costi 100.00" \
+grep -q "NOBU (movimenti non attribuiti a BU): ricavi 200.00 · costi 100.00" <<<"$OUT" \
   && ok "bilancio: NOBU visibile (non attribuito ≠ perso)" || ko "bilancio NOBU: $(echo "$OUT" | grep NOBU)"
-echo "$OUT" | grep -q "QUADRATURA: somma margini BU (300.00) = risultato totale" \
+grep -q "QUADRATURA: somma margini BU (300.00) = risultato totale" <<<"$OUT" \
   && ok "bilancio: quadratura 400−200+100 = 300 verificata" || ko "bilancio quadratura: $(echo "$OUT" | grep QUADRATURA)"
-echo "$OUT" | grep -q "APERTO: il ribaltamento dei costi indiretti" \
+grep -q "APERTO: il ribaltamento dei costi indiretti" <<<"$OUT" \
   && ok "bilancio: ribaltamento REPARTO dichiarato APERTO (formula non provata, non indovinata)" \
   || ko "bilancio: manca la dichiarazione del ribaltamento aperto"
 

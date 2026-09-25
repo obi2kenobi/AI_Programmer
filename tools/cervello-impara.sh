@@ -24,15 +24,20 @@ API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 LOG="${NIGHT_LOG:-$HOME/night-shift-console.log}"
 
 [ -f "$LOG" ] || { echo "log assente: $LOG" >&2; exit 2; }
-OGGI=$(date +%F)
+# (2026-09-25, settimo ventaglio, V3 R6): IMPARA_DATA per la lezione di un giorno gia' passato (il turno la recupera
+# quando nessun ciclo e' partito dopo le 22). Di norma oggi.
+OGGI="${IMPARA_DATA:-$(date +%F)}"
 
 # il contesto: le righe NOTEVOLI del giorno (gli eventi firmati, come la dashboard)
+# (2026-09-24, quinto ventaglio, R4 R6): cercava «registro: debiti», e il produttore scrive «registro: debito
+# famiglie» — firma morta dalla nascita. E «rianimat» non prende «rianima_ollama:». Le firme del 24/9 entrano.
 CTX=$(grep -a "^\[$OGGI" "$LOG" 2>/dev/null \
-      | grep -aE "AGENTE FALLITO|wedge|rianimat|MIGLIORIA|gate BOCCIA|VERIFICA ROSSA|DELIBERA|quarantena|TRASFORMATORE|registro: debiti|Sonda|round di pazienza|cervello:" \
+      | grep -aE "AGENTE FALLITO|wedge|rianimat|rianima_ollama: esito|MIGLIORIA|gate BOCCIA|VERIFICA ROSSA|DELIBERA|quarantena|TRASFORMATORE|registro: debito famiglie|LENTE MUTA|coda ILLEGGIBILE|⛔ MANCA|SENTINELLA|SFORO DEL BUDGET|Sonda|round di pazienza|cervello:" \
       | tail -80 | cut -c1-150)
 
 # la scaletta di quello che il sistema GIA' sa: non si reimpara l'alfa
-SAPEVOLI=$(grep -a "^## E-0" "$HERE/docs/errori/REGISTRO.md" 2>/dev/null | tail -12 | cut -c1-80)
+# (ottavo ventaglio, O3 R5): «E-[0-9]», non «E-0» — da E-100 in poi le voci nuove non entravano nel prompt
+SAPEVOLI=$(grep -a "^## E-[0-9]" "$HERE/docs/errori/REGISTRO.md" 2>/dev/null | tail -12 | cut -c1-80)
 
 read -r -d '' PROMPT <<FINE || true
 Sei la memoria di un sistema di sviluppo autonomo (AI_Programmer) che gira 24/7.
@@ -54,8 +59,9 @@ Rispondi SOLO con JSON su una riga:
 I link devono puntare a note esistenti in cervello/ (slug minuscoli col trattino) o essere lista vuota.
 FINE
 
-R=$(curl -sf --max-time 150 "$API" -d "$(jq -cn --arg m "$MODEL" --arg p "$PROMPT" \
-  '{model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null \
+R=$(printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
+  '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
+  | curl -sf --max-time 150 "$API" --data-binary @- 2>/dev/null \
   | jq -r '.message.content // empty' 2>/dev/null)
 [ -n "$R" ] || { echo "IMPARA: il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }
 
@@ -73,7 +79,12 @@ jq -e '.titolo and .problema and .soluzione' <<<"$R" >/dev/null 2>&1 \
 
 TITOLO=$(jq -r '.titolo' <<<"$R"); PROBLEMA=$(jq -r '.problema' <<<"$R")
 SOLUZIONE=$(jq -r '.soluzione' <<<"$R"); QUANDO=$(jq -r '.quando' <<<"$R")
-SLUG=$(printf '%s' "$TITOLO" | tr 'àèéìòù' 'aeeiou' | tr 'A-Z' 'a-z' | tr -cs 'a-z0-9' '-' | sed 's/^-//;s/-$//' | cut -c1-40)
+# (2026-09-25, settimo ventaglio, V4 R5): lo slug in python. Con `tr` il GNU lavorava in byte («Perché è così» diventava
+# «perchuu-ui-cosuu»), il Mac per caratteri: la chiave anti-doppione cambiava con la piattaforma. Per l'ASCII e' identico.
+SLUG=$(python3 -c '
+import re, sys, unicodedata
+t = unicodedata.normalize("NFKD", sys.argv[1]).encode("ascii", "ignore").decode().lower()
+print(re.sub(r"[^a-z0-9]+", "-", t).strip("-")[:40].strip("-"))' "$TITOLO")
 
 # una lezione al giorno e niente doppioni di slug
 NOTA="$CERVELLO/lezione-$SLUG.md"

@@ -11,28 +11,29 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
+# (2026-09-23, notte dei giri — il debito «banchi che rifanno a mano»): qui c'era una COPIA della
+# sequenza del turno. Con il gate spento in night-shift/night-shift.sh il banco restava verde. Ora
+# il cancello vive in night-shift/lib.sh cancello_design e il banco chiama QUELLA funzione;
+# classify() traduce soltanto il motivo nelle etichette storiche dei casi qui sotto.
+source "$HERE/night-shift/lib.sh"
+declare -F cancello_design >/dev/null || { ko "cancello_design non definita in night-shift/lib.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 classify() {
-  local BODY="$1"
-  if ! printf '%s' "$BODY" | grep -q "^## Territorio"; then echo "SENZA-TERRITORIO"; return; fi
-  if ! printf '%s' "$BODY" | grep -q "^## Design"; then echo "SENZA-DESIGN"; return; fi
-  local DESIGN_RAW DESIGN_BODY TERR_BODY
-  DESIGN_RAW=$(printf '%s' "$BODY" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
-  DESIGN_BODY=$(printf '%s' "$DESIGN_RAW" | tr -d '[:space:]')
-  [ "${#DESIGN_BODY}" -lt 80 ] && { echo "DESIGN-POVERO"; return; }
-  printf '%s' "$DESIGN_RAW" | grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' \
-    || { echo "DESIGN-SENZA-RIFERIMENTO"; return; }
-  TERR_BODY=$(printf '%s' "$BODY" | awk '/^## Territorio/{f=1;next} /^## /{f=0} f')
-  printf '%s' "$TERR_BODY" | grep -qE '\.[a-z]{2,4}\b|file|riga|documento|md\b' || { echo "TERRITORIO-SENZA-FILE"; return; }
-  echo "PASSA"
+  local M; M=$(cancello_design "$1")
+  case "$M" in
+    "") echo "PASSA" ;;
+    territorio-assente) echo "SENZA-TERRITORIO" ;;
+    design-assente) echo "SENZA-DESIGN" ;;
+    design-povero*) echo "DESIGN-POVERO" ;;
+    design-senza-fonte) echo "DESIGN-SENZA-RIFERIMENTO" ;;
+    territorio-vago) echo "TERRITORIO-SENZA-FILE" ;;
+    *) echo "IGNOTO:$M" ;;
+  esac
 }
 
-# verifica che l'ordine reale in night-shift.sh sia quello atteso: assenza PRIMA di qualità
-ORDINE=$(grep -n '^      log "Issue #\$NUM: \(SENZA sezione ## Territorio\|SENZA sezione ## Design\|sezione ## Design troppo povera\|## Territorio senza file\)' \
-  "$HERE/night-shift/night-shift.sh" | cut -d: -f1)
-readarray -t RIGHE <<< "$ORDINE"
-[ "${#RIGHE[@]}" -eq 4 ] && [ "${RIGHE[0]}" -lt "${RIGHE[2]}" ] && [ "${RIGHE[1]}" -lt "${RIGHE[3]}" ] \
-  && ok "night-shift.sh: i controlli di ASSENZA precedono quelli di QUALITÀ (ordine corretto)" \
-  || ko "night-shift.sh: ordine dei controlli non verificato: righe ${RIGHE[*]}"
+# il turno usa la funzione (non una copia sua), e l'issue scartata non va avanti
+grep -q 'MOTIVO=$(cancello_design "$BODY")' "$HERE/night-shift/night-shift.sh" \
+  && ok "night-shift.sh decide il cancello con lib.sh cancello_design (la funzione provata qui)" \
+  || ko "night-shift.sh non usa cancello_design: questo banco proverebbe una copia"
 
 RISULTATO=$(classify "## Commessa
 fai qualcosa")
@@ -85,6 +86,25 @@ tools/foo.js righe 1-10")
   [ "$RISULTATO" = "PASSA" ] && ok "Design $ETICHETTA: passa il gate" || ko "Design $ETICHETTA: bloccato erroneamente ($RISULTATO)"
 done
 
+# (2026-09-24, terzo ventaglio, V3): la skill audit-commessa controllava solo `## Design` e `## Commessa`,
+# e promuoveva commesse che questo cancello poi respinge (territorio-assente). La skill usa il cancello
+# vero, non una lista sua — in tutti e due gli specchi.
+for SK in "$HERE/.claude/skills/audit-commessa/SKILL.md" "$HERE/.opencode/skills/audit-commessa/SKILL.md"; do
+  grep -c 'cancello_design' "$SK" >/dev/null && ok "$(basename "$(dirname "$(dirname "$(dirname "$SK")")")")/audit-commessa usa cancello_design" \
+    || ko "$SK: la struttura si giudica con una lista sua, non col cancello del turno"
+done
+
+
+# (2026-09-25, settimo ventaglio, V4 R3): la soglia «80 caratteri utili» contava con ${#}, che in C conta i byte e in
+# UTF-8 i caratteri: la stessa issue accentata passava l'audit serale (una sessione in C) e la notte la saltava. Qui 64
+# caratteri utili (piu' di 80 byte): povera in tutti e due i locali.
+DESIGN_ACC="perché è già così più città però lì là giù più così già però perché SAL.md città"
+BODY_ACC=$(printf '## Territorio\nFile: src/Codice.gs, riga 12\n\n## Design\n%s\n' "$DESIGN_ACC")
+N_UTILI=$(printf '%s' "$DESIGN_ACC" | python3 -c 'import sys; print(len("".join(sys.stdin.read().split())))')
+M_C=$(LC_ALL=C bash -c 'source "$1"; cancello_design "$2"' _ "$HERE/night-shift/lib.sh" "$BODY_ACC")
+M_U=$(LC_ALL=C.UTF-8 bash -c 'source "$1"; cancello_design "$2"' _ "$HERE/night-shift/lib.sh" "$BODY_ACC")
+[ "$M_C" = "$M_U" ] && [ "$M_C" = "design-povero $N_UTILI" ] && ok "V4 R3: design accentato di $N_UTILI caratteri: stesso verdetto in C e in UTF-8 («${M_C}»)" \
+  || ko "V4 R3: C «${M_C}», UTF-8 «${M_U}» (attesi tutti e due «design-povero ${N_UTILI}»)"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

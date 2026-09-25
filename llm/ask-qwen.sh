@@ -18,6 +18,8 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 # si armonizza allo stesso ordine.
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+# (2026-09-24, Q2): senza python3 il wrapper usciva 127 col solo «command not found» (il contratto e' 0/1/2)
+command -v python3 >/dev/null 2>&1 || { echo "ERRORE ollama: python3 assente — serve per il payload e la risposta" >&2; exit 1; }
 
 # giro 10/10 (set 1 "armonizza gli agenti"): traccia locale minima — vedi llm/_usage.sh.
 source "$HERE/_usage.sh"
@@ -32,7 +34,7 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 # qwen3.8-27b:iq3s, cervello/decisione-modello-unico.md — il 27b quantizzato, non quello di allora).
 MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8-27b:iq3s}}"
 CTX="${QWEN_CTX:-16384}"
-THINK="${QWEN_THINK:-false}"
+THINK="${QWEN_THINK:-${THINK:-false}}"   # THINK: il profilo del turno (D11)
 API="http://localhost:11434"
 
 # rischio segnalato (revisione 14 lenti, 2026-08-28): senza --max-time, se il server
@@ -75,17 +77,19 @@ fi
 ---
 $STDIN_DATA"
 
-PAYLOAD=$(python3 - "$MODEL" "$CTX" "$THINK" "$PROMPT" <<'PY'
+# (2026-09-23, giro A1 della notte): prompt e payload viaggiano su stdin, non come argomenti —
+# oltre 128 KB (MAX_ARG_STRLEN) il wrapper moriva con «Argument list too long», rc=126 (stesso
+# difetto e stessa cura di ask-glm.sh). Il "\n" finale del here-string si toglie qui sotto.
+PAYLOAD=$(python3 -c '
 import json, sys
+p = sys.stdin.read()
 print(json.dumps({
     "model": sys.argv[1],
-    "messages": [{"role": "user", "content": sys.argv[4]}],
+    "messages": [{"role": "user", "content": p[:-1] if p.endswith("\n") else p}],
     "stream": False,
     "think": sys.argv[3] == "true",
     "options": {"num_ctx": int(sys.argv[2]), "temperature": 0.3},
-}))
-PY
-)
+}))' "$MODEL" "$CTX" "$THINK" <<<"$PROMPT")
 
 # bug reale (dogfooding, set 1 "armonizza gli agenti"): --max-time era fisso a 1800,
 # ignorando ASK_TIMEOUT — llm/README.md lo dichiara un override universale per
@@ -98,7 +102,7 @@ START=$(date +%s)
 # qui, prima di qualunque diagnosi. set +e locale per leggere l'exit code senza farlo
 # esplodere (stesso fix di ask-glm.sh).
 set +e
-RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" -d "$PAYLOAD")
+RESP=$(curl -s --max-time "$TIMEOUT" "$API/api/chat" --data-binary @- <<<"$PAYLOAD")
 CURL_RC=$?
 set -e
 if [ "$CURL_RC" -ne 0 ]; then
@@ -122,7 +126,11 @@ except json.JSONDecodeError:
 if "error" in r:
     print("ERRORE ollama:", r["error"], file=sys.stderr); sys.exit(1)
 try:
-    print(r["message"]["content"])
+    c = r["message"]["content"]
+    # (2026-09-24, Q2): un contenuto vuoto (done_reason length, un modello che pensa soltanto) usciva 0
+    if not c:
+        print("ERRORE ollama: risposta vuota (done_reason:", r.get("done_reason", "?"), ")", file=sys.stderr); sys.exit(1)
+    print(c)
 except (KeyError, TypeError):
     print("ERRORE ollama: risposta JSON di forma inattesa (manca message.content) —", raw[:200], file=sys.stderr)
     sys.exit(1)

@@ -119,12 +119,12 @@ M=$(ls "$SB/.git/miglioria"/clean.docs.utils* 2>/dev/null | head -1)
 
 # 4. il cooldown: stesso file+categoria saltato, si passa al prossimo della rotazione
 OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=docs bash "$CM" "$SB" 2>/dev/null); RC=$?
-if [ "$RC" -eq 1 ] && echo "$OUT" | grep -q "cooldown"; then
+if [ "$RC" -eq 1 ] && grep -q "cooldown" <<<"$OUT"; then
   ok "cooldown rispettato (docs|utils.js saltato)"
 else
   # (audit-2): questo ramo non puo' piu' dire ok a gratis — PROVA che utils.js
   # e' intatto: se il cooldown fosse rotto, la caccia avrebbe ritoccato lui
-  if git -C "$SB" diff --quiet 2>/dev/null || ! git -C "$SB" diff --name-only 2>/dev/null | grep -q "utils.js"; then
+  if git -C "$SB" diff --quiet 2>/dev/null || ! git -C "$SB" diff --name-only 2>/dev/null | grep -c "utils.js" >/dev/null; then
     FILE_PROMPT=$(MIGLIORIA_AGENT="$STUB_MUTO" MIGLIORIA_CAT=docs bash "$CM" "$SB" 2>&1 | grep -o "su [^ ]*" | head -1)
     echo "  (nota: rotazione caduta su $FILE_PROMPT)"
     ok "cooldown: utils.js non ritoccato in docs (albero o diff verificati)"
@@ -201,6 +201,17 @@ grep -q "vittima.sh:3" "$SB4/.git/caccia-registro/rinviati" 2>/dev/null && ok "r
 PROSSIMO=$(bash "$HERE/tools/caccia-registro.sh" --prossimo "$SB4" 2>/dev/null)
 case "$PROSSIMO" in *"vittima.sh:3"*) ko "rinvio: il sito riproposto!";; *) ok "rinvio: il censimento passa oltre";; esac
 rm -rf "$SB4"
+# (2026-09-24, quinto ventaglio, R4 R3): lo stderr dell'agente finiva in /dev/null — i wedge di Ollama DENTRO la
+# finestra («server muto anche al ping», le righe di rianima_ollama, «NESSUN rianimamento») non arrivavano al log;
+# al turno restava «agente rc=1», e la dashboard non contava il wedge dove colpisce di piu'.
+STUB_WEDGE=$(mktemp)
+printf '#!/bin/bash\necho "[agente] ⚠ server muto anche al ping: rianimo Ollama" >&2\necho "rianima_ollama: esito FALLITO in 60 s" >&2\necho "[agente] ⛔ Ollama non ha risposto (turno 1) — NESSUN rianimamento ha funzionato" >&2\nexit 1\n' > "$STUB_WEDGE"; chmod +x "$STUB_WEDGE"
+OUT=$(MIGLIORIA_AGENT="$STUB_WEDGE" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.js bash "$CM" "$SB" 2>&1)
+grep -c 'server muto anche al ping' <<<"$OUT" >/dev/null && grep -c 'NESSUN rianimamento' <<<"$OUT" >/dev/null && grep -c 'rianima_ollama: esito FALLITO' <<<"$OUT" >/dev/null \
+  && ok "i wedge dell'agente arrivano nell'uscita della miglioria (e quindi al log del turno)" || ko "wedge dell'agente persi: $(tail -2 <<<"$OUT")"
+git -C "$SB" reset -q --hard; rm -f "$STUB_WEDGE"
+grep -c 'rianima_ollama: esito' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il turno rilancia nel log le righe d'esito di rianima_ollama e dei wedge" || ko "il turno non rilancia le righe dei wedge della miglioria"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

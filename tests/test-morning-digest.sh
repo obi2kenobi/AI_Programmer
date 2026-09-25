@@ -27,7 +27,7 @@ echo 'DIGEST_EMAIL=test@esempio.it' > "$TMP/repo/night-shift/repos.key"
 cat > "$HOME/morning-gate-report.md" <<'EOF'
 # Report
 
-Totale: 3 PR verificate
+Totale: 3 PR verificate, una "urgente"
 
 Nota con "virgolette" e un backslash \ dentro.
 EOF
@@ -56,6 +56,10 @@ grep -qF '\"virgolette\"' <<<"$CAPTURED" && ok "le virgolette nel report sono es
   || ko "virgolette non escaped: $CAPTURED"
 grep -qF '\\' <<<"$CAPTURED" && ok "il backslash nel report è escaped nello script AppleScript" \
   || ko "backslash non escaped: $CAPTURED"
+# (2026-09-24, terzo ventaglio, V2 S12b): l'oggetto viene dalla riga «Totale:» e si escapa a parte
+# (SUBJ_ESC); senza virgolette su quella riga, `SUBJ_ESC=$SUBJ` restava verde
+grep -qF '[Gate] Totale: 3 PR verificate, una \"urgente\"' <<<"$CAPTURED" && ok "le virgolette dell'oggetto sono escaped" \
+  || ko "oggetto non escaped: $(grep -o 'subject:[^,]*' <<<"$CAPTURED")"
 
 # ── (revisione 10 giri, 2026-09-23): la memoria del turno ─────────────────────────────
 # Tre difetti misurati: (a) `.sal-turni.md` si svuotava PRIMA dell'invio — se Mail e mail
@@ -87,6 +91,37 @@ CAP2=$(cat "$TMP/captured.txt" 2>/dev/null)
 grep -q "Cicli notturni\*\*: 2 " <<<"$CAP2" && ok "cicli = turni scritti (2)" || ko "cicli: $(grep -o 'Cicli notturni[^/]*' <<<"$CAP2")"
 grep -q "\*\*PR\*\*: 5 " <<<"$CAP2" && ok "PR = somma delle PR dei turni (3+2 = 5), non il numero di turni" || ko "PR: $(grep -o 'PR\*\*: [0-9]*' <<<"$CAP2")"
 grep -q "ASPETTA IL GIORNO\*\*: 1 decisioni" <<<"$CAP2" && ok "ASPETTA = le decisioni pendenti (1), non il log dei turni dopo" || ko "ASPETTA: $(grep -o 'ASPETTA IL GIORNO[^p]*' <<<"$CAP2")"
+# (2026-09-24, quinto ventaglio, R4 R4): cicli e fix si contavano nelle 20 righe di coda del log che ogni
+# turno accoda — finestre che si sovrappongono. Un ciclo corto rientra nella coda del precedente (contato due
+# volte), uno lungo non ci lascia la riga d'inizio (zero). Ora: un'intestazione = un ciclo, e i fix sono un
+# numero dell'intestazione, come le PR.
+cat > "$SALT" <<'EOF'
+
+### 2026-09-23, turno automatico — 0 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio, 1 auto-fix
+
+  [00:30:00] === TURNO INIZIATO ===
+  [01:00:00] === TURNO INIZIATO ===
+  [01:00:01] REPO a: auto-fix — indice del SAL rigenerato (S16)
+
+### 2026-09-23, turno automatico — 0 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio, 2 auto-fix
+
+  [01:00:00] === TURNO INIZIATO ===
+  [01:00:01] REPO a: auto-fix — indice del SAL rigenerato (S16)
+  [02:00:00] === TURNO INIZIATO ===
+  [02:00:01] REPO a: auto-fix — CRLF bonificato in x.sh
+  [02:00:02] REPO a: auto-fix — indice pattern riordinato (alfabetico)
+
+### 2026-09-23, turno automatico — 1 PR bozza, 0 proposte in issue, 0 fallite, 0 saltate per Design/Territorio, 0 auto-fix
+
+  [03:10:00] una riga lunga, l'inizio del ciclo e' fuori dalla coda
+EOF
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out4.log" 2>&1
+CAP4=$(cat "$TMP/captured.txt" 2>/dev/null)
+grep -q "Cicli notturni\*\*: 3 " <<<"$CAP4" && ok "R4 R4: cicli = intestazioni (3), non le righe d'inizio nelle code sovrapposte" || ko "R4 R4: cicli: $(grep -o 'Cicli notturni[^/]*' <<<"$CAP4")"
+grep -q "\*\*Fix\*\*: 3" <<<"$CAP4" && ok "R4 R4: fix = somma dalle intestazioni (1+2+0 = 3)" || ko "R4 R4: fix: $(grep -o 'Fix\*\*: [0-9]*' <<<"$CAP4")"
+grep -c 'saltate per Design/Territorio, \$TOT_AUTOFIX auto-fix' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "R4 R4: il turno scrive i fix nell'intestazione" \
+  || ko "R4 R4: l'intestazione del turno non porta il numero dei fix"
+cp "$TMP/salt.orig" "$SALT"
 PRIMA_RIGA_SUMMARY=$(bash "$TMP/repo/night-shift/gate-summary.sh" 0 2>/dev/null | head -1)
 [ -z "$PRIMA_RIGA_SUMMARY" ] || [ "$(grep -cF "$PRIMA_RIGA_SUMMARY" <<<"$CAP2")" -eq 1 ] \
   && ok "il riepilogo del gate compare UNA volta" || ko "riepilogo del gate duplicato nel digest"
@@ -97,6 +132,40 @@ bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out3.log" 2>&1; RC3=$?
 [ "$RC3" -ne 0 ] && ok "invio fallito → esito rosso (rc=$RC3)" || ko "invio fallito ma rc 0"
 cmp -s "$SALT" "$TMP/salt.orig" && ok "invio fallito → la memoria del turno RESTA (non svuotata)" || ko "invio fallito e memoria svuotata: persa"
 
+# (2026-09-24, quarto ventaglio, Q2 R3): il report del morning-gate (in pensione dal 2026-09-23) puo' mancare.
+# Il commento del digest dice che non ne dipende piu', ma `SUBJ=$(grep … "$REPORT" | …)` sotto set -e e
+# pipefail moriva rc 2, senza una riga: la mail del mattino spariva in silenzio.
+rm -f "$HOME/morning-gate-report.md" "$TMP/captured.txt"
+printf '#!/bin/bash\n[ "$1" = "-e" ] && printf "%%s" "$2" > "$OSASCRIPT_CAPTURE"\nexit 0\n' > "$TMP/bin/osascript"; chmod +x "$TMP/bin/osascript"   # l'invio riesce: qui si giudica il report assente
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out2.log" 2>&1; RC=$?
+[ "$RC" -eq 0 ] && [ -f "$TMP/captured.txt" ] && grep -c 'Mattina del sistema' "$TMP/captured.txt" >/dev/null \
+  && ok "senza il report del gate il digest parte lo stesso, con l'oggetto di ripiego" || ko "senza report del gate: rc=$RC, $(tail -1 "$TMP/out2.log")"
+
+
+# (2026-09-25, settimo ventaglio, V3 R1): il gate e' in pensione, e il suo ultimo report resta sul disco per sempre. Il
+# digest lo allegava a ogni mattina, di qualunque eta', e ne faceva l'OGGETTO della mail; i «sospesi» del cervello erano
+# il file piu' recente, di qualunque giorno. Scelta provvisoria (DEBITI, D-V3-1): il report entra solo se ha meno di 24
+# ore, e i sospesi di un altro giorno si dicono per data.
+printf '# Report\n\nTotale: VECCHIO-DI-UN-MESE\n' > "$HOME/morning-gate-report.md"
+python3 -c 'import os,sys,time; t=time.time()-30*86400; os.utime(sys.argv[1],(t,t))' "$HOME/morning-gate-report.md"
+mkdir -p "$HOME/night-shift-work"; printf 'IN SOSPESO (vecchi)\n' > "$HOME/night-shift-work/.cervello-2026-01-01"
+rm -f "$TMP/captured.txt"
+bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out4.log" 2>&1; RC=$?
+C4=$(cat "$TMP/captured.txt" 2>/dev/null)
+[ "$RC" -eq 0 ] && grep -c 'Mattina del sistema' <<<"$C4" >/dev/null && ! grep -c 'VECCHIO-DI-UN-MESE' <<<"$C4" >/dev/null && grep -c 'non allegato' <<<"$C4" >/dev/null \
+  && ok "V3 R1: un report del gate di 30 giorni fa non e' l'oggetto della mail, non si allega, e si dice" \
+  || ko "V3 R1: report vecchio: rc=$RC, $(grep -o 'subject:"[^"]*"' <<<"$C4" | head -1)"
+grep -c 'sospesi del 2026-01-01' <<<"$C4" >/dev/null && ok "V3 R1: i sospesi di un altro giorno si dicono per data" || ko "V3 R1: i sospesi vecchi entrano come di oggi"
+rm -f "$HOME/night-shift-work/.cervello-2026-01-01" "$HOME/morning-gate-report.md"
+
+# (2026-09-25, ottavo ventaglio, O5 R2): con Mail che non parte e `mail` che accetta, il digest diceva «inviato (via mail)»
+# e svuotava la memoria del turno. L'rc 0 di mail(1) vuol dire «in coda locale», non «arrivato»: sul Mac senza relay il
+# messaggio resta li'. Ora lo dice, e la memoria resta.
+cp "$TMP/salt.orig" "$SALT"
+printf '#!/bin/bash\nexit 1\n' > "$TMP/bin/osascript"; printf '#!/bin/bash\ncat >/dev/null; echo "postdrop: warning: unable to look up public/pickup" >&2; exit 0\n' > "$TMP/bin/mail"; chmod +x "$TMP/bin/osascript" "$TMP/bin/mail"
+OUT5=$(bash "$TMP/repo/night-shift/morning-digest.sh" 2>&1); RC5=$?
+cmp -s "$SALT" "$TMP/salt.orig" && grep -ci 'coda locale' <<<"$OUT5" >/dev/null \
+  && ok "O5 R2: via mail(1) il digest dice «in coda locale» e la memoria del turno resta" || ko "O5 R2: via mail(1): rc=$RC5, memoria $(cmp -s "$SALT" "$TMP/salt.orig" && echo intatta || echo SVUOTATA), «$(tail -1 <<<"$OUT5")»"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -902,3 +902,201 @@
 - Verifica guardia: strumento sostituito da `exit 0` → test-presidio 4 OK, 5 FAIL;
   test-caccia-registro 3 OK, 9 FAIL (prima della cura: verdi).
 - Aggiramento: un test in quarantena che esegue un secondo strumento del clone senza copiarlo.
+
+## E-042 Una causa esclusa con una misura a macchina scarica
+
+- Data / sessione: 2026-09-23 (sessione cloud dei debiti di dominio, dopo il D10 — errore mio)
+- Famiglia: R2 (verde senza dati)
+- Chi l'ha trovato: la caccia sotto carico (quattro esecuzioni in parallelo di
+  `tests/test-errori.sh`), dopo che il rosso intermittente era stato registrato in DEBITI
+- Sintomo: la suite rossa una volta ogni tanto («144 OK, 1 FAIL»), mai ripetuta a comando;
+  nella voce di DEBITI avevo scritto che la forma E-002 era «esclusa con una misura».
+- Causa prossima: `echo "$BLOCCO" | grep -q` sotto pipefail in `tests/test-errori.sh` (e la
+  stessa forma in `tests/test-suite-runner.sh`): grep -q esce alla prima riga, echo prende
+  SIGPIPE e la pipeline e' falsa con il campo presente («E-032: mancanti: Guardia:»).
+- Causa del ragionamento: ho misurato la forma sospetta (500 prove, 0 falsi) su una macchina
+  scarica, dove echo scrive tutto prima che grep sia schedulato — e ho promosso quel verde a
+  esclusione. La misura provava l'assenza del difetto nelle condizioni in cui non poteva comparire.
+- Perché non ci ha fermati: la famiglia E-002 era gia' nota e censita, ma solo per `tools/`; i
+  banchi non erano nel censimento, e ogni singolo rosso spariva al rilancio.
+- Guardia: `tests/test-e002-banchi-curati.sh` (cricchetto: i banchi curati non tornano alla forma
+  che morde) + la cura `grep -q … <<<"$X"` nei due banchi.
+- Verifica guardia: con la forma rimessa in `tests/test-errori.sh` la guardia e' rossa; sotto
+  carico la forma dava 2 rossi su 120, la cura 0 su 120.
+- Aggiramento: gli altri 248 siti nei banchi (DEBITI, famiglia E-002) finche' non sono curati.
+
+## E-043 Un sabotaggio dichiarato rosso prima di leggerne l'uscita
+
+- Data / sessione: 2026-09-24 (notte dei giri, Q28 — errore mio)
+- Famiglia: R1 (assunzione non verificata) + R2 (verde senza dati: il sabotaggio non poteva
+  mordere)
+- Chi l'ha trovato: io, rileggendo l'uscita del comando dopo il push: il sabotaggio diceva
+  «18 OK, 0 FAIL»
+- Sintomo: il SAL (voce 18°, Q28) e il messaggio del commit 1a6572b dicevano «il sabotaggio ne
+  rifa' rosso uno». Era verde.
+- Causa prossima: avevo sabotato la pulizia del CR in `tools/profilo.sh`, una riga RIDONDANTE — il
+  CR e' uno spazio per `[[:space:]]` e lo toglieva gia' il taglio degli spazi ai bordi.
+- Causa del ragionamento: nello STESSO comando ho lanciato il sabotaggio e scritto il SAL col
+  verdetto gia' deciso, prima di vedere l'uscita. Il verdetto e' stato scritto dall'aspettativa, non
+  dal banco.
+- Perché non ci ha fermati: la consegna controlla che la suite sia verde, non che il sabotaggio
+  dichiarato sia stato rosso — quello e' un'affermazione nel testo.
+- Guardia: `tests/test-profilo.sh` col sabotaggio vero (via il taglio degli spazi: 3 rossi), e la
+  riga ridondante tolta dal codice. Regola di procedura, da ora: il verdetto del sabotaggio si
+  scrive in un comando SUCCESSIVO, dopo averne letto l'uscita.
+- Verifica guardia: taglio degli spazi sabotato → «15 OK, 3 FAIL»; ripristinato → 18/0.
+- Aggiramento: la regola di procedura non ha un dente meccanico — il testo del SAL e dei commit
+  resta un'affermazione. Il commit 1a6572b non si riscrive (storia pubblicata): lo corregge questa
+  voce e il commit successivo.
+
+
+## E-044 Un sabotaggio su una variabile che alimenta rm -rf: /tmp svuotata
+
+- Data / sessione: 2026-09-24 (notte dei giri, T2#1 — errore mio)
+- Famiglia: R6 (effetto collaterale ignorato: la pulizia cancella cio' che la variabile dice) + R1
+  (assunzione non verificata: «il sabotaggio tocca solo il banco»)
+- Chi l'ha trovato: io, subito: l'uscita del comando era sparita («output file could not be read»)
+- Sintomo: `/tmp` vuota. Persi lo scratchpad della sessione (helper di consegna, backup, i sei
+  rapporti grezzi T1-T6 dei giri, le note), il backup da cui ripristinare il sabotaggio e il programma
+  di firma dei commit dell'ambiente (`/tmp/code-sign`): da allora ogni commit locale fallisce.
+- Causa prossima: per sabotare la cura di `tools/giri-avversari.sh` ho rimesso `AVVT=/tmp`. La
+  pulizia della batteria faceva `rm -rf "$AVVT"`: con quel valore, `rm -rf /tmp`, da root.
+- Causa del ragionamento: ho scelto il sabotaggio «riporta la cartella condivisa», senza guardare
+  che quella stessa variabile era l'argomento di un `rm -rf` che avevo appena scritto io. Il
+  sabotaggio va sulla difesa, non su un valore che la pulizia usa per cancellare.
+- Perché non ci ha fermati: `rm -rf "$VAR"` non ha nessun controllo su cosa sia VAR; il backup era
+  nella stessa `/tmp` che è stata cancellata.
+- Guardia: `tests/test-giri-avversari-isolati.sh` (caso 0): ogni `rm -rf` di `$AVVT` deve portare
+  la guardia del nome (`case "$AVVT" in */giri-avversari.??????)`); la stessa riga, valutata su una
+  cartella altrui, la deve lasciare stare. Nel codice la cartella si crea con quel nome
+  (`mktemp -d …/giri-avversari.XXXXXX`) e si cancella solo se lo porta. Regola di procedura, da
+  ora: un sabotaggio non tocca mai una variabile che finisce in `rm`, e i backup dei sabotaggi non
+  stanno nella cartella che il sabotaggio può cancellare.
+- Verifica guardia: pulizia nuda `rm -rf "$AVVT"` → «4 OK, 2 FAIL» («altrui CANCELLATA»);
+  ripristinata → 6/0.
+- Aggiramento: il programma di firma NON è ripristinato. Rimetterlo da `/root/.claude/environment-manager/`
+  è stato negato dal classificatore dei permessi, giustamente: è dell'ambiente, non mio. Serve Luca
+  (o una sessione nuova). I rapporti grezzi T1-T6 sono persi: ne restano i riassunti che i giri mi
+  hanno consegnato e le cure già nel SAL.
+- Esito (2026-09-24, 05:29Z): alla ripresa della sessione l'ambiente ha ricreato `/tmp/code-sign` da
+  sé; la patch in attesa e' diventata un commit normale, verificato con la suite, e il file della patch
+  e' stato tolto.
+
+## E-045 Un file dato per assente, cercato col nome sbagliato
+
+- Data / sessione: 2026-09-24 (notte dei giri, T4 — errore mio)
+- Famiglia: R1 (assunzione non verificata: «se `find` non lo trova, non c'è») + R5 (memoria contro
+  realtà: il nome del comando preso per il nome del file)
+- Chi l'ha trovato: lente (il giro V3 del terzo ventaglio, «le skill come istruzioni»)
+- Sintomo: nel MANUALE, in DEBITI e nel SAL ho scritto che `/nuova-commessa` «in questo repo non
+  esiste», e ho tolto il suo rimando dalla descrizione della skill design-doc. Il wizard c'è:
+  `.zcode-commands-nuova-commessa.md`, col suo banco `tests/test-nuova-commessa-wizard-coerenza.sh`.
+- Causa prossima: l'ho cercato con `find -name 'nuova-commessa*'` e `ls .claude/commands .zcode`. Il
+  file si chiama `.zcode-commands-nuova-commessa.md`: nessuna delle due ricerche poteva trovarlo.
+- Causa del ragionamento: un'assenza dichiarata su una ricerca sola, col nome che avevo in testa. Per
+  dire «non esiste» serve una ricerca che troverebbe il file comunque si chiami (`git ls-files | grep`
+  sul nome nudo), non il pattern che mi aspettavo.
+- Perché non ci ha fermati: nessun banco confrontava le affermazioni di assenza nei documenti con i
+  file veri; il banco del wizard esisteva ma non guarda cosa dicono gli altri documenti.
+- Guardia: `tests/test-doc-non-corrotti.sh` — finché `.zcode-commands-nuova-commessa.md` esiste, nessun
+  documento vivo (MANUALE, DEBITI, AGENTS, README, METHOD) lo dice assente. Regola di procedura, da
+  ora: un «non esiste» si dichiara dopo `git ls-files | grep -i <nome nudo>`, non dopo un `find` col
+  nome che mi aspetto.
+- Verifica guardia: sul MANUALE e su DEBITI di prima → «8 OK, 1 FAIL» («wizard dato per assente»);
+  corretti → 9/0.
+- Aggiramento: la guardia copre questo nome solo; un'altra assenza affermata a torto non la vede. Il
+  SAL (append-only) resta com'è, e lo corregge una voce successiva.
+
+## E-046 Il controllo «verde prima di mutare» eseguiva il banco di se stesso
+
+- Data / sessione: 2026-09-24 (notte dei giri, cura Q32 del primo ventaglio — errore mio; messo agli
+  atti in ritardo, alla ripresa del terzo ventaglio: il SAL lo nominava, il registro no)
+- Famiglia: R4 (autoriferimento: l'arnese nel mirino delle proprie sonde) + R3 (precondizione non
+  chiesta: albero pulito contro albero in stage)
+- Chi l'ha trovato: lente (il giro V2 del terzo ventaglio, «i banchi come giudici»)
+- Sintomo: `tools/mutation-tests.sh` su un albero pulito non finiva più: 9 livelli annidati in 15
+  minuti, ucciso dal tetto (`rc=124`).
+- Causa prossima: il controllo di Q32 (`d1554c0`) esegue ogni banco abbinato prima di mutare, compreso
+  `tests/test-mutation-tests.sh`, che su un albero pulito rilancia il run completo di mutation-tests.
+- Causa del ragionamento: ho aggiunto un passo che esegue «tutti i banchi» senza chiedermi se fra loro
+  ci fosse il banco dello strumento stesso, e l'ho provato solo col mio helper di consegna.
+- Perché non ci ha fermati: l'helper mette tutto in stage PRIMA della suite; con l'indice sporco quel
+  banco prende il ramo veloce e la ricorsione non scatta. Il turno gira su un albero pulito.
+- Guardia: `tests/test-mutation-tests.sh` — una repo di prova in cui il banco di mutation-tests rilancia
+  mutation-tests; il run deve finire entro 30 s.
+- Verifica guardia: col salto del proprio banco tolto, ucciso dal tetto di 30 s (FAIL); con la cura,
+  finito. Più la suite intera in un clone pulito: 249 s, 170/170.
+- Aggiramento: nessuno serve; il ramo dell'albero pulito si misura in un clone fresco, non con l'helper.
+
+## E-047 Due sabotaggi diversi, lo stesso FAIL: Python leggeva il bytecode stantio
+
+- Data / sessione: 2026-09-24 (terzo ventaglio, V2#5, sabotaggi delle soglie degli indici della crisi)
+- Famiglia: R2 (verde senza dati: il banco girava su un codice diverso da quello sotto prova) + R1
+  (assunzione non verificata: «ho cambiato il file, quindi il test vede il cambio»)
+- Chi l'ha trovato: lente (la lettura dell'uscita in un comando separato, regola di E-043: tre
+  sabotaggi su tre soglie diverse davano tutti «FAIL oneriFinRicavi»)
+- Sintomo: sabotando `tools/indici_crisi.py` con `sed` (2.1→21, poi 6.3→63, poi 2.9→29), il secondo e il
+  terzo sabotaggio facevano fallire il caso del PRIMO. Il giro V2 aveva scritto «6.3→63: rc 0, 10 OK»,
+  ma con il sorgente vero quel sabotaggio fa rosso il caso «sana» (pn/passivo = 50% ≤ 63): anche quello
+  era probabilmente un verde falso della stessa causa.
+- Causa prossima: Python invalida un `.pyc` confrontando mtime (al secondo) e dimensione del sorgente.
+  `2.1`→`21 ` e `6.3`→`63` lasciano la stessa dimensione, e i sabotaggi in sequenza cadono nello stesso
+  secondo: il modulo importato dal banco era quello in `tools/__pycache__`. Riprodotto su un file di una
+  riga: dopo `X = 2.1` → `X = 21 `, `import` restituisce 2.1.
+- Causa del ragionamento: un sabotaggio l'ho sempre pensato come «cambio il file, rilancio». Ma il
+  banco non esegue il file: esegue ciò che l'interprete ne ha in cache.
+- Perché non ci ha fermati: nessun banco giudicava la cache; `tools/mutation-tests.sh` è salvo per
+  costruzione (il mutante ha un'altra dimensione), i sabotaggi a mano no.
+- Guardia: `tests/test-suite-runner.sh`, caso 5 — un modulo con un `.pyc` valido, modificato alla stessa
+  dimensione e con lo stesso mtime: la suite deve vedere il sorgente. Cura in `tools/suite.sh`: ogni giro
+  ha una cache fresca (`PYTHONPYCACHEPREFIX` in una cartella temporanea).
+- Verifica guardia: senza l'export della variabile, «12 OK, 1 FAIL» («la suite ha giudicato il bytecode
+  stantio»); con la cura, 13/0.
+- Aggiramento: un sabotaggio di un modulo Python lanciato FUORI dalla suite si esegue con
+  `PYTHONPYCACHEPREFIX=$(mktemp -d)`, oppure dopo aver tolto il `__pycache__` del file.
+
+## E-048 Un file sovrascritto senza guardarlo: il gancio git era un rimando, non una copia
+
+- Data / sessione: 2026-09-24 (quinto ventaglio, R1 R5, esenzione dell'archivio nel pre-commit)
+- Famiglia: R1 (assunzione non verificata: «.githooks/pre-commit è una copia di tools/pre-commit.sh»)
+- Chi l'ha trovato: io, dall'uscita di `diff -q` che non diceva niente e da `git diff --stat` (233 righe in più
+  su un file di 4)
+- Sintomo: dopo aver cambiato `tools/pre-commit.sh` ho lanciato `cp tools/pre-commit.sh .githooks/pre-commit`
+  per «tenerli allineati». Il file di destinazione era un rimando di quattro righe
+  (`exec bash …/tools/pre-commit.sh ""`): la copia lo sostituiva con il gancio intero, che al primo cambio del
+  vero sarebbe invecchiato in silenzio. Ripristinato con `git checkout HEAD --` prima di ogni commit: nessun
+  danno pubblicato.
+- Causa prossima: un `cp` su un file che non avevo letto, contro la regola «Before deleting or overwriting,
+  look at the target».
+- Causa del ragionamento: ho dato per buona una struttura (due copie da allineare) invece di leggerla. Il nome
+  della cartella (`.githooks/`) suggeriva una copia; il contenuto diceva un rimando.
+- Perché non ci ha fermati: nessun banco guardava la forma del gancio git; `tests/test-pre-commit.sh`
+  controllava solo che esistesse e fosse eseguibile.
+- Guardia: `tests/test-pre-commit.sh`, caso E-048 — `.githooks/pre-commit` ha al più 6 righe e contiene
+  `exec bash …tools/pre-commit.sh`.
+- Verifica guardia: con la copia rifatta (`cp tools/pre-commit.sh .githooks/pre-commit`) «30 OK, 1 FAIL»;
+  col rimando ripristinato, 31/0.
+- Aggiramento: prima di un `cp` sopra un file tracciato, `git show HEAD:<file> | head` o un `Read`.
+
+## E-049 Un banco rosso a caso: uccidevo i figli prima del padre, e il padre vivo scriveva il segno
+
+- Data / sessione: 2026-09-25 (settimo ventaglio, V5 R2). Il banco è mio: `tests/test-grafo-notturno.sh`, nato nel
+  sesto ventaglio (S4 R6).
+- Famiglia: R3 (una prova che non misura ciò che dice: il verde e il rosso dipendevano dallo scheduler)
+- Chi l'ha trovato: il giro V5, misurando la suite banco per banco con altri quattro giri in corsa: rosso 6 volte su 19.
+- Sintomo: «pass ucciso: il ciclo dopo non riparte». Il banco uccideva il pass con `pkill -KILL -P "$P"; kill -KILL
+  "$P"`. Morto il figlio, la subshell del pass restava viva un attimo e proseguiva con `touch "$GRAFO_MARKER"`: il
+  segno del giorno per un pass ucciso, e il ciclo dopo non ripartiva. A macchina scarica non si vede: 0 su 8, e 0 su
+  10 con sei processi di carico. Con mezzo secondo di pausa fra i due colpi, 3 su 3 rossi.
+- Causa prossima: l'ordine dei colpi. Ho ucciso un albero di processi dai rami, lasciando il tronco libero di agire.
+- Causa del ragionamento: ho pensato ai due `kill` come a un gesto solo, istantaneo. In mezzo c'è una finestra, e il
+  padre ci esegue del codice. L'ordine inverso (prima il padre) ha l'altro difetto: i figli passano a init e `pkill
+  -P` non li trova più. La stessa forma stava anche in `tests/test-mutation-atomico.sh` (padre prima: figli orfani) e
+  in `tools/mutation-tests.sh` (figli prima).
+- Perché non ci ha fermati: il banco era verde a ogni mia consegna (suite in sequenza, macchina scarica). La suite
+  si ferma al primo rosso e non ripete: un rosso a caso nella notte sarebbe sembrato un difetto del turno.
+- Guardia: `tests/test-grafo-notturno.sh`, caso E-049. Ogni `pkill -KILL -P "$X"` nei banchi e in
+  `tools/mutation-tests.sh` ha `kill -STOP "$X"` davanti, sulla stessa riga.
+- Verifica guardia: con il kill di ieri rimesso, «5 OK, 1 FAIL» (E-049 nomina la riga); con lo STOP, 6/0. Il banco
+  con lo STOP: 0 rossi su 5 a macchina scarica, 0 su 3 anche a finestra larga.
+- Aggiramento: per uccidere un albero, `kill -STOP padre; pkill -KILL -P padre; kill -KILL padre`.

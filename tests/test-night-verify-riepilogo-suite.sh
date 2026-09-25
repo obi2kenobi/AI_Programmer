@@ -45,7 +45,7 @@ EOF
 chmod +x "$TMP/tests/test-a.sh" "$TMP/tests/test-b.sh"
 
 OUT_OK=$(bash "$HERE/tools/suite.sh" "$TMP" 2>&1)
-echo "$OUT_OK" | tail -1 | grep -q "2/2" \
+echo "$OUT_OK" | tail -1 | grep -c "2/2" >/dev/null \
   && ok "successo: il tail riporta il conteggio reale (2/2), non l'output dell'ultimo test" \
   || ko "successo: il tail non riporta il conteggio — mostra invece: $(echo "$OUT_OK" | tail -1)"
 
@@ -58,10 +58,10 @@ EOF
 chmod +x "$TMP/tests/test-c-fallisce.sh"
 
 OUT_KO=$(bash "$HERE/tools/suite.sh" "$TMP" 2>&1) || true
-echo "$OUT_KO" | grep -q "FALLITO.*test-c-fallisce.sh" \
+grep -q "FALLITO.*test-c-fallisce.sh" <<<"$OUT_KO" \
   && ok "fallimento: il tail indica il file esatto che ha fatto fallire la suite" \
   || ko "fallimento: nessuna indicazione di quale file sia fallito"
-echo "$OUT_KO" | grep -qE "FALLITO \([0-9]+/[0-9]+\)" \
+grep -qE "FALLITO \([0-9]+/[0-9]+\)" <<<"$OUT_KO" \
   && ok "fallimento: la posizione (N/TOT) è riportata" \
   || ko "fallimento: nessuna posizione N/TOT riportata"
 

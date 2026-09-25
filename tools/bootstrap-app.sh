@@ -14,23 +14,47 @@
 set -euo pipefail
 
 NAME="${1:?uso: bootstrap-app.sh <nome-repo> [--private] [--dry-run]}"
-DRY_RUN=0
-for a in "$@"; do [ "$a" = "--dry-run" ] && DRY_RUN=1; done
+# (Q14, 2026-09-23, giro A8 della notte): i flag si leggono in qualunque ordine — `--private`
+# valeva solo come secondo argomento, e `<nome> --dry-run --private` creava una repo PUBBLICA.
+DRY_RUN=0; VIS="--public"
+for a in "$@"; do
+  case "$a" in --dry-run) DRY_RUN=1 ;; --private) VIS="--private" ;; esac
+done
 if [ $DRY_RUN -eq 1 ]; then echo "== DRY RUN: tutto what-if, nessuna scrittura =="; fi
-VIS="--public"
-[ "${2:-}" = "--private" ] && VIS="--private"
 
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/night-shift-work/$NAME"
 
-[ -d "$DEST" ] && { echo "esiste già: $DEST"; exit 1; }
+# (2026-09-24, sesto ventaglio, S2 R5): «esiste già» valeva anche per un bootstrap interrotto (cartella col commit,
+# nessun remoto: `gh repo create` fallito) — un vicolo cieco senza un gesto. Si distingue, e si dice cosa fare.
+if [ -d "$DEST" ]; then
+  if [ -d "$DEST/.git" ] && [ -z "$(git -C "$DEST" remote 2>/dev/null)" ]; then
+    echo "esiste già: $DEST — ma è un bootstrap INTERROTTO (nessun remoto: la creazione su GitHub non è riuscita)."
+    echo "  per riprendere da capo: togli quella cartella e rilancia bootstrap-app (dentro c'è solo lo standard generato)"
+  else
+    echo "esiste già: $DEST"
+  fi
+  exit 1
+fi
 gh auth status >/dev/null 2>&1 || { echo "gh non autenticato"; exit 1; }
+# (2026-09-24, quarto ventaglio, Q1 R1): senza identita' git il commit iniziale moriva (rc 128) DOPO aver
+# creato la cartella, e il secondo lancio si fermava su «esiste già». La precondizione si chiede prima.
+git var GIT_AUTHOR_IDENT >/dev/null 2>&1 || { echo "bootstrap-app: git non sa chi sei (user.email) — prima: git config --global user.name \"<nome>\" && git config --global user.email <email>"; exit 1; }
+# (Q14): il dry-run prometteva «nessuna scrittura» e creava la repo locale intera (e un secondo
+# lancio vero moriva su «esiste già»). Ora costruisce in una cartella temporanea — cosi' prova
+# davvero ogni copia — dice cosa creerebbe, e la cancella.
+if [ $DRY_RUN -eq 1 ]; then
+  PROVA_DRY=$(mktemp -d)
+  trap 'rm -rf "$PROVA_DRY"' EXIT
+  DEST="$PROVA_DRY/$NAME"
+fi
 
 mkdir -p "$DEST" && cd "$DEST"
 git init -q -b main
 
 # Le regole universali si EREDITANO dal hub: un solo luogo dove vivono.
-cp "$HERE/CLAUDE.md" CLAUDE.md
+# (D8, Luca 2026-09-23): senza i blocchi del solo hub — tools/claude-md-satellite.sh
+bash "$HERE/tools/claude-md-satellite.sh" > CLAUDE.md || { echo "bootstrap-app: CLAUDE.md dell'hub con marcatori solo-hub rotti — mi fermo"; exit 1; }
 cat > PROJECT.md <<EOF
 # PROJECT.md — contesto specifico di $NAME
 
@@ -105,6 +129,16 @@ cp "$HERE/.claude/settings.json" .claude/settings.json
 mkdir -p tools
 bash "$HERE/tools/copia-hook.sh" "$PWD" >/dev/null \
   || { echo "⛔ copia degli hook fallita: il progetto nascerebbe senza il cancello sul deploy"; exit 1; }
+# (Q15, 2026-09-23, giro A8 della notte): il CLAUDE.md qui sopra CITA il settimo patto (`bash
+# tools/debiti-riapertura.sh`), il REGISTRO con la sua guardia, i guardiani del commit, il formato
+# del report di campo — e nessuno arrivava (sync-repo li portava, qui la lista non c'era). Stessa
+# lista di sync-repo e onboard: tools/installa-citati.sh. E gli specchi dei plugin OpenCode.
+bash "$HERE/tools/installa-citati.sh" "$PWD" >/dev/null \
+  || { echo "⛔ installazione degli strumenti citati fallita: il CLAUDE.md citerebbe il nulla"; exit 1; }
+if [ -d "$HERE/.opencode/plugins" ]; then
+  mkdir -p .opencode/plugins
+  cp -r "$HERE/.opencode/plugins/." .opencode/plugins/
+fi
 
 # gap reale (4° ciclo, set 1 "agenti", giro 3, 2026-08-23): la label GitHub "night-shift"
 # viene creata sotto (riga con `gh label create`) ma il template che insegna la FORMA
@@ -118,7 +152,11 @@ echo "# $NAME" > README.md
 # SECRET-SCAN (review §4.3): gitleaks PRIMA del primo push — la disciplina da sola non basta
 command -v gitleaks >/dev/null 2>&1 && { gitleaks detect --source . --no-banner >/dev/null 2>&1 || { echo "⛔ gitleaks ha trovato segreti — risolvere PRIMA del push"; exit 1; }; } || echo "⚠ gitleaks assente (brew install gitleaks): secret-scan saltato"
 if [ $DRY_RUN -eq 1 ]; then
-  echo "(dry: creerebbe la repo)"
+  [ "$VIS" = "--private" ] && VISIBILE="privata" || VISIBILE="pubblica"
+  echo "(dry: creerebbe la repo $NAME, $VISIBILE, in $HOME/night-shift-work/$NAME, con:)"
+  find . -path ./.git -prune -o -type f -print | sed 's|^\./|  |' | sort
+  echo "(dry: creerebbe la label night-shift e iscriverebbe la repo nella coda)"
+  exit 0
 else
   # bug reale (dogfooding, nuovo ciclo 10 giri): la vecchia catena
   # "[ dry ] || git add -A && [ dry ] || git commit" non si fermava se git add
@@ -126,15 +164,39 @@ else
   # &&/||, e git commit veniva eseguito comunque (verificato con simulazione).
   git add -A
   git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
-  gh repo create "$NAME" $VIS --source . --push -q
+  # (S2 R5): se GitHub non risponde, la copia locale ha il commit e nessun remoto — si dice, col gesto per riprendere
+  # (2026-09-25, ottavo ventaglio, O4 R2): senza -q — il gh vero non ce l'ha («unknown shorthand flag: 'q'»), e il bootstrap
+  # si fermava sempre qui con un messaggio da problema di rete. L'uscita normale di gh si tace, gli errori restano a schermo.
+  gh repo create "$NAME" $VIS --source . --push >/dev/null \
+    || { echo "⛔ gh repo create fallito: $DEST ha il commit dello standard ma nessun remoto, niente label, niente coda."
+         echo "   per riprendere: cd $DEST && gh repo create $NAME $VIS --source . --push — oppure togli la cartella e rilancia bootstrap-app"; exit 1; }
+  # (2026-09-24, notte dei giri, T1#2): i guardiani del commit arrivano con lo standard ma core.hooksPath
+  # non viaggia col clone. Nella copia che crea lui, il bootstrap li accende — DOPO il primo commit e
+  # push (lo stesso gesto di night-shift/install.sh per l'hub). Negli altri cloni lo ricorda il garante.
+  git config core.hooksPath .githooks && echo "guardiani del commit accesi (core.hooksPath .githooks)"
 fi
-gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$NAME" >/dev/null 2>&1 || true
+# (2026-09-24, sesto ventaglio, S1 R2): `-R "$NAME"` senza owner — gh vuole OWNER/REPO, e la label non si
+# creava MAI (l'avviso scattava a ogni bootstrap; il banco dava verde col gh finto che accettava tutto).
+# Il nome pieno: quello dato, se ha gia' l'owner; se no il login di gh.
+case "$NAME" in
+  */*) PIENO="$NAME" ;;
+  *) LOGIN=$(gh api user --jq .login 2>/dev/null || true); PIENO="${LOGIN:+$LOGIN/}$NAME" ;;
+esac
+# (Q2 R4): la label non creata si dice — senza, le commesse della notte non vengono viste
+gh label create night-shift --description "Lavorata dal turno di notte (modello locale)" --color 5D3FD3 -R "$PIENO" >/dev/null 2>&1 \
+  || { case "$PIENO" in */*) ;; *) PIENO="<owner>/$NAME" ;; esac
+       echo "⚠ label night-shift NON creata su $PIENO: le commesse della notte non saranno viste — gh label create night-shift -R $PIENO"; }
 
-# La iscrive alla coda locale (se esiste repos.conf)
-CONF="$HERE/night-shift/repos.conf"
-if [ -f "$CONF" ] && ! grep -q "^$(gh api user --jq .login)/$NAME\$" "$CONF"; then
-  echo "$(gh api user --jq .login)/$NAME feat" >> "$CONF"
-  echo "aggiunta a $CONF"
+# La iscrive alla coda locale (se esiste repos.conf). NIGHT_REPOS_CONF: override per i banchi,
+# stesso gesto di tools/onboard-repo.sh (Q14: un banco vero avrebbe iscritto repo finte nella
+# coda VERA dell'hub — successo a onboard al giro 20)
+CONF="${NIGHT_REPOS_CONF:-$HERE/night-shift/repos.conf}"
+# (Q2 R4): il login si legge e si controlla PRIMA di scriverlo nella coda; una sostituzione usata come
+# argomento non ferma set -e, e il bootstrap iscriveva «/nome» e diceva «Fatto»
+if [ -f "$CONF" ]; then
+  LOGIN=$(gh api user --jq .login 2>/dev/null) && [ -n "$LOGIN" ] \
+    || { echo "⛔ login GitHub illeggibile (gh api user): repo creata ma NON iscritta nella coda — a mano: bash tools/iscrivi-coda.sh $CONF <owner>/$NAME feat"; exit 1; }
+  bash "$HERE/tools/iscrivi-coda.sh" "$CONF" "$LOGIN/$NAME" feat   # T6#6: confronto esatto
 fi
 
 echo ""

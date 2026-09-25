@@ -14,10 +14,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 for f in METHOD.md docs/system.md; do
   BODY=$(cat "$HERE/$f")
-  echo "$BODY" | grep -q "/goal" \
+  grep -q "/goal" <<<"$BODY" \
     && ok "$f: il diagramma cita il ramo /goal (territorio piccolo)" \
     || ko "$f: il diagramma non cita /goal — mostra solo la strada notturna"
-  echo "$BODY" | grep -qi "torna a brainstorming\|brainstorming ⇄" \
+  grep -qi "torna a brainstorming\|brainstorming ⇄" <<<"$BODY" \
     && ok "$f: il diagramma mostra il ritorno a /brainstorming se nessuna opzione è buona" \
     || ko "$f: il diagramma non mostra il loopback verso /brainstorming"
 done

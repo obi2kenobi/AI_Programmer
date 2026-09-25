@@ -9,9 +9,11 @@
 # costa il tempo della comprensione vera.
 #
 # Uso: bash tools/polilivello.sh <dir-progetto>
-# Esce 0 sempre (è uno studio, non un gate); il verdetto è il report stesso.
+# Esce 0 (è uno studio, non un gate; il verdetto è il report stesso) · 1 uso.
 set -uo pipefail
 DIR="${1:-}"
+# (sesto ventaglio, rinviati di S3 R6): una cartella relativa che comincia col trattino e' un percorso, non un'opzione.
+case "$DIR" in -*) DIR="./$DIR" ;; esac
 if [ -z "$DIR" ] || [ ! -d "$DIR" ]; then
   echo "uso: polilivello.sh <dir-progetto>" >&2; exit 1
 fi

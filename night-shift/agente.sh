@@ -9,16 +9,32 @@
 # Esce: 0 = lavoro completato · 1 = fallito · 2 = uso · 3 = timeout
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-DIR="${1:?uso: agente.sh <dir> <prompt>}"
-PROMPT="${2:?uso: agente.sh <dir> <prompt>}"
-MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
+[ $# -ge 2 ] || { echo "uso: agente.sh <dir> <prompt>" >&2; exit 2; }
+DIR="$1"; PROMPT="$2"
+MODEL="${NIGHT_MODEL:-${MODELLO:-qwen3.8-27b:iq3s}}"   # MODELLO: il profilo del turno (D11)
+# shellcheck source=lib.sh
+source "$HERE/night-shift/lib.sh"   # gate_allowlist_ok: l'allowlist di sola lettura del censore
 # NIGHT_API_URL: solo per i test (server mock, stesso contratto del solver) — di norma non si tocca
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 MAX_TURNI="${AGENTE_MAX_TURNI:-8}"
+PENSA=$( [ "${THINK:-false}" = "true" ] && echo true || echo false )   # THINK del profilo (D11): solo true|false arrivano a jq
 TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-600}"  # (2026-09-21: 300 non bastano al 27B quando paga un ricarico in coda)
 
 [ -d "$DIR" ] || { echo "⛔ dir inesistente: $DIR" >&2; exit 2; }
+# (Q2 R2): senza jq il corpo della richiesta restava vuoto e l'agente accusava Ollama (e lo rianimava)
+MANCANO=$(dipendenze_mancanti jq curl) || { echo "⛔ MANCA $MANCANO: l'agente non parte — ogni diagnosi del modello sarebbe falsa" >&2; exit 2; }
 cd "$DIR"
+
+# percorso_ammesso <realpath> <realpath-progetto>: 0 se il percorso sta dentro il progetto e NON dentro un `.git`.
+# (2026-09-25, ottavo ventaglio, O1 R1): `.git/` sta dentro il progetto, e il confine lo ammetteva. Una voce di
+# .git/config (o un hook) puo' essere un comando che git esegue: lo scriveva il modello con un edit, e lo eseguivano
+# poi tutti i git del turno — fuori dalla sandbox, e a ogni notte, perche' reset --hard non tocca .git/config.
+percorso_ammesso() {
+  case "$1" in */.git|*/.git/*) return 1 ;; esac
+  case "$1" in "$2"|"$2"/*) return 0 ;; esac
+  return 1
+}
 
 log() { echo "[agente $(date '+%H:%M:%S')] $*" >&2; }
 T_INIZIO=$(date +%s)
@@ -54,8 +70,11 @@ $AGENTE_INTELLIGENZA
 Apply this expertise to the task. Cite specific patterns or rules from your specialty when relevant.}"
 
 # la conversazione: parte con system + user
-CONV=$(jq -n --arg sys "$SYSTEM" --arg p "$PROMPT" \
-  '[{"role":"system","content":$sys},{"role":"user","content":$p}]')
+# (2026-09-23, notte dei giri, T5#6): prompt e conversazione viaggiano su STDIN verso jq e curl, mai
+# negli argomenti — leggibili da `ps`, e oltre 128 KB per argomento (Linux) il comando non parte:
+# la conversazione arriva a MAX_TURNI × 24 KB di file letti.
+CONV=$(printf '%s' "$PROMPT" | jq -Rs --arg sys "$SYSTEM" \
+  '. as $p | [{"role":"system","content":$sys},{"role":"user","content":$p}]')
 
 TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
@@ -63,10 +82,11 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
   [ "$ELAPSED" -gt "$TIMEOUT_TOTALE" ] && { log "⛔ timeout ${TIMEOUT_TOTALE}s"; exit 3; }
 
-  RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
+  RESPONSE=$(jq -c \
     --arg m "$MODEL" \
-    --argjson msgs "$CONV" \
-    '{model:$m, messages:$msgs, stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+    --argjson th "$PENSA" \
+    '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}' <<<"$CONV" \
+    | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
 
   if [ -z "$RESPONSE" ]; then
     # (2026-09-19, Ollama wedged alle 17:29): il server a volte smette di
@@ -76,26 +96,27 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
     # morta che il turno registra come «nessuna miglioria trovata».
     PING=$(curl -s --max-time 20 "$API" -d "{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":\"Say OK\"}],\"stream\":false}" 2>/dev/null | jq -r '.message.content // empty' 2>/dev/null)
     if [ -z "$PING" ]; then
-      log "⚠ server muto anche al ping: rianimo Ollama (kill serve — launchd lo riparte)"
-      pkill -f "ollama serve" 2>/dev/null
-      for i in 1 2 3 4 5 6 7 8; do
-        sleep 5
-        curl -sf --max-time 5 http://localhost:11434/api/tags >/dev/null 2>&1 && break
-      done
+      log "⚠ server muto anche al ping: rianimo Ollama (lib.sh rianima_ollama: custode se c'e', istanza propria se no)"
+      rianima_ollama 2>&1 | while IFS= read -r l; do log "$l"; done
     fi
     # (07:22 di stamattina): una generazione puo' morire ANCHE col server sano al
     # ping — il rianimamento non basta, serve il RIENTO. Un tentativo in piu'
     # costa secondi; la finestra morta costa mezz'ora di cooldown.
     log "generazione vuota (ping: $([ -n "$PING" ] && echo sano || echo muto)) — ritento il turno"
-    RESPONSE=$(curl -sf --max-time 120 "$API" -d "$(jq -n \
+    RESPONSE=$(jq -c \
       --arg m "$MODEL" \
-      --argjson msgs "$CONV" \
-      '{model:$m, messages:$msgs, stream:false, think:false, options:{temperature:0, num_ctx:4096}}')" 2>/dev/null)
+      --argjson th "$PENSA" \
+      '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}' <<<"$CONV" \
+      | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   fi
 
   [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
 
   CONTENT=$(echo "$RESPONSE" | jq -r '.message.content // empty')
+  # (2026-09-24, quarto ventaglio, Q3 R1): 200 con il contenuto vuoto (un modello che pensa soltanto, un
+  # contesto saturo) usciva 0 «completato», e a valle la caccia dichiarava il file pulito per 6 ore.
+  # Muto non e' finito: rc 1, e il chiamante lo legge come agente fallito.
+  [ -z "$CONTENT" ] && { log "⛔ risposta vuota del modello (turno $TURNO) — muto, NON completato: agente rc=1"; exit 1; }
   log "turno $TURNO (${ELAPSED}s): il modello risponde"
 
   # prova a parsare come JSON action (spogliando i fence markdown)
@@ -110,6 +131,33 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   PREV_STRIPPED="$STRIPPED"
 
 ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
+
+  # (2026-09-25, ottavo ventaglio, O1 R4): una frase prima del JSON («Leggo prima il file: {…}») perdeva l'azione. Si
+  # cerca il primo oggetto con "action" dentro il testo.
+  if [ -z "$ACTION" ] && grep -c '"action"' <<<"$STRIPPED" >/dev/null; then
+    ESTRATTO=$(python3 -c '
+import json, sys
+t = sys.argv[1]; d = json.JSONDecoder(); i = t.find("{")
+while i != -1:
+    try:
+        o, _ = d.raw_decode(t[i:])
+        if isinstance(o, dict) and "action" in o:
+            print(json.dumps(o)); break
+    except ValueError:
+        pass
+    i = t.find("{", i + 1)' "$STRIPPED" 2>/dev/null)
+    if [ -n "$ESTRATTO" ]; then STRIPPED="$ESTRATTO"; ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null); fi
+  fi
+  # (ottavo ventaglio, O1 R4): un'azione che non si legge (JSON troncato da un tetto sui token) NON e' la risposta finale:
+  # era «completato», rc 0, e la caccia dichiarava il file pulito per 6 ore. Torna al modello come errore di formato;
+  # due di fila sono rc 1.
+  if [ -z "$ACTION" ] && grep -c '"action"' <<<"$STRIPPED" >/dev/null; then
+    FORMATO_ROTTO=$(( ${FORMATO_ROTTO:-0} + 1 ))
+    [ "$FORMATO_ROTTO" -ge 2 ] && { log "⛔ azione illeggibile per $FORMATO_ROTTO turni di fila (JSON troncato o rotto) — NON completato: agente rc=1"; exit 1; }
+    ACTION="__formato__"
+  else
+    FORMATO_ROTTO=0
+  fi
 
   if [ -z "$ACTION" ]; then
     # non è un'action: il modello ha finito
@@ -126,12 +174,12 @@ ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
       # (516 righe per un tubo). edit = sostituzione ESATTA vecchio→nuovo:
       # fallisce se la stringa non c'e', quindi il modello DEVE leggere prima,
       # e il diff minimale non e' una preghiera nel prompt — e' strutturale.
-      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       FOLD=$(echo "$STRIPPED" | jq -r '.old')
       FNEW=$(echo "$STRIPPED" | jq -r '.new')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
           EDIT_OUT=$(python3 -c "
 import sys
@@ -153,15 +201,15 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
           RESULT="ERROR: file not found: $FPATH"
         fi ;;
         *)
-        RESULT="ERROR: path outside project"
+        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
         log "  edit: $FPATH FUORI (rifiutato)" ;;
       esac ;;
 
     read)
-      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
           RESULT="File $FPATH content:\n$(head -c 24000 "$REAL")"
           log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
@@ -170,16 +218,16 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
           log "  read: $FPATH NON TROVATO"
         fi ;;
         *)
-        RESULT="ERROR: path outside project"
+        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
         log "  read: $FPATH FUORI (rifiutato)" ;;
       esac ;;
 
     write)
-      FPATH=$(echo "$STRIPPED" | jq -r '.path')
+      FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       FCONTENT=$(echo "$STRIPPED" | jq -r '.content')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         # (giro 11, 2026-09-20): il system prompt dice «WRITE solo per file NUOVI» ma nulla
         # lo faceva rispettare — la riscrittura intera (516 righe per un tubo) passava di qui.
         # La regola diventa strutturale: un file che esiste si cambia SOLO con edit.
@@ -189,25 +237,40 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         else
           mkdir -p "$(dirname "$REAL")"
           echo "$FCONTENT" > "$REAL"
+          # T5#2b: il file nuovo si dichiara — nella consegna del turno entrano solo i file dichiarati
+          dichiara_file_nuovo "$DIR" "${REAL#"$REAL_DIR"/}" || log "  write: $DIR non e' una repo git — nessuna consegna a cui dichiarare il file"
           RESULT="OK: wrote to $FPATH"
           log "  write: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
         fi ;;
         *)
-        RESULT="ERROR: path outside project"
+        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
         log "  write: $FPATH FUORI (rifiutato)" ;;
       esac ;;
 
     run)
       CMD=$(echo "$STRIPPED" | jq -r '.command')
-      case "$CMD" in
-        *clasp*|*push*|*deploy*|*curl*|*rm\ -rf*|*sudo*)
-          RESULT="ERROR: command not allowed"
-          log "  run: RIFIUTATO: $CMD" ;;
-        *)
-          RESULT="Command: $CMD\nOutput:\n$(eval "$CMD" 2>&1 | head -30)"
-          log "  run: $CMD" ;;
-      esac ;;
+      # (2026-09-23, giro A6 della notte): qui c'era una denylist a SOTTOSTRINGHE e poi eval, fuori
+      # sandbox — `git p""ush`, wget, un interprete o un touch passavano (riprodotto: 0 rifiuti su 4,
+      # file scritti). Ora il run passa dalla stessa allowlist di SOLA LETTURA del censore: le
+      # scritture restano a edit/write, confinate al progetto. Sul Mac il comando gira in piu' dentro
+      # sandbox-exec col profilo del turno (niente rete, scritture solo qui e in /tmp).
+      if ! gate_allowlist_ok "$CMD"; then
+        RESULT="ERROR: command not allowed. run accepts only read-only tools: grep, cat, diff, wc, head, tail, ls, test, jq, echo, and git diff/log/show/grep/status/rev-parse/ls-files/blame. To change files use edit or write."
+        log "  run: RIFIUTATO (fuori dall'allowlist di sola lettura): $CMD"
+      elif command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ]; then
+        PROFILO=$(mktemp /tmp/agente-sandbox.XXXXXX)
+        sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO"
+        RESULT="Command: $CMD\nOutput:\n$(sandbox-exec -f "$PROFILO" bash -c "$CMD" 2>&1 | head -30)"
+        rm -f "$PROFILO"
+        log "  run (sandbox): $CMD"
+      else
+        RESULT="Command: $CMD\nOutput:\n$(eval "$CMD" 2>&1 | head -30)"
+        log "  run: $CMD"
+      fi ;;
 
+    __formato__)
+      RESULT="ERROR: your action is not valid JSON (truncated or malformed). Send ONE complete JSON object on one line, or your final answer as plain text."
+      log "  azione illeggibile (JSON troncato o rotto): errore di formato rimandato al modello" ;;
     *)
       RESULT="ERROR: unknown action: $ACTION"
       log "  azione sconosciuta: $ACTION" ;;

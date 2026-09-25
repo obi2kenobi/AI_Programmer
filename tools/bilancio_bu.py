@@ -39,6 +39,11 @@ def main():
     è ricavo. Il ribaltamento dei costi indiretti NON è provato dal codice
     REPO-E: l'oracolo produce margine DIRETTO e lo dichiara.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: bilancio_bu.py < gl.csv — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     # (giro 21, 2026-09-20 — D32): senza la colonna amount (o con stdin vuoto) usciva una
     # tabella di zeri con rc 0 — verde senza dati. `bu` resta facoltativa (NOBU e' voluto).
     reader = csv.DictReader(sys.stdin)
@@ -74,6 +79,10 @@ def main():
         t["ricavi"] += ricavo
         t["costi"] += costo
 
+    # (Q22): con zero righe valide (anche: tutte scartate) stampava «QUADRATURA … 0.00 = 0.00»
+    if not amounts:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23) — righe scartate: {righe_scartate}", file=sys.stderr)
+        return 1
     tot_r = sum(v["ricavi"] for v in bu_tot.values())
     tot_c = sum(v["costi"] for v in bu_tot.values())
     risultato_totale = round(tot_r - tot_c, 2)

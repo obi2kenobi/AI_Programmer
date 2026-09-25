@@ -26,6 +26,16 @@ GATE_LOG="$HOME/morning-gate.log"
 rotate_log_if_big "$GATE_LOG"
 
 log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "$GATE_LOG"; }
+# (2026-09-24, notte dei giri, T2#2): il gate lavora nella STESSA cartella del turno ($WORK/<repo>) —
+# lanciato a mano accanto al turno, spostava la copia su main trascinandosi la patch a meta' del turno
+# (patterns/workdir-e-proprietario.md). Ora prende il lock del turno: con un turno vivo non entra.
+TURN_LOCK="$WORK/.lock-turno"
+mkdir -p "$WORK"
+if ! prendi_lock_turno "$TURN_LOCK"; then
+  log "turno notturno vivo (PID $(cat "$TURN_LOCK/pid" 2>/dev/null || echo '?')) nella stessa cartella di lavoro: il gate non entra — rilancialo a turno finito"
+  exit 3
+fi
+trap 'rm -rf "$TURN_LOCK"' EXIT
 
 REPO_LIST=()
 if [ $# -gt 0 ]; then
@@ -80,7 +90,7 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
   git -C "$DIR" fetch origin --prune -q
   DB=$(default_branch "$DIR") || log "ATTENZIONE: default branch non rilevato in $REPO, assumo main"
   # review §4.2: drift-check del CLAUDE.md (informativo, non bloccante)
-  if ! diff -q <(git -C "$DIR" show "origin/$DB:CLAUDE.md" 2>/dev/null) "$HERE/../CLAUDE.md" >/dev/null 2>&1; then
+  if ! diff -q <(git -C "$DIR" show "origin/$DB:CLAUDE.md" 2>/dev/null) <(bash "$HERE/../tools/claude-md-satellite.sh") >/dev/null 2>&1; then
     echo "_⚠ Drift: il CLAUDE.md della repo $REPO differisce da quello del hub (regole ereditate non allineate — valutare l'aggiornamento)._" >> "$REPORT"
   fi
 
@@ -145,7 +155,8 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
     # 9: il file c'è ma sembra dimenticato) — qui la repo DICHIARA esplicitamente, col
     # motivo, di non poter verificare in automatico. Marcatore: una riga
     # "# NON-VERIFICABILE: <motivo>" in .night-verify.
-    NV_MOTIVO=$(printf '%s' "$NIGHT_VERIFY" | grep -iE '^#\s*NON-VERIFICABILE\s*:' | head -1 | sed -E 's/^#\s*NON-VERIFICABILE\s*:\s*//I')
+    # (T3#3, 2026-09-23): classi POSIX e nessun flag I — il sed BSD del Mac legge \s come «s» e rifiuta I
+    NV_MOTIVO=$(printf '%s' "$NIGHT_VERIFY" | grep -iE '^#[[:space:]]*NON-VERIFICABILE[[:space:]]*:' | head -1 | sed -E 's/^[^:]*:[[:space:]]*//')
     if [ -n "$NV_MOTIVO" ]; then
       echo "**Verifiche dichiarate:** repo marcata \`NON-VERIFICABILE\` — $NV_MOTIVO. La verifica di livello 1-2 passa da un controllo umano/deploy, non dal gate automatico." >> "$REPORT"
       VERDICT="non-verificabile"
@@ -161,18 +172,22 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
       CMD_ESEGUITI=0
       # (2026-09-19): FORMATO script dichiarato — il file e' un programma intero
       # (Magazzino, 505 righe): una verifica sola, non riga-per-riga
-      if printf '%s\n' "$NIGHT_VERIFY" | head -10 | grep -q "^# FORMATO: script"; then
+      if printf '%s\n' "$NIGHT_VERIFY" | head -10 | grep -c "^# FORMATO: script" >/dev/null; then
         CMD_ESEGUITI=1
         echo "- \`.night-verify\` (formato script, eseguito intero):" >> "$REPORT"
         # (D41, giro 28 2026-09-20): l'output delle verifiche entrava nel report e nella proposta
         # di issue SENZA maschera — solo il banco avversariale passava da mask_secrets. Un test
         # che stampa un token lo portava in chiaro fino a GitHub («Mask, don't omit»).
-        if OUT=$( cd "$DIR" && run_guarded 900 bash .night-verify 2>&1 </dev/null | mask_secrets; exit "${PIPESTATUS[0]}" ); then
+        # (2026-09-25, settimo ventaglio, V1 R4): si esegue il contenuto di main (NIGHT_VERIFY), da un file temporaneo,
+        # come il censore — `bash .night-verify` eseguiva quello del ramo della PR: la PR si giudicava con le prove sue.
+        NV_SCRIPT=$(mktemp "${TMPDIR:-/tmp}/gate-nv.XXXXXX"); printf '%s\n' "$NIGHT_VERIFY" > "$NV_SCRIPT"
+        if OUT=$( cd "$DIR" && run_guarded 900 bash "$NV_SCRIPT" 2>&1 </dev/null | mask_secrets; exit "${PIPESTATUS[0]}" ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
           FAIL_DETAIL="$FAIL_DETAIL"$'\n- .night-verify (formato script):'$'\n'"$(echo "$OUT" | tail -8)"
         fi
+        rm -f "$NV_SCRIPT"
       else
       while IFS= read -r cmd; do
         # (D40, giro 28 2026-09-20): qui c'era `cmd="${cmd%%#*}"` — un `#` fra virgolette
@@ -293,7 +308,10 @@ ${DIFF_TXT}"
       # backtick/virgolette/$ che l'output di un comando qualunque potrebbe contenere.
       echo "" >> "$REPORT"
       echo "> ⛔ **Proposta correttiva** (il correttore — da approvare):" >> "$REPORT"
-      echo "> \`\`\`bash" >> "$REPORT"
+      # (2026-09-24, sesto ventaglio, S1 R6): il blocco si apriva DENTRO la citazione (`> ```bash`) e si chiudeva
+      # fuori: in CommonMark finisce con la citazione, e il comando usciva dal blocco. Ora il blocco sta fuori.
+      echo "" >> "$REPORT"
+      echo "\`\`\`bash" >> "$REPORT"
       echo "gh issue create -R $REPO --label night-shift --title \"correzione: PR #$NUM — verifiche o banco avversario falliti\" --body \"\$(cat <<'GATE_EOF'" >> "$REPORT"
       echo "La PR #$NUM non supera il gate del mattino (verifiche: $VERDICT, banco: $BANCO)." >> "$REPORT"
       if [ -n "$FAIL_DETAIL" ]; then

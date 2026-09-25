@@ -20,7 +20,7 @@ Le tre domande restano le stesse (il metodo: le domande prima del codice):
 Uso: dashboard  (da qualsiasi directory) → http://localhost:8787
 Override per test: NIGHT_LOG (il log da leggere), NIGHT_CENSUS (dir .git/caccia-registro).
 """
-import http.server, json, os, re, subprocess, time
+import html, http.server, json, os, re, subprocess, time
 from datetime import datetime
 
 HUB = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,10 +49,12 @@ def stats():
          "funnel": {}, "gate_bocia": [], "push_err": [], "delibere": [],
          "recent": [], "verifiche": [], "ollama_wedge": 0, "ollama_revive": 0,
          "drift": {}, "pr": 0, "fix": 0, "cicli": 0, "tot": 0, "errori": 0,
-         "battito_min": None, "gap_max": None, "pr_eventi": {}}
+         "battito_min": None, "gap_max": None, "pr_eventi": {},
+         "ultimo_errore": "", "coda_illeggibile": 0}
     F = s["funnel"]
     F["finestre"] = F["trasformatore"] = F["agente_ok"] = F["agente_morto"] = 0
     F["gate"] = F["consegne"] = F["push_fail"] = F["approvate"] = F["rigettate"] = 0
+    F["lente_muta"] = 0   # (2026-09-24, R4 R2): la firma «LENTE MUTA» del turno (dal 24/9) non la contava nessuno
     ultima_apertura = -1
     rosse = []
     prev_dt = None
@@ -77,6 +79,7 @@ def stats():
             if "attivo la CACCIA" in l: F["finestre"] += 1
             if "TRASFORMATORE deterministico" in l: F["trasformatore"] += 1
             if "AGENTE FALLITO" in l: F["agente_morto"] += 1
+            if "LENTE MUTA" in l: F["lente_muta"] += 1
             if "caccia: sana e nessuna miglioria" in l: F["agente_ok"] += 1
             if "gate BOCCIA" in l or "gate BOCCIA:" in l:
                 F["gate"] += 1; s["gate_bocia"].append(l.strip()[1:150])
@@ -92,8 +95,11 @@ def stats():
                 m = re.search(r"PR di \S+ → \S+/pull/(\d+)", l)
                 if m: s["pr_eventi"].setdefault(m.group(1), []).append("consegnata")
             if "auto-fix" in l and "senza diff" not in l: s["fix"] += 1
-            if "ERRORE" in l or "⛔" in l: s["errori"] += 1
-            if "Ollama wedged" in l: s["ollama_wedge"] += 1
+            if "ERRORE" in l or "⛔" in l:
+                s["errori"] += 1; s["ultimo_errore"] = l.strip()[22:160]   # (R4 R5): anche QUALE, dopo la data
+            if "coda ILLEGGIBILE" in l: s["coda_illeggibile"] += 1
+            # (2026-09-24, R4 R3): anche il wedge DENTRO la finestra dell'agente (rilanciato da caccia-miglioria)
+            if "Ollama wedged" in l or "server muto anche al ping" in l: s["ollama_wedge"] += 1
             if "rianimato dal watchdog" in l: s["ollama_revive"] += 1
             m = re.search(r"PR #(\d+) in quarantena", l)
             if m: s["pr_eventi"].setdefault(m.group(1), []).append("in quarantena")
@@ -177,8 +183,12 @@ def verdetto(s):
     F = s["funnel"]
     battito = s.get("battito_min")
     if not s.get("attivo"):
+        # (2026-09-24, quinto ventaglio, R4 R5): diceva «KeepAlive lo riscatta entro 30s» — il plist del turno non
+        # ha KeepAlive (la Q12 l'aveva tolto da turno-vivo, non da qui). Il gesto vero, e l'ultimo ⛔ se c'e'.
+        perche = f" Ultimo errore del log: {s['ultimo_errore']}." if s.get("ultimo_errore") else ""
         return ("#e74c3c", "🔴 FERMO",
-                "il turno non e' nei processi — KeepAlive lo riscatta entro 30s; se resta fermo, guarda il log")
+                "il turno non e' nei processi — launchd lo riparte da solo solo alle 23:00: "
+                "launchctl kickstart gui/$(id -u)/<job nightshift> (bash tools/turno-vivo.sh stampa il comando)." + perche)
     if battito is not None and battito > 15:
         return ("#f39c12", "🟠 VIVO MA MUTO",
                 f"il log tace da {battito:.0f} minuti: fase lunga (banco/mutazioni) o blocco vero? il PID c'e'")
@@ -190,15 +200,25 @@ def verdetto(s):
         if r: motivo += f" · {r} rinviate dal censore"
         return ("#4ecca3", "🟢 STA CONSEGNANDO", motivo)
     if F["finestre"] and not F["consegne"]:
+        if F.get("lente_muta"):
+            return ("#f39c12", "🟡 GIRA MA NON CONSEGNA",
+                    f"{F['lente_muta']} lenti mute oggi: il modello non risponde alla caccia (guarda Ollama)")
         if F["agente_morto"]:
             return ("#f39c12", "🟡 GIRA MA NON CONSEGNA",
                     f"{F['agente_morto']} agenti morti oggi e nessuna consegna: il collo e' l'agente (tetto turni? contesa?)")
         return ("#f39c12", "🟡 GIRA MA NON CONSEGNA",
                 f"{F['finestre']} finestre di caccia, zero consegne: guarda il funnel")
+    # (R4 R5): col PID vivo un giorno di coda illeggibile era «il lavoro arrivera'» — nessuna repo lavorata
+    if s.get("coda_illeggibile"):
+        return ("#f39c12", "🟡 CODA ILLEGGIBILE",
+                f"{s['coda_illeggibile']} volte oggi la coda delle issue non si e' letta (gh?): quelle repo sono saltate")
     return ("#0af", "🔵 IN OSSERVAZIONE", "il turno vive: cicli, verifiche e drift — il lavoro arrivera'")
 
 def lettura_funnel(F):
     """La lettura CALCOLATA: la prima anomalia vera del funnel, non un consiglio generico."""
+    # (R4 R2): prima di tutto il modello muto — un giorno di lenti mute si leggeva «le forme non sono riconosciute»
+    if F.get("lente_muta") and not F["consegne"]:
+        return f"il modello non risponde alle lenti ({F['lente_muta']} lenti mute oggi): guarda Ollama, non le forme"
     if F["finestre"] >= 3 and not F["trasformatore"] and not F["consegne"]:
         return "le finestre ci sono ma il trasformatore non applica: le forme non sono riconosciute"
     if not F["consegne"] and F["agente_morto"]:
@@ -266,8 +286,12 @@ def page(s):
         blocchi += "<div style='color:#e74c3c;font-size:.75rem;margin:2px 0'>" + "<br>".join(s["push_err"][-3:]) + "</div>"
     if s["gate_bocia"]:
         blocchi += "<div style='color:#f39c12;font-size:.75rem;margin:2px 0'>" + "<br>".join(s["gate_bocia"][-3:]) + "</div>"
+    # (R4 R5): il contatore degli errori c'era, e la pagina non lo mostrava
+    if s.get("errori"):
+        blocchi += (f"<div style='color:#e74c3c;font-size:.75rem;margin:2px 0'>{s['errori']} errori oggi (ERRORE/⛔)"
+                    f" — l'ultimo: {html.escape(s.get('ultimo_errore', ''))}</div>")
     if not blocchi:
-        blocchi = "<div style='color:#4ecca3;font-size:.75rem'>niente da segnalare: nessun gate o push bocciato oggi</div>"
+        blocchi = "<div style='color:#4ecca3;font-size:.75rem'>niente da segnalare: nessun gate, push o errore oggi</div>"
     delib = "<br>".join(s["delibere"][-4:]) or "<i>nessuna deliberazione: il censore aspetta la prima PR in quarantena</i>"
     ver = "".join(f"<div style='color:#e74c3c'>❌ {v}</div>" for v in s["verifiche"]) or "<div style='color:#4ecca3'>✅ tutte verdi</div>"
     log = "".join(f"<div style='padding:2px 0;border-bottom:1px solid #1a1a2e;color:#8899aa'>{r}</div>" for r in reversed(s["recent"][-15:]))

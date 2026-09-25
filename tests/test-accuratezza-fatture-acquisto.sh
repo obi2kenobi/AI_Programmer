@@ -46,37 +46,37 @@ EOF
 OUT=$(python3 "$HERE/tools/accuratezza_fatture_acquisto.py" "$TMP/config.json" "$TMP/fatture.csv" "$TMP/ordini.csv")
 
 # 1. accuratezza e margine come da aritmetica a mano
-echo "$OUT" | grep -q "Accuratezza: 60.0% · Margine di errore: 40.0%" \
+grep -q "Accuratezza: 60.0% · Margine di errore: 40.0%" <<<"$OUT" \
   && ok "accuratezza 60.0%, margine 40.0% ((10−4)/10)" \
   || ko "accuratezza: $(echo "$OUT" | grep 'Accuratezza')"
-echo "$OUT" | grep -q "Errori reali: 4" && ok "errori reali = 1 anomala + 1 inesistente + 2 discrepanze" \
+grep -q "Errori reali: 4" <<<"$OUT" && ok "errori reali = 1 anomala + 1 inesistente + 2 discrepanze" \
   || ko "errori reali: $(echo "$OUT" | grep 'Errori reali')"
 
 # 2. LA REGOLA: fattura sotto ordine NON è discrepanza (fatturazione parziale)
-echo "$OUT" | grep -q "Matching validi (incl. fatturazione parziale): 5" \
+grep -q "Matching validi (incl. fatturazione parziale): 5" <<<"$OUT" \
   && ok "F03 (−40%): parziale, valida — il falso positivo storico resta chiuso" \
   || ko "validi: $(echo "$OUT" | grep 'validi')"
 
 # 3. soglia al 5%: F04 +2% e F09 +4.5% passano, F02 +10% e F05 +20% no
-echo "$OUT" | grep -q "F02→O1: fattura oltre ordine di +100.00 EUR (+10.0%)" \
+grep -q "F02→O1: fattura oltre ordine di +100.00 EUR (+10.0%)" <<<"$OUT" \
   && ok "F02 +10%: discrepanza" || ko "F02: $(echo "$OUT" | grep F02)"
-echo "$OUT" | grep -q "F05→O2: fattura oltre ordine di +100.00 EUR (+20.0%)" \
+grep -q "F05→O2: fattura oltre ordine di +100.00 EUR (+20.0%)" <<<"$OUT" \
   && ok "F05 +20%: discrepanza" || ko "F05: $(echo "$OUT" | grep F05)"
-echo "$OUT" | grep -vq "F09→O3" && ok "F09 +4.5%: sotto soglia 5%, valida" \
+grep -vq "F09→O3" <<<"$OUT" && ok "F09 +4.5%: sotto soglia 5%, valida" \
   || ko "F09 segnalata per errore: $(echo "$OUT" | grep F09)"
 
 # 4. whitelist: F07 legittima, F06 anomala
-echo "$OUT" | grep -q "Senza ordine — legittime (whitelist): 1 — F07" \
+grep -q "Senza ordine — legittime (whitelist): 1 — F07" <<<"$OUT" \
   && ok "F07 fornitore whitelist: legittima, non errore" || ko "F07: $(echo "$OUT" | grep legittime)"
-echo "$OUT" | grep -q "Senza ordine — anomale: 1 — F06" \
+grep -q "Senza ordine — anomale: 1 — F06" <<<"$OUT" \
   && ok "F06 senza ordine né whitelist: anomala" || ko "F06: $(echo "$OUT" | grep anomale)"
 
 # 5. ordine inesistente
-echo "$OUT" | grep -q "Ordine inesistente: 1 — F08→O9" \
+grep -q "Ordine inesistente: 1 — F08→O9" <<<"$OUT" \
   && ok "F08 con ordine O9 assente: errore dichiarato" || ko "F08: $(echo "$OUT" | grep inesistente)"
 
 # 6. obiettivo
-echo "$OUT" | grep -q "Obiettivo (margine < 0.1%): NON raggiunto" \
+grep -q "Obiettivo (margine < 0.1%): NON raggiunto" <<<"$OUT" \
   && ok "obiettivo 0.1% correttamente NON raggiunto con margine 40%" \
   || ko "obiettivo: $(echo "$OUT" | grep Obiettivo)"
 
@@ -86,7 +86,7 @@ nr,fornitore,ordine_nr,importo
 G1,FORN-A,O1,1000
 EOF
 OUT2=$(python3 "$HERE/tools/accuratezza_fatture_acquisto.py" "$TMP/config.json" "$TMP/f2.csv" "$TMP/ordini.csv")
-echo "$OUT2" | grep -q "Accuratezza: 100.0%" && echo "$OUT2" | grep -q "Obiettivo (margine < 0.1%): RAGGIUNTO" \
+grep -q "Accuratezza: 100.0%" <<<"$OUT2" && grep -q "Obiettivo (margine < 0.1%): RAGGIUNTO" <<<"$OUT2" \
   && ok "caso conforme: 100.0% e obiettivo RAGGIUNTO (il verde dev'essere raggiungibile)" \
   || ko "caso conforme: $OUT2"
 
@@ -101,10 +101,10 @@ nr,importo
 OZERO,0
 EOF
 OUT3=$(python3 "$HERE/tools/accuratezza_fatture_acquisto.py" "$TMP/config.json" "$TMP/f3.csv" "$TMP/o3.csv")
-echo "$OUT3" | grep -q "Ordine con importo <= 0 (dato anomalo, percentuale non definita): 1 — H1→OZERO" \
+grep -q "Ordine con importo <= 0 (dato anomalo, percentuale non definita): 1 — H1→OZERO" <<<"$OUT3" \
   && ok "ordine a 0€ con fattura 5000€: segnalato come dato anomalo, non 'valida'" \
   || ko "ordine a 0€ non segnalato: $OUT3"
-echo "$OUT3" | grep -q "Errori reali: 1" \
+grep -q "Errori reali: 1" <<<"$OUT3" \
   && ok "ordine a 0€: contato negli errori reali" \
   || ko "errori reali attesi 1: $OUT3"
 

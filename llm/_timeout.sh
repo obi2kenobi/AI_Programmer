@@ -20,10 +20,18 @@ ai_timeout() {
     # ignora/blocca (trap '' TERM), timeout non forza mai la terminazione, esattamente sul
     # ramo più comune (coreutils presenti). Verificato dal vivo: un comando con
     # trap '' TERM sotto `timeout 2` tornava dopo l'intera durata del comando, non a 2s.
-    # "-k 5": se il comando è ancora vivo 5s dopo il TERM, SIGKILL — stessa garanzia del
-    # fallback perl sotto (kill di gruppo), non solo sul ramo di emergenza.
-    if command -v timeout >/dev/null 2>&1; then command timeout -k 5 "$secs" "$@"; return; fi
-    if command -v gtimeout >/dev/null 2>&1; then command gtimeout -k 5 "$secs" "$@"; return; fi
+    # "-k 5": se il comando è ancora vivo 5s dopo il TERM, SIGKILL — la stessa garanzia che dal
+    # 2026-09-23 (T3#1) da anche il fallback perl sotto (prima mandava KILL subito, senza TERM).
+    # (2026-09-25, settimo ventaglio, V2 R4): GNU timeout esce 124 solo se il TERM basta; se serve il KILL esce 137.
+    # Il contratto (e il ramo perl) dice 124 allo scadere: un 137 arrivato a tetto scaduto si riporta a 124. Un KILL
+    # arrivato prima del tetto (da fuori) resta 137.
+    local gnu="" t0=$SECONDS rc
+    if command -v timeout >/dev/null 2>&1; then gnu=timeout; elif command -v gtimeout >/dev/null 2>&1; then gnu=gtimeout; fi
+    if [ -n "$gnu" ]; then
+      rc=0; command "$gnu" -k 5 "$secs" "$@" || rc=$?   # «|| rc=$?»: sotto set -e il chiamante uscirebbe qui, prima della riga sotto
+      case "$secs" in *[!0-9]*|"") ;; *) [ "$rc" -eq 137 ] && [ $((SECONDS - t0)) -ge "$secs" ] && rc=124 ;; esac
+      return "$rc"
+    fi
   fi
   command perl -e '
     my $s = shift; my $pid = 0;
@@ -34,11 +42,31 @@ ai_timeout() {
     # del suo gruppo (setpgrp) e il segnale di allarme uccide il gruppo (-$pid).
     # NOTA: qui dentro niente apostrofi nei commenti — questa stringa è delimitata
     # da apici singoli e un apostrofo italiano la chiuderebbe (pagato dal vivo).
-    $SIG{ALRM} = sub { kill "KILL", -$pid if $pid; exit 124 };
+    # (2026-09-23, notte dei giri, T3#1): come GNU timeout -k 5 — prima TERM al gruppo, poi fino a
+    # 5 secondi di attesa, poi KILL. Prima era KILL subito: sul Mac senza coreutils i trap EXIT dei
+    # comandi interrotti non giravano mai (un lock lasciato sporco). Il KILL finale va comunque al
+    # gruppo: il nipote orfano muore anche quando il figlio e gia uscito col TERM.
+    $SIG{ALRM} = sub {
+      if ($pid) {
+        kill "TERM", -$pid;
+        for (1 .. 50) { last if waitpid($pid, 1) > 0; select(undef, undef, undef, 0.1) }
+        kill "KILL", -$pid;
+      }
+      exit 124 };
     alarm $s;
     $pid = fork();
     if ($pid == 0) { setpgrp(0, 0); exec @ARGV or exit 127 }
     waitpid($pid, 0);
     exit(($? & 127) ? 128 + ($? & 127) : $? >> 8);
   ' "$secs" "$@"
+}
+
+# ai_timeout_ramo: quale dei tre rami userebbe ai_timeout qui (2026-09-23, T3#6: il turno lo scrive nel
+# log — i rami si comportavano diversamente, e dal log del Mac non si vedeva quale girava)
+ai_timeout_ramo() {
+  if [ -z "${AI_TIMEOUT_FORCE_PERL:-}" ]; then
+    command -v timeout >/dev/null 2>&1 && { echo "GNU timeout"; return; }
+    command -v gtimeout >/dev/null 2>&1 && { echo "gtimeout"; return; }
+  fi
+  echo "perl (TERM, 5 s, KILL)"
 }

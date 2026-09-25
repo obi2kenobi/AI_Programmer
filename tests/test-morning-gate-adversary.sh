@@ -20,7 +20,7 @@ SNIPPET=$(sed -n '/ADVERSARY="\${ADVERSARY:-qwen}"/,/ASK="\$HERE\/\.\.\/llm\/ask
 check_adversary() {
   local valore="$1" atteso="$2"
   local ASK
-  ASK=$(bash -c "HERE='$HERE/night-shift'; ADVERSARY='$valore'; $SNIPPET; echo \"\$ASK\"")
+  ASK=$(HERE="$HERE/night-shift" ADVERSARY="$valore" bash -c "$SNIPPET; echo \"\$ASK\"")
   [[ "$ASK" == *"$atteso" ]] && ok "ADVERSARY=$valore → $atteso" \
     || ko "ADVERSARY=$valore → atteso *$atteso, ottenuto $ASK"
 }

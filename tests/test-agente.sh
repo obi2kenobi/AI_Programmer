@@ -50,7 +50,8 @@ scenario() { # scenario <nome> <dir-progetto> <prompt> <corpo-1> [<corpo-2> …]
   local d="$MOCK_DIR/$nome"; mkdir -p "$d"; local i=1
   for b in "$@"; do printf '%s\n' "$b" > "$d/$i.json"; i=$((i+1)); done
   python3 "$MOCK_DIR/serve.py" "$d" > "$d/port" 2>/dev/null & local pid=$!
-  for _ in $(seq 1 30); do [ -s "$d/port" ] && break; sleep 0.1; done
+  for _ in $(seq 1 150); do [ -s "$d/port" ] && break; sleep 0.1; done # (2026-09-23): 15 s, non 2-3 — sotto carico python parte piu' lento, la porta restava vuota e il tool diceva «il modello non ha risposto» (rosso a caso, catturato su test-cervello-impara)
+  [ -s "$d/port" ] || echo "⚠ il modello finto non e' partito in 15 s: il FAIL che segue e' dell'ambiente, non dell'agente" >&2
   OUT=$(NIGHT_API_URL="http://127.0.0.1:$(cat "$d/port")/api/chat" AGENTE_MAX_TURNI="${MAX_T:-6}" AGENTE_TIMEOUT=60 bash "$AGENTE" "$dir" "$prompt" 2>&1); RC=$?
   kill "$pid" 2>/dev/null; wait "$pid" 2>/dev/null
 }
@@ -64,7 +65,7 @@ scenario a1 "$SB" "fix sconto" \
 [ "$RC" -eq 0 ] && grep -q 'p \* x / 100' "$SB/mat.js" && [ "$(wc -l < "$SB/mat.js")" -eq 3 ] \
   && ok "A1: read → edit esatto → finish (rc 0, una riga cambiata, le altre byte-identiche)" \
   || ko "A1: rc=$RC file: $(tr '\n' '|' < "$SB/mat.js") out: $(echo "$OUT" | tail -2 | tr '\n' ' ')"
-echo "$OUT" | grep -q "completato in 3 turni" && ok "A1: tre turni contati" || ko "A1: conteggio turni: $(echo "$OUT" | grep completato)"
+grep -q "completato in 3 turni" <<<"$OUT" && ok "A1: tre turni contati" || ko "A1: conteggio turni: $(echo "$OUT" | grep completato)"
 
 # A2: edit con old ASSENTE → errore al modello, file intatto; poi old AMBIGUO → errore
 SB="$SB_ROOT/a2"; mkdir -p "$SB"; printf 'a\nb\na\n' > "$SB/f.txt"
@@ -73,7 +74,7 @@ scenario a2 "$SB" "edit" \
   "$(azione '{"action":"edit","path":"f.txt","old":"a","new":"y"}')" \
   "$(azione 'stop')"
 [ "$(cat "$SB/f.txt" | tr '\n' '|')" = "a|b|a|" ] && ok "A2: old assente e old ambiguo → file INTATTO" || ko "A2: file toccato: $(tr '\n' '|' < "$SB/f.txt")"
-echo "$OUT" | grep -q "vecchio non trovato" && echo "$OUT" | grep -q "ambiguo" && ok "A2: entrambi gli errori dichiarati nel log" || ko "A2: errori non loggati: $(echo "$OUT" | grep edit | tr '\n' ' ')"
+grep -q "vecchio non trovato" <<<"$OUT" && grep -q "ambiguo" <<<"$OUT" && ok "A2: entrambi gli errori dichiarati nel log" || ko "A2: errori non loggati: $(echo "$OUT" | grep edit | tr '\n' ' ')"
 
 # A3: confinamento — read e write FUORI dal progetto rifiutati, il segreto non passa
 SB="$SB_ROOT/a3"; mkdir -p "$SB"; printf 'SEGRETO-XYZ\n' > "$MOCK_DIR/segreto.txt"
@@ -88,9 +89,22 @@ scenario a3 "$SB" "leggi" \
   "$(azione '{"action":"write","path":"'"$MOCK_DIR"'/fuori.txt","content":"x"}')" \
   "$(azione '{"action":"read","path":"../segreto.txt"}')" \
   "$(azione 'fine')"
-echo "$OUT" | grep -q "SEGRETO-XYZ" && ko "A3: file ESTERNO letto (confinamento rotto!)" || ok "A3: il contenuto esterno non arriva al modello"
+grep -q "SEGRETO-XYZ" <<<"$OUT" && ko "A3: file ESTERNO letto (confinamento rotto!)" || ok "A3: il contenuto esterno non arriva al modello"
 [ -f "$MOCK_DIR/fuori.txt" ] && ko "A3: write FUORI dal progetto eseguito" || ok "A3: write fuori dal progetto rifiutato"
 [ "$(echo "$OUT" | grep -c 'FUORI (rifiutato)')" -ge 3 ] && ok "A3: tre rifiuti dichiarati nel log (read, write, ../)" || ko "A3: rifiuti loggati: $(echo "$OUT" | grep -c FUORI)"
+
+# A3b (2026-09-25, ottavo ventaglio, O1 R1): `.git/` sta dentro il progetto, e il confine lo ammetteva. Una voce di
+# .git/config puo' essere un comando che git esegue: la scriveva il modello, e la eseguivano poi i git del turno,
+# fuori dalla sandbox, a ogni notte. Ora edit, write e read dentro un .git sono rifiutati.
+SB="$SB_ROOT/a3b"; mkdir -p "$SB"; git -C "$SB" init -q; cp "$SB/.git/config" "$MOCK_DIR/config-prima"
+scenario a3b "$SB" "config" \
+  "$(azione '{"action":"edit","path":".git/config","old":"[core]","new":"[core]\n\tfinto = si"}')" \
+  "$(azione '{"action":"write","path":".git/hooks/post-checkout","content":"#!/bin/sh\necho x"}')" \
+  "$(azione '{"action":"read","path":".git/config"}')" \
+  "$(azione 'fine')"
+cmp -s "$SB/.git/config" "$MOCK_DIR/config-prima" && [ ! -e "$SB/.git/hooks/post-checkout" ] \
+  && ok "O1 R1: .git/config intatto e nessun hook scritto dal modello" || ko "O1 R1: il modello ha scritto dentro .git/"
+[ "$(echo "$OUT" | grep -c '(rifiutato)')" -ge 3 ] && ok "O1 R1: tre rifiuti dentro .git dichiarati nel log" || ko "O1 R1: rifiuti dentro .git: $(echo "$OUT" | grep -c rifiutato)"
 
 # A4: run — denylist (curl/push/rm -rf/sudo/clasp) rifiutata, comando innocuo eseguito
 SB="$SB_ROOT/a4"; mkdir -p "$SB"
@@ -100,7 +114,22 @@ scenario a4 "$SB" "run" \
   "$(azione '{"action":"run","command":"echo ciao-dal-run"}')" \
   "$(azione 'fine')"
 [ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 2 ] && ok "A4: curl e push RIFIUTATI (denylist)" || ko "A4: rifiuti: $(echo "$OUT" | grep -c RIFIUTATO) (attesi 2)"
-echo "$OUT" | grep -q 'run: echo ciao-dal-run' && ok "A4: il comando innocuo gira" || ko "A4: comando innocuo non eseguito"
+grep -q 'run: echo ciao-dal-run' <<<"$OUT" && ok "A4: il comando innocuo gira" || ko "A4: comando innocuo non eseguito"
+
+# A4bis (2026-09-23, giro A6 della notte): la denylist a sottostringhe si aggirava — `git p""ush`,
+# wget, un interprete, un touch: tutto andava in eval, fuori sandbox. Ora il run passa dalla STESSA
+# allowlist di sola lettura del censore (lib.sh gate_allowlist_ok); le scritture restano a edit/write.
+SB="$SB_ROOT/a4bis"; mkdir -p "$SB"; printf 'uno\n' > "$SB/f.txt"
+scenario a4bis "$SB" "run" \
+  "$(azione '{"action":"run","command":"git p\"\"ush origin main"}')" \
+  "$(azione '{"action":"run","command":"wget -q http://example.invalid/x"}')" \
+  "$(azione '{"action":"run","command":"python3 -c \"open(chr(80)+chr(87)+chr(78),chr(119))\""}')" \
+  "$(azione '{"action":"run","command":"touch PWN2"}')" \
+  "$(azione '{"action":"run","command":"grep -c uno f.txt"}')" \
+  "$(azione 'fine')"
+[ "$(echo "$OUT" | grep -c 'run: RIFIUTATO')" -eq 4 ] && ok "A4bis: push camuffato, wget, interprete e touch RIFIUTATI" || ko "A4bis: rifiuti $(echo "$OUT" | grep -c 'run: RIFIUTATO') su 4 attesi"
+[ ! -e "$SB/PWN" ] && [ ! -e "$SB/PWN2" ] && ok "A4bis: nessun file scritto dal run" || ko "A4bis: il run ha SCRITTO nel progetto"
+grep -q 'run: grep -c uno f.txt' <<<"$OUT" && ok "A4bis: la lettura (grep) gira ancora" || ko "A4bis: anche la lettura e' bloccata"
 
 # A5: write crea SOLO file nuovi — su un file esistente rifiuta (edit e' l'unica via)
 SB="$SB_ROOT/a5"; mkdir -p "$SB"; printf 'originale\n' > "$SB/c.txt"
@@ -117,7 +146,15 @@ MAX_T=2 scenario a6 "$SB" "loop" \
   "$(azione '{"action":"read","path":"x.txt"}')" \
   "$(azione '{"action":"read","path":"x.txt"}')" \
   "$(azione '{"action":"read","path":"x.txt"}')"
-[ "$RC" -eq 1 ] && echo "$OUT" | grep -q "max turni" && ok "A6: tetto dei turni → rc 1 dichiarato (niente loop infinito)" || ko "A6: rc=$RC: $(echo "$OUT" | tail -1)"
+[ "$RC" -eq 1 ] && grep -q "max turni" <<<"$OUT" && ok "A6: tetto dei turni → rc 1 dichiarato (niente loop infinito)" || ko "A6: rc=$RC: $(echo "$OUT" | tail -1)"
+
+# A7 (2026-09-24, quarto ventaglio, Q3 R1): una risposta 200 con il contenuto VUOTO usciva 0 «completato»
+# — a valle caccia-miglioria dichiarava il file pulito per 6 ore e il turno «repository in salute».
+# Muto non e' finito: rc diverso da 0, e il chiamante lo vede come agente fallito («agente rc=»).
+SB="$SB_ROOT/a7"; mkdir -p "$SB"; printf 'x\n' > "$SB/x.txt"
+scenario a7 "$SB" "correggi" '{"message":{"role":"assistant","content":""}}'
+[ "$RC" -ne 0 ] && grep -c "vuota" <<<"$OUT" >/dev/null && ! grep -c "✅ completato" <<<"$OUT" >/dev/null \
+  && ok "A7: contenuto vuoto → rc $RC, «risposta vuota», non «completato»" || ko "A7: contenuto vuoto → rc=$RC: $(echo "$OUT" | tail -1)"
 
 # ── Parte B: le sfide col modello VERO (skip dichiarato senza Ollama) ───────────────
 if curl -sf --max-time 2 http://localhost:11434/api/tags >/dev/null 2>&1; then
@@ -131,6 +168,27 @@ else
   echo "⊘ Ollama non attivo: sfide col modello vero saltate (la meccanica e' provata sopra col mock)"
 fi
 
+
+# (2026-09-25, ottavo ventaglio, O1 R4): un'azione JSON rotta (troncata da un tetto sui token) o preceduta da una frase
+# era «non e' un'azione, quindi ho finito»: rc 0, e la caccia dichiarava il file pulito per 6 ore. Ora un'azione che non
+# si legge torna al modello come errore di formato; due di fila sono rc 1. La prosa prima del JSON non basta a perderla.
+SB="$SB_ROOT/o1r4"; mkdir -p "$SB"; printf 'uno\n' > "$SB/f.txt"
+scenario o1r4a "$SB" "tronca" \
+  "$(azione '{"action":"edit","path":"f.txt","old":"uno","new":"')" \
+  "$(azione '{"action":"edit","path":"f.txt","old":"uno","new":"')"
+[ "$RC" -ne 0 ] && grep -ci 'illeggibil' <<<"$OUT" >/dev/null && ok "O1 R4: azione troncata due volte: rc $RC, non «completato»" || ko "O1 R4: azione troncata: rc $RC ($(grep -m1 'completato\|illeggib' <<<"$OUT"))"
+scenario o1r4b "$SB" "frase" \
+  "$(azione 'Leggo prima il file: {"action":"read","path":"f.txt"}')" \
+  "$(azione 'Fatto.')"
+[ "$RC" -eq 0 ] && grep -c 'read: f.txt' <<<"$OUT" >/dev/null && ok "O1 R4: una frase prima del JSON non perde l'azione (read eseguito)" || ko "O1 R4: frase prima del JSON: rc $RC, read $(grep -c 'read: f.txt' <<<"$OUT")"
+scenario o1r4c "$SB" "riprende" \
+  "$(azione '{"action":"read","path":"f.t')" \
+  "$(azione 'Fatto.')"
+[ "$RC" -eq 0 ] && grep -ci 'formato' <<<"$OUT" >/dev/null && ok "O1 R4: un troncato e poi la risposta finale: l'errore di formato torna al modello, poi rc 0" || ko "O1 R4: ripresa dopo un troncato: rc $RC"
+scenario o1r4d "$SB" "senza percorso" \
+  "$(azione '{"action":"write","content":"x"}')" \
+  "$(azione 'Fatto.')"
+[ ! -e "$SB/null" ] && [ ! -e "$PWD/null" ] && ok "O1 R4: un write senza path non crea un file «null»" || ko "O1 R4: un write senza path ha creato un file «null»"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

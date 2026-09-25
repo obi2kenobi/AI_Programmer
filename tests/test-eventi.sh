@@ -39,12 +39,42 @@ while IFS='|' read -r _scarta _firma _prod _cons _guard; do
     IFS=$OLDIFS; C=$(echo "$C" | sed 's/^ *//;s/ *$//')
     case "$C" in *console.log*|*battito*) continue ;; esac
     [ -f "$HERE/$C" ] || ko "#$N consumatore inesistente: $C"
+    # (2026-09-24, quinto ventaglio, R4 R6): bastava che il FILE esistesse — cervello-impara cercava «registro:
+    # debiti» e il produttore scrive «registro: debito famiglie»: una firma morta dalla nascita, e verde
+    grep -qF "$PAT" "$HERE/$C" 2>/dev/null || ko "#$N consumatore $C non cerca '$PAT'"
     IFS=','; done; IFS=$OLDIFS
 
   # orfane: "⚠ NESSUNO" = firma che nessuno legge — conteggiata e dichiarata
   case "$CONS" in *NESSUNO*) ORFANE=$((ORFANE+1)) ;; esac
 done < <(grep '^| `' "$HERE/docs/eventi.md")
 
+# (R4 R6): le firme nate il 24/9 non erano nel catalogo, e il guardiano restava verde
+for F in 'coda ILLEGGIBILE' '⛔ MANCA' 'SENTINELLA' 'rianima_ollama: esito' 'SFORO DEL BUDGET'; do
+  grep -qF "| \`$F" "$HERE/docs/eventi.md" || ko "R4 R6: la firma «${F}» non e' nel catalogo"
+done
+# (2026-09-24, quinto ventaglio, R4 R6 — il censimento inverso): ogni riga «⚠»/«⛔» che il turno scrive nel log ha
+# una riga nel catalogo, o e' dichiarata fra quelle che legge solo il battito (una persona che guarda il log).
+# La chiave e' il primo tratto letterale di almeno 8 caratteri dopo il simbolo, fino a «(», e al piu' 18.
+# Una riga nuova senza dichiarazione e' un contatore cieco in potenza: rosso.
+NONDETTE=$(python3 - "$HERE/night-shift/night-shift.sh" "$HERE/docs/eventi.md" <<'PY'
+import re, sys
+cat = open(sys.argv[2], encoding="utf-8").read()
+for i, l in enumerate(open(sys.argv[1], encoding="utf-8"), 1):
+    if l.lstrip().startswith("#"):
+        continue
+    m = re.search(r'log "([^"]*[⚠⛔][^"]*)', l)
+    if not m:
+        continue
+    s = m.group(1)
+    s = s[max(s.rfind("⚠"), s.rfind("⛔")) + 1:].split("(")[0]
+    parti = re.split(r"\$\([^)]*\)?|\$\{[^}]*\}|\$[A-Za-z_][A-Za-z0-9_]*", s)
+    k = next((p.strip(" :—-$") for p in parti if len(p.strip(" :—-$")) >= 8), "")[:18].strip()
+    if k and k not in cat:
+        print(f"night-shift.sh:{i} «{k}»")
+PY
+)
+[ -z "$NONDETTE" ] && ok "R4 R6: ogni riga ⚠/⛔ del turno e' nel catalogo o dichiarata letta dal battito" \
+  || ko "R4 R6: righe ⚠/⛔ del turno non dichiarate nel catalogo: $(tr '\n' ' ' <<<"$NONDETTE")"
 [ "$N" -ge 25 ] && ok "$N firme nel catalogo, produttori e consumatori verificati" || ko "solo $N firme"
 [ "$ORFANE" -le 2 ] && ok "orfane dichiarate: $ORFANE (tolleranza 2: battito del log)" || ko "troppe firme orfane: $ORFANE — qualcuna e' un contatore cieco"
 

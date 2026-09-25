@@ -19,4 +19,6 @@
   (subpath "__HOME__/.gnupg")
   (subpath "__HOME__/.config/gh")
   (subpath "__HOME__/.claude/.credentials.json")
-  (subpath "__HOME__/.ollama"))
+  (subpath "__HOME__/.ollama")
+  ;; (2026-09-23, giro A6 della notte): le credenziali di clasp — il deploy in produzione
+  (literal "__HOME__/.clasprc.json"))

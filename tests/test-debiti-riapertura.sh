@@ -21,9 +21,9 @@ Refactor della funzione X: si può fare da soli.
 | 2026-01-01 ✅ SALDATO | cosa vecchia | perché | come |
 FIN
 OUT=$(bash "$TOOL" "$SB" 2>&1)
-echo "$OUT" | grep -q "APERTI: 2 — di DOMINIO: 1" && ok "conta 2 aperti, 1 di dominio (il saldato escluso)" || ko "conto sbagliato: $(echo "$OUT" | sed -n 2p)"
-echo "$OUT" | grep -q "D1. Da decidere col dominio" && ok "il debito di dominio diventa DOMANDA singola (D1)" || ko "dominio non fra le domande"
-echo "$OUT" | grep -q "R1. Lavoro tecnico" && ok "il risolvibile finisce in DA FARE SUBITO" || ko "risolvibile non elencato"
+grep -q "APERTI: 2 — di DOMINIO: 1" <<<"$OUT" && ok "conta 2 aperti, 1 di dominio (il saldato escluso)" || ko "conto sbagliato: $(echo "$OUT" | sed -n 2p)"
+grep -q "D1. Da decidere col dominio" <<<"$OUT" && ok "il debito di dominio diventa DOMANDA singola (D1)" || ko "dominio non fra le domande"
+grep -q "R1. Lavoro tecnico" <<<"$OUT" && ok "il risolvibile finisce in DA FARE SUBITO" || ko "risolvibile non elencato"
 OUT0=$(bash "$TOOL" "$SB" >/dev/null 2>&1; echo $?)
 [ "$OUT0" = "0" ] && ok "esce 0: informa e non blocca (la pressione e' la visibilita')" || ko "esce $OUT0"
 # (D21, test del sistema completo 2026-09-20): due difetti visti sul DEBITI vero.
@@ -44,11 +44,11 @@ $RIEMPI
 La scelta finale spetta a Luca: e' una decisione di acquisto hardware.
 FIN
 OUT3=$(bash "$TOOL" "$SB3" 2>&1)
-echo "$OUT3" | grep -q "perché conta: | Data" && ko "D21a: il «perché conta» e' l'intestazione della tabella" \
+grep -q "perché conta: | Data" <<<"$OUT3" && ko "D21a: il «perché conta» e' l'intestazione della tabella" \
   || ok "D21a: il «perché conta» non e' l'intestazione della tabella"
-echo "$OUT3" | grep -q "perché conta: .*decisione di Luca" && ok "D21a: il «perché conta» e' la riga vera della tabella" \
+grep -q "perché conta: .*decisione di Luca" <<<"$OUT3" && ok "D21a: il «perché conta» e' la riga vera della tabella" \
   || ko "D21a: il perché vero non compare: $(echo "$OUT3" | grep 'perché conta' | head -1)"
-echo "$OUT3" | grep -q "APERTI: 2 — di DOMINIO: 2" && ok "D21b: la parola chiave oltre i 600 caratteri classifica comunque DOMINIO" \
+grep -q "APERTI: 2 — di DOMINIO: 2" <<<"$OUT3" && ok "D21b: la parola chiave oltre i 600 caratteri classifica comunque DOMINIO" \
   || ko "D21b: classificazione su finestra corta: $(echo "$OUT3" | sed -n 2p)"
 rm -rf "$SB3"
 
@@ -70,19 +70,108 @@ cat > "$SB4/DEBITI.md" <<'FIN'
 | 2026-01-03 | provare sul Mac | serve il Mac | ⏳ IN ATTESA: primo giro sul Mac |
 FIN
 OUT4=$(bash "$TOOL" "$SB4" 2>&1)
-echo "$OUT4" | grep -q "R1. Mista" && ok "riga viva in sezione con una saldata: la sezione resta APERTA" \
+grep -q "R1. Mista" <<<"$OUT4" && ok "riga viva in sezione con una saldata: la sezione resta APERTA" \
   || ko "la riga saldata nasconde la viva: $(echo "$OUT4" | sed -n 2p)"
-echo "$OUT4" | grep -q "A1. Solo in attesa" && ok "riga ⏳: classe IN ATTESA, non «da fare subito»" \
+grep -q "A1. Solo in attesa" <<<"$OUT4" && ok "riga ⏳: classe IN ATTESA, non «da fare subito»" \
   || ko "riga ⏳ non in attesa: $(echo "$OUT4" | sed -n 2p)"
-echo "$OUT4" | grep -q "IN ATTESA: primo giro sul Mac" && ok "l'evento dichiarato si vede" || ko "evento ⏳ non mostrato"
+grep -q "IN ATTESA: primo giro sul Mac" <<<"$OUT4" && ok "l'evento dichiarato si vede" || ko "evento ⏳ non mostrato"
 rm -rf "$SB4"
 
 # senza DEBITI.md: dichiarato, non muto (sesto patto)
+# (D5, decisione di Luca 2026-09-23: «a») LA PREMESSA INVECCHIA COL CODICE: una voce aperta che
+# cita un file cambiato in git DOPO la sua data (la piu' recente scritta nella riga: chi la
+# riverifica la aggiorna) chiede di riverificare la premessa. Dal campo REPO-G: le credenziali
+# spostate via nella PR #36, e l'obiezione in DEBITI e' rimasta com'era per giorni.
+SB4=$(mktemp -d /tmp/debiti-t4.XXXXXX)
+g4() { git -C "$SB4" -c user.email=t@t -c user.name=t -c core.hooksPath=/dev/null "$@"; }
+g4 init -q; mkdir -p "$SB4/tools"
+echo v1 > "$SB4/tools/vecchio.sh"; echo v1 > "$SB4/tools/fermo.sh"
+g4 add -A; GIT_COMMITTER_DATE="2026-01-01T12:00:00" g4 commit -q --date "2026-01-01T12:00:00" -m base
+echo v2 > "$SB4/tools/vecchio.sh"
+g4 add -A; GIT_COMMITTER_DATE="2026-03-01T12:00:00" g4 commit -q --date "2026-03-01T12:00:00" -m cambia
+cat > "$SB4/DEBITI.md" <<'FIN'
+# DEBITI
+## Premessa scaduta (dominio)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-02-01 | `tools/vecchio.sh` contiene credenziali | decisione di Luca | quando si decide |
+## Premessa ferma (dominio)
+| 2026-02-01 | `tools/fermo.sh` e `tools/inesistente.sh` | decisione di Luca | quando si decide |
+## Premessa riverificata (dominio)
+| 2026-02-01 | `tools/vecchio.sh` (riverificato 2026-03-05: ancora vero) | decisione di Luca | quando si decide |
+FIN
+OUT4=$(bash "$TOOL" "$SB4" 2>&1)
+echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -c "premessa da riverificare: tools/vecchio.sh" >/dev/null \
+  && ok "file citato cambiato DOPO la voce: premessa da riverificare" || ko "premessa scaduta non segnalata: $(echo "$OUT4" | grep -A3 'Premessa scaduta' | tr '\n' ' ')"
+echo "$OUT4" | grep -A3 "Premessa scaduta" | grep -c "2026-03-01" >/dev/null && ok "la segnalazione dice QUANDO e' cambiato" || ko "manca la data del cambio"
+echo "$OUT4" | grep -A2 "Premessa ferma" | grep -c "riverificare" >/dev/null && ko "file fermo o inesistente segnalato a vuoto" || ok "file fermo o inesistente: nessuna segnalazione"
+echo "$OUT4" | grep -A2 "Premessa riverificata" | grep -c "riverificare" >/dev/null && ko "la data di riverifica nella riga non e' contata" || ok "una data piu' recente nella riga (riverifica) azzera l'orologio"
+rm -rf "$SB4"
+
 SB2=$(mktemp -d /tmp/debiti-t2.XXXXXX)
 OUT2=$(bash "$TOOL" "$SB2" 2>&1)
-echo "$OUT2" | grep -q "nessun DEBITI.md: niente da bruciare (dichiarato" && ok "senza debiti lo DICE (mai muto)" || ko "silenzio senza DEBITI.md"
+grep -q "nessun DEBITI.md: niente da bruciare (dichiarato" <<<"$OUT2" && ok "senza debiti lo DICE (mai muto)" || ko "silenzio senza DEBITI.md"
 rm -rf "$SB2"
 
+# (2026-09-23, notte dei giri): «SALDAT[OA]» OVUNQUE nella riga la chiudeva — anche «NON SALDATO» o
+# «PARZIALMENTE SALDATA» (sul DEBITI vero una riga cosi' era chiusa dal 2026-08-24). Visto
+# scrivendo io stesso «in parte SALDATO» su una riga col debito residuo: sarebbe sparito.
+SB5=$(mktemp -d /tmp/debiti-t5.XXXXXX)
+aperti_con() {  # $1 = la cella «Data» della sola riga della sezione → il numero di debiti APERTI
+  printf '# DEBITI\n## Una riga (2026-01-01)\n| Data | Scorciatoia | Perché | Quando |\n|---|---|---|---|\n| %s | un debito tecnico | x | y |\n' "$1" > "$SB5/DEBITI.md"
+  bash "$TOOL" "$SB5" 2>&1 | sed -n 's/^debiti APERTI: \([0-9]*\).*/\1/p'
+}
+[ "$(aperti_con '2026-01-01 NON SALDATO')" = "1" ] && ok "«NON SALDATO» resta aperto" || ko "«NON SALDATO» contato come saldato"
+[ "$(aperti_con '2026-01-01 ✅ PARZIALMENTE SALDATA')" = "1" ] && ok "«PARZIALMENTE SALDATA» resta aperta" || ko "«PARZIALMENTE SALDATA» contata come saldata"
+[ "$(aperti_con '2026-01-01 ✅ SALDATO')" = "0" ] && ok "«✅ SALDATO» si chiude" || ko "«✅ SALDATO» non si chiude piu'"
+rm -rf "$SB5"
+
+# (2026-09-24, quinto ventaglio, R1 R1): l'unita' di conto era la SEZIONE. Sul DEBITI vero la sezione «La notte
+# dei giri» ha dieci righe vive, nove sono domande di dominio a se': l'uscita diceva «DOMINIO: 1» e mostrava
+# il perche' della prima. Il settimo patto chiede domande singole: si conta la RIGA.
+SB6=$(mktemp -d /tmp/debiti-t6.XXXXXX)
+cat > "$SB6/DEBITI.md" <<'FIN'
+# DEBITI
+## Due domande nella stessa sezione (2026-01-01)
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-01-01 | Domanda di dominio: la soglia dello sconto | perché conta: lo sconto cambia il margine | una risposta |
+| 2026-01-02 | Domanda di dominio: il segno del fondo | perché conta: il fondo decide il netto | una risposta |
+| 2026-01-03 | refactor della funzione X | tempo | prossimo giro |
+FIN
+OUT6=$(bash "$TOOL" "$SB6" 2>&1)
+grep -c "APERTI: 3 — di DOMINIO: 2" <<<"$OUT6" >/dev/null && ok "R1 R1: tre righe vive nella stessa sezione sono tre debiti, due di dominio" \
+  || ko "R1 R1: conto per sezione: $(sed -n 2p <<<"$OUT6")"
+grep -A1 "D1\. " <<<"$OUT6" | grep -c "lo sconto cambia il margine" >/dev/null && grep -A1 "D2\. " <<<"$OUT6" | grep -c "il fondo decide il netto" >/dev/null \
+  && ok "R1 R1: D1 e D2 portano ciascuna il suo perche'" || ko "R1 R1: perche' non per riga: $(grep -A1 '^  D' <<<"$OUT6" | tr '\n' ' ')"
+grep -c "R1\. Due domande nella stessa sezione (2026-01-01) — refactor della funzione X" <<<"$OUT6" >/dev/null \
+  && ok "R1 R1: la riga tecnica della stessa sezione e' un risolvibile, con la sua scorciatoia" || ko "R1 R1: la riga tecnica non e' R1: $(grep '^  R' <<<"$OUT6")"
+rm -rf "$SB6"
+
+# (2026-09-24, quinto ventaglio, R1 R3): una riga SALDATO usciva dalla vista per intero, anche con un residuo
+# ⏳ dichiarato («fatto. ⏳ NON verificato dal vivo»). Sul DEBITI vero sette righe cosi', e per una l'evento
+# era gia' accaduto. Ora si elencano a parte: non fra gli aperti (il conto non si gonfia), ma visibili.
+SB7=$(mktemp -d /tmp/debiti-t7.XXXXXX)
+printf '# D\n## Sezione\n| Data | S | P | Q |\n|---|---|---|---|\n| 2026-01-01 ✅ SALDATO | cosa | perche | fatto. ⏳ NON verificato dal vivo: la prova sul Mac |\n' > "$SB7/DEBITI.md"
+OUT7=$(bash "$TOOL" "$SB7" 2>&1)
+grep -c "APERTI: 0" <<<"$OUT7" >/dev/null && ok "R1 R3: il saldato con residuo non gonfia gli aperti" || ko "R1 R3: conto: $(sed -n 2p <<<"$OUT7")"
+grep -c "⏳ NON verificato dal vivo: la prova sul Mac" <<<"$OUT7" >/dev/null && grep -ci "saldati con residuo" <<<"$OUT7" >/dev/null \
+  && ok "R1 R3: il residuo ⏳ del saldato si vede, in una sezione sua" || ko "R1 R3: residuo invisibile: $(tr '\n' ' ' <<<"$OUT7")"
+rm -rf "$SB7"
+
+
+# (2026-09-25, ottavo ventaglio, O3 R2): il gancio d'avvio della sessione (tools/metodo-reminder-hook.sh, 10 s di tetto)
+# tiene solo la seconda riga, ma pagava la deriva delle citazioni (un git blame per citazione, quadratica col tempo): da
+# circa 250 citazioni il gancio moriva, e la sessione partiva senza patti. Qui una cita-verifica finta lenta: con
+# DEBITI_SENZA_DERIVA=1 non si chiama.
+DL=$(mktemp -d); mkdir -p "$DL/tools" "$DL/p"; cp "$HERE/tools/debiti-riapertura.sh" "$DL/tools/"
+printf '#!/bin/bash\nsleep 20; echo lenta\n' > "$DL/tools/cita-verifica.sh"; printf '# DEBITI\n' > "$DL/p/DEBITI.md"
+source "$HERE/llm/_timeout.sh"   # ai_timeout: `timeout` sul Mac non c'e'
+T0=$(date +%s); DEBITI_SENZA_DERIVA=1 ai_timeout 10 bash "$DL/tools/debiti-riapertura.sh" "$DL/p" >/dev/null 2>&1; RCD=$?; DUR=$(( $(date +%s) - T0 ))
+[ "$RCD" -eq 0 ] && [ "$DUR" -lt 5 ] && ok "O3 R2: con DEBITI_SENZA_DERIVA=1 la deriva non si paga (${DUR} s)" || ko "O3 R2: la deriva si paga lo stesso (rc $RCD, ${DUR} s)"
+grep -c 'DEBITI_SENZA_DERIVA=1 bash "$HERE/tools/debiti-riapertura.sh"' "$HERE/tools/metodo-reminder-hook.sh" >/dev/null \
+  && ok "O3 R2: il gancio d'avvio chiede la riapertura senza deriva" || ko "O3 R2: il gancio d'avvio paga la deriva che poi scarta"
+rm -rf "$DL"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

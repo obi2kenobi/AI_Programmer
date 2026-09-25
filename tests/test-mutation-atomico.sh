@@ -19,30 +19,36 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 TMP=$(mktemp -d /tmp/mutation-atomico.XXXXXX)
 trap 'rm -rf "$TMP"' EXIT
 
-# fixture: mini-repo con git, un tool e un test che dorme 30s
+# fixture: mini-repo con git, un tool e un test che dorme 30s quando il tool e' mutato
 git init -q "$TMP/repo"
 mkdir -p "$TMP/repo/tools" "$TMP/repo/tests"
 printf '#!/bin/bash\necho "sono il tool foo, riga 3"\n' > "$TMP/repo/tools/foo.sh"
 chmod +x "$TMP/repo/tools/foo.sh"
-printf '#!/bin/bash\nsleep 30\nexit 1\n' > "$TMP/repo/tests/test-foo.sh"
+# (Q32, 2026-09-23): il banco di mutazione ora esegue ogni test PRIMA col tool intatto (un banco gia'
+# rosso non prova niente): il test passa subito col tool sano e dorme solo col tool mutato
+printf '#!/bin/bash\ngrep -q "riga 3" "$(dirname "$0")/../tools/foo.sh" && exit 0\nsleep 30\nexit 1\n' > "$TMP/repo/tests/test-foo.sh"
 cp "$HERE/tools/mutation-tests.sh" "$TMP/repo/tools/"
-git -C "$TMP/repo" add -A && git -C "$TMP/repo" commit -qm base
+git -C "$TMP/repo" add -A && git -C "$TMP/repo" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qm base   # identita' propria: una HOME vuota non ne ha (Q1 R1)
 ORIG=$(cat "$TMP/repo/tools/foo.sh")
 PAYLOAD=$(printf '#!/bin/bash\nexit 0\n')   # $(...) strippa il newline finale: come ATTUALE
 
+# aspetta_mutazione: fino a 5 s, finche' foo.sh e' mutato E il banco mutato e' vivo. (2026-09-25, settimo ventaglio, V5 R5):
+# erano tre `sleep 3` fissi, e due `sleep 1` dopo un `wait` che aspetta gia' la fine (trap compresa): 11 dei 16 s del banco.
+aspetta_mutazione() { for _ in $(seq 1 100); do [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && pgrep -P "$PID" >/dev/null && return 0; sleep 0.05; done; return 0; }
+
 # ── A. SIGKILL: il peggiore dei casi ────────────────────────────────────────
-( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
-sleep 3   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
+aspetta_mutazione   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
 # (revisione 10 giri, 2026-09-23): «integro» era accettato anche se la mutazione NON era mai
 # avvenuta (il banco sostituito da `exit 0` passava A, B e C). Prima del colpo, la mutazione
 # dev'essere IN CORSO — altrimenti la prova e' vuota, non verde.
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "A: la mutazione e' in corso al momento del colpo (prova non vuota)" \
   || ko "A: al colpo foo.sh non era mutato — la prova di atomicita' sarebbe vuota"
-kill -KILL "$PID" 2>/dev/null
-pkill -KILL -P "$PID" 2>/dev/null
+# (settimo ventaglio, E-049): STOP al padre, poi i figli, poi il padre. Ucciso prima il padre, i figli passavano a
+# init e `pkill -P` non li trovava piu': restavano orfani.
+kill -STOP "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null; kill -KILL "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
-sleep 1
 ATTUALE=$(cat "$TMP/repo/tools/foo.sh")
 if [ "$ATTUALE" = "$ORIG" ] || [ "$ATTUALE" = "$PAYLOAD" ]; then
   ok "A: SIGKILL a meta' mutazione — il tool e' integro o esattamente neutralizzato (mai troncato)"
@@ -55,26 +61,52 @@ chmod +x "$TMP/repo/tools/foo.sh"
 git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
 
 # ── B. SIGTERM: il caso gentile, il trap deve ripristinare ──────────────────
-( cd "$TMP/repo" && exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
-sleep 3
+aspetta_mutazione
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "B: la mutazione e' in corso al momento del colpo (prova non vuota)" \
   || ko "B: al colpo foo.sh non era mutato — la prova del trap sarebbe vuota"
 kill -TERM "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
-sleep 1
 ATTUALE=$(cat "$TMP/repo/tools/foo.sh")
 if [ "$ATTUALE" = "$ORIG" ]; then
   ok "B: SIGTERM a meta' mutazione — il trap ha ripristinato l'originale"
 else
   ko "B: SIGTERM ha lasciato il tool sporco (payload o monco): il trap non ripristina"
 fi
+# ── C. TERM e KILL dopo 5 s, come fa ai_timeout (2026-09-24, terzo ventaglio, V4#3): il banco girava in
+#    primo piano, e la trap aspettava la sua fine prima di ripristinare — col KILL 5 s dopo il TERM la
+#    trap non girava mai, e il tool restava NEUTRALIZZATO. Il test dorme 30 s: il ripristino deve arrivare
+#    prima del KILL.
+git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
+( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
+PID=$!
+aspetta_mutazione
+[ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "C: la mutazione e' in corso al momento del colpo (prova non vuota)" \
+  || ko "C: al colpo foo.sh non era mutato — la prova sarebbe vuota"
+kill -TERM "$PID" 2>/dev/null; sleep 5; kill -STOP "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null; kill -KILL "$PID" 2>/dev/null
+wait "$PID" 2>/dev/null
+[ "$(cat "$TMP/repo/tools/foo.sh")" = "$ORIG" ] && ok "C: TERM e KILL dopo 5 s (come ai_timeout): il tool e' ripristinato prima del KILL" \
+  || ko "C: TERM e KILL dopo 5 s: il tool e' rimasto neutralizzato (la trap aspettava il banco)"
+pkill -f "$TMP/repo/tests/test-foo.sh" 2>/dev/null
+
 # il banco deve anche lasciare l'albero senza file temporanei .mut/.rest
-if ! ls "$TMP/repo/tools/" | grep -q "foo.sh.mut\|foo.sh.rest"; then
+if ! ls "$TMP/repo/tools/" | grep -c "foo.sh.mut\|foo.sh.rest" >/dev/null; then
   ok "nessun file temporaneo .mut/.rest abbandonato"
 else
   ko "file temporaneo .mut/.rest abbandonato in tools/"
 fi
+
+# (2026-09-24, sesto ventaglio, S4 R4): dopo un SIGKILL il tool resta NEUTRALIZZATO, e il giro dopo diceva «albero
+# sporco: committa prima di mutare» — cioe' di committare il sabotaggio. Ora il banco riconosce il proprio resto
+# (la firma esatta della mutazione) e dice il gesto giusto.
+git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null
+printf '#!/bin/bash\nexit 0\n' > "$TMP/repo/tools/foo.sh"
+OUT=$( cd "$TMP/repo" && bash tools/mutation-tests.sh 2>&1 ); RC=$?
+[ "$RC" -ne 0 ] && grep -ci 'neutralizzat' <<<"$OUT" >/dev/null && grep -c 'git checkout -- tools/foo.sh' <<<"$OUT" >/dev/null && ! grep -c 'committa prima' <<<"$OUT" >/dev/null \
+  && ok "S4 R4: il resto di un giro interrotto si riconosce, e il gesto detto e' il ripristino, non il commit" || ko "S4 R4: resto non riconosciuto (rc $RC): $OUT"
+git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null
+grep -c 'mktemp "\${TMPDIR:-/tmp}/mutation-backup' "$HERE/tools/mutation-tests.sh" >/dev/null && ok "S4 R4: il backup segue TMPDIR" || ko "S4 R4: backup in /tmp fisso"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -45,6 +45,12 @@ checks.append(("vnClose = 452.00", abs(r["vnClose"] - 452.0) < 1e-9))
 # il cespite NON dismesso non deve contribuire alle cessioni
 r_senza_non_dismesso = calcola_roll_forward(fa, [cespiti[0]])
 checks.append(("il cespite non dismesso è escluso (stesso risultato senza di lui)", r_senza_non_dismesso == r))
+# (2026-09-24, terzo ventaglio, V2#6): il ramo «yearCessioni != 0» non aveva un caso — via la condizione,
+# verde lo stesso. Un cespite dismesso in un anno PRECEDENTE (isDisposed, yearCessioni 0) non e' una
+# cessione di quest'anno (formula in testa al tool): il risultato non cambia se c'e'.
+dismesso_prima = {"isDisposed": True, "yearCessioni": 0, "costo": 70.0, "rival": 0.0, "sval": 0.0, "fondo": -70.0}
+checks.append(("dismesso in un anno precedente (yearCessioni 0): escluso dalle cessioni dell'anno",
+               calcola_roll_forward(fa, cespiti + [dismesso_prima]) == r))
 
 for nome, esito in checks:
     print(f"{'OK' if esito else 'KO'}\t{nome}")

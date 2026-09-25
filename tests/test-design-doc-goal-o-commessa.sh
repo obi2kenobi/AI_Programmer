@@ -16,15 +16,15 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SEZ3=$(awk '/^## 3\./{f=1} /^## 4\./{f=0} f' "$DD")
 
-echo "$SEZ3" | grep -q "nuova-commessa" \
+grep -q "nuova-commessa" <<<"$SEZ3" \
   && ok "§3 cita ancora /nuova-commessa per il territorio grande/notturno" \
   || ko "§3 non cita più /nuova-commessa"
 
-echo "$SEZ3" | grep -q "/goal" \
+grep -q "/goal" <<<"$SEZ3" \
   && ok "§3 offre anche /goal per il territorio piccolo/diurno" \
   || ko "§3 non offre /goal come alternativa — solo il percorso notturno"
 
-echo "$SEZ3" | grep -q "criterio di successo del punto 1" \
+grep -q "criterio di successo del punto 1" <<<"$SEZ3" \
   && ok "l'obiettivo del /goal è derivato dal criterio di successo dichiarato al punto 1, non inventato" \
   || ko "manca il vincolo che l'obiettivo del /goal derivi dal punto 1"
 

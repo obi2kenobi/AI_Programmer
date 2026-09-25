@@ -43,45 +43,45 @@ EOF
 OUT=$(python3 "$HERE/tools/margine_documento.py" "$TMP/vendite.csv" "$TMP/acquisti.csv" "$TMP/note.csv")
 
 # 1. totale e percentuale come da aritmetica a mano
-echo "$OUT" | grep -q "Totale ricavi accoppiati: 2500.00 EUR" \
+grep -q "Totale ricavi accoppiati: 2500.00 EUR" <<<"$OUT" \
   && ok "ricavi accoppiati 2500.00 EUR" || ko "ricavi: $(echo "$OUT" | grep 'ricavi accoppiati')"
-echo "$OUT" | grep -q "Totale margine: +300.00 EUR (+12.0% sui ricavi)" \
+grep -q "Totale margine: +300.00 EUR (+12.0% sui ricavi)" <<<"$OUT" \
   && ok "margine totale +300.00 EUR = 12.0% sui ricavi" || ko "margine: $(echo "$OUT" | grep 'Totale margine')"
 
 # 2. normalizzazione riferimento: "rf-001" (minuscolo) accoppia "RF-001" per il
 # toUpperCase del codice REPO-E. NOTA: gli SPAZI vengono rimossi ma il trattino no —
 # "rf 001" (→RF001) NON accoppia "RF-001" nemmeno nel codice originale: aspettativa
 # corretta dopo la prima run rossa, non un difetto del tool
-echo "$OUT" | grep -q "RF-001: vendita=1000.00 acquisto=600.00 margine=+400.00 (+40.0% sui ricavi)" \
+grep -q "RF-001: vendita=1000.00 acquisto=600.00 margine=+400.00 (+40.0% sui ricavi)" <<<"$OUT" \
   && ok "normalizzazione rif: 'rf-001' minuscolo accoppia 'RF-001'" || ko "RF-001: $(echo "$OUT" | grep 'RF-001:')"
 
 # 3. % sui RICAVI, non sul costo: 400/1000=40% (su costo sarebbe 400/600=66.7%)
-echo "$OUT" | grep -q "RF-001.*+40.0%" && ! echo "$OUT" | grep -q "RF-001.*+66.7%" \
+grep -q "RF-001.*+40.0%" <<<"$OUT" && ! grep -q "RF-001.*+66.7%" <<<"$OUT" \
   && ok "percentuale calcolata sui ricavi (40.0%, non 66.7% sul costo)" \
   || ko "percentuale: base sbagliata? $(echo "$OUT" | grep 'RF-001:')"
 
 # 4. BU diversa: flaggata ma margine calcolato
-echo "$OUT" | grep -q "RF-002.*BU DIVERSA" && echo "$OUT" | grep -q "RF-002.*margine=+100.00" \
+grep -q "RF-002.*BU DIVERSA" <<<"$OUT" && grep -q "RF-002.*margine=+100.00" <<<"$OUT" \
   && ok "RF-002: BU DIVERSA flaggata, margine +100 calcolato lo stesso" \
   || ko "RF-002: $(echo "$OUT" | grep 'RF-002:')"
 
 # 5. margine negativo ammesso (nessun clamp)
-echo "$OUT" | grep -q "RF-005: vendita=1000.00 acquisto=1200.00 margine=-200.00 (-20.0% sui ricavi)" \
+grep -q "RF-005: vendita=1000.00 acquisto=1200.00 margine=-200.00 (-20.0% sui ricavi)" <<<"$OUT" \
   && ok "RF-005: margine negativo −200 ammesso e visibile" || ko "RF-005: $(echo "$OUT" | grep 'RF-005:')"
 
 # 6. vendita senza acquisto = ERRORE, non margine zero
-echo "$OUT" | grep -q "ERRORI accoppiamento (NON sono margine zero): 1 — RF-003" \
+grep -q "ERRORI accoppiamento (NON sono margine zero): 1 — RF-003" <<<"$OUT" \
   && ok "RF-003 senza acquisto: errore dichiarato, escluso dai totali" \
   || ko "RF-003: $(echo "$OUT" | grep 'ERRORI')"
 
 # 7. nota di credito: annullato, escluso, riportato
-echo "$OUT" | grep -q "Annullati da nota di credito: 1 — RF-004 (200.00 EUR esclusi)" \
+grep -q "Annullati da nota di credito: 1 — RF-004 (200.00 EUR esclusi)" <<<"$OUT" \
   && ok "RF-004 in nota di credito: annullato e riportato (scarto mai silenzioso)" \
   || ko "RF-004: $(echo "$OUT" | grep 'Annullati')"
 
 # 8. guardia di regressione: RF-003/RF-004 NON nei totali
 TOT=$(echo "$OUT" | grep "Totale ricavi accoppiati")
-echo "$TOT" | grep -qv "2800\|3000" \
+grep -qv "2800\|3000" <<<"$TOT" \
   && ok "i documenti non accoppiati/annullati non gonfiano i totali ($TOT)" \
   || ko "totali gonfiati: $TOT"
 
@@ -97,7 +97,7 @@ rif,data,bu,fornitore,importo
 RF-ZERO,2026-01-01,ARRG,F1,200
 EOF
 OUT_ZERO=$(python3 "$HERE/tools/margine_documento.py" "$TMP/vendite_zero.csv" "$TMP/acquisti_zero.csv")
-echo "$OUT_ZERO" | grep -q "RF-ZERO: vendita=0.00 acquisto=200.00 margine=-200.00 (n.d. (vendita a zero) sui ricavi)" \
+grep -q "RF-ZERO: vendita=0.00 acquisto=200.00 margine=-200.00 (n.d. (vendita a zero) sui ricavi)" <<<"$OUT_ZERO" \
   && ok "vendita a zero: margine -200.00 corretto, percentuale 'n.d.' non '+0.0%' fuorviante" \
   || ko "vendita a zero: $(echo "$OUT_ZERO" | grep 'RF-ZERO:')"
 

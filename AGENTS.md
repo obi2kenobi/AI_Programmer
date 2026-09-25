@@ -9,16 +9,11 @@
 ## 0. Lo standard (non serve invocarlo)
 
 Questo repo lavora col metodo attivo PER MECCANISMO: all'apertura di una
-sessione e a OGNI prompt, un hook inietta il promemorio del metodo
-({
-  "hookSpecificOutput": {
-    "hookEventName": "UserPromptSubmit",
-    "additionalContext": " metodo attivo: esegui-non-dedurre · oracolo prima della formula · banco prima della correzione · SAL prima del passo successivo"
-  }
-}). Se sei un agente e leggi questo file, il
+sessione e a OGNI prompt, un hook inietta il promemoria del metodo
+(`tools/metodo-reminder-hook.sh`). Se sei un agente e leggi questo file, il
 metodo è già in opera intorno a te: METHOD.md §"Lo standard" dice cosa deve
 esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
-.night-verify) e  lo porta tutto.
+.night-verify) e `tools/sync-repo.sh <owner/repo> --standard` lo porta tutto.
 
 ## 0bis. Lavoro distribuito (a due o più mani — Luca, Lavinia, sessioni)
 
@@ -40,6 +35,31 @@ esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 - **Prima regola di ogni PR**: le stesse verifiche dichiarate e lo stesso gate
   valgono per chiunque apra il branch (`claude/*`, `night/*`, `glm/*`).
 
+## 0ter. Il primo giorno (clone fresco, persona o agente)
+
+Quattro comandi, in quest'ordine: i guardiani del commit, l'identità git, il polso, la suite.
+
+```bash
+git config core.hooksPath .githooks
+git config user.name "<nome>" && git config user.email "<email>"
+bash tools/system-health.sh
+bash tools/suite.sh
+```
+
+- I guardiani del commit (`.githooks/`: pre-commit e commit-msg) non viaggiano col clone. Sul Mac del turno
+  li accende `night-shift/install.sh:51`; in ogni altro clone vanno accesi a mano, col primo comando.
+- Senza identità git la suite e `tools/bootstrap-app.sh` non possono committare (Q1, 2026-09-24).
+- Sul Mac del turno la copia dove gira `night-shift/install.sh` è DEL TURNO: a ogni ciclo si riallinea a
+  origin/main. Di giorno si lavora in un altro clone. Se ci si lavora lo stesso, il turno non butta niente:
+  lo sporco finisce in uno stash «salvataggio turno …», i commit non pushati in un ramo `salvataggio/…`, e il
+  log lo dice (`allinea_hub` in `night-shift/lib.sh`, R5 2026-09-24).
+- Prerequisiti: git, jq, curl, python3 (senza uno di questi il turno non parte: `dipendenze_mancanti` in
+  `night-shift/lib.sh`), shellcheck (una riga di `.night-verify`), graphify (`pip install graphifyy`,
+  `tools/graphify-spina.sh:29`). gh serve solo per sync, bootstrap, onboard e il turno.
+- Rosso ATTESO: senza `night-shift/repos.key` (un collaboratore, una sessione cloud) `bash tools/privacy-check.sh`
+  esce 1 con «GATE DEGRADATO» (`tools/privacy-check.sh:29`). Non è un guasto: la chiave vive solo sul Mac di
+  Luca. Le forme di segreto si controllano lo stesso.
+
 ## 1. Le regole vincolanti e la mappa
 
 - `CLAUDE.md` — le regole (Karpathy §1-6 + §7 delega): valgono per ogni agente, non
@@ -54,7 +74,9 @@ esserci fisicamente in una repo che lo adotta (CLAUDE.md, skill, agenti, HOOK,
 
 ```
 /selezione-contesto → /brainstorming ⇄ /design-doc → /goal (piccolo) | commessa (grande)
-                                                              → /audit-commessa → notte → gate → review
+                                                              → /audit-commessa → notte → censore → review di Luca
+  (il censore, night-shift/revisore.sh: fonde le PR `caccia:`, lascia un parere sulle PR di issue;
+  il morning-gate è in pensione dal 2026-09-23)
 TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul campo):
   chiarito in 1-2 domande, un file, verificabile qui e ora → si fa e basta, col metodo
   ma SENZA pipeline (dettaglio: METHOD.md) — bug reale corretto: revisione 14 lenti,
@@ -107,11 +129,16 @@ Consulta prima di reinventare; dopo averne pagato uno nuovo, scrivilo.
 
 ## 5. La verifica: come esco da qui
 
-`bash .night-verify` — suite completa (fail-fast) + shellcheck +
-privacy-check + indice SAL. Se touchi `SAL.md`, rigenera l'indice
+`bash tools/suite.sh` — la suite completa (verde = «Suite test hub: N/N file superati», `tools/suite.sh:72`); poi le altre righe di
+`.night-verify` (shellcheck, py-gate, privacy-check, indice SAL), UNA ALLA VOLTA come fa il turno.
+(2026-09-23, notte dei giri: qui si insegnava a eseguire il file intero con bash, che esce 0 senza far girare un
+solo banco — la riga `@540 …` e' un budget che capisce solo il turno, e l'rc e' quello dell'ultima riga.) Se touchi `SAL.md`, rigenera l'indice
 (`bash tools/sal-indice.sh`) e porta le modifiche in un commit/giro prima che il
-gate giri. Privacy: REPO-E è il codice con cui riferirsi al repo esterno, MAI il
-nome di clienti o progetti reali (il privacy-check fallisce il gate su una perdita).
+gate giri. Privacy (CLAUDE.md §7, «Public repo, private work»): i nomi di repo e di persone
+possono comparire, l'ACCESSO mai (segreti, credenziali, token, push in produzione). I codici REPO-x
+restano nei testi storici, ma il loro registro è ritirato. I termini delle liste locali
+(`repos.key`, `~/.privacy-nomi`) il privacy-check li blocca ancora: se valga per loro «nomi sì» è una
+domanda aperta a Luca (DEBITI).
 
 ## Regole graphify
 
@@ -125,14 +152,5 @@ Rules:
 - If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
 - Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
 - After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
-
-This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
-
-When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
-
-Rules:
-- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
-- Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
-- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
-- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
-- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+- (2026-09-24, fourth ventaglio, Q4 — measured) **Limits of the graph.** For "who uses X" run `graphify affected "X"` (file:L per caller), not `query`: with the default budget `query` prints nodes, not call sites. Calls written inside `"$(f …)"`, `<(f)` and `trap '…'` are INVISIBLE to the bash extractor (`graphify affected lente_pr` says "No affected nodes found", yet `night-shift/night-shift.sh` calls it twice): before calling anything dead, confirm with `grep -rn 'X'`. An edge carries only the FIRST call site of each caller. Query with code terms (`mask secrets`), not an Italian sentence (it matches words like "maschera", "registra"). Not in the graph: top-of-script constants, `.night-verify`, `.claude/settings.json`, plist and conf files — grep them. After editing a file, its file:L in the graph are stale until the next commit.
+- (D1, 2026-09-23) `graphify-out/graph.json` is VERSIONED and kept fresh by `tools/graphify-spina.sh` (SessionStart hook, and the pre-commit stages it); the semantic pass (docs, patterns) runs at night with Ollama (`tools/grafo-semantico.sh`) and arrives as a draft PR.

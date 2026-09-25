@@ -16,7 +16,9 @@
 #   goal-issue.sh <repo-dir> list                   → goal aperti
 # Esce: 0 ok · 2 uso · 3 conflitto (create su esistente)
 set -uo pipefail
-DIR="${1:?uso: goal-issue.sh <dir> <create|update|show|close|list> ...}"; shift
+# (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa niente di dichiarato: l'uso sbagliato esce 2
+[ $# -ge 1 ] || { echo "uso: goal-issue.sh <dir> <create|update|show|close|list> ..." >&2; exit 2; }
+DIR="$1"; shift
 CMD="${1:-}"; shift || true
 cd "$DIR" 2>/dev/null || { echo "⛔ dir: $DIR" >&2; exit 2; }
 GOAL_DIR=".git/goals"

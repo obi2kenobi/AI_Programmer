@@ -13,9 +13,9 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 bash -n "$BAT" && ok "sintassi" || ko "sintassi rotta"
 
 OUT=$(bash "$BAT" 2>&1); RC=$?
-echo "$OUT" | grep -q "VERDETTO: 0 finding" && ok "su repo integro: 0 finding" || ko "finding su repo integro: $(echo "$OUT" | grep -c '^FIND')"
+grep -q "VERDETTO: 0 finding" <<<"$OUT" && ok "su repo integro: 0 finding" || ko "finding su repo integro: $(echo "$OUT" | grep -c '^FIND')"
 for s in S1 S2 S3 S4 S5 S6 S7 S8 S9; do
-  echo "$OUT" | grep -q "OK   $s " && ok "sonda $s presente e verde" || ko "sonda $s assente o rossa"
+  grep -q "OK   $s " <<<"$OUT" && ok "sonda $s presente e verde" || ko "sonda $s assente o rossa"
 done
 
 # caso negativo S1: glifo costruito a runtime (il nome letterale qui dentro
@@ -34,7 +34,7 @@ if git clone -q --local "$HERE" "$QT/hub" 2>/dev/null; then
   GLIFO=$(python3 -c "print(chr(0x9633)+chr(0x53f0))")
   printf 'parola con %s dentro\n' "$GLIFO" >> "$QT/hub/DEBITI.md"
   OUT2=$(bash "$QT/hub/tools/giri-ignoranti.sh" 2>&1); RC2=$?
-  [ $RC2 -ne 0 ] && echo "$OUT2" | grep -q "FIND S1" \
+  [ $RC2 -ne 0 ] && grep -q "FIND S1" <<<"$OUT2" \
     && ok "glifo in quarantena: S1 lo prende e la batteria esce rossa" \
     || ko "glifo piantato NON visto (rc=$RC2)"
   rm -rf "$QT"
@@ -46,6 +46,16 @@ fi
 # l'esclusione del registro è DICHIARATA nel commento della sonda
 grep -q "REGISTRO.md" "$BAT" && ok "l'esclusione del registro è dichiarata, non silenziosa" || ko "esclusione non dichiarata"
 
+
+# (2026-09-25, ottavo ventaglio, O3 R4): S16 leggeva l'indice del SAL con un `head -200` nascosto — da 197 voci diceva
+# «indice FERMO» a indice appena rigenerato (e la cura suggerita non curava). Qui il SAL vero piu' 60 voci.
+T16=$(mktemp -d); mkdir -p "$T16/tools"; cp "$HERE/tools/giri-ignoranti.sh" "$HERE/tools/sal-indice.sh" "$T16/tools/"
+cp "$HERE/SAL.md" "$T16/"; [ -f "$HERE/SAL-ARCHIVIO.md" ] && cp "$HERE/SAL-ARCHIVIO.md" "$T16/"
+for i in $(seq 1 60); do printf '\n### 2026-10-05 — voce gonfiata numero %s\nx\n' "$i" >> "$T16/SAL.md"; done
+(cd "$T16" && bash tools/sal-indice.sh >/dev/null 2>&1)
+S16=$(cd "$T16" && bash tools/giri-ignoranti.sh 2>/dev/null | grep 'S16')
+grep -c '^OK .*S16' <<<"$S16" >/dev/null && ok "O3 R4: S16 con oltre 200 voci, indice rigenerato: fresco (niente falso FERMO)" || ko "O3 R4: S16 con oltre 200 voci: «${S16}»"
+rm -rf "$T16"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

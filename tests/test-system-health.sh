@@ -32,12 +32,36 @@ mkdir -p "$TMP/night-shift" "$TMP/tools"
 cp "$HERE/tools/system-health.sh" "$TMP/tools/"
 printf '# solo commenti\n\n' > "$TMP/night-shift/repos.conf"
 OUT=$(bash "$TMP/tools/system-health.sh" 2>&1)
-echo "$OUT" | grep -qi "integer expression" \
+grep -qi "integer expression" <<<"$OUT" \
   && ko "coda con solo commenti: errore di shell — output: $OUT" \
   || ok "coda con solo commenti: nessun errore di shell"
-echo "$OUT" | grep -q "repos.conf vuoto o assente" \
+grep -q "repos.conf vuoto o assente" <<<"$OUT" \
   && ok "coda con solo commenti: segnalata correttamente come vuota" \
   || ko "coda con solo commenti: non segnalata come vuota — output: $OUT"
+
+# (Q30, 2026-09-23, notte dei giri): turno-vivo girava FUORI dai contatori — «⛔ TURNO INCASTRATO»
+# stampato, ma il verdetto e l'exit code identici a un turno sano (il guasto delle tre notti del
+# 2026-08-31 non spostava nulla, e quindi nemmeno status-page). Un log fermo alza i critici di 1.
+TV=$(mktemp -d)
+printf '[2026-01-01 00:00:00] === TURNO INIZIATO ===\n' > "$TV/fermo.log"
+critici() { TURNO_VIVO_LOG="$1" bash "$HERE/tools/system-health.sh" 2>/dev/null | sed -n 's/.*attenzione · \([0-9]*\) critici.*/\1/p'; }
+C_FERMO=$(critici "$TV/fermo.log"); C_NESSUNO=$(critici "$TV/nessuno.log")
+[ -n "$C_FERMO" ] && [ "$C_FERMO" -eq $((C_NESSUNO+1)) ] && ok "turno incastrato: i critici salgono di 1 ($C_NESSUNO → $C_FERMO)" \
+  || ko "turno incastrato non conta nel verdetto (critici: senza log $C_NESSUNO, log fermo ${C_FERMO:-?})"
+rm -rf "$TV"
+
+# (2026-09-24, quarto ventaglio, Q1 R6): fuori dal Mac lo swap non misurato (sysctl senza vm.swapusage)
+# diventava «✅ swap: M (sotto controllo)», e dopo «launchctl assente: non verificabile» seguiva comunque
+# «launchd: … NON caricato». Una misura mancata si dice «non misurabile», e una voce non verificabile non
+# riceve un verdetto. (Qui, in Linux, launchctl e vm.swapusage mancano davvero.)
+if ! command -v launchctl >/dev/null 2>&1; then
+  OUT=$(bash "$HERE/tools/system-health.sh" 2>/dev/null)
+  ! grep -c '✅ swap' <<<"$OUT" >/dev/null && grep -c 'swap: non misurabile' <<<"$OUT" >/dev/null \
+    && ok "swap non misurato: detto «non misurabile», non verde" || ko "swap non misurato e verde: $(grep swap <<<"$OUT")"
+  ! grep -c 'NON caricato' <<<"$OUT" >/dev/null && ok "senza launchctl nessun «NON caricato» inventato" || ko "senza launchctl: $(grep 'NON caricato' <<<"$OUT" | head -1)"
+else
+  echo "SALTO: qui c'e' launchctl (un Mac), il caso «fuori dal Mac» non si esercita"
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

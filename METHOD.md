@@ -31,7 +31,7 @@ TASK DA UNA SESSIONE (terza corsia, 7° ciclo 2026-08-24 — dal report sul camp
 | Censore nel ciclo (guardie + prove sul branch + delibera, solo PR `caccia:`) | `night-shift/revisore.sh` | idem |
 | Digest del mattino (email alle 7:30: lezioni, sospesi, resoconto) | `night-shift/morning-digest.sh` | idem |
 | Gate del mattino — **in pensione dal 2026-09-23**, invocabile a mano (3 controlli + banco sandboxed) | `night-shift/morning-gate.sh` | idem (`cervello/decisione-dominio-2026-09-23.md`) |
-| Registro esiti (notte) | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |
+| Registro esiti del gate — **storico**: lo scriveva il gate del mattino (in pensione); ultima riga 2026-08-21 | `night-shift/gate-esito.sh`, `night-shift/gate-summary.sh` | `metrics/gate.csv` |
 | Registro chiamate (giorno) | `llm/usage-summary.sh` | `~/.ai-programmer-usage.log` (4° ciclo, set 3, giro 5, 2026-08-23: il log esisteva dal ciclo precedente, il riepilogo no) |
 | Loop diurni con verifica | `/goal ... \| max N` | `.claude/skills/goal/SKILL.md` (set 2 2026-08-22: prima citato senza esistere; 5° ciclo, set 2 giro 3, 2026-08-23: primo loop reale eseguito, `loops/` non più vuota) |
 
@@ -48,6 +48,10 @@ AI_Programmer ha, fisicamente:
    UserPromptSubmit lo ri-inietta a ogni prompt (il problema era «invocato
    all'inizio e poi dimenticato»: ora non serve invocarlo);
 4. **`.night-verify`** dichiarato.
+5. **gli strumenti che il CLAUDE.md cita** — il settimo patto (`tools/debiti-riapertura.sh`), lo
+   scheletro di `DEBITI.md` e del REGISTRO, i guardiani del commit (`.githooks/`,
+   `tools/pre-commit.sh`), il formato del report di campo. Una lista sola,
+   `tools/installa-citati.sh`, per sync-repo, bootstrap-app e onboard-repo.
 
 Un solo comando porta tutto: `tools/sync-repo.sh <owner/repo> --standard`
 (apre la PR). `tools/sync-repo.sh <owner/repo>` senza flag verifica e riporta

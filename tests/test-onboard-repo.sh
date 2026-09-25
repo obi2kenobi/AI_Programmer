@@ -58,6 +58,8 @@ con_agenti_e_hook_proprio() {
   mkdir -p .claude/skills/dev-critic .opencode/skills/dev-critic
   echo "SKILL PERSONALIZZATA DAL PROGETTO" > .claude/skills/dev-critic/SKILL.md
   echo "SKILL PERSONALIZZATA DAL PROGETTO" > .opencode/skills/dev-critic/SKILL.md
+  # (Q15): anche i DEBITI del progetto — l'onboard porta gli strumenti citati, mai sopra i suoi
+  printf '# DEBITI del progetto\n' > DEBITI.md
 }
 
 DICHIARATI=$(bash "$HERE/tools/copia-hook.sh" --elenco)
@@ -80,6 +82,14 @@ while IFS= read -r H; do
 done <<< "$DICHIARATI"
 [ -z "$MANCANTI" ] && ok "caso 1: OGNI hook dichiarato in settings.json e' sull'origin ed eseguibile" \
   || ko "caso 1 (D28): hook dichiarati ma assenti/non eseguibili sull'origin:$MANCANTI"
+# (Q24, 2026-09-23, notte): i banchi di propagazione dell'onboard rifacevano il merge a mano; qui si
+# guarda l'origin VERO dopo l'onboarding: ogni skill, agente, specchio e pattern dell'hub arriva
+MANCA=""
+for d in .claude/skills .opencode/skills .claude/agents .opencode/agent patterns; do
+  for x in "$HERE/$d"/*; do [ -e "$TMP/check1/$d/$(basename "$x")" ] || MANCA="$MANCA $d/$(basename "$x")"; done
+done
+[ -z "$MANCA" ] && ok "caso 1 (Q24): ogni skill, agente, specchio e pattern dell'hub e' sull'origin" \
+  || ko "caso 1 (Q24): assenti sull'origin:$MANCA"
 [ -f "$TMP/check1/.night-verify" ] && ok "caso 1: .night-verify arrivato" || ko "caso 1: .night-verify assente"
 grep -q "^sandbox/vuota" "$TMP/repos.conf" && ok "caso 1: iscritta nella coda (repos.conf del test, non dell'hub)" || ko "caso 1: non iscritta in repos.conf"
 
@@ -99,7 +109,46 @@ git clone -q "$ORIGIN2" "$TMP/check2"
   && ok "caso 2: la skill personalizzata del progetto (claude e opencode) NON e' stata sovrascritta" \
   || ko "caso 2: skill personalizzata sovrascritta dall'onboarding"
 [ -f "$TMP/check2/.claude/skills/gas-sviluppo/SKILL.md" ] && ok "caso 2: le skill dell'hub mancanti sono arrivate" || ko "caso 2: skill dell'hub mancanti non propagate"
-echo "$OUT2" | grep -q "agenti del hub già tutti presenti" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
+grep -q "agenti del hub già tutti presenti" <<<"$OUT2" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
+
+# (Q15, 2026-09-23): gli strumenti che lo standard CITA arrivano (settimo patto, guardiani del
+# commit), e lo stato del progetto resta suo
+[ -x "$TMP/check1/tools/debiti-riapertura.sh" ] && [ -f "$TMP/check1/.githooks/pre-commit" ] && [ -f "$TMP/check1/tools/cita-verifica.sh" ] \
+  && ok "caso 1 (Q15): gli strumenti citati dallo standard arrivano sull'origin" \
+  || ko "caso 1 (Q15): strumenti citati assenti (debiti-riapertura, .githooks, cita-verifica)"
+[ "$(cat "$TMP/check2/DEBITI.md" 2>/dev/null)" = "# DEBITI del progetto" ] \
+  && ok "caso 2 (Q15): i DEBITI del progetto NON sono stati toccati" || ko "caso 2 (Q15): DEBITI del progetto sovrascritti"
+
+# --- caso 3 (2026-09-24, quinto ventaglio, R2 R6): una repo GAS -----------------------------
+# L'onboard copiava gli hook da solo, senza la seconda meta' di copia-hook: le righe «residuo» della
+# .gitignore (il primo Stop lasciava «?? .campo-rem»). Seminava un .night-verify di soli commenti anche su una
+# repo GAS, e il sync non seminava piu' il gate perche' il file c'era: la prima notte, «verifiche-vuote».
+# E PROJECT.md, che il CLAUDE.md del satellite cita, lo creava solo il bootstrap.
+gas() { printf 'function onOpen(){}\n' > Code.gs; }
+ORIGIN3=$(nuova_sandbox gasrepo gas)
+OUT3=$(onboard "$ORIGIN3" gasrepo); RC3=$?
+git clone -q "$ORIGIN3" "$TMP/check3"
+grep -qxF '.campo-rem' "$TMP/check3/.gitignore" 2>/dev/null && ok "caso 3 (R2 R6): il residuo degli hook e' nella .gitignore sull'origin" \
+  || ko "caso 3 (R2 R6): .gitignore senza i residui degli hook (rc $RC3)"
+grep -cxF 'bash tools/gas-gate.sh' "$TMP/check3/.night-verify" >/dev/null && ok "caso 3 (R2 R6): la repo GAS ha il suo gate seminato in .night-verify" \
+  || ko "caso 3 (R2 R6): .night-verify senza comandi su una repo GAS: $(grep -vc '^#' "$TMP/check3/.night-verify" 2>/dev/null) righe non commentate"
+[ -f "$TMP/check3/PROJECT.md" ] && [ -f "$TMP/check1/PROJECT.md" ] && ok "caso 3 (R2 R6): PROJECT.md arriva anche con l'onboard" || ko "caso 3 (R2 R6): PROJECT.md assente dopo l'onboard"
+! grep -cxF 'bash tools/gas-gate.sh' "$TMP/check1/.night-verify" >/dev/null && ok "caso 3 (R2 R6): una repo non GAS non riceve il gate GAS" || ko "caso 3 (R2 R6): gate GAS seminato su una repo senza .gs"
+
+# --- caso 4 (2026-09-24, sesto ventaglio, S2 R1 e S4 R3): la copia di lavoro c'e' gia' ---------------------
+# L'onboard lavorava in $HOME/night-shift-work/<repo>, la stessa copia del turno: se c'era, niente fetch e niente
+# ritorno su main. Il turno la lascia sul ramo della PR notturna, e lo standard finiva DENTRO quella PR. E un file
+# rimasto non tracciato da un giro interrotto valeva «gia' presente»: quella skill non arrivava mai, e diceva «Fatto».
+ORIGIN4=$(nuova_sandbox turno vuota)
+T4="$TMP/home-turno/night-shift-work/turno"; mkdir -p "$(dirname "$T4")"; git clone -q "$ORIGIN4" "$T4"
+git -C "$T4" checkout -q -b night/issue-7; echo fix > "$T4/fix.txt"; git -C "$T4" add fix.txt; git -C "$T4" commit -qm "fix issue 7"; git -C "$T4" push -q -u origin night/issue-7 2>/dev/null
+PRIMA7=$(git -C "$ORIGIN4" rev-parse night/issue-7)
+UNA=$(basename "$(ls -d "$HERE"/.claude/skills/*/ | head -1)"); mkdir -p "$T4/.claude/skills/$UNA"; cp -r "$HERE/.claude/skills/$UNA/." "$T4/.claude/skills/$UNA/"
+OUT4=$(onboard "$ORIGIN4" turno); RC4=$?
+git clone -q "$ORIGIN4" "$TMP/check4"
+[ "$(git -C "$ORIGIN4" rev-parse night/issue-7)" = "$PRIMA7" ] && ok "caso 4 (S2 R1): il ramo della PR notturna resta com'era" || ko "caso 4 (S2 R1): lo standard e' finito sul ramo della PR notturna"
+MANCA4=""; for x in "$HERE"/.claude/skills/*; do [ -e "$TMP/check4/.claude/skills/$(basename "$x")" ] || MANCA4="$MANCA4 $(basename "$x")"; done
+[ -z "$MANCA4" ] && [ "$RC4" -eq 0 ] && ok "caso 4 (S4 R3): ogni skill e' su main dell'origin, anche quella rimasta non tracciata nella copia" || ko "caso 4: su main mancano:$MANCA4 (rc $RC4)"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

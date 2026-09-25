@@ -34,7 +34,7 @@ while IFS= read -r riga_num_percorso; do
   percorso="${riga_num_percorso#*:}"
   [ -e "$HERE/$percorso" ] && continue
   riga_testo=$(sed -n "${riga}p" "$PM")
-  echo "$riga_testo" | grep -qiE "vive nel|repo del cliente|non vive in questo hub|vive in .*repo" \
+  grep -qiE "vive nel|repo del cliente|non vive in questo hub|vive in .*repo" <<<"$riga_testo" \
     || { echo "   citato ma assente e non dichiarato esterno: $percorso (riga $riga)"; MANCANTI=$((MANCANTI+1)); }
 done < <( { grep -noE '`[A-Za-z0-9_./-]+\.(md|sh|py|js|json|csv|php|txt)`' "$PM"
             grep -noE '`[A-Za-z0-9_.-]+(/[A-Za-z0-9_.-]+)+/?`' "$PM"

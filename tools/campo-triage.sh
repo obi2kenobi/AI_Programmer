@@ -12,7 +12,7 @@ NON_PROC=0
 for f in "$HERE"/docs/campo/*.md "$HERE"/docs/campo/*.html; do
   case "$f" in */README.md) continue;; esac
   [ -f "$f" ] || continue
-  grep -q "$(basename "${f%.*}")" "$HERE/SAL.md" 2>/dev/null || { echo "  non processato: $(basename $f)"; NON_PROC=$((NON_PROC+1)); }
+  grep -q "$(basename "${f%.*}")" "$HERE/SAL.md" 2>/dev/null || { echo "  non processato: $(basename "$f")"; NON_PROC=$((NON_PROC+1)); }
 done
 echo "docs/campo/: $TOTAL report, $NON_PROC non processati"
 [ "$NON_PROC" -eq 0 ]

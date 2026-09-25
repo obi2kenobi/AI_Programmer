@@ -29,10 +29,26 @@ for f in "$HERE"/patterns/*.md; do
   [ -z "$REF" ] && { ko "$nome: ancora hub-locale senza un percorso riconoscibile: $ANCORA"; continue; }
   CHECKED=$((CHECKED+1))
   [ -e "$HERE/$REF" ] && ok "$nome: l'ancora ($REF) esiste davvero" \
-    || ko "$nome: l'ancora cita $REF ma il file non esiste — ancora morta"
+    || { ko "$nome: l'ancora cita $REF ma il file non esiste — ancora morta"; continue; }
+  # (2026-09-24, terzo ventaglio, V5 R6): il registro patterns/README.md — quello che legge
+  # tools/pattern-reminder-hook.sh — citava per quattro pattern un'ancora diversa da quella del file
+  # (percorsi vecchi, cartelle non versionate). Una sola ancora: la riga del registro porta il percorso del file.
+  grep -F "[$nome]($nome.md)" "$HERE/patterns/README.md" | grep -cF "$REF" >/dev/null \
+    || ko "$nome: il registro patterns/README.md non cita l'ancora del file ($REF)"
+  # (2026-09-24, terzo ventaglio, V5): il file esisteva, ma il SIMBOLO no — rinominata run_guarded o
+  # gate_allowlist_ok, questo banco restava verde. Un'ancora «file:simbolo» vuole il simbolo nel file.
+  SIMBOLO=$(printf '%s' "$ANCORA" | grep -oE "$(printf '%s' "$REF" | sed 's/[.]/\\./g'):[A-Za-z_][A-Za-z0-9_-]*" | head -1 | cut -d: -f2)
+  if [ -n "$SIMBOLO" ]; then
+    # la DEFINIZIONE, non una menzione: il nome compare anche nei commenti (rinominata run_guarded, la
+    # sola ricerca del nome restava verde): funzione bash, def python, o assegnazione
+    grep -qE "^[[:space:]]*(function[[:space:]]+)?$SIMBOLO[[:space:]]*\(\)|^[[:space:]]*def $SIMBOLO\(|^[[:space:]]*$SIMBOLO=" "$HERE/$REF" \
+      && ok "$nome: il simbolo $SIMBOLO e' definito in $REF" \
+      || ko "$nome: l'ancora cita $REF:$SIMBOLO ma $SIMBOLO non vi e' piu' definito — ancora morta"
+  fi
 done
 
-[ "$CHECKED" -gt 0 ] && ok "verificate $CHECKED ancore hub-locali su $(ls "$HERE"/patterns/*.md | wc -l | tr -d ' ') pattern totali" \
+# (V5): README.md e' il registro, non un pattern — non si conta fra i pattern
+[ "$CHECKED" -gt 0 ] && ok "verificate $CHECKED ancore hub-locali su $(ls "$HERE"/patterns/*.md | grep -vc '/README\.md$') pattern totali" \
   || ko "nessuna ancora hub-locale trovata da verificare — controllare la logica del test"
 
 echo ""

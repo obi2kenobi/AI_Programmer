@@ -27,6 +27,7 @@ diverge silenziosamente su dati reali).
 Uso: python3 tools/rollforward_cespiti.py < categoria.json
 """
 import json
+import math
 import sys
 
 
@@ -67,6 +68,11 @@ def calcola_roll_forward(fa, cespiti_categoria):
 def main():
     """Cespiti JSON in stdin → righe roll-forward. Input non-parsabile: uso.
     """
+    # (2026-09-24, quinto ventaglio, R3 R6): un file passato come argomento era ignorato in silenzio, e si
+    # calcolava su quello che c'era in stdin
+    if len(sys.argv) > 1:
+        print(f"uso: rollforward_cespiti.py < cespiti.json — legge solo stdin: l'argomento {sys.argv[1]!r} non e' letto", file=sys.stderr)
+        return 1
     try:
         dati = json.load(sys.stdin)
     except (ValueError, EOFError):
@@ -83,7 +89,26 @@ def main():
     if mancanti:
         print(f"uso: rollforward_cespiti.py — campi mancanti nel JSON: {', '.join(mancanti)}", file=sys.stderr)
         return 1
-    r = calcola_roll_forward(fa, dati["cespiti"])
+    # (2026-09-24, quinto ventaglio, R3 R4): un cespite che non e' un oggetto era un AttributeError
+    storti = [i for i, c in enumerate(dati["cespiti"]) if not isinstance(c, dict)]
+    if storti:
+        print(f"uso: rollforward_cespiti.py — cespiti[] contiene elementi che non sono oggetti (posizioni {storti[:5]})", file=sys.stderr)
+        return 1
+    # (Q22, 2026-09-23): un cespite dismesso senza «fondo» (KeyError) o un null in un campo della
+    # categoria (TypeError) erano traceback nudi: il contratto D32 e' uso/ERRORE, mai traceback
+    try:
+        r = calcola_roll_forward(fa, dati["cespiti"])
+    except KeyError as e:
+        print(f"ERRORE: un cespite di cespiti[] non ha il campo {e} — nessun roll-forward", file=sys.stderr)
+        return 1
+    except TypeError as e:
+        print(f"ERRORE: un campo numerico e' null o non numerico ({e}) — nessun roll-forward", file=sys.stderr)
+        return 1
+    # (2026-09-24, quinto ventaglio, R3 R2): un NaN nel JSON dava «clClose: nan», rc 0
+    marci = [k for k, v in r.items() if not math.isfinite(v)]
+    if marci:
+        print(f"ERRORE: righe non finite (nan/inf): {', '.join(marci)} — nessun roll-forward", file=sys.stderr)
+        return 1
     for chiave, valore in r.items():
         print(f"{chiave}: {valore:.2f}")
 

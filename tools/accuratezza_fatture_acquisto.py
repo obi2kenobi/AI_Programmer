@@ -28,6 +28,7 @@ config.json: {"soglia_discrepanza_pct": 5, "obiettivo_margine_errore_pct": 0.1,
 """
 import csv
 import json
+import math
 import sys
 
 
@@ -41,10 +42,25 @@ def leggi_csv(path, colonne=()):
             if mancanti:
                 print(f"uso: accuratezza_fatture_acquisto.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
                 sys.exit(1)
-            return list(reader)
+            righe = list(reader)
+    except UnicodeDecodeError:
+        # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo (il caso che D32 aveva
+        # curato). Si dice; leggerlo in cp1252 e' una scelta di dominio (DEBITI, V4 D4).
+        print(f"uso: accuratezza_fatture_acquisto.py — {path} non e' UTF-8 (un export di Excel in Windows-1252?): salvalo come «CSV UTF-8»" , file=sys.stderr)
+        sys.exit(1)
     except OSError as e:
         print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — {e}", file=sys.stderr)
         sys.exit(1)
+    # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
+    # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
+    for n, r in enumerate(righe, start=2):
+        if "importo" in colonne:
+            try:
+                float(r["importo"])
+            except (ValueError, TypeError):
+                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso col punto decimale, es. 1234.56) — nessun verdetto", file=sys.stderr)
+                sys.exit(1)
+    return righe
 
 
 def main():
@@ -61,12 +77,31 @@ def main():
     except (OSError, ValueError) as e:
         print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — config non leggibile: {e}", file=sys.stderr)
         return 1
-    soglia = float(cfg.get("soglia_discrepanza_pct", 5))
-    obiettivo_pct = float(cfg.get("obiettivo_margine_errore_pct", 0.1))
+    # (2026-09-24, quinto ventaglio, R3 R4): una config lista o una soglia «cinque» erano un traceback
+    if not isinstance(cfg, dict):
+        print("uso: accuratezza_fatture_acquisto.py — la config deve essere un oggetto JSON {...}", file=sys.stderr)
+        return 1
+    try:
+        soglia = float(cfg.get("soglia_discrepanza_pct", 5))
+        obiettivo_pct = float(cfg.get("obiettivo_margine_errore_pct", 0.1))
+    except (ValueError, TypeError):
+        print("ERRORE: soglia_discrepanza_pct e obiettivo_margine_errore_pct devono essere numeri — nessun verdetto", file=sys.stderr)
+        return 1
     whitelist = set(cfg.get("whitelist_fornitori") or [])
 
     fatture = leggi_csv(sys.argv[2], ("nr", "importo"))
     ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
+    # (2026-09-24, quinto ventaglio, R3 R2): un importo nan rendeva falso `pct > soglia`, la fattura contava come
+    # «valida» e usciva «Accuratezza 100% RAGGIUNTO». Un importo non finito si dichiara.
+    marce = [f"fattura {f['nr']}" for f in fatture if not math.isfinite(float(f["importo"]))] + \
+            [f"ordine {k}" for k, v in ordini.items() if not math.isfinite(v)]
+    if marce:
+        print(f"ERRORE: importi non finiti (nan/inf): {', '.join(marce[:5])} — nessun verdetto", file=sys.stderr)
+        return 1
+    # (Q22): con zero fatture stampava «Accuratezza 0.0% … RAGGIUNTO» — un verdetto sul nulla
+    if not fatture:
+        print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
+        return 1
 
     validi, discrepanze, inesistenti = [], [], []
     legittime_senza_ordine, anomale_senza_ordine = [], []
@@ -119,7 +154,7 @@ def main():
     print(f" Discrepanze over-invoicing (>{soglia:g}%): {len(discrepanze)}")
     for d in discrepanze:
         print(f"  {d['fattura']}→{d['ordine']}: fattura oltre ordine di {d['eccedenza']:+.2f} EUR ({d['pct']:+.1f}%)")
-    print(f"Errori reali: {errori_reali} (anomale + inesistenti + discrepanze)")
+    print(f"Errori reali: {errori_reali} (anomale + inesistenti + discrepanze + ordini a importo <= 0)")
     print(f"Accuratezza: {accuratezza:.1f}% · Margine di errore: {margine_errore:.1f}%")
     esito = "RAGGIUNTO" if margine_errore < obiettivo_pct else "NON raggiunto"
     print(f"Obiettivo (margine < {obiettivo_pct:g}%): {esito}")

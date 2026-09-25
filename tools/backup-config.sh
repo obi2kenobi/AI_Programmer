@@ -16,30 +16,24 @@ GIST_ID=""
 [ -f "$GIST_ID_FILE" ] && GIST_ID=$(cat "$GIST_ID_FILE")
 
 FILES=("night-shift/repos.conf" "night-shift/repos.key" "metrics/gate.csv" "DEBITI.md")
-ARGS=()
-TMPFILES=()
+# (2026-09-25, ottavo ventaglio, O4 R1): il backup non e' mai stato fatto. `gh gist create --secret` e' rifiutato dal gh
+# vero (un gist e' segreto per default), la forma di `gist edit` pure, e sotto set -e lo script usciva 1 muto. E i file
+# arrivavano al gist coi nomi casuali di mktemp. Ora: una cartella coi nomi veri, un gist nuovo a ogni backup (l'ID del
+# precedente resta in .gist-backup-id.prima, da togliere a mano: cosa farne e' una domanda in DEBITI), e ogni fallimento
+# detto con il suo motivo.
+TD=$(mktemp -d)
+trap 'rm -rf "$TD"' EXIT
+N=0
 for f in "${FILES[@]}"; do
-  if [ -f "$HERE/$f" ]; then
-    T=$(mktemp); cp "$HERE/$f" "$T"; TMPFILES+=("$T")
-    ARGS+=("--filename" "$(basename "$f")" "$T")
-  fi
+  [ -f "$HERE/$f" ] && { cp "$HERE/$f" "$TD/$(basename "$f")"; N=$((N+1)); }
 done
-trap 'rm -f ${TMPFILES[@]+"${TMPFILES[@]}"}' EXIT
-
-if [ -n "$GIST_ID" ]; then
-  # aggiorna il gist esistente
-  gh gist edit "$GIST_ID" --desc "$GIST_DESC" ${ARGS[@]+"${ARGS[@]}"} 2>/dev/null \
-    && echo "✓ backup aggiornato: $GIST_ID" \
-    || { echo "⚠ aggiornamento fallito, provo a creare"; GIST_ID=""; }
+[ "$N" -gt 0 ] || { echo "⛔ backup fallito: nessuno dei file da salvare c'e' (${FILES[*]})" >&2; exit 1; }
+URL=""
+if ! URL=$(gh gist create --desc "$GIST_DESC" "$TD"/* 2>"$TD/.err" | tail -1) || [ -z "$URL" ]; then
+  echo "⛔ backup fallito (gh gist create): $(tail -1 "$TD/.err" 2>/dev/null)" >&2
+  exit 1
 fi
-
-if [ -z "$GIST_ID" ]; then
-  URL=$(gh gist create --secret --desc "$GIST_DESC" ${ARGS[@]+"${ARGS[@]}"} 2>/dev/null | tail -1)
-  if [ -n "$URL" ]; then
-    echo "$URL" | grep -oE '[a-f0-9]{32,}' > "$GIST_ID_FILE"
-    echo "✓ nuovo gist segreto: $URL"
-  else
-    echo "⛔ backup fallito (gh gist create)"
-    exit 1
-  fi
-fi
+[ -n "$GIST_ID" ] && cp "$GIST_ID_FILE" "$GIST_ID_FILE.prima" \
+  && echo "  il gist del backup di prima resta: il suo ID e' in .gist-backup-id.prima (toglilo quando il nuovo e' verificato)"
+echo "$URL" | grep -oE '[a-f0-9]{32,}' > "$GIST_ID_FILE"
+echo "✓ nuovo gist segreto con $N file: $URL"
