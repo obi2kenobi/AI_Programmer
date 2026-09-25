@@ -739,10 +739,16 @@ review del giorno." 2>>"$ERR_NOTTE" \
         if [ $? -eq 0 ]; then
           grep 'NON dichiarato' <<<"$ERR_CONSEGNA" | while IFS= read -r l; do log "REPO $REPO: $l"; done   # T5#2b: detto, mai taciuto
           PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
-          log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
-          log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
+          # (2026-09-25, ottavo ventaglio, O2 R4): si conta solo una PR vera — con gh in errore (rate limit) la «PR» era il
+          # messaggio d'errore, il SAL scriveva «1 PR bozza» e il freno del rate limit (dorme solo a zero PR) non scattava
+          case "$PR_CACCIA" in
+            https://*)
+              log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
+              log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
+              PR_CREATED=$((PR_CREATED+1)) ;;  # locale a shift_repo, inizializzata prima della caccia
+            *) log "⚠ REPO $REPO: PR di $ORIGINE NON creata (il ramo $CACCIA_BRANCH e' spinto): $(tail -1 <<<"$PR_CACCIA" | cut -c1-120)" ;;
+          esac
           git -C "$DIR" checkout "$DB" -q
-          PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
         elif grep -c '^DOPPIONE' <<<"$ERR_CONSEGNA" >/dev/null; then
           log "REPO $REPO: $(grep '^DOPPIONE' <<<"$ERR_CONSEGNA" | head -1) — ramo locale buttato"
           git -C "$DIR" reset -q --hard
@@ -956,7 +962,7 @@ $BODY"
             COMMENTI_GIA=$(gh issue view "$NUM" -R "$REPO" --json comments -q '.comments[].body' 2>/dev/null || true)
             grep -q "GIA' IMPLEMENTATA" <<<"$COMMENTI_GIA" || gh issue comment "$NUM" -R "$REPO" --body-file "$CORPO_GIA" >/dev/null 2>&1
             rm -f "$CORPO_GIA"
-            ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: gia' implementata? (chiede il giorno)"
+            ASPETTA_GIORNO="$ASPETTA_GIORNO"$'\n'"  $REPO #$NUM: gia' implementata? (chiede il giorno)"
             rm -f "$ISSUE_FILE"
             continue
           fi
@@ -1030,7 +1036,9 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
           { echo "🌙 Proposta notturna (NON applicata: funzione nuova o bersaglio non trovato in automatico). Il codice generato dal modello locale:"; echo '```javascript'; cat "$PATCH_LATEST"; echo '```'; echo ""; echo "Da verificare e collegare a mano (il giorno dispone): la funzione è proposta, manca l'inserimento nel file e l'attivazione (botone/menu/chiamata)."; } > "$COMMENTO"
           if gh issue comment "$NUM" -R "$REPO" --body-file "$COMMENTO" >/dev/null 2>&1; then
             log "Issue #$NUM: proposta pubblicata come commento (niente PR di scarto)"
-            ASPETTA_GIORNO="$ASPETTA_GIORNO\n  $REPO #$NUM: $TITLE"  # globale: la legge il SAL di fine turno
+            # (ottavo ventaglio, O2 R5): a capo veri, non «\n» per echo -e — il titolo e' testo di GitHub, e un «\c» chiudeva
+            # l'uscita perdendo le voci dopo
+            ASPETTA_GIORNO="$ASPETTA_GIORNO"$'\n'"  $REPO #$NUM: $TITLE"  # globale: la legge il SAL di fine turno
           else
             log "⚠ Issue #$NUM: commento della proposta fallito — il codice resta in $PATCH_LATEST"
           fi
@@ -1421,7 +1429,7 @@ if true; then
 
 $(grep -aE "^\[|^--- Issue|^===== REPO" "$LOG" | tail -20 | sed 's/^/  /')
 
-**ASPETTA IL GIORNO** (proposta pubblicata, decisione diurna pendente):$(echo -e "$ASPETTA_GIORNO" || true)
+**ASPETTA IL GIORNO** (proposta pubblicata, decisione diurna pendente):$(printf '%s' "$ASPETTA_GIORNO")
 SALEOF
   log "memoria del turno scritta in night-shift/.sal-turni.md (locale: il mattino la porta nella SAL)"
 fi

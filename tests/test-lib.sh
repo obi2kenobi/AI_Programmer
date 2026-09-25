@@ -206,6 +206,20 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, ottavo ventaglio, O2 R4 e R5)
+# R4: la PR di caccia si contava «creata» anche con gh in errore (log e SAL mentivano, e il freno del rate limit non
+# scattava). R5: i titoli delle issue (testo di GitHub) si accumulavano con «\n» e si stampavano con `echo -e`: un
+# `C:\cartelle` nel titolo chiudeva l'uscita a \c, e la lista ASPETTA IL GIORNO perdeva le voci dopo.
+NS_T="$HERE/night-shift/night-shift.sh"
+awk '/PR_CACCIA=\$\(cd "\$DIR" && gh pr create/{p=1} p&&/PR_CREATED=\$\(\(PR_CREATED\+1\)\)/{print; exit} p' "$NS_T" | grep -c 'case "$PR_CACCIA" in' >/dev/null \
+  && ok "O2 R4: la PR di caccia si conta solo se gh ha dato un URL" || ko "O2 R4: la PR di caccia si conta anche quando gh fallisce"
+! grep -c 'echo -e "$ASPETTA_GIORNO"' "$NS_T" >/dev/null && ! grep -cE 'ASPETTA_GIORNO="\$ASPETTA_GIORNO\\n' "$NS_T" >/dev/null \
+  && ok "O2 R5: la lista ASPETTA IL GIORNO si accumula con a capo veri e si stampa senza interpretare i titoli" \
+  || ko "O2 R5: i titoli di GitHub passano ancora da echo -e"
+AG=""; TITLE='Percorso C:\cartelle\nuove'; AG="$AG"$'\n'"  o/r #12: $TITLE"; AG="$AG"$'\n'"  o/r #13: dopo"
+[ "$(printf '%s' "$AG" | grep -c 'o/r #13')" -eq 1 ] && [ "$(printf '%s' "$AG" | grep -cF 'C:\cartelle')" -eq 1 ] \
+  && ok "O2 R5: printf '%s' tiene intero un titolo con «\\c» e le voci dopo" || ko "O2 R5: la forma nuova perde le voci"
+
 # --- (2026-09-25, ottavo ventaglio, O5 R1): l'auto-miglioramento dell'hub apriva una PR nuova e identica a ogni ciclo (il
 # ramo cambia nome a ogni minuto). Provato nel laboratorio del giro (tre cicli, tre PR, stesso patch-id; con la cura:
 # «DOPPIONE», nessuna PR). Qui la guardia: prima del push, lo stesso controllo delle cacce sui rami notte/auto-*.
