@@ -1267,6 +1267,20 @@ fi
 # la propone come nota del cervello DA APPROVARE al mattino — mai auto-salvata
 # (il loro auto_approve:false e' il nostro ASPETTA IL GIORNO). Fallita = niente
 # marker = riprova al prossimo ciclo.
+# (2026-09-25, settimo ventaglio, V3 R6): se nessun ciclo e' PARTITO fra le 22 e mezzanotte (un'issue dura fino a 240
+# minuti), la lezione di ieri non si faceva piu', e nessuna riga lo diceva. Al primo ciclo di oggi si recupera, sul log
+# intero di ieri — solo se ieri il turno ha scritto qualcosa.
+IMPRA_IERI=$(date -v-1d +%F 2>/dev/null || date -d yesterday +%F 2>/dev/null)
+if [ -n "$IMPRA_IERI" ] && [ ! -f "$WORK/.impara-$IMPRA_IERI" ] && [ -f "$HERE/../tools/cervello-impara.sh" ] \
+   && grep -ac "^\[$IMPRA_IERI" "${NIGHT_LOG:-$HOME/night-shift-console.log}" >/dev/null 2>&1; then
+  log "impara: la lezione di ieri ($IMPRA_IERI) manca — nessun ciclo e' partito dopo le ${IMPARA_ORA:-22}: la faccio ora, sul log di ieri"
+  if IMP_OUT=$(IMPARA_DATA="$IMPRA_IERI" bash "$HERE/../tools/cervello-impara.sh" 2>&1); then
+    printf '%s\n' "$IMP_OUT" > "$WORK/.impara-$IMPRA_IERI"
+    log "impara (ieri): $(echo "$IMP_OUT" | head -1)"
+  else
+    log "impara (ieri): fallito (dichiarato) — riprovo al prossimo ciclo"
+  fi
+fi
 IMPRA_MARKER="$WORK/.impara-$(date +%F)"
 if [ ! -f "$IMPRA_MARKER" ] && [ "$(date +%H)" -ge "${IMPARA_ORA:-22}" ] && [ -f "$HERE/../tools/cervello-impara.sh" ]; then
   if IMP_OUT=$(bash "$HERE/../tools/cervello-impara.sh" 2>&1); then

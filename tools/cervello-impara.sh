@@ -24,7 +24,9 @@ API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 LOG="${NIGHT_LOG:-$HOME/night-shift-console.log}"
 
 [ -f "$LOG" ] || { echo "log assente: $LOG" >&2; exit 2; }
-OGGI=$(date +%F)
+# (2026-09-25, settimo ventaglio, V3 R6): IMPARA_DATA per la lezione di un giorno gia' passato (il turno la recupera
+# quando nessun ciclo e' partito dopo le 22). Di norma oggi.
+OGGI="${IMPARA_DATA:-$(date +%F)}"
 
 # il contesto: le righe NOTEVOLI del giorno (gli eventi firmati, come la dashboard)
 # (2026-09-24, quinto ventaglio, R4 R6): cercava «registro: debiti», e il produttore scrive «registro: debito
