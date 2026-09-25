@@ -39,3 +39,21 @@
     rifiuta un tipo che non è nella lista: oggi nessuno lo controlla.
   - CLAUDE.md §2 «Respect existing patterns», già proposta sopra: una regola applicata da due giudici vive in una
     funzione sola. Stanotte cinque casi (consolidamento, tema 1).
+
+## Aggiornamento (2026-09-25, ottavo ventaglio chiuso)
+- Usato: cinque lenti nuove. Due trattano come avversari il modello e GitHub; le altre guardano la crescita, le
+  versioni degli strumenti e le azioni esterne ripetute. Consolidamento in
+  `docs/giri/2026-09-25-ottavo/99-CONSOLIDAMENTO.md`: 29 rilievi, 20 curati, 1 già coperto, 8 rinviati, 11 domande
+  nuove in DEBITI. A fine ventaglio ho rifatto in un worktree pulito i sabotaggi delle ultime nove cure: tutti rossi.
+- Ha retto: il gh vero a rete chiusa come oracolo delle forme. Arriva all'errore di rete solo se i flag sono giusti, e
+  ha smascherato tre strumenti che non avevano mai funzionato con la suite verde (O4 R1, R2, R3).
+- Ha ostacolato: il gh finto dei banchi era più indulgente del vero, e accettava flag che il vero rifiuta. Poi i miei
+  soliti scivoloni: quattro `$NOME` davanti a «», presi dalla sonda. E una cura (O3 R4) scritta prima del banco,
+  rimediata subito dopo e dichiarata.
+- Proposte al canone (non applicate):
+  - CLAUDE.md §1 «Goal-driven execution»: un finto di un comando esterno è severo almeno quanto il vero. Rifiuta i flag
+    che il vero rifiuta, o il banco prova solo il finto. Oggi il finto del bootstrap lo fa; gli altri no.
+  - Un banco che passa ogni forma di `gh` usata dall'hub al gh vero, a rete chiusa (O4, tema trasversale). Quello che
+    oggi ho fatto a mano per tre forme diventa una sonda.
+  - CLAUDE.md §3 «Report problems immediately»: una lettura esterna fallita non vale «vuoto». Una sentinella per «non
+    so», e la scrittura che ne dipende si salta (tema 1 del consolidamento, sette casi da tre lenti).
