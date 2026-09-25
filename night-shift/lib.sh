@@ -585,7 +585,7 @@ dipendenze_mancanti() {
 leggi_coda() {
   local out err rc
   err=$(mktemp "${TMPDIR:-/tmp}/leggi-coda.XXXXXX") || { echo "leggi_coda: mktemp fallito" >&2; return 1; }
-  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body --limit 50 2>"$err"); rc=$?
+  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body --limit 200 2>"$err"); rc=$?
   if [ "$rc" -ne 0 ] || ! jq -e 'type == "array"' >/dev/null 2>&1 <<<"$out"; then
     echo "gh rc=$rc: $(tail -1 "$err" | cut -c1-120)${out:+ · risposta: $(head -c 60 <<<"$out")}" >&2
     rm -f "$err"; return 1

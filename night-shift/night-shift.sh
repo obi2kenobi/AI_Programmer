@@ -346,7 +346,7 @@ shift_repo() {
       log "REPO $REPO: VERIFICA ROSSA: verifiche-vuote (.night-verify senza comandi)"
     fi
     if [ "$NV_ROSSI" -gt 0 ]; then
-      NV_ISSUE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      NV_ISSUE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if ! grep -qF "[night-verify]" <<<"$NV_ISSUE"; then
         # (D16, test del sistema completo 2026-09-20): il corpo diceva «I dettagli sono nel
         # log del turno» — da remoto il giorno non poteva disporre (issue #95 aperta cosi'
@@ -380,7 +380,7 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
       log "REPO $REPO: standard: ALLINEATO all'hub"
     else
       log "REPO $REPO: standard: DIVERGENTE dall'hub — verifico se c'e' gia' una PR di riallineo"
-      PR_SYNC=$(gh pr list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      PR_SYNC=$(gh pr list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
         log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
       else
@@ -586,7 +586,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # ── fine auto-miglioramento sicuro ────────────────────────────────────────
     if [ "$N_FIND" -gt 0 ]; then
       CICLO_TITOLO="[ciclo-vivo] $N_FIND finding dell'auto-esame notturno"
-      ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      ISSUE_APERTE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if grep -qF "[ciclo-vivo]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
       else
@@ -607,7 +607,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
     fi
     BANCO_OUT=$(bash "$HERE/../tools/banco-passaggio.sh" --veloce 2>&1 || true)
     if ! echo "$BANCO_OUT" | tail -1 | grep -c "CHIUSO" >/dev/null; then
-      ISSUE_APERTE=$(gh issue list -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
+      ISSUE_APERTE=$(gh issue list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null || true)
       if grep -qF "[banco]" <<<"$ISSUE_APERTE"; then
         log "REPO $REPO: banco rosso MA issue [banco] gia' aperta — niente duplicati, aspetta il giorno"
       elif true; then
@@ -629,7 +629,9 @@ review del giorno." 2>>"$ERR_NOTTE" \
   if [ -f "$HERE/revisore.sh" ]; then
     # (revisione 10 giri): la candidata si sceglie coi predicati del censore (lib.sh
     # candidata_censore) — prima una PR di issue in testa affamava le caccia dietro di lei
-    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,createdAt --limit 20 2>/dev/null \
+    # (2026-09-25, ottavo ventaglio, O2 R2): --limit 200, non 20 — con 20 PR piu' nuove davanti nessuna caccia arrivava al
+    # giudizio, in silenzio. Ogni lista del turno dichiara il suo limite (tests/test-lib.sh lo pretende).
+    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,createdAt --limit 200 2>/dev/null \
       | candidata_censore)
     if [ -n "${REVISORE_CANDIDATA:-}" ]; then
       log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
@@ -649,7 +651,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
     # (D10, decisione di Luca 2026-09-23: «b»): una PR di ISSUE per ciclo riceve il PARERE del
     # censore — stesse guardie e prove, giudizio contro il testo della issue, un commento motivato;
     # mai la fusione, che resta di Luca. Un parere per commit (lib.sh candidata_parere).
-    PARERE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,headRefOid --limit 20 2>/dev/null \
+    PARERE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,headRefOid --limit 200 2>/dev/null \
       | candidata_parere "$DIR/.git/revisore")
     if [ -n "${PARERE_CANDIDATA:-}" ]; then
       log "REPO $REPO: PR di issue #$PARERE_CANDIDATA — la porto al CENSORE per il parere (non fonde)"
@@ -719,7 +721,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
         # (V1#2, 2026-09-24): le cacce con una PR aperta — se una porta gia' lo stesso diff, niente PR doppia
-        CACCE_APERTE=$(cd "$DIR" && gh pr list --state open --json headRefName -q '.[].headRefName' 2>/dev/null | grep '^night/caccia-' || true)
+        CACCE_APERTE=$(cd "$DIR" && gh pr list --limit 1000 --state open --json headRefName -q '.[].headRefName' 2>/dev/null | grep '^night/caccia-' || true)
         ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" 2>&1 \
           && { ! DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" $CACCE_APERTE) || { echo "DOPPIONE di una caccia gia' aperta ($DOPPIA): stesso diff, nessuna PR nuova"; false; }; } \
           && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)

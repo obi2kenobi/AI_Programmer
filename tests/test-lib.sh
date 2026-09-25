@@ -206,6 +206,14 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, ottavo ventaglio, O2 R2 e R3): `gh pr list` e `gh issue list` tornano 30 elementi se non si dice altro
+# (e il censore ne chiedeva 20): con 20 PR piu' nuove davanti nessuna caccia arrivava al giudizio, e le guardie
+# anti-doppione oltre 30 issue non vedevano il doppione. Ogni lista del turno dichiara un limite di almeno 100.
+CORTE=$(grep -nE 'gh (pr|issue) list' "$HERE/night-shift/night-shift.sh" "$HERE/night-shift/lib.sh" | grep -v ':[[:space:]]*#' \
+  | awk '{ if (match($0, /--limit [0-9]+/)) { n = substr($0, RSTART+8, RLENGTH-8) + 0; if (n < 100) print } else print }' || true)
+[ -z "$CORTE" ] && ok "O2 R2: ogni gh pr/issue list del turno dichiara un limite di almeno 100" \
+  || ko "O2 R2: liste del turno col limite di default (30) o corto: $(cut -d: -f1,2 <<<"$CORTE" | sed "s#$HERE/##" | tr '\n' ' ')"
+
 # --- (2026-09-25, ottavo ventaglio, O2 R1): lo stato della PR di un ramo si chiedeva con `gh pr view … 2>/dev/null`, e un
 # errore di gh (rate limit, rete) era vuoto = «nessuna PR»: il turno rifaceva l'issue e forzava il ramo di una PR APERTA.
 if command -v stato_pr_ramo >/dev/null; then
