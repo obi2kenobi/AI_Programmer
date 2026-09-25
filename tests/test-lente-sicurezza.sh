@@ -116,6 +116,13 @@ N_PR=$(grep -c 'gh pr create' "$NS"); N_LENTE=$(grep -c 'lente_pr ' "$NS")
 grep -q 'lente_pr ' "$HERE/tools/grafo-semantico.sh" && ok "anche la PR del grafo semantico passa dalla lente" || ko "la PR del grafo semantico salta la lente"
 grep -q 'lente-sicurezza.sh' "$HERE/night-shift/revisore.sh" && ok "il censore interroga la lente prima di deliberare" || ko "il censore delibera senza la lente"
 
+
+# (2026-09-25, ottavo ventaglio, O1 R2): il verdetto era l'ULTIMA riga con le graffe. Un cervello che dice «sicuro:false»
+# e poi cita un esempio «sicuro:true» (o una risposta costruita cosi' da chi scrive il diff) dava PULITA, rc 0.
+pr contrad tools/z.sh 'echo "ciao"'
+OUT=$(LENTE_RISPOSTA="$(printf '%s\n%s' '{"sicuro":false,"rilievi":["tools/z.sh:1 — stampa un segreto"]}' 'per esempio un diff pulito darebbe {"sicuro":true,"rilievi":[]}')" lente contrad); RC=$?
+[ "$RC" -eq 1 ] && tail -1 <<<"$OUT" | grep -c 'RILIEVI' >/dev/null && ok "O1 R2: un «sicuro:false» vince su un «sicuro:true» citato dopo (RILIEVI)" \
+  || ko "O1 R2: risposta contraddittoria: rc=$RC, $(tail -1 <<<"$OUT")"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

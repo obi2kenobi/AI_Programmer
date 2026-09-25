@@ -91,8 +91,16 @@ if [ -n "${LENTE_STUB:-}" ]; then
 else
   RISP=$(printf '%s' "$PROMPT" | QWEN_MODEL="$MODEL" ASK_TIMEOUT=300 bash "$HERE/llm/ask-qwen.sh" "Rispondi alla richiesta qui sotto." 2>/dev/null)
 fi
-JSON=$(grep -oE '\{.*\}' <<<"$RISP" | tail -1)
-SICURO=$(jq -r 'if has("sicuro") then (.sicuro|tostring) else empty end' <<<"$JSON" 2>/dev/null)
+# (2026-09-25, ottavo ventaglio, O1 R2): si leggono TUTTE le righe JSON della risposta, e un solo «sicuro:false» vince.
+# Prima il verdetto era l'ultima riga con le graffe: «false» seguito da un esempio «true» citato dava PULITA, rc 0.
+SICURO=""; JSON=""
+while IFS= read -r J; do
+  V=$(jq -r 'if type == "object" and has("sicuro") then (.sicuro|tostring) else empty end' <<<"$J" 2>/dev/null)
+  case "$V" in
+    false) SICURO=false; JSON="$J"; break ;;
+    true)  [ -n "$SICURO" ] || { SICURO=true; JSON="$J"; } ;;
+  esac
+done < <(grep -oE '\{.*\}' <<<"$RISP")
 log "strato 2: il cervello dice sicuro=${SICURO:-?}"
 echo ""; echo "**Giudizio del cervello ($MODEL):**"
 case "$SICURO" in
