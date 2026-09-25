@@ -109,7 +109,7 @@ tell application \"Mail\"
 end tell" 2>/dev/null && INVIATO="Digest inviato a $DEST" || {
   # fallback: mail CLI. (2026-09-25, ottavo ventaglio, O5 R2): il suo rc 0 vuol dire «accettato nella coda LOCALE», non
   # «arrivato» — sul Mac senza relay il messaggio resta li'. Si dice cosi', la memoria del turno non si svuota, e lo
-  # stderr di mail va nel log invece che nel vuoto. Se il ripiego vada tenuto e' una domanda in DEBITI.
+  # stderr di mail va nel log invece che nel vuoto. Il ripiego resta (D37, 2026-09-25).
   echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>>"$HOME/morning-digest.log" \
     && { INVIATO="Digest messo nella coda locale di mail(1) per $DEST — consegna NON verificata (Mail non e' partito); la memoria del turno resta"; SOLO_CODA=1; } \
     || INVIATO=""
