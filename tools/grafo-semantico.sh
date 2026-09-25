@@ -54,6 +54,10 @@ fi
 BR="night/grafo-$DATA"
 git checkout -q -B "$BR"
 git commit -qm "chore: grafo semantico notturno $DATA (graphify extract, $MODEL)" || { log "commit fallito"; exit 1; }
+# (2026-09-25, settimo ventaglio, V1 R3): il cancello delle forme PRIMA del push, come gli altri quattro push della
+# notte (lib.sh forme_prima_del_push, T5#3). graph.json lo scrive un modello: una forma di segreto arrivava sul remoto
+# e la lente la vedeva solo dopo. Nel log la sola riga di sintesi, mai le righe del reperto.
+FORME=$(forme_prima_del_push "$W" "$BASE_REF") || { log "$(head -1 <<<"$FORME")"; exit 1; }
 git push -q origin "$BR" 2>/dev/null || { log "push di $BR fallito (ramo gia' esistente? mai forzato)"; exit 1; }
 # (2026-09-24, quinto ventaglio, R5 R4): il corpo prometteva «il merge unisce i grafi» — vero solo dove la spina
 # ha registrato il driver in .git/config; un clone nuovo o il bottone di GitHub vanno in conflitto (provato: rc 1)

@@ -1,5 +1,5 @@
 #!/bin/bash
-# test-grafo-semantico-data.sh — (2026-09-25, settimo ventaglio, V3 R2): un pass del grafo partito il 25 e finito
+# test-grafo-semantico.sh — il pass del grafo sotto prova. (2026-09-25, settimo ventaglio, V3 R2): un pass del grafo partito il 25 e finito
 # dopo mezzanotte prendeva il ramo, il commit e il titolo del 26 (tre `date +%F` a fine pass), mentre il segno del
 # turno diceva 25. Il pass del 26 moriva al push: il ramo c'era gia'. Ora il turno passa GRAFO_DATA, la data del
 # segno, e vale per ramo, commit e titolo. Qui la `date` finta dice sempre 26: il ramo deve dire 25.
@@ -19,7 +19,7 @@ echo "# x" > "$T/seme/README.md"; g -C "$T/seme" add README.md; g -C "$T/seme" c
 g clone -q "$T/remoto.git" "$T/work/grafo-prova"
 VERA=$(command -v date)
 printf '#!/bin/bash\n[ "$*" = "+%%F" ] && { echo 2026-09-26; exit 0; }\nexec %q "$@"\n' "$VERA" > "$T/bin/date"
-printf '#!/bin/bash\nif [ "$1" = extract ]; then mkdir -p graphify-out; echo "{\\"n\\":$RANDOM}" > graphify-out/graph.json; fi\nexit 0\n' > "$T/bin/graphify"
+printf '#!/bin/bash\nif [ "$1" = extract ]; then mkdir -p graphify-out; echo "{\\"n\\":$RANDOM,\\"t\\":\\"${FORMA:-}\\"}" > graphify-out/graph.json; fi\nexit 0\n' > "$T/bin/graphify"
 printf '#!/bin/bash\necho "$*" >> %q\necho https://example.invalid/pr/1\n' "$T/gh.log" > "$T/bin/gh"
 chmod +x "$T/bin/"*
 
@@ -39,6 +39,19 @@ grep -cE 'GRAFO_DATA="\$GRAFO_DATA"[^#]*grafo-semantico\.sh' "$HERE/night-shift/
   && grep -cF 'GRAFO_MARKER="$WORK/.grafo-$GRAFO_DATA"' "$HERE/night-shift/night-shift.sh" >/dev/null \
   && ok "V3 R2: night-shift.sh calcola la data una volta e la passa al pass" \
   || ko "V3 R2: night-shift.sh non passa al pass la data del segno"
+
+# (settimo ventaglio, V1 R3): dei cinque push notturni questo era l'unico senza il cancello delle forme: un grafo
+# scritto da un modello con una forma di token arrivava sul remoto, e la lente la vedeva solo DOPO il push. Il
+# token si compone a runtime (E-007) e non deve mai comparire nell'uscita.
+TOK="gh""p_$(printf 'Z%.0s' $(seq 1 24))"
+OUT=$(cd "$T" && HOME="$T/home" GIT_CONFIG_GLOBAL=/dev/null PATH="$T/bin:$PATH" GRAFO_DATA=2026-09-27 FORMA="$TOK" \
+  GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t \
+  bash "$HERE/tools/grafo-semantico.sh" obi2kenobi/prova "$T/work" 2>&1); RC=$?
+RAMI=$(git -C "$T/remoto.git" branch --format='%(refname:short)' | tr '\n' ' ')
+[ "$RC" -ne 0 ] && ! grep -cw 'night/grafo-2026-09-27' <<<"$RAMI" >/dev/null \
+  && ok "V1 R3: una forma di segreto nel grafo ferma il push (il ramo non arriva al remoto)" \
+  || ko "V1 R3: grafo con una forma di segreto: rc=$RC, rami «$RAMI»"
+! grep -cF "$TOK" <<<"$OUT" >/dev/null && ok "V1 R3: il valore non compare nell'uscita" || ko "V1 R3: il valore compare nell'uscita"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -22160,6 +22160,51 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_grafo_semantico",
+      "label": "grafo-semantico.sh",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "test-forme-prima-del-push.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "grafo-semantico.sh",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_grafo_semantico_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "test-forme-prima-del-push.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tools_grafo_semantico_sh__entry",
+      "label": "grafo-semantico.sh script",
+      "_origin": "ast",
+      "community": 28,
+      "community_name": "test-forme-prima-del-push.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "grafo-semantico.sh script",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_doc_citazioni",
       "label": "test-doc-citazioni.sh",
       "_origin": "ast",
@@ -47797,48 +47842,78 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_grafo_semantico",
-      "label": "grafo-semantico.sh",
+      "id": "tests_test_grafo_semantico",
+      "label": "test-grafo-semantico.sh",
       "_origin": "ast",
       "community": 745,
-      "community_name": "grafo-semantico.sh",
+      "community_name": "test-grafo-semantico.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "grafo-semantico.sh",
-      "source_file": "tools/grafo-semantico.sh",
+      "norm_label": "test-grafo-semantico.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L1"
     },
     {
-      "id": "tools_grafo_semantico_log",
-      "label": "log()",
+      "id": "tests_test_grafo_semantico_g",
+      "label": "g()",
       "_origin": "ast",
       "community": 745,
-      "community_name": "grafo-semantico.sh",
+      "community_name": "test-grafo-semantico.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "log()",
-      "source_file": "tools/grafo-semantico.sh",
-      "source_location": "L22"
+      "norm_label": "g()",
+      "source_file": "tests/test-grafo-semantico.sh",
+      "source_location": "L14"
     },
     {
-      "id": "tools_grafo_semantico_sh__entry",
-      "label": "grafo-semantico.sh script",
+      "id": "tests_test_grafo_semantico_ko",
+      "label": "ko()",
       "_origin": "ast",
       "community": 745,
-      "community_name": "grafo-semantico.sh",
+      "community_name": "test-grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-grafo-semantico.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_grafo_semantico_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 745,
+      "community_name": "test-grafo-semantico.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-grafo-semantico.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_grafo_semantico_sh__entry",
+      "label": "test-grafo-semantico.sh script",
+      "_origin": "ast",
+      "community": 745,
+      "community_name": "test-grafo-semantico.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "grafo-semantico.sh script",
-      "source_file": "tools/grafo-semantico.sh",
+      "norm_label": "test-grafo-semantico.sh script",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L1"
     },
     {
@@ -48636,81 +48711,6 @@
       "norm_label": "proposta al canone",
       "source_file": "docs/campo/2026-09-25-settimo-ventaglio.md",
       "source_location": "L22"
-    },
-    {
-      "id": "tests_test_grafo_semantico_data",
-      "label": "test-grafo-semantico-data.sh",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "test-grafo-semantico-data.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-grafo-semantico-data.sh",
-      "source_file": "tests/test-grafo-semantico-data.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_grafo_semantico_data_g",
-      "label": "g()",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "test-grafo-semantico-data.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "g()",
-      "source_file": "tests/test-grafo-semantico-data.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_grafo_semantico_data_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "test-grafo-semantico-data.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-grafo-semantico-data.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_grafo_semantico_data_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "test-grafo-semantico-data.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-grafo-semantico-data.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_grafo_semantico_data_sh__entry",
-      "label": "test-grafo-semantico-data.sh script",
-      "_origin": "ast",
-      "community": 755,
-      "community_name": "test-grafo-semantico-data.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-grafo-semantico-data.sh script",
-      "source_file": "tests/test-grafo-semantico-data.sh",
-      "source_location": "L1"
     },
     {
       "id": "llm_ask_glm",
@@ -56190,38 +56190,38 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data_sh__entry",
-      "target": "tests_test_grafo_semantico_data_g",
+      "source": "tests_test_grafo_semantico_sh__entry",
+      "target": "tests_test_grafo_semantico_g",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L16",
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data_sh__entry",
-      "target": "tests_test_grafo_semantico_data_ok",
+      "source": "tests_test_grafo_semantico_sh__entry",
+      "target": "tests_test_grafo_semantico_ok",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L31",
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data_sh__entry",
-      "target": "tests_test_grafo_semantico_data_ko",
+      "source": "tests_test_grafo_semantico_sh__entry",
+      "target": "tests_test_grafo_semantico_ko",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L32",
       "weight": 1.0
     },
@@ -60363,6 +60363,18 @@
       "context": "call",
       "source_file": "tools/grafo-semantico.sh",
       "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_grafo_semantico_sh__entry",
+      "target": "night_shift_lib_forme_prima_del_push",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/grafo-semantico.sh",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -86759,13 +86771,13 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data",
-      "target": "tests_test_grafo_semantico_data_sh__entry",
+      "source": "tests_test_grafo_semantico",
+      "target": "tests_test_grafo_semantico_sh__entry",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L1",
       "weight": 1.0
     },
@@ -92919,35 +92931,35 @@
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data",
-      "target": "tests_test_grafo_semantico_data_ko",
+      "source": "tests_test_grafo_semantico",
+      "target": "tests_test_grafo_semantico_ko",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L10",
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data",
-      "target": "tests_test_grafo_semantico_data_g",
+      "source": "tests_test_grafo_semantico",
+      "target": "tests_test_grafo_semantico_g",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L14",
       "weight": 1.0
     },
     {
-      "source": "tests_test_grafo_semantico_data",
-      "target": "tests_test_grafo_semantico_data_ok",
+      "source": "tests_test_grafo_semantico",
+      "target": "tests_test_grafo_semantico_ok",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "tests/test-grafo-semantico-data.sh",
+      "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L9",
       "weight": 1.0
     },
@@ -99146,5 +99158,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "74acf2238f621e5a1e45e06642c0ac723791d259"
+  "built_at_commit": "a3cfc6f23a57e910064c2cb89302d4b7db5bdcd6"
 }

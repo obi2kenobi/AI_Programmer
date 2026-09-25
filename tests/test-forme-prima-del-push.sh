@@ -32,9 +32,13 @@ grep -cF "$F20" <<<"$OUT" >/dev/null && ko "il motivo porta il segreto in chiaro
 LENTE_STUB=/bin/false OUT=$(LENTE_STUB=/bin/false forme_prima_del_push "$T/pulito" base 2>&1); RC=$?
 [ $RC -eq 0 ] && ok "il cancello non consulta il cervello (uno stub muto non lo rende DEGRADATO)" || ko "il cancello dipende dal cervello (rc $RC): $OUT"
 
-# ogni `git push` del turno ha il cancello nelle 4 righe prima (stesso && o riga sopra)
-SENZA=$(awk '/forme_prima_del_push/{u=NR} /git( -C "\$DIR")? push/ && !/^[[:space:]]*#/{ if (!u || NR-u>4) print FILENAME":"NR }' "$HERE/night-shift/night-shift.sh")
-[ -z "$SENZA" ] && ok "ogni git push di night-shift.sh passa dal cancello delle forme" || ko "git push senza cancello: $SENZA"
+# ogni `git push` del turno ha il cancello nelle 4 righe prima (stesso && o riga sopra).
+# (2026-09-25, settimo ventaglio, V1 R3): guardava solo night-shift.sh — il pass del grafo (tools/grafo-semantico.sh,
+# lanciato dal turno) spingeva senza cancello. Ora ogni script di night-shift/ e il pass del grafo; `git push`
+# dentro un testo (il prompt del morning-gate lo nomina fra i vietati) non conta: si cerca `push -`.
+SENZA=$(awk 'FNR==1{u=0} /forme_prima_del_push/{u=FNR} /git( -C "\$[A-Z_]+")? push -/ && !/^[[:space:]]*#/{ if (!u || FNR-u>4) print FILENAME":"FNR }' \
+  "$HERE"/night-shift/*.sh "$HERE/tools/grafo-semantico.sh")
+[ -z "$SENZA" ] && ok "ogni git push della notte (night-shift/ e il pass del grafo) passa dal cancello delle forme" || ko "git push senza cancello: $SENZA"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
