@@ -112,6 +112,19 @@ else
     || ko "D41: ne' il valore ne' la maschera nel report: l'output e' stato OMESSO (mask, don't omit)"
 fi
 
+
+# --- (2026-09-25, settimo ventaglio, V1 R4): in FORMATO script il gate leggeva .night-verify da main ma eseguiva
+# `bash .night-verify` dal ramo della PR: la PR si giudicava con le prove scritte da lei. Il censore esegue il contenuto
+# di main da un file temporaneo. Qui main dice exit 1, la PR riscrive exit 0.
+aggiorna_verify "$(printf '# FORMATO: script\nexit 1')"
+git -C "$SRC" checkout -q night/issue-7
+printf '# FORMATO: script\nexit 0\n' > "$SRC/.night-verify"
+git -C "$SRC" -c user.name=t -c user.email=t@t commit -qam "la PR riscrive le prove"
+git -C "$SRC" checkout -q main; git -C "$HOME/night-shift-work/repo-t3" fetch -q origin
+OUT=$(PATH="$SB/bin:$PATH" ADVERSARY=none bash "$GATE" sandbox/repo-t3 2>&1)
+! tail -1 "$HUB_METRICS" | grep -c "verifiche-ok" >/dev/null \
+  && ok "V1 R4: formato script, la PR che riscrive .night-verify non si promuove: girano le prove di main" \
+  || ko "V1 R4: formato script, la PR si giudica con le prove sue (verdetto $(tail -1 "$HUB_METRICS" | cut -d, -f5))"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

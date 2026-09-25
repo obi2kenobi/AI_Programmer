@@ -178,12 +178,16 @@ for REPO in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do
         # (D41, giro 28 2026-09-20): l'output delle verifiche entrava nel report e nella proposta
         # di issue SENZA maschera — solo il banco avversariale passava da mask_secrets. Un test
         # che stampa un token lo portava in chiaro fino a GitHub («Mask, don't omit»).
-        if OUT=$( cd "$DIR" && run_guarded 900 bash .night-verify 2>&1 </dev/null | mask_secrets; exit "${PIPESTATUS[0]}" ); then
+        # (2026-09-25, settimo ventaglio, V1 R4): si esegue il contenuto di main (NIGHT_VERIFY), da un file temporaneo,
+        # come il censore — `bash .night-verify` eseguiva quello del ramo della PR: la PR si giudicava con le prove sue.
+        NV_SCRIPT=$(mktemp "${TMPDIR:-/tmp}/gate-nv.XXXXXX"); printf '%s\n' "$NIGHT_VERIFY" > "$NV_SCRIPT"
+        if OUT=$( cd "$DIR" && run_guarded 900 bash "$NV_SCRIPT" 2>&1 </dev/null | mask_secrets; exit "${PIPESTATUS[0]}" ); then
           echo "  ✅ — $(echo "$OUT" | tail -2 | tr '\n' ' ')" >> "$REPORT"
         else
           echo "  ❌ — $(echo "$OUT" | tail -3 | tr '\n' ' ')" >> "$REPORT"; V_RC=1
           FAIL_DETAIL="$FAIL_DETAIL"$'\n- .night-verify (formato script):'$'\n'"$(echo "$OUT" | tail -8)"
         fi
+        rm -f "$NV_SCRIPT"
       else
       while IFS= read -r cmd; do
         # (D40, giro 28 2026-09-20): qui c'era `cmd="${cmd%%#*}"` — un `#` fra virgolette

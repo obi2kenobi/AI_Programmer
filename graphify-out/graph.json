@@ -52880,7 +52880,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L181",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -52892,19 +52892,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L181",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_morning_gate_sh__entry",
-      "target": "night_shift_lib_gate_allowlist_ok",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L259",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -52917,6 +52905,18 @@
       "context": "call",
       "source_file": "night-shift/morning-gate.sh",
       "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_morning_gate_sh__entry",
+      "target": "night_shift_lib_gate_allowlist_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L263",
       "weight": 1.0
     },
     {
@@ -99667,5 +99667,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8f54b35e2f8007f8af2e13b3e2d8b098a973abf6"
+  "built_at_commit": "1bb592c05f9f8bafbac3623ed00ecfd8ec50fb7a"
 }
