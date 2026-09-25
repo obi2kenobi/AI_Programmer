@@ -117,7 +117,7 @@ verdetto_verifica() {
 # gate_banchi <dir> [secondi-per-banco=300]: il gate del fixer notturno — esegue i banchi di <dir>/tests
 # (la copia del ramo con i fix), ciascuno sotto tetto, con un secondo tentativo dopo 2 s per i transienti.
 # Stampa «amber <banco>» (passato al secondo), «rosso <banco> — <motivo>» (una riga FAIL, o SFORO), e
-# per ultima «TOTALE <verdi> <rossi>». I banchi che chiamano cervelli esterni restano fuori (2026-09-15).
+# per ultima «TOTALE <verdi> <rossi>». Gli stessi banchi della suite: nessuno escluso (settimo ventaglio, V1 R6).
 # (2026-09-24, terzo ventaglio, V1#1, V1#5, V4#6): il ciclo viveva in night-shift.sh e lanciava
 # $HERE/../tests — la copia VIVA, non il ramo — senza tetto: un banco che si annidava (E-046) ha fermato il
 # turno per sempre, e il commit diceva «banco CHIUSO su questo branch» senza averlo provato.
@@ -126,7 +126,9 @@ gate_banchi() {
   for tt in "$dir"/tests/test-*.sh; do
     [ -f "$tt" ] || continue
     nome=$(basename "$tt")
-    case "$nome" in test-ask-*|test-ai-timeout*|test-stdin-timeout*) continue ;; esac
+    # (2026-09-25, settimo ventaglio, V1 R6): qui si saltavano test-ask-*, test-ai-timeout* e test-stdin-timeout* «perche'
+    # chiamano cervelli esterni». Non e' piu' vero: sono ermetici (misurato con un PATH senza claude ne' ollama, 22 s in
+    # tutto), e la suite li esegue. Toccato uno di loro dal fixer, nessun banco del gate lo riprovava.
     # (2026-09-25, settimo ventaglio): rc 0 non basta, come in tools/suite.sh — un banco senza asserzioni (o
     # che muore VERDE dentro un `source`) esce 0 lo stesso. Si pretende «N OK, 0 FAIL» con N >= 1; il muto e'
     # rosso subito, senza secondo tentativo (non e' un transitorio).
@@ -149,6 +151,8 @@ gate_banchi() {
       else echo "rosso $nome — $(grep FAIL <<<"$out" | head -2 | tr '\n' ' ' | mask_secrets)"; fi
     fi
   done
+  # (settimo ventaglio, V1 R6): zero banchi non e' verde — la suite con zero banchi e' rossa (tools/suite.sh)
+  [ $((pass + fail)) -eq 0 ] && { echo "rosso (nessun banco) — nessun tests/test-*.sh da giudicare in $dir"; fail=1; }
   echo "TOTALE $pass $fail"
 }
 

@@ -235,6 +235,13 @@ if command -v gate_banchi >/dev/null; then
   grep -qx "TOTALE 1 3" <<<"$OUTG" && ok "gate_banchi: 1 verde, 3 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
   grep -c "rosso test-muto.sh — verde senza verdetto" <<<"$OUTG" >/dev/null && ok "gate_banchi: il banco muto (rc 0, «0 OK») e' rosso, come nella suite" \
     || ko "gate_banchi: il banco muto passa il gate: $(grep muto <<<"$OUTG")"
+  # (settimo ventaglio, V1 R6): zero banchi era «TOTALE 0 0», letto verde dal fixer; la suite con zero banchi e' rossa.
+  # E quattro banchi ermetici (test-ask-*, ai-timeout, stdin-timeout: nessun cervello, misurato) restavano fuori.
+  GB0=$(mktemp -d); mkdir -p "$GB0/tests"
+  grep -qx "TOTALE 0 1" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi senza banchi e' rosso (come la suite)" || ko "V1 R6: gate_banchi senza banchi: $(gate_banchi "$GB0" 2 | tail -1)"
+  printf '#!/bin/bash\necho "1 OK, 0 FAIL"\n' > "$GB0/tests/test-ask-ermetico.sh"
+  grep -qx "TOTALE 1 0" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi giudica anche test-ask-* (ermetici, come nella suite)" || ko "V1 R6: test-ask-* ancora escluso: $(gate_banchi "$GB0" 2 | tail -1)"
+  rm -rf "$GB0"
   grep -c "rosso test-appeso.sh — SFORO" <<<"$OUTG" >/dev/null && [ "$DURG" -lt 25 ] && ok "gate_banchi: il banco appeso muore al tetto e si dice sforo (${DURG}s)" || ko "gate_banchi: banco appeso non fermato (${DURG}s): $OUTG"
   grep -c "rosso test-rosso.sh — FAIL rotto davvero" <<<"$OUTG" >/dev/null && ok "gate_banchi: il rosso dice la sua riga FAIL" || ko "gate_banchi: rosso senza motivo: $OUTG"
   rm -rf "$GB"
