@@ -250,8 +250,8 @@ AG=""; TITLE='Percorso C:\cartelle\nuove'; AG="$AG"$'\n'"  o/r #12: $TITLE"; AG=
 # --- (2026-09-25, ottavo ventaglio, O5 R1): l'auto-miglioramento dell'hub apriva una PR nuova e identica a ogni ciclo (il
 # ramo cambia nome a ogni minuto). Provato nel laboratorio del giro (tre cicli, tre PR, stesso patch-id; con la cura:
 # «DOPPIONE», nessuna PR). Qui la guardia: prima del push, lo stesso controllo delle cacce sui rami notte/auto-*.
-grep -c 'NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE' "$HERE/night-shift/night-shift.sh" >/dev/null && grep -c "grep '^notte/auto-'" "$HERE/night-shift/night-shift.sh" >/dev/null \
-  && ok "O5 R1: l'auto-miglioramento non riapre una PR con lo stesso diff (caccia_gia_aperta sui notte/auto-*)" \
+grep -c 'NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE' "$HERE/night-shift/night-shift.sh" >/dev/null && grep -c "grep -E '^(night|notte)/auto-'" "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "O5 R1: l'auto-miglioramento non riapre una PR con lo stesso diff (caccia_gia_aperta sui */auto-*)" \
   || ko "O5 R1: l'auto-miglioramento apre una PR a ogni ciclo, senza guardare quelle aperte"
 
 # --- (2026-09-25, ottavo ventaglio, O2 R2 e R3): `gh pr list` e `gh issue list` tornano 30 elementi se non si dice altro
@@ -748,6 +748,13 @@ grep -q 'MIRROR_NOTE' "$NS_T" && grep -q 'MIRROR_NOTE' <<<"$AGENTE_BLOCCO" \
 grep -q 'TEST_FILE="$DIR/tests/night/bozza_test_' "$HERE/night-shift/night-shift.sh" && grep -q 'BOZZA generata dal turno notturno' "$HERE/night-shift/night-shift.sh" \
   && ! grep -q 'col test che lo presidia' "$HERE/night-shift/night-shift.sh" \
   && ok "D9: il test generato si chiama bozza, e la sua prima riga dice che nessuno l'ha eseguito" || ko "D9: il test generato si presenta ancora come presidio"
+
+# (2026-09-25, D35, risposta delegata): i rami dell'auto-miglioramento si chiamavano notte/auto-*, un prefisso che CLAUDE.md
+# §4 dice invisibile a ogni giudice. Ora night/auto-*; i vecchi notte/auto-* restano riconosciuti (doppioni e scopa).
+NS_T="$HERE/night-shift/night-shift.sh"
+grep -q 'BRANCH="night/auto-$(date +%Y%m%d-%H%M)"' "$NS_T" && ! grep -q 'BRANCH="notte/auto-' "$NS_T" \
+  && grep -q "grep -E '^(night|notte)/auto-' | head -10" "$NS_T" \
+  && ok "D35: i rami dell'auto-miglioramento nascono night/auto-*, e la scopa riconosce anche i vecchi notte/auto-*" || ko "D35: i rami nascono ancora notte/auto-*"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

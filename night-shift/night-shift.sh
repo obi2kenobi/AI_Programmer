@@ -447,7 +447,8 @@ for p in sorted(glob.glob('patterns/*.md')):
 PYSCAN
 ) || true
     if [ "$N_FIND" -gt 0 ] || [ -n "$NON_CITATI" ]; then
-      BRANCH="notte/auto-$(date +%Y%m%d-%H%M)"
+      # (2026-09-25, D35, risposta delegata): night/, non notte/ — CLAUDE.md §4: un altro prefisso e' invisibile a ogni giudice
+      BRANCH="night/auto-$(date +%Y%m%d-%H%M)"
       if git -C "$DIR" checkout -b "$BRANCH" -q 2>/dev/null; then
         # fix 1: pattern mai citato dal canone → citazione nell'indice per tema del metodo
         for PAT in $NON_CITATI; do
@@ -566,7 +567,7 @@ PYIDX
             ERR_NOTTE=$(mktemp /tmp/night-commit-err.XXXXXX)
             # (ottavo ventaglio, O5 R1): i rami notte/auto-* con una PR aperta, per il controllo del doppione qui sotto
             APERTE_NOTTE=(); NOTTE_LISTA=$(cd "$DIR" && gh pr list --state open --limit 1000 --json headRefName -q '.[].headRefName' 2>/dev/null) || NOTTE_LISTA="$GH_NON_SO"
-            while IFS= read -r _r; do [ -n "$_r" ] && APERTE_NOTTE+=("$_r"); done < <(grep '^notte/auto-' <<<"$NOTTE_LISTA" || true)
+            while IFS= read -r _r; do [ -n "$_r" ] && APERTE_NOTTE+=("$_r"); done < <(grep -E '^(night|notte)/auto-' <<<"$NOTTE_LISTA" || true)
             # TUTTI e TRE i comandi col stderr catturato (prima catturavo solo git add:
             # il commit moriva nel pre-commit hook e l'stderr andava nel vuoto)
             # (T5#2b, 2026-09-24): qui resta `add -A` per scelta — i fix sono deterministici (nessun
@@ -1352,7 +1353,7 @@ else
   log "pulizia rami: fetch o lista PR falliti — non cancello niente (senza date o PR la scopa e' cieca)"
 fi
 if [ "$SCOPA_OK" -eq 1 ]; then
-  for B in $(rami_da_scopare "$(date +%s)" 24 "$RAMI_TSV" "$PR_TSV" | grep "^notte/auto-" | head -10); do
+  for B in $(rami_da_scopare "$(date +%s)" 24 "$RAMI_TSV" "$PR_TSV" | grep -E '^(night|notte)/auto-' | head -10); do
     gh api -X DELETE "repos/obi2kenobi/AI_Programmer/git/refs/heads/${B//\//%2F}" >/dev/null 2>&1 \
       && log "pulizia: ramo notte stante '$B' cancellato (PR fusa/chiusa, o nessuna PR da oltre 24h)"
   done
