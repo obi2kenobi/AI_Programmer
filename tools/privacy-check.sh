@@ -90,7 +90,7 @@ fi
 # anche nella storia. Si dicono commit e oggetto, mai il valore. Misurato sull'hub: 5 s, zero commit.
 # Ogni alternativa sta anche in SHAPES (lo pretende tests/test-privacy.sh).
 SHAPES_CREDENZIALI='sk-ant-[A-Za-z0-9_-]{20}|sk-proj-[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{12}|xoxb-[0-9A-Za-z-]{10}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|ya29\.[A-Za-z0-9_-]{20}|1//0[A-Za-z0-9_-]{20}|GOCSPX-[A-Za-z0-9_-]{20}|://[^/[:space:]:@]+:[^/[:space:]@]{6,}@|[0-9a-f]{32}\.[A-Za-z0-9]{16}'
-CRED_STORIA=$( (cd "$HERE" && git log --all --format='%h %s' -G"$SHAPES_CREDENZIALI" -- . ':!tests/' ':!tools/privacy-check.sh' ':!tools/giri-avversari.sh' ':!SAL-ARCHIVIO.md' ':!**/repos.key' 2>/dev/null) || true)
+CRED_STORIA=$( (cd "$HERE" && git log --all --format='%h %s' -G"$SHAPES_CREDENZIALI" -- . ':!tests/' ':!tools/privacy-check.sh' ':!tools/giri-avversari.sh' ':!SAL-ARCHIVIO.md' ':!**/repos.key' ':!graphify-out' 2>/dev/null) || true)   # graphify-out: D38
 if [ -n "$CRED_STORIA" ]; then
   echo "⛔ privacy-check: forma di CREDENZIALE nella STORIA git (il valore non si stampa: la chiave va ruotata; riscrivere la storia lo decide Luca):" >&2
   echo "$CRED_STORIA" | cut -c1-90 | sed 's/^/  commit /' >&2
@@ -132,7 +132,9 @@ scan_termine() {
   local FILES HIST MSG ALL
   # (2026-09-24, Q5 R5): -i — il nome in MAIUSCOLO passava qui e non nel pre-commit (che e' -i)
   FILES=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F "$termine" 2>/dev/null) | grep -v "repos.key" || true)
-  HIST=$( (cd "$HERE" && git log --all --oneline -S"$termine" -- . 2>/dev/null) | sed 's/^/storia: /' || true)
+  # (2026-09-25, D38): la storia di graphify-out/ no — file generato, ~73 versioni al giorno (il 73% del tempo, O3 R1),
+  # e ogni sua versione passa dal cancello delle forme prima del push; il grafo di OGGI e' fra i FILES qui sopra
+  HIST=$( (cd "$HERE" && git log --all --oneline -S"$termine" -- . ':!graphify-out' 2>/dev/null) | sed 's/^/storia: /' || true)
   MSG=$( (cd "$HERE" && git log --all --oneline --grep="$termine" -F 2>/dev/null) | sed 's/^/messaggio: /' || true)
   ALL=$(printf '%s\n%s\n%s\n' "$FILES" "$HIST" "$MSG" | grep -v '^$' || true)
   if [ -n "$ALL" ]; then
