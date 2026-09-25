@@ -359,6 +359,12 @@ CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il 14b risponde in se
 VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
+# (2026-09-25, D43, risposta delegata): un verdetto fuori vocabolario ricadeva nel ramo del rigetto — commento pubblico e
+# PR chiusa per una risposta mal formata, che non si annulla. Il dubbio del censore non e' un no: al giorno, in silenzio.
+case "$VERDETTO" in
+  APPROVA|RIGETTA) ;;
+  *) log "censore: verdetto fuori vocabolario («$(printf '%s' "$VERDETTO" | taglia_caratteri 40)») — al giorno, nessun commento"; exit 2 ;;
+esac
 
 # ══ DELIBERA ═══════════════════════════════════════════════════════════════════
 

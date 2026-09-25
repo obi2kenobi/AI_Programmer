@@ -124,6 +124,13 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
 grep -q "\[DRY\] gh pr close 7" <<<"$OUT" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
 grep -q "gh pr merge" <<<"$OUT" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
 
+# 2bis2. (2026-09-25, D43, risposta delegata): un verdetto fuori vocabolario (ne' APPROVA ne' RIGETTA) ricadeva nel
+#        ramo del rigetto: commento pubblico e PR chiusa. Il dubbio del censore non e' un no: rc 2, al giorno.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-forse
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=FORSE bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -c 'gh pr close\|gh pr comment\|gh pr merge' <<<"$OUT" >/dev/null && grep -ci 'fuori vocabolario' <<<"$OUT" >/dev/null \
+  && ok "D43: verdetto fuori vocabolario: rc 2, niente chiusura ne' commento, e lo dice" || ko "D43: verdetto FORSE: rc $RC, $(grep -c 'gh pr close' <<<"$OUT") chiusure"
+
 # 2ter. (2026-09-25, ottavo ventaglio, O5 R3): un rigetto la cui chiusura fallisce diceva «chiusa» lo stesso, e la PR
 #       tornava al censore a ogni ciclo (tre rigetti, e al quarto una fusione). E una fusione fallita lasciava la PR
 #       «pronta», fuori dalla bozza e dalle guardie per sempre. REVISORE_DRY_FALLISCE fa fallire un'azione nel DRY.

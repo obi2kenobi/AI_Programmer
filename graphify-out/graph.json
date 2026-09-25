@@ -39601,7 +39601,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L298"
+      "source_location": "L299"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39613,7 +39613,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L292"
+      "source_location": "L293"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -50994,7 +50994,7 @@
       },
       "norm_label": "pr_issue()",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L348"
+      "source_location": "L355"
     },
     {
       "id": "tests_test_revisore_sh__entry",
@@ -53959,7 +53959,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L370",
+      "source_location": "L376",
       "weight": 1.0
     },
     {
@@ -59395,7 +59395,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L349",
+      "source_location": "L356",
       "weight": 1.0
     },
     {
@@ -59455,7 +59455,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L369",
+      "source_location": "L376",
       "weight": 1.0
     },
     {
@@ -66758,7 +66758,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L292",
+      "source_location": "L293",
       "weight": 1.0
     },
     {
@@ -66769,7 +66769,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L298",
+      "source_location": "L299",
       "weight": 1.0
     },
     {
@@ -96425,7 +96425,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-revisore.sh",
-      "source_location": "L348",
+      "source_location": "L355",
       "weight": 1.0
     },
     {
@@ -100677,5 +100677,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "47df35572b22870211660a1eb2f5fd0bf1312a6f"
+  "built_at_commit": "3af3bf4f845fc0b9f4b2dc0955a365d7356bf23e"
 }
