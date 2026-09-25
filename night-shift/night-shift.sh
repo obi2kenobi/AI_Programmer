@@ -2,7 +2,7 @@
 # night-shift.sh v2.0 — il turno di notte multi-repo del sistema AI_Programmer.
 #
 # Per ogni repo (argomenti, o night-shift/repos.conf senza argomenti):
-# issue aperte con label night-shift → branch night/issue-N → OpenCode headless (Qwen locale)
+# issue aperte con label night-shift → branch night/issue-N → risolvi-issue.sh (Qwen locale; agente.sh di riserva)
 # → commit → PR BOZZA (mai push su main) → commento nell'issue.
 #
 # Tutto ciò che tre notti su REPO-A hanno insegnato è qui dentro:
@@ -11,7 +11,7 @@
 #   - bash 3.2 (niente mapfile) e cd nel subshell (l'agente lavorava nella directory sbagliata)
 #   - idempotenza completa (PR aperta → skip; PR fusa → chiude l'issue rimasta aperta)
 #   - WATCHDOG per-issue (Luca, 2026-08-31): TIMEOUT_MINUTI default 240, override con NIGHT_SHIFT_TIMEOUT. Il no-limit è costato 3 notti.
-#     Guardia anti-loop: ferma_opencode_del_turno (lib.sh) ferma il SUO opencode e libera il Mac (R5 R6).
+#     Copre il risolutore e l'agente di riserva insieme (D8, 2026-09-25: prima viveva nel ramo opencode, mai eseguito).
 #   - keyword inglese "Closes #N" (l'italiana non auto-chiude le issue al merge)
 #   - git clean per issue (un fallimento non lascia rifiuti al commit successivo)
 #
@@ -72,7 +72,6 @@ if [ -f "$HERE/../tools/profilo.sh" ]; then
 fi
 WORK="$HOME/night-shift-work"
 MODEL_TAG="${MODELLO:-qwen3.8-27b:iq3s}"
-OCPROVIDER="ollama/$MODEL_TAG"
 DEFAULT_TYPE="chore"
 
 # --- La lista delle repo -------------------------------------------------------
@@ -161,12 +160,8 @@ export LANG="${LANG:-en_US.UTF-8}" LC_ALL="${LC_ALL:-en_US.UTF-8}"
 # ollama list prende SIGPIPE, rc 141, pipefail). Cattura prima, confronta poi.
 LISTA_MODELLI=$(ollama list 2>/dev/null)
 grep -qi "$MODEL_TAG" <<<"$LISTA_MODELLI" || { log "ERRORE: modello $MODEL_TAG assente (ollama pull $MODEL_TAG)"; exit 1; }
-# Finding #3 (2026-08-21): opencode orfani di ore rubano il modello e inquinano i turni.
-# Il turno È l'unico proprietario legittimo di "opencode run" mentre gira: si ripulisce prima.
-# (2026-09-24, quinto ventaglio, R5 R6): ma solo del SUO — `pkill -f "opencode run"` uccideva anche quello del
-# giorno. Il PID lo scrive il ramo opencode qui sotto; l'orfano vero di un turno morto e' il file rimasto.
-OPENCODE_PID_FILE="$WORK/.opencode-turno.pid"
-ferma_opencode_del_turno "$OPENCODE_PID_FILE" && log "Puliti processi opencode orfani (del turno: il PID nel file)" && sleep 2 || true
+# (2026-09-25, D8): qui si ripulivano gli opencode orfani del turno. Il turno non lancia piu' opencode (il suo ramo non
+# girava mai, vedi sotto il risolutore): la pulizia e' uscita con lui.
 
 # (2026-09-22, seconda metà della cura dopo le 11 ore buie): ANCHE questa sonda
 # di generazione uccideva il turno al secondo colpo (23:09, 10:24) — l'exit a
@@ -940,27 +935,16 @@ review del giorno." 2>>"$ERR_NOTTE" \
       MIRROR_LIST=$(grep -vE '^\s*#|^\s*$' "$DIR/.night-mirror" | tr '\n' ',' | sed 's/,$//')
       [ -n "$MIRROR_LIST" ] && MIRROR_NOTE=" Cartelle specchio/sola lettura DICHIARATE da questa repo (.night-mirror), non scriverci MAI: $MIRROR_LIST."
     fi
-    local PROMPT="Risolvi questa GitHub issue in MODO INCREMENTALE. REGOLA ANTI-LOOP (4 notti perse così — NON ignorarla):
-
-1. NON rileggere un file che hai già letto in questa sessione. Se hai la lista delle funzioni, lavori da quella.
-2. Dopo al massimo TRE letture di file, SMETTI di leggere e INIZIA A SCRIVERE. Anche sbagliato: si corregge dopo, ma si scrive.
-3. Il piano NON si riscrive: se l'hai già formulato una volta, vai al passo di scrittura successivo.
-4. Se dopo 5 minuti non hai scritto NESSUNA riga di codice, qualcosa è rotto: scrivi la modifica più piccola possibile (anche una riga) per sbloccarti, poi continua da lì.
-5. NON rieseguire grep che hai già fatto. Se hai trovato le funzioni, usale.
-
-Se ti accorgi di essere in loop (stesso pensiero, stessa lettura, nessuna scrittura): FERMA TUTTO, scrivi UNA riga di commento nel file target che dice cosa stavi per fare, e termina con esito 'loop-dichiarato'. Meglio una riga scritta che dieci ore di lettura.
-
-Lavora in modo autonomo e convergi. Modifica solo i file strettamente necessari.$MIRROR_NOTE Rispetta le convenzioni di commit del repo.
-
-Issue #$NUM: $TITLE
-
-$BODY"
 
     # DAL 2026-09-02: risolutore SENZA agente (risolvi-issue.sh) — 20 test: 10/10
     # convergono col 14B coder (17s medi) contro 0/10 con opencode (loop infinito).
     # Il problema non era il modello: era l'agente. Questo script chiama Ollama
     # direttamente, il modello risponde col codice, lo script lo applica e verifica.
     NIGHT_SOLVER="${HERE}/risolvi-issue.sh"
+    # WATCHDOG PER-ISSUE (decisione di Luca, 2026-08-31): il no-limit e' costato 3 notti (28-30/8: loop da 59h, job vivo
+    # che blocca launchd). (2026-09-25, D8, risposta delegata): viveva nel ramo opencode, che non girava mai — per mesi
+    # un'issue non ha avuto altro limite che i timeout interni. Ora copre il risolutore e l'agente di riserva insieme.
+    TIMEOUT_MINUTI="${NIGHT_SHIFT_TIMEOUT:-240}"
     if [ -f "$NIGHT_SOLVER" ]; then
       # l'issue scaricata in un file locale: la leggono il check «gia' implementata» qui
       # sotto E il solver. (D6, test del sistema completo 2026-09-20: il file veniva
@@ -1021,8 +1005,10 @@ $BODY"
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
       # (revisione 10 giri): il default e' MODEL_TAG — con MODELLO cambiato, sonda e solver
       # usavano due modelli diversi
-      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-$MODEL_TAG}" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
+      T_ISSUE=$(date +%s)
+      OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-$MODEL_TAG}" ai_timeout "$((TIMEOUT_MINUTI * 60))" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
+      [ "$RC" -eq 124 ] && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — risolutore fermato, si passa oltre"
       log "Issue #$NUM: $OUT"
       # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo
       # vede DOVE eravamo rimasti, non riparte da zero
@@ -1034,10 +1020,12 @@ $BODY"
       AUTORE_FIX="risolvi-issue.sh, modello locale"   # chi ha scritto il fix: lo dice il commit (V1#6)
       # (2026-09-25, settimo ventaglio, V2 R3): rc 2 (uso errato, o node assente) non va all'agente: non saprebbe
       # verificare nemmeno lui, e il motivo vero si perderebbe dietro un «agente fallito».
-      if [ "$RC" -ne 0 ] && [ "$RC" -ne 3 ] && [ "$RC" -ne 2 ] && [ -f "$HERE/agente.sh" ]; then
-        log "Issue #$NUM: solver rc=$RC — provo l'AGENTE (cascade)"
-        AGENTE_OUT=$(bash "$HERE/agente.sh" "$DIR" \
-          "Fix this GitHub issue. Read the relevant files, understand the problem, fix it.
+      # il watchdog e' dell'issue intera: all'agente resta il tempo che il risolutore non ha usato
+      RESTO_WD=$(( TIMEOUT_MINUTI * 60 - ( $(date +%s) - T_ISSUE ) ))
+      if [ "$RC" -ne 0 ] && [ "$RC" -ne 3 ] && [ "$RC" -ne 2 ] && [ "$RC" -ne 124 ] && [ "$RESTO_WD" -gt 60 ] && [ -f "$HERE/agente.sh" ]; then
+        log "Issue #$NUM: solver rc=$RC — provo l'AGENTE (cascade, $((RESTO_WD / 60)) minuti di watchdog)"
+        AGENTE_OUT=$(ai_timeout "$RESTO_WD" bash "$HERE/agente.sh" "$DIR" \
+          "Fix this GitHub issue. Read the relevant files, understand the problem, fix it.${MIRROR_NOTE}
 
 === ISSUE ===
 $(cat "$ISSUE_FILE" | head -60)
@@ -1045,6 +1033,7 @@ $(cat "$ISSUE_FILE" | head -60)
 
 Fix the code in the current directory. When done, respond with FINISH." 2>&1)
         AGENTE_RC=$?
+        [ "$AGENTE_RC" -eq 124 ] && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — agente fermato, si passa oltre"
         # (audit 2026-09-23): l'esito della cascade finiva in una variabile e
         # moriva — ora almeno la coda dell'output si vede nel log del turno.
         log "Issue #$NUM: cascade-agente rc=$AGENTE_RC — $(echo "$AGENTE_OUT" | tail -2 | head -1 | cut -c1-110)"
@@ -1216,90 +1205,10 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
       continue
     fi
 
-    # WATCHDOG PER-ISSUE (decisione di Luca, 2026-08-31 — DEBITI saldato). Il no-limit
-    # (2026-08-21) è costato 3 notti (28-30/8: loop da 59h, job vivo che blocca launchd)
-    # e oggi sta bruciando ancora. Il watchdog è il pattern watchdog-guardato applicato
-    # al turno stesso: l'agente ha TIMEOUT_MINUTI (default 240 = 4h), la review del
-    # mattino resta l'appello. NON è un limite alla qualità: è il limite al loop.
-    TIMEOUT_MINUTI="${NIGHT_SHIFT_TIMEOUT:-240}"
-    # (R5 R6): `exec` — il PID e' quello di opencode stesso, e si scrive: la pulizia ferma solo lui
-    ( cd "$DIR" && exec opencode run --model "$OCPROVIDER" "$PROMPT" ) >> "$LOG" 2>&1 &
-    AGENTE_PID=$!
-    echo "$AGENTE_PID" > "$OPENCODE_PID_FILE"
-    ( sleep $((TIMEOUT_MINUTI * 60)); kill $AGENTE_PID 2>/dev/null && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — ucciso, il piano nel log resta la ripartenza" ) &
-    WATCHDOG_PID=$!
-    wait $AGENTE_PID 2>/dev/null
-    RC=$?
-    kill $WATCHDOG_PID 2>/dev/null || true
-    if [ $RC -ne 0 ] && ! kill -0 $AGENTE_PID 2>/dev/null; then
-      # il watchdog l'ha ucciso (o è morto da sé): si passa alla issue successiva, il turno NON si blocca
-      log "⚠ issue #$NUM: agente terminato (rc=$RC) — si passa oltre, il piano è nel log"
-    fi
-
-    # Rilevatore di loop-di-riletture (notti 28/8 e 31/8: il prompt anti-loop da solo
-    # NON basta — il modello lo ignora e rilegge le stesse finestre per ore).
-    # DUE firme post-run: (a) righe consecutive identiche, (b) la stessa finestra
-    # di Read ripetuta più di 10 volte (la firma reale del 31/8: offset=655 ripetuto 21 volte).
-    local CODA NREP WINS
-    CODA=$(tail -40 "$LOG" | grep -vE '^[[:space:]]*$' | uniq -c | sort -rn | head -1)
-    NREP=$(echo "$CODA" | awk '{print $1}')
-    # firma (b): la stessa finestra Read ripetuta oltre 10 volte in tutta la sessione
-    WINS=$(grep -a "Read " "$LOG" | grep -oE "offset=[0-9]+, limit=[0-9]+" | sort | uniq -c | sort -rn | head -1 | awk '{print $1}')
-    if [ "${NREP:-0}" -ge 3 ] || [ "${WINS:-0}" -gt 10 ]; then
-      log "⚠ issue #$NUM: LOOP DI RIPLETTURA rilevato ($NREP ripetizioni consecutive senza esecuzione) — issue lasciata aperta; il piano già scritto nel log è il punto di ripartenza, non un punto da rifare"
-      echo "$(date '+%Y-%m-%d'),$(repo_code "$REPO"),#$NUM,#$NUM,loop-rilettura,—," >> "${HUB_METRICS:-/dev/null}" 2>/dev/null || true
-    fi
-    # (revisione 10 giri, 2026-09-23): era `local OP_RC=$?` — l'esito dell'`if` appena chiuso,
-    # sempre 0: il ramo «OpenCode fallito» (commento sull'issue, regola dell'A/B) era MORTO.
-    # L'esito dell'agente e' RC, letto dal `wait` qui sopra.
-    local OP_RC=$RC
-    ferma_opencode_del_turno "$OPENCODE_PID_FILE" || true
-
-    if [ "$OP_RC" -ne 0 ]; then
-      log "Issue #$NUM: OpenCode fallito, skip"
-      FAIL_PREC=$(gh issue view "$NUM" -R "$REPO" --json comments -q '[.comments[].body | select(test("esecuzione fallita"))] | length' 2>/dev/null || echo 0)
-      if [ "${FAIL_PREC:-0}" -ge 1 ]; then
-        gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte: esecuzione fallita per la $((FAIL_PREC+1))ª volta. Regola dell'A/B: due fallimenti notturni = territorio da giorno — valuta di passarla al giorno (Claude/GLM la chiudono in minuti)." >/dev/null 2>&1
-      else
-        gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte: esecuzione fallita (vedi log locale). Riproverà alla prossima esecuzione." >/dev/null 2>&1
-      fi
-      FAILED=$((FAILED+1)); continue
-    fi
-
-    if git -C "$DIR" diff --quiet && [ -z "$(git -C "$DIR" status --porcelain)" ]; then
-      log "Issue #$NUM: nessuna modifica prodotta, skip"
-      FAILED=$((FAILED+1)); continue
-    fi
-
-    # (T5#2b, 2026-09-24): qui resta `add -A` — i file nuovi di opencode (un test, un modulo) sono il suo
-    # lavoro e opencode non li dichiara. Se debbano passare da una dichiarazione e' una domanda (DEBITI).
-    git -C "$DIR" add -A
-    git -C "$DIR" commit -q -m "$CTYPE: night issue #$NUM — $TITLE" || { log "Issue #$NUM: commit fallito"; FAILED=$((FAILED+1)); continue; }
-    F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; FAILED=$((FAILED+1)); continue; }  # T5#3: prima del push
-    git -C "$DIR" push -q -u origin "$BRANCH" || { log "Issue #$NUM: push fallito"; FAILED=$((FAILED+1)); continue; }
-
-    local PR_URL
-    PR_URL=$(gh pr create -R "$REPO" --draft --base "$DB" --head "$BRANCH" \
-      --title "night: $TITLE" \
-      --body "PR bozza dal turno di notte (Qwen3.8-27B locale via AI_Programmer).
-
-Closes #$NUM al merge. La keyword resta INGLESE: GitHub non auto-chiude con le traduzioni.
-
-## Da verificare al gate del mattino
-- [ ] La modifica fa ciò che chiede l'issue
-- [ ] Nessun effetto collaterale fuori scope
-- [ ] Verifiche dichiarate della repo passano
-- [ ] Banco avversariale (morning-gate) senza smentite" 2>/dev/null) || { log "Issue #$NUM: creazione PR fallita"; FAILED=$((FAILED+1)); continue; }
-
-    log "Issue #$NUM: $(lente_pr "$DIR" "origin/$DB" "$BRANCH" "$PR_URL")"  # D2: lente sicurezza automatica
-    gh issue comment "$NUM" -R "$REPO" --body "🌙 Turno di notte completato: PR bozza pronta per il gate del mattino → $PR_URL" >/dev/null 2>&1
-    log "Issue #$NUM: PR creata → $PR_URL"
-    PR_CREATED=$((PR_CREATED+1))
-    # bug reale (revisione 14 lenti, 2026-08-28): "main" hardcoded nonostante SAL.md
-    # dichiarasse chiuso il refactor "§2.2 main hardcoded in 6 punti" — restava questo
-    # settimo punto. Su un repo con default branch diverso da "main" falliva silenziosamente
-    # (nessun ||, niente -e) e lasciava $DIR checked-out sull'ultimo branch night/issue-N.
-    git -C "$DIR" checkout "$DB" -q
+    # (2026-09-25, D8, risposta delegata): qui c'era il ramo opencode — l'else di un risolutore che esiste sempre, quindi
+    # mai eseguito. Senza risolutore l'issue si salta, e lo si dice.
+    log "Issue #$NUM: ⛔ risolvi-issue.sh assente — nessun risolutore: issue saltata"
+    FAILED=$((FAILED+1))
   done
 
   # bug reale (dogfooding, nuovo ciclo 10 giri): PR_CREATED/FAILED sono `local` a

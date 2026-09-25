@@ -111,7 +111,8 @@ grep -q 'privacy-check.sh' "$LENTE" && ! grep -q "^SHAPES='" "$LENTE" \
 # 8. i punti d'aggancio: ogni PR della notte passa dalla lente, e il censore non fonde senza
 NS="$HERE/night-shift/night-shift.sh"
 N_PR=$(grep -c 'gh pr create' "$NS"); N_LENTE=$(grep -c 'lente_pr ' "$NS")
-[ "$N_PR" -ge 4 ] && [ "$N_LENTE" -ge "$N_PR" ] \
+# (2026-09-25, D8): i punti di creazione sono tre — il quarto era il ramo opencode, tolto perche' non girava mai
+[ "$N_PR" -ge 3 ] && [ "$N_LENTE" -ge "$N_PR" ] \
   && ok "night-shift: $N_PR creazioni di PR, $N_LENTE passaggi dalla lente" || ko "night-shift: $N_PR PR create ma $N_LENTE passaggi dalla lente"
 grep -q 'lente_pr ' "$HERE/tools/grafo-semantico.sh" && ok "anche la PR del grafo semantico passa dalla lente" || ko "la PR del grafo semantico salta la lente"
 grep -q 'lente-sicurezza.sh' "$HERE/night-shift/revisore.sh" && ok "il censore interroga la lente prima di deliberare" || ko "il censore delibera senza la lente"

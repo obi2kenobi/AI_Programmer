@@ -512,37 +512,11 @@ if declare -F prendi_lock_turno >/dev/null; then
   NSH="$HERE/night-shift/night-shift.sh"
   R_LOCK=$(grep -n 'prendi_lock_turno "' "$NSH" | head -1 | cut -d: -f1)
   R_RESET=$(grep -n 'reset -q --hard' "$NSH" | head -1 | cut -d: -f1)
-  R_PKILL=$(grep -n 'ferma_opencode_del_turno "' "$NSH" | grep -v '^[0-9]*:[[:space:]]*#' | head -1 | cut -d: -f1)
-  [ -n "$R_LOCK" ] && [ "$R_LOCK" -lt "${R_RESET:-0}" ] && [ "$R_LOCK" -lt "${R_PKILL:-0}" ]     && ok "night-shift.sh: il lock del turno si prende PRIMA del self-pull e del pkill"     || ko "night-shift.sh: lock (riga ${R_LOCK:-assente}) dopo reset (${R_RESET:-?}) o pkill (${R_PKILL:-?})"
+  [ -n "$R_LOCK" ] && [ "$R_LOCK" -lt "${R_RESET:-0}" ]     && ok "night-shift.sh: il lock del turno si prende PRIMA del self-pull e del pkill"     || ko "night-shift.sh: lock (riga ${R_LOCK:-assente}) dopo reset (${R_RESET:-?}) o pkill (${R_PKILL:-?})"
 else
   ko "prendi_lock_turno non definita in lib.sh"
 fi
 
-# --- (2026-09-24, quinto ventaglio, R5 R6): la pulizia d'inizio ciclo era `pkill -f "opencode run"` — uccideva
-# anche l'opencode del GIORNO (tools/test-modelli-notturni.sh lo usa), che leggeva l'uscita vuota come «il
-# modello non risponde». E il ramo che lancia opencode nel turno non gira nemmeno (DEBITI, V1#6d). Ora il turno
-# ferma solo il PID che ha scritto lui, e solo se quel PID e' ancora un «opencode run» (un PID riusato no).
-if declare -F ferma_opencode_del_turno >/dev/null; then
-  OC=$(mktemp -d); mkdir -p "$OC/bin"
-  printf '#!/bin/bash\nsleep 30\n' > "$OC/bin/opencode"; chmod +x "$OC/bin/opencode"
-  PATH="$OC/bin:$PATH" opencode run del-giorno & GIORNO=$!
-  PATH="$OC/bin:$PATH" opencode run del-turno & TURNO=$!
-  sleep 30 & RIUSATO=$!
-  sleep 0.3
-  echo "$TURNO" > "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_T=$?
-  echo "$RIUSATO" > "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_R=$?
-  rm -f "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_N=$?
-  sleep 0.3
-  [ "$RC_T" -eq 0 ] && ! kill -0 "$TURNO" 2>/dev/null && ok "R5 R6: l'opencode del turno (PID nel file) si ferma" || ko "R5 R6: opencode del turno vivo (rc $RC_T)"
-  kill -0 "$GIORNO" 2>/dev/null && ok "R5 R6: l'opencode del giorno resta vivo" || ko "R5 R6: la pulizia ha ucciso l'opencode del giorno"
-  [ "$RC_R" -ne 0 ] && kill -0 "$RIUSATO" 2>/dev/null && ok "R5 R6: un PID riusato (non piu' opencode) non si tocca" || ko "R5 R6: ucciso un PID riusato"
-  [ "$RC_N" -ne 0 ] && ok "R5 R6: senza file di PID non si ferma niente" || ko "R5 R6: senza file, rc 0"
-  kill "$GIORNO" "$RIUSATO" "$TURNO" 2>/dev/null; wait "$GIORNO" "$RIUSATO" "$TURNO" 2>/dev/null; rm -rf "$OC"
-else
-  ko "R5 R6: ferma_opencode_del_turno assente da night-shift/lib.sh"
-fi
-NUDI=$(grep -n 'pkill -f "opencode run"' "$HERE/night-shift/night-shift.sh" | grep -v '^[0-9]*:[[:space:]]*#' || true)
-[ -z "$NUDI" ] && ok "R5 R6: il turno non fa piu' pkill -f \"opencode run\"" || ko "R5 R6: pkill nudo rimasto: $NUDI"
 
 # --- (2026-09-24, sesto ventaglio, S1 R1): l'issue [night-verify] chiedeva di «riprodurre a mano» le righe di
 # .night-verify cosi' com'erano, fuori da un blocco di codice. La riga dell'indice SAL dell'hub finisce in `exit 1`:
@@ -755,6 +729,19 @@ else
 fi
 grep -q 'NV_MOTIVO=$(motivo_non_verificabile "$DIR/.night-verify")' "$HERE/night-shift/night-shift.sh" \
   && ok "D17: il turno legge la dichiarazione prima di dire verifiche-vuote" || ko "D17: il turno punisce ancora la dichiarazione"
+
+# (2026-09-25, D8, risposta delegata): il ramo opencode era l'else di `[ -f risolvi-issue.sh ]` e non girava mai; dentro
+# viveva il watchdog per-issue di 240 minuti che CLAUDE.md §7 promette. Ora il ramo non c'e', e il watchdog sta attorno
+# al risolutore e all'agente di riserva (col tempo che resta). Le cartelle specchio arrivano al prompt dell'agente.
+NS_T="$HERE/night-shift/night-shift.sh"
+! grep -q 'exec opencode run' "$NS_T" && ! grep -q 'ferma_opencode_del_turno' "$NS_T" "$HERE/night-shift/lib.sh" \
+  && ok "D8: il ramo opencode morto e la sua pulizia non ci sono piu'" || ko "D8: il ramo opencode c'e' ancora"
+grep -q 'ai_timeout "$((TIMEOUT_MINUTI \* 60))" bash "$NIGHT_SOLVER"' "$NS_T" && grep -q 'ai_timeout "$RESTO_WD" bash "$HERE/agente.sh"' "$NS_T" \
+  && grep -q 'WATCHDOG scattato a ${TIMEOUT_MINUTI}min' "$NS_T" \
+  && ok "D8: il watchdog di 240 minuti sta attorno al risolutore e all'agente" || ko "D8: il risolutore gira senza watchdog"
+AGENTE_BLOCCO=$(grep -A3 'AGENTE_OUT=$(' "$NS_T")
+grep -q 'MIRROR_NOTE' "$NS_T" && grep -q 'MIRROR_NOTE' <<<"$AGENTE_BLOCCO" \
+  && ok "D8: le cartelle specchio (.night-mirror) arrivano al prompt dell'agente" || ko "D8: .night-mirror non arriva a nessuno"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"
