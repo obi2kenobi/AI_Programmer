@@ -8,6 +8,9 @@ default_branch() {
   ref=$(git -C "$dir" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null) && {
     echo "${ref#refs/remotes/origin/}"; return 0
   }
+  # (2026-09-25, ottavo ventaglio, O4 R3): senza origin/HEAD si chiede al remoto (git, senza gh e senza API)
+  ref=$(git -C "$dir" ls-remote --symref origin HEAD 2>/dev/null | sed -n 's|^ref: refs/heads/\([^[:space:]]*\)[[:space:]]*HEAD$|\1|p' | head -1)
+  [ -n "$ref" ] && { echo "$ref"; return 0; }
   local ghb
   # bug reale (revisione 14 lenti, 2026-08-28): la query jq leggeva `.name` invece di
   # `.defaultBranchRef.name` — con `--json defaultBranchRef` l'oggetto è
@@ -15,7 +18,8 @@ default_branch() {
   # riuscito, solo la query sbagliata) e il chiamante non vedeva MAI l'avviso di fallback,
   # perché "&&" scattava comunque con la stringa letterale "null". Verificato con jq sullo
   # stesso schema prima e dopo il fix.
-  ghb=$(gh repo view -R "$(git -C "$dir" remote get-url origin 2>/dev/null | sed 's|.*github.com[:/]||; s|\.git$||')" \
+  # (ottavo ventaglio, O4 R3): la repo e' posizionale — `gh repo view -R` e' rifiutato dal gh vero
+  ghb=$(gh repo view "$(git -C "$dir" remote get-url origin 2>/dev/null | sed 's|.*github.com[:/]||; s|\.git$||')" \
     --json defaultBranchRef -q .defaultBranchRef.name 2>/dev/null) && [ -n "$ghb" ] && [ "$ghb" != "null" ] && { echo "$ghb"; return 0; }
   echo "main" # fallback finale: CHIAMANTE deve avvisare che è un'assunzione
   return 1

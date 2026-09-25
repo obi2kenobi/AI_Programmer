@@ -206,6 +206,20 @@ else
 fi
 grep -c 'esegui_verifica "\$DIR"' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "night-shift.sh esegue .night-verify con esegui_verifica" || ko "night-shift.sh esegue .night-verify buttando l'uscita"
 
+# --- (2026-09-25, ottavo ventaglio, O4 R3): senza origin/HEAD, default_branch ripiegava su `gh repo view -R …`, che il gh
+# vero rifiuta («unknown shorthand flag: 'R'»): diceva sempre «main», anche per una repo `master`.
+if command -v default_branch >/dev/null; then
+  DBT=$(mktemp -d); git init -q --bare -b master "$DBT/r.git"
+  git clone -q "$DBT/r.git" "$DBT/seme" 2>/dev/null; echo x > "$DBT/seme/a"
+  git -C "$DBT/seme" add a; git -C "$DBT/seme" -c user.email=t@t -c user.name=t commit -qm a; git -C "$DBT/seme" push -q origin master 2>/dev/null
+  git clone -q "$DBT/r.git" "$DBT/c" 2>/dev/null; git -C "$DBT/c" remote set-head origin -d 2>/dev/null
+  DBR=$(default_branch "$DBT/c" 2>/dev/null); DBRC=$?
+  [ "$DBR" = master ] && [ "$DBRC" -eq 0 ] && ok "O4 R3: senza origin/HEAD default_branch chiede al remoto (master, non «main»)" || ko "O4 R3: senza origin/HEAD: «${DBR}» rc $DBRC"
+  rm -rf "$DBT"
+else
+  ko "O4 R3: default_branch assente"
+fi
+
 # --- (2026-09-25, ottavo ventaglio, O2 R3): le guardie anti-doppione leggevano «gh in errore» come «non c'e'» —
 # `$(gh … 2>/dev/null || true)` — e il turno riapriva issue, PR e commenti a ogni ciclo in cui la lettura cadeva e la
 # scrittura no. Ora gh che non risponde e' GH_NON_SO, e la scrittura esterna si salta in quel ciclo.
