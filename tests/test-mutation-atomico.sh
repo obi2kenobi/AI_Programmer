@@ -32,10 +32,14 @@ git -C "$TMP/repo" add -A && git -C "$TMP/repo" -c user.name=t -c user.email=t@t
 ORIG=$(cat "$TMP/repo/tools/foo.sh")
 PAYLOAD=$(printf '#!/bin/bash\nexit 0\n')   # $(...) strippa il newline finale: come ATTUALE
 
+# aspetta_mutazione: fino a 5 s, finche' foo.sh e' mutato E il banco mutato e' vivo. (2026-09-25, settimo ventaglio, V5 R5):
+# erano tre `sleep 3` fissi, e due `sleep 1` dopo un `wait` che aspetta gia' la fine (trap compresa): 11 dei 16 s del banco.
+aspetta_mutazione() { for _ in $(seq 1 100); do [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && pgrep -P "$PID" >/dev/null && return 0; sleep 0.05; done; return 0; }
+
 # ── A. SIGKILL: il peggiore dei casi ────────────────────────────────────────
 ( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
-sleep 3   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
+aspetta_mutazione   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
 # (revisione 10 giri, 2026-09-23): «integro» era accettato anche se la mutazione NON era mai
 # avvenuta (il banco sostituito da `exit 0` passava A, B e C). Prima del colpo, la mutazione
 # dev'essere IN CORSO — altrimenti la prova e' vuota, non verde.
@@ -45,7 +49,6 @@ sleep 3   # il banco ha gia' mutato foo.sh: test-foo dorme 30s
 # init e `pkill -P` non li trovava piu': restavano orfani.
 kill -STOP "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null; kill -KILL "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
-sleep 1
 ATTUALE=$(cat "$TMP/repo/tools/foo.sh")
 if [ "$ATTUALE" = "$ORIG" ] || [ "$ATTUALE" = "$PAYLOAD" ]; then
   ok "A: SIGKILL a meta' mutazione — il tool e' integro o esattamente neutralizzato (mai troncato)"
@@ -60,12 +63,11 @@ git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
 # ── B. SIGTERM: il caso gentile, il trap deve ripristinare ──────────────────
 ( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
-sleep 3
+aspetta_mutazione
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "B: la mutazione e' in corso al momento del colpo (prova non vuota)" \
   || ko "B: al colpo foo.sh non era mutato — la prova del trap sarebbe vuota"
 kill -TERM "$PID" 2>/dev/null
 wait "$PID" 2>/dev/null
-sleep 1
 ATTUALE=$(cat "$TMP/repo/tools/foo.sh")
 if [ "$ATTUALE" = "$ORIG" ]; then
   ok "B: SIGTERM a meta' mutazione — il trap ha ripristinato l'originale"
@@ -79,7 +81,7 @@ fi
 git -C "$TMP/repo" checkout -q -- tools/foo.sh 2>/dev/null || true
 ( cd "$TMP/repo" && TMPDIR="$TMP" exec bash tools/mutation-tests.sh ) >/dev/null 2>&1 &
 PID=$!
-sleep 3
+aspetta_mutazione
 [ "$(cat "$TMP/repo/tools/foo.sh")" = "$PAYLOAD" ] && ok "C: la mutazione e' in corso al momento del colpo (prova non vuota)" \
   || ko "C: al colpo foo.sh non era mutato — la prova sarebbe vuota"
 kill -TERM "$PID" 2>/dev/null; sleep 5; kill -STOP "$PID" 2>/dev/null; pkill -KILL -P "$PID" 2>/dev/null; kill -KILL "$PID" 2>/dev/null

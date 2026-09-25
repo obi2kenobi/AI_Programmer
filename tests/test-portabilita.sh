@@ -56,7 +56,8 @@ mtime /nonesiste/xyz >/dev/null 2>&1 && ko "mtime() su file assente dovrebbe tor
 # grep -P: il grep di macOS (BSD) non ce l'ha — "invalid option", il controllo muore
 # zitto e il finding passa per verde (E-037: teatro di parser). \d → [0-9] con -E,
 # \r → $'\r' letterale, range unicode → perl -CSD. git grep -P e' un altro binario: lecito.
-S=$(righe_con 'grep -[a-zA-Z]*P[a-zA-Z]* ' | grep -vE 'git (grep|-C)' || true)
+# (2026-09-25, settimo ventaglio): `pgrep -P <pid>` e' un altro programma (il PID del padre, anche sul Mac): non conta.
+S=$(righe_con '(^|[^a-z])grep -[a-zA-Z]*P[a-zA-Z]* ' | grep -vE 'git (grep|-C)' || true)
 [ -z "$S" ] && ok "nessun grep -P nudo (BSD: invalid option, il controllo muore zitto)" || ko "grep -P non portabile (E-037):"$'\n'"$S"
 
 # realpath --relative-to / readlink -f: GNU (revisione 10 giri, 2026-09-23 — risolvi-issue.sh
