@@ -31,6 +31,15 @@ if [ -z "$ULTIMA" ]; then
   echo "turno-vivo: il log non contiene nessun TURNO INIZIATO — niente da giudicare"
   exit 0
 fi
+# (2026-09-25, D30, risposta delegata): se il ciclo corrente ha cominciato un'issue, il suo limite e' il watchdog di 240
+# minuti (night-shift/night-shift.sh, TIMEOUT_MINUTI), non i ~15 di un ciclo: la soglia diventa il watchdog piu' 15 minuti.
+# Prima un'issue in lavoro da 45 minuti dava il ⛔ col pkill da incollare contro un turno sano.
+NOTA_ISSUE=""
+if { [ -f "$LOG.1" ] && cat "$LOG.1"; cat "$LOG"; } 2>/dev/null | awk '/TURNO INIZIATO/{c=0} /--- Issue #/{c=1} END{exit !c}'; then
+  SOGLIA_ISSUE=$(( ${TURNO_VIVO_WATCHDOG_MIN:-240} + 15 ))
+  [ "$SOGLIA_ISSUE" -gt "$SOGLIA_MIN" ] && SOGLIA_MIN=$SOGLIA_ISSUE
+  NOTA_ISSUE=", issue in corso: soglia del watchdog"
+fi
 # (2026-09-25, settimo ventaglio, V3 R4): l'eta' si prende in epoch — il timestamp locale del log passa da mktime, che
 # conosce il fuso e l'ora legale. Prima si sottraevano due ore locali «ingenue»: in primavera 15 minuti veri diventavano
 # 75 (e un pkill da incollare), in autunno l'eta' veniva negativa («illeggibile»). Nell'ora ripetuta d'autunno mktime
@@ -48,7 +57,7 @@ if [ "${ETA_MIN:--1}" -lt 0 ]; then
   exit 2
 fi
 if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
-  echo "⛔ TURNO INCASTRATO: ultimo ciclo iniziato ${ETA_MIN} minuti fa (soglia ${SOGLIA_MIN}min)."
+  echo "⛔ TURNO INCASTRATO: ultimo ciclo iniziato ${ETA_MIN} minuti fa (soglia ${SOGLIA_MIN}min${NOTA_ISSUE})."
   echo "   Nel continuo un ciclo non supera i ~15 minuti: qualcosa dentro sta hangando."
   echo "   Dove si e' fermato: l'ultima riga di $LOG."
   # (Q12, 2026-09-23): prometteva un riavvio automatico di launchd — il plist parte alle 23:00 e non ha
@@ -58,5 +67,5 @@ if [ "$ETA_MIN" -ge "$SOGLIA_MIN" ]; then
   echo "   launchctl kickstart gui/\$(id -u)/\$(launchctl list | awk '/nightshift/{print \$3}')"
   exit 1
 fi
-echo "turno-vivo: il turno cicla (ultimo iniziato ${ETA_MIN}min fa, soglia ${SOGLIA_MIN}min)"
+echo "turno-vivo: il turno cicla (ultimo iniziato ${ETA_MIN}min fa, soglia ${SOGLIA_MIN}min${NOTA_ISSUE})"
 exit 0
