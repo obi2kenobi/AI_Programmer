@@ -118,6 +118,8 @@ log "File da leggere: $TERRitorio"
 dentro_il_progetto() {
   RP_F=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$1" 2>/dev/null)
   RP_D=$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$2" 2>/dev/null)
+  # (2026-09-25, ottavo ventaglio, O1 R1): mai dentro un .git — una voce di .git/config puo' essere un comando che git esegue
+  case "$RP_F" in */.git|*/.git/*) return 1;; esac
   case "$RP_F" in "$RP_D"|"$RP_D"/*) return 0;; *) return 1;; esac
 }
 

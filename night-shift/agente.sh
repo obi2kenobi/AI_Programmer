@@ -26,6 +26,16 @@ TIMEOUT_TOTALE="${AGENTE_TIMEOUT:-600}"  # (2026-09-21: 300 non bastano al 27B q
 MANCANO=$(dipendenze_mancanti jq curl) || { echo "⛔ MANCA $MANCANO: l'agente non parte — ogni diagnosi del modello sarebbe falsa" >&2; exit 2; }
 cd "$DIR"
 
+# percorso_ammesso <realpath> <realpath-progetto>: 0 se il percorso sta dentro il progetto e NON dentro un `.git`.
+# (2026-09-25, ottavo ventaglio, O1 R1): `.git/` sta dentro il progetto, e il confine lo ammetteva. Una voce di
+# .git/config (o un hook) puo' essere un comando che git esegue: lo scriveva il modello con un edit, e lo eseguivano
+# poi tutti i git del turno — fuori dalla sandbox, e a ogni notte, perche' reset --hard non tocca .git/config.
+percorso_ammesso() {
+  case "$1" in */.git|*/.git/*) return 1 ;; esac
+  case "$1" in "$2"|"$2"/*) return 0 ;; esac
+  return 1
+}
+
 log() { echo "[agente $(date '+%H:%M:%S')] $*" >&2; }
 T_INIZIO=$(date +%s)
 
@@ -142,7 +152,7 @@ ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
       FNEW=$(echo "$STRIPPED" | jq -r '.new')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
           EDIT_OUT=$(python3 -c "
 import sys
@@ -164,7 +174,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
           RESULT="ERROR: file not found: $FPATH"
         fi ;;
         *)
-        RESULT="ERROR: path outside project"
+        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
         log "  edit: $FPATH FUORI (rifiutato)" ;;
       esac ;;
 
@@ -172,7 +182,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       FPATH=$(echo "$STRIPPED" | jq -r '.path')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
           RESULT="File $FPATH content:\n$(head -c 24000 "$REAL")"
           log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
@@ -181,7 +191,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
           log "  read: $FPATH NON TROVATO"
         fi ;;
         *)
-        RESULT="ERROR: path outside project"
+        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
         log "  read: $FPATH FUORI (rifiutato)" ;;
       esac ;;
 
@@ -190,7 +200,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       FCONTENT=$(echo "$STRIPPED" | jq -r '.content')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$REAL" in "$REAL_DIR"|"$REAL_DIR"/*)
+      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         # (giro 11, 2026-09-20): il system prompt dice «WRITE solo per file NUOVI» ma nulla
         # lo faceva rispettare — la riscrittura intera (516 righe per un tubo) passava di qui.
         # La regola diventa strutturale: un file che esiste si cambia SOLO con edit.
@@ -206,7 +216,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
           log "  write: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
         fi ;;
         *)
-        RESULT="ERROR: path outside project"
+        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
         log "  write: $FPATH FUORI (rifiutato)" ;;
       esac ;;
 

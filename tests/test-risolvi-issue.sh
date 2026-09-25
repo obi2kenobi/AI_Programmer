@@ -108,6 +108,14 @@ fi
 grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' <<<"$OUT" \
   && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
   || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
+# (2026-09-25, ottavo ventaglio, O1 R1): il Territorio di un'issue e' input esterno, e `.git/config` sta dentro il progetto:
+# il confine lo ammetteva (lettura mandata al modello, e un bersaglio di scrittura). Ora un .git e' fuori.
+SBG=$(mktemp -d /tmp/risolvi-git.XXXXXX); git -C "$SBG" init -q; cp "$SBG/.git/config" "$SBG/config-prima"
+printf '## Commessa\nsistema la config\n\n## Territorio\nFile: `.git/config`\n' > "$SBG/issue.md"
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SBG" "$SBG/issue.md" 2>&1); RC=$?
+cmp -s "$SBG/.git/config" "$SBG/config-prima" && [ "$RC" -ne 0 ] && ! grep -c 'letti [1-9]' <<<"$OUT" >/dev/null \
+  && ok "O1 R1: un Territorio che nomina .git/config non si legge e non si scrive (modello non chiamato)" || ko "O1 R1: .git/config nel Territorio: rc=$RC, $(grep -m1 -E '⛔|letti' <<<"$OUT")"
+rm -rf "$SBG"
 # (2026-09-25, settimo ventaglio, V2 R3): senza node sul PATH (il plist del turno ne da' uno fisso) `node --check`
 # esce 127, e il solver lo leggeva come «il codice non passa»: un fix giusto buttato con due diagnosi false, e la
 # cascata all'agente. Ora: rc 2, «MANCA node», prima di chiamare il modello, e il file non si tocca.

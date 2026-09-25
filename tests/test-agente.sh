@@ -93,6 +93,19 @@ grep -q "SEGRETO-XYZ" <<<"$OUT" && ko "A3: file ESTERNO letto (confinamento rott
 [ -f "$MOCK_DIR/fuori.txt" ] && ko "A3: write FUORI dal progetto eseguito" || ok "A3: write fuori dal progetto rifiutato"
 [ "$(echo "$OUT" | grep -c 'FUORI (rifiutato)')" -ge 3 ] && ok "A3: tre rifiuti dichiarati nel log (read, write, ../)" || ko "A3: rifiuti loggati: $(echo "$OUT" | grep -c FUORI)"
 
+# A3b (2026-09-25, ottavo ventaglio, O1 R1): `.git/` sta dentro il progetto, e il confine lo ammetteva. Una voce di
+# .git/config puo' essere un comando che git esegue: la scriveva il modello, e la eseguivano poi i git del turno,
+# fuori dalla sandbox, a ogni notte. Ora edit, write e read dentro un .git sono rifiutati.
+SB="$SB_ROOT/a3b"; mkdir -p "$SB"; git -C "$SB" init -q; cp "$SB/.git/config" "$MOCK_DIR/config-prima"
+scenario a3b "$SB" "config" \
+  "$(azione '{"action":"edit","path":".git/config","old":"[core]","new":"[core]\n\tfinto = si"}')" \
+  "$(azione '{"action":"write","path":".git/hooks/post-checkout","content":"#!/bin/sh\necho x"}')" \
+  "$(azione '{"action":"read","path":".git/config"}')" \
+  "$(azione 'fine')"
+cmp -s "$SB/.git/config" "$MOCK_DIR/config-prima" && [ ! -e "$SB/.git/hooks/post-checkout" ] \
+  && ok "O1 R1: .git/config intatto e nessun hook scritto dal modello" || ko "O1 R1: il modello ha scritto dentro .git/"
+[ "$(echo "$OUT" | grep -c '(rifiutato)')" -ge 3 ] && ok "O1 R1: tre rifiuti dentro .git dichiarati nel log" || ko "O1 R1: rifiuti dentro .git: $(echo "$OUT" | grep -c rifiutato)"
+
 # A4: run — denylist (curl/push/rm -rf/sudo/clasp) rifiutata, comando innocuo eseguito
 SB="$SB_ROOT/a4"; mkdir -p "$SB"
 scenario a4 "$SB" "run" \
