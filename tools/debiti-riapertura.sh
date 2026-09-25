@@ -189,7 +189,9 @@ PY
 
 # (2026-09-24, quinto ventaglio, R1 R6): le citazioni file:riga della memoria scivolano col codice (nove su
 # dieci). Qui se ne dice solo il conto; l'elenco lo da' cita-verifica. Un avviso: la riapertura non si ferma.
-if [ -f DEBITI.md ] && [ -f "$SE/cita-verifica.sh" ]; then
+# (2026-09-25, ottavo ventaglio, O3 R2): DEBITI_SENZA_DERIVA=1 la salta. Un git blame per citazione cresce col tempo: il
+# gancio d'avvio (10 s di tetto) la pagava per poi scartarla, e da circa 250 citazioni moriva — sessione senza patti.
+if [ "${DEBITI_SENZA_DERIVA:-0}" != 1 ] && [ -f DEBITI.md ] && [ -f "$SE/cita-verifica.sh" ]; then
   DOCS=(DEBITI.md); [ -f docs/errori/REGISTRO.md ] && DOCS+=(docs/errori/REGISTRO.md)
   echo "$(bash "$SE/cita-verifica.sh" --deriva "${DOCS[@]}" 2>&1 | tail -1) — l'elenco: bash tools/cita-verifica.sh --deriva ${DOCS[*]}"
 fi

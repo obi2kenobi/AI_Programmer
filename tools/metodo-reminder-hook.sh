@@ -46,7 +46,8 @@ if [ "$EVENT" = "SessionStart" ]; then
   # domande singole, i risolvibili da fare prima di procedere. Mai taciti.
   DEBITI_CTX=""
   if [ -f "$PWD/DEBITI.md" ] && [ -f "$HERE/tools/debiti-riapertura.sh" ]; then
-    DEBITI_RIEPILOGO=$(bash "$HERE/tools/debiti-riapertura.sh" "$PWD" 2>/dev/null | sed -n '2p' | head -c 300)
+    # (ottavo ventaglio, O3 R2): senza la deriva delle citazioni — si userebbe solo la seconda riga, e costava fino al tetto
+    DEBITI_RIEPILOGO=$(DEBITI_SENZA_DERIVA=1 bash "$HERE/tools/debiti-riapertura.sh" "$PWD" 2>/dev/null | sed -n '2p' | head -c 300)
     # (report BusinessPlan 2026-09-19): era `DEBITI_CTX "` — un refuso di UN
     # carattere eseguiva DEBITI_CTX come comando (not found), ometteva il settimo
     # patto dal contesto e usciva 0. In silenzio, in ogni repo onboardata.

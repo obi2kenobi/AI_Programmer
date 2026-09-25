@@ -159,6 +159,19 @@ grep -c "⏳ NON verificato dal vivo: la prova sul Mac" <<<"$OUT7" >/dev/null &&
   && ok "R1 R3: il residuo ⏳ del saldato si vede, in una sezione sua" || ko "R1 R3: residuo invisibile: $(tr '\n' ' ' <<<"$OUT7")"
 rm -rf "$SB7"
 
+
+# (2026-09-25, ottavo ventaglio, O3 R2): il gancio d'avvio della sessione (tools/metodo-reminder-hook.sh, 10 s di tetto)
+# tiene solo la seconda riga, ma pagava la deriva delle citazioni (un git blame per citazione, quadratica col tempo): da
+# circa 250 citazioni il gancio moriva, e la sessione partiva senza patti. Qui una cita-verifica finta lenta: con
+# DEBITI_SENZA_DERIVA=1 non si chiama.
+DL=$(mktemp -d); mkdir -p "$DL/tools" "$DL/p"; cp "$HERE/tools/debiti-riapertura.sh" "$DL/tools/"
+printf '#!/bin/bash\nsleep 20; echo lenta\n' > "$DL/tools/cita-verifica.sh"; printf '# DEBITI\n' > "$DL/p/DEBITI.md"
+source "$HERE/llm/_timeout.sh"   # ai_timeout: `timeout` sul Mac non c'e'
+T0=$(date +%s); DEBITI_SENZA_DERIVA=1 ai_timeout 10 bash "$DL/tools/debiti-riapertura.sh" "$DL/p" >/dev/null 2>&1; RCD=$?; DUR=$(( $(date +%s) - T0 ))
+[ "$RCD" -eq 0 ] && [ "$DUR" -lt 5 ] && ok "O3 R2: con DEBITI_SENZA_DERIVA=1 la deriva non si paga (${DUR} s)" || ko "O3 R2: la deriva si paga lo stesso (rc $RCD, ${DUR} s)"
+grep -c 'DEBITI_SENZA_DERIVA=1 bash "$HERE/tools/debiti-riapertura.sh"' "$HERE/tools/metodo-reminder-hook.sh" >/dev/null \
+  && ok "O3 R2: il gancio d'avvio chiede la riapertura senza deriva" || ko "O3 R2: il gancio d'avvio paga la deriva che poi scarta"
+rm -rf "$DL"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
