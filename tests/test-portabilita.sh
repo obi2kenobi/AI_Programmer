@@ -150,6 +150,11 @@ PYMB
 [ -z "$S" ] && ok "V4 R1: nessun \$NOME attaccato a un carattere non ASCII (sul Mac e' una variabile non legata)" \
   || ko "V4 R1: \$NOME seguito da un carattere non ASCII — scrivere \${NOME}:"$'\n'"$S"
 
+# (2026-09-25, settimo ventaglio, V2 R5): `$(MIGLIOREA_DURATA)` e' una command substitution, non una variabile: esegue un
+# comando che non esiste (rc 127 inghiottito) e il log diceva «(s GPU)» — la dashboard non ha mai ricevuto il costo
+# della miglioria. Un nome tutto maiuscolo fra $( ) e' quasi sempre una variabile scritta male.
+S=$(righe_con '\$\([A-Z][A-Z0-9_]*\)' || true)
+[ -z "$S" ] && ok "V2 R5: nessun \$(NOME_MAIUSCOLO): una variabile si legge con \${NOME}" || ko "V2 R5: \$(NOME) esegue un comando, non legge una variabile:"$'\n'"$S"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

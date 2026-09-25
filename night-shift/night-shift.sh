@@ -714,7 +714,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         # (studio gsd-pi, cost-per-unit): il costo della consegna in secondi
         # di GPU — la dashboard lo mostrera' nel funnel
         MIGLIOREA_DURATA=$(( $(date +%s) - MIGLIORIA_T0 ))
-        log "REPO $REPO: 🎯 MIGLIORIA pronta ($(MIGLIOREA_DURATA)s GPU): $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
+        log "REPO $REPO: 🎯 MIGLIORIA pronta (${MIGLIOREA_DURATA}s GPU): $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
