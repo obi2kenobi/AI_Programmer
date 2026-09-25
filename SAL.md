@@ -5340,3 +5340,38 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
 - **Settimo ventaglio, V5 R5 — tre `sleep 3` fissi in `tests/test-mutation-atomico.sh`.** Ora un'attesa condizionata
   (mutazione fatta e banco vivo): da 16 a circa 5 s, 5 verdi su 5, e il sabotaggio della regressione V4#3 resta rosso
   (8/1). La lente `grep -P` di `tests/test-portabilita.sh` prendeva `pgrep -P` (il PID del padre, portabile): corretta.
+- **Ottavo ventaglio, O2 R1 — un errore di gh era «nessuna PR», e il turno forzava il ramo di una PR aperta.** Ora
+  `stato_pr_ramo` (`night-shift/lib.sh`) distingue la lista vuota (NESSUNA) da gh che non risponde (rc 2): allora l'issue
+  si salta in questo ciclo. Caso in `tests/test-lib.sh`, rosso prima; sabotaggio rosso.
+- **Ottavo ventaglio, O1 R1 — il modello poteva scrivere dentro `.git/`.** Una voce di `.git/config` può essere un
+  comando che git esegue: la scriveva l'agente con un edit, e la eseguivano poi i git del turno, fuori dalla sandbox, a
+  ogni notte. Ora `percorso_ammesso` in `night-shift/agente.sh` rifiuta edit, write e read dentro un `.git`, e il
+  risolutore esclude `.git` dal Territorio (lì il caso era già verde: difesa in profondità, dichiarata). Caso A3b in
+  `tests/test-agente.sh`, rosso prima (il modello aveva scritto un hook); sabotaggio 2 rossi.
+- **Ottavo ventaglio, O1 R2 — la lente sicurezza prendeva l'ultima riga con le graffe.** Un «sicuro:false» seguito da un
+  esempio «sicuro:true» dava PULITA, rc 0. Ora si leggono tutte le righe JSON e un solo false vince. Caso in
+  `tests/test-lente-sicurezza.sh` (18/0), rosso prima; sabotaggio 17/1.
+- **Ottavo ventaglio, O2 R2 — il censore vedeva solo le 20 PR più recenti, e le guardie anti-doppione le prime 30.**
+  Ora ogni `gh pr list` e `gh issue list` del turno dichiara un limite di almeno 100 (200 per le candidate, 1000 per gli
+  anti-doppione), e `tests/test-lib.sh` lo pretende; rosso prima su otto righe.
+- **Ottavo ventaglio, O5 R1 — l'auto-miglioramento dell'hub apriva una PR identica a ogni ciclo.** Ora, dopo il commit,
+  `caccia_gia_aperta` sui rami `notte/auto-*` con una PR aperta: stesso patch-id, niente push, e il log dice DOPPIONE.
+  Provato nel laboratorio del giro O5 (blocco vero, `gh` finto con stato): con la cura «DOPPIONE», nessuna PR; col blocco
+  di prima la PR #3. Guardia statica in `tests/test-lib.sh`. Il prefisso `notte/` (invisibile ai giudici) e la PR del
+  grafo a ogni giorno sono una domanda in DEBITI.
+- **Ottavo ventaglio, O4 R1 — il backup settimanale su gist non era mai stato fatto.** `gh gist create --secret` è
+  rifiutato dal gh vero, `gist edit` pure, e sotto `set -e` lo script usciva muto; i file andavano nel gist coi nomi di
+  mktemp. Ora una cartella coi nomi veri, un gist nuovo a ogni backup, l'ID del precedente in `.gist-backup-id.prima`
+  (gitignorato), e il fallimento detto col motivo. La forma nuova verificata col gh 2.45 vero a rete chiusa (arriva
+  all'errore di rete, non a quello dei flag). Due casi in `tests/test-backup-config.sh`, rossi prima. Cosa fare dei gist
+  vecchi, e se `repos.key` debba stare in un gist, è una domanda in DEBITI.
+- **Ottavo ventaglio, O4 R2 — `gh repo create … -q` è rifiutato dal gh vero.** Il bootstrap si fermava sempre lì. Tolto
+  il `-q`; il gh finto di `tests/test-bootstrap-app-e2e.sh` ora rifiuta il `-q` come il vero (rosso prima 12/5).
+- **Ottavo ventaglio, O3 R2 — il gancio d'avvio pagava la deriva delle citazioni e poi la scartava.** Da circa 250
+  citazioni superava i 10 s e la sessione partiva senza patti. Ora `DEBITI_SENZA_DERIVA=1` la salta, e il gancio lo usa.
+  Due casi in `tests/test-debiti-riapertura.sh`, rossi prima; sabotaggio rosso.
+- **Ottavo ventaglio, O3 R5 — `grep "^## E-0"`**: da E-100 in poi le lezioni nuove non entravano nel prompt del
+  cervello. Ora `E-[0-9]`. Guardia in `tests/test-cervello-impara.sh`.
+- **Ottavo ventaglio, O3 R4 — un `head -200` nascosto nella sonda S16.** Da 197 voci diceva «indice FERMO» a indice
+  appena rigenerato. Tolto; caso permanente in `tests/test-giri-ignoranti.sh` (SAL vero più 60 voci), rosso con la
+  versione di prima. Qui ho scritto la cura prima del banco: rimediato col banco e il sabotaggio subito dopo.
