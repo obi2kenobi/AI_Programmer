@@ -35,6 +35,9 @@ righe «Settimo ventaglio».
   - `gate_banchi` contava verde un banco muto, che la suite rifiutava (in apertura).
 - **Smentite**: una, in parte. V4 R1 non si riproduce qui nemmeno con la bash 3.2.57 compilata (glibc non classifica
   0xC2 come lettera). Il difetto resta quello visto sul Mac il 10/9; le graffe e la sonda valgono comunque.
+- **Budget**: in un clone pulito di `e4ff099`, 414 s su 540 (76%), 191/191. Ieri era 83% con 188 banchi. La
+  sentinella resta sopra la sua soglia del 70%: è la domanda D-V5-3. (Una prima misura, 296 s, non valeva: l'albero era
+  sporco e la batteria delle mutazioni si ferma per disegno.)
 - **Suite**: 191/191 all'ultima consegna, con cinque banchi nuovi:
   - `tests/test-grafo-semantico.sh`;
   - `tests/test-caccia-smistamento.sh`;

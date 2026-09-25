@@ -23,3 +23,19 @@
 - CLAUDE.md §2 «Respect existing patterns»: quando la stessa regola vive in due giudici (suite e gate del fixer),
   una delle due copie diverge. Proposta: una regola, una funzione, citata da entrambi. Non applicata: la lente V1
   del settimo ventaglio la sta misurando.
+
+## Aggiornamento (2026-09-25, settimo ventaglio chiuso, fino alle 05Z)
+- Usato: cinque lenti (due giudici, il codice d'uscita, il calendario, la codifica, il budget). Consolidamento in
+  `docs/giri/2026-09-25-settimo/99-CONSOLIDAMENTO.md`: 29 rilievi, 26 curati (2 in parte), 3 rinviati, 11 domande di
+  dominio nuove in DEBITI. Un mio errore nel REGISTRO (E-049, con guardia).
+- Ha retto: le guardie di stanotte hanno morso le mie prime stesure nella stessa notte. La sonda dei caratteri non
+  ASCII ha preso tre mie righe nuove, il pre-commit un mio letterale di banco. La lettura del verdetto invece dell'rc
+  ha fatto emergere un attacco (A20) che non aveva mai visto niente.
+- Ha ostacolato: la suite di consegna gira con l'albero sporco, e lì la batteria delle mutazioni si ferma per disegno.
+  Le mie consegne non l'hanno mai eseguita: l'ho provata a parte in un clone. Anche una mia misura del budget ne è
+  stata falsata, ed è rifatta in un clone pulito.
+- Proposte al canone (non applicate):
+  - CLAUDE.md §4: il tipo di commit `perf` non c'è, e l'ho usato (`7e426c9`). O la lista si allarga, o il pre-commit
+    rifiuta un tipo che non è nella lista: oggi nessuno lo controlla.
+  - CLAUDE.md §2 «Respect existing patterns», già proposta sopra: una regola applicata da due giudici vive in una
+    funzione sola. Stanotte cinque casi (consolidamento, tema 1).
