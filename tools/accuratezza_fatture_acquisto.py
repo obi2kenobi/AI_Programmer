@@ -43,6 +43,11 @@ def leggi_csv(path, colonne=()):
                 print(f"uso: accuratezza_fatture_acquisto.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
                 sys.exit(1)
             righe = list(reader)
+    except UnicodeDecodeError:
+        # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo (il caso che D32 aveva
+        # curato). Si dice; leggerlo in cp1252 e' una scelta di dominio (DEBITI, V4 D4).
+        print(f"uso: accuratezza_fatture_acquisto.py — {path} non e' UTF-8 (un export di Excel in Windows-1252?): salvalo come «CSV UTF-8»" , file=sys.stderr)
+        sys.exit(1)
     except OSError as e:
         print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — {e}", file=sys.stderr)
         sys.exit(1)

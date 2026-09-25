@@ -146,7 +146,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L61"
+      "source_location": "L66"
     },
     {
       "id": "tools_rating_dso_clienti_main",
@@ -650,7 +650,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L73"
+      "source_location": "L78"
     },
     {
       "id": "tools_margine_documento_normalizza",
@@ -19892,7 +19892,7 @@
       "source_location": "L36"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_62",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_67",
       "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
       "_origin": "ast",
       "community": 252,
@@ -19900,7 +19900,7 @@
       "file_type": "rationale",
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L62"
+      "source_location": "L67"
     },
     {
       "id": "tools_rating_dso_clienti_rationale_3",
@@ -39838,7 +39838,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L282"
+      "source_location": "L283"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39850,7 +39850,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L276"
+      "source_location": "L277"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -48909,7 +48909,7 @@
       "source_location": "L48"
     },
     {
-      "id": "tools_margine_documento_rationale_74",
+      "id": "tools_margine_documento_rationale_79",
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 755,
@@ -48917,7 +48917,7 @@
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L74"
+      "source_location": "L79"
     },
     {
       "id": "night_shift_lib_impronta_righe",
@@ -60023,7 +60023,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L87",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -60911,7 +60911,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L82",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -60923,7 +60923,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L91",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -66163,7 +66163,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L276",
+      "source_location": "L277",
       "weight": 1.0
     },
     {
@@ -66174,7 +66174,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L282",
+      "source_location": "L283",
       "weight": 1.0
     },
     {
@@ -88350,7 +88350,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L61",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -89164,7 +89164,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L73",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -97352,14 +97352,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_62",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_67",
       "target": "tools_accuratezza_fatture_acquisto_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L62",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -97836,14 +97836,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_74",
+      "source": "tools_margine_documento_rationale_79",
       "target": "tools_margine_documento_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L74",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -99729,5 +99729,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "144a4ee75fda9e5d9914d8dcd13081d04f9fa92a"
+  "built_at_commit": "77a757a681a394e5d38576abb2569b841957020e"
 }

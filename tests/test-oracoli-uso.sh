@@ -54,6 +54,11 @@ dichiara "margine: file inesistenti"            python3 "$T/margine_documento.py
 dichiara "margine: colonne sbagliate"           python3 "$T/margine_documento.py" "$TMP/ab.csv" "$TMP/ab.csv"
 dichiara "accuratezza: file inesistenti"        python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/no.json" "$TMP/no.csv" "$TMP/no.csv"
 dichiara "accuratezza: colonne sbagliate"       python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/ab.csv" "$TMP/ab.csv"
+# (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 (Excel) era un UnicodeDecodeError nudo, cioe' il traceback
+# che D32 aveva curato; la codifica non era nel banco
+printf 'a,b\nSedia citt\340 \200 promo,2\n' > "$TMP/cp1252.csv"
+dichiara "margine: CSV non UTF-8"               python3 "$T/margine_documento.py" "$TMP/cp1252.csv" "$TMP/ab.csv"
+dichiara "accuratezza: CSV non UTF-8"           python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/cp1252.csv" "$TMP/ab.csv"
 dichiara "rating: colonne sbagliate"            python3 "$T/rating_dso_clienti.py" < "$TMP/ab.csv"
 dichiara "rating: stdin vuoto"                  python3 "$T/rating_dso_clienti.py" < "$TMP/niente"
 dichiara "riconciliazione: colonne sbagliate"   python3 "$T/riconciliazione_magazzino.py" < "$TMP/ab.csv"
