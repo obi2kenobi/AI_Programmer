@@ -20,6 +20,9 @@ case "$1 $2" in
   # (2026-09-24, sesto ventaglio, S1 R2): come il gh vero (2.45), -R vuole OWNER/REPO — il finto che accettava
   # tutto lasciava verde un bootstrap che la label non la creava mai
   "label create") R=$(sed -n 's/.* -R \([^ ]*\).*/\1/p' <<<"$*"); case "$R" in */*) exit 0 ;; *) echo 'expected the "[HOST/]OWNER/REPO" format' >&2; exit 1 ;; esac ;;
+  # (2026-09-25, ottavo ventaglio, O4 R2): come il gh vero (2.45), `repo create` non ha -q («unknown shorthand flag: 'q'»):
+  # il finto che accettava tutto lasciava verde un bootstrap che si fermava sempre qui
+  "repo create") for a in "$@"; do [ "$a" = -q ] && { echo "unknown shorthand flag: 'q' in -q" >&2; exit 1; }; done; exit 0 ;;
   *) exit 0 ;;
 esac
 EOF

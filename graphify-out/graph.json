@@ -15118,7 +15118,7 @@
       },
       "norm_label": "lancia()",
       "source_file": "tests/test-bootstrap-app-e2e.sh",
-      "source_location": "L28"
+      "source_location": "L31"
     },
     {
       "id": "tests_test_bootstrap_app_e2e_ok",
@@ -54683,7 +54683,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-bootstrap-app-e2e.sh",
-      "source_location": "L36",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -54695,7 +54695,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-bootstrap-app-e2e.sh",
-      "source_location": "L37",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -54707,7 +54707,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-bootstrap-app-e2e.sh",
-      "source_location": "L37",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -91694,7 +91694,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-bootstrap-app-e2e.sh",
-      "source_location": "L28",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -100158,5 +100158,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "772fe5ada2501be77ea7d2c178409fe90e835fff"
+  "built_at_commit": "371153a274bd5bfa6f83acab3b25081ca69517c1"
 }

@@ -165,7 +165,9 @@ else
   git add -A
   git commit -q -m "feat: repo generata dal sistema AI_Programmer (bootstrap-app)"
   # (S2 R5): se GitHub non risponde, la copia locale ha il commit e nessun remoto — si dice, col gesto per riprendere
-  gh repo create "$NAME" $VIS --source . --push -q \
+  # (2026-09-25, ottavo ventaglio, O4 R2): senza -q — il gh vero non ce l'ha («unknown shorthand flag: 'q'»), e il bootstrap
+  # si fermava sempre qui con un messaggio da problema di rete. L'uscita normale di gh si tace, gli errori restano a schermo.
+  gh repo create "$NAME" $VIS --source . --push >/dev/null \
     || { echo "⛔ gh repo create fallito: $DEST ha il commit dello standard ma nessun remoto, niente label, niente coda."
          echo "   per riprendere: cd $DEST && gh repo create $NAME $VIS --source . --push — oppure togli la cartella e rilancia bootstrap-app"; exit 1; }
   # (2026-09-24, notte dei giri, T1#2): i guardiani del commit arrivano con lo standard ma core.hooksPath
