@@ -123,6 +123,21 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
 grep -q "\[DRY\] gh pr close 7" <<<"$OUT" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
 grep -q "gh pr merge" <<<"$OUT" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
 
+# 2ter. (2026-09-25, ottavo ventaglio, O5 R3): un rigetto la cui chiusura fallisce diceva «chiusa» lo stesso, e la PR
+#       tornava al censore a ogni ciclo (tre rigetti, e al quarto una fusione). E una fusione fallita lasciava la PR
+#       «pronta», fuori dalla bozza e dalle guardie per sempre. REVISORE_DRY_FALLISCE fa fallire un'azione nel DRY.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ko2
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_DRY_FALLISCE="gh pr close" REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
+grep -ci 'chiusura fallita' <<<"$OUT" >/dev/null && ! grep -c 'chiusa col parere' <<<"$OUT" >/dev/null \
+  && ok "O5 R3: rigetto con la chiusura fallita: detto, non «chiusa»" || ko "O5 R3: rigetto, chiusura fallita: $(grep -m1 'PR #7' <<<"$OUT")"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=APPROVA bash "$REV" "$SB" 7 2>&1); RC=$?
+! grep -c 'gh pr merge' <<<"$OUT" >/dev/null && grep -ci 'gia.* rigettata' <<<"$OUT" >/dev/null \
+  && ok "O5 R3: una PR rigettata su quel commit non torna al giudizio (niente fusione al ciclo dopo)" || ko "O5 R3: la rigettata torna al giudizio: rc $RC, $(grep -m1 -E 'MERGE|merge|rigett' <<<"$OUT")"
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-ok2
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_DRY_FALLISCE="gh pr merge" REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && grep -c '\[DRY\] gh pr ready 7 --undo' <<<"$OUT" >/dev/null \
+  && ok "O5 R3: fusione fallita: la PR torna bozza (ready --undo), rc 2" || ko "O5 R3: fusione fallita: rc $RC, ready --undo $(grep -c 'ready 7 --undo' <<<"$OUT")"
+
 # 2bis. (D2, 2026-09-23) la lente sicurezza trova un rilievo → rc 2 al giorno, NESSUN merge
 #       anche col censore pronto ad APPROVARE (un segreto fuso resta nella storia)
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-lente

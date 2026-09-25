@@ -92,7 +92,12 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
 }
 
 azione_gh() { # in DRY stampa a stdout, altrimenti esegue silenzioso (niente eval)
-  if [ -n "${REVISORE_DRY:-}" ]; then echo "[DRY] $*"; return 0; fi
+  # (2026-09-25, ottavo ventaglio, O5 R3): REVISORE_DRY_FALLISCE="<inizio del comando>" fa fallire quell'azione nel DRY —
+  # serve ai banchi per provare i rami di errore (una chiusura o una fusione che GitHub rifiuta)
+  if [ -n "${REVISORE_DRY:-}" ]; then
+    case "$*" in "${REVISORE_DRY_FALLISCE:-__nessuna__}"*) echo "[DRY-FALLITA] $*"; return 1 ;; esac
+    echo "[DRY] $*"; return 0
+  fi
   "$@" >/dev/null 2>&1
 }
 MODO="delibera"; PARERE_FILE=""
@@ -176,6 +181,12 @@ git checkout -q --detach "$HEAD_OID" 2>/dev/null || { git checkout -q "$DB"; exi
 DBRANCH="$DB"
 ripristina() { git checkout -q "$DBRANCH" 2>/dev/null; }
 trap ripristina EXIT
+# (2026-09-25, ottavo ventaglio, O5 R3): un rigetto la cui chiusura e' fallita resta ricordato per quel commit — prima la
+# PR tornava al censore a ogni ciclo, e un verdetto diverso al quarto giro la fondeva
+if [ -f "$STATE/rigetto-$PR-$HEAD_OID" ]; then
+  log "PR #$PR gia' rigettata su questo commit (la chiusura era fallita): non si rigiudica — al giorno"
+  exit 2
+fi
 if [ "$MODO" = "parere" ]; then
   PARERE_FILE="$STATE/parere-$PR-$HEAD_OID"
   [ -f "$PARERE_FILE" ] && { log "parere gia' dato su questo commit della PR #$PR — niente da rifare"; exit 2; }
@@ -372,7 +383,11 @@ if [ "$VERDETTO" = "APPROVA" ]; then
     exit 0
   else
     rm -f "$CERT_FILE"
-    log "⚠ merge di PR #$PR fallito — lasciata al giorno"
+    # (ottavo ventaglio, O5 R3): la PR torna bozza — il patto e' «bozza, mai pronta»; lasciata pronta usciva dalle
+    # guardie del censore («non e' piu' bozza — non mio») per sempre, senza un commento
+    azione_gh gh pr ready "$PR" --undo || true
+    azione_gh gh pr comment "$PR" --body "Approvata dal censore notturno, ma la fusione e' fallita (conflitto, protezione del ramo o GitHub): torna bozza, decide il giorno." || true
+    log "⚠ merge di PR #$PR fallito — tornata bozza, lasciata al giorno"
     exit 2
   fi
 else
@@ -382,7 +397,12 @@ else
     "$GIUDICE_MODEL" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$RIG_FILE"
   azione_gh gh pr comment "$PR" --body-file "$RIG_FILE" || true
   rm -f "$RIG_FILE"
-  azione_gh gh pr close "$PR"
-  log "⛔ PR #$PR chiusa col parere motivato"
+  if azione_gh gh pr close "$PR"; then
+    log "⛔ PR #$PR chiusa col parere motivato"
+  else
+    # (ottavo ventaglio, O5 R3): diceva «chiusa» anche quando GitHub rifiutava; ora si dice, e il rigetto si ricorda
+    touch "$STATE/rigetto-$PR-$HEAD_OID"
+    log "⚠ PR #$PR rigettata, ma la chiusura fallita: resta aperta; il rigetto e' ricordato per questo commit"
+  fi
   exit 1
 fi
