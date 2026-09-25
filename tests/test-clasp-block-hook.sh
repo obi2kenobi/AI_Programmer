@@ -280,6 +280,20 @@ jq -cn '{tool_name:"Bash",tool_input:{command:"npx clasp push"}}' | bash "$SBX/h
 [ "$RCX" -eq 2 ] && ok "gancio morto su clasp push: nega (exit 2, modo prudente)" || ko "gancio morto su clasp push: rc $RCX — il comando passerebbe"
 jq -cn '{tool_name:"Bash",tool_input:{command:"ls -la"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; RCX=$?
 [ "$RCX" -eq 0 ] && ok "gancio morto su un comando innocuo: passa (non blocca tutto)" || ko "gancio morto su ls: rc $RCX"
+# (2026-09-25, settimo ventaglio, V4 R1): il ramo che nega `npm run <script-con-clasp-push>` e' proprio quello che moriva
+# sul Mac (una variabile attaccata a «). Il modo prudente conosceva solo la parola clasp nel comando: `npm run pubblica`
+# passava. Ora nega un runner di script quando un package.json vicino ha uno script che fa clasp push/deploy.
+mkdir -p "$SBX/gas/src" "$SBX/web"
+printf '{"scripts":{"pubblica":"clasp push -f"},"devDependencies":{"@google/clasp":"^2.4"}}\n' > "$SBX/gas/package.json"
+printf '{"scripts":{"test":"node t.js"}}\n' > "$SBX/web/package.json"
+RCX=$(cd "$SBX/gas/src" && jq -cn '{tool_name:"Bash",tool_input:{command:"npm run pubblica"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; echo $?)
+[ "$RCX" -eq 2 ] && ok "V4 R1: gancio morto, npm run di uno script che fa clasp push: nega" || ko "V4 R1: gancio morto, npm run pubblica passa (rc $RCX)"
+RCX=$(cd "$SBX/web" && jq -cn '{tool_name:"Bash",tool_input:{command:"npm run test"}}' | bash "$SBX/hook.sh" >/dev/null 2>&1; echo $?)
+[ "$RCX" -eq 0 ] && ok "V4 R1: gancio morto, npm run in un progetto senza clasp: passa" || ko "V4 R1: gancio morto, npm run test negato (rc $RCX)"
+NOJQ=$(mktemp -d); for b in bash sh cat printf tr sed grep awk head tail env; do ln -s "$(command -v "$b")" "$NOJQ/$b" 2>/dev/null; done
+RCX=$(cd "$SBX/gas/src" && printf '%s' '{"tool_name":"Bash","tool_input":{"command":"npm run pubblica"}}' | PATH="$NOJQ" bash "$HOOK" >/dev/null 2>&1; echo $?)
+[ "$RCX" -eq 2 ] && ok "V4 R1: senza jq, npm run di uno script che fa clasp push: nega" || ko "V4 R1: senza jq, npm run pubblica passa (rc $RCX)"
+rm -rf "$NOJQ"
 rm -rf "$SBX"
 
 echo ""

@@ -16,13 +16,30 @@ dove() {   # con un * si guarda se il glob trova qualcosa, senza si guarda il pe
   case "$1" in *\**) compgen -G "$PWD/$1" >/dev/null 2>&1 ;; *) [ -e "$PWD/$1" ] ;; esac \
     && printf '%s' "$1" || printf "%s (nell'hub AI_Programmer)" "$1"
 }
+# prudente_nega <input grezzo>: rc 0 = da negare. Il modo prudente (jq assente, o il gancio morto) non sa spogliare il
+# comando: nega le forme dirette di clasp push/deploy e deploy-ora. (2026-09-25, settimo ventaglio, V4 R1): e anche un
+# runner di script (npm, yarn, pnpm, bun) quando un package.json qui o in una cartella sopra, o nel progetto, ha uno
+# script che fa clasp push/deploy. Il ramo completo che lo nega era proprio quello che moriva sul Mac, e il prudente
+# lasciava passare `npm run pubblica`. Una sola funzione per i due rami: prima il grep viveva copiato in tutti e due.
+prudente_nega() {
+  grep -qE 'clasp[^"]*[^a-z](push|deploy)([^a-z]|$)|deploy-ora' <<<"$1" && return 0
+  grep -qE '(^|[^a-z])(npm|yarn|pnpm|bun)([^a-z]|$)' <<<"$1" || return 1
+  local d="$PWD"
+  while :; do
+    grep -qsE '"[^"]*"[[:space:]]*:[[:space:]]*"[^"]*clasp[^"]*[^a-z](push|deploy)' "$d/package.json" && return 0
+    [ "$d" = / ] && break
+    d="${d%/*}"; [ -n "$d" ] || d=/
+  done
+  [ -n "${CLAUDE_PROJECT_DIR:-}" ] && grep -qsE '"[^"]*"[[:space:]]*:[[:space:]]*"[^"]*clasp[^"]*[^a-z](push|deploy)' "$CLAUDE_PROJECT_DIR/package.json" && return 0
+  return 1
+}
 # (2026-09-23, giro A1 della notte): senza jq il cancello era APERTO (`|| exit 0`), e senza JSON
 # solo `exit 2` blocca (documentazione degli hook di Claude Code). Senza jq: MODO PRUDENTE — un
 # grep sull'input grezzo nega push/deploy/deploy-ora con exit 2; tutto il resto passa. Puo'
 # negare a torto una citazione (niente spoglio senza jq): meglio un falso rosso che un cancello aperto.
 if ! command -v jq >/dev/null 2>&1; then
   GREZZO="$(cat)"
-  if grep -qE 'clasp[^"]*[^a-z](push|deploy)([^a-z]|$)|deploy-ora' <<<"$GREZZO"; then
+  if prudente_nega "$GREZZO"; then
     echo "NEGATO (clasp-block-hook, jq ASSENTE: modo prudente): clasp push/deploy e deploy-ora sono dell'umano. Installa jq per il cancello completo." >&2
     exit 2
   fi
@@ -36,7 +53,7 @@ INPUT="$(cat)"
 # «jq assente»: push/deploy/deploy-ora negati con exit 2, il resto passa.
 prudente() {
   local rc=$?; [ "$rc" -eq 0 ] && return 0
-  if grep -qE 'clasp[^"]*[^a-z](push|deploy)([^a-z]|$)|deploy-ora' <<<"$INPUT"; then
+  if prudente_nega "$INPUT"; then
     echo "NEGATO (clasp-block-hook, errore interno rc=$rc: modo prudente): clasp push/deploy e deploy-ora sono dell'umano." >&2
     exit 2
   fi

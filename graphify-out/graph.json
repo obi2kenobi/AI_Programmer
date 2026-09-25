@@ -43102,7 +43102,22 @@
       },
       "norm_label": "prudente()",
       "source_file": "tools/clasp-block-hook.sh",
-      "source_location": "L37"
+      "source_location": "L54"
+    },
+    {
+      "id": "tools_clasp_block_hook_prudente_nega",
+      "label": "prudente_nega()",
+      "_origin": "ast",
+      "community": 691,
+      "community_name": "clasp-block-hook.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prudente_nega()",
+      "source_file": "tools/clasp-block-hook.sh",
+      "source_location": "L24"
     },
     {
       "id": "tools_clasp_block_hook_senza_heredoc",
@@ -43117,7 +43132,7 @@
       },
       "norm_label": "senza_heredoc()",
       "source_file": "tools/clasp-block-hook.sh",
-      "source_location": "L120"
+      "source_location": "L137"
     },
     {
       "id": "tools_clasp_block_hook_sh__entry",
@@ -59949,6 +59964,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_clasp_block_hook_prudente",
+      "target": "tools_clasp_block_hook_prudente_nega",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/clasp-block-hook.sh",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
       "source": "tools_clasp_block_hook_sh__entry",
       "target": "tools_clasp_block_hook_senza_heredoc",
       "relation": "calls",
@@ -59957,7 +59984,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/clasp-block-hook.sh",
-      "source_location": "L146",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_clasp_block_hook_sh__entry",
+      "target": "tools_clasp_block_hook_prudente_nega",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/clasp-block-hook.sh",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -96211,7 +96250,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/clasp-block-hook.sh",
-      "source_location": "L120",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -96227,13 +96266,24 @@
     },
     {
       "source": "tools_clasp_block_hook",
+      "target": "tools_clasp_block_hook_prudente_nega",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/clasp-block-hook.sh",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_clasp_block_hook",
       "target": "tools_clasp_block_hook_prudente",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/clasp-block-hook.sh",
-      "source_location": "L37",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -99219,5 +99269,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "407f44df28a59e30bc0b54ed723297490cce6df5"
+  "built_at_commit": "5d068f2aa9c89d9d258fe3c4fe17104b188c81c9"
 }
