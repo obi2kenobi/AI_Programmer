@@ -94,6 +94,17 @@ for SK in "$HERE/.claude/skills/audit-commessa/SKILL.md" "$HERE/.opencode/skills
     || ko "$SK: la struttura si giudica con una lista sua, non col cancello del turno"
 done
 
+
+# (2026-09-25, settimo ventaglio, V4 R3): la soglia «80 caratteri utili» contava con ${#}, che in C conta i byte e in
+# UTF-8 i caratteri: la stessa issue accentata passava l'audit serale (una sessione in C) e la notte la saltava. Qui 64
+# caratteri utili (piu' di 80 byte): povera in tutti e due i locali.
+DESIGN_ACC="perché è già così più città però lì là giù più così già però perché SAL.md città"
+BODY_ACC=$(printf '## Territorio\nFile: src/Codice.gs, riga 12\n\n## Design\n%s\n' "$DESIGN_ACC")
+N_UTILI=$(printf '%s' "$DESIGN_ACC" | python3 -c 'import sys; print(len("".join(sys.stdin.read().split())))')
+M_C=$(LC_ALL=C bash -c 'source "$1"; cancello_design "$2"' _ "$HERE/night-shift/lib.sh" "$BODY_ACC")
+M_U=$(LC_ALL=C.UTF-8 bash -c 'source "$1"; cancello_design "$2"' _ "$HERE/night-shift/lib.sh" "$BODY_ACC")
+[ "$M_C" = "$M_U" ] && [ "$M_C" = "design-povero $N_UTILI" ] && ok "V4 R3: design accentato di $N_UTILI caratteri: stesso verdetto in C e in UTF-8 («${M_C}»)" \
+  || ko "V4 R3: C «${M_C}», UTF-8 «${M_U}» (attesi tutti e due «design-povero ${N_UTILI}»)"
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

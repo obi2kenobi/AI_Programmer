@@ -759,8 +759,10 @@ cancello_design() {
   grep -q "^## Territorio" <<<"$corpo" || { echo "territorio-assente"; return 0; }
   grep -q "^## Design" <<<"$corpo" || { echo "design-assente"; return 0; }
   design_raw=$(printf '%s' "$corpo" | awk '/^## Design/{f=1;next} /^## /{f=0} f')
-  design_body=$(printf '%s' "$design_raw" | tr -d '[:space:]')
-  [ "${#design_body}" -lt 80 ] && { echo "design-povero ${#design_body}"; return 0; }
+  # (2026-09-25, settimo ventaglio, V4 R3): i caratteri utili si contano in python — ${#} conta byte in C e caratteri in
+  # UTF-8, e la stessa issue accentata passava l'audit serale e la notte veniva saltata. Il messaggio dice «caratteri».
+  design_body=$(printf '%s' "$design_raw" | python3 -c 'import sys; print(len("".join(sys.stdin.buffer.read().decode("utf-8", "replace").split())))' 2>/dev/null)
+  [ "${design_body:-0}" -lt 80 ] && { echo "design-povero ${design_body:-0}"; return 0; }
   # una lunghezza non e' una fonte: almeno UN riferimento verificabile (URL, link markdown,
   # SAL.md, un'issue #N, o un percorso di file) — set 2, prosa di riempimento da 87 caratteri
   grep -qiE 'https?://|\[[^]]+\]\([^)]+\)|SAL(\.md)?\b|(issue|pr|#)[[:space:]]*#?[0-9]+|\.[a-z]{2,4}\b' <<<"$design_raw" \
