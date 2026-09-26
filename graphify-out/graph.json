@@ -113,19 +113,19 @@
       "source_location": "L72"
     },
     {
-      "id": "tools_indici_crisi_crisi_presunta",
-      "label": "crisi_presunta()",
+      "id": "tools_margine_documento_leggi_csv",
+      "label": "leggi_csv()",
       "_callable": true,
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "code",
-      "norm_label": "crisi_presunta()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L73"
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L47"
     },
     {
-      "id": "tools_indici_crisi_main",
+      "id": "tools_margine_documento_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
@@ -133,32 +133,20 @@
       "community_name": "json",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L77"
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L84"
     },
     {
-      "id": "tools_indici_crisi_pct",
-      "label": "pct()",
+      "id": "tools_margine_documento_normalizza",
+      "label": "normalizza()",
       "_callable": true,
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "code",
-      "norm_label": "pct()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L45"
-    },
-    {
-      "id": "tools_indici_crisi_valuta_indici_crisi",
-      "label": "valuta_indici_crisi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "json",
-      "file_type": "code",
-      "norm_label": "valuta_indici_crisi()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L49"
+      "norm_label": "normalizza()",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L40"
     },
     {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
@@ -278,7 +266,7 @@
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L70"
+      "source_location": "L77"
     },
     {
       "id": "tools_scadenzario_aging_fascia_dettaglio",
@@ -290,7 +278,7 @@
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L37"
+      "source_location": "L38"
     },
     {
       "id": "tools_scadenzario_aging_importo_fornitore",
@@ -302,7 +290,7 @@
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L65"
+      "source_location": "L72"
     },
     {
       "id": "tools_scadenzario_aging_main",
@@ -314,7 +302,19 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L94"
+      "source_location": "L101"
+    },
+    {
+      "id": "tools_scadenzario_aging_tipo_noto",
+      "label": "tipo_noto()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "tipo_noto()",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L68"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -629,40 +629,52 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_margine_documento_leggi_csv",
-      "label": "leggi_csv()",
+      "id": "tools_indici_crisi_crisi_presunta",
+      "label": "crisi_presunta()",
       "_callable": true,
       "_origin": "ast",
-      "community": 755,
-      "community_name": "margine_documento.py",
+      "community": 756,
+      "community_name": "indici_crisi.py",
       "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L47"
+      "norm_label": "crisi_presunta()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L73"
     },
     {
-      "id": "tools_margine_documento_main",
+      "id": "tools_indici_crisi_main",
       "label": "main()",
       "_callable": true,
       "_origin": "ast",
-      "community": 755,
-      "community_name": "margine_documento.py",
+      "community": 756,
+      "community_name": "indici_crisi.py",
       "file_type": "code",
       "norm_label": "main()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L84"
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L77"
     },
     {
-      "id": "tools_margine_documento_normalizza",
-      "label": "normalizza()",
+      "id": "tools_indici_crisi_pct",
+      "label": "pct()",
       "_callable": true,
       "_origin": "ast",
-      "community": 755,
-      "community_name": "margine_documento.py",
+      "community": 756,
+      "community_name": "indici_crisi.py",
       "file_type": "code",
-      "norm_label": "normalizza()",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L40"
+      "norm_label": "pct()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "tools_indici_crisi_valuta_indici_crisi",
+      "label": "valuta_indici_crisi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "valuta_indici_crisi()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L49"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -16402,66 +16414,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_allinea_hub",
-      "label": "allinea_hub()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "allinea_hub()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L704"
-    },
-    {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "eta_secondi()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L845"
-    },
-    {
-      "id": "night_shift_lib_git_vivo_in",
-      "label": "git_vivo_in()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "git_vivo_in()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L691"
-    },
-    {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mtime()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L32"
-    },
-    {
       "id": "tests_test_e002_codice",
       "label": "test-e002-codice.sh",
       "_origin": "ast",
@@ -20085,14 +20037,14 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_indici_crisi",
-      "label": "indici_crisi.py",
+      "id": "tools_margine_documento",
+      "label": "margine_documento.py",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "code",
-      "norm_label": "indici_crisi.py",
-      "source_file": "tools/indici_crisi.py",
+      "norm_label": "margine_documento.py",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L1"
     },
     {
@@ -20140,37 +20092,37 @@
       "source_location": "L73"
     },
     {
-      "id": "tools_indici_crisi_rationale_2",
-      "label": "Indici della crisi d'impresa (CNDCEC / CCII, D.Lgs 14/2019), settore G46.\u2026",
+      "id": "tools_margine_documento_rationale_2",
+      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "rationale",
-      "norm_label": "indici della crisi d'impresa (cndcec / ccii, d.lgs 14/2019), settore g46....",
-      "source_file": "tools/indici_crisi.py",
+      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
+      "source_file": "tools/margine_documento.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_indici_crisi_rationale_50",
-      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
+      "id": "tools_margine_documento_rationale_48",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "rationale",
-      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L50"
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L48"
     },
     {
-      "id": "tools_indici_crisi_rationale_78",
-      "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
+      "id": "tools_margine_documento_rationale_85",
+      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 252,
       "community_name": "json",
       "file_type": "rationale",
-      "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L78"
+      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L85"
     },
     {
       "id": "tools_rollforward_cespiti_rationale_2",
@@ -20489,21 +20441,6 @@
       "norm_label": "repo_code()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L555"
-    },
-    {
-      "id": "night_shift_lib_riga_verifica_vuota",
-      "label": "riga_verifica_vuota()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "riga_verifica_vuota()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L195"
     },
     {
       "id": "night_shift_lib_sh__entry",
@@ -30791,6 +30728,17 @@
       "source_location": "L61"
     },
     {
+      "id": "tools_scadenzario_aging_rationale_102",
+      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L102"
+    },
+    {
       "id": "tools_scadenzario_aging_rationale_2",
       "label": "Scadenzario clienti/fornitori: classificazione a fasce di scadenza (aging) e\u2026",
       "_origin": "ast",
@@ -30802,7 +30750,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_38",
+      "id": "tools_scadenzario_aging_rationale_39",
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30810,10 +30758,10 @@
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38"
+      "source_location": "L39"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_71",
+      "id": "tools_scadenzario_aging_rationale_78",
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30821,18 +30769,7 @@
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L71"
-    },
-    {
-      "id": "tools_scadenzario_aging_rationale_95",
-      "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
-      "_origin": "ast",
-      "community": 38,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L95"
+      "source_location": "L78"
     },
     {
       "id": "tools_prova_rilevatori",
@@ -46727,11 +46664,71 @@
       "source_location": "L3"
     },
     {
+      "id": "night_shift_lib_allinea_hub",
+      "label": "allinea_hub()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "allinea_hub()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L704"
+    },
+    {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L845"
+    },
+    {
+      "id": "night_shift_lib_git_vivo_in",
+      "label": "git_vivo_in()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "git_vivo_in()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L691"
+    },
+    {
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L32"
+    },
+    {
       "id": "tests_test_portabilita",
       "label": "test-portabilita.sh",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46746,7 +46743,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46761,7 +46758,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46776,7 +46773,7 @@
       "label": "righe_con()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46791,7 +46788,7 @@
       "label": "test-portabilita.sh script",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48058,7 +48055,7 @@
       "label": "ask-glm.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48073,7 +48070,7 @@
       "label": "ask-glm.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48088,7 +48085,7 @@
       "label": "ask-opus.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48103,7 +48100,7 @@
       "label": "ask-opus.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48118,7 +48115,7 @@
       "label": "ask-qwen.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48133,7 +48130,7 @@
       "label": "ask-qwen.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48148,7 +48145,7 @@
       "label": "_timeout.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48159,26 +48156,11 @@
       "source_location": "L1"
     },
     {
-      "id": "llm_timeout_ai_timeout",
-      "label": "ai_timeout()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ai_timeout()",
-      "source_file": "llm/_timeout.sh",
-      "source_location": "L12"
-    },
-    {
       "id": "llm_timeout_ai_timeout_ramo",
       "label": "ai_timeout_ramo()",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48193,7 +48175,7 @@
       "label": "_timeout.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48208,7 +48190,7 @@
       "label": "_usage.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48223,7 +48205,7 @@
       "label": "log_ask_usage()",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48238,7 +48220,7 @@
       "label": "_usage.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -48249,866 +48231,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_revisore",
-      "label": "revisore.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "revisore.sh",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_revisore_azione_gh",
-      "label": "azione_gh()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "azione_gh()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L94"
-    },
-    {
-      "id": "night_shift_revisore_chiedi",
-      "label": "chiedi()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "chiedi()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L76"
-    },
-    {
-      "id": "night_shift_revisore_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L60"
-    },
-    {
-      "id": "night_shift_revisore_rinvia",
-      "label": "rinvia()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rinvia()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L107"
-    },
-    {
-      "id": "night_shift_revisore_ripristina",
-      "label": "ripristina()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ripristina()",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L185"
-    },
-    {
-      "id": "night_shift_revisore_sh__entry",
-      "label": "revisore.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "revisore.sh script",
-      "source_file": "night-shift/revisore.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ai_timeout",
-      "label": "test-ai-timeout.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-ai-timeout.sh",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ai_timeout_caso1",
-      "label": "caso1()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "caso1()",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L21"
-    },
-    {
-      "id": "tests_test_ai_timeout_caso6",
-      "label": "caso6()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "caso6()",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L55"
-    },
-    {
-      "id": "tests_test_ai_timeout_caso7a",
-      "label": "caso7a()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "caso7a()",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L82"
-    },
-    {
-      "id": "tests_test_ai_timeout_caso7c",
-      "label": "caso7c()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "caso7c()",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L90"
-    },
-    {
-      "id": "tests_test_ai_timeout_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_ai_timeout_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_ai_timeout_sh__entry",
-      "label": "test-ai-timeout.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-ai-timeout.sh script",
-      "source_file": "tests/test-ai-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ask_wrappers",
-      "label": "test-ask-wrappers.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-ask-wrappers.sh",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ask_wrappers_check_glm_response",
-      "label": "check_glm_response()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_glm_response()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L150"
-    },
-    {
-      "id": "tests_test_ask_wrappers_check_qwen_response",
-      "label": "check_qwen_response()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_qwen_response()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L170"
-    },
-    {
-      "id": "tests_test_ask_wrappers_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_ask_wrappers_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_ask_wrappers_sh__entry",
-      "label": "test-ask-wrappers.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-ask-wrappers.sh script",
-      "source_file": "tests/test-ask-wrappers.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map",
-      "label": "test-bc-map.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bc-map.sh",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_map_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_bc_map_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_bc_map_sh__entry",
-      "label": "test-bc-map.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bc-map.sh script",
-      "source_file": "tests/test-bc-map.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata",
-      "label": "test-bc-tipi-metadata.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-bc-tipi-metadata.sh",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_bc_tipi_metadata_sh__entry",
-      "label": "test-bc-tipi-metadata.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-bc-tipi-metadata.sh script",
-      "source_file": "tests/test-bc-tipi-metadata.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ciclo_vivo",
-      "label": "test-ciclo-vivo.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-ciclo-vivo.sh",
-      "source_file": "tests/test-ciclo-vivo.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_ciclo_vivo_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-ciclo-vivo.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_ciclo_vivo_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-ciclo-vivo.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_ciclo_vivo_sh__entry",
-      "label": "test-ciclo-vivo.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-ciclo-vivo.sh script",
-      "source_file": "tests/test-ciclo-vivo.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_dashboard",
-      "label": "test-dashboard.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-dashboard.sh",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_dashboard_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_dashboard_lang",
-      "label": "LANG",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "lang",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_dashboard_lc_all",
-      "label": "LC_ALL",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "lc_all",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_dashboard_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_dashboard_path",
-      "label": "PATH",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L11"
-    },
-    {
-      "id": "tests_test_dashboard_sh__entry",
-      "label": "test-dashboard.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-dashboard.sh script",
-      "source_file": "tests/test-dashboard.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_debiti_riapertura",
-      "label": "test-debiti-riapertura.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-debiti-riapertura.sh",
-      "source_file": "tests/test-debiti-riapertura.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_debiti_riapertura_aperti_con",
-      "label": "aperti_con()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "aperti_con()",
-      "source_file": "tests/test-debiti-riapertura.sh",
-      "source_location": "L120"
-    },
-    {
-      "id": "tests_test_debiti_riapertura_g4",
-      "label": "g4()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "g4()",
-      "source_file": "tests/test-debiti-riapertura.sh",
-      "source_location": "L86"
-    },
-    {
-      "id": "tests_test_debiti_riapertura_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-debiti-riapertura.sh",
-      "source_location": "L10"
-    },
-    {
-      "id": "tests_test_debiti_riapertura_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-debiti-riapertura.sh",
-      "source_location": "L9"
-    },
-    {
-      "id": "tests_test_debiti_riapertura_sh__entry",
-      "label": "test-debiti-riapertura.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-debiti-riapertura.sh script",
-      "source_file": "tests/test-debiti-riapertura.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_mutation_tests",
-      "label": "test-mutation-tests.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-mutation-tests.sh",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_mutation_tests_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L14"
-    },
-    {
-      "id": "tests_test_mutation_tests_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_mutation_tests_sh__entry",
-      "label": "test-mutation-tests.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-mutation-tests.sh script",
-      "source_file": "tests/test-mutation-tests.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout",
-      "label": "test-stdin-timeout.sh",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-stdin-timeout.sh",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout_check_bounded",
-      "label": "check_bounded()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_bounded()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L39"
-    },
-    {
-      "id": "tests_test_stdin_timeout_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L16"
-    },
-    {
-      "id": "tests_test_stdin_timeout_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L15"
-    },
-    {
-      "id": "tests_test_stdin_timeout_path",
-      "label": "PATH",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "path",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L36"
-    },
-    {
-      "id": "tests_test_stdin_timeout_sh__entry",
-      "label": "test-stdin-timeout.sh script",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-stdin-timeout.sh script",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_stdin_timeout_zhipuai_api_key",
-      "label": "ZHIPUAI_API_KEY",
-      "_origin": "ast",
-      "community": 751,
-      "community_name": "ai_timeout",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "code"
-      },
-      "norm_label": "zhipuai_api_key",
-      "source_file": "tests/test-stdin-timeout.sh",
-      "source_location": "L37"
-    },
-    {
       "id": "tools_prepara_deploy",
       "label": "prepara-deploy.sh",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -49123,7 +48250,7 @@
       "label": "prepara-deploy.sh script",
       "_origin": "ast",
       "community": 751,
-      "community_name": "ai_timeout",
+      "community_name": "_timeout.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -49131,6 +48258,141 @@
       },
       "norm_label": "prepara-deploy.sh script",
       "source_file": "tools/prepara-deploy.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "llm_timeout_ai_timeout",
+      "label": "ai_timeout()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ai_timeout()",
+      "source_file": "llm/_timeout.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_ai_timeout",
+      "label": "test-ai-timeout.sh",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-ai-timeout.sh",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ai_timeout_caso1",
+      "label": "caso1()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "caso1()",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_ai_timeout_caso6",
+      "label": "caso6()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "caso6()",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L55"
+    },
+    {
+      "id": "tests_test_ai_timeout_caso7a",
+      "label": "caso7a()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "caso7a()",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L82"
+    },
+    {
+      "id": "tests_test_ai_timeout_caso7c",
+      "label": "caso7c()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "caso7c()",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L90"
+    },
+    {
+      "id": "tests_test_ai_timeout_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_ai_timeout_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-ai-timeout.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_ai_timeout_sh__entry",
+      "label": "test-ai-timeout.sh script",
+      "_origin": "ast",
+      "community": 752,
+      "community_name": "ai_timeout",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-ai-timeout.sh script",
+      "source_file": "tests/test-ai-timeout.sh",
       "source_location": "L1"
     },
     {
@@ -49326,48 +48588,378 @@
       "source_location": "L48"
     },
     {
-      "id": "tools_margine_documento",
-      "label": "margine_documento.py",
+      "id": "night_shift_lib_riga_verifica_vuota",
+      "label": "riga_verifica_vuota()",
       "_origin": "ast",
       "community": 755,
-      "community_name": "margine_documento.py",
+      "community_name": "revisore.sh",
       "file_type": "code",
-      "norm_label": "margine_documento.py",
-      "source_file": "tools/margine_documento.py",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "riga_verifica_vuota()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L195"
+    },
+    {
+      "id": "night_shift_revisore",
+      "label": "revisore.sh",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "revisore.sh",
+      "source_file": "night-shift/revisore.sh",
       "source_location": "L1"
     },
     {
-      "id": "tools_margine_documento_rationale_2",
-      "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
+      "id": "night_shift_revisore_azione_gh",
+      "label": "azione_gh()",
       "_origin": "ast",
       "community": 755,
-      "community_name": "margine_documento.py",
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "azione_gh()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L94"
+    },
+    {
+      "id": "night_shift_revisore_chiedi",
+      "label": "chiedi()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "chiedi()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L76"
+    },
+    {
+      "id": "night_shift_revisore_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L60"
+    },
+    {
+      "id": "night_shift_revisore_rinvia",
+      "label": "rinvia()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rinvia()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L107"
+    },
+    {
+      "id": "night_shift_revisore_ripristina",
+      "label": "ripristina()",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ripristina()",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L185"
+    },
+    {
+      "id": "night_shift_revisore_sh__entry",
+      "label": "revisore.sh script",
+      "_origin": "ast",
+      "community": 755,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "revisore.sh script",
+      "source_file": "night-shift/revisore.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_indici_crisi",
+      "label": "indici_crisi.py",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "indici_crisi.py",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_2",
+      "label": "Indici della crisi d'impresa (CNDCEC / CCII, D.Lgs 14/2019), settore G46.\u2026",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "indici_crisi.py",
       "file_type": "rationale",
-      "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
-      "source_file": "tools/margine_documento.py",
+      "norm_label": "indici della crisi d'impresa (cndcec / ccii, d.lgs 14/2019), settore g46....",
+      "source_file": "tools/indici_crisi.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_margine_documento_rationale_48",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "id": "tools_indici_crisi_rationale_50",
+      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
       "_origin": "ast",
-      "community": 755,
-      "community_name": "margine_documento.py",
+      "community": 756,
+      "community_name": "indici_crisi.py",
       "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L48"
+      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L50"
     },
     {
-      "id": "tools_margine_documento_rationale_85",
-      "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
+      "id": "tools_indici_crisi_rationale_78",
+      "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
       "_origin": "ast",
-      "community": 755,
-      "community_name": "margine_documento.py",
+      "community": 756,
+      "community_name": "indici_crisi.py",
       "file_type": "rationale",
-      "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
-      "source_file": "tools/margine_documento.py",
-      "source_location": "L85"
+      "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L78"
+    },
+    {
+      "id": "tests_test_dashboard",
+      "label": "test-dashboard.sh",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-dashboard.sh",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_dashboard_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_dashboard_lang",
+      "label": "LANG",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lang",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_dashboard_lc_all",
+      "label": "LC_ALL",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lc_all",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_dashboard_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_dashboard_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_dashboard_sh__entry",
+      "label": "test-dashboard.sh script",
+      "_origin": "ast",
+      "community": 757,
+      "community_name": "test-dashboard.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-dashboard.sh script",
+      "source_file": "tests/test-dashboard.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_stdin_timeout",
+      "label": "test-stdin-timeout.sh",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-stdin-timeout.sh",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_stdin_timeout_check_bounded",
+      "label": "check_bounded()",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check_bounded()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L39"
+    },
+    {
+      "id": "tests_test_stdin_timeout_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_stdin_timeout_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_stdin_timeout_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L36"
+    },
+    {
+      "id": "tests_test_stdin_timeout_sh__entry",
+      "label": "test-stdin-timeout.sh script",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-stdin-timeout.sh script",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_stdin_timeout_zhipuai_api_key",
+      "label": "ZHIPUAI_API_KEY",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "test-stdin-timeout.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "zhipuai_api_key",
+      "source_file": "tests/test-stdin-timeout.sh",
+      "source_location": "L37"
     },
     {
       "id": "tests_test_impara_recupero",
@@ -49567,6 +49159,96 @@
       "norm_label": "vedi anche",
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
       "source_location": "L153"
+    },
+    {
+      "id": "tests_test_ask_wrappers",
+      "label": "test-ask-wrappers.sh",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "test-ask-wrappers.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-ask-wrappers.sh",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ask_wrappers_check_glm_response",
+      "label": "check_glm_response()",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "test-ask-wrappers.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check_glm_response()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L150"
+    },
+    {
+      "id": "tests_test_ask_wrappers_check_qwen_response",
+      "label": "check_qwen_response()",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "test-ask-wrappers.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "check_qwen_response()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L170"
+    },
+    {
+      "id": "tests_test_ask_wrappers_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "test-ask-wrappers.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_ask_wrappers_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "test-ask-wrappers.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_ask_wrappers_sh__entry",
+      "label": "test-ask-wrappers.sh script",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "test-ask-wrappers.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-ask-wrappers.sh script",
+      "source_file": "tests/test-ask-wrappers.sh",
+      "source_location": "L1"
     },
     {
       "id": "tests_test_trattino_iniziale",
@@ -49854,6 +49536,216 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_debiti_riapertura",
+      "label": "test-debiti-riapertura.sh",
+      "_origin": "ast",
+      "community": 765,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-debiti-riapertura.sh",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_debiti_riapertura_aperti_con",
+      "label": "aperti_con()",
+      "_origin": "ast",
+      "community": 765,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "aperti_con()",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L120"
+    },
+    {
+      "id": "tests_test_debiti_riapertura_g4",
+      "label": "g4()",
+      "_origin": "ast",
+      "community": 765,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g4()",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L86"
+    },
+    {
+      "id": "tests_test_debiti_riapertura_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 765,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_debiti_riapertura_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 765,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "tests_test_debiti_riapertura_sh__entry",
+      "label": "test-debiti-riapertura.sh script",
+      "_origin": "ast",
+      "community": 765,
+      "community_name": "test-debiti-riapertura.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-debiti-riapertura.sh script",
+      "source_file": "tests/test-debiti-riapertura.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_map",
+      "label": "test-bc-map.sh",
+      "_origin": "ast",
+      "community": 766,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bc-map.sh",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_map_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 766,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_bc_map_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 766,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_bc_map_sh__entry",
+      "label": "test-bc-map.sh script",
+      "_origin": "ast",
+      "community": 766,
+      "community_name": "test-bc-map.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bc-map.sh script",
+      "source_file": "tests/test-bc-map.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata",
+      "label": "test-bc-tipi-metadata.sh",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "test-bc-tipi-metadata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-bc-tipi-metadata.sh",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "test-bc-tipi-metadata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "test-bc-tipi-metadata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L15"
+    },
+    {
+      "id": "tests_test_bc_tipi_metadata_sh__entry",
+      "label": "test-bc-tipi-metadata.sh script",
+      "_origin": "ast",
+      "community": 767,
+      "community_name": "test-bc-tipi-metadata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-bc-tipi-metadata.sh script",
+      "source_file": "tests/test-bc-tipi-metadata.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
       "_origin": "ast",
@@ -49911,6 +49803,66 @@
       },
       "norm_label": "test-lock-turno-corsa.sh script",
       "source_file": "tests/test-lock-turno-corsa.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ciclo_vivo",
+      "label": "test-ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 769,
+      "community_name": "test-ciclo-vivo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-ciclo-vivo.sh",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_ciclo_vivo_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 769,
+      "community_name": "test-ciclo-vivo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_ciclo_vivo_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 769,
+      "community_name": "test-ciclo-vivo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-ciclo-vivo.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_ciclo_vivo_sh__entry",
+      "label": "test-ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 769,
+      "community_name": "test-ciclo-vivo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-ciclo-vivo.sh script",
+      "source_file": "tests/test-ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -50096,6 +50048,66 @@
       "norm_label": "proposta al canone",
       "source_file": "docs/campo/2026-09-26-sorveglianza-pr-126.md",
       "source_location": "L12"
+    },
+    {
+      "id": "tests_test_mutation_tests",
+      "label": "test-mutation-tests.sh",
+      "_origin": "ast",
+      "community": 771,
+      "community_name": "test-mutation-tests.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-mutation-tests.sh",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_mutation_tests_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 771,
+      "community_name": "test-mutation-tests.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L14"
+    },
+    {
+      "id": "tests_test_mutation_tests_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 771,
+      "community_name": "test-mutation-tests.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_mutation_tests_sh__entry",
+      "label": "test-mutation-tests.sh script",
+      "_origin": "ast",
+      "community": 771,
+      "community_name": "test-mutation-tests.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-mutation-tests.sh script",
+      "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L1"
     },
     {
       "id": "opencode_skills_gas_sviluppo_references_famiglie_difetti",
@@ -62104,7 +62116,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L121",
+      "source_location": "L128",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scadenzario_aging_main",
+      "target": "tools_scadenzario_aging_tipo_noto",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L147",
       "weight": 1.0
     },
     {
@@ -62116,7 +62140,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L141",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -62128,7 +62152,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L163",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -63124,7 +63148,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -63136,7 +63160,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -90646,13 +90670,35 @@
     },
     {
       "source": "tools_scadenzario_aging",
+      "target": "tools_scadenzario_aging_main",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scadenzario_aging",
       "target": "tools_scadenzario_aging_fascia_dettaglio",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L37",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scadenzario_aging",
+      "target": "tools_scadenzario_aging_tipo_noto",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -90663,7 +90709,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L65",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -90674,18 +90720,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L70",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_scadenzario_aging",
-      "target": "tools_scadenzario_aging_main",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L94",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -99335,6 +99370,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_scadenzario_aging_rationale_102",
+      "target": "tools_scadenzario_aging_main",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
       "source": "tools_scadenzario_aging_rationale_2",
       "target": "tools_scadenzario_aging",
       "relation": "rationale_for",
@@ -99346,36 +99392,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_scadenzario_aging_rationale_38",
+      "source": "tools_scadenzario_aging_rationale_39",
       "target": "tools_scadenzario_aging_fascia_dettaglio",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
-      "source": "tools_scadenzario_aging_rationale_71",
+      "source": "tools_scadenzario_aging_rationale_78",
       "target": "tools_scadenzario_aging_aggrega_totali",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L71",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_scadenzario_aging_rationale_95",
-      "target": "tools_scadenzario_aging_main",
-      "relation": "rationale_for",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L95",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -101141,5 +101176,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "014fcdd555123b7547ec7de1b21a680aefe7b017"
+  "built_at_commit": "dea11ca268dec3d5ffbb3e382ab22f677c380192"
 }

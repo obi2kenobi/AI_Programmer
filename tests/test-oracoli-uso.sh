@@ -136,7 +136,8 @@ grep -qiE "ignorat.*1|1 .*ignorat" <<<"$OUT" && ok "rating: la riga di tipo igno
   || ko "rating: riga «nota credito» sparita senza conteggio: $(head -1 <<<"$OUT")"
 printf 'tipo,importo,giorni\nFornitore FATTURA,1000,10\nFornitore Payment,300,10\nFornitore Fattura,200,10\n' > "$TMP/a.csv"
 OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a.csv" 2>&1)
-grep -q "ATTENZIONE" <<<"$OUT" && grep -q "FATTURA" <<<"$OUT" && grep -q "Payment" <<<"$OUT" \
+# (2026-09-26, domanda 1): «FATTURA» ora e' riconosciuta (maiuscole indifferenti); «Payment» resta sconosciuto, e si dice
+grep -q "ATTENZIONE" <<<"$OUT" && ! grep -q "FATTURA" <<<"$(grep ATTENZIONE <<<"$OUT")" && grep -q "Payment" <<<"$OUT" \
   && ok "aging: i tipi documento fornitore non riconosciuti sono DETTI (prima: entrate in silenzio)" \
   || ko "aging: tipi fornitore ignoti presi come entrate senza avviso: $(head -2 <<<"$OUT" | tr '\n' ' ')"
 # (2026-09-24, quinto ventaglio, R3 R2): la cura nan/inf non era arrivata a sei oracoli — due davano un verdetto
@@ -216,7 +217,8 @@ dichiara "rollforward: file come argomento"     python3 "$T/rollforward_cespiti.
 # domanda 1 di docs/giri/2026-09-23-notte/DOMANDE.md): qui si pretende solo che l'importo sia il SUO.
 printf 'giorni,tipo,importo\n10,Cliente Fattura,1000\n10,fornitore Fattura,500\n' > "$TMP/a2.csv"
 OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a2.csv" 2>&1)
-grep -c '^Entrate: +1500.00' <<<"$OUT" >/dev/null && ok "aging: la riga «fornitore» minuscola porta il SUO importo (+1500, non +2000)" || ko "aging: importo copiato dalla riga prima: $(grep Entrate <<<"$OUT")"
+# (2026-09-26, domanda 1): «fornitore Fattura» e' ora un'uscita (maiuscole indifferenti): -500, col SUO importo
+grep -c '^Uscite: -500.00' <<<"$OUT" >/dev/null && grep -c '^Entrate: +1000.00' <<<"$OUT" >/dev/null && ok "aging: la riga «fornitore» minuscola porta il SUO importo (-500 in uscita)" || ko "aging: riga fornitore minuscola: $(grep -E 'Entrate|Uscite' <<<"$OUT" | tr '\n' ' ')"
 printf 'giorni,tipo,importo\n10, Fornitore Fattura,500\n' > "$TMP/a3.csv"
 OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a3.csv" 2>&1); RC=$?
 ! grep -c Traceback <<<"$OUT" >/dev/null && [ "$RC" -eq 0 ] && ok "aging: la riga «fornitore» come PRIMA riga non e' un traceback" || ko "aging: prima riga fornitore: rc=$RC $(tail -1 <<<"$OUT")"

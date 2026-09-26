@@ -18,7 +18,8 @@ codice reale:
   come da BC (positivo = credito da incassare); l'importo di una riga FORNITORE
   fattura/invoice diventa NEGATIVO (-abs), una nota di credito resta POSITIVO
   (+abs) — l'uscita di cassa futura è sempre negativa, l'entrata sempre positiva,
-  qualunque sia il tipo di documento originale.
+  qualunque sia il tipo di documento originale. Il tipo si confronta senza maiuscole;
+  un tipo fornitore fuori elenco rende la riga RIFIUTATA e detta (Luca, 2026-09-26).
 
   Totali: per ogni fascia, somma degli importi con quel segno; entrate = somma
   importi positivi; uscite = somma importi negativi; saldo = entrate + uscite;
@@ -55,15 +56,21 @@ def fascia_dettaglio(giorni):
     return "LUNGO"
 
 
-# (Q22, 2026-09-23): i tipi documento fornitore che la convenzione del docstring nomina. Un tipo
-# fuori elenco (FATTURA maiuscolo, Payment, vuoto) prende +abs come la nota di credito — cioe'
-# finisce fra le ENTRATE. Il comportamento resta (se sia fedele al sistema studiato e' una domanda
-# di dominio: docs/giri/2026-09-23-notte/DOMANDE.md); da oggi lo si DICE.
+# (Q22, 2026-09-23): i tipi documento fornitore che la convenzione del docstring nomina. Un tipo fuori elenco (FATTURA
+# maiuscolo, Payment, vuoto) prendeva +abs come la nota di credito — cioe' finiva fra le ENTRATE, solo detto.
+# (2026-09-26, risposta di Luca alla domanda 1 di docs/giri/2026-09-23-notte/DOMANDE.md): il tipo si confronta senza
+# maiuscole («FATTURA» e' una fattura), e un tipo che non e' in elenco non va fra le entrate: la riga si RIFIUTA e
+# l'uscita la dice (tipo, quante righe, quanto importo).
 TIPI_FORNITORE_NOTI = ("Invoice", "Fattura", "Nota di credito", "Nota credito", "Credit Memo")
+TIPI_USCITA = ("invoice", "fattura")
+
+
+def tipo_noto(doc_type):
+    return doc_type.strip().lower() in {t.lower() for t in TIPI_FORNITORE_NOTI}
 
 
 def importo_fornitore(importo_bc, doc_type):
-    is_uscita = doc_type in ("Invoice", "Fattura")
+    is_uscita = doc_type.strip().lower() in TIPI_USCITA
     return -abs(importo_bc) if is_uscita else abs(importo_bc)
 
 
@@ -134,18 +141,13 @@ def main():
         # quindi in "entrate" invece che in "uscite". "tipo" porta sia la controparte
         # (Cliente/Fornitore) sia il tipo documento (es. "Fornitore Fattura"); solo le
         # righe Fornitore applicano la convenzione dell'uscita di cassa.
-        if tipo.startswith("Fornitore"):
-            doc_type = tipo[len("Fornitore"):].strip()
-            if doc_type not in TIPI_FORNITORE_NOTI:
-                non_riconosciuti.append(tipo)
+        # (2026-09-24, quinto ventaglio, R3 R1): anche «fornitore» minuscolo o con uno spazio davanti e' un fornitore
+        if tipo.strip().lower().startswith("fornitore"):
+            doc_type = tipo.strip()[len("fornitore"):].strip()
+            if not tipo_noto(doc_type):
+                non_riconosciuti.append((tipo, importo_bc))
+                continue
             importo = importo_fornitore(importo_bc, doc_type)
-        elif tipo.strip().lower().startswith("fornitore"):
-            non_riconosciuti.append(tipo)
-            # (2026-09-24, quinto ventaglio, R3 R1): qui l'importo non si assegnava — la riga prendeva quello
-            # della riga PRIMA (o, se prima, un traceback). Il segno e' quello che l'ATTENZIONE qui sotto
-            # dichiara per i tipi non riconosciuti (+abs): convenzione provvisoria, la domanda 1 di
-            # docs/giri/2026-09-23-notte/DOMANDE.md resta aperta.
-            importo = abs(importo_bc)
         else:
             importo = importo_bc
         righe.append({
@@ -153,13 +155,15 @@ def main():
             "importo": importo,
             "fascia": fascia,
         })
+    if non_riconosciuti:
+        tipi = sorted({t for t, _ in non_riconosciuti})
+        print(f"ATTENZIONE: {len(non_riconosciuti)} righe fornitore RIFIUTATE, tipo documento non riconosciuto"
+              f" ({', '.join(tipi)}; importo {sum(abs(i) for _, i in non_riconosciuti):.2f}): fuori dai totali."
+              f" Tipi noti: {', '.join(TIPI_FORNITORE_NOTI)}.", file=sys.stderr)
     # (Q22): con zero righe stampava entrate, uscite e fasce a +0.00€, rc 0
     if not righe:
         print(f"ERRORE: nessuna riga valida nell'input — nessun verdetto (un estratto vuoto e' un'estrazione fallita finche' non si dimostra il contrario; Q22, 2026-09-23)", file=sys.stderr)
         return 1
-    if non_riconosciuti:
-        print(f"ATTENZIONE: {len(non_riconosciuti)} righe fornitore con tipo non riconosciuto, prese col segno +abs"
-              f" (fra le ENTRATE) — {', '.join(sorted(set(non_riconosciuti)))}. Convenzione da confermare.", file=sys.stderr)
     r = aggrega_totali(righe)
     print(f"Entrate: {r['entrate']:+.2f}€")
     print(f"Uscite: {r['uscite']:+.2f}€")
