@@ -386,7 +386,7 @@
       "file_type": "code",
       "norm_label": "capitale_residuo()",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L49"
+      "source_location": "L52"
     },
     {
       "id": "tools_leasing_amministrativo_main",
@@ -398,7 +398,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L67"
+      "source_location": "L70"
     },
     {
       "id": "tools_leasing_amministrativo_main_numero",
@@ -410,7 +410,7 @@
       "file_type": "code",
       "norm_label": "numero()",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L91"
+      "source_location": "L94"
     },
     {
       "id": "tools_leasing_amministrativo_mesi_tra",
@@ -422,7 +422,7 @@
       "file_type": "code",
       "norm_label": "mesi_tra()",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L43"
+      "source_location": "L46"
     },
     {
       "id": "tools_valorizzazione_magazzino_applica_override",
@@ -34576,7 +34576,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_leasing_amministrativo_rationale_44",
+      "id": "tools_leasing_amministrativo_rationale_47",
       "label": "Differenza di mesi calendario SENZA aggiustamento del giorno \u2014 fedele a\u2026",
       "_origin": "ast",
       "community": 46,
@@ -34584,10 +34584,10 @@
       "file_type": "rationale",
       "norm_label": "differenza di mesi calendario senza aggiustamento del giorno \u2014 fedele a...",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L44"
+      "source_location": "L47"
     },
     {
-      "id": "tools_leasing_amministrativo_rationale_50",
+      "id": "tools_leasing_amministrativo_rationale_53",
       "label": "Ammortamento UNIFORME (semplificazione DICHIARATA nel sorgente REPO-E, non un\u2026",
       "_origin": "ast",
       "community": 46,
@@ -34595,10 +34595,10 @@
       "file_type": "rationale",
       "norm_label": "ammortamento uniforme (semplificazione dichiarata nel sorgente repo-e, non un...",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L50"
+      "source_location": "L53"
     },
     {
-      "id": "tools_leasing_amministrativo_rationale_68",
+      "id": "tools_leasing_amministrativo_rationale_71",
       "label": "Un contratto JSON \u2192 importo previsto col canone + adeguamento Euribor\u2026",
       "_origin": "ast",
       "community": 46,
@@ -34606,7 +34606,7 @@
       "file_type": "rationale",
       "norm_label": "un contratto json \u2192 importo previsto col canone + adeguamento euribor...",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L68"
+      "source_location": "L71"
     },
     {
       "id": "docs_bc_endpoints_postedsalescreditmemolines",
@@ -61767,7 +61767,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L55",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -61779,7 +61779,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L135",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -62463,7 +62463,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L91",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -62991,7 +62991,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L37",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -63003,7 +63003,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L38",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -63015,7 +63015,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L39",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -63351,7 +63351,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L40",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -90392,7 +90392,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L43",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -90403,7 +90403,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L49",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -90414,7 +90414,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L67",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -99262,36 +99262,36 @@
       "weight": 1.0
     },
     {
-      "source": "tools_leasing_amministrativo_rationale_44",
+      "source": "tools_leasing_amministrativo_rationale_47",
       "target": "tools_leasing_amministrativo_mesi_tra",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L44",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
-      "source": "tools_leasing_amministrativo_rationale_50",
+      "source": "tools_leasing_amministrativo_rationale_53",
       "target": "tools_leasing_amministrativo_capitale_residuo",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L50",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
-      "source": "tools_leasing_amministrativo_rationale_68",
+      "source": "tools_leasing_amministrativo_rationale_71",
       "target": "tools_leasing_amministrativo_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/leasing_amministrativo.py",
-      "source_location": "L68",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -101233,5 +101233,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "97c51bd84845f6d16c3110f32f4262d0105995e7"
+  "built_at_commit": "d68a8ff324bb79bf43c8c72dc931b260b35ee40b"
 }
