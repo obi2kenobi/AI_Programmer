@@ -12,6 +12,8 @@ dichiarata nel payload):
    non in un commento.
 2. Attribuzione BU via dimensione; BU non nota (fuori dall'elenco) → NOBU:
    il non-attribuito è una categoria VISIBILE, non una perdita silenziosa.
+   Elenco chiuso: ARRG, BIOC, EDIL, IMB (Luca, 2026-09-26); le BU fuori elenco
+   si nominano in un'ATTENZIONE.
 3. margine per BU = ricavi diretti − costi diretti; risultato per BU include
    il ribaltamento dei costi indiretti (REPARTO); risultato TOTALE = ricavi −
    costi complessivi (convenzione testuale del progetto reale).
@@ -31,6 +33,10 @@ CSV: conto,posting_date,bu,amount   (amount col segno del G/L)
 """
 import csv
 import sys
+
+# (2026-09-26, risposta di Luca alla domanda 8 di docs/giri/2026-09-23-notte/DOMANDE.md): l'elenco CHIUSO delle BU. Il
+# docstring prometteva «fuori elenco → NOBU» ma l'elenco non esisteva: un refuso diventava una BU col suo margine.
+BU_NOTE = ("ARRG", "BIOC", "EDIL", "IMB")
 
 
 def main():
@@ -54,8 +60,12 @@ def main():
     bu_tot = {}
     amounts = []  # righe valide, per la quadratura indipendente sotto
     righe_scartate = 0
+    fuori_elenco = {}
     for r in righe:
         bu = (r.get("bu") or "NOBU").strip().upper() or "NOBU"
+        if bu not in BU_NOTE and bu != "NOBU":
+            fuori_elenco[bu] = fuori_elenco.get(bu, 0) + 1
+            bu = "NOBU"
         amount_raw = (r.get("amount") or "").strip()
         # bug reale (revisione 14 lenti, 2026-08-28): un campo amount vuoto/mancante
         # diventava silenziosamente un costo zero (float(r["amount"] or 0)), senza
@@ -112,6 +122,9 @@ def main():
     else:
         print(f"QUADRATURA ROTTA: somma margini {somma_margini:.2f} · totale {risultato_totale:.2f} · calcolo indipendente {risultato_indipendente:.2f} — cercare il doppio conteggio nell'aggregazione per BU")
 
+    if fuori_elenco:
+        print(f"ATTENZIONE: BU fuori elenco messe in NOBU ({', '.join(f'{b} ×{n}' for b, n in sorted(fuori_elenco.items()))});"
+              f" elenco: {', '.join(BU_NOTE)}", file=sys.stderr)
     if "NOBU" in bu_tot:
         v = bu_tot["NOBU"]
         print(f"NOBU (movimenti non attribuiti a BU): ricavi {v['ricavi']:.2f} · costi {v['costi']:.2f} — visibile, non perso")

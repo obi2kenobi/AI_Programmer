@@ -686,7 +686,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36"
+      "source_location": "L42"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
@@ -51236,7 +51236,7 @@
       "source_location": "L3"
     },
     {
-      "id": "tools_bilancio_bu_rationale_37",
+      "id": "tools_bilancio_bu_rationale_43",
       "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
       "_origin": "ast",
       "community": 84,
@@ -51244,7 +51244,7 @@
       "file_type": "rationale",
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37"
+      "source_location": "L43"
     },
     {
       "id": "tools_scostamento_standard_effettivo_rationale_2",
@@ -62763,7 +62763,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L32",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -62775,7 +62775,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L33",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -89842,7 +89842,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L36",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -99020,14 +99020,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_bilancio_bu_rationale_37",
+      "source": "tools_bilancio_bu_rationale_43",
       "target": "tools_bilancio_bu_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -101233,5 +101233,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "031d4d8f2393c2b8d9d9c44389e82f51d7725b3b"
+  "built_at_commit": "29a74484e3b8ec1b4cc6f2b5f4bfde0698ce12de"
 }
