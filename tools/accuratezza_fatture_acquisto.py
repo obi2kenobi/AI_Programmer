@@ -15,7 +15,12 @@ controllo accuratezza fatture di acquisto di REPO-E (cartella gas-src/):
 3. Fatture senza ordine da fornitore WHITELIST = legittime (canoni, abbonamenti):
    NON sono errori. Le altre = anomale (Elaborazione.js calcolaStatisticheFinali).
 4. erroriReali = fattureAnomaleSenzaOrdine + fattureOrdineInesistente +
-   discrepanzeImporti.
+   discrepanzeImporti + fatture su ordini a importo <= 0.
+   CONFINE DICHIARATO: l'ultimo addendo NON e' nella formula di REPO-E (dal
+   2026-08-28: la percentuale su un ordine <= 0 non e' definita). E' una
+   deviazione VOLUTA, confermata da Luca il 2026-09-26 (domanda 7 di
+   docs/giri/2026-09-23-notte/DOMANDE.md): su quei dati le due accuratezze
+   divergono, e questa e' la nostra.
 5. percentualeAccuratezza = (totaleFatture − erroriReali) / totaleFatture × 100;
    margineErrore = erroriReali / totaleFatture × 100; obiettivo raggiunto se
    margineErrore < obiettivoMargineErrorePct (0.1% di default, Config.js).

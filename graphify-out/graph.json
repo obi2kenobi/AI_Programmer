@@ -86,7 +86,7 @@
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L35"
+      "source_location": "L40"
     },
     {
       "id": "tools_accuratezza_fatture_acquisto_main",
@@ -98,7 +98,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L72"
+      "source_location": "L77"
     },
     {
       "id": "tools_rating_dso_clienti_main",
@@ -20169,7 +20169,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_36",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_41",
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 252,
@@ -20177,10 +20177,10 @@
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L36"
+      "source_location": "L41"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_73",
+      "id": "tools_accuratezza_fatture_acquisto_rationale_78",
       "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
       "_origin": "ast",
       "community": 252,
@@ -20188,7 +20188,7 @@
       "file_type": "rationale",
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L73"
+      "source_location": "L78"
     },
     {
       "id": "tools_rating_dso_clienti_rationale_3",
@@ -60927,7 +60927,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L98",
+      "source_location": "L103",
       "weight": 1.0
     },
     {
@@ -62511,7 +62511,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L29",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -62523,7 +62523,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L30",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -62535,7 +62535,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L31",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -62547,7 +62547,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L32",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -89622,7 +89622,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L35",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -89633,7 +89633,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L72",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -98811,25 +98811,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_36",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_41",
       "target": "tools_accuratezza_fatture_acquisto_leggi_csv",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L36",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_73",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_78",
       "target": "tools_accuratezza_fatture_acquisto_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L73",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -101233,5 +101233,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d68a8ff324bb79bf43c8c72dc931b260b35ee40b"
+  "built_at_commit": "4d180abeeb2f6e2543591749a963c92fdd16ae96"
 }
