@@ -5440,3 +5440,24 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     - un pavimento di 4 punti di creazione PR diventato 3 con D8.
 
     E due falsi rossi del banco di D18, capiti: un git appena finito e un git zombie.
+- **Le 15 risposte di Luca, applicate una per commit (2026-09-26).** Poste una alla volta in chat con le opzioni; le
+  risposte stanno in `docs/giri/2026-09-23-notte/DOMANDE.md` («Risposte di Luca»), e ogni riga di `DEBITI.md` dice come
+  e' stata saldata. Ogni cura di codice ha il banco rosso prima e il sabotaggio rosso dopo; suite verde a ogni consegna
+  (191, poi 192 e 193 file coi due banchi nuovi).
+  - Codice: 1 (aging, tipi fornitore senza maiuscole, sconosciuti rifiutati), 2 (DSO, codice solo sullo stesso
+    cliente), 5 (margine, BU senza maiuscole), 6 (cespiti, fondo positivo convertito e detto), 8 (bilancio, elenco
+    chiuso delle BU), 13 (leasing oltre la fine: importo 0 con la nota), 15 (`docs/bc/` esente dai nomi anche la notte,
+    una regola sola), 12 (numeri all'italiana: `tools/numero.py`, una lettura sola per gli otto oracoli che leggono un
+    CSV, banco `tests/test-numero.sh`).
+  - Banco nuovo: 14 (`tests/test-percorso-spazio.sh` installa da «Il mio disco/hub AI» ed esegue plist, gancio del
+    garante e comandi installati).
+  - Documenti: 7 (ordini ≤0, deviazione voluta) e 11 (l'adeguamento arretrato a ogni data). Come oggi, scritte nella
+    docstring: 3, 4, 9, 10.
+  - Visti applicando:
+    - il 12 toccava anche valorizzazione, scostamento e riconciliazione, che la domanda non nominava: «per tutti gli
+      oracoli» li comprende;
+    - il banco del bilancio copiava l'oracolo in `/tmp` e perdeva l'import (curato con `PYTHONPATH`);
+    - la batteria avversaria prova HEAD, non l'albero: un attacco rotto da una cura si vede solo alla consegna dopo (A13,
+      in DEBITI).
+  - Mie prime stesure prese prima del commit: due `$NOME»` senza graffe (V4 R1, bash 3.2 del Mac), una dalla suite e
+    una da `tests/test-portabilita.sh`; e un banco che cercava «Rossi» dove l'oracolo stampa il cliente normalizzato.

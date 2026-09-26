@@ -106,7 +106,8 @@ provvisoria in vigore oggi. Si pongono una alla volta (settimo patto).
 Poste una alla volta in chat, ognuna con le sue opzioni. Corrispondenza con le domande di questo file: 1-7 sono le
 domande 1-7; 8 e 9 sono le due meta' della domanda 8 (l'elenco delle BU, il segno per riga o per conto); 10 e' la 9;
 11 e' la 10. Le 12-15 sono le altre righe di dominio di `DEBITI.md`: il formato dei numeri (D-R3-2), il leasing oltre
-la scadenza (D-R3-3), gli spazi nei percorsi del Mac (S3 R2), i nomi del tenant in `docs/bc/` (V1 R1). Da applicare.
+la scadenza (D-R3-3), gli spazi nei percorsi del Mac (S3 R2), i nomi del tenant in `docs/bc/` (V1 R1). Applicate tutte il 2026-09-26, una per commit: il riepilogo e' nel SAL, e
+ogni riga di `DEBITI.md` dice come e' stata saldata.
 
 - **1.** scadenzario: maiuscole indifferenti, tipi sconosciuti rifiutati e segnalati
 - **2.** DSO abbinamento: solo fatture dello stesso cliente (il confronto per contenuto resta)
