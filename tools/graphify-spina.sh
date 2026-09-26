@@ -58,7 +58,8 @@ fi
 T0=$(date +%s)
 UPD=$(cd "$DIR" && PYTHONHASHSEED=0 graphify update . 2>&1); RC=$?
 printf '%s\n' "$UPD" >> "$LOG"
-if [ $RC -ne 0 ] || grep -q "Refusing to overwrite" <<<"$UPD"; then
+_cp=$([ $RC -ne 0 ] |) || true
+if grep -q "Refusing to overwrite" <<<"$UPD" <<<"$_cp"; then
   log "update NON riuscito (rc=$RC)"
   echo "graphify-spina: ⚠ grafo NON aggiornato (rc=$RC) — dettagli in graphify-out/.spina.log$(grep -q 'Refusing' <<<"$UPD" && echo '; meno nodi di prima: se la cancellazione e voluta, GRAPHIFY_FORCE=1 graphify update .')"
   exit 0
