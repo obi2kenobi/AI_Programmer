@@ -17,24 +17,12 @@
       "source_location": "L363"
     },
     {
-      "id": "tools_bc_map_fetch",
-      "label": "fetch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "code",
-      "norm_label": "fetch()",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L67"
-    },
-    {
       "id": "tools_bc_index_catalogo_mancanti",
       "label": "catalogo_mancanti()",
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "code",
       "norm_label": "catalogo_mancanti()",
       "source_file": "tools/bc_index.py",
@@ -46,7 +34,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_index.py",
@@ -58,23 +46,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "code",
       "norm_label": "parse()",
       "source_file": "tools/bc_index.py",
       "source_location": "L15"
-    },
-    {
-      "id": "tools_bc_tipi_metadata_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L31"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -207,54 +183,6 @@
       "norm_label": "main()",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L80"
-    },
-    {
-      "id": "tools_indici_crisi_crisi_presunta",
-      "label": "crisi_presunta()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "code",
-      "norm_label": "crisi_presunta()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L73"
-    },
-    {
-      "id": "tools_indici_crisi_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L77"
-    },
-    {
-      "id": "tools_indici_crisi_pct",
-      "label": "pct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "code",
-      "norm_label": "pct()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L45"
-    },
-    {
-      "id": "tools_indici_crisi_valuta_indici_crisi",
-      "label": "valuta_indici_crisi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "code",
-      "norm_label": "valuta_indici_crisi()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L49"
     },
     {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
@@ -653,6 +581,126 @@
       "source_location": "L126"
     },
     {
+      "id": "tools_bc_map_fetch",
+      "label": "fetch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "code",
+      "norm_label": "fetch()",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L67"
+    },
+    {
+      "id": "tools_gas_qualita_function_bodies",
+      "label": "function_bodies()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 762,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "function_bodies()",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L38"
+    },
+    {
+      "id": "tools_gas_qualita_leggi_file",
+      "label": "leggi_file()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 762,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "leggi_file()",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L27"
+    },
+    {
+      "id": "tools_gas_qualita_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 762,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L63"
+    },
+    {
+      "id": "tools_gas_qualita_riga_di",
+      "label": "riga_di()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 762,
+      "community_name": "gas_qualita.py",
+      "file_type": "code",
+      "norm_label": "riga_di()",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L59"
+    },
+    {
+      "id": "tools_indici_crisi_crisi_presunta",
+      "label": "crisi_presunta()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "crisi_presunta()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L73"
+    },
+    {
+      "id": "tools_indici_crisi_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L77"
+    },
+    {
+      "id": "tools_indici_crisi_pct",
+      "label": "pct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "pct()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "tools_indici_crisi_valuta_indici_crisi",
+      "label": "valuta_indici_crisi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "valuta_indici_crisi()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L49"
+    },
+    {
+      "id": "tools_bc_tipi_metadata_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L31"
+    },
+    {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
       "label": "calcola_scostamento()",
       "_callable": true,
@@ -878,54 +926,6 @@
       "file_type": "code",
       "norm_label": "siti()",
       "source_file": "tools/e002-siti.py",
-      "source_location": "L59"
-    },
-    {
-      "id": "tools_gas_qualita_function_bodies",
-      "label": "function_bodies()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "function_bodies()",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L38"
-    },
-    {
-      "id": "tools_gas_qualita_leggi_file",
-      "label": "leggi_file()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "leggi_file()",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L27"
-    },
-    {
-      "id": "tools_gas_qualita_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L63"
-    },
-    {
-      "id": "tools_gas_qualita_riga_di",
-      "label": "riga_di()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "riga_di()",
-      "source_file": "tools/gas_qualita.py",
       "source_location": "L59"
     },
     {
@@ -5597,78 +5597,6 @@
       "source_location": "L115"
     },
     {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
-      "label": "5.1 Il denominatore va provato, non stampato",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.1 il denominatore va provato, non stampato",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L137"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
-      "label": "5.2 Un verde per assenza non \u00e8 un verde",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.2 un verde per assenza non e un verde",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L157"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
-      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L163"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
-      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L169"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
-      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L174"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
-      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L132"
-    },
-    {
       "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_6_il_byte_invisibile_famiglia_chiusa_non_due_casi_curati",
       "label": "6. Il byte invisibile (famiglia chiusa, non due casi curati)",
       "_origin": "ast",
@@ -5739,29 +5667,6 @@
       "norm_label": "numeri della giornata",
       "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
       "source_location": "L321"
-    },
-    {
-      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
-      "label": "Proposta al canone",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "proposta al canone",
-      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
-      "source_location": "L280"
-    },
-    {
-      "id": "tools_bc_map_rationale_68",
-      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
-      "_origin": "ast",
-      "community": 117,
-      "community_name": "2026-09-02 \u2014 Una webapp GAS morta da loggati: il manifest, i verdetti che mentono, la consegna dei comandi",
-      "file_type": "rationale",
-      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
-      "source_file": "tools/bc_map.py",
-      "source_location": "L68"
     },
     {
       "id": "claude",
@@ -12165,21 +12070,10 @@
       "label": "bc_index.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "code",
       "norm_label": "bc_index.py",
       "source_file": "tools/bc_index.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_bc_tipi_metadata",
-      "label": "bc_tipi_metadata.py",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "code",
-      "norm_label": "bc_tipi_metadata.py",
-      "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L1"
     },
     {
@@ -12187,7 +12081,7 @@
       "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "severita media (15)",
@@ -12199,7 +12093,7 @@
       "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "rationale",
       "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
       "source_file": "tools/bc_index.py",
@@ -12210,7 +12104,7 @@
       "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
       "source_file": "tools/bc_index.py",
@@ -12221,7 +12115,7 @@
       "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "rationale",
       "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
       "source_file": "tools/bc_index.py",
@@ -12232,33 +12126,11 @@
       "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
       "source_file": "tools/bc_index.py",
       "source_location": "L49"
-    },
-    {
-      "id": "tools_bc_tipi_metadata_rationale_2",
-      "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_bc_tipi_metadata_rationale_32",
-      "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "file_type": "rationale",
-      "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
-      "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L32"
     },
     {
       "id": "opencode_skills_allineamento_fork_skill",
@@ -16405,66 +16277,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_allinea_hub",
-      "label": "allinea_hub()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "allinea_hub()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L704"
-    },
-    {
-      "id": "night_shift_lib_eta_secondi",
-      "label": "eta_secondi()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "eta_secondi()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L845"
-    },
-    {
-      "id": "night_shift_lib_git_vivo_in",
-      "label": "git_vivo_in()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "git_vivo_in()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L691"
-    },
-    {
-      "id": "night_shift_lib_mtime",
-      "label": "mtime()",
-      "_origin": "ast",
-      "community": 212,
-      "community_name": "caccia-miglioria.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "mtime()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L32"
-    },
-    {
       "id": "tests_test_e002_codice",
       "label": "test-e002-codice.sh",
       "_origin": "ast",
@@ -20561,21 +20373,6 @@
       "source_location": "L555"
     },
     {
-      "id": "night_shift_lib_riga_verifica_vuota",
-      "label": "riga_verifica_vuota()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "riga_verifica_vuota()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L195"
-    },
-    {
       "id": "night_shift_lib_sh__entry",
       "label": "lib.sh script",
       "_origin": "ast",
@@ -21814,17 +21611,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_indici_crisi",
-      "label": "indici_crisi.py",
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "code",
-      "norm_label": "indici_crisi.py",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_rollforward_cespiti",
       "label": "rollforward_cespiti.py",
       "_origin": "ast",
@@ -21867,39 +21653,6 @@
       "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L81"
-    },
-    {
-      "id": "tools_indici_crisi_rationale_2",
-      "label": "Indici della crisi d'impresa (CNDCEC / CCII, D.Lgs 14/2019), settore G46.\u2026",
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "rationale",
-      "norm_label": "indici della crisi d'impresa (cndcec / ccii, d.lgs 14/2019), settore g46....",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_indici_crisi_rationale_50",
-      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "rationale",
-      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L50"
-    },
-    {
-      "id": "tools_indici_crisi_rationale_78",
-      "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
-      "_origin": "ast",
-      "community": 267,
-      "community_name": "accuratezza_fatture_acquisto.py",
-      "file_type": "rationale",
-      "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L78"
     },
     {
       "id": "tools_rollforward_cespiti_rationale_2",
@@ -46853,11 +46606,86 @@
       "source_location": "L3"
     },
     {
+      "id": "night_shift_lib_allinea_hub",
+      "label": "allinea_hub()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "allinea_hub()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L704"
+    },
+    {
+      "id": "night_shift_lib_eta_secondi",
+      "label": "eta_secondi()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "eta_secondi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L845"
+    },
+    {
+      "id": "night_shift_lib_git_vivo_in",
+      "label": "git_vivo_in()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "git_vivo_in()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L691"
+    },
+    {
+      "id": "night_shift_lib_impronta_righe",
+      "label": "impronta_righe()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "impronta_righe()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L479"
+    },
+    {
+      "id": "night_shift_lib_mtime",
+      "label": "mtime()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "mtime()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L32"
+    },
+    {
       "id": "tests_test_portabilita",
       "label": "test-portabilita.sh",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46872,7 +46700,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46887,7 +46715,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46902,7 +46730,7 @@
       "label": "righe_con()",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46917,7 +46745,7 @@
       "label": "test-portabilita.sh script",
       "_origin": "ast",
       "community": 737,
-      "community_name": "test-portabilita.sh",
+      "community_name": "mtime",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46926,6 +46754,66 @@
       "norm_label": "test-portabilita.sh script",
       "source_file": "tests/test-portabilita.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "tools_lente_sicurezza",
+      "label": "lente-sicurezza.sh",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "lente-sicurezza.sh",
+      "source_file": "tools/lente-sicurezza.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_lente_sicurezza_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/lente-sicurezza.sh",
+      "source_location": "L32"
+    },
+    {
+      "id": "tools_lente_sicurezza_sh__entry",
+      "label": "lente-sicurezza.sh script",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "lente-sicurezza.sh script",
+      "source_file": "tools/lente-sicurezza.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_lente_sicurezza_verdetto",
+      "label": "verdetto()",
+      "_origin": "ast",
+      "community": 737,
+      "community_name": "mtime",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "verdetto()",
+      "source_file": "tools/lente-sicurezza.sh",
+      "source_location": "L33"
     },
     {
       "id": "tests_test_deploy_assistito",
@@ -47814,6 +47702,21 @@
       "norm_label": "test-grafo-semantico.sh script",
       "source_file": "tests/test-grafo-semantico.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "night_shift_lib_riga_verifica_vuota",
+      "label": "riga_verifica_vuota()",
+      "_origin": "ast",
+      "community": 746,
+      "community_name": "revisore.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "riga_verifica_vuota()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L195"
     },
     {
       "id": "night_shift_revisore",
@@ -48867,6 +48770,101 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_1_il_denominatore_va_provato_non_stampato",
+      "label": "5.1 Il denominatore va provato, non stampato",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.1 il denominatore va provato, non stampato",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L137"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_2_un_verde_per_assenza_non_\u00e8_un_verde",
+      "label": "5.2 Un verde per assenza non \u00e8 un verde",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.2 un verde per assenza non e un verde",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L157"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_3_rilevare_non_basta_il_verdetto_deve_dire_il_vero",
+      "label": "5.3 Rilevare non basta: il verdetto deve dire il vero",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.3 rilevare non basta: il verdetto deve dire il vero",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L163"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_4_exit_dopo_una_pipe_misura_la_pipe",
+      "label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.4 `exit=$?` dopo una pipe misura la pipe",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L169"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_5_un_ref_remote_tracking_\u00e8_un_sensore_stantio",
+      "label": "5.5 Un ref remote-tracking \u00e8 un sensore stantio",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5.5 un ref remote-tracking e un sensore stantio",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L174"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_5_i_verdetti_che_mentono_quattro_istanze_in_un_giorno",
+      "label": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. i verdetti che mentono \u2014 quattro istanze in un giorno",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L132"
+    },
+    {
+      "id": "docs_campo_2026_09_02_repo_e_giornata_gas_lezioni_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-02-repo-e-giornata-gas-lezioni.md",
+      "source_location": "L280"
+    },
+    {
+      "id": "tools_bc_map_rationale_68",
+      "label": "GET OData con paginazione @odata.nextLink: BC taglia le risposte grandi, chi\u2026",
+      "_origin": "ast",
+      "community": 756,
+      "community_name": "5. I verdetti che mentono \u2014 quattro istanze in un giorno",
+      "file_type": "rationale",
+      "norm_label": "get odata con paginazione @odata.nextlink: bc taglia le risposte grandi, chi...",
+      "source_file": "tools/bc_map.py",
+      "source_location": "L68"
+    },
+    {
       "id": "tests_test_stdin_timeout",
       "label": "test-stdin-timeout.sh",
       "_origin": "ast",
@@ -49426,79 +49424,59 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_impronta_righe",
-      "label": "impronta_righe()",
+      "id": "tools_gas_qualita",
+      "label": "gas_qualita.py",
       "_origin": "ast",
       "community": 762,
-      "community_name": "lente-sicurezza.sh script",
+      "community_name": "gas_qualita.py",
       "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "impronta_righe()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L479"
-    },
-    {
-      "id": "tools_lente_sicurezza",
-      "label": "lente-sicurezza.sh",
-      "_origin": "ast",
-      "community": 762,
-      "community_name": "lente-sicurezza.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "lente-sicurezza.sh",
-      "source_file": "tools/lente-sicurezza.sh",
+      "norm_label": "gas_qualita.py",
+      "source_file": "tools/gas_qualita.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_lente_sicurezza_log",
-      "label": "log()",
+      "id": "tools_gas_qualita_rationale_2",
+      "label": "Censimento qualit\u00e0 di un progetto Google Apps Script \u2014 le famiglie misurate del\u2026",
       "_origin": "ast",
       "community": 762,
-      "community_name": "lente-sicurezza.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "tools/lente-sicurezza.sh",
-      "source_location": "L32"
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "censimento qualita di un progetto google apps script \u2014 le famiglie misurate del...",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L2"
     },
     {
-      "id": "tools_lente_sicurezza_sh__entry",
-      "label": "lente-sicurezza.sh script",
+      "id": "tools_gas_qualita_rationale_28",
+      "label": "Lettura tollerante (encoding/errori): un file illeggibile \u00e8 un rilevo, non un\u2026",
       "_origin": "ast",
       "community": 762,
-      "community_name": "lente-sicurezza.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "lente-sicurezza.sh script",
-      "source_file": "tools/lente-sicurezza.sh",
-      "source_location": "L1"
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "lettura tollerante (encoding/errori): un file illeggibile e un rilevo, non un...",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L28"
     },
     {
-      "id": "tools_lente_sicurezza_verdetto",
-      "label": "verdetto()",
+      "id": "tools_gas_qualita_rationale_39",
+      "label": "Nome \u2192 corpo normalizzato (brace matching approssimato per funzioni top-level).",
       "_origin": "ast",
       "community": 762,
-      "community_name": "lente-sicurezza.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "verdetto()",
-      "source_file": "tools/lente-sicurezza.sh",
-      "source_location": "L33"
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "nome \u2192 corpo normalizzato (brace matching approssimato per funzioni top-level).",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L39"
+    },
+    {
+      "id": "tools_gas_qualita_rationale_64",
+      "label": "Il rilevatore: per ogni famiglia misurata, cerca nel progetto GAS i segni che\u2026",
+      "_origin": "ast",
+      "community": 762,
+      "community_name": "gas_qualita.py",
+      "file_type": "rationale",
+      "norm_label": "il rilevatore: per ogni famiglia misurata, cerca nel progetto gas i segni che...",
+      "source_file": "tools/gas_qualita.py",
+      "source_location": "L64"
     },
     {
       "id": "docs_giri_2026_09_25_ottavo_risposte_delegate",
@@ -50177,6 +50155,143 @@
       },
       "norm_label": "test-mutation-tests.sh script",
       "source_file": "tests/test-mutation-tests.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_indici_crisi",
+      "label": "indici_crisi.py",
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "code",
+      "norm_label": "indici_crisi.py",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_2",
+      "label": "Indici della crisi d'impresa (CNDCEC / CCII, D.Lgs 14/2019), settore G46.\u2026",
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "rationale",
+      "norm_label": "indici della crisi d'impresa (cndcec / ccii, d.lgs 14/2019), settore g46....",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_50",
+      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "rationale",
+      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_78",
+      "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
+      "_origin": "ast",
+      "community": 772,
+      "community_name": "indici_crisi.py",
+      "file_type": "rationale",
+      "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L78"
+    },
+    {
+      "id": "tools_bc_tipi_metadata",
+      "label": "bc_tipi_metadata.py",
+      "_origin": "ast",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "code",
+      "norm_label": "bc_tipi_metadata.py",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_bc_tipi_metadata_rationale_2",
+      "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
+      "_origin": "ast",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_bc_tipi_metadata_rationale_32",
+      "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
+      "_origin": "ast",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "file_type": "rationale",
+      "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
+      "source_file": "tools/bc_tipi_metadata.py",
+      "source_location": "L32"
+    },
+    {
+      "id": "tests_test_percorso_spazio",
+      "label": "test-percorso-spazio.sh",
+      "_origin": "ast",
+      "community": 774,
+      "community_name": "test-percorso-spazio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-percorso-spazio.sh",
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_percorso_spazio_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 774,
+      "community_name": "test-percorso-spazio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_percorso_spazio_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 774,
+      "community_name": "test-percorso-spazio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_percorso_spazio_sh__entry",
+      "label": "test-percorso-spazio.sh script",
+      "_origin": "ast",
+      "community": 774,
+      "community_name": "test-percorso-spazio.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-percorso-spazio.sh script",
+      "source_file": "tests/test-percorso-spazio.sh",
       "source_location": "L1"
     },
     {
@@ -52988,17 +53103,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_gas_qualita",
-      "label": "gas_qualita.py",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "gas_qualita.py",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_verifica_banco",
       "label": "verifica_banco.py",
       "_origin": "ast",
@@ -53054,50 +53158,6 @@
       "source_location": "L60"
     },
     {
-      "id": "tools_gas_qualita_rationale_2",
-      "label": "Censimento qualit\u00e0 di un progetto Google Apps Script \u2014 le famiglie misurate del\u2026",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "censimento qualita di un progetto google apps script \u2014 le famiglie misurate del...",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_gas_qualita_rationale_28",
-      "label": "Lettura tollerante (encoding/errori): un file illeggibile \u00e8 un rilevo, non un\u2026",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "lettura tollerante (encoding/errori): un file illeggibile e un rilevo, non un...",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L28"
-    },
-    {
-      "id": "tools_gas_qualita_rationale_39",
-      "label": "Nome \u2192 corpo normalizzato (brace matching approssimato per funzioni top-level).",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "nome \u2192 corpo normalizzato (brace matching approssimato per funzioni top-level).",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L39"
-    },
-    {
-      "id": "tools_gas_qualita_rationale_64",
-      "label": "Il rilevatore: per ogni famiglia misurata, cerca nel progetto GAS i segni che\u2026",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "il rilevatore: per ogni famiglia misurata, cerca nel progetto gas i segni che...",
-      "source_file": "tools/gas_qualita.py",
-      "source_location": "L64"
-    },
-    {
       "id": "tools_verifica_banco_rationale_2",
       "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
       "_origin": "ast",
@@ -53124,22 +53184,10 @@
       "label": "glob",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "glob",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "importlib_util",
-      "label": "importlib_util",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "importlib_util",
       "source_file": "",
       "type": "external"
     },
@@ -53148,34 +53196,10 @@
       "label": "os",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "bc_tipi_metadata.py",
+      "community_name": "bc_index.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "os",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "urllib_request",
-      "label": "urllib_request",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "urllib_request",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "xml_etree_elementtree",
-      "label": "xml_etree_elementtree",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "bc_tipi_metadata.py",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "xml_etree_elementtree",
       "source_file": "",
       "type": "external"
     },
@@ -53284,6 +53308,42 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_parse",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "importlib_util",
+      "label": "importlib_util",
+      "_origin": "semantic",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "importlib_util",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "urllib_request",
+      "label": "urllib_request",
+      "_origin": "semantic",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "urllib_request",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "xml_etree_elementtree",
+      "label": "xml_etree_elementtree",
+      "_origin": "semantic",
+      "community": 773,
+      "community_name": "bc_tipi_metadata.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "xml_etree_elementtree",
       "source_file": "",
       "type": "external"
     },
@@ -59443,6 +59503,30 @@
       "context": "call",
       "source_file": "tests/test-payload-da-stdin.sh",
       "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_percorso_spazio_sh__entry",
+      "target": "tests_test_percorso_spazio_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_percorso_spazio_sh__entry",
+      "target": "tests_test_percorso_spazio_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -89527,6 +89611,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_percorso_spazio",
+      "target": "tests_test_percorso_spazio_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_pipeline_diagrammi_mostrano_i_rami",
       "target": "tests_test_pipeline_diagrammi_mostrano_i_rami_sh__entry",
       "relation": "contains",
@@ -96985,6 +97080,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_percorso_spazio",
+      "target": "tests_test_percorso_spazio_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_percorso_spazio",
+      "target": "tests_test_percorso_spazio_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-percorso-spazio.sh",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_pipeline_diagrammi_mostrano_i_rami",
       "target": "tests_test_pipeline_diagrammi_mostrano_i_rami_ok",
       "relation": "defines",
@@ -101828,5 +101945,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5eabb602b5e0051eda0c3f24615c93630efcd421"
+  "built_at_commit": "99559c9c13a3c9c54a94c55eadcf0fef5aff97a4"
 }
