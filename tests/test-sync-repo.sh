@@ -63,7 +63,8 @@ cat > "$TMP/bin/gh" <<'EOF'
 case "$1 $2" in
   "api "*) [ -f "${GH_CLAUDE_MD:-}" ] && base64 < "$GH_CLAUDE_MD" || { echo "gh: HTTP 404" >&2; exit 1; } ;;
   "repo clone") git clone -q "${GH_CLONE_SRC:?}" "$4" ;;
-  "pr create") if [ -n "${GH_PR_ESISTE:-}" ]; then echo 'a pull request for branch "x" into branch "main" already exists:'; echo "https://github.invalid/stub/pull/9"; exit 1; fi
+  "pr list") [ -n "${GH_PR_LIST_ROTTO:-}" ] && { echo "HTTP 502" >&2; exit 1; }; printf '%s\n' "${GH_PR_CHIUSE:-[]}" ;;
+  "pr create") echo create >> "${GH_LOG:-/dev/null}"; if [ -n "${GH_PR_ESISTE:-}" ]; then echo 'a pull request for branch "x" into branch "main" already exists:'; echo "https://github.invalid/stub/pull/9"; exit 1; fi
                echo "https://github.invalid/stub/pull/1" ;;
   *) exit 0 ;;
 esac
@@ -88,24 +89,56 @@ BR=$(ramo_standard vuota-remota)
 grep -q "ASSENTE" <<<"$OUT" && ok "D11: il verdetto dice che CLAUDE.md era ASSENTE (non un errore di rete)" \
   || ko "D11: assenza non dichiarata come tale: $(echo "$OUT" | head -1)"
 
-# (2026-09-24, quinto ventaglio, R2 R5): --standard sostituisce il CLAUDE.md del satellite per intero — la
-# regola locale spariva dal ramo, e l'uscita non lo diceva. Se le righe vadano spostate in PROJECT.md o la
-# PR si debba fermare e' una domanda (DEBITI); intanto si DICONO, nell'uscita e nel messaggio del commit.
+# (2026-09-25, D15, risposta delegata): con righe proprie del satellite la PR di riallineo NON parte, e lo dice — prima le
+# toglieva dal ramo (onboard promette «un CLAUDE.md proprio non si sovrascrive»). E una riga di una versione VECCHIA del
+# CLAUDE.md dell'hub (dalla sua storia git) non e' propria: quella il riallineo la aggiorna, senza fermarsi.
 nuovo_bare proprio 0
 { cat "$TMP/claude-sat.md"; printf '\n## Regola locale\nMai toccare il foglio MASTER a mano.\n'; } > "$TMP/proprio-seed/CLAUDE.md"
 git -C "$TMP/proprio-seed" add -A && git -C "$TMP/proprio-seed" -c user.name=t -c user.email=t@t commit -qm locale && git -C "$TMP/proprio-seed" push -q origin HEAD:main 2>/dev/null
-OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/proprio.git" GH_CLAUDE_MD="$TMP/proprio-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/proprio --standard 2>&1)
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/proprio.git" GH_CLAUDE_MD="$TMP/proprio-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/proprio --standard 2>&1); RC=$?
 BR=$(ramo_standard proprio)
-grep -c "⚠ 2 righe del CLAUDE.md" <<<"$OUT" >/dev/null && grep -c "foglio MASTER" <<<"$OUT" >/dev/null \
-  && ok "R2 R5: --standard dice quante e quali righe del CLAUDE.md del satellite la PR toglie" || ko "R2 R5: righe proprie tolte in silenzio: $(grep -c . <<<"$OUT") righe d'uscita, nessun avviso"
-[ -n "$BR" ] && git -C "$TMP/proprio.git" log -1 --format=%B "$BR" | grep -c "foglio MASTER" >/dev/null \
-  && ok "R2 R5: le righe tolte sono nel messaggio del commit (quindi nel corpo della PR, --fill)" || ko "R2 R5: il commit del ramo '$BR' non le nomina"
+[ "$RC" -ne 0 ] && [ -z "$BR" ] && grep -c "foglio MASTER" <<<"$OUT" >/dev/null && grep -c "PROJECT.md" <<<"$OUT" >/dev/null \
+  && ok "D15: con righe proprie la PR non parte, e dice quali e dove spostarle" || ko "D15: righe proprie: rc $RC, ramo '$BR' — $(grep -m1 '⚠\|⛔' <<<"$OUT")"
+VECCHIA=$(git -C "$HERE" log --format= -p -- CLAUDE.md 2>/dev/null | grep '^-[^-]' | sed 's/^-//' | grep -vxFf "$HERE/CLAUDE.md" | grep -v '^[[:space:]]*$' | head -1)
+if [ -n "$VECCHIA" ]; then
+  nuovo_bare vecchio 0
+  { cat "$TMP/claude-sat.md"; printf '\n%s\n' "$VECCHIA"; } > "$TMP/vecchio-seed/CLAUDE.md"
+  git -C "$TMP/vecchio-seed" add -A && git -C "$TMP/vecchio-seed" -c user.name=t -c user.email=t@t commit -qm vecchio && git -C "$TMP/vecchio-seed" push -q origin HEAD:main 2>/dev/null
+  OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/vecchio.git" GH_CLAUDE_MD="$TMP/vecchio-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/vecchio --standard 2>&1); RC=$?
+  BR=$(ramo_standard vecchio); S2R6_REPO=vecchio
+  [ "$RC" -eq 0 ] && [ -n "$BR" ] && ok "D15: una riga di un CLAUDE.md vecchio dell'hub non ferma il riallineo" || ko "D15: riga di un hub vecchio presa per propria: rc $RC — $(grep -m1 '⚠\|⛔' <<<"$OUT")"
+else
+  echo "SALTO: la storia di CLAUDE.md dell'hub non e' in questo clone (clone superficiale): il caso «hub vecchio» non si esercita"
+fi
 
 # (2026-09-24, sesto ventaglio, S2 R6): «PR aperta … (24 gruppi di file aggiornati)» contava le copie, non il diff —
 # il numero finiva nel log del turno come misura della PR. Ora e' il numero di file del commit.
+# (D15): la PR la apre il riallineo di un satellite con righe di un hub vecchio (quello con righe proprie si ferma)
+if [ -n "${S2R6_REPO:-}" ]; then
 NDICH=$(grep -oE '\(([0-9]+) file nel commit\)' <<<"$OUT" | grep -oE '[0-9]+')
-NVERI=$(git -C "$TMP/proprio.git" diff --name-only "$BR~1" "$BR" 2>/dev/null | grep -c .)
+NVERI=$(git -C "$TMP/$S2R6_REPO.git" diff --name-only "$BR~1" "$BR" 2>/dev/null | grep -c .)
 [ -n "$NDICH" ] && [ "$NDICH" = "$NVERI" ] && ok "S2 R6: la PR dice quanti file cambia davvero ($NVERI)" || ko "S2 R6: la PR dichiara «${NDICH:-?}», il commit ne cambia $NVERI: $(grep -m1 'PR aperta' <<<"$OUT")"
+else
+  echo "SALTO: S2 R6 senza la prova «hub vecchio» (clone superficiale)"
+fi
+# (2026-09-25, D21, risposta delegata): una PR di riallineo che Luca chiude SENZA fonderla si riproponeva ogni notte con un
+# ramo nuovo. Ora il commit porta l'impronta del contenuto (patch-id): se una PR chiusa e non fusa ha la stessa, il no
+# resta finche' lo standard (o il satellite) cambia. gh che non risponde: non si apre al buio.
+nuovo_bare rifiuto 1
+OUT=$(cd "$TMP" && GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+IMPR=$(git -C "$TMP/rifiuto.git" log -1 --format=%B "$(ramo_standard rifiuto)" 2>/dev/null | sed -n 's/^Impronta dello standard: \([0-9a-f]*\).*/\1/p')
+[ -n "$IMPR" ] && ok "D21: il commit del riallineo porta l'impronta del contenuto" || ko "D21: nessuna impronta nel commit: $(tail -1 <<<"$OUT")"
+git -C "$TMP/rifiuto.git" branch -q -D "$(ramo_standard rifiuto)" 2>/dev/null
+: > "$TMP/gh-create.log"
+OUT=$(cd "$TMP" && GH_PR_CHIUSE="[{\"number\":7,\"mergedAt\":null,\"body\":\"Impronta dello standard: $IMPR\"}]" GH_LOG="$TMP/gh-create.log" GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ! grep -c create "$TMP/gh-create.log" >/dev/null && grep -c '#7' <<<"$OUT" >/dev/null \
+  && ok "D21: stesso contenuto di una PR chiusa senza fusione: niente PR nuova, e lo dice" || ko "D21: la rifiutata si ripropone: rc $RC — $(tail -1 <<<"$OUT")"
+OUT=$(cd "$TMP" && GH_PR_CHIUSE='[{"number":7,"mergedAt":null,"body":"Impronta dello standard: 0000"}]' GH_LOG="$TMP/gh-create.log" GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+grep -c create "$TMP/gh-create.log" >/dev/null && ok "D21: contenuto cambiato dal rifiuto: la PR si ripropone" || ko "D21: contenuto nuovo, nessuna PR: $(tail -1 <<<"$OUT")"
+git -C "$TMP/rifiuto.git" branch -q -D "$(ramo_standard rifiuto)" 2>/dev/null; : > "$TMP/gh-create.log"
+OUT=$(cd "$TMP" && GH_PR_LIST_ROTTO=1 GH_LOG="$TMP/gh-create.log" GH_CLONE_SRC="$TMP/rifiuto.git" GH_CLAUDE_MD="$TMP/rifiuto-seed/CLAUDE.md" PATH="$TMP/bin:$PATH" bash "$HERE/tools/sync-repo.sh" sandbox/rifiuto --standard 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c create "$TMP/gh-create.log" >/dev/null && ok "D21: gh che non dice le PR chiuse: niente PR al buio, rc $RC" || ko "D21: gh rotto, PR aperta lo stesso (rc $RC)"
+
 
 # (2026-09-24, sesto ventaglio, S2 R4): l'rc di `gh pr create` non si guardava — con la PR gia' aperta gh esce 1 e
 # stampa la sua URL, e sync diceva «PR aperta», un fatto detto due volte. Una PR che c'e' si dice per quello che e'.

@@ -261,6 +261,18 @@ if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
       break
     fi
   done
+  # (2026-09-25, D42, risposta delegata): si applica UNA funzione. Un blocco che ne ridefinisce altre, o aggiunge codice a
+  # livello di file, finiva intero al posto della funzione chiesta (verificato il blocco, non il file) ed usciva
+  # APPLICATO. Ora e' una PROPOSTA: il fix non fa piu' di quanto l'issue chiede. Righe vuote e commenti non contano.
+  if [ -n "$TARGET_FN" ]; then
+    SOLO_FN=$(printf '%s\n' "$CODE" | awk -v fn="function $TARGET_FN" '$0 ~ "^"fn {p=1} p {print} p && /^}$/ {exit}')
+    RESTO=$(printf '%s\n' "$CODE" | awk -v fn="function $TARGET_FN" '$0 ~ "^"fn {p=1} !p {print} p && /^}$/ {p=0; fatto=1; next} fatto && !p {print}' \
+            | grep -vE '^[[:space:]]*($|//|/\*|\*)' || true)
+    if [ -z "$SOLO_FN" ] || [ -n "$RESTO" ]; then
+      log "⚠ il blocco del modello va oltre una funzione ($TARGET_FN): $(printf '%s' "$RESTO" | head -1 | cut -c1-60) — proposta, non fix (D42)"
+      TARGET_FN=""
+    fi
+  fi
   # (fase B adattiva, 2026-09-07 — chiude il DEBITI "inserzione funzioni nuove": le issue
   #  "Feature:" chiedono funzioni che NON esistono ancora; degradare a proposta teneva
   #  l'issue #10 ferma da tre notti. L'inserzione ha REGOLE dal campo: in un .html si va
@@ -347,7 +359,7 @@ PYEOF
         RV=$(auto_review "$CODE" "$(cat "$ISSUE" | head -30)")
         log "auto-review: $RV"
         echo "REVIEW: $RV"
-        # GENERATORE DI TEST: terza domanda (il fix arriva presidiato)
+        # GENERATORE DI TEST: terza domanda — una BOZZA di test, che nessuno esegue (D9, 2026-09-25)
         TG=$(genera_test "$TARGET_FN" "$CODE" "$(cat "$ISSUE" | head -30)")
         # (revisione 10 giri, 2026-09-23): il test ha PIU' righe e il protocollo era una riga
         # («TEST-GENERATO: $TG»): il turno ne salvava solo la prima (`function test_fix() {`) e

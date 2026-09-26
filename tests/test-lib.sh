@@ -250,8 +250,8 @@ AG=""; TITLE='Percorso C:\cartelle\nuove'; AG="$AG"$'\n'"  o/r #12: $TITLE"; AG=
 # --- (2026-09-25, ottavo ventaglio, O5 R1): l'auto-miglioramento dell'hub apriva una PR nuova e identica a ogni ciclo (il
 # ramo cambia nome a ogni minuto). Provato nel laboratorio del giro (tre cicli, tre PR, stesso patch-id; con la cura:
 # «DOPPIONE», nessuna PR). Qui la guardia: prima del push, lo stesso controllo delle cacce sui rami notte/auto-*.
-grep -c 'NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE' "$HERE/night-shift/night-shift.sh" >/dev/null && grep -c "grep '^notte/auto-'" "$HERE/night-shift/night-shift.sh" >/dev/null \
-  && ok "O5 R1: l'auto-miglioramento non riapre una PR con lo stesso diff (caccia_gia_aperta sui notte/auto-*)" \
+grep -c 'NOTTE_DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" ${APERTE_NOTTE' "$HERE/night-shift/night-shift.sh" >/dev/null && grep -c "grep -E '^(night|notte)/auto-'" "$HERE/night-shift/night-shift.sh" >/dev/null \
+  && ok "O5 R1: l'auto-miglioramento non riapre una PR con lo stesso diff (caccia_gia_aperta sui */auto-*)" \
   || ko "O5 R1: l'auto-miglioramento apre una PR a ogni ciclo, senza guardare quelle aperte"
 
 # --- (2026-09-25, ottavo ventaglio, O2 R2 e R3): `gh pr list` e `gh issue list` tornano 30 elementi se non si dice altro
@@ -512,37 +512,11 @@ if declare -F prendi_lock_turno >/dev/null; then
   NSH="$HERE/night-shift/night-shift.sh"
   R_LOCK=$(grep -n 'prendi_lock_turno "' "$NSH" | head -1 | cut -d: -f1)
   R_RESET=$(grep -n 'reset -q --hard' "$NSH" | head -1 | cut -d: -f1)
-  R_PKILL=$(grep -n 'ferma_opencode_del_turno "' "$NSH" | grep -v '^[0-9]*:[[:space:]]*#' | head -1 | cut -d: -f1)
-  [ -n "$R_LOCK" ] && [ "$R_LOCK" -lt "${R_RESET:-0}" ] && [ "$R_LOCK" -lt "${R_PKILL:-0}" ]     && ok "night-shift.sh: il lock del turno si prende PRIMA del self-pull e del pkill"     || ko "night-shift.sh: lock (riga ${R_LOCK:-assente}) dopo reset (${R_RESET:-?}) o pkill (${R_PKILL:-?})"
+  [ -n "$R_LOCK" ] && [ "$R_LOCK" -lt "${R_RESET:-0}" ]     && ok "night-shift.sh: il lock del turno si prende PRIMA del self-pull e del pkill"     || ko "night-shift.sh: lock (riga ${R_LOCK:-assente}) dopo reset (${R_RESET:-?}) o pkill (${R_PKILL:-?})"
 else
   ko "prendi_lock_turno non definita in lib.sh"
 fi
 
-# --- (2026-09-24, quinto ventaglio, R5 R6): la pulizia d'inizio ciclo era `pkill -f "opencode run"` — uccideva
-# anche l'opencode del GIORNO (tools/test-modelli-notturni.sh lo usa), che leggeva l'uscita vuota come «il
-# modello non risponde». E il ramo che lancia opencode nel turno non gira nemmeno (DEBITI, V1#6d). Ora il turno
-# ferma solo il PID che ha scritto lui, e solo se quel PID e' ancora un «opencode run» (un PID riusato no).
-if declare -F ferma_opencode_del_turno >/dev/null; then
-  OC=$(mktemp -d); mkdir -p "$OC/bin"
-  printf '#!/bin/bash\nsleep 30\n' > "$OC/bin/opencode"; chmod +x "$OC/bin/opencode"
-  PATH="$OC/bin:$PATH" opencode run del-giorno & GIORNO=$!
-  PATH="$OC/bin:$PATH" opencode run del-turno & TURNO=$!
-  sleep 30 & RIUSATO=$!
-  sleep 0.3
-  echo "$TURNO" > "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_T=$?
-  echo "$RIUSATO" > "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_R=$?
-  rm -f "$OC/pid"; ferma_opencode_del_turno "$OC/pid"; RC_N=$?
-  sleep 0.3
-  [ "$RC_T" -eq 0 ] && ! kill -0 "$TURNO" 2>/dev/null && ok "R5 R6: l'opencode del turno (PID nel file) si ferma" || ko "R5 R6: opencode del turno vivo (rc $RC_T)"
-  kill -0 "$GIORNO" 2>/dev/null && ok "R5 R6: l'opencode del giorno resta vivo" || ko "R5 R6: la pulizia ha ucciso l'opencode del giorno"
-  [ "$RC_R" -ne 0 ] && kill -0 "$RIUSATO" 2>/dev/null && ok "R5 R6: un PID riusato (non piu' opencode) non si tocca" || ko "R5 R6: ucciso un PID riusato"
-  [ "$RC_N" -ne 0 ] && ok "R5 R6: senza file di PID non si ferma niente" || ko "R5 R6: senza file, rc 0"
-  kill "$GIORNO" "$RIUSATO" "$TURNO" 2>/dev/null; wait "$GIORNO" "$RIUSATO" "$TURNO" 2>/dev/null; rm -rf "$OC"
-else
-  ko "R5 R6: ferma_opencode_del_turno assente da night-shift/lib.sh"
-fi
-NUDI=$(grep -n 'pkill -f "opencode run"' "$HERE/night-shift/night-shift.sh" | grep -v '^[0-9]*:[[:space:]]*#' || true)
-[ -z "$NUDI" ] && ok "R5 R6: il turno non fa piu' pkill -f \"opencode run\"" || ko "R5 R6: pkill nudo rimasto: $NUDI"
 
 # --- (2026-09-24, sesto ventaglio, S1 R1): l'issue [night-verify] chiedeva di «riprodurre a mano» le righe di
 # .night-verify cosi' com'erano, fuori da un blocco di codice. La riga dell'indice SAL dell'hub finisce in `exit 1`:
@@ -661,6 +635,126 @@ rotate_log_if_big "$LOGTMP/assente.log" 1; RC_ASSENTE=$?
   && ok "rotate_log_if_big: file assente, no-op senza errore (exit 0, nessun file creato)" \
   || ko "rotate_log_if_big: file assente non gestito pulito (rc=$RC_ASSENTE)"
 rm -rf "$LOGTMP"
+
+# --- (2026-09-25, D39, risposta delegata): la console del turno non ruotava mai. Il turno la tiene APERTA (launchd la apre
+# in append, e il turno rilancia se stesso con exec): un mv mandava tutta la notte nel .1 e la dashboard restava cieca.
+# ruota_log_aperto copia e tronca: chi scrive in append continua nel file nuovo, dall'inizio.
+if command -v ruota_log_aperto >/dev/null; then
+  RLA=$(mktemp -d)
+  ( exec >>"$RLA/console.log"; echo prima; sleep 1; echo dopo ) &
+  RLA_PID=$!; sleep 0.3
+  head -c 2048 /dev/zero | tr '\0' x >> "$RLA/console.log"; echo >> "$RLA/console.log"
+  ruota_log_aperto "$RLA/console.log" 0
+  wait "$RLA_PID"
+  grep -qx 'prima' "$RLA/console.log.1" && grep -qx 'dopo' "$RLA/console.log" && ! grep -qx 'prima' "$RLA/console.log" \
+    && [ "$(wc -c < "$RLA/console.log" | tr -d ' ')" -lt 100 ] \
+    && ok "D39: ruota_log_aperto: il vecchio nel .1, chi scrive in append continua nel file nuovo" \
+    || ko "D39: ruota_log_aperto: .1=«$(head -c 40 "$RLA/console.log.1" 2>/dev/null)» nuovo=$(wc -c < "$RLA/console.log") byte"
+  rm -rf "$RLA"
+else
+  ko "D39: ruota_log_aperto assente in lib.sh"
+fi
+grep -q 'ruota_log_aperto "${NIGHT_LOG:-$HOME/night-shift-console.log}"' "$HERE/night-shift/night-shift.sh" \
+  && ok "D39: il turno ruota la console a ogni ciclo" || ko "D39: il turno non ruota la console"
+
+# (2026-09-25, D45, risposta delegata): una PR di issue APERTA e' intoccabile — il turno salta l'issue, non spinge sul suo
+# ramo (riscriverla sposterebbe il terreno sotto chi la sta leggendo). Guardia sul comportamento che c'e' gia'.
+grep -qF 'if [ "$PR_STATE" = "OPEN" ]; then log "Issue #$NUM: PR già aperta, skip"; continue; fi' "$HERE/night-shift/night-shift.sh" \
+  && ok "D45: una PR di issue aperta non si riscrive (il turno salta l'issue)" || ko "D45: il salto dell'issue con PR aperta non c'e' piu'"
+
+# --- (2026-09-25, D44, risposta delegata): un'issue d'allarme ([night-verify], [ciclo-vivo], [banco]) restava aperta dopo il
+# verde e diceva il falso; e un rosso NUOVO con l'issue gia' aperta finiva solo nel log. Ora: al verde si chiude col suo
+# perche'; un rosso diverso dall'ultimo detto si commenta, una volta (non a ogni ciclo).
+if command -v allarme_verde >/dev/null && command -v allarme_rosso_nuovo >/dev/null; then
+  AL=$(mktemp -d); mkdir -p "$AL/bin"
+  cat > "$AL/bin/gh" <<'GHA'
+#!/bin/bash
+echo "$*" >> "$GH_LOG"
+case "$1 $2" in
+  "issue list") [ "${GH_ROTTO:-0}" = 1 ] && exit 1; echo '[{"number":5,"title":"[night-verify] 2 verifiche rosse"},{"number":6,"title":"altro"}]' ;;
+esac
+exit 0
+GHA
+  chmod +x "$AL/bin/gh"
+  PATH="$AL/bin:$PATH" GH_LOG="$AL/log" allarme_verde o/r "[night-verify]" >/dev/null 2>&1
+  grep -c '^issue close 5 ' "$AL/log" >/dev/null && ! grep -c '^issue close 6' "$AL/log" >/dev/null \
+    && ok "D44: al verde l'issue d'allarme si chiude (solo quella)" || ko "D44: al verde: $(grep '^issue' "$AL/log" | tr '\n' ';')"
+  : > "$AL/log"; PATH="$AL/bin:$PATH" GH_LOG="$AL/log" GH_ROTTO=1 allarme_verde o/r "[night-verify]" >/dev/null 2>&1; RCA=$?
+  [ "$RCA" -eq 2 ] && ! grep -c '^issue close' "$AL/log" >/dev/null && ok "D44: gh che non risponde: niente chiusura, rc 2" || ko "D44: gh rotto: rc $RCA"
+  : > "$AL/log"
+  for i in 1 2; do PATH="$AL/bin:$PATH" GH_LOG="$AL/log" WORK="$AL" allarme_rosso_nuovo o/r "[night-verify]" "- \`bash a.sh\`" >/dev/null 2>&1; done
+  PATH="$AL/bin:$PATH" GH_LOG="$AL/log" WORK="$AL" allarme_rosso_nuovo o/r "[night-verify]" "- \`bash b.sh\`" >/dev/null 2>&1
+  [ "$(grep -c '^issue comment 5 ' "$AL/log")" -eq 2 ] && ok "D44: un rosso nuovo si commenta una volta, lo stesso rosso no" \
+    || ko "D44: commenti del rosso: $(grep -c '^issue comment 5 ' "$AL/log") (attesi 2)"
+  rm -rf "$AL"
+else
+  ko "D44: allarme_verde o allarme_rosso_nuovo assenti in lib.sh"
+fi
+NS_T="$HERE/night-shift/night-shift.sh"
+[ "$(grep -c 'allarme_verde "$REPO"' "$NS_T")" -ge 3 ] && [ "$(grep -c 'allarme_rosso_nuovo "$REPO"' "$NS_T")" -ge 3 ] \
+  && ok "D44: il turno chiude al verde e commenta i rossi nuovi per [night-verify], [ciclo-vivo] e [banco]" \
+  || ko "D44: il turno chiama allarme_verde $(grep -c 'allarme_verde "$REPO"' "$NS_T") volte e allarme_rosso_nuovo $(grep -c 'allarme_rosso_nuovo "$REPO"' "$NS_T")"
+
+# --- (2026-09-25, D44 seconda parte, risposta delegata): una PR di issue che Luca chiude SENZA fonderla si rifaceva al ciclo
+# dopo — il «no» durava un ciclo. Ora una PR CLOSED ferma l'issue. Per farla rifare si mette all'issue l'etichetta
+# `rifai` (riaprire la PR la renderebbe intoccabile, D45).
+if command -v pr_chiusa_ferma >/dev/null; then
+  pr_chiusa_ferma CLOSED "night-shift" && ok "D44: PR chiusa senza fusione: l'issue si ferma" || ko "D44: PR chiusa: l'issue si rifa'"
+  ! pr_chiusa_ferma CLOSED "night-shift,rifai" && ok "D44: con l'etichetta rifai l'issue si rifa'" || ko "D44: l'etichetta rifai non sblocca"
+  ! pr_chiusa_ferma NESSUNA "night-shift" && ok "D44: senza PR l'issue si lavora" || ko "D44: senza PR l'issue si ferma"
+else
+  ko "D44: pr_chiusa_ferma assente in lib.sh"
+fi
+grep -q 'pr_chiusa_ferma "$PR_STATE" "$ETICHETTE"' "$HERE/night-shift/night-shift.sh" && grep -q -- '--json number,title,body,labels' "$HERE/night-shift/lib.sh" \
+  && ok "D44: il turno legge le etichette dell'issue e ferma quella con la PR chiusa" || ko "D44: il turno non guarda la PR chiusa, o non legge le etichette"
+
+# (2026-09-25, D4, risposta delegata): un'issue di CORREZIONE su una funzione esistente e cablata veniva saltata dal
+# controllo «GIA' IMPLEMENTATA?», nato per le feature gia' consegnate. Il segnale e' l'etichetta `correzione`.
+grep -q 'case ",$ETICHETTE," in \*,correzione,\*)' "$HERE/night-shift/night-shift.sh" && grep -q 'correzione' "$HERE/.github/ISSUE_TEMPLATE/night-shift.md" \
+  && ok "D4: con l'etichetta correzione il controllo GIA' IMPLEMENTATA non ferma l'issue, e il modello di issue lo dice" \
+  || ko "D4: l'etichetta correzione non e' letta dal turno o non e' nel modello di issue"
+
+# (2026-09-25, D17, risposta delegata): il modello di .night-verify chiede «# NON-VERIFICABILE: <motivo>» a chi non ha
+# verifiche automatiche, e il turno la puniva: zero comandi = ROSSO e un'issue ogni notte. Ora la dichiarazione vale.
+if command -v motivo_non_verificabile >/dev/null; then
+  NVD=$(mktemp -d)
+  printf '# NON-VERIFICABILE: solo fogli Google, niente codice eseguibile\n' > "$NVD/si"
+  printf '# NON-VERIFICABILE: <motivo>\n' > "$NVD/modello"; printf 'bash x.sh\n' > "$NVD/cmd"
+  [ "$(motivo_non_verificabile "$NVD/si")" = "solo fogli Google, niente codice eseguibile" ] \
+    && ! motivo_non_verificabile "$NVD/modello" >/dev/null && ! motivo_non_verificabile "$NVD/cmd" >/dev/null \
+    && ok "D17: la dichiarazione NON-VERIFICABILE si legge col motivo (l'esempio del modello no)" || ko "D17: motivo_non_verificabile sbaglia"
+  rm -rf "$NVD"
+else
+  ko "D17: motivo_non_verificabile assente in lib.sh"
+fi
+grep -q 'NV_MOTIVO=$(motivo_non_verificabile "$DIR/.night-verify")' "$HERE/night-shift/night-shift.sh" \
+  && ok "D17: il turno legge la dichiarazione prima di dire verifiche-vuote" || ko "D17: il turno punisce ancora la dichiarazione"
+
+# (2026-09-25, D8, risposta delegata): il ramo opencode era l'else di `[ -f risolvi-issue.sh ]` e non girava mai; dentro
+# viveva il watchdog per-issue di 240 minuti che CLAUDE.md §7 promette. Ora il ramo non c'e', e il watchdog sta attorno
+# al risolutore e all'agente di riserva (col tempo che resta). Le cartelle specchio arrivano al prompt dell'agente.
+NS_T="$HERE/night-shift/night-shift.sh"
+! grep -q 'exec opencode run' "$NS_T" && ! grep -q 'ferma_opencode_del_turno' "$NS_T" "$HERE/night-shift/lib.sh" \
+  && ok "D8: il ramo opencode morto e la sua pulizia non ci sono piu'" || ko "D8: il ramo opencode c'e' ancora"
+grep -q 'ai_timeout "$((TIMEOUT_MINUTI \* 60))" bash "$NIGHT_SOLVER"' "$NS_T" && grep -q 'ai_timeout "$RESTO_WD" bash "$HERE/agente.sh"' "$NS_T" \
+  && grep -q 'WATCHDOG scattato a ${TIMEOUT_MINUTI}min' "$NS_T" \
+  && ok "D8: il watchdog di 240 minuti sta attorno al risolutore e all'agente" || ko "D8: il risolutore gira senza watchdog"
+AGENTE_BLOCCO=$(grep -A3 'AGENTE_OUT=$(' "$NS_T")
+grep -q 'MIRROR_NOTE' "$NS_T" && grep -q 'MIRROR_NOTE' <<<"$AGENTE_BLOCCO" \
+  && ok "D8: le cartelle specchio (.night-mirror) arrivano al prompt dell'agente" || ko "D8: .night-mirror non arriva a nessuno"
+
+# (2026-09-25, D9, risposta delegata): il test generato per un fix entrava nel commit e nessuno lo eseguiva, ma il codice
+# lo chiamava «il test che presidia». E' una bozza: il nome del file e la sua prima riga lo dicono.
+grep -q 'TEST_FILE="$DIR/tests/night/bozza_test_' "$HERE/night-shift/night-shift.sh" && grep -q 'BOZZA generata dal turno notturno' "$HERE/night-shift/night-shift.sh" \
+  && ! grep -q 'col test che lo presidia' "$HERE/night-shift/night-shift.sh" \
+  && ok "D9: il test generato si chiama bozza, e la sua prima riga dice che nessuno l'ha eseguito" || ko "D9: il test generato si presenta ancora come presidio"
+
+# (2026-09-25, D35, risposta delegata): i rami dell'auto-miglioramento si chiamavano notte/auto-*, un prefisso che CLAUDE.md
+# §4 dice invisibile a ogni giudice. Ora night/auto-*; i vecchi notte/auto-* restano riconosciuti (doppioni e scopa).
+NS_T="$HERE/night-shift/night-shift.sh"
+grep -q 'BRANCH="night/auto-$(date +%Y%m%d-%H%M)"' "$NS_T" && ! grep -q 'BRANCH="notte/auto-' "$NS_T" \
+  && grep -q "grep -E '^(night|notte)/auto-' | head -10" "$NS_T" \
+  && ok "D35: i rami dell'auto-miglioramento nascono night/auto-*, e la scopa riconosce anche i vecchi notte/auto-*" || ko "D35: i rami nascono ancora notte/auto-*"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

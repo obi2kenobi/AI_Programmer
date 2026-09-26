@@ -56,7 +56,8 @@ dichiara "accuratezza: file inesistenti"        python3 "$T/accuratezza_fatture_
 dichiara "accuratezza: colonne sbagliate"       python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/ab.csv" "$TMP/ab.csv"
 # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 (Excel) era un UnicodeDecodeError nudo, cioe' il traceback
 # che D32 aveva curato; la codifica non era nel banco
-printf 'a,b\nSedia citt\340 \200 promo,2\n' > "$TMP/cp1252.csv"
+# (D31, 2026-09-25): un file cp1252 ora si legge; il rifiuto si prova con un byte che nemmeno cp1252 definisce (0x81)
+printf 'a,b\nSedia citt\340 \201 promo,2\n' > "$TMP/cp1252.csv"
 dichiara "margine: CSV non UTF-8"               python3 "$T/margine_documento.py" "$TMP/cp1252.csv" "$TMP/ab.csv"
 dichiara "accuratezza: CSV non UTF-8"           python3 "$T/accuratezza_fatture_acquisto.py" "$TMP/vuoto.json" "$TMP/cp1252.csv" "$TMP/ab.csv"
 dichiara "rating: colonne sbagliate"            python3 "$T/rating_dso_clienti.py" < "$TMP/ab.csv"
@@ -135,7 +136,8 @@ grep -qiE "ignorat.*1|1 .*ignorat" <<<"$OUT" && ok "rating: la riga di tipo igno
   || ko "rating: riga «nota credito» sparita senza conteggio: $(head -1 <<<"$OUT")"
 printf 'tipo,importo,giorni\nFornitore FATTURA,1000,10\nFornitore Payment,300,10\nFornitore Fattura,200,10\n' > "$TMP/a.csv"
 OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a.csv" 2>&1)
-grep -q "ATTENZIONE" <<<"$OUT" && grep -q "FATTURA" <<<"$OUT" && grep -q "Payment" <<<"$OUT" \
+# (2026-09-26, domanda 1): «FATTURA» ora e' riconosciuta (maiuscole indifferenti); «Payment» resta sconosciuto, e si dice
+grep -q "ATTENZIONE" <<<"$OUT" && ! grep -q "FATTURA" <<<"$(grep ATTENZIONE <<<"$OUT")" && grep -q "Payment" <<<"$OUT" \
   && ok "aging: i tipi documento fornitore non riconosciuti sono DETTI (prima: entrate in silenzio)" \
   || ko "aging: tipi fornitore ignoti presi come entrate senza avviso: $(head -2 <<<"$OUT" | tr '\n' ' ')"
 # (2026-09-24, quinto ventaglio, R3 R2): la cura nan/inf non era arrivata a sei oracoli — due davano un verdetto
@@ -160,15 +162,16 @@ printf '%s\nfattura,2026-01-01,,1,Rossi,,nan\npagamento,2026-01-05,,2,Rossi,,nan
 dichiara "rating: importo nan" python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
 # (2026-09-24, quinto ventaglio, R3 R3): il contratto D32 si provava sulle colonne, non sulle celle. Una cella
 # vuota, in formato italiano o non intera era un traceback in aging, rating, margine e accuratezza. Ora si
-# rifiuta col numero di riga; se «1.234,56» vada invece LETTO e' una domanda (DEBITI, D-R3-2).
+# rifiuta col numero di riga. (2026-09-26, domanda 12 di Luca): «1.234,56» ora si LEGGE (tests/test-numero.sh);
+# qui resta il rifiuto dell'italiano malformato.
 printf 'giorni,tipo,importo\n10,Cliente,\n' > "$TMP/a.csv";            dichiara "aging: importo vuoto"          python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
-printf 'giorni,tipo,importo\n10,Cliente,"1.234,56"\n' > "$TMP/a.csv";  dichiara "aging: importo 1.234,56"       python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
+printf 'giorni,tipo,importo\n10,Cliente,"1.23,4"\n' > "$TMP/a.csv";    dichiara "aging: importo 1.23,4"         python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
 printf 'giorni,tipo,importo\n1.5,Cliente,100\n' > "$TMP/a.csv";        dichiara "aging: giorni 1.5"             python3 "$T/scadenzario_aging.py" < "$TMP/a.csv"
 printf '%s\nfattura,,,1,Rossi,,100\n' "$H" > "$TMP/r.csv";                dichiara "rating: data vuota"            python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
 printf '%s\nfattura,24/09/2026,,1,Rossi,,100\n' "$H" > "$TMP/r.csv";      dichiara "rating: data 24/09/2026"       python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
-printf '%s\nfattura,2026-01-01,,1,Rossi,,"1.234,56"\n' "$H" > "$TMP/r.csv"; dichiara "rating: importo 1.234,56"   python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
-printf 'rif,importo\nRF1,"1.200,00"\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,100\n' > "$TMP/ma.csv"
-dichiara "margine: importo vendita 1.200,00" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
+printf '%s\nfattura,2026-01-01,,1,Rossi,,"1,234,56"\n' "$H" > "$TMP/r.csv"; dichiara "rating: importo 1,234,56"   python3 "$T/rating_dso_clienti.py" < "$TMP/r.csv"
+printf 'rif,importo\nRF1,"1.20,00"\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,100\n' > "$TMP/ma.csv"
+dichiara "margine: importo vendita 1.20,00" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
 printf 'rif,importo\nRF1,100\n' > "$TMP/mv.csv"; printf 'rif,importo\nRF1,\n' > "$TMP/ma.csv"
 dichiara "margine: importo acquisto vuoto" python3 "$T/margine_documento.py" "$TMP/mv.csv" "$TMP/ma.csv"
 printf 'nr,importo,ordine_nr,fornitore\nF1,100,O1,A\n' > "$TMP/fn.csv"; printf 'nr,importo\nO1,\n' > "$TMP/on.csv"
@@ -215,7 +218,8 @@ dichiara "rollforward: file come argomento"     python3 "$T/rollforward_cespiti.
 # domanda 1 di docs/giri/2026-09-23-notte/DOMANDE.md): qui si pretende solo che l'importo sia il SUO.
 printf 'giorni,tipo,importo\n10,Cliente Fattura,1000\n10,fornitore Fattura,500\n' > "$TMP/a2.csv"
 OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a2.csv" 2>&1)
-grep -c '^Entrate: +1500.00' <<<"$OUT" >/dev/null && ok "aging: la riga «fornitore» minuscola porta il SUO importo (+1500, non +2000)" || ko "aging: importo copiato dalla riga prima: $(grep Entrate <<<"$OUT")"
+# (2026-09-26, domanda 1): «fornitore Fattura» e' ora un'uscita (maiuscole indifferenti): -500, col SUO importo
+grep -c '^Uscite: -500.00' <<<"$OUT" >/dev/null && grep -c '^Entrate: +1000.00' <<<"$OUT" >/dev/null && ok "aging: la riga «fornitore» minuscola porta il SUO importo (-500 in uscita)" || ko "aging: riga fornitore minuscola: $(grep -E 'Entrate|Uscite' <<<"$OUT" | tr '\n' ' ')"
 printf 'giorni,tipo,importo\n10, Fornitore Fattura,500\n' > "$TMP/a3.csv"
 OUT=$(python3 "$T/scadenzario_aging.py" < "$TMP/a3.csv" 2>&1); RC=$?
 ! grep -c Traceback <<<"$OUT" >/dev/null && [ "$RC" -eq 0 ] && ok "aging: la riga «fornitore» come PRIMA riga non e' un traceback" || ko "aging: prima riga fornitore: rc=$RC $(tail -1 <<<"$OUT")"

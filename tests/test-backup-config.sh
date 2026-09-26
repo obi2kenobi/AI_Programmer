@@ -36,6 +36,8 @@ case "$1 $2" in
                  for a in "${@:3}"; do [ -f "$a" ] && basename "$a" >> "$GH_LOG.file"; done
                  echo "https://gist.github.com/finto/0123456789abcdef0123456789abcdef"; exit 0 ;;
   "gist edit") echo "too many arguments" >&2; exit 1 ;;
+  "gist view") [ "${GH_VISTA_CORTA:-0}" = 1 ] && { head -1 "$GH_LOG.file"; exit 0; }; cat "$GH_LOG.file"; exit 0 ;;
+  "gist delete") for a in "$@"; do case "$a" in --yes) echo "unknown flag: --yes" >&2; exit 1;; esac; done; exit 0 ;;
 esac
 exit 0
 GHF
@@ -44,6 +46,19 @@ OUT=$(PATH="$FG/bin:$PATH" GH_LOG="$FG/log" bash "$FG/hub/tools/backup-config.sh
 [ "$RC" -eq 0 ] && grep -cx 'repos.conf' "$FG/log.file" >/dev/null 2>&1 && grep -cx 'DEBITI.md' "$FG/log.file" >/dev/null 2>&1 \
   && ok "O4 R1: il backup si crea col gh vero (niente --secret) e i file hanno il loro nome" \
   || ko "O4 R1: backup: rc=$RC, file nel gist: $(tr '\n' ' ' < "$FG/log.file" 2>/dev/null), uscita: $(tail -1 <<<"$OUT")"
+# (2026-09-25, D36, risposta delegata): repos.key (la chiave dei nomi privati) non va in un gist, che chi ha l'URL legge;
+# e il gist di prima si toglie solo dopo aver verificato che il nuovo ha tutti i file.
+printf 'REPO-T=finto/x\n' > "$FG/hub/night-shift/repos.key"; echo "abcdefabcdefabcdefabcdefabcdef01" > "$FG/hub/.gist-backup-id"
+: > "$FG/log"; : > "$FG/log.file"
+OUT=$(PATH="$FG/bin:$PATH" GH_LOG="$FG/log" bash "$FG/hub/tools/backup-config.sh" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ! grep -cx 'repos.key' "$FG/log.file" >/dev/null && grep -c 'repos.key' <<<"$OUT" >/dev/null \
+  && ok "D36: repos.key non entra nel gist, e l'uscita lo dice" || ko "D36: repos.key nel gist o taciuto: rc=$RC, file: $(tr '\n' ' ' < "$FG/log.file")"
+grep -c '^gist delete abcdefabcdefabcdefabcdefabcdef01' "$FG/log" >/dev/null && grep -cx '0123456789abcdef0123456789abcdef' "$FG/hub/.gist-backup-id" >/dev/null \
+  && ok "D36: nuovo gist verificato, il vecchio tolto" || ko "D36: il gist vecchio non e' stato tolto: $(grep '^gist' "$FG/log" | tr '\n' ';')"
+echo "abcdefabcdefabcdefabcdefabcdef01" > "$FG/hub/.gist-backup-id"; : > "$FG/log"; : > "$FG/log.file"
+OUT=$(PATH="$FG/bin:$PATH" GH_LOG="$FG/log" GH_VISTA_CORTA=1 bash "$FG/hub/tools/backup-config.sh" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c '^gist delete' "$FG/log" >/dev/null && grep -ci 'non verificato' <<<"$OUT" >/dev/null \
+  && ok "D36: un gist nuovo incompleto non toglie il vecchio, e lo dice (rc $RC)" || ko "D36: gist incompleto: rc=$RC, delete: $(grep -c '^gist delete' "$FG/log")"
 printf '#!/bin/bash\necho "HTTP 401: Bad credentials" >&2; exit 1\n' > "$FG/bin/gh"
 OUT=$(PATH="$FG/bin:$PATH" bash "$FG/hub/tools/backup-config.sh" 2>&1); RC=$?
 [ "$RC" -ne 0 ] && grep -c 'backup fallito' <<<"$OUT" >/dev/null && ok "O4 R1: gh in errore → «backup fallito» detto, rc $RC (non un silenzio)" || ko "O4 R1: gh in errore: rc=$RC, uscita «$(tail -1 <<<"$OUT")»"

@@ -39,6 +39,18 @@ mtime() {
 # (file → file.1, sovrascrivendo un .1 precedente: non serve di più per un log locale
 # di debug, non un archivio). Debito aperto dal 2026-08-21 ("nessun limite raggiunto");
 # night-shift.log e morning-gate.log crescono senza limite da allora.
+# ruota_log_aperto <file> [soglia_mb=10]: come rotate_log_if_big, ma per un log che qualcuno tiene APERTO in append
+# (la console del turno: launchd la apre, e il turno rilancia se stesso con exec). Un mv lo farebbe continuare a scrivere
+# nel .1; qui si copia e si tronca, e chi scrive in append riparte dall'inizio del file nuovo. Le righe scritte fra la
+# copia e il troncamento si perdono: una finestra di millisecondi, dichiarata (D39, 2026-09-25).
+ruota_log_aperto() {
+  local file="$1" soglia_mb="${2:-10}" size_bytes
+  [ -f "$file" ] || return 0
+  size_bytes=$(wc -c < "$file" 2>/dev/null) || return 0
+  [ "$size_bytes" -ge $((soglia_mb * 1024 * 1024)) ] || return 0
+  cp -p "$file" "$file.1" && : > "$file"
+}
+
 rotate_log_if_big() {
   local file="$1" soglia_mb="${2:-10}"
   [ -f "$file" ] || return 0
@@ -119,6 +131,55 @@ stato_pr_ramo() {
         -q 'map(.state) | if index("OPEN") then "OPEN" elif index("MERGED") then "MERGED" elif length > 0 then .[0] else "NESSUNA" end' 2>/dev/null) || return 2
   [ -n "$out" ] || return 2
   printf '%s\n' "$out"
+}
+
+# Le issue d'allarme del turno ([night-verify], [ciclo-vivo], [banco]). (2026-09-25, D44, risposta delegata): restavano
+# aperte dopo il verde e dicevano il falso, e un rosso nuovo con l'issue gia' aperta finiva solo nel log.
+# numeri_allarme <owner/repo> <prefisso>: i numeri delle issue aperte il cui titolo inizia col prefisso; rc 2 se gh tace.
+numeri_allarme() {
+  local out
+  out=$(gh issue list -R "$1" --state open --limit 1000 --json number,title 2>/dev/null) || return 2
+  jq -r --arg p "$2" '.[] | select(.title | startswith($p)) | .number' <<<"$out" 2>/dev/null || return 2
+}
+# allarme_verde <owner/repo> <prefisso>: il rosso e' sparito — le issue d'allarme si chiudono, col perche'.
+allarme_verde() {
+  local nums n
+  nums=$(numeri_allarme "$1" "$2") || return 2
+  for n in $nums; do
+    gh issue close "$n" -R "$1" --comment "Tornato verde nel ciclo delle $(date '+%F %H:%M'): chiusa dal turno notturno. Se il rosso torna, il turno ne apre una nuova." >/dev/null 2>&1 \
+      && echo "issue #$n $2 chiusa: tornato verde"
+  done
+}
+# allarme_rosso_nuovo <owner/repo> <prefisso> <rossi>: con l'issue gia' aperta, un rosso DIVERSO dall'ultimo detto si
+# commenta, una volta; lo stesso rosso no (53 cicli a notte). L'impronta dell'ultimo detto sta in $WORK.
+allarme_rosso_nuovo() {
+  local nums n imp f
+  nums=$(numeri_allarme "$1" "$2") || return 2
+  n=$(head -1 <<<"$nums"); [ -n "$n" ] || return 0
+  imp=$(printf '%s' "$3" | cksum | cut -d' ' -f1)
+  f="${WORK:-/tmp}/.allarme-$(printf '%s' "$1$2" | tr -c 'A-Za-z0-9' '_')"
+  [ "$(cat "$f" 2>/dev/null)" = "$imp" ] && return 0
+  gh issue comment "$n" -R "$1" --body "Rosso nuovo nel ciclo delle $(date '+%F %H:%M'):
+$3" >/dev/null 2>&1 && echo "$imp" > "$f" && echo "issue #$n $2: rosso nuovo commentato"
+}
+
+# pr_chiusa_ferma <stato della PR del ramo> <etichette dell'issue, separate da virgola>: 0 se l'issue va FERMATA.
+# (2026-09-25, D44, risposta delegata): una PR di issue chiusa senza fonderla e' il «no» di una persona, e si rifaceva al
+# ciclo dopo. Ora ferma l'issue; l'etichetta `rifai` la sblocca (riaprire la PR la renderebbe intoccabile, D45).
+pr_chiusa_ferma() {
+  [ "$1" = "CLOSED" ] || return 1
+  case ",$2," in *,rifai,*) return 1 ;; esac
+  return 0
+}
+
+# motivo_non_verificabile <.night-verify>: stampa il motivo di «# NON-VERIFICABILE: <motivo>» a inizio riga, rc 0; rc 1 se
+# la dichiarazione non c'e' o e' l'esempio del modello («<motivo>»). Stessa regola di tools/installa-citati.sh.
+# (2026-09-25, D17, risposta delegata): il turno contava zero comandi e faceva ROSSO anche con la dichiarazione.
+motivo_non_verificabile() {
+  local riga
+  riga=$(grep -E '^#[[:space:]]*NON-VERIFICABILE:[[:space:]]*[^<[:space:]]' "$1" 2>/dev/null | head -1) || return 1
+  [ -n "$riga" ] || return 1
+  printf '%s\n' "$riga" | sed -E 's/^#[[:space:]]*NON-VERIFICABILE:[[:space:]]*//'
 }
 
 # taglia_caratteri <n>: i primi n CARATTERI dello stdin (non byte). (2026-09-25, settimo ventaglio, V4 R6): `cut -c` del
@@ -612,7 +673,7 @@ dipendenze_mancanti() {
 leggi_coda() {
   local out err rc
   err=$(mktemp "${TMPDIR:-/tmp}/leggi-coda.XXXXXX") || { echo "leggi_coda: mktemp fallito" >&2; return 1; }
-  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body --limit 200 2>"$err"); rc=$?
+  out=$(gh issue list -R "$1" --label night-shift --state open --json number,title,body,labels --limit 200 2>"$err"); rc=$?
   if [ "$rc" -ne 0 ] || ! jq -e 'type == "array"' >/dev/null 2>&1 <<<"$out"; then
     echo "gh rc=$rc: $(tail -1 "$err" | cut -c1-120)${out:+ · risposta: $(head -c 60 <<<"$out")}" >&2
     rm -f "$err"; return 1
@@ -625,13 +686,36 @@ leggi_coda() {
 # le modifiche non committate e i commit non pushati, e col checkout fallito resettava il ramo del giorno; il
 # log diceva «allineato». Ora: sporco → stash «salvataggio turno <ora>»; commit fuori da origin → ramo
 # salvataggio/<ora>; checkout di main fallito → niente reset, rc 1. Ogni cosa messa da parte si dice.
+# git_vivo_in <dir>: 0 se un processo git lavora dentro <dir> (la sua cartella corrente e' li'). Un git di cui non si sa
+# dire la cartella conta come vivo: nel dubbio il lock non si tocca. (D18, 2026-09-25)
+git_vivo_in() {
+  local dir pid cwd
+  dir=$(cd "$1" 2>/dev/null && pwd -P) || return 0
+  for pid in $(pgrep -x git 2>/dev/null); do
+    case "$(ps -o stat= -p "$pid" 2>/dev/null)" in Z*|"") continue ;; esac   # uno zombie (o gia' finito) non lavora
+    cwd=$(readlink "/proc/$pid/cwd" 2>/dev/null || lsof -a -d cwd -p "$pid" -Fn 2>/dev/null | sed -n 's/^n//p')
+    # cartella illeggibile: se il git e' ancora vivo nel dubbio conta, se e' gia' finito (un git di un attimo) no
+    [ -n "$cwd" ] || { kill -0 "$pid" 2>/dev/null && return 0; continue; }
+    case "$cwd" in "$dir"|"$dir"/*) return 0 ;; esac
+  done
+  return 1
+}
+
 allinea_hub() {
-  local d="$1" ts up br sporchi avanti gd err salvato
+  local d="$1" ts up br sporchi avanti gd err salvato eta_lock
   ts=$(date +%Y%m%d-%H%M%S)
   # (2026-09-24, sesto ventaglio, S4 R2): un .git/index.lock rimasto da un git ucciso (SIGKILL, Mac spento di colpo)
   # faceva fallire stash e reset a ogni ciclo con la causa in /dev/null, e ogni ciclo apriva un ramo salvataggio/
   # nuovo. Ora si dice per nome e non si tocca niente: toglierlo e' di chi lavora nella copia (DEBITI, S4 D2).
   gd=$(git -C "$d" rev-parse --absolute-git-dir 2>/dev/null)
+  # (2026-09-25, D18, risposta delegata): ma se ha piu' di 60 minuti e nessun git lavora in quella copia, e' un orfano
+  # vero, e si toglie da solo (e' la cura che git stesso suggerisce) — prima restava finche' una persona non arrivava.
+  if [ -n "$gd" ] && [ -f "$gd/index.lock" ]; then
+    eta_lock=$(( $(date +%s) - $(mtime "$gd/index.lock" 2>/dev/null || date +%s) ))
+    if [ "$eta_lock" -ge 3600 ] && ! git_vivo_in "$d"; then
+      rm -f "$gd/index.lock" && echo "index.lock orfano tolto ($gd, da $eta_lock s, nessun git vivo nella copia)"
+    fi
+  fi
   if [ -n "$gd" ] && [ -f "$gd/index.lock" ]; then
     echo "NON allineato: $gd/index.lock esiste (da $(( $(date +%s) - $(mtime "$gd/index.lock" 2>/dev/null || date +%s) )) s) — un git ucciso a meta'? Niente stash ne' reset finche' c'e'; se nessun git lavora li', si toglie a mano"
     return 1
@@ -723,20 +807,6 @@ comandi_da_incollare() {
   echo '```'
   while IFS= read -r r; do [ -n "$r" ] && printf 'bash -c %q\n' "$r"; done <<<"$1"
   echo '```'
-}
-
-# ferma_opencode_del_turno <file-pid> (2026-09-24, quinto ventaglio, R5 R6; pattern cuore-unico-proprietario):
-# la pulizia era `pkill -f "opencode run"` — uccideva anche l'opencode del GIORNO. Il turno ferma solo il PID che
-# ha scritto lui nel file, e solo se quel PID e' ancora un «opencode run» (un PID riusato da altro non si tocca).
-# Il file si toglie comunque. rc 0 = fermato qualcosa; 1 = niente da fermare.
-ferma_opencode_del_turno() {
-  local f="$1" pid
-  [ -f "$f" ] || return 1
-  pid=$(cat "$f" 2>/dev/null); rm -f "$f"
-  { [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; } || return 1
-  ps -p "$pid" -o command= 2>/dev/null | grep -c 'opencode run' >/dev/null || return 1
-  pkill -P "$pid" 2>/dev/null; kill "$pid" 2>/dev/null
-  return 0
 }
 
 prendi_lock_turno() {   # [programma]: chi e' «vivo» (default night-shift; ciclo-vivo lo usa col suo nome)

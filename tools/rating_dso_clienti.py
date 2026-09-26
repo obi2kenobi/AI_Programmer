@@ -7,14 +7,19 @@ clienti di REPO-E (Codice.js, analizzaRatingClienti):
 
 1. Matching pagamento→fattura, in ordine: (a) per CODICE documento nella
    descrizione del pagamento (pattern tipo 25OV-123456), prima fattura non
-   ancora abbinate che lo contiene; (b) in fallback: stesso cliente
+   ancora abbinate DELLO STESSO CLIENTE che lo contiene (il cliente e' una
+   scelta di Luca del 2026-09-26, non del sorgente); (b) in fallback: stesso cliente
    (normalizzato trim/minuscolo/spazi collassati) E data entro 7 giorni E
    importo entro 1 EUR. La cessione a FACTOR pro soluto è un PAGAMENTO alla
    data di cessione (data estratta dalla descrizione, formato ddMMyy).
 2. giorni = data pagamento − data fattura; scartati se <0 o >365 (guardia
    contro i falsi abbinate: un pagamento prima della fattura non è velocità,
    è un errore di matching).
-3. DSO medio per cliente = somma giorni / fatture pagate, arrotondato.
+3. DSO medio per cliente = somma giorni / fatture pagate, arrotondato con
+   round() di Python: la metà va al pari (2,5 -> 2), non su come Math.round di JS.
+   Scelta di Luca del 2026-09-26 (domanda 3): si resta così.
+   Un importo vuoto vale zero (domanda 4): scelta di Luca del 2026-09-26, contro
+   il default del canone «assente non è zero».
 4. Fatture non pagate contate a parte; pagamenti non abbinate elencati a
    parte (scarto mai silenzioso — nel progetto reale finiscono in un foglio
    "Pagamenti non associati").
@@ -35,6 +40,8 @@ import math
 import re
 import sys
 from datetime import date
+
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
 
 CODICE_RE = re.compile(r"\d{2}(OV|FVI|CORR)-\d+")
 CESSIONE_RE = re.compile(r"(?P<cod>\d{2}\w{2}-\d{6}) (?P<gg>\d{2})(?P<mm>\d{2})(?P<aa>\d{2})")
@@ -70,11 +77,11 @@ def main():
         # (2026-09-24, quinto ventaglio, R3 R3): una data vuota o «24/09/2026», o un importo «1.234,56»,
         # erano un traceback. La data si legge solo dove il rating la usa (fatture, pagamenti, cessioni).
         try:
-            importo = float(r["importo"] or 0)
+            importo = leggi_numero(r["importo"] or "0")
             data = date.fromisoformat(r["data_documento"]) if tipo in ("fattura", "pagamento", "cessione") else None
         except (ValueError, TypeError):
             print(f"ERRORE: riga {n}: importo o data non leggibili (importo={r['importo']!r}, data_documento={r['data_documento']!r};"
-                  f" attesi importo col punto decimale e data AAAA-MM-GG) — nessun rating", file=sys.stderr)
+                  f" attesi importo numerico, anche all'italiana 1.234,56, e data AAAA-MM-GG) — nessun rating", file=sys.stderr)
             return 1
         # (2026-09-24, quinto ventaglio, R3 R2): un importo nan passava come «NON MATCHATO … nan», rc 0
         if not math.isfinite(importo):
@@ -110,7 +117,11 @@ def main():
         match = None
         m = CODICE_RE.search(p["descrizione"])
         if m:
-            match = next((f for f in fatture if m.group(0) in f["descrizione"] and not f["matched"]), None)
+            # (2026-09-26, risposta di Luca alla domanda 2 di docs/giri/2026-09-23-notte/DOMANDE.md): solo fatture dello
+            # STESSO cliente. Il contenimento del codice attraversava i clienti: il pagamento di Rossi per «25OV-123»
+            # finiva sulla fattura di Bianchi «25OV-1234». Il confronto per contenuto resta, come nel sorgente.
+            match = next((f for f in fatture if m.group(0) in f["descrizione"] and not f["matched"]
+                          and f["cliente"] == p["cliente"]), None)
         if match is None:
             match = next((f for f in fatture if not f["matched"]
                           and f["cliente"] == p["cliente"]

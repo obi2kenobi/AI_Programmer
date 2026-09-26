@@ -87,3 +87,7 @@ Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file pe
   di `.night-verify` pretende), `DEBITI.md` (riapertura: `bash tools/debiti-riapertura.sh`).
 - **Cosa non si prova da una sessione cloud**: Ollama, `gh` autenticato, il Mac del turno —
   ciò che ne dipende si dichiara ⏳ in DEBITI.
+- **Il Mac di riferimento** (D23, risposta delegata del 2026-09-25): macOS di serie più un Homebrew minimo. Cioè bash
+  3.2, sed e grep BSD, niente `setsid`, `timeout` solo col ramo perl di `ai_timeout`, python 3.9 di sistema. Ciò che
+  gira lì gira anche coi GNU, il contrario no. Da una sessione cloud lo si prova col PATH del Mac simulato (bash 3.2.57
+  e sed di Apple compilati); sul Mac lo dice la riga d'ambiente del turno.

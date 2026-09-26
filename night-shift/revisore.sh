@@ -11,7 +11,7 @@
 # La deliberazione e' a tre livelli, in ordine di autorita':
 #   1. GUARDIE (deterministiche): diff <=60 righe, <=3 file, ASCII, no CRLF,
 #      solo PR bozza night/* con titolo 'caccia:', quarantena >=20 min dalla PR e dal suo ultimo commit
-#      (chi crea non si giudica nello stesso respiro), budget <=5 merge/giorno.
+#      (chi crea non si giudica nello stesso respiro), budget <=5 merge nelle ultime 24 ore (D32).
 #   2. PROVE (deterministiche): verifiche dichiarate riga per riga + un comando
 #      avversario scritto dal modello con allowlist ristretta (deve riuscire)
 #      + la lente sicurezza §2bis (tools/lente-sicurezza.sh, D2 2026-09-23): deve essere PULITA.
@@ -101,13 +101,12 @@ chiedi_rizzo() { # chiedi_rizzo <diff-riassunto> <categoria> → "RIGETTA-rapida
   curl -sf --max-time 2 http://127.0.0.1:8017/ >/dev/null 2>&1 || return 1
 
   local RISP PROB
-  RISP=$(curl -sf --max-time 15 "$RIZZO_URL" \
-    -H 'Content-Type: application/json' \
-    -d "$(jq -cn \
-      --arg state "A PR claims category '$categoria' with this diff: $riassunto. It passed mechanical gates (lines, files, syntax). You are a hostile reviewer looking for reasons to REJECT: does this diff do something different from what the category claims? Does it remove or break something? Is it too invasive for the stated purpose?" \
-      '{state:$state, model:"rizzo-latest", questions:{
+  # (T5#6, tests/test-payload-da-stdin.sh): il riassunto del diff su stdin, mai negli argomenti di curl o jq
+  RISP=$(printf "A PR claims category '%s' with this diff: %s. It passed mechanical gates (lines, files, syntax). You are a hostile reviewer looking for reasons to REJECT: does this diff do something different from what the category claims? Does it remove or break something? Is it too invasive for the stated purpose?" "$categoria" "$riassunto" \
+    | jq -cRs '{state:., model:"rizzo-latest", questions:{
         approve: {type:"noul", instructions:"Despite passing mechanical gates, is this PR suspicious enough to reject immediately? True if safe to approve, false if something smells wrong."}
-      }}')" 2>/dev/null) || return 1
+      }}' \
+    | curl -sf --max-time 15 "$RIZZO_URL" -H 'Content-Type: application/json' --data-binary @- 2>/dev/null) || return 1
 
   PROB=$(printf '%s' "$RISP" | jq -r '.answers.approve.noul // empty' 2>/dev/null)
   [ -z "$PROB" ] && return 1
@@ -177,12 +176,15 @@ if [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
   exit 2
 fi
 
-# budget: massimo $BUDGET_GIORNO deliberazioni-merge al giorno, per repo
-OGGI=$(date '+%Y-%m-%d')
-BUDGET_FILE="$STATE/mergi-$OGGI"
-N_MERGI=$(cat "$BUDGET_FILE" 2>/dev/null || echo 0)
+# budget: massimo $BUDGET_GIORNO deliberazioni-merge nelle ULTIME 24 ORE, per repo.
+# (2026-09-25, D32, risposta delegata): era di calendario (mergi-<data>) e si azzerava a mezzanotte: 10 fusioni in 90
+# minuti a cavallo del giorno. Ora una riga per fusione (epoch) in mergi.log, e si contano quelle delle ultime 24 ore.
+BUDGET_FILE="$STATE/mergi.log"
+DA=$(( $(date +%s) - 86400 ))
+N_MERGI=$(awk -v da="$DA" '$1 + 0 > da' "$BUDGET_FILE" 2>/dev/null | grep -c . || true)
+N_MERGI=${N_MERGI:-0}
 # il budget conta le FUSIONI: il parere non fonde, non lo consuma
-[ "$MODO" = "parere" ] || [ "$N_MERGI" -lt "$BUDGET_GIORNO" ] || { log "guardia: budget esaurito ($N_MERGI/$BUDGET_GIORNO oggi)"; exit 2; }
+[ "$MODO" = "parere" ] || [ "$N_MERGI" -lt "$BUDGET_GIORNO" ] || { log "guardia: budget esaurito ($N_MERGI/$BUDGET_GIORNO nelle ultime 24 ore)"; exit 2; }
 
 # diff: piccolo, pochi file, ASCII, niente CRLF
 # (il fetch e' un rinfresco: in produzione il branch di solito c'e' gia' in
@@ -256,8 +258,10 @@ command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ]
   || rinvia "prove: DEGRADATO — sandbox-exec o night-shift/sandbox.sb assente: il codice della PR non si esegue fuori dalla sandbox"
 PROFILO_PROVE=$(mktemp /tmp/revisore-sandbox.XXXXXX)
 sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO_PROVE"
-SANDBOX_PRE=(env TMPDIR=/tmp sandbox-exec -f "$PROFILO_PROVE")
-log "prove: in sandbox (profilo $PROFILO_PROVE)"
+# (2026-09-25, D22, risposta delegata): la sandbox nega la rete, localhost compreso, e resta cosi' (aprirla riaprirebbe
+# la porta che T5#1 ha chiuso). La suite salta i banchi che dichiarano «# rete: localhost», e lo dice.
+SANDBOX_PRE=(env TMPDIR=/tmp SUITE_SENZA_RETE=1 sandbox-exec -f "$PROFILO_PROVE")
+log "prove: in sandbox (profilo $PROFILO_PROVE; i banchi di rete si saltano, dichiarati)"
 # (D1, 2026-09-20): le prove sono quelle DICHIARATE DALLA REPO sul ramo di default —
 # lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
 # leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.
@@ -393,6 +397,12 @@ fi
 VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
+# (2026-09-25, D43, risposta delegata): un verdetto fuori vocabolario ricadeva nel ramo del rigetto — commento pubblico e
+# PR chiusa per una risposta mal formata, che non si annulla. Il dubbio del censore non e' un no: al giorno, in silenzio.
+case "$VERDETTO" in
+  APPROVA|RIGETTA) ;;
+  *) log "censore: verdetto fuori vocabolario («$(printf '%s' "$VERDETTO" | taglia_caratteri 40)») — al giorno, nessun commento"; exit 2 ;;
+esac
 
 # ══ DELIBERA ═══════════════════════════════════════════════════════════════════
 
@@ -413,10 +423,10 @@ if [ "$VERDETTO" = "APPROVA" ]; then
     "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 300)" > "$CERT_FILE"
   azione_gh gh pr ready "$PR" || true
   if azione_gh gh pr merge "$PR" --squash --delete-branch --match-head-commit "$HEAD_OID"; then
-    echo $(( N_MERGI + 1 )) > "$BUDGET_FILE"
+    date +%s >> "$BUDGET_FILE"
     azione_gh gh pr comment "$PR" --body-file "$CERT_FILE" || true
     rm -f "$CERT_FILE"
-    log "✅ PR #$PR MERGIATA (deliberazione $(( N_MERGI + 1 ))/$BUDGET_GIORNO di oggi)"
+    log "✅ PR #$PR MERGIATA (deliberazione $(( N_MERGI + 1 ))/$BUDGET_GIORNO nelle ultime 24 ore)"
     exit 0
   else
     rm -f "$CERT_FILE"

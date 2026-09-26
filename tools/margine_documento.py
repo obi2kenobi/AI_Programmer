@@ -16,7 +16,7 @@ alla riga 639):
    è un accoppiamento mancante (nel codice REPO-E finisce in `errori`).
 5. Riferimento presente nelle NOTE DI CREDITO = vendita "Annullato da nota di
    credito": esclusa dal margine, riportata a parte (scarto mai silenzioso).
-6. BU vendita ≠ BU acquisto = ⚠️ BU DIVERSA: margine calcolato lo stesso, ma
+6. BU vendita ≠ BU acquisto (maiuscole e spazi non contano, Luca 2026-09-26) = ⚠️ BU DIVERSA: margine calcolato lo stesso, ma
    flaggato — è un segnale di contabilità per BU sbagliata, non un errore di calcolo.
 7. Margine NEGATIVO possibile e ammesso: vendere sotto costo è un dato, non un
    bug del tool (nessun clamp, nessun valore assoluto).
@@ -36,6 +36,8 @@ import math
 import re
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 
 def normalizza(ref):
     # (Q22, 2026-09-23): toglieva solo spazio e tab; il sorgente citato qui sopra usa /\s+/g, che
@@ -47,30 +49,37 @@ def normalizza(ref):
 def leggi_csv(path, colonne=()):
     """(giro 21, 2026-09-20 — D32): file inesistente o colonna mancante = traceback nudo.
     Si dichiara cosa manca e si esce 1, come scadenzario_aging."""
-    try:
-        with open(path, encoding="utf-8-sig", newline="") as f:
-            reader = csv.DictReader(f)
-            mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
-            if mancanti:
-                print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+    # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo. (D31, risposta delegata del
+    # 2026-09-25): UTF-8 prima, poi cp1252 — l'Excel italiano salva il «CSV» in cp1252 — e lo si dice. Un file che non e'
+    # nemmeno cp1252 (un byte che cp1252 non definisce) resta rifiutato.
+    for codifica in ("utf-8-sig", "cp1252"):
+        try:
+            with open(path, encoding=codifica, newline="") as f:
+                reader = csv.DictReader(f)
+                mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
+                if mancanti:
+                    print(f"uso: margine_documento.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+                    sys.exit(1)
+                righe = list(reader)
+            break
+        except UnicodeDecodeError:
+            if codifica == "cp1252":
+                print(f"uso: margine_documento.py — {path} non e' UTF-8 e nemmeno Windows-1252: salvalo come «CSV UTF-8»", file=sys.stderr)
                 sys.exit(1)
-            righe = list(reader)
-    except UnicodeDecodeError:
-        # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo (il caso che D32 aveva
-        # curato). Si dice; leggerlo in cp1252 e' una scelta di dominio (DEBITI, V4 D4).
-        print(f"uso: margine_documento.py — {path} non e' UTF-8 (un export di Excel in Windows-1252?): salvalo come «CSV UTF-8»" , file=sys.stderr)
-        sys.exit(1)
-    except OSError as e:
-        print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
-        sys.exit(1)
+        except OSError as e:
+            print(f"uso: margine_documento.py vendite.csv acquisti.csv [note_credito.csv] — {e}", file=sys.stderr)
+            sys.exit(1)
+    if codifica == "cp1252":
+        print(f"ATTENZIONE: {path} non e' UTF-8: letto come Windows-1252 (l'export di Excel)", file=sys.stderr)
     # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
-    # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
+    # rifiuta col numero di riga. Domanda 12 (Luca, 2026-09-26): il formato italiano si LEGGE, qui, una volta sola:
+    # la cella diventa un numero e il resto del file non riconverte
     for n, r in enumerate(righe, start=2):
         if "importo" in colonne:
             try:
-                float(r["importo"])
+                r["importo"] = leggi_numero(r["importo"])
             except (ValueError, TypeError):
-                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso col punto decimale, es. 1234.56) — nessun verdetto", file=sys.stderr)
+                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso un numero, es. 1234.56 o 1.234,56) — nessun verdetto", file=sys.stderr)
                 sys.exit(1)
     return righe
 
@@ -98,7 +107,7 @@ def main():
     # primo acquisto per riferimento vince (comportamento del map originale)
     acquisti_map = {}
     # (2026-09-24, quinto ventaglio, R3 R2): un importo nan/inf dava «Totale margine: +nan EUR», rc 0
-    marci = [r.get("rif") or "(senza rif)" for r in vendite + acquisti if not math.isfinite(float(r["importo"]))]
+    marci = [r.get("rif") or "(senza rif)" for r in vendite + acquisti if not math.isfinite(r["importo"])]
     if marci:
         print(f"ERRORE: importi non finiti (nan/inf) per {', '.join(marci[:5])} — nessun verdetto", file=sys.stderr)
         return 1
@@ -114,7 +123,7 @@ def main():
           f"Riferimenti nota di credito: {len(note_credito)}")
     for v in vendite:
         rif = normalizza(v.get("rif"))
-        importo_v = float(v["importo"])
+        importo_v = v["importo"]
         if rif in note_credito:
             annullati.append({"rif": rif, "importo": importo_v})
             continue
@@ -122,7 +131,7 @@ def main():
         if a is None:
             errori.append({"rif": rif or "(senza rif)", "importo": importo_v})
             continue
-        importo_a = float(a["importo"])
+        importo_a = a["importo"]
         margine = importo_v - importo_a
         # bug reale (revisione 14 lenti, 2026-08-28): con vendita a importo 0 la percentuale
         # era forzata a 0.0 — l'euro del margine resta corretto, ma "+0.0%" si legge come
@@ -131,7 +140,8 @@ def main():
         perc = margine / importo_v if importo_v else None
         totale_ricavi += importo_v
         totale_margine += margine
-        avviso = " ⚠️ BU DIVERSA" if (v.get("bu") or "") != (a.get("bu") or "") else ""
+        # (2026-09-26, risposta di Luca alla domanda 5): «arrg» e «ARRG» sono la stessa BU — maiuscole e spazi non contano
+        avviso = " ⚠️ BU DIVERSA" if (v.get("bu") or "").strip().upper() != (a.get("bu") or "").strip().upper() else ""
         perc_txt = f"{perc:+.1%}" if perc is not None else "n.d. (vendita a zero)"
         print(f"  {rif}: vendita={importo_v:.2f} acquisto={importo_a:.2f}"
               f" margine={margine:+.2f} ({perc_txt} sui ricavi){avviso}")

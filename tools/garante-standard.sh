@@ -50,6 +50,7 @@ if [ -f "$CWD/.claude/settings.json" ]; then
     if ! diff -q "$HUB/.claude/skills/gas-sviluppo/references/metodo.md"                  "$CWD/.claude/skills/gas-sviluppo/references/metodo.md" >/dev/null 2>&1; then
       echo "⚠ AI_Programmer: il metodo installato qui DIVERGE da quello dell'hub (regole nuove mancate)." >&2
       echo "  per aggiornare: $SYNC (dall'hub, scelta consapevole)" >&2
+      echo "  (D16) le skill dello standard sono dell'hub: l'aggiornamento le riscrive, le regole locali vanno in PROJECT.md" >&2
     fi
     # (2026-09-24, notte dei giri, T1#2): i guardiani del commit arrivano con lo standard, ma
     # core.hooksPath e' configurazione LOCALE (non viaggia col clone): spenti, il pre-commit che il

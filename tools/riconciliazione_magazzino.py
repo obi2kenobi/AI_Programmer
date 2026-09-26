@@ -16,6 +16,8 @@ stato = "Non Contato" (qty_fisica vuota) oppure qualsiasi altro valore se contat
 import csv
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 
 def categorizza(righe):
     """Il cuore della riconciliazione (formula REPO-E): delta = fisica − BC,
@@ -36,9 +38,9 @@ def categorizza(righe):
         if stato.lower() == "non contato" or qty_fisica_raw == "":
             non_contato.append({"codice": codice, "delta": "", "delta_valore": ""})
             continue
-        qty_bc = float(r["qty_bc"])
-        costo_finale = float(r["costo_finale"])
-        qty_fisica = float(qty_fisica_raw)
+        qty_bc = leggi_numero(r["qty_bc"])
+        costo_finale = leggi_numero(r["costo_finale"])
+        qty_fisica = leggi_numero(qty_fisica_raw)
         # giri avversari 2026-08-28: nan/inf nel CSV devono dirsi, non produrre
         # delta "nan" silenziosi nell'output del magazzino
         import math

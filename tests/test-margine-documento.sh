@@ -101,6 +101,19 @@ grep -q "RF-ZERO: vendita=0.00 acquisto=200.00 margine=-200.00 (n.d. (vendita a 
   && ok "vendita a zero: margine -200.00 corretto, percentuale 'n.d.' non '+0.0%' fuorviante" \
   || ko "vendita a zero: $(echo "$OUT_ZERO" | grep 'RF-ZERO:')"
 
+# (2026-09-25, D31, risposta delegata): un export di Excel in Windows-1252 si legge (UTF-8 prima, poi cp1252) e lo si dice
+sed 's/FORN-A/FORN-CITTÀ/' "$TMP/acquisti.csv" | iconv -f UTF-8 -t CP1252 > "$TMP/acq1252.csv"
+OUT5=$(python3 "$HERE/tools/margine_documento.py" "$TMP/vendite.csv" "$TMP/acq1252.csv" "$TMP/note.csv" 2>&1); RC5=$?
+[ "$RC5" -eq 0 ] && grep -c 'Windows-1252' <<<"$OUT5" >/dev/null && grep -q "Totale margine: +300.00 EUR" <<<"$OUT5" \
+  && ok "D31: CSV in Windows-1252: letto, detto, stesso margine" || ko "D31: CSV in Windows-1252: rc=$RC5 — $(head -1 <<<"$OUT5")"
+
+# (2026-09-26, risposta di Luca alla domanda 5): «arrg» e «ARRG» sono la stessa BU — niente avviso BU DIVERSA
+printf 'rif,data,bu,ubicazione,importo\nRF-9,2026-05-10,ARRG,SD,100\n' > "$TMP/v5.csv"
+printf 'rif,data,bu,fornitore,importo\nRF-9,2026-04-01, arrg ,F,60\n' > "$TMP/a5.csv"
+OUT5=$(python3 "$HERE/tools/margine_documento.py" "$TMP/v5.csv" "$TMP/a5.csv" 2>&1)
+grep -q "RF-9.*margine=+40.00" <<<"$OUT5" && ! grep -q "BU DIVERSA" <<<"$OUT5" \
+  && ok "D5: arrg e ARRG (anche con spazi) sono la stessa BU" || ko "D5: $(grep 'RF-9' <<<"$OUT5")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

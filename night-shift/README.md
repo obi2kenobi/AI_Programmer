@@ -11,7 +11,7 @@ privacy totale e nessun rate limit. La qualità dei cervelli cloud resta superio
 ```
 GIORNO (cervelli): ZCode/GLM · Claude Code/Opus · OpenCode via Wayfinder → Qwen
                    pianificano, correggono, giudicano
-NOTTE (braccia):   night-shift 23:00 → issue `night-shift` → OpenCode → Qwen locale
+NOTTE (braccia):   night-shift 23:00 → issue `night-shift` → risolvi-issue.sh (agente.sh di riserva) → Qwen locale
                    commesse meccaniche → PR BOZZA, mai push su main
 NEL CICLO (giudizio): revisore.sh (il censore) → guardie + prove sul branch + delibera
                     sulle PR `caccia:` (il sì è del censore, il VETO resta umano — patto del 2026-09-18)

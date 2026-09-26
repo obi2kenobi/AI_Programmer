@@ -19,8 +19,10 @@ echo "# x" > "$T/seme/README.md"; g -C "$T/seme" add README.md; g -C "$T/seme" c
 g clone -q "$T/remoto.git" "$T/work/grafo-prova"
 VERA=$(command -v date)
 printf '#!/bin/bash\n[ "$*" = "+%%F" ] && { echo 2026-09-26; exit 0; }\nexec %q "$@"\n' "$VERA" > "$T/bin/date"
-printf '#!/bin/bash\nif [ "$1" = extract ]; then mkdir -p graphify-out; echo "{\\"n\\":$RANDOM,\\"t\\":\\"${FORMA:-}\\"}" > graphify-out/graph.json; fi\nexit 0\n' > "$T/bin/graphify"
-printf '#!/bin/bash\necho "$*" >> %q\necho https://example.invalid/pr/1\n' "$T/gh.log" > "$T/bin/gh"
+# (2026-09-26): il grafo finto era {"n":$RANDOM}: due passaggi con lo stesso numero davano «grafo uguale» e il caso D35
+# era rosso a caso (una volta alla consegna). Ora un contatore: ogni passaggio scrive un grafo diverso, sempre.
+printf '#!/bin/bash\nif [ "$1" = extract ]; then mkdir -p graphify-out; N=$(( $(cat %q 2>/dev/null || echo 0) + 1 )); echo "$N" > %q; echo "{\\"n\\":$N,\\"t\\":\\"${FORMA:-}\\"}" > graphify-out/graph.json; fi\nexit 0\n' "$T/contatore" "$T/contatore" > "$T/bin/graphify"
+printf '#!/bin/bash\necho "$*" >> %q\n[ "$1 $2" = "pr list" ] && { [ -n "${GH_ROTTO:-}" ] && exit 1; printf "%%s\\n" "${GH_APERTE:-}"; exit 0; }\necho https://example.invalid/pr/1\n' "$T/gh.log" > "$T/bin/gh"
 chmod +x "$T/bin/"*
 
 OUT=$(cd "$T" && HOME="$T/home" GIT_CONFIG_GLOBAL=/dev/null PATH="$T/bin:$PATH" GRAFO_DATA=2026-09-25 \
@@ -52,6 +54,23 @@ RAMI=$(git -C "$T/remoto.git" branch --format='%(refname:short)' | tr '\n' ' ')
   && ok "V1 R3: una forma di segreto nel grafo ferma il push (il ramo non arriva al remoto)" \
   || ko "V1 R3: grafo con una forma di segreto: rc=$RC, rami «${RAMI}»"
 ! grep -cF "$TOK" <<<"$OUT" >/dev/null && ok "V1 R3: il valore non compare nell'uscita" || ko "V1 R3: il valore compare nell'uscita"
+
+# (2026-09-25, D35, risposta delegata): il pass apriva una PR del grafo al giorno senza guardare quella di ieri — PR che si
+# accumulavano. Ora, se una PR del grafo e' aperta, il nuovo grafo va sul SUO ramo (un commit in piu', mai forzato), e
+# nessuna PR nuova. gh che non dice le PR aperte: non se ne apre una al buio.
+: > "$T/gh.log"
+OUT=$(cd "$T" && HOME="$T/home" GIT_CONFIG_GLOBAL=/dev/null PATH="$T/bin:$PATH" GRAFO_DATA=2026-09-28 GH_APERTE="night/grafo-2026-09-25" \
+  GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t \
+  bash "$HERE/tools/grafo-semantico.sh" obi2kenobi/prova "$T/work" 2>&1); RC=$?
+RAMI=$(git -C "$T/remoto.git" branch --format='%(refname:short)' | tr '\n' ' ')
+NCOMMIT=$(git -C "$T/remoto.git" rev-list --count main..night/grafo-2026-09-25 2>/dev/null)
+[ "$RC" -eq 0 ] && ! grep -cw 'night/grafo-2026-09-28' <<<"$RAMI" >/dev/null && [ "${NCOMMIT:-0}" -eq 2 ] && ! grep -c '^pr create' "$T/gh.log" >/dev/null \
+  && ok "D35: con una PR del grafo aperta il grafo nuovo va sul suo ramo, niente PR nuova" || ko "D35: USCITA=[$(tail -4 <<<"$OUT" | tr "\n" " ")] rc=$RC, rami «${RAMI}», commit sul ramo aperto ${NCOMMIT:-?}, $(grep -c '^pr create' "$T/gh.log") PR create"
+: > "$T/gh.log"
+OUT=$(cd "$T" && HOME="$T/home" GIT_CONFIG_GLOBAL=/dev/null PATH="$T/bin:$PATH" GRAFO_DATA=2026-09-29 GH_ROTTO=1 \
+  GIT_AUTHOR_NAME=t GIT_AUTHOR_EMAIL=t@t GIT_COMMITTER_NAME=t GIT_COMMITTER_EMAIL=t@t \
+  bash "$HERE/tools/grafo-semantico.sh" obi2kenobi/prova "$T/work" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && ! grep -c '^pr create' "$T/gh.log" >/dev/null && ok "D35: gh che non dice le PR aperte: niente PR al buio, rc $RC" || ko "D35: gh rotto: rc $RC"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

@@ -109,6 +109,10 @@ git clone -q "$ORIGIN2" "$TMP/check2"
   && ok "caso 2: la skill personalizzata del progetto (claude e opencode) NON e' stata sovrascritta" \
   || ko "caso 2: skill personalizzata sovrascritta dall'onboarding"
 [ -f "$TMP/check2/.claude/skills/gas-sviluppo/SKILL.md" ] && ok "caso 2: le skill dell'hub mancanti sono arrivate" || ko "caso 2: skill dell'hub mancanti non propagate"
+# (2026-09-25, D16, risposta delegata): le skill dello standard sono dell'hub — la personalizzazione resta, ma si dice che il
+# prossimo sync --standard la riscrive, e dove vanno le regole locali
+grep -q "dev-critic.*PROJECT.md" <<<"$OUT2" && ok "D16: la skill personalizzata si dice, con dove vanno le regole locali" \
+  || ko "D16: skill personalizzata taciuta: $(grep -m1 'skill' <<<"$OUT2")"
 grep -q "agenti del hub già tutti presenti" <<<"$OUT2" && ok "caso 2: agenti riconosciuti come gia' presenti" || ko "caso 2: agenti ricopiati"
 
 # (Q15, 2026-09-23): gli strumenti che lo standard CITA arrivano (settimo patto, guardiani del

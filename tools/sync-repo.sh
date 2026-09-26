@@ -130,14 +130,26 @@ fi
 # l'uscita lo dicesse. Qui si dicono le righe non vuote che la versione dell'hub non ha: proprie del
 # satellite, o di una versione vecchia dell'hub (da qui non si distinguono). Se spostarle in PROJECT.md o
 # fermare la PR e' una domanda di dominio (DEBITI.md); intanto si dicono, nell'uscita e nel commit.
+# (2026-09-25, D15, risposta delegata): una riga che c'e' stata in QUALUNQUE versione del CLAUDE.md dell'hub (la sua
+# storia git) non e' propria del satellite: e' di un hub vecchio, e il riallineo la aggiorna. Le altre sono regole
+# locali, e con loro la PR non parte (fermati_se_proprie): onboard promette che un CLAUDE.md proprio non si sovrascrive.
 righe_proprie() {
   [ -f "$1" ] || return 0
-  grep -vxFf "$2" "$1" | grep -v '^[[:space:]]*$'
+  local noti rc
+  noti=$(mktemp) || return 1
+  { cat "$2"; git -C "$HERE" log --format= -p -- CLAUDE.md 2>/dev/null | grep -vE '^(\+\+\+|---) ' | sed -n 's/^[-+]//p'; } > "$noti"
+  grep -vxFf "$noti" "$1" | grep -v '^[[:space:]]*$'; rc=$?
+  rm -f "$noti"; return "$rc"
 }
 avvisa_proprie() { # avvisa_proprie <righe> <repo>
   [ -n "$1" ] || return 0
-  echo "  ⚠ $(grep -c . <<<"$1") righe del CLAUDE.md di ${2:-questo progetto} non sono nella versione dell'hub (proprie, o di un hub vecchio): la PR le toglie"
+  echo "  ⚠ $(grep -c . <<<"$1") righe del CLAUDE.md di ${2:-questo progetto} non sono in nessuna versione del CLAUDE.md dell'hub: sono regole locali"
   head -10 <<<"$1" | sed 's/^/    - /'
+}
+fermati_se_proprie() { # fermati_se_proprie <righe> <repo>: con regole locali la PR di riallineo non parte
+  [ -n "$1" ] || return 0
+  echo "⛔ sync-repo: la PR di riallineo NON parte — sostituirebbe il CLAUDE.md e le regole locali sparirebbero. Spostale nel PROJECT.md di ${2:-questo progetto} (o toglile), poi rilancia (D15)."
+  exit 1
 }
 
 # fondi_settings <settings-del-satellite> <settings-dell-hub> (Q13): riscrive il primo con la fusione.
@@ -186,7 +198,7 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   while IFS= read -r P; do
     [ -n "$P" ] && git add "$P" 2>/dev/null
   done <<< "$SCRITTI"
-  PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"
+  PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"; fermati_se_proprie "$PROPRIE" "$REPO"
   cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null  # D8: versione satellite
   for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
@@ -253,10 +265,23 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   # (2026-09-24, sesto ventaglio, S2 R6): il conto della PR erano le copie («24 gruppi aggiornati» per un diff di un
   # file); ora sono i file che il commit cambia davvero
   NFILE=$(git diff --cached --name-only | grep -c .)
+  # (2026-09-25, D21, risposta delegata): una PR di riallineo chiusa da una persona SENZA fonderla si riproponeva ogni
+  # notte con un ramo nuovo. L'impronta del contenuto (patch-id) va nel commit, quindi nel corpo della PR (--fill): se una
+  # PR chiusa e non fusa porta la stessa, il no resta finche' lo standard (o il satellite) cambia.
+  IMPRONTA=$(git diff --cached | git patch-id --stable 2>/dev/null | cut -d' ' -f1)
+  if [ -n "$IMPRONTA" ]; then
+    CHIUSE=$(gh pr list -R "$REPO" --state closed --limit 100 --search "$IMPRONTA in:body" --json number,mergedAt,body 2>/dev/null) \
+      || { echo "sync-repo --standard: ⚠ gh non ha detto le PR chiuse di $REPO — non apro la PR al buio (una rifiutata si riproporrebbe)"; exit 1; }
+    RIFIUTATA=$(jq -r --arg i "$IMPRONTA" '[.[] | select(.mergedAt == null and ((.body // "") | contains($i)))][0].number // empty' <<<"$CHIUSE" 2>/dev/null)
+    if [ -n "$RIFIUTATA" ]; then
+      echo "sync-repo --standard: la PR #$RIFIUTATA con lo stesso contenuto e' stata chiusa senza fonderla — il no resta finche' lo standard cambia (D21)"
+      exit 0
+    fi
+  fi
   BR="claude/standard-$(date +%Y%m%d)"
   git checkout -q -b "$BR"
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: adotta lo standard AI_Programmer (CLAUDE.md, skill, agenti, hook) — sync-repo.sh --standard" \
-    ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"}
+    ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"} ${IMPRONTA:+-m "Impronta dello standard: $IMPRONTA (una PR chiusa senza fonderla con questa impronta non si ripropone)"}
   spingi "$BR" || exit 1
   # (2026-09-19): gh pr create fallito in silenzio lasciava cantare vittoria —
   # la PR si VERIFICA, non si dichiara
@@ -281,7 +306,7 @@ if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   gh repo clone "$REPO" "$TMP/work" -- -q --depth 1 2>/dev/null || { echo "sync-repo: clone fallito"; exit 1; }
   cd "$TMP/work" || { echo "sync-repo: il clone non ha creato $TMP/work — mi fermo"; exit 1; }
   git checkout -q -b "$BR"
-  PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"
+  PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"; fermati_se_proprie "$PROPRIE" "$REPO"
   cp "$HUB_CLAUDE" CLAUDE.md
   git add CLAUDE.md
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: riallinea CLAUDE.md all'hub (regole ereditate) — tools/sync-repo.sh" \

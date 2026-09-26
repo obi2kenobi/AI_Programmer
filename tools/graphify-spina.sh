@@ -26,7 +26,7 @@ for a in "$@"; do case "$a" in --stage) STAGE=1 ;; *) DIR="$a" ;; esac; done
 OUT="$DIR/graphify-out"
 
 if ! command -v graphify >/dev/null 2>&1; then
-  echo "graphify-spina: graphify ASSENTE — grafo DEGRADATO, navigazione a grep (installa: pip install graphifyy)"
+  echo "graphify-spina: graphify ASSENTE — grafo DEGRADATO, navigazione a grep (installa: pipx install --python python3.12 graphifyy==0.9.66)"
   exit 0
 fi
 git -C "$DIR" rev-parse --git-dir >/dev/null 2>&1 || { echo "graphify-spina: $DIR non e' una repo git — salto"; exit 0; }
@@ -54,7 +54,8 @@ if [ "$(git -C "$DIR" config --get merge.graphify.driver)" != "$DRIVER" ]; then
 fi
 
 # 4. il grafo AST (incrementale). Il rifiuto per «meno nodi» di graphify si DICHIARA, non si forza:
-#    una cancellazione voluta si conferma a mano con GRAPHIFY_FORCE=1.
+#    una cancellazione voluta si conferma a mano con GRAPHIFY_FORCE=1. (D41, 2026-09-25): la 0.9.66 non lo fa — la
+#    versione fissata non rifiuta mai, e questo avviso non scatta; resta per una versione che lo faccia.
 T0=$(date +%s)
 UPD=$(cd "$DIR" && PYTHONHASHSEED=0 graphify update . 2>&1); RC=$?
 printf '%s\n' "$UPD" >> "$LOG"

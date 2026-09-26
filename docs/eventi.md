@@ -60,7 +60,7 @@ riga ⚠/⛔ del turno sia nel catalogo o in questo elenco. Una riga nuova senza
 - Censore: `censore ha RIGETTATO la PR`, `censore in errore sulla PR`, `censore in errore sul parere`.
 - Caccia: `LENTE SEGNALA`, `commit/push della … fallito`.
 - Issue: `commento della proposta fallito`, `… sul remoto ha … commit non del turno`, `PR NON creata`,
-  `commit/push FALLITO`, `WATCHDOG scattato`, `agente terminato`, `LOOP DI RIPLETTURA rilevato`.
+  `commit/push FALLITO`, `WATCHDOG scattato`, `risolvi-issue.sh assente` (D8: `agente terminato` e `LOOP DI RIPLETTURA rilevato` sono usciti col ramo opencode).
 
 Note (2026-09-24, quinto ventaglio, R4 R6): la dashboard legge il censimento del registro dal file storia e
 mostra le righe `registro:` fra le recenti; `⛔ MANCA` lo conta fra gli errori (ogni `⛔`). Il guardiano ora

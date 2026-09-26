@@ -22,6 +22,8 @@ import csv
 import math
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 
 def media_pesata(righe):
     somma_costo = sum(r["costo_eff_unitario"] * r["qta_prodotta"] for r in righe)
@@ -112,7 +114,7 @@ def main():
     righe = []
     for n, r in enumerate(reader, start=2):
         try:
-            riga = {"costo_eff_unitario": float(r["costo_eff_unitario"]), "qta_prodotta": float(r["qta_prodotta"])}
+            riga = {"costo_eff_unitario": leggi_numero(r["costo_eff_unitario"]), "qta_prodotta": leggi_numero(r["qta_prodotta"])}
         except (TypeError, ValueError):
             print(f"ERRORE: riga {n} non numerica: {dict(r)!r}", file=sys.stderr)
             return 1

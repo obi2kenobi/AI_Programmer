@@ -24,7 +24,7 @@ CORPO_GATE=""
 # eta_giorni <file>: giorni interi dall'ultima modifica (python3: stat -f/-c si scrivono solo in lib.sh)
 eta_giorni() { python3 -c 'import os,sys,time; print(int((time.time()-os.path.getmtime(sys.argv[1]))//86400))' "$1" 2>/dev/null || echo 0; }
 # (2026-09-25, settimo ventaglio, V3 R1): il gate e' in pensione e il suo ultimo report resta sul disco per sempre: la
-# mail del 26/9 usciva con l'oggetto del report del 28/8. Scelta provvisoria (DEBITI, D-V3-1): si allega, e da' l'oggetto,
+# mail del 26/9 usciva con l'oggetto del report del 28/8. Regola (D29, 2026-09-25): si allega, e da' l'oggetto,
 # solo se ha meno di 24 ore; altrimenti una riga lo dice.
 REPORT_FRESCO=0
 if [ -f "$REPORT" ]; then
@@ -109,7 +109,7 @@ tell application \"Mail\"
 end tell" 2>/dev/null && INVIATO="Digest inviato a $DEST" || {
   # fallback: mail CLI. (2026-09-25, ottavo ventaglio, O5 R2): il suo rc 0 vuol dire «accettato nella coda LOCALE», non
   # «arrivato» — sul Mac senza relay il messaggio resta li'. Si dice cosi', la memoria del turno non si svuota, e lo
-  # stderr di mail va nel log invece che nel vuoto. Se il ripiego vada tenuto e' una domanda in DEBITI.
+  # stderr di mail va nel log invece che nel vuoto. Il ripiego resta (D37, 2026-09-25).
   echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>>"$HOME/morning-digest.log" \
     && { INVIATO="Digest messo nella coda locale di mail(1) per $DEST — consegna NON verificata (Mail non e' partito); la memoria del turno resta"; SOLO_CODA=1; } \
     || INVIATO=""

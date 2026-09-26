@@ -131,8 +131,9 @@ difesa_test tests/test-margine-documento.sh "A12 aritmetica oracolo invertita (r
 
 att; python3 - <<'EOF'
 p = 'tools/scadenzario_aging.py'; s = open(p).read()
-old = 'if tipo.startswith("Fornitore"):'
-assert old in s; open(p, 'w').write(s.replace(old, 'if False and tipo.startswith("Fornitore"):'))
+# (2026-09-26, domanda 1): la riga del ramo fornitore e' cambiata (maiuscole indifferenti): l'attacco la segue
+old = 'if tipo.strip().lower().startswith("fornitore"):'
+assert old in s; open(p, 'w').write(s.replace(old, 'if False and tipo.strip().lower().startswith("fornitore"):'))
 EOF
 difesa_test tests/test-scadenzario-aging.sh "A13 fix segno fornitore disattivato"
 
