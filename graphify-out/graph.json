@@ -434,7 +434,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47"
+      "source_location": "L48"
     },
     {
       "id": "tools_rating_dso_clienti_normalizza",
@@ -446,7 +446,7 @@
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "tools_valorizzazione_magazzino_applica_override",
@@ -34382,7 +34382,7 @@
       "source_location": "L3"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_48",
+      "id": "tools_rating_dso_clienti_rationale_49",
       "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 46,
@@ -34390,7 +34390,7 @@
       "file_type": "rationale",
       "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48"
+      "source_location": "L49"
     },
     {
       "id": "docs_bc_endpoints_postedsalescreditmemolines",
@@ -39772,7 +39772,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 rinviato risolvibile",
       "source_file": "DEBITI.md",
-      "source_location": "L300"
+      "source_location": "L301"
     },
     {
       "id": "debiti_la_notte_dei_giri_verifiche_che_solo_il_mac_pu\u00f2_fare",
@@ -39784,7 +39784,7 @@
       "node_kind": "heading",
       "norm_label": "la notte dei giri \u2014 verifiche che solo il mac puo fare",
       "source_file": "DEBITI.md",
-      "source_location": "L294"
+      "source_location": "L295"
     },
     {
       "id": "debiti_lavoro_distribuito_a_due_mani_luca_lavinia_2026_08_27_valutazione_su_evidenza",
@@ -40039,7 +40039,7 @@
       },
       "norm_label": "classifica()",
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L265"
+      "source_location": "L266"
     },
     {
       "id": "tools_giri_avversari_difesa_test",
@@ -61516,7 +61516,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L268",
+      "source_location": "L269",
       "weight": 1.0
     },
     {
@@ -61528,7 +61528,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L269",
+      "source_location": "L270",
       "weight": 1.0
     },
     {
@@ -61600,7 +61600,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L188",
+      "source_location": "L189",
       "weight": 1.0
     },
     {
@@ -61612,7 +61612,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L275",
+      "source_location": "L276",
       "weight": 1.0
     },
     {
@@ -62080,7 +62080,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L69",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -63040,7 +63040,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -63052,7 +63052,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -63064,7 +63064,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -63076,7 +63076,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -63328,7 +63328,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -67103,7 +67103,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L294",
+      "source_location": "L295",
       "weight": 1.0
     },
     {
@@ -67114,7 +67114,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "DEBITI.md",
-      "source_location": "L300",
+      "source_location": "L301",
       "weight": 1.0
     },
     {
@@ -90566,7 +90566,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -90577,7 +90577,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -98266,7 +98266,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/giri-avversari.sh",
-      "source_location": "L265",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
@@ -99293,14 +99293,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_rating_dso_clienti_rationale_48",
+      "source": "tools_rating_dso_clienti_rationale_49",
       "target": "tools_rating_dso_clienti_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -101176,5 +101176,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "dea11ca268dec3d5ffbb3e382ab22f677c380192"
+  "built_at_commit": "befe96f3f8a5124024755de615c24d3b0753adca"
 }

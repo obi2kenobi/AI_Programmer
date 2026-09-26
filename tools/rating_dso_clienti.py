@@ -7,7 +7,8 @@ clienti di REPO-E (Codice.js, analizzaRatingClienti):
 
 1. Matching pagamento→fattura, in ordine: (a) per CODICE documento nella
    descrizione del pagamento (pattern tipo 25OV-123456), prima fattura non
-   ancora abbinate che lo contiene; (b) in fallback: stesso cliente
+   ancora abbinate DELLO STESSO CLIENTE che lo contiene (il cliente e' una
+   scelta di Luca del 2026-09-26, non del sorgente); (b) in fallback: stesso cliente
    (normalizzato trim/minuscolo/spazi collassati) E data entro 7 giorni E
    importo entro 1 EUR. La cessione a FACTOR pro soluto è un PAGAMENTO alla
    data di cessione (data estratta dalla descrizione, formato ddMMyy).
@@ -110,7 +111,11 @@ def main():
         match = None
         m = CODICE_RE.search(p["descrizione"])
         if m:
-            match = next((f for f in fatture if m.group(0) in f["descrizione"] and not f["matched"]), None)
+            # (2026-09-26, risposta di Luca alla domanda 2 di docs/giri/2026-09-23-notte/DOMANDE.md): solo fatture dello
+            # STESSO cliente. Il contenimento del codice attraversava i clienti: il pagamento di Rossi per «25OV-123»
+            # finiva sulla fattura di Bianchi «25OV-1234». Il confronto per contenuto resta, come nel sorgente.
+            match = next((f for f in fatture if m.group(0) in f["descrizione"] and not f["matched"]
+                          and f["cliente"] == p["cliente"]), None)
         if match is None:
             match = next((f for f in fatture if not f["matched"]
                           and f["cliente"] == p["cliente"]
