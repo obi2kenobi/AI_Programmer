@@ -20,7 +20,9 @@ pct() restituisce 0, e i due indici "ge" non possono mai scattare in quel caso �
 azzeramento per un motivo diverso da "dato assente" (es. una lettura vuota) renderebbe
 la presunzione di crisi impossibile invece che incerta. Vale come nota nel risultato,
 non come correzione: è così anche nell'oracolo. Con TUTTI i denominatori nulli, invece, l'oracolo
-rifiuta (ERRORE, rc 1): non c'e' niente da misurare (D13, 2026-09-25).
+rifiuta (ERRORE, rc 1): non c'e' niente da misurare (D13, 2026-09-25). Con UNO solo nullo si
+stampano la NOTA e il verdetto: scelta di Luca del 2026-09-26 (domanda 10), la presunzione non
+diventa «non valutabile».
 
 Uso: python3 tools/indici_crisi.py < aggregati.json
 """

@@ -9,7 +9,9 @@ dichiarata nel payload):
 1. CONVENZIONE DEI SEGNI del G/L: Amount < 0 = RICAVO (entra come −Amount),
    Amount >= 0 = COSTO. «Un segno invertito non dà errore: dà un costo che
    sembra un ricavo» — per questo la convenzione sta in testa all'oracolo,
-   non in un commento.
+   non in un commento. Il segno si legge RIGA PER RIGA, non per conto: lo
+   storno di un costo esce come ricavo. Scelta di Luca del 2026-09-26 (domanda 9):
+   si resta così, e la colonna `conto` non è letta.
 2. Attribuzione BU via dimensione; BU non nota (fuori dall'elenco) → NOBU:
    il non-attribuito è una categoria VISIBILE, non una perdita silenziosa.
    Elenco chiuso: ARRG, BIOC, EDIL, IMB (Luca, 2026-09-26); le BU fuori elenco

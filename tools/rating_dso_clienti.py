@@ -15,7 +15,11 @@ clienti di REPO-E (Codice.js, analizzaRatingClienti):
 2. giorni = data pagamento − data fattura; scartati se <0 o >365 (guardia
    contro i falsi abbinate: un pagamento prima della fattura non è velocità,
    è un errore di matching).
-3. DSO medio per cliente = somma giorni / fatture pagate, arrotondato.
+3. DSO medio per cliente = somma giorni / fatture pagate, arrotondato con
+   round() di Python: la metà va al pari (2,5 -> 2), non su come Math.round di JS.
+   Scelta di Luca del 2026-09-26 (domanda 3): si resta così.
+   Un importo vuoto vale zero (domanda 4): scelta di Luca del 2026-09-26, contro
+   il default del canone «assente non è zero».
 4. Fatture non pagate contate a parte; pagamenti non abbinate elencati a
    parte (scarto mai silenzioso — nel progetto reale finiscono in un foglio
    "Pagamenti non associati").

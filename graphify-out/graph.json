@@ -62,7 +62,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L44"
+      "source_location": "L46"
     },
     {
       "id": "tools_margine_documento_leggi_csv",
@@ -122,7 +122,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L50"
+      "source_location": "L54"
     },
     {
       "id": "tools_rating_dso_clienti_normalizza",
@@ -134,7 +134,7 @@
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46"
+      "source_location": "L50"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -650,7 +650,7 @@
       "file_type": "code",
       "norm_label": "crisi_presunta()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L73"
+      "source_location": "L75"
     },
     {
       "id": "tools_indici_crisi_main",
@@ -662,7 +662,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L77"
+      "source_location": "L79"
     },
     {
       "id": "tools_indici_crisi_pct",
@@ -674,7 +674,7 @@
       "file_type": "code",
       "norm_label": "pct()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L45"
+      "source_location": "L47"
     },
     {
       "id": "tools_indici_crisi_valuta_indici_crisi",
@@ -686,7 +686,7 @@
       "file_type": "code",
       "norm_label": "valuta_indici_crisi()",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L49"
+      "source_location": "L51"
     },
     {
       "id": "tools_bc_tipi_metadata_main",
@@ -19967,7 +19967,7 @@
       "source_location": "L3"
     },
     {
-      "id": "tools_bilancio_bu_rationale_45",
+      "id": "tools_bilancio_bu_rationale_47",
       "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
       "_origin": "ast",
       "community": 252,
@@ -19975,7 +19975,7 @@
       "file_type": "rationale",
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L45"
+      "source_location": "L47"
     },
     {
       "id": "tools_margine_documento_rationale_2",
@@ -20044,7 +20044,7 @@
       "source_location": "L3"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_51",
+      "id": "tools_rating_dso_clienti_rationale_55",
       "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 252,
@@ -20052,7 +20052,7 @@
       "file_type": "rationale",
       "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L51"
+      "source_location": "L55"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
@@ -50180,7 +50180,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_indici_crisi_rationale_50",
+      "id": "tools_indici_crisi_rationale_52",
       "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
       "_origin": "ast",
       "community": 772,
@@ -50188,10 +50188,10 @@
       "file_type": "rationale",
       "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L50"
+      "source_location": "L52"
     },
     {
-      "id": "tools_indici_crisi_rationale_78",
+      "id": "tools_indici_crisi_rationale_80",
       "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
       "_origin": "ast",
       "community": 772,
@@ -50199,7 +50199,7 @@
       "file_type": "rationale",
       "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L78"
+      "source_location": "L80"
     },
     {
       "id": "tools_bc_tipi_metadata",
@@ -61386,7 +61386,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L78",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -62010,7 +62010,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L106",
+      "source_location": "L108",
       "weight": 1.0
     },
     {
@@ -62022,7 +62022,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L120",
+      "source_location": "L122",
       "weight": 1.0
     },
     {
@@ -62034,7 +62034,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L65",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -62406,7 +62406,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L72",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -62418,7 +62418,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L76",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -63150,7 +63150,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L34",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -63162,7 +63162,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -63174,7 +63174,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -63354,7 +63354,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L27",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -63366,7 +63366,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L28",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -63378,7 +63378,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L29",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -63498,7 +63498,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L34",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -63510,7 +63510,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L35",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -63522,7 +63522,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L36",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -63534,7 +63534,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L37",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -63546,7 +63546,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L40",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -63834,7 +63834,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L37",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -63882,7 +63882,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L38",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -63894,7 +63894,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L40",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -90443,7 +90443,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L44",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -90916,7 +90916,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -90927,7 +90927,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L49",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -90938,7 +90938,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L73",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -90949,7 +90949,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L77",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -91213,7 +91213,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L46",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -91224,7 +91224,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L50",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -99698,14 +99698,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_bilancio_bu_rationale_45",
+      "source": "tools_bilancio_bu_rationale_47",
       "target": "tools_bilancio_bu_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -99907,25 +99907,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_50",
+      "source": "tools_indici_crisi_rationale_52",
       "target": "tools_indici_crisi_valuta_indici_crisi",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L50",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
-      "source": "tools_indici_crisi_rationale_78",
+      "source": "tools_indici_crisi_rationale_80",
       "target": "tools_indici_crisi_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/indici_crisi.py",
-      "source_location": "L78",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -100039,14 +100039,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_rating_dso_clienti_rationale_51",
+      "source": "tools_rating_dso_clienti_rationale_55",
       "target": "tools_rating_dso_clienti_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L51",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -101945,5 +101945,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "99559c9c13a3c9c54a94c55eadcf0fef5aff97a4"
+  "built_at_commit": "ae01db9f7203c0d0119bcd27db685ffa48e64071"
 }
