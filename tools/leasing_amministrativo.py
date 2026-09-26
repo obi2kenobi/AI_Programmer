@@ -119,6 +119,12 @@ def main():
         print("ERRORE: data_fine precedente a data_inizio", file=sys.stderr)
         return 1
     # (spread, euribor e data di riferimento: validati sopra, con gli altri numeri)
+    # (2026-09-26, risposta di Luca alla domanda 13 di docs/giri/2026-09-23-notte/DOMANDE.md): oltre la fine del contratto
+    # il canone previsto era quello pieno — un costo che nel budget non ci sara'. Ora 0, con la nota; il calcolo prosegue.
+    if riferimento > fine:
+        print(f"Importo previsto: 0.00 EUR")
+        print(f" Nota: contratto concluso il {fine} (riferimento {riferimento}): nessun canone ne' adeguamento previsto")
+        return 0
 
     if euribor_corrente is None:
         print(f"Importo previsto: {canone:.2f} EUR")
