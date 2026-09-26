@@ -91,6 +91,35 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
     | jq -r '.message.content // empty' 2>/dev/null
 }
 
+chiedi_rizzo() { # chiedi_rizzo <diff-riassunto> <categoria> → "RIGETTA-rapida" o vuoto
+  # (studio rizzo-flow, 2026-09-26): PRE-FILTRO avversativo — puo' solo
+  # bocciare VELOCE (p<0.2). L'approvazione passa SEMPRE dal LLM: il razzo
+  # non ha il contesto per approvare, solo per fiutare puzza.
+  local riassunto="$1" categoria="$2"
+  local RIZZO_URL="${RIZZO_URL:-http://127.0.0.1:8017/v1/systemone}"
+
+  curl -sf --max-time 2 http://127.0.0.1:8017/ >/dev/null 2>&1 || return 1
+
+  local RISP PROB
+  RISP=$(curl -sf --max-time 15 "$RIZZO_URL" \
+    -H 'Content-Type: application/json' \
+    -d "$(jq -cn \
+      --arg state "A PR claims category '$categoria' with this diff: $riassunto. It passed mechanical gates (lines, files, syntax). You are a hostile reviewer looking for reasons to REJECT: does this diff do something different from what the category claims? Does it remove or break something? Is it too invasive for the stated purpose?" \
+      '{state:$state, model:"rizzo-latest", questions:{
+        approve: {type:"noul", instructions:"Despite passing mechanical gates, is this PR suspicious enough to reject immediately? True if safe to approve, false if something smells wrong."}
+      }}')" 2>/dev/null) || return 1
+
+  PROB=$(printf '%s' "$RISP" | jq -r '.answers.approve.noul // empty' 2>/dev/null)
+  [ -z "$PROB" ] && return 1
+
+  log "censore-razzo: p=$PROB (0 token)"
+  # solo la RIGETTAZIONE netta salta il LLM (p<0.2 = molta puzza)
+  if (( $(echo "$PROB < 0.15" | bc -l 2>/dev/null || echo 1) )); then
+    printf '{"verdetto":"RIGETTA","rischio":"alto","motivi":["censore razzo: p=%s, troppa puzza anche coi gate verdi (rizzo-flow, 0 token)"]}' "$PROB"
+    return 0
+  fi
+  return 1  # p>=0.2: il LLM giudica (il razzo non ha abbastanza contesto per approvare)
+}
 azione_gh() { # in DRY stampa a stdout, altrimenti esegue silenzioso (niente eval)
   # (2026-09-25, ottavo ventaglio, O5 R3): REVISORE_DRY_FALLISCE="<inizio del comando>" fa fallire quell'azione nel DRY —
   # serve ai banchi per provare i rami di errore (una chiusura o una fusione che GitHub rifiuta)
@@ -352,7 +381,15 @@ Giudica:
 
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 fi
-CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il 14b risponde in secondi: 300 di fiato bastano
+# (studio rizzo-flow, 2026-09-26): prima il CENSORE RAZZO (50ms, 0 token) —
+# se la probabilita' e' netta (>0.8 o <0.3), delibera da solo. Zona grigia o
+# rizzo spento: il LLM giudica come sempre.
+# (rizzo-flow): il PRE-FILTRO puo' solo bocciare veloce — l'approvazione resta al LLM
+DIFF_RIASSUNTO="Categoria ${CAT:-sconosciuta}, diff di $N_RIGHE righe su $N_FILE file: $(printf '%s' "$DIFF" | head -c 400)"
+CENS_RISP=$(chiedi_rizzo "$DIFF_RIASSUNTO" "${CAT:-sconosciuta}" 2>/dev/null) || CENS_RISP=""
+if [ -z "$CENS_RISP" ]; then
+  CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il LLM giudica (approva o rigetta)
+fi
 VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
