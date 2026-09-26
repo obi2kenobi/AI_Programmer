@@ -44,7 +44,8 @@ s = s.replace(
 )
 open(dst, "w").write(s)
 PY
-OUT_BUG=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARRG,50\n' | python3 "$BUGGED")
+# (2026-09-26, domanda 12): la copia importa tools/numero.py, la lettura unica dei numeri
+OUT_BUG=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARRG,50\n' | PYTHONPATH="$HERE/tools" python3 "$BUGGED")
 rm -f "$BUGGED"
 grep -q "^QUADRATURA ROTTA: " <<<"$OUT_BUG" \
   && ok "watchdog-guardato: un doppio conteggio iniettato fa scattare QUADRATURA ROTTA" \

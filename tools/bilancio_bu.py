@@ -34,6 +34,8 @@ CSV: conto,posting_date,bu,amount   (amount col segno del G/L)
 import csv
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 # (2026-09-26, risposta di Luca alla domanda 8 di docs/giri/2026-09-23-notte/DOMANDE.md): l'elenco CHIUSO delle BU. Il
 # docstring prometteva «fuori elenco → NOBU» ma l'elenco non esisteva: un refuso diventava una BU col suo margine.
 BU_NOTE = ("ARRG", "BIOC", "EDIL", "IMB")
@@ -73,7 +75,7 @@ def main():
         # del file (NOBU visibile, non perso). Una riga con importo mancante/non numerico
         # viene ora SCARTATA e CONTATA, non azzerata in silenzio.
         try:
-            amount = float(amount_raw)
+            amount = leggi_numero(amount_raw)  # domanda 12: anche «-1.234,56»
             # giri avversari 2026-08-28 (D20): 1e999 produceva margine -inf in silenzio
             import math as _m
             if not _m.isfinite(amount):

@@ -37,6 +37,8 @@ import re
 import sys
 from datetime import date
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 CODICE_RE = re.compile(r"\d{2}(OV|FVI|CORR)-\d+")
 CESSIONE_RE = re.compile(r"(?P<cod>\d{2}\w{2}-\d{6}) (?P<gg>\d{2})(?P<mm>\d{2})(?P<aa>\d{2})")
 
@@ -71,11 +73,11 @@ def main():
         # (2026-09-24, quinto ventaglio, R3 R3): una data vuota o «24/09/2026», o un importo «1.234,56»,
         # erano un traceback. La data si legge solo dove il rating la usa (fatture, pagamenti, cessioni).
         try:
-            importo = float(r["importo"] or 0)
+            importo = leggi_numero(r["importo"] or "0")
             data = date.fromisoformat(r["data_documento"]) if tipo in ("fattura", "pagamento", "cessione") else None
         except (ValueError, TypeError):
             print(f"ERRORE: riga {n}: importo o data non leggibili (importo={r['importo']!r}, data_documento={r['data_documento']!r};"
-                  f" attesi importo col punto decimale e data AAAA-MM-GG) — nessun rating", file=sys.stderr)
+                  f" attesi importo numerico, anche all'italiana 1.234,56, e data AAAA-MM-GG) — nessun rating", file=sys.stderr)
             return 1
         # (2026-09-24, quinto ventaglio, R3 R2): un importo nan passava come «NON MATCHATO … nan», rc 0
         if not math.isfinite(importo):

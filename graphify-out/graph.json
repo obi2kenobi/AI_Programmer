@@ -34,7 +34,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "catalogo_mancanti()",
       "source_file": "tools/bc_index.py",
@@ -46,7 +46,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_index.py",
@@ -58,7 +58,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "parse()",
       "source_file": "tools/bc_index.py",
@@ -70,47 +70,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L31"
-    },
-    {
-      "id": "tools_verifica_banco_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L34"
-    },
-    {
-      "id": "tools_accuratezza_fatture_acquisto_leggi_csv",
-      "label": "leggi_csv()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "leggi_csv()",
-      "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L40"
-    },
-    {
-      "id": "tools_accuratezza_fatture_acquisto_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L77"
     },
     {
       "id": "tools_bilancio_bu_main",
@@ -118,11 +82,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L42"
+      "source_location": "L44"
     },
     {
       "id": "tools_margine_documento_leggi_csv",
@@ -130,11 +94,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "leggi_csv()",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L47"
+      "source_location": "L49"
     },
     {
       "id": "tools_margine_documento_main",
@@ -142,11 +106,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L84"
+      "source_location": "L87"
     },
     {
       "id": "tools_margine_documento_normalizza",
@@ -154,11 +118,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L40"
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_numero_leggi_numero",
+      "label": "leggi_numero()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "leggi_numero",
+      "file_type": "code",
+      "norm_label": "leggi_numero()",
+      "source_file": "tools/numero.py",
+      "source_location": "L26"
     },
     {
       "id": "tools_rating_dso_clienti_main",
@@ -166,11 +142,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48"
+      "source_location": "L50"
     },
     {
       "id": "tools_rating_dso_clienti_normalizza",
@@ -178,11 +154,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "normalizza()",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L44"
+      "source_location": "L46"
     },
     {
       "id": "tools_riconciliazione_magazzino_categorizza",
@@ -190,11 +166,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "categorizza()",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L20"
+      "source_location": "L22"
     },
     {
       "id": "tools_riconciliazione_magazzino_main",
@@ -202,11 +178,83 @@
       "_callable": true,
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L60"
+      "source_location": "L62"
+    },
+    {
+      "id": "tools_accuratezza_fatture_acquisto_leggi_csv",
+      "label": "leggi_csv()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "leggi_csv()",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_accuratezza_fatture_acquisto_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L80"
+    },
+    {
+      "id": "tools_indici_crisi_crisi_presunta",
+      "label": "crisi_presunta()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "crisi_presunta()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L73"
+    },
+    {
+      "id": "tools_indici_crisi_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L77"
+    },
+    {
+      "id": "tools_indici_crisi_pct",
+      "label": "pct()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "pct()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "tools_indici_crisi_valuta_indici_crisi",
+      "label": "valuta_indici_crisi()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "valuta_indici_crisi()",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L49"
     },
     {
       "id": "tools_rollforward_cespiti_calcola_roll_forward",
@@ -214,7 +262,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "calcola_roll_forward()",
       "source_file": "tools/rollforward_cespiti.py",
@@ -226,7 +274,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "fondi_al_segno_convenzionale()",
       "source_file": "tools/rollforward_cespiti.py",
@@ -238,47 +286,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L83"
-    },
-    {
-      "id": "tools_e002_siti_dentro_virgolette",
-      "label": "dentro_virgolette()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "dentro_virgolette()",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L18"
-    },
-    {
-      "id": "tools_e002_siti_incluse_sotto_pipefail",
-      "label": "incluse_sotto_pipefail()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "incluse_sotto_pipefail()",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L43"
-    },
-    {
-      "id": "tools_e002_siti_siti",
-      "label": "siti()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "code",
-      "norm_label": "siti()",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L59"
     },
     {
       "id": "tools_scadenzario_aging_aggrega_totali",
@@ -290,7 +302,7 @@
       "file_type": "code",
       "norm_label": "aggrega_totali()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L77"
+      "source_location": "L79"
     },
     {
       "id": "tools_scadenzario_aging_fascia_dettaglio",
@@ -302,7 +314,7 @@
       "file_type": "code",
       "norm_label": "fascia_dettaglio()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38"
+      "source_location": "L40"
     },
     {
       "id": "tools_scadenzario_aging_importo_fornitore",
@@ -314,7 +326,7 @@
       "file_type": "code",
       "norm_label": "importo_fornitore()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L72"
+      "source_location": "L74"
     },
     {
       "id": "tools_scadenzario_aging_main",
@@ -326,7 +338,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L101"
+      "source_location": "L103"
     },
     {
       "id": "tools_scadenzario_aging_tipo_noto",
@@ -338,7 +350,7 @@
       "file_type": "code",
       "norm_label": "tipo_noto()",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L68"
+      "source_location": "L70"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -470,7 +482,7 @@
       "file_type": "code",
       "norm_label": "applica_override()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L66"
+      "source_location": "L68"
     },
     {
       "id": "tools_valorizzazione_magazzino_costo_base_per_codice",
@@ -482,7 +494,7 @@
       "file_type": "code",
       "norm_label": "costo_base_per_codice()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L45"
+      "source_location": "L47"
     },
     {
       "id": "tools_valorizzazione_magazzino_main",
@@ -494,7 +506,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L148"
+      "source_location": "L150"
     },
     {
       "id": "tools_valorizzazione_magazzino_risolvi_costo",
@@ -506,7 +518,7 @@
       "file_type": "code",
       "norm_label": "risolvi_costo()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L91"
+      "source_location": "L93"
     },
     {
       "id": "tools_valorizzazione_magazzino_valorizza",
@@ -518,7 +530,7 @@
       "file_type": "code",
       "norm_label": "valorizza()",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L104"
+      "source_location": "L106"
     },
     {
       "id": "tools_bc_map_collect_fields",
@@ -641,54 +653,6 @@
       "source_location": "L126"
     },
     {
-      "id": "tools_indici_crisi_crisi_presunta",
-      "label": "crisi_presunta()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "code",
-      "norm_label": "crisi_presunta()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L73"
-    },
-    {
-      "id": "tools_indici_crisi_main",
-      "label": "main()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "code",
-      "norm_label": "main()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L77"
-    },
-    {
-      "id": "tools_indici_crisi_pct",
-      "label": "pct()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "code",
-      "norm_label": "pct()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L45"
-    },
-    {
-      "id": "tools_indici_crisi_valuta_indici_crisi",
-      "label": "valuta_indici_crisi()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "code",
-      "norm_label": "valuta_indici_crisi()",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L49"
-    },
-    {
       "id": "tools_scostamento_standard_effettivo_calcola_scostamento",
       "label": "calcola_scostamento()",
       "_callable": true,
@@ -698,7 +662,7 @@
       "file_type": "code",
       "norm_label": "calcola_scostamento()",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L32"
+      "source_location": "L34"
     },
     {
       "id": "tools_scostamento_standard_effettivo_calcola_trend",
@@ -710,7 +674,7 @@
       "file_type": "code",
       "norm_label": "calcola_trend()",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L38"
+      "source_location": "L40"
     },
     {
       "id": "tools_scostamento_standard_effettivo_main",
@@ -722,7 +686,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L77"
+      "source_location": "L79"
     },
     {
       "id": "tools_scostamento_standard_effettivo_media_pesata",
@@ -734,7 +698,7 @@
       "file_type": "code",
       "norm_label": "media_pesata()",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L26"
+      "source_location": "L28"
     },
     {
       "id": "tools_scostamento_standard_effettivo_valuta_alert",
@@ -746,7 +710,7 @@
       "file_type": "code",
       "norm_label": "valuta_alert()",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L63"
+      "source_location": "L65"
     },
     {
       "id": "tools_dashboard_barrette",
@@ -881,12 +845,48 @@
       "source_location": "L190"
     },
     {
+      "id": "tools_e002_siti_dentro_virgolette",
+      "label": "dentro_virgolette()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "dentro_virgolette()",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L18"
+    },
+    {
+      "id": "tools_e002_siti_incluse_sotto_pipefail",
+      "label": "incluse_sotto_pipefail()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "incluse_sotto_pipefail()",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "tools_e002_siti_siti",
+      "label": "siti()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "siti()",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L59"
+    },
+    {
       "id": "tools_gas_qualita_function_bodies",
       "label": "function_bodies()",
       "_callable": true,
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "function_bodies()",
       "source_file": "tools/gas_qualita.py",
@@ -898,7 +898,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "leggi_file()",
       "source_file": "tools/gas_qualita.py",
@@ -910,7 +910,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/gas_qualita.py",
@@ -922,11 +922,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "riga_di()",
       "source_file": "tools/gas_qualita.py",
       "source_location": "L59"
+    },
+    {
+      "id": "tools_verifica_banco_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L34"
     },
     {
       "id": "sal_2026_08_27_10_trenta_giri_n_2_il_collegamento_rotto_ero_io",
@@ -12153,7 +12165,7 @@
       "label": "bc_index.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "bc_index.py",
       "source_file": "tools/bc_index.py",
@@ -12164,21 +12176,10 @@
       "label": "bc_tipi_metadata.py",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "code",
       "norm_label": "bc_tipi_metadata.py",
       "source_file": "tools/bc_tipi_metadata.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_verifica_banco",
-      "label": "verifica_banco.py",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "code",
-      "norm_label": "verifica_banco.py",
-      "source_file": "tools/verifica_banco.py",
       "source_location": "L1"
     },
     {
@@ -12186,7 +12187,7 @@
       "label": "Severit\u00e0 MEDIA (15)",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "severita media (15)",
@@ -12198,7 +12199,7 @@
       "label": "Riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "riduce una riga di censimento endpoint ai campi dell'indice: nome, servizi...",
       "source_file": "tools/bc_index.py",
@@ -12209,7 +12210,7 @@
       "label": "Rigenera docs/bc/README.md dall'indice dei file endpoint mappati. Uso: python3\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'indice dei file endpoint mappati. uso: python3...",
       "source_file": "tools/bc_index.py",
@@ -12220,7 +12221,7 @@
       "label": "I servizi OData del catalogo (2026-08-26, fornitore: Luca) senza file di\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "i servizi odata del catalogo (2026-08-26, fornitore: luca) senza file di...",
       "source_file": "tools/bc_index.py",
@@ -12231,7 +12232,7 @@
       "label": "Rigenera docs/bc/README.md dall'insieme dei censimenti: l'indice NON si edita a\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "rigenera docs/bc/readme.md dall'insieme dei censimenti: l'indice non si edita a...",
       "source_file": "tools/bc_index.py",
@@ -12242,7 +12243,7 @@
       "label": "Corregge i TIPI dei campi del censimento usando $metadata (schema vero, non\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "corregge i tipi dei campi del censimento usando $metadata (schema vero, non...",
       "source_file": "tools/bc_tipi_metadata.py",
@@ -12253,33 +12254,11 @@
       "label": "Scarica $metadata (schema VERO, non campioni), mappa EntitySet\u2192\u2026",
       "_origin": "ast",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "file_type": "rationale",
       "norm_label": "scarica $metadata (schema vero, non campioni), mappa entityset\u2192...",
       "source_file": "tools/bc_tipi_metadata.py",
       "source_location": "L32"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_2",
-      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_verifica_banco_rationale_35",
-      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
-      "_origin": "ast",
-      "community": 174,
-      "community_name": "re",
-      "file_type": "rationale",
-      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
-      "source_file": "tools/verifica_banco.py",
-      "source_location": "L35"
     },
     {
       "id": "opencode_skills_allineamento_fork_skill",
@@ -20098,22 +20077,11 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto",
-      "label": "accuratezza_fatture_acquisto.py",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "code",
-      "norm_label": "accuratezza_fatture_acquisto.py",
-      "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L1"
-    },
-    {
       "id": "tools_bilancio_bu",
       "label": "bilancio_bu.py",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "bilancio_bu.py",
       "source_file": "tools/bilancio_bu.py",
@@ -20124,10 +20092,21 @@
       "label": "margine_documento.py",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "margine_documento.py",
       "source_file": "tools/margine_documento.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_numero",
+      "label": "numero.py",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "leggi_numero",
+      "file_type": "code",
+      "norm_label": "numero.py",
+      "source_file": "tools/numero.py",
       "source_location": "L1"
     },
     {
@@ -20135,7 +20114,7 @@
       "label": "rating_dso_clienti.py",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "rating_dso_clienti.py",
       "source_file": "tools/rating_dso_clienti.py",
@@ -20146,154 +20125,155 @@
       "label": "riconciliazione_magazzino.py",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "code",
       "norm_label": "riconciliazione_magazzino.py",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L1"
     },
     {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_2",
-      "label": "Accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza\u2026",
+      "id": "debiti_la_notte_dei_giri_2026_09_23",
+      "label": "La notte dei giri (2026-09-23)",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza...",
-      "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_41",
-      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
-      "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L41"
-    },
-    {
-      "id": "tools_accuratezza_fatture_acquisto_rationale_78",
-      "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
-      "_origin": "ast",
-      "community": 252,
-      "community_name": "sys",
-      "file_type": "rationale",
-      "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
-      "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L78"
+      "community_name": "leggi_numero",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "la notte dei giri (2026-09-23)",
+      "source_file": "DEBITI.md",
+      "source_location": "L241"
     },
     {
       "id": "tools_bilancio_bu_rationale_3",
       "label": "Conto economico per Business Unit dalla contabilit\u00e0 generale (G/L). Oracolo (7\u00b0\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "conto economico per business unit dalla contabilita generale (g/l). oracolo (7\u00b0...",
       "source_file": "tools/bilancio_bu.py",
       "source_location": "L3"
     },
     {
-      "id": "tools_bilancio_bu_rationale_43",
+      "id": "tools_bilancio_bu_rationale_45",
       "label": "Un CSV bu,amount per stdin \u2192 tabella per BU con margine diretto e quadratura.\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "un csv bu,amount per stdin \u2192 tabella per bu con margine diretto e quadratura....",
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L43"
+      "source_location": "L45"
     },
     {
       "id": "tools_margine_documento_rationale_2",
       "label": "Margine per documento: accoppiamento vendita\u2194acquisto per riferimento. Oracolo\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "margine per documento: accoppiamento vendita\u2194acquisto per riferimento. oracolo...",
       "source_file": "tools/margine_documento.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_margine_documento_rationale_48",
+      "id": "tools_margine_documento_rationale_50",
       "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L48"
+      "source_location": "L50"
     },
     {
-      "id": "tools_margine_documento_rationale_85",
+      "id": "tools_margine_documento_rationale_88",
       "label": "Accoppia vendite\u2194acquisti per riferimento documento, calcola margine per\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L85"
+      "source_location": "L88"
+    },
+    {
+      "id": "tools_numero_rationale_1",
+      "label": "numero.py \u2014 la lettura unica dei numeri negli export CSV, per tutti gli\u2026",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "leggi_numero",
+      "file_type": "rationale",
+      "norm_label": "numero.py \u2014 la lettura unica dei numeri negli export csv, per tutti gli...",
+      "source_file": "tools/numero.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_numero_rationale_27",
+      "label": "Il testo di una cella -> float. ValueError se non \u00e8 un numero riconosciuto.",
+      "_origin": "ast",
+      "community": 252,
+      "community_name": "leggi_numero",
+      "file_type": "rationale",
+      "norm_label": "il testo di una cella -> float. valueerror se non e un numero riconosciuto.",
+      "source_file": "tools/numero.py",
+      "source_location": "L27"
     },
     {
       "id": "tools_rating_dso_clienti_rationale_3",
       "label": "Rating clienti: DSO medio per cliente con matching pagamenti\u2194fatture e\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "rating clienti: dso medio per cliente con matching pagamenti\u2194fatture e...",
       "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L3"
     },
     {
-      "id": "tools_rating_dso_clienti_rationale_49",
+      "id": "tools_rating_dso_clienti_rationale_51",
       "label": "Movimenti CSV in stdin \u2192 DSO medio per cliente. Il matching \u00e8 quello del\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "movimenti csv in stdin \u2192 dso medio per cliente. il matching e quello del...",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L49"
+      "source_location": "L51"
     },
     {
       "id": "tools_riconciliazione_magazzino_rationale_2",
       "label": "Riconciliazione inventario fisico di magazzino. Formula reale (oracolo, non\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "riconciliazione inventario fisico di magazzino. formula reale (oracolo, non...",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L2"
     },
     {
-      "id": "tools_riconciliazione_magazzino_rationale_21",
+      "id": "tools_riconciliazione_magazzino_rationale_23",
       "label": "Il cuore della riconciliazione (formula REPO-E): delta = fisica \u2212 BC,\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "il cuore della riconciliazione (formula repo-e): delta = fisica \u2212 bc,...",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L21"
+      "source_location": "L23"
     },
     {
-      "id": "tools_riconciliazione_magazzino_rationale_61",
+      "id": "tools_riconciliazione_magazzino_rationale_63",
       "label": "CSV in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto\u2026",
       "_origin": "ast",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "file_type": "rationale",
       "norm_label": "csv in stdin \u2192 conteggi per categoria, rettifiche ordinate per impatto...",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L61"
+      "source_location": "L63"
     },
     {
       "id": "night_shift_lib",
@@ -21823,22 +21803,110 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_accuratezza_fatture_acquisto",
+      "label": "accuratezza_fatture_acquisto.py",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "accuratezza_fatture_acquisto.py",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_indici_crisi",
+      "label": "indici_crisi.py",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "code",
+      "norm_label": "indici_crisi.py",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_rollforward_cespiti",
       "label": "rollforward_cespiti.py",
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "code",
       "norm_label": "rollforward_cespiti.py",
       "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L1"
     },
     {
+      "id": "tools_accuratezza_fatture_acquisto_rationale_2",
+      "label": "Accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza\u2026",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "rationale",
+      "norm_label": "accuratezza fatture di acquisto: matching fattura\u2194ordine e accuratezza...",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_accuratezza_fatture_acquisto_rationale_43",
+      "label": "(giro 21, 2026-09-20 \u2014 D32): file inesistente o colonna mancante = traceback\u2026",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "rationale",
+      "norm_label": "(giro 21, 2026-09-20 \u2014 d32): file inesistente o colonna mancante = traceback...",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L43"
+    },
+    {
+      "id": "tools_accuratezza_fatture_acquisto_rationale_81",
+      "label": "Fatture vs ordini \u2192 accuratezza (T\u2212E)/T. Solo l'OVER-invoicing \u00e8 discrepanza\u2026",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "rationale",
+      "norm_label": "fatture vs ordini \u2192 accuratezza (t\u2212e)/t. solo l'over-invoicing e discrepanza...",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L81"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_2",
+      "label": "Indici della crisi d'impresa (CNDCEC / CCII, D.Lgs 14/2019), settore G46.\u2026",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "rationale",
+      "norm_label": "indici della crisi d'impresa (cndcec / ccii, d.lgs 14/2019), settore g46....",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_50",
+      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "rationale",
+      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L50"
+    },
+    {
+      "id": "tools_indici_crisi_rationale_78",
+      "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
+      "_origin": "ast",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "file_type": "rationale",
+      "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
+      "source_file": "tools/indici_crisi.py",
+      "source_location": "L78"
+    },
+    {
       "id": "tools_rollforward_cespiti_rationale_2",
       "label": "Roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per\u2026",
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "roll-forward annuale dei cespiti (costo storico, fondo, valore netto) per...",
       "source_file": "tools/rollforward_cespiti.py",
@@ -21849,7 +21917,7 @@
       "label": "(2026-09-26, risposta di Luca alla domanda 6 di\u2026",
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "(2026-09-26, risposta di luca alla domanda 6 di...",
       "source_file": "tools/rollforward_cespiti.py",
@@ -21860,7 +21928,7 @@
       "label": "Roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1\u2026",
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "roll-forward per categoria: iniziale + acquisizioni \u2212 dismissioni \u00b1...",
       "source_file": "tools/rollforward_cespiti.py",
@@ -21871,7 +21939,7 @@
       "label": "Cespiti JSON in stdin \u2192 righe roll-forward. Input non-parsabile: uso.",
       "_origin": "ast",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "file_type": "rationale",
       "norm_label": "cespiti json in stdin \u2192 righe roll-forward. input non-parsabile: uso.",
       "source_file": "tools/rollforward_cespiti.py",
@@ -28067,59 +28135,79 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_e002_siti",
-      "label": "e002-siti.py",
+      "id": "tests_test_numero",
+      "label": "test-numero.sh",
       "_origin": "ast",
       "community": 34,
-      "community_name": "e002-siti.py",
+      "community_name": "test-numero.sh",
       "file_type": "code",
-      "norm_label": "e002-siti.py",
-      "source_file": "tools/e002-siti.py",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-numero.sh",
+      "source_file": "tests/test-numero.sh",
       "source_location": "L1"
     },
     {
-      "id": "tools_e002_siti_rationale_19",
-      "label": "True se la posizione pos della riga sta dentro '\u2026' o \"\u2026\" (le barre rovesciate\u2026",
+      "id": "tests_test_numero_ko",
+      "label": "ko()",
       "_origin": "ast",
       "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "true se la posizione pos della riga sta dentro '...' o \"...\" (le barre rovesciate...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L19"
+      "community_name": "test-numero.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L13"
     },
     {
-      "id": "tools_e002_siti_rationale_2",
-      "label": "e002-siti.py \u2014 elenca i siti della famiglia E-002 nei file bash sotto pipefail:\u2026",
+      "id": "tests_test_numero_leggi",
+      "label": "leggi()",
       "_origin": "ast",
       "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "e002-siti.py \u2014 elenca i siti della famiglia e-002 nei file bash sotto pipefail:...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L2"
+      "community_name": "test-numero.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "leggi()",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L16"
     },
     {
-      "id": "tools_e002_siti_rationale_44",
-      "label": "I nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano\u2026",
+      "id": "tests_test_numero_ok",
+      "label": "ok()",
       "_origin": "ast",
       "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "i nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L44"
+      "community_name": "test-numero.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L12"
     },
     {
-      "id": "tools_e002_siti_rationale_60",
-      "label": "I siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo\u2026",
+      "id": "tests_test_numero_sh__entry",
+      "label": "test-numero.sh script",
       "_origin": "ast",
       "community": 34,
-      "community_name": "e002-siti.py",
-      "file_type": "rationale",
-      "norm_label": "i siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo...",
-      "source_file": "tools/e002-siti.py",
-      "source_location": "L60"
+      "community_name": "test-numero.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-numero.sh script",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L1"
     },
     {
       "id": "tests_test_sync_repo_hooks_propagation",
@@ -30790,7 +30878,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_102",
+      "id": "tools_scadenzario_aging_rationale_104",
       "label": "Scadenzario CSV (giorni,tipo,importo) \u2192 aging con fasce e totali. Header\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30798,7 +30886,7 @@
       "file_type": "rationale",
       "norm_label": "scadenzario csv (giorni,tipo,importo) \u2192 aging con fasce e totali. header...",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L102"
+      "source_location": "L104"
     },
     {
       "id": "tools_scadenzario_aging_rationale_2",
@@ -30812,7 +30900,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_39",
+      "id": "tools_scadenzario_aging_rationale_41",
       "label": "Bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia \u00e8\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30820,10 +30908,10 @@
       "file_type": "rationale",
       "norm_label": "bucket di scaduto (<=30, 31-60, >60) e residuo (breve/medio/lungo): la fascia e...",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L39"
+      "source_location": "L41"
     },
     {
-      "id": "tools_scadenzario_aging_rationale_78",
+      "id": "tools_scadenzario_aging_rationale_80",
       "label": "Somme per fascia e saldo netto. Le righe fornitore passano da importo_fornitore\u2026",
       "_origin": "ast",
       "community": 38,
@@ -30831,7 +30919,7 @@
       "file_type": "rationale",
       "norm_label": "somme per fascia e saldo netto. le righe fornitore passano da importo_fornitore...",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L78"
+      "source_location": "L80"
     },
     {
       "id": "tools_prova_rilevatori",
@@ -35192,7 +35280,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_105",
+      "id": "tools_valorizzazione_magazzino_rationale_107",
       "label": "Il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. Senza\u2026",
       "_origin": "ast",
       "community": 48,
@@ -35200,10 +35288,10 @@
       "file_type": "rationale",
       "norm_label": "il cuore dell'oracolo: per riga \u2014 location esclusa? riportata a parte. senza...",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L105"
+      "source_location": "L107"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_149",
+      "id": "tools_valorizzazione_magazzino_rationale_151",
       "label": "Report: totale SOLO delle location considerate, dettaglio ordinato per valore,\u2026",
       "_origin": "ast",
       "community": 48,
@@ -35211,7 +35299,7 @@
       "file_type": "rationale",
       "norm_label": "report: totale solo delle location considerate, dettaglio ordinato per valore,...",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L149"
+      "source_location": "L151"
     },
     {
       "id": "tools_valorizzazione_magazzino_rationale_2",
@@ -35225,7 +35313,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_46",
+      "id": "tools_valorizzazione_magazzino_rationale_48",
       "label": "Primo costo medio non-nullo per codice, attraversando le location.",
       "_origin": "ast",
       "community": 48,
@@ -35233,10 +35321,10 @@
       "file_type": "rationale",
       "norm_label": "primo costo medio non-nullo per codice, attraversando le location.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L46"
+      "source_location": "L48"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_67",
+      "id": "tools_valorizzazione_magazzino_rationale_69",
       "label": "PERCENTUALE: costo*(1+v/100) \u00b7 EURO: costo+v. override None \u2192 costo invariato.",
       "_origin": "ast",
       "community": 48,
@@ -35244,10 +35332,10 @@
       "file_type": "rationale",
       "norm_label": "percentuale: costo*(1+v/100) \u00b7 euro: costo+v. override none \u2192 costo invariato.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L67"
+      "source_location": "L69"
     },
     {
-      "id": "tools_valorizzazione_magazzino_rationale_92",
+      "id": "tools_valorizzazione_magazzino_rationale_94",
       "label": "Catena articolo > categoria > gruppo: il primo override esistente vince.",
       "_origin": "ast",
       "community": 48,
@@ -35255,7 +35343,7 @@
       "file_type": "rationale",
       "norm_label": "catena articolo > categoria > gruppo: il primo override esistente vince.",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L92"
+      "source_location": "L94"
     },
     {
       "id": "docs_bc_endpoints_prezzi_vendita_excel",
@@ -39862,18 +39950,6 @@
       "norm_label": "il turno senza limite ha bruciato 3 notti (evidenza misurata, 2026-08-31)",
       "source_file": "DEBITI.md",
       "source_location": "L168"
-    },
-    {
-      "id": "debiti_la_notte_dei_giri_2026_09_23",
-      "label": "La notte dei giri (2026-09-23)",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "DEBITI.md \u2014 il registro delle scorciatoie rimandate",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "la notte dei giri (2026-09-23)",
-      "source_file": "DEBITI.md",
-      "source_location": "L241"
     },
     {
       "id": "debiti_la_notte_dei_giri_rinviato_risolvibile",
@@ -48791,50 +48867,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_indici_crisi",
-      "label": "indici_crisi.py",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "code",
-      "norm_label": "indici_crisi.py",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_indici_crisi_rationale_2",
-      "label": "Indici della crisi d'impresa (CNDCEC / CCII, D.Lgs 14/2019), settore G46.\u2026",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "rationale",
-      "norm_label": "indici della crisi d'impresa (cndcec / ccii, d.lgs 14/2019), settore g46....",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L2"
-    },
-    {
-      "id": "tools_indici_crisi_rationale_50",
-      "label": "Cinque indici con soglie del codice REPO-E (non leggi italiane: la presunzione\u2026",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "rationale",
-      "norm_label": "cinque indici con soglie del codice repo-e (non leggi italiane: la presunzione...",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L50"
-    },
-    {
-      "id": "tools_indici_crisi_rationale_78",
-      "label": "Bilancio JSON in stdin \u2192 verdetti per indice + presunzione finale. Input non-\u2026",
-      "_origin": "ast",
-      "community": 756,
-      "community_name": "indici_crisi.py",
-      "file_type": "rationale",
-      "norm_label": "bilancio json in stdin \u2192 verdetti per indice + presunzione finale. input non-...",
-      "source_file": "tools/indici_crisi.py",
-      "source_location": "L78"
-    },
-    {
       "id": "tests_test_stdin_timeout",
       "label": "test-stdin-timeout.sh",
       "_origin": "ast",
@@ -51273,7 +51305,7 @@
       "source_location": "L2"
     },
     {
-      "id": "tools_scostamento_standard_effettivo_rationale_39",
+      "id": "tools_scostamento_standard_effettivo_rationale_41",
       "label": "Trend mese per mese: effetto\u2212standard con segno \u2014 il segno dice se si \u00e8 speso\u2026",
       "_origin": "ast",
       "community": 84,
@@ -51281,10 +51313,10 @@
       "file_type": "rationale",
       "norm_label": "trend mese per mese: effetto\u2212standard con segno \u2014 il segno dice se si e speso...",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L39"
+      "source_location": "L41"
     },
     {
-      "id": "tools_scostamento_standard_effettivo_rationale_64",
+      "id": "tools_scostamento_standard_effettivo_rationale_66",
       "label": "La soglia scatta su valore ASSOLUTO: scostamento \u221212% e +12% valgono lo stesso\u2026",
       "_origin": "ast",
       "community": 84,
@@ -51292,10 +51324,10 @@
       "file_type": "rationale",
       "norm_label": "la soglia scatta su valore assoluto: scostamento \u221212% e +12% valgono lo stesso...",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L64"
+      "source_location": "L66"
     },
     {
-      "id": "tools_scostamento_standard_effettivo_rationale_78",
+      "id": "tools_scostamento_standard_effettivo_rationale_80",
       "label": "Legge costo_standard da argv, i consumi da stdin, stampa confronto, trend e\u2026",
       "_origin": "ast",
       "community": 84,
@@ -51303,7 +51335,7 @@
       "file_type": "rationale",
       "norm_label": "legge costo_standard da argv, i consumi da stdin, stampa confronto, trend e...",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L78"
+      "source_location": "L80"
     },
     {
       "id": "claude_agents_sviluppatore_gas",
@@ -52945,22 +52977,88 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_e002_siti",
+      "label": "e002-siti.py",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "e002-siti.py",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L1"
+    },
+    {
       "id": "tools_gas_qualita",
       "label": "gas_qualita.py",
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "code",
       "norm_label": "gas_qualita.py",
       "source_file": "tools/gas_qualita.py",
       "source_location": "L1"
     },
     {
+      "id": "tools_verifica_banco",
+      "label": "verifica_banco.py",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "code",
+      "norm_label": "verifica_banco.py",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_e002_siti_rationale_19",
+      "label": "True se la posizione pos della riga sta dentro '\u2026' o \"\u2026\" (le barre rovesciate\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "true se la posizione pos della riga sta dentro '...' o \"...\" (le barre rovesciate...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L19"
+    },
+    {
+      "id": "tools_e002_siti_rationale_2",
+      "label": "e002-siti.py \u2014 elenca i siti della famiglia E-002 nei file bash sotto pipefail:\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "e002-siti.py \u2014 elenca i siti della famiglia e-002 nei file bash sotto pipefail:...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_e002_siti_rationale_44",
+      "label": "I nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "i nomi dei file che uno script sotto pipefail include con `source`/`.` \u2014 girano...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "tools_e002_siti_rationale_60",
+      "label": "I siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "i siti file:riga di un file, solo se gira sotto pipefail: lo dichiara, o lo...",
+      "source_file": "tools/e002-siti.py",
+      "source_location": "L60"
+    },
+    {
       "id": "tools_gas_qualita_rationale_2",
       "label": "Censimento qualit\u00e0 di un progetto Google Apps Script \u2014 le famiglie misurate del\u2026",
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "censimento qualita di un progetto google apps script \u2014 le famiglie misurate del...",
       "source_file": "tools/gas_qualita.py",
@@ -52971,7 +53069,7 @@
       "label": "Lettura tollerante (encoding/errori): un file illeggibile \u00e8 un rilevo, non un\u2026",
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "lettura tollerante (encoding/errori): un file illeggibile e un rilevo, non un...",
       "source_file": "tools/gas_qualita.py",
@@ -52982,7 +53080,7 @@
       "label": "Nome \u2192 corpo normalizzato (brace matching approssimato per funzioni top-level).",
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "nome \u2192 corpo normalizzato (brace matching approssimato per funzioni top-level).",
       "source_file": "tools/gas_qualita.py",
@@ -52993,18 +53091,40 @@
       "label": "Il rilevatore: per ogni famiglia misurata, cerca nel progetto GAS i segni che\u2026",
       "_origin": "ast",
       "community": 99,
-      "community_name": "gas_qualita.py",
+      "community_name": "sys",
       "file_type": "rationale",
       "norm_label": "il rilevatore: per ogni famiglia misurata, cerca nel progetto gas i segni che...",
       "source_file": "tools/gas_qualita.py",
       "source_location": "L64"
     },
     {
+      "id": "tools_verifica_banco_rationale_2",
+      "label": "Verifica meccanica dell'uscita di un banco GAS \u2014 l'exit code non \u00e8 un verdetto.\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "verifica meccanica dell'uscita di un banco gas \u2014 l'exit code non e un verdetto....",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L2"
+    },
+    {
+      "id": "tools_verifica_banco_rationale_35",
+      "label": "I cinque controlli del docstring, in ordine di severit\u00e0: forma prima del\u2026",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "sys",
+      "file_type": "rationale",
+      "norm_label": "i cinque controlli del docstring, in ordine di severita: forma prima del...",
+      "source_file": "tools/verifica_banco.py",
+      "source_location": "L35"
+    },
+    {
       "id": "glob",
       "label": "glob",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "glob",
@@ -53016,7 +53136,7 @@
       "label": "importlib_util",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "importlib_util",
@@ -53028,22 +53148,10 @@
       "label": "os",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "os",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "re",
-      "label": "re",
-      "_origin": "semantic",
-      "community": 174,
-      "community_name": "re",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "re",
       "source_file": "",
       "type": "external"
     },
@@ -53052,7 +53160,7 @@
       "label": "urllib_request",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "urllib_request",
@@ -53064,7 +53172,7 @@
       "label": "xml_etree_elementtree",
       "_origin": "semantic",
       "community": 174,
-      "community_name": "re",
+      "community_name": "bc_tipi_metadata.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "xml_etree_elementtree",
@@ -53076,34 +53184,10 @@
       "label": "csv",
       "_origin": "semantic",
       "community": 252,
-      "community_name": "sys",
+      "community_name": "leggi_numero",
       "external": true,
       "file_type": "concept",
       "norm_label": "csv",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "math",
-      "label": "math",
-      "_origin": "semantic",
-      "community": 252,
-      "community_name": "sys",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "math",
-      "source_file": "",
-      "type": "external"
-    },
-    {
-      "id": "sys",
-      "label": "sys",
-      "_origin": "semantic",
-      "community": 252,
-      "community_name": "sys",
-      "external": true,
-      "file_type": "concept",
-      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     },
@@ -53112,10 +53196,22 @@
       "label": "json",
       "_origin": "semantic",
       "community": 267,
-      "community_name": "json",
+      "community_name": "accuratezza_fatture_acquisto.py",
       "external": true,
       "file_type": "concept",
       "norm_label": "json",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "math",
+      "label": "math",
+      "_origin": "semantic",
+      "community": 267,
+      "community_name": "accuratezza_fatture_acquisto.py",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "math",
       "source_file": "",
       "type": "external"
     },
@@ -53236,6 +53332,30 @@
       "external": true,
       "file_type": "concept",
       "norm_label": "time",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "re",
+      "label": "re",
+      "_origin": "semantic",
+      "community": 99,
+      "community_name": "sys",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "re",
+      "source_file": "",
+      "type": "external"
+    },
+    {
+      "id": "sys",
+      "label": "sys",
+      "_origin": "semantic",
+      "community": 99,
+      "community_name": "sys",
+      "external": true,
+      "file_type": "concept",
+      "norm_label": "sys",
       "source_file": "",
       "type": "external"
     }
@@ -58906,6 +59026,42 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_numero_sh__entry",
+      "target": "tests_test_numero_leggi",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_numero_sh__entry",
+      "target": "tests_test_numero_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_numero_sh__entry",
+      "target": "tests_test_numero_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_nuova_commessa_wizard_coerenza_sh__entry",
       "target": "tests_test_nuova_commessa_wizard_coerenza_ko",
       "relation": "calls",
@@ -60934,6 +61090,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_accuratezza_fatture_acquisto_leggi_csv",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
       "source": "tools_accuratezza_fatture_acquisto_main",
       "target": "tools_accuratezza_fatture_acquisto_leggi_csv",
       "relation": "calls",
@@ -60942,7 +61110,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L103",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -61123,6 +61291,18 @@
       "context": "call",
       "source_file": "tools/bencina-modelli.sh",
       "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_bilancio_bu_main",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -61846,6 +62026,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_margine_documento_leggi_csv",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
       "source": "tools_margine_documento_main",
       "target": "tools_margine_documento_normalizza",
       "relation": "calls",
@@ -61854,7 +62046,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L102",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -61866,7 +62058,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/margine_documento.py",
-      "source_location": "L93",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -62130,7 +62322,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L70",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_rating_dso_clienti_main",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_riconciliazione_magazzino_categorizza",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
@@ -62142,7 +62358,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L82",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
@@ -62171,6 +62387,18 @@
     },
     {
       "source": "tools_scadenzario_aging_main",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L129",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scadenzario_aging_main",
       "target": "tools_scadenzario_aging_fascia_dettaglio",
       "relation": "calls",
       "_origin": "ast",
@@ -62178,7 +62406,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L128",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
@@ -62190,7 +62418,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L147",
+      "source_location": "L149",
       "weight": 1.0
     },
     {
@@ -62202,7 +62430,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L150",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -62214,7 +62442,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L167",
+      "source_location": "L169",
       "weight": 1.0
     },
     {
@@ -62226,7 +62454,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L49",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scostamento_standard_effettivo_main",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/scostamento_standard_effettivo.py",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -62238,7 +62478,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L130",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -62250,7 +62490,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L131",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -62262,7 +62502,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L132",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -62274,7 +62514,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L133",
+      "source_location": "L135",
       "weight": 1.0
     },
     {
@@ -62386,6 +62626,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_valorizzazione_magazzino_costo_base_per_codice",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
       "source": "tools_valorizzazione_magazzino_main",
       "target": "tools_valorizzazione_magazzino_valorizza",
       "relation": "calls",
@@ -62394,7 +62646,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L184",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -62406,7 +62658,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L100",
+      "source_location": "L102",
       "weight": 1.0
     },
     {
@@ -62418,7 +62670,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L110",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_valorizzazione_magazzino_valorizza",
+      "target": "tools_numero_leggi_numero",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -62430,7 +62694,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L136",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -62575,6 +62839,18 @@
       "context": "import",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_accuratezza_fatture_acquisto",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -62803,6 +63079,18 @@
       "context": "import",
       "source_file": "tools/bilancio_bu.py",
       "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_bilancio_bu",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -63094,6 +63382,30 @@
       "weight": 1.0
     },
     {
+      "source": "tools_margine_documento",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_numero",
+      "target": "re",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/numero.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
       "source": "tools_rating_dso_clienti",
       "target": "csv",
       "relation": "imports",
@@ -63142,6 +63454,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_rating_dso_clienti",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
       "source": "tools_riconciliazione_magazzino",
       "target": "csv",
       "relation": "imports",
@@ -63163,6 +63487,18 @@
       "context": "import",
       "source_file": "tools/riconciliazione_magazzino.py",
       "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_riconciliazione_magazzino",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -63226,6 +63562,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_scadenzario_aging",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
       "source": "tools_scostamento_standard_effettivo",
       "target": "csv",
       "relation": "imports",
@@ -63259,6 +63607,18 @@
       "context": "import",
       "source_file": "tools/scostamento_standard_effettivo.py",
       "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scostamento_standard_effettivo",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/scostamento_standard_effettivo.py",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -63310,6 +63670,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_valorizzazione_magazzino",
+      "target": "tools_numero_leggi_numero",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
       "source": "tools_verifica_banco",
       "target": "re",
       "relation": "imports",
@@ -63358,6 +63730,30 @@
       "weight": 1.0
     },
     {
+      "source": "tools_accuratezza_fatture_acquisto",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/accuratezza_fatture_acquisto.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_bilancio_bu",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/bilancio_bu.py",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
       "source": "tools_dashboard",
       "target": "datetime",
       "relation": "imports_from",
@@ -63382,6 +63778,18 @@
       "weight": 1.0
     },
     {
+      "source": "tools_margine_documento",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/margine_documento.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
       "source": "tools_rating_dso_clienti",
       "target": "datetime",
       "relation": "imports_from",
@@ -63391,6 +63799,66 @@
       "context": "import",
       "source_file": "tools/rating_dso_clienti.py",
       "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_rating_dso_clienti",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/rating_dso_clienti.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_riconciliazione_magazzino",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/riconciliazione_magazzino.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scadenzario_aging",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/scadenzario_aging.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_scostamento_standard_effettivo",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/scostamento_standard_effettivo.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_valorizzazione_magazzino",
+      "target": "tools_numero",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "tools/valorizzazione_magazzino.py",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -88916,6 +89384,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_numero",
+      "target": "tests_test_numero_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_nuova_commessa_wizard_coerenza",
       "target": "tests_test_nuova_commessa_wizard_coerenza_sh__entry",
       "relation": "contains",
@@ -89649,7 +90128,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L40",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -89660,7 +90139,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L77",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -89869,7 +90348,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L42",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -90463,7 +90942,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L40",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -90474,7 +90953,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L47",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -90485,7 +90964,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L84",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -90508,6 +90987,17 @@
       "confidence_score": 1.0,
       "source_file": "tools/mutation-tests.sh",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_numero",
+      "target": "tools_numero_leggi_numero",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/numero.py",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -90628,7 +91118,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L44",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -90639,7 +91129,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L48",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -90650,7 +91140,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L20",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -90661,7 +91151,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L60",
+      "source_location": "L62",
       "weight": 1.0
     },
     {
@@ -90749,7 +91239,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L101",
+      "source_location": "L103",
       "weight": 1.0
     },
     {
@@ -90760,7 +91250,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L38",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -90771,7 +91261,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L68",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -90782,7 +91272,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L72",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -90793,7 +91283,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L77",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -90804,7 +91294,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L26",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -90815,7 +91305,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L32",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -90826,7 +91316,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L38",
+      "source_location": "L40",
       "weight": 1.0
     },
     {
@@ -90837,7 +91327,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L63",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -90848,7 +91338,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L77",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -90936,7 +91426,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L104",
+      "source_location": "L106",
       "weight": 1.0
     },
     {
@@ -90947,7 +91437,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L148",
+      "source_location": "L150",
       "weight": 1.0
     },
     {
@@ -90958,7 +91448,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -90969,7 +91459,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L66",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -90980,7 +91470,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L91",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -96055,6 +96545,39 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_numero",
+      "target": "tests_test_numero_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_numero",
+      "target": "tests_test_numero_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_numero",
+      "target": "tests_test_numero_leggi",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-numero.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_nuova_commessa_wizard_coerenza",
       "target": "tests_test_nuova_commessa_wizard_coerenza_ok",
       "relation": "defines",
@@ -98849,25 +99372,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_41",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_43",
       "target": "tools_accuratezza_fatture_acquisto_leggi_csv",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L41",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
-      "source": "tools_accuratezza_fatture_acquisto_rationale_78",
+      "source": "tools_accuratezza_fatture_acquisto_rationale_81",
       "target": "tools_accuratezza_fatture_acquisto_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/accuratezza_fatture_acquisto.py",
-      "source_location": "L78",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -99058,14 +99581,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_bilancio_bu_rationale_43",
+      "source": "tools_bilancio_bu_rationale_45",
       "target": "tools_bilancio_bu_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancio_bu.py",
-      "source_location": "L43",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -99344,25 +99867,47 @@
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_48",
+      "source": "tools_margine_documento_rationale_50",
       "target": "tools_margine_documento_leggi_csv",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L48",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
-      "source": "tools_margine_documento_rationale_85",
+      "source": "tools_margine_documento_rationale_88",
       "target": "tools_margine_documento_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/margine_documento.py",
-      "source_location": "L85",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_numero_rationale_1",
+      "target": "tools_numero",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/numero.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_numero_rationale_27",
+      "target": "tools_numero_leggi_numero",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/numero.py",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -99377,14 +99922,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_rating_dso_clienti_rationale_49",
+      "source": "tools_rating_dso_clienti_rationale_51",
       "target": "tools_rating_dso_clienti_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/rating_dso_clienti.py",
-      "source_location": "L49",
+      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -99399,25 +99944,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_riconciliazione_magazzino_rationale_21",
+      "source": "tools_riconciliazione_magazzino_rationale_23",
       "target": "tools_riconciliazione_magazzino_categorizza",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L21",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
-      "source": "tools_riconciliazione_magazzino_rationale_61",
+      "source": "tools_riconciliazione_magazzino_rationale_63",
       "target": "tools_riconciliazione_magazzino_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/riconciliazione_magazzino.py",
-      "source_location": "L61",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -99465,14 +100010,14 @@
       "weight": 1.0
     },
     {
-      "source": "tools_scadenzario_aging_rationale_102",
+      "source": "tools_scadenzario_aging_rationale_104",
       "target": "tools_scadenzario_aging_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L102",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -99487,25 +100032,25 @@
       "weight": 1.0
     },
     {
-      "source": "tools_scadenzario_aging_rationale_39",
+      "source": "tools_scadenzario_aging_rationale_41",
       "target": "tools_scadenzario_aging_fascia_dettaglio",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L39",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
-      "source": "tools_scadenzario_aging_rationale_78",
+      "source": "tools_scadenzario_aging_rationale_80",
       "target": "tools_scadenzario_aging_aggrega_totali",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scadenzario_aging.py",
-      "source_location": "L78",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -99520,58 +100065,58 @@
       "weight": 1.0
     },
     {
-      "source": "tools_scostamento_standard_effettivo_rationale_39",
+      "source": "tools_scostamento_standard_effettivo_rationale_41",
       "target": "tools_scostamento_standard_effettivo_calcola_trend",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L39",
+      "source_location": "L41",
       "weight": 1.0
     },
     {
-      "source": "tools_scostamento_standard_effettivo_rationale_64",
+      "source": "tools_scostamento_standard_effettivo_rationale_66",
       "target": "tools_scostamento_standard_effettivo_valuta_alert",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L64",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
-      "source": "tools_scostamento_standard_effettivo_rationale_78",
+      "source": "tools_scostamento_standard_effettivo_rationale_80",
       "target": "tools_scostamento_standard_effettivo_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/scostamento_standard_effettivo.py",
-      "source_location": "L78",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_105",
+      "source": "tools_valorizzazione_magazzino_rationale_107",
       "target": "tools_valorizzazione_magazzino_valorizza",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L105",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_149",
+      "source": "tools_valorizzazione_magazzino_rationale_151",
       "target": "tools_valorizzazione_magazzino_main",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L149",
+      "source_location": "L151",
       "weight": 1.0
     },
     {
@@ -99586,36 +100131,36 @@
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_46",
+      "source": "tools_valorizzazione_magazzino_rationale_48",
       "target": "tools_valorizzazione_magazzino_costo_base_per_codice",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L46",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_67",
+      "source": "tools_valorizzazione_magazzino_rationale_69",
       "target": "tools_valorizzazione_magazzino_applica_override",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L67",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
-      "source": "tools_valorizzazione_magazzino_rationale_92",
+      "source": "tools_valorizzazione_magazzino_rationale_94",
       "target": "tools_valorizzazione_magazzino_risolvi_costo",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/valorizzazione_magazzino.py",
-      "source_location": "L92",
+      "source_location": "L94",
       "weight": 1.0
     },
     {
@@ -101222,6 +101767,18 @@
       "weight": 1.0
     },
     {
+      "source": "debiti_la_notte_dei_giri_2026_09_23",
+      "target": "tools_numero_leggi_numero",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "leggi_numero",
+      "source_file": "DEBITI.md",
+      "source_location": "L257",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_2026_08_28_parrocchie_giornata_completa_2_le_commesse_della_giornata_in_ordine",
       "target": "tools_leasing_amministrativo_main_numero",
       "relation": "references",
@@ -101271,5 +101828,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f9a6c6fd87a927b4bffee8fac8bdfe3c184c4eec"
+  "built_at_commit": "5eabb602b5e0051eda0c3f24615c93630efcd421"
 }

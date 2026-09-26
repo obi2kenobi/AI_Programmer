@@ -36,6 +36,8 @@ import json
 import math
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 
 def leggi_csv(path, colonne=()):
     """(giro 21, 2026-09-20 — D32): file inesistente o colonna mancante = traceback nudo.
@@ -63,13 +65,14 @@ def leggi_csv(path, colonne=()):
     if codifica == "cp1252":
         print(f"ATTENZIONE: {path} non e' UTF-8: letto come Windows-1252 (l'export di Excel)", file=sys.stderr)
     # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
-    # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
+    # rifiuta col numero di riga. Domanda 12 (Luca, 2026-09-26): il formato italiano si LEGGE, qui, una volta sola:
+    # la cella diventa un numero e il resto del file non riconverte
     for n, r in enumerate(righe, start=2):
         if "importo" in colonne:
             try:
-                float(r["importo"])
+                r["importo"] = leggi_numero(r["importo"])
             except (ValueError, TypeError):
-                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso col punto decimale, es. 1234.56) — nessun verdetto", file=sys.stderr)
+                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso un numero, es. 1234.56 o 1.234,56) — nessun verdetto", file=sys.stderr)
                 sys.exit(1)
     return righe
 
@@ -101,10 +104,10 @@ def main():
     whitelist = set(cfg.get("whitelist_fornitori") or [])
 
     fatture = leggi_csv(sys.argv[2], ("nr", "importo"))
-    ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
+    ordini = {r["nr"].strip(): r["importo"] for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
     # (2026-09-24, quinto ventaglio, R3 R2): un importo nan rendeva falso `pct > soglia`, la fattura contava come
     # «valida» e usciva «Accuratezza 100% RAGGIUNTO». Un importo non finito si dichiara.
-    marce = [f"fattura {f['nr']}" for f in fatture if not math.isfinite(float(f["importo"]))] + \
+    marce = [f"fattura {f['nr']}" for f in fatture if not math.isfinite(f["importo"])] + \
             [f"ordine {k}" for k, v in ordini.items() if not math.isfinite(v)]
     if marce:
         print(f"ERRORE: importi non finiti (nan/inf): {', '.join(marce[:5])} — nessun verdetto", file=sys.stderr)
@@ -121,7 +124,7 @@ def main():
         nr = f["nr"]
         fornitore = (f.get("fornitore") or "").strip()
         onr = (f.get("ordine_nr") or "").strip()
-        importo = float(f["importo"])
+        importo = f["importo"]
         if onr == "":
             (legittime_senza_ordine if fornitore in whitelist else anomale_senza_ordine).append(nr)
             continue

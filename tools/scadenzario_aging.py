@@ -31,6 +31,8 @@ CSV con colonne: tipo,importo,giorni (giorni vuoto = nessuna data di scadenza)
 import csv
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 FASCE_SCADUTO = ("SCADUTO >60", "SCADUTO 31-60", "SCADUTO <=30")
 FASCE_ORDINE = FASCE_SCADUTO + ("BREVE", "MEDIO", "LUNGO")
 
@@ -124,11 +126,11 @@ def main():
         tipo = r["tipo"]
         # (2026-09-24, quinto ventaglio, R3 R3): una cella vuota, «1.234,56» o giorni «1.5» erano un traceback
         try:
-            importo_bc = float(r["importo"])
+            importo_bc = leggi_numero(r["importo"])
             fascia = fascia_dettaglio(giorni)
         except (ValueError, TypeError):
             print(f"ERRORE: riga {reader.line_num}: importo o giorni non numerici (importo={r['importo']!r}, giorni={r['giorni']!r};"
-                  f" attesi importo col punto decimale e giorni interi) — nessun verdetto", file=sys.stderr)
+                  f" attesi importo numerico, anche all'italiana 1.234,56, e giorni interi) — nessun verdetto", file=sys.stderr)
             return 1
         # giri avversari 2026-08-28 (D5/D6): nan/inf passavano e producevano totali
         # "+nan€" in silenzio. Un importo non finito è dato marcio: si dichiara.
