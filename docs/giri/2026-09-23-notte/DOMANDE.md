@@ -100,3 +100,26 @@ provvisoria in vigore oggi. Si pongono una alla volta (settimo patto).
 - **Il sistema.** Il sorgente dice in che mesi si chiama il calcolo trimestrale.
 - **Una persona.** Nessuna, se il sorgente è chiaro.
 - **Oggi.** Invariato.
+
+## Risposte di Luca (2026-09-26)
+
+Poste una alla volta in chat, ognuna con le sue opzioni. Corrispondenza con le domande di questo file: 1-7 sono le
+domande 1-7; 8 e 9 sono le due meta' della domanda 8 (l'elenco delle BU, il segno per riga o per conto); 10 e' la 9;
+11 e' la 10. Le 12-15 sono le altre righe di dominio di `DEBITI.md`: il formato dei numeri (D-R3-2), il leasing oltre
+la scadenza (D-R3-3), gli spazi nei percorsi del Mac (S3 R2), i nomi del tenant in `docs/bc/` (V1 R1). Da applicare.
+
+- **1.** scadenzario: maiuscole indifferenti, tipi sconosciuti rifiutati e segnalati
+- **2.** DSO abbinamento: solo fatture dello stesso cliente (il confronto per contenuto resta)
+- **3.** DSO arrotondamento: al pari, come oggi (nessuna modifica)
+- **4.** DSO importo vuoto: vale zero, come oggi (nessuna modifica; scelta di Luca contro il default «assente non e' zero»)
+- **5.** margine BU: arrg e ARRG sono la stessa BU (confronto senza maiuscole)
+- **6.** cespiti fondo positivo: si converte il segno e un'ATTENZIONE dice quante righe
+- **7.** accuratezza ordini <=0: resta errore reale, dichiarato come deviazione voluta da REPO-E
+- **8.** bilancio BU: elenco chiuso ARRG, BIOC, EDIL, IMB; il resto va in NOBU, segnalato
+- **9.** bilancio BU segno: per riga, come oggi (nessuna modifica)
+- **10.** indici crisi un denominatore nullo: nota e verdetto, come oggi (nessuna modifica)
+- **11.** leasing adeguamento: a ogni data, come fa il codice; si corregge la documentazione (regola 4)
+- **12.** numeri CSV: formato italiano (1.234,56), una funzione di lettura sola li converte per tutti gli oracoli
+- **13.** leasing oltre la fine: importo 0 con una NOTA «contratto concluso il ...», il calcolo prosegue
+- **14.** percorsi Mac: si', ci sono spazi — un banco che installa e fa girare da un percorso con lo spazio entra nella suite
+- **15.** docs/bc/: nomi pubblicabili, esente anche nel controllo notturno (una regola sola)
