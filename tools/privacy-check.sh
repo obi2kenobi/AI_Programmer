@@ -44,6 +44,12 @@ nomi_locali() {
     printf '%s\n' "$n"
   done < "$1"
 }
+# esente_dai_nomi <percorso>: 0 se il file non si controlla contro la lista dei nomi. La regola UNICA, per questo check e
+# (via --esente-nomi) per il pre-commit. (2026-09-26, risposta di Luca alla domanda 15): docs/bc/ documenta lo SCHEMA del
+# tenant — i nomi delle estensioni sono fatti, e si possono pubblicare. Prima il pre-commit la esentava con una copia sua
+# e questo check no: un nome passava il commit di giorno e faceva rosso ogni notte.
+esente_dai_nomi() { case "$1" in docs/bc/*) return 0 ;; esac; return 1; }
+if [ "${1:-}" = "--esente-nomi" ]; then esente_dai_nomi "${2:-}"; exit $?; fi
 # --elenca-nomi <lista>: stampa i nomi (per chi li confronta in memoria, mai per stamparli) ed esce.
 if [ "${1:-}" = "--elenca-nomi" ]; then
   [ -f "${2:-}" ] || exit 0
@@ -178,7 +184,8 @@ if [ -s "$NOMI_LOCALI" ]; then
   # dalla decisione di dominio (nomi-si, accesso-no) — amnistia dichiarata,
   # non oblio. Il tripwire e' per cio' che entra ADESSO.
   while IFS= read -r n; do
-    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F -- "$n" 2>/dev/null) | grep -v "repos.key" || true)
+    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F -- "$n" 2>/dev/null) | grep -v "repos.key" \
+      | while IFS= read -r f; do esente_dai_nomi "$f" || printf '%s\n' "$f"; done || true)
     if [ -n "$FILES_N" ]; then
       maschera "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
       maschera "$(head -5 <<<"$FILES_N")" >&2
