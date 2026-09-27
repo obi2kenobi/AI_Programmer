@@ -49504,6 +49504,66 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_campo_2026_09_27_merge_rizzo_pr_126",
+      "label": "2026-09-27-merge-rizzo-pr-126.md",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "2026-09-27 \u2014 sorveglianza della PR #126, il merge del pre-filtro rizzo-flow",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-27-merge-rizzo-pr-126.md",
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_27_merge_rizzo_pr_126_2026_09_27_sorveglianza_della_pr_126_il_merge_del_pre_filtro_rizzo_flow",
+      "label": "2026-09-27 \u2014 sorveglianza della PR #126, il merge del pre-filtro rizzo-flow",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "2026-09-27 \u2014 sorveglianza della PR #126, il merge del pre-filtro rizzo-flow",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-27 \u2014 sorveglianza della pr #126, il merge del pre-filtro rizzo-flow",
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_27_merge_rizzo_pr_126_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "2026-09-27 \u2014 sorveglianza della PR #126, il merge del pre-filtro rizzo-flow",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "docs_campo_2026_09_27_merge_rizzo_pr_126_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "2026-09-27 \u2014 sorveglianza della PR #126, il merge del pre-filtro rizzo-flow",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_09_27_merge_rizzo_pr_126_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 758,
+      "community_name": "2026-09-27 \u2014 sorveglianza della PR #126, il merge del pre-filtro rizzo-flow",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L17"
+    },
+    {
       "id": "tests_test_impara_recupero",
       "label": "test-impara-recupero.sh",
       "_origin": "ast",
@@ -60309,7 +60369,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-sal-archivia.sh",
-      "source_location": "L36",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -60321,7 +60381,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-sal-archivia.sh",
-      "source_location": "L36",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -77058,6 +77118,50 @@
       "confidence_score": 1.0,
       "source_file": "docs/campo/2026-09-26-sorveglianza-pr-126.md",
       "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_27_merge_rizzo_pr_126",
+      "target": "docs_campo_2026_09_27_merge_rizzo_pr_126_2026_09_27_sorveglianza_della_pr_126_il_merge_del_pre_filtro_rizzo_flow",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_27_merge_rizzo_pr_126_2026_09_27_sorveglianza_della_pr_126_il_merge_del_pre_filtro_rizzo_flow",
+      "target": "docs_campo_2026_09_27_merge_rizzo_pr_126_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_27_merge_rizzo_pr_126_2026_09_27_sorveglianza_della_pr_126_il_merge_del_pre_filtro_rizzo_flow",
+      "target": "docs_campo_2026_09_27_merge_rizzo_pr_126_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_27_merge_rizzo_pr_126_2026_09_27_sorveglianza_della_pr_126_il_merge_del_pre_filtro_rizzo_flow",
+      "target": "docs_campo_2026_09_27_merge_rizzo_pr_126_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-27-merge-rizzo-pr-126.md",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -102122,5 +102226,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "74942bfe380f40a4d291ec6b26f048325c95b2e9"
+  "built_at_commit": "557ba0f77b183ce1b2be55ceb0f148f49e29065d"
 }
