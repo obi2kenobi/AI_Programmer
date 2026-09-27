@@ -4583,6 +4583,36 @@
       "source_location": "L198"
     },
     {
+      "id": "night_shift_lib_lock_turno_orfano",
+      "label": "lock_turno_orfano()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_turno_orfano()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L763"
+    },
+    {
+      "id": "night_shift_lib_prendi_lock_turno",
+      "label": "prendi_lock_turno()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prendi_lock_turno()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L742"
+    },
+    {
       "id": "night_shift_lib_riga_verifica_vuota",
       "label": "riga_verifica_vuota()",
       "_origin": "ast",
@@ -4731,6 +4761,51 @@
       "norm_label": "shift_repo()",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L195"
+    },
+    {
+      "id": "tools_ciclo_vivo",
+      "label": "ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ciclo-vivo.sh",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo_corpo_agent",
+      "label": "corpo_agent()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "corpo_agent()",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L126"
+    },
+    {
+      "id": "tools_ciclo_vivo_sh__entry",
+      "label": "ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ciclo-vivo.sh script",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
     },
     {
       "id": "tools_profilo",
@@ -9083,86 +9158,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_agente",
-      "label": "agente.sh",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "agente.sh",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_agente_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L39"
-    },
-    {
-      "id": "night_shift_agente_percorso_ammesso",
-      "label": "percorso_ammesso()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "percorso_ammesso()",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L33"
-    },
-    {
-      "id": "night_shift_agente_sh__entry",
-      "label": "agente.sh script",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "agente.sh script",
-      "source_file": "night-shift/agente.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_lib_dichiara_file_nuovo",
-      "label": "dichiara_file_nuovo()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "dichiara_file_nuovo()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L514"
-    },
-    {
       "id": "night_shift_lib_rianima_ollama",
       "label": "rianima_ollama()",
       "_origin": "ast",
       "community": 147,
-      "community_name": "agente.sh script",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -9177,7 +9177,7 @@
       "label": "test-rianima-ollama.sh",
       "_origin": "ast",
       "community": 147,
-      "community_name": "agente.sh script",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -9192,7 +9192,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 147,
-      "community_name": "agente.sh script",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -9207,7 +9207,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 147,
-      "community_name": "agente.sh script",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -9222,7 +9222,7 @@
       "label": "test-rianima-ollama.sh script",
       "_origin": "ast",
       "community": 147,
-      "community_name": "agente.sh script",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -28429,21 +28429,6 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_giri_ignoranti_check_numero",
-      "label": "check_numero()",
-      "_origin": "ast",
-      "community": 352,
-      "community_name": "giri-ignoranti.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "check_numero()",
-      "source_file": "tools/giri-ignoranti.sh",
-      "source_location": "L42"
-    },
-    {
       "id": "tools_giri_ignoranti_sh__entry",
       "label": "giri-ignoranti.sh script",
       "_origin": "ast",
@@ -28457,21 +28442,6 @@
       "norm_label": "giri-ignoranti.sh script",
       "source_file": "tools/giri-ignoranti.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "tools_giri_ignoranti_sonda",
-      "label": "sonda()",
-      "_origin": "ast",
-      "community": 352,
-      "community_name": "giri-ignoranti.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "sonda()",
-      "source_file": "tools/giri-ignoranti.sh",
-      "source_location": "L14"
     },
     {
       "id": "tools_pattern_reminder_hook",
@@ -40168,11 +40138,86 @@
       "source_location": "L155"
     },
     {
+      "id": "night_shift_agente",
+      "label": "agente.sh",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "agente.sh",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_agente_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L39"
+    },
+    {
+      "id": "night_shift_agente_percorso_ammesso",
+      "label": "percorso_ammesso()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "percorso_ammesso()",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L33"
+    },
+    {
+      "id": "night_shift_agente_sh__entry",
+      "label": "agente.sh script",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "agente.sh script",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_lib_dichiara_file_nuovo",
+      "label": "dichiara_file_nuovo()",
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "dichiara_file_nuovo()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L514"
+    },
+    {
       "id": "tests_test_consegna_dichiarata",
       "label": "test-consegna-dichiarata.sh",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "agente.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -40187,7 +40232,7 @@
       "label": "g()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "agente.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -40202,7 +40247,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "agente.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -40217,7 +40262,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "agente.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -40232,7 +40277,7 @@
       "label": "test-consegna-dichiarata.sh script",
       "_origin": "ast",
       "community": 62,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "agente.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46888,41 +46933,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_lock_turno_orfano",
-      "label": "lock_turno_orfano()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_turno_orfano()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L763"
-    },
-    {
-      "id": "night_shift_lib_prendi_lock_turno",
-      "label": "prendi_lock_turno()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "prendi_lock_turno()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L742"
-    },
-    {
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46937,7 +46952,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46952,7 +46967,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46967,7 +46982,7 @@
       "label": "test-lock-turno-corsa.sh script",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46975,51 +46990,6 @@
       },
       "norm_label": "test-lock-turno-corsa.sh script",
       "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo",
-      "label": "ciclo-vivo.sh",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ciclo-vivo.sh",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo_corpo_agent",
-      "label": "corpo_agent()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "corpo_agent()",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L126"
-    },
-    {
-      "id": "tools_ciclo_vivo_sh__entry",
-      "label": "ciclo-vivo.sh script",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ciclo-vivo.sh script",
-      "source_file": "tools/ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -59907,30 +59877,6 @@
       "context": "call",
       "source_file": "tools/giri-avversari.sh",
       "source_location": "L88",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_giri_ignoranti_sh__entry",
-      "target": "tools_giri_ignoranti_sonda",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/giri-ignoranti.sh",
-      "source_location": "L34",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_giri_ignoranti_sh__entry",
-      "target": "tools_giri_ignoranti_check_numero",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/giri-ignoranti.sh",
-      "source_location": "L51",
       "weight": 1.0
     },
     {
@@ -96295,28 +96241,6 @@
       "weight": 1.0
     },
     {
-      "source": "tools_giri_ignoranti",
-      "target": "tools_giri_ignoranti_sonda",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tools/giri-ignoranti.sh",
-      "source_location": "L14",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_giri_ignoranti",
-      "target": "tools_giri_ignoranti_check_numero",
-      "relation": "defines",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "tools/giri-ignoranti.sh",
-      "source_location": "L42",
-      "weight": 1.0
-    },
-    {
       "source": "tools_grafo_semantico",
       "target": "tools_grafo_semantico_log",
       "relation": "defines",
@@ -98797,5 +98721,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3bdf64988213ce429f9e5f48520bcc17f3b0f490"
+  "built_at_commit": "8a4cdd8ecc7eb09ede8d84234bd447a0133b3288"
 }
