@@ -192,6 +192,25 @@ fi
 [ -n "$TARGET" ] || { log "tutti i file in cooldown per '$CAT' — riprova più tardi"; exit 1; }
 [ -f "$TARGET" ] || { log "file inesistente: $TARGET"; exit 2; }
 
+# --- la SCUOLA DEI RIGETTI (2026-09-28, dal backlog) ----------------------------
+# Il censore ha bocciato questo file di recente (registro .git/caccia-registro/rigetti,
+# scritto dal revisore a ogni RIGETTA)? Il modello riproporrebbe la stessa idea con
+# altro testo — le varianti col/senza «|| true» del backlog avevano patch-id diversi
+# e il dedup non le vedeva. File + categoria + finestra: superato il cooldown si torna
+# liberi. La categoria «?» (rigetto senza [cat] nel titolo) blocca tutte: non si
+# evade cambiando etichetta a un bocciato senza categoria.
+if [ -f "$DIR/.git/caccia-registro/rigetti" ]; then
+  SOGLIA=$(( $(date +%s) - ${RIGETTI_COOLDOWN_SEC:-172800} ))   # 2 giorni di scuola
+  while IFS='|' read -r rep rcat rfiles _resto; do
+    [ "${rep:-0}" -ge "$SOGLIA" ] 2>/dev/null || continue
+    case ",$rfiles," in *",$TARGET,"*) ;; *) continue ;; esac
+    if [ "$rcat" = "$CAT" ] || [ "$rcat" = "?" ]; then
+      log "scuola dei rigetti: $TARGET bocciato dal censore (cat: ${rcat:-?}) il $(date -r "$rep" '+%d/%m %H:%M' 2>/dev/null || echo '?') — salto e mi raffreddo"
+      exit 1
+    fi
+  done < "$DIR/.git/caccia-registro/rigetti"
+fi
+
 log "categoria '$CAT' su $TARGET"
 
 # (2026-09-20, Luca: «chiudi ora»): per la famiglia E-002 il fix e' MECCANICO —

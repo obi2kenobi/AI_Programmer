@@ -132,6 +132,20 @@ azione_gh() { # in DRY stampa a stdout, altrimenti esegue silenzioso (niente eva
   "$@" >/dev/null 2>&1
 }
 MODO="delibera"; PARERE_FILE=""
+# registra_rigetto <motivo>: la SCUOLA DEI RIGETTI (2026-09-28, dal backlog: il modello
+# ripropone la stessa idea bocciata con altro testo — le varianti col/senza «|| true»).
+# Ogni rigetto (del censore o deterministico) lascia una riga epoch|cat|file|motivo nel
+# registro della repo: la caccia la consulta prima di ritoccare un sito. Solo modo delibera:
+# il parere delle issue non boccia migliorie, non insegna niente alla caccia.
+registra_rigetto() {
+  [ "$MODO" = "delibera" ] || return 0
+  local motivob files rcat
+  motivob=$(printf '%s' "$1" | tr -d '\n|' | cut -c1-90)
+  files=$(printf '%s' "$DIFF_FILES" | tr '\n' ',' | tr -d '|' | cut -c1-120)
+  rcat=$(printf '%s' "$TITLE" | grep -oE '\[([a-z]+)\]' | tr -d '[]' | head -1)
+  mkdir -p "$DIR/.git/caccia-registro"
+  printf '%s|%s|%s|%s\n' "$(date +%s)" "${rcat:-?}" "$files" "$motivob" >> "$DIR/.git/caccia-registro/rigetti"
+}
 # rigetto_deterministico <motivo>: la PR si chiude ORA, senza LLM — o la firma e' certa
 # (E-050) o il rinvio e' strutturale per l'N-esima volta (E-051). Nel modo PARERE non si
 # chiude mai (D10: mai close): diventa il parere negativo di rinvia().
@@ -140,6 +154,7 @@ rigetta_deterministico() {
     rinvia "$1"
     return
   fi
+  registra_rigetto "$1"
   log "DELIBERA: RIGETTA PR #$PR — rigetto deterministico: $1"
   local f; f=$(mktemp /tmp/revisore-rd.XXXXXX)
   printf 'RIGETTATA dal revisore notturno (verdetto DETERMINISTICO, nessun modello coinvolto).\nMotivo: %s\nSe il debito e reale la caccia lo riproponra al prossimo giro; questa PR non passa e aspettare non la cambia.\n' "$1" > "$f"
@@ -504,6 +519,7 @@ if [ "$VERDETTO" = "APPROVA" ]; then
   fi
 else
   log "DELIBERA: RIGETTA PR #$PR — $MOTIVI"
+  registra_rigetto "censore: $(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-80)"
   RIG_FILE=$(mktemp /tmp/revisore-rig.XXXXXX)
   printf 'RIGETTATA dal censore notturno (censore: %s).\nMotivi: %s\n' \
     "$GIUDICE_MODEL" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$RIG_FILE"
