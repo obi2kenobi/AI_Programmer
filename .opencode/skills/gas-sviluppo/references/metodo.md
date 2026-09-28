@@ -1126,3 +1126,20 @@ che bara; un file byte-identico dopo "l'ho modificato" no.
 L'agente deve conoscere i prerequisiti nascosti del suo runtime — quale URL,
 quale processo, quale modalita' di avvio — perche' quella e' contesto
 dell'applicazione, non sapere tribale.
+
+## Il cancello PII aziendale (rizzo-pii)
+
+(dominio, Luca 2026-09-28: rizzo-pii diventa il metodo standard di anonimizzazione aziendale. Ogni sistema che manda dati a un LLM — locale o cloud — passa da questo cancello PRIMA.)
+
+Il modello (mmBERT 0.3B, CPU, ~0.5GB, zero GPU) rileva 24 categorie di dati personali — CF, PIVA, IBAN, nomi, telefoni, email, indirizzi, catasto — e le sostituisce con placeholder. Il dizionario `placeholder → valore` vive su disco locale e NON passa mai al LLM.
+
+```
+dati veri → tools/anonimizza-aziendale.sh pulisci → placeholder → LLM → risposta → ripristina → dati veri
+```
+
+Tre regole:
+1. OGNI chiamata a un LLM con dati che possono contenere PII passa dal cancello (pulisci prima, ripristina dopo)
+2. Il dizionario NON entra mai nel prompt, nel log, o nel repo
+3. Se il server PII e' spento: passthrough dichiarato su stderr (il sistema lavora, ma vede i dati veri — si dichiara, non si tace)
+
+Presidiato da: privacy-check.sh (pre-commit) + agente.sh (read-on-anonimizza) + questo metodo.

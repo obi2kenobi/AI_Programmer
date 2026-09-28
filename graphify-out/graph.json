@@ -2861,6 +2861,18 @@
       "source_location": "L297"
     },
     {
+      "id": "claude_skills_gas_sviluppo_references_metodo_il_cancello_pii_aziendale_rizzo_pii",
+      "label": "Il cancello PII aziendale (rizzo-pii)",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "Il metodo \u2014 il mandato distillato (fonte: gas-agent/mandato.md di REPO-E)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il cancello pii aziendale (rizzo-pii)",
+      "source_file": ".claude/skills/gas-sviluppo/references/metodo.md",
+      "source_location": "L1130"
+    },
+    {
       "id": "claude_skills_gas_sviluppo_references_metodo_il_catalogo_pattern_\u00e8_parte_del_canone_fix_g03_2026_08_28",
       "label": "Il catalogo pattern \u00e8 parte del canone (fix G03, 2026-08-28)",
       "_origin": "ast",
@@ -4631,6 +4643,36 @@
       "source_location": "L198"
     },
     {
+      "id": "night_shift_lib_lock_turno_orfano",
+      "label": "lock_turno_orfano()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "lock_turno_orfano()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L763"
+    },
+    {
+      "id": "night_shift_lib_prendi_lock_turno",
+      "label": "prendi_lock_turno()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "prendi_lock_turno()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L742"
+    },
+    {
       "id": "night_shift_lib_riga_verifica_vuota",
       "label": "riga_verifica_vuota()",
       "_origin": "ast",
@@ -4779,6 +4821,51 @@
       "norm_label": "shift_repo()",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L195"
+    },
+    {
+      "id": "tools_ciclo_vivo",
+      "label": "ciclo-vivo.sh",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "ciclo-vivo.sh",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_ciclo_vivo_corpo_agent",
+      "label": "corpo_agent()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "corpo_agent()",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L126"
+    },
+    {
+      "id": "tools_ciclo_vivo_sh__entry",
+      "label": "ciclo-vivo.sh script",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "ciclo-vivo.sh script",
+      "source_file": "tools/ciclo-vivo.sh",
+      "source_location": "L1"
     },
     {
       "id": "tools_profilo",
@@ -14399,6 +14486,18 @@
       "norm_label": "il backlog-ordinato con le domande di dominio in cima (dal campo repo-m, 2026-08-28)",
       "source_file": ".opencode/skills/gas-sviluppo/references/metodo.md",
       "source_location": "L297"
+    },
+    {
+      "id": "opencode_skills_gas_sviluppo_references_metodo_il_cancello_pii_aziendale_rizzo_pii",
+      "label": "Il cancello PII aziendale (rizzo-pii)",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "Il metodo \u2014 il mandato distillato (fonte: gas-agent/mandato.md di REPO-E)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il cancello pii aziendale (rizzo-pii)",
+      "source_file": ".opencode/skills/gas-sviluppo/references/metodo.md",
+      "source_location": "L1130"
     },
     {
       "id": "opencode_skills_gas_sviluppo_references_metodo_il_catalogo_pattern_\u00e8_parte_del_canone_fix_g03_2026_08_28",
@@ -46947,41 +47046,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_lock_turno_orfano",
-      "label": "lock_turno_orfano()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "lock_turno_orfano()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L763"
-    },
-    {
-      "id": "night_shift_lib_prendi_lock_turno",
-      "label": "prendi_lock_turno()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "prendi_lock_turno()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L742"
-    },
-    {
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -46996,7 +47065,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47011,7 +47080,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47026,7 +47095,7 @@
       "label": "test-lock-turno-corsa.sh script",
       "_origin": "ast",
       "community": 746,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -47034,51 +47103,6 @@
       },
       "norm_label": "test-lock-turno-corsa.sh script",
       "source_file": "tests/test-lock-turno-corsa.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo",
-      "label": "ciclo-vivo.sh",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "ciclo-vivo.sh",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tools_ciclo_vivo_corpo_agent",
-      "label": "corpo_agent()",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "corpo_agent()",
-      "source_file": "tools/ciclo-vivo.sh",
-      "source_location": "L126"
-    },
-    {
-      "id": "tools_ciclo_vivo_sh__entry",
-      "label": "ciclo-vivo.sh script",
-      "_origin": "ast",
-      "community": 746,
-      "community_name": "prendi_lock_turno",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "ciclo-vivo.sh script",
-      "source_file": "tools/ciclo-vivo.sh",
       "source_location": "L1"
     },
     {
@@ -49623,6 +49647,36 @@
       "norm_label": "accoppia vendite\u2194acquisti per riferimento documento, calcola margine per...",
       "source_file": "tools/margine_documento.py",
       "source_location": "L79"
+    },
+    {
+      "id": "tools_anonimizza_aziendale",
+      "label": "anonimizza-aziendale.sh",
+      "_origin": "ast",
+      "community": 776,
+      "community_name": "anonimizza-aziendale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "anonimizza-aziendale.sh",
+      "source_file": "tools/anonimizza-aziendale.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_anonimizza_aziendale_sh__entry",
+      "label": "anonimizza-aziendale.sh script",
+      "_origin": "ast",
+      "community": 776,
+      "community_name": "anonimizza-aziendale.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "anonimizza-aziendale.sh script",
+      "source_file": "tools/anonimizza-aziendale.sh",
+      "source_location": "L1"
     },
     {
       "id": "opencode_skills_gas_sviluppo_references_famiglie_difetti",
@@ -63333,6 +63387,17 @@
       "confidence_score": 1.0,
       "source_file": ".claude/skills/gas-sviluppo/references/metodo.md",
       "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_gas_sviluppo_references_metodo_il_metodo_il_mandato_distillato_fonte_gas_agent_mandato_md_di_repo_e",
+      "target": "claude_skills_gas_sviluppo_references_metodo_il_cancello_pii_aziendale_rizzo_pii",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/gas-sviluppo/references/metodo.md",
+      "source_location": "L1130",
       "weight": 1.0
     },
     {
@@ -79551,6 +79616,17 @@
     },
     {
       "source": "opencode_skills_gas_sviluppo_references_metodo_il_metodo_il_mandato_distillato_fonte_gas_agent_mandato_md_di_repo_e",
+      "target": "opencode_skills_gas_sviluppo_references_metodo_il_cancello_pii_aziendale_rizzo_pii",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/gas-sviluppo/references/metodo.md",
+      "source_location": "L1130",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_gas_sviluppo_references_metodo_il_metodo_il_mandato_distillato_fonte_gas_agent_mandato_md_di_repo_e",
       "target": "opencode_skills_gas_sviluppo_references_metodo_vincoli_trasversali_pagati_con_la_data_dentro_la_fonte",
       "relation": "contains",
       "_origin": "ast",
@@ -87863,6 +87939,17 @@
       "confidence_score": 1.0,
       "source_file": "tools/anonimizza.py",
       "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_anonimizza_aziendale",
+      "target": "tools_anonimizza_aziendale_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/anonimizza-aziendale.sh",
+      "source_location": "L1",
       "weight": 1.0
     },
     {
@@ -99047,5 +99134,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9ed0a1877b4ef8bee16216abacc61ae2a179a398"
+  "built_at_commit": "b7243ab2a6e0c8c4613cf0386d95716fef5654eb"
 }
