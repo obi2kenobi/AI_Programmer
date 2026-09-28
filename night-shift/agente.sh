@@ -77,6 +77,7 @@ CONV=$(printf '%s' "$PROMPT" | jq -Rs --arg sys "$SYSTEM" \
   '. as $p | [{"role":"system","content":$sys},{"role":"user","content":$p}]')
 
 TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
+ANON_DIZ=$(mktemp /tmp/anon-diz-XXXXXX.json)  # diz PII: locale, attivo solo con AGENTE_ANONIMIZZA=1
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   TURNO=$((TURNO+1))
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
@@ -163,7 +164,8 @@ while i != -1:
     # non è un'action: il modello ha finito
     log "✅ completato in $TURNO turni (${ELAPSED}s)"
     echo "$CONTENT"
-    exit 0
+    rm -f "$ANON_DIZ" 2>/dev/null
+exit 0
   fi
 
   RESULT=""
@@ -177,6 +179,11 @@ while i != -1:
       FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       FOLD=$(echo "$STRIPPED" | jq -r '.old')
       FNEW=$(echo "$STRIPPED" | jq -r '.new')
+      # (rizzo-pii): l'agente scrive [FULLNAME_1], il file ha Mario Rossi
+      if [ -f "$ANON_DIZ" ] && [ -s "$ANON_DIZ" ]; then
+        FOLD=$(printf '%s' "$FOLD" | python3 "$HERE/../tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
+        FNEW=$(printf '%s' "$FNEW" | python3 "$HERE/../tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
+      fi
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
@@ -211,8 +218,21 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
-          RESULT="File $FPATH content:\n$(head -c 24000 "$REAL")"
-          log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
+          # (studio rizzo-pii, passo 2): il LLM vede PLACEHOLDER, non PII
+          RAW_CONTENT=$(head -c 24000 "$REAL")
+          if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && [ -f "$HERE/../tools/anonimizza.py" ] && curl -sf --max-time 2 http://127.0.0.1:5005/health >/dev/null 2>&1; then
+            ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/../tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
+            if [ -n "$ANON_OUT" ]; then
+              RESULT="File $FPATH content:\n$ANON_OUT"
+              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
+            else
+              RESULT="File $FPATH content:\n$RAW_CONTENT"
+              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, passthrough)"
+            fi
+          else
+            RESULT="File $FPATH content:\n$RAW_CONTENT"
+            log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
+          fi
         else
           RESULT="ERROR: file not found: $FPATH"
           log "  read: $FPATH NON TROVATO"
