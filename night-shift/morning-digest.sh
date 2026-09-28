@@ -90,6 +90,27 @@ if [ -n "$CERVMARK" ]; then
   BODY="$(printf '%s\n\n---\n%s' "$BODY" "$(cat "$CERVMARK")")"
 fi
 
+# (2026-09-28, la direzione): la roadmap di ogni repo nel digest — il passo corrente e
+# da quanto e' fermo. Il tool c'era da giorni (costruito, banchi verdi) ma nessuno lo
+# guardava: senza questa riga nessuno chiede «perche' ferma?» e la notte vaga a debiti
+# senza direzione. I placeholder di advance e l'assenza si saltano in silenzio.
+ROADMAP_OUT=""
+if [ -f "$(dirname "$0")/repos.conf" ]; then
+  while read -r ENTRY _rm; do
+    case "$ENTRY" in ''|'#'*) continue ;; esac
+    NOME="${ENTRY##*/}"
+    RM="$HOME/night-shift-work/$NOME/.git/roadmap"
+    [ -f "$RM" ] || continue
+    PASSO=$(head -1 "$RM" 2>/dev/null || true)
+    case "$PASSO" in ""|"(nessuna roadmap)"|"(prossimo passo da impostare)"|"("*) continue ;; esac
+    ROADMAP_OUT="$ROADMAP_OUT
+- $NOME: $PASSO — ferma da $(eta_giorni "$RM") giorni"
+  done < "$(dirname "$0")/repos.conf"
+fi
+if [ -n "$ROADMAP_OUT" ]; then
+  BODY="$(printf '%s\n\n---\nLA DIREZIONE (roadmap per repo)\n%s' "$BODY" "$ROADMAP_OUT")"
+fi
+
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
 # arbitrario (titoli PR, output di comandi) — senza escaping, una virgoletta o un
 # backslash al suo interno rompe o inietta nello script AppleScript. Stessa lezione

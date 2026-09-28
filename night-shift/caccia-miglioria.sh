@@ -178,6 +178,22 @@ while IFS= read -r f; do FILES+=("$f"); done < <(list_files)
 
 TARGET="${MIGLIORIA_FILE:-}"
 [ -n "$SITO" ] && TARGET="${SITO%:*}"   # il debito dice il file: la riga va nel prompt
+# (2026-09-28, la direzione): la roadmap detta il passo — se il passo corrente cita un
+# file tracciato, la caccia lo punta PRIMA di vagare a rotazione. Il collegamento che
+# mancava: il tool c'era, la caccia non lo guardava mai. Solo file veri e non in cooldown.
+if [ -z "$TARGET" ] && [ -f "$HERE/tools/roadmap-repo.sh" ]; then
+  PASSO_RM=$(bash "$HERE/tools/roadmap-repo.sh" "$DIR" get 2>/dev/null | head -1 || true)
+  case "$PASSO_RM" in ""|"("*|"(prossimo passo da impostare)") ;; *)
+    for CAND in $(printf '%s' "$PASSO_RM" | grep -oE '[A-Za-z0-9_./-]+\.(sh|py|js|gs)' || true); do
+      if [ -f "$CAND" ] && git ls-files --error-unmatch "$CAND" >/dev/null 2>&1 && ! in_cooldown "$CAT" "$CAND"; then
+        TARGET="$CAND"
+        log "roadmap: il passo cita $CAND — lo punto (passo: $(printf '%s' "$PASSO_RM" | cut -c1-70))"
+        break
+      fi
+    done
+  ;;
+  esac
+fi
 if [ -z "$TARGET" ]; then
   FIDX=$(cat "$STATE/coda-idx" 2>/dev/null || echo 0)
   [ "$FIDX" -eq "$FIDX" ] 2>/dev/null || FIDX=0
