@@ -140,7 +140,7 @@ MODO="delibera"; PARERE_FILE=""
 registra_rigetto() {
   [ "$MODO" = "delibera" ] || return 0
   local motivob files rcat
-  motivob=$(printf '%s' "$1" | tr -d '\n|' | cut -c1-90)
+  motivob=$(printf '%s' "$1" | tr -d '\n|' | taglia_caratteri 90)
   files=$(printf '%s' "$DIFF_FILES" | tr '\n' ',' | tr -d '|' | cut -c1-120)
   rcat=$(printf '%s' "$TITLE" | grep -oE '\[([a-z]+)\]' | tr -d '[]' | head -1)
   mkdir -p "$DIR/.git/caccia-registro"
@@ -519,7 +519,7 @@ if [ "$VERDETTO" = "APPROVA" ]; then
   fi
 else
   log "DELIBERA: RIGETTA PR #$PR — $MOTIVI"
-  registra_rigetto "censore: $(echo "$MOTIVI" | tr '\n' ' ' | cut -c1-80)"
+  registra_rigetto "censore: $(echo "$MOTIVI" | tr '\n' ' ')"
   RIG_FILE=$(mktemp /tmp/revisore-rig.XXXXXX)
   printf 'RIGETTATA dal censore notturno (censore: %s).\nMotivi: %s\n' \
     "$GIUDICE_MODEL" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$RIG_FILE"
