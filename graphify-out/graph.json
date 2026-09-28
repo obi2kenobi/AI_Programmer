@@ -49763,6 +49763,66 @@
       "source_location": "L153"
     },
     {
+      "id": "docs_campo_2026_09_28_sorveglianza_pr_126",
+      "label": "2026-09-28-sorveglianza-pr-126.md",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "2026-09-28 \u2014 sorveglianza della PR #126",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-28-sorveglianza-pr-126.md",
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_28_sorveglianza_pr_126_2026_09_28_sorveglianza_della_pr_126",
+      "label": "2026-09-28 \u2014 sorveglianza della PR #126",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "2026-09-28 \u2014 sorveglianza della PR #126",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-28 \u2014 sorveglianza della pr #126",
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_28_sorveglianza_pr_126_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "2026-09-28 \u2014 sorveglianza della PR #126",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L8"
+    },
+    {
+      "id": "docs_campo_2026_09_28_sorveglianza_pr_126_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "2026-09-28 \u2014 sorveglianza della PR #126",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_09_28_sorveglianza_pr_126_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 760,
+      "community_name": "2026-09-28 \u2014 sorveglianza della PR #126",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L12"
+    },
+    {
       "id": "tests_test_trattino_iniziale",
       "label": "test-trattino-iniziale.sh",
       "_origin": "ast",
@@ -77165,6 +77225,50 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_09_28_sorveglianza_pr_126",
+      "target": "docs_campo_2026_09_28_sorveglianza_pr_126_2026_09_28_sorveglianza_della_pr_126",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_28_sorveglianza_pr_126_2026_09_28_sorveglianza_della_pr_126",
+      "target": "docs_campo_2026_09_28_sorveglianza_pr_126_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_28_sorveglianza_pr_126_2026_09_28_sorveglianza_della_pr_126",
+      "target": "docs_campo_2026_09_28_sorveglianza_pr_126_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_28_sorveglianza_pr_126_2026_09_28_sorveglianza_della_pr_126",
+      "target": "docs_campo_2026_09_28_sorveglianza_pr_126_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-28-sorveglianza-pr-126.md",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_readme",
       "target": "docs_campo_readme_report_dal_campo_come_si_\u00e8_comportato_ai_programmer_a_ogni_uso",
       "relation": "contains",
@@ -102226,5 +102330,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "557ba0f77b183ce1b2be55ceb0f148f49e29065d"
+  "built_at_commit": "2ee433da73c899aa916018ea80fb34dd1482d01d"
 }
