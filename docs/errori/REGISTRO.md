@@ -1100,3 +1100,84 @@
 - Verifica guardia: con il kill di ieri rimesso, «5 OK, 1 FAIL» (E-049 nomina la riga); con lo STOP, 6/0. Il banco
   con lo STOP: 0 rossi su 5 a macchina scarica, 0 su 3 anche a finestra larga.
 - Aggiramento: per uccidere un albero, `kill -STOP padre; pkill -KILL -P padre; kill -KILL padre`.
+
+## E-050 La caccia in loop: lo stesso costrutto rotto proposto per notti di fila
+
+- Data / sessione: 2026-09-28 (svuotamento a mano del backlog: 163 PR aperte sui tre repo).
+- Famiglia: R2 (un comportamento ripetuto all'infinito senza memoria di se'): la pipeline non
+  ricorda cosa ha gia' proposto e rigettato.
+- Chi l'ha trovato: il giorno (Luca: «vedo molti commit con conflitti non in main»), audit manuale
+  dei diff di tutte le PR aperte.
+- Sintomo: 4 PR hub e 158 satellite con lo STESSO intervento: `_cp=$([ $RC -ne 0 ] |)` su
+  graphify-spina.sh (pipe troncata: syntax error dentro la sostituzione comando, inghiottito da
+  `|| true` — il ramo d'errore non scatta piu'), `_cp=$(echo "$PROMPT")` + doppia herestring su
+  metodo-reminder-hook.sh (bash usa solo l'ultima: il grep cerca la stringa vuota), e una PR che
+  svuotava py-gate.sh con `exit 0`.
+- Causa prossima: il modello non convergente riscrive lo stesso sito ogni notte; le varianti
+  (con/senza `|| true`) hanno patch-id diversi e il dedup `caccia_gia_aperta` non le vede; bash -n
+  passa (l'errore e' dentro la sostituzione, al runtime).
+- Causa del ragionamento: nessun gate guardava la FORMA dei costrutti aggiunti — solo righe,
+  file, ASCII e sintassi. Un costrutto semanticamente rotto ma sintatticamente vivo passava tutto.
+- Perche' non ci ha fermati: il revisore rinvia al giorno senza chiudere (vedi E-051): le PR
+  rotte restavano in coda e la caccia ne aggiungeva di nuove ogni notte.
+- Guardia: firme deterministiche SIA nel gate della caccia (night-shift/caccia-miglioria.sh,
+  GATE_E050) SIA nelle guardie del revisore (night-shift/revisore.sh, rigetto deterministico):
+  `^\+.*\$\([^)]*\|\)` (pipe subito prima della parentesi che chiude la sostituzione) e
+  `^\+.*<<<[^<]*<<<` (due herestring sulla stessa riga). Nel gate: cooldown sul sito, niente
+  secondo colpo.
+- Verifica guardia: tests/test-revisore.sh (casi E-050: rigetto deterministico PRIMA del censore,
+  con stub che direbbe APPROVA) e tests/test-caccia-miglioria.sh (gate boccia + cooldown + working
+  tree ripristinato). Le firme provate su casi veri e su falsi positivi (pipe sana `| head -1`,
+  herestring singola, heredoc).
+- Aggiramento: spezzare il costrutto su piu' righe. La difesa vera e' la coppia: firma qui +
+  censore LLM (che sul semantico resta) + la regola che una miglioria deve DIMOSTRARE valore.
+
+## E-051 La FIFO del censore muore di fame: «rinvia al giorno» senza chiusura, per sempre
+
+- Data / sessione: 2026-09-28 (stesso audit; log del turno: la stessa PR rinviata a ogni ciclo
+  per giorni — #63 Magazzino, #23 Bilancio, #127 hub).
+- Famiglia: R3 (una coda senza raccolta rifiuti: il rinvio e' infinito, la testa blocca tutto).
+- Chi l'ha trovato: il giorno, leggendo il log del turno: «censore rinvia la PR #63 al giorno»
+  ripetuto identico a ogni ciclo dal 24 settembre.
+- Sintomo: 163 PR aperte; il censore ne processava UNA per ciclo (la piu' vecchia) e quella era
+  rossa (shellcheck beccava la pipe troncata: i gate funzionavano) — rinviata, non chiusa: la
+  coda dietro non passava mai.
+- Causa prossima: `candidata_censore` prende la piu' vecchia; `rinvia()` esce 2 senza memoria:
+  nessun conteggio, nessuna chiusura dopo N tentativi.
+- Causa del ragionamento: il rinvio era pensato per «aspetta e riprova» (quarantena, budget) ma
+  e' diventato anche l'esito dei rigetti deterministici (prove rosse), che ad aspettare non
+  cambiano. Infrastruttura e proprieta' della PR viaggiavano sullo stesso codice d'uscita.
+- Perche' non ci ha fermati: ogni riga di log era corretta in se' («rinvia al giorno» e' il
+  comportamento dichiarato); nessuna metrica guardava la LUNGHEZZA della coda.
+- Guardia: (1) il turno prova fino a REVISORE_PER_CICLO (3) PR per ciclo — il rinvio passa alla
+  successiva nello stesso ciclo (night-shift/night-shift.sh + lib.sh candidata_censore con
+  esclusioni); (2) i rinvii STRUTTURALI (proprieta' della PR) si contano per commit in
+  .git/revisore/rinvi/: dopo REVISORE_MAX_RINVI (3) rigetto deterministico e chiusura; quelli di
+  infrastruttura (quarantena, budget, sandbox, cervelli muti) non contano; un nuovo commit
+  azzera (chiave PR+HEAD_OID).
+- Verifica guardia: tests/test-revisore.sh casi E-051 (tre rinvii strutturali → chiusura; nuovo
+  commit → conteggio da zero; quarantena giovane non conta).
+- Aggiramento: pushare commit nuovi azzera il conteggio — e va bene cosi': chi corregge la PR
+  merita un nuovo ciclo di tentativi.
+
+## E-052 Il clone single-branch: revisore e dedup ciechi sui rami PR dei satelliti
+
+- Data / sessione: 2026-09-28 (audit del backlog; refspec dei cloni Magazzino e Bilancio).
+- Famiglia: R1 (assunzione non verificata: «il fetch porta tutti i rami»).
+- Chi l'ha trovato: il giorno, cercando perche' l'audit dei cloni satellitari diceva
+  «RAMO-SCOMPARSO» per tutte le PR aperte.
+- Sintomo: i cloni di Magazzino e Bilancio vedevano SOLO origin/main (111 e 90 rami remoti
+  invisibili); il «fetch di rinfresco» del revisore e il confronto patch-id di
+  caccia_gia_aperta (che legge `origin/<ramo>`) non vedevano MAI i rami night/*: il dedup delle
+  caccie era silenziosamente inattivo sui satelliti.
+- Causa prossima: `gh repo clone --depth=50` implica `--single-branch` (refspec solo main); il
+  fetch one-shot `git fetch origin <ramo>` scrive FETCH_HEAD, non refs/remotes/origin/<ramo>.
+- Causa del ragionamento: il clone shallow e' stato scelto per velocita' d'onboarding senza
+  verificare CHE COSA il resto del sistema si aspettava di trovare nel clone.
+- Perche' non ci ha fermati: nessun test provava la visibilita' dei rami PR nei cloni di
+  produzione (le bancote di test clonano a mano, con tutti i rami).
+- Guardia: `--no-single-branch` nel clone di tools/onboard-repo.sh (PR #131, 2026-09-28); i due
+  cloni esistenti corretti a mano con `git remote set-branches origin '*'`.
+- Verifica guardia: i cloni ora vedono 111/90 rami remoti e l'audit del backlog li raggiunge.
+- Aggiramento: nessuno necessario in produzione; una bancota che clona senza i rami ripete il
+  buio — il rimedio e' la riga di onboard, non un test in suite.

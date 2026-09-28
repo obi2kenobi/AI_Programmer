@@ -652,19 +652,27 @@ review del giorno." 2>>"$ERR_NOTTE" \
   fi
 
   # (2026-09-18, Luca: «un agente revisore, censore, che verifica prova certifica
-  # il codice e decide se deliberarlo o no»): ogni ciclo, UNA PR bozza night/*
-  # passa dal censore — guardie deterministiche, prove sul branch, giudizio di
-  # un processo separato senza la memoria di chi ha scritto (stesso modello dal
+  # il codice e decide se deliberarlo o no»): ogni ciclo, fino a REVISORE_PER_CICLO (3)
+  # PR bozza night/* passano dal censore — guardie deterministiche, prove sul branch,
+  # giudizio di un processo separato senza la memoria di chi ha scritto (stesso modello dal
   # 2026-09-19 — cervello/decisione-modello-unico.md —, istruzioni e ruolo diversi: chi scrive non giudica). La quarantena (>=20 min) la decide il revisore:
   # chi crea non si giudica nello stesso respiro. Il veto resta umano.
+  # (E-051, 2026-09-28, svuotamento del backlog): era UNA PR per ciclo, la piu' vecchia —
+  # una PR rossa in testa (prove rosse, guardie) veniva rinviata per giorni e la coda
+  # dietro moriva di fame: 163 PR aperte sui tre repo. Ora il rinvio (rc 2) passa alla
+  # successiva NELLO STESSO ciclo; le gia' provate si escludono (candidata_censore).
   if [ -f "$HERE/revisore.sh" ]; then
     # (revisione 10 giri): la candidata si sceglie coi predicati del censore (lib.sh
     # candidata_censore) — prima una PR di issue in testa affamava le caccia dietro di lei
     # (2026-09-25, ottavo ventaglio, O2 R2): --limit 200, non 20 — con 20 PR piu' nuove davanti nessuna caccia arrivava al
     # giudizio, in silenzio. Ogni lista del turno dichiara il suo limite (tests/test-lib.sh lo pretende).
-    REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,createdAt --limit 200 2>/dev/null \
-      | candidata_censore)
-    if [ -n "${REVISORE_CANDIDATA:-}" ]; then
+    REVISORE_PROVATE=()
+    REVISORE_TENTATIVI=0
+    while [ "$REVISORE_TENTATIVI" -lt "${REVISORE_PER_CICLO:-3}" ]; do
+      REVISORE_CANDIDATA=$(cd "$DIR" && gh pr list --state open --json number,headRefName,isDraft,title,createdAt --limit 200 2>/dev/null \
+        | candidata_censore ${REVISORE_PROVATE[@]+"${REVISORE_PROVATE[@]}"})
+      [ -n "${REVISORE_CANDIDATA:-}" ] || break
+      REVISORE_TENTATIVI=$((REVISORE_TENTATIVI+1))
       log "REPO $REPO: PR #$REVISORE_CANDIDATA in quarantena — la porto al CENSORE"
       REVISORE_OUT=$(bash "$HERE/revisore.sh" "$DIR" "$REVISORE_CANDIDATA" 2>&1); REVISORE_RC=$?
       # (audit 2026-09-23, corretto al secondo giro): le firme "DELIBERA:" vivevano
@@ -673,12 +681,13 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # firma DENTRO la riga, non all'inizio.
       while IFS= read -r _dl; do log "REPO $REPO: $_dl"; done < <(grep -a "DELIBERA: APPROVA\|DELIBERA: RIGETTA" <<<"$REVISORE_OUT" | sed 's/^\[revisore [^]]*\] //')
       case "$REVISORE_RC" in
-        0) log "REPO $REPO: ✅ censore ha DELIBERATO il merge: PR #$REVISORE_CANDIDATA" ;;
+        0) log "REPO $REPO: ✅ censore ha DELIBERATO il merge: PR #$REVISORE_CANDIDATA"; break ;;
         1) log "REPO $REPO: ⛔ censore ha RIGETTATO la PR #$REVISORE_CANDIDATA (chiusa con motivi)" ;;
-        2) log "REPO $REPO: censore rinvia la PR #$REVISORE_CANDIDATA al giorno ($(echo "$REVISORE_OUT" | tail -1 | cut -c1-100))" ;;
-        *) log "REPO $REPO: ⚠ censore in errore sulla PR #$REVISORE_CANDIDATA (rc=$REVISORE_RC)" ;;
+        2) log "REPO $REPO: censore rinvia la PR #$REVISORE_CANDIDATA al giorno ($(echo "$REVISORE_OUT" | tail -1 | cut -c1-100)) — passo alla successiva" ;;
+        *) log "REPO $REPO: ⚠ censore in errore sulla PR #$REVISORE_CANDIDATA (rc=$REVISORE_RC)"; break ;;
       esac
-    fi
+      REVISORE_PROVATE+=("$REVISORE_CANDIDATA")
+    done
     # (D10, decisione di Luca 2026-09-23: «b»): una PR di ISSUE per ciclo riceve il PARERE del
     # censore — stesse guardie e prove, giudizio contro il testo della issue, un commento motivato;
     # mai la fusione, che resta di Luca. Un parere per commit (lib.sh candidata_parere).
