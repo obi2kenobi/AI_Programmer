@@ -181,8 +181,8 @@ exit 0
       FNEW=$(echo "$STRIPPED" | jq -r '.new')
       # (rizzo-pii): l'agente scrive [FULLNAME_1], il file ha Mario Rossi
       if [ -f "$ANON_DIZ" ] && [ -s "$ANON_DIZ" ]; then
-        FOLD=$(printf '%s' "$FOLD" | python3 "$HERE/../tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
-        FNEW=$(printf '%s' "$FNEW" | python3 "$HERE/../tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
+        FOLD=$(printf '%s' "$FOLD" | python3 "$HERE/tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
+        FNEW=$(printf '%s' "$FNEW" | python3 "$HERE/tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
       fi
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
@@ -220,8 +220,15 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         if [ -f "$REAL" ]; then
           # (studio rizzo-pii, passo 2): il LLM vede PLACEHOLDER, non PII
           RAW_CONTENT=$(head -c 24000 "$REAL")
-          if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && [ -f "$HERE/../tools/anonimizza.py" ] && curl -sf --max-time 2 http://127.0.0.1:5005/health >/dev/null 2>&1; then
-            ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/../tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
+          if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ]; then
+          if ! curl -sf --max-time 2 http://127.0.0.1:5005/health >/dev/null 2>&1; then
+            RESULT="ERROR: PII server down — read blocked (GDPR gate). Retry or declare finish."
+            log "  read: BLOCCATO (server PII spento)"
+            ANON_SKIP=1
+          fi
+        fi
+        if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && [ "${ANON_SKIP:-0}" != "1" ] && [ -f "$HERE/tools/anonimizza.py" ]; then
+            ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
             if [ -n "$ANON_OUT" ]; then
               RESULT="File $FPATH content:\n$ANON_OUT"
               log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"

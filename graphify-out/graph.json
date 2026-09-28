@@ -122,7 +122,7 @@
       "file_type": "code",
       "norm_label": "de_anonimizza()",
       "source_file": "tools/anonimizza.py",
-      "source_location": "L53"
+      "source_location": "L72"
     },
     {
       "id": "tools_anonimizza_main",
@@ -134,7 +134,7 @@
       "file_type": "code",
       "norm_label": "main()",
       "source_file": "tools/anonimizza.py",
-      "source_location": "L65"
+      "source_location": "L84"
     },
     {
       "id": "tools_bc_index_catalogo_mancanti",
@@ -52932,7 +52932,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L261",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -52944,7 +52944,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L277",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -59472,7 +59472,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/anonimizza.py",
-      "source_location": "L74",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -59484,7 +59484,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/anonimizza.py",
-      "source_location": "L76",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -87927,7 +87927,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/anonimizza.py",
-      "source_location": "L53",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
@@ -87938,7 +87938,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/anonimizza.py",
-      "source_location": "L65",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
@@ -99134,5 +99134,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b7243ab2a6e0c8c4613cf0386d95716fef5654eb"
+  "built_at_commit": "3f0998f9892d51544f28cb8b2ff8c076e77a2d70"
 }

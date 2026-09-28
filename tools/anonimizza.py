@@ -44,9 +44,28 @@ def anonimizza(testo: str, diz_path: str) -> str:
     if risp is None:
         print("anonimizza: server spento — passthrough (il LLM vedrà i dati veri)", file=sys.stderr)
         return testo
-    # salva il dizionario locale (mai mandato al LLM)
-    with open(diz_path, "w") as f:
-        json.dump(risp.get("mapping", {}), f, ensure_ascii=False, indent=1)
+    # dizionario CUMULATIVO: merge, non overwrite (Claude 2026-09-28: se il file A
+    # ha [FULLNAME_1]=Mario e il file B ha [FULLNAME_1]=Luigi, il vecchio codice
+    # sovrascriveva: il ripristino del file A metteva Luigi — corruzione silenziosa)
+    nuovo = risp.get("mapping", {})
+    vecchio = {}
+    try:
+        with open(diz_path) as f:
+            vecchio = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+    # per ogni placeholder nuovo che collide con uno esistente, rinumera
+    for ph, reale in nuovo.items():
+        base = ph.rstrip("0123456789]")
+        n = 1
+        while f"{base}{n}]" in vecchio and vecchio[f"{base}{n}]"] != reale:
+            n += 1
+        vecchio[f"{base}{n}]"] = reale
+    # salva con permessi 600 (non leggibile da altri)
+    import os, tempfile
+    fd = os.open(diz_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        json.dump(vecchio, f, ensure_ascii=False, indent=1)
     return risp.get("anonymized_text", testo)
 
 
