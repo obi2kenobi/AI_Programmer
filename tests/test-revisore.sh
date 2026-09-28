@@ -430,6 +430,76 @@ OUT=$(cd "$SB" && PATH="$SOLOGH:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 [ "$RC" -eq 2 ] && ! grep -c "gh pr merge" <<<"$OUT" >/dev/null && grep -c "DEGRADATO" <<<"$OUT" >/dev/null \
   && ok "senza sandbox-exec: DEGRADATO, rc 2, nessun merge" || ko "senza sandbox: rc $RC — $(tail -1 <<<"$OUT")"
 
+# E-050a. (2026-09-28, svuotamento del backlog): la firma della pipe troncata nel diff aggiunto —
+# rigetto DETERMINISTICO prima del censore (lo stub qui direbbe APPROVA: se arriva al merge, il banco e' rosso).
+SB=$(nuova_repo)
+printf 'UPD="x"; RC=0\nif [ "$RC" -ne 0 ]; then echo ko; fi\n' > "$SB/gira.sh"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm gira
+git -C "$SB" checkout -q -b night/test-e050a
+printf 'UPD="x"; RC=0\n_cp=$([ $RC -ne 0 ] |) || true\nif [ "$RC" -ne 0 ]; then echo ko; fi\n' > "$SB/gira.sh"
+QUANDO=$(python3 -c "import datetime; print((datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(minutes=30)).isoformat())")
+git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: gira"
+git -C "$SB" checkout -q main
+python3 - > "$GHSTUB_JSON" <<'PYJ'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria al codice dall'agente notturno",
+  "headRefName": "night/test-e050a", "isDraft": True, "state": "OPEN",
+  "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=30)).isoformat()}))
+PYJ
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 1 ] && ok "E-050 pipe troncata: rc 1 (rigetto deterministico)" || ko "rc $RC (atteso 1): $(tail -1 <<<"$OUT")"
+grep -q "E-050" <<<"$OUT" && ok "E-050: il motivo cita la firma" || ko "il motivo non cita E-050"
+grep -q "\[DRY\] gh pr close 7" <<<"$OUT" && ok "E-050: PR chiusa" || ko "E-050: PR non chiusa"
+grep -q "gh pr merge" <<<"$OUT" && ko "E-050: ha mergiato nonostante la firma!" || ok "E-050: nessun merge"
+
+# E-050b. la seconda firma: doppia herestring sulla stessa riga
+SB=$(nuova_repo)
+printf 'A="x"\ngrep -q x <<<"$A"\n' > "$SB/gira.sh"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm gira
+git -C "$SB" checkout -q -b night/test-e050b
+printf 'A="x"; B="y"\n_cp=$(echo "$A")\ngrep -q x <<<"$A" <<<"$_cp"\n' > "$SB/gira.sh"
+git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: gira"
+git -C "$SB" checkout -q main
+python3 - > "$GHSTUB_JSON" <<'PYJ'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria al codice dall'agente notturno",
+  "headRefName": "night/test-e050b", "isDraft": True, "state": "OPEN",
+  "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=30)).isoformat()}))
+PYJ
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -q "doppia herestring" <<<"$OUT" && ok "E-050 doppia herestring: rc 1 con motivo" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+
+# E-051a. (2026-09-28): i rinvii STRUTTURALI si contano — alla terza la PR si chiude, la FIFO non
+# muore di fame. Prove rosse (night-verify 'false' su main): la PR e' sana per guardie ma rossa per prove.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-e051
+printf 'false\n' > "$SB/.night-verify"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm rosso
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC1=$?
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC2=$?
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC3=$?
+[ "$RC1" -eq 2 ] && [ "$RC2" -eq 2 ] && ok "E-051: primi due rinvii (rc 2, rc 2)" || ko "rc1=$RC1 rc2=$RC2"
+[ "$RC3" -eq 1 ] && grep -q "rigetto deterministico" <<<"$OUT" && ok "E-051: al TERZO rinvio strutturale la PR si chiude (rc 1)" || ko "rc3=$RC3: $(tail -1 <<<"$OUT")"
+
+# E-051b. un nuovo commit azzera il conteggio (chiave PR+HEAD_OID): chi corregge riparte da zero
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-e051b
+printf 'false\n' > "$SB/.night-verify"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm rosso
+for i in 1 2; do (cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 >/dev/null 2>&1); done
+git -C "$SB" checkout -q night/test-e051b
+printf 'function viva(x) {\n  // raddoppia: altro commento ancora\n  return x * 2;\n}\n' > "$SB/utils.js"
+git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: ancora"
+git -C "$SB" checkout -q main
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ok "E-051: nuovo commit → conteggio da zero (rc 2, non chiusa)" || ko "rc $RC dopo il nuovo commit: $(tail -1 <<<"$OUT")"
+
+# E-051c. i rinvii di INFRASTRUTTURA non contano: quarantena giovane → rc 2 e NESSUN contatore
+SB=$(nuova_repo); nuova_pr "$SB" 5 night/test-e051c
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && [ ! -d "$SB/.git/revisore/rinvi" ] && ok "E-051: quarantena (infrastruttura) non incrementa nessun contatore" || ko "rc $RC o contatore creato: $(ls "$SB/.git/revisore/rinvi" 2>/dev/null)"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

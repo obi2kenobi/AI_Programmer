@@ -11,7 +11,10 @@
 # La deliberazione e' a tre livelli, in ordine di autorita':
 #   1. GUARDIE (deterministiche): diff <=60 righe, <=3 file, ASCII, no CRLF,
 #      solo PR bozza night/* con titolo 'caccia:', quarantena >=20 min dalla PR e dal suo ultimo commit
-#      (chi crea non si giudica nello stesso respiro), budget <=5 merge nelle ultime 24 ore (D32).
+#      (chi crea non si giudica nello stesso respiro), budget <=5 merge nelle ultime 24 ore (D32),
+#      firme E-050 sui costrutti rotti (rigetto deterministico, 2026-09-28).
+#      I rinvii STRUTTURALI (proprieta' della PR) si contano per commit: dopo
+#      REVISORE_MAX_RINVI (3) la PR si chiude — la FIFO non muore di fame (E-051).
 #   2. PROVE (deterministiche): verifiche dichiarate riga per riga + un comando
 #      avversario scritto dal modello con allowlist ristretta (deve riuscire)
 #      + la lente sicurezza §2bis (tools/lente-sicurezza.sh, D2 2026-09-23): deve essere PULITA.
@@ -129,11 +132,47 @@ azione_gh() { # in DRY stampa a stdout, altrimenti esegue silenzioso (niente eva
   "$@" >/dev/null 2>&1
 }
 MODO="delibera"; PARERE_FILE=""
-# rinvia <motivo>: la PR va al giorno. Nel modo PARERE il motivo diventa il parere (negativo,
-# deterministico) scritto sulla PR, e si ricorda per quel commit: Luca lo legge, il turno non
-# lo rifa' a ogni ciclo.
+# rigetto_deterministico <motivo>: la PR si chiude ORA, senza LLM — o la firma e' certa
+# (E-050) o il rinvio e' strutturale per l'N-esima volta (E-051). Nel modo PARERE non si
+# chiude mai (D10: mai close): diventa il parere negativo di rinvia().
+rigetta_deterministico() {
+  if [ "$MODO" = "parere" ]; then
+    rinvia "$1"
+    return
+  fi
+  log "DELIBERA: RIGETTA PR #$PR — rigetto deterministico: $1"
+  local f; f=$(mktemp /tmp/revisore-rd.XXXXXX)
+  printf 'RIGETTATA dal revisore notturno (verdetto DETERMINISTICO, nessun modello coinvolto).\nMotivo: %s\nSe il debito e reale la caccia lo riproponra al prossimo giro; questa PR non passa e aspettare non la cambia.\n' "$1" > "$f"
+  azione_gh gh pr comment "$PR" --body-file "$f" || true
+  rm -f "$f"
+  if azione_gh gh pr close "$PR"; then
+    log "⛔ PR #$PR chiusa dal rigetto deterministico"
+  else
+    [ -n "${HEAD_OID:-}" ] && touch "$STATE/rigetto-$PR-$HEAD_OID"
+    log "⚠ PR #$PR rigettata (deterministico), ma la chiusura fallita: ricordata per questo commit"
+  fi
+  exit 1
+}
+# rinvia <motivo> [strutturale]: la PR va al giorno. Nel modo PARERE il motivo diventa il parere
+# (negativo, deterministico) scritto sulla PR, e si ricorda per quel commit: Luca lo legge, il
+# turno non lo rifa' a ogni ciclo.
+# (E-051, 2026-09-28, svuotamento del backlog): i rinvii STRUTTURALI — proprieta' della PR che
+# non cambiano ad aspettare: diff fuori guardie, prove rosse, banco che smaschera — si contano
+# per commit; dopo REVISORE_MAX_RINVI (default 3) la PR si chiude. Prima una PR rossa in testa
+# alla FIFO veniva rinviata per GIORNI e la coda dietro moriva di fame: 163 PR aperte il
+# 2026-09-28. I rinvii di infrastruttura (quarantena, budget, sandbox, cervelli muti) non
+# contano: non sono colpa della PR. Un nuovo commit azzera il conteggio (chiave PR+HEAD_OID).
 rinvia() {
   log "$1 — al giorno"
+  if [ "${2:-}" = "strutturale" ] && [ "$MODO" != "parere" ]; then
+    mkdir -p "$STATE/rinvi"
+    local rlog="$STATE/rinvi/$PR-${HEAD_OID:-senza-oid}"
+    printf '%s %s\n' "$(date +%s)" "$1" >> "$rlog"
+    local n_rinvi; n_rinvi=$(grep -c . "$rlog" 2>/dev/null || echo 0)
+    if [ "${n_rinvi:-0}" -ge "${REVISORE_MAX_RINVI:-3}" ]; then
+      rigetta_deterministico "rinviata $n_rinvi volte per motivi strutturali (ultimo: $1)"
+    fi
+  fi
   if [ "$MODO" = "parere" ]; then
     local f; f=$(mktemp /tmp/revisore-parere.XXXXXX)
     printf 'Parere del censore notturno: NON APPROVABILE di notte (prove deterministiche).\nMotivo: %s\nLa PR resta aperta: la fusione e la decisione sono di Luca (D10, 2026-09-23).\n' "$1" > "$f"
@@ -228,23 +267,38 @@ N_FILE=$(printf '%s\n' "$DIFF_FILES" | grep -c .)
 N_RIGHE=$(git diff --numstat "$DB"...HEAD 2>/dev/null | awk '{a+=$1+$2} END{print a+0}')
 # (D4, 2026-09-20): un diff VUOTO passava tutte le guardie (0 <= 60) e veniva deliberato
 # — il censore giudicava il nulla e lo mergiava. Niente diff, niente giudizio.
-[ "$N_FILE" -ge 1 ] || rinvia "guardia: diff vuoto ($DB...HEAD) — niente da giudicare"
+[ "$N_FILE" -ge 1 ] || rinvia "guardia: diff vuoto ($DB...HEAD) — niente da giudicare" strutturale
 # (D1, 2026-09-20): chi scrive le prove non le passa. Una PR che tocca .night-verify
 # (anche solo per riscriverlo a `true`) non si giudica: le prove sotto sono lette dal
 # ramo di default, come fa il morning gate, e questa guardia chiude l'altra via.
 if grep -qx '.night-verify' <<<"$DIFF_FILES"; then
-  rinvia "guardia: la PR tocca .night-verify — le prove non si giudicano da chi le scrive"
+  rinvia "guardia: la PR tocca .night-verify — le prove non si giudicano da chi le scrive" strutturale
 fi
-[ "$N_FILE" -le "$MAX_FILE" ] || rinvia "guardia: $N_FILE file (max $MAX_FILE)"
-[ "$N_RIGHE" -le "$MAX_RIGHE" ] || rinvia "guardia: $N_RIGHE righe (max $MAX_RIGHE)"
+[ "$N_FILE" -le "$MAX_FILE" ] || rinvia "guardia: $N_FILE file (max $MAX_FILE)" strutturale
+[ "$N_RIGHE" -le "$MAX_RIGHE" ] || rinvia "guardia: $N_RIGHE righe (max $MAX_RIGHE)" strutturale
 if ! git diff "$DB"...HEAD | python3 -c '
 import sys
 for l in sys.stdin:
     if l.startswith("+") and any(ord(c) > 126 or c == "\r" for c in l):
         sys.exit(1)' 2>/dev/null; then
-  rinvia "guardia: non-ASCII o CRLF nel diff"
+  rinvia "guardia: non-ASCII o CRLF nel diff" strutturale
 fi
 DIFF=$(git diff "$DB"...HEAD)
+
+# (E-050, 2026-09-28, svuotamento del backlog): le firme del loop notturno — la caccia ha
+# riproposto per notti di fila gli stessi due costrutti rotti su tutti e tre i repo. Il
+# deterministico prima dell'intelligente: rigetto senza consumare il LLM, cosi' il ciclo
+# dopo la coda scorre. Le firme guardano solo le righe AGGIUNTE.
+#   1. pipe troncata dentro la sostituzione comando: `_cp=$([ $RC -ne 0 ] |)` — syntax
+#      error dentro $( ) al runtime, inghiottito da `|| true`: la riga non fa cio' che sembra;
+#   2. doppia herestring sulla stessa riga: `grep -q x <<<"$A" <<<"$B"` — bash usa solo
+#      l'ultima: il comando cerca la stringa sbagliata.
+if printf '%s' "$DIFF" | grep -qE '^\+.*\$\([^)]*\|\)'; then
+  rigetta_deterministico "E-050: pipe troncata dentro la sostituzione comando nel diff aggiunto (syntax error inghiottito: firma del loop della caccia, non una miglioria)"
+fi
+if printf '%s' "$DIFF" | grep -qE '^\+.*<<<[^<]*<<<'; then
+  rigetta_deterministico "E-050: doppia herestring nella stessa riga aggiunta (bash usa solo l'ultima: il comando cerca la stringa sbagliata)"
+fi
 
 # ══ 2. PROVE (deterministiche) ══════════════════════════════════════════════════
 PROVE_ROTTE=""
@@ -299,7 +353,7 @@ else
   PROVE_ROTTE="; .night-verify assente sul ramo di default ($DB)"
 fi
 rm -f "$PROFILO_PROVE"
-[ -z "$PROVE_ROTTE" ] || rinvia "prove: verifiche dichiarate rosse:$PROVE_ROTTE"
+[ -z "$PROVE_ROTTE" ] || rinvia "prove: verifiche dichiarate rosse:$PROVE_ROTTE" strutturale
 PROVE_VERDI=1
 
 # banco avversario: il modello scrive UN comando allowlistato che deve riuscire
@@ -335,14 +389,22 @@ if [ "$AVV_VALIDA" -eq 1 ]; then
 else
   BANCO_ESITO="COMANDO INVALIDO (scartato dall'allowlist) — non conta come prova superata"
 fi
-[ "$BANCO_ESITO" = "REGGE (comando avversario riuscito)" ] || rinvia "prove: banco: $BANCO_ESITO"
+# (E-051): SMASCHERATA e' un difetto della PR (strutturale, conta); COMANDO INVALIDO
+# e' la qualita' del modello che scrive il comando (infrastruttura, non conta).
+BANCO_STR=""
+[ "$BANCO_ESITO" = "SMASCHERATA" ] && BANCO_STR="strutturale"
+[ "$BANCO_ESITO" = "REGGE (comando avversario riuscito)" ] || rinvia "prove: banco: $BANCO_ESITO" $BANCO_STR
 
 # la LENTE SICUREZZA (dev-critic §2bis — D2, Luca 2026-09-23: automatica su ogni PR della notte).
 # Rilievi o lente senza verdetto: al giorno, mai fusa — un segreto mergiato non si ritira con un
 # revert (resta nella storia). Stesso cervello del censore; nei test lo stesso stub.
 LENTE_OUT=$(LENTE_STUB="${LENTE_STUB:-${REVISORE_STUB:-}}" MODELLO="$GIUDICE_MODEL" \
   bash "$HERE/tools/lente-sicurezza.sh" "$DIR" "$DB" HEAD 2>/dev/null); LENTE_RC=$?
-[ "$LENTE_RC" -eq 0 ] || rinvia "prove: $(tail -1 <<<"$LENTE_OUT") (mai fusa con la lente sicurezza non pulita)"
+# (E-051): rilievi VERI della lente = proprieta' della PR (strutturale); lente DEGRADATA
+# (cervello muto, fuori formato) = infrastruttura: non conta, non e' colpa della PR.
+LENTE_STR="strutturale"
+grep -q "DEGRADAT" <<<"$LENTE_OUT" && LENTE_STR=""
+[ "$LENTE_RC" -eq 0 ] || rinvia "prove: $(tail -1 <<<"$LENTE_OUT") (mai fusa con la lente sicurezza non pulita)" $LENTE_STR
 log "prove: $(tail -1 <<<"$LENTE_OUT")"
 
 # ══ 3. GIUDIZIO (il censore: cervello diverso da chi ha scritto) ═══════════════

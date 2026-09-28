@@ -212,6 +212,37 @@ grep -c 'server muto anche al ping' <<<"$OUT" >/dev/null && grep -c 'NESSUN rian
 git -C "$SB" reset -q --hard; rm -f "$STUB_WEDGE"
 grep -c 'rianima_ollama: esito' "$HERE/night-shift/night-shift.sh" >/dev/null && ok "il turno rilancia nel log le righe d'esito di rianima_ollama e dei wedge" || ko "il turno non rilancia le righe dei wedge della miglioria"
 
+# E-050. (2026-09-28, svuotamento del backlog): il costrutto rotto che la caccia ripropone in
+# loop — pipe troncata dentro $( ) — non passa il gate: bocciata, cooldown sul sito, tree pulito,
+# NESSUN secondo colpo (il chirurgo riscriverebbe lo stesso rotto).
+STUB_ROTTO=$(mktemp /tmp/stub-rotto.XXXXXX)
+cat > "$STUB_ROTTO" <<'EOF'
+#!/bin/bash
+DIR="$1"; PROMPT="$2"
+FILE=$(printf '%s' "$PROMPT" | sed -n "s/.*improving the file '\([^']*\)'.*/\1/p")
+[ -n "$FILE" ] || exit 1
+python3 - "$DIR/$FILE" <<'PYR'
+import sys
+p = sys.argv[1]
+with open(p, "a") as f:
+    f.write('UPD="x"; RC=0\n_cp=$([ $RC -ne 0 ] |) || true\nif grep -q x <<<"$UPD" <<<"$_cp"; then echo ko; fi\n')
+PYR
+exit 0
+EOF
+chmod +x "$STUB_ROTTO"
+SB2=$(mktemp -d /tmp/test-miglioria-e050.XXXXXX)
+printf 'UPD="x"; RC=0\nif [ "$RC" -ne 0 ]; then echo ko; fi\n' > "$SB2/gira.sh"
+nuova_repo "$SB2"
+git -C "$SB2" add -A && git -C "$SB2" -c user.name=t -c user.email=t@t commit -qm gira
+OUT=$(MIGLIORIA_AGENT="$STUB_ROTTO" MIGLIORIA_CAT=morto MIGLIORIA_FILE=gira.sh bash "$CM" "$SB2" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && ok "E-050: costrutto rotto bocciato dal gate (rc 1)" || ko "rc $RC (atteso 1): $OUT"
+grep -q "E-050" <<<"$OUT" && ok "E-050: il gate dichiara la firma" || ko "nessuna firma E-050 nel log"
+git -C "$SB2" diff --quiet 2>/dev/null && ok "E-050: working tree ripristinato" || ko "il rotto e' rimasto nel tree"
+grep -q 'pipe troncata' "$SB2/gira.sh" 2>/dev/null && ko "la pipe troncata e' sopravvissuta" || ok "gira.sh tornato pulito"
+ls "$SB2/.git/miglioria/" 2>/dev/null | grep -q '^clean\.morto\.' && ok "E-050: cooldown scritto sul sito" || ko "nessun marker di cooldown"
+rm -rf "$SB2" "$STUB_ROTTO"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

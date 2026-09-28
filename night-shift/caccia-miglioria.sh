@@ -93,9 +93,10 @@ in_cooldown() {
 
 # --- il gate: la frontiera tra 'miglioria' e 'riscrittura' ----------------------
 # Nessun diff passa senza: poche righe, pochi file, sintassi valida, solo ASCII
-# (il registro della repo è ASCII: 'e' non 'è'), niente CRLF.
+# (il registro della repo è ASCII: 'e' non è 'è'), niente CRLF, niente firme E-050.
 gate() {
   local files n tot
+  GATE_E050=0
   files=$(git diff --name-only 2>/dev/null)
   [ -n "$files" ] || { log "gate: nessun diff"; return 1; }
   n=$(printf '%s\n' "$files" | grep -c .)
@@ -108,6 +109,19 @@ for l in sys.stdin:
     if l.startswith("+") and any(ord(c) > 126 or c == "\r" for c in l):
         sys.exit(1)' 2>/dev/null; then
     log "gate BOCCIA: non-ASCII o CRLF nelle righe aggiunte"; return 1
+  fi
+  # (E-050, 2026-09-28, svuotamento del backlog): le firme dei costrutti rotti che la
+  # caccia ripropone in loop da notti — pipe troncata dentro la sostituzione comando
+  # (`_cp=$([ $RC -ne 0 ] |)`: syntax error inghiottito da `|| true`) e doppia
+  # herestring (`<<<"$A" <<<"$B"`: bash usa solo l'ultima). Stesse firme del revisore:
+  # il deterministico ferma la consegna PRIMA che il diff diventi una PR.
+  if git diff 2>/dev/null | grep -qE '^\+.*\$\([^)]*\|\)'; then
+    log "gate BOCCIA: E-050 pipe troncata nella sostituzione comando (firma del loop notturno)"
+    GATE_E050=1; return 1
+  fi
+  if git diff 2>/dev/null | grep -qE '^\+.*<<<[^<]*<<<'; then
+    log "gate BOCCIA: E-050 doppia herestring nella stessa riga (bash usa solo l'ultima)"
+    GATE_E050=1; return 1
   fi
   while IFS= read -r f; do
     case "$f" in
@@ -254,6 +268,15 @@ if git diff --quiet 2>/dev/null; then
 fi
 
 if ! gate; then
+  # (E-050): il costrutto rotto non si ripara col chirurgo — il modello lo riscrive
+  # uguale. Cooldown sul sito (stessa forma del 'pulito': per questa finestra non si
+  # ritocca) e si esce senza secondo colpo.
+  if [ "${GATE_E050:-0}" -eq 1 ]; then
+    touch "$STATE/$(marker_name "$CAT" "$TARGET")"
+    log "E-050: cooldown di ${COOLDOWN}s su [$CAT] $TARGET — il costrutto e rotto, non riscrivibile"
+    ripristina
+    exit 1
+  fi
   N_TROPPE=$(git diff --numstat | awk '{a+=$1+$2} END{print a+0}')
   if [ -z "${SECONDO_COLPO:-}" ] && [ "${N_TROPPE:-0}" -gt "$MAX_RIGHE_DIFF" ]; then
     # (2026-09-19, dall'inchiesta «perche' non trova nulla»): il 14b sovra-consegna

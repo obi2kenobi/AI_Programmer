@@ -488,16 +488,23 @@ for raw in sys.stdin.buffer:
 ' || echo "⛔ impronta_righe: MORTA (python) — righe SOPPRESSE, non mostrate: e' un rosso, non un silenzio"
 }
 
-# candidata_censore(): dal JSON di `gh pr list --json number,headRefName,isDraft,title` (stdin)
-# il numero della prima PR che il censore ACCETTA — bozza, branch night/*, titolo `caccia:`:
+# candidata_censore [numero-da-escludere...]: dal JSON di `gh pr list --json number,headRefName,isDraft,title`
+# (stdin) il numero della prima PR che il censore ACCETTA — bozza, branch night/*, titolo `caccia:`:
 # gli stessi predicati delle guardie di night-shift/revisore.sh. (Revisione 10 giri,
 # 2026-09-23): il turno prendeva la prima bozza night/* qualunque; con una PR di issue in
 # testa il censore rispondeva «non mio» a ogni ciclo e le caccia dietro non passavano mai.
 # (2026-09-24, terzo ventaglio, V1#2): gh elenca le PR piu' RECENTI prima, e si prendeva la prima — la piu'
 # nuova, in quarantena — mentre le cacce vecchie non tornavano piu' davanti al censore. Ora la piu' VECCHIA
 # (createdAt crescente; senza createdAt l'ordine resta quello di gh).
+# (E-051, 2026-09-28): gli escludibili sono le PR gia' provate in QUESTO ciclo — il rinvio
+# della testa non deve fermare la coda: il turno ripete la chiamata passando i numeri gia' andati.
 candidata_censore() {
-  jq -r '[.[] | select(.isDraft == true and (.headRefName | startswith("night/")) and ((.title // "") | startswith("caccia:")))] | sort_by(.createdAt // "") | .[0].number // empty' 2>/dev/null
+  local n filtri=""
+  for n in "$@"; do
+    case "$n" in ''|*[!0-9]*) continue ;; esac   # non-numero: si ignora, mai iniettato nel jq
+    filtri="$filtri select(.number != $n) |"
+  done
+  jq -r "[.[] | select(.isDraft == true and (.headRefName | startswith(\"night/\")) and ((.title // \"\") | startswith(\"caccia:\"))) | $filtri .] | sort_by(.createdAt // \"\") | .[0].number // empty" 2>/dev/null
 }
 
 # caccia_gia_aperta <dir> <base> <ramo>...: 0 se uno dei rami remoti (le cacce con una PR aperta) porta gia'
