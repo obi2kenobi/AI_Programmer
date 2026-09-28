@@ -252,6 +252,34 @@ def lettura_debiti(cens):
     if delta > 0: return f"<div style='color:#e74c3c;font-size:.78rem;margin-top:4px'>verdetto: CRESCE ({delta:+d}) — si creano piu' debiti di quanti se ne pagano</div>"
     return "<div style='color:#f39c12;font-size:.78rem;margin-top:4px'>verdetto: STABILE — nessun debito saldato nella finestra: la caccia consegna? il censore fonde?</div>"
 
+def andamento():
+    """(2026-09-28, il bilancino) La storia che il funnel del giorno non racconta:
+    ultime 7 righe per repo dal CSV scritto a fine ciclo da tools/bilancino.sh.
+    Assente = sezione dichiarata vuota, mai un errore."""
+    csv_path = os.path.expanduser(os.environ.get("NIGHT_FUNNEL", os.path.join(WORK, "funnel.csv")))
+    if not os.path.exists(csv_path):
+        return "<i>il bilancino non ha ancora scritto nessuna riga (scrive a fine ciclo)</i>"
+    import csv as _csv
+    with open(csv_path) as fh:
+        righe = list(_csv.DictReader(fh))
+    if not righe:
+        return "<i>il CSV del bilancino e' vuoto</i>"
+    colonne = [("data", "giorno"), ("cicli", "cicli"), ("pr_fuse", "fuse"), ("pr_rigettate", "rigett."),
+               ("rigetti_det", "rig-det"), ("gpu_s", "gpu_s"), ("debiti_aperti", "debiti"), ("lezioni", "lezioni")]
+    out = []
+    for repo in sorted({r.get("repo", "?") for r in righe}):
+        mine = [r for r in righe if r.get("repo") == repo][-7:]
+        out.append(f"<div style='margin:8px 0'><b style='color:#0af'>{repo}</b>")
+        out.append("<table style='font-size:.72rem;border-collapse:collapse'><tr style='color:#8899aa'>"
+                   + "".join(f"<th style='padding:1px 8px;text-align:right'>{h}</th>" for _, h in colonne) + "</tr>")
+        for r in mine:
+            out.append("<tr>" + "".join(
+                f"<td style='padding:1px 8px;text-align:right;border-top:1px solid #223'>{r.get(k, '—')}</td>"
+                for k, _ in colonne) + "</tr>")
+        out.append("</table></div>")
+    return "".join(out)
+
+
 def page(s):
     """Rende i numeri in una pagina HTML sola, senza dipendenze. v5: verdetto in
     cima, fila delle PR, battito del log, letture calcolate."""
@@ -356,6 +384,7 @@ h2{{font-size:.85rem;color:#0af;margin-bottom:8px}} .log{{font-family:Menlo,mono
 {barrette(s['censimento']['trend'])}{lettura_debiti(s['censimento'])}</div>
 <div class="sec"><h2>⑤ IL CENSORE — deliberazioni e motivi</h2><div style="font-size:.75rem">{delib}</div></div>
 <div class="sec"><h2>⑥ DRIFT DELLO STANDARD (per repo, oggi)</h2><div style="font-size:.75rem">{drift_html}</div></div>
+<div class="sec"><h2>⑥bis L'ANDAMENTO — il bilancino degli ultimi 7 giorni</h2><div style="font-size:.8rem">{andamento()}</div></div>
 <div class="sec"><h2>📅 Attività</h2><div class="log">{log}</div></div>
 <div class="sec"><h2>🔍 Verifiche rosse (ciclo corrente)</h2>{ver}</div>
 <p style="color:#556;font-size:.7rem">v5 · verdetto, fila PR, battito, letture calcolate · <a href=http://localhost:8787 style=color:#0af>ricarica</a></p></body></html>'''

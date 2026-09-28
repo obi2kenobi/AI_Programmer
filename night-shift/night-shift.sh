@@ -1376,6 +1376,12 @@ ASPETTA_GIORNO=""
 TOT_SKIPPED_DESIGN=0
 for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1
+  # (2026-09-28, il bilancino): una riga di conto per repo a fine ciclo — letta dal log
+  # vero, upsert sul CSV di $WORK. Il fallimento si dichiara e non ferma il turno:
+  # contare la notte non e' mai piu' importante della notte.
+  if [ -f "$HERE/../tools/bilancino.sh" ]; then
+    log "REPO ${ENTRY%% *}: $(bash "$HERE/../tools/bilancino.sh" "${ENTRY%% *}" 2>&1 | tail -1)"
+  fi
 done
 log "=== TURNO FINITO ==="
 
