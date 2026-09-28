@@ -93,7 +93,7 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
 
 chiedi_rizzo() { # chiedi_rizzo <diff-riassunto> <categoria> → "RIGETTA-rapida" o vuoto
   # (studio rizzo-flow, 2026-09-26): PRE-FILTRO avversativo — puo' solo
-  # bocciare VELOCE (p<0.2). L'approvazione passa SEMPRE dal LLM: il razzo
+  # bocciare VELOCE (p<0.15). L'approvazione passa SEMPRE dal LLM: il razzo
   # non ha il contesto per approvare, solo per fiutare puzza.
   local riassunto="$1" categoria="$2"
   local RIZZO_URL="${RIZZO_URL:-http://127.0.0.1:8017/v1/systemone}"
@@ -112,7 +112,7 @@ chiedi_rizzo() { # chiedi_rizzo <diff-riassunto> <categoria> → "RIGETTA-rapida
   [ -z "$PROB" ] && return 1
 
   log "censore-razzo: p=$PROB (0 token)"
-  # solo la RIGETTAZIONE netta salta il LLM (p<0.2 = molta puzza)
+  # solo la RIGETTAZIONE netta salta il LLM (p<0.15 = molta puzza)
   if (( $(echo "$PROB < 0.15" | bc -l 2>/dev/null || echo 1) )); then
     printf '{"verdetto":"RIGETTA","rischio":"alto","motivi":["censore razzo: p=%s, troppa puzza anche coi gate verdi (rizzo-flow, 0 token)"]}' "$PROB"
     return 0
@@ -386,10 +386,13 @@ Giudica:
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 fi
 # (studio rizzo-flow, 2026-09-26): prima il CENSORE RAZZO (50ms, 0 token) —
-# se la probabilita' e' netta (>0.8 o <0.3), delibera da solo. Zona grigia o
+# se la bocciatura rapida se p<0.15, altrimenti il LLM giudica. Zona grigia o
 # rizzo spento: il LLM giudica come sempre.
 # (rizzo-flow): il PRE-FILTRO puo' solo bocciare veloce — l'approvazione resta al LLM
-DIFF_RIASSUNTO="Categoria ${CAT:-sconosciuta}, diff di $N_RIGHE righe su $N_FILE file: $(printf '%s' "$DIFF" | head -c 400)"
+PR_TITLE=$(gh pr view "$PR" --json title -q .title 2>/dev/null || echo "")
+CAT=$(printf '%s' "$PR_TITLE" | grep -oE '\[([a-z]+)\]' | tr -d '[]' | head -1)
+CAT="${CAT:-sconosciuta}"
+DIFF_RIASSUNTO="Categoria $CAT, diff di $N_RIGHE righe su $N_FILE file: $(printf '%s' "$DIFF" | head -c 400)"
 CENS_RISP=$(chiedi_rizzo "$DIFF_RIASSUNTO" "${CAT:-sconosciuta}" 2>/dev/null) || CENS_RISP=""
 if [ -z "$CENS_RISP" ]; then
   CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il LLM giudica (approva o rigetta)

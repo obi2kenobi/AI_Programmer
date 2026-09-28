@@ -196,5 +196,33 @@ else
   echo "privacy-check: lista locale ~/.privacy-nomi assente — passaggio saltato (gate degradato, regola F3)" >&2
 fi
 
+# ── (studio rizzo-pii, 2026-09-28): il modello NER su CPU ──────────────────
+# 22 categorie di PII rilevate da un modello (micro-F1 0.989 su italiano):
+# CF, PIVA, IBAN, nome, indirizzo, carta, email, telefono... cose che il grep
+# con lista manuale non vede. Se il server e' spento: skip dichiarato (fallback
+# alle shape + lista locale che restano attive sopra).
+PII_URL="${PII_URL:-http://127.0.0.1:5005}"
+if curl -sf --max-time 3 "$PII_URL/health" >/dev/null 2>&1; then
+  PII_FILE=""
+  for f in $(git diff --cached --name-only 2>/dev/null | head -20; git ls-files docs/bc/ 2>/dev/null | head -50); do
+    [ -f "$f" ] || continue
+    PII_RISP=$(curl -sf --max-time 15 "$PII_URL/analyze" \
+      -H 'Content-Type: application/json' \
+      -d "$(jq -cn --arg t "$(head -c 8000 "$f")" '{text:$t}')" 2>/dev/null) || continue
+    PII_N=$(printf '%s' "$PII_RISP" | jq -r '.n_entities // 0' 2>/dev/null)
+    if [ "${PII_N:-0}" -gt 0 ]; then
+      # le categorie AMOUNT/DATE/URL sono dati di business, non privacy
+      PII_SENS=$(printf '%s' "$PII_RISP" | jq -r '.by_label | del(.AMOUNT, .DATE, .URL, .ORG, .BUILDINGNUM, .STREET, .CITY, .AGE, .DOCID, .ID_DOC) | [.[]] | add // 0' 2>/dev/null)
+      if [ "${PII_SENS:-0}" -gt 0 ]; then
+        echo "⛔ PII (rizzo-pii, modello): $f — $PII_SENS entita' sensibili:" >&2
+        printf '%s' "$PII_RISP" | jq -r '.by_label | del(.AMOUNT, .DATE, .URL, .ORG, .BUILDINGNUM, .STREET, .CITY, .AGE, .DOCID, .ID_DOC) | to_entries[] | select(.value > 0) | "  \(.key): \(.value)"' >&2
+        RC=1
+      fi
+    fi
+  done
+else
+  echo "privacy-check: rizzo-pii spento su $PII_URL — skip dichiarato (il modello NER non gira)" >&2
+fi
+
 [ $RC -eq 0 ] && echo "privacy-check: pulito (file correnti + storia git, tutti i branch)"
 exit $RC

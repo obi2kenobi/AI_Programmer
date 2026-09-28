@@ -77,10 +77,12 @@ CONV=$(printf '%s' "$PROMPT" | jq -Rs --arg sys "$SYSTEM" \
   '. as $p | [{"role":"system","content":$sys},{"role":"user","content":$p}]')
 
 TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
+ANON_DIZ=$(mktemp /tmp/anon-diz-XXXXXX.json)  # diz PII: locale, attivo solo con AGENTE_ANONIMIZZA=1
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   TURNO=$((TURNO+1))
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
-  [ "$ELAPSED" -gt "$TIMEOUT_TOTALE" ] && { log "⛔ timeout ${TIMEOUT_TOTALE}s"; exit 3; }
+  [ "$ELAPSED" -gt "$TIMEOUT_TOTALE" ] && { log "⛔ timeout ${TIMEOUT_TOTALE}s"; rm -f "$ANON_DIZ" 2>/dev/null
+exit 3; }
 
   RESPONSE=$(jq -c \
     --arg m "$MODEL" \
@@ -110,7 +112,8 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
       | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   fi
 
-  [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
+  [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; rm -f "$ANON_DIZ" 2>/dev/null
+exit 1; }
 
   CONTENT=$(echo "$RESPONSE" | jq -r '.message.content // empty')
   # (2026-09-24, quarto ventaglio, Q3 R1): 200 con il contenuto vuoto (un modello che pensa soltanto, un
@@ -163,7 +166,8 @@ while i != -1:
     # non è un'action: il modello ha finito
     log "✅ completato in $TURNO turni (${ELAPSED}s)"
     echo "$CONTENT"
-    exit 0
+    rm -f "$ANON_DIZ" 2>/dev/null
+exit 0
   fi
 
   RESULT=""
@@ -177,6 +181,11 @@ while i != -1:
       FPATH=$(echo "$STRIPPED" | jq -r '.path // empty')
       FOLD=$(echo "$STRIPPED" | jq -r '.old')
       FNEW=$(echo "$STRIPPED" | jq -r '.new')
+      # (rizzo-pii): l'agente scrive [FULLNAME_1], il file ha Mario Rossi
+      if [ -f "$ANON_DIZ" ] && [ -s "$ANON_DIZ" ]; then
+        FOLD=$(printf '%s' "$FOLD" | python3 "$HERE/tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
+        FNEW=$(printf '%s' "$FNEW" | python3 "$HERE/tools/anonimizza.py" --ripristina --diz "$ANON_DIZ" 2>/dev/null)
+      fi
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
@@ -211,8 +220,30 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
-          RESULT="File $FPATH content:\n$(head -c 24000 "$REAL")"
-          log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
+          RAW_CONTENT=$(head -c 24000 "$REAL")
+          # (audit-5): GDPR gate fail-closed — il server PII DEVE esserci quando
+          # l'anonimizzazione e' attiva; se manca, il read si blocca (non passthrough)
+          if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ]; then
+            if ! curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1; then
+              RESULT="ERROR: PII server down — read blocked for GDPR. Retry later or declare finish."
+              log "  read: $FPATH BLOCCATO (server PII spento — fail-closed)"
+            elif [ -f "$HERE/tools/anonimizza.py" ]; then
+              ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
+              if [ -n "$ANON_OUT" ] && ! printf '%s' "$ANON_OUT" | grep -q "passthrough"; then
+                RESULT="File $FPATH content:\n$ANON_OUT"
+                log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
+              else
+                RESULT="File $FPATH content:\n$RAW_CONTENT"
+                log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, passthrough dichiarato)"
+              fi
+            else
+              RESULT="File $FPATH content:\n$RAW_CONTENT"
+              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, tool assente)"
+            fi
+          else
+            RESULT="File $FPATH content:\n$RAW_CONTENT"
+            log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
+          fi
         else
           RESULT="ERROR: file not found: $FPATH"
           log "  read: $FPATH NON TROVATO"
@@ -264,7 +295,13 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         rm -f "$PROFILO"
         log "  run (sandbox): $CMD"
       else
-        RESULT="Command: $CMD\nOutput:\n$(eval "$CMD" 2>&1 | head -30)"
+        RUN_RAW=$(eval "$CMD" 2>&1 | head -30)
+        # GDPR: anche il run legge dati — se l'anonimizzazione e' attiva, filtra
+        if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1 && [ -f "$HERE/tools/anonimizza.py" ]; then
+          RUN_ANON=$(printf '%s' "$RUN_RAW" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
+          [ -n "$RUN_ANON" ] && ! echo "$RUN_ANON" | grep -q "passthrough" && RUN_RAW="$RUN_ANON" && log "  run: output PII anonimizzato"
+        fi
+        RESULT="Command: $CMD\nOutput:\n$RUN_RAW"
         log "  run: $CMD"
       fi ;;
 
