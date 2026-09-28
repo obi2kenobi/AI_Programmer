@@ -37,7 +37,12 @@ gh label create night-shift --description "Lavorata dal turno di notte (modello 
 TMP_ONBOARD=$(mktemp -d)
 trap 'rm -rf "$TMP_ONBOARD"' EXIT
 WORK="$TMP_ONBOARD/${REPO##*/}"
-gh repo clone "$REPO" "$WORK" -- --depth=50 -q || { echo "⛔ clone di $REPO fallito"; exit 1; }
+# (2026-09-28, backlog PR): --depth implica --single-branch: il clone vedeva SOLO main.
+# Il revisore dei satelliti fa un fetch di "rinfresco" dei rami PR prima di giudicarli, e in un
+# clone single-branch quel fetch non porta giu' niente (i rami remoti 111 su Magazzino, 90 su
+# Bilancio erano invisibili: audit del 2026-09-28). --no-single-branch mantiene lo shallow
+# ma porta tutti i rami.
+gh repo clone "$REPO" "$WORK" -- --depth=50 --no-single-branch -q || { echo "⛔ clone di $REPO fallito"; exit 1; }
 
 if command -v gitleaks >/dev/null 2>&1; then
   if gitleaks detect --source "$WORK" --no-banner >/dev/null 2>&1; then
