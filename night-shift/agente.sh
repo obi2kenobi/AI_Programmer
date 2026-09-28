@@ -81,7 +81,8 @@ ANON_DIZ=$(mktemp /tmp/anon-diz-XXXXXX.json)  # diz PII: locale, attivo solo con
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   TURNO=$((TURNO+1))
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
-  [ "$ELAPSED" -gt "$TIMEOUT_TOTALE" ] && { log "⛔ timeout ${TIMEOUT_TOTALE}s"; exit 3; }
+  [ "$ELAPSED" -gt "$TIMEOUT_TOTALE" ] && { log "⛔ timeout ${TIMEOUT_TOTALE}s"; rm -f "$ANON_DIZ" 2>/dev/null
+exit 3; }
 
   RESPONSE=$(jq -c \
     --arg m "$MODEL" \
@@ -111,7 +112,8 @@ while [ "$TURNO" -lt "$MAX_TURNI" ]; do
       | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   fi
 
-  [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; exit 1; }
+  [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; rm -f "$ANON_DIZ" 2>/dev/null
+exit 1; }
 
   CONTENT=$(echo "$RESPONSE" | jq -r '.message.content // empty')
   # (2026-09-24, quarto ventaglio, Q3 R1): 200 con il contenuto vuoto (un modello che pensa soltanto, un
@@ -218,23 +220,25 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
-          # (studio rizzo-pii, passo 2): il LLM vede PLACEHOLDER, non PII
           RAW_CONTENT=$(head -c 24000 "$REAL")
+          # (audit-5): GDPR gate fail-closed — il server PII DEVE esserci quando
+          # l'anonimizzazione e' attiva; se manca, il read si blocca (non passthrough)
           if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ]; then
-          if ! curl -sf --max-time 2 http://127.0.0.1:5005/health >/dev/null 2>&1; then
-            RESULT="ERROR: PII server down — read blocked (GDPR gate). Retry or declare finish."
-            log "  read: BLOCCATO (server PII spento)"
-            ANON_SKIP=1
-          fi
-        fi
-        if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && [ "${ANON_SKIP:-0}" != "1" ] && [ -f "$HERE/tools/anonimizza.py" ]; then
-            ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
-            if [ -n "$ANON_OUT" ]; then
-              RESULT="File $FPATH content:\n$ANON_OUT"
-              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
+            if ! curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1; then
+              RESULT="ERROR: PII server down — read blocked for GDPR. Retry later or declare finish."
+              log "  read: $FPATH BLOCCATO (server PII spento — fail-closed)"
+            elif [ -f "$HERE/tools/anonimizza.py" ]; then
+              ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
+              if [ -n "$ANON_OUT" ] && ! printf '%s' "$ANON_OUT" | grep -q "passthrough"; then
+                RESULT="File $FPATH content:\n$ANON_OUT"
+                log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
+              else
+                RESULT="File $FPATH content:\n$RAW_CONTENT"
+                log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, passthrough dichiarato)"
+              fi
             else
               RESULT="File $FPATH content:\n$RAW_CONTENT"
-              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, passthrough)"
+              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, tool assente)"
             fi
           else
             RESULT="File $FPATH content:\n$RAW_CONTENT"
@@ -291,7 +295,13 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         rm -f "$PROFILO"
         log "  run (sandbox): $CMD"
       else
-        RESULT="Command: $CMD\nOutput:\n$(eval "$CMD" 2>&1 | head -30)"
+        RUN_RAW=$(eval "$CMD" 2>&1 | head -30)
+        # GDPR: anche il run legge dati — se l'anonimizzazione e' attiva, filtra
+        if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1 && [ -f "$HERE/tools/anonimizza.py" ]; then
+          RUN_ANON=$(printf '%s' "$RUN_RAW" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
+          [ -n "$RUN_ANON" ] && ! echo "$RUN_ANON" | grep -q "passthrough" && RUN_RAW="$RUN_ANON" && log "  run: output PII anonimizzato"
+        fi
+        RESULT="Command: $CMD\nOutput:\n$RUN_RAW"
         log "  run: $CMD"
       fi ;;
 
