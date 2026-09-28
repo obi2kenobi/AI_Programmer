@@ -1,5 +1,6 @@
 #!/bin/bash
 # test-agente.sh — l'agente nostro sotto prova, in DUE parti.
+# rete: localhost (un server finto sulla macchina: fuori dalle prove del censore, che nega la rete — D22)
 #
 # Parte A (sempre, deterministica — giro 11 del 2026-09-20): la MECCANICA del ciclo
 # bash ↔ modello con un server mock che risponde una sequenza di azioni. Nata perche' il

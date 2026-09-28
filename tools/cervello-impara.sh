@@ -31,7 +31,8 @@ OGGI="${IMPARA_DATA:-$(date +%F)}"
 # il contesto: le righe NOTEVOLI del giorno (gli eventi firmati, come la dashboard)
 # (2026-09-24, quinto ventaglio, R4 R6): cercava «registro: debiti», e il produttore scrive «registro: debito
 # famiglie» — firma morta dalla nascita. E «rianimat» non prende «rianima_ollama:». Le firme del 24/9 entrano.
-CTX=$(grep -a "^\[$OGGI" "$LOG" 2>/dev/null \
+# (2026-09-25, D39): la console ruota (copia e tronca): le righe di oggi di prima della rotazione stanno nel .1
+CTX=$( { [ -f "$LOG.1" ] && cat "$LOG.1"; cat "$LOG"; } 2>/dev/null | grep -a "^\[$OGGI" \
       | grep -aE "AGENTE FALLITO|wedge|rianimat|rianima_ollama: esito|MIGLIORIA|gate BOCCIA|VERIFICA ROSSA|DELIBERA|quarantena|TRASFORMATORE|registro: debito famiglie|LENTE MUTA|coda ILLEGGIBILE|⛔ MANCA|SENTINELLA|SFORO DEL BUDGET|Sonda|round di pazienza|cervello:" \
       | tail -80 | cut -c1-150)
 

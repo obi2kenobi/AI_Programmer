@@ -22,13 +22,28 @@ codice reale:
 
 Il segno del fondo è un invariante di dominio (lente dev-critic §2ter: un segno
 sbagliato qui produce un roll-forward che quadra solo per caso su dati piccoli e
-diverge silenziosamente su dati reali).
+diverge silenziosamente su dati reali). Un fondo positivo nell'input si converte al
+segno negativo e si dichiara con un'ATTENZIONE (Luca, 2026-09-26).
 
 Uso: python3 tools/rollforward_cespiti.py < categoria.json
 """
 import json
 import math
 import sys
+
+
+def fondi_al_segno_convenzionale(fa, cespiti):
+    """(2026-09-26, risposta di Luca alla domanda 6 di docs/giri/2026-09-23-notte/DOMANDE.md): il fondo e' negativo per
+    convenzione. Un export col fondo POSITIVO (altri gestionali) dava un valore netto di 1600 su un costo di 1000, in
+    silenzio. Qui il segno si converte, e si restituisce quante righe: il chiamante lo dice."""
+    convertiti = 0
+    for k in ("openFondo", "yearFondo"):
+        if isinstance(fa.get(k), (int, float)) and fa[k] > 0:
+            fa[k] = -fa[k]; convertiti += 1
+    for c in cespiti:
+        if isinstance(c.get("fondo"), (int, float)) and c["fondo"] > 0:
+            c["fondo"] = -c["fondo"]; convertiti += 1
+    return convertiti
 
 
 def calcola_roll_forward(fa, cespiti_categoria):
@@ -96,6 +111,10 @@ def main():
         return 1
     # (Q22, 2026-09-23): un cespite dismesso senza «fondo» (KeyError) o un null in un campo della
     # categoria (TypeError) erano traceback nudi: il contratto D32 e' uso/ERRORE, mai traceback
+    convertiti = fondi_al_segno_convenzionale(fa, dati["cespiti"])
+    if convertiti:
+        print(f"ATTENZIONE: {convertiti} valori di fondo POSITIVI convertiti al segno convenzionale (negativo): l'export"
+              f" usa l'altra convenzione? (domanda 6, Luca 2026-09-26)", file=sys.stderr)
     try:
         r = calcola_roll_forward(fa, dati["cespiti"])
     except KeyError as e:

@@ -11,6 +11,9 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SB=$(mktemp -d); trap 'rm -rf "$SB"' EXIT
+# (2026-09-27): la voce «recente» era la data fissa 2026-08-27 — con la finestra di 30 giorni e' diventata vecchia
+# il 27 settembre, e il banco e' andato rosso da solo. Recente e' oggi, per costruzione.
+OGGI=$(date +%Y-%m-%d)
 cat > "$SB/SAL.md" <<SAL
 # SAL
 
@@ -27,7 +30,7 @@ altra lezione
 ### SENZA DATA — voce senza data
 non va archiviata
 
-### 2026-08-27 — voce recente
+### $OGGI — voce recente
 lezione fresca
 SAL
 : > "$SB/ARCHIVIO.md"
@@ -49,7 +52,7 @@ grep -c "voce vecchissima" "$SB/ARCHIVIO.md" | grep -c "^1$" >/dev/null && ok "n
 # riscriveva il SAL. Ucciso fra le due, al giro dopo riaccodava le stesse voci: l'archivio (append-only per regola)
 # teneva i doppioni per sempre. Ora ogni scrittura e' atomica e una voce gia' nell'archivio non si riaccoda.
 SB2=$(mktemp -d)
-printf '# SAL\n\n## Indice del diario\n- x\n\n## Log\n### 2026-05-01 — vecchia uno\nuno\n\n### 2026-05-02 — vecchia due\ndue\n\n### 2026-08-27 — recente\nr\n' > "$SB2/SAL.md"; : > "$SB2/ARCHIVIO.md"
+printf '# SAL\n\n## Indice del diario\n- x\n\n## Log\n### 2026-05-01 — vecchia uno\nuno\n\n### 2026-05-02 — vecchia due\ndue\n\n### %s — recente\nr\n' "$OGGI" > "$SB2/SAL.md"; : > "$SB2/ARCHIVIO.md"
 if command -v strace >/dev/null 2>&1; then
   SAL="$SB2/SAL.md" ARCHIVIO="$SB2/ARCHIVIO.md" strace -f -o /dev/null -P "$SB2/SAL.md" -e trace=openat -e inject=openat:signal=KILL:when=2 bash "$HERE/tools/sal-archivia.sh" 30 >/dev/null 2>&1
   SAL="$SB2/SAL.md" ARCHIVIO="$SB2/ARCHIVIO.md" bash "$HERE/tools/sal-archivia.sh" 30 >/dev/null 2>&1

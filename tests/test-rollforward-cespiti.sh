@@ -64,6 +64,15 @@ grep -q "REPO-E" "$HERE/tools/rollforward_cespiti.py" \
   && ok "il tool cita la fonte reale della formula (per codice anonimo)" \
   || ko "il tool non cita più la fonte della formula"
 
+# (2026-09-26, risposta di Luca alla domanda 6): un export col fondo POSITIVO (convenzione di altri gestionali) dava un
+# valore netto di 1600 su un costo di 1000, in silenzio. Ora il segno si converte e un'ATTENZIONE dice quante righe.
+# Stesso caso del conto a mano qui sopra, coi tre fondi positivi: il risultato deve essere lo stesso (vnClose 452).
+POS='{"categoria":{"openCosto":1000,"openRival":50,"openSval":-30,"yearCosto":200,"yearRival":10,"yearSval":-5,"openFondo":600,"yearFondo":150},"cespiti":[{"isDisposed":true,"yearCessioni":1,"costo":100,"rival":5,"sval":-2,"fondo":80},{"isDisposed":false,"yearCessioni":0,"costo":500,"rival":0,"sval":0,"fondo":-300}]}'
+OUT6=$(python3 "$HERE/tools/rollforward_cespiti.py" <<<"$POS" 2>&1); RC6=$?
+[ "$RC6" -eq 0 ] && grep -q '^vnClose: 452.00' <<<"$OUT6" && grep -q '^fondoClose: -670.00' <<<"$OUT6" \
+  && ok "D6: fondi positivi convertiti: stesso roll-forward del conto a mano (vnClose 452)" || ko "D6: fondi positivi: rc=$RC6 — $(grep -E 'vnClose|fondoClose' <<<"$OUT6" | tr '\n' ' ')"
+grep -q 'ATTENZIONE: 3 ' <<<"$OUT6" && ok "D6: l'ATTENZIONE dice quante righe di fondo sono state convertite (3)" || ko "D6: conversione taciuta: $(grep -i attenzione <<<"$OUT6")"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

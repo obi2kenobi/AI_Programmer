@@ -194,8 +194,9 @@ if [ -f "$HOME/.privacy-nomi" ]; then
     nell_indice "$f" || continue
     # eccezione DICHIARATA (2026-09-14): docs/bc/ documenta lo SCHEMA del tenant — i nomi
     # delle entita' (es. le estensioni del gruppo) sono FATTI, rinominarli mentirebbe
-    # sulla documentazione. La prosa nei report resta protetta.
-    case "$f" in docs/bc/*) continue;; esac
+    # sulla documentazione. La prosa nei report resta protetta. (2026-09-26, domanda 15): la regola la
+    # dice privacy-check, la stessa che applica di notte — prima qui c'era una copia, e la notte no.
+    bash "$HERE/tools/privacy-check.sh" --esente-nomi "$f" && continue
     # (2026-09-24, quarto ventaglio, Q5 R5): si guardavano solo i .md — un nome in uno script o in un .txt
     # passava. Ora ogni file di TESTO in stage (i binari fuori), e il nome nell'uscita e' la sua impronta.
     indice "$f" | grep -Ic . >/dev/null || continue   # -c legge tutto: niente SIGPIPE sotto pipefail (E-002)

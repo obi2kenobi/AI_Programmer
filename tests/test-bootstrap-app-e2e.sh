@@ -95,6 +95,13 @@ grep -q 'Da review Opus 2026-08-21' "$D/DEBITI.md" 2>/dev/null && ko "Q15: la re
 : > "$TMP/gh.log"; rm -rf "$D"
 lancia prova-ordine --dry-run --private
 grep -q 'privata' "$TMP/out" && ok "--private vale anche dopo --dry-run (l'ordine dei flag non conta)" || ko "--private ignorato se non e' il secondo argomento"
+# (2026-09-25, D5, risposta delegata): privata di default, pubblica solo con --public esplicito
+: > "$TMP/gh.log"; rm -rf "$D"
+lancia prova-default --dry-run
+grep -q 'privata' "$TMP/out" && ok "D5: senza flag la repo nasce privata" || ko "D5: senza flag la repo nasce pubblica: $(grep -m1 'creerebbe' "$TMP/out")"
+: > "$TMP/gh.log"; rm -rf "$D"
+lancia prova-pubblica --dry-run --public
+grep -q 'pubblica' "$TMP/out" && ok "D5: con --public la repo nasce pubblica" || ko "D5: --public ignorato: $(grep -m1 'creerebbe' "$TMP/out")"
 
 # (2026-09-24, sesto ventaglio, S2 R5): `gh repo create` che fallisce (rete, 5xx, nome preso) lasciava la cartella col
 # commit e nessun remoto, senza dire come riprendere; il secondo giro si fermava su «esiste già» come per una repo

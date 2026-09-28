@@ -43,6 +43,24 @@ OUT2=$(bash tools/privacy-check.sh 2>&1); RC2=$?
 [ $RC2 -eq 1 ] && grep -q "messaggio:" <<<"$OUT2" && ok "il check vede anche il leak in un messaggio di commit" \
   || ko "leak nel messaggio non rilevato (rc=$RC2): $OUT2"
 
+# (2026-09-25, D38, risposta delegata): la storia di graphify-out/ esce dalla scansione. E' un file generato (circa 73
+# versioni al giorno, il 73% del tempo del check), e passa comunque dal cancello delle forme prima del push (V1 R3).
+# Le forme di segreto nella storia restano cercate ovunque tranne li'; i file di OGGI si guardano tutti.
+G=$(mktemp -d); mkdir -p "$G/tools" "$G/night-shift" "$G/graphify-out"; cp "$HERE/tools/privacy-check.sh" "$G/tools/"
+printf 'REPO-T=finto/segreto-storico\n' > "$G/night-shift/repos.key"
+git -C "$G" init -q && git -C "$G" add tools/ && git -C "$G" -c user.email=t@t -c user.name=t commit -qm tools
+echo '{"label":"finto/segreto-storico"}' > "$G/graphify-out/graph.json"
+git -C "$G" add graphify-out && git -C "$G" -c user.email=t@t -c user.name=t commit -qm "grafo"
+echo '{}' > "$G/graphify-out/graph.json"
+git -C "$G" add graphify-out && git -C "$G" -c user.email=t@t -c user.name=t commit -qm "grafo nuovo"
+OUT3=$(bash "$G/tools/privacy-check.sh" 2>&1); RC3=$?
+[ $RC3 -eq 0 ] && ! grep -q "storia:" <<<"$OUT3" && ok "D38: la storia di graphify-out/ non si scansiona" \
+  || ko "D38: la storia del grafo e' ancora scansionata (rc=$RC3): $(grep -m1 'storia:' <<<"$OUT3")"
+echo '{"label":"finto/segreto-storico"}' > "$G/graphify-out/graph.json"; git -C "$G" add graphify-out
+OUT3=$(bash "$G/tools/privacy-check.sh" 2>&1); RC3=$?
+[ $RC3 -eq 1 ] && ok "D38: il grafo di OGGI resta guardato" || ko "D38: il grafo corrente non e' piu' guardato (rc=$RC3)"
+rm -rf "$G"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -1,7 +1,9 @@
 #!/bin/bash
 # bootstrap-app.sh — crea una repo nuova DENTRO il sistema: regole ereditate,
 # PROJECT.md stub, label night-shift, .night-verify dichiarato.
-# Uso: bootstrap-app.sh <nome-repo> [--private]
+# Uso: bootstrap-app.sh <nome-repo> [--public] [--dry-run]
+# (2026-09-25, D5): la repo nasce PRIVATA; pubblica solo con --public (i gestionali sono privati, e una
+# repo resa pubblica per sbaglio non si ritira). --private resta accettato, e non cambia niente.
 #
 # PERCORSO CLOUD/IBRIDO (4° ciclo, set 3, giro 7, 2026-08-23 — stesso gap già trovato e
 # corretto in testa a tools/onboard-repo.sh, mai propagato qui): questo script chiama
@@ -13,12 +15,12 @@
 # proprietario (repo GitHub, label night-shift, riga in repos.conf).
 set -euo pipefail
 
-NAME="${1:?uso: bootstrap-app.sh <nome-repo> [--private] [--dry-run]}"
+NAME="${1:?uso: bootstrap-app.sh <nome-repo> [--public] [--dry-run]}"
 # (Q14, 2026-09-23, giro A8 della notte): i flag si leggono in qualunque ordine — `--private`
 # valeva solo come secondo argomento, e `<nome> --dry-run --private` creava una repo PUBBLICA.
-DRY_RUN=0; VIS="--public"
+DRY_RUN=0; VIS="--private"
 for a in "$@"; do
-  case "$a" in --dry-run) DRY_RUN=1 ;; --private) VIS="--private" ;; esac
+  case "$a" in --dry-run) DRY_RUN=1 ;; --private) VIS="--private" ;; --public) VIS="--public" ;; esac
 done
 if [ $DRY_RUN -eq 1 ]; then echo "== DRY RUN: tutto what-if, nessuna scrittura =="; fi
 

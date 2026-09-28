@@ -26,12 +26,18 @@ cd -- "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco esegui
 PYTHONPYCACHEPREFIX=$(mktemp -d "${TMPDIR:-/tmp}/suite-pyc.XXXXXX"); export PYTHONPYCACHEPREFIX
 trap 'case "$PYTHONPYCACHEPREFIX" in */suite-pyc.??????) rm -rf "$PYTHONPYCACHEPREFIX" ;; esac' EXIT
 
-N=0; SUPERATI=0
+N=0; SUPERATI=0; SALTATI=0; SALTATI_LISTA=""
 TOT=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
 [ "$TOT" -eq 0 ] && { echo "⛔ suite: nessun tests/test-*.sh trovato"; exit 1; }
 T0=$(date +%s)
 for t in tests/test-*.sh; do
   N=$((N+1))
+  # (2026-09-25, D22, risposta delegata): nella sandbox del censore la rete e' negata, localhost compreso, e resta
+  # cosi'. Un banco che parla con un server finto su localhost lo dichiara («# rete: localhost» in testa), e con
+  # SUITE_SENZA_RETE=1 si salta: contato, nominato, mai taciuto.
+  if [ "${SUITE_SENZA_RETE:-0}" = 1 ] && [ -n "$(sed -n '1,15{/^# rete: localhost/p;}' "$t")" ]; then
+    SALTATI=$((SALTATI+1)); SALTATI_LISTA="$SALTATI_LISTA $t"; continue
+  fi
   # (2026-09-24, terzo ventaglio, V4#1): il banco in corso, su stderr — se un budget taglia la suite,
   # l'ultima riga dice dove si e' fermata
   echo "▶ $t" >&2
@@ -52,15 +58,15 @@ for t in tests/test-*.sh; do
 done
 # (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo (N), non i banchi superati — un
 # ciclo che saltava banchi stampava lo stesso «TOT/TOT». Si conta dopo il verdetto, e mancarne uno e' rosso.
-if [ "$SUPERATI" -ne "$TOT" ]; then
+if [ "$((SUPERATI + SALTATI))" -ne "$TOT" ]; then
   echo "FALLITO: superati $SUPERATI banchi su $TOT — il runner ne ha saltati $((TOT - SUPERATI))"
   exit 1
 fi
 DURATA=$(( $(date +%s) - T0 ))
 echo "Durata della suite: $DURATA s"
 # (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. Il budget di .night-verify si scopriva solo
-# allo sforo, di notte; ora la suite dice la quota usata, e dal 70% avvisa. Avvisa, non boccia: se la soglia
-# debba far rosso il turno e' una domanda aperta in DEBITI.md.
+# allo sforo, di notte; ora la suite dice la quota usata, e dal 70% avvisa. Avvisa, non boccia (D7, 2026-09-25: il rosso
+# per tempo e' il budget stesso).
 BUDGET=$(sed -n 's/^@\([0-9][0-9]*\) bash tools\/suite\.sh.*/\1/p' .night-verify 2>/dev/null | head -1)
 if [ -n "$BUDGET" ] && [ "$BUDGET" -gt 0 ]; then
   PERC=$(( DURATA * 100 / BUDGET ))
@@ -69,4 +75,5 @@ if [ -n "$BUDGET" ] && [ "$BUDGET" -gt 0 ]; then
 else
   echo "Budget della suite: non dichiarato in .night-verify — nessuna sentinella del margine"
 fi
-echo "Suite test hub: $SUPERATI/$TOT file superati"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono
+[ "$SALTATI" -gt 0 ] && echo "Saltati $SALTATI banchi che parlano con localhost (SUITE_SENZA_RETE=1, la sandbox del censore):$SALTATI_LISTA"
+echo "Suite test hub: $SUPERATI/$TOT file superati${SALTATI_LISTA:+, $SALTATI saltati (rete, dichiarati)}"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono

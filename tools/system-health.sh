@@ -62,13 +62,19 @@ fi
 # stesso («NON caricato»): la voce non verificabile non riceve un verdetto
 if command -v launchctl >/dev/null 2>&1; then
   LAUNCHD_LIST=$(launchctl list 2>/dev/null)
-  for AG in luca.ollama luca.nightshift; do
-    if grep -q "$AG" <<<"$LAUNCHD_LIST"; then
-      ok "launchd: $AG caricato"
-    else
-      warn "launchd: $AG NON caricato"
-    fi
-  done
+  # (2026-09-25, D10, risposta delegata): si cercava `luca.ollama`, un job che nessun installatore del repo crea. Il
+  # custode di ollama si trova come lo trova rianima_ollama (night-shift/lib.sh): il primo job con «ollama» nel nome.
+  CUSTODE=$(awk '/ollama/{print $3; exit}' <<<"$LAUNCHD_LIST")
+  if [ -n "$CUSTODE" ]; then
+    ok "launchd: custode di ollama $CUSTODE caricato"
+  else
+    warn "launchd: nessun custode di ollama — rianima_ollama avvierebbe un'istanza propria"
+  fi
+  if grep -q "luca.nightshift" <<<"$LAUNCHD_LIST"; then
+    ok "launchd: luca.nightshift caricato"
+  else
+    warn "launchd: luca.nightshift NON caricato"
+  fi
 fi
 
 # 4. Tool CLI

@@ -116,6 +116,22 @@ OUT=$(cd "$SB7" && bash "$RUNNER" "$SB7/non-esiste" 2>&1); RC=$?
   && ok "cartella inesistente: rosso e detto, non la suite di un'altra cartella" || ko "cartella inesistente: rc $RC, $(tail -1 <<<"$OUT")"
 rm -rf "$SB7"
 
+# (2026-09-25, D22, risposta delegata): la sandbox del censore nega la rete, localhost compreso, e la suite dell'hub e' fra
+# le sue prove: i banchi con un server finto su localhost la facevano sempre rossa. La sandbox resta chiusa; quei banchi
+# lo dichiarano («# rete: localhost»), e con SUITE_SENZA_RETE=1 (il censore) si saltano, contati e detti.
+SB3=$(mktemp -d /tmp/test-suite3.XXXXXX); mkdir -p "$SB3/tests"
+printf '#!/bin/bash\necho "1 OK, 0 FAIL"\n' > "$SB3/tests/test-a.sh"
+printf '#!/bin/bash\n# rete: localhost (un server finto)\nexit 1\n' > "$SB3/tests/test-b.sh"
+OUT=$(SUITE_SENZA_RETE=1 bash "$RUNNER" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "1 saltati" <<<"$OUT" && grep -q "test-b.sh" <<<"$OUT" \
+  && ok "D22: SUITE_SENZA_RETE=1: il banco di rete si salta, contato e nominato" || ko "D22: senza rete: rc $RC — $(tail -2 <<<"$OUT" | tr '\n' ' ')"
+OUT=$(bash "$RUNNER" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && ok "D22: senza la variabile il banco di rete gira (e qui e' rosso)" || ko "D22: il banco di rete saltato anche fuori dal censore (rc $RC)"
+rm -rf "$SB3"
+grep -q 'SUITE_SENZA_RETE=1 sandbox-exec' "$HERE/night-shift/revisore.sh" && ok "D22: il censore passa SUITE_SENZA_RETE=1 alle sue prove" || ko "D22: il censore non lo passa"
+NET=""; for f in agente cervello-impara risolvi-issue; do grep -q '^# rete: localhost' "$HERE/tests/test-$f.sh" || NET="$NET $f"; done
+[ -z "$NET" ] && ok "D22: i banchi col server finto su localhost lo dichiarano" || ko "D22: non dichiarano la rete:$NET"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

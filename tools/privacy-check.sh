@@ -44,6 +44,12 @@ nomi_locali() {
     printf '%s\n' "$n"
   done < "$1"
 }
+# esente_dai_nomi <percorso>: 0 se il file non si controlla contro la lista dei nomi. La regola UNICA, per questo check e
+# (via --esente-nomi) per il pre-commit. (2026-09-26, risposta di Luca alla domanda 15): docs/bc/ documenta lo SCHEMA del
+# tenant — i nomi delle estensioni sono fatti, e si possono pubblicare. Prima il pre-commit la esentava con una copia sua
+# e questo check no: un nome passava il commit di giorno e faceva rosso ogni notte.
+esente_dai_nomi() { case "$1" in docs/bc/*) return 0 ;; esac; return 1; }
+if [ "${1:-}" = "--esente-nomi" ]; then esente_dai_nomi "${2:-}"; exit $?; fi
 # --elenca-nomi <lista>: stampa i nomi (per chi li confronta in memoria, mai per stamparli) ed esce.
 if [ "${1:-}" = "--elenca-nomi" ]; then
   [ -f "${2:-}" ] || exit 0
@@ -53,6 +59,11 @@ fi
 RC=0
 if [ -f "$KEY" ]; then
   HA_KEY=1
+elif [ ! -d "$HERE/night-shift" ]; then
+  # (2026-09-25, D6, risposta delegata): un satellite (nessuna cartella night-shift/) non ha mai una repos.key, che e'
+  # dell'hub: la sua assenza qui non e' un degrado. Si controllano le forme di segreto e la lista locale dei nomi.
+  HA_KEY=0
+  echo "privacy-check: satellite (nessuna night-shift/): repos.key e' dell'hub — qui le forme di segreto e ~/.privacy-nomi (D6)" >&2
 else
   HA_KEY=0
   echo "⛔ privacy-check: GATE DEGRADATO — repos.key assente: nomi/persone/termini della chiave NON controllati (né file, né storia git). Non è un verdetto di pulizia. Le forme di segreto e ~/.privacy-nomi si controllano comunque, qui sotto." >&2
@@ -85,7 +96,7 @@ fi
 # anche nella storia. Si dicono commit e oggetto, mai il valore. Misurato sull'hub: 5 s, zero commit.
 # Ogni alternativa sta anche in SHAPES (lo pretende tests/test-privacy.sh).
 SHAPES_CREDENZIALI='sk-ant-[A-Za-z0-9_-]{20}|sk-proj-[A-Za-z0-9_-]{20}|ghp_[A-Za-z0-9]{20}|gho_[A-Za-z0-9]{20}|github_pat_[A-Za-z0-9_]{20}|AKIA[0-9A-Z]{12}|xoxb-[0-9A-Za-z-]{10}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|ya29\.[A-Za-z0-9_-]{20}|1//0[A-Za-z0-9_-]{20}|GOCSPX-[A-Za-z0-9_-]{20}|://[^/[:space:]:@]+:[^/[:space:]@]{6,}@|[0-9a-f]{32}\.[A-Za-z0-9]{16}'
-CRED_STORIA=$( (cd "$HERE" && git log --all --format='%h %s' -G"$SHAPES_CREDENZIALI" -- . ':!tests/' ':!tools/privacy-check.sh' ':!tools/giri-avversari.sh' ':!SAL-ARCHIVIO.md' ':!**/repos.key' 2>/dev/null) || true)
+CRED_STORIA=$( (cd "$HERE" && git log --all --format='%h %s' -G"$SHAPES_CREDENZIALI" -- . ':!tests/' ':!tools/privacy-check.sh' ':!tools/giri-avversari.sh' ':!SAL-ARCHIVIO.md' ':!**/repos.key' ':!graphify-out' 2>/dev/null) || true)   # graphify-out: D38
 if [ -n "$CRED_STORIA" ]; then
   echo "⛔ privacy-check: forma di CREDENZIALE nella STORIA git (il valore non si stampa: la chiave va ruotata; riscrivere la storia lo decide Luca):" >&2
   echo "$CRED_STORIA" | cut -c1-90 | sed 's/^/  commit /' >&2
@@ -127,7 +138,9 @@ scan_termine() {
   local FILES HIST MSG ALL
   # (2026-09-24, Q5 R5): -i — il nome in MAIUSCOLO passava qui e non nel pre-commit (che e' -i)
   FILES=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F "$termine" 2>/dev/null) | grep -v "repos.key" || true)
-  HIST=$( (cd "$HERE" && git log --all --oneline -S"$termine" -- . 2>/dev/null) | sed 's/^/storia: /' || true)
+  # (2026-09-25, D38): la storia di graphify-out/ no — file generato, ~73 versioni al giorno (il 73% del tempo, O3 R1),
+  # e ogni sua versione passa dal cancello delle forme prima del push; il grafo di OGGI e' fra i FILES qui sopra
+  HIST=$( (cd "$HERE" && git log --all --oneline -S"$termine" -- . ':!graphify-out' 2>/dev/null) | sed 's/^/storia: /' || true)
   MSG=$( (cd "$HERE" && git log --all --oneline --grep="$termine" -F 2>/dev/null) | sed 's/^/messaggio: /' || true)
   ALL=$(printf '%s\n%s\n%s\n' "$FILES" "$HIST" "$MSG" | grep -v '^$' || true)
   if [ -n "$ALL" ]; then
@@ -171,7 +184,8 @@ if [ -s "$NOMI_LOCALI" ]; then
   # dalla decisione di dominio (nomi-si, accesso-no) — amnistia dichiarata,
   # non oblio. Il tripwire e' per cio' che entra ADESSO.
   while IFS= read -r n; do
-    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F -- "$n" 2>/dev/null) | grep -v "repos.key" || true)
+    FILES_N=$( (cd "$HERE" && git ls-files -z | xargs -0 grep -l -i -F -- "$n" 2>/dev/null) | grep -v "repos.key" \
+      | while IFS= read -r f; do esente_dai_nomi "$f" || printf '%s\n' "$f"; done || true)
     if [ -n "$FILES_N" ]; then
       maschera "⛔ NOME PRIVATO (lista locale) in file correnti ($n):" >&2
       maschera "$(head -5 <<<"$FILES_N")" >&2

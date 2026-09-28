@@ -4,6 +4,10 @@ about: Lavoro meccanico per il turno di notte (modello locale) — richiede il d
 labels: ["night-shift"]
 ---
 
+<!-- Se la commessa CORREGGE una funzione che esiste gia' (non ne aggiunge una nuova), metti all'issue anche l'etichetta
+     `correzione`: senza, il turno la salta come «GIA' IMPLEMENTATA?» quando la funzione nominata esiste ed e' chiamata.
+     (D4, 2026-09-25) -->
+
 ## Design
 
 <!-- OBBLIGATORIO (il turno salta le issue senza questa sezione): link al documento di
@@ -35,7 +39,9 @@ labels: ["night-shift"]
      Regola dell'11 ore (2026-08-22): la notte non converge sui territori grandi —
      file da centinaia di righe da esplorare = GIORNO. Notturno solo se: file piccoli,
      righe indicate, nessuna esplorazione. Se il territorio è grande, NON scrivere questa
-     commessa: passa il lavoro al giorno. -->
+     commessa: passa il lavoro al giorno.
+     Ogni file fra backtick, per esempio `Codice Principale.gs` (40 righe): un nome con lo spazio si legge
+     solo cosi' (D19, 2026-09-25). -->
 
 ## Commessa (contesto precaricato)
 

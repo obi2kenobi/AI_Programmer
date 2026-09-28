@@ -63,6 +63,17 @@ else
   echo "SALTO: qui c'e' launchctl (un Mac), il caso «fuori dal Mac» non si esercita"
 fi
 
+# (2026-09-25, D10, risposta delegata): system-health cercava il job launchd `luca.ollama`, che nessun installatore del repo
+# crea: su ogni altra installazione segnava ⚠ un job che non puo' esistere. Ora cerca il custode di ollama come fa
+# rianima_ollama (night-shift/lib.sh): qualunque job con «ollama» nel nome. Qui un launchctl finto con il custode di Ollama.app.
+mkdir -p "$TMP/lbin"
+printf '#!/bin/bash\nprintf "PID\\tStatus\\tLabel\\n412\\t0\\tcom.electron.ollama\\n77\\t0\\tcom.luca.nightshift\\n"\n' > "$TMP/lbin/launchctl"; chmod +x "$TMP/lbin/launchctl"
+OUTL=$(PATH="$TMP/lbin:$PATH" bash "$HERE/tools/system-health.sh" 2>/dev/null)
+grep -q 'custode di ollama com.electron.ollama' <<<"$OUTL" && ! grep -q 'luca.ollama' <<<"$OUTL" \
+  && ok "D10: il custode di ollama si trova come lo trova rianima_ollama (non per il nome luca.ollama)" || ko "D10: $(grep -m1 'ollama' <<<"$OUTL")"
+grep -q 'rianima_ollama' "$HERE/docs/MANUALE-OPERATIVO.md" && ! grep -q 'gui/$(id -u)/luca.ollama' "$HERE/docs/MANUALE-OPERATIVO.md" \
+  && ok "D10: il manuale rianima Ollama col gesto del repo" || ko "D10: il manuale cita ancora il job luca.ollama"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

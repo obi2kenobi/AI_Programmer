@@ -16,9 +16,12 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 [ -x "$MUTA" ] && ok "il banco mutazioni è eseguibile" || ko "non eseguibile"
 bash -n "$MUTA" && ok "sintassi" || ko "sintassi rotta"
 
-# su albero pulito: completa e dichiara il verdetto (run pieno: è il contratto
-# del banco, e in suite costa quanto due test lenti — accettato)
-if git -C "$HERE" diff --quiet 2>/dev/null && git -C "$HERE" diff --cached --quiet 2>/dev/null; then
+# su albero pulito, con MUTAZIONI_COMPLETE=1: completa e dichiara il verdetto (run pieno: e' il contratto del banco).
+# (D33, 2026-09-25): senza, lo si dichiara e non si conta — il run completo lo fa il banco di passaggio, passo 4.
+PULITO=0; git -C "$HERE" diff --quiet 2>/dev/null && git -C "$HERE" diff --cached --quiet 2>/dev/null && PULITO=1
+if [ "$PULITO" = 1 ] && [ "${MUTAZIONI_COMPLETE:-0}" != 1 ]; then
+  echo "· run completo delle mutazioni: non in suite (D33) — lo esegue tools/banco-passaggio.sh (passo 4), o MUTAZIONI_COMPLETE=1"
+elif [ "${MUTAZIONI_COMPLETE:-0}" = 1 ] && [ "$PULITO" = 1 ]; then
   OUT=$(bash "$MUTA" 2>&1); RC=$?
   [ $RC -eq 0 ] && grep -qE "[0-9]+ test reagiscono alla mutazione, 0 teatri verdi" <<<"$OUT" \
     && ok "run completo: tutti i test reagiscono, nessun teatro" \
@@ -30,6 +33,13 @@ else
     && ok "albero sporco: il banco si ferma prima di mutare (exit 2)" \
     || ko "la guardia non scatta (rc=$RC): muterebbe lavoro non committato"
 fi
+
+# (2026-09-25, D33, risposta delegata): il run completo e' del banco di passaggio (tools/banco-passaggio.sh, passo 4), non
+# della suite di ogni notte: rifaceva circa 107 s di banchi appena eseguiti. Qui lo si pretende da tutti e due i lati.
+grep -q 'elif \[ "${MUTAZIONI_COMPLETE:-0}" = 1 \] && \[ "$PULITO" = 1 \]; then' "$0" \
+  && grep -q 'bash tools/mutation-tests.sh >"$BP_LOG/mutazioni.log"' "$HERE/tools/banco-passaggio.sh" \
+  && ok "D33: il run completo gira solo con MUTAZIONI_COMPLETE=1, e il banco di passaggio lo esegue" \
+  || ko "D33: il run completo e' ancora nella suite, o il banco di passaggio non lo esegue"
 
 # (Q32, 2026-09-23, notte dei giri): un banco GIA' rosso prima della mutazione fallisce anche dopo,
 # e veniva contato «reagisce alla mutazione» — un TIENE regalato da un banco rotto. Si prova in una

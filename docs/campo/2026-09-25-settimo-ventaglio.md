@@ -57,3 +57,15 @@
     oggi ho fatto a mano per tre forme diventa una sonda.
   - CLAUDE.md §3 «Report problems immediately»: una lettura esterna fallita non vale «vuoto». Una sentinella per «non
     so», e la scrittura che ne dipende si salta (tema 1 del consolidamento, sette casi da tre lenti).
+
+## Aggiornamento (2026-09-25, le risposte delegate)
+- Usato: Luca ha delegato le domande che non chiedono dominio. 38 su 45 risposte, con quattro criteri dichiarati
+  (`docs/giri/2026-09-25-ottavo/RISPOSTE-DELEGATE.md`); poi applicate una per commit, col banco rosso prima e il
+  sabotaggio dopo.
+- Ha retto: applicare una risposta e' un'altra verifica della risposta. Tre si sono precisate lavorandoci (D6, D15, D44),
+  e l'applicazione di D8 ha rivelato una promessa senza guardia: `.night-mirror` era dichiarato ma non negato.
+- Ha ostacolato: i gh finti dei banchi rispondevano errore ai comandi che non conoscevano, e ogni nuova lettura di gh
+  li rompeva (O4, di nuovo). Poi un git zombie nel container, che `kill -0` vede vivo.
+- Proposta al canone (non applicata): CLAUDE.md §1 «Done means proven and confirmed»: una risposta delegata e' una
+  decisione presa per conto del padrone del dominio, e resta rivedibile. Il file delle risposte ne tiene i criteri, cosi'
+  chi la rilegge sa perche' e' stata presa.

@@ -9,9 +9,13 @@ dichiarata nel payload):
 1. CONVENZIONE DEI SEGNI del G/L: Amount < 0 = RICAVO (entra come −Amount),
    Amount >= 0 = COSTO. «Un segno invertito non dà errore: dà un costo che
    sembra un ricavo» — per questo la convenzione sta in testa all'oracolo,
-   non in un commento.
+   non in un commento. Il segno si legge RIGA PER RIGA, non per conto: lo
+   storno di un costo esce come ricavo. Scelta di Luca del 2026-09-26 (domanda 9):
+   si resta così, e la colonna `conto` non è letta.
 2. Attribuzione BU via dimensione; BU non nota (fuori dall'elenco) → NOBU:
    il non-attribuito è una categoria VISIBILE, non una perdita silenziosa.
+   Elenco chiuso: ARRG, BIOC, EDIL, IMB (Luca, 2026-09-26); le BU fuori elenco
+   si nominano in un'ATTENZIONE.
 3. margine per BU = ricavi diretti − costi diretti; risultato per BU include
    il ribaltamento dei costi indiretti (REPARTO); risultato TOTALE = ricavi −
    costi complessivi (convenzione testuale del progetto reale).
@@ -31,6 +35,12 @@ CSV: conto,posting_date,bu,amount   (amount col segno del G/L)
 """
 import csv
 import sys
+
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
+# (2026-09-26, risposta di Luca alla domanda 8 di docs/giri/2026-09-23-notte/DOMANDE.md): l'elenco CHIUSO delle BU. Il
+# docstring prometteva «fuori elenco → NOBU» ma l'elenco non esisteva: un refuso diventava una BU col suo margine.
+BU_NOTE = ("ARRG", "BIOC", "EDIL", "IMB")
 
 
 def main():
@@ -54,8 +64,12 @@ def main():
     bu_tot = {}
     amounts = []  # righe valide, per la quadratura indipendente sotto
     righe_scartate = 0
+    fuori_elenco = {}
     for r in righe:
         bu = (r.get("bu") or "NOBU").strip().upper() or "NOBU"
+        if bu not in BU_NOTE and bu != "NOBU":
+            fuori_elenco[bu] = fuori_elenco.get(bu, 0) + 1
+            bu = "NOBU"
         amount_raw = (r.get("amount") or "").strip()
         # bug reale (revisione 14 lenti, 2026-08-28): un campo amount vuoto/mancante
         # diventava silenziosamente un costo zero (float(r["amount"] or 0)), senza
@@ -63,7 +77,7 @@ def main():
         # del file (NOBU visibile, non perso). Una riga con importo mancante/non numerico
         # viene ora SCARTATA e CONTATA, non azzerata in silenzio.
         try:
-            amount = float(amount_raw)
+            amount = leggi_numero(amount_raw)  # domanda 12: anche «-1.234,56»
             # giri avversari 2026-08-28 (D20): 1e999 produceva margine -inf in silenzio
             import math as _m
             if not _m.isfinite(amount):
@@ -112,6 +126,9 @@ def main():
     else:
         print(f"QUADRATURA ROTTA: somma margini {somma_margini:.2f} · totale {risultato_totale:.2f} · calcolo indipendente {risultato_indipendente:.2f} — cercare il doppio conteggio nell'aggregazione per BU")
 
+    if fuori_elenco:
+        print(f"ATTENZIONE: BU fuori elenco messe in NOBU ({', '.join(f'{b} ×{n}' for b, n in sorted(fuori_elenco.items()))});"
+              f" elenco: {', '.join(BU_NOTE)}", file=sys.stderr)
     if "NOBU" in bu_tot:
         v = bu_tot["NOBU"]
         print(f"NOBU (movimenti non attribuiti a BU): ricavi {v['ricavi']:.2f} · costi {v['costi']:.2f} — visibile, non perso")

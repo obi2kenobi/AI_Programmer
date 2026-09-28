@@ -194,6 +194,12 @@ grep -ci 'coda illeggibile' <<<"$(cut -d'|' -f4,5 <<<"$R6")" >/dev/null && ! gre
   && ok "R4 R5: la coda illeggibile e' il motivo del verdetto, non «il lavoro arrivera'»" || ko "R4 R5: coda illeggibile invisibile: [$R6]"
 grep -c 'errori-visti' <<<"$R6" >/dev/null && ok "R4 R5: gli errori del giorno si vedono nella pagina" || ko "R4 R5: il contatore degli errori resta nascosto"
 
+# (2026-09-25, D39): la console ora ruota — il totale dei cicli conta anche quelli del file ruotato (.1)
+printf '[%s 09:00:00] === TURNO INIZIATO (1 repo in coda) ===\n[%s 09:10:00] === TURNO INIZIATO (1 repo in coda) ===\n' 2026-09-01 2026-09-01 > "$TMP/finto.log.1"
+TOTR=$(NIGHT_LOG="$TMP/finto.log" ai_timeout 20 python3 "$DASH" --stats 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin)["tot"])')
+[ "$TOTR" = "4" ] && ok "D39: tot conta anche i cicli del file ruotato (2 + 2)" || ko "D39: tot col file ruotato: $TOTR (atteso 4)"
+rm -f "$TMP/finto.log.1"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

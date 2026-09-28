@@ -42,6 +42,15 @@ grep -q "Non matchati: 1" <<<"$OUT3" \
   && ok "pagamento senza candidati: resta non matchato (invariato)" \
   || ko "pagamento senza candidati rotto — output: $OUT3"
 
+# (2026-09-26, risposta di Luca alla domanda 2): l'abbinamento per codice attraversava i clienti — il pagamento di Rossi
+# per «25OV-123» finiva sulla fattura di Bianchi «25OV-1234». Ora il codice abbina solo fatture dello stesso cliente.
+H='tipo,data_documento,data_registrazione,nr_doc,cliente,descrizione,importo'
+OUT_D2=$(printf '%s\nfattura,2026-01-01,2026-01-01,1,Bianchi,25OV-1234,700\nfattura,2026-01-02,2026-01-02,2,Rossi,25OV-123,300\npagamento,2026-01-20,2026-01-20,3,Rossi,saldo 25OV-123,300\n' "$H" \
+  | python3 "$HERE/tools/rating_dso_clienti.py")
+grep -qE "rossi\s+1\s+18 gg" <<<"$OUT_D2" && ! grep -qE "bianchi\s+1\s" <<<"$OUT_D2" \
+  && ok "D2: il pagamento di Rossi va sulla fattura di Rossi, non su quella di Bianchi che contiene lo stesso codice" \
+  || ko "D2: abbinamento fra clienti — output: $(grep -iE 'rossi|bianchi' <<<"$OUT_D2" | tr '\n' ' ')"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

@@ -88,6 +88,17 @@ grep -q "Uscite: -1000.00€" <<<"$CLI_OUT_FORN" \
   && ok "CLI: fattura fornitore = uscita -1000.00€ (non entrata)" \
   || ko "CLI: segno fornitore non applicato — output: $CLI_OUT_FORN"
 
+# (2026-09-26, risposta di Luca alla domanda 1): i tipi documento fornitore si confrontano senza maiuscole, e un tipo che
+# non si riconosce non va piu' fra le ENTRATE: la riga si rifiuta, e l'uscita dice quante e quali.
+AG=$(mktemp -d)
+printf 'giorni,tipo,importo\n10,Fornitore FATTURA,1000\n10,Fornitore Payment,300\n10,fornitore credit memo,50\n10,Cliente Fattura,2000\n' > "$AG/a.csv"
+OUT_D1=$(python3 "$HERE/tools/scadenzario_aging.py" < "$AG/a.csv" 2>&1); RC_D1=$?
+[ "$RC_D1" -eq 0 ] && grep -q '^Uscite: -1000.00' <<<"$OUT_D1" && grep -q '^Entrate: +2050.00' <<<"$OUT_D1" \
+  && ok "D1: «FATTURA» maiuscola e' un'uscita, «credit memo» minuscola una nota di credito" || ko "D1: maiuscole: rc=$RC_D1 — $(grep -E 'Entrate|Uscite' <<<"$OUT_D1" | tr '\n' ' ')"
+grep -qi 'rifiutat' <<<"$OUT_D1" && grep -q 'Payment' <<<"$OUT_D1" && ! grep -q '+2350.00' <<<"$OUT_D1" \
+  && ok "D1: il tipo sconosciuto «Payment» e' rifiutato e detto, non messo fra le entrate" || ko "D1: Payment: $(grep -iE 'ATTENZIONE|Entrate' <<<"$OUT_D1" | tr '\n' ' ')"
+rm -rf "$AG"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

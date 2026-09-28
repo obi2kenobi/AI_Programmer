@@ -51,6 +51,16 @@ python3 "$TOOL" >/dev/null 2>&1; RC=$?
 python3 "$TOOL" /inesistente.json >/dev/null 2>&1; RC=$?
 [ "$RC" -ne 0 ] && ok "file inesistente: errore, non silenzio" || ko "file inesistente: exit 0 inaspettato"
 
+# (2026-09-26, risposta di Luca alla domanda 13): con la data di riferimento OLTRE la fine del contratto il canone previsto
+# era 1000 EUR, un costo che nel budget non ci sara'. Ora: importo 0, con la NOTA della fine, e il calcolo prosegue (rc 0).
+cat > "$TMP/finito.json" <<'EOF'
+{"canone_base": 1000, "data_inizio": "2024-01-01", "data_fine": "2025-12-31",
+ "data_riferimento": "2026-03-01", "spread": 1.0, "euribor_stipula": 0.5, "euribor_corrente": 1.5}
+EOF
+OUT13=$(python3 "$TOOL" "$TMP/finito.json" 2>&1); RC13=$?
+[ "$RC13" -eq 0 ] && grep -q "Importo previsto: 0.00 EUR" <<<"$OUT13" && grep -q "contratto concluso il 2025-12-31" <<<"$OUT13" \
+  && ok "D13: oltre la fine del contratto l'importo previsto e' 0, con la nota della fine" || ko "D13: rc=$RC13 — $(head -3 <<<"$OUT13" | tr '\n' ' ')"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

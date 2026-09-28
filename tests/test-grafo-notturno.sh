@@ -42,6 +42,20 @@ python3 -c 'import os,sys,time; t=time.time()-25*3600; os.utime(sys.argv[1],(t,t
 OUT4=$(ciclo 4)
 ! grep -c 'avviato in background' <<<"$OUT4" >/dev/null && ! grep -ci 'rimosso' <<<"$OUT4" >/dev/null && grep -c 'oltre 24' <<<"$OUT4" >/dev/null \
   && ok "V3 R3: pass vivo da oltre 24 ore: il lock resta, nessun secondo pass, e lo dice" || ko "V3 R3: pass vivo oltre 24h: $(grep LOG <<<"$OUT4" | head -2 | tr '\n' ' ')"
+# (2026-09-25, D25, risposta delegata): un pass che FALLISCE non lascia il segno del giorno — al primo fallimento resta un
+# segno «tentato» e il ciclo dopo riprova; al secondo il giorno si chiude, e il log lo dice. Qui il pass finto esce 1.
+printf '#!/bin/bash\necho pass-rotto; exit 1\n' > "$T/hub/tools/grafo-semantico.sh"
+P=$(cat "$T/work/.lock-grafo/pid" 2>/dev/null); [ -n "$P" ] && { kill -STOP "$P" 2>/dev/null; pkill -KILL -P "$P" 2>/dev/null; kill -KILL "$P" 2>/dev/null; }
+rm -rf "$T/work/.lock-grafo" "$T/work/.grafo-"*
+fine_pass() { for _ in $(seq 1 50); do [ -d "$T/work/.lock-grafo" ] || return 0; sleep 0.2; done; return 1; }
+ciclo 5 >/dev/null; fine_pass
+[ ! -f "$T/work/.grafo-$(date +%F)" ] && [ -f "$T/work/.grafo-tentato-$(date +%F)" ] \
+  && ok "D25: pass fallito: niente segno del giorno, resta il «tentato»" || ko "D25: pass fallito lascia il segno del giorno: $(ls -a "$T/work" | tr '\n' ' ')"
+OUT6=$(ciclo 6); fine_pass
+grep -c 'avviato in background' <<<"$OUT6" >/dev/null && [ -f "$T/work/.grafo-$(date +%F)" ] && grep -ci 'fallito due volte' "$T/work/grafo-semantico.log" >/dev/null \
+  && ok "D25: secondo tentativo, fallito anche lui: il giorno si chiude e il log lo dice" || ko "D25: secondo tentativo: $(tail -2 "$T/work/grafo-semantico.log" | tr '\n' ' ')"
+OUT7=$(ciclo 7)
+! grep -c 'avviato in background' <<<"$OUT7" >/dev/null && ok "D25: dopo due fallimenti niente terzo pass nello stesso giorno" || ko "D25: terzo pass avviato"
 # E-049 (guardia): chi uccide un albero di processi ferma il padre con STOP prima di ucciderne i figli. Figli prima:
 # il padre vivo un attimo prosegue (qui scriveva il segno del giorno). Padre prima: i figli restano orfani.
 NUDI=$(grep -n 'pkill -KILL -P "\$[A-Za-z_]*"' "$HERE"/tests/*.sh "$HERE/tools/mutation-tests.sh" | grep -v ':[[:space:]]*#' \

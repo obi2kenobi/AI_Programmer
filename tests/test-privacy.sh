@@ -156,6 +156,28 @@ OUT=$(HOME="$TMP/vuota" bash "$TMP/tools/privacy-check.sh" 2>&1); RC=$?
 grep -c "Dell'Ortolano" <<<"$OUT" >/dev/null && ko "S3 R1: l'uscita porta il termine con l'apostrofo in chiaro" || ok "S3 R1: e l'uscita lo maschera"
 git -C "$TMP" rm -q --cached apice.md
 
+# (2026-09-26, risposta di Luca alla domanda 15): docs/bc/ documenta lo schema del tenant, e i nomi delle estensioni si
+# possono pubblicare. Il pre-commit la esentava, il controllo notturno no: rosso stabile ogni notte. Ora una regola sola,
+# qui (--esente-nomi), che il pre-commit chiede.
+mkdir -p "$TMP/docs/bc"; printf 'estensione di FornitoreRiservato\n' > "$TMP/docs/bc/schema.md" && git -C "$TMP" add docs/bc/schema.md
+OUT=$(HOME="$TMP/casa" bash "$TMP/tools/privacy-check.sh" 2>&1)
+! grep -c 'docs/bc/schema.md' <<<"$OUT" >/dev/null && ok "D15: un nome della lista in docs/bc/ non e' una fuga (esente anche di notte)" || ko "D15: docs/bc/ segnalata: $(grep -m1 schema <<<"$OUT")"
+bash "$TMP/tools/privacy-check.sh" --esente-nomi docs/bc/schema.md && ! bash "$TMP/tools/privacy-check.sh" --esente-nomi docs/altro.md \
+  && ok "D15: --esente-nomi dice la regola (docs/bc/ si', il resto no)" || ko "D15: --esente-nomi assente o sbagliato"
+grep -q 'privacy-check.sh" --esente-nomi "$f"' "$HERE/tools/pre-commit.sh" && ! grep -q 'case "$f" in docs/bc/\*) continue;; esac' "$HERE/tools/pre-commit.sh" \
+  && ok "D15: il pre-commit chiede la regola a privacy-check, senza una copia sua" || ko "D15: il pre-commit ha ancora la sua copia dell'esenzione"
+git -C "$TMP" rm -q --cached docs/bc/schema.md
+# (2026-09-25, D6, risposta delegata): in un satellite (nessuna cartella night-shift/) repos.key e' dell'hub, e la sua
+# assenza non e' un degrado: si controllano le forme di segreto (e la lista locale dei nomi, se c'e').
+SAT=$(mktemp -d); mkdir -p "$SAT/tools"; cp "$HERE/tools/privacy-check.sh" "$SAT/tools/"
+git -C "$SAT" init -q && git -C "$SAT" add tools/ && git -C "$SAT" -c user.email=t@t -c user.name=t commit -qm tools
+OUT=$(HOME="$SAT/casa" bash "$SAT/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 0 ] && ! grep -q "GATE DEGRADATO" <<<"$OUT" && grep -q "satellite" <<<"$OUT" \
+  && ok "D6: satellite senza repos.key: pulito, non degradato, e lo dice" || ko "D6: satellite senza repos.key: rc=$RC — $(head -2 <<<"$OUT")"
+echo "token gh""p_ABCDEFGHIJKLMNOPQRSTUVWX" > "$SAT/fuga.md" && git -C "$SAT" add fuga.md
+OUT=$(HOME="$SAT/casa" bash "$SAT/tools/privacy-check.sh" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -q "FORMA DI SEGRETO" <<<"$OUT" && ok "D6: nel satellite le forme di segreto si vedono ancora" || ko "D6: satellite, forma non vista: rc=$RC"
+rm -rf "$SAT"
 rm -rf "$TMP"
 echo ""
 echo "$PASS OK, $FAIL FAIL"

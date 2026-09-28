@@ -69,6 +69,28 @@ ORA=$(TZ=Europe/Rome python3 -c 'import time; print(time.mktime(time.strptime("2
 echo "[2026-10-25 02:50:00] === TURNO INIZIATO" > "$TMP/autunno.log"
 OUT=$(TZ=Europe/Rome FAKE_NOW="$ORA" PYTHONPATH="$TMP/py" TURNO_VIVO_LOG="$TMP/autunno.log" bash "$TOOL" 2>&1); RC=$?
 [ "$RC" -eq 0 ] && ok "V3 R4: nell'ora ripetuta d'autunno l'eta' non e' negativa (niente «illeggibile»)" || ko "V3 R4: autunno: rc=$RC, $(head -1 <<<"$OUT")"
+# (2026-09-25, D39): la console ruota (copia e tronca) all'inizio del ciclo — per qualche minuto il file nuovo non ha
+# ancora il suo TURNO INIZIATO, che sta nel .1. L'ultimo ciclo si cerca in tutti e due.
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n' "$ADESSO" > "$TMP/ruotato.log.1"
+printf '[%s] REPO r/x: un passo\n' "$ADESSO" > "$TMP/ruotato.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/ruotato.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "cicla" <<<"$OUT" && ok "D39: console appena ruotata: l'ultimo ciclo si trova nel .1" || ko "D39: console ruotata: rc=$RC, $(head -1 <<<"$OUT")"
+
+# (2026-09-25, D30, risposta delegata): un'issue ha un watchdog di 240 minuti — con un'issue in lavoro da 45 minuti il ⛔
+# (con il pkill da incollare) arrivava contro un turno sano. Se il ciclo corrente ha cominciato un'issue, la soglia e' il
+# watchdog piu' 15 minuti di margine.
+MIN45=$(python3 -c "from datetime import datetime, timedelta; print((datetime.now() - timedelta(minutes=45)).strftime('%Y-%m-%d %H:%M:%S'))")
+MIN300=$(python3 -c "from datetime import datetime, timedelta; print((datetime.now() - timedelta(minutes=300)).strftime('%Y-%m-%d %H:%M:%S'))")
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n[%s] --- Issue #12: una commessa lunga\n' "$MIN45" "$MIN45" > "$TMP/issue.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/issue.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "issue in corso" <<<"$OUT" && ok "D30: issue in lavoro da 45 minuti: nessun ⛔, e lo dice" || ko "D30: issue da 45 min: rc=$RC, $(head -1 <<<"$OUT")"
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n[%s] --- Issue #12: una commessa lunga\n' "$MIN300" "$MIN300" > "$TMP/issue.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/issue.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && ok "D30: issue ferma da 300 minuti (oltre il watchdog): ⛔" || ko "D30: issue da 300 min: rc=$RC"
+printf '[%s] === TURNO INIZIATO (1 repo in coda) ===\n' "$MIN45" > "$TMP/senza.log"
+OUT=$(TURNO_VIVO_LOG="$TMP/senza.log" bash "$TOOL" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && ok "D30: senza issue in corso la soglia resta 30 minuti" || ko "D30: senza issue, 45 min: rc=$RC"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

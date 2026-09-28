@@ -16,6 +16,9 @@ calcolaImportoPrevistoLeasingTrimestrale + calcolaCapitaleResiduoEInteressi):
    adeguamentoTrimestrale = adeguamentoMensile × 3 — TRIMESTRALE e ARRETRATO:
    a ottobre si riceve il canone di ottobre + l'adeguamento del trimestre
    PRECEDENTE (lug-ago-set), regola di dominio scritta nel commento originale.
+   L'oracolo lo somma a OGNI data di riferimento, non solo al mese del canone
+   trimestrale: e' il comportamento del codice, confermato da Luca il 2026-09-26
+   (domanda 10 di docs/giri/2026-09-23-notte/DOMANDE.md).
 5. importoPrevisto = canone mensile + adeguamento trimestrale.
 6. Euribor corrente ASSENTE → NESSUN adeguamento, importo = canone, con nota
    esplicita «no adeguamento — Euribor mancante»: il dato assente dichiara se
@@ -119,6 +122,12 @@ def main():
         print("ERRORE: data_fine precedente a data_inizio", file=sys.stderr)
         return 1
     # (spread, euribor e data di riferimento: validati sopra, con gli altri numeri)
+    # (2026-09-26, risposta di Luca alla domanda 13 di docs/giri/2026-09-23-notte/DOMANDE.md): oltre la fine del contratto
+    # il canone previsto era quello pieno — un costo che nel budget non ci sara'. Ora 0, con la nota; il calcolo prosegue.
+    if riferimento > fine:
+        print(f"Importo previsto: 0.00 EUR")
+        print(f" Nota: contratto concluso il {fine} (riferimento {riferimento}): nessun canone ne' adeguamento previsto")
+        return 0
 
     if euribor_corrente is None:
         print(f"Importo previsto: {canone:.2f} EUR")
@@ -144,7 +153,7 @@ def main():
     print(f"Tassi: base {tasso_base:.3f}% · corrente {tasso_corrente:.3f}% · delta {delta:+.3f} punti")
     print(f"Adeguamento mensile: {adeguamento_mensile:+.2f} EUR · trimestrale ARRETRATO: {adeguamento_trimestrale:+.2f} EUR")
     print(f"Importo previsto: {previsto:.2f} EUR (canone {canone:.2f} + adeguamento {adeguamento_trimestrale:+.2f})")
-    print(f"Nota dominio: l'adeguamento del trimestre PRECEDENTE arriva con il canone del trimestre successivo (arretrato).")
+    print(f"Nota dominio: l'adeguamento del trimestre PRECEDENTE (arretrato) e' sommato a ogni data di riferimento.")
     return 0
 
 

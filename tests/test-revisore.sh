@@ -111,8 +111,9 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 [ "$RC" -eq 0 ] && ok "APPROVA → rc 0" || ko "rc $RC (atteso 0): $(echo "$OUT" | tail -2)"
 grep -q "\[DRY\] gh pr merge 7 --squash" <<<"$OUT" && ok "delibera: squash-merge della PR #7" || ko "non ha delibera il merge"
 if grep -q "budget\|deliberazione 1/" <<<"$OUT"; then ok "budget registrato"; else ko "budget non scritto (audit 2026-09-23: il ko era irraggiungibile)"; fi
-B=$(cat "$SB"/.git/revisore/mergi-* 2>/dev/null | head -1)
-[ "$B" = "1" ] && ok "budget a 1/5 sul file" || ko "file budget: '$B'"
+# (2026-09-25, D32): il budget e' mobile — una riga (epoch) per fusione in mergi.log, contate le ultime 24 ore
+B=$(grep -c . "$SB/.git/revisore/mergi.log" 2>/dev/null)
+[ "${B:-0}" = "1" ] && ok "budget a 1/5 sul file" || ko "file budget: '${B:-}'"
 BR_FIN=$(git -C "$SB" branch --show-current)
 [ "$BR_FIN" = "main" ] && ok "tornato su main dopo la deliberazione" || ko "rimasto su $BR_FIN"
 
@@ -122,6 +123,13 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
 [ "$RC" -eq 1 ] && ok "RIGETTA → rc 1" || ko "rc $RC (atteso 1)"
 grep -q "\[DRY\] gh pr close 7" <<<"$OUT" && ok "PR chiusa col parere" || ko "non ha chiuso la PR"
 grep -q "gh pr merge" <<<"$OUT" && ko "ha provato a mergiare una rigettata!" || ok "nessun merge della rigettata"
+
+# 2bis2. (2026-09-25, D43, risposta delegata): un verdetto fuori vocabolario (ne' APPROVA ne' RIGETTA) ricadeva nel
+#        ramo del rigetto: commento pubblico e PR chiusa. Il dubbio del censore non e' un no: rc 2, al giorno.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-forse
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=FORSE bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ! grep -c 'gh pr close\|gh pr comment\|gh pr merge' <<<"$OUT" >/dev/null && grep -ci 'fuori vocabolario' <<<"$OUT" >/dev/null \
+  && ok "D43: verdetto fuori vocabolario: rc 2, niente chiusura ne' commento, e lo dice" || ko "D43: verdetto FORSE: rc $RC, $(grep -c 'gh pr close' <<<"$OUT") chiusure"
 
 # 2ter. (2026-09-25, ottavo ventaglio, O5 R3): un rigetto la cui chiusura fallisce diceva «chiusa» lo stesso, e la PR
 #       tornava al censore a ogni ciclo (tre rigetti, e al quarto una fusione). E una fusione fallita lasciava la PR
@@ -235,9 +243,17 @@ rm -f "$STUB_CATTIVO"
 # 7. budget esaurito: 5 deliberazioni oggi → guardia, rc 2
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-budget
 mkdir -p "$SB/.git/revisore"
-echo 5 > "$SB/.git/revisore/mergi-$(date '+%Y-%m-%d')"
+ORA=$(date +%s); for i in 1 2 3 4 5; do echo $((ORA - i * 60)); done > "$SB/.git/revisore/mergi.log"
 OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 2 ] && ok "budget 5/5 → rc 2 (non si delibera piu' oggi)" || ko "rc $RC (atteso 2)"
+# (2026-09-25, D32, risposta delegata): il budget e' delle ULTIME 24 ORE, non del giorno di calendario — a mezzanotte si
+# azzerava, e 10 fusioni in 90 minuti passavano. Cinque fusioni di 23 ore fa contano ancora; di 25 ore fa no.
+for i in 1 2 3 4 5; do echo $((ORA - 23 * 3600 - i)); done > "$SB/.git/revisore/mergi.log"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && ok "D32: cinque fusioni di 23 ore fa: budget esaurito (mobile, non di calendario)" || ko "D32: fusioni di 23 ore fa non contate: rc $RC"
+for i in 1 2 3 4 5; do echo $((ORA - 25 * 3600 - i)); done > "$SB/.git/revisore/mergi.log"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+! grep -c 'budget esaurito' <<<"$OUT" >/dev/null && ok "D32: fusioni di 25 ore fa: fuori dalla finestra" || ko "D32: fusioni di 25 ore fa ancora contate"
 
 # --- test del sistema completo, 2026-09-20 (report Fable, D1-D4): quattro buchi che
 # DELIBERAVANO il merge. Ogni caso e' stato riprodotto in DRY prima della cura.

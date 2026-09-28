@@ -5414,3 +5414,50 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   `tests/test-revisore.sh`; sabotaggio 37/3.
 - **Ottavo ventaglio, i sabotaggi riletti.** Le nove cure qui sopra, rifatte a fine ventaglio in un worktree pulito:
   col sorgente del commit padre il banco è rosso, con la cura verde (i numeri sono quelli di questa rilettura).
+- **Risposte delegate, 38 su 45, applicate una per commit.** Luca, 2026-09-25: «rispondi a tutte quelle che non hanno
+  bisogno di dominio… poi applicale una alla volta». Le risposte col loro perché sono in
+  `docs/giri/2026-09-25-ottavo/RISPOSTE-DELEGATE.md`, e ogni riga di `DEBITI.md` dice come e' stata saldata. Ogni cura
+  che cambia il codice ha il banco rosso prima e il sabotaggio rosso dopo; suite 191/191 a ogni consegna.
+  - Solo saldate, senza codice: D2, D7, D11, D27, D29, D34, D37. In attesa di un evento: D26, D40 (la riga d'ambiente del
+    primo turno sul Mac) e D28 (la prima durata misurata di un pass del grafo).
+  - Codice: D4, D5, D6, D8 con D3, D9, D10, D13, D15, D16, D17, D18, D21, D22, D25, D30, D31, D32, D33, D35, D36, D38,
+    D39, D42, D43, D44, D45 (una guardia: il comportamento c'era gia'). Documenti: D19, D23, D41.
+  - Tre risposte precisate applicandole, dichiarato nel file delle risposte e in DEBITI:
+    - D6: la lista locale dei nomi resta attiva nei satelliti (toglierla indeboliva quelli pubblici);
+    - D15: una riga di un CLAUDE.md vecchio dell'hub non e' propria, altrimenti ogni satellite indietro si fermava;
+    - D44: la PR chiusa si sblocca con l'etichetta `rifai`, perche' riaprirla la renderebbe intoccabile (D45).
+  - Un errore mio annotato in DEBITI: la riga di D45 diceva che il turno riscriveva una PR aperta «per scelta». Era
+    falso: il codice la salta.
+  - Tre rilievi nuovi, visti applicando, in DEBITI:
+    - l'`eval` del comando avversario del censore fuori dalla sandbox;
+    - `.night-mirror` dichiarato all'agente ma non negato in scrittura;
+    - la scopa oltre le 1000 PR (dai grezzi di O2).
+  - Misure: la suite in un clone pulito scende da 414 a 284 s (52% del budget) dopo D33. D8 toglie 111 righe morte da
+    `night-shift/night-shift.sh`.
+  - Tre mie prime stesure prese dalla suite prima del commit:
+    - due `| grep -q` in pipe (E-002);
+    - una riga ⛔ non dichiarata nel catalogo degli eventi;
+    - un pavimento di 4 punti di creazione PR diventato 3 con D8.
+
+    E due falsi rossi del banco di D18, capiti: un git appena finito e un git zombie.
+- **Le 15 risposte di Luca, applicate una per commit (2026-09-26).** Poste una alla volta in chat con le opzioni; le
+  risposte stanno in `docs/giri/2026-09-23-notte/DOMANDE.md` («Risposte di Luca»), e ogni riga di `DEBITI.md` dice come
+  e' stata saldata. Ogni cura di codice ha il banco rosso prima e il sabotaggio rosso dopo; suite verde a ogni consegna
+  (191, poi 192 e 193 file coi due banchi nuovi).
+  - Codice: 1 (aging, tipi fornitore senza maiuscole, sconosciuti rifiutati), 2 (DSO, codice solo sullo stesso
+    cliente), 5 (margine, BU senza maiuscole), 6 (cespiti, fondo positivo convertito e detto), 8 (bilancio, elenco
+    chiuso delle BU), 13 (leasing oltre la fine: importo 0 con la nota), 15 (`docs/bc/` esente dai nomi anche la notte,
+    una regola sola), 12 (numeri all'italiana: `tools/numero.py`, una lettura sola per gli otto oracoli che leggono un
+    CSV, banco `tests/test-numero.sh`).
+  - Banco nuovo: 14 (`tests/test-percorso-spazio.sh` installa da «Il mio disco/hub AI» ed esegue plist, gancio del
+    garante e comandi installati).
+  - Documenti: 7 (ordini ≤0, deviazione voluta) e 11 (l'adeguamento arretrato a ogni data). Come oggi, scritte nella
+    docstring: 3, 4, 9, 10.
+  - Visti applicando:
+    - il 12 toccava anche valorizzazione, scostamento e riconciliazione, che la domanda non nominava: «per tutti gli
+      oracoli» li comprende;
+    - il banco del bilancio copiava l'oracolo in `/tmp` e perdeva l'import (curato con `PYTHONPATH`);
+    - la batteria avversaria prova HEAD, non l'albero: un attacco rotto da una cura si vede solo alla consegna dopo (A13,
+      in DEBITI).
+  - Mie prime stesure prese prima del commit: due `$NOME»` senza graffe (V4 R1, bash 3.2 del Mac), una dalla suite e
+    una da `tests/test-portabilita.sh`; e un banco che cercava «Rossi» dove l'oracolo stampa il cliente normalizzato.

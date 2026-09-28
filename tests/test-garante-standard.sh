@@ -22,6 +22,7 @@ OUT=$(cd "$SB" && bash "$GARANTE" 2>&1)
 if grep -q "DIVERGE" <<<"$OUT"; then
   ok "metodo installato vecchio → avviso deriva (con il comando per aggiornare)"
   grep -q "sync-repo" <<<"$OUT" && ok "l'avviso dice COME aggiornare" || ko "avviso senza rimedio"
+  grep -q "PROJECT.md" <<<"$OUT" && ok "D16: l'avviso dice che le skill sono dell'hub e dove vanno le regole locali" || ko "D16: avviso senza PROJECT.md"
   # (2026-09-24, sesto ventaglio, S1): il rimedio era «sync-repo.sh --standard» senza owner/repo — incollato,
   # sync-repo rispondeva con la riga d'uso ed usciva 1. Senza origin si dice il segnaposto; con, il nome vero.
   grep -c 'sync-repo.sh <owner/repo> --standard' <<<"$OUT" >/dev/null && ok "S1: il rimedio ha l'argomento che sync-repo vuole" || ko "S1: rimedio senza owner/repo: $(grep -o 'sync-repo.sh[^)]*' <<<"$OUT" | head -1)"

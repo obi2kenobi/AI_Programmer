@@ -85,11 +85,13 @@ bash tools/status-page.sh
 Nell'ordine: cosa è giù; il motore si resuscita così; un agente impantanato si libera così;
 il turno dice cosa sta facendo. La pulizia scrive `[o]pencode run` e non `opencode run`: la classe trova il
 processo ma non la riga di comando che la contiene, così un agente che la esegue alla lettera non uccide
-la propria shell (provato con pgrep, 2026-09-24, Q1 R4).
+la propria shell (provato con pgrep, 2026-09-24, Q1 R4). Ollama si rianima col gesto del turno, `rianima_ollama`
+(`night-shift/lib.sh`): trova il custode launchd per nome, qualunque sia (Ollama.app o un plist), e senza custode avvia
+un'istanza propria. I comandi vanno lanciati dalla radice dell'hub.
 
 ```bash
 bash tools/system-health.sh
-launchctl kickstart -k gui/$(id -u)/luca.ollama
+bash -c 'source night-shift/lib.sh && rianima_ollama'
 pkill -f "[o]pencode run"
 tail -5 ~/night-shift.log
 ```
@@ -100,4 +102,6 @@ tail -5 ~/night-shift.log
 - `night-shift/repos.key` — PERSONA=, TERMINI=, DIGEST_EMAIL= (i codici anonimi che ospitava
   sono ritirati dal 2026-09-23)
 - `~/.config/wayfinder-router/` — il router
-- `~/.config/opencode/opencode.json` — l'harness notturno
+- `~/.config/opencode/opencode.json` — OpenCode, usato di giorno (via Wayfinder): il turno non lo lancia piu' (D8)
+- graphify: `pipx install --python python3.12 graphifyy==0.9.66` — pip e' rifiutato su tutti e due i python del Mac (3.9 di sistema, e Homebrew con PEP 668), e la
+  versione e' quella che l'hub prova (D41). gh si aggiorna liberamente: la riga d'ambiente del turno dice quale gira

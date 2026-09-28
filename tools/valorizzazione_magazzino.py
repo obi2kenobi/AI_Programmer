@@ -41,6 +41,8 @@ import json
 import math
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 
 def costo_base_per_codice(righe):
     """Primo costo medio non-nullo per codice, attraversando le location."""
@@ -54,7 +56,7 @@ def costo_base_per_codice(righe):
             # (Q22, 2026-09-23): «nan»/«inf» passavano da float() e davano «nan EUR» con rc 0 —
             # un costo non finito e' non numerico come «abc»: ignorato e dichiarato (senza costo)
             try:
-                v = float(raw)
+                v = leggi_numero(raw)
                 if not math.isfinite(v):
                     raise ValueError("non finito")
                 costi[codice] = v
@@ -119,7 +121,7 @@ def valorizza(righe, cfg):
         location = (r.get("location") or "PRINCIPALE").strip()
         # (Q22): qty vuota = traceback, qty «nan» = «valore +nan EUR». Senza quantita' non si valuta.
         try:
-            qty = float(r["qty"])
+            qty = leggi_numero(r["qty"])
         except (TypeError, ValueError):
             raise ValueError(f"qty non numerica per {codice}: {r['qty']!r}")
         if not math.isfinite(qty):

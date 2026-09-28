@@ -116,6 +116,12 @@ grep -q "SAL del dominio" "$SC" \
   && ok "circolarità: il SAL che il gate scrive è la fonte #1 di selezione-contesto" \
   || ko "la catena non è circolare: il SAL non è in testa alle fonti"
 
+# (2026-09-25, D19, risposta delegata): il risolutore legge un file col nome con lo spazio («Codice Principale.gs») solo se
+# il Territorio lo scrive fra backtick; senza, mandava al modello un sorgente vuoto. Il modello di issue li chiede.
+TERR_TMPL=$(sed -n '/^## Territorio/,/^## Commessa/p' "$TMPL")
+grep -q 'fra backtick' <<<"$TERR_TMPL" && grep -q '`Codice Principale.gs`' <<<"$TERR_TMPL" \
+  && ok "D19: il modello di issue chiede i file del Territorio fra backtick, con l'esempio dello spazio" || ko "D19: il Territorio del modello non chiede i backtick"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

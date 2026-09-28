@@ -54,7 +54,7 @@ bash tools/suite.sh
   lo sporco finisce in uno stash «salvataggio turno …», i commit non pushati in un ramo `salvataggio/…`, e il
   log lo dice (`allinea_hub` in `night-shift/lib.sh`, R5 2026-09-24).
 - Prerequisiti: git, jq, curl, python3 (senza uno di questi il turno non parte: `dipendenze_mancanti` in
-  `night-shift/lib.sh`), shellcheck (una riga di `.night-verify`), graphify (`pip install graphifyy`,
+  `night-shift/lib.sh`), shellcheck (una riga di `.night-verify`), graphify (`pipx install --python python3.12 graphifyy==0.9.66`: python >= 3.10, versione fissata,
   `tools/graphify-spina.sh:29`). gh serve solo per sync, bootstrap, onboard e il turno.
 - Rosso ATTESO: senza `night-shift/repos.key` (un collaboratore, una sessione cloud) `bash tools/privacy-check.sh`
   esce 1 con «GATE DEGRADATO» (`tools/privacy-check.sh:29`). Non è un guasto: la chiave vive solo sul Mac di

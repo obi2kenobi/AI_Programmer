@@ -35,6 +35,15 @@ def leggi_log():
     except Exception:
         return []
 
+def turni_ruotati():
+    """(D39, 2026-09-25): la console ruota (night-shift/lib.sh, ruota_log_aperto). Il totale dei cicli conta anche quelli
+    del file ruotato, letto solo per questo."""
+    try:
+        with open(LOG + ".1", errors="ignore") as f:
+            return sum(1 for l in f if riga_data(l) and "TURNO INIZIATO" in l)
+    except OSError:
+        return 0
+
 def riga_data(l):
     m = re.match(r"\[(\d{4}-\d\d-\d\d \d\d:\d\d:\d\d)\]", l)
     return datetime.strptime(m.group(1), "%Y-%m-%d %H:%M:%S") if m else None
@@ -56,6 +65,7 @@ def stats():
     F["gate"] = F["consegne"] = F["push_fail"] = F["approvate"] = F["rigettate"] = 0
     F["lente_muta"] = 0   # (2026-09-24, R4 R2): la firma «LENTE MUTA» del turno (dal 24/9) non la contava nessuno
     ultima_apertura = -1
+    s["tot"] = turni_ruotati()
     rosse = []
     prev_dt = None
     for i, l in enumerate(lines):

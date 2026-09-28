@@ -44,11 +44,18 @@ s = s.replace(
 )
 open(dst, "w").write(s)
 PY
-OUT_BUG=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARRG,50\n' | python3 "$BUGGED")
+# (2026-09-26, domanda 12): la copia importa tools/numero.py, la lettura unica dei numeri
+OUT_BUG=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARRG,50\n' | PYTHONPATH="$HERE/tools" python3 "$BUGGED")
 rm -f "$BUGGED"
 grep -q "^QUADRATURA ROTTA: " <<<"$OUT_BUG" \
   && ok "watchdog-guardato: un doppio conteggio iniettato fa scattare QUADRATURA ROTTA" \
   || ko "watchdog-guardato: la quadratura non ha rilevato il doppio conteggio iniettato — output: $OUT_BUG"
+
+# (2026-09-26, risposta di Luca alla domanda 8): l'elenco delle BU e' chiuso — ARRG, BIOC, EDIL, IMB. Il docstring prometteva
+# «fuori elenco → NOBU» ma l'elenco non c'era: un refuso («ARGG») diventava una BU col suo margine. Ora va in NOBU, detto.
+OUT8=$(printf 'conto,posting_date,bu,amount\n1,2026-01-01,ARRG,-100\n1,2026-01-01,ARGG,-40\n' | python3 "$HERE/tools/bilancio_bu.py" 2>&1)
+! grep -qE '^ARGG ' <<<"$OUT8" && grep -q 'NOBU (movimenti non attribuiti a BU): ricavi 40.00' <<<"$OUT8" && grep -q 'ARGG' <<<"$(grep -i attenzione <<<"$OUT8")" \
+  && ok "D8: una BU fuori elenco (ARGG) va in NOBU, e l'ATTENZIONE la nomina" || ko "D8: $(grep -E 'ARGG|NOBU|ATTENZIONE' <<<"$OUT8" | tr '\n' ' ')"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

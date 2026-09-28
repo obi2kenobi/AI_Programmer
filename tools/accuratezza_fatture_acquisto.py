@@ -15,7 +15,12 @@ controllo accuratezza fatture di acquisto di REPO-E (cartella gas-src/):
 3. Fatture senza ordine da fornitore WHITELIST = legittime (canoni, abbonamenti):
    NON sono errori. Le altre = anomale (Elaborazione.js calcolaStatisticheFinali).
 4. erroriReali = fattureAnomaleSenzaOrdine + fattureOrdineInesistente +
-   discrepanzeImporti.
+   discrepanzeImporti + fatture su ordini a importo <= 0.
+   CONFINE DICHIARATO: l'ultimo addendo NON e' nella formula di REPO-E (dal
+   2026-08-28: la percentuale su un ordine <= 0 non e' definita). E' una
+   deviazione VOLUTA, confermata da Luca il 2026-09-26 (domanda 7 di
+   docs/giri/2026-09-23-notte/DOMANDE.md): su quei dati le due accuratezze
+   divergono, e questa e' la nostra.
 5. percentualeAccuratezza = (totaleFatture − erroriReali) / totaleFatture × 100;
    margineErrore = erroriReali / totaleFatture × 100; obiettivo raggiunto se
    margineErrore < obiettivoMargineErrorePct (0.1% di default, Config.js).
@@ -31,34 +36,43 @@ import json
 import math
 import sys
 
+from numero import leggi_numero  # domanda 12: la lettura unica dei numeri (1.234,56), tools/numero.py
+
 
 def leggi_csv(path, colonne=()):
     """(giro 21, 2026-09-20 — D32): file inesistente o colonna mancante = traceback nudo.
     Si dichiara cosa manca e si esce 1, come scadenzario_aging."""
-    try:
-        with open(path, encoding="utf-8-sig", newline="") as f:
-            reader = csv.DictReader(f)
-            mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
-            if mancanti:
-                print(f"uso: accuratezza_fatture_acquisto.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+    # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo. (D31, risposta delegata del
+    # 2026-09-25): UTF-8 prima, poi cp1252 — l'Excel italiano salva il «CSV» in cp1252 — e lo si dice. Un file che non e'
+    # nemmeno cp1252 (un byte che cp1252 non definisce) resta rifiutato.
+    for codifica in ("utf-8-sig", "cp1252"):
+        try:
+            with open(path, encoding=codifica, newline="") as f:
+                reader = csv.DictReader(f)
+                mancanti = [c for c in colonne if c not in (reader.fieldnames or [])]
+                if mancanti:
+                    print(f"uso: accuratezza_fatture_acquisto.py — in {path} mancano le colonne: {', '.join(mancanti)}", file=sys.stderr)
+                    sys.exit(1)
+                righe = list(reader)
+            break
+        except UnicodeDecodeError:
+            if codifica == "cp1252":
+                print(f"uso: accuratezza_fatture_acquisto.py — {path} non e' UTF-8 e nemmeno Windows-1252: salvalo come «CSV UTF-8»", file=sys.stderr)
                 sys.exit(1)
-            righe = list(reader)
-    except UnicodeDecodeError:
-        # (2026-09-25, settimo ventaglio, V4 R4): un export Windows-1252 era un traceback nudo (il caso che D32 aveva
-        # curato). Si dice; leggerlo in cp1252 e' una scelta di dominio (DEBITI, V4 D4).
-        print(f"uso: accuratezza_fatture_acquisto.py — {path} non e' UTF-8 (un export di Excel in Windows-1252?): salvalo come «CSV UTF-8»" , file=sys.stderr)
-        sys.exit(1)
-    except OSError as e:
-        print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — {e}", file=sys.stderr)
-        sys.exit(1)
+        except OSError as e:
+            print(f"uso: accuratezza_fatture_acquisto.py config.json fatture.csv ordini.csv — {e}", file=sys.stderr)
+            sys.exit(1)
+    if codifica == "cp1252":
+        print(f"ATTENZIONE: {path} non e' UTF-8: letto come Windows-1252 (l'export di Excel)", file=sys.stderr)
     # (2026-09-24, quinto ventaglio, R3 R3): una cella importo vuota o «1.234,56» era un traceback; si
-    # rifiuta col numero di riga (il formato italiano e' una domanda: DEBITI, D-R3-2)
+    # rifiuta col numero di riga. Domanda 12 (Luca, 2026-09-26): il formato italiano si LEGGE, qui, una volta sola:
+    # la cella diventa un numero e il resto del file non riconverte
     for n, r in enumerate(righe, start=2):
         if "importo" in colonne:
             try:
-                float(r["importo"])
+                r["importo"] = leggi_numero(r["importo"])
             except (ValueError, TypeError):
-                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso col punto decimale, es. 1234.56) — nessun verdetto", file=sys.stderr)
+                print(f"ERRORE: {path} riga {n}: importo non numerico {r['importo']!r} (atteso un numero, es. 1234.56 o 1.234,56) — nessun verdetto", file=sys.stderr)
                 sys.exit(1)
     return righe
 
@@ -90,10 +104,10 @@ def main():
     whitelist = set(cfg.get("whitelist_fornitori") or [])
 
     fatture = leggi_csv(sys.argv[2], ("nr", "importo"))
-    ordini = {r["nr"].strip(): float(r["importo"]) for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
+    ordini = {r["nr"].strip(): r["importo"] for r in leggi_csv(sys.argv[3], ("nr", "importo"))}
     # (2026-09-24, quinto ventaglio, R3 R2): un importo nan rendeva falso `pct > soglia`, la fattura contava come
     # «valida» e usciva «Accuratezza 100% RAGGIUNTO». Un importo non finito si dichiara.
-    marce = [f"fattura {f['nr']}" for f in fatture if not math.isfinite(float(f["importo"]))] + \
+    marce = [f"fattura {f['nr']}" for f in fatture if not math.isfinite(f["importo"])] + \
             [f"ordine {k}" for k, v in ordini.items() if not math.isfinite(v)]
     if marce:
         print(f"ERRORE: importi non finiti (nan/inf): {', '.join(marce[:5])} — nessun verdetto", file=sys.stderr)
@@ -110,7 +124,7 @@ def main():
         nr = f["nr"]
         fornitore = (f.get("fornitore") or "").strip()
         onr = (f.get("ordine_nr") or "").strip()
-        importo = float(f["importo"])
+        importo = f["importo"]
         if onr == "":
             (legittime_senza_ordine if fornitore in whitelist else anomale_senza_ordine).append(nr)
             continue
