@@ -49525,6 +49525,36 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_pii_scan",
+      "label": "pii-scan.sh",
+      "_origin": "ast",
+      "community": 774,
+      "community_name": "pii-scan.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "pii-scan.sh",
+      "source_file": "tools/pii-scan.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_pii_scan_sh__entry",
+      "label": "pii-scan.sh script",
+      "_origin": "ast",
+      "community": 774,
+      "community_name": "pii-scan.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "pii-scan.sh script",
+      "source_file": "tools/pii-scan.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "opencode_skills_gas_sviluppo_references_famiglie_difetti",
       "label": ".opencode/skills/gas-sviluppo/references/famiglie-difetti.md",
       "_origin": "ast",
@@ -88496,6 +88526,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_pii_scan",
+      "target": "tools_pii_scan_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/pii-scan.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tools_polilivello",
       "target": "tools_polilivello_sh__entry",
       "relation": "contains",
@@ -98797,5 +98838,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3bdf64988213ce429f9e5f48520bcc17f3b0f490"
+  "built_at_commit": "8a4cdd8ecc7eb09ede8d84234bd447a0133b3288"
 }
