@@ -30,7 +30,7 @@ EOF
 # 1. i conti del giorno, letti dal log vero
 OUT=$(BILANCINO_CSV="$RADICE/funnel.csv" BILANCINO_WORK="$RADICE/work" BILANCINO_DATA=2026-09-27 \
   BILANCINO_LOG_EXTRA="$RADICE/log" bash "$BIL" pippo/alpha 2>&1); RC=$?
-[ "$RC" -eq 0 ] && ok "rc 0" || ko "rc $RC: $OUT"
+[ "$RC" -eq 0 ] && grep -q "^bilancino: " <<<"$OUT" && ok "rc 0 con la firma bilancino:" || ko "rc $RC: $OUT"
 RIGA=$(grep '^2026-09-27,alpha,' "$RADICE/funnel.csv")
 [ "$RIGA" = "2026-09-27,alpha,2,1,1,1,1,0,0,45,0,1" ] && ok "i numeri veri: $RIGA" || ko "riga: $RIGA"
 

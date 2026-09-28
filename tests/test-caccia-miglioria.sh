@@ -258,7 +258,7 @@ git -C "$SB3" add -A && git -C "$SB3" -c user.name=t -c user.email=t@t commit -q
 mkdir -p "$SB3/.git/caccia-registro"
 echo "$(date +%s)|morto|utils.js|censore: non e' una variabile morta" > "$SB3/.git/caccia-registro/rigetti"
 OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.js bash "$CM" "$SB3" 2>&1); RC=$?
-[ "$RC" -eq 1 ] && grep -q "scuola dei rigetti" <<<"$OUT" && ok "scuola: file bocciato oggi → salto dichiarato (rc 1)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+[ "$RC" -eq 1 ] && grep -q "scuola dei rigetti:" <<<"$OUT" && ok "scuola: file bocciato oggi → salto dichiarato (rc 1)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
 git -C "$SB3" diff --quiet 2>/dev/null && ok "scuola: il file bocciato resta intatto" || ko "ha toccato il file bocciato"
 
 # scaduto (oltre il cooldown): la scuola lascia lavorare
@@ -291,7 +291,7 @@ nuova_repo "$SB4"
 git -C "$SB4" add -A && git -C "$SB4" -c user.name=t -c user.email=t@t commit -qm file
 printf 'saldare il doppione di calcoloPrezzo in utils.js prima della chiusura' > "$SB4/.git/roadmap"
 OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto bash "$CM" "$SB4" 2>&1); RC=$?
-[ "$RC" -eq 0 ] && grep -q "MIGLIORIA \[morto\] utils.js" <<<"$OUT" \
+[ "$RC" -eq 0 ] && grep -q "MIGLIORIA \[morto\] utils.js" <<<"$OUT" && grep -q "roadmap: il passo cita utils.js" <<<"$OUT" \
   && ok "roadmap: il passo cita utils.js e la caccia lo punta (non la rotazione)" || ko "rc $RC: $(tail -2 <<<"$OUT")"
 # senza roadmap (o con placeholder) la rotazione resta padrona: nessun crash
 rm -f "$SB4/.git/roadmap"

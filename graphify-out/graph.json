@@ -40724,7 +40724,7 @@
       "node_kind": "heading",
       "norm_label": "righe \u26a0/\u26d4 del turno lette solo dal battito",
       "source_file": "docs/eventi.md",
-      "source_location": "L48"
+      "source_location": "L52"
     },
     {
       "id": "githooks_commit_msg",
@@ -77235,7 +77235,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/eventi.md",
-      "source_location": "L48",
+      "source_location": "L52",
       "weight": 1.0
     },
     {
@@ -101686,5 +101686,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0d469fcc77ff2756881e7932dacab13d58b378ee"
+  "built_at_commit": "21b1ac9f63a86a527abc269050e305cb75973640"
 }

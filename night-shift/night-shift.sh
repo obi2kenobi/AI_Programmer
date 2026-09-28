@@ -1394,7 +1394,11 @@ for ENTRY in "${REPO_LIST[@]}"; do
   # vero, upsert sul CSV di $WORK. Il fallimento si dichiara e non ferma il turno:
   # contare la notte non e' mai piu' importante della notte.
   if [ -f "$HERE/../tools/bilancino.sh" ]; then
-    log "REPO ${ENTRY%% *}: $(bash "$HERE/../tools/bilancino.sh" "${ENTRY%% *}" 2>&1 | tail -1)"
+    BIL_RIGA=$(bash "$HERE/../tools/bilancino.sh" "${ENTRY%% *}" 2>&1 | tail -1)
+    case "$BIL_RIGA" in
+      bilancino:*) log "REPO ${ENTRY%% *}: $BIL_RIGA" ;;
+      *) log "REPO ${ENTRY%% *}: bilancino: riga non firmata (dichiarato): $BIL_RIGA" ;;
+    esac
   fi
 done
 log "=== TURNO FINITO ==="
