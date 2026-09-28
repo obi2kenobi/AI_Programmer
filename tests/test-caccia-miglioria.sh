@@ -243,6 +243,63 @@ ls "$SB2/.git/miglioria/" 2>/dev/null | grep -q '^clean\.morto\.' && ok "E-050: 
 rm -rf "$SB2" "$STUB_ROTTO"
 
 
+# Scuola dei rigetti (2026-09-28): il file bocciato dal censore di recente non si
+# ritocca — ne' oggi ne' col modello che riscrive la stessa idea con altro testo.
+SB3=$(mktemp -d /tmp/test-miglioria-scuola.XXXXXX)
+cat > "$SB3/utils.js" <<'EOF'
+var temp = 0;  // MORTO
+function calcoloPrezzo(base, sconto) {
+  var prezzo = base - (base * sconto / 100);
+  return prezzo;
+}
+EOF
+nuova_repo "$SB3"
+git -C "$SB3" add -A && git -C "$SB3" -c user.name=t -c user.email=t@t commit -qm file
+mkdir -p "$SB3/.git/caccia-registro"
+echo "$(date +%s)|morto|utils.js|censore: non e' una variabile morta" > "$SB3/.git/caccia-registro/rigetti"
+OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.js bash "$CM" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -q "scuola dei rigetti:" <<<"$OUT" && ok "scuola: file bocciato oggi → salto dichiarato (rc 1)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+git -C "$SB3" diff --quiet 2>/dev/null && ok "scuola: il file bocciato resta intatto" || ko "ha toccato il file bocciato"
+
+# scaduto (oltre il cooldown): la scuola lascia lavorare
+echo "$(( $(date +%s) - 200000 ))|morto|utils.js|bocciato tanto tempo fa" > "$SB3/.git/caccia-registro/rigetti"
+OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.js bash "$CM" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "scuola: rigetto scaduto → si lavora (rc 0)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+git -C "$SB3" reset -q --hard
+
+# categoria diversa: il bocciato di 'docs' non blocca 'morto'
+echo "$(date +%s)|docs|utils.js|commenti che non dicevano il vero" > "$SB3/.git/caccia-registro/rigetti"
+OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto MIGLIORIA_FILE=utils.js bash "$CM" "$SB3" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "scuola: categoria diversa → si lavora (rc 0)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+rm -rf "$SB3"
+
+
+# La direzione (2026-09-28): la roadmap detta il passo — un file citato dal passo
+# corrente diventa il bersaglio della caccia, prima della rotazione a vuoto.
+SB4=$(mktemp -d /tmp/test-miglioria-roadmap.XXXXXX)
+cat > "$SB4/utils.js" <<'EOF'
+var temp = 0;  // MORTO
+function calcoloPrezzo(base, sconto) {
+  var prezzo = base - (base * sconto / 100);
+  return prezzo;
+}
+EOF
+cat > "$SB4/altro.js" <<'EOF'
+var zzz = 1;  // MORTO
+EOF
+nuova_repo "$SB4"
+git -C "$SB4" add -A && git -C "$SB4" -c user.name=t -c user.email=t@t commit -qm file
+printf 'saldare il doppione di calcoloPrezzo in utils.js prima della chiusura' > "$SB4/.git/roadmap"
+OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto bash "$CM" "$SB4" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "MIGLIORIA \[morto\] utils.js" <<<"$OUT" && grep -q "roadmap: il passo cita utils.js" <<<"$OUT" \
+  && ok "roadmap: il passo cita utils.js e la caccia lo punta (non la rotazione)" || ko "rc $RC: $(tail -2 <<<"$OUT")"
+# senza roadmap (o con placeholder) la rotazione resta padrona: nessun crash
+rm -f "$SB4/.git/roadmap"
+OUT=$(MIGLIORIA_AGENT="$STUB" MIGLIORIA_CAT=morto bash "$CM" "$SB4" 2>&1); RC=$?
+[ "$RC" -eq 0 ] && ok "senza roadmap si lavora come prima (rc 0)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+rm -rf "$SB4"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

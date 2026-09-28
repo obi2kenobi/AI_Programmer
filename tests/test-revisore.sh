@@ -500,6 +500,32 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 [ "$RC" -eq 2 ] && [ ! -d "$SB/.git/revisore/rinvi" ] && ok "E-051: quarantena (infrastruttura) non incrementa nessun contatore" || ko "rc $RC o contatore creato: $(ls "$SB/.git/revisore/rinvi" 2>/dev/null)"
 
 
+# Scuola dei rigetti (2026-09-28): ogni RIGETTA lascia la riga epoch|cat|file|motivo
+# nel registro della repo — la caccia la consultera' prima di ritoccare il sito.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-scuola
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=RIGETTA bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -q "|?|utils.js|censore:" "$SB/.git/caccia-registro/rigetti" 2>/dev/null \
+  && ok "scuola: il rigetto del censere scrive la riga (file+motivo)" || ko "riga della scuola mancante: $(cat "$SB/.git/caccia-registro/rigetti" 2>/dev/null)"
+# anche il rigetto DETERMINISTICO insegna (E-050: categoria '?' perche' il titolo non ha [cat])
+SB=$(nuova_repo)
+printf 'A="x"\ngrep -q x <<<"$A"\n' > "$SB/gira.sh"
+git -C "$SB" add -A && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm gira
+git -C "$SB" checkout -q -b night/test-scuola2
+printf 'A="x"; B="y"\ngrep -q x <<<"$A" <<<"$B"\n' > "$SB/gira.sh"
+git -C "$SB" add -A && GIT_COMMITTER_DATE="$QUANDO" GIT_AUTHOR_DATE="$QUANDO" git -C "$SB" -c user.name=t -c user.email=t@t commit -qm "improve: gira"
+git -C "$SB" checkout -q main
+python3 - > "$GHSTUB_JSON" <<'PYJ'
+import json
+from datetime import datetime, timezone, timedelta
+print(json.dumps({"number": 7, "title": "caccia: miglioria al codice dall'agente notturno",
+  "headRefName": "night/test-scuola2", "isDraft": True, "state": "OPEN",
+  "createdAt": (datetime.now(timezone.utc) - timedelta(minutes=30)).isoformat()}))
+PYJ
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -q "|?|gira.sh|E-050" "$SB/.git/caccia-registro/rigetti" 2>/dev/null \
+  && ok "scuola: anche il rigetto deterministico lascia la riga" || ko "riga E-050 mancante: $(cat "$SB/.git/caccia-registro/rigetti" 2>/dev/null)"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

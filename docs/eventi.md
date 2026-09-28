@@ -44,6 +44,10 @@ col funnel: DELIBERA: contava zero da sempre). Scritto leggendo il codice reale 
 | `SENTINELLA` | `tools/suite.sh`, `night-shift/lib.sh` | `tools/cervello-impara.sh` | test-eventi, test-lib |
 | `rianima_ollama: esito` | `night-shift/lib.sh` | `night-shift/night-shift.sh`, `tools/cervello-impara.sh` | test-eventi, test-rianima-ollama |
 | `SFORO DEL BUDGET` | `night-shift/lib.sh` | `tools/cervello-impara.sh` | test-eventi, test-lib |
+| `bilancino:` | `tools/bilancino.sh`, `night-shift/night-shift.sh` | `tests/test-bilancino.sh` | test-eventi, test-bilancino |
+| `specchio:` | `tools/specchio.sh`, `night-shift/night-shift.sh` | `tests/test-specchio.sh` | test-eventi, test-specchio |
+| `scuola dei rigetti:` | `night-shift/caccia-miglioria.sh` | `tests/test-caccia-miglioria.sh` | test-eventi, test-caccia-miglioria |
+| `roadmap: il passo cita` | `night-shift/caccia-miglioria.sh` | `tests/test-caccia-miglioria.sh` | test-eventi, test-caccia-miglioria |
 
 ## Righe ⚠/⛔ del turno lette solo dal battito
 

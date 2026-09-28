@@ -34,7 +34,9 @@ OGGI="${IMPARA_DATA:-$(date +%F)}"
 # (2026-09-25, D39): la console ruota (copia e tronca): le righe di oggi di prima della rotazione stanno nel .1
 CTX=$( { [ -f "$LOG.1" ] && cat "$LOG.1"; cat "$LOG"; } 2>/dev/null | grep -a "^\[$OGGI" \
       | grep -aE "AGENTE FALLITO|wedge|rianimat|rianima_ollama: esito|MIGLIORIA|gate BOCCIA|VERIFICA ROSSA|DELIBERA|quarantena|TRASFORMATORE|registro: debito famiglie|LENTE MUTA|coda ILLEGGIBILE|⛔ MANCA|SENTINELLA|SFORO DEL BUDGET|Sonda|round di pazienza|cervello:" \
-      | tail -80 | cut -c1-150)
+      | tail -60 | cut -c1-120)
+# (2026-09-28, rianimazione): erano tail -80 / 150 caratteri — con num_ctx 4096 il
+# prompt mangiava quasi tutto il contesto e il modello partiva gia' strozzato.
 
 # la scaletta di quello che il sistema GIA' sa: non si reimpara l'alfa
 # (ottavo ventaglio, O3 R5): «E-[0-9]», non «E-0» — da E-100 in poi le voci nuove non entravano nel prompt
@@ -60,11 +62,24 @@ Rispondi SOLO con JSON su una riga:
 I link devono puntare a note esistenti in cervello/ (slug minuscoli col trattino) o essere lista vuota.
 FINE
 
-R=$(printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
-  '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
-  | curl -sf --max-time 150 "$API" --data-binary @- 2>/dev/null \
-  | jq -r '.message.content // empty' 2>/dev/null)
-[ -n "$R" ] || { echo "IMPARA: il modello non ha risposto (dichiarato, non taciuto)" >&2; exit 3; }
+# (2026-09-28, rianimazione — la diagnosi): 150s con -sf non bastavano MAI, dal
+# 27/9 in poi «il modello non ha risposto» a ogni ciclo: il turno gira, la coda di
+# Ollama mangia la finestra, e un prompt da migliaia di token sotto contesta sfora.
+# Cure: 300s di fiato (IMPARA_TIMEOUT), UN secondo colpo dopo 10s, e la CAUSA nel
+# messaggio (timeout 28 o HTTP?) — il fallimento dichiarato con la sua ragione.
+RISPOSTA=$(mktemp /tmp/impara-risp.XXXXXX)
+R=""; CURL_RC=0
+for COLPO in 1 2; do
+  printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
+    '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
+    | curl -s --max-time "${IMPARA_TIMEOUT:-300}" -o "$RISPOSTA" "$API" --data-binary @- 2>/dev/null
+  CURL_RC=$?
+  R=$(jq -r '.message.content // empty' "$RISPOSTA" 2>/dev/null)
+  [ -n "$R" ] && break
+  [ "$COLPO" -eq 2 ] || { echo "IMPARA: colpo 1 senza risposta (curl rc=$CURL_RC) — secondo colpo fra 10s" >&2; sleep 10; }
+done
+rm -f "$RISPOSTA"
+[ -n "$R" ] || { echo "IMPARA: il modello non ha risposto in due colpi da ${IMPARA_TIMEOUT:-300}s (curl rc=$CURL_RC: 28=timeout, 7=connessione rifiutata — contesa o server muto; dichiarato, non taciuto)" >&2; exit 3; }
 
 # il modello a volte incarta il JSON: si estrae dalla PRIMA { all'ultima } della riga.
 # (revisione 10 giri, 2026-09-23): era `sed 's/.*\({.*}\).*/\1/'` — il `.*` iniziale, avido,

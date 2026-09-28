@@ -1279,7 +1279,21 @@ if [ ! -f "$IMPRA_MARKER" ] && [ "$(date +%H)" -ge "${IMPARA_ORA:-22}" ] && [ -f
     printf '%s\n' "$IMP_OUT" > "$IMPRA_MARKER"
     log "impara: $(echo "$IMP_OUT" | head -1)"
   else
-    log "impara: fallito (dichiarato) — riprovo al prossimo ciclo"
+    log "impara: fallito (dichiarato) — riprova al prossimo ciclo"
+  fi
+fi
+
+# lo SPECCHIO (2026-09-28, proposta del giorno): il sistema si guarda la casa —
+# digest caricato e verde, lezione di ieri scritta, cloni che vedono i rami (E-052
+# non ricapiti), tre server vivi. Una volta al giorno, marker come impara; ogni
+# ROSSO apre una issue sull'hub, da' se stesso, idempotente per componente.
+SPECCHIO_MARKER="$WORK/.specchio-$(date +%F)"
+if [ ! -f "$SPECCHIO_MARKER" ] && [ -f "$HERE/../tools/specchio.sh" ]; then
+  if SPEC_OUT=$(bash "$HERE/../tools/specchio.sh" 2>&1); then
+    printf '%s\n' "$SPEC_OUT" > "$SPECCHIO_MARKER"
+    while IFS= read -r _sp; do log "$_sp"; done < <(grep -a '^specchio:' <<<"$SPEC_OUT")
+  else
+    log "specchio: fallito (dichiarato) — riprova al prossimo ciclo"
   fi
 fi
 
@@ -1376,6 +1390,16 @@ ASPETTA_GIORNO=""
 TOT_SKIPPED_DESIGN=0
 for ENTRY in "${REPO_LIST[@]}"; do
   shift_repo "$ENTRY" || GLOBAL_RC=1
+  # (2026-09-28, il bilancino): una riga di conto per repo a fine ciclo — letta dal log
+  # vero, upsert sul CSV di $WORK. Il fallimento si dichiara e non ferma il turno:
+  # contare la notte non e' mai piu' importante della notte.
+  if [ -f "$HERE/../tools/bilancino.sh" ]; then
+    BIL_RIGA=$(bash "$HERE/../tools/bilancino.sh" "${ENTRY%% *}" 2>&1 | tail -1)
+    case "$BIL_RIGA" in
+      bilancino:*) log "REPO ${ENTRY%% *}: $BIL_RIGA" ;;
+      *) log "REPO ${ENTRY%% *}: bilancino: riga non firmata (dichiarato): $BIL_RIGA" ;;
+    esac
+  fi
 done
 log "=== TURNO FINITO ==="
 
