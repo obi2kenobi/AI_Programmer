@@ -69,6 +69,16 @@ h2 = dash.andamento()
 assert 'bilancino non ha ancora scritto' in h2, h2
 print('ok')" && ok "dashboard: trend renderizzato e assenza dichiarata" || ko "andamento() rotta"
 
+# 6. (2026-09-29, resoconto della notte): il log vivo e' DUPLICATO (night-shift.log e
+# night-shift-console.log portano le stesse righe, 427/437 misurati) — la stessa riga da
+# due fonti conta UNA volta sola, o un rigetto diventa due.
+cp "$RADICE/log" "$RADICE/log-copia"
+BILANCINO_CSV="$RADICE/funnel.csv" BILANCINO_WORK="$RADICE/work" BILANCINO_DATA=2026-09-27 \
+  BILANCINO_LOG_EXTRA="$RADICE/log $RADICE/log-copia" bash "$BIL" alpha >/dev/null 2>&1
+grep -q '^2026-09-27,alpha,2,1,1,1,2,' "$RADICE/funnel.csv" \
+  && ok "dedup: la stessa riga da due fonti conta una volta (fuse=2, non 4)" || ko "$(grep '^2026-09-27,alpha,' "$RADICE/funnel.csv")"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
