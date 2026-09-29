@@ -183,7 +183,9 @@ TARGET="${MIGLIORIA_FILE:-}"
 # mancava: il tool c'era, la caccia non lo guardava mai. Solo file veri e non in cooldown.
 if [ -z "$TARGET" ] && [ -f "$HERE/tools/roadmap-repo.sh" ]; then
   PASSO_RM=$(bash "$HERE/tools/roadmap-repo.sh" "$DIR" get 2>/dev/null | head -1 || true)
-  case "$PASSO_RM" in ""|"("*|"(prossimo passo da impostare)") ;; *)
+  # (2026-09-29): il letterale del placeholder era morto — ombra del prefisso "(*)" (SC2222):
+  # il prefisso lo prende gia' entrambe le diciture tra parentesi
+  case "$PASSO_RM" in ""|"("*) ;; *)
     for CAND in $(printf '%s' "$PASSO_RM" | grep -oE '[A-Za-z0-9_./-]+\.(sh|py|js|gs)' || true); do
       if [ -f "$CAND" ] && git ls-files --error-unmatch "$CAND" >/dev/null 2>&1 && ! in_cooldown "$CAT" "$CAND"; then
         TARGET="$CAND"

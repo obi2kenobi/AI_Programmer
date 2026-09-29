@@ -50617,7 +50617,7 @@
       },
       "norm_label": "conto()",
       "source_file": "tools/bilancino.sh",
-      "source_location": "L35"
+      "source_location": "L38"
     },
     {
       "id": "tools_bilancino_sh__entry",
@@ -50797,7 +50797,7 @@
       },
       "norm_label": "etag()",
       "source_file": "tools/specchio.sh",
-      "source_location": "L57"
+      "source_location": "L58"
     },
     {
       "id": "tools_specchio_sh__entry",
@@ -50827,7 +50827,7 @@
       },
       "norm_label": "verdetto()",
       "source_file": "tools/specchio.sh",
-      "source_location": "L48"
+      "source_location": "L49"
     },
     {
       "id": "opencode_skills_goal_skill",
@@ -54114,7 +54114,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L188",
+      "source_location": "L190",
       "weight": 1.0
     },
     {
@@ -54126,7 +54126,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L290",
+      "source_location": "L292",
       "weight": 1.0
     },
     {
@@ -54138,7 +54138,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/caccia-miglioria.sh",
-      "source_location": "L305",
+      "source_location": "L307",
       "weight": 1.0
     },
     {
@@ -62070,7 +62070,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/specchio.sh",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -62082,7 +62082,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/specchio.sh",
-      "source_location": "L53",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -98740,7 +98740,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/bilancino.sh",
-      "source_location": "L35",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -99367,7 +99367,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/specchio.sh",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -99378,7 +99378,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/specchio.sh",
-      "source_location": "L57",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -101686,5 +101686,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "21b1ac9f63a86a527abc269050e305cb75973640"
+  "built_at_commit": "e90a7e62a662d59cd746b48bfa5be72d171adaeb"
 }

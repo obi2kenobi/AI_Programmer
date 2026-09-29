@@ -28,8 +28,11 @@ REPO="${1##*/}"
 
 # le righe del giorno per SOLO questo repo, da tutti i log (il .1: la console ruota, D39)
 LOGGI=( "$HOME/night-shift.log" "$HOME/night-shift.log.1" "$HOME/night-shift-console.log" "$HOME/night-shift-console.log.1" )
-GIORNO=$( { for f in "${LOGGI[@]}" "${BILANCINO_LOG_EXTRA:-}"; do [ -f "$f" ] && cat "$f"; done; } 2>/dev/null \
-  | grep -a "^\[$DATA" | grep -a "REPO [^ ]*/$REPO[ :]" )
+# (2026-09-29, resoconto della notte): night-shift.log e night-shift-console.log portano le
+# STESSE righe (427/427 misurati) — letti entrambi, ogni firma contava doppio (un rigetto
+# diventava due). sort -u: le righe sono firmate col secondo, identiche = lo stesso evento.
+GIORNO=$( { for f in "${LOGGI[@]}" ${BILANCINO_LOG_EXTRA:-}; do [ -f "$f" ] && cat "$f"; done; } 2>/dev/null \
+  | grep -a "^\[$DATA" | grep -a "REPO [^ ]*/${REPO}[ :]" | sort -u )
 [ -n "$GIORNO" ] || { echo "bilancino: nessuna riga di log per $REPO il $DATA — niente da contare"; exit 3; }
 
 conto() { printf '%s\n' "$GIORNO" | grep -ac "$1" || true; }
@@ -43,8 +46,8 @@ RIGETTI_DET=$(conto "rigetto deterministico")
 GPU_S=$(printf '%s\n' "$GIORNO" | grep -aoE '\([0-9]+s GPU\)' | grep -oE '[0-9]+' | awk '{s+=$1} END{print s+0}')
 # il conteggio gpu firma solo le migliorie concluse ((Ns GPU)): e' un minimo dichiarato,
 # non il costo totale della notte — il turno non firma ancora i secondi delle issue
-LEZIONI=$( { for f in "${LOGGI[@]}" "${BILANCINO_LOG_EXTRA:-}"; do [ -f "$f" ] && cat "$f"; done; } 2>/dev/null \
-  | grep -ac "^\[$DATA.*impara: lezione proposta" || true)
+LEZIONI=$( { for f in "${LOGGI[@]}" ${BILANCINO_LOG_EXTRA:-}; do [ -f "$f" ] && cat "$f"; done; } 2>/dev/null \
+  | grep -a "^\[$DATA.*impara: lezione proposta" | sort -u | grep -c . || true)
 
 # snapshot dei debiti dal censimento del repo (i vivi in coda: file del registro, non opinioni)
 DEBITI=0

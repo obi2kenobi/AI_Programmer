@@ -25,7 +25,8 @@ LABEL="${SPECCHIO_LAUNCHD_LABEL:-com.luca.morningdigest}"
 VERDI=0; GIALLI=0; ROSSI=0
 
 apri_issue() { # apri_issue <componente> <dettaglio>
-  local comp="$1" det="$2" titolo="specchio: $comp — degradato" gia
+  local comp="$1" det="$2" gia
+  local titolo="specchio: $comp — degradato"
   gia=$(gh issue list -R "$REPO_HUB" --state open --limit 200 --json title -q '.[].title' 2>/dev/null | grep -F "$titolo" || true)
   if [ -n "$gia" ]; then
     echo "specchio: issue gia' aperta per $comp — niente doppioni" >&2
