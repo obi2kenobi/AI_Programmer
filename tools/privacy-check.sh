@@ -201,25 +201,94 @@ fi
 # CF, PIVA, IBAN, nome, indirizzo, carta, email, telefono... cose che il grep
 # con lista manuale non vede. Se il server e' spento: skip dichiarato (fallback
 # alle shape + lista locale che restano attive sopra).
+# (2026-09-29, Luca: «risolvi nel miglior modo»): i FULLNAME amnistati dal
+# proprietario non contano — ~/.privacy-amnistia, un nome per riga. Amnistia
+# dichiarata, non oblio: il nome resta nel documento, il cancello lo conosce,
+# e ogni ALTRO nome o categoria sensibile resta rosso. Il mapping serve SOLO a
+# confrontare i valori: non si stampa mai un valore, si contano le entita'.
 PII_URL="${PII_URL:-http://127.0.0.1:5005}"
+AMN_TOT=0
 if curl -sf --max-time 3 "$PII_URL/health" >/dev/null 2>&1; then
+  AMN_JSON='[]'
+  if [ -s "$HOME/.privacy-amnistia" ]; then
+    AMN_JSON=$(jq -Rsc 'split("\n") | map(gsub("^\\s+|\\s+$"; "")) | map(select(length > 0))' "$HOME/.privacy-amnistia" 2>/dev/null || echo '[]')
+  fi
+  # (2026-09-29, dal banco impallato): i comandi git girano nella RADICE del repo (HERE),
+  # non nella cwd di chi chiama — invocato da fuori, il blocco leggeva il repo SBAGLIATO.
+  # (2026-09-29, Luca «risolvi nel miglior modo»): AMNISTIA DI CORPUS, dichiarata. Il corpus
+  # docs/bc e' pubblicato da settimane (decisione di dominio: censimento 203/258) e il
+  # modello NER lo ri-giudicava OGNI NOTTE, con falsi positivi su dati di schema (versioni
+  # lette come IP, codici di contabilita' come nomi): rosso permanente = rosso ignorato.
+  # Il tripwire e' per cio' che ENTRA ADESSO: solo i file STAGED passano dal modello.
   PII_FILE=""
-  for f in $(git diff --cached --name-only 2>/dev/null | head -20; git ls-files docs/bc/ 2>/dev/null | head -50); do
-    [ -f "$f" ] || continue
+  for f in $( (cd "$HERE" && git diff --cached --name-only 2>/dev/null | head -20) ); do
+    [ -f "$HERE/$f" ] || continue
     PII_RISP=$(curl -sf --max-time 15 "$PII_URL/analyze" \
       -H 'Content-Type: application/json' \
-      -d "$(jq -cn --arg t "$(head -c 8000 "$f")" '{text:$t}')" 2>/dev/null) || continue
+      -d "$(jq -cn --arg t "$(head -c 8000 "$HERE/$f")" '{text:$t, include_mapping:true}')" 2>/dev/null) || continue
     PII_N=$(printf '%s' "$PII_RISP" | jq -r '.n_entities // 0' 2>/dev/null)
     if [ "${PII_N:-0}" -gt 0 ]; then
-      # le categorie AMOUNT/DATE/URL sono dati di business, non privacy
-      PII_SENS=$(printf '%s' "$PII_RISP" | jq -r '.by_label | del(.AMOUNT, .DATE, .URL, .ORG, .BUILDINGNUM, .STREET, .CITY, .AGE, .DOCID, .ID_DOC) | [.[]] | add // 0' 2>/dev/null)
+      # (2026-09-29): IL MODELLO PROPOSTA, LA FORMA DECIDE. Il modello NER contava come
+      # PII cio' che non ne ha la forma (un decimale '.1997...' come CREDITCARDNUMBER,
+      # citta' vere come indirizzi privati — falsi rossi notturni sul corpus docs/bc).
+      # Per le categorie con una forma canonica, l'entita' conta solo se il VALORE ha
+      # quella forma: il veto e' deterministico, a valle del modello, repo-wide.
+      # FULLNAME e ADDRESS restano al giudizio del modello (nessuna forma canonica):
+      # per i FULLNAME c'e' l'amnistia del proprietario.
+      PII_ESITO=$(printf '%s' "$PII_RISP" | python3 -c '
+import json, os, re, sys
+AMN = set()
+try:
+    with open(os.path.expanduser("~/.privacy-amnistia")) as fh:
+        AMN = {l.strip() for l in fh if l.strip()}
+except OSError:
+    pass
+FORME = {
+    "IBAN": r"^[A-Z]{2}\d{2}[A-Z0-9]{11,26}$",
+    "CF": r"^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$",
+    "CREDITCARDNUMBER": r"^\d[\d ]{11,24}\d$",
+    "EMAIL": r"^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$",
+    "PIVA": r"^\d{11}$",
+    "IPADDR": r"^\d{1,3}(\.\d{1,3}){3}$",
+    "ZIPCODE": r"^\d{5}$",
+    "PHONE": r"^\+?\d[\d ./-]{7,15}\d$",
+}
+# ZIPCODE (2026-09-29): la geografia del tenant e business come CITY e STREET
+ESCL = {"AMOUNT", "DATE", "URL", "ORG", "BUILDINGNUM", "STREET", "CITY", "AGE", "DOCID", "ID_DOC", "ZIPCODE"}
+r = json.load(sys.stdin)
+conta, amn = {}, 0
+for k, v in (r.get("mapping") or {}).items():
+    lab = k.strip("[]").rsplit("_", 1)[0]   # le chiavi viaggiano in [FULLNAME_1]
+    if lab in ESCL:
+        continue
+    if lab == "FULLNAME":
+        # il veto dei codici: nel census BC i conti si chiamano UTILI-M, SALDO-M —
+        # tutto MAIUSCOLO con cifre/trattini e un codice di schema, non una persona
+        if v in AMN: amn += 1
+        elif re.match(r"^[A-Z0-9_-]{2,}$", v): continue
+        else: conta[lab] = conta.get(lab, 0) + 1
+        continue
+    forma = FORME.get(lab)
+    if forma is not None and not re.match(forma, v.strip()):
+        continue   # il modello lo dice, la forma lo smentisce: non conta, non si stampa
+    conta[lab] = conta.get(lab, 0) + 1
+# su stdout: totale, una riga etichetta:conteggio per le sensibili, e il totale amnistiaTI
+print(sum(conta.values()))
+for k in sorted(conta):
+    print(f"{k}:{conta[k]}")
+print(amn)' )
+      PII_SENS=$(printf '%s\n' "$PII_ESITO" | head -1)
+      PII_AMN=$(printf '%s\n' "$PII_ESITO" | tail -1)
+      PII_DETT=$(printf '%s\n' "$PII_ESITO" | sed '1d;$d')
+      AMN_TOT=$(( AMN_TOT + ${PII_AMN:-0} ))
       if [ "${PII_SENS:-0}" -gt 0 ]; then
-        echo "⛔ PII (rizzo-pii, modello): $f — $PII_SENS entita' sensibili:" >&2
-        printf '%s' "$PII_RISP" | jq -r '.by_label | del(.AMOUNT, .DATE, .URL, .ORG, .BUILDINGNUM, .STREET, .CITY, .AGE, .DOCID, .ID_DOC) | to_entries[] | select(.value > 0) | "  \(.key): \(.value)"' >&2
+        echo "⛔ PII (rizzo-pii, modello + forma): $f — $PII_SENS entita' sensibili:" >&2
+        printf '%s\n' "$PII_DETT" | while IFS=: read -r _lb _n; do [ -n "$_lb" ] && echo "  $_lb: $_n (i valori non si stampano)" >&2; done
         RC=1
       fi
     fi
   done
+  [ "${AMN_TOT:-0}" -gt 0 ] && echo "privacy-check: $AMN_TOT FULLNAME amnistia dal proprietario, non conta (dichiarato: ~/.privacy-amnistia)" >&2
 else
   echo "privacy-check: rizzo-pii spento su $PII_URL — skip dichiarato (il modello NER non gira)" >&2
 fi

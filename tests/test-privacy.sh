@@ -179,6 +179,75 @@ OUT=$(HOME="$SAT/casa" bash "$SAT/tools/privacy-check.sh" 2>&1); RC=$?
 [ $RC -eq 1 ] && grep -q "FORMA DI SEGRETO" <<<"$OUT" && ok "D6: nel satellite le forme di segreto si vedono ancora" || ko "D6: satellite, forma non vista: rc=$RC"
 rm -rf "$SAT"
 rm -rf "$TMP"
+# ── l'amnistia del proprietario (2026-09-29): i FULLNAME in ~/.privacy-amnistia non
+# contano; ogni altro nome resta rosso; il modello propone, la forma decide. Repo
+# propria (il $TMP condiviso e' gia' stato ripulito dai casi sopra) e server NER finto.
+RAD9=$(mktemp -d /tmp/test-privacy-amn.XXXXXX)
+mkdir -p "$RAD9/tools" "$RAD9/night-shift" "$RAD9/docs/bc" "$RAD9/home"
+cp "$HERE/tools/privacy-check.sh" "$RAD9/tools/"
+printf 'REPO-T=finto/prova\n' > "$RAD9/night-shift/repos.key"
+git -C "$RAD9" init -q && git -C "$RAD9" add tools && git -C "$RAD9" -c user.email=t@t -c user.name=t commit -qm base   # la chiave resta NON tracciata (come nel setup principale)
+echo "documento bc" > "$RAD9/docs/bc/prova.md" && git -C "$RAD9" add docs/bc
+printf 'NomeCheNonCompareMai\n' > "$RAD9/home/.privacy-nomi"   # non vuota: la regola F3 non degrada il gate
+
+NER_SERVER="$RAD9/ner.py"
+cat > "$NER_SERVER" <<'NERSRV'
+import http.server, socket, sys
+risposta = open(sys.argv[1]).read()
+class H(http.server.BaseHTTPRequestHandler):
+    def log_message(self, *a): pass
+    def _r(self, corpo=b"{}", code=200):
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(corpo)
+    def do_GET(self): self._r(b'{"ok":true}')
+    def do_POST(self):
+        self.rfile.read(int(self.headers.get("Content-Length", 0)))
+        self._r(risposta.encode())
+with socket.socket() as s:
+    s.bind(("127.0.0.1", 0)); port = s.getsockname()[1]; s.close()
+print(port, flush=True)
+http.server.HTTPServer(("127.0.0.1", port), H).serve_forever()
+NERSRV
+avvia_ner() {  # avvia_ner <risposta.json>: server finto su porta libera, PID in $NER_PID
+  NER_RSP="$RAD9/risp-$(date +%s%N).json"; printf '%s' "$1" > "$NER_RSP"
+  python3 "$NER_SERVER" "$NER_RSP" > "$RAD9/port" 2>/dev/null &
+  NER_PID=$!
+  for _ in $(seq 1 50); do [ -s "$RAD9/port" ] && break; sleep 0.1; done
+  NER_PORT=$(cat "$RAD9/port")
+}
+scatta_ner() { (cd "$RAD9" && PII_URL="http://127.0.0.1:$NER_PORT" HOME="$RAD9/home" bash tools/privacy-check.sh 2>&1); }
+
+# 6) FULLNAME non amnistiato (nome vero, non codice) → rosso, il valore mai stampato
+avvia_ner '{"n_entities":2,"by_label":{"FULLNAME":1,"DATE":1},"mapping":{"[FULLNAME_1]":"Mario Rossi","[DATE_1]":"2026"}}'
+OUT=$(scatta_ner); RC=$?
+[ "$RC" -eq 1 ] && grep -q "FULLNAME: 1" <<<"$OUT" && ! grep -q "Mario Rossi" <<<"$OUT" \
+  && ok "amnistia: nome NON in lista → rosso, il valore mai stampato" || ko "rc=$RC: $(grep -a FULLNAME <<<"$OUT")"
+
+# 7) il nome amnistiato non conta, amnistia dichiarata nel conto
+printf 'Mario Rossi\n' > "$RAD9/home/.privacy-amnistia"
+OUT=$(scatta_ner); RC=$?
+[ "$RC" -eq 0 ] && grep -q "1 FULLNAME amnistia dal proprietario" <<<"$OUT" \
+  && ok "amnistia: nome in lista → verde con dichiarazione" || ko "rc=$RC: $(tail -2 <<<"$OUT")"
+
+# 8) l'amnistia vale SOLO per i nomi in lista: un secondo nome resta rosso
+avvia_ner '{"n_entities":3,"by_label":{"FULLNAME":2,"DATE":1},"mapping":{"[FULLNAME_1]":"Mario Rossi","[FULLNAME_2]":"Terzo Nome","[DATE_1]":"2026"}}'
+OUT=$(scatta_ner); RC=$?
+[ "$RC" -eq 1 ] && grep -q "FULLNAME: 1" <<<"$OUT" \
+  && ok "amnistia: gli altri nomi restano rossi (1 su 2)" || ko "rc=$RC: $(grep -a FULLNAME <<<"$OUT")"
+
+# 9) (E-053) il modello propone, la forma decide: carta senza forma di carta e codice
+# tutto-maiuscolo NON contano; l'IBAN di forma vera SI'
+rm -f "$RAD9/home/.privacy-amnistia"
+avvia_ner '{"n_entities":3,"by_label":{"CREDITCARDNUMBER":1,"FULLNAME":1,"IBAN":1},"mapping":{"[CREDITCARDNUMBER_1]":".19976390134529146","[FULLNAME_1]":"UTILI-M","[IBAN_1]":"IT60X0542811101000000123456"}}'
+OUT=$(scatta_ner); RC=$?
+[ "$RC" -eq 1 ] && grep -q "IBAN: 1" <<<"$OUT" && ! grep -q "CREDITCARDNUMBER" <<<"$OUT" \
+  && ok "forma: la carta-finta e il codice UTILI-M non contano, l'IBAN vero si" || ko "rc=$RC: $(grep -aE 'IBAN|CARD' <<<"$OUT")"
+
+kill "$NER_PID" 2>/dev/null; wait "$NER_PID" 2>/dev/null
+rm -rf "$RAD9"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
