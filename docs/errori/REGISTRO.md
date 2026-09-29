@@ -1181,3 +1181,26 @@
 - Verifica guardia: i cloni ora vedono 111/90 rami remoti e l'audit del backlog li raggiunge.
 - Aggiramento: nessuno necessario in produzione; una bancota che clona senza i rami ripete il
   buio — il rimedio e' la riga di onboard, non un test in suite.
+
+## E-053 Il modello propone PII che non ne hanno la forma — e il corpus pubblicato si ri-giudica ogni notte
+
+- Data / sessione: 2026-09-29 (mattino, dal resoconto della notte: privacy-check rosso su docs/bc).
+- Famiglia: R5 (un guardiano che grida al ladro sui dati di schema: il rosso permanente insegna a ignorare i rossi).
+- Chi l'ha trovato: il giorno, leggendo il rosso notturno; il banco test-privacy impallato ha svelato anche il bug di cwd.
+- Sintomo: il NER (rizzo-pii, 0.3B) contava come sensibili un decimale '.19976390134529146' (CREDITCARDNUMBER),
+  la versione '1.0.0.134' (IPADDR), i codici di contabilita' 'UTILI-M'/'SALDO-M' (FULLNAME), le citta' del tenant —
+  su un corpus docs/bc pubblicato da settimane (decisione di dominio: censimento 203/258). Ogni notte rosso.
+- Causa prossima: il gate correva su TUTTO il corpus (git ls-files docs/bc | head -50) e prendeva il modello
+  alla lettera, senza forma; i comandi git del blocco giravano inoltre nella cwd del chiamante (il banco leggeva
+  il repo SBAGLIATO e impallava sul server vero).
+- Causa del ragionamento: il modello era l'ultima parola. Il canone del sistema e' il contrario: il deterministico
+  prima dell'intelligente — e il tripwire e' per cio' che entra ADESSO, non per ri-giudicare il pubblicato.
+- Perche' non ci ha fermati: il rosso sembrava prudenza, non rumore.
+- Guardia: tools/privacy-check.sh, blocco NER: (1) VETO DI FORMA — per le categorie con forma canonica (IBAN, CF,
+  carta, email, PIVA, IP, telefono) l'entita' conta solo se il valore ha quella forma; (2) VETO DEI CODICI sui
+  FULLNAME tutto-maiuscolo-con-cifre/trattini; (3) AMNISTIA DEL PROPRIETARIO (~/.privacy-amnistia, un nome per riga,
+  amnistia dichiarata non oblio: il conteggio lo dice); (4) AMNISTIA DI CORPUS: il NER giudica solo i file STAGED
+  (cio' che entra), il corpus pubblicato non si ri-giudica; (5) i comandi git nella radice del repo (HERE).
+- Verifica guardia: prova viva — staged con IBAN di forma vera e 'Mario Rossi' → rosso con etichette, valori mai
+  stampati; albero pulito → rc 0 col server vero. Banco: tests/test-privacy.sh, casi amnistia (6/7/8).
+- Aggiramento: un IBAN con forma vera che entra staged resta rosso: e' il lavoro del tripwire, non un buco.
