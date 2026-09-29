@@ -1118,7 +1118,7 @@
   passa (l'errore e' dentro la sostituzione, al runtime).
 - Causa del ragionamento: nessun gate guardava la FORMA dei costrutti aggiunti — solo righe,
   file, ASCII e sintassi. Un costrutto semanticamente rotto ma sintatticamente vivo passava tutto.
-- Perche' non ci ha fermati: il revisore rinvia al giorno senza chiudere (vedi E-051): le PR
+- Perché non ci ha fermati: il revisore rinvia al giorno senza chiudere (vedi E-051): le PR
   rotte restavano in coda e la caccia ne aggiungeva di nuove ogni notte.
 - Guardia: firme deterministiche SIA nel gate della caccia (night-shift/caccia-miglioria.sh,
   GATE_E050) SIA nelle guardie del revisore (night-shift/revisore.sh, rigetto deterministico):
@@ -1147,14 +1147,13 @@
 - Causa del ragionamento: il rinvio era pensato per «aspetta e riprova» (quarantena, budget) ma
   e' diventato anche l'esito dei rigetti deterministici (prove rosse), che ad aspettare non
   cambiano. Infrastruttura e proprieta' della PR viaggiavano sullo stesso codice d'uscita.
-- Perche' non ci ha fermati: ogni riga di log era corretta in se' («rinvia al giorno» e' il
+- Perché non ci ha fermati: ogni riga di log era corretta in se' («rinvia al giorno» e' il
   comportamento dichiarato); nessuna metrica guardava la LUNGHEZZA della coda.
-- Guardia: (1) il turno prova fino a REVISORE_PER_CICLO (3) PR per ciclo — il rinvio passa alla
-  successiva nello stesso ciclo (night-shift/night-shift.sh + lib.sh candidata_censore con
-  esclusioni); (2) i rinvii STRUTTURALI (proprieta' della PR) si contano per commit in
-  .git/revisore/rinvi/: dopo REVISORE_MAX_RINVI (3) rigetto deterministico e chiusura; quelli di
-  infrastruttura (quarantena, budget, sandbox, cervelli muti) non contano; un nuovo commit
-  azzera (chiave PR+HEAD_OID).
+- Guardia: night-shift/night-shift.sh (fino a REVISORE_PER_CICLO=3 PR per ciclo: il rinvio
+  passa alla successiva NELLO STESSO ciclo, esclusioni via lib.sh candidata_censore) e
+  night-shift/revisore.sh (i rinvii STRUTTURALI si contano per commit in .git/revisore/rinvi/:
+  dopo REVISORE_MAX_RINVI=3 rigetto deterministico e chiusura; l'infrastruttura — quarantena,
+  budget, sandbox, cervelli muti — non conta; un nuovo commit azzera, chiave PR+HEAD_OID).
 - Verifica guardia: tests/test-revisore.sh casi E-051 (tre rinvii strutturali → chiusura; nuovo
   commit → conteggio da zero; quarantena giovane non conta).
 - Aggiramento: pushare commit nuovi azzera il conteggio — e va bene cosi': chi corregge la PR
@@ -1174,7 +1173,7 @@
   fetch one-shot `git fetch origin <ramo>` scrive FETCH_HEAD, non refs/remotes/origin/<ramo>.
 - Causa del ragionamento: il clone shallow e' stato scelto per velocita' d'onboarding senza
   verificare CHE COSA il resto del sistema si aspettava di trovare nel clone.
-- Perche' non ci ha fermati: nessun test provava la visibilita' dei rami PR nei cloni di
+- Perché non ci ha fermati: nessun test provava la visibilita' dei rami PR nei cloni di
   produzione (le bancote di test clonano a mano, con tutti i rami).
 - Guardia: `--no-single-branch` nel clone di tools/onboard-repo.sh (PR #131, 2026-09-28); i due
   cloni esistenti corretti a mano con `git remote set-branches origin '*'`.
@@ -1195,7 +1194,7 @@
   il repo SBAGLIATO e impallava sul server vero).
 - Causa del ragionamento: il modello era l'ultima parola. Il canone del sistema e' il contrario: il deterministico
   prima dell'intelligente — e il tripwire e' per cio' che entra ADESSO, non per ri-giudicare il pubblicato.
-- Perche' non ci ha fermati: il rosso sembrava prudenza, non rumore.
+- Perché non ci ha fermati: il rosso sembrava prudenza, non rumore.
 - Guardia: tools/privacy-check.sh, blocco NER: (1) VETO DI FORMA — per le categorie con forma canonica (IBAN, CF,
   carta, email, PIVA, IP, telefono) l'entita' conta solo se il valore ha quella forma; (2) VETO DEI CODICI sui
   FULLNAME tutto-maiuscolo-con-cifre/trattini; (3) AMNISTIA DEL PROPRIETARIO (~/.privacy-amnistia, un nome per riga,
