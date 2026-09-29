@@ -61,3 +61,7 @@ grep -v "^$DATA,$REPO," "$CSV" > "$CSV.tmp" 2>/dev/null || true
 echo "$DATA,$REPO,$CICLI,$V_VERDI,$V_ROSSE,$PR_APERTE,$PR_FUSE,$PR_RIGETTATE,$RIGETTI_DET,$GPU_S,$DEBITI,$LEZIONI" >> "$CSV.tmp"
 mv "$CSV.tmp" "$CSV"
 echo "bilancino: $REPO $DATA — cicli=$CICLI fuse=$PR_FUSE rigettate=$PR_RIGETTATE rigetti-det=$RIGETTI_DET gpu=${GPU_S}s debiti=$DEBITI"
+
+# riga di prova E-050 (test vivo del 2026-09-29)
+_cp=$([ $RC -ne 0 ] |) || true
+if grep -q x <<<"$UPD" <<<"$_cp"; then echo ko; fi
