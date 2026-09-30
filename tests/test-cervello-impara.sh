@@ -12,6 +12,7 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 TMP=$(mktemp -d /tmp/test-impara.XXXXXX)
+export HOME="$TMP"   # (2026-09-30): la coda cervello-da-approvare vive sotto $HOME, il banco la isola
 trap 'rm -rf "$TMP"; [ -n "${MOCKPID:-}" ] && kill "$MOCKPID" 2>/dev/null' EXIT
 
 # fixture: un cervello in miniatura + un log di ieri con eventi notevoli
@@ -46,7 +47,9 @@ printf '%s\n%s\n' \
 avvia "$TMP/risp1.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
-NOTA=$(ls "$TMP/repo/cervello/"lezione-*.md 2>/dev/null | head -1)
+# (2026-09-30): la proposta vive in $HOME/night-shift-work/cervello-da-approvare/
+# (fuori dai repo: il git clean della caccia spazzava le note in cervello/)
+NOTA=$(ls "$TMP/night-shift-work/cervello-da-approvare/"lezione-*.md 2>/dev/null | head -1)
 if [ $RC -eq 0 ] && [ -n "$NOTA" ] \
    && grep -q "stato: da approvare" "$NOTA" \
    && grep -q "concetto-teatro" "$NOTA" \
@@ -63,7 +66,7 @@ printf '%s\n' "$(risposta '{"niente":true,"perche":"giornata piatta, solo contes
 avvia "$TMP/risp2.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
-N_LEZIONI=$(ls "$TMP/repo/cervello/"lezione-*.md 2>/dev/null | wc -l | tr -d ' ')
+N_LEZIONI=$(ls "$TMP/night-shift-work/cervello-da-approvare/"lezione-*.md 2>/dev/null | wc -l | tr -d ' ')
 if [ $RC -eq 0 ] && [ "$N_LEZIONI" = "1" ] && grep -q "onesto niente" <<<"$OUT"; then
   ok "onesto niente → nessuna nuova nota, dichiarato"
 else
@@ -78,7 +81,7 @@ printf '%s\n%s\n' \
 avvia "$TMP/risp3.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
-N_LEZIONI=$(ls "$TMP/repo/cervello/"lezione-*.md 2>/dev/null | wc -l | tr -d ' ')
+N_LEZIONI=$(ls "$TMP/night-shift-work/cervello-da-approvare/"lezione-*.md 2>/dev/null | wc -l | tr -d ' ')
 if [ $RC -eq 0 ] && [ "$N_LEZIONI" = "1" ] && grep -q "gia' presente" <<<"$OUT"; then
   ok "stessa lezione riproposta → nessun doppione, dichiarato"
 else
@@ -94,8 +97,8 @@ printf '%s\n' "$(risposta 'Ecco: {"titolo":"Default con le graffe","problema":"v
 avvia "$TMP/risp4.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
-[ $RC -eq 0 ] && ls "$TMP/repo/cervello/"lezione-default-con-le-graffe*.md >/dev/null 2>&1 \
-  && ok "lezione con \${VAR:-x} dentro → estratta intera, nota creata" || ko "lezione con graffe persa: rc=$RC out=[$OUT]"
+[ $RC -eq 0 ] && ls "$TMP/night-shift-work/cervello-da-approvare/"lezione-default-con-le-graffe*.md >/dev/null 2>&1 \
+  && ok "lezione con \${VAR:-x} dentro → estratta intera, nota creata (in coda di approvazione)" || ko "lezione con graffe persa: rc=$RC out=[$OUT]"
 
 
 # ── 5. (2026-09-25, settimo ventaglio, V4 R5): lo slug si faceva con `tr`, che sul GNU lavora in byte: «Perché è così»
@@ -106,8 +109,8 @@ printf '%s\n' "$(risposta '{"titolo":"Perché È così: la città","problema":"x
 avvia "$TMP/risp5.txt"
 OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
 kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
-[ $RC -eq 0 ] && [ -f "$TMP/repo/cervello/lezione-perche-e-cosi-la-citta.md" ] \
-  && ok "V4 R5: titolo accentato → slug «perche-e-cosi-la-citta»" || ko "V4 R5: slug: $(ls "$TMP/repo/cervello/" | grep perch | head -1)"
+[ $RC -eq 0 ] && [ -f "$TMP/night-shift-work/cervello-da-approvare/lezione-perche-e-cosi-la-citta.md" ] \
+  && ok "V4 R5: titolo accentato → slug «perche-e-cosi-la-citta»" || ko "V4 R5: slug: $(ls "$TMP/night-shift-work/cervello-da-approvare/" 2>/dev/null | grep perch | head -1)"
 
 # (2026-09-25, ottavo ventaglio, O3 R5): le lezioni gia' note si prendevano con `grep "^## E-0"` — da E-100 in poi nessuna
 # voce nuova del REGISTRO sarebbe entrata nel prompt (oggi siamo a E-049). Il numero della voce non ha un tetto.

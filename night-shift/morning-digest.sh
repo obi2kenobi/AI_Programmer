@@ -1,7 +1,13 @@
 #!/bin/bash
-# morning-digest.sh — il gate arriva nella mailbox, non nel filesystem (giro 3/10).
-# Luca non deve ANDARE a leggere ~/morning-gate-report.md: il sistema viene da lui.
-# Destinatario: ScriptProperty DIGEST_EMAIL (vuoto = no-op educato, come il digest notturno).
+# morning-digest.sh — la mattina nella mailbox, con i numeri VERI (v3, 2026-09-30).
+#
+# v1-2 trascinavano fossili: il report del gate in pensione da 31+ giorni, il
+# gate-summary di REPO-A/REPO-B (sistema pilota morto il 21/8) e i contatori
+# cumulativi del SAL («196 cicli / 156 PR» — di SEMPRE, non di stanotte).
+# La verita' del mattino ora e' IL BILANCINO (tools/bilancino.sh): una riga per
+# repo per notte, letta dal log dal vivo, col delta dei debiti sulla notte prima.
+# Restano del SAL solo le decisioni ASPETTA IL GIORNO: quelle contano ancora.
+# Destinatario: repos.key DIGEST_EMAIL (vuoto = no-op educato, come il digest notturno).
 set -euo pipefail
 
 # il destinatario vive in night-shift/repos.key (locale, gitignored): DIGEST_EMAIL=...
@@ -15,59 +21,49 @@ if [ -z "$DEST" ]; then
   exit 0
 fi
 
-# (dominio, decisione di Luca 2026-09-23: digest autonomo): il gate e' in
-# pensione dal 29/8 (il censore notturno ne ha preso il posto) e il digest non
-# dipende piu' dal suo report. Se c'e', entra come allegato; la mattina vera
-# sono le lezioni da approvare, gli sospesi e il resoconto della notte.
-REPORT="$HOME/morning-gate-report.md"
-CORPO_GATE=""
-# eta_giorni <file>: giorni interi dall'ultima modifica (python3: stat -f/-c si scrivono solo in lib.sh)
-eta_giorni() { python3 -c 'import os,sys,time; print(int((time.time()-os.path.getmtime(sys.argv[1]))//86400))' "$1" 2>/dev/null || echo 0; }
-# (2026-09-25, settimo ventaglio, V3 R1): il gate e' in pensione e il suo ultimo report resta sul disco per sempre: la
-# mail del 26/9 usciva con l'oggetto del report del 28/8. Regola (D29, 2026-09-25): si allega, e da' l'oggetto,
-# solo se ha meno di 24 ore; altrimenti una riga lo dice.
-REPORT_FRESCO=0
-if [ -f "$REPORT" ]; then
-  if [ "$(eta_giorni "$REPORT")" -lt 1 ]; then
-    REPORT_FRESCO=1
-    CORPO_GATE="$(cat "$REPORT")
+# (dominio, decisione di Luca 2026-09-23: digest autonomo) — v3 (2026-09-30): il gate
+# e' in pensione dal 29/8 e il suo report e' un fossile: non si allega e non si cita
+# piu'. I numeri della notte vengono dal bilancino.
+WORK="${MORNING_WORK:-$HOME/night-shift-work}"
+FUNNEL="${MORNING_FUNNEL:-$WORK/funnel.csv}"
+IERI=$(date -v-1d +%F 2>/dev/null || date -d yesterday +%F 2>/dev/null || echo "")
+SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
----"
-  else
-    CORPO_GATE="(report del morning-gate di $(eta_giorni "$REPORT") giorni fa: non allegato — il gate e' in pensione)
-
----"
-  fi
+# LA NOTTE: le righe di IERI dal bilancino, col delta debiti sulla notte precedente
+CORPO_NOTTE=""
+TOT_CICLI=0; TOT_FUSE=0; TOT_RIGETTATE=0; TOT_GPU=0
+if [ -n "$IERI" ] && [ -f "$FUNNEL" ]; then
+  while IFS=, read -r data repo cicli vv vr ap fu rg rd gpu deb lez; do
+    [ "$data" = "$IERI" ] || continue
+    case "$repo" in ""|data) continue ;; esac
+    DELTA=""
+    PREV_DEB=$(awk -F, -v r="$repo" -v d="$IERI" '$2==r && $1!="" && $1<d {print $11}' "$FUNNEL" 2>/dev/null | tail -1)
+    if [ -n "$PREV_DEB" ] && [ "$PREV_DEB" != "$deb" ]; then
+      DELTA=" · debiti ${PREV_DEB}→$deb"
+    fi
+    CORPO_NOTTE="$CORPO_NOTTE
+- $repo: ${cicli} cicli · PR: ${ap} aperte, ${fu} fuse, ${rg} rigettate · ${gpu}s GPU · ${lez} lezioni$DELTA"
+    TOT_CICLI=$(( TOT_CICLI + cicli )); TOT_FUSE=$(( TOT_FUSE + fu ))
+    TOT_RIGETTATE=$(( TOT_RIGETTATE + rg )); TOT_GPU=$(( TOT_GPU + gpu ))
+  done < "$FUNNEL"
+fi
+if [ -n "$CORPO_NOTTE" ]; then
+  SUBJ="Mattina $IERI — cicli $TOT_CICLI · fuse $TOT_FUSE · rigettate $TOT_RIGETTATE · ${TOT_GPU}s GPU"
+  BODY="LA NOTTE (dal bilancino, letta dal log vero)$CORPO_NOTTE"
+else
+  BODY="LA NOTTE: nessuna riga di ieri ($IERI) nel bilancino — il turno e' girato? (la risposta e' nel log)"
 fi
 
-# subject: la riga del totale dal report
-# (2026-09-24, Q2 R3): senza il report (il gate e' in pensione) grep esce 2, e sotto set -e + pipefail il
-# digest moriva qui, rc 2, senza una riga — il contrario di quanto dice il commento sopra
-SUBJ=""
-[ "$REPORT_FRESCO" -eq 1 ] && SUBJ=$( { grep "Totale:" "$REPORT" 2>/dev/null || true; } | head -1 | sed 's/[*\`]//g' | head -c 120)
-[ -z "$SUBJ" ] && SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
-
-# corpo: il report + il summary numerico
-# (revisione 10 giri, 2026-09-23): il riepilogo del gate entrava DUE volte; «PR» contava le
-# intestazioni dei turni che contengono «PR bozza» (non le PR: si sommano i numeri); «ASPETTA»
-# contava ogni riga con due spazi dal primo marcatore alla FINE del file (il log dei turni
-# dopo compreso: si contano le sole voci sotto ciascun marcatore, fino al turno successivo);
-# e la memoria si svuotava QUI, prima dell'invio — ora solo a invio riuscito, in fondo.
+# il SAL del turno: resta SOLO l'elenco delle decisioni pendenti (i contatori
+# cumulativi «196 cicli / 156 PR» erano di sempre, non di stanotte: quella
+# verita' ora vive nel bilancino, sopra)
 SAL_TURNI="$(cd "$(dirname "$0")" && pwd)/.sal-turni.md"
-BODY="${CORPO_GATE}$(bash "$(dirname "$0")/gate-summary.sh" 0 2>/dev/null || echo '(summary non disponibile)')
-$([ -f "$SAL_TURNI" ] && {
-  # (revisione 10 giri): `grep -c … || echo 0` stampava «0» due volte a conteggio zero
-  # (2026-09-24, quinto ventaglio, R4 R4): cicli e fix si contavano nelle code di log che ogni turno accoda,
-  # finestre sovrapposte (un ciclo corto contato due volte, uno lungo zero). Un'intestazione = un ciclo; i fix
-  # sono il numero dell'intestazione (le intestazioni di prima non lo portano: contano 0, e lo si sa).
-  CICLI=$(grep -c '^### .*turno automatico' "$SAL_TURNI" 2>/dev/null || true); CICLI=${CICLI:-0}
-  PR=$(grep -oE '[0-9]+ PR bozza' "$SAL_TURNI" 2>/dev/null | awk '{s+=$1} END{print s+0}')
-  FIX=$(grep '^### .*turno automatico' "$SAL_TURNI" 2>/dev/null | grep -oE '[0-9]+ auto-fix' | awk '{s+=$1} END{print s+0}')
-  echo "**Cicli notturni**: $CICLI / **PR**: $PR / **Fix**: $FIX"
+if [ -f "$SAL_TURNI" ]; then
   ASPETTA=$(awk '/ASPETTA IL GIORNO/{dentro=1; next} /^### /{dentro=0} dentro && /^  [^ ]/{n++} END{print n+0}' "$SAL_TURNI" 2>/dev/null); ASPETTA=${ASPETTA:-0}
-  [ "$ASPETTA" -gt 0 ] && echo "**ASPETTA IL GIORNO**: $ASPETTA decisioni pendenti"
-  true
-} || echo "(nessuna memoria del turno)")"
+  if [ "$ASPETTA" -gt 0 ]; then
+    BODY="$(printf '%s\n\n---\n**ASPETTA IL GIORNO**: %s decisioni pendenti del turno' "$BODY" "$ASPETTA")"
+  fi
+fi
 
 # il secondo cervello: gli sospesi compilati dal turno alla prima domanda del giorno
 # ($WORK/.cervello-<data> — deterministico, scritto da night-shift.sh). C'e' quando
