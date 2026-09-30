@@ -1,14 +1,32 @@
-# 2026-09-30 — punto della situazione su Registrazione_Fatture_Acquisto e Magazzino_Treviso
-**Autore**: sessione Claude Code (claude/charming-bohr-lceeat), su richiesta di Luca
+# 2026-09-30 — punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)
+**Autore**: sessione Claude Code (claude/charming-bohr-lceeat), con Luca
 
 ## Cosa ho usato
-`tools/debiti-riapertura.sh` (hub), `add_repo` + clone shallow dei due repo, lettura di PROJECT.md, SAL.md, DEBITI.md, docs/campo, issue e PR via MCP GitHub. Nessuna modifica ai due repo. Non ho usato il grafo: graphify è ASSENTE (navigazione a grep, dichiarato dall'hook).
+Apertura: `tools/debiti-riapertura.sh` (hub), `add_repo` e clone dei due repo, lettura di PROJECT.md, SAL, DEBITI,
+docs/campo, issue e PR. Poi, su Registrazione_Fatture_Acquisto: skill `gas-sviluppo` (caricata dopo il promemoria
+dell'hook), tre sonde di sola lettura sull'EDIL (S1 esistente, S2 e S3 scritte da me, lanciate da Luca), `test_fase2`
+con sabotaggi e il gate `.night-verify` riga per riga, il passo 1a (`ControlloEdil.gs`) e il README §42.10-§42.11.
+PR di Registrazione: #234, #235, #236 (mergiate), #238 (aperta); sulla #237, di un'altra sessione, ho solo unito
+`main` per risolvere il conflitto. Non ho usato il grafo (graphify assente, navigazione a grep).
 
 ## Cosa ho improvvisato
-Magazzino_Treviso non ha `tools/debiti-riapertura.sh`: il conteggio dei debiti (468 righe, circa 310 non marcate chiuse) l'ho fatto a grep, quindi è una stima. Le sezioni di PROJECT.md dei due repo sono state lette solo in parte (Registrazione) o per niente (Magazzino); i report dal campo di Magazzino dopo il 24/9 non sono stati letti.
+Il metodo non dice come trattare una risposta dell'ufficio che arriva dentro la PR di un'altra sessione: l'ho
+trovata solo quando Luca mi ha dato il link (non era su `main` né su nessun ramo che avessi scaricato).
+Le sonde per l'EDIL le ho progettate copiando la forma di quelle della BIOC (§40.1), non da una ricetta scritta.
 
 ## Cosa ha retto / ostacolato
-Ha retto: la riapertura per debiti ha dato subito l'elenco di R1, R2 e D1. Ha ostacolato: il limite di 2 operazioni git concorrenti del proxy ha imposto i clone in serie.
+Ha retto: sonde di sola lettura prima delle regole. S2 ha mostrato che l'ordine diviso è la forma normale
+dell'EDIL, S3 ha risposto a «come abbassa l'importo» (sconto di riga, non costo). Il banco con i sabotaggi ha
+dichiarato otto cascate vecchie sui casi nuovi invece di lasciarle cadere in silenzio.
+Ostacolato: il **mio errore**: ho posto a Luca una domanda di dominio («cosa fare se il totale differisce?») prima
+di aver misurato; Luca mi ha corretto («indaghiamo con sonde, come per la BIOC»). Inoltre più sessioni aggiungono
+sezioni in coda allo stesso README: #236, #237 e #238 si sono contese la fine del file (conflitto sulla #237,
+testo finito nella sezione sbagliata).
 
 ## Proposta al canone
-Portare `debiti-riapertura.sh` anche nei repo gemelli (oggi il settimo patto non è eseguibile lì).
+1. Le domande di dominio si fanno DOPO la sonda e portano i numeri misurati (la regola «le domande prima del
+   codice» non deve diventare «le domande prima della misura»).
+2. Un README a sezioni numerate scritto da più sessioni: chi aggiunge inserisce prima dell'ultima intestazione o
+   in una sezione propria, mai in fondo al file, perché due PR che appendono si bloccano a vicenda.
+3. Portare `debiti-riapertura.sh` anche nei repo gemelli (oggi il settimo patto lì non è eseguibile; il conteggio
+   dei debiti di Magazzino_Treviso è stato fatto a grep, quindi è una stima).
