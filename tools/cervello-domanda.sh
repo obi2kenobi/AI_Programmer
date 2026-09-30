@@ -36,11 +36,15 @@ if [ "$1" = "in-sospeso" ]; then
   echo
   echo "## lezioni da approvare (proposte dal turno, /learn)"
   LEZ=0
-  for f in "$CERVELLO"/lezione-*.md; do
+  # (2026-09-30): le proposte di /learn vivono in $WORK/cervello-da-approvare (fuori
+  # dai repo: il git clean della caccia spazzava le note non committate in cervello/)
+  APPROVA_DIR="$HOME/night-shift-work/cervello-da-approvare"
+  for f in "$APPROVA_DIR"/lezione-*.md "$CERVELLO"/lezione-*.md; do
     [ -f "$f" ] || continue
     grep -q "stato: da approvare" "$f" || continue
     LEZ=$((LEZ+1))
-    echo "  - $(sed -n '4s/^titolo: //p' "$f") — $(basename "$f" .md)"
+    T=$(sed -n 's/^titolo: //p' "$f" | head -1)
+    echo "  - ${T:-?} — $(basename "$f" .md)"
   done
   [ "$LEZ" -eq 0 ] && echo "  (nessuna in attesa)"
   echo

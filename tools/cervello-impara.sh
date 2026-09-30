@@ -103,8 +103,16 @@ t = unicodedata.normalize("NFKD", sys.argv[1]).encode("ascii", "ignore").decode(
 print(re.sub(r"[^a-z0-9]+", "-", t).strip("-")[:40].strip("-"))' "$TITOLO")
 
 # una lezione al giorno e niente doppioni di slug
-NOTA="$CERVELLO/lezione-$SLUG.md"
+# (2026-09-30, dalla mail del mattino che diceva «nessuna lezione»): la nota scritta
+# in cervello/ NON COMMITTATA veniva spazzata dal git clean della caccia (stesso
+# meccanismo del FIX 3 perso). Ora la proposta vive in $WORK/cervello-da-approvare/
+# (fuori dai repo, come i marker): la mattina la approva e la committa CHI legge.
+APPROVA="${IMPARA_APPROVA:-$(dirname "$CERVELLO")}"   # default: accanto al cervello, nel WORK
+APPROVA_DIR="$HOME/night-shift-work/cervello-da-approvare"
+mkdir -p "$APPROVA_DIR"
+NOTA="$APPROVA_DIR/lezione-$SLUG.md"
 [ -f "$NOTA" ] && { echo "IMPARA: lezione '$SLUG' gia' presente — niente doppioni" ; exit 0; }
+[ -f "$CERVELLO/lezione-$SLUG.md" ] && { echo "IMPARA: lezione '$SLUG' gia' approvata nel cervello — niente doppioni"; exit 0; }
 
 # i link proposti devono puntare a note vere: si filtrano, i rotti si dichiarano
 LINKI=""
@@ -114,13 +122,22 @@ while IFS= read -r lk; do
   if [ -f "$CERVELLO/$lk.md" ]; then LINKI="$LINKI [[$lk]]"; else ROTTI="$ROTTI $lk"; fi
 done < <(jq -r '.link[]?' <<<"$R" 2>/dev/null)
 
-BODY="stato: da approvare (il mattino decide)
+BODY="---
+tipo: lezione
+titolo: $TITOLO
+stato: da approvare (il mattino decide)
 estratta da: $LOG, giornata $OGGI
+---
 
 **Problema.** $PROBLEMA
 
 **Soluzione.** $SOLUZIONE
 
-**Quando usarla.** $QUANDO$LINKI"
-printf '%s\n' "$BODY" | bash "$HERE/tools/cervello-annota.sh" "lezione-$SLUG" lezione "$TITOLO" \
-  && echo "IMPARA: lezione proposta → cervello/lezione-$SLUG.md (da approvare al mattino)${ROTTI:+ — link scartati (non esistono):$ROTTI}"
+**Quando usarla.** $QUANDO$LINKI
+
+Il gesto per approvare: mv in cervello/ + indice (chi approva, sa fare)."
+# scritta DIRETTA (niente annota: l'indice del cervello si tocca solo all'approvazione,
+# e una modifica non committata li' finirebbe spazzata come la nota)
+printf '%s\n' "$BODY" > "$NOTA"
+chmod 600 "$NOTA" 2>/dev/null || true
+echo "IMPARA: lezione proposta → $NOTA (da approvare al mattino: fuori dai repo, la scopa non la tocca)${ROTTI:+ — link scartati (non esistono):$ROTTI}"
