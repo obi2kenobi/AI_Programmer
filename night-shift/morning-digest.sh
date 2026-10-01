@@ -118,7 +118,7 @@ DEST_ESC=$(escape_as "$DEST")
 
 osascript -e "
 tell application \"Mail\"
-  set newMsg to make new outgoing message with properties {subject:\"[Gate] $SUBJ_ESC\", content:\"$BODY_ESC\", visible:false}
+  set newMsg to make new outgoing message with properties {subject:\"$SUBJ_ESC\", content:\"$BODY_ESC\", visible:false}
   tell newMsg
     make new to recipient at end of to recipients with properties {address:\"$DEST_ESC\"}
   end tell
@@ -127,7 +127,7 @@ end tell" 2>/dev/null && INVIATO="Digest inviato a $DEST" || {
   # fallback: mail CLI. (2026-09-25, ottavo ventaglio, O5 R2): il suo rc 0 vuol dire «accettato nella coda LOCALE», non
   # «arrivato» — sul Mac senza relay il messaggio resta li'. Si dice cosi', la memoria del turno non si svuota, e lo
   # stderr di mail va nel log invece che nel vuoto. Il ripiego resta (D37, 2026-09-25).
-  echo "$BODY" | mail -s "[Gate] $SUBJ" "$DEST" 2>>"$HOME/morning-digest.log" \
+  echo "$BODY" | mail -s "$SUBJ" "$DEST" 2>>"$HOME/morning-digest.log" \
     && { INVIATO="Digest messo nella coda locale di mail(1) per $DEST — consegna NON verificata (Mail non e' partito); la memoria del turno resta"; SOLO_CODA=1; } \
     || INVIATO=""
 }
