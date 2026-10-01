@@ -616,13 +616,13 @@ review del giorno." 2>>"$ERR_NOTTE" \
         log "REPO $REPO: rilievo ciclo-vivo gia' aperto — niente duplicati, aspetta il giorno"
         AL_M=$(allarme_rosso_nuovo "$REPO" "[ciclo-vivo]" "$(grep -E '^FIND' <<<"$CICLO_OUT" || true)") && [ -n "$AL_M" ] && log "REPO $REPO: $AL_M"   # (D44)
       else
-        echo "$CICLO_OUT" > /tmp/night-ciclo-$$.md
-        if gh issue create -R "$REPO" -t "$CICLO_TITOLO" -F /tmp/night-ciclo-$$.md >/dev/null 2>&1; then
+        echo "$CICLO_OUT" > ${TMPDIR:-/tmp}/night-ciclo-$$.md
+        if gh issue create -R "$REPO" -t "$CICLO_TITOLO" -F ${TMPDIR:-/tmp}/night-ciclo-$$.md >/dev/null 2>&1; then
           log "REPO $REPO: aperta issue '$CICLO_TITOLO' — il giorno dispone"
         else
           log "⚠ REPO $REPO: creazione issue ciclo-vivo fallita — rilievo nel log"
         fi
-        rm -f /tmp/night-ciclo-$$.md
+        rm -f ${TMPDIR:-/tmp}/night-ciclo-$$.md
       fi
     else
       if [ "${NV_ROSSI:-0}" -gt 0 ]; then
@@ -1384,6 +1384,22 @@ if [ "$SCOPA_OK" -eq 1 ]; then
       && log "pulizia: ramo notte stante '$B' cancellato (PR fusa/chiusa, o nessuna PR da oltre 24h)"
   done
 fi
+# (2026-10-01, giro 3 dei miglioramenti): la scopa REMOTA lasciava indietro i rami LOCALI
+# del clone — misurati 128 rami in un giorno di turno (night/auto-*, caccia, cure): il
+# giorno dopo diventavano rumore da pulire a mano. Ora il turno sparecchia anche casa sua:
+# i rami locali GIA' FUSI in origin/main si tolgono (mai main, mai il ramo su cui si sta
+# lavorando); le caccia RIFIUTATE da oltre 48h pure (il loro contenuto e' stato respinto).
+RAMI_LOCALI_PRIMA=$(git -C "$HERE" branch --format='%(refname:short)' | grep -c . || true)
+for B in $(git -C "$HERE" branch --format='%(refname:short)' | grep -vE '^(main|master)$'); do
+  CORRENTE=$(git -C "$HERE" branch --show-current)
+  [ "$B" = "$CORRENTE" ] && continue
+  if git -C "$HERE" merge-base --is-ancestor "$B" origin/main 2>/dev/null; then
+    git -C "$HERE" branch -D "$B" >/dev/null 2>&1
+  fi
+done
+RAMI_LOCALI_DOPO=$(git -C "$HERE" branch --format='%(refname:short)' | grep -c . || true)
+[ "$RAMI_LOCALI_PRIMA" -gt "$RAMI_LOCALI_DOPO" ] \
+  && log "pulizia locale: $(( RAMI_LOCALI_PRIMA - RAMI_LOCALI_DOPO )) rami gia' fusi tolti dal clone ($RAMI_LOCALI_DOPO restanti)"
 GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_PROPOSTE=0
