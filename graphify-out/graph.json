@@ -4640,7 +4640,7 @@
       },
       "norm_label": "commenta_una_volta()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L863"
+      "source_location": "L871"
     },
     {
       "id": "night_shift_lib_forme_prima_del_push",
@@ -4685,7 +4685,7 @@
       },
       "norm_label": "lock_turno_orfano()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L840"
+      "source_location": "L848"
     },
     {
       "id": "night_shift_lib_pr_chiusa_ferma",
@@ -4715,7 +4715,7 @@
       },
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L819"
+      "source_location": "L827"
     },
     {
       "id": "night_shift_lib_riga_verifica_vuota",
@@ -20263,7 +20263,7 @@
       },
       "norm_label": "cancello_design()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L879"
+      "source_location": "L887"
     },
     {
       "id": "night_shift_lib_candidata_censore",
@@ -20308,7 +20308,7 @@
       },
       "norm_label": "comandi_da_incollare()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L813"
+      "source_location": "L821"
     },
     {
       "id": "night_shift_lib_commit_altrui",
@@ -20368,7 +20368,7 @@
       },
       "norm_label": "eta_secondi()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L852"
+      "source_location": "L860"
     },
     {
       "id": "night_shift_lib_gate_banchi",
@@ -31918,6 +31918,18 @@
       "norm_label": "e-053 il modello propone pii che non ne hanno la forma \u2014 e il corpus pubblicato si ri-giudica ogni notte",
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L1184"
+    },
+    {
+      "id": "docs_errori_registro_e_054_il_rianimamento_che_resuscita_un_servizio_che_muore_sulla_porta_occupata",
+      "label": "E-054 Il rianimamento che resuscita un servizio che muore sulla porta occupata",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-054 il rianimamento che resuscita un servizio che muore sulla porta occupata",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1207"
     },
     {
       "id": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
@@ -50572,6 +50584,78 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_campo_2026_09_30_punto_magazzino",
+      "label": "2026-09-30-punto-magazzino.md",
+      "_origin": "ast",
+      "community": 782,
+      "community_name": "2026-09-30 \u2014 punto-magazzino",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-30-punto-magazzino.md",
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_magazzino_2026_09_30_punto_magazzino",
+      "label": "2026-09-30 \u2014 punto-magazzino",
+      "_origin": "ast",
+      "community": 782,
+      "community_name": "2026-09-30 \u2014 punto-magazzino",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-30 \u2014 punto-magazzino",
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_magazzino_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 782,
+      "community_name": "2026-09-30 \u2014 punto-magazzino",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_magazzino_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 782,
+      "community_name": "2026-09-30 \u2014 punto-magazzino",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_magazzino_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 782,
+      "community_name": "2026-09-30 \u2014 punto-magazzino",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_magazzino_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 782,
+      "community_name": "2026-09-30 \u2014 punto-magazzino",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L13"
+    },
+    {
       "id": "tools_bilancino",
       "label": "bilancino.sh",
       "_origin": "ast",
@@ -50810,6 +50894,294 @@
       "norm_label": "verdetto()",
       "source_file": "tools/specchio.sh",
       "source_location": "L49"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_situazione_due_repo",
+      "label": "2026-09-30-punto-situazione-due-repo.md",
+      "_origin": "ast",
+      "community": 786,
+      "community_name": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-30-punto-situazione-due-repo.md",
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_situazione_due_repo_2026_09_30_punto_sui_due_repo_gemelli_poi_edil_in_sd_sonde_e_passo_1a",
+      "label": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "_origin": "ast",
+      "community": 786,
+      "community_name": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-30 \u2014 punto sui due repo gemelli, poi edil in sd (sonde e passo 1a)",
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_situazione_due_repo_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 786,
+      "community_name": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L17"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_situazione_due_repo_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 786,
+      "community_name": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_situazione_due_repo_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 786,
+      "community_name": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_09_30_punto_situazione_due_repo_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 786,
+      "community_name": "2026-09-30 \u2014 punto sui due repo gemelli, poi EDIL in SD (sonde e passo 1a)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_adozione_cloud",
+      "label": "2026-09-30-riordino-legno-adozione-cloud.md",
+      "_origin": "ast",
+      "community": 787,
+      "community_name": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_2026_09_30_riordino_legno_adozione_cloud",
+      "label": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "_origin": "ast",
+      "community": 787,
+      "community_name": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 787,
+      "community_name": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 787,
+      "community_name": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 787,
+      "community_name": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 787,
+      "community_name": "2026-09-30 \u2014 riordino-legno-adozione-cloud",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile",
+      "label": "2026-09-30-riordino-legno-non-raggiungibile.md",
+      "_origin": "ast",
+      "community": 788,
+      "community_name": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_2026_09_30_riordino_legno_non_raggiungibile",
+      "label": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "_origin": "ast",
+      "community": 788,
+      "community_name": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 788,
+      "community_name": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 788,
+      "community_name": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 788,
+      "community_name": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 788,
+      "community_name": "2026-09-30 \u2014 riordino-legno-non-raggiungibile",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine",
+      "label": "2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "_origin": "ast",
+      "community": 789,
+      "community_name": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_2026_10_01_arrg_sonde_s12_s15_sul_prezzo_dell_ordine",
+      "label": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "_origin": "ast",
+      "community": 789,
+      "community_name": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-01 \u2014 arrg: sonde s12\u2013s15 sul prezzo dell'ordine",
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 789,
+      "community_name": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 789,
+      "community_name": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 789,
+      "community_name": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 789,
+      "community_name": "2026-10-01 \u2014 ARRG: sonde S12\u2013S15 sul prezzo dell'ordine",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L13"
     },
     {
       "id": "opencode_skills_goal_skill",
@@ -54228,7 +54600,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L823",
+      "source_location": "L831",
       "weight": 1.0
     },
     {
@@ -59772,7 +60144,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L25",
+      "source_location": "L29",
       "weight": 1.0
     },
     {
@@ -59784,7 +60156,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L26",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -59796,7 +60168,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L30",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -76611,6 +76983,281 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_09_30_punto_magazzino",
+      "target": "docs_campo_2026_09_30_punto_magazzino_2026_09_30_punto_magazzino",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_magazzino_2026_09_30_punto_magazzino",
+      "target": "docs_campo_2026_09_30_punto_magazzino_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_magazzino_2026_09_30_punto_magazzino",
+      "target": "docs_campo_2026_09_30_punto_magazzino_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_magazzino_2026_09_30_punto_magazzino",
+      "target": "docs_campo_2026_09_30_punto_magazzino_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_magazzino_2026_09_30_punto_magazzino",
+      "target": "docs_campo_2026_09_30_punto_magazzino_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-magazzino.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_situazione_due_repo",
+      "target": "docs_campo_2026_09_30_punto_situazione_due_repo_2026_09_30_punto_sui_due_repo_gemelli_poi_edil_in_sd_sonde_e_passo_1a",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_situazione_due_repo_2026_09_30_punto_sui_due_repo_gemelli_poi_edil_in_sd_sonde_e_passo_1a",
+      "target": "docs_campo_2026_09_30_punto_situazione_due_repo_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_situazione_due_repo_2026_09_30_punto_sui_due_repo_gemelli_poi_edil_in_sd_sonde_e_passo_1a",
+      "target": "docs_campo_2026_09_30_punto_situazione_due_repo_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_situazione_due_repo_2026_09_30_punto_sui_due_repo_gemelli_poi_edil_in_sd_sonde_e_passo_1a",
+      "target": "docs_campo_2026_09_30_punto_situazione_due_repo_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_punto_situazione_due_repo_2026_09_30_punto_sui_due_repo_gemelli_poi_edil_in_sd_sonde_e_passo_1a",
+      "target": "docs_campo_2026_09_30_punto_situazione_due_repo_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-punto-situazione-due-repo.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_adozione_cloud",
+      "target": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_2026_09_30_riordino_legno_adozione_cloud",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_2026_09_30_riordino_legno_adozione_cloud",
+      "target": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_2026_09_30_riordino_legno_adozione_cloud",
+      "target": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_2026_09_30_riordino_legno_adozione_cloud",
+      "target": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_2026_09_30_riordino_legno_adozione_cloud",
+      "target": "docs_campo_2026_09_30_riordino_legno_adozione_cloud_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-adozione-cloud.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile",
+      "target": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_2026_09_30_riordino_legno_non_raggiungibile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_2026_09_30_riordino_legno_non_raggiungibile",
+      "target": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_2026_09_30_riordino_legno_non_raggiungibile",
+      "target": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_2026_09_30_riordino_legno_non_raggiungibile",
+      "target": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_2026_09_30_riordino_legno_non_raggiungibile",
+      "target": "docs_campo_2026_09_30_riordino_legno_non_raggiungibile_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-09-30-riordino-legno-non-raggiungibile.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine",
+      "target": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_2026_10_01_arrg_sonde_s12_s15_sul_prezzo_dell_ordine",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_2026_10_01_arrg_sonde_s12_s15_sul_prezzo_dell_ordine",
+      "target": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_2026_10_01_arrg_sonde_s12_s15_sul_prezzo_dell_ordine",
+      "target": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_2026_10_01_arrg_sonde_s12_s15_sul_prezzo_dell_ordine",
+      "target": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_2026_10_01_arrg_sonde_s12_s15_sul_prezzo_dell_ordine",
+      "target": "docs_campo_2026_10_01_arrg_sonde_prezzo_ordine_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-arrg-sonde-prezzo-ordine.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_readme",
       "target": "docs_campo_readme_report_dal_campo_come_si_\u00e8_comportato_ai_programmer_a_ogni_uso",
       "relation": "contains",
@@ -76806,6 +77453,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L1184",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_054_il_rianimamento_che_resuscita_un_servizio_che_muore_sulla_porta_occupata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1207",
       "weight": 1.0
     },
     {
@@ -92183,7 +92841,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L813",
+      "source_location": "L821",
       "weight": 1.0
     },
     {
@@ -92194,7 +92852,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L819",
+      "source_location": "L827",
       "weight": 1.0
     },
     {
@@ -92205,7 +92863,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L840",
+      "source_location": "L848",
       "weight": 1.0
     },
     {
@@ -92216,7 +92874,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L852",
+      "source_location": "L860",
       "weight": 1.0
     },
     {
@@ -92227,7 +92885,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L863",
+      "source_location": "L871",
       "weight": 1.0
     },
     {
@@ -92238,7 +92896,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/lib.sh",
-      "source_location": "L879",
+      "source_location": "L887",
       "weight": 1.0
     },
     {
@@ -101660,7 +102318,7 @@
       "confidence_score": 0.55,
       "context": "import",
       "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L24",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -101773,5 +102431,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "11bf91bfe8ce67a2ad8d3739db76938e9abf6ad1"
+  "built_at_commit": "9a1798af06ab230999a49994e2034dc5668026d5"
 }
