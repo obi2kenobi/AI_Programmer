@@ -23,7 +23,8 @@ echo "verify-standalone: giro su origin/$BASE in $WT (la copia del turno non si 
 source "$HOME/night-shift-work/AI_Programmer/llm/_timeout.sh" 2>/dev/null || true
 command -v ai_timeout >/dev/null 2>&1 || { echo "verify-standalone: ai_timeout assente (llm/_timeout.sh dell'hub) — righe @N senza tetto" >&2; }
 cd "$WT" || exit 2
-if head -10 .night-verify 2>/dev/null | grep -q '^# FORMATO: script'; then
+_cp=$(head -10 .night-verify 2>/dev/null) || true
+if grep -q '^# FORMATO: script' <<<"$_cp"; then
   ai_timeout 1800 bash .night-verify; RC=$?
 else
   RC=0
