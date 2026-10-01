@@ -787,6 +787,14 @@ rianima_ollama() {
   local custode
   custode=$(launchctl list 2>/dev/null | awk '/ollama/{print $3; exit}')
   if [ -n "$custode" ]; then
+    # (2026-10-01, E-054, dalla notte col server appeso): un'istanza MANUALE di ollama
+    # (partita a mano, poi wedged) tiene la porta 11434 — il kickstart resuscita il servizio,
+    # la sua nuova istanza muore subito per porta occupata e quella vecchia resta: NESSUN
+    # rianimamento funziona, per tutta la notte. Prima si toglie l'istrione, poi si resuscita.
+    if pgrep -f "ollama serve" >/dev/null 2>&1; then
+      echo "rianima_ollama: un ollama serve tiene la porta — lo tolgo prima del kickstart (E-054)" >&2
+      pkill -f "ollama serve" 2>/dev/null; sleep 2
+    fi
     echo "rianima_ollama: custode launchd $custode — kickstart a lui, attendo la sua resurrezione" >&2
     launchctl kickstart -k "gui/$(id -u)/$custode" 2>/dev/null
   else

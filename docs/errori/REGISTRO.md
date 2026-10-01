@@ -1203,3 +1203,16 @@
 - Verifica guardia: prova viva — staged con IBAN di forma vera e 'Mario Rossi' → rosso con etichette, valori mai
   stampati; albero pulito → rc 0 col server vero. Banco: tests/test-privacy.sh, casi amnistia (6/7/8).
 - Aggiramento: un IBAN con forma vera che entra staged resta rosso: e' il lavoro del tripwire, non un buco.
+
+## E-054 Il rianimamento che resuscita un servizio che muore sulla porta occupata
+
+- Data / sessione: 2026-10-01 (notte del 30/9: Ollama appeso dalle 21:39 alle 06:53).
+- Famiglia: R1 (assunzione non verificata: «kickstart resuscita il servizio» — senza chiedersi chi tiene la porta).
+- Chi l'ha trovato: il giorno, dal log notturno («NESSUN rianimamento ha funzionato» x10) e dal pid del processo (18h di vita attraverso tutto il wedge).
+- Sintomo: agente e caccia a terra tutta la notte; il processo ollama restava VIVO (appeso) e il turno girava senza cervello; il watchdog tentava e falliva a ogni ciclo.
+- Causa prossima: un'istanza manuale di `ollama serve` (partita a mano, poi wedged) teneva la 11434; il kickstart del custode launchd resuscitava il servizio, la nuova istanza moriva subito (porta occupata), quella vecchia restava.
+- Causa del ragionamento: la cura guardava il custode, non il conflitto: due rianimatori (launchd + manuale) e nessuno che togliesse di mezzo il perdente prima di far ripartire il vincente.
+- Perché non ci ha fermati: il messaggio d'errore diceva «rianimamento fallito», che suonava come un Ollama malato — non come un conflitto di porta.
+- Guardia: night-shift/lib.sh rianima_ollama — nel ramo custode, PRIMA si toglie un eventuale `ollama serve` che tiene la porta (pkill), POI il kickstart. tests/test-rianima-ollama.sh caso E-054 (con pgrep fintamente controllato: il banco non dipende piu' da cosa gira davvero sulla macchina).
+- Verifica guardia: banco 7/0 con l'ordine pkill→kickstart asserito; la prossima notte di wedge sara' la prova sul vivo.
+- Aggiramento: un wedge in cui il processo risponde al /health ma appende le chat resta possibile: quello e' il regno della sonda di generazione vera.
