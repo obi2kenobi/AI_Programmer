@@ -23,7 +23,8 @@ echo "verify-standalone: giro su origin/$BASE in $WT (la copia del turno non si 
 source "$HOME/night-shift-work/AI_Programmer/llm/_timeout.sh" 2>/dev/null || true
 command -v ai_timeout >/dev/null 2>&1 || { echo "verify-standalone: ai_timeout assente (llm/_timeout.sh dell'hub) — righe @N senza tetto" >&2; }
 cd "$WT" || exit 2
-if head -10 .night-verify 2>/dev/null | grep -q '^# FORMATO: script'; then
+HDR_NV=$(head -10 .night-verify 2>/dev/null)   # (E-002): cattura-prima, mai il tubo a grep -q
+if grep -q '^# FORMATO: script' <<<"$HDR_NV"; then
   ai_timeout 1800 bash .night-verify; RC=$?
 else
   RC=0
