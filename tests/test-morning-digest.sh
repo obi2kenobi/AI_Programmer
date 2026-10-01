@@ -86,6 +86,13 @@ grep -q "nessuna riga di ieri" "$TMP/captured.txt" \
   && ok "bilancino vuoto: dichiarato («nessuna riga di ieri»)" || ko "bilancino vuoto non dichiarato: $(grep -o 'LA NOTTE[^\]*' "$TMP/captured.txt" | head -1)"
 mv "$TMP/funnel.datum" "$TMP/funnel.csv"
 
+# 5b. (2026-10-01, giro accurato): una riga MONCA del bilancino (campi vuoti) non
+# deve ammazzare la mail: l'aritmetica sotto set -e morirebbe in silenzio
+printf 'data,repo,cicli,verify_verdi,verify_rosse,pr_aperte,pr_fuse,pr_rigettate,rigetti_det,gpu_s,debiti_aperti,lezioni\n%s,RepoMonco,,4,1,,2,,1,,3,\n' "$IERI" >> "$TMP/funnel.csv"
+MORNING_FUNNEL="$TMP/funnel.csv" bash "$TMP/repo/night-shift/morning-digest.sh" >"$TMP/out5b.log" 2>&1; RC5b=$?
+[ "$RC5b" -eq 0 ] && grep -q "RepoMonco" "$TMP/captured.txt" \
+  && ok "riga monca nel bilancino: la mail parte comunque (e la dichiara)" || ko "riga monca ammazza la mail (rc=$RC5b): $(tail -1 "$TMP/out5b.log")"
+
 # 6. invio fallito: esito rosso e la memoria del turno resta
 printf '#!/bin/bash\nexit 1\n' > "$TMP/bin/osascript"
 printf '#!/bin/bash\nexit 1\n' > "$TMP/bin/mail"; chmod +x "$TMP/bin/mail"
