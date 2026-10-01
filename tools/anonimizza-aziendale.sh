@@ -27,13 +27,15 @@ shift || true
   # ripristina condividono il dizionario). Default: fissa, non per-PID.
   ANON_DIZ_DIR="${ANON_DIZ_DIR:-/tmp/anon-aziendale}"
 ANON_DIZ="$ANON_DIZ_DIR/dizionario.json"
-mkdir -p "$ANON_DIZ_DIR" 2>/dev/null || true
+# (2026-10-01, giro 1): il fallimento inghiottito rompeva la catena in silenzio —
+# senza dizionario il ripristino fa passthrough e i dati restano anonimi per sempre
+mkdir -p "$ANON_DIZ_DIR" 2>/dev/null || { echo "⛔ anonimizza: non creo $ANON_DIZ_DIR — senza dizionario la catena GDPR e' rotta (fail-closed)" >&2; exit 1; }
 
 case "$CMD" in
   stato)
     if curl -sf --max-time 3 "$PII_URL/health" >/dev/null 2>&1; then
-      TAGS=$(curl -sf "$PII_URL/health" 2>/dev/null | jq -r '.tags // "?"')
-      MODEL=$(curl -sf "$PII_URL/health" 2>/dev/null | jq -r '.model // "?"')
+      TAGS=$(curl -sf --max-time 3 "$PII_URL/health" 2>/dev/null | jq -r '.tags // "?"')
+      MODEL=$(curl -sf --max-time 3 "$PII_URL/health" 2>/dev/null | jq -r '.model // "?"')
       echo "rizzo-pii: ATTIVO su $PII_URL (modello $MODEL, $TAGS categorie)"
       echo "  dizionario: $ANON_DIZ"
       exit 0
