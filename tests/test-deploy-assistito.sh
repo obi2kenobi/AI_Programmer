@@ -30,12 +30,50 @@ export PATH="$TMP/bin:$PATH"
 # (2026-09-23, giro A7 della notte): il gesto si fa in un TERMINALE (pty) e fuori da una sessione
 # agente — com'e' quello di Luca. Prima il banco faceva `echo si |` da una sessione agente: la
 # stessa strada con cui un agente deploiava davvero (deploy-ora leggeva il «si» dalla pipe).
+# (2026-10-01): il gesto si fa in un TERMINALE (pty) — ma «script» non va bene come
+# autista: il BSD di macOS perde lo stdin per strada (il «si» arriva come ^D) e il
+# GNU non c'e'. Il banco guida il pty con python (pty + expect minimale, multi-piattaforma).
+GESTO_PTY="$TMP/gesto.py"
+cat > "$GESTO_PTY" <<'GESTO'
+import os, pty, sys, time, select
+risposta, cmd = sys.argv[1], sys.argv[2:]
+pid, fd = pty.fork()
+if pid == 0:
+    os.execvp(cmd[0], cmd)
+buf = b""
+letto_prompt = False
+for _ in range(600):                      # fino a 60s
+    r, _, _ = select.select([fd], [], [], 0.1)
+    if r:
+        try:
+            chunk = os.read(fd, 4096)
+        except OSError:
+            break
+        if not chunk:
+            break
+        buf += chunk
+        sys.stdout.buffer.write(chunk); sys.stdout.flush()
+        if b"[si/no]" in buf and not letto_prompt:
+            letto_prompt = True
+            time.sleep(0.2)
+            os.write(fd, (risposta + "\n").encode())
+    if os.waitpid(pid, os.WNOHANG)[0] != 0:
+        # drenaggio finale
+        while True:
+            r, _, _ = select.select([fd], [], [], 0.2)
+            if not r: break
+            try:
+                c = os.read(fd, 4096)
+            except OSError:
+                break
+            if not c: break
+            buf += c; sys.stdout.buffer.write(c)
+        break
+_, status = os.waitpid(pid, 0) if os.waitpid(pid, os.WNOHANG)[0] == 0 else (pid, 0)
+sys.exit(0)
+GESTO
 gesto() { # gesto <risposta> <repo>
-  if script --version >/dev/null 2>&1; then
-    printf '%s\n' "$1" | env -u CLAUDECODE script -qec "bash $(printf %q "$TMP/tools/deploy-ora.sh") $(printf %q "$2")" /dev/null
-  else
-    printf '%s\n' "$1" | env -u CLAUDECODE script -q /dev/null bash "$TMP/tools/deploy-ora.sh" "$2"
-  fi
+  env -u CLAUDECODE python3 "$GESTO_PTY" "$1" bash "$TMP/tools/deploy-ora.sh" "$2"
 }
 
 mkrepo() { # $1 nome, $2 verify (true|false)

@@ -424,9 +424,12 @@ grep -c "bash -c true" "$GHSTUB_JSON.sandbox" >/dev/null 2>&1 && ok "le prove di
   || ko "prove fuori dalla sandbox (chiamate: $(cat "$GHSTUB_JSON.sandbox" 2>/dev/null | head -2))"
 grep -cF "$SB" "$GHSTUB_JSON.profili" >/dev/null 2>&1 && ! grep -c "__WORKDIR__" "$GHSTUB_JSON.profili" >/dev/null \
   && ok "il profilo della sandbox e' quello della copia giudicata" || ko "profilo della sandbox senza la copia giudicata"
-# senza sandbox-exec: DEGRADATO dichiarato, rinvio al giorno, NESSUN merge
+# senza sandbox-exec: DEGRADATO dichiarato, rinvio al giorno, NESSUN merge.
+# (2026-10-01): su macOS sandbox-exec non si puo' nascondere dal PATH (c'e' sempre in
+# /usr/bin) — il banco dichiarava l'assenza con REVISORE_NO_SANDBOX=1, l'hook di test
+# gemello di REVISORE_DRY/REVISORE_STUB. La guardia resta identica in produzione.
 SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-nosandbox
-OUT=$(cd "$SB" && PATH="$SOLOGH:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+OUT=$(cd "$SB" && PATH="$SOLOGH:$PATH" REVISORE_DRY=1 REVISORE_NO_SANDBOX=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
 [ "$RC" -eq 2 ] && ! grep -c "gh pr merge" <<<"$OUT" >/dev/null && grep -c "DEGRADATO" <<<"$OUT" >/dev/null \
   && ok "senza sandbox-exec: DEGRADATO, rc 2, nessun merge" || ko "senza sandbox: rc $RC — $(tail -1 <<<"$OUT")"
 

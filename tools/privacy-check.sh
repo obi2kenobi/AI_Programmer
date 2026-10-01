@@ -223,9 +223,9 @@ if curl -sf --max-time 3 "$PII_URL/health" >/dev/null 2>&1; then
   PII_FILE=""
   for f in $( (cd "$HERE" && git diff --cached --name-only 2>/dev/null | head -20) ); do
     [ -f "$HERE/$f" ] || continue
-    PII_RISP=$(curl -sf --max-time 15 "$PII_URL/analyze" \
-      -H 'Content-Type: application/json' \
-      -d "$(jq -cn --arg t "$(head -c 8000 "$HERE/$f")" '{text:$t, include_mapping:true}')" 2>/dev/null) || continue
+    # (T5#6, 2026-10-01): il contenuto del file su STDIN (head lo taglia, jq lo incarta, curl lo spedisce)
+    PII_RISP=$(head -c 8000 "$HERE/$f" | jq -cRs '{text:., include_mapping:true}' \
+      | curl -sf --max-time 15 "$PII_URL/analyze" -H 'Content-Type: application/json' --data-binary @- 2>/dev/null) || continue
     PII_N=$(printf '%s' "$PII_RISP" | jq -r '.n_entities // 0' 2>/dev/null)
     if [ "${PII_N:-0}" -gt 0 ]; then
       # (2026-09-29): IL MODELLO PROPOSTA, LA FORMA DECIDE. Il modello NER contava come

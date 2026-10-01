@@ -37,6 +37,17 @@ gh label create night-shift --description "Lavorata dal turno di notte (modello 
 TMP_ONBOARD=$(mktemp -d)
 trap 'rm -rf "$TMP_ONBOARD"' EXIT
 WORK="$TMP_ONBOARD/${REPO##*/}"
+
+# (2026-10-01, dal banco flaky): ogni sezione diceva «aggiunti e spinti» senza
+# guardare l'esito di commit e push — un push fallito sotto carico diventava una
+# riga lieta e l'origin restava vuoto. Ora la spinta prova se stessa, o si ferma.
+spinta() { # spinta <messaggio commit>
+  if ! git -C "$WORK" commit -q -m "$1" || ! git -C "$WORK" push -q; then
+    echo "⛔ onboard: commit o push FALLITI ($1) — l'origin non ha ricevuto: mi fermo, niente dichiarato senza prova" >&2
+    exit 1
+  fi
+}
+
 # (2026-09-28, backlog PR): --depth implica --single-branch: il clone vedeva SOLO main.
 # Il revisore dei satelliti fa un fetch di "rinfresco" dei rami PR prima di giudicarli, e in un
 # clone single-branch quel fetch non porta giu' niente (i rami remoti 111 su Magazzino, 90 su
@@ -63,8 +74,7 @@ if [ ! -f "$WORK/.night-verify" ]; then
 #   # NON-VERIFICABILE: <motivo>
 EOF
   git -C "$WORK" add .night-verify
-  git -C "$WORK" commit -q -m "chore: .night-verify per il gate del mattino (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: .night-verify per il gate del mattino (onboarding sistema)"
   echo ".night-verify creato e spinto"
 else
   echo ".night-verify già presente, intoccato"
@@ -107,8 +117,7 @@ for skill_dir in "$HERE"/.claude/skills/*/; do
   fi
 done
 if [ "$SKILLS_AGGIUNTE" -gt 0 ]; then
-  git -C "$WORK" commit -q -m "chore: $SKILLS_AGGIUNTE skill del hub propagate (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: $SKILLS_AGGIUNTE skill del hub propagate (onboarding sistema)"
   echo "$SKILLS_AGGIUNTE skill del hub aggiunte e spinte"
 else
   echo "skill del hub già tutte presenti, intoccate"
@@ -128,8 +137,7 @@ for skill_dir in "$HERE"/.opencode/skills/*/; do
   fi
 done
 if [ "$OPENCODE_SKILLS_AGGIUNTE" -gt 0 ]; then
-  git -C "$WORK" commit -q -m "chore: $OPENCODE_SKILLS_AGGIUNTE skill OpenCode del hub propagate (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: $OPENCODE_SKILLS_AGGIUNTE skill OpenCode del hub propagate (onboarding sistema)"
   echo "$OPENCODE_SKILLS_AGGIUNTE skill OpenCode del hub aggiunte e spinte"
 else
   echo "skill OpenCode del hub già tutte presenti, intoccate"
@@ -149,8 +157,7 @@ for pattern_file in "$HERE"/patterns/*.md; do
   fi
 done
 if [ "$PATTERNS_AGGIUNTI" -gt 0 ]; then
-  git -C "$WORK" commit -q -m "chore: $PATTERNS_AGGIUNTI pattern del hub propagati (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: $PATTERNS_AGGIUNTI pattern del hub propagati (onboarding sistema)"
   echo "$PATTERNS_AGGIUNTI pattern del hub aggiunti e spinti"
 else
   echo "pattern del hub già tutti presenti, intoccati"
@@ -193,8 +200,7 @@ if [ ! -f "$WORK/.claude/settings.json" ]; then
   done < <(bash "$HERE/tools/copia-hook.sh" --elenco 2>/dev/null)  # (revisione 10 giri: una derivazione sola)
   # (2026-09-24, quinto ventaglio, R2 R6): e la seconda meta' di copia-hook — i residui nella .gitignore
   bash "$HERE/tools/copia-hook.sh" --residui "$WORK" | while IFS= read -r P; do git -C "$WORK" add "$P"; done
-  git -C "$WORK" commit -q -m "chore: settings.json e $HOOK_AGGIUNTI hook del metodo (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: settings.json e $HOOK_AGGIUNTI hook del metodo (onboarding sistema)"
   echo "settings.json e $HOOK_AGGIUNTI hook aggiunti e spinti (gli hook gia' presenti nel progetto: intoccati)"
 fi
 # (giro 20, 2026-09-20 — stessa famiglia di D29): gli specchi finivano nell'indice e il commit
@@ -210,8 +216,7 @@ for agent_file in "$HERE"/.opencode/agent/*.md; do
   fi
 done
 if [ "$OPENCODE_AGENTI_AGGIUNTI" -gt 0 ]; then
-  git -C "$WORK" commit -q -m "chore: $OPENCODE_AGENTI_AGGIUNTI specchio/i OpenCode del hub propagato/i (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: $OPENCODE_AGENTI_AGGIUNTI specchio/i OpenCode del hub propagato/i (onboarding sistema)"
   echo "$OPENCODE_AGENTI_AGGIUNTI specchio/i OpenCode aggiunto/i e spinto/i"
 fi
 mkdir -p "$WORK/.claude/agents"
@@ -224,8 +229,7 @@ for agent_file in "$HERE"/.claude/agents/*.md; do
   fi
 done
 if [ "$AGENTS_AGGIUNTI" -gt 0 ]; then
-  git -C "$WORK" commit -q -m "chore: $AGENTS_AGGIUNTI agente/i del hub propagato/i (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: $AGENTS_AGGIUNTI agente/i del hub propagato/i (onboarding sistema)"
   echo "$AGENTS_AGGIUNTI agente/i del hub aggiunto/i e spinto/i"
 else
   echo "agenti del hub già tutti presenti, intoccati"
@@ -239,8 +243,7 @@ CITATI_SCRITTI=$(bash "$HERE/tools/installa-citati.sh" "$WORK" --solo-mancanti) 
   || { echo "⛔ installazione degli strumenti citati fallita"; exit 1; }
 if [ -n "$CITATI_SCRITTI" ]; then
   while IFS= read -r P; do git -C "$WORK" add "$P"; done <<< "$CITATI_SCRITTI"
-  git -C "$WORK" commit -q -m "chore: strumenti citati dallo standard (onboarding sistema)"
-  git -C "$WORK" push -q
+    spinta "chore: strumenti citati dallo standard (onboarding sistema)"
   echo "$(grep -c . <<< "$CITATI_SCRITTI") strumento/i citato/i dallo standard aggiunto/i e spinto/i (i gia' presenti: intoccati)"
 else
   echo "strumenti citati dallo standard gia' tutti presenti, intoccati"

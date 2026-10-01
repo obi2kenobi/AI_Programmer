@@ -239,7 +239,8 @@ OUT=$(MIGLIORIA_AGENT="$STUB_ROTTO" MIGLIORIA_CAT=morto MIGLIORIA_FILE=gira.sh b
 grep -q "E-050" <<<"$OUT" && ok "E-050: il gate dichiara la firma" || ko "nessuna firma E-050 nel log"
 git -C "$SB2" diff --quiet 2>/dev/null && ok "E-050: working tree ripristinato" || ko "il rotto e' rimasto nel tree"
 grep -q 'pipe troncata' "$SB2/gira.sh" 2>/dev/null && ko "la pipe troncata e' sopravvissuta" || ok "gira.sh tornato pulito"
-ls "$SB2/.git/miglioria/" 2>/dev/null | grep -q '^clean\.morto\.' && ok "E-050: cooldown scritto sul sito" || ko "nessun marker di cooldown"
+MARKER_E050=$(ls "$SB2/.git/miglioria/" 2>/dev/null || true)
+  grep -q '^clean\.morto\.' <<<"$MARKER_E050" && ok "E-050: cooldown scritto sul sito" || ko "nessun marker di cooldown"
 rm -rf "$SB2" "$STUB_ROTTO"
 
 

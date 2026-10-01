@@ -229,7 +229,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
               log "  read: $FPATH BLOCCATO (server PII spento — fail-closed)"
             elif [ -f "$HERE/tools/anonimizza.py" ]; then
               ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
-              if [ -n "$ANON_OUT" ] && ! printf '%s' "$ANON_OUT" | grep -q "passthrough"; then
+              if [ -n "$ANON_OUT" ] && ! grep -q "passthrough" <<<"$ANON_OUT"; then
                 RESULT="File $FPATH content:\n$ANON_OUT"
                 log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
               else
@@ -299,7 +299,7 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
         # GDPR: anche il run legge dati — se l'anonimizzazione e' attiva, filtra
         if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1 && [ -f "$HERE/tools/anonimizza.py" ]; then
           RUN_ANON=$(printf '%s' "$RUN_RAW" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
-          [ -n "$RUN_ANON" ] && ! echo "$RUN_ANON" | grep -q "passthrough" && RUN_RAW="$RUN_ANON" && log "  run: output PII anonimizzato"
+          if [ -n "$RUN_ANON" ] && ! grep -q "passthrough" <<<"$RUN_ANON"; then RUN_RAW="$RUN_ANON"; log "  run: output PII anonimizzato"; fi
         fi
         RESULT="Command: $CMD\nOutput:\n$RUN_RAW"
         log "  run: $CMD"

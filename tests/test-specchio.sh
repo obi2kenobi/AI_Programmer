@@ -77,7 +77,8 @@ printf -- '- 127 com.luca.morningdigest\n' > "$RADICE/launchctl.out"
 OUT=$(corri)
 grep -q "ROSSO digest" <<<"$OUT" && ok "digest exit 127: rosso dichiarato" || ko "$OUT"
 grep -q "specchio: digest — degradato" <<<"$OUT" && ok "digest: issue aperta" || ko "niente issue: $OUT"
-grep -c -- '--title specchio: digest' "$RADICE/gh-create.log" | grep -q '^1$' && ok "una sola issue per il digest" || ko "issue multiple: $(grep -c -- '--title specchio: digest' "$RADICE/gh-create.log")"
+N_ISSUE_DIGEST=$(grep -c -- '--title specchio: digest' "$RADICE/gh-create.log" 2>/dev/null || true); N_ISSUE_DIGEST=${N_ISSUE_DIGEST:-0}
+[ "$N_ISSUE_DIGEST" = "1" ] && ok "una sola issue per il digest" || ko "issue multiple: $N_ISSUE_DIGEST"
 
 # 3. idempotenza: l'issue e' gia' aperta → si dice, non si duplica
 printf 'specchio: digest — degradato\n' > "$RADICE/gh-aperte.txt"

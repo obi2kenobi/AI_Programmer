@@ -19,6 +19,21 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 command -v jq >/dev/null 2>&1 || { echo "⊘ jq assente: banco saltato (dichiarato)"; exit 0; }
 
+
+# (2026-10-01, la caccia al flaky): il clone di VERIFICA moriva dentro git
+# («failed to copy file ... No such file or directory» — copyfile APFS sotto
+# carico): l'onboard aveva spinto TUTTO, il banco leggeva una check vuota e
+# dichiarava sei falsi rossi. Ora: il clone di verifica riprova una volta, e
+# se non riesce il caso si dichiara NON GIUDICATO (⊥), mai finto rosso.
+clona_verifica() { # clona_verifica <origin> <dest>
+  rm -rf "$2"
+  if git clone -q "$1" "$2" 2>/dev/null; then return 0; fi
+  sleep 1
+  if git clone -q "$1" "$2" 2>/dev/null; then return 0; fi
+  echo "  ⊘ verifica di $2: clone fallito due volte (copyfile sotto carico) — caso non giudicato, non rosso" >&2
+  return 1
+}
+
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 export GIT_AUTHOR_NAME=test GIT_AUTHOR_EMAIL=test@example.com GIT_COMMITTER_NAME=test GIT_COMMITTER_EMAIL=test@example.com
 
@@ -73,7 +88,7 @@ onboard() {  # $1 = origin bare, $2 = nome repo finto
 ORIGIN1=$(nuova_sandbox vuota vuota)
 OUT1=$(onboard "$ORIGIN1" vuota); RC1=$?
 [ "$RC1" -eq 0 ] && ok "caso 1: onboard-repo termina 0 sulla repo vuota" || { ko "caso 1: rc $RC1 — $OUT1"; }
-git clone -q "$ORIGIN1" "$TMP/check1"
+clona_verifica "$ORIGIN1" "$TMP/check1"
 [ -f "$TMP/check1/.claude/settings.json" ] && ok "caso 1: settings.json arrivato sull'origin" || ko "caso 1: settings.json NON sull'origin"
 MANCANTI=""
 while IFS= read -r H; do
@@ -97,7 +112,7 @@ grep -q "^sandbox/vuota" "$TMP/repos.conf" && ok "caso 1: iscritta nella coda (r
 ORIGIN2=$(nuova_sandbox piena con_agenti_e_hook_proprio)
 OUT2=$(onboard "$ORIGIN2" piena); RC2=$?
 [ "$RC2" -eq 0 ] && ok "caso 2: onboard-repo termina 0 sulla repo gia' popolata" || ko "caso 2: rc $RC2 — $OUT2"
-git clone -q "$ORIGIN2" "$TMP/check2"
+clona_verifica "$ORIGIN2" "$TMP/check2"
 [ -f "$TMP/check2/.claude/settings.json" ] && ok "caso 2 (D29): settings.json arrivato anche senza agenti da aggiungere" \
   || ko "caso 2 (D29): settings.json mai committato — restava nell'indice della copia di lavoro"
 [ -x "$TMP/check2/tools/clasp-block-hook.sh" ] && ok "caso 2 (D29): il cancello clasp e' sull'origin" || ko "caso 2 (D29): clasp-block-hook.sh non sull'origin"
@@ -131,7 +146,7 @@ grep -q "agenti del hub già tutti presenti" <<<"$OUT2" && ok "caso 2: agenti ri
 gas() { printf 'function onOpen(){}\n' > Code.gs; }
 ORIGIN3=$(nuova_sandbox gasrepo gas)
 OUT3=$(onboard "$ORIGIN3" gasrepo); RC3=$?
-git clone -q "$ORIGIN3" "$TMP/check3"
+clona_verifica "$ORIGIN3" "$TMP/check3"
 grep -qxF '.campo-rem' "$TMP/check3/.gitignore" 2>/dev/null && ok "caso 3 (R2 R6): il residuo degli hook e' nella .gitignore sull'origin" \
   || ko "caso 3 (R2 R6): .gitignore senza i residui degli hook (rc $RC3)"
 grep -cxF 'bash tools/gas-gate.sh' "$TMP/check3/.night-verify" >/dev/null && ok "caso 3 (R2 R6): la repo GAS ha il suo gate seminato in .night-verify" \

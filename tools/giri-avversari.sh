@@ -35,7 +35,11 @@ fi
 # (pulito: e' uguale a HEAD), con una cartella temporanea sua; la memoria di ciclo-vivo (.ciclo, non
 # versionata) ci entra in copia. L'albero vero non si tocca mai.
 if [ -z "${GIRI_AVVERSARI_NEL_CLONE:-}" ]; then
-  CLONE=$(mktemp -d)
+  # (2026-10-01, dal banco): il mktemp BSD IGNORA un TMPDIR con caratteri ostili
+  # (spazio) e cade nel default di sistema — il clone sfuggiva alla cartella del
+  # banco. Il modello esplicito quote' il TMPDIR qualunque sia: il clone sta dove
+  # chi chiama ha detto.
+  CLONE=$(mktemp -d "${TMPDIR:-/tmp}/giri-avversari.XXXXXX")
   git clone -q "$HERE" "$CLONE/hub" || { echo "⛔ clone per la batteria non riuscito" >&2; rm -rf "$CLONE"; exit 2; }
   [ -d .ciclo ] && cp -a .ciclo "$CLONE/hub/"
   echo "(batteria in un clone usa e getta: $CLONE/hub — l'albero vero non si tocca)"

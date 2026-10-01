@@ -30,9 +30,9 @@ else
 fi
 [ -z "$TESTO" ] && { echo "pii-scan: nessun testo" >&2; exit 2; }
 
-RISP=$(curl -sf --max-time 30 "$PII_URL/analyze" \
-  -H 'Content-Type: application/json' \
-  -d "$(jq -cn --arg t "$TESTO" '{text:$t}')" 2>/dev/null)
+# (T5#6, 2026-10-01): il testo su STDIN, mai negli argv
+RISP=$(printf '%s' "$TESTO" | jq -cRs '{text:.}' \
+  | curl -sf --max-time 30 "$PII_URL/analyze" -H 'Content-Type: application/json' --data-binary @- 2>/dev/null)
 
 [ -z "$RISP" ] && { echo "pii-scan: server non ha risposto" >&2; exit 2; }
 

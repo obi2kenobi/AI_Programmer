@@ -83,7 +83,9 @@ if [ -n "$IERI" ]; then
   if [ -f "$WORK/.impara-$IERI" ]; then
     verdetto verde impara
   else
-    ATTIVO=$( { [ -f "$HOME/night-shift.log" ] && grep -ac "^\[$IERI" "$HOME/night-shift.log"; } 2>/dev/null || echo 0)
+    # (lente del doppio zero): grep -c stampa 0 ED esce 1 quando non trova — l'echo
+    # aggiungerebbe un secondo 0. Forma canonica: || true e il default a valle.
+    ATTIVO=$( { [ -f "$HOME/night-shift.log" ] && grep -ac "^\[$IERI" "$HOME/night-shift.log"; } 2>/dev/null || true)
     ATTIVO=$(printf '%s\n' "$ATTIVO" | awk '{s+=$1} END{print s+0}')
     if [ "$ATTIVO" -eq 0 ]; then
       verdetto verde impara   # il turno non e' girato ieri: niente lezione da pretendere

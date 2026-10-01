@@ -258,9 +258,12 @@ cp -r "$TMP/allineata" "$TMP/hook-div"; echo '# refuso' >> "$TMP/hook-div/tools/
 OUT=$(PATH="$NOJQ" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/hook-div" 2>&1); RC=$?
 [ "$RC" -ne 0 ] && ! grep -c 'ALLINEATO' <<<"$OUT" >/dev/null \
   && ok "senza jq, hook divergente: niente ALLINEATO (rc $RC), e lo dice" || ko "senza jq ALLINEATO con un hook divergente (rc $RC): $OUT"
-# (Q2 R6): mktemp fallito (TMPDIR inesistente) — senza guardia i file finivano alla radice (da root, nel
-# container, /CLAUDE.md e /claude-satellite.md)
-OUT=$(TMPDIR="$TMP/non-esiste" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" 2>&1); RC=$?
+# (Q2 R6): mktemp fallito — senza guardia i file finivano alla radice (da root, nel
+# container, /CLAUDE.md e /claude-satellite.md). (2026-10-01): il trucco del TMPDIR
+# inesistente non fallisce su macOS (il mktemp BSD e' clemente) — il banco simula il
+# fallimento con un mktemp FINTO che esce 1: la guardia si prova su ogni piattaforma.
+NOMK=$(mktemp -d "$TMP/nomk.XXXXXX"); printf '#!/bin/bash\nexit 1\n' > "$NOMK/mktemp"; chmod +x "$NOMK/mktemp"
+OUT=$(PATH="$NOMK:$PATH" bash "$HERE/tools/sync-repo.sh" --from-local "$TMP/allineata" 2>&1); RC=$?
 [ "$RC" -ne 0 ] && grep -c 'mktemp' <<<"$OUT" >/dev/null && ! grep -c 'ALLINEATO\|DIVERGENTE' <<<"$OUT" >/dev/null \
   && ok "mktemp fallito: si ferma e lo dice, senza scrivere altrove" || ko "mktemp fallito e sync-repo prosegue (rc $RC): $OUT"
 
