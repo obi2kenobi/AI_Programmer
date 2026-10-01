@@ -1319,7 +1319,9 @@ if [ -d "$GRAFO_LOCK" ]; then
 fi
 if [ ! -f "$GRAFO_MARKER" ] && [ -f "$HERE/../tools/grafo-semantico.sh" ] && command -v graphify >/dev/null 2>&1 \
    && mkdir "$GRAFO_LOCK" 2>/dev/null; then
-  GRAFO_REPO=("obi2kenobi/AI_Programmer"); for E in "${REPO_LIST[@]}"; do [ "${E%% *}" = "${GRAFO_REPO[0]}" ] || GRAFO_REPO+=("${E%% *}"); done
+  # (2026-10-01, dal banco del grafo): la forma nuda ${REPO_LIST[@]} con l'array VUOTO
+  # e' «unbound» su bash 3.2 sotto set -u — la copia senza repo ammazzava il blocco
+  GRAFO_REPO=("obi2kenobi/AI_Programmer"); for E in ${REPO_LIST[@]+"${REPO_LIST[@]}"}; do [ "${E%% *}" = "${GRAFO_REPO[0]}" ] || GRAFO_REPO+=("${E%% *}"); done
   # (2026-09-25, D25, risposta delegata): il segno del giorno solo se ogni pass esce 0. Un fallimento lascia il segno
   # «tentato» e il ciclo dopo riprova; al secondo fallimento il giorno si chiude (le ore di GPU hanno un tetto) e il log
   # lo dice. Prima il segno seguiva il ciclo con «;»: un pass morto contava come fatto, in silenzio.
@@ -1335,7 +1337,8 @@ elif [ ! -f "$GRAFO_MARKER" ] && ! command -v graphify >/dev/null 2>&1; then
   log "grafo semantico: graphify ASSENTE — pass saltato (DEGRADATO; pipx install --python python3.12 graphifyy==0.9.66)"
 fi
 
-log "=== TURNO INIZIATO (${#REPO_LIST[@]} repo in coda) ==="
+N_REPO=${#REPO_LIST[@]}
+log "=== TURNO INIZIATO (${N_REPO:-0} repo in coda) ==="
 T_CICLO_INIZIO=$(date +%s)   # per la pausa dei cicli a vuoto (D17)
 
 # (2026-09-20): il WATCHDOG di Ollama. Il server (0.32.14) si inceppa sotto

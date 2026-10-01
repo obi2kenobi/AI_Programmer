@@ -1216,3 +1216,16 @@
 - Guardia: night-shift/lib.sh rianima_ollama — nel ramo custode, PRIMA si toglie un eventuale `ollama serve` che tiene la porta (pkill), POI il kickstart. tests/test-rianima-ollama.sh caso E-054 (con pgrep fintamente controllato: il banco non dipende piu' da cosa gira davvero sulla macchina).
 - Verifica guardia: banco 7/0 con l'ordine pkill→kickstart asserito; la prossima notte di wedge sara' la prova sul vivo.
 - Aggiramento: un wedge in cui il processo risponde al /health ma appende le chat resta possibile: quello e' il regno della sonda di generazione vera.
+
+## E-055 La cura verificata verde e fusa VUOTA: il reset del turno fra la prova e il commit
+
+- Data / sessione: 2026-10-01 (il censimento completo becca il #140 parzialmente vuoto).
+- Famiglia: R2 (la sequenza edita → verifica → commit senza custodia del mezzo: il clone e' del turno).
+- Chi l'ha trovato: il giorno, dal censimento: test-allinea-hub e test-banchi-identita rossi con le stesse ferite curate il giorno prima (#140).
+- Sintomo: le cure D18 (symlink) e bootstrap (identita' esplicita) erano in main come NUMERO di commit (#140) ma non come CONTENUTO: il file e' rimasto al vecchio testo. Le stesse docstring di anonimizza.py erano sparite uguale (ritrovate il 1/10).
+- Causa prossima: il flusso edita-nel-clone-condiviso → verifica-verde → (il turno passa col suo reset/clean) → commit: il commit fotografa il file GIA' SVUOTATO.
+- Causa del ragionamento: la verifica verde valeva l'attimo in cui e' corsa, non il commit; fra i due passava il turno. Era la lezione del FIX 3 («mai lavoro non committato nei cloni del turno») applicata a malapena ai file di lavoro, mai al flusso di cura.
+- Perché non ci ha fermati: il commit riusciva, la PR fondava, il messaggio diceva la cura — tutto sembrva vero tranne il diff.
+- Guardia: tools/suite.sh — il censimento completo dei banchi DOPO ogni fusione di cure (stavolta li ha beccati in un giorno); e il flusso: le cure si scrivono in un WORKTREE, dove il reset del turno non passa mai.
+- Verifica guardia: censimento del 2026-10-01: le cure ri-applicate in worktree tengono (14/0, 3/0); il censimento gira su TUTTI i banchi, non solo i toccati.
+- Aggiramento: un turno che passi esattamente fra edit e commit nel worktree — non puo': il worktree non e' sua.

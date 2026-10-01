@@ -44,9 +44,9 @@ case "$CMD" in
 
   pulisci)
     TESTO="${1:?serve il testo}"
-    RISP=$(curl -sf --max-time 30 "$PII_URL/analyze" \
-      -H 'Content-Type: application/json' \
-      -d "$(jq -cn --arg t "$TESTO" '{text:$t, include_mapping: true}')" 2>/dev/null)
+    # (T5#6, 2026-10-01): il testo su STDIN, mai negli argv (ps li mostra a chi guarda)
+    RISP=$(printf '%s' "$TESTO" | jq -cRs '{text:., include_mapping: true}' \
+      | curl -sf --max-time 30 "$PII_URL/analyze" -H 'Content-Type: application/json' --data-binary @- 2>/dev/null)
     [ -z "$RISP" ] && { printf '%s' "$TESTO"; echo "⚠ passthrough: server PII spento" >&2; exit 0; }
     # salva il dizionario locale
     printf '%s' "$RISP" | jq '.mapping // {}' > "$ANON_DIZ" 2>/dev/null

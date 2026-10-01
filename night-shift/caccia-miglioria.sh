@@ -115,11 +115,12 @@ for l in sys.stdin:
   # (`_cp=$([ $RC -ne 0 ] |)`: syntax error inghiottito da `|| true`) e doppia
   # herestring (`<<<"$A" <<<"$B"`: bash usa solo l'ultima). Stesse firme del revisore:
   # il deterministico ferma la consegna PRIMA che il diff diventi una PR.
-  if git diff 2>/dev/null | grep -qE '^\+.*\$\([^)]*\|\)'; then
+  DIFF_GATE=$(git diff 2>/dev/null)
+  if grep -qE '^\+.*\$\([^)]*\|\)' <<<"$DIFF_GATE"; then
     log "gate BOCCIA: E-050 pipe troncata nella sostituzione comando (firma del loop notturno)"
     GATE_E050=1; return 1
   fi
-  if git diff 2>/dev/null | grep -qE '^\+.*<<<[^<]*<<<'; then
+  if grep -qE '^\+.*<<<[^<]*<<<' <<<"$DIFF_GATE"; then
     log "gate BOCCIA: E-050 doppia herestring nella stessa riga (bash usa solo l'ultima)"
     GATE_E050=1; return 1
   fi

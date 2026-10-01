@@ -35,7 +35,9 @@
 #       2 = skip (quarantena/guardie/prove rosse — lasciato al giorno) · 3 = errore
 #       4 = parere dato su una PR di issue (commento, nessun merge)
 # Test: REVISORE_DRY=1 stampa le azioni senza eseguirle; REVISORE_STUB=<script>
-#       sostituisce i due cervelli (riceve il ruolo e il prompt, risponde eco).
+#       sostituisce i due cervelli (riceve il ruolo e il prompt, risponde eco);
+#       REVISORE_NO_SANDBOX=1 dichiara l'assenza di sandbox-exec (su macOS c'e'
+#       sempre: il banco non puo' nasconderlo dal PATH).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 # (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «rigettata»: l'uso sbagliato e' un errore (3), come dichiarato
@@ -183,7 +185,7 @@ rinvia() {
     mkdir -p "$STATE/rinvi"
     local rlog="$STATE/rinvi/$PR-${HEAD_OID:-senza-oid}"
     printf '%s %s\n' "$(date +%s)" "$1" >> "$rlog"
-    local n_rinvi; n_rinvi=$(grep -c . "$rlog" 2>/dev/null || echo 0)
+    local n_rinvi; n_rinvi=$(grep -c . "$rlog" 2>/dev/null || true); n_rinvi=${n_rinvi:-0}   # forma anti-doppio-zero
     if [ "${n_rinvi:-0}" -ge "${REVISORE_MAX_RINVI:-3}" ]; then
       rigetta_deterministico "rinviata $n_rinvi volte per motivi strutturali (ultimo: $1)"
     fi
@@ -308,10 +310,10 @@ DIFF=$(git diff "$DB"...HEAD)
 #      error dentro $( ) al runtime, inghiottito da `|| true`: la riga non fa cio' che sembra;
 #   2. doppia herestring sulla stessa riga: `grep -q x <<<"$A" <<<"$B"` — bash usa solo
 #      l'ultima: il comando cerca la stringa sbagliata.
-if printf '%s' "$DIFF" | grep -qE '^\+.*\$\([^)]*\|\)'; then
+if grep -qE '^\+.*\$\([^)]*\|\)' <<<"$DIFF"; then
   rigetta_deterministico "E-050: pipe troncata dentro la sostituzione comando nel diff aggiunto (syntax error inghiottito: firma del loop della caccia, non una miglioria)"
 fi
-if printf '%s' "$DIFF" | grep -qE '^\+.*<<<[^<]*<<<'; then
+if grep -qE '^\+.*<<<[^<]*<<<' <<<"$DIFF"; then
   rigetta_deterministico "E-050: doppia herestring nella stessa riga aggiunta (bash usa solo l'ultima: il comando cerca la stringa sbagliata)"
 fi
 
@@ -323,8 +325,12 @@ PROVE_ROTTE=""
 # fondeva. Ora le prove girano nella sandbox del turno (night-shift/sandbox.sb: niente rete, scritture
 # solo nella copia e in /tmp — TMPDIR punta li'). Senza sandbox il codice della PR non si esegue:
 # DEGRADATO dichiarato, e la PR va al giorno.
-command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ] \
-  || rinvia "prove: DEGRADATO — sandbox-exec o night-shift/sandbox.sb assente: il codice della PR non si esegue fuori dalla sandbox"
+# (2026-10-01, dal banco senza-sandbox): su macOS sandbox-exec c'e' SEMPRE e il banco
+# non puo' simulare la sua assenza — REVISORE_NO_SANDBOX=1 la dichiara a mano (stessa
+# famiglia degli hook di test REVISORE_DRY / REVISORE_STUB, dichiarati in testa al file)
+if [ "${REVISORE_NO_SANDBOX:-0}" = "1" ] || ! command -v sandbox-exec >/dev/null 2>&1 || [ ! -f "$HERE/night-shift/sandbox.sb" ]; then
+  rinvia "prove: DEGRADATO — sandbox-exec o night-shift/sandbox.sb assente: il codice della PR non si esegue fuori dalla sandbox"
+fi
 PROFILO_PROVE=$(mktemp /tmp/revisore-sandbox.XXXXXX)
 sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO_PROVE"
 # (2026-09-25, D22, risposta delegata): la sandbox nega la rete, localhost compreso, e resta cosi' (aprirla riaprirebbe

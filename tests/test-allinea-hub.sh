@@ -71,7 +71,10 @@ OUT=$(allinea_hub "$T/f" 2>&1); RC=$?
 [ ! -f "$T/f/.git/index.lock" ] && grep -ci 'tolto' <<<"$OUT" >/dev/null \
   && ok "D18: index.lock di 2 ore senza git vivo: tolto, e lo dice" || ko "D18: lock vecchio e orfano: rc $RC, lock $( [ -f "$T/f/.git/index.lock" ] && echo c\'e\' || echo tolto) — $(head -1 <<<"$OUT")"
 : > "$T/f/.git/index.lock"; invecchia "$T/f/.git/index.lock"
-mkdir -p "$T/gitfinto"; cp "$(command -v sleep)" "$T/gitfinto/git"
+# (2026-10-01, di nuovo — la cura del #140 era nata vuota: editata nel clone condiviso,
+# il reset del turno la spazzo' prima del commit): il binario COPIATO muore per firma
+# del codice (rc 137); il symlink gira il binario firmato col nome git.
+mkdir -p "$T/gitfinto"; ln -s "$(command -v sleep)" "$T/gitfinto/git"
 ( cd "$T/f" && exec "$T/gitfinto/git" 30 ) & GITVIVO=$!; sleep 0.3
 OUT=$(allinea_hub "$T/f" 2>&1); RC=$?
 kill "$GITVIVO" 2>/dev/null; wait "$GITVIVO" 2>/dev/null

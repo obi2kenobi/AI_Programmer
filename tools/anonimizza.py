@@ -40,6 +40,8 @@ def chiama_server(testo: str) -> dict | None:
 
 
 def anonimizza(testo: str, diz_path: str) -> str:
+    """Sostituisce i PII con segnaposto via rizzo-pii e accumula il dizionario
+    (merge, mai overwrite). Server spento: passthrough DETTO su stderr."""
     risp = chiama_server(testo)
     if risp is None:
         print("anonimizza: server spento — passthrough (il LLM vedrà i dati veri)", file=sys.stderr)
@@ -70,6 +72,8 @@ def anonimizza(testo: str, diz_path: str) -> str:
 
 
 def de_anonimizza(testo: str, diz_path: str) -> str:
+    """Rimette i valori veri al posto dei segnaposto, dal dizionario cumulativo.
+    Dizionario assente: passthrough DETTO su stderr."""
     try:
         with open(diz_path) as f:
             mapping = json.load(f)
@@ -82,6 +86,7 @@ def de_anonimizza(testo: str, diz_path: str) -> str:
 
 
 def main():
+    """CLI: --diz obbligatorio, --ripristina per la direzione inversa."""
     import argparse
     p = argparse.ArgumentParser()
     p.add_argument("--diz", required=True, help="percorso del dizionario locale")
