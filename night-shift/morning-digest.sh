@@ -36,6 +36,11 @@ if [ -n "$IERI" ] && [ -f "$FUNNEL" ]; then
   while IFS=, read -r data repo cicli vv vr ap fu rg rd gpu deb lez; do
     [ "$data" = "$IERI" ] || continue
     case "$repo" in ""|data) continue ;; esac
+    # (2026-10-01, giro accurato): una riga monca (campo vuoto) mandrebbe in errore
+    # l'aritmetica sotto set -e e la mail morirebbe in silenzio — la peggiore delle
+    # degradazioni. Ogni campo numerico ha il suo default: la riga monca non conta,
+    # la mail parte.
+    cicli=${cicli:-0}; fu=${fu:-0}; rg=${rg:-0}; gpu=${gpu:-0}; deb=${deb:-0}; lez=${lez:-0}
     DELTA=""
     PREV_DEB=$(awk -F, -v r="$repo" -v d="$IERI" '$2==r && $1!="" && $1<d {print $11}' "$FUNNEL" 2>/dev/null | tail -1)
     if [ -n "$PREV_DEB" ] && [ "$PREV_DEB" != "$deb" ]; then

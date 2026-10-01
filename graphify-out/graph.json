@@ -29509,7 +29509,7 @@
       },
       "norm_label": "escape_as()",
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L114"
+      "source_location": "L119"
     },
     {
       "id": "night_shift_morning_digest_sh__entry",
@@ -51501,6 +51501,78 @@
       "norm_label": "test-anonimizza-tools.sh script",
       "source_file": "tests/test-anonimizza-tools.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "label": "2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "_origin": "ast",
+      "community": 791,
+      "community_name": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "label": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "_origin": "ast",
+      "community": 791,
+      "community_name": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 791,
+      "community_name": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 791,
+      "community_name": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 791,
+      "community_name": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 791,
+      "community_name": "2026-10-01 \u2014 riordino-legno-analisi-quattro-letture",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L13"
     },
     {
       "id": "opencode_skills_graphify_skill",
@@ -77441,6 +77513,61 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "target": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "target": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "target": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "target": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_2026_10_01_riordino_legno_analisi_quattro_letture",
+      "target": "docs_campo_2026_10_01_riordino_legno_analisi_quattro_letture_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-01-riordino-legno-analisi-quattro-letture.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_readme",
       "target": "docs_campo_readme_report_dal_campo_come_si_\u00e8_comportato_ai_programmer_a_ogni_uso",
       "relation": "contains",
@@ -93123,7 +93250,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L114",
+      "source_location": "L119",
       "weight": 1.0
     },
     {
@@ -102713,5 +102840,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "2195b3d0ea3b5f6e8808f38e71a1c662b150305b"
+  "built_at_commit": "4c2d145fa8312fedf0adb248690e7cc14146d7d6"
 }
