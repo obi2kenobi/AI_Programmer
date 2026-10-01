@@ -54072,7 +54072,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L272",
+      "source_location": "L273",
       "weight": 1.0
     },
     {
@@ -54084,7 +54084,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L288",
+      "source_location": "L289",
       "weight": 1.0
     },
     {
@@ -101773,5 +101773,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "11bf91bfe8ce67a2ad8d3739db76938e9abf6ad1"
+  "built_at_commit": "9e37cbebd4bff551a40baf1d96b6091c06654eca"
 }

@@ -229,7 +229,8 @@ print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
               log "  read: $FPATH BLOCCATO (server PII spento — fail-closed)"
             elif [ -f "$HERE/tools/anonimizza.py" ]; then
               ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
-              if [ -n "$ANON_OUT" ] && ! printf '%s' "$ANON_OUT" | grep -q "passthrough"; then
+              _cp=$([ -n "$ANON_OUT" ] && ! printf '%s' "$ANON_OUT") || true
+              if grep -q "passthrough" <<<"$_cp"; then
                 RESULT="File $FPATH content:\n$ANON_OUT"
                 log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
               else
