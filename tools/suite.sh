@@ -17,6 +17,9 @@
 # Esce: 0 = tutti i test superati · 1 = almeno un test fallito (o zero test)
 set -uo pipefail
 DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
+# (2026-10-02): --tutti accettato OVUNQUE nella riga (prima o dopo la dir)
+TUTTI=0
+for _a in "$@"; do [ "$_a" = "--tutti" ] && TUTTI=1; done
 cd -- "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco eseguito"; exit 1; }   # (Q3 R3): senza guardia girava la suite del chiamante
 
 # (2026-09-24, E-047): una cache di bytecode FRESCA per ogni giro della suite. Un sabotaggio a mano della
@@ -26,7 +29,7 @@ cd -- "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco esegui
 PYTHONPYCACHEPREFIX=$(mktemp -d "${TMPDIR:-/tmp}/suite-pyc.XXXXXX"); export PYTHONPYCACHEPREFIX
 trap 'case "$PYTHONPYCACHEPREFIX" in */suite-pyc.??????) rm -rf "$PYTHONPYCACHEPREFIX" ;; esac' EXIT
 
-N=0; SUPERATI=0; SALTATI=0; SALTATI_LISTA=""
+N=0; SUPERATI=0; SALTATI=0; SALTATI_LISTA=""; ROSSI_TOT=0
 TOT=$(ls tests/test-*.sh 2>/dev/null | wc -l | tr -d ' ')
 [ "$TOT" -eq 0 ] && { echo "⛔ suite: nessun tests/test-*.sh trovato"; exit 1; }
 T0=$(date +%s)
@@ -44,6 +47,8 @@ for t in tests/test-*.sh; do
   OUT=$(bash "$t" 2>&1) || {
     echo "FALLITO ($N/$TOT): $t"
     echo "$OUT" | tail -10
+    # (--tutti): il quadro completo — il primo rosso non nasconde i fratelli
+    if [ "$TUTTI" -eq 1 ]; then ROSSI_TOT=$(( ROSSI_TOT + 1 )); continue; fi
     exit 1
   }
   # (revisione 10 giri, 2026-09-23): rc 0 non basta — un test che carica una libreria con
@@ -52,14 +57,17 @@ for t in tests/test-*.sh; do
   if ! grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$OUT"; then
     echo "FALLITO ($N/$TOT): $t — verde senza verdetto (manca «N OK, 0 FAIL» con N >= 1)"
     echo "$OUT" | tail -5
+    if [ "$TUTTI" -eq 1 ]; then ROSSI_TOT=$(( ROSSI_TOT + 1 )); continue; fi
     exit 1
   fi
   SUPERATI=$((SUPERATI+1))
 done
 # (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo (N), non i banchi superati — un
 # ciclo che saltava banchi stampava lo stesso «TOT/TOT». Si conta dopo il verdetto, e mancarne uno e' rosso.
-if [ "$((SUPERATI + SALTATI))" -ne "$TOT" ]; then
-  echo "FALLITO: superati $SUPERATI banchi su $TOT — il runner ne ha saltati $((TOT - SUPERATI))"
+if [ "$((SUPERATI + SALTATI + ROSSI_TOT))" -ne "$TOT" ]; then
+  # (--tutti): i rossi VISTI non sono saltati
+  SALTATI_DAVVERO=$(( TOT - SUPERATI - ROSSI_TOT ))
+  echo "FALLITO: superati $SUPERATI banchi su $TOT — il runner ne ha saltati $SALTATI_DAVVERO"
   exit 1
 fi
 DURATA=$(( $(date +%s) - T0 ))
@@ -79,4 +87,8 @@ else
   echo "Budget della suite: non dichiarato in .night-verify — nessuna sentinella del margine"
 fi
 [ "$SALTATI" -gt 0 ] && echo "Saltati $SALTATI banchi che parlano con localhost (SUITE_SENZA_RETE=1, la sandbox del censore):$SALTATI_LISTA"
+if [ "$TUTTI" -eq 1 ] && [ "$ROSSI_TOT" -gt 0 ]; then
+  echo "Suite test hub (--tutti): $SUPERATI/$TOT superati — $ROSSI_TOT rossi, TUTTI visti (nessuno nascosto dal primo rosso)"
+  exit 1
+fi
 echo "Suite test hub: $SUPERATI/$TOT file superati${SALTATI_LISTA:+, $SALTATI saltati (rete, dichiarati)}"   # l'ULTIMA riga: il riepilogo che il turno e i banchi leggono

@@ -112,6 +112,24 @@ printf '[%s 01:00:00] REPO pippo/uno: ciclo\n' "$IERI" > "$RADICE/night-shift.lo
 OUT=$(corri)
 grep -q "GIALLO impara" <<<"$OUT" && ok "lezione manca col turno attivo: giallo" || ko "$OUT"
 
+# Il lavoro (2026-10-02): l'infra sta su ma il sistema consegna? Il funnel dice.
+# ieri con 0 cicli per un repo → ROSSO con issue sua; cicli>0 e GPU=0 → GIALLO.
+IERI_S=$(date -v-1d +%F 2>/dev/null || date -d yesterday +%F)
+mkdir -p "$WORK"
+cat > "$WORK/funnel.csv" <<EOF
+data,repo,cicli,verify_verdi,verify_rosse,pr_aperte,pr_fuse,pr_rigettate,rigetti_det,gpu_s,debiti_aperti,lezioni
+$IERI_S,RepoFermo,0,0,0,0,0,0,0,0,0,0
+$IERI_S,RepoSenzaGPU,10,5,0,0,0,0,0,0,3,0
+EOF
+: > "$RADICE/gh-aperte.txt"
+OUT=$(corri)
+grep -q "ROSSO lavoro RepoFermo" <<<"$OUT" && grep -q "specchio: lavoro RepoFermo — degradato" <<<"$OUT" \
+  && ok "lavoro: 0 cicli ieri → rosso con issue sua" || ko "$(grep -a lavoro <<<"$OUT" | head -2)"
+grep -q "GIALLO lavoro RepoSenzaGPU" <<<"$OUT" \
+  && ok "lavoro: cicli sì, GPU zero → giallo dichiarato" || ko "$(grep -a RepoSenzaGPU <<<"$OUT" | head -1)"
+rm -f "$WORK/funnel.csv"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
