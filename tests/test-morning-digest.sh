@@ -59,8 +59,10 @@ CAPTURED=$(cat "$TMP/captured.txt" 2>/dev/null || echo "")
 
 # 1. i numeri VERI di stanotte, dal bilancino
 grep -q "LA NOTTE (dal bilancino" <<<"$CAPTURED" && ok "la sezione LA NOTTE apre la mail" || ko "manca LA NOTTE: $CAPTURED"
-grep -qF "RepoUno: 8 cicli · PR: 1 aperte, 2 fuse, 1 rigettate · 42s GPU · 1 lezioni" <<<"$CAPTURED" \
-  && ok "riga di RepoUno coi numeri veri" || ko "riga RepoUno: $(grep -o 'RepoUno[^·]*' <<<"$CAPTURED" | head -1)"
+grep -qF "RepoUno: 8 cicli · PR: 1 aperte, 2 fuse, 1 rigettate · 42s GPU ≈ €" <<<"$CAPTURED" \
+  && ok "riga di RepoUno coi numeri veri E il costo stimato in euro" || ko "riga RepoUno: $(grep -o 'RepoUno[^·]*' <<<"$CAPTURED" | head -1)"
+grep -qE '42s GPU ≈ €0\.000[0-9]' <<<"$CAPTURED" \
+  && ok "il costo e' un numero con il modello dichiarato (W x kWh)" || ko "costo: $(grep -o '42s GPU[^·]*' <<<"$CAPTURED")"
 grep -qF "RepoDue" <<<"$CAPTURED" && grep -q "debiti 5→3" <<<"$CAPTURED" \
   && ok "il delta dei debiti sulla notte prima (5→3)" || ko "delta debiti: $(grep -o 'RepoDue.*' <<<"$CAPTURED" | head -1)"
 grep -qF "Mattina $IERI — cicli 15 · fuse 3 · rigettate 1 · 52s GPU" <<<"$CAPTURED" \

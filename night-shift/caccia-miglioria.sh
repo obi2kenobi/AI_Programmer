@@ -182,6 +182,15 @@ TARGET="${MIGLIORIA_FILE:-}"
 # (2026-09-28, la direzione): la roadmap detta il passo — se il passo corrente cita un
 # file tracciato, la caccia lo punta PRIMA di vagare a rotazione. Il collegamento che
 # mancava: il tool c'era, la caccia non lo guardava mai. Solo file veri e non in cooldown.
+# (2026-10-02, approvato da Luca): il GOAL di lungo corso — se la repo ne ha uno
+# (goal-issue.sh), il suo testo entra nel contesto del prompt: la caccia sa PERCHE'
+# lavora, non solo DOVE.
+GOAL_TESTO=""
+if [ -f "$HERE/tools/goal-issue.sh" ]; then
+  G_NUM=$(ls "$DIR/.git/"goal-issue-* 2>/dev/null | head -1 | grep -oE '[0-9]+' | head -1)
+  [ -n "$G_NUM" ] && GOAL_TESTO=$(bash "$HERE/tools/goal-issue.sh" "$DIR" show "$G_NUM" 2>/dev/null | head -3 || true)
+  [ -n "$GOAL_TESTO" ] && log "goal #$G_NUM attivo: $(printf '%s' "$GOAL_TESTO" | head -1 | cut -c1-70)"
+fi
 if [ -z "$TARGET" ] && [ -f "$HERE/tools/roadmap-repo.sh" ]; then
   PASSO_RM=$(bash "$HERE/tools/roadmap-repo.sh" "$DIR" get 2>/dev/null | head -1 || true)
   # (2026-09-29): il letterale del placeholder era morto — ombra del prefisso "(*)" (SC2222):
@@ -260,6 +269,12 @@ Rules:
 - Any comment you write must be ASCII only (English, or Italian without accented letters).
 - BRAINSTORM FIRST: before your first edit, state in one line: 'I am about to [action] because [reason]'. If you cannot fill that line, you are not ready to edit.
 - After writing, read the file back and verify your edit. Evidence before claims, always."
+# (2026-10-02): il goal di lungo corso come CONTESTO (non un compito): la caccia sa perche' lavora
+if [ -n "${GOAL_TESTO:-}" ]; then
+  PROMPT="$PROMPT
+
+Context — the repo's long-term goal (do not chase it directly, just prefer improvements that serve it): $(printf '%s' "$GOAL_TESTO" | head -2 | tr '\n' ' ')"
+fi
 
 AGENTE_RC=0
 if [ "$TRANSFORMED" -eq 0 ]; then

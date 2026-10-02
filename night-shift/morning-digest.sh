@@ -46,14 +46,23 @@ if [ -n "$IERI" ] && [ -f "$FUNNEL" ]; then
     if [ -n "$PREV_DEB" ] && [ "$PREV_DEB" != "$deb" ]; then
       DELTA=" · debiti ${PREV_DEB}→$deb"
     fi
+    # (2026-10-02, approvato da Luca): il costo in EURO della GPU — il modello del
+    # costo e' DICHIARATO: watt stimati del Mac sotto carico GPU (profilo o repos.key:
+    # GPU_WATT, default 45) x ore x prezzo kWh (GPU_EUR_KWH, default 0.35, ISEE non
+    # incluso perche' il contatore non e' del turno). E' una stima onesta, non una
+    # fattura: lo dice ogni volta che appare.
+    GPU_WATT_T=$( { grep -E '^GPU_WATT=' "$KEY" 2>/dev/null || true; } | cut -d= -f2 | xargs); GPU_WATT_T=${GPU_WATT_T:-45}
+    GPU_KWH_T=$( { grep -E '^GPU_EUR_KWH=' "$KEY" 2>/dev/null || true; } | cut -d= -f2 | xargs); GPU_KWH_T=${GPU_KWH_T:-0.35}
+    COSTO=$(python3 -c "print(f'{($gpu / 3600) * ($GPU_WATT_T / 1000) * $GPU_KWH_T:.4f}')" 2>/dev/null || echo "—")
     CORPO_NOTTE="$CORPO_NOTTE
-- $repo: ${cicli} cicli · PR: ${ap} aperte, ${fu} fuse, ${rg} rigettate · ${gpu}s GPU · ${lez} lezioni$DELTA"
+- $repo: ${cicli} cicli · PR: ${ap} aperte, ${fu} fuse, ${rg} rigettate · ${gpu}s GPU ≈ €$COSTO (stima: ${GPU_WATT_T}W × €$GPU_KWH_T/kWh) · ${lez} lezioni$DELTA"
     TOT_CICLI=$(( TOT_CICLI + cicli )); TOT_FUSE=$(( TOT_FUSE + fu ))
     TOT_RIGETTATE=$(( TOT_RIGETTATE + rg )); TOT_GPU=$(( TOT_GPU + gpu ))
   done < "$FUNNEL"
 fi
 if [ -n "$CORPO_NOTTE" ]; then
-  SUBJ="Mattina $IERI — cicli $TOT_CICLI · fuse $TOT_FUSE · rigettate $TOT_RIGETTATE · ${TOT_GPU}s GPU"
+  TOT_COSTO=$(python3 -c "print(f'{($TOT_GPU / 3600) * (45 / 1000) * 0.35:.3f}')" 2>/dev/null || echo "?")
+  SUBJ="Mattina $IERI — cicli $TOT_CICLI · fuse $TOT_FUSE · rigettate $TOT_RIGETTATE · ${TOT_GPU}s GPU ≈ €$TOT_COSTO"
   BODY="LA NOTTE (dal bilancino, letta dal log vero)$CORPO_NOTTE"
 else
   BODY="LA NOTTE: nessuna riga di ieri ($IERI) nel bilancino — il turno e' girato? (la risposta e' nel log)"
@@ -110,6 +119,29 @@ if [ -f "$(dirname "$0")/repos.conf" ]; then
 fi
 if [ -n "$ROADMAP_OUT" ]; then
   BODY="$(printf '%s\n\n---\nLA DIREZIONE (roadmap per repo)\n%s' "$BODY" "$ROADMAP_OUT")"
+fi
+
+# (2026-10-02, approvato da Luca): i GOAL per repo — la issue di lungo corso che
+# da' la direzione alla caccia (goal-issue.sh: .git/goal-issue-N). Nel digest con
+# l'eta': un goal fermo da settimane e' una domanda del mattino.
+GOAL_OUT=""
+if [ -f "$(dirname "$0")/repos.conf" ] && [ -x "$(dirname "$0")/../tools/goal-issue.sh" ]; then
+  while read -r ENTRY _gm; do
+    case "$ENTRY" in ''|'#'*) continue ;; esac
+    NOME="${ENTRY##*/}"
+    G_DIR="$HOME/night-shift-work/$NOME"
+    [ -d "$G_DIR/.git" ] || continue
+    G_SHOW=$(bash "$(dirname "$0")/../tools/goal-issue.sh" "$G_DIR" list 2>/dev/null | head -2) || true
+    [ -n "$G_SHOW" ] || continue
+    G_FILE=$(ls "$G_DIR/.git/"goal-issue-* 2>/dev/null | head -1)
+    G_GIORNI=0
+    [ -n "$G_FILE" ] && G_GIORNI=$(python3 -c 'import os,sys,time; print(int((time.time()-os.path.getmtime(sys.argv[1]))//86400))' "$G_FILE" 2>/dev/null || echo 0)
+    GOAL_OUT="$GOAL_OUT
+- $NOME: $(printf '%s' "$G_SHOW" | head -1 | cut -c1-80) — da $G_GIORNI giorni"
+  done < "$(dirname "$0")/repos.conf"
+fi
+if [ -n "$GOAL_OUT" ]; then
+  BODY="$(printf '%s\n\n---\nI GOAL (issue di lungo corso, per repo)\n%s' "$BODY" "$GOAL_OUT")"
 fi
 
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
