@@ -161,4 +161,28 @@ if [ -f "$WORK/funnel.csv" ]; then
   fi
 fi
 
+
+# ── 8. I SATELLITI SONO VERDI? (2026-10-03, giro C): il turno gira il loro
+# .night-verify ma NESSUNO presidia l'esito — se Magazzino va rosso per 3 giorni
+# lo vede solo chi legge il log. Ora lo specchio guarda le ULTIME verifiche.
+if [ -f "$CONF" ]; then
+  while read -r SAT_ENTRY _sat; do
+    case "$SAT_ENTRY" in ''|'#'*) continue ;; esac
+    NOME="${SAT_ENTRY##*/}"
+    ULTIMO_ESITO=$(grep -a "REPO .*: verifica VERDE\|REPO .*: VERIFICA ROSSA" "$HOME/night-shift.log" 2>/dev/null \
+      | grep -a "$NOME" | tail -1)
+    case "$ULTIMO_ESITO" in
+      *VERIFICA*ROSSA*)
+        verdetto giallo "verify $NOME" "ultima verifica del satellite ROSSA (vedi log)"
+        ;;
+      *verifica*VERDE*)
+        :   # verde: il satellite respira
+        ;;
+      *)
+        verdetto giallo "verify $NOME" "nessuna verifica trovata nel log — il turno lo tocca?"
+        ;;
+    esac
+  done < "$CONF"
+fi
+
 echo "specchio: $VERDI verdi · $GIALLI gialli · $ROSSI rossi$( [ "$ROSSI" -eq 0 ] && printf ' — casa in ordine' || printf ' — %d issue all hub' "$ROSSI" )"
