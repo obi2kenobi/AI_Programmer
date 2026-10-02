@@ -187,7 +187,9 @@ TARGET="${MIGLIORIA_FILE:-}"
 # lavora, non solo DOVE.
 GOAL_TESTO=""
 if [ -f "$HERE/tools/goal-issue.sh" ]; then
-  G_NUM=$(ls "$DIR/.git/"goal-issue-* 2>/dev/null | head -1 | grep -oE '[0-9]+' | head -1)
+  # (2026-10-03): goal-issue.sh salva in .git/goals/issue-N (sottodir), non
+  # .git/goal-issue-N (piatto) — il goal era INVISIBILE alla caccia dal primo giorno
+  G_NUM=$(ls "$DIR/.git/goals/"issue-* 2>/dev/null | head -1 | grep -oE '[0-9]+' | head -1)
   [ -n "$G_NUM" ] && GOAL_TESTO=$(bash "$HERE/tools/goal-issue.sh" "$DIR" show "$G_NUM" 2>/dev/null | head -3 || true)
   [ -n "$GOAL_TESTO" ] && log "goal #$G_NUM attivo: $(printf '%s' "$GOAL_TESTO" | head -1 | cut -c1-70)"
 fi
