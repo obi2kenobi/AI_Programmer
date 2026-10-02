@@ -131,6 +131,18 @@ fi
 
 
 # ── 7. IL LAVORO (2026-10-02): l'infrastruttura sta su ma il sistema CONSEGNA?
+# (giro 4): anche i DEBITI si guardano — tre giorni consecutivi in crescita vogliono
+# dire che il censimento trova piu' di quanti la caccia ne saldi: la domanda e' del
+# mattino, non della notte numero sette.
+DEBT_CRESCITA=0
+ULTIMI_DEB=$(tail -20 "$WORK/funnel.csv" 2>/dev/null | awk -F, '$2=="AI_Programmer" && $11!="" {print $11}' | tail -3)
+N_DEB=$(printf '%s\n' "$ULTIMI_DEB" | grep -c . || true)
+if [ "${N_DEB:-0}" -eq 3 ]; then
+  D1=$(printf '%s\n' "$ULTIMI_DEB" | sed -n 1p); D2=$(printf '%s\n' "$ULTIMI_DEB" | sed -n 2p); D3=$(printf '%s\n' "$ULTIMI_DEB" | sed -n 3p)
+  if [ "$D3" -gt "$D2" ] && [ "$D2" -gt "$D1" ] && [ "$D1" -gt 0 ] 2>/dev/null; then
+    verdetto giallo "debiti" "in crescita da 3 giorni ($D1→$D2→$D3): il censimento trova piu' di quanti la caccia saldi"
+  fi
+fi
 # La notte si misura nel bilancino: se i cicli non partono o la GPU resta a zero
 # per giorni, il turno gira a vuoto e nessuno lo diceva. Il funnel e' la verita'.
 if [ -f "$WORK/funnel.csv" ]; then

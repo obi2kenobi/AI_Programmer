@@ -18,12 +18,15 @@ printf '@10 sleep 0.1\nfalse\n' > "$T/repo/.night-verify-profonda"
 BLOCCO=$(sed -n '/la verifica PROFONDA (.night-verify-profonda/,/^    # (2026-09-25, D17/p' "$HERE/night-shift/night-shift.sh" | sed '$d')
 [ -n "$BLOCCO" ] && ok "blocco profonda trovato nel turno" || { ko "blocco non trovato"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 printf '%s\n' '#!/bin/bash' 'set -uo pipefail' "source $(printf %q "$HERE/night-shift/lib.sh")" 'log() { echo "LOG: $*"; }' \
-  "DIR=$(printf %q "$T/repo")" "REPO=pippo/x" "WORK=$(printf %q "$T/work")" "$BLOCCO" > "$T/ciclo.sh"
+  "DIR=$(printf %q "$T/repo")" "REPO=pippo/x" "WORK=$(printf %q "$T/work")" 'NV_ROSSI=0' 'NV_ROSSI_LISTA=""' "$BLOCCO" 'echo "NV_ROSSI_FINALE=$NV_ROSSI"' > "$T/ciclo.sh"
 
 bash "$T/ciclo.sh" > "$T/out1" 2>&1
 grep -q 'verifica profonda girata (1x al giorno)' "$T/out1" && ok "primo ciclo: la profonda gira e lo dice" || ko "primo ciclo: $(cat "$T/out1")"
 N_ROSSI_PROF=$(grep -c 'LOG: REPO pippo/x: VERIFICA ROSSA (profonda): false' "$T/out1" 2>/dev/null || true)
 [ "${N_ROSSI_PROF:-0}" -eq 1 ] && ok "il rosso della profonda e' dichiarato" || ko "rosso non dichiarato: $(cat "$T/out1")"
+# (giro 5): il rosso sale anche NV_ROSSI — la issue nasce dalla via di sempre. Il banco
+# lo vede stampando le variabili a fine ciclo.
+grep -q 'NV_ROSSI_FINALE=1' "$T/out1" && ok "il rosso della profonda SALE nel conteggio issue (come il commento prometteva)" || ko "NV_ROSSI non toccato dal rosso profondo"
 ls "$T/work/.profonda-pippo_x-"* >/dev/null 2>&1 && ok "il marker del giorno e' scritto (anche col rosso)" || ko "marker mancante"
 
 # secondo ciclo nello stesso giorno: NON gira

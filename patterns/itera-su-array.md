@@ -4,3 +4,8 @@ Il corpo di un `while read` non eredita mai lo stdin del loop — pipe **o file*
 
 
 **Vedi anche**: `copertura-dal-glob` · E-030 in `docs/errori/REGISTRO.md`
+
+2026-10-01 (il blocco del grafo, dal banco): la forma nuda «${ARR[@]}» con l'array VUOTO
+e' «unbound variable» su bash 3.2 sotto set -u — non solo lo stdin e' la questione: la
+FORMA stessa e' il rischio quando l'array puo' nascere vuoto. La forma sicura resta
+«${ARR[@]+"${ARR[@]}"}», sempre; o una guardia esplicita di vuotezza prima del loop.
