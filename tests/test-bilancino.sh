@@ -79,6 +79,17 @@ grep -q '^2026-09-27,alpha,2,1,1,1,2,' "$RADICE/funnel.csv" \
   && ok "dedup: la stessa riga da due fonti conta una volta (fuse=2, non 4)" || ko "$(grep '^2026-09-27,alpha,' "$RADICE/funnel.csv")"
 
 
+# 7. (2026-10-03, giro B): le ISSUE firmano la durata e il bilancino le conta —
+# il GPU era solo dalle migliorie (il 90% del lavoro reale era invisibile)
+echo "[2026-09-27 22:00:00] REPO pippo/alpha: issue #42: (600s) risolutore: fatta" >> "$RADICE/log"
+BILANCINO_CSV="$RADICE/funnel.csv" BILANCINO_WORK="$RADICE/work" BILANCINO_DATA=2026-09-27 \
+  BILANCINO_LOG_EXTRA="$RADICE/log" bash "$BIL" alpha >/dev/null 2>&1
+grep -q '^2026-09-27,alpha,.*,' "$RADICE/funnel.csv" || true
+GPU_ROW=$(grep '^2026-09-27,alpha,' "$RADICE/funnel.csv" | cut -d, -f10)
+[ "$GPU_ROW" -gt 45 ] \
+  && ok "GPU include le issue (miglioria 45s + issue 600s = ${GPU_ROW}s > 45)" || ko "GPU ancora solo migliorie: $GPU_ROW"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
