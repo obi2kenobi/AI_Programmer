@@ -542,6 +542,25 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVI
   && ok "PR giovane: nessuna chiusura per eta' (il limite non morde chi e' in orario)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
 
 
+# (2026-10-03, E-057): il censore risponde MULTIRIGA col recinto ```json — il jq su
+# riga muoreva e 40-56 volte al giorno era «non ha risposto». Estrazione tollerante.
+cat > "$STUB" <<'STUBEOF'
+#!/bin/bash
+MODELLO="$1"; shift; PROMPT=$(cat)
+case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
+  *SMASCHERA*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
+  *CENSORE*) printf 'Ecco il verdetto:\n\n```json\n{\n  "verdetto": "APPROVA",\n  "rischio": "basso",\n  "motivi": ["il diff fa quello che dice"]\n}\n```\n' ;;
+  *) printf '' ;;
+esac
+STUBEOF
+chmod +x "$STUB"
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-multiriga
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "gh pr merge 7" <<<"$OUT" \
+  && ok "E-057: censore multiriga col recinto → verdict estratto, PR fusa" || ko "rc=$RC: $(grep -aE 'APPROVA|RIGETTA|non ha' <<<"$OUT" | head -1)"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

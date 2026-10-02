@@ -31989,6 +31989,18 @@
       "source_location": "L1233"
     },
     {
+      "id": "docs_errori_registro_e_057_il_censore_che_non_risponde_la_stessa_malattia_dell_impara_40_volte_al_giorno",
+      "label": "E-057 Il censore che non risponde: la stessa malattia dell'impara, 40 volte al giorno",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-057 il censore che non risponde: la stessa malattia dell'impara, 40 volte al giorno",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1246"
+    },
+    {
       "id": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
       "label": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
       "_origin": "ast",
@@ -55788,7 +55800,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L507",
+      "source_location": "L526",
       "weight": 1.0
     },
     {
@@ -55800,7 +55812,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L535",
+      "source_location": "L554",
       "weight": 1.0
     },
     {
@@ -78479,6 +78491,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/errori/REGISTRO.md",
       "source_location": "L1233",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_057_il_censore_che_non_risponde_la_stessa_malattia_dell_impara_40_volte_al_giorno",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1246",
       "weight": 1.0
     },
     {
@@ -103743,5 +103766,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "c9f8c4973ba13df5c62daa32f03986fb0e765a53"
+  "built_at_commit": "ba8e314df831cef0eac15f551b7a4e1ff9635cc5"
 }

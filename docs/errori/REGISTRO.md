@@ -1242,3 +1242,16 @@
 - Guardia: la forma canonica `X=$( { grep ... 2>/dev/null || true; } | ...)` con il default a valle; morning-digest.sh cinque siti curati; tests/test-morning-digest.sh caso «chiave senza DIGEST_EMAIL» (16/0).
 - Verifica guardia: banco 16/0 con la chiave muta; grep della forma pericolosa nei set -e: zero rimasti.
 - Aggiramento: nessuno — chi toglie la riga dalla chiave ora riceve il messaggio educato.
+
+## E-057 Il censore che non risponde: la stessa malattia dell'impara, 40 volte al giorno
+
+- Data / sessione: 2026-10-03 (giro A dei tre): 40-56 rinvii al giorno per «non ha risposto in JSON».
+- Famiglia: R2 (la stessa malattia curata nell'impara il giorno prima, non riconosciuta come famiglia finché non ha morso due volte).
+- Chi l'ha trovato: il giorno, contando le ricorrenze nel log (il sintomo era noto, la causa mai guardata).
+- Sintomo: il censore LLM veniva rinviato 40-56 volte al giorno per «non ha risposto in JSON»: la risposta c'era, era multiriga o col recinto ```json, e il jq su riga singola moriva.
+- Causa prossima: `VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty')` — jq su riga non vede JSON spezzato.
+- Causa del ragionamento: la cura dell'impara (#156) ha affrontato il sintomo in UN tool senza spazzare la famiglia: il revisore aveva la stessa forma.
+- Perché non ci ha fermati: il rinvio è transitorio (non chiude la PR, la rimanda) — non era un rosso, era un giallo quotidiano invisibile.
+- Guardia: night-shift/revisore.sh — estrazione tollerante con python (prima graffa alla compagna, recinti tolti) + num_ctx:8192 nella chiamata. tests/test-revisore.sh caso multiriga (57/0).
+- Verifica guardia: banco 57/0 col caso multiriga.
+- Aggiramento: un censore che risponde in prosa pura resterebbe non-parseable — l'esito e' il rinvio transitorio, non il finto verdetto.

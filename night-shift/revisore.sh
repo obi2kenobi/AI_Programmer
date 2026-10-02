@@ -91,7 +91,7 @@ chiedi() { # chiedi <modello> <max-sec> <prompt> → risposta (solo contenuto)
   # (T5#6, 2026-09-23): il prompt (col diff) su stdin, mai negli argomenti
   printf '%s' "$prompt" | jq -cRs --arg m "$modello" \
     --argjson th "$( [ "${THINK:-false}" = "true" ] && echo true || echo false )" \
-    '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:$th, options:{temperature:0}}' \
+    '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:$th, options:{temperature:0, num_ctx:8192}}' \
     | curl -s --max-time "$maxsec" "$API" --data-binary @- \
     | jq -r '.message.content // empty' 2>/dev/null
 }
@@ -487,8 +487,27 @@ CENS_RISP=$(chiedi_rizzo "$DIFF_RIASSUNTO" "${CAT:-sconosciuta}" 2>/dev/null) ||
 if [ -z "$CENS_RISP" ]; then
   CENS_RISP=$(chiedi "$GIUDICE_MODEL" 300 "$CENS_PROMPT")  # il LLM giudica (approva o rigetta)
 fi
-VERDETTO=$(printf '%s' "$CENS_RISP" | jq -r '.verdetto // empty' 2>/dev/null)
-MOTIVI=$(printf '%s' "$CENS_RISP" | jq -r '.motivi[]?' 2>/dev/null | head -5)
+# (2026-10-03, giro A — E-057): il censore LLM ha lo stesso difetto dell'impara:
+# la risposta puo' essere multiriga o col recinto ```json — il jq su riga singola muore,
+# e 40-56 volte al giorno il censore 'non ha risposto'. Stessa cura: estrazione
+# tollerante con python (prima graffa alla sua compagna, recinti tolti).
+CENS_JSON=$(printf '%s' "$CENS_RISP" | python3 -c '
+import json, sys, re
+t = sys.stdin.read().strip()
+t = re.sub(r"^.*?```(?:json)?\s*", "", t, flags=re.S)
+t = re.sub(r"```\s*$", "", t.strip())
+i = t.find("{")
+while i != -1:
+    for j in range(len(t), i, -1):
+        try:
+            obj = json.loads(t[i:j])
+            if isinstance(obj, dict): print(json.dumps(obj)); sys.exit(0)
+        except Exception:
+            continue
+    i = t.find("{", i + 1)
+sys.exit(1)' 2>/dev/null || true)
+VERDETTO=$(printf '%s' "$CENS_JSON" | jq -r '.verdetto // empty' 2>/dev/null)
+MOTIVI=$(printf '%s' "$CENS_JSON" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
 # (2026-09-25, D43, risposta delegata): un verdetto fuori vocabolario ricadeva nel ramo del rigetto — commento pubblico e
 # PR chiusa per una risposta mal formata, che non si annulla. Il dubbio del censore non e' un no: al giorno, in silenzio.
