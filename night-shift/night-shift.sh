@@ -419,7 +419,28 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
       if [ "$PR_SYNC" = "$GH_NON_SO" ]; then
         log "REPO $REPO: ⚠ gh non ha risposto (PR aperte): il riallineo allo standard non si propone in questo ciclo — non al buio"
       elif grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
-        log "REPO $REPO: PR di riallineo gia' aperta — aspetto il merge"
+        # (2026-10-02, approvato da Luca «con gusto»): il riallineo auto-verificato.
+        # La PR di riallineo non aspetta piu' il giorno: si prova l'IDENTITA' — il
+        # branch della PR, dopo un giro di sync-repo --from-local, deve essere ALLINEATO
+        # (cioe': la PR porta ESATTAMENTE lo standard, ne' piu' ne' meno). Se coincide,
+        # e' deterministicamente lo standard: si fonde. Se no, resta al giorno.
+        PR_STD_NUM=$(printf '%s' "$PR_SYNC" | head -1 | grep -oE '[0-9]+' | head -1)
+        PR_STD_BRANCH=$(cd "$DIR" && gh pr view "$PR_STD_NUM" --json headRefName -q .headRefName 2>/dev/null) || PR_STD_BRANCH=""
+        if [ -n "$PR_STD_BRANCH" ]; then
+          VERIFICA_STD=$(cd "$DIR" && git fetch -q origin "$PR_STD_BRANCH" 2>/dev/null             && git checkout -q "origin/$PR_STD_BRANCH" 2>/dev/null             && bash "$HERE/../tools/sync-repo.sh" --from-local "$DIR" 2>&1 | tail -1)
+          git -C "$DIR" checkout -q "$DB" 2>/dev/null || true
+          case "$VERIFICA_STD" in
+            *ALLINEATO*)
+              if (cd "$DIR" && gh pr merge "$PR_STD_NUM" --squash --delete-branch >/dev/null 2>&1); then
+                log "REPO $REPO: riallineo AUTO-FUSO: PR #$PR_STD_NUM verificata identica allo standard (idempotenza sync-repo) — il giorno resta per le altre"
+              else
+                log "REPO $REPO: riallineo verificato ma fusione fallita (PR #$PR_STD_NUM) — al giorno"
+              fi ;;
+            *) log "REPO $REPO: PR di riallineo #$PR_STD_NUM NON e' solo standard (verifica: $(printf '%s' "$VERIFICA_STD" | cut -c1-80)) — al giorno" ;;
+          esac
+        else
+          log "REPO $REPO: PR di riallineo gia' aperta ma illeggibile — aspetto il giorno"
+        fi
       else
         SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
         # (D15, test del sistema completo 2026-09-20): il log diceva «PR di riallineo
