@@ -76,6 +76,11 @@ for COLPO in 1 2; do
   CURL_RC=$?
   R=$(jq -r '.message.content // empty' "$RISPOSTA" 2>/dev/null)
   [ -n "$R" ] && break
+  # (2026-10-02): prompt lungo + registro cresciuto = 4826 token su 4096 di ctx: il
+  # server risponde {error: exceeds context} senza content — e il messaggio storico
+  # diceva «risposta non valida», che e' una bugia. L'errore si dice col suo nome.
+  ERR=$(jq -r '.error.message // empty' "$RISPOSTA" 2>/dev/null)
+  [ -n "$ERR" ] && echo "IMPARA: il server ha detto no: $ERR" >&2
   [ "$COLPO" -eq 2 ] || { echo "IMPARA: colpo 1 senza risposta (curl rc=$CURL_RC) — secondo colpo fra 10s" >&2; sleep 10; }
 done
 rm -f "$RISPOSTA"
