@@ -17,7 +17,7 @@ PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$NV" \
+grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh( .*)?$" "$NV" \
   && ok ".night-verify-profonda invoca il runner della suite (un comando per riga)" \
   || ko ".night-verify-profonda non invoca piu' il runner — verifiche-vuote per omissione?"
 

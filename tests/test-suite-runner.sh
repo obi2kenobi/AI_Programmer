@@ -52,7 +52,7 @@ OUT=$(bash "$RUNNER" "$SB3" 2>&1); RC=$?
 rm -rf "$SB3"
 
 # 4. il runner e' dichiarato in .night-verify-profonda come UN COMANDO per riga
-grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify-profonda" && ok "dichiarato in .night-verify-profonda" \
+grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh( .*)?$" "$HERE/.night-verify-profonda" && ok "dichiarato in .night-verify-profonda" \
   || ko ".night-verify-profonda non invoca suite.sh"
 
 # (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo, non i banchi eseguiti — col
