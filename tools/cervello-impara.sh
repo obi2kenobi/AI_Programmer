@@ -81,11 +81,23 @@ done
 rm -f "$RISPOSTA"
 [ -n "$R" ] || { echo "IMPARA: il modello non ha risposto in due colpi da ${IMPARA_TIMEOUT:-300}s (curl rc=$CURL_RC: 28=timeout, 7=connessione rifiutata — contesa o server muto; dichiarato, non taciuto)" >&2; exit 3; }
 
-# il modello a volte incarta il JSON: si estrae dalla PRIMA { all'ultima } della riga.
-# (revisione 10 giri, 2026-09-23): era `sed 's/.*\({.*}\).*/\1/'` — il `.*` iniziale, avido,
-# arrivava all'ULTIMA graffa aperta: una lezione con `${VAR:-x}` diventava JSON rotto.
-# `grep -o` prende la corrispondenza piu' a sinistra: parte dalla prima graffa.
-R=$(grep -oE '\{.*\}' <<<"$R" | head -1)
+# il modello a volte incarta il JSON — e a volte lo SPEZZA su piu' righe (2026-10-02:
+# tutta la notte di «risposta non valida» per questo): si estrae con python, dalla prima
+# graffa alla sua COMPAGNA, tollerando i recinti ```json e le righe attorno.
+R=$(printf '%s' "$R" | python3 -c '
+import json, sys, re
+t = sys.stdin.read()
+t = re.sub(r"^.*?\`\`\`(?:json)?\s*", "", t.strip(), flags=re.S)
+t = re.sub(r"\`\`\`\s*$", "", t.strip())
+i = t.find("{")
+while i != -1:
+    for j in range(len(t), i, -1):
+        try:
+            json.loads(t[i:j]); print(t[i:j]); sys.exit(0)
+        except Exception:
+            continue
+    i = t.find("{", i + 1)
+sys.exit(1)' 2>/dev/null || true)
 if jq -e '.niente == true' <<<"$R" >/dev/null 2>&1; then
   echo "IMPARA: onesto niente — $(jq -r '.perche' <<<"$R" 2>/dev/null)"
   exit 0
