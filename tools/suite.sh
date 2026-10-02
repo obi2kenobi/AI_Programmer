@@ -67,10 +67,13 @@ echo "Durata della suite: $DURATA s"
 # (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. Il budget di .night-verify si scopriva solo
 # allo sforo, di notte; ora la suite dice la quota usata, e dal 70% avvisa. Avvisa, non boccia (D7, 2026-09-25: il rosso
 # per tempo e' il budget stesso).
-BUDGET=$(sed -n 's/^@\([0-9][0-9]*\) bash tools\/suite\.sh.*/\1/p' .night-verify 2>/dev/null | head -1)
+# (2026-10-02): la suite vive in .night-verify-profonda (1x/giorno): il budget
+# si dichiara li'; il vecchio .night-verify resta come ripiego per chi ce l'ha ancora
+BUDGET=$(sed -n 's/^@\([0-9][0-9]*\) bash tools\/suite\.sh.*/\1/p' .night-verify-profonda 2>/dev/null | head -1)
+[ -n "$BUDGET" ] || BUDGET=$(sed -n 's/^@\([0-9][0-9]*\) bash tools\/suite\.sh.*/\1/p' .night-verify 2>/dev/null | head -1)
 if [ -n "$BUDGET" ] && [ "$BUDGET" -gt 0 ]; then
   PERC=$(( DURATA * 100 / BUDGET ))
-  echo "Budget della suite: $DURATA s su $BUDGET s dichiarati in .night-verify ($PERC%)"
+  echo "Budget della suite: $DURATA s su $BUDGET s dichiarati ($PERC%)"
   [ "$PERC" -ge 70 ] && echo "⚠ SENTINELLA: la suite ha usato il $PERC% del budget (soglia 70%) — il margine si chiude: banchi lenti o budget da rivedere PRIMA dello sforo"
 else
   echo "Budget della suite: non dichiarato in .night-verify — nessuna sentinella del margine"

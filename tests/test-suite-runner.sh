@@ -1,6 +1,6 @@
 #!/bin/bash
 # test-suite-runner.sh — tools/suite.sh sotto prova (E-029: era una riga composta
-# in .night-verify sopravvissuta per caso). Prova il runner su una suite finta:
+# in .night-verify-profonda sopravvissuta per caso). Prova il runner su una suite finta:
 # tutti verdi → rc 0 e riepilogo N/TOT; uno rosso → rc 1, nome e output del file.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
@@ -51,9 +51,9 @@ OUT=$(bash "$RUNNER" "$SB3" 2>&1); RC=$?
 [ "$RC" -eq 1 ] && ok "zero asserzioni («0 OK, 0 FAIL»): ROSSO" || ko "zero asserzioni accettate (rc $RC)"
 rm -rf "$SB3"
 
-# 4. il runner e' dichiarato in .night-verify come UN COMANDO per riga
-grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify" && ok "dichiarato in .night-verify" \
-  || ko ".night-verify non invoca suite.sh"
+# 4. il runner e' dichiarato in .night-verify-profonda come UN COMANDO per riga
+grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify-profonda" && ok "dichiarato in .night-verify-profonda" \
+  || ko ".night-verify-profonda non invoca suite.sh"
 
 # (2026-09-24, terzo ventaglio, V2#2): il riepilogo contava i GIRI del ciclo, non i banchi eseguiti — col
 # ciclo sabotato (`[ "$N" -gt 5 ] && continue`) stampava «170/170 superati» avendone eseguiti 5. Qui 7
@@ -91,15 +91,15 @@ fi
 rm -rf "$SB5"
 
 # 6. (2026-09-24, terzo ventaglio, V4#2): la sentinella del margine. La suite cresceva (136 -> 170 banchi in
-# sei giorni) e il budget di .night-verify si scopriva solo allo sforo, di notte. Ora la suite dice che
+# sei giorni) e il budget di .night-verify-profonda si scopriva solo allo sforo, di notte. Ora la suite dice che
 # quota del budget dichiarato ha usato, e avvisa dal 70%.
 SB6=$(mktemp -d /tmp/test-suite6.XXXXXX); mkdir -p "$SB6/tests"
 printf '#!/bin/bash\nsleep 1\necho "1 OK, 0 FAIL"\n' > "$SB6/tests/test-lento.sh"
-echo '@1 bash tools/suite.sh' > "$SB6/.night-verify"
+echo '@1 bash tools/suite.sh' > "$SB6/.night-verify-profonda"
 OUT=$(bash "$RUNNER" "$SB6" 2>&1)
-grep -c 'SENTINELLA' <<<"$OUT" >/dev/null && ok "oltre il 70% del budget di .night-verify: la sentinella avvisa" \
+grep -c 'SENTINELLA' <<<"$OUT" >/dev/null && ok "oltre il 70% del budget di .night-verify-profonda: la sentinella avvisa" \
   || ko "suite oltre il budget dichiarato e nessun avviso: $OUT"
-echo '@1000 bash tools/suite.sh' > "$SB6/.night-verify"
+echo '@1000 bash tools/suite.sh' > "$SB6/.night-verify-profonda"
 OUT=$(bash "$RUNNER" "$SB6" 2>&1)
 grep -c 'su 1000 s dichiarati' <<<"$OUT" >/dev/null && ! grep -c 'SENTINELLA' <<<"$OUT" >/dev/null \
   && ok "sotto il 70%: la quota si dice, nessun avviso" || ko "sotto soglia: $OUT"

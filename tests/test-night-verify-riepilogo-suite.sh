@@ -9,17 +9,17 @@
 # sempre mostrare un riepilogo N/TOT, sia al successo che al fallimento (con posizione e
 # nome del file che ha fatto fallire).
 # (E-029, 2026-09-18): la riga composta `N=0; TOT=...` e' diventata tools/suite.sh
-# (contratto: .night-verify e' UN COMANDO per riga). Il guardiano segue il codice:
-# controlla la dichiarazione in .night-verify e prova il RUNNER vero.
+# (contratto: .night-verify-profonda e' UN COMANDO per riga). Il guardiano segue il codice:
+# controlla la dichiarazione in .night-verify-profonda e prova il RUNNER vero.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify" \
-  && ok ".night-verify dichiara il runner (un comando per riga, E-029)" \
-  || { ko ".night-verify non invoca piu' il runner della suite — verifiche-vuote in agguato"; echo ""; echo "$PASS OK, $FAIL FAIL"; exit 1; }
+grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$HERE/.night-verify-profonda" \
+  && ok ".night-verify-profonda dichiara il runner (un comando per riga, E-029)" \
+  || { ko ".night-verify-profonda non invoca piu' il runner della suite — verifiche-vuote in agguato"; echo ""; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 grep -Eq '^for t in tests/test-\*\.sh' "$HERE/tools/suite.sh" \
   && ok "il runner contiene il loop su TUTTI i test" \
   || { ko "il runner non loopa su tests/test-*.sh — regressione al bug del giro 4"; echo ""; echo "$PASS OK, $FAIL FAIL"; exit 1; }

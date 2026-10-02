@@ -22,13 +22,15 @@ printf '%s\n' '#!/bin/bash' 'set -uo pipefail' "source $(printf %q "$HERE/night-
 
 bash "$T/ciclo.sh" > "$T/out1" 2>&1
 grep -q 'verifica profonda girata (1x al giorno)' "$T/out1" && ok "primo ciclo: la profonda gira e lo dice" || ko "primo ciclo: $(cat "$T/out1")"
-grep -c 'LOG: REPO pippo/x: VERIFICA ROSSA (profonda): false' "$T/out1" | grep -q '^1$' && ok "il rosso della profonda e' dichiarato" || ko "rosso non dichiarato: $(cat "$T/out1")"
+N_ROSSI_PROF=$(grep -c 'LOG: REPO pippo/x: VERIFICA ROSSA (profonda): false' "$T/out1" 2>/dev/null || true)
+[ "${N_ROSSI_PROF:-0}" -eq 1 ] && ok "il rosso della profonda e' dichiarato" || ko "rosso non dichiarato: $(cat "$T/out1")"
 ls "$T/work/.profonda-pippo_x-"* >/dev/null 2>&1 && ok "il marker del giorno e' scritto (anche col rosso)" || ko "marker mancante"
 
 # secondo ciclo nello stesso giorno: NON gira
 N_PRIMA=$(grep -c 'VERIFICA ROSSA (profonda)' "$T/out1")
 bash "$T/ciclo.sh" > "$T/out2" 2>&1
-grep -qc 'verifica profonda girata' "$T/out2" && ko "la profonda e' girata DUE volte nello stesso giorno" || ok "secondo ciclo: la profonda non si ripete"
+SECONDE=$(grep -c 'verifica profonda girata' "$T/out2" || true)
+[ "${SECONDE:-0}" -eq 0 ] && ok "secondo ciclo: la profonda non si ripete" || ko "la profonda e' girata DUE volte nello stesso giorno"
 grep -q 'LOG: REPO pippo/x: .night-verify (formato script)' "$T/out2" || true   # il per-cycle non e' qui: ok
 
 # giorno dopo: il marker del giorno manca → riparte (si simula togliendo quello di oggi)

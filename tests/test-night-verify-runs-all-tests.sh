@@ -1,25 +1,25 @@
 #!/bin/bash
 # test-night-verify-runs-all-tests.sh — 4° ciclo, SET 1 giro 4: bug reale trovato
-# leggendo la storia di .night-verify (git log -p). La riga delle verifiche dichiarate
+# leggendo la storia di .night-verify-profonda (git log -p). La riga delle verifiche dichiarate
 # del HUB elencava 4 test per nome (test-lib, test-gate-tools, test-ask-wrappers,
 # test-privacy), ferma dall'"autogiro 5/10" — i 23+ file tests/test-*.sh accumulati nei
 # cicli successivi (Set 2, Set 3, questo) non erano mai stati aggiunti: il gate che
 # impone a ogni altra repo "dichiara le tue verifiche" non applicava a se stesso la
 # propria regola ("verifiche-vuote" per omissione, non per il file intero ma per singoli
 # test dimenticati). Sostituito con un loop: verifica che non regredisca a un elenco fisso.
-# (E-029, 2026-09-18): il loop e' migrato in tools/suite.sh (.night-verify e' un
+# (E-029, 2026-09-18): il loop e' migrato in tools/suite.sh (.night-verify-profonda e' un
 # comando per riga) — il guardiano segue il codice dove vive.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-NV="$HERE/.night-verify"
+NV="$HERE/.night-verify-profonda"
 RUNNER="$HERE/tools/suite.sh"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 grep -Eq "^(@[0-9]+ )?bash tools/suite\.sh$" "$NV" \
-  && ok ".night-verify invoca il runner della suite (un comando per riga)" \
-  || ko ".night-verify non invoca piu' il runner — verifiche-vuote per omissione?"
+  && ok ".night-verify-profonda invoca il runner della suite (un comando per riga)" \
+  || ko ".night-verify-profonda non invoca piu' il runner — verifiche-vuote per omissione?"
 
 grep -Eq '^for t in tests/test-\*\.sh' "$RUNNER" \
   && ok "il runner usa un loop su tests/test-*.sh (non un elenco fisso)" \
@@ -27,7 +27,7 @@ grep -Eq '^for t in tests/test-\*\.sh' "$RUNNER" \
 
 # non deve restare nessuna riga che invoca UN test per nome fisso (regressione all'elenco)
 NOMINATI=$(grep -oE 'bash tests/test-[a-z0-9-]+\.sh' "$NV" || true)
-[ -z "$NOMINATI" ] && ok "nessun test è più invocato per nome fisso in .night-verify (solo via runner)" \
+[ -z "$NOMINATI" ] && ok "nessun test è più invocato per nome fisso in .night-verify-profonda (solo via runner)" \
   || ko "test ancora invocati per nome fisso, fuori dal runner: $NOMINATI"
 
 # il glob del runner deve davvero includere OGNI file tests/test-*.sh presente oggi
