@@ -1229,3 +1229,16 @@
 - Guardia: tools/suite.sh — il censimento completo dei banchi DOPO ogni fusione di cure (stavolta li ha beccati in un giorno); e il flusso: le cure si scrivono in un WORKTREE, dove il reset del turno non passa mai.
 - Verifica guardia: censimento del 2026-10-01: le cure ri-applicate in worktree tengono (14/0, 3/0); il censimento gira su TUTTI i banchi, non solo i toccati.
 - Aggiramento: un turno che passi esattamente fra edit e commit nel worktree — non puo': il worktree non e' sua.
+
+## E-056 Il grep a vuoto sotto set -e: la famiglia che uccide le mattine in silenzio
+
+- Data / sessione: 2026-10-01/02 (tre occorrenze in due giorni, tutte nella stessa mail).
+- Famiglia: R2 (uno schema ripetuto senza memoria: ogni sito imparava la lezione da solo).
+- Chi l'ha trovato: il giorno — la prima dal banco (riga monca), la seconda e terza dalla diagnosi dell'euro (GPU_WATT), la quarta e quinta dal giro 2 (DEST, MANIFEST): tutte in morning-digest.sh.
+- Sintomo: la mail del mattino NON parte, senza una riga: `X=$(grep PATTERNE file | ...)` con PATTERN assente fa uscire grep con 1, la pipeline sotto pipefail rende 1 la sostituzione, e set -e uccide lo script prima del messaggio educato previsto poco sotto.
+- Causa prossima: la differenza semantica fra «grep non ha trovato» (esito legittimo, vuoto) e «grep e' morto» — set -e non la vede.
+- Causa del ragionamento: ogni volta si curava IL SITO («la lezione della riga monca, di nuovo») senza nominare la famiglia: cinque siti in un file solo.
+- Perché non ci ha fermati: con la chiave configurata non si vede mai — la mail parte; il difetto aspetta il giorno in cui la configurazione cambia.
+- Guardia: la forma canonica `X=$( { grep ... 2>/dev/null || true; } | ...)` con il default a valle; morning-digest.sh cinque siti curati; tests/test-morning-digest.sh caso «chiave senza DIGEST_EMAIL» (16/0).
+- Verifica guardia: banco 16/0 con la chiave muta; grep della forma pericolosa nei set -e: zero rimasti.
+- Aggiramento: nessuno — chi toglie la riga dalla chiave ora riceve il messaggio educato.

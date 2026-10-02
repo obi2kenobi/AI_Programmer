@@ -103,6 +103,16 @@ MORNING_FUNNEL="$TMP/funnel.csv" bash "$TMP/repo/night-shift/morning-digest.sh" 
 [ "$RC3" -ne 0 ] && ok "invio fallito → esito rosso (rc=$RC3)" || ko "invio fallito ma rc 0"
 cmp -s "$TMP/repo/night-shift/.sal-turni.md" "$TMP/salt.orig" && ok "invio fallito → la memoria del turno RESTA" || ko "memoria svuotata con invio fallito"
 
+# (2026-10-02, G2): la chiave ESISTE ma senza DIGEST_EMAIL — il grep a vuoto sotto
+# set -euo pipefail ammazzava la mail prima del no-op educato. Ora: messaggio, rc 0.
+mv "$TMP/repo/night-shift/repos.conf" "$TMP/repo/night-shift/repos.key.salva" 2>/dev/null
+echo 'ALTRO=x' > "$TMP/repo/night-shift/repos.key"
+OUT=$(MORNING_FUNNEL="$TMP/funnel.csv" bash "$TMP/repo/night-shift/morning-digest.sh" 2>&1); RC5c=$?
+[ "$RC5c" -eq 0 ] && grep -q "DIGEST_EMAIL non configurata" <<<"$OUT" \
+  && ok "chiave senza DIGEST_EMAIL: no-op educato (rc 0), non morte silenziosa" || ko "rc=$RC5c: $(tail -1 <<<"$OUT")"
+mv "$TMP/repo/night-shift/repos.key.salva" "$TMP/repo/night-shift/repos.key" 2>/dev/null
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

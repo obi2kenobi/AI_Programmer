@@ -14,7 +14,7 @@ set -euo pipefail
 KEY="$(cd "$(dirname "$0")" && pwd)/repos.key"
 DEST=""
 if [ -f "$KEY" ]; then
-  DEST=$(grep -E '^DIGEST_EMAIL=' "$KEY" | cut -d= -f2- | xargs)
+  DEST=$( { grep -E '^DIGEST_EMAIL=' "$KEY" 2>/dev/null || true; } | cut -d= -f2- | xargs)
 fi
 if [ -z "$DEST" ]; then
   echo "morning-digest: DIGEST_EMAIL non configurata in repos.key — digest saltato (aggiungi DIGEST_EMAIL=tu@esempio.it)"
@@ -89,7 +89,7 @@ fi
 # (audit-2): i deploy pronti si guardano ORA, non solo via marker del mattino —
 # un pacchetto preparato stamattina scade domattina
 if ls "$HOME"/deploy-pronto/*/MANIFEST.md >/dev/null 2>&1; then
-  BODY="$(printf '%s\n\n---\nDEPLOY PRONTI (il gesto: deploy-ora <repo>)\n%s' "$BODY" "$(grep -H '' "$HOME"/deploy-pronto/*/MANIFEST.md 2>/dev/null | grep -E 'commit:|preparato:' | sed 's|.*/deploy-pronto/||;s|MANIFEST.md:||' | head -8)")"
+  BODY="$(printf '%s\n\n---\nDEPLOY PRONTI (il gesto: deploy-ora <repo>)\n%s' "$BODY" "$( { grep -H '' "$HOME"/deploy-pronto/*/MANIFEST.md 2>/dev/null | grep -E 'commit:|preparato:' || true; } | sed 's|.*/deploy-pronto/||;s|MANIFEST.md:||' | head -8)")"
 fi
 CERVMARK=$({ ls -t "$HOME"/night-shift-work/.cervello-????-??-?? 2>/dev/null || true; } | head -1)
 if [ -n "$CERVMARK" ]; then

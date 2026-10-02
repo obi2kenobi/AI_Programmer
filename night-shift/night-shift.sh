@@ -356,6 +356,11 @@ shift_repo() {
           else
             NV_ROSSI_PROF=1
             log "REPO $REPO: VERIFICA ROSSA (profonda): $NV_CMD"
+            # (2026-10-02, giro 5): il commento diceva «il ciclo-vivo lo fa diventare
+            # issue» ma i rossi della profonda NON entravano in NV_ROSSI: la bugia
+            # era silenziosa. Ora entrano — la issue nasce dalla stessa via di sempre.
+            NV_ROSSI=$(( NV_ROSSI + 1 ))
+            NV_ROSSI_LISTA="$NV_ROSSI_LISTA; profonda: $NV_CMD"
           fi
         done < "$DIR/.night-verify-profonda"
         printf '%s\n' "$(date '+%F %T') rosse=$NV_ROSSI_PROF" > "$PROF_MARKER"
@@ -1447,6 +1452,25 @@ done
 RAMI_LOCALI_DOPO=$(git -C "$HERE" branch --format='%(refname:short)' | grep -c . || true)
 [ "$RAMI_LOCALI_PRIMA" -gt "$RAMI_LOCALI_DOPO" ] \
   && log "pulizia locale: $(( RAMI_LOCALI_PRIMA - RAMI_LOCALI_DOPO )) rami gia' fusi tolti dal clone ($RAMI_LOCALI_DOPO restanti)"
+# (2026-10-02, giro 3): anche i cloni SATTELLITI accumulano rami (misurati: 2-3 caccia
+# rifiutate a repo, fermi da giorni) — la scopa fin qui puliva solo l'hub. Stessa regola,
+# tutti i cloni del turno: i rami gia' fusi si tolgono, mai main, mai il ramo corrente.
+TOT_SAT_TOLTI=0
+if [ -f "$HERE/repos.conf" ]; then
+  while read -r SAT_ENTRY _sat; do
+    case "$SAT_ENTRY" in ''|'#'*) continue ;; esac
+    SAT_DIR="$WORK/${SAT_ENTRY##*/}"
+    [ -d "$SAT_DIR/.git" ] || continue
+    git -C "$SAT_DIR" fetch -q origin 2>/dev/null || true
+    for B in $(git -C "$SAT_DIR" branch --format='%(refname:short)' 2>/dev/null | grep -vE '^(main|master)$'); do
+      [ "$B" = "$(git -C "$SAT_DIR" branch --show-current 2>/dev/null)" ] && continue
+      if git -C "$SAT_DIR" merge-base --is-ancestor "$B" "origin/main" 2>/dev/null; then
+        git -C "$SAT_DIR" branch -D "$B" >/dev/null 2>&1 && TOT_SAT_TOLTI=$(( TOT_SAT_TOLTI + 1 ))
+      fi
+    done
+  done < "$HERE/repos.conf"
+fi
+[ "$TOT_SAT_TOLTI" -gt 0 ] && log "pulizia locale satelliti: $TOT_SAT_TOLTI rami gia' fusi tolti dai cloni del turno"
 GLOBAL_RC=0
 TOT_PR_CREATED=0
 TOT_PROPOSTE=0
