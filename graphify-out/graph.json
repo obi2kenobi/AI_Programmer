@@ -14,7 +14,7 @@
       "file_type": "code",
       "norm_label": "h",
       "source_file": "tools/dashboard.py",
-      "source_location": "L392"
+      "source_location": "L408"
     },
     {
       "id": "tools_anonimizza_anonimizza",
@@ -854,7 +854,7 @@
       "file_type": "code",
       "norm_label": "andamento()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L255"
+      "source_location": "L265"
     },
     {
       "id": "tools_dashboard_barrette",
@@ -866,7 +866,7 @@
       "file_type": "code",
       "norm_label": "barrette()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L169"
+      "source_location": "L179"
     },
     {
       "id": "tools_dashboard_h_do_get",
@@ -878,7 +878,7 @@
       "file_type": "code",
       "norm_label": ".do_get()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L393"
+      "source_location": "L409"
     },
     {
       "id": "tools_dashboard_h_log_message",
@@ -890,7 +890,7 @@
       "file_type": "code",
       "norm_label": ".log_message()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L396"
+      "source_location": "L412"
     },
     {
       "id": "tools_dashboard_leggi_log",
@@ -914,7 +914,7 @@
       "file_type": "code",
       "norm_label": "lettura_debiti()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L244"
+      "source_location": "L254"
     },
     {
       "id": "tools_dashboard_lettura_funnel",
@@ -926,7 +926,7 @@
       "file_type": "code",
       "norm_label": "lettura_funnel()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L227"
+      "source_location": "L237"
     },
     {
       "id": "tools_dashboard_page",
@@ -938,7 +938,7 @@
       "file_type": "code",
       "norm_label": "page()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L283"
+      "source_location": "L293"
     },
     {
       "id": "tools_dashboard_riga_data",
@@ -986,7 +986,7 @@
       "file_type": "code",
       "norm_label": "verdetto()",
       "source_file": "tools/dashboard.py",
-      "source_location": "L190"
+      "source_location": "L200"
     },
     {
       "id": "sal_2026_08_27_10_trenta_giri_n_2_il_collegamento_rotto_ero_io",
@@ -53507,7 +53507,7 @@
       "source_location": "L1"
     },
     {
-      "id": "tools_dashboard_rationale_170",
+      "id": "tools_dashboard_rationale_180",
       "label": "sparkline SVG del debito nel tempo \u2014 analisi vera, dati veri.",
       "_origin": "ast",
       "community": 9,
@@ -53515,10 +53515,10 @@
       "file_type": "rationale",
       "norm_label": "sparkline svg del debito nel tempo \u2014 analisi vera, dati veri.",
       "source_file": "tools/dashboard.py",
-      "source_location": "L170"
+      "source_location": "L180"
     },
     {
-      "id": "tools_dashboard_rationale_191",
+      "id": "tools_dashboard_rationale_201",
       "label": "LA RIGA LAMPANTE: la pagina giudica, con il motivo. Ordine di gravita': fermo >\u2026",
       "_origin": "ast",
       "community": 9,
@@ -53526,10 +53526,10 @@
       "file_type": "rationale",
       "norm_label": "la riga lampante: la pagina giudica, con il motivo. ordine di gravita': fermo >...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L191"
+      "source_location": "L201"
     },
     {
-      "id": "tools_dashboard_rationale_228",
+      "id": "tools_dashboard_rationale_238",
       "label": "La lettura CALCOLATA: la prima anomalia vera del funnel, non un consiglio\u2026",
       "_origin": "ast",
       "community": 9,
@@ -53537,10 +53537,10 @@
       "file_type": "rationale",
       "norm_label": "la lettura calcolata: la prima anomalia vera del funnel, non un consiglio...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L228"
+      "source_location": "L238"
     },
     {
-      "id": "tools_dashboard_rationale_245",
+      "id": "tools_dashboard_rationale_255",
       "label": "Il verdetto calcolato della curva del debito: scende, sale o sta ferma nella\u2026",
       "_origin": "ast",
       "community": 9,
@@ -53548,10 +53548,10 @@
       "file_type": "rationale",
       "norm_label": "il verdetto calcolato della curva del debito: scende, sale o sta ferma nella...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L245"
+      "source_location": "L255"
     },
     {
-      "id": "tools_dashboard_rationale_256",
+      "id": "tools_dashboard_rationale_266",
       "label": "(2026-09-28, il bilancino) La storia che il funnel del giorno non racconta:\u2026",
       "_origin": "ast",
       "community": 9,
@@ -53559,10 +53559,10 @@
       "file_type": "rationale",
       "norm_label": "(2026-09-28, il bilancino) la storia che il funnel del giorno non racconta:...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L256"
+      "source_location": "L266"
     },
     {
-      "id": "tools_dashboard_rationale_284",
+      "id": "tools_dashboard_rationale_294",
       "label": "Rende i numeri in una pagina HTML sola, senza dipendenze. v5: verdetto in cima,\u2026",
       "_origin": "ast",
       "community": 9,
@@ -53570,7 +53570,7 @@
       "file_type": "rationale",
       "norm_label": "rende i numeri in una pagina html sola, senza dipendenze. v5: verdetto in cima,...",
       "source_file": "tools/dashboard.py",
-      "source_location": "L284"
+      "source_location": "L294"
     },
     {
       "id": "tools_dashboard_rationale_31",
@@ -62400,7 +62400,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L395",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -62412,7 +62412,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L395",
+      "source_location": "L411",
       "weight": 1.0
     },
     {
@@ -62424,7 +62424,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L344",
+      "source_location": "L360",
       "weight": 1.0
     },
     {
@@ -62436,7 +62436,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L377",
+      "source_location": "L393",
       "weight": 1.0
     },
     {
@@ -62448,7 +62448,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L384",
+      "source_location": "L400",
       "weight": 1.0
     },
     {
@@ -62460,7 +62460,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L384",
+      "source_location": "L400",
       "weight": 1.0
     },
     {
@@ -62472,7 +62472,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L387",
+      "source_location": "L403",
       "weight": 1.0
     },
     {
@@ -62496,7 +62496,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L68",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -62508,7 +62508,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/dashboard.py",
-      "source_location": "L72",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -64044,7 +64044,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "tools/dashboard.py",
-      "source_location": "L402",
+      "source_location": "L418",
       "weight": 1.0
     },
     {
@@ -92185,7 +92185,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L169",
+      "source_location": "L179",
       "weight": 1.0
     },
     {
@@ -92196,7 +92196,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L190",
+      "source_location": "L200",
       "weight": 1.0
     },
     {
@@ -92207,7 +92207,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L227",
+      "source_location": "L237",
       "weight": 1.0
     },
     {
@@ -92218,7 +92218,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L244",
+      "source_location": "L254",
       "weight": 1.0
     },
     {
@@ -92229,7 +92229,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L255",
+      "source_location": "L265",
       "weight": 1.0
     },
     {
@@ -92240,7 +92240,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L283",
+      "source_location": "L293",
       "weight": 1.0
     },
     {
@@ -92273,7 +92273,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L392",
+      "source_location": "L408",
       "weight": 1.0
     },
     {
@@ -101524,7 +101524,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L393",
+      "source_location": "L409",
       "weight": 1.0
     },
     {
@@ -101535,7 +101535,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L396",
+      "source_location": "L412",
       "weight": 1.0
     },
     {
@@ -101770,69 +101770,69 @@
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_170",
+      "source": "tools_dashboard_rationale_180",
       "target": "tools_dashboard_barrette",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L170",
+      "source_location": "L180",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_191",
+      "source": "tools_dashboard_rationale_201",
       "target": "tools_dashboard_verdetto",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L191",
+      "source_location": "L201",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_228",
+      "source": "tools_dashboard_rationale_238",
       "target": "tools_dashboard_lettura_funnel",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L228",
+      "source_location": "L238",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_245",
+      "source": "tools_dashboard_rationale_255",
       "target": "tools_dashboard_lettura_debiti",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L245",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_256",
+      "source": "tools_dashboard_rationale_266",
       "target": "tools_dashboard_andamento",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L256",
+      "source_location": "L266",
       "weight": 1.0
     },
     {
-      "source": "tools_dashboard_rationale_284",
+      "source": "tools_dashboard_rationale_294",
       "target": "tools_dashboard_page",
       "relation": "rationale_for",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/dashboard.py",
-      "source_location": "L284",
+      "source_location": "L294",
       "weight": 1.0
     },
     {
@@ -103766,5 +103766,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3b1c82b963e83393ab261bd861491946a84536b6"
+  "built_at_commit": "e4086733ca857a2576518292b1f0d51c8690516d"
 }

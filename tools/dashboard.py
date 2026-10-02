@@ -63,7 +63,10 @@ def stats():
     F = s["funnel"]
     F["finestre"] = F["trasformatore"] = F["agente_ok"] = F["agente_morto"] = 0
     F["gate"] = F["consegne"] = F["push_fail"] = F["approvate"] = F["rigettate"] = 0
-    F["lente_muta"] = 0   # (2026-09-24, R4 R2): la firma «LENTE MUTA» del turno (dal 24/9) non la contava nessuno
+    F["lente_muta"] = 0
+    # (2026-10-03, giro F): le firme NUOVE — issue, goal, riallineo auto-fuso
+    F["issue_lavorate"] = 0; F["goal_attivo"] = ""
+    s["gpu_issue"] = 0; s["riallineo_auto"] = 0
     ultima_apertura = -1
     s["tot"] = turni_ruotati()
     rosse = []
@@ -98,6 +101,13 @@ def stats():
                 import re as _re
                 m = _re.search(r"\((\d+)s GPU\)", l)
                 if m: s.setdefault("gpu_sec", 0); s["gpu_sec"] += int(m.group(1))
+            # (2026-10-03): le issue firmano (Ns) — il costo GPU include anche loro
+            import re as _re2
+            m = _re2.search(r"issue #(\d+): \((\d+)s\)", l)
+            if m: F["issue_lavorate"] += 1; s["gpu_issue"] += int(m.group(2))
+            m = _re2.search(r"goal #(\d+) attivo: (.+)", l)
+            if m and not s["goal_attivo"]: s["goal_attivo"] = f"#{m.group(1)}: {m.group(2)[:60]}"
+            if "riallineo AUTO-FUSO" in l: s["riallineo_auto"] += 1
             if "commit/push" in l and "fallito" in l:
                 F["push_fail"] += 1; s["push_err"].append(l.strip()[1:200])
             if "PR di" in l and "→" in l:
@@ -334,8 +344,14 @@ def page(s):
     ver = "".join(f"<div style='color:#e74c3c'>❌ {v}</div>" for v in s["verifiche"]) or "<div style='color:#4ecca3'>✅ tutte verdi</div>"
     log = "".join(f"<div style='padding:2px 0;border-bottom:1px solid #1a1a2e;color:#8899aa'>{r}</div>" for r in reversed(s["recent"][-15:]))
     ollama = f"🧠 {s.get('modello', 'spento')}"
-    if s.get("gpu_sec"):
-        ollama += f" · <span style='color:#0af'>{s['gpu_sec']}s GPU spesi oggi</span>"
+    gpu_tot = s.get("gpu_sec", 0) + s.get("gpu_issue", 0)
+    if gpu_tot:
+        parts = []
+        if s.get("gpu_sec"): parts.append(f"{s['gpu_sec']}s migliorie")
+        if s.get("gpu_issue"): parts.append(f"+{s['gpu_issue']}s issue")
+        ollama += f" · <span style='color:#0af'>{gpu_tot}s GPU oggi ({' + '.join(parts)})</span>"
+    if s.get("goal_attivo"):
+        ollama += f" · <span style='color:#4ecca3'>🎯 {s['goal_attivo']}</span>"
     if s["ollama_wedge"]:
         ollama += f" · <span style='color:#e74c3c'>{s['ollama_wedge']} wedge oggi</span>"
     if s["ollama_revive"]:
