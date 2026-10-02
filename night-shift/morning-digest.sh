@@ -30,29 +30,25 @@ IERI=$(date -v-1d +%F 2>/dev/null || date -d yesterday +%F 2>/dev/null || echo "
 SUBJ="Mattina del sistema — $(date '+%Y-%m-%d')"
 
 # LA NOTTE: le righe di IERI dal bilancino, col delta debiti sulla notte precedente
+# (2026-10-02, approvato da Luca): il costo in EURO della GPU — il modello del
+# costo e' DICHIARATO: watt stimati (GPU_WATT, default 45) x ore x kWh (GPU_EUR_KWH,
+# default 0.35). (2026-10-03, giro K): calcolati UNA VOLTA fuori dal loop — erano
+# dentro e facevano 2 grep per ogni repo (6 totali invece di 2).
+GPU_WATT_T=$( { grep -E '^GPU_WATT=' "$KEY" 2>/dev/null || true; } | cut -d= -f2 | xargs); GPU_WATT_T=${GPU_WATT_T:-45}
+GPU_KWH_T=$( { grep -E '^GPU_EUR_KWH=' "$KEY" 2>/dev/null || true; } | cut -d= -f2 | xargs); GPU_KWH_T=${GPU_KWH_T:-0.35}
 CORPO_NOTTE=""
 TOT_CICLI=0; TOT_FUSE=0; TOT_RIGETTATE=0; TOT_GPU=0
 if [ -n "$IERI" ] && [ -f "$FUNNEL" ]; then
   while IFS=, read -r data repo cicli vv vr ap fu rg rd gpu deb lez; do
     [ "$data" = "$IERI" ] || continue
     case "$repo" in ""|data) continue ;; esac
-    # (2026-10-01, giro accurato): una riga monca (campo vuoto) mandrebbe in errore
-    # l'aritmetica sotto set -e e la mail morirebbe in silenzio — la peggiore delle
-    # degradazioni. Ogni campo numerico ha il suo default: la riga monca non conta,
-    # la mail parte.
+    # (2026-10-01, giro accurato): una riga monca non conta, la mail parte
     cicli=${cicli:-0}; fu=${fu:-0}; rg=${rg:-0}; gpu=${gpu:-0}; deb=${deb:-0}; lez=${lez:-0}
     DELTA=""
     PREV_DEB=$(awk -F, -v r="$repo" -v d="$IERI" '$2==r && $1!="" && $1<d {print $11}' "$FUNNEL" 2>/dev/null | tail -1)
     if [ -n "$PREV_DEB" ] && [ "$PREV_DEB" != "$deb" ]; then
       DELTA=" · debiti ${PREV_DEB}→$deb"
     fi
-    # (2026-10-02, approvato da Luca): il costo in EURO della GPU — il modello del
-    # costo e' DICHIARATO: watt stimati del Mac sotto carico GPU (profilo o repos.key:
-    # GPU_WATT, default 45) x ore x prezzo kWh (GPU_EUR_KWH, default 0.35, ISEE non
-    # incluso perche' il contatore non e' del turno). E' una stima onesta, non una
-    # fattura: lo dice ogni volta che appare.
-    GPU_WATT_T=$( { grep -E '^GPU_WATT=' "$KEY" 2>/dev/null || true; } | cut -d= -f2 | xargs); GPU_WATT_T=${GPU_WATT_T:-45}
-    GPU_KWH_T=$( { grep -E '^GPU_EUR_KWH=' "$KEY" 2>/dev/null || true; } | cut -d= -f2 | xargs); GPU_KWH_T=${GPU_KWH_T:-0.35}
     COSTO=$(python3 -c "print(f'{($gpu / 3600) * ($GPU_WATT_T / 1000) * $GPU_KWH_T:.4f}')" 2>/dev/null || echo "—")
     CORPO_NOTTE="$CORPO_NOTTE
 - $repo: ${cicli} cicli · PR: ${ap} aperte, ${fu} fuse, ${rg} rigettate · ${gpu}s GPU ≈ €$COSTO (stima: ${GPU_WATT_T}W × €$GPU_KWH_T/kWh) · ${lez} lezioni$DELTA"
@@ -61,7 +57,7 @@ if [ -n "$IERI" ] && [ -f "$FUNNEL" ]; then
   done < "$FUNNEL"
 fi
 if [ -n "$CORPO_NOTTE" ]; then
-  TOT_COSTO=$(python3 -c "print(f'{($TOT_GPU / 3600) * (45 / 1000) * 0.35:.3f}')" 2>/dev/null || echo "?")
+  TOT_COSTO=$(python3 -c "print(f'{($TOT_GPU / 3600) * ($GPU_WATT_T / 1000) * $GPU_KWH_T:.3f}')" 2>/dev/null || echo "?")
   SUBJ="Mattina $IERI — cicli $TOT_CICLI · fuse $TOT_FUSE · rigettate $TOT_RIGETTATE · ${TOT_GPU}s GPU ≈ €$TOT_COSTO"
   BODY="LA NOTTE (dal bilancino, letta dal log vero)$CORPO_NOTTE"
 else
