@@ -108,7 +108,23 @@ fi
 if diff -q "$HUB_CLAUDE" "$TMP/CLAUDE.md" >/dev/null 2>&1; then
   # (Q2 R1): in remoto gli hook non si confrontano (solo --from-local): lo si dice, non «e gli hook pure»
   if [ -n "$LOCAL_DIR" ]; then HOOK_ESITO="e gli hook pure"; else HOOK_ESITO="hook NON confrontati: solo --from-local li legge"; fi
-  echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub ($HOOK_ESITO)"
+  # (2026-10-03, giro H): anche i PATTERN si confrontano in --from-local — 14 su 66
+  # divergevano senza che il check lo dicesse (le lezioni dell'hub mai arrivate)
+  PAT_DIV=0
+  if [ -n "$LOCAL_DIR" ]; then
+    for pf in "$HERE"/patterns/*.md; do
+      [ -f "$pf" ] || continue
+      pn=$(basename "$pf")
+      if [ -f "$LOCAL_DIR/patterns/$pn" ] && ! cmp -s "$pf" "$LOCAL_DIR/patterns/$pn" 2>/dev/null; then
+        PAT_DIV=$((PAT_DIV+1))
+      fi
+    done
+  fi
+  if [ "$PAT_DIV" -gt 0 ]; then
+    echo "sync-repo: DIVERGENTE — CLAUDE.md e hook ok ma $PAT_DIV pattern dell'hub divergono nel satellite"
+    exit 1
+  fi
+  echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub ($HOOK_ESITO${PAT_DIV:+, $PAT_DIV pattern diversi})"
   # (D12): il CLAUDE.md e' il canarino, non lo standard. Con --standard si prosegue e si
   # confronta il sistema intero (skill, agenti, hook): prima l'uscita qui rendeva
   # invisibile la deriva di tutto cio' che non e' CLAUDE.md.
@@ -200,6 +216,18 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   done <<< "$SCRITTI"
   PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"; fermati_se_proprie "$PROPRIE" "$REPO"
   cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null  # D8: versione satellite
+  # (2026-10-03, giro H): i PATTERN aggiornati dell'hub si propagano — 14 su 66 erano
+  # divergenti (le lezioni di ottobre mai arrivate ai satellitari). Solo pattern che
+  # esistono NELL'HUB: i pattern propri del satellite restano intoccabili.
+  PAT_AGG=0
+  for pf in "$HERE"/patterns/*.md; do
+    [ -f "$pf" ] || continue
+    pn=$(basename "$pf")
+    if ! cmp -s "$pf" "patterns/$pn" 2>/dev/null; then
+      cp "$pf" "patterns/$pn" && git add "patterns/$pn" 2>/dev/null && PAT_AGG=$((PAT_AGG+1))
+    fi
+  done
+  [ "$PAT_AGG" -gt 0 ] && echo "sync-repo: $PAT_AGG pattern aggiornati dall'hub"
   for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
     case "$ITEM" in
