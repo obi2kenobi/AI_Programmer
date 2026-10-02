@@ -101,6 +101,19 @@ kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
   && ok "lezione con \${VAR:-x} dentro → estratta intera, nota creata (in coda di approvazione)" || ko "lezione con graffe persa: rc=$RC out=[$OUT]"
 
 
+# ── 4b. (2026-10-02): il modello SPEZZA il JSON su piu' righe con recinto ```json —
+# tutta la notte di «risposta non valida» per questo. L'estrazione prende dalla prima
+# graffa alla sua compagna, recinti tollerati.
+mkmock
+{ printf '%s\n' 'Ecco la lezione:' '' '```json' '{' '  "titolo": "Lezione multiriga", "problema": "x", "soluzione": "y", "quando": "z", "link": []' '}' '```'; } > "$TMP/risp4b.corpo"
+jq -cn --rawfile c "$TMP/risp4b.corpo" '{message:{content:$c}}' > "$TMP/risp4b.txt"
+avvia "$TMP/risp4b.txt"
+OUT=$(cd "$TMP/repo" && NIGHT_API_URL="http://127.0.0.1:$(cat "$TMP/port")/api/chat" NIGHT_LOG="$TMP/log" bash tools/cervello-impara.sh 2>&1); RC=$?
+kill "$MOCKPID" 2>/dev/null; wait "$MOCKPID" 2>/dev/null; MOCKPID=""
+NOTA4B=$(ls "$TMP/night-shift-work/cervello-da-approvare/"lezione-lezione-multiriga*.md 2>/dev/null | head -1)
+[ "$RC" -eq 0 ] && [ -n "$NOTA4B" ] \
+  && ok "JSON multiriga col recinto: lezione estratta e in coda" || ko "multiriga: rc=$RC nota=[$NOTA4B] out=[$OUT]"
+
 # ── 5. (2026-09-25, settimo ventaglio, V4 R5): lo slug si faceva con `tr`, che sul GNU lavora in byte: «Perché è così»
 # diventava «perchuu-ui-cosuu» (il byte comune delle vocali accentate finiva su «u»), e la chiave anti-doppione cambiava
 # con la piattaforma. Ora python, senza accenti e senza maiuscole, come le ancore di sal-indice.
