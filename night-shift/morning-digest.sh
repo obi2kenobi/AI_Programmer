@@ -133,7 +133,7 @@ if [ -f "$(dirname "$0")/repos.conf" ] && [ -x "$(dirname "$0")/../tools/goal-is
     [ -d "$G_DIR/.git" ] || continue
     G_SHOW=$(bash "$(dirname "$0")/../tools/goal-issue.sh" "$G_DIR" list 2>/dev/null | head -2) || true
     [ -n "$G_SHOW" ] || continue
-    G_FILE=$(ls "$G_DIR/.git/"goal-issue-* 2>/dev/null | head -1)
+    G_FILE=$(ls "$G_DIR/.git/goals/"issue-* 2>/dev/null | head -1)
     G_GIORNI=0
     [ -n "$G_FILE" ] && G_GIORNI=$(python3 -c 'import os,sys,time; print(int((time.time()-os.path.getmtime(sys.argv[1]))//86400))' "$G_FILE" 2>/dev/null || echo 0)
     GOAL_OUT="$GOAL_OUT
