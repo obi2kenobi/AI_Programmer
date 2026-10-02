@@ -80,12 +80,12 @@ else
   OUT=$(ai_timeout "$TIMEOUT" claude -p "$DOMANDA" ${MODEL_ARGS[@]+"${MODEL_ARGS[@]}"} </dev/null 2>"$ERRF")
 fi
 RC=$?
-ERR=$(cat "$ERRF")
 set -e
 if [ "$RC" -eq 124 ]; then
   echo "ask-opus: timeout dopo ${TIMEOUT}s (claude -p non ha risposto in tempo — ASK_TIMEOUT per allungarlo)" >&2
   exit 1
 elif [ "$RC" -ne 0 ]; then
+  ERR=$(cat "$ERRF")
   OUT="$OUT${ERR:+
 $ERR}"
   echo "ask-opus: $OUT" >&2
@@ -98,5 +98,4 @@ $ERR}"
     && exit 2
   exit 1
 fi
-[ -n "$ERR" ] && printf '%s\n' "$ERR" >&2
 echo "$OUT"
