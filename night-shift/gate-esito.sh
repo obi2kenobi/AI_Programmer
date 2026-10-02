@@ -66,10 +66,9 @@ if idx is None:
     print(f"nessuna riga in attesa di esito per {repo} #{pr}", file=sys.stderr)
     sys.exit(1)
 
-campi = righe[idx].split(",")
 # formato storico a 6 campi: manca la colonna, si aggiunge con la sua virgola.
 # formato attuale a 7 campi: la virgola c'è già (campo vuoto), si scrive solo il valore.
-righe[idx] = righe[idx] + (f",{esito}" if len(campi) == 6 else esito)
+righe[idx] = righe[idx] + (f",{esito}" if len(righe[idx].split(",")) == 6 else esito)
 with io.open(csv, "w", encoding="utf-8") as f:
     f.write("\n".join(righe) + "\n")
 print(f"esito registrato: {repo} #{pr} → {esito}")
