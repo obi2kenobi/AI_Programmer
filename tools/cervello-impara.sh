@@ -71,7 +71,7 @@ RISPOSTA=$(mktemp /tmp/impara-risp.XXXXXX)
 R=""; CURL_RC=0
 for COLPO in 1 2; do
   printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
-    '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:4096}}' \
+    '. as $p | {model:$m, think:false, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0, num_ctx:8192}}' \
     | curl -s --max-time "${IMPARA_TIMEOUT:-300}" -o "$RISPOSTA" "$API" --data-binary @- 2>/dev/null
   CURL_RC=$?
   R=$(jq -r '.message.content // empty' "$RISPOSTA" 2>/dev/null)
