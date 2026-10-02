@@ -43,9 +43,13 @@ PR_APERTE=$(conto ": PR di .*→")
 PR_FUSE=$(conto "censore ha DELIBERATO il merge")
 PR_RIGETTATE=$(conto "censore ha RIGETTATO la PR")
 RIGETTI_DET=$(conto "rigetto deterministico")
-GPU_S=$(printf '%s\n' "$GIORNO" | grep -aoE '\([0-9]+s GPU\)' | grep -oE '[0-9]+' | awk '{s+=$1} END{print s+0}')
-# il conteggio gpu firma solo le migliorie concluse ((Ns GPU)): e' un minimo dichiarato,
-# non il costo totale della notte — il turno non firma ancora i secondi delle issue
+# (2026-10-03, giro B): il funnel conta anche le ISSUE — il turno firma la durata di
+# ogni issue come "issue #N: (Ns)" — prima solo le migliorie portavano la firma GPU,
+# e il costo reale della notte era sotto-dichiarato del 90% (le issue sono il lavoro
+# principale). Ora: GPU_MIGLIORIA dalle firme (Ns GPU) + ISSUE_DALLE firme (Ns) delle issue.
+GPU_MIGL=$(printf '%s\n' "$GIORNO" | grep -aoE '\([0-9]+s GPU\)' | grep -oE '[0-9]+' | awk '{s+=$1} END{print s+0}')
+GPU_ISSUE=$(printf '%s\n' "$GIORNO" | grep -aoE 'issue #[0-9]+: \([0-9]+s\)' | grep -oE '\([0-9]+s\)' | grep -oE '[0-9]+' | awk '{s+=$1} END{print s+0}')
+GPU_S=$(( GPU_MIGL + GPU_ISSUE ))
 LEZIONI=$( { for f in "${LOGGI[@]}" ${BILANCINO_LOG_EXTRA:-}; do [ -f "$f" ] && cat "$f"; done; } 2>/dev/null \
   | grep -a "^\[$DATA.*impara: lezione proposta" | sort -u | grep -c . || true)
 

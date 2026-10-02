@@ -1070,8 +1070,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
       T_ISSUE=$(date +%s)
       OUT=$(NIGHT_MODEL="${NIGHT_MODEL:-$MODEL_TAG}" ai_timeout "$((TIMEOUT_MINUTI * 60))" bash "$NIGHT_SOLVER" "$DIR" "$ISSUE_FILE" 2>&1)
       RC=$?
+      # (2026-10-03, giro B): anche le ISSUE firmano il loro tempo — il funnel contava
+      # solo le migliorie (un minimo dichiarato che nascondeva il 90% del costo reale)
+      ISSUE_DURATA=$(( $(date +%s) - T_ISSUE ))
       [ "$RC" -eq 124 ] && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — risolutore fermato, si passa oltre"
-      log "Issue #$NUM: $OUT"
+      log "REPO $REPO: issue #$NUM: (${ISSUE_DURATA}s) $OUT"
       # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo
       # vede DOVE eravamo rimasti, non riparte da zero
       [ -f "$HERE/../tools/goal-issue.sh" ] && bash "$HERE/../tools/goal-issue.sh" "$DIR" update "$NUM" "solver rc=$RC: $(echo "$OUT" | tail -1 | cut -c1-80)" >/dev/null 2>&1 || true
