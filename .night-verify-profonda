@@ -2,4 +2,4 @@
 # Era nel .night-verify per-cycle: la suite completa (~25 minuti) ad ogni ciclo
 # portava il ciclo da 20 a 40+ minuti e sotto carico flakkava (test-profilo).
 # Il turno la esegue al primo ciclo del giorno, poi firma il marker in $WORK.
-@1800 bash tools/suite.sh
+@1800 bash tools/suite.sh . --tutti

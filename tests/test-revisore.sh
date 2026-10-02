@@ -529,6 +529,19 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
   && ok "scuola: anche il rigetto deterministico lascia la riga" || ko "riga E-050 mancante: $(cat "$SB/.git/caccia-registro/rigetti" 2>/dev/null)"
 
 
+# La quarantena ETERNA (2026-10-02, la #112): PR di 5 GIORNI con rinvii tutti transitori
+# → chiusa col deterministico (i transitori non contano per E-051: senza limite restava per sempre)
+SB=$(nuova_repo); nuova_pr "$SB" $(( 5 * 1440 )) night/test-eterna
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -q "quarantena da 5 giorni" <<<"$OUT" && grep -q "\[DRY\] gh pr close 7" <<<"$OUT" \
+  && ok "quarantena eterna: PR di 5 giorni chiusa col deterministico" || ko "rc $RC: $(grep -a quarantena <<<"$OUT" | head -1)"
+# entro il limite: la PR di 30 minuti NON si chiude per eta'
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-giovane
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" REVISORE_STUB_VERDETTO=APPROVA bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "MERGIATA" <<<"$OUT" \
+  && ok "PR giovane: nessuna chiusura per eta' (il limite non morde chi e' in orario)" || ko "rc $RC: $(tail -1 <<<"$OUT")"
+
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

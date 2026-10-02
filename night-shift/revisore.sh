@@ -231,6 +231,13 @@ if [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
   log "guardia: quarantena ${ETA_MIN}min < ${QUARANTENA_MIN}min — chi crea non si giudica nello stesso respiro"
   exit 2
 fi
+# (2026-10-02, la #112): la QUARANTENA ETERNA. Una PR puo' restare mesi se i rinvii sono
+# tutti TRANSITORI (censore muto, razzo giu'): non contano per E-051, giustamente — ma
+# nemmeno la chiudono. Dopo REVISORE_ETA_MAX_GIORNI (default 4) in quarantena, il revisore
+# chiude col verdetto deterministico: la caccia la riproporra' se il debito e' reale.
+if [ "$MODO" = "delibera" ] && [ "$ETA_MIN" -ge $(( ${REVISORE_ETA_MAX_GIORNI:-4} * 1440 )) ]; then
+  rigetta_deterministico "in quarantena da $(( ETA_MIN / 1440 )) giorni (limite ${REVISORE_ETA_MAX_GIORNI:-4}): i rinvii sono tutti transitori — la caccia la riproporra' se il debito e' reale"
+fi
 
 # budget: massimo $BUDGET_GIORNO deliberazioni-merge nelle ULTIME 24 ORE, per repo.
 # (2026-09-25, D32, risposta delegata): era di calendario (mergi-<data>) e si azzerava a mezzanotte: 10 fusioni in 90

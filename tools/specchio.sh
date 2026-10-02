@@ -129,4 +129,24 @@ else
   verdetto giallo server-pii "rizzo-pii giu' su 5005: il gate GDPR degrada a shape+lista locale"
 fi
 
+
+# ── 7. IL LAVORO (2026-10-02): l'infrastruttura sta su ma il sistema CONSEGNA?
+# La notte si misura nel bilancino: se i cicli non partono o la GPU resta a zero
+# per giorni, il turno gira a vuoto e nessuno lo diceva. Il funnel e' la verita'.
+if [ -f "$WORK/funnel.csv" ]; then
+  IERI=$(date -v-1d +%F 2>/dev/null || date -d yesterday +%F 2>/dev/null || true)
+  if [ -n "$IERI" ]; then
+    while IFS=, read -r data repo cicli vv vr ap fu rg rd gpu deb lez; do
+      [ "$data" = "$IERI" ] || continue
+      case "$repo" in ""|data) continue ;; esac
+      cicli=${cicli:-0}; gpu=${gpu:-0}
+      if [ "$cicli" -eq 0 ]; then
+        verdetto rosso "lavoro $repo" "ieri NESSUN ciclo nel bilancino: il turno e' girato senza toccare il repo?"
+      elif [ "$gpu" -eq 0 ] && [ "${LEZIONI_DISATTIVE:-0}" != "1" ]; then
+        verdetto giallo "lavoro $repo" "ieri 0 secondi GPU firmati (${cicli} cicli): il modello non ha mai consegnato (wedge o solo lavoro deterministico?)"
+      fi
+    done < "$WORK/funnel.csv"
+  fi
+fi
+
 echo "specchio: $VERDI verdi · $GIALLI gialli · $ROSSI rossi$( [ "$ROSSI" -eq 0 ] && printf ' — casa in ordine' || printf ' — %d issue all hub' "$ROSSI" )"
