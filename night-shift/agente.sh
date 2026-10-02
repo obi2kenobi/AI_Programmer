@@ -87,7 +87,7 @@ exit 3; }
   RESPONSE=$(jq -c \
     --arg m "$MODEL" \
     --argjson th "$PENSA" \
-    '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}' <<<"$CONV" \
+    '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:12288}}' <<<"$CONV" \
     | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
 
   if [ -z "$RESPONSE" ]; then
@@ -108,14 +108,14 @@ exit 3; }
     RESPONSE=$(jq -c \
       --arg m "$MODEL" \
       --argjson th "$PENSA" \
-      '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:4096}}' <<<"$CONV" \
+      '. as $msgs | {model:$m, messages:$msgs, stream:false, think:$th, options:{temperature:0, num_ctx:12288}}' <<<"$CONV" \
       | curl -sf --max-time 120 "$API" --data-binary @- 2>/dev/null)
   fi
 
   [ -z "$RESPONSE" ] && { log "⛔ Ollama non ha risposto (turno $TURNO) — NESSUN rianimamento ha funzionato"; rm -f "$ANON_DIZ" 2>/dev/null
 exit 1; }
 
-  CONTENT=$(echo "$RESPONSE" | jq -r '.message.content // empty')
+  CONTENT=$(printf '%s' "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null)
   # (2026-09-24, quarto ventaglio, Q3 R1): 200 con il contenuto vuoto (un modello che pensa soltanto, un
   # contesto saturo) usciva 0 «completato», e a valle la caccia dichiarava il file pulito per 6 ore.
   # Muto non e' finito: rc 1, e il chiamante lo legge come agente fallito.
@@ -123,7 +123,7 @@ exit 1; }
   log "turno $TURNO (${ELAPSED}s): il modello risponde"
 
   # prova a parsare come JSON action (spogliando i fence markdown)
-  STRIPPED=$(echo "$CONTENT" | sed 's/^```[a-z]*//; s/```$//' | tr -d '\n' | sed 's/^ *//; s/ *$//')
+  STRIPPED=$(printf '%s' "$CONTENT" | sed 's/^```[a-z]*//; s/```$//' | tr -d '\n' | sed 's/^ *//; s/ *$//')
   # (studio dsh guard, audit-4): conteggio qui, applicazione DOPO il case —
   # prima RESULT="" a meta' giro azzerava il reminder (era un no-op)
   if [ "$STRIPPED" = "${PREV_STRIPPED:-}" ] && [ -n "$STRIPPED" ]; then
