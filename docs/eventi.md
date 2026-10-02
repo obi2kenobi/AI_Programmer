@@ -48,6 +48,7 @@ col funnel: DELIBERA: contava zero da sempre). Scritto leggendo il codice reale 
 | `specchio:` | `tools/specchio.sh`, `night-shift/night-shift.sh` | `tests/test-specchio.sh` | test-eventi, test-specchio |
 | `scuola dei rigetti:` | `night-shift/caccia-miglioria.sh` | `tests/test-caccia-miglioria.sh` | test-eventi, test-caccia-miglioria |
 | `roadmap: il passo cita` | `night-shift/caccia-miglioria.sh` | `tests/test-caccia-miglioria.sh` | test-eventi, test-caccia-miglioria |
+| `verifica profonda` | `night-shift/night-shift.sh` | `tests/test-verifica-profonda.sh` | test-eventi, test-verifica-profonda |
 
 ## Righe ⚠/⛔ del turno lette solo dal battito
 

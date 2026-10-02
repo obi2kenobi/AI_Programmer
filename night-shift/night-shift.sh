@@ -336,6 +336,32 @@ shift_repo() {
     # (report BusinessPlan): zero comandi dichiarati NON e' verde — l'assenza di
     # verifiche non si puo' confondere col loro successo. La forma piu' pura del
     # difetto che il metodo combatte.
+    # (2026-10-02, giro di velocita'): la verifica PROFONDA (.night-verify-profonda,
+    # oggi solo l'hub: la suite completa ~25 minuti) NON gira a ogni ciclo — portava
+    # il ciclo da 20 a 40+ minuti per lo stesso albero. Un giro al giorno, al primo
+    # ciclo: il marker si scrive COMUNQUE (anche col rosso, che il ciclo-vivo fa
+    # diventare issue): un rosso non si martella 40 volte con 25 minuti l'uno.
+    if [ -f "$DIR/.night-verify-profonda" ]; then
+      PROF_MARKER="$WORK/.profonda-$(printf '%s' "$REPO" | tr '/' '_')-$(date +%F)"
+      if [ ! -f "$PROF_MARKER" ]; then
+        NV_ROSSI_PROF=0
+        while IFS= read -r NV_CMD; do
+          riga_verifica_vuota "$NV_CMD" && continue
+          NV_SEC=120
+          case "$NV_CMD" in
+            @*" "*) NV_SEC="${NV_CMD%% *}"; NV_SEC="${NV_SEC#@}"; NV_CMD="${NV_CMD#* }" ;;
+          esac
+          if (cd "$DIR" && ai_timeout "$NV_SEC" bash -c "$NV_CMD" >/dev/null 2>&1 </dev/null); then
+            log "REPO $REPO: verifica profonda: $NV_CMD — VERDE"
+          else
+            NV_ROSSI_PROF=1
+            log "REPO $REPO: VERIFICA ROSSA (profonda): $NV_CMD"
+          fi
+        done < "$DIR/.night-verify-profonda"
+        printf '%s\n' "$(date '+%F %T') rosse=$NV_ROSSI_PROF" > "$PROF_MARKER"
+        log "REPO $REPO: verifica profonda girata (1x al giorno) — rosse=$NV_ROSSI_PROF"
+      fi
+    fi
     # (2026-09-25, D17, risposta delegata): «# NON-VERIFICABILE: <motivo>» e' la forma che il modello chiede a chi non ha
     # verifiche automatiche — vale come esito a se', dichiarato nel log, senza issue. Senza la dichiarazione resta ROSSO.
     NV_MOTIVO=""
