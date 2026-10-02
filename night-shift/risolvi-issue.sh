@@ -189,7 +189,12 @@ EOF
 # --- 3. chiamata a Ollama (LOCALE) ---
 log "Chiamando $MODEL su localhost..."
 START=$(date +%s)
-RESPONSE=$(printf '%s' "$PROMPT" | jq -Rs --arg m "$MODEL" '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, options:{temperature:0}}' | curl -sf --max-time 300 "$API" --data-binary @- 2>&1)
+# (2026-10-03, giro D — le cure di E-056/E-057/T5#6 arrivate qui): num_ctx 12288
+# (il prompt porta fino a 24KB di issue + 24KB di codice: sforava il default),
+# think:false (il pensiero sporca l'output del codice), payload su stdin.
+RESPONSE=$(printf '%s' "$PROMPT" | jq -cRs --arg m "$MODEL" \
+  '. as $p | {model:$m, messages:[{role:"user",content:$p}], stream:false, think:false, options:{temperature:0, num_ctx:12288}}' \
+  | curl -sf --max-time 300 "$API" --data-binary @- 2>/dev/null)
 RC=$?
 ELAPSED=$(( $(date +%s) - START ))
 if [ $RC -ne 0 ]; then
@@ -199,10 +204,11 @@ fi
 log "Ollama ha risposto in ${ELAPSED}s"
 
 # --- 4. estrai il codice dalla risposta ---
-CODE=$(echo "$RESPONSE" | jq -r '.message.content' | sed -n '/^```/,/^```/p' | sed '/^```/d')
+# (T5#6): la risposta su stdin, mai negli argv di echo/jq
+CONTENT=$(printf '%s' "$RESPONSE" | jq -r '.message.content // empty' 2>/dev/null)
+CODE=$(printf '%s' "$CONTENT" | sed -n '/^```/,/^```/p' | sed '/^```/d')
 if [ -z "$CODE" ]; then
-  # fallback: la risposta intera potrebbe essere codice senza fence
-  CODE=$(echo "$RESPONSE" | jq -r '.message.content')
+  CODE="$CONTENT"   # fallback: senza recinto, la risposta intera e' il codice
 fi
 if [ -z "$CODE" ] || [ "$CODE" = "null" ]; then
   log "⛔ Il modello non ha prodotto codice"
