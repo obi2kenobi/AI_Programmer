@@ -56,7 +56,13 @@ for FORMA in \
   "pnpm dlx clasp push" \
   "yarn dlx clasp deploy" \
   "./node_modules/.bin/clasp push" \
-  "cd progetto && npx clasp push"; do
+  "cd progetto && npx clasp push" \
+  "CI=1 npx clasp push" \
+  "FOO=1 clasp push" \
+  "A=1 B=2 clasp deploy" \
+  "npx @google/clasp@latest push" \
+  "npx -y @google/clasp@3.0.0 push" \
+  "npx clasp@latest push"; do
   OUT=$(jq -n --arg c "$FORMA" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK")
   echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
     && ok ""$FORMA" -> deny" || ko ""$FORMA" NON negato: il cancello si scavalca"
@@ -73,7 +79,12 @@ for INNOCUO in \
   'echo "il deploy è di Luca: clasp push mai"' \
   "npx clasp pull" \
   "npx clasp versions" \
-  "grep -rn clasp tools/"; do
+  "grep -rn clasp tools/" \
+  "grep 'FOO=1 clasp push' docs" \
+  'git commit -m "A=1 clasp push"' \
+  "clasp deployments" \
+  "A=1 B=2 clasp pull" \
+  "CI=1 npx clasp pull"; do
   OUT=$(jq -n --arg c "$INNOCUO" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK")
   echo "$OUT" | jq -e '.hookSpecificOutput.permissionDecision == "deny"' >/dev/null 2>&1 \
     && ko ""\$INNOCUO" negato — falso positivo, non scrive in produzione" \
