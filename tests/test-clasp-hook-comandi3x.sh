@@ -6,7 +6,7 @@
 # CORREZIONE: cio' che oggi NON fa (create-deployment e update-deployment passano). Riga finale unica: attese eseguite: N/M · fallite: K
 set -uo pipefail
 HOOK="${1:-$(cd "$(dirname "$0")/.." && pwd)/tools/clasp-block-hook.sh}"
-M=22
+M=30
 echo "gancio letto: $HOOK"
 ESEGUITE=0; FALLITE=0
 decisione() {
@@ -41,6 +41,14 @@ attesa deny  "bash -c 'clasp create-deployment'"        "3.x dentro bash -c"
 attesa deny  "for i in 1; do clasp update-deployment x; done" "3.x in un ciclo"
 attesa deny  "CI=1 clasp create-deployment"             "3.x con variabile davanti"
 attesa deny  "cd gas && clasp create-deployment"        "3.x dopo cd"
+attesa deny  "clasp undeploy abcd1234"                 "cancella un deployment: agisce sulla produzione"
+attesa deny  "clasp delete-deployment abcd1234"         "3.x: cancella un deployment"
+attesa deny  "clasp run-function main"                  "3.x: esegue una funzione in produzione"
+attesa deny  "npx clasp run main"                       "2.x: esegue una funzione in produzione (via npx)"
+attesa deny  "bash -c 'clasp undeploy x'"               "undeploy dentro bash -c"
+attesa passa "npm run build"                            "npm run non e clasp run"
+attesa passa "git commit -m 'il clasp run era vietato'" "una citazione non e un comando"
+attesa passa "clasp status"                             "lettura"
 echo "attese eseguite: $ESEGUITE/$M · fallite: $FALLITE"
 [ "$ESEGUITE" -eq "$M" ] || echo ">>> ESEGUITE MENO DI QUELLE DICHIARATE"
 [ "$FALLITE" -eq 0 ] && [ "$ESEGUITE" -eq "$M" ]
