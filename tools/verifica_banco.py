@@ -29,6 +29,9 @@ import re
 import sys
 
 RIGA_RE = re.compile(r"attese eseguite:\s*(\d+)\s*/\s*(\d+)\s*·\s*fallite:\s*(\d+)")
+# Dopo la riga canonica un banco può ancora dire rosso: sabotaggi che non cadono, banco incoerente, crash (giri lenti 2/10, area 20 rilievo 3).
+SABOTAGGI_RE = re.compile(r"sabotaggi:\s*(\d+)\s*/\s*(\d+)")
+ALTRI_ROSSI_RE = re.compile(r"^(FAIL\b|BANCO INCOERENTE|Traceback)", re.M)
 
 
 def main():
@@ -64,6 +67,16 @@ def main():
         return 1
     if k > 0:
         print(f"VERDETTO: ROSSO — {k} attese fallite su {m}: il difetto c'è (o la correzione non regge)")
+        return 1
+    if m == 0:
+        print("VERDETTO: ROSSO (banco vuoto) — 0 attese dichiarate, 0 eseguite: un banco senza attese non prova niente")
+        return 1
+    sab = SABOTAGGI_RE.findall(testo)
+    if sab and any(int(a) < int(b) for a, b in sab):
+        print(f"VERDETTO: ROSSO (sabotaggi non intercettati) — {sab[-1][0]}/{sab[-1][1]}: almeno un sabotaggio non ha fatto cadere le attese dichiarate")
+        return 1
+    if ALTRI_ROSSI_RE.search(testo):
+        print("VERDETTO: ROSSO (dopo la riga canonica) — l'uscita contiene FAIL, BANCO INCOERENTE o un Traceback: la riga-verdetto non basta")
         return 1
     print(f"VERDETTO: VERDE — {m} attese eseguite, 0 fallite. Il banco resta una prova solo se un sabotaggio l'ha visto cadere.")
     return 0

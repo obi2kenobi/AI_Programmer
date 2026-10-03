@@ -29,6 +29,16 @@ python3 "$TOOL" "$TMP/doppia.txt" >/dev/null 2>&1; [ $? -eq 2 ] && ok "due righe
 python3 "$TOOL" "$TMP/vuota.txt" >/dev/null 2>&1;   [ $? -eq 1 ] && ok "uscita vuota: il banco non è partito (exit 1, non silenzio)" || ko "vuota non colta"
 python3 "$TOOL" "$TMP/controtorno.txt" >/dev/null 2>&1; [ $? -eq 2 ] && ok "eseguite>dichiarate 9/8: forma rotta (exit 2)" || ko "controtorno non colto"
 
+# (giri lenti 2/10, area 20 rilievo 3, provato eseguendo) un banco vuoto e un banco il cui verdetto precede un sabotaggio che NON cade non sono verdi
+printf 'attese eseguite: 0/0 · fallite: 0\n' > "$TMP/vuoto0.txt"
+printf 'attese eseguite: 690/690 · fallite: 0\nFAIL G81b — x — cadute 0/1\nsabotaggi: 429/430 hanno fatto cadere esattamente le attese dichiarate\n' > "$TMP/sabotaggio.txt"
+printf 'attese eseguite: 5/5 · fallite: 0\nBANCO INCOERENTE: attese registrate 4, dichiarate 5\n' > "$TMP/incoerente.txt"
+printf 'attese eseguite: 5/5 · fallite: 0\nsabotaggi: 430/430 hanno fatto cadere esattamente le attese dichiarate\n' > "$TMP/sabotaggio-ok.txt"
+python3 "$TOOL" "$TMP/vuoto0.txt" >/dev/null 2>&1;      [ $? -eq 1 ] && ok "0/0·0: un banco senza attese non è verde (exit 1)" || ko "banco vuoto giudicato verde"
+python3 "$TOOL" "$TMP/sabotaggio.txt" >/dev/null 2>&1;  [ $? -eq 1 ] && ok "riga canonica verde ma sabotaggi 429/430 e FAIL: rosso (exit 1)" || ko "sabotaggio non caduto giudicato verde"
+python3 "$TOOL" "$TMP/incoerente.txt" >/dev/null 2>&1;  [ $? -eq 1 ] && ok "BANCO INCOERENTE dopo la riga canonica: rosso (exit 1)" || ko "banco incoerente giudicato verde"
+python3 "$TOOL" "$TMP/sabotaggio-ok.txt" >/dev/null 2>&1; [ $? -eq 0 ] && ok "sabotaggi 430/430 tutti intercettati: resta verde (exit 0)" || ko "falso rosso sui sabotaggi tutti intercettati"
+
 OUT=$(python3 "$TOOL" "$TMP/saltate.txt")
 grep -q "2 attese sono SPARITE in silenzio" <<<"$OUT" \
   && ok "il verdetto dice QUANTE attese sono sparite (il conto sta scritto)" || ko "il conteggio delle sparite manca"
