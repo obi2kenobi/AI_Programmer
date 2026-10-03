@@ -22,7 +22,7 @@ dove() {   # con un * si guarda se il glob trova qualcosa, senza si guarda il pe
 # script che fa clasp push/deploy. Il ramo completo che lo nega era proprio quello che moriva sul Mac, e il prudente
 # lasciava passare `npm run pubblica`. Una sola funzione per i due rami: prima il grep viveva copiato in tutti e due.
 prudente_nega() {
-  grep -qE 'clasp[^"]*[^a-z](push|deploy|create-deployment|update-deployment)([^a-z]|$)|deploy-ora' <<<"$1" && return 0
+  grep -qE 'clasp[^"]*[^a-z](push|deploy|create-deployment|update-deployment|undeploy|delete-deployment|run-function)([^a-z]|$)|deploy-ora' <<<"$1" && return 0
   grep -qE '(^|[^a-z])(npm|yarn|pnpm|bun)([^a-z]|$)' <<<"$1" || return 1
   local d="$PWD"
   while :; do
@@ -108,12 +108,12 @@ OPT='([[:space:]]+-[^[:space:]]+([[:space:]]+[^-[:space:];&|][^[:space:];&|]*)?)
 VARS='([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]*[[:space:]]+)*'
 VERSIONE='(@[A-Za-z0-9._^~-]+)?'
 FINE='([[:space:];&|)"'"'"']|$)'
-INVOCAZIONE="${SEP}${VARS}${RUN}${BIN}clasp${VERSIONE}${OPT}[[:space:]]+(push|deploy|create-deployment|update-deployment)${FINE}"
+INVOCAZIONE="${SEP}${VARS}${RUN}${BIN}clasp${VERSIONE}${OPT}[[:space:]]+(push|deploy|create-deployment|update-deployment|undeploy|delete-deployment|run-function|run)${FINE}"
 # `bash -c "…"` (e sh/zsh/dash): le virgolette sono DATI per lo spoglio qui sotto, ma
 # l'interprete le ESEGUE — si guarda il comando intero, con l'invocazione dentro le virgolette.
 # (Q5 R4): la shell anche dopo `/` (/bin/bash), con opzioni lunghe o con argomento prima di -c (--norc,
 # -o pipefail), `--` dopo -c; e `eval "…"`, che esegue la stringa come bash -c
-SHC="(^|[;&|({[:space:]/])((ba|z|da)?sh[[:space:]]+(-{1,2}[A-Za-z-]+([[:space:]]+[a-z]+)?[[:space:]]+)*-[A-Za-z]*c([[:space:]]+--)?|eval)[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${VARS}${RUN}${BIN}clasp${VERSIONE}${OPT}[[:space:]]+(push|deploy|create-deployment|update-deployment)${FINE}"
+SHC="(^|[;&|({[:space:]/])((ba|z|da)?sh[[:space:]]+(-{1,2}[A-Za-z-]+([[:space:]]+[a-z]+)?[[:space:]]+)*-[A-Za-z]*c([[:space:]]+--)?|eval)[[:space:]]+[\"']([^\"']*[;&|({][[:space:]]*)?${VARS}${RUN}${BIN}clasp${VERSIONE}${OPT}[[:space:]]+(push|deploy|create-deployment|update-deployment|undeploy|delete-deployment|run-function|run)${FINE}"
 
 # (report REPO-I 2026-09-19, H7 — due buchi misurati eseguendo):
 #   a) `npm run push` non contiene la stringa clasp e PASSAVA — ed e' la via che
