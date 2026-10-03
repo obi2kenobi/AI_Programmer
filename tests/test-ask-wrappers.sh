@@ -69,7 +69,7 @@ else
 fi
 
 # --- contratto uniforme: usage anche con stdin in arrivo ---
-OUT5=$(echo "contenuto" | bash "$HERE/llm/ask-qwen.sh" 2>&1); RC5=$?
+OUT5=$(echo "contenuto" | bash "$HERE/llm/ask-qwen.sh" 2>&1)
 grep -q "uso:" <<<"$OUT5" && ok "ask-qwen senza prompt: usage anche con stdin in arrivo" || ko "qwen usage: $OUT5"
 
 # --- bug reale (set 1, giro 1): senza prompt NON deve tentare di avviare Ollama.
