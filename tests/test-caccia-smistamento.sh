@@ -8,9 +8,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
-NS="$HERE/night-shift/night-shift.sh"
-
-BLOCCO=$(awk '/^      MIGLIORIA_RC=1 MIGLIORIA_OUT=""/{p=1} p{print} p&&/\[ -n "\$CENSUS" \] && log/{c=1} c&&/^      fi$/{exit}' "$NS")
+BLOCCO=$(awk '/^      MIGLIORIA_RC=1 MIGLIORIA_OUT=""/{p=1} p{print} p&&/\[ -n "\$CENSUS" \] && log/{c=1} c&&/^      fi$/{exit}' "$HERE/night-shift/night-shift.sh")
 [ -n "$BLOCCO" ] && grep -c 'CENSUS' <<<"$BLOCCO" >/dev/null || { ko "blocco dello smistamento non trovato in night-shift.sh"; echo "$PASS OK, $FAIL FAIL"; exit 1; }
 
 T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
