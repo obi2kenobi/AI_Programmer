@@ -12,3 +12,5 @@ Ha retto: banco prima della correzione e sabotaggio per ogni correzione (ha scop
 
 ## Proposta al canone
 Lo script deve rifiutarsi se il banco normale non è verde (oggi lo verifica solo chi si ricorda). Domande di dominio aperte per Luca: README §42.124–§42.125.
+
+**Aggiunta (giro lente B aree 20-25)**: il gancio `tools/clasp-block-hook.sh` lasciava passare `clasp create-deployment` e `update-deployment` (nomi di clasp 3.x che deployano, dal README di `@google/clasp`; non ho eseguito clasp): ora li nega, con `tests/test-clasp-hook-comandi3x.sh` (22 attese, 10 rosse prima). Aperto per Luca: `undeploy`/`delete-deployment` e `run`/`run-function` passano ancora il gancio; quale versione di clasp usi? Aperto anche lo script locale che riparte da main: scarta commit locali non pushati dicendo «niente lasciato indietro».
