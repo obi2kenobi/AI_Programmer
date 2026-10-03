@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ IN PENSIONE DAL 2026-08-29 — i numeri della notte ora vivono nel bilancino (tools/bilancino.sh).
+# Questo file resta per referenza storica: NON USARE.
 # gate-summary.sh — il riepilogo dei dati accumulati dal gate (metrics/gate.csv).
 # docs/system.md promette che "le decisioni future le decidono i dati": questo è lo
 # strumento che li legge. Per repo: % verifiche ok, % smentite del banco, commesse

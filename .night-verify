@@ -12,7 +12,6 @@
 # Se esegui `bash .night-verify` intero, l'rc finale riflette SOLO l'ultima riga:
 # per il verdetto conta i FALLITO nell'output, o guarda le singole righe come fa il turno.
 shellcheck --severity=warning --exclude=SC2034,SC2164,SC2155,SC2010 night-shift/*.sh llm/*.sh tools/*.sh
-bash -n night-shift/morning-gate.sh
 # (E-028+E-029): ogni .py tracciato deve compilare. E-028: la dashboard era
 # committata non-compilante e passava (nessun gate eseguiva la sintassi py).
 # E-029: la prima versione di questo gate era una RIGA COMPOSTA qui dentro — ma

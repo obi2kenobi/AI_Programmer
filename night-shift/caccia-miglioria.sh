@@ -222,6 +222,16 @@ fi
 [ -n "$TARGET" ] || { log "tutti i file in cooldown per '$CAT' — riprova più tardi"; exit 1; }
 [ -f "$TARGET" ] || { log "file inesistente: $TARGET"; exit 2; }
 
+# --- il GRAFO come navigazione (2026-10-03, approvato da Luca: «integriamolo bene») -
+# Il grafo strutturale (graphify-out/, sempre fresco dal pre-commit) sa CHI DIPENDE da
+# questo file. L'agente che lo modifica deve saperlo — per non rompere i chiamanti e
+# per capire il contesto. Un'unica query, contesto pronto.
+GRAFO_CONTESTO=""
+if command -v graphify >/dev/null 2>&1 && [ -d graphify-out ] 2>/dev/null; then
+  GRAFO_CONTESTO=$(graphify affected "$TARGET" 2>/dev/null | head -5 || true)
+  [ -n "$GRAFO_CONTESTO" ] && log "grafo: $TARGET tocca: $(printf '%s' "$GRAFO_CONTESTO" | tr '\n' ' ' | cut -c1-80)"
+fi
+
 # --- la SCUOLA DEI RIGETTI (2026-09-28, dal backlog) ----------------------------
 # Il censore ha bocciato questo file di recente (registro .git/caccia-registro/rigetti,
 # scritto dal revisore a ogni RIGETTA)? Il modello riproporrebbe la stessa idea con
@@ -276,6 +286,11 @@ if [ -n "${GOAL_TESTO:-}" ]; then
   PROMPT="$PROMPT
 
 Context — the repo's long-term goal (do not chase it directly, just prefer improvements that serve it): $(printf '%s' "$GOAL_TESTO" | head -2 | tr '\n' ' ')"
+fi
+if [ -n "${GRAFO_CONTESTO:-}" ]; then
+  PROMPT="$PROMPT
+
+Navigation context — files that DEPEND on this file (from the code graph, do not modify them, just be aware your changes may affect them): $(printf '%s' "$GRAFO_CONTESTO" | tr '\n' ' ' | cut -c1-300)"
 fi
 
 AGENTE_RC=0

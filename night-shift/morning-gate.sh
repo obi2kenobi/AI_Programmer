@@ -1,4 +1,6 @@
 #!/bin/bash
+# ⚠️ IN PENSIONE DAL 2026-08-29 — il censore notturno (revisore.sh) ne ha preso il posto. La mattina e il digest (morning-digest.sh).
+# Questo file resta per referenza storica: NON USARE.
 # morning-gate.sh — il giudizio del mattino: REPO-A come giudice, censore, correttore.
 #
 # Per ogni PR night/* O claude/* aperta su ogni repo della coda (il giudice ha due occhi:

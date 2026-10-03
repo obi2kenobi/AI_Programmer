@@ -41,12 +41,12 @@ command -v jq >/dev/null 2>&1 || { echo "⚠ MANCA jq"; MISSING=1; }
 # symlink si toglie PRIMA di scrivere: `>` su un symlink scriverebbe dentro il file dell'hub.
 step "comandi in $BIN"
 mkdir -p "$BIN"
-for cmd in llm/ask-qwen.sh llm/ask-opus.sh llm/ask-glm.sh night-shift/night-shift.sh night-shift/morning-gate.sh; do
+for cmd in llm/ask-qwen.sh llm/ask-opus.sh llm/ask-glm.sh night-shift/night-shift.sh; do
   name=$(basename "$cmd" .sh)
   rm -f "$BIN/$name"
   printf '#!/bin/bash\nexec bash "%s" "$@"\n' "$HUB/$cmd" > "$BIN/$name" && chmod +x "$BIN/$name"
 done
-echo "  comandi: ask-qwen ask-opus ask-glm night-shift morning-gate"
+echo "  comandi: ask-qwen ask-opus ask-glm night-shift"
 # il pre-commit dell'hub (controlli rapidi: glifi, CRLF, link pendenti)
 git -C "$HUB" config core.hooksPath .githooks 2>/dev/null && echo "  pre-commit attivo (core.hooksPath)"
 
@@ -98,4 +98,4 @@ echo "  ask-qwen \"ping\"                     → cervello locale"
 echo "  curl -s localhost:11434/api/health   → server always-on"
 echo "  launchctl list | grep $USER_NAME     → i due agent"
 echo "  notte: il turno parte da solo alle 23:00 (o: night-shift owner/repo)"
-echo "  mattina: morning-gate                → il giudizio con banco avversariale"
+echo "  mattina:                → il giudizio con banco avversariale"
