@@ -75,5 +75,5 @@ OUT=$(bash "$HERE/tools/rileva-ruoli.sh" "$F" 2>&1)
 grep -q "esiste già" <<<"$OUT" && ok "il file esistente non viene toccato (editabile)" || ko "il rilevamento ha sovrascritto il file di Luca"
 grep -qx "specialista-logistica" "$F/.git/ruoli-attivi" && ok "il contenuto editato resta" || ko "il contenuto editato è stato perso"
 
-echo "── test-rileva-ruoli: $PASS ok · $FAIL fail"
+echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]

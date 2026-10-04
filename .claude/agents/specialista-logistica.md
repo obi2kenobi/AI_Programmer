@@ -70,6 +70,5 @@ campioni NON vanno, nemmeno per «provare»).
 
 ## Vedi anche
 
-skill `gas-sviluppo` (il metodo di consegna) · oracoli `riconciliazione_magazzino.py`
-e `valorizzazione_magazzino.py` · pattern `cuore-unico-proprietario` ·
+skill `gas-sviluppo` (il metodo di consegna) · oracoli `tools/riconciliazione_magazzino.py` e `tools/valorizzazione_magazzino.py` · pattern `cuore-unico-proprietario` ·
 `chiave-stabile-etichetta-libera` · `confronto-non-vuoto`.

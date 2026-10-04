@@ -52053,7 +52053,7 @@
     },
     {
       "id": "claude_skills_qualita_python_skill",
-      "label": "qualita-python/SKILL.md",
+      "label": ".claude/skills/qualita-python/SKILL.md",
       "_origin": "ast",
       "community": 797,
       "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
@@ -52063,7 +52063,7 @@
         "description": "La procedura di revisione qualit\u00e0 del codice Python OLTRE la sintassi \u2014 quando l&#x27;utente chiede una revisione Python approfondita, un audit qualit\u00e0 su un repo o modulo .py, \u00abcontrolla docstring/type hints/dead code/import\u00bb, o prima di fondere codice Python delicato. py-gate ferma la sintassi; qui si cerca ci\u00f2 che il compilatore non vede. Completata dal ruolo revisore-python (il canone); questa \u00e8 la procedura operativa coi comandi."
       },
       "node_kind": "page",
-      "norm_label": "qualita-python/skill.md",
+      "norm_label": ".claude/skills/qualita-python/skill.md",
       "source_file": ".claude/skills/qualita-python/SKILL.md",
       "source_location": "L1"
     },
@@ -53088,7 +53088,7 @@
     },
     {
       "id": "claude_skills_igiene_dati_skill",
-      "label": "igiene-dati/SKILL.md",
+      "label": ".claude/skills/igiene-dati/SKILL.md",
       "_origin": "ast",
       "community": 805,
       "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
@@ -53098,7 +53098,7 @@
         "description": "La procedura per verificare la QUALIT\u00c0 dei DATI (non del codice che li processa) \u2014 CSV ed export fogli, campioni, fixture: encoding, separatori, date, duplicati, sentinelle, campi vuoti contro campi mai raccolti. Quando l&#x27;utente chiede \u00abcontrolla questo CSV/esportazione\u00bb, \u00abperch\u00e9 i numeri non tornano?\u00bb, prima di costruire un banco su dati di provenienza incerta, o dopo l&#x27;importazione di un dump nuovo. Nata dall&#x27;incidente del 23/9 (dati personali veri nei campioni) e dalla famiglia confronto-n"
       },
       "node_kind": "page",
-      "norm_label": "igiene-dati/skill.md",
+      "norm_label": ".claude/skills/igiene-dati/skill.md",
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
       "source_location": "L1"
     },
@@ -53136,7 +53136,7 @@
       "node_kind": "heading",
       "norm_label": "3. le date (la famiglia che morde di piu)",
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L46"
+      "source_location": "L50"
     },
     {
       "id": "claude_skills_igiene_dati_skill_4_duplicati_e_chiavi",
@@ -53148,7 +53148,7 @@
       "node_kind": "heading",
       "norm_label": "4. duplicati e chiavi",
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L72"
+      "source_location": "L76"
     },
     {
       "id": "claude_skills_igiene_dati_skill_5_i_vuoti_e_i_mai_raccolti_confronto_non_vuoto",
@@ -53160,7 +53160,7 @@
       "node_kind": "heading",
       "norm_label": "5. i vuoti e i mai-raccolti (confronto-non-vuoto)",
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L94"
+      "source_location": "L98"
     },
     {
       "id": "claude_skills_igiene_dati_skill_6_l_uscita",
@@ -53172,7 +53172,7 @@
       "node_kind": "heading",
       "norm_label": "6. l'uscita",
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L105"
+      "source_location": "L109"
     },
     {
       "id": "claude_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
@@ -53455,7 +53455,7 @@
     },
     {
       "id": "claude_skills_backtest_onesto_skill",
-      "label": "backtest-onesto/SKILL.md",
+      "label": ".claude/skills/backtest-onesto/SKILL.md",
       "_origin": "ast",
       "community": 809,
       "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
@@ -53465,7 +53465,7 @@
         "description": "La procedura per VERIFICARE un backtest o un&#x27;analisi di trading \u2014 quando l&#x27;utente chiede se un backtest \u00e8 affidabile, se una strategia regge, di controllare rendimenti/Sharpe/drawdown, o in un repo trading prima di fidarsi dei numeri. Nata dal parco (Trading-Short: 7 .py contro 70 .md di analisi \u2014 i numeri citati nei documenti non erano mai ricalcolati). Non \u00e8 una skill di previsione: verifica il rigore del metodo, mai la fortuna del risultato."
       },
       "node_kind": "page",
-      "norm_label": "backtest-onesto/skill.md",
+      "norm_label": ".claude/skills/backtest-onesto/skill.md",
       "source_file": ".claude/skills/backtest-onesto/SKILL.md",
       "source_location": "L1"
     },
@@ -53515,7 +53515,7 @@
       "node_kind": "heading",
       "norm_label": "4. le metriche con nome e periodo",
       "source_file": ".claude/skills/backtest-onesto/SKILL.md",
-      "source_location": "L54"
+      "source_location": "L55"
     },
     {
       "id": "claude_skills_backtest_onesto_skill_5_il_verdetto",
@@ -53527,7 +53527,7 @@
       "node_kind": "heading",
       "norm_label": "5. il verdetto",
       "source_file": ".claude/skills/backtest-onesto/SKILL.md",
-      "source_location": "L67"
+      "source_location": "L68"
     },
     {
       "id": "claude_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
@@ -53663,7 +53663,7 @@
     },
     {
       "id": "claude_skills_cura_conoscenza_skill",
-      "label": "cura-conoscenza/SKILL.md",
+      "label": ".claude/skills/cura-conoscenza/SKILL.md",
       "_origin": "ast",
       "community": 810,
       "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
@@ -53673,7 +53673,7 @@
         "description": "La procedura per tenere VIVA la conoscenza documentale di un repo \u2014 quando l&#x27;utente chiede di sistemare la documentazione, mettere in ordine i documenti/analisi, rifare il README o l&#x27;indice, verificare che i documenti dicano la verit\u00e0 sul codice, o su repo dove i .md superano i file di codice. Nata dai morsi misurati: il report fossile citato 31 giorni dopo la pensione, i 6 grezzi morti in /tmp (E-044), il campo promesso-mai-scritto (PR #168). Completata dal ruolo curatore-conoscenza (il canone); "
       },
       "node_kind": "page",
-      "norm_label": "cura-conoscenza/skill.md",
+      "norm_label": ".claude/skills/cura-conoscenza/skill.md",
       "source_file": ".claude/skills/cura-conoscenza/SKILL.md",
       "source_location": "L1"
     },
@@ -53751,7 +53751,7 @@
     },
     {
       "id": "claude_skills_pipeline_idempotenti_skill",
-      "label": "pipeline-idempotenti/SKILL.md",
+      "label": ".claude/skills/pipeline-idempotenti/SKILL.md",
       "_origin": "ast",
       "community": 811,
       "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
@@ -53761,7 +53761,7 @@
         "description": "La procedura per costruire e verificare una pipeline di dati IDEMPOTENTE a prova di rilancio \u2014 quando l&#x27;utente chiede raccolta dati da API/fogli, job schedulati, sincronizzazioni Business Central, importazioni ripetute, o \u00abperch\u00e9 ogni notte ho righe doppione?\u00bb. Nata dal parco (Price-Intelligence: 23 .gs + 14 .js di raccolta senza prova di rilancio; la famiglia nextLink-ignorato \u00e8 tra le pi\u00f9 pagate del parco GAS). Non \u00e8 la skill del calcolo sui dati (controllo-gestione): \u00e8 quella del TRASPORTO."
       },
       "node_kind": "page",
-      "norm_label": "pipeline-idempotenti/skill.md",
+      "norm_label": ".claude/skills/pipeline-idempotenti/skill.md",
       "source_file": ".claude/skills/pipeline-idempotenti/SKILL.md",
       "source_location": "L1"
     },
@@ -55846,6 +55846,406 @@
       "source_location": "L2805"
     },
     {
+      "id": "opencode_skills_qualita_python_skill",
+      "label": ".opencode/skills/qualita-python/SKILL.md",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "qualita-python",
+        "description": "La procedura di revisione qualit\u00e0 del codice Python OLTRE la sintassi \u2014 quando l&#x27;utente chiede una revisione Python approfondita, un audit qualit\u00e0 su un repo o modulo .py, \u00abcontrolla docstring/type hints/dead code/import\u00bb, o prima di fondere codice Python delicato. py-gate ferma la sintassi; qui si cerca ci\u00f2 che il compilatore non vede. Completata dal ruolo revisore-python (il canone); questa \u00e8 la procedura operativa coi comandi."
+      },
+      "node_kind": "page",
+      "norm_label": ".opencode/skills/qualita-python/skill.md",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_0_l_inventario_un_comando_prima_di_giudicare",
+      "label": "0. L'inventario (un comando, prima di giudicare)",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "0. l'inventario (un comando, prima di giudicare)",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_1_le_eccezioni_inghiottite_la_famiglia_peggiore",
+      "label": "1. Le eccezioni inghiottite (la famiglia peggiore)",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. le eccezioni inghiottite (la famiglia peggiore)",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_2_i_confini_dei_dati_dove_python_incontra_bc",
+      "label": "2. I confini dei dati (dove Python incontra BC)",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. i confini dei dati (dove python incontra bc)",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L35"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_3_le_firme_dei_confini_type_hints_dove_conta",
+      "label": "3. Le firme dei confini (type hints dove conta)",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. le firme dei confini (type hints dove conta)",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_4_docstring_sui_pubblici",
+      "label": "4. Docstring sui pubblici",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. docstring sui pubblici",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L49"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_5_import_e_dead_code",
+      "label": "5. Import e dead code",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. import e dead code",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L67"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_6_i_test_che_non_possono_fallire",
+      "label": "6. I test che non possono fallire",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. i test che non possono fallire",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L78"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_7_l_uscita",
+      "label": "7. L'uscita",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "7. l'uscita",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L86"
+    },
+    {
+      "id": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "label": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "_origin": "ast",
+      "community": 836,
+      "community_name": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "qualita-python \u2014 oltre la sintassi, con i comandi",
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill",
+      "label": ".opencode/skills/igiene-dati/SKILL.md",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "igiene-dati",
+        "description": "La procedura per verificare la QUALIT\u00c0 dei DATI (non del codice che li processa) \u2014 CSV ed export fogli, campioni, fixture: encoding, separatori, date, duplicati, sentinelle, campi vuoti contro campi mai raccolti. Quando l&#x27;utente chiede \u00abcontrolla questo CSV/esportazione\u00bb, \u00abperch\u00e9 i numeri non tornano?\u00bb, prima di costruire un banco su dati di provenienza incerta, o dopo l&#x27;importazione di un dump nuovo. Nata dall&#x27;incidente del 23/9 (dati personali veri nei campioni) e dalla famiglia confronto-n"
+      },
+      "node_kind": "page",
+      "norm_label": ".opencode/skills/igiene-dati/skill.md",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_1_la_provenienza_prima_di_tutto",
+      "label": "1. La provenienza (prima di tutto)",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. la provenienza (prima di tutto)",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_2_la_forma_un_comando_per_domanda",
+      "label": "2. La forma (un comando per domanda)",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. la forma (un comando per domanda)",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_3_le_date_la_famiglia_che_morde_di_pi\u00f9",
+      "label": "3. Le date (la famiglia che morde di pi\u00f9)",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. le date (la famiglia che morde di piu)",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L46"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_4_duplicati_e_chiavi",
+      "label": "4. Duplicati e chiavi",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. duplicati e chiavi",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L72"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_5_i_vuoti_e_i_mai_raccolti_confronto_non_vuoto",
+      "label": "5. I vuoti e i mai-raccolti (confronto-non-vuoto)",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. i vuoti e i mai-raccolti (confronto-non-vuoto)",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L94"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_6_l_uscita",
+      "label": "6. L'uscita",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "6. l'uscita",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L105"
+    },
+    {
+      "id": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "label": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "_origin": "ast",
+      "community": 837,
+      "community_name": "igiene-dati \u2014 i dati si guardano PRIMA di crederci",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "igiene-dati \u2014 i dati si guardano prima di crederci",
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill",
+      "label": ".opencode/skills/backtest-onesto/SKILL.md",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "backtest-onesto",
+        "description": "La procedura per VERIFICARE un backtest o un&#x27;analisi di trading \u2014 quando l&#x27;utente chiede se un backtest \u00e8 affidabile, se una strategia regge, di controllare rendimenti/Sharpe/drawdown, o in un repo trading prima di fidarsi dei numeri. Nata dal parco (Trading-Short: 7 .py contro 70 .md di analisi \u2014 i numeri citati nei documenti non erano mai ricalcolati). Non \u00e8 una skill di previsione: verifica il rigore del metodo, mai la fortuna del risultato."
+      },
+      "node_kind": "page",
+      "norm_label": ".opencode/skills/backtest-onesto/skill.md",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill_1_il_censimento_del_metodo",
+      "label": "1. Il censimento del metodo",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. il censimento del metodo",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L11"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill_2_la_caccia_al_lookahead_per_costruzione_non_per_lettura",
+      "label": "2. La caccia al lookahead (per costruzione, non per lettura)",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. la caccia al lookahead (per costruzione, non per lettura)",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L22"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill_3_il_ricalcolo_il_rilievo_si_prova",
+      "label": "3. Il ricalcolo (il rilievo si PROVA)",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. il ricalcolo (il rilievo si prova)",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L35"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill_4_le_metriche_con_nome_e_periodo",
+      "label": "4. Le metriche con nome e periodo",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. le metriche con nome e periodo",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L54"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill_5_il_verdetto",
+      "label": "5. Il verdetto",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. il verdetto",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L67"
+    },
+    {
+      "id": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "label": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "_origin": "ast",
+      "community": 838,
+      "community_name": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "backtest-onesto \u2014 il passato si prova, non si racconta",
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill",
+      "label": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "cura-conoscenza",
+        "description": "La procedura per tenere VIVA la conoscenza documentale di un repo \u2014 quando l&#x27;utente chiede di sistemare la documentazione, mettere in ordine i documenti/analisi, rifare il README o l&#x27;indice, verificare che i documenti dicano la verit\u00e0 sul codice, o su repo dove i .md superano i file di codice. Nata dai morsi misurati: il report fossile citato 31 giorni dopo la pensione, i 6 grezzi morti in /tmp (E-044), il campo promesso-mai-scritto (PR #168). Completata dal ruolo curatore-conoscenza (il canone); "
+      },
+      "node_kind": "page",
+      "norm_label": ".opencode/skills/cura-conoscenza/skill.md",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill_1_il_censimento_un_comando_per_repo",
+      "label": "1. Il censimento (un comando per repo)",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. il censimento (un comando per repo)",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill_2_lo_stato_vivo_obsoleto_storico",
+      "label": "2. Lo stato (VIVO / OBSOLETO / STORICO)",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. lo stato (vivo / obsoleto / storico)",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L29"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill_3_la_verifica_dei_claim_la_menzione_non_\u00e8_l_uso",
+      "label": "3. La verifica dei claim (la menzione non \u00e8 l'uso)",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. la verifica dei claim (la menzione non e l'uso)",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L43"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill_4_la_cura_e_la_consegna",
+      "label": "4. La cura e la consegna",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. la cura e la consegna",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L59"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "label": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L6"
+    },
+    {
+      "id": "opencode_skills_cura_conoscenza_skill_i_limiti_dichiarati_non_taciute",
+      "label": "I limiti (dichiarati, non taciute)",
+      "_origin": "ast",
+      "community": 839,
+      "community_name": "cura-conoscenza \u2014 i documenti raggiungibili, datati, coerenti",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "i limiti (dichiarati, non taciute)",
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L70"
+    },
+    {
       "id": "tools_scostamento_standard_effettivo",
       "label": "scostamento_standard_effettivo.py",
       "_origin": "ast",
@@ -55888,6 +56288,94 @@
       "norm_label": "legge costo_standard da argv, i consumi da stdin, stampa confronto, trend e...",
       "source_file": "tools/scostamento_standard_effettivo.py",
       "source_location": "L80"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill",
+      "label": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "pipeline-idempotenti",
+        "description": "La procedura per costruire e verificare una pipeline di dati IDEMPOTENTE a prova di rilancio \u2014 quando l&#x27;utente chiede raccolta dati da API/fogli, job schedulati, sincronizzazioni Business Central, importazioni ripetute, o \u00abperch\u00e9 ogni notte ho righe doppione?\u00bb. Nata dal parco (Price-Intelligence: 23 .gs + 14 .js di raccolta senza prova di rilancio; la famiglia nextLink-ignorato \u00e8 tra le pi\u00f9 pagate del parco GAS). Non \u00e8 la skill del calcolo sui dati (controllo-gestione): \u00e8 quella del TRASPORTO."
+      },
+      "node_kind": "page",
+      "norm_label": ".opencode/skills/pipeline-idempotenti/skill.md",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill_1_il_contratto_della_pipeline_si_scrive_prima_del_codice",
+      "label": "1. Il contratto della pipeline (si scrive PRIMA del codice)",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1. il contratto della pipeline (si scrive prima del codice)",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L11"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill_2_il_codice_le_forme_che_il_parco_ha_pagato",
+      "label": "2. Il codice (le forme che il parco ha pagato)",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2. il codice (le forme che il parco ha pagato)",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill_3_il_banco_il_cuore_della_skill_il_doppio_lancio",
+      "label": "3. Il banco (il cuore della skill: il DOPPIO LANCIO)",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "3. il banco (il cuore della skill: il doppio lancio)",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L41"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill_4_il_sabotaggio_le_mutazioni_che_il_banco_deve_prendere",
+      "label": "4. Il sabotaggio (le mutazioni che il banco deve prendere)",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "4. il sabotaggio (le mutazioni che il banco deve prendere)",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L59"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill_5_la_consegna",
+      "label": "5. La consegna",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "5. la consegna",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L68"
+    },
+    {
+      "id": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "label": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "_origin": "ast",
+      "community": 840,
+      "community_name": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L6"
     },
     {
       "id": "claude_agents_sviluppatore_gas",
@@ -69012,7 +69500,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/backtest-onesto/SKILL.md",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -69023,7 +69511,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/backtest-onesto/SKILL.md",
-      "source_location": "L67",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -71168,7 +71656,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L105",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -71201,7 +71689,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L46",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -71212,7 +71700,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L72",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -71223,7 +71711,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/igiene-dati/SKILL.md",
-      "source_location": "L94",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -86726,6 +87214,72 @@
       "weight": 1.0
     },
     {
+      "source": "opencode_skills_backtest_onesto_skill",
+      "target": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "target": "opencode_skills_backtest_onesto_skill_1_il_censimento_del_metodo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "target": "opencode_skills_backtest_onesto_skill_2_la_caccia_al_lookahead_per_costruzione_non_per_lettura",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "target": "opencode_skills_backtest_onesto_skill_3_il_ricalcolo_il_rilievo_si_prova",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "target": "opencode_skills_backtest_onesto_skill_4_le_metriche_con_nome_e_periodo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
+      "target": "opencode_skills_backtest_onesto_skill_5_il_verdetto",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
       "source": "opencode_skills_brainstorming_skill",
       "target": "opencode_skills_brainstorming_skill_brainstorming_le_domande_prima_delle_risposte",
       "relation": "contains",
@@ -86921,6 +87475,72 @@
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/controllo-gestione/SKILL.md",
       "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_cura_conoscenza_skill",
+      "target": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "target": "opencode_skills_cura_conoscenza_skill_1_il_censimento_un_comando_per_repo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "target": "opencode_skills_cura_conoscenza_skill_2_lo_stato_vivo_obsoleto_storico",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "target": "opencode_skills_cura_conoscenza_skill_3_la_verifica_dei_claim_la_menzione_non_\u00e8_l_uso",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "target": "opencode_skills_cura_conoscenza_skill_4_la_cura_e_la_consegna",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_cura_conoscenza_skill_cura_conoscenza_i_documenti_raggiungibili_datati_coerenti",
+      "target": "opencode_skills_cura_conoscenza_skill_i_limiti_dichiarati_non_taciute",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/cura-conoscenza/SKILL.md",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -88783,6 +89403,83 @@
       "weight": 1.0
     },
     {
+      "source": "opencode_skills_igiene_dati_skill",
+      "target": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "target": "opencode_skills_igiene_dati_skill_6_l_uscita",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L105",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "target": "opencode_skills_igiene_dati_skill_1_la_provenienza_prima_di_tutto",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "target": "opencode_skills_igiene_dati_skill_2_la_forma_un_comando_per_domanda",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "target": "opencode_skills_igiene_dati_skill_3_le_date_la_famiglia_che_morde_di_pi\u00f9",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "target": "opencode_skills_igiene_dati_skill_4_duplicati_e_chiavi",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L72",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
+      "target": "opencode_skills_igiene_dati_skill_5_i_vuoti_e_i_mai_raccolti_confronto_non_vuoto",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/igiene-dati/SKILL.md",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
       "source": "opencode_skills_incidenti_esterni_skill",
       "target": "opencode_skills_incidenti_esterni_skill_incidenti_esterni_le_lezioni_gi\u00e0_pagate_da_altri",
       "relation": "contains",
@@ -89069,6 +89766,72 @@
       "weight": 1.0
     },
     {
+      "source": "opencode_skills_pipeline_idempotenti_skill",
+      "target": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "target": "opencode_skills_pipeline_idempotenti_skill_1_il_contratto_della_pipeline_si_scrive_prima_del_codice",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "target": "opencode_skills_pipeline_idempotenti_skill_2_il_codice_le_forme_che_il_parco_ha_pagato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "target": "opencode_skills_pipeline_idempotenti_skill_3_il_banco_il_cuore_della_skill_il_doppio_lancio",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "target": "opencode_skills_pipeline_idempotenti_skill_4_il_sabotaggio_le_mutazioni_che_il_banco_deve_prendere",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_pipeline_idempotenti_skill_pipeline_idempotenti_rilanciare_non_cambia_il_risultato",
+      "target": "opencode_skills_pipeline_idempotenti_skill_5_la_consegna",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
       "source": "opencode_skills_polilivello_skill",
       "target": "opencode_skills_polilivello_skill_polilivello_capire_il_bersaglio_prima_di_avere_ragioni_su_di_lui",
       "relation": "contains",
@@ -89176,6 +89939,105 @@
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/post-mortem/SKILL.md",
       "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill",
+      "target": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_0_l_inventario_un_comando_prima_di_giudicare",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_1_le_eccezioni_inghiottite_la_famiglia_peggiore",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_2_i_confini_dei_dati_dove_python_incontra_bc",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_3_le_firme_dei_confini_type_hints_dove_conta",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_4_docstring_sui_pubblici",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_5_import_e_dead_code",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_6_i_test_che_non_possono_fallire",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_qualita_python_skill_qualita_python_oltre_la_sintassi_con_i_comandi",
+      "target": "opencode_skills_qualita_python_skill_7_l_uscita",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/qualita-python/SKILL.md",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -108786,5 +109648,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "465c9bc3dc1dba3a9710ffd22ef8ec49aa0bde95"
+  "built_at_commit": "16695ca313e60742bd3e1d487aa7d5548e290512"
 }

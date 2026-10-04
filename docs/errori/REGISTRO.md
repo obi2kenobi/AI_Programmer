@@ -1259,12 +1259,12 @@
 ## E-058 Il turno che si riprende l'hub mentre il giorno ci lavora: lo stash che salva (una volta)
 
 - Data / sessione: 2026-10-03, ore 17:29. Scoperto ricostruendo un albero di lavoro vuoto.
-- Famiglia: contesa giorno/notte sullo STESSO clone (la gemella della lezione E-055 «sempre worktree, commit subito» — qui il turno, non il reset del turno stesso, era l'agente).
+- Famiglia: R6 (processo: due attori sullo stesso clone, l'effetto collaterale del turno ignorato dal giorno) + R1 (assunzione «sto solo aggiungendo file, nessun conflitto possibile» — il turno non confligge, REPLICA).
 - Chi l'ha trovato: il giorno, dopo 25 minuti di suite: al ritorno dal banco, git status pulito, roles/ e 41 percorsi spariti.
 - Sintomo: il lavoro non committato sparisce dalla copia viva dell'hub; il reflog racconta `checkout main` + `reset --hard origin/main` + potatura del ramo night/* su cui si era; l'albero finisce su un ramo auto-YYYYMMDD del fixer.
 - Causa prossima: il turno è VIVO 24/7 e self-pulla l'hub a ogni ciclo (allinea_hub: sporco → stash «salvataggio turno <ora>», poi checkout+reset). Chi lavora nella copia viva non committando è in gara con lui.
 - Causa del ragionamento: la sensazione «sto solo aggiungendo file, nessun conflitto possibile» — il turno non confligge, REPLACA. E la suite completa (~25 min) è esattamente la finestra in cui il ciclo del turno passa.
 - Perché non ci ha fermati: allinea_hub ha FUNZIONATO come progettato: lo sporco era nello stash (untracked inclusi), recuperabile. La prima versione di questa stessa giornata (prima del 24/9) l'avrebbe perso per sempre.
-- Guardia: il giorno lavora l'hub in un WORKTREE (`git worktree add /tmp/<nome> -b night/<ramo> <base>`), commit a ogni passo, e la suite gira NEL worktree (il turno itera $WORK/<repo>, il worktree non è nel suo elenco). Il lavoro di oggi è stato ripescato con `git stash apply stash@{0}` nel worktree: 52 file, integri.
+- Guardia: night-shift/lib.sh — allinea_hub stasha lo sporco PRIMA di ogni reset (ha salvato i 41 percorsi: senza, era la perdita secca); la regola operativa che ne discende (il giorno lavora l'hub in worktree, `git worktree add /tmp/<nome> -b night/<ramo> <base>`, commit a ogni passo, suite NEL worktree) vive in questa voce e nel registro delle decisioni del giorno.
 - Verifica guardia: banco = il fatto stesso: 41 percorsi ripescati e committati (465c9bc) senza perdere una riga.
 - Aggiramento: se serve lavorare nella copia viva (raro), dichiararlo col presidio (claim) e comunque committare prima di ogni banco lungo.

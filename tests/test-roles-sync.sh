@@ -70,5 +70,5 @@ while IFS= read -r R; do
     || ko "$R: edit:deny assente in OpenCode"
 done < <(grep -lE '^edita: no' "$HERE"/roles/*.md 2>/dev/null | xargs -n1 basename 2>/dev/null | sed 's/\.md$//')
 
-echo "── test-roles-sync: $PASS ok · $FAIL fail"
+echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]

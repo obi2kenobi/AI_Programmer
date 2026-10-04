@@ -49,21 +49,21 @@ RUOLI=""
 attiva() { RUOLI="$RUOLI$1"$'\n'; echo "  + $1 ($2)"; }
 
 # ── per nome: il dominio dichiarato da Luca nel nome/README ─────────────────
-if echo "$SEGNALE" | grep -qiE 'trading|strategia|backtest|long.?short|scalp'; then
+if grep -qiE 'trading|strategia|backtest|long.?short|scalp' <<<"$SEGNALE"; then
   attiva analista-trading "nome/README: trading"
 fi
-if echo "$SEGNALE" | grep -qiE 'price.?intelligen|middleware|pipeline|etl|sync|collector|scraping'; then
+if grep -qiE 'price.?intelligen|middleware|pipeline|etl|sync|collector|scraping' <<<"$SEGNALE"; then
   attiva pipeline-dati "nome/README: pipeline"
 fi
-if echo "$SEGNALE" | grep -qiE 'ordin|magazzin|logistic|dropship|golilla|spediz|warehous'; then
+if grep -qiE 'ordin|magazzin|logistic|dropship|golilla|spediz|warehous' <<<"$SEGNALE"; then
   attiva specialista-logistica "nome/README: logistica"
 fi
-if echo "$SEGNALE" | grep -qiE 'contabilit|bilanc|fattur|cespit|scadenz|margine|dso|riconcili'; then
+if grep -qiE 'contabilit|bilanc|fattur|cespit|scadenz|margine|dso|riconcili' <<<"$SEGNALE"; then
   attiva contabilita-analitica "nome/README: contabilità"
   attiva costruttore-calcoli-gestionali "nome/README: contabilità"
   attiva revisore-calcoli-critici "nome/README: contabilità"
 fi
-if echo "$SEGNALE" | grep -qiE 'business central|\bbc\b|navision|dynamics'; then
+if grep -qiE 'business central|\bbc\b|navision|dynamics' <<<"$SEGNALE"; then
   attiva censitore-forma-dati "nome/README: dati Business Central"
 fi
 
