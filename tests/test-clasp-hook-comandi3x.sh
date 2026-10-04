@@ -9,6 +9,8 @@ HOOK="${1:-$(cd "$(dirname "$0")/.." && pwd)/tools/clasp-block-hook.sh}"
 M=30
 echo "gancio letto: $HOOK"
 ESEGUITE=0; FALLITE=0
+# decisione <comando>: simula una richiesta Bash verso il gancio e restituisce la sua
+# decisione ("passa" o "deny"). Serve a attesa() per confrontare l'esito atteso con quello reale.
 decisione() {
   local out; out="$(jq -nc --arg c "$1" '{tool_name:"Bash",tool_input:{command:$c}}' | bash "$HOOK")"
   if [ -z "$out" ]; then echo passa; else jq -r '.hookSpecificOutput.permissionDecision // "passa"' <<<"$out"; fi
