@@ -91,17 +91,81 @@ echo "   ✓ $(wc -l < CLAUDE.md | tr -d ' ') righe (puntatore)"
 echo "── 2/6 hook..."
 mkdir -p tools
 HOOK_COPIATI=0
-for H in pattern-reminder-hook.sh clasp-block-hook.sh metodo-reminder-hook.sh skill-reminder-hook.sh graphify-spina.sh; do
+for H in pattern-reminder-hook.sh clasp-block-hook.sh metodo-reminder-hook.sh skill-reminder-hook.sh graphify-spina.sh gas-gate.sh; do
   if [ -f "$HUB/tools/$H" ]; then
     cp "$HUB/tools/$H" "tools/$H" && chmod +x "tools/$H" && HOOK_COPIATI=$((HOOK_COPIATI+1))
   fi
 done
-# registrazione in settings.json (se non gia' presente)
-if [ -f .claude/settings.json ]; then
-  for H in pattern-reminder-hook clasp-block-hook; do
-    jq -e --arg cmd "\"\$CLAUDE_PROJECT_DIR\"/tools/$H.sh" '.hooks.PreToolUse[]? | .hooks[]? | select(.command == $cmd)' .claude/settings.json >/dev/null 2>&1 || \
-      echo "   ⚠ $H non registrato in settings.json — vedi tools/copia-hook.sh"
-  done
+# registrazione in settings.json: CREALO se non c'e' (repo nuovo), aggiornalo se c'e'
+mkdir -p .claude
+if [ ! -f .claude/settings.json ]; then
+  # repo nuovo: settings completo con tutti e 5 gli hook
+  cat > .claude/settings.json << 'SETTINGS'
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/pattern-reminder-hook.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/skill-reminder-hook.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/clasp-block-hook.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/metodo-reminder-hook.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/metodo-reminder-hook.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/tools/graphify-spina.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
+SETTINGS
+  echo "   ✓ settings.json creato (5 hook registrati)"
+elif [ -f "$HUB/tools/copia-hook.sh" ]; then
+  # repo esistente: usa copia-hook dell'hub
+  bash "$HUB/tools/copia-hook.sh" "$PWD" >/dev/null 2>&1 && echo "   ✓ hook registrati" || echo "   ⚠ copia-hook non riuscito"
 fi
 echo "   ✓ $HOOK_COPIATI hook copiati in tools/"
 
