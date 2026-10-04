@@ -21388,7 +21388,7 @@
       },
       "norm_label": "ko()",
       "source_file": "tests/test-claude-md-segreto-impronta-regola.sh",
-      "source_location": "L13"
+      "source_location": "L14"
     },
     {
       "id": "tests_test_claude_md_segreto_impronta_regola_ok",
@@ -21403,7 +21403,7 @@
       },
       "norm_label": "ok()",
       "source_file": "tests/test-claude-md-segreto-impronta-regola.sh",
-      "source_location": "L12"
+      "source_location": "L13"
     },
     {
       "id": "tests_test_claude_md_segreto_impronta_regola_sh__entry",
@@ -52644,6 +52644,78 @@
       "source_location": "L149"
     },
     {
+      "id": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa",
+      "label": "2026-10-03-riordino-legno-adozione-chiusa.md",
+      "_origin": "ast",
+      "community": 800,
+      "community_name": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_2026_10_03_riordino_legno_adozione_chiusa",
+      "label": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "_origin": "ast",
+      "community": 800,
+      "community_name": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 800,
+      "community_name": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 800,
+      "community_name": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 800,
+      "community_name": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 800,
+      "community_name": "2026-10-03 \u2014 riordino-legno-adozione-chiusa",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L13"
+    },
+    {
       "id": "sal_archivio_2026_08_23_2_set_1_3_giri_2_3_la_skill_raggiunge_la_commessa_poi_il_progetto_nuovo",
       "label": "2026-08-23 (2) \u2014 Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo",
       "_origin": "ast",
@@ -57468,7 +57540,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-claude-md-segreto-impronta-regola.sh",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -57480,7 +57552,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-claude-md-segreto-impronta-regola.sh",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -78462,6 +78534,61 @@
       "weight": 1.0
     },
     {
+      "source": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa",
+      "target": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_2026_10_03_riordino_legno_adozione_chiusa",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_2026_10_03_riordino_legno_adozione_chiusa",
+      "target": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_2026_10_03_riordino_legno_adozione_chiusa",
+      "target": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_2026_10_03_riordino_legno_adozione_chiusa",
+      "target": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_2026_10_03_riordino_legno_adozione_chiusa",
+      "target": "docs_campo_2026_10_03_riordino_legno_adozione_chiusa_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
       "source": "docs_campo_readme",
       "target": "docs_campo_readme_report_dal_campo_come_si_\u00e8_comportato_ai_programmer_a_ogni_uso",
       "relation": "contains",
@@ -96014,7 +96141,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-claude-md-segreto-impronta-regola.sh",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -96025,7 +96152,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-claude-md-segreto-impronta-regola.sh",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0
     },
     {
@@ -103998,5 +104125,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "310fc606c08c7b2e00f5b70864acb860c90bf7d0"
+  "built_at_commit": "8ef3ff79c36730b833cc5591fbfea51380fa61d6"
 }

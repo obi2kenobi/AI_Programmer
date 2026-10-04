@@ -9,6 +9,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 CLAUDE="$HERE/CLAUDE.md"
 PATTERN="$HERE/patterns/segreto-come-impronta.md"
 PASS=0; FAIL=0
+# ok/ko: tally and print one check result; the final exit code is 0 only if FAIL stays 0.
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
