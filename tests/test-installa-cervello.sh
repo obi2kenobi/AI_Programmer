@@ -25,7 +25,7 @@ mkdir -p "$T/hub/night-shift" "$T/hub/tools"
 cp "$HERE/night-shift/repos.conf" "$T/hub/night-shift/repos.conf" 2>/dev/null || \
   printf 'obi2kenobi/AI_Programmer docs\n' > "$T/hub/night-shift/repos.conf"
 # gli hook dal vero hub (il finto ha solo repos.conf)
-for h in pattern-reminder-hook.sh clasp-block-hook.sh metodo-reminder-hook.sh skill-reminder-hook.sh graphify-spina.sh; do
+for h in pattern-reminder-hook.sh clasp-block-hook.sh metodo-reminder-hook.sh skill-reminder-hook.sh graphify-spina.sh gas-gate.sh; do
   cp "$HERE/tools/$h" "$T/hub/tools/$h" 2>/dev/null
 done
 cp "$HERE/tools/claude-md-cervello.sh" "$T/hub/tools/" 2>/dev/null || true
@@ -43,6 +43,9 @@ grep -q 'metodo AI_Programmer' "$T/nuovo/CLAUDE.md" 2>/dev/null \
 # 2. hook presenti
 [ -f "$T/nuovo/tools/pattern-reminder-hook.sh" ] && ok "hook pattern-reminder presente" || ko "hook mancante"
 [ -f "$T/nuovo/tools/clasp-block-hook.sh" ] && ok "hook clasp-block presente" || ko "hook clasp mancante"
+[ -f "$T/nuovo/tools/gas-gate.sh" ] && ok "gas-gate copiato (per night-verify)" || ko "gas-gate mancante"
+[ -f "$T/nuovo/.claude/settings.json" ] && grep -q 'pattern-reminder' "$T/nuovo/.claude/settings.json" \
+  && ok "settings.json con hook registrati" || ko "settings.json senza hook"
 
 # 3. grafo creato (se graphify disponibile)
 if command -v graphify >/dev/null 2>&1; then
