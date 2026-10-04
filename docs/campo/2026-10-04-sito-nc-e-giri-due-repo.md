@@ -18,3 +18,14 @@ Agenti `sviluppatore-gas` (6 fasi del sito + integrazione + gruppi di correzione
 2. Il gate deve esigere la riga-verdetto `attese eseguite: N/M · fallite: 0` per ogni banco (non solo il codice di uscita) e dichiarare come DEGRADATO, non verde, un salto di banchi (es. `playwright-core` assente).
 3. Le lenti che citano file (`test-citazioni-vere`) devono scandire solo i file tracciati (`git ls-files`).
 4. Brief `n-giri`: aggiungere la riga «agenti paralleli: nome dei file di lavoro con prefisso del giro» (lo scratchpad è condiviso).
+
+## Secondo giro e terzo (aggiunta a fine giornata)
+- **Cosa è stato fatto**: secondo giro di lettura sul codice GIÀ corretto (8 + 8 giri, lenti regressione / prova / fail-closed) più un giro trasversale sul contratto fra i due repo; correzioni a gruppi sugli stessi rami (G7–G12 su Registrazione, T7–T12 su Treviso, K1–K4 su entrambi, contratto v3). Gate e cancello rilanciati da me a ogni consegna e a ogni merge: 26 comandi verdi e 103 comandi / 3211 attese verdi.
+- **Cosa ha trovato che i banchi non vedevano**: regressioni vere delle correzioni stesse (memoria per messaggio che chiude come definitivo un secondo allegato diverso; POST del carico con 5xx dichiarata «non registrata»; `attribuiti_a_mano` non cablato nel punto di chiamata; `in_corso` orfano invisibile; ripiego Drive memorizzato come definitivo). Causa comune: i banchi provavano le funzioni pure, non il punto di chiamata né la voce di chi viene fermato.
+- **Errore di processo mio, corretto**: il merge di `main` nel ramo (dopo che la #372 era entrata come squash) ha duplicato in silenzio una funzione (`segnalataAltrove_`) senza conflitto; trovato leggendo il diff di `gas/` prima del push, tolto in un commit a parte. Controllo da fare dopo ogni merge automatico: cercare funzioni duplicate (`grep '^function'` | `uniq -d`).
+- **Cosa ha ostacolato**: una PR di adozione dello standard su Treviso (#197) mette in rosso il cancello da sola (sostituisce i hook di progetto con la versione generica, e 3 test non la riconoscono): non unita, lasciata aperta; verificato lo stato combinato prima di unire la #198.
+
+## Proposta al canone (seguito)
+5. Dopo un merge di `main` in un ramo di lavoro, controllo obbligatorio dell'albero: diff dei sorgenti contro lo stato precedente e ricerca di funzioni duplicate — un merge senza conflitti non garantisce un albero sano.
+6. Il merge di una PR «squash» non si verifica con `merge-base --is-ancestor` (la proposta 1 non vale per lo squash): si verifica con il diff dei sorgenti fra `main` e l'ultimo commit del ramo (vuoto = contenuto presente).
+7. Una PR di adozione dello standard va verificata sullo stato combinato (`main` + PR) con il cancello PRIMA del merge: può mettere in rosso un repo verde.
