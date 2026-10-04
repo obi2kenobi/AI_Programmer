@@ -211,6 +211,12 @@ fi
 echo "── 5bis/7 ruoli attivi della faretra..."
 if [ -x "$HUB/tools/rileva-ruoli.sh" ]; then
   bash "$HUB/tools/rileva-ruoli.sh" "$DIR" 2>&1 | sed 's/^/   /'
+  # (giro 2, 2026-10-04): non basta dichiararli — Claude Code legge gli agenti DAL repo:
+  # si proiettano i SOLI ruoli attivi (marcati come generati; un agente manuale resta suo)
+  if [ -x "$HUB/tools/genera-agenti.sh" ] && [ -f "$DIR/.git/ruoli-attivi" ]; then
+    bash "$HUB/tools/genera-agenti.sh" --repo "$DIR" 2>&1 | sed 's/^/   /'
+    git add .claude/agents .opencode/agent >/dev/null 2>&1 || true
+  fi
 else
   echo "   ⚠ rileva-ruoli.sh assente nell'hub (faretra vecchia?) — il turno lo rilevera' al primo ciclo"
 fi

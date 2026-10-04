@@ -68,6 +68,15 @@ bash "$HERE/tools/rileva-ruoli.sh" "$F" >/dev/null 2>&1
 R=$(cat "$F/.git/ruoli-attivi" 2>/dev/null)
 grep -qx "pipeline-dati" <<<"$R" && ok "repo price attiva pipeline-dati" || ko "repo price NON attiva pipeline-dati"
 
+# ── 4bis. repo solo-documenti: curatore, NON il canone GAS (giro 2) ───────────
+F=$(nuova_fixture RiflessioniCampo)
+mkdir -p "$F/docs"
+for i in 1 2 3; do echo "# riflessione $i" > "$F/docs/nota$i.md"; done
+bash "$HERE/tools/rileva-ruoli.sh" "$F" >/dev/null 2>&1
+R=$(cat "$F/.git/ruoli-attivi" 2>/dev/null)
+grep -qx "curatore-conoscenza" <<<"$R" && ok "repo solo-documenti attiva curatore-conoscenza" || ko "repo solo-documenti NON attiva curatore-conoscenza ($R)"
+grep -qx "sviluppatore-gas" <<<"$R" && ko "repo solo-documenti attiva il canone GAS (falso positivo: zero codice)" || ok "repo solo-documenti senza canone GAS"
+
 # ── 5. il file esistente è di Luca ────────────────────────────────────────────
 F=$(nuova_fixture Magazzino_Treviso)
 printf 'specialista-logistica\n' > "$F/.git/ruoli-attivi"

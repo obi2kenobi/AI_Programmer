@@ -140,6 +140,31 @@ if [ -n "$GOAL_OUT" ]; then
   BODY="$(printf '%s\n\n---\nI GOAL (issue di lungo corso, per repo)\n%s' "$BODY" "$GOAL_OUT")"
 fi
 
+# (2026-10-04, giro 2 della faretra): I RUOLI per repo — la faretra dichiarata, per la
+# stessa ragione della roadmap («senza questa riga nessuno chiede perche' ferma»): un
+# repo senza ruoli attivi e' un repo che la notte continua a lavorare alla cieca di
+# dominio. I mancanti si CONTANO in una riga, i presenti si dicono per nome (brevi).
+RUOLI_OUT=""
+RUOLI_MANCANTI=0
+if [ -f "$(dirname "$0")/repos.conf" ]; then
+  while read -r ENTRY _rm2; do
+    case "$ENTRY" in ''|'#'*) continue ;; esac
+    NOME2="${ENTRY##*/}"
+    RA="$HOME/night-shift-work/$NOME2/.git/ruoli-attivi"
+    if [ ! -f "$RA" ]; then
+      RUOLI_MANCANTI=$(( RUOLI_MANCANTI + 1 )); continue
+    fi
+    RUOLI_LISTA=$(grep -vE '^\s*(#|$)' "$RA" 2>/dev/null | tr '\n' ' ' | cut -c1-70)
+    [ -n "$RUOLI_LISTA" ] || continue
+    RUOLI_OUT="$RUOLI_OUT
+- $NOME2: $RUOLI_LISTA"
+  done < "$(dirname "$0")/repos.conf"
+fi
+if [ -n "$RUOLI_OUT" ]; then
+  BODY="$(printf '%s\n\n---\nI RUOLI (la faretra attiva, per repo)%s' "$BODY" "$RUOLI_OUT")"
+  [ "$RUOLI_MANCANTI" -gt 0 ] && BODY="$(printf '%s\n(%s repo ancora senza ruoli attivi: la notte li rilevera', o si dichiarano a mano in .git/ruoli-attivi)' "$BODY" "$RUOLI_MANCANTI")"
+fi
+
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo
 # arbitrario (titoli PR, output di comandi) — senza escaping, una virgoletta o un
 # backslash al suo interno rompe o inietta nello script AppleScript. Stessa lezione

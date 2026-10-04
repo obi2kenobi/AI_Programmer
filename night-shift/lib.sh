@@ -924,9 +924,12 @@ canone_ruoli() {  # <dir-repo> [tetto-byte-per-ruolo=3000] [tetto-ruoli=2]
     # il corpo dopo il frontmatter; awk|cat MAI awk|head (E-056: SIGPIPE sotto pipefail)
     TUTTO=$(awk 'c>=2{print} /^---$/{c++; next}' "$F" 2>/dev/null || true)
     CORPO=$(printf '%s' "$TUTTO" | head -c "$TETTO_B" || true)
-    if [ "${#TUTTO}" -gt "$TETTO_B" ]; then
+    # (giro 2, 2026-10-04): ${#TUTTO} conta CARATTERI, head -c taglia BYTE — coll'italiano
+    # accentato la dichiarazione diceva numeri mai visti. Si misurano i byte, come si tagliano.
+    TUTTO_B=$(printf '%s' "$TUTTO" | wc -c | tr -d ' ')
+    if [ "${TUTTO_B:-0}" -gt "$TETTO_B" ]; then
       CORPO="$CORPO
-[... canone del ruolo '$R' troncato a $TETTO_B byte su ${#TUTTO}: il resto vive in roles/$R.md nell'hub.]"
+[... canone del ruolo '$R' troncato a $TETTO_B byte su ${TUTTO_B}: il resto vive in roles/$R.md nell'hub.]"
     fi
     OUT+="--- DOMAIN ROLE: $R (canone misurato del parco) ---"$'\n'"$CORPO"$'\n'$'\n'
     N=$((N+1))

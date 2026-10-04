@@ -87,8 +87,14 @@ if [ "$N_MD" -ge 10 ] && [ "$N_MD" -gt $(( N_CODICE * 2 )) ]; then
 fi
 
 if [ -z "$RUOLI" ]; then
-  RUOLI="sviluppatore-gas"$'\n'"revisore-gas"$'\n'
-  echo "  (nessun segnale: canone GAS di default — il baricentro del parco)"
+  if [ "$N_CODICE" -eq 0 ] && [ "$N_MD" -gt 0 ]; then
+    # (giro 2, 2026-10-04): un repo di soli documenti col canone GAS era un falso positivo
+    # — non c'e' niente da sviluppare in .gs. Il prodotto di un repo doc-only e' la conoscenza.
+    attiva curatore-conoscenza "censimento: solo documenti ($N_MD .md, zero codice)"
+  else
+    RUOLI="sviluppatore-gas"$'\n'"revisore-gas"$'\n'
+    echo "  (nessun segnale: canone GAS di default — il baricentro del parco)"
+  fi
 fi
 
 if [ "$MODO" = "--asciutti" ]; then
