@@ -124,6 +124,12 @@ if diff -q "$HUB_CLAUDE" "$TMP/CLAUDE.md" >/dev/null 2>&1; then
     echo "sync-repo: DIVERGENTE — CLAUDE.md e hook ok ma $PAT_DIV pattern dell'hub divergono nel satellite"
     exit 1
   fi
+  # (2026-10-04, cervello centrale): il CLAUDE.md PUNTATORE e' allineato per definizione
+  # (le regole vivono nell'hub, non si copiano). Solo gli HOOK si verificano.
+  if grep -q 'metodo AI_Programmer' "$TMP/CLAUDE.md" 2>/dev/null && grep -q 'night-shift-work/AI_Programmer/CLAUDE.md' "$TMP/CLAUDE.md" 2>/dev/null; then
+    echo "sync-repo: ALLINEATO (cervello centrale) — CLAUDE.md e' un puntatore all'hub"
+    [ "$STANDARD" -eq 1 ] || exit 0
+  fi
   echo "sync-repo: ALLINEATO — CLAUDE.md ${REPO:-del progetto locale} coincide con quello dell'hub ($HOOK_ESITO${PAT_DIV:+, $PAT_DIV pattern diversi})"
   # (D12): il CLAUDE.md e' il canarino, non lo standard. Con --standard si prosegue e si
   # confronta il sistema intero (skill, agenti, hook): prima l'uscita qui rendeva
@@ -215,7 +221,18 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
     [ -n "$P" ] && git add "$P" 2>/dev/null
   done <<< "$SCRITTI"
   PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"; fermati_se_proprie "$PROPRIE" "$REPO"
-  cp "$HUB_CLAUDE" CLAUDE.md && git add CLAUDE.md 2>/dev/null  # D8: versione satellite
+  # (2026-10-04, cervello centrale): CLAUDE.md sottile = puntatore all'hub
+  if [ -f "$HERE/claude-md-cervello.sh" ]; then
+    bash "$HERE/claude-md-cervello.sh" "$PWD" "$HERE" >/dev/null 2>&1
+    git add CLAUDE.md 2>/dev/null
+  else
+    # (2026-10-04): CLAUDE.md sottile anche qui
+  if [ -f "$HERE/claude-md-cervello.sh" ]; then
+    bash "$HERE/claude-md-cervello.sh" "$PWD" "$HERE" >/dev/null 2>&1
+  else
+    cp "$HUB_CLAUDE" CLAUDE.md
+  fi && git add CLAUDE.md 2>/dev/null  # fallback: D8
+  fi
   # (2026-10-03, giro H): i PATTERN aggiornati dell'hub si propagano — 14 su 66 erano
   # divergenti (le lezioni di ottobre mai arrivate ai satellitari). Solo pattern che
   # esistono NELL'HUB: i pattern propri del satellite restano intoccabili.
@@ -335,7 +352,12 @@ if [ "$CON_PR" -eq 1 ] && [ -n "$REPO" ]; then
   cd "$TMP/work" || { echo "sync-repo: il clone non ha creato $TMP/work — mi fermo"; exit 1; }
   git checkout -q -b "$BR"
   PROPRIE=$(righe_proprie CLAUDE.md "$HUB_CLAUDE"); avvisa_proprie "$PROPRIE" "$REPO"; fermati_se_proprie "$PROPRIE" "$REPO"
-  cp "$HUB_CLAUDE" CLAUDE.md
+  # (2026-10-04): CLAUDE.md sottile anche qui
+  if [ -f "$HERE/claude-md-cervello.sh" ]; then
+    bash "$HERE/claude-md-cervello.sh" "$PWD" "$HERE" >/dev/null 2>&1
+  else
+    cp "$HUB_CLAUDE" CLAUDE.md
+  fi
   git add CLAUDE.md
   git -c user.email=sync@hub -c user.name=sync-repo commit -qm "chore: riallinea CLAUDE.md all'hub (regole ereditate) — tools/sync-repo.sh" \
     ${PROPRIE:+-m "$(avvisa_proprie "$PROPRIE" "$REPO" | sed 's/^ *//')"}
