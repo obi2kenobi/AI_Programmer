@@ -251,6 +251,16 @@ shift_repo() {
   git -C "$DIR" config user.name  >/dev/null 2>&1 || git -C "$DIR" config user.name  "Night Shift"
   git -C "$DIR" config user.email >/dev/null 2>&1 || git -C "$DIR" config user.email "night-shift@localhost"
 
+  # (2026-10-03, faretra): i ruoli attivi del repo — .git/ruoli-attivi, rilevati la
+  # prima volta (nome + censimento), poi EDITABILI da Luca e mai più toccati. La
+  # caccia e il risolutore li iniettano come canone di dominio.
+  if [ -x "$HERE/../tools/rileva-ruoli.sh" ]; then
+    if [ ! -f "$DIR/.git/ruoli-attivi" ]; then
+      RILEVA_OUT=$(bash "$HERE/../tools/rileva-ruoli.sh" "$DIR" 2>&1) || true
+      log "REPO $REPO: ruoli attivi rilevati: $(printf '%s' "$RILEVA_OUT" | grep -E '^\s*\+' | tr -d ' +' | tr '\n' ' ')"
+    fi
+  fi
+
   local ISSUES COUNT
   # (2026-09-24, Q2 R5): «0 issue» e «non so» non sono la stessa cosa — con la coda illeggibile la repo si
   # salta in questo ciclo (niente caccia al posto delle commesse), e il log lo dice
@@ -486,11 +496,16 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
     # banco, censore e caccia. La redirezione va prima dell'heredoc, e `|| true` fuori dalla sostituzione.
     NON_CITATI=$(cd "$DIR" && python3 - 2>/dev/null <<'PYSCAN'
 import glob, os, re
-# corpus ALLINEATO al dente (ciclo-vivo lente 2): references + agents. Le SKILL.md
+# corpus ALLINEATO al dente (ciclo-vivo lente 2): references + ruoli. Le SKILL.md
 # NON contano: la lente non le guarda, e un fixer che guarda piu' largo del dente
 # non vede il finding che il dente vede (morso 5, 2026-09-15).
+# (2026-10-03, faretra): i ruoli canonici sono roles/ (LLM-agnostic);
+# .claude/agents/ resta come ripiego per i satelliti non ancora sincronizzati.
+agenti = [f for f in sorted(glob.glob('roles/*.md')) if not f.endswith('README.md')]
+if not agenti:
+    agenti = sorted(glob.glob('.claude/agents/*.md'))
 corpus = ""
-for f in glob.glob('.claude/skills/gas-sviluppo/references/*.md') + glob.glob('.claude/agents/*.md'):
+for f in glob.glob('.claude/skills/gas-sviluppo/references/*.md') + agenti:
     corpus += open(f, errors='ignore').read()
 for p in sorted(glob.glob('patterns/*.md')):
     base = os.path.basename(p)[:-3]

@@ -14,6 +14,11 @@
 #    del 4/9 l'ha trattato come successo e ha aperto una PR di soli scarti: un .js
 #    proposto + il .night-bak dell'App.html intero, +739 righe di rumore.)
 set -uo pipefail
+# (2026-10-03, faretra): canone_ruoli() dalla lib — il risolutore prima lavorava SENZA
+# canone di dominio (i ruoli erano armi del giorno). Sourcing tollerante: la lib vive
+# nell'hub, questo script gira dall'hub.
+LIB_SH="$(cd "$(dirname "$0")" && pwd)/lib.sh"
+[ -f "$LIB_SH" ] && . "$LIB_SH"
 # (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
 [ $# -ge 2 ] || { echo "uso: risolvi-issue.sh <dir-progetto> <issue-md>" >&2; exit 2; }
 DIR="$1"; ISSUE="$2"
@@ -171,6 +176,21 @@ if [ "$(wc -c < "$ISSUE" | tr -d ' ')" -gt 24000 ]; then
 [... ISSUE TRONCATA: mostrati i primi 24000 byte su $(wc -c < "$ISSUE" | tr -d ' ').]"
 fi
 
+# (2026-10-03, faretra): il canone di dominio dei ruoli attivi del repo (.git/ruoli-attivi,
+# scritto da tools/rileva-ruoli.sh). Il risolutore prima lavorava alla cieca di dominio.
+# Tetto 2x3000 byte: il num_ctx e' 12288, non un pozzo (lezione #172).
+DOMINIO_CANONE_BLOCO=""
+if declare -f canone_ruoli >/dev/null 2>&1; then
+  RUOLI_CANONE=$(canone_ruoli "$DIR" 3000 2)
+  if [ -n "$RUOLI_CANONE" ]; then
+    log "canone di dominio iniettato: $(printf '%s' "$RUOLI_CANONE" | grep -c 'DOMAIN ROLE' || true) ruolo/i attivi"
+    DOMINIO_CANONE_BLOCO="=== DOMAIN CANON (measured rules of this repo's domain — follow them when they bite) ===
+$RUOLI_CANONE=== END DOMAIN CANON ===
+
+"
+  fi
+fi
+
 PROMPT=$(cat <<EOF
 You are a coding assistant. Read the following GitHub issue and the source code. Write the EXACT code changes needed. Output ONLY the modified functions with their full body, wrapped in code blocks. Do NOT re-read files, do NOT ask questions, do NOT explain: just output the corrected code.
 
@@ -178,7 +198,7 @@ You are a coding assistant. Read the following GitHub issue and the source code.
 $COMMESSA
 === END ISSUE ===
 
-=== SOURCE CODE ===
+$DOMINIO_CANONE_BLOCO=== SOURCE CODE ===
 $FILES_CONTENT
 === END SOURCE ===
 

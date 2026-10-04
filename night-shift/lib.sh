@@ -902,3 +902,35 @@ cancello_design() {
   return 0
 }
 
+
+# canone_ruoli(): il canone dei ruoli attivi di un repo, per il prompt della notte.
+# (2026-10-03, allargamento della faretra deciso da Luca: la notte risolveva e cacciava
+# SENZA canone di dominio — i 6 agenti erano armi del giorno, in formato Claude. Ora i
+# ruoli vivono in roles/ (hub), il repo dichiara i suoi in .git/ruoli-attivi (scritto da
+# tools/rileva-ruoli.sh, editabile da Luca), e la notte li inietta QUI.)
+# Tetto per costruzione: la lezione #172 (non-convergenza) e' SATURAZIONE di num_ctx —
+# il canone e' un CONTESTO, non un libro: 2 ruoli x 3000 byte, troncato DICHIARATO.
+canone_ruoli() {  # <dir-repo> [tetto-byte-per-ruolo=3000] [tetto-ruoli=2]
+  local DIR="${1:-}" TETTO_B="${2:-3000}" TETTO_N="${3:-2}"
+  local FILE="$DIR/.git/ruoli-attivi"
+  [ -f "$FILE" ] || return 0
+  local HUB
+  HUB="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+  local OUT="" R F CORPO TUTTO N=0
+  while IFS= read -r R; do
+    case "$R" in ''|'#'*) continue ;; esac
+    F="$HUB/roles/$R.md"
+    [ -f "$F" ] || continue
+    # il corpo dopo il frontmatter; awk|cat MAI awk|head (E-056: SIGPIPE sotto pipefail)
+    TUTTO=$(awk 'c>=2{print} /^---$/{c++; next}' "$F" 2>/dev/null || true)
+    CORPO=$(printf '%s' "$TUTTO" | head -c "$TETTO_B" || true)
+    if [ "${#TUTTO}" -gt "$TETTO_B" ]; then
+      CORPO="$CORPO
+[... canone del ruolo '$R' troncato a $TETTO_B byte su ${#TUTTO}: il resto vive in roles/$R.md nell'hub.]"
+    fi
+    OUT+="--- DOMAIN ROLE: $R (canone misurato del parco) ---"$'\n'"$CORPO"$'\n'$'\n'
+    N=$((N+1))
+    [ "$N" -ge "$TETTO_N" ] && break
+  done < "$FILE"
+  printf '%s' "$OUT"
+}
