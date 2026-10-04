@@ -420,7 +420,7 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
       log "REPO $REPO: standard: ALLINEATO all'hub"
     else
       log "REPO $REPO: standard: DIVERGENTE dall'hub — verifico se c'e' gia' una PR di riallineo"
-      PR_SYNC=$(gh pr list --limit 1000 -R "$REPO" --state open --json title -q '.[].title' 2>/dev/null) || PR_SYNC="$GH_NON_SO"   # (O2 R3)
+      PR_SYNC=$(gh pr list --limit 1000 -R "$REPO" --state open --json number,title -q '.[] | "#\(.number) \(.title)"' 2>/dev/null) || PR_SYNC="$GH_NON_SO"   # (O2 R3 + 2026-10-04: numero incluso per il riallineo-auto)
       if [ "$PR_SYNC" = "$GH_NON_SO" ]; then
         log "REPO $REPO: ⚠ gh non ha risposto (PR aperte): il riallineo allo standard non si propone in questo ciclo — non al buio"
       elif grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
@@ -795,7 +795,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         MIGLIORIA_RC=$?
         # (audit 2026-09-23): "TRASFORMATORE deterministico" e "gate BOCCIA"
         # morivano qui come le DELIBERE — il funnel diceva "0 per sempre".
-        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA|agente: .*(⚠|⛔|rianima_ollama: esito)" <<<"$MIGLIORIA_OUT")   # (R4 R3): anche i wedge dell'agente
+        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA|agente: .*(⚠|⛔|rianima_ollama: esito)|goal #|grafo:.*tocca|scuola dei rigetti" <<<"$MIGLIORIA_OUT")   # (R4 R3): anche i wedge dell'agente
         # (strumento, 2026-09-19): la riga-categoria in produzione — senza questa
         # riga non si sa SE la finestra abbia pagato un debito o girato a rotazione
         log "REPO $REPO: caccia-interna: $(echo "$MIGLIORIA_OUT" | grep -a "categoria" | head -1 | cut -c1-140)"
