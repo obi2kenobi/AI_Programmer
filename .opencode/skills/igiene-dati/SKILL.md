@@ -23,20 +23,24 @@ Tre domande, risposta nel report SEMPRE:
 
 ## 2. La forma (un comando per domanda)
 
-```bash
-file dati.csv                          # encoding dichiarato
-head -c 400 dati.csv | od -c | head -5 # BOM, separatori, ritorni a capo
+```python
+file dati.csv
+# encoding dichiarato
+head -c 400 dati.csv | od -c | head -5
+# BOM, separatori, ritorni a capo
 python3 - <<'PY'
 import csv, collections
 with open('dati.csv', encoding='utf-8-sig', newline='') as f:
     campione = f.read(65536)
     f.seek(0)
     sep = csv.Sniffer().sniff(campione).delimiter
-    r = csv.reader(f, delimiter=sep)  # il separatore si annusa, non si indovina
+    r = csv.reader(f, delimiter=sep)
+    # il separatore si annusa, non si indovina
     righe = list(r)
 print("righe:", len(righe), "colonne prima riga:", len(righe[0]))
 larghezze = collections.Counter(len(x) for x in righe)
-print("larghezze (conteggio):", larghezze)  # righe storte visibili subito
+print("larghezze (conteggio):", larghezze)
+# righe storte visibili subito
 PY
 ```
 
@@ -45,7 +49,7 @@ ma vanno SPIEGATE prima di procedere, non scoperte dal traceback.
 
 ## 3. Le date (la famiglia che morde di più)
 
-```bash
+```python
 python3 - <<'PY'
 import csv, collections, re
 with open('dati.csv', encoding='utf-8-sig', newline='') as f:
@@ -71,7 +75,7 @@ passare); `<VUOTO>` in campo data (vuoto ≠ assente).
 
 ## 4. Duplicati e chiavi
 
-```bash
+```python
 python3 - <<'PY'
 import csv, collections
 with open('dati.csv', encoding='utf-8-sig', newline='') as f:

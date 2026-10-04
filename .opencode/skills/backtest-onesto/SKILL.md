@@ -36,9 +36,10 @@ Il lookahead non si vede leggendo: si cerca nello schema. Le domande, in ordine:
 
 I numeri citati nei documenti si ricalcolano con codice PROPRIO, minimo:
 
-```bash
+```python
 python3 - <<'PY'
-import pandas as pd  # o puro csv se il repo non usa pandas
+import pandas as pd
+# o puro csv se il repo non usa pandas
 # carica la STESSA serie del backtest, ricalcola UNA metrica citata
 # (es. rendimento cumulato finale), stampa con 4 decimali
 PY

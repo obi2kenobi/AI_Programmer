@@ -56019,7 +56019,7 @@
       "node_kind": "heading",
       "norm_label": "3. le date (la famiglia che morde di piu)",
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L46"
+      "source_location": "L50"
     },
     {
       "id": "opencode_skills_igiene_dati_skill_4_duplicati_e_chiavi",
@@ -56031,7 +56031,7 @@
       "node_kind": "heading",
       "norm_label": "4. duplicati e chiavi",
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L72"
+      "source_location": "L76"
     },
     {
       "id": "opencode_skills_igiene_dati_skill_5_i_vuoti_e_i_mai_raccolti_confronto_non_vuoto",
@@ -56043,7 +56043,7 @@
       "node_kind": "heading",
       "norm_label": "5. i vuoti e i mai-raccolti (confronto-non-vuoto)",
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L94"
+      "source_location": "L98"
     },
     {
       "id": "opencode_skills_igiene_dati_skill_6_l_uscita",
@@ -56055,7 +56055,7 @@
       "node_kind": "heading",
       "norm_label": "6. l'uscita",
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L105"
+      "source_location": "L109"
     },
     {
       "id": "opencode_skills_igiene_dati_skill_igiene_dati_i_dati_si_guardano_prima_di_crederci",
@@ -56131,7 +56131,7 @@
       "node_kind": "heading",
       "norm_label": "4. le metriche con nome e periodo",
       "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
-      "source_location": "L54"
+      "source_location": "L55"
     },
     {
       "id": "opencode_skills_backtest_onesto_skill_5_il_verdetto",
@@ -56143,7 +56143,7 @@
       "node_kind": "heading",
       "norm_label": "5. il verdetto",
       "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
-      "source_location": "L67"
+      "source_location": "L68"
     },
     {
       "id": "opencode_skills_backtest_onesto_skill_backtest_onesto_il_passato_si_prova_non_si_racconta",
@@ -87265,7 +87265,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
-      "source_location": "L54",
+      "source_location": "L55",
       "weight": 1.0
     },
     {
@@ -87276,7 +87276,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/backtest-onesto/SKILL.md",
-      "source_location": "L67",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -89421,7 +89421,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L105",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -89454,7 +89454,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L46",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -89465,7 +89465,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L72",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -89476,7 +89476,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/igiene-dati/SKILL.md",
-      "source_location": "L94",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -109648,5 +109648,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "16695ca313e60742bd3e1d487aa7d5548e290512"
+  "built_at_commit": "310b061ed918a943bcd7d016e2a11271d3b6266f"
 }

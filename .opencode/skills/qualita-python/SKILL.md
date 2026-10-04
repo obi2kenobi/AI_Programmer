@@ -12,9 +12,9 @@ comando o una lettura dichiarata, ogni rilievo con file:riga e prova.
 ## 0. L'inventario (un comando, prima di giudicare)
 
 ```bash
-find . -name '*.py' -not -path './.git/*' | xargs wc -l | tail -1   # volume
-grep -rn "def \|class " --include='*.py' . | wc -l                  # firme
-ls tests/ test/ 2>/dev/null || echo "NESSUNA CARTELLA TEST"         # banco
+find . -name '*.py' -not -path './.git/*' | xargs wc -l | tail -1
+grep -rn "def \|class " --include='*.py' . | wc -l
+ls tests/ test/ 2>/dev/null || echo "NESSUNA CARTELLA TEST"
 ```
 
 Il repo senza tests/ è il primo rilievo (gravità alta: il parco conta i test
@@ -51,7 +51,7 @@ la firma del confine, non per ogni variabile interna.
 La barra è quella del progetto (gli oracoli tools/*.py del parco sono
 documentati). Il censimento:
 
-```bash
+```python
 python3 - <<'PY'
 import ast, glob
 for f in glob.glob('**/*.py', recursive=True):
