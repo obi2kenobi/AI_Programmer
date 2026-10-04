@@ -9260,23 +9260,8 @@
       "source_location": "L582"
     },
     {
-      "id": "night_shift_lib_rianima_ollama",
-      "label": "rianima_ollama()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rianima_ollama()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L786"
-    },
-    {
-      "id": "tests_test_rianima_ollama",
-      "label": "test-rianima-ollama.sh",
+      "id": "tests_test_consegna_dichiarata",
+      "label": "test-consegna-dichiarata.sh",
       "_origin": "ast",
       "community": 147,
       "community_name": "agente.sh script",
@@ -9285,12 +9270,27 @@
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-rianima-ollama.sh",
-      "source_file": "tests/test-rianima-ollama.sh",
+      "norm_label": "test-consegna-dichiarata.sh",
+      "source_file": "tests/test-consegna-dichiarata.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_rianima_ollama_ko",
+      "id": "tests_test_consegna_dichiarata_g",
+      "label": "g()",
+      "_origin": "ast",
+      "community": 147,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 147,
@@ -9301,11 +9301,11 @@
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L13"
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L11"
     },
     {
-      "id": "tests_test_rianima_ollama_ok",
+      "id": "tests_test_consegna_dichiarata_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 147,
@@ -9316,12 +9316,12 @@
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L12"
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_rianima_ollama_sh__entry",
-      "label": "test-rianima-ollama.sh script",
+      "id": "tests_test_consegna_dichiarata_sh__entry",
+      "label": "test-consegna-dichiarata.sh script",
       "_origin": "ast",
       "community": 147,
       "community_name": "agente.sh script",
@@ -9330,8 +9330,8 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-rianima-ollama.sh script",
-      "source_file": "tests/test-rianima-ollama.sh",
+      "norm_label": "test-consegna-dichiarata.sh script",
+      "source_file": "tests/test-consegna-dichiarata.sh",
       "source_location": "L1"
     },
     {
@@ -44624,7 +44624,7 @@
       },
       "norm_label": "avvisa_proprie()",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L160"
+      "source_location": "L166"
     },
     {
       "id": "tools_sync_repo_fermati_se_proprie",
@@ -44639,7 +44639,7 @@
       },
       "norm_label": "fermati_se_proprie()",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L165"
+      "source_location": "L171"
     },
     {
       "id": "tools_sync_repo_fondi_settings",
@@ -44654,7 +44654,7 @@
       },
       "norm_label": "fondi_settings()",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L174"
+      "source_location": "L180"
     },
     {
       "id": "tools_sync_repo_righe_proprie",
@@ -44669,7 +44669,7 @@
       },
       "norm_label": "righe_proprie()",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L152"
+      "source_location": "L158"
     },
     {
       "id": "tools_sync_repo_sh__entry",
@@ -52085,78 +52085,78 @@
       "source_location": "L2805"
     },
     {
-      "id": "tests_test_consegna_dichiarata",
-      "label": "test-consegna-dichiarata.sh",
+      "id": "night_shift_lib_rianima_ollama",
+      "label": "rianima_ollama()",
       "_origin": "ast",
       "community": 798,
-      "community_name": "test-consegna-dichiarata.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-consegna-dichiarata.sh",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_consegna_dichiarata_g",
-      "label": "g()",
-      "_origin": "ast",
-      "community": 798,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "g()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L13"
+      "norm_label": "rianima_ollama()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L786"
     },
     {
-      "id": "tests_test_consegna_dichiarata_ko",
+      "id": "tests_test_rianima_ollama",
+      "label": "test-rianima-ollama.sh",
+      "_origin": "ast",
+      "community": 798,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-rianima-ollama.sh",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 798,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L11"
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L13"
     },
     {
-      "id": "tests_test_consegna_dichiarata_ok",
+      "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 798,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L10"
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L12"
     },
     {
-      "id": "tests_test_consegna_dichiarata_sh__entry",
-      "label": "test-consegna-dichiarata.sh script",
+      "id": "tests_test_rianima_ollama_sh__entry",
+      "label": "test-rianima-ollama.sh script",
       "_origin": "ast",
       "community": 798,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-consegna-dichiarata.sh script",
-      "source_file": "tests/test-consegna-dichiarata.sh",
+      "norm_label": "test-rianima-ollama.sh script",
+      "source_file": "tests/test-rianima-ollama.sh",
       "source_location": "L1"
     },
     {
@@ -52714,6 +52714,36 @@
       "norm_label": "proposta al canone",
       "source_file": "docs/campo/2026-10-03-riordino-legno-adozione-chiusa.md",
       "source_location": "L13"
+    },
+    {
+      "id": "tools_claude_md_cervello",
+      "label": "claude-md-cervello.sh",
+      "_origin": "ast",
+      "community": 801,
+      "community_name": "claude-md-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "claude-md-cervello.sh",
+      "source_file": "tools/claude-md-cervello.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_claude_md_cervello_sh__entry",
+      "label": "claude-md-cervello.sh script",
+      "_origin": "ast",
+      "community": 801,
+      "community_name": "claude-md-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "claude-md-cervello.sh script",
+      "source_file": "tools/claude-md-cervello.sh",
+      "source_location": "L1"
     },
     {
       "id": "sal_archivio_2026_08_23_2_set_1_3_giri_2_3_la_skill_raggiunge_la_commessa_poi_il_progetto_nuovo",
@@ -63576,7 +63606,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L217",
+      "source_location": "L223",
       "weight": 1.0
     },
     {
@@ -63588,7 +63618,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L217",
+      "source_location": "L223",
       "weight": 1.0
     },
     {
@@ -63600,7 +63630,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L239",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -63612,7 +63642,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L313",
+      "source_location": "L330",
       "weight": 1.0
     },
     {
@@ -92493,6 +92523,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_claude_md_cervello",
+      "target": "tools_claude_md_cervello_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/claude-md-cervello.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tools_claude_md_satellite",
       "target": "tools_claude_md_satellite_sh__entry",
       "relation": "contains",
@@ -101795,7 +101836,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L152",
+      "source_location": "L158",
       "weight": 1.0
     },
     {
@@ -101806,7 +101847,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L160",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -101817,7 +101858,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L165",
+      "source_location": "L171",
       "weight": 1.0
     },
     {
@@ -101828,7 +101869,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L174",
+      "source_location": "L180",
       "weight": 1.0
     },
     {
@@ -104125,5 +104166,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8ef3ff79c36730b833cc5591fbfea51380fa61d6"
+  "built_at_commit": "289ec6e9cbc21543523ae87bed12e38a9e1154cf"
 }
