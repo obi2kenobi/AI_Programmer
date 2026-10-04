@@ -119,7 +119,10 @@ calcolo contabile NON delegare l'invenzione della formula: cerca l'oracolo.
   `tools/genera-agenti.sh` — chi edita gli specchietti vede il lavoro cancellato
   (la deriva muore così; banco: `tests/test-roles-sync.sh`). La notte inietta i
   ruoli attivi del repo (`.git/ruoli-attivi`, da `tools/rileva-ruoli.sh`) come
-  canone di dominio nella caccia e nel risolutore.
+  canone di dominio nella caccia, nel risolutore E nel censore del revisore; il
+  cancello del commit rigenera i mirror quando roles/ cambia (la deriva non
+  sopravvive a un commit); i satelliti ricevono i SOLI ruoli attivi con
+  `genera-agenti.sh --repo` (marcati: i manuali restano loro).
 
 ### Portare il metodo in una repo
 

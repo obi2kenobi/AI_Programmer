@@ -45,6 +45,7 @@ edita: si | no
 | **OpenCode** | `.opencode/agent/<nome>.md` GENERATO (frontmatter mode/permission) |
 | **Qualsiasi LLM open-weight** | il file stesso: body markdown puro, nessun protocollo. Lo si incolla nel prompt o lo si mette in RAG — non serve nient'altro |
 | **Un umano** | uguale, è un documento leggibile |
+| **Il satellite** | `genera-agenti.sh --repo <dir>` proietta SOLO i ruoli attivi (`.git/ruoli-attivi`) nei suoi `.claude/agents/` e `.opencode/agent/`, con marcatore: si rigenerano e si tolgono da soli, un agente scritto a mano resta suo |
 
 ## Le regole della casa
 

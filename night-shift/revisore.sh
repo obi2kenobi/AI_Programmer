@@ -436,12 +436,29 @@ grep -q "DEGRADAT" <<<"$LENTE_OUT" && LENTE_STR=""
 log "prove: $(tail -1 <<<"$LENTE_OUT")"
 
 # ══ 3. GIUDIZIO (il censore: cervello diverso da chi ha scritto) ═══════════════
+# (2026-10-04, giro 2 della faretra): il censore giudica col canone del DOMINIO del
+# repo — prima giudicava una PR di magazzino o di trading con gli occhiali generici:
+# «movimenti veri, giacenza derivata» e «niente lookahead» non erano nel suo mondo.
+# Budget stretto per costruzione: il censore viaggia a num_ctx 8192 (E-057), il canone
+# e' un CONTESTO non un libro → 2 ruoli x 1500 byte, troncato dichiarato.
+CENS_CANONE=""
+if declare -f canone_ruoli >/dev/null 2>&1 && [ -d "$DIR/.git" ]; then
+  CENS_CANONE=$(canone_ruoli "$DIR" 1500 2)
+  if [ -n "$CENS_CANONE" ]; then
+    log "censore: canone di dominio iniettato ($(printf '%s' "$CENS_CANONE" | grep -c 'DOMAIN ROLE' || true) ruolo/i)"
+  fi
+fi
+CENS_DOMINIO=""
+[ -n "$CENS_CANONE" ] && CENS_DOMINIO="
+
+Canone misurato del dominio di QUESTA repo (le regole che i suoi ruoli hanno pagato — una violazione e' motivo di RIGETTA):
+$CENS_CANONE"
 CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritto un altro modello ($AUTORE_MODEL), tu sei un processo separato, senza la memoria di chi l'ha scritta, e il tuo compito e' trovare il motivo per RIGETTARLA. L'onore della prova e' della PR: nel dubbio, RIGETTA.
 
 La PR dichiara di essere una piccola miglioria notturna (categoria: morto=eliminazione codice non usato, docs=commenti aggiunti, semplice=semplificazione a comportamento identico, ripetuto=letterale ripetuto estratto a costante).
 
 Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; diff di $N_RIGHE righe su $N_FILE file.
-
+$CENS_DOMINIO
 Diff:
 $DIFF
 
@@ -450,6 +467,7 @@ Giudica:
 2. elimina qualcosa che serve? (una 'variabile morta' che e' usata altrove: RIGETTA)
 3. lascia il file coerente e funzionante?
 4. i commenti aggiunti dicono la verita' sul codice?
+5. il diff rispetta il canone del dominio qui sopra, quando morde?
 
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 if [ "$MODO" = "parere" ]; then
@@ -463,7 +481,7 @@ Titolo: $(printf '%s' "$ISSUE_JSON" | jq -r '.title // ""')
 Richiesta: $(printf '%s' "$ISSUE_JSON" | jq -r '.body // ""' | head -c 4000)
 
 Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; lente sicurezza pulita; diff di $N_RIGHE righe su $N_FILE file.
-
+$CENS_DOMINIO
 Diff:
 $DIFF
 
@@ -472,6 +490,7 @@ Giudica:
 2. tocca qualcosa fuori dallo scope della issue?
 3. lascia i file coerenti e funzionanti?
 4. i commenti aggiunti dicono la verita' sul codice?
+5. il diff rispetta il canone del dominio qui sopra, quando morde?
 
 Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 fi

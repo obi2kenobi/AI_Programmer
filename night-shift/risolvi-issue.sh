@@ -181,7 +181,19 @@ fi
 # Tetto 2x3000 byte: il num_ctx e' 12288, non un pozzo (lezione #172).
 DOMINIO_CANONE_BLOCO=""
 if declare -f canone_ruoli >/dev/null 2>&1; then
-  RUOLI_CANONE=$(canone_ruoli "$DIR" 3000 2)
+  # (2026-10-04, giro 2): budget ADATTIVO — la lezione #172 e' saturazione di num_ctx:
+  # quando issue+file occupano molto, il canone si RITIRA prima di diventare il proverbiale
+  # pagliaio. Le soglie sono byte misurati (wc -c), dichiarate nel log, mai silenziose.
+  PROMPT_CARICO=$(python3 -c "import sys; print(len(sys.stdin.read()))" <<<"$COMMESSA$FILES_CONTENT" 2>/dev/null || echo 0)
+  CANONE_B=3000; CANONE_N=2
+  if [ "$PROMPT_CARICO" -ge 48000 ]; then
+    CANONE_B=0; CANONE_N=0
+    log "canone di dominio: SALTO (issue+file = ${PROMPT_CARICO} byte >= 48000: il num_ctx prima del canone, lezione #172)"
+  elif [ "$PROMPT_CARICO" -ge 32000 ]; then
+    CANONE_B=2000; CANONE_N=1
+    log "canone di dominio: ridotto a 1x2000 byte (issue+file = ${PROMPT_CARICO} byte)"
+  fi
+  RUOLI_CANONE=$(canone_ruoli "$DIR" "$CANONE_B" "$CANONE_N")
   if [ -n "$RUOLI_CANONE" ]; then
     log "canone di dominio iniettato: $(printf '%s' "$RUOLI_CANONE" | grep -c 'DOMAIN ROLE' || true) ruolo/i attivi"
     DOMINIO_CANONE_BLOCO="=== DOMAIN CANON (measured rules of this repo's domain — follow them when they bite) ===

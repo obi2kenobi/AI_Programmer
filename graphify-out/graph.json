@@ -29524,7 +29524,7 @@
       },
       "norm_label": "escape_as()",
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L147"
+      "source_location": "L172"
     },
     {
       "id": "night_shift_morning_digest_sh__entry",
@@ -32145,7 +32145,7 @@
       "node_kind": "heading",
       "norm_label": "5. la verifica: come esco da qui",
       "source_file": "AGENTS.md",
-      "source_location": "L136"
+      "source_location": "L139"
     },
     {
       "id": "agents_agents_md_il_contratto_d_ingresso_per_agenti_llm_in_questo_repo",
@@ -32169,7 +32169,7 @@
       "node_kind": "heading",
       "norm_label": "il catalogo pattern",
       "source_file": "AGENTS.md",
-      "source_location": "L130"
+      "source_location": "L133"
     },
     {
       "id": "agents_portare_il_metodo_in_una_repo",
@@ -32181,7 +32181,7 @@
       "node_kind": "heading",
       "norm_label": "portare il metodo in una repo",
       "source_file": "AGENTS.md",
-      "source_location": "L124"
+      "source_location": "L127"
     },
     {
       "id": "agents_regole_graphify",
@@ -32193,7 +32193,7 @@
       "node_kind": "heading",
       "norm_label": "regole graphify",
       "source_file": "AGENTS.md",
-      "source_location": "L149"
+      "source_location": "L152"
     },
     {
       "id": "docs_bc_endpoints_componenti_ordine_produzione_excel",
@@ -55046,7 +55046,7 @@
       "node_kind": "heading",
       "norm_label": "l'inventario (si conta, non si scrive)",
       "source_file": "roles/README.md",
-      "source_location": "L62"
+      "source_location": "L63"
     },
     {
       "id": "roles_readme_le_regole_della_casa",
@@ -55058,7 +55058,7 @@
       "node_kind": "heading",
       "norm_label": "le regole della casa",
       "source_file": "roles/README.md",
-      "source_location": "L49"
+      "source_location": "L50"
     },
     {
       "id": "roles_readme_roles_la_faretra_dei_ruoli_in_un_formato_che_parla_a_qualsiasi_llm",
@@ -56376,6 +56376,81 @@
       "norm_label": "pipeline-idempotenti \u2014 rilanciare non cambia il risultato",
       "source_file": ".opencode/skills/pipeline-idempotenti/SKILL.md",
       "source_location": "L6"
+    },
+    {
+      "id": "tests_test_genera_agenti_repo",
+      "label": "test-genera-agenti-repo.sh",
+      "_origin": "ast",
+      "community": 841,
+      "community_name": "test-genera-agenti-repo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-genera-agenti-repo.sh",
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_genera_agenti_repo_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 841,
+      "community_name": "test-genera-agenti-repo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L18"
+    },
+    {
+      "id": "tests_test_genera_agenti_repo_nuovo_repo",
+      "label": "nuovo_repo()",
+      "_origin": "ast",
+      "community": 841,
+      "community_name": "test-genera-agenti-repo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "nuovo_repo()",
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_genera_agenti_repo_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 841,
+      "community_name": "test-genera-agenti-repo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_genera_agenti_repo_sh__entry",
+      "label": "test-genera-agenti-repo.sh script",
+      "_origin": "ast",
+      "community": 841,
+      "community_name": "test-genera-agenti-repo.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-genera-agenti-repo.sh script",
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L1"
     },
     {
       "id": "claude_agents_sviluppatore_gas",
@@ -59187,7 +59262,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L526",
+      "source_location": "L545",
       "weight": 1.0
     },
     {
@@ -59199,7 +59274,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L554",
+      "source_location": "L573",
       "weight": 1.0
     },
     {
@@ -61863,6 +61938,30 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-gate-tools.sh",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_genera_agenti_repo_sh__entry",
+      "target": "tests_test_genera_agenti_repo_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_genera_agenti_repo_sh__entry",
+      "target": "tests_test_genera_agenti_repo_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-genera-agenti-repo.sh",
       "source_location": "L30",
       "weight": 1.0
     },
@@ -66891,7 +66990,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tools/sync-repo.sh",
-      "source_location": "L332",
+      "source_location": "L341",
       "weight": 1.0
     },
     {
@@ -68257,7 +68356,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L124",
+      "source_location": "L127",
       "weight": 1.0
     },
     {
@@ -68268,7 +68367,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L130",
+      "source_location": "L133",
       "weight": 1.0
     },
     {
@@ -68279,7 +68378,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L136",
+      "source_location": "L139",
       "weight": 1.0
     },
     {
@@ -68290,7 +68389,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "L149",
+      "source_location": "L152",
       "weight": 1.0
     },
     {
@@ -91423,7 +91522,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "roles/README.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -91434,7 +91533,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "roles/README.md",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -96091,6 +96190,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_genera_agenti_repo",
+      "target": "tests_test_genera_agenti_repo_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_giri_avversari_classifica",
       "target": "tests_test_giri_avversari_classifica_sh__entry",
       "relation": "contains",
@@ -99717,7 +99827,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "night-shift/morning-digest.sh",
-      "source_location": "L147",
+      "source_location": "L172",
       "weight": 1.0
     },
     {
@@ -102754,6 +102864,39 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-gate-tools.sh",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_genera_agenti_repo",
+      "target": "tests_test_genera_agenti_repo_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_genera_agenti_repo",
+      "target": "tests_test_genera_agenti_repo_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_genera_agenti_repo",
+      "target": "tests_test_genera_agenti_repo_nuovo_repo",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L22",
       "weight": 1.0
     },
     {
@@ -109648,5 +109791,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "310b061ed918a943bcd7d016e2a11271d3b6266f"
+  "built_at_commit": "fd73cfc8bd40cc79783388954318eaf43927aa78"
 }

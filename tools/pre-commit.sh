@@ -240,5 +240,21 @@ if [ "$FALLITI" -eq 0 ] && [ -n "$FUORI_GRAFO" ] && [ -f "$HERE/graphify-out/.gi
   bash "$HERE/tools/graphify-spina.sh" "$HERE" --stage
 fi
 
+# 9bis. (2026-10-04, giro 2 della faretra): gli specchietti degli agenti si GENERANO da
+#    roles/ al commit — chi tocca roles/ (o edita a mano un mirror) ottiene i mirror
+#    rigenerati e staged nello stesso commit: la deriva non sopravvive al cancello.
+#    Solo nell'HUB (serve roles/ e il generatore); i satelliti col cervello centrale
+#    non li hanno e il controllo tace (la loro proiezione e' genera-agenti --repo).
+if [ "$FALLITI" -eq 0 ] && [ -d "$HERE/roles" ] && [ -x "$HERE/tools/genera-agenti.sh" ]; then
+  TOCCATI=$(staged | grep -E '^(roles/|\.claude/agents/|\.opencode/agent/)' || true)
+  if [ -n "$TOCCATI" ]; then
+    if ! bash "$HERE/tools/genera-agenti.sh" --controlla >/dev/null 2>&1; then
+      bash "$HERE/tools/genera-agenti.sh" >/dev/null
+      git add .claude/agents .opencode/agent 2>/dev/null || true
+      echo "pre-commit: specchietti agenti rigenerati da roles/ (staged insieme)"
+    fi
+  fi
+fi
+
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
 exit $FALLITI

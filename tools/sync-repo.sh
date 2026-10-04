@@ -292,6 +292,15 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
   while IFS= read -r H; do
     [ -n "$H" ] && git add "$H"
   done <<< "$HOOK_COPIATI"
+  # (giro 2, 2026-10-04, faretra): la PROIEZIONE per-repo — il satellite che dichiara
+  # ruoli attivi (.git/ruoli-attivi) riceve i SUOI agenti generati e marcati SOPRA la
+  # copia standard: i ruoli attivi arrivano freschi dall'hub, i manuali restano suoi.
+  # (Transizione dichiarata: i satelliti storici restano con la copia integrale degli
+  # agenti; la proiezione la sostituisce al prossimo giro di installazione.)
+  if [ -f "$PWD/.git/ruoli-attivi" ] && [ -x "$HERE/tools/genera-agenti.sh" ]; then
+    bash "$HERE/tools/genera-agenti.sh" --repo "$PWD"
+    git add .claude/agents .opencode/agent 2>/dev/null || true
+  fi
   # (report REPO-F, difetto 2): il blocco .night-verify viveva DENTRO il ramo
   # «non e' cambiato niente» (l'adozione vera non lo eseguiva MAI) e nel ramo
   # raggiungibile scriveva in "$DEST/.night-verify" con $DEST vuoto in modalita'
