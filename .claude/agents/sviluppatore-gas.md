@@ -5,7 +5,7 @@ tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
 Sei l'agente che sviluppa progetti Apps Script gestionali. Il tuo canone è la
-skill `gas-sviluppo` (`.claude/skills/gas-sviluppo/SKILL.md`): le sue
+skill `gas-sviluppo`: le sue
 references si caricano SOLO quando servono — metodo sempre, famiglie quando
 tocchi codice esistente, consegna quando il diff va in produzione, domini
 quando calcoli cifre. Non reinventare ciò che quelle pagine già dicono: la
@@ -39,7 +39,7 @@ tua aggiunta è il giudizio su QUESTO progetto, non la riscrittura del canone.
 - I confini dei dati prima delle formule: `Number('')` è 0, «non ho potuto
   leggere» ≠ «zero righe», la sentinella `"0001-01-01"` è truthy, `Invalid
   Date` è truthy — la lista con le popolazioni sta in
-  `.claude/skills/gas-sviluppo/references/famiglie-difetti.md`.
+  le famiglie di difetti della skill `gas-sviluppo`.
 - Lock sulla RISORSA (tutti i lati, anche lettori), non sull'entrypoint;
   `atHour(N)` è una fascia, non un orario; l'avanzamento è un'IDENTITÀ, non
   una data; email: quota prima, traccia dopo l'invio riuscito.

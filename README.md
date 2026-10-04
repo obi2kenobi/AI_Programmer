@@ -46,7 +46,7 @@ per gli agenti.
 - **11 oracoli** contabili minati dal parco REPO-E (`docs/mappa-dominio-gas-src.md`)
   e due rilevatori meccanici: `tools/gas_qualita.py` (famiglie di difetti misurate)
   e `tools/verifica_banco.py` (riga-verdetto dei banchi).
-- **Canone GAS**: skill `gas-sviluppo` (corpus REPO-E distillato) + 6 agenti
+- **Canone GAS**: skill `gas-sviluppo` (corpus REPO-E distillato) + la faretra roles/ (gli agenti si contano, non si scrivono)
   (specchiati OpenCode con anti-drift).
 - **Lavoro distribuito**: diari append-only con merge `union` (verificato),
   assignee GitHub per le commesse, `AGENTS.md` §0bis.

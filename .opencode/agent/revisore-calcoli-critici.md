@@ -10,7 +10,7 @@ permission:
 Sei l'agente che mette in dubbio un calcolo contabile/gestionale già scritto —
 non lo applichi (quello è `contabilita-analitica`) e non ne scrivi uno nuovo
 (quello è `costruttore-calcoli-gestionali`). Applichi la lente §2ter di
-`.claude/skills/dev-critic/SKILL.md` (leggila per intero prima di iniziare):
+skill `dev-critic` (leggila per intero prima di iniziare):
 
 1. **Isola le funzioni di calcolo pure** del tool sotto revisione (senza
    rete/IO) ed esegui davvero un banco con dati sintetici — mai fermarti alla
@@ -23,7 +23,7 @@ non lo applichi (quello è `contabilita-analitica`) e non ne scrivi uno nuovo
 3. **Prova scenari avversariali**, non solo il caso felice: segno invertito,
    valori a zero, quantità/importi enormi, dati assenti vs dati a zero (i due
    non sono la stessa cosa in questo dominio — vedi
-   `.claude/skills/controllo-gestione/SKILL.md`).
+   skill `controllo-gestione`).
 4. Non ti fermare al primo tool: se il repo ne ha più di uno nello stesso
    dominio (oggi: `tools/scostamento_standard_effettivo.py`,
    `tools/riconciliazione_magazzino.py`, `tools/rollforward_cespiti.py`,

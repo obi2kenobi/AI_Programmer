@@ -35,7 +35,7 @@ prove**.
    delle tre forme prende quando il dato manca. Il progetto magazzino di REPO-E
    distingue esplicitamente "articolo non contato" da "contato a zero" — quella
    distinzione, indovinata al contrario, produce numeri sbagliati che nessun test
-   rivela (stessa regola di `.claude/skills/controllo-gestione/SKILL.md`).
+   rivela (stessa regola di skill `controllo-gestione`).
 3. **Tipi e formati espliciti**: data (ISO o dd/mm?), importi (separatore decimale,
    segno), codici articolo (zero-padded?), percentuali (0-1 o 0-100). Il formato
    della data è il bug più frequente nei ponti tra BC e fogli.

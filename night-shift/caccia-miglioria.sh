@@ -292,6 +292,16 @@ if [ -n "${GRAFO_CONTESTO:-}" ]; then
 
 Navigation context — files that DEPEND on this file (from the code graph, do not modify them, just be aware your changes may affect them): $(printf '%s' "$GRAFO_CONTESTO" | tr '\n' ' ' | cut -c1-300)"
 fi
+# (2026-10-03, faretra): il canone di dominio del repo — la caccia sa DI COSA e' il repo
+# (.git/ruoli-attivi, da tools/rileva-ruoli.sh). Prima cacciava col solo canone GAS.
+RUOLI_CANONE=$(canone_ruoli "$DIR" 3000 2)
+if [ -n "$RUOLI_CANONE" ]; then
+  PROMPT="$PROMPT
+
+Domain canon — measured rules of THIS repo's domain (follow them when they bite):
+$RUOLI_CANONE"
+  log "canone di dominio iniettato: $(printf '%s' "$RUOLI_CANONE" | grep -c 'DOMAIN ROLE' || true) ruolo/i attivi"
+fi
 
 AGENTE_RC=0
 if [ "$TRANSFORMED" -eq 0 ]; then

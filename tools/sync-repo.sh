@@ -245,7 +245,9 @@ if [ "$STANDARD" -eq 1 ] && [ -n "$REPO" ]; then
     fi
   done
   [ "$PAT_AGG" -gt 0 ] && echo "sync-repo: $PAT_AGG pattern aggiornati dall'hub"
-  for ITEM in .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
+  # (2026-10-03, faretra): roles/ viaggia coi satelliti — e' la fonte LLM-agnostic
+  # da cui si generano .claude/agents e .opencode/agent (tools/genera-agenti.sh)
+  for ITEM in roles .claude/skills .claude/agents .claude/settings.json .opencode/agent .opencode/skills .opencode/plugins; do
     [ -e "$HERE/$ITEM" ] || continue
     case "$ITEM" in
       .claude/settings.json)

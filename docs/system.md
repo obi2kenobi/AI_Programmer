@@ -288,8 +288,10 @@ famiglie misurate con popolazioni). Fatto:
 - **Agenti generali**: `sviluppatore-gas` riscritto come agente GENERALE che
   carica il canone progressivamente (non più i soli 6 pattern), e il nuovo
   `revisore-gas` (i quattro verbi su progetti esistenti: censimento con
-  raggiungibilità prima, banco prima, sabotaggio, tre prodotti). Ora 6 agenti (giro 29 2026-09-20: qui diceva 7, mai stati
-  piu' di 6 — nessun agente e' stato cancellato nella storia), specchiati OpenCode con anti-drift.
+  raggiungibilità prima, banco prima, sabotaggio, tre prodotti). Erano 6 (giro 29 2026-09-20: qui diceva 7, mai stati
+  piu' di 6); dall'2026-10-03 sono 11 in `roles/` (faretra LLM-agnostic: + analista-trading,
+  pipeline-dati, specialista-logistica, revisore-python, curatore-conoscenza), con gli specchietti
+  Claude/OpenCode GENERATI da `tools/genera-agenti.sh` — la deriva muore alla fonte.
 - Guardia: `tests/test-gas-sviluppo-sistema.sh` (16 controlli allora, 33 al 2026-09-23: provenienza,
   regole non negoziabili, popolazioni numeriche ≥15, privacy).
 

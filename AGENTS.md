@@ -108,12 +108,18 @@ calcolo contabile NON delegare l'invenzione della formula: cerca l'oracolo.
   con la domanda discriminante — ausilio, non verdetto;
   `tools/verifica_banco.py <uscita>` giudica la riga-verdetto canonica di un
   banco GAS (`attese eseguite: N/M · fallite: K`): l'exit code non è un verdetto.
-- **Agenti** (`.claude/agents/` per il giorno, specchiati in `.opencode/agent/`
-  per la notte): censitore-forma-dati · contabilita-analitica (applica) ·
+- **Ruoli della faretra** (`roles/`, formato neutrale — UNA fonte per tutti gli
+  LLM, anche open-weight: il file è markdown puro, lo si incolla nel prompt di
+  qualunque modello): censitore-forma-dati · contabilita-analitica (applica) ·
   costruttore-calcoli-gestionali (costruisce) · revisore-calcoli-critici (dubita) ·
-  revisore-gas (censimento+banco+sabotaggio su un progetto Apps Script intero) ·
-  sviluppatore-gas (progetti Apps Script interi). I corpi sono identici fra le due
-  cartelle per contratto (`tests/test-opencode-agent-sync.sh`).
+  revisore-gas (censimento+banco+sabotaggio) · sviluppatore-gas (progetti Apps
+  Script interi) · analista-trading · pipeline-dati · specialista-logistica ·
+  revisore-python · curatore-conoscenza. Da `roles/` si GENERANO gli specchietti
+  per harness (`.claude/agents/`, `.opencode/agent/`) con
+  `tools/genera-agenti.sh` — chi edita gli specchietti vede il lavoro cancellato
+  (la deriva muore così; banco: `tests/test-roles-sync.sh`). La notte inietta i
+  ruoli attivi del repo (`.git/ruoli-attivi`, da `tools/rileva-ruoli.sh`) come
+  canone di dominio nella caccia e nel risolutore.
 
 ### Portare il metodo in una repo
 

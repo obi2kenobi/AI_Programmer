@@ -17,6 +17,7 @@
 #   3. Grafo (graphify update — la prima volta, poi il pre-commit lo aggiorna)
 #   4. .night-verify (se non c'e', un minimo: bash -n sui .sh)
 #   5. repos.conf (il turno lo processa dal prossimo ciclo)
+#   5bis. ruoli attivi (.git/ruoli-attivi — la faretra: la caccia sa di che repo e')
 #   6. Issue abilitate su GitHub
 #
 # NON FA (perche' non serve col cervello centrale):
@@ -192,7 +193,7 @@ else
 fi
 
 # ── 5. repos.conf ────────────────────────────────────────────────────────────
-echo "── 5/6 registrazione nel turno..."
+echo "── 5/7 registrazione nel turno..."
 CONF="$HUB/night-shift/repos.conf"
 if ! grep -q "$REPO" "$CONF" 2>/dev/null; then
   echo "" >> "$CONF"
@@ -203,8 +204,19 @@ else
   echo "   ✓ gia' registrato"
 fi
 
+# ── 5bis. ruoli attivi ───────────────────────────────────────────────────────
+# (2026-10-03, faretra): il repo dichiara i suoi ruoli di dominio (.git/ruoli-attivi):
+# la notte li inietta come canone nel prompt della caccia e del risolutore. Il file
+# e' di Luca: editabile a mano, il rilevamento non lo tocca piu'.
+echo "── 5bis/7 ruoli attivi della faretra..."
+if [ -x "$HUB/tools/rileva-ruoli.sh" ]; then
+  bash "$HUB/tools/rileva-ruoli.sh" "$DIR" 2>&1 | sed 's/^/   /'
+else
+  echo "   ⚠ rileva-ruoli.sh assente nell'hub (faretra vecchia?) — il turno lo rilevera' al primo ciclo"
+fi
+
 # ── 6. Issue abilitate ───────────────────────────────────────────────────────
-echo "── 6/6 issue su GitHub..."
+echo "── 6/7 issue su GitHub..."
 gh repo edit "$REPO" --enable-issues >/dev/null 2>&1 && echo "   ✓ abilitate" || echo "   ⚠ non riuscito (o gia' abilitate)"
 
 # ── commit ────────────────────────────────────────────────────────────────────
