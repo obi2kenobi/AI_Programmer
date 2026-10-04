@@ -17,7 +17,7 @@ grep -q "stato.json" "$HERE/tools/ciclo-vivo.sh" && grep -q "MAI ESISTIT" "$HERE
   || { grep -q "Memoria: .ciclo/stato.json" "$HERE/tools/ciclo-vivo.sh" && ko "l'header promette ancora stato.json che non esiste" || ok "nessun riferimento fuorviante a stato.json"; }
 
 # un giro reale: la memoria è disposable (.ciclo gitignored), il giro è sicuro
-OUT=$(bash "$HERE/tools/ciclo-vivo.sh" 2>&1); RC=$?
+OUT=$(bash "$HERE/tools/ciclo-vivo.sh" 2>&1)
 grep -q "^=== CICLO VIVO" <<<"$OUT" && ok "un giro parte e si presenta" || ko "il giro non parte"
 grep -q "^Finding questo giro: " <<<"$OUT" && ok "il verdetto è sempre visibile" || ko "verdetto assente"
 [ -f "$HERE/.ciclo/giro" ] && [ -f "$HERE/.ciclo/livello" ] \
