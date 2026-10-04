@@ -9260,23 +9260,8 @@
       "source_location": "L582"
     },
     {
-      "id": "tests_test_consegna_dichiarata",
-      "label": "test-consegna-dichiarata.sh",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-consegna-dichiarata.sh",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_consegna_dichiarata_g",
-      "label": "g()",
+      "id": "night_shift_lib_rianima_ollama",
+      "label": "rianima_ollama()",
       "_origin": "ast",
       "community": 147,
       "community_name": "agente.sh script",
@@ -9285,12 +9270,27 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "g()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L13"
+      "norm_label": "rianima_ollama()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L786"
     },
     {
-      "id": "tests_test_consegna_dichiarata_ko",
+      "id": "tests_test_rianima_ollama",
+      "label": "test-rianima-ollama.sh",
+      "_origin": "ast",
+      "community": 147,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-rianima-ollama.sh",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 147,
@@ -9301,11 +9301,11 @@
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L11"
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L13"
     },
     {
-      "id": "tests_test_consegna_dichiarata_ok",
+      "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 147,
@@ -9316,12 +9316,12 @@
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L10"
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L12"
     },
     {
-      "id": "tests_test_consegna_dichiarata_sh__entry",
-      "label": "test-consegna-dichiarata.sh script",
+      "id": "tests_test_rianima_ollama_sh__entry",
+      "label": "test-rianima-ollama.sh script",
       "_origin": "ast",
       "community": 147,
       "community_name": "agente.sh script",
@@ -9330,8 +9330,8 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-consegna-dichiarata.sh script",
-      "source_file": "tests/test-consegna-dichiarata.sh",
+      "norm_label": "test-rianima-ollama.sh script",
+      "source_file": "tests/test-rianima-ollama.sh",
       "source_location": "L1"
     },
     {
@@ -52085,78 +52085,138 @@
       "source_location": "L2805"
     },
     {
-      "id": "night_shift_lib_rianima_ollama",
-      "label": "rianima_ollama()",
+      "id": "tests_test_installa_cervello",
+      "label": "test-installa-cervello.sh",
       "_origin": "ast",
       "community": 798,
-      "community_name": "rianima_ollama",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rianima_ollama()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L786"
-    },
-    {
-      "id": "tests_test_rianima_ollama",
-      "label": "test-rianima-ollama.sh",
-      "_origin": "ast",
-      "community": 798,
-      "community_name": "rianima_ollama",
+      "community_name": "test-installa-cervello.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-rianima-ollama.sh",
-      "source_file": "tests/test-rianima-ollama.sh",
+      "norm_label": "test-installa-cervello.sh",
+      "source_file": "tests/test-installa-cervello.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_rianima_ollama_ko",
+      "id": "tests_test_installa_cervello_git_author_email",
+      "label": "GIT_AUTHOR_EMAIL",
+      "_origin": "ast",
+      "community": 798,
+      "community_name": "test-installa-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_email",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_installa_cervello_git_author_name",
+      "label": "GIT_AUTHOR_NAME",
+      "_origin": "ast",
+      "community": 798,
+      "community_name": "test-installa-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_author_name",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_installa_cervello_git_committer_email",
+      "label": "GIT_COMMITTER_EMAIL",
+      "_origin": "ast",
+      "community": 798,
+      "community_name": "test-installa-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_email",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_installa_cervello_git_committer_name",
+      "label": "GIT_COMMITTER_NAME",
+      "_origin": "ast",
+      "community": 798,
+      "community_name": "test-installa-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "git_committer_name",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16"
+    },
+    {
+      "id": "tests_test_installa_cervello_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 798,
-      "community_name": "rianima_ollama",
+      "community_name": "test-installa-cervello.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L13"
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L11"
     },
     {
-      "id": "tests_test_rianima_ollama_ok",
+      "id": "tests_test_installa_cervello_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 798,
-      "community_name": "rianima_ollama",
+      "community_name": "test-installa-cervello.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L12"
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_rianima_ollama_sh__entry",
-      "label": "test-rianima-ollama.sh script",
+      "id": "tests_test_installa_cervello_path",
+      "label": "PATH",
       "_origin": "ast",
       "community": 798,
-      "community_name": "rianima_ollama",
+      "community_name": "test-installa-cervello.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L8"
+    },
+    {
+      "id": "tests_test_installa_cervello_sh__entry",
+      "label": "test-installa-cervello.sh script",
+      "_origin": "ast",
+      "community": 798,
+      "community_name": "test-installa-cervello.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-rianima-ollama.sh script",
-      "source_file": "tests/test-rianima-ollama.sh",
+      "norm_label": "test-installa-cervello.sh script",
+      "source_file": "tests/test-installa-cervello.sh",
       "source_location": "L1"
     },
     {
@@ -52743,6 +52803,111 @@
       },
       "norm_label": "claude-md-cervello.sh script",
       "source_file": "tools/claude-md-cervello.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata",
+      "label": "test-consegna-dichiarata.sh",
+      "_origin": "ast",
+      "community": 802,
+      "community_name": "test-consegna-dichiarata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-consegna-dichiarata.sh",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata_g",
+      "label": "g()",
+      "_origin": "ast",
+      "community": 802,
+      "community_name": "test-consegna-dichiarata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 802,
+      "community_name": "test-consegna-dichiarata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 802,
+      "community_name": "test-consegna-dichiarata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata_sh__entry",
+      "label": "test-consegna-dichiarata.sh script",
+      "_origin": "ast",
+      "community": 802,
+      "community_name": "test-consegna-dichiarata.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-consegna-dichiarata.sh script",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_installa_ai_programmer",
+      "label": "installa-ai-programmer.sh",
+      "_origin": "ast",
+      "community": 803,
+      "community_name": "installa-ai-programmer.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "installa-ai-programmer.sh",
+      "source_file": "tools/installa-ai-programmer.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_installa_ai_programmer_sh__entry",
+      "label": "installa-ai-programmer.sh script",
+      "_origin": "ast",
+      "community": 803,
+      "community_name": "installa-ai-programmer.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "installa-ai-programmer.sh script",
+      "source_file": "tools/installa-ai-programmer.sh",
       "source_location": "L1"
     },
     {
@@ -59287,6 +59452,30 @@
       "context": "call",
       "source_file": "tests/test-install.sh",
       "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello_sh__entry",
+      "target": "tests_test_installa_cervello_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello_sh__entry",
+      "target": "tests_test_installa_cervello_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -91049,6 +91238,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_installa_citati",
       "target": "tests_test_installa_citati_sh__entry",
       "relation": "contains",
@@ -92948,6 +93148,17 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tools/install-garante.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_installa_ai_programmer",
+      "target": "tools_installa_ai_programmer_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/installa-ai-programmer.sh",
       "source_location": "L1",
       "weight": 1.0
     },
@@ -98020,6 +98231,83 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-install-garante.sh",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_git_author_email",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_git_author_name",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_git_committer_email",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_git_committer_name",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_installa_cervello",
+      "target": "tests_test_installa_cervello_path",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-installa-cervello.sh",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -104166,5 +104454,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "289ec6e9cbc21543523ae87bed12e38a9e1154cf"
+  "built_at_commit": "bc2eb3921848f0308fbc33ce9ea2d4c8259e9ca5"
 }
