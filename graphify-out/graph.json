@@ -52911,6 +52911,51 @@
       "source_location": "L1"
     },
     {
+      "id": "tools_adatta_night_verify",
+      "label": "adatta-night-verify.sh",
+      "_origin": "ast",
+      "community": 804,
+      "community_name": "adatta-night-verify.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "adatta-night-verify.sh",
+      "source_file": "tools/adatta-night-verify.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_adatta_night_verify_adatta",
+      "label": "adatta()",
+      "_origin": "ast",
+      "community": 804,
+      "community_name": "adatta-night-verify.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "adatta()",
+      "source_file": "tools/adatta-night-verify.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tools_adatta_night_verify_sh__entry",
+      "label": "adatta-night-verify.sh script",
+      "_origin": "ast",
+      "community": 804,
+      "community_name": "adatta-night-verify.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "adatta-night-verify.sh script",
+      "source_file": "tools/adatta-night-verify.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "sal_archivio_2026_08_23_2_set_1_3_giri_2_3_la_skill_raggiunge_la_commessa_poi_il_progetto_nuovo",
       "label": "2026-08-23 (2) \u2014 Set 1/3 giri 2-3: la skill raggiunge la commessa, poi il progetto nuovo",
       "_origin": "ast",
@@ -62512,6 +62557,18 @@
       "context": "call",
       "source_file": "tools/accuratezza_fatture_acquisto.py",
       "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_adatta_night_verify_sh__entry",
+      "target": "tools_adatta_night_verify_adatta",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/adatta-night-verify.sh",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -92338,6 +92395,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_adatta_night_verify",
+      "target": "tools_adatta_night_verify_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/adatta-night-verify.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tools_anonimizza",
       "target": "tools_anonimizza_chiama_server",
       "relation": "contains",
@@ -101424,6 +101492,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_adatta_night_verify",
+      "target": "tools_adatta_night_verify_adatta",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/adatta-night-verify.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
       "source": "tools_banco_passaggio",
       "target": "tools_banco_passaggio_step",
       "relation": "defines",
@@ -104454,5 +104533,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bc2eb3921848f0308fbc33ce9ea2d4c8259e9ca5"
+  "built_at_commit": "965c0a73c7d6c43c500038c5ca028eac92f4fdc2"
 }
