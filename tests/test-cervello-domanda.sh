@@ -19,8 +19,7 @@ EOF
 chmod +x "$TMP/curl"
 chiedi() { printf '%s' "$1" > "$TMP/risposta"; RISPOSTA_FINTA="$TMP/risposta" PATH="$TMP:$PATH" bash "$HERE/tools/cervello-domanda.sh" archeologia E-002 >"$TMP/out" 2>&1; echo $?; }
 
-RIGA_VERA=$(grep -n 'E-002' "$HERE/docs/errori/REGISTRO.md" | head -1 | cut -d: -f1)
-RC=$(chiedi "E-002 nasce dai falsi positivi SIGPIPE (docs/errori/REGISTRO.md:$RIGA_VERA).")
+RC=$(chiedi "E-002 nasce dai falsi positivi SIGPIPE (docs/errori/REGISTRO.md:$(grep -n 'E-002' "$HERE/docs/errori/REGISTRO.md" | head -1 | cut -d: -f1)).")
 [ "$RC" -eq 0 ] && ok "citazione pertinente (la riga contiene il termine): rc 0" || ko "citazione pertinente rifiutata: rc $RC — $(tail -2 "$TMP/out")"
 RC=$(chiedi "E-002 nasce per caso, senza fonti.")
 [ "$RC" -ne 0 ] && grep -qi "nessuna citazione" "$TMP/out" && ok "risposta senza citazioni: rc $RC, detta non ancorata" \
