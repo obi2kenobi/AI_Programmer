@@ -17932,6 +17932,30 @@
       "source_location": "L1"
     },
     {
+      "id": "patterns_allowlist_per_segmento",
+      "label": "allowlist-per-segmento.md",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "patterns/README.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "allowlist-per-segmento.md",
+      "source_file": "patterns/allowlist-per-segmento.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "patterns_allowlist_per_segmento_allowlist_per_segmento",
+      "label": "allowlist-per-segmento",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "patterns/README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "allowlist-per-segmento",
+      "source_file": "patterns/allowlist-per-segmento.md",
+      "source_location": "L1"
+    },
+    {
       "id": "patterns_banco_sintetico_per_calcoli_critici",
       "label": "banco-sintetico-per-calcoli-critici.md",
       "_origin": "ast",
@@ -18052,51 +18076,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_lock_per_risorsa",
-      "label": "lock-per-risorsa.md",
+      "id": "patterns_locale_del_turno",
+      "label": "locale-del-turno.md",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "lock-per-risorsa.md",
-      "source_file": "patterns/lock-per-risorsa.md",
+      "norm_label": "locale-del-turno.md",
+      "source_file": "patterns/locale-del-turno.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_lock_per_risorsa_lock_per_risorsa",
-      "label": "lock-per-risorsa",
+      "id": "patterns_locale_del_turno_locale_del_turno",
+      "label": "locale-del-turno",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "lock-per-risorsa",
-      "source_file": "patterns/lock-per-risorsa.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "patterns_presidio_senza_consumatori",
-      "label": "presidio-senza-consumatori.md",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "patterns/README.md",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "presidio-senza-consumatori.md",
-      "source_file": "patterns/presidio-senza-consumatori.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "patterns_presidio_senza_consumatori_presidio_senza_consumatori",
-      "label": "presidio-senza-consumatori",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "patterns/README.md",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "presidio-senza-consumatori",
-      "source_file": "patterns/presidio-senza-consumatori.md",
+      "norm_label": "locale-del-turno",
+      "source_file": "patterns/locale-del-turno.md",
       "source_location": "L1"
     },
     {
@@ -18112,27 +18112,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_segreto_come_impronta",
-      "label": "segreto-come-impronta.md",
+      "id": "patterns_regola_provata_non_assunta",
+      "label": "regola-provata-non-assunta.md",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "segreto-come-impronta.md",
-      "source_file": "patterns/segreto-come-impronta.md",
+      "norm_label": "regola-provata-non-assunta.md",
+      "source_file": "patterns/regola-provata-non-assunta.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_segreto_come_impronta_segreto_come_impronta",
-      "label": "segreto-come-impronta",
+      "id": "patterns_regola_provata_non_assunta_regola_provata_non_assunta",
+      "label": "regola-provata-non-assunta",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "segreto-come-impronta",
-      "source_file": "patterns/segreto-come-impronta.md",
+      "norm_label": "regola-provata-non-assunta",
+      "source_file": "patterns/regola-provata-non-assunta.md",
       "source_location": "L1"
     },
     {
@@ -41262,27 +41262,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_allowlist_per_segmento",
-      "label": "allowlist-per-segmento.md",
+      "id": "patterns_lock_per_risorsa",
+      "label": "lock-per-risorsa.md",
       "_origin": "ast",
       "community": 629,
-      "community_name": "allowlist-per-segmento.md",
+      "community_name": "lock-per-risorsa.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "allowlist-per-segmento.md",
-      "source_file": "patterns/allowlist-per-segmento.md",
+      "norm_label": "lock-per-risorsa.md",
+      "source_file": "patterns/lock-per-risorsa.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_allowlist_per_segmento_allowlist_per_segmento",
-      "label": "allowlist-per-segmento",
+      "id": "patterns_lock_per_risorsa_lock_per_risorsa",
+      "label": "lock-per-risorsa",
       "_origin": "ast",
       "community": 629,
-      "community_name": "allowlist-per-segmento.md",
+      "community_name": "lock-per-risorsa.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "allowlist-per-segmento",
-      "source_file": "patterns/allowlist-per-segmento.md",
+      "norm_label": "lock-per-risorsa",
+      "source_file": "patterns/lock-per-risorsa.md",
       "source_location": "L1"
     },
     {
@@ -42862,27 +42862,27 @@
       "source_location": "L89"
     },
     {
-      "id": "patterns_regola_provata_non_assunta",
-      "label": "regola-provata-non-assunta.md",
+      "id": "patterns_presidio_senza_consumatori",
+      "label": "presidio-senza-consumatori.md",
       "_origin": "ast",
       "community": 670,
-      "community_name": "regola-provata-non-assunta.md",
+      "community_name": "presidio-senza-consumatori.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "regola-provata-non-assunta.md",
-      "source_file": "patterns/regola-provata-non-assunta.md",
+      "norm_label": "presidio-senza-consumatori.md",
+      "source_file": "patterns/presidio-senza-consumatori.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_regola_provata_non_assunta_regola_provata_non_assunta",
-      "label": "regola-provata-non-assunta",
+      "id": "patterns_presidio_senza_consumatori_presidio_senza_consumatori",
+      "label": "presidio-senza-consumatori",
       "_origin": "ast",
       "community": 670,
-      "community_name": "regola-provata-non-assunta.md",
+      "community_name": "presidio-senza-consumatori.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "regola-provata-non-assunta",
-      "source_file": "patterns/regola-provata-non-assunta.md",
+      "norm_label": "presidio-senza-consumatori",
+      "source_file": "patterns/presidio-senza-consumatori.md",
       "source_location": "L1"
     },
     {
@@ -56552,27 +56552,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_locale_del_turno",
-      "label": "locale-del-turno.md",
+      "id": "patterns_segreto_come_impronta",
+      "label": "segreto-come-impronta.md",
       "_origin": "ast",
       "community": 842,
-      "community_name": "locale-del-turno.md",
+      "community_name": "segreto-come-impronta.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "locale-del-turno.md",
-      "source_file": "patterns/locale-del-turno.md",
+      "norm_label": "segreto-come-impronta.md",
+      "source_file": "patterns/segreto-come-impronta.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_locale_del_turno_locale_del_turno",
-      "label": "locale-del-turno",
+      "id": "patterns_segreto_come_impronta_segreto_come_impronta",
+      "label": "segreto-come-impronta",
       "_origin": "ast",
       "community": 842,
-      "community_name": "locale-del-turno.md",
+      "community_name": "segreto-come-impronta.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "locale-del-turno",
-      "source_file": "patterns/locale-del-turno.md",
+      "norm_label": "segreto-come-impronta",
+      "source_file": "patterns/segreto-come-impronta.md",
       "source_location": "L1"
     },
     {
@@ -109143,7 +109143,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_lock_per_risorsa",
+      "target": "patterns_locale_del_turno",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109154,7 +109154,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_manifest_webapp_nel_repo",
+      "target": "patterns_lock_per_risorsa",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109165,7 +109165,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_migrazione_con_interruttore",
+      "target": "patterns_manifest_webapp_nel_repo",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109176,7 +109176,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_misura_la_deriva_prima_di_assumerla",
+      "target": "patterns_migrazione_con_interruttore",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109187,7 +109187,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_misura_prima_di_toccare",
+      "target": "patterns_misura_la_deriva_prima_di_assumerla",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109198,7 +109198,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_numero_col_suo_comando",
+      "target": "patterns_misura_prima_di_toccare",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109209,7 +109209,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_oracolo_dal_sistema_vecchio",
+      "target": "patterns_numero_col_suo_comando",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109220,7 +109220,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_oracolo_indipendente",
+      "target": "patterns_oracolo_dal_sistema_vecchio",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109231,7 +109231,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_pipefail_grep_sigpipe",
+      "target": "patterns_oracolo_indipendente",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109242,7 +109242,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_ponte_branch_usa_e_getta",
+      "target": "patterns_pipefail_grep_sigpipe",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109253,7 +109253,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_presidio_senza_consumatori",
+      "target": "patterns_ponte_branch_usa_e_getta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109264,7 +109264,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_regola_provata_non_assunta",
+      "target": "patterns_presidio_senza_consumatori",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109275,7 +109275,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_riga_in_coda_non_interposta",
+      "target": "patterns_regola_provata_non_assunta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109286,7 +109286,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_sabotaggio_plausibile",
+      "target": "patterns_riga_in_coda_non_interposta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109297,7 +109297,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_scarto_mai_silenzioso",
+      "target": "patterns_sabotaggio_plausibile",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109308,7 +109308,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_segreto_come_impronta",
+      "target": "patterns_scarto_mai_silenzioso",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109319,7 +109319,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_soglia_con_default_guardato",
+      "target": "patterns_segreto_come_impronta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109330,7 +109330,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_soglia_con_provenienza",
+      "target": "patterns_soglia_con_default_guardato",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109341,7 +109341,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_somma_diversa_da_zero_non_e_presenza",
+      "target": "patterns_soglia_con_provenienza",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109352,7 +109352,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_stato_vuoto_dalla_pipeline",
+      "target": "patterns_somma_diversa_da_zero_non_e_presenza",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109363,7 +109363,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_test_che_certifica_il_bug",
+      "target": "patterns_stato_vuoto_dalla_pipeline",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109374,7 +109374,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_tolleranza_derivata_non_scelta",
+      "target": "patterns_test_che_certifica_il_bug",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109385,7 +109385,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_trovare_non_e_fallire",
+      "target": "patterns_tolleranza_derivata_non_scelta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109396,7 +109396,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_verdetto_sempre_visibile",
+      "target": "patterns_trovare_non_e_fallire",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109407,7 +109407,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_versione_sugli_artefatti",
+      "target": "patterns_verdetto_sempre_visibile",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109418,7 +109418,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_vivo_gia_in_git",
+      "target": "patterns_versione_sugli_artefatti",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109429,7 +109429,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_watchdog_guardato",
+      "target": "patterns_vivo_gia_in_git",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109440,13 +109440,24 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_workdir_e_proprietario",
+      "target": "patterns_watchdog_guardato",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "patterns/README.md",
       "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "patterns_readme",
+      "target": "patterns_workdir_e_proprietario",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "patterns/README.md",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -110027,5 +110038,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d10f35ae95844eb66ff4469723814d185b2b1520"
+  "built_at_commit": "e1b4365db4447237aecbbf278ec4afb4ddb2a167"
 }
