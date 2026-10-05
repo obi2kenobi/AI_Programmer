@@ -162,7 +162,11 @@ if [ -f "$(dirname "$0")/repos.conf" ]; then
 fi
 if [ -n "$RUOLI_OUT" ]; then
   BODY="$(printf '%s\n\n---\nI RUOLI (la faretra attiva, per repo)%s' "$BODY" "$RUOLI_OUT")"
-  [ "$RUOLI_MANCANTI" -gt 0 ] && BODY="$(printf '%s\n(%s repo ancora senza ruoli attivi: la notte li rilevera', o si dichiarano a mano in .git/ruoli-attivi)' "$BODY" "$RUOLI_MANCANTI")"
+  # (niente apostrofi nelle stringhe di formato: «rilevera'» chiudeva il formato
+  # e il verificatore sintattico lo diceva — la mail sarebbe morta la prima notte utile)
+  if [ "$RUOLI_MANCANTI" -gt 0 ]; then
+    BODY="$(printf '%s\n(%s repo ancora senza ruoli attivi: la notte li rilevera, o si dichiarano a mano in .git/ruoli-attivi)' "$BODY" "$RUOLI_MANCANTI")"
+  fi
 fi
 
 # escaping per AppleScript (giro 3/10, nuovo ciclo): il contenuto del report è testo

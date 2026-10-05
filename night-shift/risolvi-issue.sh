@@ -18,6 +18,7 @@ set -uo pipefail
 # canone di dominio (i ruoli erano armi del giorno). Sourcing tollerante: la lib vive
 # nell'hub, questo script gira dall'hub.
 LIB_SH="$(cd "$(dirname "$0")" && pwd)/lib.sh"
+# shellcheck source=lib.sh  # (SC1090: la lib vive accanto, il percorso e' calcolato)
 [ -f "$LIB_SH" ] && . "$LIB_SH"
 # (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
 [ $# -ge 2 ] || { echo "uso: risolvi-issue.sh <dir-progetto> <issue-md>" >&2; exit 2; }
@@ -137,6 +138,19 @@ while IFS= read -r F; do
   # vanno risolti contro $DIR, non contro la CWD di chi lancia (bug colto dal test
   # di suite 2026-09-04: i 20 test manuali giravano da dentro la dir e non lo vedevano)
   [ -f "$F" ] || F="$DIR/$F"
+  # (2026-10-05, Centrale_Rischi in loop dalle 04:25): il Territorio dell'issue nomina il
+  # file NATO, ma molti progetti GAS lo tengono in una sottocartella (apps-script/). Prima:
+  # file non trovato -> rifiuto -> cascata all'agente (~5 min GPU) -> rifiuto -> il ciclo
+  # RIPROVA le stesse issue per ore. Ora: se il percorso diretto manca, si cerca il file
+  # PER NOME dentro il progetto (una volta, dichiarata); se non c'e' nemmeno, si salta come
+  # prima. La sicurezza non cambia: dentro_il_progetto resta, sotto.
+  if [ ! -f "$F" ]; then
+    TROVATO=$(find "$DIR" -name "${F##*/}" -type f -not -path "*/.git/*" 2>/dev/null | head -1 || true)
+    if [ -n "$TROVATO" ]; then
+      log "Territorio: '$F' risolto per nome in '${TROVATO#"$DIR"/}'"
+      F="$TROVATO"
+    fi
+  fi
   [ -f "$F" ] || continue
   if ! dentro_il_progetto "$F" "$DIR"; then
     log "⛔ $F e' FUORI dal progetto: il Territorio di un issue non legge fuori da $DIR (salto)"

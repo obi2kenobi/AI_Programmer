@@ -51,4 +51,13 @@ attesa passa "git commit -m 'il clasp run era vietato'" "una citazione non e un 
 attesa passa "clasp status"                             "lettura"
 echo "attese eseguite: $ESEGUITE/$M · fallite: $FALLITE"
 [ "$ESEGUITE" -eq "$M" ] || echo ">>> ESEGUITE MENO DI QUELLE DICHIARATE"
-[ "$FALLITE" -eq 0 ] && [ "$ESEGUITE" -eq "$M" ]
+# (2026-10-05, report della notte): verdetto canonico per il gate (gate_banchi pretende
+# «N OK, 0 FAIL»: il solo «attese eseguite» era un verde senza verdetto, e la issue #197
+# se lo rigirava ogni ciclo) e via di fallimento VISIBILE (il meta-audit D39 cerca un
+# ko in codice: i contatori soli non bastano all'uditore).
+ko() { echo "FAIL $1"; }
+echo "$ESEGUITE OK, $FALLITE FAIL"
+if [ "$FALLITE" -ne 0 ] || [ "$ESEGUITE" -ne "$M" ]; then
+  ko "clasp-block: $FALLITE attese fallite su $ESEGUITE (dichiarate $M)"
+  exit 1
+fi

@@ -300,6 +300,18 @@ OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$SOLVER" "$SB9" "$SB9/issu
   && ok "S3 R3: nessun file letto → il modello non si chiama, e lo dice (rc 1)" || ko "S3 R3: SOURCE vuoto mandato al modello (rc $RC): $(grep -m1 'Chiamando\|nessun' <<<"$OUT")"
 rm -rf "$SB9"
 
+# (2026-10-05, Centrale_Rischi in loop dalle 04:25): il Territorio che nomina il file
+# NUDO mentre il progetto lo tiene in una sottocartella (apps-script/) prima faceva
+# rifiutare il solver e cascava sull'agente (~5 min GPU) OGNI ciclo, per ore.
+SB10=$(mktemp -d "${TMPDIR:-/tmp}/risolvi-sb10.XXXXXX"); git -C "$SB10" init -q
+mkdir -p "$SB10/apps-script"; echo "function f(){return 1}" > "$SB10/apps-script/Codice.gs"
+printf 'sviluppatore-gas\n' > "$SB10/.git/ruoli-attivi"
+printf '## Commessa\nun commento\n\n## Verifica\nbash -n\n\n## Territorio\nCodice.gs\n' > "$SB10/issue.md"
+OUT=$(NIGHT_API_URL=http://127.0.0.1:9/api/chat bash "$SOLVER" "$SB10" "$SB10/issue.md" 2>&1); RC=$?
+grep -q "risolto per nome in 'apps-script/Codice.gs'" <<<"$OUT" && grep -q "letti 1 file" <<<"$OUT"   && ok "Territorio nudo risolto per nome nella sottocartella (apps-script/)"   || ko "Territorio nudo NON risolto (rc=$RC): $(grep -m1 -E 'letti|nessun' <<<"$OUT")"
+grep -q "canone di dominio iniettato" <<<"$OUT"   && ok "col Territorio risolto, il canone di dominio arriva al modello"   || ko "il canone non e' arrivato col Territorio risolto"
+rm -rf "$SB10"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
