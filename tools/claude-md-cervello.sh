@@ -22,7 +22,7 @@ Le regole vincolanti NON sono in questo file: vivono nel cervello centrale.
 → `~/.night-shift-work/AI_Programmer/CLAUDE.md` (le regole complete)
 
 **Durante il lavoro, consulta:**
-→ Skills: `~/.night-shift/AI_Programmer/.claude/skills/`
+→ Skills: `~/.night-shift-work/AI_Programmer/.claude/skills/`
 → Patterns (lezioni apprese): `~/.night-shift-work/AI_Programmer/patterns/`
 → Registro errori: `~/.night-shift-work/AI_Programmer/docs/errori/REGISTRO.md`
 

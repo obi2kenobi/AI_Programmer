@@ -48,6 +48,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [lettura-esecuzione-precedente](lettura-esecuzione-precedente.md) | REPO-I: 5 moduli indipendenti | 2026-08-28 |
 | [link-assoluti-e-decodifica-robusta](link-assoluti-e-decodifica-robusta.md) | REPO-CR doGet | 2026-09-01 |
 | [lo-stub-che-mente-al-rovescio](lo-stub-che-mente-al-rovescio.md) | Controlli-trimestrali PR #103 | 2026-09-01 |
+| [locale-del-turno](locale-del-turno.md) | tests/test-locale-turno.sh | 2026-10-05 |
 | [lock-per-risorsa](lock-per-risorsa.md) | night-shift/night-shift.sh (LOCK) | 2026-08-21 |
 | [manifest-webapp-nel-repo](manifest-webapp-nel-repo.md) | REPO-CR appsscript.json | 2026-09-01 |
 | [migrazione-con-interruttore](migrazione-con-interruttore.md) | REPO-Q split 2026-09-02 | 2026-09-02 |

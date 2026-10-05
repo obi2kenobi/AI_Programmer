@@ -8,4 +8,4 @@ commit solo anche su una storia di 41 — producendo conclusioni false che
 suonano come difetti del progetto ma sono difetti del censimento.
 
 
-**Vedi anche**: `esegui-non-leggere`
+**Vedi anche**: `esegui-non-leggere` · `locale-del-turno`

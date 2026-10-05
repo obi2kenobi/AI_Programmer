@@ -4613,6 +4613,66 @@
       "source_location": "L123"
     },
     {
+      "id": "night_shift_lib_aggiungi_consegna",
+      "label": "aggiungi_consegna()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "aggiungi_consegna()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L593"
+    },
+    {
+      "id": "night_shift_lib_commenta_una_volta",
+      "label": "commenta_una_volta()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "commenta_una_volta()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L871"
+    },
+    {
+      "id": "night_shift_lib_forme_prima_del_push",
+      "label": "forme_prima_del_push()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "forme_prima_del_push()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L571"
+    },
+    {
+      "id": "night_shift_lib_funzione_definita_e_chiamata",
+      "label": "funzione_definita_e_chiamata()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "funzione_definita_e_chiamata()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L259"
+    },
+    {
       "id": "night_shift_lib_lock_turno_orfano",
       "label": "lock_turno_orfano()",
       "_origin": "ast",
@@ -4628,6 +4688,21 @@
       "source_location": "L848"
     },
     {
+      "id": "night_shift_lib_pr_chiusa_ferma",
+      "label": "pr_chiusa_ferma()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "pr_chiusa_ferma()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L169"
+    },
+    {
       "id": "night_shift_lib_prendi_lock_turno",
       "label": "prendi_lock_turno()",
       "_origin": "ast",
@@ -4641,6 +4716,21 @@
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L827"
+    },
+    {
+      "id": "night_shift_lib_riga_verifica_vuota",
+      "label": "riga_verifica_vuota()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "riga_verifica_vuota()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L195"
     },
     {
       "id": "night_shift_lib_ruota_log_aperto",
@@ -4776,6 +4866,21 @@
       "norm_label": "night-shift.sh script",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "night_shift_night_shift_shift_repo",
+      "label": "shift_repo()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "shift_repo()",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L191"
     },
     {
       "id": "tools_ciclo_vivo",
@@ -9335,21 +9440,6 @@
       "source_location": "L582"
     },
     {
-      "id": "night_shift_lib_rianima_ollama",
-      "label": "rianima_ollama()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rianima_ollama()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L786"
-    },
-    {
       "id": "tests_test_consegna_dichiarata",
       "label": "test-consegna-dichiarata.sh",
       "_origin": "ast",
@@ -9422,66 +9512,6 @@
       },
       "norm_label": "test-consegna-dichiarata.sh script",
       "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_rianima_ollama",
-      "label": "test-rianima-ollama.sh",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-rianima-ollama.sh",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "tests_test_rianima_ollama_ko",
-      "label": "ko()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ko()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_test_rianima_ollama_ok",
-      "label": "ok()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "ok()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_test_rianima_ollama_sh__entry",
-      "label": "test-rianima-ollama.sh script",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "test-rianima-ollama.sh script",
-      "source_file": "tests/test-rianima-ollama.sh",
       "source_location": "L1"
     },
     {
@@ -17902,6 +17932,30 @@
       "source_location": "L1"
     },
     {
+      "id": "patterns_allowlist_per_segmento",
+      "label": "allowlist-per-segmento.md",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "patterns/README.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "allowlist-per-segmento.md",
+      "source_file": "patterns/allowlist-per-segmento.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "patterns_allowlist_per_segmento_allowlist_per_segmento",
+      "label": "allowlist-per-segmento",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "patterns/README.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "allowlist-per-segmento",
+      "source_file": "patterns/allowlist-per-segmento.md",
+      "source_location": "L1"
+    },
+    {
       "id": "patterns_banco_sintetico_per_calcoli_critici",
       "label": "banco-sintetico-per-calcoli-critici.md",
       "_origin": "ast",
@@ -18022,51 +18076,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_lock_per_risorsa",
-      "label": "lock-per-risorsa.md",
+      "id": "patterns_locale_del_turno",
+      "label": "locale-del-turno.md",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "lock-per-risorsa.md",
-      "source_file": "patterns/lock-per-risorsa.md",
+      "norm_label": "locale-del-turno.md",
+      "source_file": "patterns/locale-del-turno.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_lock_per_risorsa_lock_per_risorsa",
-      "label": "lock-per-risorsa",
+      "id": "patterns_locale_del_turno_locale_del_turno",
+      "label": "locale-del-turno",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "lock-per-risorsa",
-      "source_file": "patterns/lock-per-risorsa.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "patterns_presidio_senza_consumatori",
-      "label": "presidio-senza-consumatori.md",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "patterns/README.md",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "presidio-senza-consumatori.md",
-      "source_file": "patterns/presidio-senza-consumatori.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "patterns_presidio_senza_consumatori_presidio_senza_consumatori",
-      "label": "presidio-senza-consumatori",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "patterns/README.md",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "presidio-senza-consumatori",
-      "source_file": "patterns/presidio-senza-consumatori.md",
+      "norm_label": "locale-del-turno",
+      "source_file": "patterns/locale-del-turno.md",
       "source_location": "L1"
     },
     {
@@ -18082,27 +18112,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_segreto_come_impronta",
-      "label": "segreto-come-impronta.md",
+      "id": "patterns_regola_provata_non_assunta",
+      "label": "regola-provata-non-assunta.md",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "segreto-come-impronta.md",
-      "source_file": "patterns/segreto-come-impronta.md",
+      "norm_label": "regola-provata-non-assunta.md",
+      "source_file": "patterns/regola-provata-non-assunta.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_segreto_come_impronta_segreto_come_impronta",
-      "label": "segreto-come-impronta",
+      "id": "patterns_regola_provata_non_assunta_regola_provata_non_assunta",
+      "label": "regola-provata-non-assunta",
       "_origin": "ast",
       "community": 23,
       "community_name": "patterns/README.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "segreto-come-impronta",
-      "source_file": "patterns/segreto-come-impronta.md",
+      "norm_label": "regola-provata-non-assunta",
+      "source_file": "patterns/regola-provata-non-assunta.md",
       "source_location": "L1"
     },
     {
@@ -20224,21 +20254,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_aggiungi_consegna",
-      "label": "aggiungi_consegna()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "aggiungi_consegna()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L593"
-    },
-    {
       "id": "night_shift_lib_allinea_hub",
       "label": "allinea_hub()",
       "_origin": "ast",
@@ -20344,21 +20359,6 @@
       "source_location": "L821"
     },
     {
-      "id": "night_shift_lib_commenta_una_volta",
-      "label": "commenta_una_volta()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "commenta_una_volta()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L871"
-    },
-    {
       "id": "night_shift_lib_commit_altrui",
       "label": "commit_altrui()",
       "_origin": "ast",
@@ -20417,36 +20417,6 @@
       "norm_label": "eta_secondi()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L860"
-    },
-    {
-      "id": "night_shift_lib_forme_prima_del_push",
-      "label": "forme_prima_del_push()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "forme_prima_del_push()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L571"
-    },
-    {
-      "id": "night_shift_lib_funzione_definita_e_chiamata",
-      "label": "funzione_definita_e_chiamata()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "funzione_definita_e_chiamata()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L259"
     },
     {
       "id": "night_shift_lib_gate_banchi",
@@ -20554,21 +20524,6 @@
       "source_location": "L139"
     },
     {
-      "id": "night_shift_lib_pr_chiusa_ferma",
-      "label": "pr_chiusa_ferma()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "pr_chiusa_ferma()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L169"
-    },
-    {
       "id": "night_shift_lib_rami_da_scopare",
       "label": "rami_da_scopare()",
       "_origin": "ast",
@@ -20597,21 +20552,6 @@
       "norm_label": "repo_code()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L562"
-    },
-    {
-      "id": "night_shift_lib_riga_verifica_vuota",
-      "label": "riga_verifica_vuota()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "riga_verifica_vuota()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L195"
     },
     {
       "id": "night_shift_lib_sh__entry",
@@ -20687,21 +20627,6 @@
       "norm_label": "versioni_turno()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L283"
-    },
-    {
-      "id": "night_shift_night_shift_shift_repo",
-      "label": "shift_repo()",
-      "_origin": "ast",
-      "community": 253,
-      "community_name": "lib.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "shift_repo()",
-      "source_file": "night-shift/night-shift.sh",
-      "source_location": "L191"
     },
     {
       "id": "docs_giri_2026_09_25_settimo_00_brief",
@@ -32103,6 +32028,30 @@
       "source_location": "L1259"
     },
     {
+      "id": "docs_errori_registro_e_059_il_locale_del_turno_non_e_il_locale_del_giorno_i_rossi_che_a_mano_non_esistono",
+      "label": "E-059 Il locale del turno non e' il locale del giorno: i rossi che a mano non esistono",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-059 il locale del turno non e' il locale del giorno: i rossi che a mano non esistono",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1272"
+    },
+    {
+      "id": "docs_errori_registro_e_060_il_generatore_dei_claude_md_satellite_scriveva_un_puntatore_che_non_esiste",
+      "label": "E-060 Il generatore dei CLAUDE.md satellite scriveva un puntatore che non esiste",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "e-060 il generatore dei claude.md satellite scriveva un puntatore che non esiste",
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1285"
+    },
+    {
       "id": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
       "label": "le lenti prendono gli errori meccanici, il dominio quelli di giudizio. Obbligatorio da E-024.",
       "_origin": "ast",
@@ -41313,27 +41262,27 @@
       "source_location": "L1"
     },
     {
-      "id": "patterns_allowlist_per_segmento",
-      "label": "allowlist-per-segmento.md",
+      "id": "patterns_lock_per_risorsa",
+      "label": "lock-per-risorsa.md",
       "_origin": "ast",
       "community": 629,
-      "community_name": "allowlist-per-segmento.md",
+      "community_name": "lock-per-risorsa.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "allowlist-per-segmento.md",
-      "source_file": "patterns/allowlist-per-segmento.md",
+      "norm_label": "lock-per-risorsa.md",
+      "source_file": "patterns/lock-per-risorsa.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_allowlist_per_segmento_allowlist_per_segmento",
-      "label": "allowlist-per-segmento",
+      "id": "patterns_lock_per_risorsa_lock_per_risorsa",
+      "label": "lock-per-risorsa",
       "_origin": "ast",
       "community": 629,
-      "community_name": "allowlist-per-segmento.md",
+      "community_name": "lock-per-risorsa.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "allowlist-per-segmento",
-      "source_file": "patterns/allowlist-per-segmento.md",
+      "norm_label": "lock-per-risorsa",
+      "source_file": "patterns/lock-per-risorsa.md",
       "source_location": "L1"
     },
     {
@@ -42913,27 +42862,27 @@
       "source_location": "L89"
     },
     {
-      "id": "patterns_regola_provata_non_assunta",
-      "label": "regola-provata-non-assunta.md",
+      "id": "patterns_presidio_senza_consumatori",
+      "label": "presidio-senza-consumatori.md",
       "_origin": "ast",
       "community": 670,
-      "community_name": "regola-provata-non-assunta.md",
+      "community_name": "presidio-senza-consumatori.md",
       "file_type": "document",
       "node_kind": "page",
-      "norm_label": "regola-provata-non-assunta.md",
-      "source_file": "patterns/regola-provata-non-assunta.md",
+      "norm_label": "presidio-senza-consumatori.md",
+      "source_file": "patterns/presidio-senza-consumatori.md",
       "source_location": "L1"
     },
     {
-      "id": "patterns_regola_provata_non_assunta_regola_provata_non_assunta",
-      "label": "regola-provata-non-assunta",
+      "id": "patterns_presidio_senza_consumatori_presidio_senza_consumatori",
+      "label": "presidio-senza-consumatori",
       "_origin": "ast",
       "community": 670,
-      "community_name": "regola-provata-non-assunta.md",
+      "community_name": "presidio-senza-consumatori.md",
       "file_type": "document",
       "node_kind": "heading",
-      "norm_label": "regola-provata-non-assunta",
-      "source_file": "patterns/regola-provata-non-assunta.md",
+      "norm_label": "presidio-senza-consumatori",
+      "source_file": "patterns/presidio-senza-consumatori.md",
       "source_location": "L1"
     },
     {
@@ -55302,6 +55251,81 @@
       "source_location": "L73"
     },
     {
+      "id": "night_shift_lib_rianima_ollama",
+      "label": "rianima_ollama()",
+      "_origin": "ast",
+      "community": 826,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "rianima_ollama()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L786"
+    },
+    {
+      "id": "tests_test_rianima_ollama",
+      "label": "test-rianima-ollama.sh",
+      "_origin": "ast",
+      "community": 826,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-rianima-ollama.sh",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 826,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 826,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_rianima_ollama_sh__entry",
+      "label": "test-rianima-ollama.sh script",
+      "_origin": "ast",
+      "community": 826,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-rianima-ollama.sh script",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "roles_censitore_forma_dati",
       "label": "roles/censitore-forma-dati.md",
       "_origin": "ast",
@@ -55858,6 +55882,66 @@
       },
       "norm_label": "genera-agenti.sh script",
       "source_file": "tools/genera-agenti.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_locale_turno",
+      "label": "test-locale-turno.sh",
+      "_origin": "ast",
+      "community": 835,
+      "community_name": "test-locale-turno.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-locale-turno.sh",
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_locale_turno_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 835,
+      "community_name": "test-locale-turno.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L22"
+    },
+    {
+      "id": "tests_test_locale_turno_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 835,
+      "community_name": "test-locale-turno.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L21"
+    },
+    {
+      "id": "tests_test_locale_turno_sh__entry",
+      "label": "test-locale-turno.sh script",
+      "_origin": "ast",
+      "community": 835,
+      "community_name": "test-locale-turno.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-locale-turno.sh script",
+      "source_file": "tests/test-locale-turno.sh",
       "source_location": "L1"
     },
     {
@@ -56465,6 +56549,30 @@
       },
       "norm_label": "test-genera-agenti-repo.sh script",
       "source_file": "tests/test-genera-agenti-repo.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "patterns_segreto_come_impronta",
+      "label": "segreto-come-impronta.md",
+      "_origin": "ast",
+      "community": 842,
+      "community_name": "segreto-come-impronta.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "segreto-come-impronta.md",
+      "source_file": "patterns/segreto-come-impronta.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "patterns_segreto_come_impronta_segreto_come_impronta",
+      "label": "segreto-come-impronta",
+      "_origin": "ast",
+      "community": 842,
+      "community_name": "segreto-come-impronta.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "segreto-come-impronta",
+      "source_file": "patterns/segreto-come-impronta.md",
       "source_location": "L1"
     },
     {
@@ -63010,6 +63118,30 @@
       "context": "call",
       "source_file": "tests/test-lib.sh",
       "source_location": "L471",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_locale_turno_sh__entry",
+      "target": "tests_test_locale_turno_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_locale_turno_sh__entry",
+      "target": "tests_test_locale_turno_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -82930,6 +83062,28 @@
     },
     {
       "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_059_il_locale_del_turno_non_e_il_locale_del_giorno_i_rossi_che_a_mano_non_esistono",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1272",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
+      "target": "docs_errori_registro_e_060_il_generatore_dei_claude_md_satellite_scriveva_un_puntatore_che_non_esiste",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/errori/REGISTRO.md",
+      "source_location": "L1285",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_errori_registro_le_lenti_prendono_gli_errori_meccanici_il_dominio_quelli_di_giudizio_obbligatorio_da_e_024",
       "target": "docs_errori_registro_e_008_l_asserzione_che_citava_un_verdetto_inesistente",
       "relation": "contains",
       "_origin": "ast",
@@ -90728,6 +90882,17 @@
       "weight": 1.0
     },
     {
+      "source": "patterns_locale_del_turno",
+      "target": "patterns_locale_del_turno_locale_del_turno",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "patterns/locale-del-turno.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "patterns_lock_per_risorsa",
       "target": "patterns_lock_per_risorsa_lock_per_risorsa",
       "relation": "contains",
@@ -96499,6 +96664,17 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-lib.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_locale_turno",
+      "target": "tests_test_locale_turno_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-locale-turno.sh",
       "source_location": "L1",
       "weight": 1.0
     },
@@ -103829,6 +104005,28 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_locale_turno",
+      "target": "tests_test_locale_turno_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_locale_turno",
+      "target": "tests_test_locale_turno_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-locale-turno.sh",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_lock_turno_corsa",
       "target": "tests_test_lock_turno_corsa_ko",
       "relation": "defines",
@@ -108945,7 +109143,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_lock_per_risorsa",
+      "target": "patterns_locale_del_turno",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -108956,7 +109154,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_manifest_webapp_nel_repo",
+      "target": "patterns_lock_per_risorsa",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -108967,7 +109165,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_migrazione_con_interruttore",
+      "target": "patterns_manifest_webapp_nel_repo",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -108978,7 +109176,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_misura_la_deriva_prima_di_assumerla",
+      "target": "patterns_migrazione_con_interruttore",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -108989,7 +109187,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_misura_prima_di_toccare",
+      "target": "patterns_misura_la_deriva_prima_di_assumerla",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109000,7 +109198,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_numero_col_suo_comando",
+      "target": "patterns_misura_prima_di_toccare",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109011,7 +109209,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_oracolo_dal_sistema_vecchio",
+      "target": "patterns_numero_col_suo_comando",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109022,7 +109220,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_oracolo_indipendente",
+      "target": "patterns_oracolo_dal_sistema_vecchio",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109033,7 +109231,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_pipefail_grep_sigpipe",
+      "target": "patterns_oracolo_indipendente",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109044,7 +109242,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_ponte_branch_usa_e_getta",
+      "target": "patterns_pipefail_grep_sigpipe",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109055,7 +109253,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_presidio_senza_consumatori",
+      "target": "patterns_ponte_branch_usa_e_getta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109066,7 +109264,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_regola_provata_non_assunta",
+      "target": "patterns_presidio_senza_consumatori",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109077,7 +109275,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_riga_in_coda_non_interposta",
+      "target": "patterns_regola_provata_non_assunta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109088,7 +109286,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_sabotaggio_plausibile",
+      "target": "patterns_riga_in_coda_non_interposta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109099,7 +109297,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_scarto_mai_silenzioso",
+      "target": "patterns_sabotaggio_plausibile",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109110,7 +109308,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_segreto_come_impronta",
+      "target": "patterns_scarto_mai_silenzioso",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109121,7 +109319,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_soglia_con_default_guardato",
+      "target": "patterns_segreto_come_impronta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109132,7 +109330,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_soglia_con_provenienza",
+      "target": "patterns_soglia_con_default_guardato",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109143,7 +109341,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_somma_diversa_da_zero_non_e_presenza",
+      "target": "patterns_soglia_con_provenienza",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109154,7 +109352,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_stato_vuoto_dalla_pipeline",
+      "target": "patterns_somma_diversa_da_zero_non_e_presenza",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109165,7 +109363,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_test_che_certifica_il_bug",
+      "target": "patterns_stato_vuoto_dalla_pipeline",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109176,7 +109374,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_tolleranza_derivata_non_scelta",
+      "target": "patterns_test_che_certifica_il_bug",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109187,7 +109385,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_trovare_non_e_fallire",
+      "target": "patterns_tolleranza_derivata_non_scelta",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109198,7 +109396,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_verdetto_sempre_visibile",
+      "target": "patterns_trovare_non_e_fallire",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109209,7 +109407,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_versione_sugli_artefatti",
+      "target": "patterns_verdetto_sempre_visibile",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109220,7 +109418,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_vivo_gia_in_git",
+      "target": "patterns_versione_sugli_artefatti",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109231,7 +109429,7 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_watchdog_guardato",
+      "target": "patterns_vivo_gia_in_git",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -109242,13 +109440,24 @@
     },
     {
       "source": "patterns_readme",
-      "target": "patterns_workdir_e_proprietario",
+      "target": "patterns_watchdog_guardato",
       "relation": "references",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "patterns/README.md",
       "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "patterns_readme",
+      "target": "patterns_workdir_e_proprietario",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "patterns/README.md",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -109829,5 +110038,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a9fc2f42308d77540e2fd4a76d5aa8dd3479a593"
+  "built_at_commit": "e1b4365db4447237aecbbf278ec4afb4ddb2a167"
 }

@@ -1268,3 +1268,29 @@
 - Guardia: night-shift/lib.sh — allinea_hub stasha lo sporco PRIMA di ogni reset (ha salvato i 41 percorsi: senza, era la perdita secca); la regola operativa che ne discende (il giorno lavora l'hub in worktree, `git worktree add /tmp/<nome> -b night/<ramo> <base>`, commit a ogni passo, suite NEL worktree) vive in questa voce e nel registro delle decisioni del giorno.
 - Verifica guardia: banco = il fatto stesso: 41 percorsi ripescati e committati (465c9bc) senza perdere una riga.
 - Aggiramento: se serve lavorare nella copia viva (raro), dichiararlo col presidio (claim) e comunque committare prima di ogni banco lungo.
+
+## E-059 Il locale del turno non e' il locale del giorno: i rossi che a mano non esistono
+
+- Data / sessione: 2026-10-05, mattina. Scoperto dietro l'issue #9 di obi2kenobi/Riordino-legno (dieci commenti di rosso-nuovo, uno per ciclo); lo stesso giorno, identico crash, issue #196 di obi2kenobi/Magazzino_Treviso (riga 42, «FORMA+byte»).
+- Famiglia: R1 (assunzione «verde a mano = verde ovunque»: il locale del processo che esegue il test non era mai stato una variabile dichiarata) + R6 (processo: turno e giorno giudicano lo stesso test in ambienti diversi e nessuno dei due lo sa).
+- Chi l'ha trovato: il giorno (sessione ZCode/GLM), leggendo l'uscita INTERA del gate nel $WORK del turno (`.night-verify-*.log`: il byte rotto nel nome della variabile esiste solo lì — il commento dell'issue lo tronca).
+- Sintomo: il test del claspignore del satellite (issue #9 di obi2kenobi/Riordino-legno) rosso rc 1 in 0 s nel turno, verde in ogni esecuzione a mano dal clone pulito; l'errore citava «line 17: ammessi<byte-rotto>: unbound variable».
+- Causa prossima: il turno esporta `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8` (night-shift/night-shift.sh, export in testa al turno). Con quel locale: (a) il sort di BSD collaziona senza distinguere maiuscole — `!appsscript.json` precede `!Code.gs` — e l'atteso scritto in ordine di byte salta; (b) bash 3.2 attacca il «»» multibyte al nome della variabile che segue («$var»» = la variabile «var+byte») e con `set -u` il test muore di unbound. La (b) scatta anche in shell del giorno: ha morso il banco stesso di questa voce alla prima stesura.
+- Causa del ragionamento: «il test qui e' verde, quindi e' il turno ad avere l'ambiente rotto» — mezz'ora cercata dentro il file del test (versioni, stash, bash diverse) prima di leggere l'uscita intera del gate; il locale era l'unica variabile non considerata.
+- Perché non ci ha fermati: la META BASH della trappola era nota all'hub dal 2026-09-25 (V4 R1 in tests/test-portabilita.sh, dal campo repo-v del 10/9) — ma copre solo i file DELL HUB: le repo satellite non l'hanno mai ereditata, la meta sort non era da nessuna parte, e nessuno aveva collegato il locale esportato dal turno ai rossi notturni dei satelliti. `esegui_verifica` conserva l'uscita in file: senza quello, il byte rotto non si sarebbe visto mai.
+- Guardia: tests/test-locale-turno.sh — prova le cure DENTRO il locale del turno (`LC_ALL=C sort`; `«${var}»»` con le graffe), tiene vive le due trappole come banchi (se diventano verdi, bash o sort sono cambiati e questa voce va aggiornata — non sono falsi rossi). Pattern: patterns/locale-del-turno.md.
+- Verifica guardia: 6 OK 0 FAIL; il banco stesso rosso PRIMA delle graffe (la trappola morde anche chi la documenta: riga del check 4 eseguita); e la riga-trappola del check 3 si costruisce a runtime con printf ottale (lezione E-007) perche il byte letterale nel sorgente farebbe scattare V4 R1 sul banco stesso.
+- Aggiramento: per riprodurre a mano qualunque rosso «solo del turno»: `env -i PATH=/usr/bin:/bin LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 /bin/bash <test>`.
+
+## E-060 Il generatore dei CLAUDE.md satellite scriveva un puntatore che non esiste
+
+- Data / sessione: 2026-10-05, insieme a E-059.
+- Famiglia: R2 (verde senza dati: il generatore non aveva nessun banco sull'uscita — qualunque riga scrivesse era verde).
+- Chi l'ha trovato: il giorno, seguendo il puntatore del CLAUDE.md di Riordino-legno con ls.
+- Sintomo: ogni CLAUDE.md satellite installato dall'hub porta la riga «Skills: `~/.night-shift/AI_Programmer/.claude/skills/`» — percorso inesistente (manca «-work»); tutte le altre righe del puntatore citano `~/.night-shift-work/AI_Programmer`.
+- Causa prossima: tools/claude-md-cervello.sh, riga del puntatore skills dentro l'heredoc, scritta a mano con un carattere mancante; il generatore girava senza banco che ne leggesse l'uscita.
+- Causa del ragionamento: «e' un puntatore statico, chi lo sbaglia» — nessuno ha mai seguito il link dalla parte di chi lo riceve (le sessioni sulle repo satellite non aprono le skill da quella riga, quindi nessun sintomo dal campo).
+- Perché non ci ha fermati: il CLAUDE.md e' testo: nessun gate esegue i percorsi che cita, quindi nessun rosso poteva nascere nelle repo onboardate — il difetto poteva vivere per sempre.
+- Guardia: tests/test-locale-turno.sh (check 5-6): gira il generatore in una dir temporanea e pretende che il puntatore skills citi `~/.night-shift-work` e che nessun percorso `~/.night-shift/...` senza «-work» appaia nell'uscita.
+- Verifica guardia: vista rossa sulla versione col typo (2 FAIL su 6), verde dopo la correzione (6 OK).
+- Aggiramento: le CLAUDE.md gia' installate portano il percorso rotto finché il riallineo dello standard non le tocca (D15): rigenerarle in massa e' decisione del proprietario, non del turno.
