@@ -39,9 +39,12 @@ adatta() { # adatta <dir>
   fi
 
   # se il .night-verify esiste e ha gia' comandi: NON toccare (lo ha definito il progetto)
-  local HA_CMD=$(grep -cvE '^\s*#|^\s*$' .night-verify 2>/dev/null || echo 0)
-  if [ "${HA_CMD:-0}" -gt 0 ]; then
-    echo "  ✓ $N: gia' configurato ($(grep -cvE '^\s*#|^\s*$' .night-verify) comandi)"
+  # (2026-10-05, lente del doppio zero): `grep -c ... || echo 0` qui dava «0\n0» —
+  # non intero, il -gt sotto era errore-di-sintassi=falso. Forma canonica: || true + default.
+  local HA_CMD=$(grep -cvE '^\s*#|^\s*$' .night-verify 2>/dev/null || true)
+  HA_CMD=${HA_CMD:-0}
+  if [ "$HA_CMD" -gt 0 ]; then
+    echo "  ✓ $N: gia' configurato ($HA_CMD comandi)"
     return 0
   fi
 

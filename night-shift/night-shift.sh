@@ -746,7 +746,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # su stderr catturato e ingoiato. La prima cura grepava "^DELIBERA:" — MAI
       # match: il log() del revisore antepone "[revisore HH:MM:SS] ". Si cerca la
       # firma DENTRO la riga, non all'inizio.
-      while IFS= read -r _dl; do log "REPO $REPO: $_dl"; done < <(grep -a "DELIBERA: APPROVA\|DELIBERA: RIGETTA" <<<"$REVISORE_OUT" | sed 's/^\[revisore [^]]*\] //')
+      while IFS= read -r _dl; do log "REPO $REPO: $_dl"; done < <(grep -a "DELIBERA: APPROVA\|DELIBERA: RIGETTA\|censore: canone" <<<"$REVISORE_OUT" | sed 's/^\[revisore [^]]*\] //')
       case "$REVISORE_RC" in
         0) log "REPO $REPO: ✅ censore ha DELIBERATO il merge: PR #$REVISORE_CANDIDATA"; break ;;
         1) log "REPO $REPO: ⛔ censore ha RIGETTATO la PR #$REVISORE_CANDIDATA (chiusa con motivi)" ;;
@@ -810,7 +810,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
         MIGLIORIA_RC=$?
         # (audit 2026-09-23): "TRASFORMATORE deterministico" e "gate BOCCIA"
         # morivano qui come le DELIBERE — il funnel diceva "0 per sempre".
-        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA|agente: .*(⚠|⛔|rianima_ollama: esito)|goal #|grafo:.*tocca|scuola dei rigetti" <<<"$MIGLIORIA_OUT")   # (R4 R3): anche i wedge dell'agente
+        while IFS= read -r _mg; do log "REPO $REPO: $_mg"; done < <(grep -aE "TRASFORMATORE deterministico|gate BOCCIA|agente: .*(⚠|⛔|rianima_ollama: esito)|goal #|grafo:.*tocca|scuola dei rigetti|canone di dominio" <<<"$MIGLIORIA_OUT")   # (R4 R3): anche i wedge dell'agente
         # (strumento, 2026-09-19): la riga-categoria in produzione — senza questa
         # riga non si sa SE la finestra abbia pagato un debito o girato a rotazione
         log "REPO $REPO: caccia-interna: $(echo "$MIGLIORIA_OUT" | grep -a "categoria" | head -1 | cut -c1-140)"
