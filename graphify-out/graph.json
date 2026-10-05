@@ -21762,7 +21762,7 @@
       },
       "norm_label": "ko()",
       "source_file": "tests/test-design-doc-goal-o-commessa.sh",
-      "source_location": "L15"
+      "source_location": "L14"
     },
     {
       "id": "tests_test_design_doc_goal_o_commessa_ok",
@@ -21777,7 +21777,7 @@
       },
       "norm_label": "ok()",
       "source_file": "tests/test-design-doc-goal-o-commessa.sh",
-      "source_location": "L14"
+      "source_location": "L13"
     },
     {
       "id": "tests_test_design_doc_goal_o_commessa_sh__entry",
@@ -61170,7 +61170,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-design-doc-goal-o-commessa.sh",
-      "source_location": "L20",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -61182,7 +61182,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "tests/test-design-doc-goal-o-commessa.sh",
-      "source_location": "L21",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -102082,7 +102082,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-design-doc-goal-o-commessa.sh",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -102093,7 +102093,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/test-design-doc-goal-o-commessa.sh",
-      "source_location": "L15",
+      "source_location": "L14",
       "weight": 1.0
     },
     {
@@ -109791,5 +109791,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fd73cfc8bd40cc79783388954318eaf43927aa78"
+  "built_at_commit": "b29fbb81ea69329d994c003d61a87d5b4425bde0"
 }

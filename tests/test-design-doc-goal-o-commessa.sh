@@ -9,12 +9,11 @@
 # inventato lì.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-DD="$HERE/.claude/skills/design-doc/SKILL.md"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
-SEZ3=$(awk '/^## 3\./{f=1} /^## 4\./{f=0} f' "$DD")
+SEZ3=$(awk '/^## 3\./{f=1} /^## 4\./{f=0} f' "$HERE/.claude/skills/design-doc/SKILL.md")
 
 grep -q "nuova-commessa" <<<"$SEZ3" \
   && ok "§3 cita ancora /nuova-commessa per il territorio grande/notturno" \
