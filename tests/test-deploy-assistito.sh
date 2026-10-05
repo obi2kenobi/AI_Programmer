@@ -13,7 +13,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 TMP=$(mktemp -d); export TMP
 trap 'rm -rf "$TMP"' EXIT
-export HOME_BAK="$HOME"; export HOME="$TMP"
+export HOME="$TMP"
 # (revisione 10 giri, 2026-09-23): con HOME spostato git perde l'identita' del
 # ~/.gitconfig — i `git commit` di mkrepo fallivano in silenzio (>/dev/null), il
 # repo non aveva HEAD e prepara-deploy moriva su rev-parse: 2 rossi del BANCO,
