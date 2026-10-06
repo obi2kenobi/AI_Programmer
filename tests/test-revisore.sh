@@ -29,10 +29,16 @@ cat > "$STUB" <<'EOF'
 # (14b anche come censore — bencina: il 27b 0/3 in 442s anche sola). Si
 # distinguono dal RUOLO nel prompt: l'avversario SMASCHERA, il censore delibera.
 MODELLO="$1"; shift; PROMPT=$(cat)
+printf x >> "${REVISORE_STUB_LOG:-/dev/null}"   # (2026-10-06): contatore di chiamate — il banco prova che lo sticky NON chiama il cervello
 case "$PROMPT" in
   *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
-  *CENSORE*) printf '{"verdetto":"%s","rischio":"basso","motivi":["il diff fa quello che dichiara","nessun danno collaterale"]}\n' "${REVISORE_STUB_VERDETTO:-APPROVA}" ;;
+  *CENSORE*)
+    if [ "${REVISORE_STUB_VERDETTO:-APPROVA}" = "PROSA" ]; then
+      printf 'Analizzo il canone del repo: la regola dei movimenti veri e della giacenza derivata sembra rispettata dal diff, anche se avrei una riserva sul secondo file. Nel complesso approverei, con qualche dubbio sul rischio.\n'
+    else
+      printf '{"verdetto":"%s","rischio":"basso","motivi":["il diff fa quello che dichiara","nessun danno collaterale"]}\n' "${REVISORE_STUB_VERDETTO:-APPROVA}"
+    fi ;;
   *) printf '' ;;
 esac
 EOF
@@ -560,6 +566,50 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB" bash
 [ "$RC" -eq 0 ] && grep -q "gh pr merge 7" <<<"$OUT" \
   && ok "E-057: censore multiriga col recinto → verdict estratto, PR fusa" || ko "rc=$RC: $(grep -aE 'APPROVA|RIGETTA|non ha' <<<"$OUT" | head -1)"
 
+
+# (2026-10-06, il collo di bottiglia): censore che risponde in PROSA (misurato
+# 54/54 su Controlli-trimestrali col canone doppio) — prima rinviava a ogni ciclo
+# senza memoria: 54 chiamate GPU su 9 PR ferme. Ora conta, mostra la testa della
+# risposta, e alla terza dello stesso giorno esce PRIMA di chiamare il cervello.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-prosa
+# stub PROPRIO del caso: quello globale viene sovrascritto dal caso multiriga (E-057)
+# che gira prima — la prima versione di questo banco lo usava e riceveva «Ecco il
+# verdetto» col recinto: approve silenziosi, prosa mai vista.
+STUB2=$(mktemp "$RADICE/stub-prosa.XXXXXX")
+cat > "$STUB2" <<'STUBEOF'
+#!/bin/bash
+printf x >> "${REVISORE_STUB_LOG:-/dev/null}"
+PROMPT=$(cat)
+case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":["stub: la lente dice cosi"]}
+' ;;
+  *SMASCHERA*) printf '```
+grep -c "function viva" utils.js
+```
+' ;;
+  *CENSORE*) printf 'Analizzo il canone del repo: la regola dei movimenti veri e della giacenza derivata sembra rispettata dal diff, anche se avrei una riserva sul secondo file. Nel complesso approverei, con qualche dubbio sul rischio.
+' ;;
+  *) printf '' ;;
+esac
+STUBEOF
+chmod +x "$STUB2"
+LGC=$RADICE/stub-chiamate.log; : > "$LGC"
+CORRI() { cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB2" REVISORE_STUB_LOG="$LGC" bash "$REV" "$SB" 7 2>&1; }
+OUT=$(CORRI); RC=$?
+[ "$RC" -eq 2 ] && grep -q "non ha risposto in JSON" <<<"$OUT" && grep -q "Analizzo il canone" <<<"$OUT" \
+  && ok "prosa: rinvio con la TESTA della risposta nel log (visibile)" || { ko "prosa 1a: rc=$RC"; echo "--- DEBUG revisore:"; grep -aE "razzo|CENSORE|censore|DELIBERA|JSON" <<<"$OUT" | head -8; echo "--- DEBUG stub log: $(wc -c < "$LGC" | tr -d ' ') chiamate"; }
+NJFILE=$(ls "$SB/.git/revisore/nonjson/" 2>/dev/null | head -1)
+[ -n "$NJFILE" ] && [ "$(grep -c "$(date +%F)" "$SB/.git/revisore/nonjson/$NJFILE")" -eq 1 ] \
+  && ok "prosa: il rinvio si CONTA (1 oggi)" || ko "prosa: contatore non scritto"
+OUT=$(CORRI); RC=$?
+[ "$RC" -eq 2 ] && [ "$(grep -c "$(date +%F)" "$SB/.git/revisore/nonjson/$NJFILE")" -eq 2 ] \
+  && ok "prosa 2a: secondo rinvio contato" || ko "prosa 2a: rc=$RC"
+PRIMA=$(wc -c < "$LGC" | tr -d ' ')
+OUT=$(CORRI); RC=$?
+DOPO=$(wc -c < "$LGC" | tr -d ' ')
+[ "$RC" -eq 2 ] && grep -q "gia' rinviata .* oggi per risposta non-JSON" <<<"$OUT" && [ "$DOPO" = "$PRIMA" ] \
+  && ok "prosa 3a (stesso giorno): esce PRIMA di chiamare il cervello (GPU risparmiata)" \
+  || ko "prosa 3a: rc=$RC, chiamate stub $PRIMA→$DOPO"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

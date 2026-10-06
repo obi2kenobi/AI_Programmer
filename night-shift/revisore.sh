@@ -286,6 +286,23 @@ if [ "$MODO" = "parere" ]; then
   [ -f "$PARERE_FILE" ] && { log "parere gia' dato su questo commit della PR #$PR — niente da rifare"; exit 2; }
 fi
 
+# (2026-10-06, il collo di bottiglia Controlli-trimestrali): il censore che risponde
+# in prosa (misurato: 54/54 rinvii non-JSON su quel repo in una notte — il canone di
+# dominio nel prompt spinge il modello ad ANALIZZARE le regole invece di delibera)
+# rinviava la PR a ogni ciclo senza memoria: 54 chiamate GPU su 9 PR ferme, backlog
+# che non si svuota mai. Ora: due risposte non-JSON nello STESSO giorno → la PR va al
+# giorno davvero (si riprova domani, col prompt che sara' cambiato). Nessuna GPU.
+NJ="$STATE/nonjson/$PR-${HEAD_OID:-senza-oid}"
+NJ_OGGI=0
+if [ -f "$NJ" ]; then
+  NJ_OGGI=$(grep -c "$(date +%F)" "$NJ" 2>/dev/null || true)
+  NJ_OGGI=${NJ_OGGI:-0}
+fi
+if [ "${NJ_OGGI:-0}" -ge "${REVISORE_MAX_NONJSON:-2}" ]; then
+  log "censore: PR #$PR gia' rinviata $NJ_OGGI volte oggi per risposta non-JSON — al giorno anche stanotte (niente GPU)"
+  exit 2
+fi
+
 DIFF_FILES=$(git diff --name-only "$DB"...HEAD 2>/dev/null)
 N_FILE=$(printf '%s\n' "$DIFF_FILES" | grep -c .)
 N_RIGHE=$(git diff --numstat "$DB"...HEAD 2>/dev/null | awk '{a+=$1+$2} END{print a+0}')
@@ -451,7 +468,7 @@ fi
 CENS_DOMINIO=""
 [ -n "$CENS_CANONE" ] && CENS_DOMINIO="
 
-Canone misurato del dominio di QUESTA repo (le regole che i suoi ruoli hanno pagato — una violazione e' motivo di RIGETTA):
+Canone misurato del dominio di QUESTA repo — serve a GIUDICARE in silenzio, non a commentare: la tua analisi vive SOLO dentro i «motivi» del JSON (max 3 voci), mai in prosa. Una violazione del canone e' motivo di RIGETTA:
 $CENS_CANONE"
 CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritto un altro modello ($AUTORE_MODEL), tu sei un processo separato, senza la memoria di chi l'ha scritta, e il tuo compito e' trovare il motivo per RIGETTARLA. L'onore della prova e' della PR: nel dubbio, RIGETTA.
 
@@ -469,7 +486,8 @@ Giudica:
 4. i commenti aggiunti dicono la verita' sul codice?
 5. il diff rispetta il canone del dominio qui sopra, quando morde?
 
-Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
+Decidi dentro di te, poi rispondi SOLO con il JSON su una riga — nessuna parola prima, nessuna spiegazione dopo, nessuna analisi scritta:
+{\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 if [ "$MODO" = "parere" ]; then
   ISSUE_N="${BRANCH#night/issue-}"
   ISSUE_JSON=$(gh issue view "$ISSUE_N" --json title,body 2>/dev/null)
@@ -492,7 +510,8 @@ Giudica:
 4. i commenti aggiunti dicono la verita' sul codice?
 5. il diff rispetta il canone del dominio qui sopra, quando morde?
 
-Rispondi SOLO con JSON su una riga: {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
+Decidi dentro di te, poi rispondi SOLO con il JSON su una riga — nessuna parola prima, nessuna spiegazione dopo, nessuna analisi scritta:
+{\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 fi
 # (studio rizzo-flow, 2026-09-26): prima il CENSORE RAZZO (50ms, 0 token) —
 # se la bocciatura rapida se p<0.15, altrimenti il LLM giudica. Zona grigia o
@@ -527,7 +546,14 @@ while i != -1:
 sys.exit(1)' 2>/dev/null || true)
 VERDETTO=$(printf '%s' "$CENS_JSON" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_JSON" | jq -r '.motivi[]?' 2>/dev/null | head -5)
-[ -n "$VERDETTO" ] || { log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto)"; exit 2; }
+[ -n "$VERDETTO" ] || {
+  # (2026-10-06): la risposta c'e' ma non contiene JSON: si CONTA (sticky qui sopra)
+  # e si mostra la testa — il rinvio muto non diceva se era prosa, recinto o vuoto.
+  mkdir -p "$STATE/nonjson"
+  printf '%s\n' "$(date +%F)" >> "$NJ"
+  log "censore non ha risposto in JSON — al giorno (non si delibera senza verdetto). Testa della risposta: $(printf '%s' "$CENS_RISP" | tr '\n' ' ' | cut -c1-160)"
+  exit 2
+}
 # (2026-09-25, D43, risposta delegata): un verdetto fuori vocabolario ricadeva nel ramo del rigetto — commento pubblico e
 # PR chiusa per una risposta mal formata, che non si annulla. Il dubbio del censore non e' un no: al giorno, in silenzio.
 case "$VERDETTO" in
