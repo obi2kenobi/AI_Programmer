@@ -3,6 +3,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DD="$HERE/.claude/skills/design-doc/SKILL.md"
 PASS=0; FAIL=0
+# ok: increment the PASS counter and print an OK line for a passed check
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 grep -qi "VINCOLI DI SQUALIFICA" "$DD" && ok "squalifiche" || ko "squalifiche mancanti"
