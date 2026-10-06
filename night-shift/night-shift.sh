@@ -746,7 +746,7 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # su stderr catturato e ingoiato. La prima cura grepava "^DELIBERA:" — MAI
       # match: il log() del revisore antepone "[revisore HH:MM:SS] ". Si cerca la
       # firma DENTRO la riga, non all'inizio.
-      while IFS= read -r _dl; do log "REPO $REPO: $_dl"; done < <(grep -a "DELIBERA: APPROVA\|DELIBERA: RIGETTA\|censore: canone" <<<"$REVISORE_OUT" | sed 's/^\[revisore [^]]*\] //')
+      while IFS= read -r _dl; do log "REPO $REPO: $_dl"; done < <(grep -a "DELIBERA: APPROVA\|DELIBERA: RIGETTA\|censore: canone\|censore non ha risposto\|gia.*rinviata.*non-JSON" <<<"$REVISORE_OUT" | sed 's/^\[revisore [^]]*\] //')
       case "$REVISORE_RC" in
         0) log "REPO $REPO: ✅ censore ha DELIBERATO il merge: PR #$REVISORE_CANDIDATA"; break ;;
         1) log "REPO $REPO: ⛔ censore ha RIGETTATO la PR #$REVISORE_CANDIDATA (chiusa con motivi)" ;;
