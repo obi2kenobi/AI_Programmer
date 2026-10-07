@@ -17,8 +17,8 @@ bash "$HERE/tools/claude-md-satellite.sh" "$HERE/CLAUDE.md" > "$S/CLAUDE.md"
 mkdir -p "$S/.claude"; cp -R "$HERE/.claude/skills" "$S/.claude/"
 bash "$HERE/tools/installa-citati.sh" "$S" >/dev/null 2>&1
 g -C "$S" add -A; g -C "$S" commit -qm nascita
-OUT=$(bash "$S/tests/test-errori.sh" 2>&1); RC=$?
-[ "$RC" -eq 0 ] && ok "satellite appena nato: la lente del registro e' verde (rc 0)" || ko "satellite appena nato rosso: $(grep FAIL <<<"$OUT" | tr '\n' ' ')"
+OUT=$(bash "$S/tests/test-errori.sh" 2>&1)
+[ $? -eq 0 ] && ok "satellite appena nato: la lente del registro e' verde (rc 0)" || ko "satellite appena nato rosso: $(grep FAIL <<<"$OUT" | tr '\n' ' ')"
 grep -c "nessun errore" <<<"$OUT" >/dev/null && ok "e dice che il registro non ha ancora voci (non tace)" || ko "zero voci taciute: $(tail -3 <<<"$OUT" | tr '\n' ' ')"
 
 # una voce registrata e committata, poi tolta: rosso (append-only)
