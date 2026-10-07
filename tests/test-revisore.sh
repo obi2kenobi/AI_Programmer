@@ -611,6 +611,36 @@ DOPO=$(wc -c < "$LGC" | tr -d ' ')
   && ok "prosa 3a (stesso giorno): esce PRIMA di chiamare il cervello (GPU risparmiata)" \
   || ko "prosa 3a: rc=$RC, chiamate stub $PRIMA→$DOPO"
 
+# (2026-10-07): il censore SCRIVE il JSON ma lo rompe dentro i «motivi» (16/16 notti
+# identiche: {"verdetto": "RIGETTA", "rischio": "medio", "motivi": ["La categoria
+# dichiarata ...non si chiude piu'): il verdetto — PRIMO per formato — si ripesca
+# con la regex e la PR riceve la delibera che il censore aveva gia' deciso.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-json-rotto
+STUB3=$(mktemp "$RADICE/stub-rotto.XXXXXX")
+cat > "$STUB3" <<'STUBEOF'
+#!/bin/bash
+PROMPT=$(cat)
+case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":[]}
+' ;;
+  *SMASCHERA*) printf '```
+grep -c "function viva" utils.js
+```
+' ;;
+  *CENSORE*) printf '{"verdetto": "RIGETTA", "rischio": "medio", "motivi": ["La categoria dichiarata e "docs" ma il diff tocca codice: un commento nel .gs
+' ;;
+  *) printf '' ;;
+esac
+STUBEOF
+chmod +x "$STUB3"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB3" bash "$REV" "$SB" 7 2>&1); RC=$?
+grep -q "JSON rotto, verdetto ripescato" <<<"$OUT" && grep -qa "DELIBERA: RIGETTA" <<<"$OUT" \
+  && ok "JSON rotto: il verdetto RIGETTA si ripesca e la delibera arriva" \
+  || ko "JSON rotto: rc=$RC $(grep -m1 -aE 'JSON|DELIBERA' <<<"$OUT" | cut -c1-70)"
+grep -qa "La categoria dichiarata" <<<"$OUT" \
+  && ok "JSON rotto: il motivo (parziale ma vero) viaggia con la delibera" \
+  || ko "JSON rotto: motivi persi"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

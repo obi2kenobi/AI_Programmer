@@ -4613,6 +4613,66 @@
       "source_location": "L123"
     },
     {
+      "id": "night_shift_lib_aggiungi_consegna",
+      "label": "aggiungi_consegna()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "aggiungi_consegna()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L593"
+    },
+    {
+      "id": "night_shift_lib_commenta_una_volta",
+      "label": "commenta_una_volta()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "commenta_una_volta()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L871"
+    },
+    {
+      "id": "night_shift_lib_forme_prima_del_push",
+      "label": "forme_prima_del_push()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "forme_prima_del_push()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L571"
+    },
+    {
+      "id": "night_shift_lib_funzione_definita_e_chiamata",
+      "label": "funzione_definita_e_chiamata()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "funzione_definita_e_chiamata()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L259"
+    },
+    {
       "id": "night_shift_lib_lock_turno_orfano",
       "label": "lock_turno_orfano()",
       "_origin": "ast",
@@ -4628,6 +4688,21 @@
       "source_location": "L848"
     },
     {
+      "id": "night_shift_lib_pr_chiusa_ferma",
+      "label": "pr_chiusa_ferma()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "pr_chiusa_ferma()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L169"
+    },
+    {
       "id": "night_shift_lib_prendi_lock_turno",
       "label": "prendi_lock_turno()",
       "_origin": "ast",
@@ -4641,6 +4716,21 @@
       "norm_label": "prendi_lock_turno()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L827"
+    },
+    {
+      "id": "night_shift_lib_riga_verifica_vuota",
+      "label": "riga_verifica_vuota()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "riga_verifica_vuota()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L195"
     },
     {
       "id": "night_shift_lib_ruota_log_aperto",
@@ -4776,6 +4866,21 @@
       "norm_label": "night-shift.sh script",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "night_shift_night_shift_shift_repo",
+      "label": "shift_repo()",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "night-shift.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "shift_repo()",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L191"
     },
     {
       "id": "tools_ciclo_vivo",
@@ -9335,23 +9440,8 @@
       "source_location": "L582"
     },
     {
-      "id": "night_shift_lib_rianima_ollama",
-      "label": "rianima_ollama()",
-      "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rianima_ollama()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L786"
-    },
-    {
-      "id": "tests_test_rianima_ollama",
-      "label": "test-rianima-ollama.sh",
+      "id": "tests_test_consegna_dichiarata",
+      "label": "test-consegna-dichiarata.sh",
       "_origin": "ast",
       "community": 147,
       "community_name": "agente.sh script",
@@ -9360,12 +9450,27 @@
         "language": "bash",
         "kind": "file"
       },
-      "norm_label": "test-rianima-ollama.sh",
-      "source_file": "tests/test-rianima-ollama.sh",
+      "norm_label": "test-consegna-dichiarata.sh",
+      "source_file": "tests/test-consegna-dichiarata.sh",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_rianima_ollama_ko",
+      "id": "tests_test_consegna_dichiarata_g",
+      "label": "g()",
+      "_origin": "ast",
+      "community": 147,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "g()",
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_consegna_dichiarata_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 147,
@@ -9376,11 +9481,11 @@
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L13"
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L11"
     },
     {
-      "id": "tests_test_rianima_ollama_ok",
+      "id": "tests_test_consegna_dichiarata_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 147,
@@ -9391,12 +9496,12 @@
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-rianima-ollama.sh",
-      "source_location": "L12"
+      "source_file": "tests/test-consegna-dichiarata.sh",
+      "source_location": "L10"
     },
     {
-      "id": "tests_test_rianima_ollama_sh__entry",
-      "label": "test-rianima-ollama.sh script",
+      "id": "tests_test_consegna_dichiarata_sh__entry",
+      "label": "test-consegna-dichiarata.sh script",
       "_origin": "ast",
       "community": 147,
       "community_name": "agente.sh script",
@@ -9405,8 +9510,8 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-rianima-ollama.sh script",
-      "source_file": "tests/test-rianima-ollama.sh",
+      "norm_label": "test-consegna-dichiarata.sh script",
+      "source_file": "tests/test-consegna-dichiarata.sh",
       "source_location": "L1"
     },
     {
@@ -50086,101 +50191,11 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_gate_allowlist_ok",
-      "label": "gate_allowlist_ok()",
-      "_origin": "ast",
-      "community": 772,
-      "community_name": "gate_allowlist_ok",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "gate_allowlist_ok()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L304"
-    },
-    {
-      "id": "night_shift_lib_rotate_log_if_big",
-      "label": "rotate_log_if_big()",
-      "_origin": "ast",
-      "community": 772,
-      "community_name": "gate_allowlist_ok",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "rotate_log_if_big()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L54"
-    },
-    {
-      "id": "night_shift_lib_run_guarded",
-      "label": "run_guarded()",
-      "_origin": "ast",
-      "community": 772,
-      "community_name": "gate_allowlist_ok",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "run_guarded()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L93"
-    },
-    {
-      "id": "night_shift_morning_gate",
-      "label": "morning-gate.sh",
-      "_origin": "ast",
-      "community": 772,
-      "community_name": "gate_allowlist_ok",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "morning-gate.sh",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L1"
-    },
-    {
-      "id": "night_shift_morning_gate_log",
-      "label": "log()",
-      "_origin": "ast",
-      "community": 772,
-      "community_name": "gate_allowlist_ok",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "log()",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L30"
-    },
-    {
-      "id": "night_shift_morning_gate_sh__entry",
-      "label": "morning-gate.sh script",
-      "_origin": "ast",
-      "community": 772,
-      "community_name": "gate_allowlist_ok",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_entrypoint"
-      },
-      "norm_label": "morning-gate.sh script",
-      "source_file": "night-shift/morning-gate.sh",
-      "source_location": "L1"
-    },
-    {
       "id": "tests_test_banco_prompt_allowlist_sync",
       "label": "test-banco-prompt-allowlist-sync.sh",
       "_origin": "ast",
       "community": 772,
-      "community_name": "gate_allowlist_ok",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -50195,7 +50210,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 772,
-      "community_name": "gate_allowlist_ok",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -50210,7 +50225,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 772,
-      "community_name": "gate_allowlist_ok",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -50225,7 +50240,7 @@
       "label": "test-banco-prompt-allowlist-sync.sh script",
       "_origin": "ast",
       "community": 772,
-      "community_name": "gate_allowlist_ok",
+      "community_name": "test-banco-prompt-allowlist-sync.sh",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -52711,6 +52726,54 @@
       "source_location": "L1"
     },
     {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2839"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2897"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2941"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2994"
+    },
+    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -52745,6 +52808,18 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1766"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 80,
+      "community_name": "SAL \u2014 il diario vivo del sistema",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2805"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -56609,138 +56684,162 @@
       "source_location": "L16"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo",
+      "label": "2026-10-06-terzo-giro-due-repo.md",
       "_origin": "ast",
       "community": 844,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
       "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2839"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "_origin": "ast",
-      "community": 844,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2897"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "_origin": "ast",
-      "community": 844,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2941"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
-      "_origin": "ast",
-      "community": 844,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2994"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 844,
-      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2805"
-    },
-    {
-      "id": "tests_test_consegna_dichiarata",
-      "label": "test-consegna-dichiarata.sh",
-      "_origin": "ast",
-      "community": 845,
-      "community_name": "test-consegna-dichiarata.sh",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "file"
-      },
-      "norm_label": "test-consegna-dichiarata.sh",
-      "source_file": "tests/test-consegna-dichiarata.sh",
+      "node_kind": "page",
+      "norm_label": "2026-10-06-terzo-giro-due-repo.md",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
       "source_location": "L1"
     },
     {
-      "id": "tests_test_consegna_dichiarata_g",
-      "label": "g()",
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "label": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "_origin": "ast",
+      "community": 844,
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "_origin": "ast",
+      "community": 844,
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "_origin": "ast",
+      "community": 844,
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "_origin": "ast",
+      "community": 844,
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo_esito",
+      "label": "Esito",
+      "_origin": "ast",
+      "community": 844,
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "esito",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L4"
+    },
+    {
+      "id": "docs_campo_2026_10_06_terzo_giro_due_repo_proposta_al_canone",
+      "label": "Proposta al canone",
+      "_origin": "ast",
+      "community": 844,
+      "community_name": "2026-10-06 \u2014 terzo giro di lettura e correzione su due repo",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L19"
+    },
+    {
+      "id": "night_shift_lib_rianima_ollama",
+      "label": "rianima_ollama()",
       "_origin": "ast",
       "community": 845,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "g()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L13"
+      "norm_label": "rianima_ollama()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L786"
     },
     {
-      "id": "tests_test_consegna_dichiarata_ko",
+      "id": "tests_test_rianima_ollama",
+      "label": "test-rianima-ollama.sh",
+      "_origin": "ast",
+      "community": 845,
+      "community_name": "rianima_ollama",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-rianima-ollama.sh",
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
       "_origin": "ast",
       "community": 845,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ko()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L11"
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L13"
     },
     {
-      "id": "tests_test_consegna_dichiarata_ok",
+      "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
       "_origin": "ast",
       "community": 845,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
       },
       "norm_label": "ok()",
-      "source_file": "tests/test-consegna-dichiarata.sh",
-      "source_location": "L10"
+      "source_file": "tests/test-rianima-ollama.sh",
+      "source_location": "L12"
     },
     {
-      "id": "tests_test_consegna_dichiarata_sh__entry",
-      "label": "test-consegna-dichiarata.sh script",
+      "id": "tests_test_rianima_ollama_sh__entry",
+      "label": "test-rianima-ollama.sh script",
       "_origin": "ast",
       "community": 845,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "metadata": {
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "norm_label": "test-consegna-dichiarata.sh script",
-      "source_file": "tests/test-consegna-dichiarata.sh",
+      "norm_label": "test-rianima-ollama.sh script",
+      "source_file": "tests/test-rianima-ollama.sh",
       "source_location": "L1"
     },
     {
@@ -58370,21 +58469,6 @@
       "source_location": "L1"
     },
     {
-      "id": "night_shift_lib_aggiungi_consegna",
-      "label": "aggiungi_consegna()",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "aggiungi_consegna()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L593"
-    },
-    {
       "id": "night_shift_lib_allarme_rosso_nuovo",
       "label": "allarme_rosso_nuovo()",
       "_origin": "ast",
@@ -58430,8 +58514,8 @@
       "source_location": "L514"
     },
     {
-      "id": "night_shift_lib_commenta_una_volta",
-      "label": "commenta_una_volta()",
+      "id": "night_shift_lib_gate_allowlist_ok",
+      "label": "gate_allowlist_ok()",
       "_origin": "ast",
       "community": 99,
       "community_name": "test-lib.sh script",
@@ -58440,39 +58524,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "commenta_una_volta()",
+      "norm_label": "gate_allowlist_ok()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L871"
-    },
-    {
-      "id": "night_shift_lib_forme_prima_del_push",
-      "label": "forme_prima_del_push()",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "forme_prima_del_push()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L571"
-    },
-    {
-      "id": "night_shift_lib_funzione_definita_e_chiamata",
-      "label": "funzione_definita_e_chiamata()",
-      "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
-      "file_type": "code",
-      "metadata": {
-        "language": "bash",
-        "kind": "bash_function"
-      },
-      "norm_label": "funzione_definita_e_chiamata()",
-      "source_file": "night-shift/lib.sh",
-      "source_location": "L259"
+      "source_location": "L304"
     },
     {
       "id": "night_shift_lib_motivo_non_verificabile",
@@ -58490,8 +58544,8 @@
       "source_location": "L178"
     },
     {
-      "id": "night_shift_lib_pr_chiusa_ferma",
-      "label": "pr_chiusa_ferma()",
+      "id": "night_shift_lib_rotate_log_if_big",
+      "label": "rotate_log_if_big()",
       "_origin": "ast",
       "community": 99,
       "community_name": "test-lib.sh script",
@@ -58500,13 +58554,13 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "pr_chiusa_ferma()",
+      "norm_label": "rotate_log_if_big()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L169"
+      "source_location": "L54"
     },
     {
-      "id": "night_shift_lib_riga_verifica_vuota",
-      "label": "riga_verifica_vuota()",
+      "id": "night_shift_lib_run_guarded",
+      "label": "run_guarded()",
       "_origin": "ast",
       "community": 99,
       "community_name": "test-lib.sh script",
@@ -58515,9 +58569,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "riga_verifica_vuota()",
+      "norm_label": "run_guarded()",
       "source_file": "night-shift/lib.sh",
-      "source_location": "L195"
+      "source_location": "L93"
     },
     {
       "id": "night_shift_lib_verifica_issue_comando",
@@ -58535,8 +58589,23 @@
       "source_location": "L647"
     },
     {
-      "id": "night_shift_night_shift_shift_repo",
-      "label": "shift_repo()",
+      "id": "night_shift_morning_gate",
+      "label": "morning-gate.sh",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "morning-gate.sh",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "night_shift_morning_gate_log",
+      "label": "log()",
       "_origin": "ast",
       "community": 99,
       "community_name": "test-lib.sh script",
@@ -58545,9 +58614,24 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "shift_repo()",
-      "source_file": "night-shift/night-shift.sh",
-      "source_location": "L191"
+      "norm_label": "log()",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L30"
+    },
+    {
+      "id": "night_shift_morning_gate_sh__entry",
+      "label": "morning-gate.sh script",
+      "_origin": "ast",
+      "community": 99,
+      "community_name": "test-lib.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "morning-gate.sh script",
+      "source_file": "night-shift/morning-gate.sh",
+      "source_location": "L1"
     },
     {
       "id": "tests_test_lib",
@@ -59196,7 +59280,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1384",
+      "source_location": "L1413",
       "weight": 1.0
     },
     {
@@ -59208,7 +59292,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1500",
+      "source_location": "L1529",
       "weight": 1.0
     },
     {
@@ -59304,7 +59388,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1056",
+      "source_location": "L1066",
       "weight": 1.0
     },
     {
@@ -59316,7 +59400,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1259",
+      "source_location": "L1288",
       "weight": 1.0
     },
     {
@@ -59352,7 +59436,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L301",
+      "source_location": "L311",
       "weight": 1.0
     },
     {
@@ -59364,7 +59448,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L311",
+      "source_location": "L321",
       "weight": 1.0
     },
     {
@@ -59376,7 +59460,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L651",
+      "source_location": "L661",
       "weight": 1.0
     },
     {
@@ -59388,7 +59472,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L974",
+      "source_location": "L984",
       "weight": 1.0
     },
     {
@@ -59400,7 +59484,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L987",
+      "source_location": "L997",
       "weight": 1.0
     },
     {
@@ -59568,7 +59652,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L571",
+      "source_location": "L594",
       "weight": 1.0
     },
     {
@@ -59580,7 +59664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L599",
+      "source_location": "L622",
       "weight": 1.0
     },
     {
@@ -83119,6 +83203,72 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/campo/2026-10-05-chiusura-pr-due-repo.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_06_terzo_giro_due_repo",
+      "target": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "target": "docs_campo_2026_10_06_terzo_giro_due_repo_cosa_ho_improvvisato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "target": "docs_campo_2026_10_06_terzo_giro_due_repo_cosa_ha_retto_ostacolato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "target": "docs_campo_2026_10_06_terzo_giro_due_repo_proposta_al_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "target": "docs_campo_2026_10_06_terzo_giro_due_repo_esito",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_campo_2026_10_06_terzo_giro_due_repo_2026_10_06_terzo_giro_di_lettura_e_correzione_su_due_repo",
+      "target": "docs_campo_2026_10_06_terzo_giro_due_repo_cosa_ho_usato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/campo/2026-10-06-terzo-giro-due-repo.md",
       "source_location": "L7",
       "weight": 1.0
     },
@@ -110364,5 +110514,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1f99fbe85c8f62686892c44aed09538303737a7e"
+  "built_at_commit": "e1fa12ea21d2a5e3a7d3ecda91aad5dc94e7168d"
 }

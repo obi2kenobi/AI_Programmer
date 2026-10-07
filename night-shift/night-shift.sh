@@ -251,6 +251,16 @@ shift_repo() {
   git -C "$DIR" config user.name  >/dev/null 2>&1 || git -C "$DIR" config user.name  "Night Shift"
   git -C "$DIR" config user.email >/dev/null 2>&1 || git -C "$DIR" config user.email "night-shift@localhost"
 
+  # (2026-10-07, Unicredit_Factoring 45 rosse/notte): un clone single-branch non
+  # fa fetchare al revisore i rami PR (specchio: «refspec single-branch: il revisore
+  # non...»). Il refspec si ALLARGA appena serve: chi clona stretto poi lavora largo.
+  local FETCH_SPEC
+  FETCH_SPEC=$(git -C "$DIR" config remote.origin.fetch 2>/dev/null || true)
+  if [ -n "$FETCH_SPEC" ] && ! grep -q 'refs/heads/\*' <<<"$FETCH_SPEC"; then
+    git -C "$DIR" config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
+    log "REPO $REPO: clone single-branch allargato al refspec completo (il revisore fetcha i rami PR)"
+  fi
+
   # (2026-10-03, faretra): i ruoli attivi del repo — .git/ruoli-attivi, rilevati la
   # prima volta (nome + censimento), poi EDITABILI da Luca e mai più toccati. La
   # caccia e il risolutore li iniettano come canone di dominio.
@@ -1079,6 +1089,21 @@ review del giorno." 2>>"$ERR_NOTTE" \
       #  La stratificazione giusta: PR aperta -> skip (gia' sopra, prima di tutto); proposta
       #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
       #  capacita' migliore non e' spam: e' il lavoro che riparte.
+      # (2026-10-07, il brucio di Centrale_Rischi: 80 minuti di GPU in una notte):
+      # le issue che vanno al watchdog dei 300s si ritentavano a OGNI ciclo — due
+      # scatti al giorno vogliono dire «questa issue oggi non converge nel budget»:
+      # si riposa fino a domani (il giorno puo' spezzarla o alzare il tetto per repo).
+      WD_FILE="$DIR/.git/watchdog-issue/$NUM"
+      WD_OGGI=0
+      if [ -f "$WD_FILE" ]; then
+        WD_OGGI=$(grep -c "$(date +%F)" "$WD_FILE" 2>/dev/null || true)
+        WD_OGGI=${WD_OGGI:-0}
+      fi
+      if [ "${WD_OGGI:-0}" -ge "${ISSUE_MAX_WATCHDOG:-2}" ]; then
+        log "Issue #$NUM: watchdog scattato ${WD_OGGI} volte oggi — si riposa fino a domani (niente GPU)"
+        rm -f "$ISSUE_FILE"
+        continue
+      fi
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
       # (revisione 10 giri): il default e' MODEL_TAG — con MODELLO cambiato, sonda e solver
       # usavano due modelli diversi
@@ -1088,7 +1113,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # (2026-10-03, giro B): anche le ISSUE firmano il loro tempo — il funnel contava
       # solo le migliorie (un minimo dichiarato che nascondeva il 90% del costo reale)
       ISSUE_DURATA=$(( $(date +%s) - T_ISSUE ))
-      [ "$RC" -eq 124 ] && log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — risolutore fermato, si passa oltre"
+      if [ "$RC" -eq 124 ]; then
+        mkdir -p "$DIR/.git/watchdog-issue"
+        printf '%s\n' "$(date +%F)" >> "$WD_FILE"
+        log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min (n.$(grep -c . "$WD_FILE" 2>/dev/null || echo 1) oggi) — risolutore fermato, si passa oltre"
+      fi
       log "REPO $REPO: issue #$NUM: (${ISSUE_DURATA}s) $OUT"
       # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo
       # vede DOVE eravamo rimasti, non riparte da zero

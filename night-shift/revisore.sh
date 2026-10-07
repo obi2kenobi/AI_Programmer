@@ -544,6 +544,29 @@ while i != -1:
             continue
     i = t.find("{", i + 1)
 sys.exit(1)' 2>/dev/null || true)
+# (2026-10-07, 16/16 notti uguali): il censore SCRIVE il JSON ma lo rompe dentro i
+# «motivi» — virgolette non escapate o taglio a meta': la graffa non si chiude, e il
+# verdetto — che il formato del prompt mette PER PRIMO — andava perso col bagno.
+# Quando il parse non chiude, il verdetto si estrae con la regex e si RICOSTRUISCE un
+# JSON dichiarato (motivi: solo le voci complete; se nessuna, lo si dice).
+if [ -z "$CENS_JSON" ] && [ -n "$CENS_RISP" ]; then
+  CENS_JSON=$(printf '%s' "$CENS_RISP" | python3 -c '
+import json, re, sys
+t = sys.stdin.read()
+v = re.search(r"\"verdetto\"\s*:\s*\"(APPROVA|RIGETTA)\"", t)
+if not v: sys.exit(1)
+r = re.search(r"\"rischio\"\s*:\s*\"(basso|medio|alto)\"", t)
+rischio = r.group(1) if r else "medio"
+blocco = re.search(r"\"motivi\"\s*:\s*\[(.*)", t, re.S)
+voci = []
+if blocco:
+    # voci COMPLETE: stringhe chiuse prima di qualsiasi rottura a valle
+    voci = re.findall(r"\"([^\"\n\\\\]{3,140})\"", blocco.group(1))[:3]
+if not voci: voci = ["verdetto ripescato da JSON rotto del censore (motivi incompleti)"]
+print(json.dumps({"verdetto": v.group(1), "rischio": rischio, "motivi": voci}, ensure_ascii=False))
+' 2>/dev/null || true)
+  [ -n "$CENS_JSON" ] && log "censore: JSON rotto, verdetto ripescato con la regex ($(printf '%s' "$CENS_JSON" | jq -r .verdetto 2>/dev/null))"
+fi
 VERDETTO=$(printf '%s' "$CENS_JSON" | jq -r '.verdetto // empty' 2>/dev/null)
 MOTIVI=$(printf '%s' "$CENS_JSON" | jq -r '.motivi[]?' 2>/dev/null | head -5)
 [ -n "$VERDETTO" ] || {
