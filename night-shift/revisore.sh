@@ -460,6 +460,18 @@ log "prove: $(tail -1 <<<"$LENTE_OUT")"
 # e' un CONTESTO non un libro → 2 ruoli x 1500 byte, troncato dichiarato.
 # (furto #2 da mainline): l'intento dichiarato dall'autore nel corpo della PR —
 # il censore giudica il diff CONTRO l'intento, non solo contro la categoria.
+# (furto giro 2, DeployProof): le SENTINELLE DEL DIFF — si mutano le righe cambiate
+# (== ↔ !=, .py, tetto 3) e si conta quante mutazioni una verifica vede rosse.
+# Zero rosse su un diff di codice = nessun test morde le righe nuove: il censore
+# lo sa, il giorno lo legge nei motivi.
+SENTINELLE=""
+if [ -x "$HERE/../tools/mutazione-diff.sh" ]; then
+  SENTINELLE=$(ai_timeout 120 bash "$HERE/../tools/mutazione-diff.sh" "$DIR" "$DB" "bash .night-verify" 2>/dev/null | tail -1 || true)
+  case "$SENTINELLE" in
+    sentinelle:*0/*) log "sentinelle del diff: $SENTINELLE — NESSUNA verifica morde le righe cambiate" ;;
+    sentinelle:*) log "sentinelle del diff: $SENTINELLE" ;;
+  esac
+fi
 CENS_INTENTO_BLOCCO=""
 CENS_INTENTO_GREZZO=$(gh pr view "$PR" --json body -q '.body // empty' 2>/dev/null | grep -o "Intento dichiarato dall'autore: .*" | head -1 | sed "s/^Intento dichiarato dall'autore: //" || true)
 [ -n "$CENS_INTENTO_GREZZO" ] && CENS_INTENTO_BLOCCO="Intento dichiarato dall'autore prima dell'edit: $CENS_INTENTO_GREZZO"
@@ -481,6 +493,7 @@ La PR dichiara di essere una piccola miglioria notturna (categoria: morto=elimin
 
 Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; diff di $N_RIGHE righe su $N_FILE file.
 $CENS_INTENTO_BLOCCO
+${SENTINELLE:+Prova di sentinelle: $SENTINELLE (mutazioni delle righe cambiate viste da una verifica rossa — 0/N su un diff di codice significa diff non presidiato)}
 $CENS_DOMINIO
 Diff:
 $DIFF
@@ -506,6 +519,7 @@ Richiesta: $(printf '%s' "$ISSUE_JSON" | jq -r '.body // ""' | head -c 4000)
 
 Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; lente sicurezza pulita; diff di $N_RIGHE righe su $N_FILE file.
 $CENS_INTENTO_BLOCCO
+${SENTINELLE:+Prova di sentinelle: $SENTINELLE (mutazioni delle righe cambiate viste da una verifica rossa — 0/N su un diff di codice significa diff non presidiato)}
 $CENS_DOMINIO
 Diff:
 $DIFF
