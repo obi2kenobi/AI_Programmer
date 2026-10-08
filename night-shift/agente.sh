@@ -77,6 +77,10 @@ CONV=$(printf '%s' "$PROMPT" | jq -Rs --arg sys "$SYSTEM" \
   '. as $p | [{"role":"system","content":$sys},{"role":"user","content":$p}]')
 
 TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
+# (furto giro 4, little-coder «cold-start ~7k token dichiarati»): il contesto
+# iniziale si MISURA all'ingresso — prompt + contesto del progetto. La pressione
+# del num_ctx (lezione #172) diventa un numero nel log, non un'ipotesi a posteriori.
+log "contesto iniziale: ~$(token_stimati "$(printf '%s' "${2:-}" | wc -c | tr -d ' ')") token stimati (prompt $(printf '%s' "${2:-}" | wc -c | tr -d ' ') byte) — num_ctx 12240: la pressione si vede subito"
 ANON_DIZ=$(mktemp /tmp/anon-diz-XXXXXX.json)  # diz PII: locale, attivo solo con AGENTE_ANONIMIZZA=1
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   TURNO=$((TURNO+1))

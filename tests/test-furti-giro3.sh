@@ -45,5 +45,12 @@ grep -q "9ter" "$HERE/tools/pre-commit.sh" && grep -q "senza banchi toccati" "$H
 grep -qE "TOCCATO_CODICE=..staged" "$HERE/tools/pre-commit.sh" && grep -q "TOCCATO_BANCHI" "$HERE/tools/pre-commit.sh" \
   && ok "il promemorio guarda gli STAGED, cattura-prima (E-002)" || ko "non guarda gli staged"
 
+# (furto giro 4, little-coder): il contesto iniziale si stima onesto
+. "$HERE/night-shift/lib.sh" 2>/dev/null || true
+T1=$(token_stimati 3500)
+[ "$T1" = "1000" ] && ok "token_stimati: 3500 byte → 1000 token (stima dichiarata 3.5 B/tok)" || ko "token_stimati(3500)=$T1"
+T0=$(token_stimati 0)
+[ "$T0" -ge 1 ] && ok "zero byte → almeno 1 (mai 0: il vuoto non e' un contesto)" || ko "token_stimati(0)=$T0"
+
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]
