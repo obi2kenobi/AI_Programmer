@@ -1027,3 +1027,13 @@ trailers_notte() {
   [ -n "$prompt" ] && printf 'Night-Prompt-Sha: %s\n' "$(printf '%s' "$prompt" | shasum | cut -d' ' -f1 | cut -c1-16)"
   return 0
 }
+
+# token_stimati <byte> → stima token (italiano/.codice ≈ 3.5 byte/token su Qwen
+# tokenizer BPE: stima onesta, dichiarata, non un oracolo). (furto giro 4 da
+# little-coder: il loro cold-start e' ~7k token DICHIARATI — noi combattiamo la
+# pressione del contesto (#172) senza mai misurarla all'ingresso.)
+token_stimati() {
+  local b="${1:-0}"
+  [ "$b" -lt 0 ] && b=0
+  python3 -c "print(max(1, int($b / 3.5)))"
+}
