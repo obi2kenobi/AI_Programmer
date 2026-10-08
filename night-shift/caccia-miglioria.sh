@@ -294,7 +294,7 @@ Navigation context — files that DEPEND on this file (from the code graph, do n
 fi
 # (2026-10-03, faretra): il canone di dominio del repo — la caccia sa DI COSA e' il repo
 # (.git/ruoli-attivi, da tools/rileva-ruoli.sh). Prima cacciava col solo canone GAS.
-RUOLI_CANONE=$(canone_ruoli "$DIR" 3000 2)
+RUOLI_CANONE=$(canone_ruoli "$DIR" 3000 2 "$TARGET")
 if [ -n "$RUOLI_CANONE" ]; then
   PROMPT="$PROMPT
 
