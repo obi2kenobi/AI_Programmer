@@ -1294,3 +1294,16 @@
 - Guardia: tests/test-locale-turno.sh (check 5-6): gira il generatore in una dir temporanea e pretende che il puntatore skills citi `~/.night-shift-work` e che nessun percorso `~/.night-shift/...` senza «-work» appaia nell'uscita.
 - Verifica guardia: vista rossa sulla versione col typo (2 FAIL su 6), verde dopo la correzione (6 OK).
 - Aggiramento: le CLAUDE.md gia' installate portano il percorso rotto finché il riallineo dello standard non le tocca (D15): rigenerarle in massa e' decisione del proprietario, non del turno.
+
+## E-059 L'issue che non converge ritentata a ogni ciclo (e il watchdog che non era il segnale)
+
+- Data / sessione: 2026-10-07/08, tre notti di misure su Centrale_Rischi.
+- Famiglia: R2 (verde senza dati: la v1 del riposo contava i watchdog rc-124, che non arrivavano MAI — 0 riposi «verdi» mentre la GPU bruciava) + R6 (processo: ritentare senza memoria).
+- Chi l'ha trovato: la notte con i numeri (5101s GPU, 0 riposi scattati), il giorno leggendoli.
+- Sintomo: Centrale_Rischi 74%+ della GPU notturna sulle stesse due issue; il contatore v1 a zero.
+- Causa prossima: le run finivano rc=1 DOPO aver bruciato tutta l'inferenza (~300s, limite interno della chiamata, non l'ai_timeout), e la cascata all'agente moriva a parte («generazione vuota, ping sano»): nessuno dei due produceva il rc-124 che la v1 contava.
+- Causa del ragionamento: cura agganciata al sintomo visibile (il watchdog) invece che al costo visibile (il budget speso senza convergere).
+- Perché non ci ha fermati: il ritento è il comportamento design del turno (finché non converge, riprova) — serve un SEGNO che distingua «sta convergendo lentamente» da «brucia e basta».
+- Guardia: night-shift/night-shift.sh + night-shift/lib.sh — segnale composito (watchdog OR budget pieno rc!=0,2,3 con durata >=280s OR cascata fallita), 2 segnali/giorno → l'issue riposa (.git/non-converge/N, col perché nella riga). Banco: tests/test-non-converge.sh (5 OK).
+- Verifica guardia: banco 5/0; stanotte attesa GPU totale < 20 minuti.
+- Aggiramento: un'issue che converge AL TERZO ciclo con due signal-zero non viene fermata (bene); una che alternasse riuscite e fallimenti non riposa mai (dichiarato).

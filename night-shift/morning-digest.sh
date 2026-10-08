@@ -140,6 +140,17 @@ if [ -n "$GOAL_OUT" ]; then
   BODY="$(printf '%s\n\n---\nI GOAL (issue di lungo corso, per repo)\n%s' "$BODY" "$GOAL_OUT")"
 fi
 
+# (2026-10-08, furto dichiarato dalla skill /retro di M. Pocock — via D. Fontanel):
+# LA RETRO — il COME del turno scavato dal log (navigazione, attrito senza guardia,
+# regole rimaste prosa). La retro fa domande, il giorno decide: tre righe che senza
+# questa sezione nessuno si farebbe.
+if [ -x "$(dirname "$0")/../tools/retro-notte.sh" ]; then
+  RETRO_OUT=$(bash "$(dirname "$0")/../tools/retro-notte.sh" "$IERI" 2>/dev/null || true)
+  if [ -n "$RETRO_OUT" ] && ! grep -q "Nessuna riga" <<<"$RETRO_OUT"; then
+    BODY="$(printf '%s\n\n---\n%s' "$BODY" "$RETRO_OUT")"
+  fi
+fi
+
 # (2026-10-04, giro 2 della faretra): I RUOLI per repo — la faretra dichiarata, per la
 # stessa ragione della roadmap («senza questa riga nessuno chiede perche' ferma»): un
 # repo senza ruoli attivi e' un repo che la notte continua a lavorare alla cieca di
