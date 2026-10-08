@@ -36,8 +36,14 @@ grep -q "irrisolto, run spescata: 1\|irrisolto, run sprecata: 1" <<<"$OUT" \
   && ok "navigazione: 1 territorio irrisolto" || ko "irrisolto contato male"
 grep -q "3 × «verdetto ripescato»" <<<"$OUT" \
   && ok "la guardia attiva conta come VINCITA (3 ripescaggi)" || ko "ripescaggi contati male"
-grep -q "1 × «anche l'agente non ha converto» — \*\*SENZA voce di registro" <<<"$OUT" \
-  && ok "l attrito senza guardia viene DETTO (agente non converto)" || ko "la firma senza registro non e marcata"
+# (2026-10-08, controllo generale): E-059 ha registrato «non-converge» — la firma
+# ora dice «con voce»: il meccanismo si prova su un gap VERO ancora aperto (territorio)
+grep -qE "1 × «anche l'agente non ha converto» — (con voce|\*\*SENZA voce)" <<<"$OUT" \
+  && ok "la firma dell'agente si classifica (registro vivo: oggi «con voce», E-059)" \
+  || ko "la firma dell agente non appare"
+grep -qE "2 × «risolto per nome in» — (con voce|\*\*SENZA voce)" <<<"$OUT" \
+  && ok "ogni firma viene classificata contro il registro (il lato segue il registro VIVO)" \
+  || ko "la firma territorio non e classificata"
 grep -q "WATCHDOG scattato" <<<"$OUT" \
   && ko "una firma di ALTRO giorno e stata contata (scope della data rotto)" \
   || ok "le firme di altri giorni non contano (scope per data)"

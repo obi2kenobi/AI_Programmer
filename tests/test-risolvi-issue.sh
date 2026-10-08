@@ -143,7 +143,14 @@ rm -rf "$SBG"
 SENZA_NODE=$(printf '%s' "$PATH" | tr ':' '\n' | while IFS= read -r d; do [ -x "$d/node" ] || printf '%s:' "$d"; done); SENZA_NODE=${SENZA_NODE%:}
 if PATH="$SENZA_NODE" command -v python3 >/dev/null && PATH="$SENZA_NODE" command -v curl >/dev/null && ! PATH="$SENZA_NODE" command -v node >/dev/null; then
   printf 'function calc(a, b) {\n  return a + b;\n}\n' > "$SB/calc.js"
-  OUT=$(PATH="$SENZA_NODE" NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB" "$SB/issue.md" 2>&1); RC=$?
+  # (2026-10-08, controllo generale): rosso del turno dal 24/9 che le suite del
+  # giorno non vedevano MAI — nel PATH fisso del plist, togliere le dir col node
+  # (homebrew) toglie anche la dir che risolve BASH: «bash: command not found».
+  # bash si risolve in assoluto PRIMA di spogliare il PATH (lo scopo del banco e'
+  # il solver senza node, non la risoluzione di bash).
+  BASH_ASSOLUTO=$(command -v bash || true)
+  [ -n "$BASH_ASSOLUTO" ] || BASH_ASSOLUTO=/bin/bash   # nel PATH del plist bash non si risolve: sul Mac c'e' sempre /bin/bash
+  OUT=$(PATH="$SENZA_NODE" NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" "$BASH_ASSOLUTO" "$SOLVER" "$SB" "$SB/issue.md" 2>&1); RC=$?
   [ $RC -eq 2 ] && grep -c 'MANCA node' <<<"$OUT" >/dev/null && grep -c 'return a + b;' "$SB/calc.js" >/dev/null \
     && ok "V2 R3: senza node, rc 2 «MANCA node» e il file intatto (non «codice rotto»)" \
     || ko "V2 R3: senza node: rc=$RC — $(grep -E '⛔|⚠' <<<"$OUT" | head -2 | tr '\n' ' ')"

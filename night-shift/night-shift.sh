@@ -1151,7 +1151,7 @@ Intento dichiarato dall'autore: $INTENTO_PR"
         # (v2): rc!=124 ma tutta l'inferenza bruciata (~300s e piu') senza convergere —
         # e' il caso VERO di Centrale_Rischi: il budget lo spende, il fix non arriva
         conta_non_convergenza "$DIR" "$NUM" "solver a budget pieno (rc=$RC, ${ISSUE_DURATA}s)"
-        log "⚠ issue #$NUM: ${ISSUE_DURATA}s spesi senza convergere (rc=$RC) — segnato"
+        log "⚠ issue #$NUM: budget pieno senza convergere (${ISSUE_DURATA}s, rc=$RC) — segnato"
       fi
       log "REPO $REPO: issue #$NUM: (${ISSUE_DURATA}s) $OUT"
       # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo

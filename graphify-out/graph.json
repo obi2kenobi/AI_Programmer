@@ -55561,8 +55561,8 @@
       "source_location": "L1"
     },
     {
-      "id": "tests_test_revisore_corri",
-      "label": "CORRI()",
+      "id": "tests_test_revisore_corri_prosa",
+      "label": "corri_prosa()",
       "_origin": "ast",
       "community": 83,
       "community_name": "test-revisore.sh",
@@ -55571,7 +55571,7 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "norm_label": "corri()",
+      "norm_label": "corri_prosa()",
       "source_file": "tests/test-revisore.sh",
       "source_location": "L597"
     },
@@ -67753,18 +67753,6 @@
       "context": "call",
       "source_file": "tools/pre-commit.sh",
       "source_location": "L172",
-      "weight": 1.0
-    },
-    {
-      "source": "tools_pre_commit_sh__entry",
-      "target": "tools_pre_commit_staged",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "tools/pre-commit.sh",
-      "source_location": "L262",
       "weight": 1.0
     },
     {
@@ -107175,7 +107163,7 @@
     },
     {
       "source": "tests_test_revisore",
-      "target": "tests_test_revisore_corri",
+      "target": "tests_test_revisore_corri_prosa",
       "relation": "defines",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -111647,5 +111635,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cdc1a185cdd9ea3ab35a7deaea0258e29ad81914"
+  "built_at_commit": "8684d9710d154b5c919686b81523405e79ab6e4b"
 }
