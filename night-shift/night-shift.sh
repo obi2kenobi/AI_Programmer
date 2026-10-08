@@ -868,7 +868,14 @@ review del giorno." 2>>"$ERR_NOTTE" \
 
 Intento dichiarato dall'autore: $INTENTO_PR"
           fi
-          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "$PR_BODY_PR" 2>&1 | tail -1)
+          # (furto giro 2, OpenAPPA): la destinazione PR-body passa dal cancello —
+          # le righe con dati personali si TOLGONO prima di pubblicare
+          PR_BODY_PULITO=$(printf '%s' "$PR_BODY_PR" | { grep -vE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|IT[0-9]{2}[A-Z][0-9]{10}[0-9A-Z]{12}|[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]' || true; })
+          if [ "$PR_BODY_PULITO" != "$PR_BODY_PR" ]; then
+            log "REPO $REPO: cancello destinazioni: righe con dati personali rimosse dal corpo della PR"
+          fi
+          printf '%s' "$PR_BODY_PR" | bash "$HERE/../tools/destinazioni-pulite.sh" pr-body >/dev/null 2>&1 || true
+          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "$PR_BODY_PULITO" 2>&1 | tail -1)
           # (2026-09-25, ottavo ventaglio, O2 R4): si conta solo una PR vera — con gh in errore (rate limit) la «PR» era il
           # messaggio d'errore, il SAL scriveva «1 PR bozza» e il freno del rate limit (dorme solo a zero PR) non scattava
           case "$PR_CACCIA" in

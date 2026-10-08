@@ -132,6 +132,21 @@ exit 1; }
     RIPETIZIONI=0
   fi
   PREV_STRIPPED="$STRIPPED"
+  # (furto giro 2, RiskKernel «runaway halted at its loop budget»): il rilevatore
+  # dei RIPETUTI identici non vede il ciclo A-B-A-B (mai due risposte uguali di
+  # fila, ma otto turni persi a ronzare). Firma = azione+bersaglio; periodo 2 per
+  # due cicli completi = loop dichiarato, si esce.
+  SIGLA=$(echo "$STRIPPED" | jq -r '"\(.action // "?") \(.path // .target // "")"' 2>/dev/null || echo "?")
+  STORICO_SIGLE="${STORICO_SIGLE:-}|${SIGLA}"
+  ULTIME4=$(printf '%s' "$STORICO_SIGLE" | awk -F'|' '{if (NF>=5) print $(NF-3)"|"$(NF-2)"|"$(NF-1)"|"$NF}')
+  A=$(printf '%s' "$ULTIME4" | cut -d'|' -f2)
+  B=$(printf '%s' "$ULTIME4" | cut -d'|' -f3)
+  C4=$(printf '%s' "$ULTIME4" | cut -d'|' -f4)
+  D4=$(printf '%s' "$ULTIME4" | cut -d'|' -f5)
+  if [ -n "$A" ] && [ "$A" = "$C4" ] && [ "$B" = "$D4" ] && [ "$A" != "$B" ]; then
+    log "⛔ ciclo A-B rilevato (\"$A\" ↔ \"$B\" per due giri): loop dichiarato, esco al budget"
+    exit 1
+  fi
 
 ACTION=$(echo "$STRIPPED" | jq -r '.action // empty' 2>/dev/null)
 
