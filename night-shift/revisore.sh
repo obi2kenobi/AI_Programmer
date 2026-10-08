@@ -465,7 +465,11 @@ log "prove: $(tail -1 <<<"$LENTE_OUT")"
 # Zero rosse su un diff di codice = nessun test morde le righe nuove: il censore
 # lo sa, il giorno lo legge nei motivi.
 SENTINELLE=""
-if [ -x "$HERE/../tools/mutazione-diff.sh" ]; then
+# (giro lenti 2): senza .night-verify il conteggio direbbe «0/N non presidiato»
+# a ogni PR — falso allarme strutturale. Default dichiarato PRIMA, il calcolo
+# (solo se le verifiche esistono) lo sovrascrive.
+SENTINELLE="n/d (repo senza verifiche dichiarate)"
+if [ -x "$HERE/../tools/mutazione-diff.sh" ] && [ -f "$DIR/.night-verify" ]; then
   SENTINELLE=$(ai_timeout 120 bash "$HERE/../tools/mutazione-diff.sh" "$DIR" "$DB" "bash .night-verify" 2>/dev/null | tail -1 || true)
   case "$SENTINELLE" in
     sentinelle:*0/*) log "sentinelle del diff: $SENTINELLE — NESSUNA verifica morde le righe cambiate" ;;

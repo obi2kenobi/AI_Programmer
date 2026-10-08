@@ -138,9 +138,10 @@ exit 1; }
   fi
   # B) (furto giro 7, no-ask-human): la notte che CHIEDE e' un turno bruciato —
   # il promemoria torna al modello nella risposta stessa
+  NO_ASK=0
   if grep -qaE 'Should I|dovrei chiedere|posso procedere|dimmi tu' <<<"$CONTENT"; then
-    RESULT="REMINDER: you run unattended at night — nobody answers. Decide autonomously with the canon you have, act, and declare assumptions."
-    log "⚠ il modello ha chiesto all'umano: promemoria di autonomia rimandato"
+    NO_ASK=1
+    log "⚠ il modello ha chiesto all'umano: promemoria di autonomia ACCODATO alla risposta"
   fi
 
   # prova a parsare come JSON action (spogliando i fence markdown)
@@ -258,6 +259,14 @@ open(p, 'w').write(s.replace(new, old, 1))" "$REAL" "$FOLD" "$FNEW" 2>/dev/null 
             AMBIGUOUS) RESULT="ERROR: old string appears more than once in $FPATH — include more surrounding lines to make it unique"; log "  edit: $FPATH ambiguo" ;;
             *) RESULT="ERROR: edit failed"; log "  edit: $FPATH fallito" ;;
           esac
+
+  # (giro lenti 1): il promemoria si ACCODA al RESULT dell'azione — prima veniva
+  # assegnato e poi azzerato dal case (la stessa trappola descritta dal commento
+  # qui sopra, pagata DUE volte): il reminder deve sopravvivere all'azione.
+  if [ "${NO_ASK:-0}" -eq 1 ]; then
+    RESULT="${RESULT}
+REMINDER: you run unattended at night — nobody answers. Decide autonomously with the canon you have, act, and declare assumptions."
+  fi
         else
           RESULT="ERROR: file not found: $FPATH"
         fi ;;
