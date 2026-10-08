@@ -128,7 +128,7 @@ exit 1; }
   # (furto giro 7, context-monitor di cc-safe-setup): pressione a soglie GRADUATE —
   # il turno accumula; quando il num_ctx si riempie la qualita' precipita prima
   # dell'errore. A 75% si chiude: meglio una consegna parziale che un gargarismo.
-  STORICO_BYTE=$(( ${#STORICO_BYTE:-0} + ${#CONTENT} ))
+  STORICO_BYTE=$(( ${STORICO_BYTE:-0} + ${#CONTENT} ))
   SOGLIA=$(( 12240 * 7 / 2 ))   # ~75% di num_ctx, in caratteri (3.5 byte/token stimati)
   if [ "$STORICO_BYTE" -gt "$(( SOGLIA * 45 / 100 ))" ] && [ "$STORICO_BYTE" -le "$SOGLIA" ]; then
     log "⚠ contesto: ~$(( STORICO_BYTE / 350 ))0 token — oltre il 45%: si chiude presto"
