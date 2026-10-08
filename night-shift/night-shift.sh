@@ -844,13 +844,31 @@ review del giorno." 2>>"$ERR_NOTTE" \
         else
           CACCE_APERTE="$GH_NON_SO"
         fi
-        ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" 2>&1 \
+        # (furto #4 da brain0): il commit dichiara il suo mandato — git log sapra'
+        # chi ha scritto quella riga e perche, senza transcript da conservare.
+        # La categoria e il goal si LEGGONO dall'output della caccia (gia' catturato):
+        # niente variabili magiche attraverso i confini di processo.
+        TRAILERS_GOAL=$(grep -aoE "goal #[0-9]+" <<<"$MIGLIORIA_OUT" | head -1 || true)
+        TRAILERS_CAT=$(grep -aoE "categoria '[a-z]+'" <<<"$MIGLIORIA_OUT" | head -1 | cut -d"'" -f2 || true)
+        TRAILERS_CACCIA=$(trailers_notte "$TRAILERS_GOAL" "$TRAILERS_CAT" "$MIGLIORIA_OUT")
+        ERR_CONSEGNA=$(cd "$DIR" && aggiungi_consegna "$DIR" 2>&1 && git commit -qm "$MSG_PR" ${TRAILERS_CACCIA:+-m "$TRAILERS_CACCIA"} 2>&1 \
           && { [ "$CACCE_APERTE" != "$GH_NON_SO" ] || { echo "DOPPIONE non verificabile: gh non ha risposto sulle PR aperte (riprovo al ciclo dopo)"; false; }; } \
           && { ! DOPPIA=$(caccia_gia_aperta "$DIR" "origin/$DB" $CACCE_APERTE) || { echo "DOPPIONE di una caccia gia' aperta ($DOPPIA): stesso diff, nessuna PR nuova"; false; }; } \
           && forme_prima_del_push "$DIR" "origin/$DB" && git push -u origin "$CACCIA_BRANCH" 2>&1)
         if [ $? -eq 0 ]; then
           grep 'NON dichiarato' <<<"$ERR_CONSEGNA" | while IFS= read -r l; do log "REPO $REPO: $l"; done   # T5#2b: detto, mai taciuto
-          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge." 2>&1 | tail -1)
+          # (furto #2 da mainline «review the intent behind the diff»): l'intento
+          # dichiarato dall'autore PRIMA dell'edit («I am about to X because Y», che
+          # il prompt della caccia gia' esige) viaggia nel corpo della PR: il censore
+          # non indovina piu' perche' il diff esiste.
+          INTENTO_PR=$(grep -aoE "I am about to [^\"]{10,180}" <<<"$MIGLIORIA_OUT" | head -1 || true)
+          PR_BODY_PR="Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge."
+          if [ -n "$INTENTO_PR" ]; then
+            PR_BODY_PR="$PR_BODY_PR
+
+Intento dichiarato dall'autore: $INTENTO_PR"
+          fi
+          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "$PR_BODY_PR" 2>&1 | tail -1)
           # (2026-09-25, ottavo ventaglio, O2 R4): si conta solo una PR vera — con gh in errore (rate limit) la «PR» era il
           # messaggio d'errore, il SAL scriveva «1 PR bozza» e il freno del rate limit (dorme solo a zero PR) non scattava
           case "$PR_CACCIA" in
@@ -1102,6 +1120,14 @@ review del giorno." 2>>"$ERR_NOTTE" \
         rm -f "$ISSUE_FILE"
         continue
       fi
+      # (2026-10-08, furto #1 da mainline «stop repeating abandoned paths»): se
+      # quest'issue ha gia' speso tentativi, il modello li VEDE prima di riprovarci —
+      # cambia strategia o dichiara perche' questa volta e' diverso.
+      STORIA=$(storia_tentativi "$DIR" "$NUM")
+      if [ -n "$STORIA" ]; then
+        printf '%s\n' "$STORIA" >> "$ISSUE_FILE"
+        log "Issue #$NUM: storia dei tentativi precedenti iniettata nel prompt ($(printf '%s' "$STORIA" | grep -c '^2026' || true) segnali)"
+      fi
       log "Issue #$NUM: risolutore senza agente (risolvi-issue.sh)"
       # (revisione 10 giri): il default e' MODEL_TAG — con MODELLO cambiato, sonda e solver
       # usavano due modelli diversi
@@ -1289,7 +1315,7 @@ Funzione NUOVA inserita dal turno: nessuno la chiama ancora — il collegamento 
         # push -u: a fine corsa l'upstream del branch diventa il suo (non più main)
         # T5#2b: nel commit le modifiche, la bozza di test e i file nuovi dichiarati da agente.sh
         if ( cd "$DIR" && aggiungi_consegna "$DIR" "${TEST_FILE:+${TEST_FILE#"$DIR"/}}" | while IFS= read -r l; do log "Issue #$NUM: $l"; done \
-             && git commit -qm "$(messaggio_fix "$CTYPE" "$NUM" "$TITLE" "$AUTORE_FIX" "$NOTA_INS" "$VERIFICA_OUT")" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
+             && git commit -qm "$(messaggio_fix "$CTYPE" "$NUM" "$TITLE" "$AUTORE_FIX" "$NOTA_INS" "$VERIFICA_OUT")" -m "$(trailers_notte "issue-#${NUM:-}" "fix" "$(cat "${ISSUE_FILE:-}" 2>/dev/null || true)")" && { F=$(forme_prima_del_push "$DIR" "origin/$DB") || { log "Issue #$NUM: $F"; false; }; } \
              && git push -q -u origin ${LEASE_ARGS[@]+"${LEASE_ARGS[@]}"} "$BRANCH" ); then
           log "Issue #$NUM: fix committato e pushato"
           # il patto del turno è la PR BOZZA (mai pronta, mai su main): --draft.

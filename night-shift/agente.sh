@@ -201,7 +201,23 @@ if s.count(old) > 1:
 open(p, 'w').write(s.replace(old, new))
 print('OK')" "$REAL" "$FOLD" "$FNEW" 2>/dev/null)
           case "$EDIT_OUT" in
-            OK) RESULT="Edit applied to $FPATH (exact replacement done)"; log "  edit: $FPATH (sostituzione esatta)" ;;
+            OK)
+              # (2026-10-08, furto #3 da SWE-agent: «l'edit non passa se non compila,
+              # rifiutato sul posto»). Un edit rotto tornava silenzioso al cancello,
+              # sprecando il turno: ora si REVOCA e l'errore torna al modello, che
+              # corregge al turno dopo. Ignoti passano (dichiarato in lib.sh).
+              if ! edit_sintassi_ok "$REAL"; then
+                python3 -c "
+import sys
+p, old, new = sys.argv[1], sys.argv[2], sys.argv[3]
+s = open(p).read()
+open(p, 'w').write(s.replace(new, old, 1))" "$REAL" "$FOLD" "$FNEW" 2>/dev/null || true
+                PRIMO_ERR=$( { bash -n "$REAL" 2>&1 || node --check "$REAL" 2>&1 || python3 -m py_compile "$REAL" 2>&1 || true; } | head -1 | cut -c1-120)
+                RESULT="ERROR: edit REJECTED — syntax error after edit (${PRIMO_ERR:-file non sano}). Fix the code and re-apply the edit."
+                log "  edit: $FPATH REVOCATO (sintassi rotta: si corregge al turno dopo)"
+              else
+                RESULT="Edit applied to $FPATH (exact replacement done)"; log "  edit: $FPATH (sostituzione esatta)"
+              fi ;;
             NOT_FOUND) RESULT="ERROR: old string not found in $FPATH — read the file first, use the EXACT current text as old"; log "  edit: $FPATH vecchio non trovato" ;;
             AMBIGUOUS) RESULT="ERROR: old string appears more than once in $FPATH — include more surrounding lines to make it unique"; log "  edit: $FPATH ambiguo" ;;
             *) RESULT="ERROR: edit failed"; log "  edit: $FPATH fallito" ;;

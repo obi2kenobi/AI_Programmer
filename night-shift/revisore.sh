@@ -458,6 +458,11 @@ log "prove: $(tail -1 <<<"$LENTE_OUT")"
 # «movimenti veri, giacenza derivata» e «niente lookahead» non erano nel suo mondo.
 # Budget stretto per costruzione: il censore viaggia a num_ctx 8192 (E-057), il canone
 # e' un CONTESTO non un libro → 2 ruoli x 1500 byte, troncato dichiarato.
+# (furto #2 da mainline): l'intento dichiarato dall'autore nel corpo della PR —
+# il censore giudica il diff CONTRO l'intento, non solo contro la categoria.
+CENS_INTENTO_BLOCCO=""
+CENS_INTENTO_GREZZO=$(gh pr view "$PR" --json body -q '.body // empty' 2>/dev/null | grep -o "Intento dichiarato dall'autore: .*" | head -1 | sed "s/^Intento dichiarato dall'autore: //" || true)
+[ -n "$CENS_INTENTO_GREZZO" ] && CENS_INTENTO_BLOCCO="Intento dichiarato dall'autore prima dell'edit: $CENS_INTENTO_GREZZO"
 CENS_CANONE=""
 if declare -f canone_ruoli >/dev/null 2>&1 && [ -d "$DIR/.git" ]; then
   CENS_CANONE=$(canone_ruoli "$DIR" 1500 2)
@@ -475,12 +480,13 @@ CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: 
 La PR dichiara di essere una piccola miglioria notturna (categoria: morto=eliminazione codice non usato, docs=commenti aggiunti, semplice=semplificazione a comportamento identico, ripetuto=letterale ripetuto estratto a costante).
 
 Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; diff di $N_RIGHE righe su $N_FILE file.
+$CENS_INTENTO_BLOCCO
 $CENS_DOMINIO
 Diff:
 $DIFF
 
 Giudica:
-1. il diff fa DAVVERO quello che dichiara la categoria? (un 'docs' che tocca codice: RIGETTA)
+1. il diff fa DAVVERO quello che dichiara la categoria e l'intento dell'autore? (un 'docs' che tocca codice, un diff che smentisce l'intento: RIGETTA)
 2. elimina qualcosa che serve? (una 'variabile morta' che e' usata altrove: RIGETTA)
 3. lascia il file coerente e funzionante?
 4. i commenti aggiunti dicono la verita' sul codice?
@@ -499,6 +505,7 @@ Titolo: $(printf '%s' "$ISSUE_JSON" | jq -r '.title // ""')
 Richiesta: $(printf '%s' "$ISSUE_JSON" | jq -r '.body // ""' | head -c 4000)
 
 Prove deterministiche gia' superate: verifiche dichiarate tutte verdi; comando avversario del banco riuscito; lente sicurezza pulita; diff di $N_RIGHE righe su $N_FILE file.
+$CENS_INTENTO_BLOCCO
 $CENS_DOMINIO
 Diff:
 $DIFF

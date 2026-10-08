@@ -42,5 +42,32 @@ grep -q "solver a budget pieno" "$TMP/.git/non-converge/42" \
   && ok "il segnale porta il motivo (il giorno puo' decidere cosa fare)" \
   || ko "il segnale e' muto"
 
+# (furto #1 da mainline): la storia dei tentativi falliti entra nel prompt
+STORIA=$(storia_tentativi "$TMP" 42)
+grep -q "TENTATIVI PRECEDENTI" <<<"$STORIA" && grep -q "solver a budget pieno" <<<"$STORIA" \
+  && grep -q "Cambia strategia" <<<"$STORIA" \
+  && ok "la storia delle vie abbandonate si inietta (con i motivi e l'avviso)" \
+  || ko "storia mancante o muta: $(head -2 <<<"$STORIA")"
+STORIA_VUOTA=$(storia_tentativi "$TMP" 999)
+[ -z "$STORIA_VUOTA" ] && ok "senza storia non si inietta niente" || ko "storia per issue ignota"
+
+# (furto #3): la guardia sintattica per estensione
+F3=$(mktemp "$TMP/edit.XXXXXX")
+echo 'function sana(){ return 0; }' > "$F3.sh"
+edit_sintassi_ok "$F3.sh" && ok "edit .sh sano passa" || ko "edit .sh sano bocciato"
+printf 'function rotta(){ return 0 }' > "$F3.sh"
+if edit_sintassi_ok "$F3.sh"; then ko "edit .sh rotto passa"; else ok "edit .sh rotto bocciato (rifiutato sul posto)"; fi
+echo 'const x = 1;' > "$F3.gs" && edit_sintassi_ok "$F3.gs" && ok "edit .gs sano passa" || ko "edit .gs sano bocciato"
+printf 'def rotto(: pass' > "$F3.py"
+if edit_sintassi_ok "$F3.py"; then ko "edit .py rotto passa"; else ok "edit .py rotto bocciato"; fi
+echo '# solo markdown' > "$F3.md" && edit_sintassi_ok "$F3.md" && ok "estensione ignota: passa (dichiarato)" || ko "ignoto bocciato"
+
+# (furto #4): i trailer del mandato
+T=$(trailers_notte "goal #164" "docs" "prompt-vero")
+grep -q "^Night-Goal: goal #164$" <<<"$T" && grep -q "^Night-Category: docs$" <<<"$T" && grep -q "^Night-Prompt-Sha: .\{16\}$" <<<"$T" \
+  && ok "i trailer dichiarano mandato, categoria e sha del prompt" || ko "trailer incompleti: $T"
+T2=$(trailers_notte "" "" "")
+[ -z "$T2" ] && ok "senza mandato niente trailer vuoti" || ko "trailer vuoti prodotti"
+
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]

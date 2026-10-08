@@ -955,3 +955,47 @@ conta_non_convergenza() {
   mkdir -p "$1/.git/non-converge"
   printf '%s %s\n' "$(date +%F)" "$3" >> "$1/.git/non-converge/$2"
 }
+
+# storia_tentativi <dir-repo> <numero-issue> → la sezione da APPENDERE all'issue
+# prima di ritentarla (furto #1 da mainline: «stop repeating abandoned paths» —
+# l'agente vede PRIMA dell'edit che quella strada e' gia' morta e perche').
+# Le righe di .git/non-converge/N sono gia' datate e motivate: si portano.
+storia_tentativi() {
+  local f="$1/.git/non-converge/$2"
+  [ -f "$f" ] || return 0
+  local righe
+  righe=$(grep -c . "$f" 2>/dev/null || true)
+  [ "${righe:-0}" -eq 0 ] && return 0
+  printf '\n\n=== TENTATIVI PRECEDENTI (vie gia provate: NON ripeterle) ===\n'
+  cat "$f"
+  cat <<'AVVISO'
+Questi approcci sono gia stati tentati e non hanno converto. Cambia strategia, o dichiara esplicitamente perche questa volta e diverso.
+AVVISO
+}
+
+# edit_sintassi_ok <file> → 0 se il file appena editato e' sintatticamente sano
+# (furto #3 da SWE-agent: «l'edit non passa se il codice non compila — rifiutato
+# sul posto, non scoperto dopo»). Per estensione; ignoti passano (dichiarato).
+edit_sintassi_ok() {
+  local f="$1"
+  case "$f" in
+    *.sh)  bash -n "$f" 2>/dev/null ;;
+    *.js|*.mjs|*.cjs) node --check "$f" >/dev/null 2>&1 ;;
+    *.gs)
+      # node tratta .gs come ELM: si controlla come .js via stdin
+      node --check --input-type=commonjs < "$f" >/dev/null 2>&1 || node --check < "$f" >/dev/null 2>&1 ;;
+    *.py)  python3 -m py_compile "$f" >/dev/null 2>&1 ;;
+    *)     return 0 ;;
+  esac
+}
+
+# trailers_notte <goal> <categoria> <prompt> → il blocco trailer per i commit
+# notturni (furto #4 da brain0: il PERCHE' passivo — ogni commit dichiara il
+# mandato che l'ha prodotto, cosi' git log sa chi e perche').
+trailers_notte() {
+  local goal="${1:-}" cat="${2:-}" prompt="${3:-}"
+  [ -n "$goal" ] && printf 'Night-Goal: %s\n' "$goal"
+  [ -n "$cat" ] && printf 'Night-Category: %s\n' "$cat"
+  [ -n "$prompt" ] && printf 'Night-Prompt-Sha: %s\n' "$(printf '%s' "$prompt" | shasum | cut -d' ' -f1 | cut -c1-16)"
+  return 0
+}

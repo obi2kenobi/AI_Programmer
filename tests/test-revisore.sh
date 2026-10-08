@@ -641,6 +641,39 @@ grep -qa "La categoria dichiarata" <<<"$OUT" \
   && ok "JSON rotto: il motivo (parziale ma vero) viaggia con la delibera" \
   || ko "JSON rotto: motivi persi"
 
+# (furto #2 da mainline): l'intento dichiarato dall'autore viaggia nel corpo della
+# PR e arriva al CENSORE — giudica il diff CONTRO l'intento, non solo la categoria.
+SB=$(nuova_repo); nuova_pr "$SB" 30 night/test-intento
+python3 - "$GHSTUB_JSON" <<'PYFIX'
+import json, sys
+p = sys.argv[1]
+d = json.load(open(p))
+d["body"] = "Prodotto dal turno notturno.\n\nIntento dichiarato dall'autore: I am about to extract the duplicated constant because three files repeat it"
+json.dump(d, open(p, "w"))
+PYFIX
+STUB4=$(mktemp "$RADICE/stub-intento.XXXXXX")
+cat > "$STUB4" <<'STUBEOF'
+#!/bin/bash
+PROMPT=$(cat)
+case "$PROMPT" in
+  *"LENTE SICUREZZA"*) printf '{"sicuro":true,"rilievi":[]}\n' ;;
+  *SMASCHERA*) printf '```
+grep -c "function viva" utils.js\n```\n' ;;
+  *CENSORE*)
+    if grep -q "Intento dichiarato dall'autore prima dell'edit: I am about to extract" <<<"$PROMPT"; then
+      printf '{"verdetto":"APPROVA","rischio":"basso","motivi":["il diff realizza l intento dichiarato"]}\n'
+    else
+      printf '{"verdetto":"RIGETTA","rischio":"alto","motivi":["il censore NON ha ricevuto l intento"]}\n'
+    fi ;;
+  *) printf '' ;;
+esac
+STUBEOF
+chmod +x "$STUB4"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB4" bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 0 ] && grep -q "DELIBERA: APPROVA" <<<"$OUT" \
+  && ok "l'intento dell'autore arriva al censore (giudica contro l'intento)" \
+  || ko "intento non ricevuto: rc=$RC $(grep -m1 -aE 'DELIBERA|RIGETTA' <<<"$OUT" | cut -c1-70)"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
