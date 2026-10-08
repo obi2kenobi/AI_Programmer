@@ -57970,6 +57970,36 @@
       "source_location": "L12"
     },
     {
+      "id": "tools_lente_dipendenze",
+      "label": "lente-dipendenze.sh",
+      "_origin": "ast",
+      "community": 862,
+      "community_name": "lente-dipendenze.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "lente-dipendenze.sh",
+      "source_file": "tools/lente-dipendenze.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_lente_dipendenze_sh__entry",
+      "label": "lente-dipendenze.sh script",
+      "_origin": "ast",
+      "community": 862,
+      "community_name": "lente-dipendenze.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "lente-dipendenze.sh script",
+      "source_file": "tools/lente-dipendenze.sh",
+      "source_location": "L1"
+    },
+    {
       "id": "claude_skills_design_doc_skill",
       "label": ".claude/skills/design-doc/SKILL.md",
       "_origin": "ast",
@@ -59918,7 +59948,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L228",
+      "source_location": "L245",
       "weight": 1.0
     },
     {
@@ -59930,7 +59960,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L307",
+      "source_location": "L324",
       "weight": 1.0
     },
     {
@@ -59942,7 +59972,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L323",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -100469,6 +100499,17 @@
       "weight": 1.0
     },
     {
+      "source": "tools_lente_dipendenze",
+      "target": "tools_lente_dipendenze_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/lente-dipendenze.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tools_lente_sicurezza",
       "target": "tools_lente_sicurezza_sh__entry",
       "relation": "contains",
@@ -112136,5 +112177,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8f26e24eb53bbb719988bd7c0fae7a3379ff227c"
+  "built_at_commit": "965bae130dcc60d18f4f6e43a4444d135352665f"
 }
