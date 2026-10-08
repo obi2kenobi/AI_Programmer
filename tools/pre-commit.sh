@@ -256,5 +256,14 @@ if [ "$FALLITI" -eq 0 ] && [ -d "$HERE/roles" ] && [ -x "$HERE/tools/genera-agen
   fi
 fi
 
+# 9ter. (furto giro 3, claude-night-market «TDD enforcement hooks»): codice
+# toccato senza banchi toccati — PROMEMORIA, mai blocco (la sentinella puo'
+# esistere gia' altrove: questo chiede, non decide).
+if staged | grep -qE '\.(py|gs|js)$' 2>/dev/null; then
+  if ! staged | grep -qE '(test|banco|verify|verifica)' 2>/dev/null; then
+    echo "⚠ codice senza banchi toccati: quale sentinella morde il diff? (mutazione-diff lo dira' al revisore)"
+  fi
+fi
+
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
 exit $FALLITI

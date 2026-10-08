@@ -910,8 +910,9 @@ cancello_design() {
 # tools/rileva-ruoli.sh, editabile da Luca), e la notte li inietta QUI.)
 # Tetto per costruzione: la lezione #172 (non-convergenza) e' SATURAZIONE di num_ctx —
 # il canone e' un CONTESTO, non un libro: 2 ruoli x 3000 byte, troncato DICHIARATO.
-canone_ruoli() {  # <dir-repo> [tetto-byte-per-ruolo=3000] [tetto-ruoli=2]
-  local DIR="${1:-}" TETTO_B="${2:-3000}" TETTO_N="${3:-2}"
+canone_ruoli() {  # <dir-repo> [tetto-byte-per-ruolo=3000] [tetto-ruoli=2] [bersaglio]
+  # (furto giro 3, agent-os): col bersaglio, le SEZIONI entrano per pertinenza
+  local DIR="${1:-}" TETTO_B="${2:-3000}" TETTO_N="${3:-2}" BERSAGLIO="${4:-}"
   local FILE="$DIR/.git/ruoli-attivi"
   [ -f "$FILE" ] || return 0
   local HUB
@@ -923,6 +924,33 @@ canone_ruoli() {  # <dir-repo> [tetto-byte-per-ruolo=3000] [tetto-ruoli=2]
     [ -f "$F" ] || continue
     # il corpo dopo il frontmatter; awk|cat MAI awk|head (E-056: SIGPIPE sotto pipefail)
     TUTTO=$(awk 'c>=2{print} /^---$/{c++; next}' "$F" 2>/dev/null || true)
+    # (furto giro 3, agent-os): col bersaglio, le SEZIONI del ruolo entrano per
+    # pertinenza (nome/cartella/estensione del file che sta per essere toccato),
+    # non i primi byte alla cieca — e in ordine originale, entro budget.
+    if [ -n "$BERSAGLIO" ] && [ "$(printf '%s' "$TUTTO" | wc -c | tr -d ' ')" -gt "$TETTO_B" ]; then
+      # (lezione #232: MAI script-heredoc e dati-pipe sullo stesso stdin — lo
+      # script consuma i dati. Script in -c, dati in pipe.)
+      TUTTO=$(printf '%s' "$TUTTO" | python3 -c '
+import re, sys
+bers, tetto = sys.argv[1], int(sys.argv[2])
+base = bers.rsplit("/", 1)[-1]
+est = base.rsplit(".", 1)[-1] if "." in base else ""
+nome = base.rsplit(".", 1)[0].lower()
+cartella = bers.rsplit("/", 1)[-2].lower() if "/" in bers else ""
+parole = [w for w in (nome, cartella, est) if w and len(w) > 2]
+sezioni = re.split(r"(?m)^(?=## )", sys.stdin.read())
+def punti(sec):
+    s = sec.lower()
+    return sum(s.count(p) for p in parole)
+ordine = sorted(range(len(sezioni)), key=lambda i: (-punti(sezioni[i]), i))
+scelte, usati = set(), 0
+for i in ordine:
+    if usati + len(sezioni[i]) <= tetto or not scelte:
+        scelte.add(i)
+        usati += len(sezioni[i])
+print("".join(sezioni[i] for i in sorted(scelte)), end="")
+' "$BERSAGLIO" "$TETTO_B" 2>/dev/null || true)
+    fi
     CORPO=$(printf '%s' "$TUTTO" | head -c "$TETTO_B" || true)
     # (giro 2, 2026-10-04): ${#TUTTO} conta CARATTERI, head -c taglia BYTE — coll'italiano
     # accentato la dichiarazione diceva numeri mai visti. Si misurano i byte, come si tagliano.
