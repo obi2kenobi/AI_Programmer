@@ -9440,6 +9440,21 @@
       "source_location": "L582"
     },
     {
+      "id": "night_shift_lib_edit_sintassi_ok",
+      "label": "edit_sintassi_ok()",
+      "_origin": "ast",
+      "community": 147,
+      "community_name": "agente.sh script",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "edit_sintassi_ok()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L979"
+    },
+    {
       "id": "night_shift_lib_rianima_ollama",
       "label": "rianima_ollama()",
       "_origin": "ast",
@@ -20599,6 +20614,21 @@
       "source_location": "L128"
     },
     {
+      "id": "night_shift_lib_storia_tentativi",
+      "label": "storia_tentativi()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "storia_tentativi()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L963"
+    },
+    {
       "id": "night_shift_lib_taglia_caratteri",
       "label": "taglia_caratteri()",
       "_origin": "ast",
@@ -20612,6 +20642,21 @@
       "norm_label": "taglia_caratteri()",
       "source_file": "night-shift/lib.sh",
       "source_location": "L188"
+    },
+    {
+      "id": "night_shift_lib_trailers_notte",
+      "label": "trailers_notte()",
+      "_origin": "ast",
+      "community": 253,
+      "community_name": "lib.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "trailers_notte()",
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L995"
     },
     {
       "id": "night_shift_lib_verdetto_verifica",
@@ -52753,54 +52798,6 @@
       "source_location": "L1"
     },
     {
-      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
-      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2839"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
-      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2897"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
-      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2941"
-    },
-    {
-      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
-      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2994"
-    },
-    {
       "id": "sal_archivio_decisioni",
       "label": "Decisioni",
       "_origin": "ast",
@@ -52835,18 +52832,6 @@
       "norm_label": "riepilogo dei tre set (30 giri, 4\u00b0 ciclo) \u2014 dopo il ciclo precedente da 40 giri",
       "source_file": "SAL-ARCHIVIO.md",
       "source_location": "L1766"
-    },
-    {
-      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
-      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL \u2014 il diario vivo del sistema",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
-      "source_file": "SAL-ARCHIVIO.md",
-      "source_location": "L2805"
     },
     {
       "id": "sal_archivio_riepilogo_set_1_3_10_giri_5_ciclo_un_sistema_di_agenti_per_problemi_matematico_contabili",
@@ -56871,7 +56856,7 @@
       "label": "conta_non_convergenza()",
       "_origin": "ast",
       "community": 846,
-      "community_name": "test-non-converge.sh",
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -56886,7 +56871,7 @@
       "label": "test-non-converge.sh",
       "_origin": "ast",
       "community": 846,
-      "community_name": "test-non-converge.sh",
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -56901,7 +56886,7 @@
       "label": "ko()",
       "_origin": "ast",
       "community": 846,
-      "community_name": "test-non-converge.sh",
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -56916,7 +56901,7 @@
       "label": "ok()",
       "_origin": "ast",
       "community": 846,
-      "community_name": "test-non-converge.sh",
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -56931,7 +56916,7 @@
       "label": "test-non-converge.sh script",
       "_origin": "ast",
       "community": 846,
-      "community_name": "test-non-converge.sh",
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "metadata": {
         "language": "bash",
@@ -57272,6 +57257,66 @@
       "norm_label": "regole-cancelli.md \u2014 la mappa regola \u2192 cancello meccanico",
       "source_file": "docs/regole-cancelli.md",
       "source_location": "L1"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_\u00e8_il_corpus_non_la_cava",
+      "label": "2026-08-24 (6) \u2014 la rotta corretta: il parco \u00e8 il corpus, non la cava",
+      "_origin": "ast",
+      "community": 851,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (6) \u2014 la rotta corretta: il parco e il corpus, non la cava",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2839"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
+      "label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "_origin": "ast",
+      "community": 851,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (7) \u2014 7\u00b0 ciclo, set 1/3: tre oracoli residui e il rilevatore meccanico",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2897"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
+      "label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "_origin": "ast",
+      "community": 851,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (8) \u2014 7\u00b0 ciclo, set 2/3: il flusso di progettazione dogfooddato su un caso vero",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2941"
+    },
+    {
+      "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
+      "label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, Set 3/3: il hub impara a giudicare i banchi",
+      "_origin": "ast",
+      "community": 851,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "2026-08-24 (9) \u2014 7\u00b0 ciclo, set 3/3: il hub impara a giudicare i banchi",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2994"
+    },
+    {
+      "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
+      "label": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "_origin": "ast",
+      "community": 851,
+      "community_name": "Riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "riepilogo dei tre set (30 giri, 6\u00b0 ciclo) \u2014 \"agenti, progettare, flusso/interazione\"",
+      "source_file": "SAL-ARCHIVIO.md",
+      "source_location": "L2805"
     },
     {
       "id": "claude_skills_audit_commessa_skill",
@@ -59327,6 +59372,18 @@
     },
     {
       "source": "night_shift_agente_sh__entry",
+      "target": "night_shift_lib_edit_sintassi_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/agente.sh",
+      "source_location": "L209",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_agente_sh__entry",
       "target": "night_shift_lib_dichiara_file_nuovo",
       "relation": "calls",
       "_origin": "ast",
@@ -59334,7 +59391,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L272",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -59346,7 +59403,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/agente.sh",
-      "source_location": "L288",
+      "source_location": "L304",
       "weight": 1.0
     },
     {
@@ -59598,7 +59655,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1416",
+      "source_location": "L1442",
       "weight": 1.0
     },
     {
@@ -59610,7 +59667,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1532",
+      "source_location": "L1558",
       "weight": 1.0
     },
     {
@@ -59699,6 +59756,30 @@
     },
     {
       "source": "night_shift_night_shift_shift_repo",
+      "target": "night_shift_lib_commenta_una_volta",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L1002",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_shift_repo",
+      "target": "night_shift_lib_pr_chiusa_ferma",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "night-shift/night-shift.sh",
+      "source_location": "L1015",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_night_shift_shift_repo",
       "target": "night_shift_lib_funzione_definita_e_chiamata",
       "relation": "calls",
       "_origin": "ast",
@@ -59706,7 +59787,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1066",
+      "source_location": "L1084",
       "weight": 1.0
     },
     {
@@ -59718,7 +59799,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1115",
+      "source_location": "L1141",
       "weight": 1.0
     },
     {
@@ -59730,7 +59811,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1291",
+      "source_location": "L1317",
       "weight": 1.0
     },
     {
@@ -59791,30 +59872,6 @@
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
       "source_location": "L661",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_night_shift_shift_repo",
-      "target": "night_shift_lib_commenta_una_volta",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "night-shift/night-shift.sh",
-      "source_location": "L984",
-      "weight": 1.0
-    },
-    {
-      "source": "night_shift_night_shift_shift_repo",
-      "target": "night_shift_lib_pr_chiusa_ferma",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "night-shift/night-shift.sh",
-      "source_location": "L997",
       "weight": 1.0
     },
     {
@@ -59982,7 +60039,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L594",
+      "source_location": "L601",
       "weight": 1.0
     },
     {
@@ -59994,7 +60051,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L622",
+      "source_location": "L629",
       "weight": 1.0
     },
     {
@@ -64303,6 +64360,18 @@
       "context": "call",
       "source_file": "tests/test-non-converge.sh",
       "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_non_converge_sh__entry",
+      "target": "night_shift_lib_edit_sintassi_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-non-converge.sh",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -101022,6 +101091,39 @@
       "weight": 1.0
     },
     {
+      "source": "night_shift_lib",
+      "target": "night_shift_lib_storia_tentativi",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L963",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
+      "target": "night_shift_lib_edit_sintassi_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L979",
+      "weight": 1.0
+    },
+    {
+      "source": "night_shift_lib",
+      "target": "night_shift_lib_trailers_notte",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "night-shift/lib.sh",
+      "source_location": "L995",
+      "weight": 1.0
+    },
+    {
       "source": "night_shift_morning_digest",
       "target": "night_shift_morning_digest_escape_as",
       "relation": "defines",
@@ -111126,5 +111228,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "032d8cf0290ed225ad464388362c1390fc42d90e"
+  "built_at_commit": "0d7c45a0d33917febb7e171d9be9a1b713402b12"
 }
