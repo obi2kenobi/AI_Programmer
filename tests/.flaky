@@ -1,0 +1,4 @@
+# Test dichiarati FLAKY (furto giro 5 da nextest: fail→retry→pass = FLAKY, ambra non rossa).
+# Uno per riga: nome-del-test # motivo (data)
+test-agente.sh # contesa GPU col turno vivo: verdi a GPU libera, misurato 5-8/10
+test-caccia-miglioria.sh # contesa GPU col turno vivo: idem

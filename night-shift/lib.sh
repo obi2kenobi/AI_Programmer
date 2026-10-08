@@ -217,8 +217,20 @@ verdetto_verifica() {
 # (2026-09-24, terzo ventaglio, V1#1, V1#5, V4#6): il ciclo viveva in night-shift.sh e lanciava
 # $HERE/../tests — la copia VIVA, non il ramo — senza tetto: un banco che si annidava (E-046) ha fermato il
 # turno per sempre, e il commit diceva «banco CHIUSO su questo branch» senza averlo provato.
+# classifica_banco <nome> <rc1> <rc2> → verde|ambra|rosso (furto giro 5 da nextest:
+# fail→retry→pass = FLAKY = ambra. I flaky si DICHIARANO in tests/.flaky col motivo:
+# la seconda chance e' un elenco di dispensa firmato, non un'opinione.)
+classifica_banco() {
+  local nome="$1" rc1="$2" rc2="${3:-99}"
+  [ "$rc1" -eq 0 ] && { echo verde; return 0; }
+  if grep -q "^${nome%% *} " tests/.flaky 2>/dev/null; then
+    [ "$rc2" -eq 0 ] && { echo ambra; return 0; }
+  fi
+  echo rosso
+}
+
 gate_banchi() {
-  local dir="$1" sec="${2:-300}" tt nome out rc pass=0 fail=0
+  local dir="$1" sec="${2:-300}" tt nome out rc pass=0 fail=0 ambra=0
   for tt in "$dir"/tests/test-*.sh; do
     [ -f "$tt" ] || continue
     nome=$(basename "$tt")
@@ -229,6 +241,18 @@ gate_banchi() {
     # che muore VERDE dentro un `source`) esce 0 lo stesso. Si pretende «N OK, 0 FAIL» con N >= 1; il muto e'
     # rosso subito, senza secondo tentativo (non e' un transitorio).
     out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
+    # (furto giro 5, nextest «fail→retry→pass = FLAKY»): il rosso di un test
+    # DICHIARATO flaky (tests/.flaky, col motivo) ha una seconda chance. Se passa:
+    # ambra, contato a parte — il verde-tre-volte-di-fila promuove (si toglie
+    # dalla dispensa), il rosso-doppio resta rosso.
+    if [ "$rc" -ne 0 ] && grep -q "^$(basename "$tt") " "$dir/tests/.flaky" 2>/dev/null; then
+      out2=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc2=$?
+      if [ "$rc2" -eq 0 ]; then
+        pass=$((pass+1)); ambra=$((ambra+1))
+        echo "AMBRA $(basename "$tt") — flaky dichiarato: fallito e passato alla riprova"
+        continue
+      fi
+    fi
     if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
       pass=$((pass+1)); continue
     fi
@@ -237,6 +261,18 @@ gate_banchi() {
     fi
     sleep 2
     out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
+    # (furto giro 5, nextest «fail→retry→pass = FLAKY»): il rosso di un test
+    # DICHIARATO flaky (tests/.flaky, col motivo) ha una seconda chance. Se passa:
+    # ambra, contato a parte — il verde-tre-volte-di-fila promuove (si toglie
+    # dalla dispensa), il rosso-doppio resta rosso.
+    if [ "$rc" -ne 0 ] && grep -q "^$(basename "$tt") " "$dir/tests/.flaky" 2>/dev/null; then
+      out2=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc2=$?
+      if [ "$rc2" -eq 0 ]; then
+        pass=$((pass+1)); ambra=$((ambra+1))
+        echo "AMBRA $(basename "$tt") — flaky dichiarato: fallito e passato alla riprova"
+        continue
+      fi
+    fi
     if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
       pass=$((pass+1)); echo "amber $nome"
     elif [ "$rc" -eq 0 ]; then
@@ -249,7 +285,7 @@ gate_banchi() {
   done
   # (settimo ventaglio, V1 R6): zero banchi non e' verde — la suite con zero banchi e' rossa (tools/suite.sh)
   [ $((pass + fail)) -eq 0 ] && { echo "rosso (nessun banco) — nessun tests/test-*.sh da giudicare in $dir"; fail=1; }
-  echo "TOTALE $pass $fail"
+  echo "TOTALE $pass $fail (di cui ambra-flaky: $ambra)"
 }
 
 # funzione_definita_e_chiamata <file> <nome>: 0 se <file> DEFINISCE `function <nome>(` e la CHIAMA su un'altra

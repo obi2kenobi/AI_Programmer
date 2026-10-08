@@ -52,5 +52,15 @@ T1=$(token_stimati 3500)
 T0=$(token_stimati 0)
 [ "$T0" -ge 1 ] && ok "zero byte → almeno 1 (mai 0: il vuoto non e' un contesto)" || ko "token_stimati(0)=$T0"
 
+# (furto giro 5, nextest): fail→retry→pass = AMBRA; il flaky si DICHIARA
+V=$(classifica_banco test-agente.sh 0 99)
+[ "$V" = "verde" ] && ok "classifica: rc1=0 → verde, niente riprove" || ko "verde non riconosciuto: $V"
+A=$(cd "$HERE" && classifica_banco test-agente.sh 1 0)
+[ "$A" = "ambra" ] && ok "test-agente dichiarato flaky: fallito+ritentato passato → AMBRA" || ko "attesa ambra: $A"
+R=$(cd "$HERE" && classifica_banco test-agente.sh 1 1)
+[ "$R" = "rosso" ] && ok "flaky che fallisce DUE volte resta rosso (la dispensa non e' impunita')" || ko "atteso rosso: $R"
+X=$(cd "$HERE" && classifica_banco test-lib.sh 1 0)
+[ "$X" = "rosso" ] && ok "test NON dichiarato: nessuna seconda chance (la dispensa e' un elenco firmato)" || ko "atteso rosso per non-dichiarato: $X"
+
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]
