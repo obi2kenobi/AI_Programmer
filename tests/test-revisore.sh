@@ -594,22 +594,22 @@ esac
 STUBEOF
 chmod +x "$STUB2"
 LGC=$RADICE/stub-chiamate.log; : > "$LGC"
-CORRI() { cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB2" REVISORE_STUB_LOG="$LGC" bash "$REV" "$SB" 7 2>&1; }
-OUT=$(CORRI); RC=$?
+corri_prosa() { cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB2" REVISORE_STUB_LOG="$LGC" bash "$REV" "$SB" 7 2>&1; }
+OUT=$(corri_prosa); RC=$?
 [ "$RC" -eq 2 ] && grep -q "non ha risposto in JSON" <<<"$OUT" && grep -q "Analizzo il canone" <<<"$OUT" \
   && ok "prosa: rinvio con la TESTA della risposta nel log (visibile)" || { ko "prosa 1a: rc=$RC"; echo "--- DEBUG revisore:"; grep -aE "razzo|CENSORE|censore|DELIBERA|JSON" <<<"$OUT" | head -8; echo "--- DEBUG stub log: $(wc -c < "$LGC" | tr -d ' ') chiamate"; }
 NJFILE=$(ls "$SB/.git/revisore/nonjson/" 2>/dev/null | head -1)
 [ -n "$NJFILE" ] && [ "$(grep -c "$(date +%F)" "$SB/.git/revisore/nonjson/$NJFILE")" -eq 1 ] \
   && ok "prosa: il rinvio si CONTA (1 oggi)" || ko "prosa: contatore non scritto"
-OUT=$(CORRI); RC=$?
+OUT=$(corri_prosa); RC=$?
 [ "$RC" -eq 2 ] && [ "$(grep -c "$(date +%F)" "$SB/.git/revisore/nonjson/$NJFILE")" -eq 2 ] \
   && ok "prosa 2a: secondo rinvio contato" || ko "prosa 2a: rc=$RC"
 PRIMA=$(wc -c < "$LGC" | tr -d ' ')
-OUT=$(CORRI); RC=$?
+OUT=$(corri_prosa); RC=$?
 DOPO=$(wc -c < "$LGC" | tr -d ' ')
 [ "$RC" -eq 2 ] && grep -q "gia' rinviata .* oggi per risposta non-JSON" <<<"$OUT" && [ "$DOPO" = "$PRIMA" ] \
   && ok "prosa 3a (stesso giorno): esce PRIMA di chiamare il cervello (GPU risparmiata)" \
-  || ko "prosa 3a: rc=$RC, chiamate stub $PRIMA→$DOPO"
+  || ko "prosa 3a: rc=$RC, chiamate stub ${PRIMA}→${DOPO}"
 
 # (2026-10-07): il censore SCRIVE il JSON ma lo rompe dentro i «motivi» (16/16 notti
 # identiche: {"verdetto": "RIGETTA", "rischio": "medio", "motivi": ["La categoria

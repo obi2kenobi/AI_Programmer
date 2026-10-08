@@ -42,7 +42,8 @@ grep -qE "NON e' ancora misurabile|concordanza" <<<"$OUT" \
 grep -q "9ter" "$HERE/tools/pre-commit.sh" && grep -q "senza banchi toccati" "$HERE/tools/pre-commit.sh" \
   && ok "il pre-commit porta il promemorio codice-senza-banchi (9ter, mai blocco)" \
   || ko "il blocco 9ter manca"
-grep -qE "if ! staged" "$HERE/tools/pre-commit.sh" && ok "il promemorio guarda gli STAGED (non il working tree)" || ko "non guarda gli staged"
+grep -qE "TOCCATO_CODICE=..staged" "$HERE/tools/pre-commit.sh" && grep -q "TOCCATO_BANCHI" "$HERE/tools/pre-commit.sh" \
+  && ok "il promemorio guarda gli STAGED, cattura-prima (E-002)" || ko "non guarda gli staged"
 
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]

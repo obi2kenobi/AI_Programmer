@@ -259,10 +259,10 @@ fi
 # 9ter. (furto giro 3, claude-night-market «TDD enforcement hooks»): codice
 # toccato senza banchi toccati — PROMEMORIA, mai blocco (la sentinella puo'
 # esistere gia' altrove: questo chiede, non decide).
-if staged | grep -qE '\.(py|gs|js)$' 2>/dev/null; then
-  if ! staged | grep -qE '(test|banco|verify|verifica)' 2>/dev/null; then
-    echo "⚠ codice senza banchi toccati: quale sentinella morde il diff? (mutazione-diff lo dira' al revisore)"
-  fi
+TOCCATO_CODICE=$(staged | grep -E '\.(py|gs|js)$' 2>/dev/null || true)
+TOCCATO_BANCHI=$(staged | grep -E '(test|banco|verify|verifica)' 2>/dev/null || true)
+if [ -n "$TOCCATO_CODICE" ] && [ -z "$TOCCATO_BANCHI" ]; then
+  echo "⚠ codice senza banchi toccati: quale sentinella morde il diff? (mutazione-diff lo dira' al revisore)"
 fi
 
 [ "$FALLITI" -eq 0 ] && echo "pre-commit: controlli rapidi OK" || echo "pre-commit: correggi e ricommetti (oppure --no-verify, sapendo cosa fai)"
