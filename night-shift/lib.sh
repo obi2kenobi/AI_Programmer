@@ -937,3 +937,21 @@ canone_ruoli() {  # <dir-repo> [tetto-byte-per-ruolo=3000] [tetto-ruoli=2]
   done < "$FILE"
   printf '%s' "$OUT"
 }
+
+# issue_non_converge_oggi <dir-repo> <numero-issue> → quante volte OGGI l'issue ha
+# bruciato il suo budget senza convergere (watchdog, inferenza a budget pieno,
+# cascata all'agente fallita). Il riposo di un'issue che non converge si conta
+# PER GIORNO: domani il prompt sara' diverso, il carico anche.
+issue_non_converge_oggi() {
+  local f="$1/.git/non-converge/$2"
+  [ -f "$f" ] || { echo 0; return 0; }
+  local n
+  n=$(grep -c "$(date +%F)" "$f" 2>/dev/null || true)
+  echo "${n:-0}"
+}
+
+# conta_non_convergenza <dir-repo> <numero-issue> <perche-breve>: una riga al giorno.
+conta_non_convergenza() {
+  mkdir -p "$1/.git/non-converge"
+  printf '%s %s\n' "$(date +%F)" "$3" >> "$1/.git/non-converge/$2"
+}

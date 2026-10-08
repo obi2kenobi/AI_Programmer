@@ -1089,18 +1089,16 @@ review del giorno." 2>>"$ERR_NOTTE" \
       #  La stratificazione giusta: PR aperta -> skip (gia' sopra, prima di tutto); proposta
       #  effettiva di STANOTTE (RC=3) -> niente duplicati (check nel ramo). Il ritento con
       #  capacita' migliore non e' spam: e' il lavoro che riparte.
-      # (2026-10-07, il brucio di Centrale_Rischi: 80 minuti di GPU in una notte):
-      # le issue che vanno al watchdog dei 300s si ritentavano a OGNI ciclo — due
-      # scatti al giorno vogliono dire «questa issue oggi non converge nel budget»:
-      # si riposa fino a domani (il giorno puo' spezzarla o alzare il tetto per repo).
-      WD_FILE="$DIR/.git/watchdog-issue/$NUM"
-      WD_OGGI=0
-      if [ -f "$WD_FILE" ]; then
-        WD_OGGI=$(grep -c "$(date +%F)" "$WD_FILE" 2>/dev/null || true)
-        WD_OGGI=${WD_OGGI:-0}
-      fi
-      if [ "${WD_OGGI:-0}" -ge "${ISSUE_MAX_WATCHDOG:-2}" ]; then
-        log "Issue #$NUM: watchdog scattato ${WD_OGGI} volte oggi — si riposa fino a domani (niente GPU)"
+      # (2026-10-07, il brucio di Centrale_Rischi; v2 il 2026-10-08): le issue che non
+      # convergono si ritentavano a OGNI ciclo. La v1 contava solo i watchdog (rc 124)
+      # — ma Centrale_Rischi fallisce con rc=1 DOPO aver bruciato tutta l'inferenza
+      # (~300s), e la cascata all'agente muore con «generazione vuota»: 5101s GPU in
+      # una notte, 0 riposi scattati. Il segnale giusto e' COMPOSITO: watchdog, oppure
+      # budget pieno speso senza convergere, oppure agente in cascata fallito. Due in
+      # un giorno (spesso UN ciclo: solver + cascata) → l'issue riposa fino a domani.
+      NC_OGGI=$(issue_non_converge_oggi "$DIR" "$NUM")
+      if [ "${NC_OGGI:-0}" -ge "${ISSUE_MAX_NON_CONVERGE:-2}" ]; then
+        log "Issue #$NUM: non converge da ${NC_OGGI} segnali oggi — riposa fino a domani (niente GPU; il giorno puo' spezzarla o alzarle il tetto)"
         rm -f "$ISSUE_FILE"
         continue
       fi
@@ -1114,9 +1112,13 @@ review del giorno." 2>>"$ERR_NOTTE" \
       # solo le migliorie (un minimo dichiarato che nascondeva il 90% del costo reale)
       ISSUE_DURATA=$(( $(date +%s) - T_ISSUE ))
       if [ "$RC" -eq 124 ]; then
-        mkdir -p "$DIR/.git/watchdog-issue"
-        printf '%s\n' "$(date +%F)" >> "$WD_FILE"
-        log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min (n.$(grep -c . "$WD_FILE" 2>/dev/null || echo 1) oggi) — risolutore fermato, si passa oltre"
+        conta_non_convergenza "$DIR" "$NUM" "watchdog ${TIMEOUT_MINUTI}min"
+        log "⚠ issue #$NUM: WATCHDOG scattato a ${TIMEOUT_MINUTI}min — risolutore fermato, si passa oltre"
+      elif [ "$RC" -ne 0 ] && [ "$RC" -ne 2 ] && [ "$RC" -ne 3 ] && [ "${ISSUE_DURATA:-0}" -ge 280 ]; then
+        # (v2): rc!=124 ma tutta l'inferenza bruciata (~300s e piu') senza convergere —
+        # e' il caso VERO di Centrale_Rischi: il budget lo spende, il fix non arriva
+        conta_non_convergenza "$DIR" "$NUM" "solver a budget pieno (rc=$RC, ${ISSUE_DURATA}s)"
+        log "⚠ issue #$NUM: ${ISSUE_DURATA}s spesi senza convergere (rc=$RC) — segnato"
       fi
       log "REPO $REPO: issue #$NUM: (${ISSUE_DURATA}s) $OUT"
       # (studio dsh goal): il progresso si accumula nel goal — il prossimo ciclo
@@ -1152,6 +1154,7 @@ Fix the code in the current directory. When done, respond with FINISH." 2>&1)
           OUT="AGENTE: completato"
           [ -f "$HERE/../tools/goal-issue.sh" ] && bash "$HERE/../tools/goal-issue.sh" "$DIR" update "$NUM" "AGENTE ha converto (cascade)" >/dev/null 2>&1 || true
         else
+          conta_non_convergenza "$DIR" "$NUM" "agente in cascata non converto (rc=$AGENTE_RC)"
           log "Issue #$NUM: anche l'agente non ha converto (rc=$AGENTE_RC)"
         fi
       fi
