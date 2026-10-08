@@ -75,5 +75,12 @@ OUT=$(bash "$HERE/tools/lente-dipendenze.sh" "$NUDA" 2>/dev/null); rm -rf "$NUDA
 grep -q "nessun manifest" <<<"$OUT" && ok "repo senza manifest: dichiarato, non difetto" || ko "repo nudo: $OUT"
 rm -rf "$FL"
 
+# (giro 8): l'audit della conoscenza — pattern fermai da N giorni si LISTANO
+OUT=$(bash "$HERE/tools/auditoria-conoscenza.sh" 30 2>/dev/null)
+grep -qE "Pattern censiti: [0-9]+ · non toccati da almeno 30g: [0-9]+" <<<"$OUT" \
+  && ok "l'audit dichiara il censimento e i fermi (soglia dichiarata)" || ko "audit muto: $OUT"
+grep -qE "Domanda per il giorno|Pattern censiti" <<<"$OUT" \
+  && ok "la domanda reinforce-o-decay c'e' (o si rafforza o si dichiara storica)" || ko "manca la domanda"
+
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]
