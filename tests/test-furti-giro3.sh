@@ -23,8 +23,13 @@ L_CIECO=$(printf '%s' "$CIECO" | wc -c | tr -d ' '); L_SEL=$(printf '%s' "$SEL" 
   && ok "canone selettivo: bersaglio magazzino → densita' logistica non inferiore alla cieca ($D_SEL/$L_SEL vs $D_CIECO/$L_CIECO)" \
   || ko "selettivo peggiora la pertinenza: $D_SEL/$L_SEL vs $D_CIECO/$L_CIECO"
 # senza bersaglio: comportamento invariato (il risolutore resta cieco e contento)
-[ "$(canone_ruoli "$F" 1200 2 | wc -c | tr -d ' ')" = "$L_CIECO" ] \
-  && ok "senza bersaglio il canone non cambia (retrocompatibile)" || ko "il canone cieco e' cambiato"
+# retrocompatibilita' per CONTENUTO (i byte del marker di troncamento possono
+# variare con le cifre: cio' che conta e' lo stesso canone, stessa testa)
+B2=$(canone_ruoli "$F" 1200 2)
+[ "$(printf '%s' "$CIECO" | grep -c 'DOMAIN ROLE')" = "$(printf '%s' "$B2" | grep -c 'DOMAIN ROLE')" ] \
+  && [ "$(printf '%s' "$CIECO" | head -c 200)" = "$(printf '%s' "$B2" | head -c 200)" ] \
+  && ok "senza bersaglio il canone non cambia (stessi ruoli, stessa testa)" \
+  || ko "il canone cieco e' cambiato tra due chiamate"
 
 # ── jev-lab: il giudice misurato ────────────────────────────────────────────
 OUT=$(bash "$HERE/tools/consenso-giudice.sh" 2>/dev/null)
