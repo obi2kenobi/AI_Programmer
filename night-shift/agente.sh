@@ -125,6 +125,23 @@ exit 1; }
   # Muto non e' finito: rc 1, e il chiamante lo legge come agente fallito.
   [ -z "$CONTENT" ] && { log "⛔ risposta vuota del modello (turno $TURNO) — muto, NON completato: agente rc=1"; exit 1; }
   log "turno $TURNO (${ELAPSED}s): il modello risponde"
+  # (furto giro 7, context-monitor di cc-safe-setup): pressione a soglie GRADUATE —
+  # il turno accumula; quando il num_ctx si riempie la qualita' precipita prima
+  # dell'errore. A 75% si chiude: meglio una consegna parziale che un gargarismo.
+  STORICO_BYTE=$(( ${#STORICO_BYTE:-0} + ${#CONTENT} ))
+  SOGLIA=$(( 12240 * 7 / 2 ))   # ~75% di num_ctx, in caratteri (3.5 byte/token stimati)
+  if [ "$STORICO_BYTE" -gt "$(( SOGLIA * 45 / 100 ))" ] && [ "$STORICO_BYTE" -le "$SOGLIA" ]; then
+    log "⚠ contesto: ~$(( STORICO_BYTE / 350 ))0 token — oltre il 45%: si chiude presto"
+  elif [ "$STORICO_BYTE" -gt "$SOGLIA" ]; then
+    log "⛔ contesto saturo (~$(( STORICO_BYTE / 350 ))0 token oltre il 75% del num_ctx): chiudo con quello che c'e', meglio una consegna onesta che il gargarismo"
+    exit 1
+  fi
+  # B) (furto giro 7, no-ask-human): la notte che CHIEDE e' un turno bruciato —
+  # il promemoria torna al modello nella risposta stessa
+  if grep -qaE 'Should I|dovrei chiedere|posso procedere|dimmi tu' <<<"$CONTENT"; then
+    RESULT="REMINDER: you run unattended at night — nobody answers. Decide autonomously with the canon you have, act, and declare assumptions."
+    log "⚠ il modello ha chiesto all'umano: promemoria di autonomia rimandato"
+  fi
 
   # prova a parsare come JSON action (spogliando i fence markdown)
   STRIPPED=$(printf '%s' "$CONTENT" | sed 's/^```[a-z]*//; s/```$//' | tr -d '\n' | sed 's/^ *//; s/ *$//')

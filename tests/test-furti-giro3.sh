@@ -62,5 +62,18 @@ R=$(cd "$HERE" && classifica_banco test-agente.sh 1 1)
 X=$(cd "$HERE" && classifica_banco test-lib.sh 1 0)
 [ "$X" = "rosso" ] && ok "test NON dichiarato: nessuna seconda chance (la dispensa e' un elenco firmato)" || ko "atteso rosso per non-dichiarato: $X"
 
+# (giro 7): la lente-dipendenze — deterministicissima, nessun network
+FL=$(mktemp -d "${TMPDIR:-/tmp}/dip.XXXXXX")
+printf 'flask==3.0.0\nrequests>=2\npandas\n' > "$FL/requirements.txt"
+printf '{"dependencies":{"express":"^4.18.0","lodash":"4.17.21"}}' > "$FL/package.json"
+OUT=$(bash "$HERE/tools/lente-dipendenze.sh" "$FL" 2>/dev/null)
+grep -q "py non pinnate 2" <<<"$OUT" && grep -q "js non bloccate 1" <<<"$OUT" \
+  && ok "lente-dipendenze: 2 py non pinnate + 1 js non bloccata (le pinnate non contano)" \
+  || ko "lente: $OUT"
+NUDA=$(mktemp -d "${TMPDIR:-/tmp}/nuda.XXXXXX")
+OUT=$(bash "$HERE/tools/lente-dipendenze.sh" "$NUDA" 2>/dev/null); rm -rf "$NUDA"
+grep -q "nessun manifest" <<<"$OUT" && ok "repo senza manifest: dichiarato, non difetto" || ko "repo nudo: $OUT"
+rm -rf "$FL"
+
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]
