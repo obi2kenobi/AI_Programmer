@@ -57484,6 +57484,59 @@
       "source_location": "L1"
     },
     {
+      "id": "claude_agents_verificatore_frontend",
+      "label": "agents/verificatore-frontend.md",
+      "_origin": "ast",
+      "community": 854,
+      "community_name": "agents/verificatore-frontend.md",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "verificatore-frontend",
+        "description": "L&#x27;agente che verifica le INTERFACCE delle webapp GAS (App.html, modali, cruscotti) \u2014 dove il codice gira nel browser dell&#x27;utente e nessun banco py lo vede. Il suo canone nasce dai morsi misurati del parco: la verifica-visiva skill esiste (browser in CI, screenshot) ma nessun ruolo la impone; i cruscotti ridisegnati di ottobre portarono il lesson del transition:background (falsi rossi nei test); l&#x27;HTML della webapp e&#x27; un endpoint pubblico (ogni funzione globale esposta). Verifica: layout ",
+        "tools": "Read, Grep, Glob, Bash"
+      },
+      "node_kind": "page",
+      "norm_label": "agents/verificatore-frontend.md",
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "claude_agents_verificatore_frontend_confini",
+      "label": "Confini",
+      "_origin": "ast",
+      "community": 854,
+      "community_name": "agents/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "confini",
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L35"
+    },
+    {
+      "id": "claude_agents_verificatore_frontend_il_canone",
+      "label": "Il canone",
+      "_origin": "ast",
+      "community": 854,
+      "community_name": "agents/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il canone",
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L10"
+    },
+    {
+      "id": "claude_agents_verificatore_frontend_metodo",
+      "label": "Metodo",
+      "_origin": "ast",
+      "community": 854,
+      "community_name": "agents/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "metodo",
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L28"
+    },
+    {
       "id": "tests_test_furti_giro3",
       "label": "test-furti-giro3.sh",
       "_origin": "ast",
@@ -57572,6 +57625,154 @@
       "norm_label": "consenso-giudice.sh script",
       "source_file": "tools/consenso-giudice.sh",
       "source_location": "L1"
+    },
+    {
+      "id": "opencode_agent_verificatore_frontend",
+      "label": "agent/verificatore-frontend.md",
+      "_origin": "ast",
+      "community": 857,
+      "community_name": "agent/verificatore-frontend.md",
+      "file_type": "document",
+      "frontmatter": {
+        "description": "L&#x27;agente che verifica le INTERFACCE delle webapp GAS (App.html, modali, cruscotti) \u2014 dove il codice gira nel browser dell&#x27;utente e nessun banco py lo vede. Il suo canone nasce dai morsi misurati del parco: la verifica-visiva skill esiste (browser in CI, screenshot) ma nessun ruolo la impone; i cruscotti ridisegnati di ottobre portarono il lesson del transition:background (falsi rossi nei test); l&#x27;HTML della webapp e&#x27; un endpoint pubblico (ogni funzione globale esposta). Verifica: layout ",
+        "mode": "subagent"
+      },
+      "node_kind": "page",
+      "norm_label": "agent/verificatore-frontend.md",
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_agent_verificatore_frontend_confini",
+      "label": "Confini",
+      "_origin": "ast",
+      "community": 857,
+      "community_name": "agent/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "confini",
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L38"
+    },
+    {
+      "id": "opencode_agent_verificatore_frontend_il_canone",
+      "label": "Il canone",
+      "_origin": "ast",
+      "community": 857,
+      "community_name": "agent/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il canone",
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "opencode_agent_verificatore_frontend_metodo",
+      "label": "Metodo",
+      "_origin": "ast",
+      "community": 857,
+      "community_name": "agent/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "metodo",
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L31"
+    },
+    {
+      "id": "roles_verificatore_frontend",
+      "label": "roles/verificatore-frontend.md",
+      "_origin": "ast",
+      "community": 858,
+      "community_name": "roles/verificatore-frontend.md",
+      "file_type": "document",
+      "frontmatter": {
+        "nome": "verificatore-frontend",
+        "descrizione": "L&#x27;agente che verifica le INTERFACCE delle webapp GAS (App.html, modali, cruscotti) \u2014 dove il codice gira nel browser dell&#x27;utente e nessun banco py lo vede. Il suo canone nasce dai morsi misurati del parco: la verifica-visiva skill esiste (browser in CI, screenshot) ma nessun ruolo la impone; i cruscotti ridisegnati di ottobre portarono il lesson del transition:background (falsi rossi nei test); l&#x27;HTML della webapp e&#x27; un endpoint pubblico (ogni funzione globale esposta). Verifica: layout ",
+        "quando": "repo con webapp GAS (App.html o cruscotti HTML), prima del merge di tocchi all&#x27;interfaccia",
+        "domini": "gas, frontend, webapp, ui",
+        "edita": "no"
+      },
+      "node_kind": "page",
+      "norm_label": "roles/verificatore-frontend.md",
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "roles_verificatore_frontend_confini",
+      "label": "Confini",
+      "_origin": "ast",
+      "community": 858,
+      "community_name": "roles/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "confini",
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L37"
+    },
+    {
+      "id": "roles_verificatore_frontend_il_canone",
+      "label": "Il canone",
+      "_origin": "ast",
+      "community": 858,
+      "community_name": "roles/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il canone",
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L12"
+    },
+    {
+      "id": "roles_verificatore_frontend_metodo",
+      "label": "Metodo",
+      "_origin": "ast",
+      "community": 858,
+      "community_name": "roles/verificatore-frontend.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "metodo",
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L30"
+    },
+    {
+      "id": "claude_agents_curatore_rilasci",
+      "label": "agents/curatore-rilasci.md",
+      "_origin": "ast",
+      "community": 859,
+      "community_name": "agents/curatore-rilasci.md",
+      "file_type": "document",
+      "frontmatter": {
+        "name": "curatore-rilasci",
+        "description": "L&#x27;agente della DISCIPLINA DI RILASCIO \u2014 il passaggio dal ramo alla produzione, che nel parco e&#x27; clasp push VIETATO (cancello umano) e deploy-ora/prepara-deploy gestiti. Il suo canone: ogni rilascio ha un MANIFEST (cosa, quando, come si torna indietro), un backup prima (non dopo), una sola via di rollback provata, e il deploy e&#x27; un gesto UMANO su decisione umana (D-decisione). I tre morsi misurati: deploy senza backup, archivio senza copia, doppia approvazione interim dimenticata. NON rilascia",
+        "tools": "Read, Grep, Glob, Bash, Edit, Write"
+      },
+      "node_kind": "page",
+      "norm_label": "agents/curatore-rilasci.md",
+      "source_file": ".claude/agents/curatore-rilasci.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "claude_agents_curatore_rilasci_confini",
+      "label": "Confini",
+      "_origin": "ast",
+      "community": 859,
+      "community_name": "agents/curatore-rilasci.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "confini",
+      "source_file": ".claude/agents/curatore-rilasci.md",
+      "source_location": "L28"
+    },
+    {
+      "id": "claude_agents_curatore_rilasci_il_canone",
+      "label": "Il canone",
+      "_origin": "ast",
+      "community": 859,
+      "community_name": "agents/curatore-rilasci.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il canone",
+      "source_file": ".claude/agents/curatore-rilasci.md",
+      "source_location": "L10"
     },
     {
       "id": "claude_skills_audit_commessa_skill",
@@ -57684,6 +57885,89 @@
       "norm_label": "vedi anche",
       "source_file": ".claude/skills/audit-commessa/SKILL.md",
       "source_location": "L126"
+    },
+    {
+      "id": "opencode_agent_curatore_rilasci",
+      "label": "agent/curatore-rilasci.md",
+      "_origin": "ast",
+      "community": 860,
+      "community_name": "agent/curatore-rilasci.md",
+      "file_type": "document",
+      "frontmatter": {
+        "description": "L&#x27;agente della DISCIPLINA DI RILASCIO \u2014 il passaggio dal ramo alla produzione, che nel parco e&#x27; clasp push VIETATO (cancello umano) e deploy-ora/prepara-deploy gestiti. Il suo canone: ogni rilascio ha un MANIFEST (cosa, quando, come si torna indietro), un backup prima (non dopo), una sola via di rollback provata, e il deploy e&#x27; un gesto UMANO su decisione umana (D-decisione). I tre morsi misurati: deploy senza backup, archivio senza copia, doppia approvazione interim dimenticata. NON rilascia",
+        "mode": "subagent"
+      },
+      "node_kind": "page",
+      "norm_label": "agent/curatore-rilasci.md",
+      "source_file": ".opencode/agent/curatore-rilasci.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "opencode_agent_curatore_rilasci_confini",
+      "label": "Confini",
+      "_origin": "ast",
+      "community": 860,
+      "community_name": "agent/curatore-rilasci.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "confini",
+      "source_file": ".opencode/agent/curatore-rilasci.md",
+      "source_location": "L31"
+    },
+    {
+      "id": "opencode_agent_curatore_rilasci_il_canone",
+      "label": "Il canone",
+      "_origin": "ast",
+      "community": 860,
+      "community_name": "agent/curatore-rilasci.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il canone",
+      "source_file": ".opencode/agent/curatore-rilasci.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "roles_curatore_rilasci",
+      "label": "roles/curatore-rilasci.md",
+      "_origin": "ast",
+      "community": 861,
+      "community_name": "roles/curatore-rilasci.md",
+      "file_type": "document",
+      "frontmatter": {
+        "nome": "curatore-rilasci",
+        "descrizione": "L&#x27;agente della DISCIPLINA DI RILASCIO \u2014 il passaggio dal ramo alla produzione, che nel parco e&#x27; clasp push VIETATO (cancello umano) e deploy-ora/prepara-deploy gestiti. Il suo canone: ogni rilascio ha un MANIFEST (cosa, quando, come si torna indietro), un backup prima (non dopo), una sola via di rollback provata, e il deploy e&#x27; un gesto UMANO su decisione umana (D-decisione). I tre morsi misurati: deploy senza backup, archivio senza copia, doppia approvazione interim dimenticata. NON rilascia",
+        "quando": "preparazione di deploy GAS, pacchetti deploy-pronto, merge verso produzione, versionamento dei rilasci",
+        "domini": "gas, deploy, rilasci",
+        "edita": "si"
+      },
+      "node_kind": "page",
+      "norm_label": "roles/curatore-rilasci.md",
+      "source_file": "roles/curatore-rilasci.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "roles_curatore_rilasci_confini",
+      "label": "Confini",
+      "_origin": "ast",
+      "community": 861,
+      "community_name": "roles/curatore-rilasci.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "confini",
+      "source_file": "roles/curatore-rilasci.md",
+      "source_location": "L30"
+    },
+    {
+      "id": "roles_curatore_rilasci_il_canone",
+      "label": "Il canone",
+      "_origin": "ast",
+      "community": 861,
+      "community_name": "roles/curatore-rilasci.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "il canone",
+      "source_file": "roles/curatore-rilasci.md",
+      "source_location": "L12"
     },
     {
       "id": "claude_skills_design_doc_skill",
@@ -70155,6 +70439,28 @@
       "weight": 1.0
     },
     {
+      "source": "claude_agents_curatore_rilasci",
+      "target": "claude_agents_curatore_rilasci_il_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/curatore-rilasci.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_agents_curatore_rilasci",
+      "target": "claude_agents_curatore_rilasci_confini",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/curatore-rilasci.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
       "source": "claude_agents_pipeline_dati",
       "target": "claude_agents_pipeline_dati_missione",
       "relation": "contains",
@@ -70504,6 +70810,39 @@
       "confidence_score": 1.0,
       "source_file": ".claude/agents/sviluppatore-gas.md",
       "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_agents_verificatore_frontend",
+      "target": "claude_agents_verificatore_frontend_il_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_agents_verificatore_frontend",
+      "target": "claude_agents_verificatore_frontend_metodo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_agents_verificatore_frontend",
+      "target": "claude_agents_verificatore_frontend_confini",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/agents/verificatore-frontend.md",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -88294,6 +88633,28 @@
       "weight": 1.0
     },
     {
+      "source": "opencode_agent_curatore_rilasci",
+      "target": "opencode_agent_curatore_rilasci_il_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agent/curatore-rilasci.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agent_curatore_rilasci",
+      "target": "opencode_agent_curatore_rilasci_confini",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agent/curatore-rilasci.md",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
       "source": "opencode_agent_pipeline_dati",
       "target": "opencode_agent_pipeline_dati_missione",
       "relation": "contains",
@@ -88643,6 +89004,39 @@
       "confidence_score": 1.0,
       "source_file": ".opencode/agent/sviluppatore-gas.md",
       "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agent_verificatore_frontend",
+      "target": "opencode_agent_verificatore_frontend_il_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agent_verificatore_frontend",
+      "target": "opencode_agent_verificatore_frontend_metodo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_agent_verificatore_frontend",
+      "target": "opencode_agent_verificatore_frontend_confini",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/agent/verificatore-frontend.md",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -92936,6 +93330,28 @@
       "weight": 1.0
     },
     {
+      "source": "roles_curatore_rilasci",
+      "target": "roles_curatore_rilasci_il_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "roles/curatore-rilasci.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "roles_curatore_rilasci",
+      "target": "roles_curatore_rilasci_confini",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "roles/curatore-rilasci.md",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
       "source": "roles_pipeline_dati",
       "target": "roles_pipeline_dati_missione",
       "relation": "contains",
@@ -93340,6 +93756,39 @@
       "confidence_score": 1.0,
       "source_file": "roles/sviluppatore-gas.md",
       "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "roles_verificatore_frontend",
+      "target": "roles_verificatore_frontend_il_canone",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "roles_verificatore_frontend",
+      "target": "roles_verificatore_frontend_metodo",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "roles_verificatore_frontend",
+      "target": "roles_verificatore_frontend_confini",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "roles/verificatore-frontend.md",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -111687,5 +112136,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "dd029f4ba42f448968177d4ffa278868b8292e99"
+  "built_at_commit": "8f26e24eb53bbb719988bd7c0fae7a3379ff227c"
 }
