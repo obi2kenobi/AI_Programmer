@@ -124,4 +124,9 @@ while IFS= read -r CAND; do
   N_MOSTRATE=$((N_MOSTRATE+1))
 done <<<"$CANDIDATE"
 echo
+# (furto giro 8, Osmani/skillmem): anche la CONOSCENZA si audita — reinforce o decay
+if [ -x "$HERE/tools/auditoria-conoscenza.sh" ]; then
+  echo
+  bash "$HERE/tools/auditoria-conoscenza.sh" 90 | tail -n +2
+fi
 echo "La retro fa domande; il giorno decide. (Fonte: skill /retro di M. Pocock, via D. Fontanel 6/10/2026 — la mossa e' nostra: prompt → scavo nel log.)"
