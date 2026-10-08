@@ -870,7 +870,7 @@ Intento dichiarato dall'autore: $INTENTO_PR"
           fi
           # (furto giro 2, OpenAPPA): la destinazione PR-body passa dal cancello —
           # le righe con dati personali si TOLGONO prima di pubblicare
-          PR_BODY_PULITO=$(printf '%s' "$PR_BODY_PR" | { grep -vE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|IT[0-9]{2}[A-Z][0-9]{10}[0-9A-Z]{12}|[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]' || true; })
+          PR_BODY_PULITO=$(printf '%s' "$PR_BODY_PR" | { grep -vE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|IT[0-9]{2}[A-Z][0-9]{10}[0-9A-Z]{12}|[A-Z]{6}[0-9]{2}[A-Z][0-9]{2}[A-Z][0-9]{3}[A-Z]|(\+39 |0039 |3[0-9]{2}[ .-]?[0-9]{3}[ .-]?[0-9]{3,4}|0[0-9]{2,4}[ .-]?[0-9]{5,7})' || true; })
           if [ "$PR_BODY_PULITO" != "$PR_BODY_PR" ]; then
             log "REPO $REPO: cancello destinazioni: righe con dati personali rimosse dal corpo della PR"
           fi
