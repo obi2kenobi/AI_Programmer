@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "d1c80b273153f8390660937550b3c8020108bc26",
+  "built_at_commit": "1f18e86b97c75b5d660975055b539a512a209f24",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -20707,7 +20707,7 @@
       "relation": "defines",
       "source": "night_shift_revisore",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L276",
+      "source_location": "L288",
       "target": "night_shift_revisore_ripristina",
       "weight": 1.0
     },
@@ -20814,7 +20814,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L379",
+      "source_location": "L391",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -20826,7 +20826,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L420",
+      "source_location": "L432",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -20838,7 +20838,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L385",
+      "source_location": "L397",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -20850,7 +20850,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L619",
+      "source_location": "L631",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -20874,7 +20874,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L647",
+      "source_location": "L659",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
@@ -20886,7 +20886,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L239",
+      "source_location": "L251",
       "target": "night_shift_revisore_rigetta_deterministico",
       "weight": 1.0
     },
@@ -20898,7 +20898,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L311",
+      "source_location": "L323",
       "target": "night_shift_revisore_rinvia",
       "weight": 1.0
     },
@@ -24998,6 +24998,17 @@
       "source_file": "patterns/banco-sintetico-per-calcoli-critici.md",
       "source_location": "L1",
       "target": "patterns_banco_sintetico_per_calcoli_critici_banco_sintetico_per_calcoli_critici",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "patterns_bsd_sed_niente_interrogativo",
+      "source_file": "patterns/bsd-sed-niente-interrogativo.md",
+      "source_location": "L1",
+      "target": "patterns_bsd_sed_niente_interrogativo_bsd_sed_niente_interrogativo",
       "weight": 1.0
     },
     {
@@ -81165,7 +81176,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L276"
+      "source_location": "L288"
     },
     {
       "_origin": "ast",
@@ -86424,6 +86435,30 @@
       "node_kind": "heading",
       "norm_label": "banco-sintetico-per-calcoli-critici",
       "source_file": "patterns/banco-sintetico-per-calcoli-critici.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 879,
+      "community_name": "bsd-sed-niente-interrogativo.md",
+      "file_type": "document",
+      "id": "patterns_bsd_sed_niente_interrogativo",
+      "label": "bsd-sed-niente-interrogativo.md",
+      "node_kind": "page",
+      "norm_label": "bsd-sed-niente-interrogativo.md",
+      "source_file": "patterns/bsd-sed-niente-interrogativo.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 879,
+      "community_name": "bsd-sed-niente-interrogativo.md",
+      "file_type": "document",
+      "id": "patterns_bsd_sed_niente_interrogativo_bsd_sed_niente_interrogativo",
+      "label": "bsd-sed-niente-interrogativo",
+      "node_kind": "heading",
+      "norm_label": "bsd-sed-niente-interrogativo",
+      "source_file": "patterns/bsd-sed-niente-interrogativo.md",
       "source_location": "L1"
     },
     {
@@ -92398,8 +92433,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 878,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_è_il_corpus_non_la_cava",
       "label": "2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava",
@@ -92410,8 +92445,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 878,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
       "label": "2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
@@ -92422,8 +92457,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 878,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
       "label": "2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
@@ -92434,8 +92469,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 878,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
       "label": "2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi",
@@ -92746,8 +92781,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 878,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
       "label": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",

@@ -197,6 +197,11 @@ elif grep -q "annotazioni saltate: origin non e' GitHub" <<<"$GCA"; then
 else ko "consegna: payload annotazione ($REG_A)"; fi
 BRA=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRA" -q 2>/dev/null
 
+# ── parere del giorno sulle PR del giorno (debito del flusso reale chiuso) ─────
+grep -q "GIORNO_PARERE=1 bash" "$GP" && ok "parere: il giorno CHIEDE il parere (GIORNO_PARERE=1 al revisore)" || ko "parere: il giorno chiede il parere"
+grep -q 'GIORNO_PARERE:-0' "$HERE/night-shift/revisore.sh" && ok "revisore: i rami giorno/* passano SOLO su richiesta, in modo PARERE (mai fusione)" || ko "revisore: cancello GIORNO_PARERE"
+grep -q "non e' night/\*" "$HERE/night-shift/revisore.sh" && ok "revisore: senza richiesta i rami giorno/* restano RIFIUTATI (la notte non li tocca)" || ko "revisore: il rifiuto resta"
+
 # ── handoff: il passamano giorno→notte (issue [handoff], corpo pulito) ──────────
 : > "$GHSTUB_REGISTRO"
 HU=$(bash "$GP" handoff "$R" "verificare PATCH-ODA in staging" "il giorno ha lasciato il test a metà: rigenerare e provare. Contatto: luca.rossi@example.com" 2>&1); HU_RC=$?

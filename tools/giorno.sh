@@ -172,7 +172,7 @@ parere)
   DIR="$2"; N="$3"
   [ -f "$HERE/night-shift/revisore.sh" ] || { echo "⛔ revisore.sh assente" >&2; exit 2; }
   log "censore in parere sulla PR #$N di ${DIR##*/} — parere, mai fusione"
-  OUT=$(bash "$HERE/night-shift/revisore.sh" "$DIR" "$N" 2>&1); RC=$?
+  OUT=$(GIORNO_PARERE=1 bash "$HERE/night-shift/revisore.sh" "$DIR" "$N" 2>&1); RC=$?
   grep -aE "DELIBERA|PARERE:|canone|rigett" <<<"$OUT" | sed 's/^\[revisore [^]]*\] //' | head -6
   riga_giorno "$DIR" "parere PR #$N (rc=$RC)"
   exit "$RC"
