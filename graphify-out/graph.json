@@ -58030,6 +58030,231 @@
       "source_location": "L1"
     },
     {
+      "id": "tests_test_sacca_migliorie",
+      "label": "test-sacca-migliorie.sh",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-sacca-migliorie.sh",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L13"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_lang",
+      "label": "LANG",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lang",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_lc_all",
+      "label": "LC_ALL",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lc_all",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_nuova_repo",
+      "label": "nuova_repo()",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "nuova_repo()",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_sacca_work",
+      "label": "SACCA_WORK",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "sacca_work",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L116"
+    },
+    {
+      "id": "tests_test_sacca_migliorie_sh__entry",
+      "label": "test-sacca-migliorie.sh script",
+      "_origin": "ast",
+      "community": 865,
+      "community_name": "test-sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-sacca-migliorie.sh script",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_sacca_migliorie",
+      "label": "sacca-migliorie.sh",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "sacca-migliorie.sh",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_sacca_migliorie_log",
+      "label": "log()",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L30"
+    },
+    {
+      "id": "tools_sacca_migliorie_sacca_dir",
+      "label": "sacca_dir()",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "sacca_dir()",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L31"
+    },
+    {
+      "id": "tools_sacca_migliorie_scheletro_stdin",
+      "label": "scheletro_stdin()",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "scheletro_stdin()",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L42"
+    },
+    {
+      "id": "tools_sacca_migliorie_sh__entry",
+      "label": "sacca-migliorie.sh script",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "sacca-migliorie.sh script",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tools_sacca_migliorie_tot_sacca",
+      "label": "tot_sacca()",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "sacca-migliorie.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "tot_sacca()",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L32"
+    },
+    {
       "id": "claude_skills_design_doc_skill",
       "label": ".claude/skills/design-doc/SKILL.md",
       "_origin": "ast",
@@ -60254,7 +60479,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1449",
+      "source_location": "L1505",
       "weight": 1.0
     },
     {
@@ -60266,7 +60491,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1565",
+      "source_location": "L1621",
       "weight": 1.0
     },
     {
@@ -60362,7 +60587,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1009",
+      "source_location": "L1065",
       "weight": 1.0
     },
     {
@@ -60374,7 +60599,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1022",
+      "source_location": "L1078",
       "weight": 1.0
     },
     {
@@ -60386,7 +60611,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1091",
+      "source_location": "L1147",
       "weight": 1.0
     },
     {
@@ -60398,7 +60623,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1148",
+      "source_location": "L1204",
       "weight": 1.0
     },
     {
@@ -60410,7 +60635,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1324",
+      "source_location": "L1380",
       "weight": 1.0
     },
     {
@@ -66162,6 +66387,42 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_sacca_migliorie_sh__entry",
+      "target": "tests_test_sacca_migliorie_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie_sh__entry",
+      "target": "tests_test_sacca_migliorie_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie_sh__entry",
+      "target": "tests_test_sacca_migliorie_nuova_repo",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_sal_archivia_sh__entry",
       "target": "tests_test_sal_archivia_ko",
       "relation": "calls",
@@ -68331,6 +68592,18 @@
       "context": "call",
       "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sacca_migliorie_sh__entry",
+      "target": "tools_sacca_migliorie_log",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -99198,6 +99471,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_sal_archivia",
       "target": "tests_test_sal_archivia_sh__entry",
       "relation": "contains",
@@ -100867,6 +101151,17 @@
       "confidence_score": 1.0,
       "source_file": "tools/rollforward_cespiti.py",
       "source_location": "L83",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sacca_migliorie",
+      "target": "tools_sacca_migliorie_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L1",
       "weight": 1.0
     },
     {
@@ -108009,6 +108304,83 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_lang",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_lc_all",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_path",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_sacca_work",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_sacca_migliorie",
+      "target": "tests_test_sacca_migliorie_nuova_repo",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-sacca-migliorie.sh",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_sal_archivia",
       "target": "tests_test_sal_archivia_ok",
       "relation": "defines",
@@ -109799,6 +110171,50 @@
       "confidence_score": 1.0,
       "source_file": "tools/rileva-ruoli.sh",
       "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sacca_migliorie",
+      "target": "tools_sacca_migliorie_log",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sacca_migliorie",
+      "target": "tools_sacca_migliorie_sacca_dir",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sacca_migliorie",
+      "target": "tools_sacca_migliorie_tot_sacca",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "tools_sacca_migliorie",
+      "target": "tools_sacca_migliorie_scheletro_stdin",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tools/sacca-migliorie.sh",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -112218,5 +112634,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5b6f9388c2500f6d96310b5eb4fd2aee4a011530"
+  "built_at_commit": "6bd913399c80516fcb2e8d016a9b17ff7e7c843b"
 }

@@ -829,12 +829,60 @@ review del giorno." 2>>"$ERR_NOTTE" \
       fi
       ORIGINE=""
       [ "$MIGLIORIA_RC" -eq 0 ] && ORIGINE="miglioria"
+      # (2026-10-09, Luca: «ma ha senso pubblicare un PR di fatto vuoto?» — no).
+      # Misurato sui diff veri dei tre giorni prima: 19 PR di caccia su 21 erano
+      # +2/-1 cosmetiche, ognuna col suo giro di lente (GPU) + censore e il suo
+      # rumore nel mattino. Sotto soglia la miglioria NON apre PR: si accumula
+      # nella SACCA del repo (patch in .git/sacca/, mai committate) e viaggia in
+      # UNA PR sola quando vale il viaggio (>= SACCA_MIN_N migliorie o
+      # >= SACCA_MIN_RIGHE righe). Stesso destino per il TEMPLATE DI FLOTTA: la
+      # trasformazione identica gia' vista in >= 2 repo oggi non e' una terza PR
+      # singola. Il debito (saldo di famiglia del registro) viaggia sempre per
+      # conto suo: non si accumula mai un saldo del registro.
+      SACCA_SPEDITA=0
+      if [ "$ORIGINE" = "miglioria" ]; then
+        CAT_MGL=$(grep -aoE "categoria '[a-z]+'" <<<"$MIGLIORIA_OUT" | head -1 | cut -d"'" -f2)
+        RIGHE_MGL=$(git -C "$DIR" diff --numstat 2>/dev/null | awk '{a+=$1+$2} END{print a+0}')
+        VA_IN_SACCA=0; PERCHE_SACCA=""
+        if [ "${CAT_MGL:-?}" != "debito" ]; then
+          if [ "${RIGHE_MGL:-99}" -lt "${SACCA_SOGLIA_RIGHE:-5}" ]; then
+            VA_IN_SACCA=1; PERCHE_SACCA="sotto soglia (${RIGHE_MGL:-?} righe < ${SACCA_SOGLIA_RIGHE:-5})"
+          elif git -C "$DIR" diff 2>/dev/null | bash "$HERE/../tools/sacca-migliorie.sh" flotta "$REPO" 2>/dev/null; then
+            VA_IN_SACCA=1; PERCHE_SACCA="template di flotta (trasformazione identica gia' vista in >=2 repo oggi)"
+          fi
+        fi
+        if [ "$VA_IN_SACCA" -eq 1 ]; then
+          log "REPO $REPO: sacca: $PERCHE_SACCA — accumulo dichiarato, stasera niente PR singola"
+          log "REPO $REPO: $(bash "$HERE/../tools/sacca-migliorie.sh" accumula "$DIR" "${CAT_MGL:-?}" "$(git -C "$DIR" diff --name-only 2>/dev/null | head -1)" 2>&1 | tail -1)"
+          git -C "$DIR" reset -q --hard
+          git -C "$DIR" clean -qfd
+          git -C "$DIR" checkout "$DB" -q
+          git -C "$DIR" branch -D "$CACCIA_BRANCH" -q 2>/dev/null || true
+          if bash "$HERE/../tools/sacca-migliorie.sh" pronta "$DIR" >/dev/null 2>&1; then
+            SACCA_SPED_OUT=$(bash "$HERE/../tools/sacca-migliorie.sh" spedisci "$DIR" 2>&1)
+            # (lezione del relay #260): la firma si cerca DENTRO la riga — il log()
+            # del tool antepone "[sacca HH:MM:SS]", un grep ancorato la perderebbe
+            while IFS= read -r _sr; do log "REPO $REPO: $_sr"; done < <(grep -a 'SACCA' <<<"$SACCA_SPED_OUT")
+            SACCA_RAMO=$(sed -n 's/^RAMO //p' <<<"$SACCA_SPED_OUT" | tail -1)
+            if [ -n "$SACCA_RAMO" ]; then
+              CACCIA_BRANCH="$SACCA_RAMO"; SACCA_SPEDITA=1
+              log "REPO $REPO: sacca piena — UNA PR sola per tutte le migliorie accumulate"
+            fi
+          fi
+          [ "$SACCA_SPEDITA" -eq 1 ] || ORIGINE=""   # la micro-miglioria resta in sacca: stasera nessuna consegna
+        fi
+      fi
       if [ -n "$ORIGINE" ]; then
         # (studio gsd-pi, cost-per-unit): il costo della consegna in secondi
         # di GPU — la dashboard lo mostrera' nel funnel
         MIGLIOREA_DURATA=$(( $(date +%s) - MIGLIORIA_T0 ))
         log "REPO $REPO: 🎯 MIGLIORIA pronta (${MIGLIOREA_DURATA}s GPU): $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-120)"
+        local TITLE_PR="caccia: miglioria al codice dall'agente notturno"
         local MSG_PR="improve: miglioria notturna — $(echo "$MIGLIORIA_OUT" | grep -a '^MIGLIORIA' | tail -1 | cut -c1-80)"
+        if [ "$SACCA_SPEDITA" -eq 1 ]; then
+          TITLE_PR="caccia: sacca di migliorie dall'agente notturno"
+          MSG_PR="improve: sacca di migliorie notturne — piu' micro-migliorie sotto soglia in una PR sola"
+        fi
         # usa il flusso commit/push/PR — e quando fallisce, DICE PERCHE'
         # (la prima consegna vera e' morta qui, con l'errore vero ingoiato)
         # (V1#2, 2026-09-24): le cacce con una PR aperta — se una porta gia' lo stesso diff, niente PR doppia
@@ -863,6 +911,11 @@ review del giorno." 2>>"$ERR_NOTTE" \
           # non indovina piu' perche' il diff esiste.
           INTENTO_PR=$(grep -aoE "I am about to [^\"]{10,180}" <<<"$MIGLIORIA_OUT" | head -1 || true)
           PR_BODY_PR="Prodotto dal turno notturno autonomo (miglioria). Il gate ha verificato: diff piccolo, sintassi valida. Verificare il diff prima del merge."
+          if [ "$SACCA_SPEDITA" -eq 1 ]; then
+            PR_BODY_PR="$PR_BODY_PR
+
+Questa PR e' una SACCA: micro-migliorie accumulate sotto soglia (o template di flotta), ognuna ha passato il gate da sola — il diff cumulativo va riguardato per intero."
+          fi
           if [ -n "$INTENTO_PR" ]; then
             PR_BODY_PR="$PR_BODY_PR
 
@@ -875,14 +928,17 @@ Intento dichiarato dall'autore: $INTENTO_PR"
             log "REPO $REPO: cancello destinazioni: righe con dati personali rimosse dal corpo della PR"
           fi
           printf '%s' "$PR_BODY_PR" | bash "$HERE/../tools/destinazioni-pulite.sh" pr-body >/dev/null 2>&1 || true
-          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "caccia: miglioria al codice dall'agente notturno" --body "$PR_BODY_PULITO" 2>&1 | tail -1)
+          PR_CACCIA=$(cd "$DIR" && gh pr create --draft --head "$CACCIA_BRANCH" --title "$TITLE_PR" --body "$PR_BODY_PULITO" 2>&1 | tail -1)
           # (2026-09-25, ottavo ventaglio, O2 R4): si conta solo una PR vera — con gh in errore (rate limit) la «PR» era il
           # messaggio d'errore, il SAL scriveva «1 PR bozza» e il freno del rate limit (dorme solo a zero PR) non scattava
           case "$PR_CACCIA" in
             https://*)
               log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
               log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
-              PR_CREATED=$((PR_CREATED+1)) ;;  # locale a shift_repo, inizializzata prima della caccia
+              PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
+              # la sacca si consuma quando la PR esiste: le micro-migliorie sono
+              # in viaggio (se la PR verra' rigettata, restano visibili li')
+              [ "$SACCA_SPEDITA" -eq 1 ] && log "REPO $REPO: $(bash "$HERE/../tools/sacca-migliorie.sh" consumata "$DIR" 2>&1 | tail -1)" ;;
             *) log "⚠ REPO $REPO: PR di $ORIGINE NON creata (il ramo $CACCIA_BRANCH e' spinto): $(tail -1 <<<"$PR_CACCIA" | cut -c1-120)" ;;
           esac
           git -C "$DIR" checkout "$DB" -q
