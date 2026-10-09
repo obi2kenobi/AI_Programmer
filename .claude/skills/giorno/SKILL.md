@@ -17,6 +17,7 @@ tools/giorno.sh consegna <dir-repo> "messaggio della consegna"
 tools/giorno.sh lente <dir-repo> [base]        # default: origin/<default>...HEAD
 tools/giorno.sh parere <dir-repo> <n-pr>       # il censore, a comando
 tools/giorno.sh handoff <dir-repo> "<titolo>" "[corpo]"  # il passamano giorno->notte (issue [handoff])
+tools/giorno.sh annota <dir-repo> <n-pr>       # righe errorformat → annotazioni SULLA RIGA della PR
 tools/giorno.sh bilancino [data]               # default: oggi
 ```
 

@@ -148,6 +148,19 @@ tradotto in lavoro vero), non prima."
   esac
   ;;
 
+# ── annota: righe errorformat → annotazioni SULLA RIGA della PR (furto reviewdog)
+annota)
+  [ $# -ge 3 ] || { echo "uso: giorno.sh annota <dir> <n-pr> (errorformat su stdin)" >&2; exit 2; }
+  DIR="$2"; N="$3"
+  REPO_URL=$(git -C "$DIR" remote get-url origin 2>/dev/null) || { echo "⛔ niente origin in $DIR" >&2; exit 2; }
+  REPO_SLUG=$(sed -n 's#.*github.com[:/]\([^/]*/[^.]*\)\(\.git\)\?$#\1#p' <<<"$REPO_URL" | head -1)
+  [ -n "$REPO_SLUG" ] || { echo "⛔ origin non GitHub: $REPO_URL" >&2; exit 2; }
+  bash "$HERE/tools/annota.sh" "$REPO_SLUG" "$N"
+  RC=$?
+  riga_giorno "$DIR" "annota PR #$N (rc=$RC)"
+  exit "$RC"
+  ;;
+
 # ── bilancino: il conto del giorno, letto dal log vero ───────────────────────────
 bilancino)
   DATA="${2:-$(date +%F)}"

@@ -1,0 +1,9 @@
+# AsciiSolo — la regola di casa: nessun carattere accentato (si scrive «e'», non «è»).
+# Stessa legge del pre-commit per il codice, estesa alla prosa dei documenti.
+extends: existence
+message: "carattere accentato — la casa scrive ASCII (e' al posto di è)"
+level: error
+ignorecase: false
+nonword: true
+tokens:
+  - '[àèéìíòóùúÀÈÉÌÒÙâêîôûäëïöü]'
