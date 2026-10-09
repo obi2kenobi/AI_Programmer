@@ -42,6 +42,21 @@ Uscita 0 PULITA · 1 RILIEVI · 2 DEGRADATA. `LENTE_STUB` passa attraverso (test
 Il censore (revisore) guarda la PR e lascia il suo parere coi motivi. Da usare
 quando una PR del giorno o della notte merita un giudizio prima del merge.
 
+## osserva — il ciclo stretto (salvi, il banco riparte)
+
+`giorno.sh osserva <dir> [comando]` (furto da watchexec/entr): a ogni modifica
+del repo gira il suo `.night-verify` (o il comando che dici). Ctrl-C per uscire.
+Senza watchexec: skip dichiarato.
+
+## l'ergonomia della macchina (installata, LLM-agnostic)
+
+- `gh dash` — il cruscotto PR/issue del parco (colonne Notte/Giorno/Handoff).
+- `git df` — difftastic: diff SINTATTICO (alberi, non righe). Opt-in: `git diff`
+  resta testuale perche' gli script lo parsano — mai diff.external.
+- `git absorb --and-rebase` — le correzioni della review si assorbono nei commit
+  giusti: stadi i fix, lui li piega nei commit che li hanno introdotti.
+- `vale` — la lente documenti (regola AsciiSolo di casa).
+
 ## bilancino — il giorno misurato
 
 Ogni azione scrive una riga in `~/giorno.log`; il bilancino le conta per repo.

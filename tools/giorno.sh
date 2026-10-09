@@ -28,7 +28,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 source "$HERE/night-shift/lib.sh"   # default_branch, aggiungi_consegna, forme_prima_del_push, lente_pr
 GIORNO_LOG="${GIORNO_LOG:-$HOME/giorno.log}"
 CMD="${1:-}"
-[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | bilancino [data]" >&2; exit 2; }
+[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | osserva <dir> [cmd] | bilancino [data]" >&2; exit 2; }
 log() { echo "[giorno $(date '+%H:%M:%S')] $*" >&2; }
 riga_giorno() { echo "[GIORNO $(date '+%F %T')] REPO ${1##*/}: $2" >> "$GIORNO_LOG"; }
 
@@ -121,6 +121,31 @@ annota)
   exit "$RC"
   ;;
 
+# ── osserva: il ciclo stretto del giorno (salvi, il banco riparte) ─────────────
+# (furto da watchexec/entr: il feedback loop Change→Verify in un comando; qui
+# girano il .night-verify del repo o il comando che dici). Ctrl-C per uscire.
+osserva)
+  [ $# -ge 2 ] || { echo "uso: giorno.sh osserva <dir> [comando]" >&2; exit 2; }
+  DIR="$2"; CMD_O="${3:-}"
+  if [ -z "$CMD_O" ]; then
+    if [ -f "$DIR/.night-verify" ]; then
+      CMD_O="bash .night-verify"
+    else
+      log "niente da osservare: senza .night-verify serve il comando come terzo argomento (es.: \"bash tests/test-giorno.sh\")"
+      exit 2
+    fi
+  fi
+  WATCHEXEC="${WATCHEXEC_BIN:-watchexec}"
+  if ! command -v "$WATCHEXEC" >/dev/null 2>&1; then
+    log "⚠ watchexec assente — osserva SALTATO (dichiarato: brew install watchexec)"
+    exit 0
+  fi
+  log "osservo ${DIR##*/}: a ogni modifica gira \"$CMD_O\" (Ctrl-C per uscire; .gitignore rispettato)"
+  riga_giorno "$DIR" "osserva avviato ($CMD_O)"
+  cd "$DIR" || exit 2
+  exec "$WATCHEXEC" -w . -- $CMD_O
+  ;;
+
 # ── bilancino: il conto del giorno, letto dal log vero ───────────────────────────
 bilancino)
   DATA="${2:-$(date +%F)}"
@@ -144,7 +169,7 @@ bilancino)
   ;;
 
 *)
-  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | bilancino [data]" >&2
+  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | osserva <dir> [cmd] | bilancino [data]" >&2
   exit 2
   ;;
 esac

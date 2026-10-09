@@ -58235,7 +58235,7 @@
       "node_kind": "heading",
       "norm_label": "bilancino \u2014 il giorno misurato",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L45"
+      "source_location": "L60"
     },
     {
       "id": "claude_skills_giorno_skill_consegna_quando_e_come",
@@ -58283,6 +58283,18 @@
       "node_kind": "heading",
       "norm_label": "il pre-push (automatico, non serve memory)",
       "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L66"
+    },
+    {
+      "id": "claude_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
+      "label": "l'ergonomia della macchina (installata, LLM-agnostic)",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "giorno \u2014 il turno di chi programma alla luce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "l'ergonomia della macchina (installata, llm-agnostic)",
+      "source_file": ".claude/skills/giorno/SKILL.md",
       "source_location": "L51"
     },
     {
@@ -58296,6 +58308,18 @@
       "norm_label": "lente \u2014 prima di consegnare, se vuoi vedere",
       "source_file": ".claude/skills/giorno/SKILL.md",
       "source_location": "L35"
+    },
+    {
+      "id": "claude_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
+      "label": "osserva \u2014 il ciclo stretto (salvi, il banco riparte)",
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "giorno \u2014 il turno di chi programma alla luce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "osserva \u2014 il ciclo stretto (salvi, il banco riparte)",
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L45"
     },
     {
       "id": "claude_skills_giorno_skill_parere_il_secondo_occhio",
@@ -58335,7 +58359,7 @@
       "node_kind": "heading",
       "norm_label": "bilancino \u2014 il giorno misurato",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L45"
+      "source_location": "L60"
     },
     {
       "id": "opencode_skills_giorno_skill_consegna_quando_e_come",
@@ -58383,6 +58407,18 @@
       "node_kind": "heading",
       "norm_label": "il pre-push (automatico, non serve memory)",
       "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L66"
+    },
+    {
+      "id": "opencode_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
+      "label": "l'ergonomia della macchina (installata, LLM-agnostic)",
+      "_origin": "ast",
+      "community": 867,
+      "community_name": "giorno \u2014 il turno di chi programma alla luce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "l'ergonomia della macchina (installata, llm-agnostic)",
+      "source_file": ".opencode/skills/giorno/SKILL.md",
       "source_location": "L51"
     },
     {
@@ -58396,6 +58432,18 @@
       "norm_label": "lente \u2014 prima di consegnare, se vuoi vedere",
       "source_file": ".opencode/skills/giorno/SKILL.md",
       "source_location": "L35"
+    },
+    {
+      "id": "opencode_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
+      "label": "osserva \u2014 il ciclo stretto (salvi, il banco riparte)",
+      "_origin": "ast",
+      "community": 867,
+      "community_name": "giorno \u2014 il turno di chi programma alla luce",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "osserva \u2014 il ciclo stretto (salvi, il banco riparte)",
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L45"
     },
     {
       "id": "opencode_skills_giorno_skill_parere_il_secondo_occhio",
@@ -59233,6 +59281,126 @@
       },
       "norm_label": "annota.sh script",
       "source_file": "tools/annota.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_giorno_osserva",
+      "label": "test-giorno-osserva.sh",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "test-giorno-osserva.sh",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "tests_test_giorno_osserva_giorno_log",
+      "label": "GIORNO_LOG",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "giorno_log",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L17"
+    },
+    {
+      "id": "tests_test_giorno_osserva_ko",
+      "label": "ko()",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L11"
+    },
+    {
+      "id": "tests_test_giorno_osserva_lang",
+      "label": "LANG",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lang",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8"
+    },
+    {
+      "id": "tests_test_giorno_osserva_lc_all",
+      "label": "LC_ALL",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "lc_all",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8"
+    },
+    {
+      "id": "tests_test_giorno_osserva_ok",
+      "label": "ok()",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L10"
+    },
+    {
+      "id": "tests_test_giorno_osserva_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8"
+    },
+    {
+      "id": "tests_test_giorno_osserva_sh__entry",
+      "label": "test-giorno-osserva.sh script",
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "test-giorno-osserva.sh script",
+      "source_file": "tests/test-giorno-osserva.sh",
       "source_location": "L1"
     },
     {
@@ -64505,6 +64673,30 @@
       "context": "call",
       "source_file": "tests/test-genera-agenti-repo.sh",
       "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva_sh__entry",
+      "target": "tests_test_giorno_osserva_ko",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva_sh__entry",
+      "target": "tests_test_giorno_osserva_ok",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -74042,7 +74234,7 @@
     },
     {
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
-      "target": "claude_skills_giorno_skill_bilancino_il_giorno_misurato",
+      "target": "claude_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -74053,13 +74245,35 @@
     },
     {
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
-      "target": "claude_skills_giorno_skill_il_pre_push_automatico_non_serve_memory",
+      "target": "claude_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".claude/skills/giorno/SKILL.md",
       "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "target": "claude_skills_giorno_skill_bilancino_il_giorno_misurato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "target": "claude_skills_giorno_skill_il_pre_push_automatico_non_serve_memory",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -92357,7 +92571,7 @@
     },
     {
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
-      "target": "opencode_skills_giorno_skill_bilancino_il_giorno_misurato",
+      "target": "opencode_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -92368,13 +92582,35 @@
     },
     {
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
-      "target": "opencode_skills_giorno_skill_il_pre_push_automatico_non_serve_memory",
+      "target": "opencode_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": ".opencode/skills/giorno/SKILL.md",
       "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "target": "opencode_skills_giorno_skill_bilancino_il_giorno_misurato",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "target": "opencode_skills_giorno_skill_il_pre_push_automatico_non_serve_memory",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L66",
       "weight": 1.0
     },
     {
@@ -99836,6 +100072,17 @@
       "weight": 1.0
     },
     {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "tests_test_giri_avversari_classifica",
       "target": "tests_test_giri_avversari_classifica_sh__entry",
       "relation": "contains",
@@ -106939,6 +107186,72 @@
       "confidence_score": 1.0,
       "source_file": "tests/test-giorno.sh",
       "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_ok",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_ko",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_giorno_log",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_lang",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_lc_all",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "tests_test_giorno_osserva",
+      "target": "tests_test_giorno_osserva_path",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -114243,5 +114556,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "92d15c82fbfc32650364b8f513081471429c38c0"
+  "built_at_commit": "b054d113b4917b7ddf10f8be1de88aa29af065c2"
 }
