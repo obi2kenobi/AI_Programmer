@@ -17,6 +17,7 @@ tools/giorno.sh consegna <dir-repo> "messaggio della consegna"
 tools/giorno.sh lente <dir-repo> [base]        # default: origin/<default>...HEAD
 tools/giorno.sh parere <dir-repo> <n-pr>       # il censore, a comando
 tools/giorno.sh handoff <dir-repo> "<titolo>" "[corpo]"  # il passamano giorno->notte (issue [handoff])
+tools/giorno.sh annota <dir-repo> <n-pr>       # righe errorformat → annotazioni SULLA RIGA della PR
 tools/giorno.sh bilancino [data]               # default: oggi
 ```
 
@@ -49,6 +50,21 @@ lavoro a metà, verifica sul vivo che manca), si lascia un'issue `[handoff]`:
 la notte lavora le issue per prime, quindi il passamano entra nella sua coda
 senza nuove strade. Il corpo passa dal cancello delle destinazioni: nessun
 dato personale nell'issue. Va chiusa quando consumata.
+
+## osserva — il ciclo stretto (salvi, il banco riparte)
+
+`giorno.sh osserva <dir> [comando]` (furto da watchexec/entr): a ogni modifica
+del repo gira il suo `.night-verify` (o il comando che dici). Ctrl-C per uscire.
+Senza watchexec: skip dichiarato.
+
+## l'ergonomia della macchina (installata, LLM-agnostic)
+
+- `gh dash` — il cruscotto PR/issue del parco (colonne Notte/Giorno/Handoff).
+- `git df` — difftastic: diff SINTATTICO (alberi, non righe). Opt-in: `git diff`
+  resta testuale perche' gli script lo parsano — mai diff.external.
+- `git absorb --and-rebase` — le correzioni della review si assorbono nei commit
+  giusti: stadi i fix, lui li piega nei commit che li hanno introdotti.
+- `vale` — la lente documenti (regola AsciiSolo di casa).
 
 ## bilancino — il giorno misurato
 

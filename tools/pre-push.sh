@@ -63,9 +63,21 @@ while read -r L_REF L_SHA R_REF R_SHA; do
   fi
   # dipendenze: avviso, mai blocco
   if [ -n "$DEPS" ]; then
-    if git diff --name-only "$BASE...$L_SHA" 2>/dev/null | grep -qE '(^|/)requirements[^/]*\.txt$|(^|/)package\.json$'; then
+    DOC_DEP=$(git diff --name-only "$BASE...$L_SHA" 2>/dev/null | grep -E '(^|/)requirements[^/]*\.txt$|(^|/)package\.json$' || true)
+    if [ -n "$DOC_DEP" ]; then
       DEP_RIGHE=$(bash "$DEPS" "$PWD" 2>/dev/null | grep -ciE 'non pinnat|senza range|non dichiarat' || true)
       [ "${DEP_RIGHE:-0}" -gt 0 ] && log "⚠ lente-dipendenze: ${DEP_RIGHE} rilievi (dipendenze non pinnate o import non dichiarati) — qualità, non blocco"
+    fi
+  fi
+  # documenti: la lente prosa (Vale, offline) sulle righe AGGIUNTE dei .md del
+  # diff — avviso, mai blocco (2026-10-09: il buco «documenti» della fareta)
+  DOC_MD=$(git diff --name-only "$BASE...$L_SHA" 2>/dev/null | grep -E '\.mdx?$' || true)
+  if [ -n "$DOC_MD" ] && [ -f "$(dirname "$LENTE")/lente-documenti.sh" ]; then
+    DOC_RIGHE=$(bash "$(dirname "$LENTE")/lente-documenti.sh" "$PWD" "$BASE" "$L_SHA" 2>/dev/null)
+    DOC_N=$(grep -c ': documento\[' <<<"$DOC_RIGHE" || true)
+    if [ "${DOC_N:-0}" -gt 0 ]; then
+      log "⚠ lente documenti: ${DOC_N} righe (prosa fuori stile di casa) — qualità, non blocco"
+      printf '%s\n' "$DOC_RIGHE" | head -5 >&2
     fi
   fi
 done
