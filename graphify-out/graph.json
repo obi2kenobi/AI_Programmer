@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "8aef106542ad99809bfa7622a09d5261e8bdccc7",
+  "built_at_commit": "d1c80b273153f8390660937550b3c8020108bc26",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -17270,7 +17270,7 @@
       "relation": "contains",
       "source": "docs_ngiri_paralleli_n_giri_paralleli_il_workflow_dichiarativo_dal_campo_repo_i_2026_08_27",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L86",
+      "source_location": "L28",
       "target": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27",
       "weight": 1.0
     },
@@ -17292,8 +17292,8 @@
       "relation": "contains",
       "source": "docs_ngiri_paralleli_n_giri_paralleli_il_workflow_dichiarativo_dal_campo_repo_i_2026_08_27",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L28",
-      "target": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_è_zero_waste_dal_campo_repo_g_2026_08_27",
+      "source_location": "L86",
+      "target": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27_86",
       "weight": 1.0
     },
     {
@@ -77283,11 +77283,11 @@
       "community_name": "N giri paralleli — il workflow dichiarativo (dal campo REPO-I, 2026-08-27)",
       "file_type": "document",
       "id": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27",
-      "label": "La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)",
+      "label": "La consolidazione delle lenti E' zero-waste (dal campo REPO-G, 2026-08-27)",
       "node_kind": "heading",
-      "norm_label": "la consolidazione delle lenti e zero-waste (dal campo repo-g, 2026-08-27)",
+      "norm_label": "la consolidazione delle lenti e' zero-waste (dal campo repo-g, 2026-08-27)",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L86"
+      "source_location": "L28"
     },
     {
       "_origin": "ast",
@@ -77306,12 +77306,12 @@
       "community": 37,
       "community_name": "N giri paralleli — il workflow dichiarativo (dal campo REPO-I, 2026-08-27)",
       "file_type": "document",
-      "id": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_è_zero_waste_dal_campo_repo_g_2026_08_27",
-      "label": "La consolidazione delle lenti È zero-waste (dal campo REPO-G, 2026-08-27)",
+      "id": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27_86",
+      "label": "La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)",
       "node_kind": "heading",
       "norm_label": "la consolidazione delle lenti e zero-waste (dal campo repo-g, 2026-08-27)",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L28"
+      "source_location": "L86"
     },
     {
       "_origin": "ast",

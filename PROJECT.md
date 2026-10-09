@@ -11,7 +11,7 @@ Concrete, project-specific instructions. The universal behavioral rules live in 
 > tools/motore-test/, last_dump.txt) esiste in questo hub (obi2kenobi/AI_Programmer). Annotato per lo
 > stesso motivo per cui la sezione Business Central sotto dichiara dove vive il proprio
 > catalogo (revisione 14 lenti, 2026-08-28). Percorsi lasciati senza backtick da qui in
-> giù apposta: sono riferimenti al repo cliente, non citazioni verificabili in questo hub.
+> giu' apposta: sono riferimenti al repo cliente, non citazioni verificabili in questo hub.
 
 ### Circuito di validazione → scoperte sempre persistite (deciso con Luca 2026-05-31)
 Costruire il **motore nuovo** (app/engine) significa riprodurre il **motore legacy reale** al millimetro
@@ -24,7 +24,7 @@ Istanzia la regola universale _"Keep living documentation, not just commits"_ �
 - **docs/48** — _come funziona_: "oro del motore", formule/regole validate come requisiti del nuovo.
 - **docs/47** — _correzioni_ applicate (separando bug del vecchio da errori-dato nostri).
 
-La _validation artifact_ del progetto (regola universale _"Done means proven"_) è last_dump.txt.
+La _validation artifact_ del progetto (regola universale _"Done means proven"_) e' last_dump.txt.
 
 ### Stack / comandi (vive nel repo cliente)
 - Test motore: `pnpm --filter @myhouse/engine test` · Lint/format: `pnpm exec biome check engine/src` (da app/).
@@ -41,32 +41,32 @@ Se il lavoro richiede CALCOLARE una cifra (margine, valorizzazione, scostamento,
 roll-forward, indice) e non solo estrarre/mappare dati, usa la skill
 `.claude/skills/controllo-gestione/SKILL.md` (hub AI_Programmer): la formula si cita
 come oracolo dal codice esistente o si chiede al proprietario del dominio, non si
-indovina. Distinta dal censimento campi qui sotto: quello è "che dati esistono", questo
-è "come si trasformano in un numero corretto".
+indovina. Distinta dal censimento campi qui sotto: quello e' "che dati esistono", questo
+e' "come si trasformano in un numero corretto".
 
 ### Censimento campi prima dell'analisi (vincolante)
 Prima di qualsiasi report/analisi, costruisci un quadro **completo e definitivo** dei dati:
 - **Testa ogni endpoint** di `docs/bc/CATALOGO_ENDPOINT_BC.md` (il catalogo vive in questo hub, export 2026-08-26) e **testa ogni campo** che restituisce.
 - Mappa **tutti** i campi, non solo quelli che sembrano utili ora: prima o poi servono tutti, non scartarne nessuno.
-- È completezza di _conoscenza/mappatura_, non codice speculativo — quindi non viola la regola _"Only what is asked"_.
+- E' completezza di _conoscenza/mappatura_, non codice speculativo — quindi non viola la regola _"Only what is asked"_.
 
 ### Come si verifica un risultato (validation artifact)
 Processo a due fasi, in quest'ordine:
 1. **Mappatura** — estrai i campi dagli endpoint e mappali (cosa sono, da dove vengono).
-2. **Riscontro** — confronta con una fonte di verità: interfaccia BC, gestionale, o totali noti.
+2. **Riscontro** — confronta con una fonte di verita': interfaccia BC, gestionale, o totali noti.
 
-Un risultato è corretto (regola _"Done means proven and confirmed"_) **solo dopo il riscontro**, mai dopo la sola estrazione.
+Un risultato e' corretto (regola _"Done means proven and confirmed"_) **solo dopo il riscontro**, mai dopo la sola estrazione.
 
 ### Persistenza della conoscenza (struttura `docs/bc/`)
-Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file per endpoint censito, più un indice:
-- **`docs/bc/README.md`** — indice + avanzamento (rigenerato da `tools/bc_index.py`, mai a mano): tabella endpoint → stato (da mappare / mappato / verificato), X su 258 — il numero aggiornato vive lì, non qui (evita la stessa staleness già trovata una volta: revisione 14 lenti, 2026-08-28).
+Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file per endpoint censito, piu' un indice:
+- **`docs/bc/README.md`** — indice + avanzamento (rigenerato da `tools/bc_index.py`, mai a mano): tabella endpoint → stato (da mappare / mappato / verificato), X su 258 — il numero aggiornato vive li', non qui (evita la stessa staleness gia' trovata una volta: revisione 14 lenti, 2026-08-28).
 - **`docs/bc/endpoints/<NomeServizio>.md`** — 1 file = 1 endpoint: URL, tabella BC, **elenco completo dei campi** (nome, tipo, significato, stato verifica, note di riscontro).
 - **`docs/bc/SAL.md`** — diario vivo + decisioni: **sempre aggiornato**.
 - **`docs/bc/CORREZIONI.md`** — errori di mappatura trovati e correzioni applicate.
 
 ### Stack / accesso
-- Endpoint: **258** servizi OData nel catalogo `docs/bc/CATALOGO_ENDPOINT_BC.md` (vive in questo hub; l'indice `tools/bc_index.py` conta i mancanti al censimento — il numero aggiornato è in `docs/bc/README.md`, non ripetuto qui apposta).
-- Auth: OAuth2 `client_credentials` (Azure AD), scope `.default`. Tenant/client/secret in **`credenziali BC.rtf`** (confermato 2026-06-23; il `Config.gs` del catalogo è la copia del backend GAS).
+- Endpoint: **258** servizi OData nel catalogo `docs/bc/CATALOGO_ENDPOINT_BC.md` (vive in questo hub; l'indice `tools/bc_index.py` conta i mancanti al censimento — il numero aggiornato e' in `docs/bc/README.md`, non ripetuto qui apposta).
+- Auth: OAuth2 `client_credentials` (Azure AD), scope `.default`. Tenant/client/secret in **`credenziali BC.rtf`** (confermato 2026-06-23; il `Config.gs` del catalogo e' la copia del backend GAS).
 - Strumento: **`tools/bc_map.py`** (Python stdlib, nessuna dipendenza) — legge le credenziali a runtime, prende il token, interroga l'endpoint e genera `docs/bc/endpoints/<Nome>.md`. Per un test al volo: `curl`.
 - Regola segreti: credenziali usabili per autenticarsi, mai riprodurne i _valori_ in output, commit o documenti (regola _"Never expose secrets"_).
 
@@ -75,9 +75,9 @@ Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file pe
 ## AI_Programmer — l'hub stesso (questa repo)
 
 > Sezione aggiunta dalla revisione in dieci giri (2026-09-23) per la regola del primo
-> contatto (CLAUDE.md §6): l'hub era la repo più lavorata e non aveva una sezione sua.
+> contatto (CLAUDE.md §6): l'hub era la repo piu' lavorata e non aveva una sezione sua.
 
-- **Cos'è**: il metodo (regole, skill, agenti, pattern) più il turno notturno e i wrapper dei
+- **Cos'e'**: il metodo (regole, skill, agenti, pattern) piu' il turno notturno e i wrapper dei
   modelli. Pubblica: i nomi possono comparire, l'accesso mai (CLAUDE.md §«Public repo»).
 - **Suite**: `bash tools/suite.sh` (ogni `tests/test-*.sh`, si ferma al primo rosso e lo mostra).
   Verifiche dichiarate: `.night-verify` (una riga = uno script per `bash -c`, budget `@<sec>`).
@@ -86,8 +86,8 @@ Istanzia _"Keep living documentation"_. 258 endpoint nel catalogo → un file pe
 - **Il diario**: `SAL.md` (dopo una voce nuova: `bash tools/sal-indice.sh`, che l'ultima riga
   di `.night-verify` pretende), `DEBITI.md` (riapertura: `bash tools/debiti-riapertura.sh`).
 - **Cosa non si prova da una sessione cloud**: Ollama, `gh` autenticato, il Mac del turno —
-  ciò che ne dipende si dichiara ⏳ in DEBITI.
-- **Il Mac di riferimento** (D23, risposta delegata del 2026-09-25): macOS di serie più un Homebrew minimo. Cioè bash
-  3.2, sed e grep BSD, niente `setsid`, `timeout` solo col ramo perl di `ai_timeout`, python 3.9 di sistema. Ciò che
-  gira lì gira anche coi GNU, il contrario no. Da una sessione cloud lo si prova col PATH del Mac simulato (bash 3.2.57
+  cio' che ne dipende si dichiara ⏳ in DEBITI.
+- **Il Mac di riferimento** (D23, risposta delegata del 2026-09-25): macOS di serie piu' un Homebrew minimo. Cioe' bash
+  3.2, sed e grep BSD, niente `setsid`, `timeout` solo col ramo perl di `ai_timeout`, python 3.9 di sistema. Cio' che
+  gira li' gira anche coi GNU, il contrario no. Da una sessione cloud lo si prova col PATH del Mac simulato (bash 3.2.57
   e sed di Apple compilati); sul Mac lo dice la riga d'ambiente del turno.
