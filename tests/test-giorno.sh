@@ -147,6 +147,21 @@ if [ "$GC3_RC" -eq 0 ]; then
 else ko "consegna --tutto (rc=$GC3_RC: $GC3)"; fi
 BR3=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BR3" -q 2>/dev/null
 
+# ── il banco del repo decide: rosso = consegna fermata SOFT ────────────────────
+printf '#!/bin/bash\necho "attese eseguite: 1/2 fallite: 1" >&2\nexit 1\n' > "$R/.night-verify"
+printf '// modifica che il banco boccera'\''\n' >> "$R/a.js"
+GB=$(bash "$GP" consegna "$R" "questa non deve passare" .night-verify 2>&1); GB_RC=$?
+if [ "$GB_RC" -ne 0 ] && grep -q "ROSSO" <<<"$GB"; then
+  ok "banco rosso: consegna FERMATA prima del push (soft, lavoro in albero)"
+else ko "banco rosso: consegna fermata (rc=$GB_RC: $GB)"; fi
+if git -C "$R" show HEAD:a.js 2>/dev/null | grep -q "boccera"; then ko "banco rosso: il commit sporco NON esiste"; else ok "banco rosso: il commit sporco NON esiste (sciolto)"; fi
+grep -q "boccera" "$R/a.js" && ok "banco rosso: il lavoro NON e' distrutto" || ko "banco rosso: il lavoro NON e' distrutto"
+printf '#!/bin/bash\necho "attese eseguite: 2/2 fallite: 0"\nexit 0\n' > "$R/.night-verify"
+sleep 1
+GB2=$(bash "$GP" consegna "$R" "questa passa col banco verde" .night-verify 2>&1); GB2_RC=$?
+[ "$GB2_RC" -eq 0 ] && grep -q "banco verde" <<<"$GB2" && ok "banco verde: la consegna passa e LO DICE" || ko "banco verde: consegna passa (rc=$GB2_RC: $GB2)"
+BRB=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRB" -q 2>/dev/null; rm -f "$R/.night-verify"
+
 # ── giorno consegna con SEGRETO: si ferma PRIMA del push, lavoro non distrutto ───
 # (il segreto in un file TRACCATO: come file nuovo non dichiarato verrebbe messo
 #  fuori da aggiungi_consegna PRIMA del commit — quella e' un'altra guardia, gia' provata)

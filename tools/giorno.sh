@@ -98,6 +98,21 @@ consegna)
   fi
   aggiungi_consegna "$DIR" ${DICHIARATI[@]+"${DICHIARATI[@]}"}   # i file nuovi NON dichiarati restano fuori (e si dice)
   git commit -qm "$MSG" -m "Turno: giorno" || { log "⛔ commit fallito — niente consegna"; exit 1; }
+  # (legge dal Round 2 della Vetrina, 2026-10-09): il banco del repo decide —
+  # una consegna col .night-verify ROSSO non si spinge. La notte lo chiama
+  # «banco CHIUSO»; qui e' soft: commit sciolto, lavoro in albero, si rilancia.
+  # (Limite dichiarato: i .night-verify con righe @N girano incomplete a mano —
+  # vale per loro la regola del registro, notte 2026-10-09.)
+  if [ -f "$DIR/.night-verify" ]; then
+    VERIFICA=$(cd "$DIR" && bash .night-verify 2>&1); VER_RC=$?
+    if [ "$VER_RC" -ne 0 ]; then
+      git reset -q --soft HEAD~1
+      log "⛔ .night-verify ROSSO — consegna fermata (soft, il lavoro resta): $(tail -2 <<<"$VERIFICA" | tr '\n' ' ' | cut -c1-140)"
+      riga_giorno "$DIR" "consegna FERMATA dal banco (rosso)"
+      exit 1
+    fi
+    log "banco verde: $(tail -1 <<<"$VERIFICA" | cut -c1-100)"
+  fi
   if ! forme_prima_del_push "$DIR" "origin/$DB"; then
     git reset -q --soft HEAD~1   # SOFT, non hard: il lavoro di una persona non si distrugge (dichiarato)
     log "⛔ consegna fermata dal cancello dei segreti: commit sciolto (soft), lavoro in albero, ramo $BR"
