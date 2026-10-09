@@ -16,6 +16,7 @@ push, file nuovi solo se dichiarati, trailer del turno, commento lente sulla PR.
 tools/giorno.sh consegna <dir-repo> "messaggio della consegna"
 tools/giorno.sh lente <dir-repo> [base]        # default: origin/<default>...HEAD
 tools/giorno.sh parere <dir-repo> <n-pr>       # il censore, a comando
+tools/giorno.sh annota <dir-repo> <n-pr>       # righe errorformat → annotazioni SULLA RIGA della PR
 tools/giorno.sh bilancino [data]               # default: oggi
 ```
 

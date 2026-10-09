@@ -28,7 +28,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 source "$HERE/night-shift/lib.sh"   # default_branch, aggiungi_consegna, forme_prima_del_push, lente_pr
 GIORNO_LOG="${GIORNO_LOG:-$HOME/giorno.log}"
 CMD="${1:-}"
-[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | bilancino [data]" >&2; exit 2; }
+[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | bilancino [data]" >&2; exit 2; }
 log() { echo "[giorno $(date '+%H:%M:%S')] $*" >&2; }
 riga_giorno() { echo "[GIORNO $(date '+%F %T')] REPO ${1##*/}: $2" >> "$GIORNO_LOG"; }
 
@@ -108,6 +108,19 @@ parere)
   exit "$RC"
   ;;
 
+# ── annota: righe errorformat → annotazioni SULLA RIGA della PR (furto reviewdog)
+annota)
+  [ $# -ge 3 ] || { echo "uso: giorno.sh annota <dir> <n-pr> (errorformat su stdin)" >&2; exit 2; }
+  DIR="$2"; N="$3"
+  REPO_URL=$(git -C "$DIR" remote get-url origin 2>/dev/null) || { echo "⛔ niente origin in $DIR" >&2; exit 2; }
+  REPO_SLUG=$(sed -n 's#.*github.com[:/]\([^/]*/[^.]*\)\(\.git\)\?$#\1#p' <<<"$REPO_URL" | head -1)
+  [ -n "$REPO_SLUG" ] || { echo "⛔ origin non GitHub: $REPO_URL" >&2; exit 2; }
+  bash "$HERE/tools/annota.sh" "$REPO_SLUG" "$N"
+  RC=$?
+  riga_giorno "$DIR" "annota PR #$N (rc=$RC)"
+  exit "$RC"
+  ;;
+
 # ── bilancino: il conto del giorno, letto dal log vero ───────────────────────────
 bilancino)
   DATA="${2:-$(date +%F)}"
@@ -131,7 +144,7 @@ bilancino)
   ;;
 
 *)
-  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | bilancino [data]" >&2
+  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | bilancino [data]" >&2
   exit 2
   ;;
 esac
