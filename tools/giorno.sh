@@ -16,6 +16,7 @@
 #   giorno.sh consegna <dir> "<messaggio>"   working tree → ramo giorno/* → gate → push → PR → lente
 #   giorno.sh lente <dir> [base]             il rapporto della lente sicurezza sul diff (base...HEAD)
 #   giorno.sh parere <dir> <n-pr>            il censore giudica la PR #n (parere, mai fusione)
+#   giorno.sh handoff <dir> "<titolo>" "[corpo]"  il passamano giorno->notte: issue [handoff]
 #   giorno.sh bilancino [data]               il conto del giorno: consegne/lenti/pareri per repo
 #
 # Il log del giorno: $GIORNO_LOG (default ~/giorno.log), una riga per azione —
@@ -28,9 +29,29 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 source "$HERE/night-shift/lib.sh"   # default_branch, aggiungi_consegna, forme_prima_del_push, lente_pr
 GIORNO_LOG="${GIORNO_LOG:-$HOME/giorno.log}"
 CMD="${1:-}"
-[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | bilancino [data]" >&2; exit 2; }
+[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | bilancino [data]" >&2; exit 2; }
 log() { echo "[giorno $(date '+%H:%M:%S')] $*" >&2; }
 riga_giorno() { echo "[GIORNO $(date '+%F %T')] REPO ${1##*/}: $2" >> "$GIORNO_LOG"; }
+
+# corpo_da_destinazioni <pr-body|issue-comment> — il testo su stdin esce senza le
+# righe colpevoli. Il cancello le elenca INDENTATE dopo la sua intestazione: si
+# tolgono TUTTE, esatte. (Il primo giro filtrava l'uscita grella del tool: non
+# matchava niente e l'email restava nel corpo — banco del 2026-10-09.)
+corpo_da_destinazioni() {
+  local dest="$1" testo out sporche f
+  testo=$(cat)
+  out=$(printf '%s' "$testo" | bash "$HERE/tools/destinazioni-pulite.sh" "$dest" 2>/dev/null) || true
+  sporche=$(sed -n 's/^  //p' <<<"$out")
+  if [ -n "$sporche" ]; then
+    log "cancello destinazioni ($dest): righe con dati personali rimosse"
+    f=$(mktemp "${TMPDIR:-/tmp}/giorno-dest.XXXXXX")
+    printf '%s\n' "$sporche" > "$f"
+    grep -vxF -f "$f" <<<"$testo" || true
+    rm -f "$f"
+  else
+    printf '%s' "$testo"
+  fi
+}
 
 case "$CMD" in
 
@@ -62,16 +83,8 @@ consegna)
   tail -2 <<<"$PUSH_OUT" >&2
   [ "$PUSH_RC" -eq 0 ] || { log "⛔ push fallito"; exit 1; }
   BODY_PR="Consegna del turno di GIORNO attraverso il cancello condiviso: lente sicurezza automatica, forme di segreto verificate prima del push, file nuovi solo se dichiarati. Il censore lascia il parere a comando (giorno.sh parere) — la fusione resta umana."
-  # il corpo passa dal cancello delle destinazioni (come i corpi PR della notte):
-  # le righe con dati personali si TOLGONO TUTTE, la destinazione non le vede mai
-  SPORCHE=$(printf '%s' "$BODY_PR" | bash "$HERE/tools/destinazioni-pulite.sh" pr-body 2>/dev/null); SP_RC=$?
-  if [ "$SP_RC" -eq 1 ] && [ -n "$SPORCHE" ]; then
-    FILTRO=$(mktemp "${TMPDIR:-/tmp}/giorno-filtro.XXXXXX")
-    printf '%s\n' "$SPORCHE" > "$FILTRO"
-    BODY_PR=$(grep -vxF -f "$FILTRO" <<<"$BODY_PR" || true)
-    rm -f "$FILTRO"
-    log "cancello destinazioni: righe con dati personali rimosse dal corpo della PR"
-  fi
+  # il corpo passa dal cancello delle destinazioni (come i corpi PR della notte)
+  BODY_PR=$(printf '%s' "$BODY_PR" | corpo_da_destinazioni pr-body)
   PR_URL=$(gh pr create --draft --head "$BR" --title "giorno: $MSG" --body "$BODY_PR" 2>&1 | tail -1)
   case "$PR_URL" in
     https://*)
@@ -108,6 +121,33 @@ parere)
   exit "$RC"
   ;;
 
+# ── handoff: il passamano giorno→notte (il terzo pezzo dell'harness) ────────────
+# La notte lavora le ISSUE per prime: la coda e' gia' il suo canale. Un handoff
+# e' un'issue etichettata che dice cosa il giorno lascia — decisioni prese,
+# lavoro a metà, cosa verificare sul vivo. Nessuna nuova strada da cablare nel
+# turno: la issue VIENE lavorata, e si chiude quando e' consumata.
+handoff)
+  [ $# -ge 3 ] || { echo "uso: giorno.sh handoff <dir> \"<titolo>\" \"[corpo]\"" >&2; exit 2; }
+  DIR="$2"; TITOLO="$3"; CORPO="${4:-}"
+  cd "$DIR" || exit 2
+  # il corpo passa dal cancello delle destinazioni (l'issue e' pubblica come le PR)
+  CORPO_PULITO=$(printf '%s' "$CORPO" | corpo_da_destinazioni issue-comment)
+  gh label create handoff --color 5319e7 --description "passamano giorno→notte" >/dev/null 2>&1 || true   # esiste gia' o niente permessi: si va avanti senza etichetta
+  BODY_H="Handoff del turno di GIORNO ($(date '+%F %H:%M')).
+
+$CORPO_PULITO
+
+---
+Lasciato dal giorno per la notte: il turno lavora le issue per prime — questa
+e' la sua coda. Va chiusa quando il contenuto e' stato consumato (fatto, o
+tradotto in lavoro vero), non prima."
+  URL_H=$(cd "$DIR" && gh issue create --label handoff --title "[handoff] $TITOLO" --body "$BODY_H" 2>&1 | tail -1)
+  case "$URL_H" in
+    https://*) log "handoff aperto: $URL_H"; riga_giorno "$DIR" "handoff → $URL_H"; echo "$URL_H" ;;
+    *) log "⚠ handoff NON aperto: $URL_H"; riga_giorno "$DIR" "handoff NON aperto ($TITOLO)"; exit 1 ;;
+  esac
+  ;;
+
 # ── bilancino: il conto del giorno, letto dal log vero ───────────────────────────
 bilancino)
   DATA="${2:-$(date +%F)}"
@@ -121,17 +161,18 @@ bilancino)
     else if ($0 ~ / BLOCCATA /) azione="bloccate"
     else if ($0 ~ /[^a-z]lente([^a-z]|$)/) azione="lenti"
     else if ($0 ~ /parere/) azione="pareri"
+    else if ($0 ~ /handoff →/) azione="handoff"
     conta[repo"|"azione]++
     repos[repo]=1
   } END {
     for (r in repos)
-      printf "%s: %d consegne, %d bloccate, %d lenti, %d pareri\n", r,
-        conta[r"|consegna"]+0, conta[r"|bloccate"]+0, conta[r"|lenti"]+0, conta[r"|pareri"]+0
+      printf "%s: %d consegne, %d bloccate, %d lenti, %d pareri, %d handoff\n", r,
+        conta[r"|consegna"]+0, conta[r"|bloccate"]+0, conta[r"|lenti"]+0, conta[r"|pareri"]+0, conta[r"|handoff"]+0
   }'
   ;;
 
 *)
-  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | bilancino [data]" >&2
+  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | bilancino [data]" >&2
   exit 2
   ;;
 esac

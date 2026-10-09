@@ -31,6 +31,7 @@ echo "$*" >> "${GHSTUB_REGISTRO:-/tmp/gh-stub.reg}"
 case "$1 $2" in
   "pr create") echo "https://github.com/obi2kenobi/FINTO/pull/999" ;;
   "pr comment") echo "https://github.com/obi2kenobi/FINTO/issues/999#comment" ;;
+  "issue create") echo "https://github.com/obi2kenobi/FINTO/issues/77" ;;
   *) echo "ok-stub" ;;
 esac
 EOF
@@ -140,10 +141,23 @@ git -C "$R" checkout -q main; git -C "$R" branch -D "$BR_S" -q 2>/dev/null; git 
 grep -q "revisore.sh" "$GP" && ok "giorno parere: cablato sul revisore (il censore del giorno)" || ko "giorno parere: cablato sul revisore"
 grep -q "GIOFIUGI\|--no-merge\|mai la fusione\|parere" "$GP" && ok "giorno parere: il contratto dichiara parere-mai-fusione" || ko "giorno parere: il contratto dichiara parere-mai-fusione"
 
+# ── handoff: il passamano giorno→notte (issue [handoff], corpo pulito) ──────────
+: > "$GHSTUB_REGISTRO"
+HU=$(bash "$GP" handoff "$R" "verificare PATCH-ODA in staging" "il giorno ha lasciato il test a metà: rigenerare e provare. Contatto: luca.rossi@example.com" 2>&1); HU_RC=$?
+if [ "$HU_RC" -eq 0 ] && grep -q "handoff" <<<"$HU"; then
+  ok "handoff: rc 0 con URL"
+else ko "handoff: rc 0 con URL (rc=$HU_RC: $HU)"; fi
+REG_H=$(cat "$GHSTUB_REGISTRO" 2>/dev/null)
+grep -q "label create handoff" <<<"$REG_H" && ok "handoff: l'etichetta viene creata (o tollerata)" || ko "handoff: l'etichetta viene creata"
+grep -q "issue create" <<<"$REG_H" && grep -q -- "--label handoff" <<<"$REG_H" && ok "handoff: issue creata CON etichetta handoff" || ko "handoff: issue creata con etichetta (registro: $REG_H)"
+grep -q "\[handoff\] verificare PATCH-ODA" <<<"$REG_H" && ok "handoff: il titolo porta il prefisso [handoff]" || ko "handoff: il titolo porta il prefisso [handoff]"
+if grep -q "luca.rossi@example.com" <<<"$REG_H"; then ko "handoff: l'email del corpo NON arriva all'issue (cancello destinazioni)"; else ok "handoff: l'email del corpo NON arriva all'issue (cancello destinazioni)"; fi
+grep -q "GIORNO.*handoff" "$GIORNO_LOG" && ok "handoff: la riga è nel log del giorno" || ko "handoff: la riga è nel log del giorno"
+
 # ── bilancino del giorno: le righe del log diventano conto ───────────────────────
-printf '[GIORNO 2026-10-09 10:00:00] REPO repo: consegna → url1 · PULITA\n[GIORNO 2026-10-09 11:00:00] REPO repo: lente · PULITA\n[GIORNO 2026-10-09 12:00:00] REPO altro: parere PR #3\n[GIORNO 2026-10-08 09:00:00] REPO vecchio: consegna → url0\n' > "$GIORNO_LOG"
+printf '[GIORNO 2026-10-09 10:00:00] REPO repo: consegna → url1 · PULITA\n[GIORNO 2026-10-09 11:00:00] REPO repo: lente · PULITA\n[GIORNO 2026-10-09 12:00:00] REPO altro: parere PR #3\n[GIORNO 2026-10-09 13:00:00] REPO altro: handoff → url-h\n[GIORNO 2026-10-08 09:00:00] REPO vecchio: consegna → url0\n' > "$GIORNO_LOG"
 BIL=$(GIORNO_DATA=2026-10-09 bash "$GP" bilancino 2>&1)
-grep -q "repo: 1 consegne\|repo.*1 consegne" <<<"$BIL" && grep -q "1 lenti" <<<"$BIL" && ok "bilancino giorno: consegne e lenti contate per repo" || ko "bilancino giorno: consegne e lenti contate (uscita: $BIL)"
+grep -q "repo: 1 consegne\|repo.*1 consegne" <<<"$BIL" && grep -q "1 lenti" <<<"$BIL" && grep -q "1 handoff" <<<"$BIL" && ok "bilancino giorno: consegne, lenti e handoff contati per repo" || ko "bilancino giorno: consegne, lenti e handoff contati (uscita: $BIL)"
 grep -q "altro" <<<"$BIL" && ! grep -q "vecchio" <<<"$BIL" && ok "bilancino giorno: solo il giorno chiesto (ieri non contamina)" || ko "bilancino giorno: solo il giorno chiesto"
 
 # ── digest: la riga del giorno c'è ───────────────────────────────────────────────
