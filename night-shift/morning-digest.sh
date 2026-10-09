@@ -64,6 +64,22 @@ else
   BODY="LA NOTTE: nessuna riga di ieri ($IERI) nel bilancino — il turno e' girato? (la risposta e' nel log)"
 fi
 
+# (2026-10-09, l'harness del giorno): il conto del GIORNO di ieri, dal log del
+# giorno ($HOME/giorno.log, una riga per consegna/lente/parere — tools/giorno.sh).
+# La misura finora copriva solo la notte: «cosa ha prodotto il giorno?» non aveva
+# risposta. C'e' quando c'e': il digest non dipende dal giorno come il giorno
+# non dipende dalla notte.
+GIORNO_LOG_D="${GIORNO_LOG:-$HOME/giorno.log}"
+if [ -f "$GIORNO_LOG_D" ]; then
+  G_RIGHE=$(grep "^\[GIORNO $IERI " "$GIORNO_LOG_D" 2>/dev/null || true)
+  if [ -n "$G_RIGHE" ]; then
+    G_CONS=$(grep -c "consegna →" <<<"$G_RIGHE" || true)
+    G_BLOC=$(grep -c "BLOCCATA" <<<"$G_RIGHE" || true)
+    G_PAR=$(grep -c "parere" <<<"$G_RIGHE" || true)
+    BODY="$(printf '%s\n\n---\nGIORNO DI IERI (dal log del giorno): %s consegne, %s fermate dal cancello dei segreti, %s pareri del censore' "$BODY" "${G_CONS:-0}" "${G_BLOC:-0}" "${G_PAR:-0}")"
+  fi
+fi
+
 # il SAL del turno: resta SOLO l'elenco delle decisioni pendenti (i contatori
 # cumulativi «196 cicli / 156 PR» erano di sempre, non di stanotte: quella
 # verita' ora vive nel bilancino, sopra)
