@@ -57,8 +57,22 @@ case "$CMD" in
 
 # ── consegna: la pipeline della notte, con la mano del giorno ────────────────────
 consegna)
-  [ $# -ge 3 ] || { echo "uso: giorno.sh consegna <dir> \"<messaggio>\"" >&2; exit 2; }
-  DIR="$2"; MSG="$3"
+  # (dal flusso reale della Vetrina, 2026-10-09): la prima consegna di un
+  # progetto nuovo e' TUTTI file nuovi — senza dichiarazione li sposta tutti
+  # in .git/consegna-fuori (disciplina giusta per la notte, che dichiara via
+  # dichiara_file_nuovo; per il giorno servono gli argomenti, o --tutto quando
+  # e' la persona a prendersi la responsabilita' dell'albero intero).
+  TUTTO=0
+  ARGS=()
+  for a in "${@:3}"; do
+    case "$a" in
+      --tutto) TUTTO=1 ;;
+      *) ARGS+=("$a") ;;
+    esac
+  done
+  [ ${#ARGS[@]} -ge 1 ] || { echo "uso: giorno.sh consegna <dir> \"<messaggio>\" <file...|--tutto>" >&2; exit 2; }
+  DIR="$2"; MSG="${ARGS[0]}"
+  DICHIARATI=("${ARGS[@]:1}")
   [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git: $DIR" >&2; exit 2; }
   cd "$DIR"
   DB=$(default_branch "$DIR")
@@ -69,9 +83,20 @@ consegna)
   BR=$(git branch --show-current)
   case "$BR" in
     giorno/*) ;;
+    # (edge dichiarato, dal banco del flusso reale): due consegne nello STESSO
+    # secondo generano lo stesso nome ramo — la seconda va a monte sul push
     *) BR="giorno/$(date +%Y%m%d-%H%M%S)"; git checkout -b "$BR" -q ;;
   esac
-  aggiungi_consegna "$DIR"   # i file nuovi NON dichiarati restano fuori (e si dice)
+  GD_CONSEGNA=$(git -C "$DIR" rev-parse --absolute-git-dir 2>/dev/null)
+  if [ "$TUTTO" -eq 1 ]; then
+    # --tutto: dichiara ogni non-tracciato (idioma del flusso reale: git ls-files
+    # --others, ricorsivo — le sottodirectory non si perdono come con ls */*)
+    { cd "$DIR" && git ls-files --others --exclude-standard; } > "$GD_CONSEGNA/agente-file-nuovi"
+    log "dichiaro TUTTO il non-tracciato ($(grep -c . "$GD_CONSEGNA/agente-file-nuovi") file): la responsabilita' e' di chi ha detto --tutto"
+  elif [ ${#DICHIARATI[@]} -gt 0 ]; then
+    printf '%s\n' "${DICHIARATI[@]}" >> "$GD_CONSEGNA/agente-file-nuovi"
+  fi
+  aggiungi_consegna "$DIR" ${DICHIARATI[@]+"${DICHIARATI[@]}"}   # i file nuovi NON dichiarati restano fuori (e si dice)
   git commit -qm "$MSG" -m "Turno: giorno" || { log "⛔ commit fallito — niente consegna"; exit 1; }
   if ! forme_prima_del_push "$DIR" "origin/$DB"; then
     git reset -q --soft HEAD~1   # SOFT, non hard: il lavoro di una persona non si distrugge (dichiarato)

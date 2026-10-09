@@ -122,6 +122,31 @@ grep -q "pr create" "$GHSTUB_REGISTRO" && grep -q "pr comment" "$GHSTUB_REGISTRO
 grep -q "GIORNO.*consegna.*pull/999" "$GIORNO_LOG" && ok "giorno consegna: la riga è nel log del giorno" || ko "giorno consegna: la riga è nel log del giorno"
 git -C "$R" checkout -q main && git -C "$R" branch -D "$BR_G" -q
 
+# ── consegna con file DICHIARATI: i nuovi dichiarati ENTRANO, gli altri fuori ──
+: > "$GHSTUB_REGISTRO"
+printf 'function gamma(g) {\n  return g * 3;\n}\n' > "$R/gamma.js"
+printf 'annotazione di passaggio\n' > "$R/passaggio.txt"
+GC2=$(bash "$GP" consegna "$R" "aggiunge gamma dichiarato" gamma.js 2>&1); GC2_RC=$?
+if [ "$GC2_RC" -eq 0 ]; then
+  STAT2=$(git -C "$R" show --stat --format= HEAD)
+  grep -q "gamma.js" <<<"$STAT2" && ok "consegna: il file nuovo DICHIARATO entra nel commit" || ko "consegna: il file dichiarato entra"
+  if grep -q "passaggio.txt" <<<"$STAT2"; then ko "consegna: il non dichiarato resta fuori"; else ok "consegna: il non dichiarato resta fuori"; fi
+else ko "consegna con file dichiarati (rc=$GC2_RC: $GC2)"; fi
+BR2=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BR2" -q 2>/dev/null; rm -f "$R/passaggio.txt"
+
+# ── consegna --tutto: l'albero intero di un progetto nuovo in UN colpo ─────────
+: > "$GHSTUB_REGISTRO"
+mkdir -p "$R/nuovo/sotto"
+printf 'x = 1\n' > "$R/nuovo/a.py"; printf 'y = 2\n' > "$R/nuovo/sotto/b.py"; printf 'z = 3\n' > "$R/nuovo/c.py"
+sleep 1   # il ramo giorno/<secondo>: due consegne nello stesso secondo collidono (edge dichiarato nel tool)
+GC3=$(bash "$GP" consegna "$R" "bootstrap --tutto" --tutto 2>&1); GC3_RC=$?
+if [ "$GC3_RC" -eq 0 ]; then
+  STAT3=$(git -C "$R" show --stat --format= HEAD)
+  grep -q "nuovo/a.py" <<<"$STAT3" && grep -q "nuovo/sotto/b.py" <<<"$STAT3" && ok "consegna --tutto: anche le sottodirectory entrano (il caso prima-consegna)" || ko "consegna --tutto: sottodirectory dentro (stat: $STAT3)"
+  grep -q "dichiaro TUTTO" <<<"$GC3" && ok "consegna --tutto: la responsabilita' e' dichiarata nel log" || ko "consegna --tutto: dichiarazione nel log"
+else ko "consegna --tutto (rc=$GC3_RC: $GC3)"; fi
+BR3=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BR3" -q 2>/dev/null
+
 # ── giorno consegna con SEGRETO: si ferma PRIMA del push, lavoro non distrutto ───
 # (il segreto in un file TRACCATO: come file nuovo non dichiarato verrebbe messo
 #  fuori da aggiungi_consegna PRIMA del commit — quella e' un'altra guardia, gia' provata)
