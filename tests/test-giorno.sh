@@ -122,6 +122,52 @@ grep -q "pr create" "$GHSTUB_REGISTRO" && grep -q "pr comment" "$GHSTUB_REGISTRO
 grep -q "GIORNO.*consegna.*pull/999" "$GIORNO_LOG" && ok "giorno consegna: la riga è nel log del giorno" || ko "giorno consegna: la riga è nel log del giorno"
 git -C "$R" checkout -q main && git -C "$R" branch -D "$BR_G" -q
 
+# ── consegna con file DICHIARATI: i nuovi dichiarati ENTRANO, gli altri fuori ──
+: > "$GHSTUB_REGISTRO"
+printf 'function gamma(g) {\n  return g * 3;\n}\n' > "$R/gamma.js"
+printf 'annotazione di passaggio\n' > "$R/passaggio.txt"
+GC2=$(bash "$GP" consegna "$R" "aggiunge gamma dichiarato" gamma.js 2>&1); GC2_RC=$?
+if [ "$GC2_RC" -eq 0 ]; then
+  STAT2=$(git -C "$R" show --stat --format= HEAD)
+  grep -q "gamma.js" <<<"$STAT2" && ok "consegna: il file nuovo DICHIARATO entra nel commit" || ko "consegna: il file dichiarato entra"
+  if grep -q "passaggio.txt" <<<"$STAT2"; then ko "consegna: il non dichiarato resta fuori"; else ok "consegna: il non dichiarato resta fuori"; fi
+else ko "consegna con file dichiarati (rc=$GC2_RC: $GC2)"; fi
+BR2=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BR2" -q 2>/dev/null; rm -f "$R/passaggio.txt"
+
+# ── consegna --tutto: l'albero intero di un progetto nuovo in UN colpo ─────────
+: > "$GHSTUB_REGISTRO"
+mkdir -p "$R/nuovo/sotto"
+printf 'x = 1\n' > "$R/nuovo/a.py"; printf 'y = 2\n' > "$R/nuovo/sotto/b.py"; printf 'z = 3\n' > "$R/nuovo/c.py"
+sleep 1   # il ramo giorno/<secondo>: due consegne nello stesso secondo collidono (edge dichiarato nel tool)
+GC3=$(bash "$GP" consegna "$R" "bootstrap --tutto" --tutto 2>&1); GC3_RC=$?
+if [ "$GC3_RC" -eq 0 ]; then
+  STAT3=$(git -C "$R" show --stat --format= HEAD)
+  grep -q "nuovo/a.py" <<<"$STAT3" && grep -q "nuovo/sotto/b.py" <<<"$STAT3" && ok "consegna --tutto: anche le sottodirectory entrano (il caso prima-consegna)" || ko "consegna --tutto: sottodirectory dentro (stat: $STAT3)"
+  grep -q "dichiaro TUTTO" <<<"$GC3" && ok "consegna --tutto: la responsabilita' e' dichiarata nel log" || ko "consegna --tutto: dichiarazione nel log"
+else ko "consegna --tutto (rc=$GC3_RC: $GC3)"; fi
+BR3=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BR3" -q 2>/dev/null
+
+# ── il banco del repo decide: rosso = consegna fermata SOFT ────────────────────
+# (ermetico: repo fresco — lo stato condiviso delle consegne precedenti
+#  inquinava la sequenza rosso->verde; le prove non si mescolano)
+RV="$SB/repo-verify"; mkdir -p "$RV"; nuova_repo "$RV" "$SB/rem-verify.git"
+printf 'a\n' > "$RV/base.txt"; git -C "$RV" add -A; git -C "$RV" -c user.name=t -c user.email=t@t commit -qm base -q
+R_PREC="$R"; R="$RV"
+printf '#!/bin/bash\necho "attese eseguite: 1/2 fallite: 1" >&2\nexit 1\n' > "$R/.night-verify"
+printf 'modifica che il banco boccera\n' >> "$R/base.txt"
+GB=$(bash "$GP" consegna "$R" "questa non deve passare" .night-verify 2>&1); GB_RC=$?
+if [ "$GB_RC" -ne 0 ] && grep -q "ROSSO" <<<"$GB"; then
+  ok "banco rosso: consegna FERMATA prima del push (soft, lavoro in albero)"
+else ko "banco rosso: consegna fermata (rc=$GB_RC: $GB)"; fi
+if git -C "$R" show HEAD:base.txt 2>/dev/null | grep -q "boccera"; then ko "banco rosso: il commit sporco NON esiste"; else ok "banco rosso: il commit sporco NON esiste (sciolto)"; fi
+grep -q "boccera" "$R/base.txt" && ok "banco rosso: il lavoro NON e' distrutto" || ko "banco rosso: il lavoro NON e' distrutto"
+printf '#!/bin/bash\necho "attese eseguite: 2/2 fallite: 0"\nexit 0\n' > "$R/.night-verify"
+sleep 1
+GB2=$(bash "$GP" consegna "$R" "questa passa col banco verde" .night-verify 2>&1); GB2_RC=$?
+[ "$GB2_RC" -eq 0 ] && grep -q "banco verde" <<<"$GB2" && ok "banco verde: la consegna passa e LO DICE" || ko "banco verde: consegna passa (rc=$GB2_RC: $GB2)"
+BRB=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRB" -q 2>/dev/null; rm -f "$R/.night-verify"
+R="$R_PREC"   # si torna al repo principale per le sezioni dopo
+
 # ── giorno consegna con SEGRETO: si ferma PRIMA del push, lavoro non distrutto ───
 # (il segreto in un file TRACCATO: come file nuovo non dichiarato verrebbe messo
 #  fuori da aggiungi_consegna PRIMA del commit — quella e' un'altra guardia, gia' provata)
@@ -140,6 +186,27 @@ git -C "$R" checkout -q main; git -C "$R" branch -D "$BR_S" -q 2>/dev/null; git 
 # ── giorno parere: il censore consultabile a comando (D10: parere, mai fusione) ──
 grep -q "revisore.sh" "$GP" && ok "giorno parere: cablato sul revisore (il censore del giorno)" || ko "giorno parere: cablato sul revisore"
 grep -q "GIOFIUGI\|--no-merge\|mai la fusione\|parere" "$GP" && ok "giorno parere: il contratto dichiara parere-mai-fusione" || ko "giorno parere: il contratto dichiara parere-mai-fusione"
+
+# ── consegna con .md fuori stile: il rilievo viene ANNOTATO sulla riga della PR ──
+: > "$GHSTUB_REGISTRO"
+printf "# Nota\n\nLa pagina e' pronta ma il testo e' così così\n" > "$R/nota-accenti.md"
+sleep 1
+GCA=$(bash "$GP" consegna "$R" "nota con accenti" nota-accenti.md 2>&1); GCA_RC=$?
+if [ "$GCA_RC" -eq 0 ] && grep -q "le annoto SULLA RIGA" <<<"$GCA"; then
+  ok "consegna: i rilievi prosa vengono annotati sulla PR (R4, cerchio reviewdog)"
+else ko "consegna: annotazioni in consegna (rc=$GCA_RC: $GCA)"; fi
+REG_A=$(cat "$GHSTUB_REGISTRO" 2>/dev/null)
+if grep -q "pulls/" <<<"$REG_A" && grep -q "path=nota-accenti.md" <<<"$REG_A"; then
+  ok "consegna: l'annotazione porta path e riga (endpoint commenti PR)"
+elif grep -q "annotazioni saltate: origin non e' GitHub" <<<"$GCA"; then
+  ok "consegna: origin non GitHub = annotazioni saltate DICHIARATE (il banco gira su bare locali)"
+else ko "consegna: payload annotazione ($REG_A)"; fi
+BRA=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRA" -q 2>/dev/null
+
+# ── parere del giorno sulle PR del giorno (debito del flusso reale chiuso) ─────
+grep -q "GIORNO_PARERE=1 bash" "$GP" && ok "parere: il giorno CHIEDE il parere (GIORNO_PARERE=1 al revisore)" || ko "parere: il giorno chiede il parere"
+grep -q 'GIORNO_PARERE:-0' "$HERE/night-shift/revisore.sh" && ok "revisore: i rami giorno/* passano SOLO su richiesta, in modo PARERE (mai fusione)" || ko "revisore: cancello GIORNO_PARERE"
+grep -q "non e' night/\*" "$HERE/night-shift/revisore.sh" && ok "revisore: senza richiesta i rami giorno/* restano RIFIUTATI (la notte non li tocca)" || ko "revisore: il rifiuto resta"
 
 # ── handoff: il passamano giorno→notte (issue [handoff], corpo pulito) ──────────
 : > "$GHSTUB_REGISTRO"
