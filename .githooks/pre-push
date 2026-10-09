@@ -1,0 +1,17 @@
+#!/bin/bash
+# pre-push (git) — delega a tools/pre-push.sh nell'hub, o all'hub trovato via
+# AI_PROGRAMMER_HUB / ~/night-shift-work (i satelliti ricevono solo .githooks:
+# il cancello dei segreti vive una volta sola, nell'hub).
+# L'attivazione e' `git config core.hooksPath .githooks` (la fa install.sh /
+# installa-citati.sh); il gancio legge lo stdin di git e lo passa al tool.
+set -uo pipefail
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+if [ -f "$ROOT/tools/pre-push.sh" ]; then
+  exec bash "$ROOT/tools/pre-push.sh"
+fi
+HUB="${AI_PROGRAMMER_HUB:-$HOME/night-shift-work/AI_Programmer}"
+if [ -f "$HUB/tools/pre-push.sh" ]; then
+  exec bash "$HUB/tools/pre-push.sh"
+fi
+echo "[pre-push] ⚠ cancello segreti SALTATO (dichiarato): tools/pre-push.sh non trovato (né locale né in $HUB)" >&2
+exit 0
