@@ -13,7 +13,7 @@ push, file nuovi solo se dichiarati, trailer del turno, commento lente sulla PR.
 ## I comandi (tutti da runnare dalla radice dell'hub o con percorsi assoluti)
 
 ```
-tools/giorno.sh consegna <dir-repo> "messaggio della consegna"
+tools/giorno.sh consegna <dir-repo> "messaggio" [file... | --tutto]  # i nuovi vanno dichiarati; --tutto per la prima consegna di un progetto
 tools/giorno.sh lente <dir-repo> [base]        # default: origin/<default>...HEAD
 tools/giorno.sh parere <dir-repo> <n-pr>       # il censore, a comando
 tools/giorno.sh handoff <dir-repo> "<titolo>" "[corpo]"  # il passamano giorno->notte (issue [handoff])

@@ -207,9 +207,21 @@ TITLE=$(printf '%s' "$PR_JSON" | jq -r '.title')
 IS_DRAFT=$(printf '%s' "$PR_JSON" | jq -r '.isDraft')
 CREATED=$(printf '%s' "$PR_JSON" | jq -r '.createdAt')
 
-case "$BRANCH" in night/*) ;; *) log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2;; esac
+case "$BRANCH" in
+  night/*) ;;
+  giorno/*)
+    # (2026-10-09, debito del flusso reale chiuso): le PR del GIORNO si giudicano
+    # SOLO a parere, e solo quando e' il giorno a chiederlo (GIORNO_PARERE=1 lo
+    # mette tools/giorno.sh): la notte continua a non toccarle, mai.
+    if [ "${GIORNO_PARERE:-0}" = "1" ]; then
+      MODO="parere"; log "PR del giorno ($BRANCH): modo PARERE su richiesta del giorno — mai fusione (D10)"
+    else
+      log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2
+    fi ;;
+  *) log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2;; esac
 case "$TITLE" in
   caccia:*) ;;
+  giorno:*) [ "${GIORNO_PARERE:-0}" = "1" ] && MODO="parere" || { log "guardia: titolo '$TITLE' non mio (ramo giorno senza richiesta)"; exit 2; } ;;
   *) case "$BRANCH" in
        night/issue-*) MODO="parere"; log "PR di issue ($BRANCH): modo PARERE — si giudica, non si fonde (D10)" ;;
        *) log "guardia: titolo non 'caccia:' — non mio"; exit 2 ;;

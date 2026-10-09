@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "92d15c82fbfc32650364b8f513081471429c38c0",
+  "built_at_commit": "1f18e86b97c75b5d660975055b539a512a209f24",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -3058,7 +3058,7 @@
       "relation": "contains",
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L53",
+      "source_location": "L69",
       "target": "claude_skills_giorno_skill_bilancino_il_giorno_misurato",
       "weight": 1.0
     },
@@ -3069,7 +3069,7 @@
       "relation": "contains",
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L23",
+      "source_location": "L24",
       "target": "claude_skills_giorno_skill_consegna_quando_e_come",
       "weight": 1.0
     },
@@ -3080,7 +3080,7 @@
       "relation": "contains",
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "target": "claude_skills_giorno_skill_handoff_il_passamano_alla_notte",
       "weight": 1.0
     },
@@ -3102,7 +3102,7 @@
       "relation": "contains",
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L59",
+      "source_location": "L75",
       "target": "claude_skills_giorno_skill_il_pre_push_automatico_non_serve_memory",
       "weight": 1.0
     },
@@ -3113,7 +3113,18 @@
       "relation": "contains",
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L35",
+      "source_location": "L60",
+      "target": "claude_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L36",
       "target": "claude_skills_giorno_skill_lente_prima_di_consegnare_se_vuoi_vedere",
       "weight": 1.0
     },
@@ -3124,7 +3135,18 @@
       "relation": "contains",
       "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L40",
+      "source_location": "L54",
+      "target": "claude_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "claude_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L41",
       "target": "claude_skills_giorno_skill_parere_il_secondo_occhio",
       "weight": 1.0
     },
@@ -17248,7 +17270,7 @@
       "relation": "contains",
       "source": "docs_ngiri_paralleli_n_giri_paralleli_il_workflow_dichiarativo_dal_campo_repo_i_2026_08_27",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L86",
+      "source_location": "L28",
       "target": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27",
       "weight": 1.0
     },
@@ -17270,8 +17292,8 @@
       "relation": "contains",
       "source": "docs_ngiri_paralleli_n_giri_paralleli_il_workflow_dichiarativo_dal_campo_repo_i_2026_08_27",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L28",
-      "target": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_è_zero_waste_dal_campo_repo_g_2026_08_27",
+      "source_location": "L86",
+      "target": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27_86",
       "weight": 1.0
     },
     {
@@ -20685,7 +20707,7 @@
       "relation": "defines",
       "source": "night_shift_revisore",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L276",
+      "source_location": "L288",
       "target": "night_shift_revisore_ripristina",
       "weight": 1.0
     },
@@ -20792,7 +20814,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L379",
+      "source_location": "L391",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -20804,7 +20826,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L420",
+      "source_location": "L432",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -20816,7 +20838,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L385",
+      "source_location": "L397",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -20828,7 +20850,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L619",
+      "source_location": "L631",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -20852,7 +20874,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L647",
+      "source_location": "L659",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
@@ -20864,7 +20886,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L239",
+      "source_location": "L251",
       "target": "night_shift_revisore_rigetta_deterministico",
       "weight": 1.0
     },
@@ -20876,7 +20898,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L311",
+      "source_location": "L323",
       "target": "night_shift_revisore_rinvia",
       "weight": 1.0
     },
@@ -23368,7 +23390,7 @@
       "relation": "contains",
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L53",
+      "source_location": "L69",
       "target": "opencode_skills_giorno_skill_bilancino_il_giorno_misurato",
       "weight": 1.0
     },
@@ -23379,7 +23401,7 @@
       "relation": "contains",
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L23",
+      "source_location": "L24",
       "target": "opencode_skills_giorno_skill_consegna_quando_e_come",
       "weight": 1.0
     },
@@ -23390,7 +23412,7 @@
       "relation": "contains",
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "target": "opencode_skills_giorno_skill_handoff_il_passamano_alla_notte",
       "weight": 1.0
     },
@@ -23412,7 +23434,7 @@
       "relation": "contains",
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L59",
+      "source_location": "L75",
       "target": "opencode_skills_giorno_skill_il_pre_push_automatico_non_serve_memory",
       "weight": 1.0
     },
@@ -23423,7 +23445,18 @@
       "relation": "contains",
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L35",
+      "source_location": "L60",
+      "target": "opencode_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L36",
       "target": "opencode_skills_giorno_skill_lente_prima_di_consegnare_se_vuoi_vedere",
       "weight": 1.0
     },
@@ -23434,7 +23467,18 @@
       "relation": "contains",
       "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L40",
+      "source_location": "L54",
+      "target": "opencode_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "opencode_skills_giorno_skill_giorno_il_turno_di_chi_programma_alla_luce",
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L41",
       "target": "opencode_skills_giorno_skill_parere_il_secondo_occhio",
       "weight": 1.0
     },
@@ -24954,6 +24998,17 @@
       "source_file": "patterns/banco-sintetico-per-calcoli-critici.md",
       "source_location": "L1",
       "target": "patterns_banco_sintetico_per_calcoli_critici_banco_sintetico_per_calcoli_critici",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "patterns_bsd_sed_niente_interrogativo",
+      "source_file": "patterns/bsd-sed-niente-interrogativo.md",
+      "source_location": "L1",
+      "target": "patterns_bsd_sed_niente_interrogativo_bsd_sed_niente_interrogativo",
       "weight": 1.0
     },
     {
@@ -37558,6 +37613,107 @@
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L17",
+      "target": "tests_test_giorno_osserva_giorno_log",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L11",
+      "target": "tests_test_giorno_osserva_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8",
+      "target": "tests_test_giorno_osserva_lang",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8",
+      "target": "tests_test_giorno_osserva_lc_all",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L10",
+      "target": "tests_test_giorno_osserva_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8",
+      "target": "tests_test_giorno_osserva_path",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tests_test_giorno_osserva",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L1",
+      "target": "tests_test_giorno_osserva_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_giorno_osserva_sh__entry",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L13",
+      "target": "tests_test_giorno_osserva_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_giorno_osserva_sh__entry",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L13",
+      "target": "tests_test_giorno_osserva_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "context": "call",
       "relation": "calls",
       "source": "tests_test_giorno_sh__entry",
@@ -39433,6 +39589,130 @@
       "source_file": "tests/test-leggi-coda.sh",
       "source_location": "L14",
       "target": "tests_test_leggi_coda_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L72",
+      "target": "tests_test_lente_documenti_ghstub_registro",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L14",
+      "target": "tests_test_lente_documenti_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L11",
+      "target": "tests_test_lente_documenti_lang",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L11",
+      "target": "tests_test_lente_documenti_lc_all",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L21",
+      "target": "tests_test_lente_documenti_nuova_repo",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L13",
+      "target": "tests_test_lente_documenti_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L73",
+      "target": "tests_test_lente_documenti_path",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tests_test_lente_documenti",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L1",
+      "target": "tests_test_lente_documenti_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_lente_documenti_sh__entry",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L16",
+      "target": "tests_test_lente_documenti_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_lente_documenti_sh__entry",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L24",
+      "target": "tests_test_lente_documenti_nuova_repo",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_lente_documenti_sh__entry",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L16",
+      "target": "tests_test_lente_documenti_ok",
       "weight": 1.0
     },
     {
@@ -47105,6 +47385,40 @@
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tools_annota",
+      "source_file": "tools/annota.sh",
+      "source_location": "L14",
+      "target": "tools_annota_log",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_annota",
+      "source_file": "tools/annota.sh",
+      "source_location": "L1",
+      "target": "tools_annota_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tools_annota_sh__entry",
+      "source_file": "tools/annota.sh",
+      "source_location": "L16",
+      "target": "tools_annota_log",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "context": "import",
       "relation": "imports",
       "source": "tools_anonimizza",
@@ -49619,7 +49933,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L74",
+      "source_location": "L99",
       "target": "night_shift_lib_aggiungi_consegna",
       "weight": 1.0
     },
@@ -49631,7 +49945,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L76",
+      "source_location": "L116",
       "target": "night_shift_lib_forme_prima_del_push",
       "weight": 1.0
     },
@@ -49643,7 +49957,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L65",
+      "source_location": "L79",
       "target": "tools_giorno_log",
       "weight": 1.0
     },
@@ -49655,7 +49969,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L79",
+      "source_location": "L111",
       "target": "tools_giorno_riga_giorno",
       "weight": 1.0
     },
@@ -50389,6 +50703,51 @@
       "source_file": "tools/lente-dipendenze.sh",
       "source_location": "L1",
       "target": "tools_lente_dipendenze_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tools_lente_documenti",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L23",
+      "target": "tools_lente_documenti_log",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tools_lente_documenti",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L37",
+      "target": "tools_lente_documenti_righe_aggiunte",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_lente_documenti",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L1",
+      "target": "tools_lente_documenti_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tools_lente_documenti_sh__entry",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L27",
+      "target": "tools_lente_documenti_log",
       "weight": 1.0
     },
     {
@@ -56791,7 +57150,7 @@
       "node_kind": "heading",
       "norm_label": "bilancino — il giorno misurato",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L53"
+      "source_location": "L69"
     },
     {
       "_origin": "ast",
@@ -56803,7 +57162,7 @@
       "node_kind": "heading",
       "norm_label": "consegna — quando e come",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L23"
+      "source_location": "L24"
     },
     {
       "_origin": "ast",
@@ -56827,7 +57186,7 @@
       "node_kind": "heading",
       "norm_label": "handoff — il passamano alla notte",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L45"
+      "source_location": "L46"
     },
     {
       "_origin": "ast",
@@ -56851,7 +57210,19 @@
       "node_kind": "heading",
       "norm_label": "il pre-push (automatico, non serve memory)",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L59"
+      "source_location": "L75"
+    },
+    {
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "giorno — il turno di chi programma alla luce",
+      "file_type": "document",
+      "id": "claude_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
+      "label": "l'ergonomia della macchina (installata, LLM-agnostic)",
+      "node_kind": "heading",
+      "norm_label": "l'ergonomia della macchina (installata, llm-agnostic)",
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L60"
     },
     {
       "_origin": "ast",
@@ -56863,7 +57234,19 @@
       "node_kind": "heading",
       "norm_label": "lente — prima di consegnare, se vuoi vedere",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L35"
+      "source_location": "L36"
+    },
+    {
+      "_origin": "ast",
+      "community": 866,
+      "community_name": "giorno — il turno di chi programma alla luce",
+      "file_type": "document",
+      "id": "claude_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
+      "label": "osserva — il ciclo stretto (salvi, il banco riparte)",
+      "node_kind": "heading",
+      "norm_label": "osserva — il ciclo stretto (salvi, il banco riparte)",
+      "source_file": ".claude/skills/giorno/SKILL.md",
+      "source_location": "L54"
     },
     {
       "_origin": "ast",
@@ -56875,7 +57258,7 @@
       "node_kind": "heading",
       "norm_label": "parere — il secondo occhio",
       "source_file": ".claude/skills/giorno/SKILL.md",
-      "source_location": "L40"
+      "source_location": "L41"
     },
     {
       "_origin": "ast",
@@ -76911,11 +77294,11 @@
       "community_name": "N giri paralleli — il workflow dichiarativo (dal campo REPO-I, 2026-08-27)",
       "file_type": "document",
       "id": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27",
-      "label": "La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)",
+      "label": "La consolidazione delle lenti E' zero-waste (dal campo REPO-G, 2026-08-27)",
       "node_kind": "heading",
-      "norm_label": "la consolidazione delle lenti e zero-waste (dal campo repo-g, 2026-08-27)",
+      "norm_label": "la consolidazione delle lenti e' zero-waste (dal campo repo-g, 2026-08-27)",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L86"
+      "source_location": "L28"
     },
     {
       "_origin": "ast",
@@ -76934,12 +77317,12 @@
       "community": 37,
       "community_name": "N giri paralleli — il workflow dichiarativo (dal campo REPO-I, 2026-08-27)",
       "file_type": "document",
-      "id": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_è_zero_waste_dal_campo_repo_g_2026_08_27",
-      "label": "La consolidazione delle lenti È zero-waste (dal campo REPO-G, 2026-08-27)",
+      "id": "docs_ngiri_paralleli_la_consolidazione_delle_lenti_e_zero_waste_dal_campo_repo_g_2026_08_27_86",
+      "label": "La consolidazione delle lenti e zero-waste (dal campo REPO-G, 2026-08-27)",
       "node_kind": "heading",
       "norm_label": "la consolidazione delle lenti e zero-waste (dal campo repo-g, 2026-08-27)",
       "source_file": "docs/ngiri-paralleli.md",
-      "source_location": "L28"
+      "source_location": "L86"
     },
     {
       "_origin": "ast",
@@ -80793,7 +81176,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L276"
+      "source_location": "L288"
     },
     {
       "_origin": "ast",
@@ -83904,7 +84287,7 @@
       "node_kind": "heading",
       "norm_label": "bilancino — il giorno misurato",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L53"
+      "source_location": "L69"
     },
     {
       "_origin": "ast",
@@ -83916,7 +84299,7 @@
       "node_kind": "heading",
       "norm_label": "consegna — quando e come",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L23"
+      "source_location": "L24"
     },
     {
       "_origin": "ast",
@@ -83940,7 +84323,7 @@
       "node_kind": "heading",
       "norm_label": "handoff — il passamano alla notte",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L45"
+      "source_location": "L46"
     },
     {
       "_origin": "ast",
@@ -83964,7 +84347,19 @@
       "node_kind": "heading",
       "norm_label": "il pre-push (automatico, non serve memory)",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L59"
+      "source_location": "L75"
+    },
+    {
+      "_origin": "ast",
+      "community": 867,
+      "community_name": "giorno — il turno di chi programma alla luce",
+      "file_type": "document",
+      "id": "opencode_skills_giorno_skill_l_ergonomia_della_macchina_installata_llm_agnostic",
+      "label": "l'ergonomia della macchina (installata, LLM-agnostic)",
+      "node_kind": "heading",
+      "norm_label": "l'ergonomia della macchina (installata, llm-agnostic)",
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L60"
     },
     {
       "_origin": "ast",
@@ -83976,7 +84371,19 @@
       "node_kind": "heading",
       "norm_label": "lente — prima di consegnare, se vuoi vedere",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L35"
+      "source_location": "L36"
+    },
+    {
+      "_origin": "ast",
+      "community": 867,
+      "community_name": "giorno — il turno di chi programma alla luce",
+      "file_type": "document",
+      "id": "opencode_skills_giorno_skill_osserva_il_ciclo_stretto_salvi_il_banco_riparte",
+      "label": "osserva — il ciclo stretto (salvi, il banco riparte)",
+      "node_kind": "heading",
+      "norm_label": "osserva — il ciclo stretto (salvi, il banco riparte)",
+      "source_file": ".opencode/skills/giorno/SKILL.md",
+      "source_location": "L54"
     },
     {
       "_origin": "ast",
@@ -83988,7 +84395,7 @@
       "node_kind": "heading",
       "norm_label": "parere — il secondo occhio",
       "source_file": ".opencode/skills/giorno/SKILL.md",
-      "source_location": "L40"
+      "source_location": "L41"
     },
     {
       "_origin": "ast",
@@ -86028,6 +86435,30 @@
       "node_kind": "heading",
       "norm_label": "banco-sintetico-per-calcoli-critici",
       "source_file": "patterns/banco-sintetico-per-calcoli-critici.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 879,
+      "community_name": "bsd-sed-niente-interrogativo.md",
+      "file_type": "document",
+      "id": "patterns_bsd_sed_niente_interrogativo",
+      "label": "bsd-sed-niente-interrogativo.md",
+      "node_kind": "page",
+      "norm_label": "bsd-sed-niente-interrogativo.md",
+      "source_file": "patterns/bsd-sed-niente-interrogativo.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 879,
+      "community_name": "bsd-sed-niente-interrogativo.md",
+      "file_type": "document",
+      "id": "patterns_bsd_sed_niente_interrogativo_bsd_sed_niente_interrogativo",
+      "label": "bsd-sed-niente-interrogativo",
+      "node_kind": "heading",
+      "norm_label": "bsd-sed-niente-interrogativo",
+      "source_file": "patterns/bsd-sed-niente-interrogativo.md",
       "source_location": "L1"
     },
     {
@@ -92002,7 +92433,7 @@
     },
     {
       "_origin": "ast",
-      "community": 863,
+      "community": 878,
       "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_è_il_corpus_non_la_cava",
@@ -92014,7 +92445,7 @@
     },
     {
       "_origin": "ast",
-      "community": 863,
+      "community": 878,
       "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
@@ -92026,7 +92457,7 @@
     },
     {
       "_origin": "ast",
-      "community": 863,
+      "community": 878,
       "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
@@ -92038,7 +92469,7 @@
     },
     {
       "_origin": "ast",
-      "community": 863,
+      "community": 878,
       "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
@@ -92350,7 +92781,7 @@
     },
     {
       "_origin": "ast",
-      "community": 863,
+      "community": 878,
       "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
@@ -99313,6 +99744,126 @@
     },
     {
       "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva",
+      "label": "test-giorno-osserva.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "test-giorno-osserva.sh",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_giorno_log",
+      "label": "GIORNO_LOG",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "giorno_log",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L17"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_ko",
+      "label": "ko()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L11"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_lang",
+      "label": "LANG",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "lang",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_lc_all",
+      "label": "LC_ALL",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "lc_all",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_ok",
+      "label": "ok()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L10"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_path",
+      "label": "PATH",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L8"
+    },
+    {
+      "_origin": "ast",
+      "community": 875,
+      "community_name": "test-giorno-osserva.sh",
+      "file_type": "code",
+      "id": "tests_test_giorno_osserva_sh__entry",
+      "label": "test-giorno-osserva.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "test-giorno-osserva.sh script",
+      "source_file": "tests/test-giorno-osserva.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 865,
       "community_name": "test-giorno.sh",
       "file_type": "code",
@@ -101184,6 +101735,141 @@
       },
       "norm_label": "test-leggi-coda.sh script",
       "source_file": "tests/test-leggi-coda.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti",
+      "label": "test-lente-documenti.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "test-lente-documenti.sh",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_ghstub_registro",
+      "label": "GHSTUB_REGISTRO",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "ghstub_registro",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L72"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_ko",
+      "label": "ko()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L14"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_lang",
+      "label": "LANG",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "lang",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L11"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_lc_all",
+      "label": "LC_ALL",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "lc_all",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L11"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_nuova_repo",
+      "label": "nuova_repo()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "nuova_repo()",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L21"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_ok",
+      "label": "ok()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L13"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_path",
+      "label": "PATH",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-lente-documenti.sh",
+      "source_location": "L11"
+    },
+    {
+      "_origin": "ast",
+      "community": 863,
+      "community_name": "test-lente-documenti.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_documenti_sh__entry",
+      "label": "test-lente-documenti.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "test-lente-documenti.sh script",
+      "source_file": "tests/test-lente-documenti.sh",
       "source_location": "L1"
     },
     {
@@ -108667,6 +109353,51 @@
     },
     {
       "_origin": "ast",
+      "community": 877,
+      "community_name": "annota.sh",
+      "file_type": "code",
+      "id": "tools_annota",
+      "label": "annota.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "annota.sh",
+      "source_file": "tools/annota.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 877,
+      "community_name": "annota.sh",
+      "file_type": "code",
+      "id": "tools_annota_log",
+      "label": "log()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/annota.sh",
+      "source_location": "L14"
+    },
+    {
+      "_origin": "ast",
+      "community": 877,
+      "community_name": "annota.sh",
+      "file_type": "code",
+      "id": "tools_annota_sh__entry",
+      "label": "annota.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "annota.sh script",
+      "source_file": "tools/annota.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 174,
       "community_name": "anonimizza.py",
       "file_type": "code",
@@ -111586,6 +112317,66 @@
       },
       "norm_label": "lente-dipendenze.sh script",
       "source_file": "tools/lente-dipendenze.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 876,
+      "community_name": "lente-documenti.sh",
+      "file_type": "code",
+      "id": "tools_lente_documenti",
+      "label": "lente-documenti.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "lente-documenti.sh",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 876,
+      "community_name": "lente-documenti.sh",
+      "file_type": "code",
+      "id": "tools_lente_documenti_log",
+      "label": "log()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "log()",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L23"
+    },
+    {
+      "_origin": "ast",
+      "community": 876,
+      "community_name": "lente-documenti.sh",
+      "file_type": "code",
+      "id": "tools_lente_documenti_righe_aggiunte",
+      "label": "righe_aggiunte()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "righe_aggiunte()",
+      "source_file": "tools/lente-documenti.sh",
+      "source_location": "L37"
+    },
+    {
+      "_origin": "ast",
+      "community": 876,
+      "community_name": "lente-documenti.sh",
+      "file_type": "code",
+      "id": "tools_lente_documenti_sh__entry",
+      "label": "lente-documenti.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "lente-documenti.sh script",
+      "source_file": "tools/lente-documenti.sh",
       "source_location": "L1"
     },
     {

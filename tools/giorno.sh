@@ -57,8 +57,22 @@ case "$CMD" in
 
 # ── consegna: la pipeline della notte, con la mano del giorno ────────────────────
 consegna)
-  [ $# -ge 3 ] || { echo "uso: giorno.sh consegna <dir> \"<messaggio>\"" >&2; exit 2; }
-  DIR="$2"; MSG="$3"
+  # (dal flusso reale della Vetrina, 2026-10-09): la prima consegna di un
+  # progetto nuovo e' TUTTI file nuovi — senza dichiarazione li sposta tutti
+  # in .git/consegna-fuori (disciplina giusta per la notte, che dichiara via
+  # dichiara_file_nuovo; per il giorno servono gli argomenti, o --tutto quando
+  # e' la persona a prendersi la responsabilita' dell'albero intero).
+  TUTTO=0
+  ARGS=()
+  for a in "${@:3}"; do
+    case "$a" in
+      --tutto) TUTTO=1 ;;
+      *) ARGS+=("$a") ;;
+    esac
+  done
+  [ ${#ARGS[@]} -ge 1 ] || { echo "uso: giorno.sh consegna <dir> \"<messaggio>\" <file...|--tutto>" >&2; exit 2; }
+  DIR="$2"; MSG="${ARGS[0]}"
+  DICHIARATI=("${ARGS[@]:1}")
   [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git: $DIR" >&2; exit 2; }
   cd "$DIR"
   DB=$(default_branch "$DIR")
@@ -69,10 +83,36 @@ consegna)
   BR=$(git branch --show-current)
   case "$BR" in
     giorno/*) ;;
+    # (edge dichiarato, dal banco del flusso reale): due consegne nello STESSO
+    # secondo generano lo stesso nome ramo — la seconda va a monte sul push
     *) BR="giorno/$(date +%Y%m%d-%H%M%S)"; git checkout -b "$BR" -q ;;
   esac
-  aggiungi_consegna "$DIR"   # i file nuovi NON dichiarati restano fuori (e si dice)
+  GD_CONSEGNA=$(git -C "$DIR" rev-parse --absolute-git-dir 2>/dev/null)
+  if [ "$TUTTO" -eq 1 ]; then
+    # --tutto: dichiara ogni non-tracciato (idioma del flusso reale: git ls-files
+    # --others, ricorsivo — le sottodirectory non si perdono come con ls */*)
+    { cd "$DIR" && git ls-files --others --exclude-standard; } > "$GD_CONSEGNA/agente-file-nuovi"
+    log "dichiaro TUTTO il non-tracciato ($(grep -c . "$GD_CONSEGNA/agente-file-nuovi") file): la responsabilita' e' di chi ha detto --tutto"
+  elif [ ${#DICHIARATI[@]} -gt 0 ]; then
+    printf '%s\n' "${DICHIARATI[@]}" >> "$GD_CONSEGNA/agente-file-nuovi"
+  fi
+  aggiungi_consegna "$DIR" ${DICHIARATI[@]+"${DICHIARATI[@]}"}   # i file nuovi NON dichiarati restano fuori (e si dice)
   git commit -qm "$MSG" -m "Turno: giorno" || { log "⛔ commit fallito — niente consegna"; exit 1; }
+  # (legge dal Round 2 della Vetrina, 2026-10-09): il banco del repo decide —
+  # una consegna col .night-verify ROSSO non si spinge. La notte lo chiama
+  # «banco CHIUSO»; qui e' soft: commit sciolto, lavoro in albero, si rilancia.
+  # (Limite dichiarato: i .night-verify con righe @N girano incomplete a mano —
+  # vale per loro la regola del registro, notte 2026-10-09.)
+  if [ -f "$DIR/.night-verify" ]; then
+    VERIFICA=$(cd "$DIR" && bash .night-verify 2>&1); VER_RC=$?
+    if [ "$VER_RC" -ne 0 ]; then
+      git reset -q --soft HEAD~1
+      log "⛔ .night-verify ROSSO — consegna fermata (soft, il lavoro resta): $(tail -2 <<<"$VERIFICA" | tr '\n' ' ' | cut -c1-140)"
+      riga_giorno "$DIR" "consegna FERMATA dal banco (rosso)"
+      exit 1
+    fi
+    log "banco verde: $(tail -1 <<<"$VERIFICA" | cut -c1-100)"
+  fi
   if ! forme_prima_del_push "$DIR" "origin/$DB"; then
     git reset -q --soft HEAD~1   # SOFT, non hard: il lavoro di una persona non si distrugge (dichiarato)
     log "⛔ consegna fermata dal cancello dei segreti: commit sciolto (soft), lavoro in albero, ramo $BR"
@@ -91,6 +131,23 @@ consegna)
       VERDETTO=$(lente_pr "$DIR" "origin/$DB" "$BR" "$PR_URL")
       log "$VERDETTO"
       riga_giorno "$DIR" "consegna → $PR_URL · $(tail -1 <<<"$VERDETTO" | grep -oE 'LENTE SICUREZZA: .*' || echo lente?)"
+      # (R4 del flusso, 2026-10-09): i rilievi PROSA della consegna finiscono
+      # SULLA RIGA della PR (errorformat → annota.sh) — il furto reviewdog chiuso
+      # dentro la consegna, non lasciato al ricordo di chi programma
+      if [ -f "$HERE/tools/lente-documenti.sh" ]; then
+        DOC_RIGHE_C=$(bash "$HERE/tools/lente-documenti.sh" "$DIR" "origin/$DB" 2>/dev/null); DOC_RC_C=$?
+        if [ "$DOC_RC_C" -eq 1 ] && [ -n "$DOC_RIGHE_C" ]; then
+          log "lente documenti: $(grep -c ':' <<<"$DOC_RIGHE_C") righe fuori stile — le annoto SULLA RIGA della PR"
+          REPO_SLUG_C=$(git -C "$DIR" remote get-url origin 2>/dev/null | sed -e 's#.*github.com[:/]##' -e 's#\.git$##' | head -1)
+          N_PR_C=$(printf '%s' "$PR_URL" | grep -oE '[0-9]+$')
+          if [ -n "$REPO_SLUG_C" ] && [ -n "$N_PR_C" ]; then
+            printf '%s\n' "$DOC_RIGHE_C" | bash "$HERE/tools/annota.sh" "$REPO_SLUG_C" "$N_PR_C" >/dev/null 2>&1 \
+              || log "⚠ annotazioni non pubblicate (dichiarato)"
+          else
+            log "⚠ annotazioni saltate: origin non e' GitHub (dichiarato)"
+          fi
+        fi
+      fi
       echo "$PR_URL"
       ;;
     *) log "⚠ ramo $BR spinto ma PR NON creata: $PR_URL"; riga_giorno "$DIR" "consegna spinta senza PR ($BR)"; exit 1 ;;
@@ -115,7 +172,7 @@ parere)
   DIR="$2"; N="$3"
   [ -f "$HERE/night-shift/revisore.sh" ] || { echo "⛔ revisore.sh assente" >&2; exit 2; }
   log "censore in parere sulla PR #$N di ${DIR##*/} — parere, mai fusione"
-  OUT=$(bash "$HERE/night-shift/revisore.sh" "$DIR" "$N" 2>&1); RC=$?
+  OUT=$(GIORNO_PARERE=1 bash "$HERE/night-shift/revisore.sh" "$DIR" "$N" 2>&1); RC=$?
   grep -aE "DELIBERA|PARERE:|canone|rigett" <<<"$OUT" | sed 's/^\[revisore [^]]*\] //' | head -6
   riga_giorno "$DIR" "parere PR #$N (rc=$RC)"
   exit "$RC"
@@ -153,7 +210,8 @@ annota)
   [ $# -ge 3 ] || { echo "uso: giorno.sh annota <dir> <n-pr> (errorformat su stdin)" >&2; exit 2; }
   DIR="$2"; N="$3"
   REPO_URL=$(git -C "$DIR" remote get-url origin 2>/dev/null) || { echo "⛔ niente origin in $DIR" >&2; exit 2; }
-  REPO_SLUG=$(sed -n 's#.*github.com[:/]\([^/]*/[^.]*\)\(\.git\)\?$#\1#p' <<<"$REPO_URL" | head -1)
+  # (trappola BSD): \? non esiste nel sed di macOS — strip in due tempi
+  REPO_SLUG=$(printf '%s' "$REPO_URL" | sed -e 's#.*github.com[:/]##' -e 's#\.git$##' | head -1)
   [ -n "$REPO_SLUG" ] || { echo "⛔ origin non GitHub: $REPO_URL" >&2; exit 2; }
   bash "$HERE/tools/annota.sh" "$REPO_SLUG" "$N"
   RC=$?
