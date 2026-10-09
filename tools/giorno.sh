@@ -138,7 +138,7 @@ consegna)
         DOC_RIGHE_C=$(bash "$HERE/tools/lente-documenti.sh" "$DIR" "origin/$DB" 2>/dev/null); DOC_RC_C=$?
         if [ "$DOC_RC_C" -eq 1 ] && [ -n "$DOC_RIGHE_C" ]; then
           log "lente documenti: $(grep -c ':' <<<"$DOC_RIGHE_C") righe fuori stile — le annoto SULLA RIGA della PR"
-          REPO_SLUG_C=$(git -C "$DIR" remote get-url origin 2>/dev/null | sed -n 's#.*github.com[:/]\\([^/]*/[^.]*\\)\\(\\.git\\)\\?$#\\1#p' | head -1)
+          REPO_SLUG_C=$(git -C "$DIR" remote get-url origin 2>/dev/null | sed -e 's#.*github.com[:/]##' -e 's#\.git$##' | head -1)
           N_PR_C=$(printf '%s' "$PR_URL" | grep -oE '[0-9]+$')
           if [ -n "$REPO_SLUG_C" ] && [ -n "$N_PR_C" ]; then
             printf '%s\n' "$DOC_RIGHE_C" | bash "$HERE/tools/annota.sh" "$REPO_SLUG_C" "$N_PR_C" >/dev/null 2>&1 \
@@ -210,7 +210,8 @@ annota)
   [ $# -ge 3 ] || { echo "uso: giorno.sh annota <dir> <n-pr> (errorformat su stdin)" >&2; exit 2; }
   DIR="$2"; N="$3"
   REPO_URL=$(git -C "$DIR" remote get-url origin 2>/dev/null) || { echo "⛔ niente origin in $DIR" >&2; exit 2; }
-  REPO_SLUG=$(sed -n 's#.*github.com[:/]\([^/]*/[^.]*\)\(\.git\)\?$#\1#p' <<<"$REPO_URL" | head -1)
+  # (trappola BSD): \? non esiste nel sed di macOS — strip in due tempi
+  REPO_SLUG=$(printf '%s' "$REPO_URL" | sed -e 's#.*github.com[:/]##' -e 's#\.git$##' | head -1)
   [ -n "$REPO_SLUG" ] || { echo "⛔ origin non GitHub: $REPO_URL" >&2; exit 2; }
   bash "$HERE/tools/annota.sh" "$REPO_SLUG" "$N"
   RC=$?
