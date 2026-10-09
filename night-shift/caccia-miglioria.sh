@@ -318,7 +318,7 @@ if [ "$TRANSFORMED" -eq 0 ]; then
   # rianima_ollama, «NESSUN rianimamento») non arrivavano al log. Le righe che contano si rilanciano.
   ERR_AGENTE=$(mktemp "${TMPDIR:-/tmp}/miglioria-agente.XXXXXX")
   AGENTE_TIMEOUT="${AGENTE_TIMEOUT:-600}" AGENTE_ANONIMIZZA="${AGENTE_ANONIMIZZA:-1}" bash "$AGENT_CMD" "$DIR" "$PROMPT" 2>"$ERR_AGENTE" || AGENTE_RC=$?
-  while IFS= read -r _r; do log "agente: $_r"; done < <(grep -aE '⚠|⛔|rianima_ollama' "$ERR_AGENTE" | head -8)
+  while IFS= read -r _r; do log "agente: $_r"; done < <(grep -aE '⚠|⛔|rianima_ollama|contesto iniziale|REVOCATO' "$ERR_AGENTE" | head -8)
   rm -f "$ERR_AGENTE"
 fi
 
