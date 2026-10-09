@@ -32,12 +32,19 @@ while IFS= read -r f; do
   # nudi e toglieva solo il primo e l'ultimo — con piu' blocchi i tag interni restavano nel JS
   # (falso KO) e un <script type="…"> non veniva letto. Ora: ogni blocco inline, attributi o
   # no (esclusi quelli con src, che non hanno corpo nostro), uno dopo l'altro.
+  # (2026-10-09, Scadenzario-clienti-fornitori): le webapp GAS a template compongono il
+  # <script> con scriptlet `<?!= include('parte') ?>` a riga intera (CEO.html: 12 include
+  # dentro il blocco) — node --check rigetta il `<?` e la webapp risultava ingiudicabile
+  # (falso KO su un repo tutto verde). Ogni scriptlet `<?…?>` diventa `null`, valido sia
+  # come statement sia come espressione. Limite dichiarato: gli scriptlet di controllo
+  # `<? if ?>…<? } ?>` che spezzano la sintassi restano fuori portata (best effort).
   python3 - "$f" > "$TMP/h.js" <<'PYSCR'
 import re, sys
 html = open(sys.argv[1], encoding="utf-8", errors="replace").read()
 for attrs, corpo in re.findall(r"<script(\s[^>]*)?>(.*?)</script>", html, flags=re.S | re.I):
     if attrs and re.search(r"\bsrc\s*=", attrs, re.I):
         continue
+    corpo = re.sub(r"<\?.*?\?>", "null", corpo, flags=re.S)
     print(corpo)
 PYSCR
   [ -s "$TMP/h.js" ] || continue
