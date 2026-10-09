@@ -131,6 +131,23 @@ consegna)
       VERDETTO=$(lente_pr "$DIR" "origin/$DB" "$BR" "$PR_URL")
       log "$VERDETTO"
       riga_giorno "$DIR" "consegna → $PR_URL · $(tail -1 <<<"$VERDETTO" | grep -oE 'LENTE SICUREZZA: .*' || echo lente?)"
+      # (R4 del flusso, 2026-10-09): i rilievi PROSA della consegna finiscono
+      # SULLA RIGA della PR (errorformat → annota.sh) — il furto reviewdog chiuso
+      # dentro la consegna, non lasciato al ricordo di chi programma
+      if [ -f "$HERE/tools/lente-documenti.sh" ]; then
+        DOC_RIGHE_C=$(bash "$HERE/tools/lente-documenti.sh" "$DIR" "origin/$DB" 2>/dev/null); DOC_RC_C=$?
+        if [ "$DOC_RC_C" -eq 1 ] && [ -n "$DOC_RIGHE_C" ]; then
+          log "lente documenti: $(grep -c ':' <<<"$DOC_RIGHE_C") righe fuori stile — le annoto SULLA RIGA della PR"
+          REPO_SLUG_C=$(git -C "$DIR" remote get-url origin 2>/dev/null | sed -n 's#.*github.com[:/]\\([^/]*/[^.]*\\)\\(\\.git\\)\\?$#\\1#p' | head -1)
+          N_PR_C=$(printf '%s' "$PR_URL" | grep -oE '[0-9]+$')
+          if [ -n "$REPO_SLUG_C" ] && [ -n "$N_PR_C" ]; then
+            printf '%s\n' "$DOC_RIGHE_C" | bash "$HERE/tools/annota.sh" "$REPO_SLUG_C" "$N_PR_C" >/dev/null 2>&1 \
+              || log "⚠ annotazioni non pubblicate (dichiarato)"
+          else
+            log "⚠ annotazioni saltate: origin non e' GitHub (dichiarato)"
+          fi
+        fi
+      fi
       echo "$PR_URL"
       ;;
     *) log "⚠ ramo $BR spinto ma PR NON creata: $PR_URL"; riga_giorno "$DIR" "consegna spinta senza PR ($BR)"; exit 1 ;;

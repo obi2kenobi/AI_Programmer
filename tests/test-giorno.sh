@@ -181,6 +181,22 @@ git -C "$R" checkout -q main; git -C "$R" branch -D "$BR_S" -q 2>/dev/null; git 
 grep -q "revisore.sh" "$GP" && ok "giorno parere: cablato sul revisore (il censore del giorno)" || ko "giorno parere: cablato sul revisore"
 grep -q "GIOFIUGI\|--no-merge\|mai la fusione\|parere" "$GP" && ok "giorno parere: il contratto dichiara parere-mai-fusione" || ko "giorno parere: il contratto dichiara parere-mai-fusione"
 
+# ── consegna con .md fuori stile: il rilievo viene ANNOTATO sulla riga della PR ──
+: > "$GHSTUB_REGISTRO"
+printf "# Nota\n\nLa pagina e' pronta ma il testo e' così così\n" > "$R/nota-accenti.md"
+sleep 1
+GCA=$(bash "$GP" consegna "$R" "nota con accenti" nota-accenti.md 2>&1); GCA_RC=$?
+if [ "$GCA_RC" -eq 0 ] && grep -q "le annoto SULLA RIGA" <<<"$GCA"; then
+  ok "consegna: i rilievi prosa vengono annotati sulla PR (R4, cerchio reviewdog)"
+else ko "consegna: annotazioni in consegna (rc=$GCA_RC: $GCA)"; fi
+REG_A=$(cat "$GHSTUB_REGISTRO" 2>/dev/null)
+if grep -q "pulls/" <<<"$REG_A" && grep -q "path=nota-accenti.md" <<<"$REG_A"; then
+  ok "consegna: l'annotazione porta path e riga (endpoint commenti PR)"
+elif grep -q "annotazioni saltate: origin non e' GitHub" <<<"$GCA"; then
+  ok "consegna: origin non GitHub = annotazioni saltate DICHIARATE (il banco gira su bare locali)"
+else ko "consegna: payload annotazione ($REG_A)"; fi
+BRA=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRA" -q 2>/dev/null
+
 # ── handoff: il passamano giorno→notte (issue [handoff], corpo pulito) ──────────
 : > "$GHSTUB_REGISTRO"
 HU=$(bash "$GP" handoff "$R" "verificare PATCH-ODA in staging" "il giorno ha lasciato il test a metà: rigenerare e provare. Contatto: luca.rossi@example.com" 2>&1); HU_RC=$?
