@@ -67,6 +67,39 @@ fi
 RIASSUNTO=$(grep -oE 'Rebuilt: [0-9]+ nodes, [0-9]+ edges' <<<"$UPD" | tail -1)
 log "update riuscito in $(( $(date +%s) - T0 ))s: ${RIASSUNTO:-nessuna modifica al codice}"
 
+# 4bis. (2026-10-09, «occhio ai conflitti in pr»): CANONIZZAZIONE. GitHub non esegue
+# i merge-driver locali (punto 3: valgono per le fusioni fatte NEI cloni), e l'ordine
+# di emissione dei nodi non e' stabile: ogni rebuild riscrive il file intero e due PR
+# contemporanee confliggono SOLO lato GitHub (misurato: #262/#263, riprodotto in
+# tests/test-grafo-stabile.sh). Ordine canonico — nodi per id, links per source+target,
+# chiavi ordinate, UTF-8 letterale: stesse sorgenti → stessi byte; il diff di un ramo
+# resta localizzato ai nodi che tocca davvero → il 3-way di GitHub fonde da solo.
+# Il driver locale resta: i casi di sovrapposizione vera si uniscono in locale.
+if python3 - "$OUT/graph.json" <<'PYCANON'
+import json, sys
+p = sys.argv[1]
+try:
+    with open(p, encoding="utf-8") as f:
+        d = json.load(f)
+except Exception:
+    sys.exit(1)
+if isinstance(d.get("nodes"), list):
+    d["nodes"] = sorted(d["nodes"], key=lambda n: (str(n.get("id", "")), str(n.get("label", ""))))
+if isinstance(d.get("links"), list):
+    d["links"] = sorted(d["links"], key=lambda l: (str(l.get("source", "")), str(l.get("target", "")), str(l.get("key", ""))))
+if isinstance(d.get("hyperedges"), list):
+    d["hyperedges"] = sorted(d["hyperedges"], key=lambda h: json.dumps(h, sort_keys=True, ensure_ascii=False))
+with open(p, "w", encoding="utf-8") as f:
+    json.dump(d, f, sort_keys=True, indent=2, ensure_ascii=False)
+    f.write("\n")
+PYCANON
+then
+  log "grafo canonizzato (ordine stabile: i diff restano localizzati)"
+else
+  log "CANONIZZAZIONE SALTATA: graph.json non leggibile — il grafo resta come emesso graphify"
+  echo "graphify-spina: ⚠ canonizzazione saltata (graph.json non leggibile)"
+fi
+
 # 5. in stage per il commit
 if [ "$STAGE" -eq 1 ]; then
   git -C "$DIR" add graphify-out/.gitignore graphify-out/.gitattributes graphify-out/graph.json 2>>"$LOG" \

@@ -16,6 +16,7 @@ push, file nuovi solo se dichiarati, trailer del turno, commento lente sulla PR.
 tools/giorno.sh consegna <dir-repo> "messaggio della consegna"
 tools/giorno.sh lente <dir-repo> [base]        # default: origin/<default>...HEAD
 tools/giorno.sh parere <dir-repo> <n-pr>       # il censore, a comando
+tools/giorno.sh handoff <dir-repo> "<titolo>" "[corpo]"  # il passamano giorno->notte (issue [handoff])
 tools/giorno.sh bilancino [data]               # default: oggi
 ```
 
@@ -40,6 +41,14 @@ Uscita 0 PULITA · 1 RILIEVI · 2 DEGRADATA. `LENTE_STUB` passa attraverso (test
 
 Il censore (revisore) guarda la PR e lascia il suo parere coi motivi. Da usare
 quando una PR del giorno o della notte merita un giudizio prima del merge.
+
+## handoff — il passamano alla notte
+
+Quando la sessione del giorno chiude con qualcosa in mano (decisione presa,
+lavoro a metà, verifica sul vivo che manca), si lascia un'issue `[handoff]`:
+la notte lavora le issue per prime, quindi il passamano entra nella sua coda
+senza nuove strade. Il corpo passa dal cancello delle destinazioni: nessun
+dato personale nell'issue. Va chiusa quando consumata.
 
 ## bilancino — il giorno misurato
 
