@@ -41,6 +41,11 @@ for P in $LENTI $CITATI $GUARDIANI $FORMATI; do
     # il CONTENUTO nella directory (cp -r dir dir annida: .githooks/.githooks), file per file
     while IFS= read -r F; do
       R="$P/${F#"$HERE/$P/"}"
+      # (2026-10-09, controllo incrociato del giorno): un satellite puo' avere un
+      # pre-push SUO (AI_Develop: tools/gate.sh, quattro gate del repo) — il
+      # delegatore dell'hub si aggiunge SOLO dove non c'e' niente: mai sopra un
+      # cancello che il repo possiede gia'. Chi ha il suo, tiene il suo.
+      case "$R" in .githooks/pre-push) [ -e "$DEST/$R" ] && continue ;; esac
       [ "$SOLO_MANCANTI" -eq 1 ] && [ -e "$DEST/$R" ] && continue
       cmp -s "$F" "$DEST/$R" && continue   # (S2 R6): identico = niente da scrivere, niente da contare
       mkdir -p "$DEST/$(dirname "$R")"
