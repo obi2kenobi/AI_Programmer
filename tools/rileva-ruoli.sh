@@ -69,7 +69,8 @@ fi
 
 # ── per censimento: la forma del codice parla ───────────────────────────────
 # (giro 6): la webapp GAS (App.html o simili) ha il suo verificatore d'interfaccia
-if [ "$(find "$DIR" -name 'App.html' -not -path '*/.git/*' 2>/dev/null | head -1)" != "" ] || [ "$N_GS" -gt 0 ] && find "$DIR" -maxdepth 2 -name '*.html' -not -path '*/.git/*' 2>/dev/null | grep -q .; then
+_cp=$([ "$N_GS" -gt 0 ] && find "$DIR" -maxdepth 2 -name '*.html' -not -path '*/.git/*' 2>/dev/null) || true
+if [ "$(find "$DIR" -name 'App.html' -not -path '*/.git/*' 2>/dev/null | head -1)" != "" ] || grep -q . <<<"$_cp"; then
   attiva verificatore-frontend "censimento: webapp HTML nel repo GAS"
 fi
 if [ "$N_GS" -gt 0 ]; then
