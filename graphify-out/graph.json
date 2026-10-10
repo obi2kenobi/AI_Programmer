@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "1f18e86b97c75b5d660975055b539a512a209f24",
+  "built_at_commit": "33457b50e4254501c3414ebd6f37c1a03b0e1c77",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -37517,7 +37517,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L39",
+      "source_location": "L44",
       "target": "tests_test_giorno_ghstub_registro",
       "weight": 1.0
     },
@@ -37528,7 +37528,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L23",
+      "source_location": "L28",
       "target": "tests_test_giorno_giorno_log",
       "weight": 1.0
     },
@@ -37539,7 +37539,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L15",
+      "source_location": "L16",
       "target": "tests_test_giorno_ko",
       "weight": 1.0
     },
@@ -37550,7 +37550,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L12",
+      "source_location": "L13",
       "target": "tests_test_giorno_lang",
       "weight": 1.0
     },
@@ -37561,7 +37561,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L12",
+      "source_location": "L13",
       "target": "tests_test_giorno_lc_all",
       "weight": 1.0
     },
@@ -37572,7 +37572,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L48",
+      "source_location": "L53",
       "target": "tests_test_giorno_nuova_repo",
       "weight": 1.0
     },
@@ -37583,7 +37583,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L14",
+      "source_location": "L15",
       "target": "tests_test_giorno_ok",
       "weight": 1.0
     },
@@ -37594,7 +37594,7 @@
       "relation": "defines",
       "source": "tests_test_giorno",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L40",
+      "source_location": "L45",
       "target": "tests_test_giorno_path",
       "weight": 1.0
     },
@@ -37718,7 +37718,7 @@
       "relation": "calls",
       "source": "tests_test_giorno_sh__entry",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L17",
+      "source_location": "L18",
       "target": "tests_test_giorno_ko",
       "weight": 1.0
     },
@@ -37730,7 +37730,7 @@
       "relation": "calls",
       "source": "tests_test_giorno_sh__entry",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L59",
+      "source_location": "L64",
       "target": "tests_test_giorno_nuova_repo",
       "weight": 1.0
     },
@@ -37742,7 +37742,7 @@
       "relation": "calls",
       "source": "tests_test_giorno_sh__entry",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L17",
+      "source_location": "L18",
       "target": "tests_test_giorno_ok",
       "weight": 1.0
     },
@@ -49865,7 +49865,7 @@
       "relation": "imports_from",
       "source": "tools_giorno",
       "source_file": "tools/giorno.sh",
-      "source_location": "L29",
+      "source_location": "L36",
       "target": "night_shift_lib",
       "weight": 1.0
     },
@@ -49876,7 +49876,7 @@
       "relation": "defines",
       "source": "tools_giorno",
       "source_file": "tools/giorno.sh",
-      "source_location": "L40",
+      "source_location": "L47",
       "target": "tools_giorno_corpo_da_destinazioni",
       "weight": 1.0
     },
@@ -49887,7 +49887,18 @@
       "relation": "defines",
       "source": "tools_giorno",
       "source_file": "tools/giorno.sh",
-      "source_location": "L33",
+      "source_location": "L268",
+      "target": "tools_giorno_ctrl",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tools_giorno",
+      "source_file": "tools/giorno.sh",
+      "source_location": "L40",
       "target": "tools_giorno_log",
       "weight": 1.0
     },
@@ -49898,7 +49909,7 @@
       "relation": "defines",
       "source": "tools_giorno",
       "source_file": "tools/giorno.sh",
-      "source_location": "L34",
+      "source_location": "L41",
       "target": "tools_giorno_riga_giorno",
       "weight": 1.0
     },
@@ -49921,7 +49932,7 @@
       "relation": "calls",
       "source": "tools_giorno_corpo_da_destinazioni",
       "source_file": "tools/giorno.sh",
-      "source_location": "L46",
+      "source_location": "L53",
       "target": "tools_giorno_log",
       "weight": 1.0
     },
@@ -49933,7 +49944,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L99",
+      "source_location": "L106",
       "target": "night_shift_lib_aggiungi_consegna",
       "weight": 1.0
     },
@@ -49945,7 +49956,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L116",
+      "source_location": "L123",
       "target": "night_shift_lib_forme_prima_del_push",
       "weight": 1.0
     },
@@ -49957,7 +49968,19 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L79",
+      "source_location": "L277",
+      "target": "tools_giorno_ctrl",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tools_giorno_sh__entry",
+      "source_file": "tools/giorno.sh",
+      "source_location": "L86",
       "target": "tools_giorno_log",
       "weight": 1.0
     },
@@ -49969,7 +49992,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L111",
+      "source_location": "L118",
       "target": "tools_giorno_riga_giorno",
       "weight": 1.0
     },
@@ -50712,7 +50735,7 @@
       "relation": "defines",
       "source": "tools_lente_documenti",
       "source_file": "tools/lente-documenti.sh",
-      "source_location": "L23",
+      "source_location": "L31",
       "target": "tools_lente_documenti_log",
       "weight": 1.0
     },
@@ -50723,7 +50746,7 @@
       "relation": "defines",
       "source": "tools_lente_documenti",
       "source_file": "tools/lente-documenti.sh",
-      "source_location": "L37",
+      "source_location": "L49",
       "target": "tools_lente_documenti_righe_aggiunte",
       "weight": 1.0
     },
@@ -50746,7 +50769,7 @@
       "relation": "calls",
       "source": "tools_lente_documenti_sh__entry",
       "source_file": "tools/lente-documenti.sh",
-      "source_location": "L27",
+      "source_location": "L39",
       "target": "tools_lente_documenti_log",
       "weight": 1.0
     },
@@ -79932,8 +79955,8 @@
     },
     {
       "_origin": "ast",
-      "community": 874,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "night_shift_lib_conta_non_convergenza",
       "label": "conta_non_convergenza()",
@@ -79962,8 +79985,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 874,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "night_shift_lib_dichiara_file_nuovo",
       "label": "dichiara_file_nuovo()",
@@ -80037,8 +80060,8 @@
     },
     {
       "_origin": "ast",
-      "community": 868,
-      "community_name": "giorno.sh",
+      "community": 11,
+      "community_name": "shift_repo",
       "file_type": "code",
       "id": "night_shift_lib_forme_prima_del_push",
       "label": "forme_prima_del_push()",
@@ -96714,8 +96737,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 874,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata",
       "label": "test-consegna-dichiarata.sh",
@@ -96729,8 +96752,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 874,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_g",
       "label": "g()",
@@ -96744,8 +96767,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 874,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_ko",
       "label": "ko()",
@@ -96759,8 +96782,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 874,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_ok",
       "label": "ok()",
@@ -96774,8 +96797,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 874,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_sh__entry",
       "label": "test-consegna-dichiarata.sh script",
@@ -99650,7 +99673,7 @@
       },
       "norm_label": "ghstub_registro",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L39"
+      "source_location": "L44"
     },
     {
       "_origin": "ast",
@@ -99665,7 +99688,7 @@
       },
       "norm_label": "giorno_log",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L23"
+      "source_location": "L28"
     },
     {
       "_origin": "ast",
@@ -99680,7 +99703,7 @@
       },
       "norm_label": "ko()",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L15"
+      "source_location": "L16"
     },
     {
       "_origin": "ast",
@@ -99695,7 +99718,7 @@
       },
       "norm_label": "lang",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L12"
+      "source_location": "L13"
     },
     {
       "_origin": "ast",
@@ -99710,7 +99733,7 @@
       },
       "norm_label": "lc_all",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L12"
+      "source_location": "L13"
     },
     {
       "_origin": "ast",
@@ -99725,7 +99748,7 @@
       },
       "norm_label": "nuova_repo()",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L48"
+      "source_location": "L53"
     },
     {
       "_origin": "ast",
@@ -99740,7 +99763,7 @@
       },
       "norm_label": "ok()",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L14"
+      "source_location": "L15"
     },
     {
       "_origin": "ast",
@@ -99875,7 +99898,7 @@
       },
       "norm_label": "path",
       "source_file": "tests/test-giorno.sh",
-      "source_location": "L12"
+      "source_location": "L13"
     },
     {
       "_origin": "ast",
@@ -103479,8 +103502,8 @@
     },
     {
       "_origin": "ast",
-      "community": 874,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge",
       "label": "test-non-converge.sh",
@@ -103494,8 +103517,8 @@
     },
     {
       "_origin": "ast",
-      "community": 874,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ko",
       "label": "ko()",
@@ -103509,8 +103532,8 @@
     },
     {
       "_origin": "ast",
-      "community": 874,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ok",
       "label": "ok()",
@@ -103524,8 +103547,8 @@
     },
     {
       "_origin": "ast",
-      "community": 874,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_sh__entry",
       "label": "test-non-converge.sh script",
@@ -111586,7 +111609,22 @@
       },
       "norm_label": "corpo_da_destinazioni()",
       "source_file": "tools/giorno.sh",
-      "source_location": "L40"
+      "source_location": "L47"
+    },
+    {
+      "_origin": "ast",
+      "community": 868,
+      "community_name": "giorno.sh",
+      "file_type": "code",
+      "id": "tools_giorno_ctrl",
+      "label": "ctrl()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ctrl()",
+      "source_file": "tools/giorno.sh",
+      "source_location": "L268"
     },
     {
       "_origin": "ast",
@@ -111601,7 +111639,7 @@
       },
       "norm_label": "log()",
       "source_file": "tools/giorno.sh",
-      "source_location": "L33"
+      "source_location": "L40"
     },
     {
       "_origin": "ast",
@@ -111616,7 +111654,7 @@
       },
       "norm_label": "riga_giorno()",
       "source_file": "tools/giorno.sh",
-      "source_location": "L34"
+      "source_location": "L41"
     },
     {
       "_origin": "ast",
@@ -112347,7 +112385,7 @@
       },
       "norm_label": "log()",
       "source_file": "tools/lente-documenti.sh",
-      "source_location": "L23"
+      "source_location": "L31"
     },
     {
       "_origin": "ast",
@@ -112362,7 +112400,7 @@
       },
       "norm_label": "righe_aggiunte()",
       "source_file": "tools/lente-documenti.sh",
-      "source_location": "L37"
+      "source_location": "L49"
     },
     {
       "_origin": "ast",
