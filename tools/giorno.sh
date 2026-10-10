@@ -13,10 +13,17 @@
 # censore si consulta a comando (parere, MAI fusione: D10 vale anche di giorno).
 #
 # Uso:
-#   giorno.sh consegna <dir> "<messaggio>"   working tree → ramo giorno/* → gate → push → PR → lente
+#   giorno.sh consegna <dir> "<msg>" [file...|--tutto]  working tree → ramo giorno/* → banco → gate → push → PR → lente → annota
 #   giorno.sh lente <dir> [base]             il rapporto della lente sicurezza sul diff (base...HEAD)
+#   giorno.sh rivedi <dir>                   il pre-volo: banco + lenti, PRONTO / NON consegnare
 #   giorno.sh parere <dir> <n-pr>            il censore giudica la PR #n (parere, mai fusione)
 #   giorno.sh handoff <dir> "<titolo>" "[corpo]"  il passamano giorno->notte: issue [handoff]
+#   giorno.sh annota <dir> <n-pr>            righe errorformat → annotazioni SULLA RIGA della PR
+#   giorno.sh osserva <dir> [cmd] [--lenti]  il ciclo stretto: a ogni salvataggio banco (e lente viva)
+#   giorno.sh controllo <dir> [--ci]         l'auto-diagnosi (--ci: i cablaggi percorsi davvero)
+#   giorno.sh contesto <dir> [file...]       il canone assemblato per il bersaglio
+#   giorno.sh scrivania                      il lavoro vivo: worktree, rami, sacche, handoff
+#   giorno.sh tempo <dir>                    la misura del banco, con drift
 #   giorno.sh bilancino [data]               il conto del giorno: consegne/lenti/pareri per repo
 #
 # Il log del giorno: $GIORNO_LOG (default ~/giorno.log), una riga per azione —
@@ -29,7 +36,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 source "$HERE/night-shift/lib.sh"   # default_branch, aggiungi_consegna, forme_prima_del_push, lente_pr
 GIORNO_LOG="${GIORNO_LOG:-$HOME/giorno.log}"
 CMD="${1:-}"
-[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | osserva <dir> [cmd] | bilancino [data]" >&2; exit 2; }
+[ -n "$CMD" ] || { echo "uso: giorno.sh consegna <dir> <msg> | controllo <dir> | contesto <dir> [file...] | scrivania | | consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | osserva <dir> [cmd] | bilancino [data]" >&2; exit 2; }
 log() { echo "[giorno $(date '+%H:%M:%S')] $*" >&2; }
 riga_giorno() { echo "[GIORNO $(date '+%F %T')] REPO ${1##*/}: $2" >> "$GIORNO_LOG"; }
 
@@ -223,9 +230,11 @@ annota)
 # (furto da watchexec/entr: il feedback loop Change→Verify in un comando; qui
 # girano il .night-verify del repo o il comando che dici). Ctrl-C per uscire.
 osserva)
-  [ $# -ge 2 ] || { echo "uso: giorno.sh osserva <dir> [comando]" >&2; exit 2; }
-  DIR="$2"; CMD_O="${3:-}"
-  if [ -z "$CMD_O" ]; then
+  [ $# -ge 2 ] || { echo "uso: giorno.sh osserva <dir> [comando] [--lenti]" >&2; exit 2; }
+  DIR="$2"; CMD_O="${3:-}"; LENTI_VIVE=0
+  case "${4:-}" in --lenti) LENTI_VIVE=1 ;; esac
+  if [ -z "$CMD_O" ] || [ "$CMD_O" = "--lenti" ]; then
+    [ "$CMD_O" = "--lenti" ] && LENTI_VIVE=1
     if [ -f "$DIR/.night-verify" ]; then
       CMD_O="bash .night-verify"
     else
@@ -238,15 +247,144 @@ osserva)
     log "⚠ watchexec assente — osserva SALTATO (dichiarato: brew install watchexec)"
     exit 0
   fi
-  log "osservo ${DIR##*/}: a ogni modifica gira \"$CMD_O\" (Ctrl-C per uscire; .gitignore rispettato)"
+  if [ "$LENTI_VIVE" -eq 1 ]; then
+    # (furto lint-staged): accanto al banco, le lenti sul diff VIVO a ogni salvataggio
+    CMD_O="$CMD_O; bash '$HERE/tools/lente-documenti.sh' '$DIR' --vivo || true"
+    log "lenti vive: a ogni salvataggio anche la lente documenti sul diff non committato"
+  fi
+  log "osservo ${DIR##*/}: a ogni modifica gira: $CMD_O (Ctrl-C per uscire)"
   riga_giorno "$DIR" "osserva avviato ($CMD_O)"
   cd "$DIR" || exit 2
-  exec "$WATCHEXEC" -w . -- $CMD_O
+  exec "$WATCHEXEC" -w . -- sh -c "$CMD_O"
+  ;;
+
+# ── controllo: l'auto-diagnosi dell'operatore (furto del pattern doctor: brew/gh
+# doctor — sola lettura, mai muta, ogni check dice la sua cura) ────────────────
+controllo)
+  [ $# -ge 2 ] || { echo "uso: giorno.sh controllo <dir> [--ci]" >&2; exit 2; }
+  DIR="$2"; CI=0
+  [ "${3:-}" = "--ci" ] && CI=1
+  ESSENZIALI_KO=0
+  ctrl() {  # ctrl <nome> <essenziale:1|0> <ok:0|1> <nota>
+    if [ "$3" -eq 0 ]; then
+      echo "$1: OPERATIVO${4:+ ($4)}"
+    elif [ "$2" -eq 1 ]; then
+      echo "$1: DEGRADATO (ESSENZIALE)${4:+ — $4}"; ESSENZIALI_KO=$((ESSENZIALI_KO+1))
+    else
+      echo "$1: SALTATO (opzionale)${4:+ — $4}"
+    fi
+  }
+  gh auth status >/dev/null 2>&1; ctrl "gh autenticato" 1 $? "gh auth login"
+  [ -f "$HERE/tools/lente-sicurezza.sh" ]; ctrl "lente sicurezza (hub)" 1 $? "l'hub e' qui: $HERE"
+  HOOKS_P=$(git -C "$DIR" config --get core.hooksPath 2>/dev/null)
+  if [ -n "$HOOKS_P" ] && [ -f "$DIR/$HOOKS_P/pre-push" ]; then ctrl "pre-push nel repo" 1 0 "$HOOKS_P/pre-push"; else ctrl "pre-push nel repo" 1 1 "git config core.hooksPath .githooks + copia-hook/installa-citati"; fi
+  command -v vale >/dev/null 2>&1; ctrl "vale (lente documenti)" 0 $? "brew install vale"
+  command -v watchexec >/dev/null 2>&1; ctrl "watchexec (osserva)" 0 $? "brew install watchexec"
+  command -v graphify >/dev/null 2>&1; ctrl "graphify (grafo/navigazione)" 0 $? "pipx install graphifyy==0.9.66"
+  [ -f "$DIR/.night-verify" ]; ctrl "banco del repo (.night-verify)" 0 $? "senza banco la consegna non ha giudice"
+  if [ "$CI" -eq 1 ]; then
+    # (furto unity doctor --ci): non la PRESENZA ma il COLLEGAMENTO — ogni filo
+    # della consegna viene percorso davvero, su un diff vuoto (infallibile perche'
+    # pulito) o con risposta dichiarata
+    HOOKS_P2=$(git -C "$DIR" config --get core.hooksPath 2>/dev/null)
+    if [ -n "$HOOKS_P2" ] && [ -x "$DIR/$HOOKS_P2/pre-push" ] && bash "$DIR/$HOOKS_P2/pre-push" </dev/null >/dev/null 2>&1; then
+      ctrl "cablaggio pre-push -> hub" 1 0 "percorso a vuoto: rc 0"
+    else
+      ctrl "cablaggio pre-push -> hub" 1 1 "il gancio non risponde"
+    fi
+    OUT_L=$(bash "$HERE/tools/lente-sicurezza.sh" "$DIR" HEAD 2>/dev/null); RC_L=$?
+    [ "$RC_L" -eq 0 ] && ctrl "cablaggio lente (diff vuoto = PULITA)" 1 0 "" || ctrl "cablaggio lente" 1 1 "rc=$RC_L (diff vuoto dovrebbe essere pulito)"
+    bash "$HERE/tools/lente-documenti.sh" "$DIR" HEAD >/dev/null 2>&1; RCD=$?
+    [ "$RCD" -eq 0 ] && ctrl "cablaggio lente documenti" 0 0 "" || ctrl "cablaggio lente documenti" 0 1 "rc=$RCD"
+    RISP=$(GIORNO_PARERE=1 bash "$HERE/night-shift/revisore.sh" "$DIR" 999999 2>&1); RCR=$?
+    case "$RCR" in 2|3) ctrl "cablaggio censore (risponde)" 1 0 "rc=$RCR su PR fittizia: vivo" ;; *) ctrl "cablaggio censore" 1 1 "rc=$RCR: non risponde" ;; esac
+  fi
+  [ "$ESSENZIALI_KO" -eq 0 ] && { echo "CONTROLLO: OPERATIVO"; exit 0; }
+  echo "CONTROLLO: DEGRADATO ($ESSENZIALI_KO essenziali) — il giorno puo' lavorare, ma declared"; exit 1
+  ;;
+
+# ── contesto: il canone alla velocita' del giorno (furto AGENTS.md/curated: il
+# minimo che serve al bersaglio, assemblato — arXiv 2606.20512: -28% runtime) ──
+contesto)
+  [ $# -ge 2 ] || { echo "uso: giorno.sh contesto <dir> [file...]" >&2; exit 2; }
+  DIR="$2"; shift 2
+  echo "CONTESTO di ${DIR##*/} ($(date '+%F %H:%M'))"
+  if [ -f "$DIR/.git/ruoli-attivi" ]; then
+    echo "-- ruoli attivi: $(grep -c . "$DIR/.git/ruoli-attivi") — $(head -5 "$DIR/.git/ruoli-attivi" | tr '\n' ' ' | cut -c1-120)"
+  else
+    echo "-- ruoli attivi: nessuno censito (tools/rileva-ruoli.sh $DIR)"
+  fi
+  CAN=$(canone_ruoli "$DIR" 2000 2 "${1:-}")
+  [ -n "$CAN" ] && printf '%s\n' "$CAN" | head -12 || echo "-- canone: vuoto per questo bersaglio"
+  if command -v graphify >/dev/null 2>&1 && [ -d "$DIR/graphify-out" ] && [ -n "${1:-}" ]; then
+    echo "-- chi dipende da $1:"; (cd "$DIR" && graphify affected "$1" 2>/dev/null | head -4) || true
+  fi
+  [ -f "$DIR/DEBITI.md" ] && { echo "-- debiti aperti:"; head -5 "$DIR/DEBITI.md" | tail -4; }
+  [ -f "$HERE/docs/errori/REGISTRO.md" ] && echo "-- registro errori dell'hub: $(grep -c '^## E-' "$HERE/docs/errori/REGISTRO.md") famiglie (docs/errori/REGISTRO.md)"
+  ;;
+
+# ── scrivania: il lavoro vivo della macchina (furto git-wt/worktree status) ────
+scrivania)
+  echo "SCRIVANIA ($(date '+%F %H:%M'))"
+  echo "-- worktree dell'hub:"
+  git -C "$HERE" worktree list 2>/dev/null | tail -n +2 | head -6
+  [ "$(git -C "$HERE" worktree list 2>/dev/null | wc -l)" -le 1 ] && echo "   (nessuno: pulito)"
+  echo "-- rami locali non spinti:"
+  git -C "$HERE" for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads/ 2>/dev/null \
+    | awk '$2=="" || $2=="[gone]" {print "   " $1}' | head -6
+  echo "-- sacche aperte:"
+  find "$HOME/night-shift-work" -maxdepth 3 -path "*/.git/sacca/indice" 2>/dev/null | while read -r ind; do
+    N=$(grep -c . "$ind" 2>/dev/null); [ "${N:-0}" -gt 0 ] && echo "   ${ind#*night-shift-work/}: $N migliorie in attesa"
+  done
+  echo "-- handoff aperti (hub):"
+  gh issue list --repo "${GIORNO_HUB_SLUG:-obi2kenobi/AI_Programmer}" --label handoff --state open --limit 5 2>/dev/null | head -5 || echo "   (gh non disponibile adesso)"
+  ;;
+
+# ── tempo: la misura del banco, con drift (furto hyperfine+Bencher: misura, ────
+# storico, e la domanda giusta: e' piu' lento di ieri?) ─────────────────────────
+tempo)
+  [ $# -ge 2 ] || { echo "uso: giorno.sh tempo <dir>" >&2; exit 2; }
+  DIR="$2"
+  [ -f "$DIR/.night-verify" ] || { log "niente da misurare: .night-verify assente"; exit 2; }
+  T0=$(date +%s); (cd "$DIR" && bash .night-verify >/dev/null 2>&1); RC=$?; DUR=$(( $(date +%s) - T0 ))
+  PREC=$(grep "tempo .night-verify:" "$GIORNO_LOG" 2>/dev/null | grep "REPO ${DIR##*/}" | tail -1 | grep -oE '[0-9]+s' | head -1 | tr -d s)
+  NOTA=""
+  case "$PREC" in
+    ""|*[^0-9]*) ;;
+    0) NOTA=" (precedente 0s)" ;;
+    *) DELTA=$(( (DUR - PREC) * 100 / PREC ))
+       NOTA=" (precedente ${PREC}s: ${DELTA}%)"
+       [ "$DELTA" -gt 30 ] && NOTA="$NOTA — DRIFT: il banco e' piu' lento di un terzo, guardalo" ;;
+  esac
+  log "banco in ${DUR}s (rc=$RC)${NOTA}"
+  riga_giorno "$DIR" "tempo .night-verify: ${DUR}s (rc=$RC)${NOTA}"
+  ;;
+
+# ── rivedi: il pre-volo della consegna (furto Kodus/CodeRabbit: la revisione ───
+# del diff LOCALE, prima di spingere — qui banco + lenti sul diff VIVO) ────────
+rivedi)
+  [ $# -ge 2 ] || { echo "uso: giorno.sh rivedi <dir>" >&2; exit 2; }
+  DIR="$2"
+  KO=0
+  if [ -f "$DIR/.night-verify" ]; then
+    (cd "$DIR" && bash .night-verify >/dev/null 2>&1) && log "banco: VERDE" || { log "banco: ROSSO"; KO=1; }
+  else
+    log "banco: assente (dichiarato)"
+  fi
+  LV=$(bash "$HERE/tools/lente-documenti.sh" "$DIR" --vivo 2>/dev/null); LV_RC=$?
+  if [ "$LV_RC" -eq 1 ]; then log "lente documenti (vivo): $(grep -c ':' <<<"$LV") righe fuori stile"; printf '%s\n' "$LV" | head -5; KO=1; else log "lente documenti (vivo): pulita"; fi
+  # la sicurezza guarda il ramo COMMITTATO: il working tree lo presidia il
+  # pre-push al momento della consegna (dichiarato: nessun doppio giro)
+  SEC=$(cd "$DIR" && bash "$HERE/tools/lente-sicurezza.sh" "$PWD" "origin/$(default_branch "$DIR")" HEAD 2>/dev/null); SEC_RC=$?
+  [ "$SEC_RC" -eq 0 ] && log "lente sicurezza (vivo): pulita" || { log "lente sicurezza (vivo): rc=$SEC_RC — $(tail -1 <<<"$SEC")"; [ "$SEC_RC" -eq 1 ] && KO=1; }
+  riga_giorno "$DIR" "rivedi (KO=$KO)"
+  [ "$KO" -eq 0 ] && { echo "RIVIEW: PRONTO ALLA CONSEGNA"; exit 0; }
+  echo "RIVEDI: NON consegnare cosi (sopra i motivi)"; exit 1
   ;;
 
 # ── bilancino: il conto del giorno, letto dal log vero ───────────────────────────
 bilancino)
-  DATA="${2:-$(date +%F)}"
+  DATA="${2:-${GIORNO_DATA:-$(date +%F)}}"
   [ -f "$GIORNO_LOG" ] || { echo "giorno.sh bilancino: nessun log ($GIORNO_LOG) — il giorno non ha ancora consegnato niente"; exit 0; }
   RIGHE=$(grep "^\[GIORNO $DATA " "$GIORNO_LOG" 2>/dev/null || true)
   [ -n "$RIGHE" ] || { echo "GIORNO $DATA: nessuna azione registrata"; exit 0; }
@@ -268,7 +406,7 @@ bilancino)
   ;;
 
 *)
-  echo "uso: giorno.sh consegna <dir> <msg> | lente <dir> [base] | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | osserva <dir> [cmd] | bilancino [data]" >&2
+  echo "uso: giorno.sh consegna <dir> <msg> [file...|--tutto] | lente <dir> [base] | rivedi <dir> | parere <dir> <n> | handoff <dir> <titolo> [corpo] | annota <dir> <n-pr> | osserva <dir> [cmd] [--lenti] | controllo <dir> [--ci] | contesto <dir> [file...] | scrivania | tempo <dir> | bilancino [data]" >&2
   exit 2
   ;;
 esac

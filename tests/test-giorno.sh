@@ -7,6 +7,7 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 GP="$HERE/tools/giorno.sh"
+GP_LDOC="$HERE/tools/lente-documenti.sh"
 PP="$HERE/tools/pre-push.sh"
 MD="$HERE/night-shift/morning-digest.sh"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
@@ -20,6 +21,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SB=$(mktemp -d /tmp/test-giorno.XXXXXX)
 trap 'rm -rf "$SB"' EXIT
+WSTUB="$SB/wstub"; printf '#!/bin/bash
+echo "$*" >> "$SB/reg"
+exit 0
+' > "$WSTUB"; chmod +x "$WSTUB"
 export GIORNO_LOG="$SB/giorno.log"
 
 # stub gh: registra le chiamate e risponde da PR creata — PRIMO in PATH, cosi' lo
@@ -159,7 +164,8 @@ GB=$(bash "$GP" consegna "$R" "questa non deve passare" .night-verify 2>&1); GB_
 if [ "$GB_RC" -ne 0 ] && grep -q "ROSSO" <<<"$GB"; then
   ok "banco rosso: consegna FERMATA prima del push (soft, lavoro in albero)"
 else ko "banco rosso: consegna fermata (rc=$GB_RC: $GB)"; fi
-if git -C "$R" show HEAD:base.txt 2>/dev/null | grep -q "boccera"; then ko "banco rosso: il commit sporco NON esiste"; else ok "banco rosso: il commit sporco NON esiste (sciolto)"; fi
+COMMIT_ROSSO=$(git -C "$R" show HEAD:base.txt 2>/dev/null)   # E-002: cattura-prima (gate notturno 10/10)
+if grep -q "boccera" <<<"$COMMIT_ROSSO"; then ko "banco rosso: il commit sporco NON esiste"; else ok "banco rosso: il commit sporco NON esiste (sciolto)"; fi
 grep -q "boccera" "$R/base.txt" && ok "banco rosso: il lavoro NON e' distrutto" || ko "banco rosso: il lavoro NON e' distrutto"
 printf '#!/bin/bash\necho "attese eseguite: 2/2 fallite: 0"\nexit 0\n' > "$R/.night-verify"
 sleep 1
@@ -207,6 +213,73 @@ BRA=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "
 grep -q "GIORNO_PARERE=1 bash" "$GP" && ok "parere: il giorno CHIEDE il parere (GIORNO_PARERE=1 al revisore)" || ko "parere: il giorno chiede il parere"
 grep -q 'GIORNO_PARERE:-0' "$HERE/night-shift/revisore.sh" && ok "revisore: i rami giorno/* passano SOLO su richiesta, in modo PARERE (mai fusione)" || ko "revisore: cancello GIORNO_PARERE"
 grep -q "non e' night/\*" "$HERE/night-shift/revisore.sh" && ok "revisore: senza richiesta i rami giorno/* restano RIFIUTATI (la notte non li tocca)" || ko "revisore: il rifiuto resta"
+
+# ── controllo: l'auto-diagnosi (doctor) ────────────────────────────────────────
+CO=$(bash "$GP" controllo "$R" 2>&1); CO_RC=$?
+grep -q "gh autenticato: " <<<"$CO" && grep -q "CONTROLLO:" <<<"$CO" && ok "controllo: elenca i componenti e da il verdetto finale" || ko "controllo: elenco e verdetto ($CO)"
+if grep -q "pre-push nel repo: DEGRADATO (ESSENZIALE)" <<<"$CO" && [ "$CO_RC" -eq 1 ]; then
+  ok "controllo: pre-push assente nel fixture = DEGRADATO essenziale, rc 1 (la cura e' scritta)"
+else ko "controllo: degradato essenziale con rc onesto (rc=$CO_RC)"; fi
+RIGA_VALE=$(grep "lente documenti" <<<"$CO" | head -1)
+[ -n "$RIGA_VALE" ] && { grep -q "OPERATIVO" <<<"$RIGA_VALE" || grep -q "SALTATO" <<<"$RIGA_VALE"; } && ok "controllo: gli opzionali si dichiarano, non bloccano" || ko "controllo: opzionali dichiarati"
+
+# ── contesto: il canone alla velocita' del giorno ──────────────────────────────
+CT=$(bash "$GP" contesto "$R" a.js 2>&1)
+grep -q "CONTESTO di" <<<"$CT" && grep -q "ruoli attivi" <<<"$CT" && ok "contesto: assembla sezioni (titolo + ruoli)" || ko "contesto: sezioni ($CT)"
+grep -qE "registro errori dell'hub: [0-9]+ famiglie" <<<"$CT" && ok "contesto: il registro errori dell'hub entra nel quadro" || ko "contesto: registro errori"
+
+# ── scrivania: il lavoro vivo ───────────────────────────────────────────────────
+SC=$(bash "$GP" scrivania 2>&1)
+grep -q "worktree dell'hub" <<<"$SC" && grep -q "rami locali non spinti" <<<"$SC" && ok "scrivania: worktree e rami non spisti in vista" || ko "scrivania: sezioni ($SC)"
+grep -q "handoff aperti" <<<"$SC" && ok "scrivania: gli handoff aperti chiudono il quadro" || ko "scrivania: handoff"
+
+# ── lente documenti --vivo: il diff NON COMMITTATO (furto lint-staged) ─────────
+printf "# Nota viva\n\nTesto con accento cosi' cosi' così\n" > "$R/vivo.md"
+VO=$(bash "$GP_LDOC" "$R" --vivo 2>/dev/null); VO_RC=$?
+if [ "$VO_RC" -eq 1 ] && grep -q "vivo.md:[0-9]*: documento" <<<"$VO"; then
+  ok "lente --vivo: l'accento NON COMMITTATO viene visto senza committare"
+else ko "lente --vivo (rc=$VO_RC: $VO)"; fi
+rm -f "$R/vivo.md"
+
+# ── osserva --lenti: accanto al banco gira anche la lente viva ─────────────────
+: > "$GHSTUB_REGISTRO"; : > "$SB/reg"
+printf '#!/bin/bash\necho x\n' > "$R/.night-verify"
+OV=$(WATCHEXEC_BIN="$WSTUB" bash "$GP" osserva "$R" --lenti 2>&1); OV_RC=$?
+REG_OV=$(cat "$SB/reg" 2>/dev/null)
+OV_OK=0
+if [ "$OV_RC" -eq 0 ] && grep -q "lente-documenti.sh" <<<"$REG_OV" && grep -q -- "--vivo" <<<"$REG_OV"; then OV_OK=1; fi
+if [ "$OV_OK" -eq 0 ]; then   # (canone gate_banchi: UNA riprova ai dichiarati intermittenti)
+  : > "$SB/reg"
+  OV=$(WATCHEXEC_BIN="$WSTUB" bash "$GP" osserva "$R" --lenti 2>&1); OV_RC=$?
+  REG_OV=$(cat "$SB/reg" 2>/dev/null)
+  [ "$OV_RC" -eq 0 ] && grep -q "lente-documenti.sh" <<<"$REG_OV" && grep -q -- "--vivo" <<<"$REG_OV" && OV_OK=1
+fi
+[ "$OV_OK" -eq 1 ] && ok "osserva --lenti: al salvataggio girano banco E lente viva" || ko "osserva --lenti (dichiarata intermittente, due colpi a vuoto)"
+
+# ── tempo: misura, storico, drift (furto hyperfine+Bencher) ────────────────────
+TP=$(bash "$GP" tempo "$R" 2>&1)
+grep -q "tempo .night-verify:" "$GIORNO_LOG" && ok "tempo: la misura e' nel log del giorno" || ko "tempo: misura nel log"
+TP2=$(bash "$GP" tempo "$R" 2>&1)
+grep -q "precedente" <<<"$TP2" && ok "tempo: il secondo giro confronta col precedente (drift)" || {
+  TP3=$(bash "$GP" tempo "$R" 2>&1)   # UNA riprova ai dichiarati (canone gate_banchi)
+  grep -q "precedente" <<<"$TP3" && ok "tempo: confronto col precedente (alla riprova)" || ko "tempo: confronto col precedente ($TP2 | $TP3)"
+}
+rm -f "$R/.night-verify"
+
+# ── rivedi: il pre-volo (banco + lenti sul vivo) ────────────────────────────────
+RV=$(bash "$GP" rivedi "$R" 2>&1); RV_RC=$?
+grep -q "RIVIEW: PRONTO" <<<"$RV" && [ "$RV_RC" -eq 0 ] && ok "rivedi: repo pulito = PRONTO ALLA CONSEGNA" || ko "rivedi pronto (rc=$RV_RC: $RV)"
+printf "# Nota sporca così\n" > "$R/sporca.md"
+RV2=$(bash "$GP" rivedi "$R" 2>&1); RV2_RC=$?
+if [ "$RV2_RC" -eq 1 ] && grep -q "NON consegnare" <<<"$RV2" && grep -q "lente documenti (vivo)" <<<"$RV2"; then
+  ok "rivedi: il diff vivo sporco FERMA il pre-volo con i motivi"
+else ko "rivedi sporco (rc=$RV2_RC: $RV2)"; fi
+rm -f "$R/sporca.md"
+
+# ── controllo --ci: il COLLAUDO dei cablaggi (furto unity doctor --ci) ────────
+CI2=$(bash "$GP" controllo "$R" --ci 2>&1); CI2_RC=$?
+grep -q "cablaggio pre-push" <<<"$CI2" && grep -q "cablaggio censore" <<<"$CI2" && ok "controllo --ci: certifica i FILI (pre-push, lente, censore)" || ko "controllo --ci: fili ($CI2)"
+[ "$CI2_RC" -eq 1 ] && grep -q "DEGRADATO" <<<"$CI2" && ok "controllo --ci: rc onesto quando un filo e' rotto (fixture senza ganci)" || ko "controllo --ci: rc onesto (rc=$CI2_RC)"
 
 # ── handoff: il passamano giorno→notte (issue [handoff], corpo pulito) ──────────
 : > "$GHSTUB_REGISTRO"

@@ -20,10 +20,22 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 VALE="${VALE_BIN:-vale}"
 [ $# -ge 2 ] || { echo "uso: lente-documenti.sh <dir-repo> <base> [head]" >&2; exit 2; }
 DIR="$1"; BASE="$2"; TESTA="${3:-HEAD}"
+# --vivo (furto lint-staged): la lente gira sul diff NON COMMITTATO — staged piu'
+# working tree, con intent-to-add per i file nuovi. BASE diventa HEAD e il range
+# e' il working diff, non base...testa.
+VIVO=0
+if [ "$BASE" = "--vivo" ]; then
+  VIVO=1; BASE="HEAD"
+  git -C "$DIR" add -N . 2>/dev/null || true
+fi
 log() { echo "[lente-documenti $(date '+%H:%M:%S')] $*" >&2; }
 
 # i .md cambiati nel range (nessuno = pulita: la lente morde solo dove il diff porta)
-FILES=$(git -C "$DIR" diff --name-only --diff-filter=ACMR "$BASE...$TESTA" -- '*.md' '*.mdx' 2>/dev/null)
+if [ "$VIVO" -eq 1 ]; then
+  FILES=$(git -C "$DIR" diff --name-only --diff-filter=ACMR HEAD -- '*.md' '*.mdx' 2>/dev/null)
+else
+  FILES=$(git -C "$DIR" diff --name-only --diff-filter=ACMR "$BASE...$TESTA" -- '*.md' '*.mdx' 2>/dev/null)
+fi
 [ -n "$FILES" ] || { log "nessun documento nel diff ($BASE...$TESTA)"; exit 0; }
 if ! command -v "$VALE" >/dev/null 2>&1; then
   log "⚠ Vale assente — lente documenti SALTATA (dichiarato: brew install vale)"
@@ -35,7 +47,8 @@ INI="$HERE/tools/lente-documenti.vale.ini"
 # le righe AGGIUNTE per file (dagli header @@, come lente-sicurezza): la lente
 # non giudica la prosa che era gia' li' — solo quella che il diff porta
 righe_aggiunte() {  # $1=file → elenco numeri riga
-  git -C "$DIR" diff -U0 "$BASE...$TESTA" -- "$1" 2>/dev/null \
+  if [ "$VIVO" -eq 1 ]; then RIF="HEAD"; else RIF="$BASE...$TESTA"; fi
+  git -C "$DIR" diff -U0 $RIF -- "$1" 2>/dev/null \
     | awk '/^@@/{split($3,a,","); n=substr(a[1],2)+0; next}
            /^\+/ && !/^\+\+\+/ {print n; n++}'
 }
