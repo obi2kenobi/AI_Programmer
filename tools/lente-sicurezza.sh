@@ -25,7 +25,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 [ $# -ge 2 ] || { echo "uso: lente-sicurezza.sh <dir-repo> <base> [head]" >&2; exit 2; }
 DIR="$1"; BASE="$2"
 TESTA="${3:-HEAD}"
-MODEL="${MODELLO:-qwen3.8-27b:iq3s}"
+MODEL="${MODELLO:-gemma4:26b-notturno}"
 MAX_PROMPT=12000   # caratteri di diff al cervello (~4 tok/s: oltre, il giudizio costa ore)
 # shellcheck source=../night-shift/lib.sh
 source "$HERE/night-shift/lib.sh"   # mask_secrets
