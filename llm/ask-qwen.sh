@@ -32,7 +32,7 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 # questo wrapper per il banco avversariale, quindi il gate avrebbe usato il modello che
 # "0/3 in 442 s" mentre la notte usava il 14b. Un solo modello: lo stesso del turno (oggi
 # qwen3.8-27b:iq3s, cervello/decisione-modello-unico.md — il 27b quantizzato, non quello di allora).
-MODEL="${QWEN_MODEL:-${ASK_MODEL:-qwen3.8-27b:iq3s}}"
+MODEL="${QWEN_MODEL:-${ASK_MODEL:-gemma4:26b-notturno}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-${THINK:-false}}"   # THINK: il profilo del turno (D11)
 API="http://localhost:11434"
