@@ -71,7 +71,7 @@ if [ -f "$HERE/../tools/profilo.sh" ]; then
   . "$HERE/../tools/profilo.sh" notturno
 fi
 WORK="$HOME/night-shift-work"
-MODEL_TAG="${MODELLO:-gemma4:26b-notturno}}"
+MODEL_TAG="${MODELLO:-gemma4:26b-notturno}"
 DEFAULT_TYPE="chore"
 
 # --- La lista delle repo -------------------------------------------------------

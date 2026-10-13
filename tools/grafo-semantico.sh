@@ -13,7 +13,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 REPO="${1:?uso: grafo-semantico.sh <owner/repo> <cartella-di-lavoro>}"
 BASE="${2:?uso: grafo-semantico.sh <owner/repo> <cartella-di-lavoro>}"
-MODEL="${MODELLO:-qwen3.8-27b:iq3s}"
+MODEL="${MODELLO:-gemma4:26b-notturno}"
 # (2026-09-25, settimo ventaglio, V3 R2): UNA data per pass, quella del segno del turno (GRAFO_DATA). Ramo, commit e
 # titolo la prendevano ciascuno a fine pass: un pass partito il 25 e finito dopo mezzanotte apriva il ramo del 26,
 # e il pass del 26 moriva al push. Lanciato a mano, senza turno, vale la data di adesso.

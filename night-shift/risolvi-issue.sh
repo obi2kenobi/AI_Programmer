@@ -23,7 +23,7 @@ LIB_SH="$(cd "$(dirname "$0")" && pwd)/lib.sh"
 # (2026-09-24, Q3 R4): `${1:?}` usciva 1, che qui significa «fallito»: l'uso sbagliato esce 2, come dichiarato
 [ $# -ge 2 ] || { echo "uso: risolvi-issue.sh <dir-progetto> <issue-md>" >&2; exit 2; }
 DIR="$1"; ISSUE="$2"
-MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
+MODEL="${NIGHT_MODEL:-gemma4:26b-notturno}"
 # NIGHT_API_URL: solo per i test (server mock) — di norma non si tocca
 # (T5#6, 2026-09-23): i prompt (con i sorgenti) viaggiano su stdin verso jq e curl, mai negli argomenti
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"

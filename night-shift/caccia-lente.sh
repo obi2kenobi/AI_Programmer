@@ -4,7 +4,7 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DIR="${1:-.}"
-MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
+MODEL="${NIGHT_MODEL:-gemma4:26b-notturno}"
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"   # NIGHT_API_URL: solo per i test, come negli altri script
 cd -- "$DIR" || exit 2
 log() { echo "[lente $(date '+%H:%M:%S')] $*" >&2; }
