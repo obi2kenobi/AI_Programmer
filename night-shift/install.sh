@@ -27,7 +27,7 @@ command -v ollama >/dev/null 2>&1 || { echo "⚠ MANCA ollama (brew install --ca
 # (revisione 10 giri, 2026-09-23): MODEL_TAG e' `"${MODELLO:-<default>}"` — senza togliere la
 # forma ${…:-…} qui si cercava in `ollama list` la stringa letterale, che non c'e' mai.
 MODELLO_TURNO=$(grep -oE '^MODEL_TAG="[^"]+"' "$HUB/night-shift/night-shift.sh" | cut -d'"' -f2 | sed -E 's/^\$\{[A-Z_]+:-(.*)\}$/\1/')
-MODELLO_TURNO="${MODELLO_TURNO:-qwen3.8-27b:iq3s}"
+MODELLO_TURNO="${MODELLO_TURNO:-gemma4:26b-notturno}"
 LISTA_MODELLI=$(ollama list 2>/dev/null); grep -qi "$MODELLO_TURNO" <<<"$LISTA_MODELLI" || echo "⚠ modello $MODELLO_TURNO assente (ollama pull $MODELLO_TURNO — 12 GB)"
 command -v gh >/dev/null 2>&1 || { echo "⚠ MANCA gh (brew install gh) + gh auth login"; MISSING=1; }
 command -v opencode >/dev/null 2>&1 || { echo "⚠ MANCA opencode (brew install opencode)"; MISSING=1; }
