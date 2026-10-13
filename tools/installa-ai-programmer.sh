@@ -36,7 +36,7 @@ if [ "${1:-}" = "--clone" ] && [ -n "${2:-}" ]; then
   DIR="$HOME/night-shift-work/${REPO##*/}"
   if [ ! -d "$DIR" ]; then
     echo "── clono $REPO in $DIR..."
-    gh repo clone "$REPO" "$DIR" -q || { echo "⛔ clone fallito"; exit 1; }
+    gh repo clone "$REPO" "$DIR" -- -q || { echo "⛔ clone fallito"; exit 1; }
   fi
   shift 2
 else
