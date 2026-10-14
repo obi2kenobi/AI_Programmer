@@ -36,6 +36,13 @@ percorso_ammesso() {
   return 1
 }
 
+# scrittura_ammessa <realpath> <realpath-progetto>: come percorso_ammesso, e in piu' NON dentro una cartella
+# dichiarata in .night-mirror (R1 del debito 2026-09-25: sola lettura, la promessa di CLAUDE.md §4). La LETTURA
+# resta ammessa: percorso_ammesso basta.
+scrittura_ammessa() {
+  percorso_ammesso "$1" "$2" && ! in_cartella_specchio "$1" "$2"
+}
+
 log() { echo "[agente $(date '+%H:%M:%S')] $*" >&2; }
 T_INIZIO=$(date +%s)
 
@@ -225,7 +232,7 @@ exit 0
       fi
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
+      case "$(scrittura_ammessa "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
           EDIT_OUT=$(python3 -c "
 import sys
@@ -271,8 +278,8 @@ REMINDER: you run unattended at night — nobody answers. Decide autonomously wi
           RESULT="ERROR: file not found: $FPATH"
         fi ;;
         *)
-        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
-        log "  edit: $FPATH FUORI (rifiutato)" ;;
+        RESULT="ERROR: path outside project, inside .git, or inside a read-only mirror folder (.night-mirror): off limits"
+        log "  edit: $FPATH FUORI (rifiutato) — fuori dal progetto, dentro .git o in una cartella specchio" ;;
       esac ;;
 
     read)
@@ -319,7 +326,7 @@ REMINDER: you run unattended at night — nobody answers. Decide autonomously wi
       FCONTENT=$(echo "$STRIPPED" | jq -r '.content')
       REAL=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$FPATH" 2>/dev/null)
       REAL_DIR=$(python3 -c "import os,sys; print(os.path.realpath(sys.argv[1]))" "$DIR")
-      case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
+      case "$(scrittura_ammessa "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         # (giro 11, 2026-09-20): il system prompt dice «WRITE solo per file NUOVI» ma nulla
         # lo faceva rispettare — la riscrittura intera (516 righe per un tubo) passava di qui.
         # La regola diventa strutturale: un file che esiste si cambia SOLO con edit.
@@ -335,8 +342,8 @@ REMINDER: you run unattended at night — nobody answers. Decide autonomously wi
           log "  write: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes)"
         fi ;;
         *)
-        RESULT="ERROR: path outside project (or inside .git, which is off limits)"
-        log "  write: $FPATH FUORI (rifiutato)" ;;
+        RESULT="ERROR: path outside project, inside .git, or inside a read-only mirror folder (.night-mirror): off limits"
+        log "  write: $FPATH FUORI (rifiutato) — fuori dal progetto, dentro .git o in una cartella specchio" ;;
       esac ;;
 
     run)

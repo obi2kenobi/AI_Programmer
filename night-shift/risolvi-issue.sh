@@ -290,6 +290,10 @@ if [ "$N_FILES" -eq 1 ] && grep -q "^function " <<<"$CODE"; then
   if ! dentro_il_progetto "$TARGET_FILE" "$DIR"; then
     log "⛔ TARGET $TARGET_FILE fuori dal progetto: rifiuto (il Territorio di un issue non scrive fuori)"
     TARGET_FILE=""
+  elif in_cartella_specchio "$RP_F" "$RP_D"; then
+    # (R1 del debito 2026-09-25): .night-mirror = sola lettura; dentro_il_progetto ha appena lasciato in RP_F/RP_D i realpath
+    log "⛔ TARGET $TARGET_FILE sta in una cartella specchio (.night-mirror): rifiuto (sola lettura, il codice resta proposta)"
+    TARGET_FILE=""
   fi
   [ -n "$TARGET_FILE" ] && [ -f "$TARGET_FILE" ] || TARGET_FILE=""
   TARGET_FN=$(echo "$CODE" | grep -oE '^function [a-zA-Z_]+' | head -1 | sed 's/function //')

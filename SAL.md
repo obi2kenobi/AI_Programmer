@@ -153,6 +153,7 @@
 - [2026-09-23 (16°) — il promemoria dei pattern non approva più da solo (sì di Luca)](#2026-09-23-16--il-promemoria-dei-pattern-non-approva-più-da-solo-sì-di-luca)
 - [2026-09-23 (17°) — il cancello clasp non scambia più il corpo di un heredoc per un comando (sì di Luca)](#2026-09-23-17--il-cancello-clasp-non-scambia-più-il-corpo-di-un-heredoc-per-un-comando-sì-di-luca)
 - [2026-09-23 (18°) — la notte dei giri: mandato di Luca «analisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti»](#2026-09-23-18--la-notte-dei-giri-mandato-di-luca-analisi-lenta-trova-e-aggiusta-tutto-10-giri-e-poi-20-non-fermarti)
+- [2026-10-14 — saldati R1 e R2 della notte dei giri (settimo patto: il debito si brucia alla riapertura)](#2026-10-14--saldati-r1-e-r2-della-notte-dei-giri-settimo-patto-il-debito-si-brucia-alla-riapertura)
 
 ## Stato
 
@@ -5473,3 +5474,24 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - APERTO: registrare a mano la prima nota di credito vera (29289711) e solo dopo accendere il trigger delle note; svuotare
     `RILETTURA.NUMERI` e `NOTA_CREDITO.NUMERO` dopo l'uso; far registrare il pellet di magazzino come la 29289691 con la
     logica di Treviso (domanda di dominio, per ora va a Maurizio).
+
+### 2026-10-14 — saldati R1 e R2 della notte dei giri (settimo patto: il debito si brucia alla riapertura)
+
+Su richiesta di Luca («affronta R1 e R2 adesso»), prima del lavoro nuovo.
+
+- **R1 (`.night-mirror` mai negata in scrittura).** Premessa riverificata: la lettura della lista arrivava solo al
+  prompt (`night-shift.sh`), nessun confine di scrittura la leggeva. Cura: `in_cartella_specchio` in `lib.sh`; edit e
+  write di `agente.sh` passano da `scrittura_ammessa` (la lettura resta ammessa); il TARGET di `risolvi-issue.sh`
+  rifiuta un file in cartella specchio (il codice resta proposta). Banco A3c in `tests/test-agente.sh` e caso R1 in
+  `tests/test-risolvi-issue.sh`: visti ROSSI prima della cura e di nuovo rossi col sabotaggio (`in_cartella_specchio`
+  che torna sempre 1).
+- **R2 (scopa dei rami: `--state all --limit 1000` si tronca).** Cura: `pr_aperte_per_scopa` in `lib.sh` (lettura
+  `--state open`, rc 1 se gh fallisce → la scopa non cancella alla cieca), aggiunta alla lista PR della scopa in
+  `night-shift.sh`. Banco R2 in `tests/test-lib.sh` con un gh finto; rosso prima, rosso col sabotaggio.
+- **Verificato eseguendo:** `test-agente.sh` 27/0, `test-risolvi-issue.sh` 35/0, `test-night-mirror-declaration.sh` 4/0,
+  `test-errori.sh` 229/0; `test-lib.sh` 199 OK e 3 FAIL che c'erano GIÀ senza le mie modifiche (tre righe `gate_banchi`:
+  conteggio dei banchi, estranee a R1/R2, non indagate).
+- **Non verificato (dichiarato):** shellcheck assente in questa sessione cloud (il gate `.night-verify` non girato per
+  intero); nessuna notte vera sul Mac (resta in A16).
+- Mia svista di stesura, corretta prima del commit: il primo testo dei log di rifiuto cambiava la stringa `FUORI (rifiutato)`
+  che il vecchio banco A3 cerca, e il controllo sulla lettura cercava il contenuto nel log (il log non lo stampa).
