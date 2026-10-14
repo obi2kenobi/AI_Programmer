@@ -82,6 +82,41 @@ def valore_da_segreto(valore):
     return len(valore) >= 16 and any(c.isdigit() for c in valore) and entropia(valore) >= ENTROPIA_MINIMA
 
 
+
+# In una web app OGNI funzione globale senza «_» finale e' un endpoint (google.script.run). Misurato su riordino-legno (2026-10-01): `getAccessToken()` restituiva al
+# browser un token valido di Business Central, e la famiglia «underscore finale» (famiglie-difetti.md:182) non aveva un controllo meccanico.
+GESTORI_PUBBLICI_RE = re.compile(r"^(?:doGet|doPost|on[A-Z]\w*)$")
+SEGRETO_USATO_RE = re.compile(r"client_?secret|getProperty\(\s*[\"'][^\"']*(?:SECRET|PASSWORD|PRIVATE_KEY|API_KEY)[^\"']*[\"']", re.I)
+RITORNO_RE = re.compile(r"\breturn\s+([^;{}]+)")
+TOKEN_RESTITUITO_RE = re.compile(r"[\w.\[\]\"']*token\w*(?:\(\s*\))?|.*\.access_token|.*\[\s*[\"']access_token[\"']\s*\]", re.I)
+
+
+def funzioni_globali(testo):
+    """(nome, indice, corpo INTERO) delle funzioni top-level: lo stesso brace matching di function_bodies, senza il troncamento a 400 caratteri."""
+    out = []
+    for m in FUN_TOP_RE.finditer(testo):
+        aperta = testo.find("{", m.end())
+        if aperta < 0:
+            continue
+        prof = 0
+        for i in range(aperta, len(testo)):
+            prof += (testo[i] == "{") - (testo[i] == "}")
+            if prof == 0:
+                out.append((m.group(1) or m.group(2), m.start(), testo[aperta:i]))
+                break
+    return out
+
+
+def motivo_pubblica(corpo):
+    """Perche' una funzione pubblica e' un sito: restituisce un token, o legge/usa un segreto (None se nessuno dei due)."""
+    for r in RITORNO_RE.finditer(corpo):
+        if TOKEN_RESTITUITO_RE.fullmatch(r.group(1).strip()):
+            return "restituisce un token"
+    if SEGRETO_USATO_RE.search(corpo):
+        return "legge o usa un segreto"
+    return None
+
+
 def main():
     """Il rilevatore: per ogni famiglia misurata, cerca nel progetto GAS i
     segni che la famiglia esiste (test finti, nomi in ombra, fusi,
@@ -210,6 +245,19 @@ def main():
             siti.append("appsscript.json non interpretabile")
     famiglie.append(("webapp anonima nel manifest",
                      "il manifest è il default dei NUOVI deployment: l'accesso vero si verifica in Distribuisci→Gestisci distribuzioni; e OGNI funzione globale è un endpoint (google.script.run)",
+                     siti))
+
+    # 10. funzioni pubbliche (senza «_» finale) che restituiscono un token o usano un segreto: endpoint verso il browser
+    siti = []
+    for f, t in testi.items():
+        for nome, idx, corpo in funzioni_globali(t):
+            if nome.endswith("_") or GESTORI_PUBBLICI_RE.match(nome):
+                continue
+            motivo = motivo_pubblica(corpo)
+            if motivo:
+                siti.append(f"{f}:{riga_di(t, idx)} {nome}() [{motivo}]")
+    famiglie.append(("funzioni pubbliche che restituiscono un token o usano un segreto",
+                     "chi puo' chiamarla dal browser (google.script.run)? se restituisce il token o legge il segreto, finisce con «_» (nascosta) o non resta nel progetto; chiederlo a chi possiede il deployment",
                      siti))
 
     # 9. atHour duplicati (fascia, non orario)
