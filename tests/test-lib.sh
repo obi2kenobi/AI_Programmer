@@ -611,6 +611,34 @@ RIGA_48=$(grep -n 'rami_da_scopare "$(date +%s)" 48' "$NSH_SC" | head -1)
 grep -cE "grep -E '\^\(night\|notte\)/'" <<<"$RIGA_48" >/dev/null && ok "scopa 48h: solo rami del turno (night/, notte/), mai claude/ o glm/" || ko "scopa 48h senza filtro di prefisso: $RIGA_48"
 grep -c 'gh pr list -R obi2kenobi/AI_Programmer --state all --limit 1000' "$NSH_SC" >/dev/null && ok "scopa: la lista delle PR arriva a 1000 (con 200 una PR aperta vecchia usciva dalla lista)" || ko "scopa: PR lette solo fino a 200"
 
+# R2 del debito 2026-09-25: la lista `--state all --limit 1000` si tronca oltre 1000 PR nella storia. Una PR APERTA
+# piu' vecchia delle 1000 piu' recenti spariva, e il suo ramo (oltre 24h) finiva scopato. La cura e' una seconda
+# lettura `--state open`, che entra nella lista come righe OPEN: qui con un gh finto (la rete non serve).
+if declare -F pr_aperte_per_scopa >/dev/null; then
+  GHF=$(mktemp -d /tmp/gh-finto.XXXXXX)
+  cat > "$GHF/gh" <<'GHEOF'
+#!/bin/bash
+[ "${GH_FINTO_ROTTO:-0}" = "1" ] && { echo "gh finto: rotto" >&2; exit 1; }
+case " $* " in *" --state open "*) printf 'ramo-aperto-antico\nnight/issue-9\n' ;; *) exit 9 ;; esac
+GHEOF
+  chmod +x "$GHF/gh"
+  ORA=1000000; H=3600
+  RAMI=$(printf '%s\t%s\n' ramo-aperto-antico $((ORA-500*H)) night/issue-9 $((ORA-30*H)) orfano-vero $((ORA-30*H)))
+  APERTE=$(PATH="$GHF:$PATH" pr_aperte_per_scopa obi2kenobi/AI_Programmer); RC=$?
+  [ "$RC" -eq 0 ] && [ "$APERTE" = "$(printf 'ramo-aperto-antico\tOPEN\nnight/issue-9\tOPEN')" ] \
+    && ok "R2: pr_aperte_per_scopa restituisce le PR aperte come righe «ramo<TAB>OPEN»" || ko "R2: righe aperte: rc=$RC '$APERTE'"
+  OUT=$(rami_da_scopare "$ORA" 24 <(printf '%s\n' "$RAMI") <(printf '%s\n' "$APERTE") | tr '\n' ' ')
+  [ "$OUT" = "orfano-vero " ] && ok "R2: una PR aperta fuori dalle prime 1000 non perde il ramo; l'orfano vero si scopa ancora" \
+    || ko "R2: scopati '$OUT' (atteso solo: orfano-vero)"
+  PATH="$GHF:$PATH" GH_FINTO_ROTTO=1 pr_aperte_per_scopa obi2kenobi/AI_Programmer >/dev/null 2>&1 \
+    && ko "R2: gh rotto → la funzione deve fallire (lista aperte non letta = scopa cieca)" \
+    || ok "R2: gh rotto → la funzione fallisce (la scopa non cancella alla cieca)"
+  rm -rf "$GHF"
+else
+  ko "pr_aperte_per_scopa non definita in lib.sh"
+fi
+grep -q 'pr_aperte_per_scopa' "$NSH_SC" && ok "R2: la scopa di night-shift.sh usa la lettura delle PR aperte" || ko "R2: night-shift.sh non usa pr_aperte_per_scopa"
+
 # --- rotate_log_if_big: debito saldato (giro 10/10, nuovo ciclo) ---
 LOGTMP=$(mktemp -d)
 echo "riga piccola" > "$LOGTMP/small.log"

@@ -120,6 +120,21 @@ consegna)
     fi
     log "banco verde: $(tail -1 <<<"$VERIFICA" | cut -c1-100)"
   fi
+  # (D1 del debito 2026-09-26, scelta 2 di Luca 2026-10-14): la batteria avversaria prova HEAD e rifiuta un albero
+  # sporco, quindi un cambio che rompe un attacco si vedeva solo alla consegna dopo. Qui l'albero e' pulito (il
+  # commit c'e', i file nuovi non dichiarati sono fuori): la batteria gira SUL COMMIT, prima del push. Rosso, o
+  # non partita (rc 2: albero sporco, clone fallito), = stessa regola del banco: soft, il lavoro resta.
+  if [ -f "$DIR/tools/giri-avversari.sh" ]; then
+    log "batteria avversaria: parto sul commit (HEAD), prima del push"
+    AVVERSARI=$(cd "$DIR" && bash tools/giri-avversari.sh 2>&1); AVV_RC=$?
+    if [ "$AVV_RC" -ne 0 ]; then
+      git reset -q --soft HEAD~1
+      log "⛔ batteria avversaria ROSSA (rc=$AVV_RC) — consegna fermata (soft, il lavoro resta): $(grep -E '^AGGIRA|^⛔' <<<"$AVVERSARI" | head -3 | tr '\n' ' ' | cut -c1-200)"
+      riga_giorno "$DIR" "consegna FERMATA dalla batteria avversaria (rc=$AVV_RC)"
+      exit 1
+    fi
+    log "batteria avversaria verde: $(grep '^VERDETTO' <<<"$AVVERSARI" | tail -1 | cut -c1-100)"
+  fi
   if ! forme_prima_del_push "$DIR" "origin/$DB"; then
     git reset -q --soft HEAD~1   # SOFT, non hard: il lavoro di una persona non si distrugge (dichiarato)
     log "⛔ consegna fermata dal cancello dei segreti: commit sciolto (soft), lavoro in albero, ramo $BR"

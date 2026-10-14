@@ -107,6 +107,24 @@ cmp -s "$SB/.git/config" "$MOCK_DIR/config-prima" && [ ! -e "$SB/.git/hooks/post
   && ok "O1 R1: .git/config intatto e nessun hook scritto dal modello" || ko "O1 R1: il modello ha scritto dentro .git/"
 [ "$(echo "$OUT" | grep -c '(rifiutato)')" -ge 3 ] && ok "O1 R1: tre rifiuti dentro .git dichiarati nel log" || ko "O1 R1: rifiuti dentro .git: $(echo "$OUT" | grep -c rifiutato)"
 
+# A3c (R1 del debito 2026-09-25): CLAUDE.md §4 promette che le cartelle di `.night-mirror` sono «declared to
+# the agent and never written». Dichiarate lo erano; nessun confine le negava. Qui: edit e write dentro una
+# cartella specchio rifiutati e dichiarati, la LETTURA resta ammessa (sono a sola lettura, non invisibili),
+# e un write FUORI dallo specchio passa ancora (il confine non deve chiudere tutto).
+SB="$SB_ROOT/a3c"; mkdir -p "$SB/specchio/sotto"; printf '# commento\nspecchio\n' > "$SB/.night-mirror"
+printf 'ORIGINALE-SPECCHIO\n' > "$SB/specchio/a.txt"
+scenario a3c "$SB" "specchio" \
+  "$(azione '{"action":"edit","path":"specchio/a.txt","old":"ORIGINALE","new":"TOCCATO"}')" \
+  "$(azione '{"action":"write","path":"specchio/sotto/nuovo.txt","content":"x"}')" \
+  "$(azione '{"action":"read","path":"specchio/a.txt"}')" \
+  "$(azione '{"action":"write","path":"libero.txt","content":"ok"}')" \
+  "$(azione 'fine')"
+[ "$(cat "$SB/specchio/a.txt")" = "ORIGINALE-SPECCHIO" ] && [ ! -e "$SB/specchio/sotto/nuovo.txt" ] \
+  && ok "R1: cartella specchio intatta (edit e write rifiutati)" || ko "R1: il modello ha scritto in una cartella specchio"
+[ "$(echo "$OUT" | grep -c 'specchio/.*FUORI (rifiutato)')" -ge 2 ] && ok "R1: i due rifiuti dentro lo specchio sono dichiarati nel log" || ko "R1: rifiuti specchio loggati: $(echo "$OUT" | grep -c 'specchio/.*FUORI (rifiutato)')"
+grep -qE 'read: specchio/a.txt \([0-9]+ bytes' <<<"$OUT" && ok "R1: la lettura dentro lo specchio resta ammessa" || ko "R1: lo specchio non si legge piu'"
+[ "$(cat "$SB/libero.txt" 2>/dev/null)" = "ok" ] && ok "R1: un write fuori dallo specchio passa ancora" || ko "R1: il confine ha chiuso anche fuori dallo specchio"
+
 # A4: run — denylist (curl/push/rm -rf/sudo/clasp) rifiutata, comando innocuo eseguito
 SB="$SB_ROOT/a4"; mkdir -p "$SB"
 scenario a4 "$SB" "run" \

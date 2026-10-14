@@ -282,6 +282,24 @@ else
   ko "sicurezza: file esterno non confinato (rc=$RC)"
 fi
 
+# --- caso R1 (debito 2026-09-25): il Territorio nomina un file dentro una cartella di `.night-mirror` (sola
+# lettura, CLAUDE.md §4). Stesso scenario di INDENTATA, ma il bersaglio sta nello specchio: il codice si
+# propone (nessun APPLICATO), il file resta intatto e il rifiuto e' dichiarato nel log.
+SB10=$(mktemp -d /tmp/risolvi-sb10.XXXXXX); mkdir -p "$SB10/specchio"
+printf 'specchio\n' > "$SB10/.night-mirror"
+printf 'if (true) {\n  function calc(a, b) {\n    return a + b;\n  }\n}\n' > "$SB10/specchio/calc2.js"
+cp "$SB10/specchio/calc2.js" "$SB10/prima.js"
+{ echo "## Commessa"; echo "correggi calc."; echo ""; echo "## Territorio"; echo "File: specchio/calc2.js"; echo ""; echo "## Verifica"; echo "node --check"; } > "$SB10/issue.md"
+cat > "$MOCK_BODY_FILE" <<'EOF'
+{"message":{"content":"```javascript\nfunction calc(a, b) {\n  return a + b * 2;\n}\n```\n"}}
+EOF
+OUT=$(NIGHT_API_URL="http://127.0.0.1:$MOCK_PORT/api/chat" bash "$SOLVER" "$SB10" "$SB10/issue.md" 2>&1); RC=$?
+if cmp -s "$SB10/specchio/calc2.js" "$SB10/prima.js" && ! grep -q "APPLICATO" <<<"$OUT" && grep -q "specchio" <<<"$(grep "TARGET" <<<"$OUT")"; then
+  ok "R1: il file in una cartella specchio non si scrive — resta proposta, rifiuto dichiarato"
+else
+  ko "R1: specchio toccato o rifiuto non dichiarato (rc=$RC): $(echo "$OUT" | grep -E 'TARGET|APPLICATO' | tr '\n' ' ')"
+fi
+
 # --- caso 3: il modello non produce codice — il solver rifiuta, niente file toccati
 cat > "$MOCK_BODY_FILE" <<'EOF'
 {"message":{"content":"Mi dispiace, non ho capito la richiesta."}}

@@ -1563,7 +1563,8 @@ fi
 RAMI_TSV=$(mktemp); PR_TSV=$(mktemp)
 if git -C "$HERE" fetch -q --prune origin 2>/dev/null \
    && git -C "$HERE" for-each-ref refs/remotes/origin --format='%(refname:lstrip=3)%09%(committerdate:unix)' 2>/dev/null | grep -v '^HEAD' > "$RAMI_TSV" \
-   && gh pr list -R obi2kenobi/AI_Programmer --state all --limit 1000 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' > "$PR_TSV" 2>/dev/null; then
+   && gh pr list -R obi2kenobi/AI_Programmer --state all --limit 1000 --json headRefName,state -q '.[] | [.headRefName, .state] | @tsv' > "$PR_TSV" 2>/dev/null \
+   && pr_aperte_per_scopa obi2kenobi/AI_Programmer >> "$PR_TSV"; then   # (R2: le aperte oltre le prime 1000 della lista sopra)
   SCOPA_OK=1
 else
   SCOPA_OK=0

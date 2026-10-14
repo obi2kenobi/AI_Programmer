@@ -592,6 +592,18 @@ for nome, eta in rami.items():
 PY
 }
 
+# pr_aperte_per_scopa <owner/repo>: i rami delle PR APERTE, una riga «ramo<TAB>OPEN» (il formato di <file-pr> di
+# rami_da_scopare). (R2 del debito 2026-09-25): la lista `--state all --limit 1000` si tronca oltre 1000 PR nella
+# storia; una PR aperta piu' vecchia delle 1000 piu' recenti spariva e il suo ramo, oltre le 24h, finiva scopato.
+# La lettura `--state open` e' separata e non si tronca (le aperte sono poche). rc 1 se gh fallisce: «non so quali
+# PR sono aperte» non e' «nessuna», e la scopa non cancella alla cieca.
+pr_aperte_per_scopa() {
+  local out
+  out=$(gh pr list -R "$1" --state open --limit 1000 --json headRefName -q '.[].headRefName' 2>/dev/null) || return 1
+  [ -n "$out" ] && printf '%s\n' "$out" | awk 'NF { print $0 "\tOPEN" }'
+  return 0
+}
+
 # repo_code(): i codici anonimi sono stati ritirati (dominio, Luca 2026-09-23:
 # il mapping non era mai stato alimentato e i nomi possono comparire — resta
 # proibito l'ACCESSO). La funzione resta per i chiamatori: restituisce il nome.
@@ -708,6 +720,24 @@ dipendenze_mancanti() {
   for c in "$@"; do command -v "$c" >/dev/null 2>&1 || m="${m:+$m }$c"; done
   printf '%s' "$m"
   [ -z "$m" ]
+}
+
+# in_cartella_specchio <realpath> <realpath-progetto>: 0 se il percorso sta dentro una cartella dichiarata in
+# <progetto>/.night-mirror (una per riga, `#` = commento: stessa lettura che ne fa night-shift.sh per il prompt).
+# (R1 del debito 2026-09-25): CLAUDE.md §4 promette «declared to the agent and never written»; la dichiarazione
+# arrivava al prompt, ma nessun confine di scrittura la faceva rispettare. Voce vuota, assoluta o con `..` = saltata
+# (una voce vuota darebbe «$2/» e chiuderebbe l'intero progetto; le altre uscirebbero dal progetto).
+in_cartella_specchio() {
+  local f="$2/.night-mirror" riga
+  [ -f "$f" ] || return 1
+  while IFS= read -r riga || [ -n "$riga" ]; do
+    case "$riga" in *[![:space:]]*) ;; *) continue ;; esac
+    case "$riga" in [[:space:]]*'#'*|'#'*) continue ;; esac
+    riga=$(printf '%s' "$riga" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//; s#^\./##; s#/*$##')
+    case "$riga" in ''|/*|*..*) continue ;; esac
+    case "$1" in "$2/$riga"|"$2/$riga"/*) return 0 ;; esac
+  done < "$f"
+  return 1
 }
 
 # leggi_coda <owner/repo> — le issue night-shift aperte, in JSON su stdout. rc 1 col motivo su stderr se gh

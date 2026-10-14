@@ -174,6 +174,28 @@ GB2=$(bash "$GP" consegna "$R" "questa passa col banco verde" .night-verify 2>&1
 BRB=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRB" -q 2>/dev/null; rm -f "$R/.night-verify"
 R="$R_PREC"   # si torna al repo principale per le sezioni dopo
 
+# ── la batteria avversaria sta fra il commit e il push (D1, scelta 2 di Luca 2026-10-14) ──
+# La batteria prova HEAD e rifiuta un albero sporco: un cambio che rompe un attacco non si vedeva prima
+# della consegna dopo. Ora, in un repo che ha tools/giri-avversari.sh, la consegna committa, lancia la batteria
+# sul commit e se e' rossa non spinge (soft: il lavoro resta). Qui la batteria e' un finto che si accende a comando.
+RA="$SB/repo-avv"; mkdir -p "$RA/tools"; nuova_repo "$RA" "$SB/rem-avv.git"
+printf '#!/bin/bash\necho "AGGIRA #1 attacco finto"\nexit 1\n' > "$RA/tools/giri-avversari.sh"
+printf 'a\n' > "$RA/base.txt"; git -C "$RA" add -A; git -C "$RA" -c user.name=t -c user.email=t@t commit -qm base -q
+R_PREC="$R"; R="$RA"
+printf 'modifica che la batteria boccera\n' >> "$R/base.txt"
+GA=$(bash "$GP" consegna "$R" "questa non deve passare" 2>&1); GA_RC=$?
+if [ "$GA_RC" -ne 0 ] && grep -q "batteria avversaria" <<<"$GA" && grep -q "AGGIRA" <<<"$GA"; then
+  ok "batteria rossa: consegna FERMATA prima del push, con la riga AGGIRA nel log"
+else ko "batteria rossa: consegna fermata (rc=$GA_RC: $GA)"; fi
+git -C "$R" show HEAD:base.txt 2>/dev/null | grep -q "boccera" && ko "batteria rossa: il commit sporco NON esiste" || ok "batteria rossa: il commit sporco NON esiste (sciolto)"
+grep -q "boccera" "$R/base.txt" && ok "batteria rossa: il lavoro NON e' distrutto" || ko "batteria rossa: il lavoro NON e' distrutto"
+printf '#!/bin/bash\necho "VERDETTO: 0 aggirati non riconosciuti"\nexit 0\n' > "$R/tools/giri-avversari.sh"
+sleep 1
+GA2=$(bash "$GP" consegna "$R" "questa passa con la batteria verde" 2>&1); GA2_RC=$?
+[ "$GA2_RC" -eq 0 ] && grep -q "batteria avversaria verde" <<<"$GA2" && ok "batteria verde: la consegna passa e LO DICE" || ko "batteria verde: consegna passa (rc=$GA2_RC: $GA2)"
+BRA=$(git -C "$R" branch --show-current); git -C "$R" checkout -q main; git -C "$R" branch -D "$BRA" -q 2>/dev/null
+R="$R_PREC"
+
 # ── giorno consegna con SEGRETO: si ferma PRIMA del push, lavoro non distrutto ───
 # (il segreto in un file TRACCATO: come file nuovo non dichiarato verrebbe messo
 #  fuori da aggiungi_consegna PRIMA del commit — quella e' un'altra guardia, gia' provata)
