@@ -5461,3 +5461,15 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
       in DEBITI).
   - Mie prime stesure prese prima del commit: due `$NOME»` senza graffe (V4 R1, bash 3.2 del Mac), una dalla suite e
     una da `tests/test-portabilita.sh`; e un banco che cercava «Rossi» dove l'oracolo stampa il cliente normalizzato.
+- **Registrazione fatture, 14/10: la P.IVA del fornitore a piè di pagina, la rilettura, la Chat e le note di credito.** Sette
+  PR sul repo delle fatture (#384–#391), ognuna con banco rosso prima e sabotaggi; il dettaglio è in
+  `docs/campo/2026-10-14-hasslacher-29289717-piva-non-letta.md`.
+  - VERIFICATO sul vivo da Luca: col prompt corretto la 29289717 Hasslacher esce con `ATU27313902` (`sondaLetturaPiva`), la
+    rilettura l'ha riscritta (riga 140), e `sondaPercheNonRegistrate` dà 139 righe: 114 registrate, 24 no (11 a mano, 10 non
+    mappate, 3 guasti), 0 pronte.
+  - ASSUNTO (non verificato da qui): la Noritec 15272017 ha lo stesso difetto della P.IVA; il messaggio Chat a Maurizio parte
+    al prossimo report delle 7 (webhook di uno spazio di prova); la 29289717 non compare fra le non registrate, ma non so
+    se qualcuno l'ha registrata in BC.
+  - APERTO: registrare a mano la prima nota di credito vera (29289711) e solo dopo accendere il trigger delle note; svuotare
+    `RILETTURA.NUMERI` e `NOTA_CREDITO.NUMERO` dopo l'uso; far registrare il pellet di magazzino come la 29289691 con la
+    logica di Treviso (domanda di dominio, per ora va a Maurizio).
