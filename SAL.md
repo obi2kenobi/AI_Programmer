@@ -5470,6 +5470,12 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
   - ASSUNTO (non verificato da qui): la Noritec 15272017 ha lo stesso difetto della P.IVA; il messaggio Chat a Maurizio parte
     al prossimo report delle 7 (webhook di uno spazio di prova); la 29289717 non compare fra le non registrate, ma non so
     se qualcuno l'ha registrata in BC.
+  - Aggiornamento 14/10 sera: la Noritec 15272017 si è riletta ed è «pronta per il giro» (lista svuotata in #392). La prima
+    nota vera (29289711) è stata rifiutata da BC: manca il codice tipo transazione servizi sulla riga DIVPREBIOC (la scheda
+    articolo non lo ha); in BC resta la bozza 26NCAP-0000092, che l'utente applicativo non può cancellare. Decisione di Luca: la
+    completa a mano Maurizio (non si rilancia `registraNotaCreditoInProduzione`). Dal codice la nota è già fra le «da lavorare a
+    mano» del report, ma il testo diceva «registrabile»: un ramo a parte lo cambia in «bozza … da completare a mano, non crearne
+    un'altra». La sonda `sondaCodiceServizi` (#393) legge dove l'ufficio prende il codice: ancora da lanciare.
   - APERTO: registrare a mano la prima nota di credito vera (29289711) e solo dopo accendere il trigger delle note; svuotare
     `RILETTURA.NUMERI` e `NOTA_CREDITO.NUMERO` dopo l'uso; far registrare il pellet di magazzino come la 29289691 con la
     logica di Treviso (domanda di dominio, per ora va a Maurizio).
