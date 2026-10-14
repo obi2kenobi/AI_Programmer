@@ -16,9 +16,11 @@ Byte NUL: i file vengono aperti in UTF-8 con errors='replace' (grep salterebbe
 l'intero file — famiglia misurata: 2 file su 1098, i più grandi del parco).
 """
 import json
+import math
 import os
 import re
 import sys
+from collections import Counter
 
 FUN_TOP_RE = re.compile(r"^(?:function\s+([A-Za-z_$][\w$]*)|(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:function|\())", re.M)
 FUN_RE = re.compile(r"^\s*(?:function\s+([A-Za-z_$][\w$]*)|(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:function|\())", re.M)
@@ -58,6 +60,26 @@ def function_bodies(testo):
 
 def riga_di(testo, idx):
     return testo.count("\n", 0, idx) + 1
+
+
+# Una variabile di nome sensibile a cui si assegna un valore lungo fra virgolette (`var BC_CLIENT_SECRET = '...'`). Falso negativo MISURATO sul campo
+# (riordino-legno, 2026-10-01 e riprovato 2026-10-14): i pattern di chiavi con prefisso noto (sk_live_, AKIA...) non la vedevano. Il valore NON si riporta mai.
+NOME_SENSIBILE_RE = re.compile(r"""\b\w*(?:secret|password|passwd|api[_-]?key|private[_-]?key|token)\w*\s*[:=]\s*(["'])([^"'\s]{16,})\1""", re.I)
+PLACEHOLDER_RE = re.compile(r"^(?:your|change|replace|insert|example|placeholder|todo|xxx)", re.I)
+ENTROPIA_MINIMA = 3.75   # misurata: un nome di cache in parole (acq_bc_token_cache_key_name) 3,4; un esadecimale casuale di 32 caratteri 3,9; un segreto base64 5 o piu'
+
+
+def entropia(valore):
+    """Entropia di Shannon in bit per carattere: separa un valore casuale da un testo in parole."""
+    n = len(valore)
+    return -sum(c / n * math.log2(c / n) for c in Counter(valore).values())
+
+
+def valore_da_segreto(valore):
+    """Un valore che ha la forma di un segreto e non di un nome, un indirizzo o un segnaposto: lungo, con una cifra, ad alta entropia."""
+    if valore.lower().startswith("http") or PLACEHOLDER_RE.match(valore):
+        return False
+    return len(valore) >= 16 and any(c.isdigit() for c in valore) and entropia(valore) >= ENTROPIA_MINIMA
 
 
 def main():
@@ -128,6 +150,9 @@ def main():
         for pat in SECRET_PATTERNS:
             for m in re.finditer(pat, t):
                 siti.append(f"{f}:{riga_di(t, m.start())} [{pat.split('[')[0][:12]}…] (valore non riportato)")
+        for m in NOME_SENSIBILE_RE.finditer(t):
+            if valore_da_segreto(m.group(2)):
+                siti.append(f"{f}:{riga_di(t, m.start())} [assegnazione a un nome sensibile] (valore non riportato)")
     famiglie.append(("segreti hardcoded (valore MAI riportato)",
                      "da spostare in Script Properties come parte del fix — e non si propone MAI di ruotare la credenziale",
                      siti))
@@ -179,8 +204,8 @@ def main():
     if os.path.isfile(manifest):
         try:
             wf = json.load(open(manifest, encoding="utf-8")).get("webapp", {})
-            if wf.get("access") == "ANYONE_ANONYMOUS":
-                siti.append("appsscript.json (manifest — ma l'accesso VERO sta nel deployment, non nel manifest)")
+            if wf.get("access") in ("ANYONE", "ANYONE_ANONYMOUS"):   # ANYONE = qualunque account Google (misurato su riordino-legno, 2026-10-01): non e' anonimo, ma e' fuori dal dominio
+                siti.append(f"appsscript.json access: {wf.get('access')} (manifest — ma l'accesso VERO sta nel deployment, non nel manifest)")
         except json.JSONDecodeError:
             siti.append("appsscript.json non interpretabile")
     famiglie.append(("webapp anonima nel manifest",

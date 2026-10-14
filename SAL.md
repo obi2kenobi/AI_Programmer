@@ -156,6 +156,7 @@
 - [2026-10-14 — saldati R1 e R2 della notte dei giri (settimo patto: il debito si brucia alla riapertura)](#2026-10-14--saldati-r1-e-r2-della-notte-dei-giri-settimo-patto-il-debito-si-brucia-alla-riapertura)
 - [2026-10-14 (2) — D1 chiusa: la batteria avversaria gira fra il commit e il push (scelta 2 di Luca)](#2026-10-14-2--d1-chiusa-la-batteria-avversaria-gira-fra-il-commit-e-il-push-scelta-2-di-luca)
 - [2026-10-14 (3) — passo 3/7 di banco-passaggio non e' piu' muto su albero sporco](#2026-10-14-3--passo-37-di-banco-passaggio-non-e-piu-muto-su-albero-sporco)
+- [2026-10-14 (4) — `gas_qualita.py`: i due falsi negativi misurati su riordino-legno (proposta dei report di campo del 2026-09-30 e 2026-10-01)](#2026-10-14-4--gas_qualitapy-i-due-falsi-negativi-misurati-su-riordino-legno-proposta-dei-report-di-campo-del-2026-09-30-e-2026-10-01)
 
 ## Stato
 
@@ -5534,3 +5535,10 @@ Su richiesta di Luca («affronta R1 e R2 adesso»), prima del lavoro nuovo.
   neutralizzato (1 FAIL). 14 OK, 0 FAIL a regime; `test-chiarezza`, `test-giri-avversari-isolati`, `test-errori` verdi.
 - **Non provato:** il banco intero `banco-passaggio.sh` di fine passaggio (214 test + mutazioni: minuti), qui non lanciato.
   Il solo passo 3 si': era il passo cambiato.
+
+### 2026-10-14 (4) — `gas_qualita.py`: i due falsi negativi misurati su riordino-legno (proposta dei report di campo del 2026-09-30 e 2026-10-01)
+
+- **Il difetto (riprovato eseguendo il 2026-10-14 sul repo vero):** `tools/gas_qualita.py` dava 0 su «segreti hardcoded» per `var BC_CLIENT_SECRET = '<valore>'` (i pattern erano solo chiavi con prefisso noto e `securityCode`) e 0 su «webapp anonima» per un manifest con `access: ANYONE` (la lente cercava solo `ANYONE_ANONYMOUS`). Erano le due proposte «lenti per segreto nel sorgente e per `ANYONE`» dei due report di campo, mai adottate; tre agenti su quattro l'avevano segnalato.
+- **La cura:** una assegnazione a un nome sensibile (`secret`, `password`, `api_key`, `private_key`, `token`) con un valore fra virgolette lungo ≥ 16, con una cifra e ad alta entropia (≥ 3,75 bit/carattere: un nome di cache in parole sta a 3,4, un esadecimale casuale a 3,9, un segreto base64 a 5 o più) è un sito; un indirizzo (`http…`), un segnaposto (`YOUR_…`), una frase con spazi e un valore corto no. Il valore non si riporta mai (solo `file:riga`). Il manifest con `access: ANYONE` è ora un sito, con il valore e il caveat del deployment.
+- **Banco** `tests/test-gas-qualita-segreti-manifest.sh` (21 attese: sette positivi e nove negativi, manifest a quattro valori), scritto prima, 7 rosse prima della cura; i due rami sabotati tornano rossi (6 e 1 rosse). `test-gas-qualita-rilevatore.sh` 13/13 e `test-gas-qualita-secret-pattern.sh` 2/2 invariati. **Sul repo vero**: `Code.gs:8` è segnalato, il valore non compare nell'output (0 occorrenze).
+- **Limite dichiarato:** l'entropia è un'euristica (un segreto fatto di sole parole passerebbe; un identificativo casuale assegnato a un nome con `token` verrebbe segnalato: per questo la famiglia porta la sua domanda discriminante). La terza proposta dei report (elencare le funzioni globali senza underscore che restituiscono un token) non è fatta.
