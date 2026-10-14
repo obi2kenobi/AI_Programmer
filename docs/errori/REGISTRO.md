@@ -1307,3 +1307,16 @@
 - Guardia: night-shift/night-shift.sh + night-shift/lib.sh — segnale composito (watchdog OR budget pieno rc!=0,2,3 con durata >=280s OR cascata fallita), 2 segnali/giorno → l'issue riposa (.git/non-converge/N, col perché nella riga). Banco: tests/test-non-converge.sh (5 OK).
 - Verifica guardia: banco 5/0; stanotte attesa GPU totale < 20 minuti.
 - Aggiramento: un'issue che converge AL TERZO ciclo con due signal-zero non viene fermata (bene); una che alternasse riuscite e fallimenti non riposa mai (dichiarato).
+
+## E-061 Il puntatore al cervello citava `~/.night-shift-work` (col punto): E-060 aveva dato per esistente un percorso che non esiste
+
+- Data / sessione: 2026-10-13, installazione di AI_Programmer su CatsFinance (PR 278).
+- Famiglia: R5 (memoria contro realtà: E-060 ha allineato la riga delle skill alle altre righe del puntatore e ha scritto «`~/.night-shift-work` e' il percorso che esiste» senza mai eseguire `ls` su quel percorso) + R2 (la guardia confrontava la stringa col percorso scelto, mai la sua esistenza: verde su un'asserzione falsa).
+- Chi l'ha trovato: Luca, installando CatsFinance sul suo Mac: `ls -d ~/night-shift-work/AI_Programmer ~/.night-shift-work/AI_Programmer` → solo quello senza punto esiste; il `grep` sul CLAUDE.md installato mostrava le righe 8, 11, 12, 13 col punto.
+- Sintomo: ogni CLAUDE.md satellite installato dal 2026-10-04 porta quattro righe che puntano a un percorso inesistente: una sessione sul satellite non trova le regole dell'hub.
+- Causa prossima: tools/claude-md-cervello.sh (righe 22-27) e il fallback inline di tools/installa-ai-programmer.sh (righe 75-80) scrivevano `~/.night-shift-work/AI_Programmer`; il WORK del turno e' `$HOME/night-shift-work` (night-shift/night-shift.sh:73).
+- Causa del ragionamento: la correzione di E-060 ha trattato la maggioranza delle righe (4 su 5) come prova di correttezza; il percorso vero non e' stato guardato dalla parte di chi lo riceve. Anche in questa sessione l'ho prima chiamato «refuso» e poi «scelta protetta da un test»: il test proteggeva la stringa sbagliata, non il fatto.
+- Perché non ci ha fermati: nessun gate esegue i percorsi citati in un CLAUDE.md (stessa ragione di E-060), e la guardia di E-060 cercava il percorso col punto.
+- Guardia: tests/test-locale-turno.sh (check 5-6): il generatore deve citare `~/night-shift-work` e nessun percorso `~/.night-shift...` col punto.
+- Verifica guardia: vista rossa sul generatore col punto (2 FAIL sui controlli del puntatore), verde dopo la correzione (i due controlli OK; resta il FAIL del check 4, non toccato: il BSD sort di macOS non c'e' su Linux).
+- Aggiramento: le CLAUDE.md gia' installate portano il percorso col punto finché non vengono corrette (CatsFinance: corretto a mano con sed, commit c1fb620 sul suo repo); rigenerarle in massa resta decisione del proprietario (come E-060, D15). La riga di E-060 «percorso che esiste» e' superata da questa voce.

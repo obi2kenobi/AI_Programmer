@@ -19,12 +19,12 @@ cat > "$DIR/CLAUDE.md" << 'CLAUDE'
 Le regole vincolanti NON sono in questo file: vivono nel cervello centrale.
 
 **PRIMA di iniziare qualsiasi lavoro, leggi:**
-→ `~/.night-shift-work/AI_Programmer/CLAUDE.md` (le regole complete)
+→ `~/night-shift-work/AI_Programmer/CLAUDE.md` (le regole complete)
 
 **Durante il lavoro, consulta:**
-→ Skills: `~/.night-shift-work/AI_Programmer/.claude/skills/`
-→ Patterns (lezioni apprese): `~/.night-shift-work/AI_Programmer/patterns/`
-→ Registro errori: `~/.night-shift-work/AI_Programmer/docs/errori/REGISTRO.md`
+→ Skills: `~/night-shift-work/AI_Programmer/.claude/skills/`
+→ Patterns (lezioni apprese): `~/night-shift-work/AI_Programmer/patterns/`
+→ Registro errori: `~/night-shift-work/AI_Programmer/docs/errori/REGISTRO.md`
 
 **Perché così:** le regole cambiano ogni giorno. Una fotocopia invecchia. Il cervello è sempre corrente.
 

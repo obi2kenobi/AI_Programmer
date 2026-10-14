@@ -6,10 +6,10 @@
 # pattern, CLAUDE.md. Solo il puntatore, gli hook, il grafo, e la registrazione.
 #
 # USO (da Claude Code o da terminale):
-#   bash ~/.night-shift-work/AI_Programmer/tools/installa-ai-programmer.sh <dir-repo>
+#   bash ~/night-shift-work/AI_Programmer/tools/installa-ai-programmer.sh <dir-repo>
 #
 # oppure su un repo GitHub:
-#   bash ~/.night-shift-work/AI_Programmer/tools/installa-ai-programmer.sh --clone owner/repo
+#   bash ~/night-shift-work/AI_Programmer/tools/installa-ai-programmer.sh --clone owner/repo
 #
 # FA (in ordine):
 #   1. CLAUDE.md sottile (puntatore al cervello — 19 righe, non 177)
@@ -36,7 +36,7 @@ if [ "${1:-}" = "--clone" ] && [ -n "${2:-}" ]; then
   DIR="$HOME/night-shift-work/${REPO##*/}"
   if [ ! -d "$DIR" ]; then
     echo "── clono $REPO in $DIR..."
-    gh repo clone "$REPO" "$DIR" -q || { echo "⛔ clone fallito"; exit 1; }
+    gh repo clone "$REPO" "$DIR" -- -q || { echo "⛔ clone fallito"; exit 1; }
   fi
   shift 2
 else
@@ -72,12 +72,12 @@ else
 Le regole vincolanti NON sono in questo file: vivono nel cervello centrale.
 
 **PRIMA di iniziare qualsiasi lavoro, leggi:**
-→ `~/.night-shift-work/AI_Programmer/CLAUDE.md` (le regole complete)
+→ `~/night-shift-work/AI_Programmer/CLAUDE.md` (le regole complete)
 
 **Durante il lavoro, consulta:**
-→ Skills: `~/.night-shift-work/AI_Programmer/.claude/skills/`
-→ Patterns (lezioni apprese): `~/.night-shift-work/AI_Programmer/patterns/`
-→ Registro errori: `~/.night-shift-work/AI_Programmer/docs/errori/REGISTRO.md`
+→ Skills: `~/night-shift-work/AI_Programmer/.claude/skills/`
+→ Patterns (lezioni apprese): `~/night-shift-work/AI_Programmer/patterns/`
+→ Registro errori: `~/night-shift-work/AI_Programmer/docs/errori/REGISTRO.md`
 
 **Perché così:** le regole cambiano ogni giorno. Una fotocopia invecchia. Il cervello è sempre corrente.
 

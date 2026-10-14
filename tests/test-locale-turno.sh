@@ -65,17 +65,18 @@ else
 fi
 
 # 5) il puntatore skills che il generatore scrive nei CLAUDE.md satellite cita il percorso
-#    che esiste (~/.night-shift-work): per un intero giro ha detto ~/.night-shift, e in
-#    ogni repo onboardata la riga delle skill puntava nel vuoto
+#    che esiste (~/night-shift-work, il WORK di night-shift/night-shift.sh:73): per un
+#    intero giro ha detto ~/.night-shift, poi ~/.night-shift-work (col punto: E-061) —
+#    in ogni repo onboardata la riga delle skill puntava nel vuoto
 TMP=$(mktemp -d)
 trap 'rm -f "$SNIP"; rm -rf "$TMP"' EXIT
 if bash "$HERE/tools/claude-md-cervello.sh" "$TMP" >/dev/null 2>&1; then
-  grep -q 'Skills: `~/.night-shift-work/AI_Programmer/.claude/skills/`' "$TMP/CLAUDE.md" \
-    && ok "il puntatore skills del CLAUDE.md satellite cita ~/.night-shift-work" \
-    || ko "il puntatore skills del CLAUDE.md satellite non cita ~/.night-shift-work"
-  grep -q '`~/\.night-shift/AI_Programmer' "$TMP/CLAUDE.md" \
-    && ko "il CLAUDE.md satellite cita ~/.night-shift/... (senza -work): percorso inesistente" \
-    || ok "nessun percorso ~/.night-shift/... (senza -work) nel CLAUDE.md satellite"
+  grep -q 'Skills: `~/night-shift-work/AI_Programmer/.claude/skills/`' "$TMP/CLAUDE.md" \
+    && ok "il puntatore skills del CLAUDE.md satellite cita ~/night-shift-work" \
+    || ko "il puntatore skills del CLAUDE.md satellite non cita ~/night-shift-work"
+  grep -q '`~/\.night-shift' "$TMP/CLAUDE.md" \
+    && ko "il CLAUDE.md satellite cita ~/.night-shift... (col punto): percorso inesistente" \
+    || ok "nessun percorso ~/.night-shift... (col punto) nel CLAUDE.md satellite"
 else
   ko "claude-md-cervello.sh non gira (il banco del typo non ha potuto giudicare)"
 fi
