@@ -15,14 +15,15 @@
 #      È la «verifica del codice appena scritto»: il file nuovo che nessun test
 #      guarda è esattamente quello che regge il prossimo incidente.
 #
-# Uso: bash tools/banco-passaggio.sh [--veloce]
+# Uso: bash tools/banco-passaggio.sh [--veloce | --solo-copertura | --solo-avversari]
 # Esce 0 solo se TUTTO tiene. Il verdetto è sempre sull'ultima riga.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$HERE"
-VELOCE=0; SOLO=0
+VELOCE=0; SOLO=0; SOLO_AVV=0
 [ "${1:-}" = "--veloce" ] && VELOCE=1
 [ "${1:-}" = "--solo-copertura" ] && SOLO=1
+[ "${1:-}" = "--solo-avversari" ] && SOLO_AVV=1
 FALLITI=0
 
 step() { echo ""; echo "== $1 =="; }
@@ -41,6 +42,36 @@ cambiati() {
   fi
   printf '%s\n%s\n' "$sporchi" "$ramo" | grep -E "$filtro" | sort -u || true
 }
+
+# passo_avversari: il passo 3/7. La batteria esce 0 (nessun aggirato), 1 (aggirati) o 2 (NON partita: albero
+# sporco, clone fallito). (Debito 2026-10-14): il passo cercava solo righe `^AGGIRA`, quindi un rc 2 stampava
+# «AGGIRATI:» a vuoto, contando un fallito senza dire perche'. Ora ogni rosso dice la sua riga; se non ce n'e'
+# nessuna di AGGIRA, l'ultima riga del log si mostra comunque (il silenzio non e' pulizia).
+passo_avversari() {
+  local rc
+  BP_LOG=${BP_LOG:-$(mktemp -d /tmp/bp.XXXXXX)}
+  bash tools/giri-avversari.sh >"$BP_LOG/avversari.log" 2>&1; rc=$?
+  if [ "$rc" -eq 0 ]; then
+    echo "  0 aggirati ($(grep -c '^TIENE' "$BP_LOG/avversari.log") tengono)"
+  elif [ "$rc" -eq 2 ]; then
+    echo "  ⛔ batteria NON partita (rc=2): $(grep -m1 . "$BP_LOG/avversari.log" | cut -c1-160)"
+    FALLITI=$((FALLITI+1))
+  else
+    echo "  AGGIRATI (rc=$rc):"
+    grep "^AGGIRA" "$BP_LOG/avversari.log" | sed 's/^/  /'
+    grep -q "^AGGIRA" "$BP_LOG/avversari.log" || echo "  (nessuna riga AGGIRA; ultima riga del log: $(tail -1 "$BP_LOG/avversari.log" | cut -c1-160))"
+    FALLITI=$((FALLITI+1))
+  fi
+}
+
+if [ "$SOLO_AVV" -eq 1 ]; then
+  # solo il passo 3: per il test di se stesso (la batteria vera costa ~1 min nel clone)
+  step "3/7 batteria avversaria"
+  passo_avversari
+  echo "VERDETTO: $([ "$FALLITI" -eq 0 ] && echo OK || echo 'batteria rossa o non partita')"
+  [ "$FALLITI" -eq 0 ]
+  exit $?
+fi
 
 if [ "$SOLO" -eq 1 ]; then
   # solo il banco 7: per il test di se stesso e per i controlli rapidi a metà giro
@@ -78,12 +109,7 @@ fi
 
 if [ "$VELOCE" -eq 0 ]; then
   step "3/7 batteria avversaria"
-  if bash tools/giri-avversari.sh >"$BP_LOG/avversari.log" 2>&1; then
-    echo "  0 aggirati ($(grep -c '^TIENE' "$BP_LOG/avversari.log") tengono)"
-  else
-    echo "  AGGIRATI:"; grep "^AGGIRA" "$BP_LOG/avversari.log" | sed 's/^/  /'
-    FALLITI=$((FALLITI+1))
-  fi
+  passo_avversari
 
   step "4/7 banco mutazioni (i test provati contro se stessi)"
   if bash tools/mutation-tests.sh >"$BP_LOG/mutazioni.log" 2>&1; then

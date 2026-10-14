@@ -155,6 +155,7 @@
 - [2026-09-23 (18°) — la notte dei giri: mandato di Luca «analisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti»](#2026-09-23-18--la-notte-dei-giri-mandato-di-luca-analisi-lenta-trova-e-aggiusta-tutto-10-giri-e-poi-20-non-fermarti)
 - [2026-10-14 — saldati R1 e R2 della notte dei giri (settimo patto: il debito si brucia alla riapertura)](#2026-10-14--saldati-r1-e-r2-della-notte-dei-giri-settimo-patto-il-debito-si-brucia-alla-riapertura)
 - [2026-10-14 (2) — D1 chiusa: la batteria avversaria gira fra il commit e il push (scelta 2 di Luca)](#2026-10-14-2--d1-chiusa-la-batteria-avversaria-gira-fra-il-commit-e-il-push-scelta-2-di-luca)
+- [2026-10-14 (3) — passo 3/7 di banco-passaggio non e' piu' muto su albero sporco](#2026-10-14-3--passo-37-di-banco-passaggio-non-e-piu-muto-su-albero-sporco)
 
 ## Stato
 
@@ -5514,3 +5515,16 @@ Su richiesta di Luca («affronta R1 e R2 adesso»), prima del lavoro nuovo.
 - **Visto per strada, registrato e NON curato:** `tools/banco-passaggio.sh` passo 3/7 su albero sporco stampa
   «AGGIRATI:» a vuoto (la batteria esce 2 con «albero sporco», riga che il passo non mostra): provato, rc=2 e 0 righe
   AGGIRA. In DEBITI, con il banco che servira'.
+
+### 2026-10-14 (3) — passo 3/7 di banco-passaggio non e' piu' muto su albero sporco
+
+- **Il difetto (provato eseguendo, vedi (2)).** La batteria avversaria esce 0 / 1 (aggirati) / 2 (NON partita); il passo
+  cercava solo `^AGGIRA`, quindi con rc 2 stampava «AGGIRATI:» a vuoto e contava un fallito senza dire perche'.
+- **La cura.** `passo_avversari` in `tools/banco-passaggio.sh`: rc 0 verde; rc 2 «batteria NON partita» con la sua
+  prima riga; altro rc «AGGIRATI (rc=N)» con le righe AGGIRA e, se non ce n'e', l'ultima riga del log. Nuova via
+  `--solo-avversari` (come `--solo-copertura`) per provarlo senza il banco intero.
+- **Banco** (`tests/test-banco-passaggio.sh`): la batteria VERA col suo rifiuto vero su albero sporco, e batterie
+  finte per aggirati / rosso muto / verde. Visto ROSSO prima della cura (14 casi: 3 FAIL) e col ramo rc 2
+  neutralizzato (1 FAIL). 14 OK, 0 FAIL a regime; `test-chiarezza`, `test-giri-avversari-isolati`, `test-errori` verdi.
+- **Non provato:** il banco intero `banco-passaggio.sh` di fine passaggio (214 test + mutazioni: minuti), qui non lanciato.
+  Il solo passo 3 si': era il passo cambiato.
