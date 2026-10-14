@@ -18,6 +18,14 @@ HERE="$(cd "$(dirname "$0")" && pwd)"
 # si armonizza allo stesso ordine.
 PROMPT="${1:-}"
 [ -z "$PROMPT" ] && { echo "uso: ask-qwen.sh \"prompt\" [stdin opzionale]" >&2; exit 1; }
+# (furto da affaan-m/ECC: i segreti si fermano PRIMA del modello — loro bloccano
+# sk-/ghp_/AKIA nel prompt. Qui prima notte: AVVISO + riga nel log, mai muto e
+# mai blocco (un falso positivo ammutolirebbe il turno; i cancelli sui diff
+# bloccano gia' la fonte). Promozione a blocco solo dopo un giro di misure.
+case "$PROMPT" in
+  *ghp_*|*sk-ant-*|*AKIA[0-9A-Z]*)
+    printf '[ask-qwen %s] ⚠ SEGRETO nel prompt verso il modello (%s caratteri) — AVVISO, non blocco: trovalo e toglilo\n' "$(date '+%H:%M:%S')" "${#PROMPT}" >&2 ;;
+esac
 # (2026-09-24, Q2): senza python3 il wrapper usciva 127 col solo «command not found» (il contratto e' 0/1/2)
 command -v python3 >/dev/null 2>&1 || { echo "ERRORE ollama: python3 assente — serve per il payload e la risposta" >&2; exit 1; }
 
