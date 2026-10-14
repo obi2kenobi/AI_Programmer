@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "33457b50e4254501c3414ebd6f37c1a03b0e1c77",
+  "built_at_commit": "aac1e2215be0167913c8d04e41e2dd4b4894a7c6",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -18487,7 +18487,7 @@
       "relation": "imports_from",
       "source": "llm_ask_qwen",
       "source_file": "llm/ask-qwen.sh",
-      "source_location": "L26",
+      "source_location": "L34",
       "target": "llm_timeout",
       "weight": 1.0
     },
@@ -18499,7 +18499,7 @@
       "relation": "imports_from",
       "source": "llm_ask_qwen",
       "source_file": "llm/ask-qwen.sh",
-      "source_location": "L25",
+      "source_location": "L33",
       "target": "llm_usage",
       "weight": 1.0
     },
@@ -39720,6 +39720,63 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "relation": "defines",
+      "source": "tests_test_lente_scudo",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L8",
+      "target": "tests_test_lente_scudo_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_lente_scudo",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L7",
+      "target": "tests_test_lente_scudo_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tests_test_lente_scudo",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L1",
+      "target": "tests_test_lente_scudo_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_lente_scudo_sh__entry",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L9",
+      "target": "tests_test_lente_scudo_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_lente_scudo_sh__entry",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L9",
+      "target": "tests_test_lente_scudo_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
       "source": "tests_test_lente_sicurezza",
       "source_file": "tests/test-lente-sicurezza.sh",
       "source_location": "L20",
@@ -50771,6 +50828,40 @@
       "source_file": "tools/lente-documenti.sh",
       "source_location": "L39",
       "target": "tools_lente_documenti_log",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tools_lente_scudo",
+      "source_file": "tools/lente-scudo.sh",
+      "source_location": "L16",
+      "target": "tools_lente_scudo_scudo",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_lente_scudo",
+      "source_file": "tools/lente-scudo.sh",
+      "source_location": "L1",
+      "target": "tools_lente_scudo_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tools_lente_scudo_sh__entry",
+      "source_file": "tools/lente-scudo.sh",
+      "source_location": "L32",
+      "target": "tools_lente_scudo_scudo",
       "weight": 1.0
     },
     {
@@ -79985,8 +80076,8 @@
     },
     {
       "_origin": "ast",
-      "community": 874,
-      "community_name": "test-consegna-dichiarata.sh",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "night_shift_lib_dichiara_file_nuovo",
       "label": "dichiara_file_nuovo()",
@@ -80060,8 +80151,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "shift_repo",
+      "community": 868,
+      "community_name": "giorno.sh",
       "file_type": "code",
       "id": "night_shift_lib_forme_prima_del_push",
       "label": "forme_prima_del_push()",
@@ -80345,8 +80436,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "night_shift_lib_rianima_ollama",
       "label": "rianima_ollama()",
@@ -80360,8 +80451,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "shift_repo",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_lib_riga_verifica_vuota",
       "label": "riga_verifica_vuota()",
@@ -80405,8 +80496,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "shift_repo",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_lib_ruota_log_aperto",
       "label": "ruota_log_aperto()",
@@ -101897,6 +101988,66 @@
     },
     {
       "_origin": "ast",
+      "community": 881,
+      "community_name": "test-lente-scudo.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_scudo",
+      "label": "test-lente-scudo.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "test-lente-scudo.sh",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 881,
+      "community_name": "test-lente-scudo.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_scudo_ko",
+      "label": "ko()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L8"
+    },
+    {
+      "_origin": "ast",
+      "community": 881,
+      "community_name": "test-lente-scudo.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_scudo_ok",
+      "label": "ok()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L7"
+    },
+    {
+      "_origin": "ast",
+      "community": 881,
+      "community_name": "test-lente-scudo.sh",
+      "file_type": "code",
+      "id": "tests_test_lente_scudo_sh__entry",
+      "label": "test-lente-scudo.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "test-lente-scudo.sh script",
+      "source_file": "tests/test-lente-scudo.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 74,
       "community_name": "test-lente-sicurezza.sh",
       "file_type": "code",
@@ -106142,8 +106293,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama",
       "label": "test-rianima-ollama.sh",
@@ -106157,8 +106308,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
@@ -106172,8 +106323,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
@@ -106187,8 +106338,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_sh__entry",
       "label": "test-rianima-ollama.sh script",
@@ -112415,6 +112566,51 @@
       },
       "norm_label": "lente-documenti.sh script",
       "source_file": "tools/lente-documenti.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 882,
+      "community_name": "lente-scudo.sh",
+      "file_type": "code",
+      "id": "tools_lente_scudo",
+      "label": "lente-scudo.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "lente-scudo.sh",
+      "source_file": "tools/lente-scudo.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 882,
+      "community_name": "lente-scudo.sh",
+      "file_type": "code",
+      "id": "tools_lente_scudo_scudo",
+      "label": "scudo()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "scudo()",
+      "source_file": "tools/lente-scudo.sh",
+      "source_location": "L16"
+    },
+    {
+      "_origin": "ast",
+      "community": 882,
+      "community_name": "lente-scudo.sh",
+      "file_type": "code",
+      "id": "tools_lente_scudo_sh__entry",
+      "label": "lente-scudo.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "lente-scudo.sh script",
+      "source_file": "tools/lente-scudo.sh",
       "source_location": "L1"
     },
     {
