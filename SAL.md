@@ -154,6 +154,7 @@
 - [2026-09-23 (17°) — il cancello clasp non scambia più il corpo di un heredoc per un comando (sì di Luca)](#2026-09-23-17--il-cancello-clasp-non-scambia-più-il-corpo-di-un-heredoc-per-un-comando-sì-di-luca)
 - [2026-09-23 (18°) — la notte dei giri: mandato di Luca «analisi lenta, trova e aggiusta tutto, 10 giri e poi 20, non fermarti»](#2026-09-23-18--la-notte-dei-giri-mandato-di-luca-analisi-lenta-trova-e-aggiusta-tutto-10-giri-e-poi-20-non-fermarti)
 - [2026-10-14 — saldati R1 e R2 della notte dei giri (settimo patto: il debito si brucia alla riapertura)](#2026-10-14--saldati-r1-e-r2-della-notte-dei-giri-settimo-patto-il-debito-si-brucia-alla-riapertura)
+- [2026-10-14 (2) — D1 chiusa: la batteria avversaria gira fra il commit e il push (scelta 2 di Luca)](#2026-10-14-2--d1-chiusa-la-batteria-avversaria-gira-fra-il-commit-e-il-push-scelta-2-di-luca)
 
 ## Stato
 
@@ -5495,3 +5496,21 @@ Su richiesta di Luca («affronta R1 e R2 adesso»), prima del lavoro nuovo.
   intero); nessuna notte vera sul Mac (resta in A16).
 - Mia svista di stesura, corretta prima del commit: il primo testo dei log di rifiuto cambiava la stringa `FUORI (rifiutato)`
   che il vecchio banco A3 cerca, e il controllo sulla lettura cercava il contenuto nel log (il log non lo stampa).
+
+### 2026-10-14 (2) — D1 chiusa: la batteria avversaria gira fra il commit e il push (scelta 2 di Luca)
+
+- **Domanda e risposta.** D1: la batteria `tools/giri-avversari.sh` prova `HEAD` e rifiuta un albero sporco
+  (`:27-31`, `:44-47`), quindi un cambio che rompe un attacco si vedeva solo alla consegna dopo. Luca: «2» = dopo il
+  commit, prima del push.
+- **Fatto.** `tools/giorno.sh consegna`, in un repo che ha `tools/giri-avversari.sh`: dopo il commit e il banco
+  `.night-verify`, lancia la batteria sul commit; rossa o non partita (rc ≠ 0) = `git reset --soft HEAD~1`, consegna
+  fermata, lavoro in albero, riga nel registro del giorno. Banco in `tests/test-giorno.sh` (batteria finta rossa/verde),
+  visto ROSSO prima e col gate neutralizzato.
+- **Misurato eseguendo.** La batteria vera, su `HEAD` di questa sessione: 49 s, 95 attacchi, 88 tengono, 0 aggirati,
+  7 ACK. Costo accettabile per una consegna.
+- **Verificato / non.** `test-giorno.sh`: i 4 casi nuovi OK, nessun FAIL nuovo; restano 6 FAIL che c'erano GIÀ senza le
+  mie modifiche (il locale `en_US.UTF-8` manca in questa sessione cloud; non indagati). Non provato: una consegna vera
+  dell'hub con `giorno.sh` (questa sessione consegna con `git` e PR a mano, quindi la batteria non e' passata di li').
+- **Visto per strada, registrato e NON curato:** `tools/banco-passaggio.sh` passo 3/7 su albero sporco stampa
+  «AGGIRATI:» a vuoto (la batteria esce 2 con «albero sporco», riga che il passo non mostra): provato, rc=2 e 0 righe
+  AGGIRA. In DEBITI, con il banco che servira'.
