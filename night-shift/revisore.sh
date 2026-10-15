@@ -285,7 +285,11 @@ fi
 # commit spinto un minuto fa su una PR vecchia si giudicava e si fondeva nello stesso respiro. L'header
 # prometteva «>=20 min dal push»: ora conta anche l'eta' del commit giudicato (data del committer).
 ETA_COMMIT=$(( ( $(date +%s) - $(git log -1 --format=%ct "$HEAD_OID" 2>/dev/null || echo 0) ) / 60 ))
-if [ "$ETA_COMMIT" -lt "$QUARANTENA_MIN" ]; then
+# (14/10, per fondi.sh): su richiesta ESPRLICITA del giorno (GIORNO_SUBITO=1) la
+# quarantena si salta DICHIARANDOLO — e' una domanda interattiva, non un ciclo
+if [ "${GIORNO_SUBITO:-0}" = "1" ]; then
+  log "quarantena saltata su richiesta esplicita del giorno (GIORNO_SUBITO)"
+elif [ "$ETA_COMMIT" -lt "$QUARANTENA_MIN" ]; then
   log "guardia: quarantena del commit ${HEAD_OID:0:8}: ${ETA_COMMIT}min < ${QUARANTENA_MIN}min — spinto da poco, al ciclo dopo"
   exit 2
 fi
