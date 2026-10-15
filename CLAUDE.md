@@ -70,6 +70,12 @@ For trivial tasks, use judgment: the rules bias toward caution over speed.
 - **One file, one responsibility** — no monolithic files.
 - **No dead code** — no commented-out code, unused imports or placeholder functions.
 - **Respect existing patterns** — naming, structure, formatting, architecture: consistency over preference.
+- **Git e clasp AUTOMATICI e sicuri (LEGGE, Luca 2026-10-15: «diventi legge il poter fare git e clasp in maniera sicura e automatica»)** — valgono per TUTTA la flotta, non per un repo:
+  - **git push/pull**: gia' automatici nei turni (self-pull, consegne su rami, mai su main).
+  - **git merge**: `tools/fondi.sh` fonde SOLO a quattro condizioni verdi (fondibile, lente PULITA, banco verde, censore APPROVA); la consegna del giorno lo prova da se' (`GIORNO_FONDI=0` spegne). Ogni NO dice quale.
+  - **clasp**: SOLO via `tools/deploy-gas.sh` — banco, lente, backup isolato verificato, MANIFEST con rollback, cancello dei target (lista nera dei vivi, impronta per cartella). Il clasp nudo resta negato dall'hook.
+  - I VIVI in produzione non si toccano mai; il rollback e' scritto prima di spingere; tutto lascia traccia nei log.
+
 - **Deploy goes through the gate** (Luca, 2026-10-15: «la maturità del progetto e dei partecipanti») — an agent deploys Apps Script ONLY via `tools/deploy-gas.sh`: banco verde, lente PULITA, backup isolato verificato, MANIFEST con rollback, e il cancello dei target (lista nera dei vivi in `~/.gas-vivi`, impronta per cartella con `--approva-target`). Raw `clasp push`/`clasp deploy` restano VIETATI e negati dall'hook (`tools/clasp-block-hook.sh`): il cancello non si aggira, si usa. I vivi in produzione non si toccano mai.
 
 ### Never expose secrets
