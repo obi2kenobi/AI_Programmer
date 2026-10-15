@@ -16,7 +16,7 @@ REPO=$(cd "$DIR" && git remote get-url origin 2>/dev/null | sed -e 's#.*github.c
 KO=0
 ST=$(gh pr view "$N" --repo "$REPO" --json mergeable,state,isDraft --jq '"\(.state) \(.mergeable) \(.isDraft)"' 2>/dev/null)
 case "$ST" in *MERGEABLE*false*) echo "1. fondibile: SI ($ST)";; *) echo "1. fondibile: NO ($ST) — conflitti o bozza"; KO=1;; esac
-VER=$(gh pr view "$N" --repo "$REPO" --json comments --jq '.[].body' 2>/dev/null | grep -oE 'LENTE SICUREZZA: [A-Z]+' | tail -1)
+VER=$(gh pr view "$N" --repo "$REPO" --json comments --jq '.comments[].body' 2>/dev/null | grep -oE 'LENTE SICUREZZA: [A-Z]+' | tail -1)
 case "$VER" in *"PULITA") echo "2. lente: $VER";; *) echo "2. lente: ${VER:-ASSENTE} — serve il verdetto PULITA nel commento"; KO=1;; esac
 if [ -f "$DIR/.night-verify" ]; then
   (cd "$DIR" && bash .night-verify >/dev/null 2>&1) && echo "3. banco: VERDE" || { echo "3. banco: ROSSO"; KO=1; }
