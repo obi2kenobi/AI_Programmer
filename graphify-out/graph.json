@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "dfb24f8e37d79880c3f5df727709d75c7c4ae0e7",
+  "built_at_commit": "fa11989b84a66e348733043fc2cd6b2183c870d2",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -484,7 +484,7 @@
       "relation": "contains",
       "source": "claude_2_code_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L78",
+      "source_location": "L84",
       "target": "claude_mask_don_t_omit_when_a_secret_could_surface_in_output",
       "weight": 1.0
     },
@@ -495,7 +495,7 @@
       "relation": "contains",
       "source": "claude_2_code_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L75",
+      "source_location": "L81",
       "target": "claude_never_expose_secrets",
       "weight": 1.0
     },
@@ -506,7 +506,7 @@
       "relation": "contains",
       "source": "claude_2_code_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L82",
+      "source_location": "L88",
       "target": "claude_one_shot_secret_handoff_interactive_login",
       "weight": 1.0
     },
@@ -517,7 +517,7 @@
       "relation": "contains",
       "source": "claude_3_communication_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L96",
+      "source_location": "L102",
       "target": "claude_what_you_hand_to_a_human_to_run_is_code",
       "weight": 1.0
     },
@@ -528,7 +528,7 @@
       "relation": "contains",
       "source": "claude_4_git_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L111",
+      "source_location": "L117",
       "target": "claude_conventions_of_the_night_gate",
       "weight": 1.0
     },
@@ -539,7 +539,7 @@
       "relation": "contains",
       "source": "claude_6_project_specific_context",
       "source_file": "CLAUDE.md",
-      "source_location": "L142",
+      "source_location": "L148",
       "target": "claude_the_first_touch_trigger",
       "weight": 1.0
     },
@@ -550,7 +550,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L164",
+      "source_location": "L170",
       "target": "claude_full_method",
       "weight": 1.0
     },
@@ -561,7 +561,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L167",
+      "source_location": "L173",
       "target": "claude_goal_loops_goal",
       "weight": 1.0
     },
@@ -572,7 +572,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L180",
+      "source_location": "L186",
       "target": "claude_navigation_before_reading_graphify",
       "weight": 1.0
     },
@@ -583,7 +583,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L159",
+      "source_location": "L165",
       "target": "claude_never_delegate",
       "weight": 1.0
     },
@@ -594,7 +594,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L203",
+      "source_location": "L209",
       "target": "claude_patterns_before_reinventing",
       "weight": 1.0
     },
@@ -605,7 +605,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L170",
+      "source_location": "L176",
       "target": "claude_public_repo_private_work",
       "weight": 1.0
     },
@@ -616,7 +616,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L186",
+      "source_location": "L192",
       "target": "claude_the_minimal_code_ladder",
       "weight": 1.0
     },
@@ -627,7 +627,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L199",
+      "source_location": "L205",
       "target": "claude_three_strikes_then_architecture",
       "weight": 1.0
     },
@@ -638,7 +638,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L154",
+      "source_location": "L160",
       "target": "claude_when_to_delegate_and_to_whom",
       "weight": 1.0
     },
@@ -1287,7 +1287,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L89",
+      "source_location": "L95",
       "target": "claude_3_communication_rules",
       "weight": 1.0
     },
@@ -1298,7 +1298,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L104",
+      "source_location": "L110",
       "target": "claude_4_git_rules",
       "weight": 1.0
     },
@@ -1309,7 +1309,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L126",
+      "source_location": "L132",
       "target": "claude_5_error_handling",
       "weight": 1.0
     },
@@ -1320,7 +1320,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L138",
+      "source_location": "L144",
       "target": "claude_6_project_specific_context",
       "weight": 1.0
     },
@@ -1331,7 +1331,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L149",
+      "source_location": "L155",
       "target": "claude_7_method_delegation",
       "weight": 1.0
     },
@@ -21216,7 +21216,7 @@
       "relation": "defines",
       "source": "night_shift_revisore",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L298",
+      "source_location": "L303",
       "target": "night_shift_revisore_ripristina",
       "weight": 1.0
     },
@@ -21323,7 +21323,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L401",
+      "source_location": "L406",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -21335,7 +21335,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L442",
+      "source_location": "L447",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -21347,7 +21347,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L407",
+      "source_location": "L412",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -21359,7 +21359,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L641",
+      "source_location": "L646",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -21383,7 +21383,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L669",
+      "source_location": "L674",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
@@ -21395,7 +21395,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L257",
+      "source_location": "L262",
       "target": "night_shift_revisore_rigetta_deterministico",
       "weight": 1.0
     },
@@ -21407,7 +21407,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L333",
+      "source_location": "L338",
       "target": "night_shift_revisore_rinvia",
       "weight": 1.0
     },
@@ -50973,7 +50973,7 @@
       "relation": "defines",
       "source": "tools_giorno",
       "source_file": "tools/giorno.sh",
-      "source_location": "L283",
+      "source_location": "L298",
       "target": "tools_giorno_ctrl",
       "weight": 1.0
     },
@@ -51054,7 +51054,7 @@
       "relation": "calls",
       "source": "tools_giorno_sh__entry",
       "source_file": "tools/giorno.sh",
-      "source_location": "L292",
+      "source_location": "L307",
       "target": "tools_giorno_ctrl",
       "weight": 1.0
     },
@@ -55140,7 +55140,7 @@
       "node_kind": "heading",
       "norm_label": "3. communication rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L89"
+      "source_location": "L95"
     },
     {
       "_origin": "ast",
@@ -55152,7 +55152,7 @@
       "node_kind": "heading",
       "norm_label": "4. git rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L104"
+      "source_location": "L110"
     },
     {
       "_origin": "ast",
@@ -55164,7 +55164,7 @@
       "node_kind": "heading",
       "norm_label": "5. error handling",
       "source_file": "CLAUDE.md",
-      "source_location": "L126"
+      "source_location": "L132"
     },
     {
       "_origin": "ast",
@@ -55176,7 +55176,7 @@
       "node_kind": "heading",
       "norm_label": "6. project-specific context",
       "source_file": "CLAUDE.md",
-      "source_location": "L138"
+      "source_location": "L144"
     },
     {
       "_origin": "ast",
@@ -55188,7 +55188,7 @@
       "node_kind": "heading",
       "norm_label": "7. method & delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L149"
+      "source_location": "L155"
     },
     {
       "_origin": "ast",
@@ -56105,7 +56105,7 @@
       "node_kind": "heading",
       "norm_label": "conventions of the night gate",
       "source_file": "CLAUDE.md",
-      "source_location": "L111"
+      "source_location": "L117"
     },
     {
       "_origin": "ast",
@@ -56117,7 +56117,7 @@
       "node_kind": "heading",
       "norm_label": "full method",
       "source_file": "CLAUDE.md",
-      "source_location": "L164"
+      "source_location": "L170"
     },
     {
       "_origin": "ast",
@@ -56129,7 +56129,7 @@
       "node_kind": "heading",
       "norm_label": "goal loops (/goal)",
       "source_file": "CLAUDE.md",
-      "source_location": "L167"
+      "source_location": "L173"
     },
     {
       "_origin": "ast",
@@ -56177,7 +56177,7 @@
       "node_kind": "heading",
       "norm_label": "mask, don't omit, when a secret could surface in output",
       "source_file": "CLAUDE.md",
-      "source_location": "L78"
+      "source_location": "L84"
     },
     {
       "_origin": "ast",
@@ -56189,7 +56189,7 @@
       "node_kind": "heading",
       "norm_label": "navigation before reading (graphify)",
       "source_file": "CLAUDE.md",
-      "source_location": "L180"
+      "source_location": "L186"
     },
     {
       "_origin": "ast",
@@ -56201,7 +56201,7 @@
       "node_kind": "heading",
       "norm_label": "never delegate",
       "source_file": "CLAUDE.md",
-      "source_location": "L159"
+      "source_location": "L165"
     },
     {
       "_origin": "ast",
@@ -56213,7 +56213,7 @@
       "node_kind": "heading",
       "norm_label": "never expose secrets",
       "source_file": "CLAUDE.md",
-      "source_location": "L75"
+      "source_location": "L81"
     },
     {
       "_origin": "ast",
@@ -56225,7 +56225,7 @@
       "node_kind": "heading",
       "norm_label": "one-shot secret handoff (interactive login)",
       "source_file": "CLAUDE.md",
-      "source_location": "L82"
+      "source_location": "L88"
     },
     {
       "_origin": "ast",
@@ -56237,7 +56237,7 @@
       "node_kind": "heading",
       "norm_label": "patterns before reinventing",
       "source_file": "CLAUDE.md",
-      "source_location": "L203"
+      "source_location": "L209"
     },
     {
       "_origin": "ast",
@@ -56249,7 +56249,7 @@
       "node_kind": "heading",
       "norm_label": "public repo, private work",
       "source_file": "CLAUDE.md",
-      "source_location": "L170"
+      "source_location": "L176"
     },
     {
       "_origin": "ast",
@@ -60297,7 +60297,7 @@
       "node_kind": "heading",
       "norm_label": "the first-touch trigger",
       "source_file": "CLAUDE.md",
-      "source_location": "L142"
+      "source_location": "L148"
     },
     {
       "_origin": "ast",
@@ -60309,7 +60309,7 @@
       "node_kind": "heading",
       "norm_label": "the minimal-code ladder",
       "source_file": "CLAUDE.md",
-      "source_location": "L186"
+      "source_location": "L192"
     },
     {
       "_origin": "ast",
@@ -60321,7 +60321,7 @@
       "node_kind": "heading",
       "norm_label": "three strikes, then architecture",
       "source_file": "CLAUDE.md",
-      "source_location": "L199"
+      "source_location": "L205"
     },
     {
       "_origin": "ast",
@@ -60333,7 +60333,7 @@
       "node_kind": "heading",
       "norm_label": "what you hand to a human to run is code",
       "source_file": "CLAUDE.md",
-      "source_location": "L96"
+      "source_location": "L102"
     },
     {
       "_origin": "ast",
@@ -60345,7 +60345,7 @@
       "node_kind": "heading",
       "norm_label": "when to delegate — and to whom",
       "source_file": "CLAUDE.md",
-      "source_location": "L154"
+      "source_location": "L160"
     },
     {
       "_origin": "semantic",
@@ -82952,7 +82952,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L298"
+      "source_location": "L303"
     },
     {
       "_origin": "ast",
@@ -113952,7 +113952,7 @@
       },
       "norm_label": "ctrl()",
       "source_file": "tools/giorno.sh",
-      "source_location": "L283"
+      "source_location": "L298"
     },
     {
       "_origin": "ast",

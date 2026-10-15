@@ -245,7 +245,12 @@ if ! [ "${ETA_MIN:-x}" -ge 0 ] 2>/dev/null; then
   log "guardia: createdAt illeggibile ('$CREATED') — quarantena fail-closed, al giorno"
   exit 2
 fi
-if [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
+# (15/10, legge dei cancelli automatici): su richiesta ESPLICITA (GIORNO_SUBITO=1,
+# lo mette fondi.sh) la quarantena si salta DICHIARANDOLO — e' un giudizio richiesto
+# da chi ha appena consegnato con banco+lente verdi, non un ciclo che si autoassolve
+if [ "${GIORNO_SUBITO:-0}" = "1" ]; then
+  log "quarantena del respiro saltata su richiesta esplicita (GIORNO_SUBITO) — le altre guardie restano"
+elif [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
   log "guardia: quarantena ${ETA_MIN}min < ${QUARANTENA_MIN}min — chi crea non si giudica nello stesso respiro"
   exit 2
 fi

@@ -170,6 +170,21 @@ consegna)
           fi
         fi
       fi
+      # (15/10, LEGGE dei cancelli automatici — Luca: «diventi legge il poter fare
+      # git e clasp in maniera sicura e automatica»): la consegna che ha passato
+      # banco, cancello segreti e lente PROVA a chiudere il cerchio da sola —
+      # decide fondi con le sue quattro condizioni (censore incluso). Se una
+      # manca, la PR resta aperta come sempre: la legge aggiunge una via, non
+      # toglie il controllo. Si spegne con GIORNO_FONDI=0.
+      if [ "${GIORNO_FONDI:-1}" = "1" ] && [ -f "$HERE/tools/fondi.sh" ]; then
+        N_AUTO=$(printf '%s' "$PR_URL" | grep -oE '[0-9]+$')
+        if [ -n "$N_AUTO" ]; then
+          log "legge: provo a chiudere il cerchio (fondi decide)"
+          FONDI_OUT=$(bash "$HERE/tools/fondi.sh" "$DIR" "$N_AUTO" 2>&1); FONDI_RC=$?
+          log "fondi: $(tail -1 <<<"$FONDI_OUT")"
+          riga_giorno "$DIR" "fondi su PR #$N_AUTO (rc=$FONDI_RC)"
+        fi
+      fi
       echo "$PR_URL"
       ;;
     *) log "⚠ ramo $BR spinto ma PR NON creata: $PR_URL"; riga_giorno "$DIR" "consegna spinta senza PR ($BR)"; exit 1 ;;
