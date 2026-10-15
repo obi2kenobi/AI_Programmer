@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "dfb24f8e37d79880c3f5df727709d75c7c4ae0e7",
+  "built_at_commit": "75555c8285b93ab43c471383a235f55814e0bab4",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -21216,7 +21216,7 @@
       "relation": "defines",
       "source": "night_shift_revisore",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L298",
+      "source_location": "L300",
       "target": "night_shift_revisore_ripristina",
       "weight": 1.0
     },
@@ -21323,7 +21323,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L401",
+      "source_location": "L403",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -21335,7 +21335,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L442",
+      "source_location": "L444",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -21347,7 +21347,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L407",
+      "source_location": "L409",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -21359,7 +21359,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L641",
+      "source_location": "L643",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -21383,7 +21383,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L669",
+      "source_location": "L671",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
@@ -21395,7 +21395,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L257",
+      "source_location": "L259",
       "target": "night_shift_revisore_rigetta_deterministico",
       "weight": 1.0
     },
@@ -21407,7 +21407,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L333",
+      "source_location": "L335",
       "target": "night_shift_revisore_rinvia",
       "weight": 1.0
     },
@@ -82952,7 +82952,7 @@
       },
       "norm_label": "ripristina()",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L298"
+      "source_location": "L300"
     },
     {
       "_origin": "ast",

@@ -245,7 +245,9 @@ if ! [ "${ETA_MIN:-x}" -ge 0 ] 2>/dev/null; then
   log "guardia: createdAt illeggibile ('$CREATED') — quarantena fail-closed, al giorno"
   exit 2
 fi
-if [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
+if [ "${GIORNO_SUBITO:-0}" = "1" ]; then
+  log "quarantena del respiro saltata su richiesta esplicita (GIORNO_SUBITO) — le altre guardie restano"
+elif [ "$ETA_MIN" -lt "$QUARANTENA_MIN" ]; then
   log "guardia: quarantena ${ETA_MIN}min < ${QUARANTENA_MIN}min — chi crea non si giudica nello stesso respiro"
   exit 2
 fi
