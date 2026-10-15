@@ -44,12 +44,21 @@ if [ -f .night-verify ]; then (bash .night-verify >/dev/null 2>&1) && echo "1. b
 LEN=$(bash "$HERE/tools/lente-sicurezza.sh" "$PWD" origin/$(cd "$PWD" && git remote get-url origin >/dev/null 2>&1 && echo main || echo main) 2>/dev/null; true)
 LEN_RC=$?
 [ "$LEN_RC" -eq 0 ] && echo "2. lente: PULITA" || { echo "2. lente: rc=$LEN_RC — solo PULITA si spedisce"; KO=1; }
-BK=".git/deploy-backup/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$BK"
-if clasp pull >/dev/null 2>&1 && [ -n "$(ls .clasp 2>/dev/null || ls src 2>/dev/null || true)" ]; then
-  cp -R src "$BK/" 2>/dev/null || clasp pull > "$BK/backup.txt" 2>&1
-  echo "3. backup vivo: $BK"
+# (difetto trovato facendo il deploy VERO del Riordino 15/10): il backup va
+# fatto in DIRECTORY ISOLATA — un clasp pull qui scaricherebbe i file VECCHI
+# sopra i nuovi, e il push dopo spingerebbe il vecchio. Il backup ha la sua
+# copia di .clasp.json e tira li'.
+BK="$DIR/.git/deploy-backup/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$BK"
+cp .clasp.json "$BK/.clasp.json" 2>/dev/null
+if (cd "$BK" && clasp pull >/dev/null 2>&1); then
+  N_BK=$(find "$BK" -type f ! -name .clasp.json | wc -c | tr -d ' ')
+  if [ "${N_BK:-0}" -gt 0 ]; then
+    echo "3. backup vivo: $BK ($N_BK byte verificati, isolato)"
+  else
+    echo "3. BACKUP vuoto — il deploy si ferma (mai senza ritorno)"; KO=1
+  fi
 else
-  echo "3. BACKUP non verificato — il deploy si ferma (mai senza ritorno)"; KO=1
+  echo "3. BACKUP non riuscito — il deploy si ferma (mai senza ritorno)"; KO=1
 fi
 [ "$KO" -eq 0 ] || { echo "DEPLOY-GAS: NO (cure scritte sopra)"; exit 1; }
 printf '# MANIFEST deploy %s\nbackup: %s\nrollback: clasp push < backup o versione GAS precedente (Deploy > Manage versions)\nverificato: banco+lente verdi\n' "$(date '+%F %T')" "$BK" > MANIFEST.md
