@@ -1,0 +1,15 @@
+# 2026-10-15 — riordino-legno-ordina-entro-e-debiti-hub
+**Autore**: sessione cloud claude/funny-hamilton-q6tov6 (per Luca), sui fork `obi2kenobi/AI_Programmer` e `obi2kenobi/Riordino-legno`. Copre il 2026-10-14 e la notte.
+
+## Cosa ho usato
+Il settimo patto alla riapertura (`tools/debiti-riapertura.sh`): R1, R2, D1 e il vuoto di `banco-passaggio` saldati con banco prima e sabotaggio (hub #282, unita). Su Riordino-legno: il residuo dell'analisi del 2026-10-01 riletto su `main`, due correzioni (`Document_Type`, prezzo medio per unita'), `docs/MISURA-VIEWER.md`, e «ordina entro» (calcolo, lettura da BC, vista, guida di staging; #41 unita) con banco prima, 24 mutazioni, Chromium vero con screenshot e un `revisore-gas` in sola lettura che ha trovato difetti veri (unita' base, rumore decimale, lead time assurdo) che ho riprodotto io prima di correggere. Sul hub: tre lenti nuove di `gas_qualita.py` (#287, aperta). Non c'era: BC raggiungibile (nessun dato vero), `shellcheck`, il locale `en_US.UTF-8` (6 FAIL di `test-giorno.sh` e 3 di `test-lib.sh` gia' presenti, non indagati).
+
+## Cosa ho improvvisato
+La scelta di assunzioni che il disegno non copriva (giacenza totale, lead time solo `nD`, vista aperta a tutti, CSV nel browser), ciascuna in `DEBITI.md` con cosa la salda; un `git worktree` per far girare il gate completo (35 min) senza fermare il lavoro; `tests/run-browser.sh` esteso al nuovo banco del browser.
+
+## Cosa ha retto / ostacolato
+Ha retto: banco prima (il banco di «ordina entro» ha preso i miei errori di attesa prima del codice), il sabotaggio per regola, e soprattutto una lettura indipendente: la revisione ha trovato 3 difetti alti che i miei 112 test non vedevano (le unita' di misura non erano nel disegno). Ostacolato, e MIO: (1) una `grep` ha stampato le righe 6-8 di `Code.gs` con le credenziali in chiaro (ho dichiarato l'errore, non le ho copiate); (2) un `pkill -f` col nome del gate ha ucciso la mia shell; (3) ho dato per «da correggere» il foglio che non colora gli scaduti, ma un banco esistente lo fissava come scelta («come il pallino della dashboard»); (4) la #38 e' stata unita nel ramo della #37 e la scheda di misura non e' arrivata su `main` (rifatta in #39); (5) la #41 e' stata unita con il gate completo non arrivato a un esito (la copia si era interrotta): l'ho scritto sulla PR e rilanciato il gate su `main`. Il banco di struttura fa scivolare le citazioni di riga a ogni riga inserita (sette posti da riallineare a mano, due volte).
+
+## Proposta al canone
+1. Un controllo che impedisca a un comando di stampare un valore di segreto: l'hook di avviso c'e' ma non ferma; basterebbe un filtro sull'output dei `grep`/`sed` su file che le lenti di `gas_qualita.py` dichiarano con un segreto (ora la lente lo sa: `Code.gs:8`).
+2. «Il gate completo ha un esito» come condizione scritta nella descrizione di ogni PR di codice: una riga `ESITO GATE: <verde|rosso|non arrivato>` che il merge non puo' ignorare (oggi «in corso» resta scritto anche dopo l'unione).
