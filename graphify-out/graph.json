@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "ba566a60d79b28683242ef94793504cbcbcac4af",
+  "built_at_commit": "dfb24f8e37d79880c3f5df727709d75c7c4ae0e7",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -38117,6 +38117,74 @@
       "source_file": "tests/test-gas-sviluppo-sistema.sh",
       "source_location": "L30",
       "target": "tests_test_gas_sviluppo_sistema_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_gas_target",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L7",
+      "target": "tests_test_gas_target_home",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_gas_target",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L9",
+      "target": "tests_test_gas_target_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_gas_target",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L9",
+      "target": "tests_test_gas_target_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tests_test_gas_target",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L1",
+      "target": "tests_test_gas_target_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_gas_target_sh__entry",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L15",
+      "target": "tests_test_gas_target_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_gas_target_sh__entry",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L10",
+      "target": "tests_test_gas_target_ok",
       "weight": 1.0
     },
     {
@@ -81580,8 +81648,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_commenta_una_volta",
       "label": "commenta_una_volta()",
@@ -81610,8 +81678,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "night_shift_lib_conta_non_convergenza",
       "label": "conta_non_convergenza()",
@@ -81730,8 +81798,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
@@ -81865,8 +81933,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_lock_turno_orfano",
       "label": "lock_turno_orfano()",
@@ -81970,8 +82038,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_pr_chiusa_ferma",
       "label": "pr_chiusa_ferma()",
@@ -81985,8 +82053,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_prendi_lock_turno",
       "label": "prendi_lock_turno()",
@@ -82030,8 +82098,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "night_shift_lib_rianima_ollama",
       "label": "rianima_ollama()",
@@ -82045,8 +82113,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_riga_verifica_vuota",
       "label": "riga_verifica_vuota()",
@@ -82450,8 +82518,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_night_shift_shift_repo",
       "label": "shift_repo()",
@@ -101440,6 +101508,81 @@
     },
     {
       "_origin": "ast",
+      "community": 894,
+      "community_name": "test-gas-target.sh",
+      "file_type": "code",
+      "id": "tests_test_gas_target",
+      "label": "test-gas-target.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "test-gas-target.sh",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 894,
+      "community_name": "test-gas-target.sh",
+      "file_type": "code",
+      "id": "tests_test_gas_target_home",
+      "label": "HOME",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "home",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L7"
+    },
+    {
+      "_origin": "ast",
+      "community": 894,
+      "community_name": "test-gas-target.sh",
+      "file_type": "code",
+      "id": "tests_test_gas_target_ko",
+      "label": "ko()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L9"
+    },
+    {
+      "_origin": "ast",
+      "community": 894,
+      "community_name": "test-gas-target.sh",
+      "file_type": "code",
+      "id": "tests_test_gas_target_ok",
+      "label": "ok()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L9"
+    },
+    {
+      "_origin": "ast",
+      "community": 894,
+      "community_name": "test-gas-target.sh",
+      "file_type": "code",
+      "id": "tests_test_gas_target_sh__entry",
+      "label": "test-gas-target.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "test-gas-target.sh script",
+      "source_file": "tests/test-gas-target.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 289,
       "community_name": "test-gate-tools.sh",
       "file_type": "code",
@@ -104201,7 +104344,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
@@ -104216,7 +104359,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_ko",
       "label": "ko()",
@@ -104231,7 +104374,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_ok",
       "label": "ok()",
@@ -104246,7 +104389,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_sh__entry",
       "label": "test-lock-turno-corsa.sh script",
@@ -105520,8 +105663,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge",
       "label": "test-non-converge.sh",
@@ -105535,8 +105678,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ko",
       "label": "ko()",
@@ -105550,8 +105693,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ok",
       "label": "ok()",
@@ -105565,8 +105708,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_sh__entry",
       "label": "test-non-converge.sh script",
@@ -108160,8 +108303,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama",
       "label": "test-rianima-ollama.sh",
@@ -108175,8 +108318,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
@@ -108190,8 +108333,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
@@ -108205,8 +108348,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_sh__entry",
       "label": "test-rianima-ollama.sh script",
@@ -112487,8 +112630,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "tools_ciclo_vivo",
       "label": "ciclo-vivo.sh",
@@ -112502,8 +112645,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "tools_ciclo_vivo_corpo_agent",
       "label": "corpo_agent()",
@@ -112517,8 +112660,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "tools_ciclo_vivo_sh__entry",
       "label": "ciclo-vivo.sh script",
