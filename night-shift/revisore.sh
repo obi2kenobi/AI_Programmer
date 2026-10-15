@@ -227,7 +227,13 @@ case "$TITLE" in
        *) log "guardia: titolo non 'caccia:' — non mio"; exit 2 ;;
      esac ;;
 esac
-[ "$IS_DRAFT" = "true" ] || { log "guardia: non e' piu' bozza — non mio"; exit 2; }
+# (emendamento 14/10, fondi.sh): in parere-del-giorno la PR FINALE si giudica
+# anche non-bozza — e' il momento del verdetto prima dell'auto-merge
+if [ "${GIORNO_PARERE:-0}" = "1" ]; then
+  [ "$IS_DRAFT" = "true" ] || log "parere del giorno: PR non-bozza (finale) — si giudica"
+else
+  [ "$IS_DRAFT" = "true" ] || { log "guardia: non e' piu' bozza — non mio"; exit 2; }
+fi
 
 # (D3, 2026-09-20): data illeggibile = quarantena CHIUSA, non aperta. Prima il fallback
 # era 999 minuti: una createdAt storpiata passava la quarantena e arrivava al merge.
