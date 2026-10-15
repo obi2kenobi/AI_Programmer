@@ -147,7 +147,14 @@ consegna)
   BODY_PR="Consegna del turno di GIORNO attraverso il cancello condiviso: lente sicurezza automatica, forme di segreto verificate prima del push, file nuovi solo se dichiarati. Il censore lascia il parere a comando (giorno.sh parere) — la fusione resta umana."
   # il corpo passa dal cancello delle destinazioni (come i corpi PR della notte)
   BODY_PR=$(printf '%s' "$BODY_PR" | corpo_da_destinazioni pr-body)
+  # (15/10, dal test nella sessione remota): non ogni gh digerisce --draft —
+  # su fallimento si riprova via API con -F draft=true (la cura che lo stesso
+  # gh suggerisce). La legge deve girare su ogni ambiente che ha gh.
   PR_URL=$(gh pr create --draft --head "$BR" --title "giorno: $MSG" --body "$BODY_PR" 2>&1 | tail -1)
+  case "$PR_URL" in https://*) ;; *)
+    REPO_API=$(git remote get-url origin 2>/dev/null | sed -e 's#.*github.com[:/]##' -e 's#\.git$##')
+    PR_URL=$(gh api "repos/$REPO_API/pulls" -f title="giorno: $MSG" -f head="$BR" -f base="$DB" -F draft=true -f body="$BODY_PR" 2>&1 | grep -oE 'https://[^"]+pull/[0-9]+' | tail -1)
+  ;; esac
   case "$PR_URL" in
     https://*)
       VERDETTO=$(lente_pr "$DIR" "origin/$DB" "$BR" "$PR_URL")
