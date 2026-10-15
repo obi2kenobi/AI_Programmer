@@ -70,7 +70,7 @@ For trivial tasks, use judgment: the rules bias toward caution over speed.
 - **One file, one responsibility** — no monolithic files.
 - **No dead code** — no commented-out code, unused imports or placeholder functions.
 - **Respect existing patterns** — naming, structure, formatting, architecture: consistency over preference.
-- **Deploy is the human's** — never `clasp push` or `clasp deploy`: they write to production with no staging and no rollback. `tools/clasp-block-hook.sh` denies them.
+- **Deploy goes through the gate** (Luca, 2026-10-15: «la maturità del progetto e dei partecipanti») — an agent deploys Apps Script ONLY via `tools/deploy-gas.sh`: banco verde, lente PULITA, backup isolato verificato, MANIFEST con rollback, e il cancello dei target (lista nera dei vivi in `~/.gas-vivi`, impronta per cartella con `--approva-target`). Raw `clasp push`/`clasp deploy` restano VIETATI e negati dall'hook (`tools/clasp-block-hook.sh`): il cancello non si aggira, si usa. I vivi in produzione non si toccano mai.
 
 ### Never expose secrets
 Never log, print, paste or commit credentials, tokens or sensitive data (credential files, `.env`, key exports). Refer to secrets by file path, not by value. If a secret appears in something to be committed or shared, stop and flag it.

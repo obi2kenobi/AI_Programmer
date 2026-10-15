@@ -176,7 +176,7 @@ CMD_STRIPPED=$(printf '%s' "$CMD_ATT" | sed "s/'[^']*'//g; s/\"[^\"]*\"//g")
 
 # NEGATO davvero: scrittura in produzione senza staging e senza rollback
 if grep -qE "$INVOCAZIONE" <<<"$CMD_STRIPPED" || grep -qE "$SHC" <<<"$CMD_NOBT"; then
-  jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). Se il push è davvero giusto, lo fa Luca a mano." \
+  jq -n --arg r "NEGATO (clasp-block-hook): clasp push/deploy scrive in PRODUZIONE senza staging né rollback. La regola è del metodo AI_Programmer: il deploy è dell'umano, che prima confronta col vivo (clasp clone + diff). La via dell'agente è tools/deploy-gas.sh (banco+lente+backup isolato+MANIFEST+cancello dei target, nell'hub AI_Programmer): il push giusto si fa cosi'." \
     '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
   exit 0
 fi
