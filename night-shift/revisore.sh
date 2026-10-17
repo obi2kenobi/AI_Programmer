@@ -46,7 +46,7 @@ DIR="$1"; PR="$2"
 [ -d "$DIR/.git" ] || { echo "⛔ non è un repo git" >&2; exit 3; }
 cd "$DIR"
 
-GIUDICE_MODEL="${REVISORE_MODEL:-${MODELLO:-gemma4:26b-notturno}}"  # (2026-09-19: 14b 1/3 in 22s; 2026-09-21: qwen3.8-27b:iq3s 3/3 in 48s con think:false — un solo modello, decisione di Luca)
+GIUDICE_MODEL="${REVISORE_MODEL:-${MODELLO:-gemma4:26b-notturno}}"  # (2026-09-19: 14b 1/3 in 22s; 2026-09-21: il modello del turno (gemma da 13/10) — un solo modello, decisione di Luca)
 AUTORE_MODEL="${NIGHT_MODEL:-${MODELLO:-gemma4:26b-notturno}}"
 # (D11, Luca 2026-09-23): i limiti vengono dal profilo del turno (profiles/notturno.conf);
 # i numeri qui sono il fallback, uguale al profilo

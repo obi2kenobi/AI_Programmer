@@ -16,7 +16,7 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 CERVELLO="$HERE/cervello"
-MODEL="${NIGHT_MODEL:-qwen3.8-27b:iq3s}"
+MODEL="${NIGHT_MODEL:-gemma4:26b-notturno}"
 API="${NIGHT_API_URL:-http://localhost:11434/api/chat}"
 
 [ $# -ge 1 ] || { echo "uso: cervello-domanda.sh in-sospeso | archeologia <termine> | collegami <termine>" >&2; exit 2; }

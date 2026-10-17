@@ -10,7 +10,7 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 OUT=$(bash -c '. "$1/tools/profilo.sh" notturno; echo "M=$MODELLO T=$AGENTE_TIMEOUT I=$IMPARA_ORA"' _ "$HERE" 2>/dev/null)
-grep -q "M=qwen3.8-27b:iq3s" <<<"$OUT" && grep -q "T=600" <<<"$OUT" && grep -q "I=22" <<<"$OUT" \
+grep -q "M=gemma4:26b-notturno" <<<"$OUT" && grep -q "T=600" <<<"$OUT" && grep -q "I=22" <<<"$OUT" \
   && ok "profilo notturno: le tre chiavi critiche caricate" \
   || ko "caricamento: $OUT"
 
@@ -20,7 +20,7 @@ grep -q "N=vuoto" <<<"$OUT" \
   || ko "profilo mancante: $OUT"
 
 OUT=$(bash -c 'MODELLO=override-manuale; . "$1/tools/profilo.sh" notturno >/dev/null 2>&1; echo "V=$MODELLO"' _ "$HERE" 2>/dev/null)
-grep -q "V=qwen3.8-27b:iq3s" <<<"$OUT" \
+grep -q "V=gemma4:26b-notturno" <<<"$OUT" \
   && ok "il file profilo PREVALE sui default del codice (e' la fonte)" \
   || ko "il profilo non riesce a prevalere: $OUT"
 
