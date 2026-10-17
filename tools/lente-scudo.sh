@@ -61,7 +61,8 @@ if [ -n "$(git status --porcelain -- night-shift/repos.conf 2>/dev/null)" ]; the
 if [ -f profiles/notturno.conf ]; then
   MOD=$(sed -n 's/^MODELLO=//p' profiles/notturno.conf | head -1)
   if [ -n "$MOD" ] && command -v ollama >/dev/null 2>&1; then
-    if ollama list 2>/dev/null | grep -qi "^$MOD "; then
+    _cp=$(ollama list 2>/dev/null) || true
+    if grep -qi "^$MOD " <<<"$_cp"; then
       scudo 0 "5. profilo: MODELLO=$MOD presente in ollama"
     else
       scudo 1 "5. PROFILO: MODELLO=$MOD dichiarato ma ASSENTE in ollama (ollama pull $MOD) — la notte resterebbe muta"
