@@ -51,7 +51,8 @@ LEN_RC=$?
 BK="$DIR/.git/deploy-backup/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$BK"
 cp .clasp.json "$BK/.clasp.json" 2>/dev/null
 if (cd "$BK" && clasp pull >/dev/null 2>&1); then
-  N_BK=$(find "$BK" -type f ! -name .clasp.json | wc -c | tr -d ' ')
+  # byte VERI dei file (prima: wc -c sull'ELENCO dei percorsi — il messaggio mentiva)
+  N_BK=$(find "$BK" -type f ! -name .clasp.json -exec cat {} + | wc -c | tr -d ' ')
   if [ "${N_BK:-0}" -gt 0 ]; then
     echo "3. backup vivo: $BK ($N_BK byte verificati, isolato)"
   else
@@ -62,5 +63,11 @@ else
 fi
 [ "$KO" -eq 0 ] || { echo "DEPLOY-GAS: NO (cure scritte sopra)"; exit 1; }
 printf '# MANIFEST deploy %s\nbackup: %s\nrollback: clasp push < backup o versione GAS precedente (Deploy > Manage versions)\nverificato: banco+lente verdi\n' "$(date '+%F %T')" "$BK" > MANIFEST.md
-clasp push 2>&1 | tail -2
+# l'esito e' quello di clasp, catturato PRIMA di tail (prima: tail lo mascherava e «SI» usciva sempre)
+PUSH_OUT=$(clasp push 2>&1); PUSH_RC=$?
+echo "$PUSH_OUT" | tail -2
+if [ "$PUSH_RC" -ne 0 ]; then
+  echo "DEPLOY-GAS: NO — clasp push fallito (rc=$PUSH_RC); il vivo puo' essere a meta': rollback dal backup $BK (vedi MANIFEST.md)"
+  exit 1
+fi
 echo "DEPLOY-GAS: SI — spinto col MANIFEST e il rollback pronti"
