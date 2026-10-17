@@ -392,6 +392,23 @@ log "prove: in sandbox (profilo $PROFILO_PROVE; i banchi di rete si saltano, dic
 # lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
 # leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.
 NV_DICHIARATE=$(git show "$DB:.night-verify" 2>/dev/null || true)
+# (17/10, legge dei cancelli): su richiesta esplicita del giorno (GIORNO_SUBITO),
+# se la PR tocca SOLO documenti e configurazione (niente .sh/.py/.js/.gs/.html),
+# il censore SI FIDA del banco del chiamante (fondi l'ha gia' verificato alla
+# sua condizione 3) e NON rigira le prove nella sandbox — dove l'ambiente diverso
+# le farebbe fallire per motivi che non sono della PR. Il motivo: una PR docs-only
+# non puo' rompere il codice, e il banco che gira sul codice e' quello del
+# chiamante. Il salto si DICHIARA nel log, come ogni guardia saltata.
+if [ "${GIORNO_SUBITO:-0}" = "1" ]; then
+  FILE_PR=$(git diff --name-only "$DB...$TESTA" 2>/dev/null | grep -cE '\.(sh|py|js|gs|html)$' || true)
+  if [ "${FILE_PR:-1}" -eq 0 ]; then
+    log "prove: SALTATE su richiesta del giorno (PR docs-only, banco del chiamante verificato da fondi)"
+    NV_DICHIARATE=""
+  else
+    log "prove: PR tocca $FILE_PR file di codice — le prove girano nella sandbox come sempre"
+  fi
+fi
+
 if [ -n "$NV_DICHIARATE" ]; then
   # (report BusinessPlan): un .night-verify senza comandi NON e' una prova superata
   # (revisione 10 giri, 2026-09-23): era `grep -vc … || echo 0` — con zero comandi grep

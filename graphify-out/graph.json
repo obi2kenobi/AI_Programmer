@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "21a4522d2016b3e0206a3ed250ba9e61d9571464",
+  "built_at_commit": "0c0e2c337446e9c7bfbf30f1b3b33f45a77f948b",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -21378,7 +21378,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L406",
+      "source_location": "L423",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -21390,7 +21390,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L447",
+      "source_location": "L464",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -21402,7 +21402,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L412",
+      "source_location": "L429",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -21414,7 +21414,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L646",
+      "source_location": "L663",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -21438,7 +21438,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L674",
+      "source_location": "L691",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
