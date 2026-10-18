@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "0c0e2c337446e9c7bfbf30f1b3b33f45a77f948b",
+  "built_at_commit": "baaafd05ec725bc46f5d1343ba2860518a52560d",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -15365,6 +15365,17 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "relation": "contains",
+      "source": "docs_campo_2026_10_15_deploy_gas_esito_e_byte",
+      "source_file": "docs/campo/2026-10-15-deploy-gas-esito-e-byte.md",
+      "source_location": "L1",
+      "target": "docs_campo_2026_10_15_deploy_gas_esito_e_byte_2026_10_15_deploy_gas_sh_esito_di_clasp_e_byte_del_backup",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
       "source": "docs_campo_2026_10_15_note_credito_bozza_e_varianti",
       "source_file": "docs/campo/2026-10-15-note-credito-bozza-e-varianti.md",
       "source_location": "L1",
@@ -21378,7 +21389,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L423",
+      "source_location": "L429",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -21390,7 +21401,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L464",
+      "source_location": "L470",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -21402,7 +21413,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L429",
+      "source_location": "L435",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -21414,7 +21425,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L663",
+      "source_location": "L669",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -21438,7 +21449,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L691",
+      "source_location": "L697",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
@@ -21462,7 +21473,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L338",
+      "source_location": "L344",
       "target": "night_shift_revisore_rinvia",
       "weight": 1.0
     },
@@ -35916,6 +35927,130 @@
       "source_file": "tests/test-deploy-assistito.sh",
       "source_location": "L95",
       "target": "tests_test_deploy_assistito_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L22",
+      "target": "tests_test_deploy_gas_esito_clasp_log",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L45",
+      "target": "tests_test_deploy_gas_esito_deploy",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L20",
+      "target": "tests_test_deploy_gas_esito_home",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L16",
+      "target": "tests_test_deploy_gas_esito_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L21",
+      "target": "tests_test_deploy_gas_esito_lente_solo_forme",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L16",
+      "target": "tests_test_deploy_gas_esito_ok",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "defines",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L38",
+      "target": "tests_test_deploy_gas_esito_path",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tests_test_deploy_gas_esito",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L1",
+      "target": "tests_test_deploy_gas_esito_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_deploy_gas_esito_sh__entry",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L48",
+      "target": "tests_test_deploy_gas_esito_deploy",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_deploy_gas_esito_sh__entry",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L49",
+      "target": "tests_test_deploy_gas_esito_ko",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "relation": "calls",
+      "source": "tests_test_deploy_gas_esito_sh__entry",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L17",
+      "target": "tests_test_deploy_gas_esito_ok",
       "weight": 1.0
     },
     {
@@ -76184,6 +76319,30 @@
     },
     {
       "_origin": "ast",
+      "community": 896,
+      "community_name": "2026-10-15-deploy-gas-esito-e-byte.md",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_15_deploy_gas_esito_e_byte",
+      "label": "2026-10-15-deploy-gas-esito-e-byte.md",
+      "node_kind": "page",
+      "norm_label": "2026-10-15-deploy-gas-esito-e-byte.md",
+      "source_file": "docs/campo/2026-10-15-deploy-gas-esito-e-byte.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 896,
+      "community_name": "2026-10-15-deploy-gas-esito-e-byte.md",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_15_deploy_gas_esito_e_byte_2026_10_15_deploy_gas_sh_esito_di_clasp_e_byte_del_backup",
+      "label": "2026-10-15 — deploy-gas.sh: esito di clasp e byte del backup",
+      "node_kind": "heading",
+      "norm_label": "2026-10-15 — deploy-gas.sh: esito di clasp e byte del backup",
+      "source_file": "docs/campo/2026-10-15-deploy-gas-esito-e-byte.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 887,
       "community_name": "2026-10-15 — note-credito-bozza-e-varianti",
       "file_type": "document",
@@ -81775,8 +81934,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_lib_commenta_una_volta",
       "label": "commenta_una_volta()",
@@ -81805,8 +81964,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "night_shift_lib_conta_non_convergenza",
       "label": "conta_non_convergenza()",
@@ -81925,8 +82084,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
@@ -82060,8 +82219,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 780,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "night_shift_lib_lock_turno_orfano",
       "label": "lock_turno_orfano()",
@@ -82165,8 +82324,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_lib_pr_chiusa_ferma",
       "label": "pr_chiusa_ferma()",
@@ -82180,8 +82339,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 780,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "night_shift_lib_prendi_lock_turno",
       "label": "prendi_lock_turno()",
@@ -82225,8 +82384,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "night_shift_lib_rianima_ollama",
       "label": "rianima_ollama()",
@@ -82240,8 +82399,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_lib_riga_verifica_vuota",
       "label": "riga_verifica_vuota()",
@@ -82645,8 +82804,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 99,
+      "community_name": "test-lib.sh script",
       "file_type": "code",
       "id": "night_shift_night_shift_shift_repo",
       "label": "shift_repo()",
@@ -94384,8 +94543,8 @@
     },
     {
       "_origin": "ast",
-      "community": 878,
-      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
+      "community": 80,
+      "community_name": "SAL — il diario vivo del sistema",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_è_il_corpus_non_la_cava",
       "label": "2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava",
@@ -94396,8 +94555,8 @@
     },
     {
       "_origin": "ast",
-      "community": 878,
-      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
+      "community": 80,
+      "community_name": "SAL — il diario vivo del sistema",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
       "label": "2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
@@ -94408,8 +94567,8 @@
     },
     {
       "_origin": "ast",
-      "community": 878,
-      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
+      "community": 80,
+      "community_name": "SAL — il diario vivo del sistema",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
       "label": "2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
@@ -94420,8 +94579,8 @@
     },
     {
       "_origin": "ast",
-      "community": 878,
-      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
+      "community": 80,
+      "community_name": "SAL — il diario vivo del sistema",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
       "label": "2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi",
@@ -94732,8 +94891,8 @@
     },
     {
       "_origin": "ast",
-      "community": 878,
-      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
+      "community": 80,
+      "community_name": "SAL — il diario vivo del sistema",
       "file_type": "document",
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
       "label": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
@@ -99321,6 +99480,141 @@
       },
       "norm_label": "test-deploy-assistito.sh script",
       "source_file": "tests/test-deploy-assistito.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito",
+      "label": "test-deploy-gas-esito.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "test-deploy-gas-esito.sh",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_clasp_log",
+      "label": "CLASP_LOG",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "clasp_log",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L22"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_deploy",
+      "label": "deploy()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "deploy()",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L45"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_home",
+      "label": "HOME",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "home",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L20"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_ko",
+      "label": "ko()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ko()",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L16"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_lente_solo_forme",
+      "label": "LENTE_SOLO_FORME",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "lente_solo_forme",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L21"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_ok",
+      "label": "ok()",
+      "metadata": {
+        "kind": "bash_function",
+        "language": "bash"
+      },
+      "norm_label": "ok()",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L16"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_path",
+      "label": "PATH",
+      "metadata": {
+        "kind": "code",
+        "language": "bash"
+      },
+      "norm_label": "path",
+      "source_file": "tests/test-deploy-gas-esito.sh",
+      "source_location": "L38"
+    },
+    {
+      "_origin": "ast",
+      "community": 878,
+      "community_name": "test-deploy-gas-esito.sh",
+      "file_type": "code",
+      "id": "tests_test_deploy_gas_esito_sh__entry",
+      "label": "test-deploy-gas-esito.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "test-deploy-gas-esito.sh script",
+      "source_file": "tests/test-deploy-gas-esito.sh",
       "source_location": "L1"
     },
     {
@@ -104471,7 +104765,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
@@ -104486,7 +104780,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_ko",
       "label": "ko()",
@@ -104501,7 +104795,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_ok",
       "label": "ok()",
@@ -104516,7 +104810,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "test-lock-turno-corsa.sh",
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_sh__entry",
       "label": "test-lock-turno-corsa.sh script",
@@ -105790,8 +106084,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge",
       "label": "test-non-converge.sh",
@@ -105805,8 +106099,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ko",
       "label": "ko()",
@@ -105820,8 +106114,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ok",
       "label": "ok()",
@@ -105835,8 +106129,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_sh__entry",
       "label": "test-non-converge.sh script",
@@ -108430,8 +108724,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama",
       "label": "test-rianima-ollama.sh",
@@ -108445,8 +108739,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
@@ -108460,8 +108754,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
@@ -108475,8 +108769,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "rianima_ollama",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_sh__entry",
       "label": "test-rianima-ollama.sh script",
@@ -112757,8 +113051,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 780,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tools_ciclo_vivo",
       "label": "ciclo-vivo.sh",
@@ -112772,8 +113066,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 780,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tools_ciclo_vivo_corpo_agent",
       "label": "corpo_agent()",
@@ -112787,8 +113081,8 @@
     },
     {
       "_origin": "ast",
-      "community": 11,
-      "community_name": "night-shift.sh script",
+      "community": 780,
+      "community_name": "prendi_lock_turno",
       "file_type": "code",
       "id": "tools_ciclo_vivo_sh__entry",
       "label": "ciclo-vivo.sh script",

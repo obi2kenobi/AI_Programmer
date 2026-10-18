@@ -310,7 +310,13 @@ if [ -f "$STATE/rigetto-$PR-$HEAD_OID" ]; then
 fi
 if [ "$MODO" = "parere" ]; then
   PARERE_FILE="$STATE/parere-$PR-$HEAD_OID"
-  [ -f "$PARERE_FILE" ] && { log "parere gia' dato su questo commit della PR #$PR — niente da rifare"; exit 2; }
+# (18/10, cerchio della legge): su richiesta ESPLICITA (GIORNO_SUBITO) il parere
+# si ripete anche sullo stesso commit — e' una domanda interattiva di fondi, non
+# un ciclo che si dimentica di aver giudicato. Il parere precedente resta in log.
+  if [ -f "$PARERE_FILE" ] && [ "${GIORNO_SUBITO:-0}" != "1" ]; then
+    log "parere gia' dato su questo commit della PR #$PR — niente da rifare"; exit 2
+  fi
+  [ -f "$PARERE_FILE" ] && [ "${GIORNO_SUBITO:-0}" = "1" ] && log "parere ripetuto su richiesta esplicita (GIORNO_SUBITO) — il precedente resta in log"
 fi
 
 # (2026-10-06, il collo di bottiglia Controlli-trimestrali): il censore che risponde
