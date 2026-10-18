@@ -84,21 +84,21 @@ AV=$(mktemp -d); git -C "$AV" init -q; mkdir -p "$AV/tools"
 cp "$BANCO" "$AV/tools/"; cp "$HERE/tools/giri-avversari.sh" "$AV/tools/"
 git -C "$AV" add -A; git -C "$AV" -c user.name=t -c user.email=t@t commit -qm base
 printf 'sporco\n' > "$AV/nuovo-non-tracciato.txt"
-OUT=$(cd "$AV" && timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
+OUT=$(cd "$AV" && ai_timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
 [ "$RC" -ne 0 ] && grep -q "NON partita" <<<"$OUT" && grep -q "albero sporco" <<<"$OUT" && ! grep -q "AGGIRATI" <<<"$OUT" \
   && ok "passo 3: albero sporco = batteria NON partita, col suo motivo (non «AGGIRATI» a vuoto)" \
   || ko "passo 3 su albero sporco (rc=$RC): $(tail -3 <<<"$OUT" | tr '\n' ' ')"
 rm -f "$AV/nuovo-non-tracciato.txt"
 printf '#!/bin/bash\necho "AGGIRA #7 attacco finto"\necho "VERDETTO: 1 aggirati non riconosciuti"\nexit 1\n' > "$AV/tools/giri-avversari.sh"
-OUT=$(cd "$AV" && timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
+OUT=$(cd "$AV" && ai_timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
 [ "$RC" -ne 0 ] && grep -q "AGGIRATI (rc=1)" <<<"$OUT" && grep -q "AGGIRA #7" <<<"$OUT" \
   && ok "passo 3: un attacco aggirato si elenca e fallisce" || ko "passo 3 con AGGIRA (rc=$RC): $(tail -3 <<<"$OUT" | tr '\n' ' ')"
 printf '#!/bin/bash\necho "esplosa a meta: errore strano"\nexit 1\n' > "$AV/tools/giri-avversari.sh"
-OUT=$(cd "$AV" && timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
+OUT=$(cd "$AV" && ai_timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
 [ "$RC" -ne 0 ] && grep -q "errore strano" <<<"$OUT" \
   && ok "passo 3: rosso senza righe AGGIRA mostra comunque l'ultima riga (mai muto)" || ko "passo 3 rosso muto (rc=$RC): $(tail -3 <<<"$OUT" | tr '\n' ' ')"
 printf '#!/bin/bash\necho "TIENE #1 x"\nexit 0\n' > "$AV/tools/giri-avversari.sh"
-OUT=$(cd "$AV" && timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
+OUT=$(cd "$AV" && ai_timeout 120 bash tools/banco-passaggio.sh --solo-avversari 2>&1); RC=$?
 [ "$RC" -eq 0 ] && grep -q "0 aggirati" <<<"$OUT" && ok "passo 3: batteria verde = 0 aggirati, rc 0" || ko "passo 3 verde (rc=$RC): $(tail -3 <<<"$OUT" | tr '\n' ' ')"
 rm -rf "$AV"
 
