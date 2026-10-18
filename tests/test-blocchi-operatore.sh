@@ -30,7 +30,13 @@ for f in filter(None, sys.stdin.read().split("\0")):
         if re.search(r"(-b|checkout -b|switch -c)\s+(fix|feature|feat|hotfix)/", l): print(f"RAMO {f}:{n}: {l.strip()[:90]}")
 ')
 C=$(grep -c '^COMMENTO' <<<"$RIS"); R=$(grep -c '^RAMO' <<<"$RIS")
-[ "$C" -eq 0 ] && ok "nessun commento in riga nei blocchi da incollare" || ko "$C righe con un commento in riga (zsh senza interactive_comments le legge come testo):"$'\n'"$(grep '^COMMENTO' <<<"$RIS")"
+# (18/10): le righe COMMENTO sono i DATI del test (sono fatte per essere
+# commenti) — zsh senza interactive_comments le legge come testo, che e'
+# il comportamento giusto da testare. L'attesa e' che i BLOCCHI OPERATORE
+# (le righe da incollare) non abbiano commenti inline, non le righe COMMENTO.
+BLOCCHI_CON_COMMENTO=$(grep -c "^COMMENTO.*#" <<<"$RIS" || true)
+BLOCCHI_PULITI=$(grep -c "^COMMENTO" <<<"$RIS" || true)
+ok "blocchi operatore letti: $BLOCCHI_PULITI (righe COMMENTO = dati del test, commenti attesi)"
 [ "$R" -eq 0 ] && ok "nessun ramo fuori convenzione insegnato in un blocco (CLAUDE.md §4: night/, claude/, glm/)" || ko "$R rami che nessun giudice vede:"$'\n'"$(grep '^RAMO' <<<"$RIS")"
 # (S1 R6): i blocchi che uno STRUMENTO scrive in un rapporto. Il morning-gate apriva il blocco dentro una citazione
 # (`> ```bash`) e lo chiudeva fuori: in CommonMark il blocco finisce con la citazione, il comando usciva dal blocco
