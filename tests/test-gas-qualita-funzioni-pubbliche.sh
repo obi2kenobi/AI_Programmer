@@ -30,7 +30,8 @@ for caso in "${POS[@]}"; do
   i=$((i+1))
   [ "$(siti "p$i" "$caso")" = "1" ] && ok "pubblica con segreto o token restituito: rilevata (${caso:0:42}…)" || ko "NON rilevata: ${caso:0:60}"
 done
-sito_testo p4 | grep -qE "Codice.gs:[0-9]+ passa\(\) \[restituisce un token\]" && ok "il sito dice file:riga" || ko "sito senza file:riga"
+P4_TESTO=$(sito_testo p4)   # E-002: cattura-prima
+grep -qE "Codice.gs:[0-9]+ passa\(\) \[restituisce un token\]" <<<"$P4_TESTO" && ok "il sito dice file:riga" || ko "sito senza file:riga"
 
 NEG=(
 "function getAccessToken_() { var p = { client_secret: SEGRETO }; return JSON.parse(UrlFetchApp.fetch(URL, { payload: p })).access_token; }"
