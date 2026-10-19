@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "481d217707dcd2165e199199f9cde2264995a961",
+  "built_at_commit": "6701ab5e2b0a6245c84b2d56f69657a73f22af66",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -484,7 +484,7 @@
       "relation": "contains",
       "source": "claude_2_code_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L84",
+      "source_location": "L86",
       "target": "claude_mask_don_t_omit_when_a_secret_could_surface_in_output",
       "weight": 1.0
     },
@@ -495,7 +495,7 @@
       "relation": "contains",
       "source": "claude_2_code_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L81",
+      "source_location": "L83",
       "target": "claude_never_expose_secrets",
       "weight": 1.0
     },
@@ -506,7 +506,7 @@
       "relation": "contains",
       "source": "claude_2_code_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L88",
+      "source_location": "L90",
       "target": "claude_one_shot_secret_handoff_interactive_login",
       "weight": 1.0
     },
@@ -517,7 +517,7 @@
       "relation": "contains",
       "source": "claude_3_communication_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L102",
+      "source_location": "L104",
       "target": "claude_what_you_hand_to_a_human_to_run_is_code",
       "weight": 1.0
     },
@@ -528,7 +528,7 @@
       "relation": "contains",
       "source": "claude_4_git_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L117",
+      "source_location": "L119",
       "target": "claude_conventions_of_the_night_gate",
       "weight": 1.0
     },
@@ -539,7 +539,7 @@
       "relation": "contains",
       "source": "claude_6_project_specific_context",
       "source_file": "CLAUDE.md",
-      "source_location": "L148",
+      "source_location": "L150",
       "target": "claude_the_first_touch_trigger",
       "weight": 1.0
     },
@@ -550,7 +550,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L170",
+      "source_location": "L172",
       "target": "claude_full_method",
       "weight": 1.0
     },
@@ -561,7 +561,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L173",
+      "source_location": "L175",
       "target": "claude_goal_loops_goal",
       "weight": 1.0
     },
@@ -572,7 +572,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L186",
+      "source_location": "L188",
       "target": "claude_navigation_before_reading_graphify",
       "weight": 1.0
     },
@@ -583,7 +583,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L165",
+      "source_location": "L167",
       "target": "claude_never_delegate",
       "weight": 1.0
     },
@@ -594,7 +594,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L209",
+      "source_location": "L211",
       "target": "claude_patterns_before_reinventing",
       "weight": 1.0
     },
@@ -605,7 +605,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L176",
+      "source_location": "L178",
       "target": "claude_public_repo_private_work",
       "weight": 1.0
     },
@@ -616,7 +616,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L192",
+      "source_location": "L194",
       "target": "claude_the_minimal_code_ladder",
       "weight": 1.0
     },
@@ -627,7 +627,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L205",
+      "source_location": "L207",
       "target": "claude_three_strikes_then_architecture",
       "weight": 1.0
     },
@@ -638,7 +638,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L160",
+      "source_location": "L162",
       "target": "claude_when_to_delegate_and_to_whom",
       "weight": 1.0
     },
@@ -1287,7 +1287,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L95",
+      "source_location": "L97",
       "target": "claude_3_communication_rules",
       "weight": 1.0
     },
@@ -1298,7 +1298,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L110",
+      "source_location": "L112",
       "target": "claude_4_git_rules",
       "weight": 1.0
     },
@@ -1309,7 +1309,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L132",
+      "source_location": "L134",
       "target": "claude_5_error_handling",
       "weight": 1.0
     },
@@ -1320,7 +1320,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L144",
+      "source_location": "L146",
       "target": "claude_6_project_specific_context",
       "weight": 1.0
     },
@@ -1331,7 +1331,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L155",
+      "source_location": "L157",
       "target": "claude_7_method_delegation",
       "weight": 1.0
     },
@@ -55330,7 +55330,7 @@
       "node_kind": "heading",
       "norm_label": "3. communication rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L95"
+      "source_location": "L97"
     },
     {
       "_origin": "ast",
@@ -55342,7 +55342,7 @@
       "node_kind": "heading",
       "norm_label": "4. git rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L110"
+      "source_location": "L112"
     },
     {
       "_origin": "ast",
@@ -55354,7 +55354,7 @@
       "node_kind": "heading",
       "norm_label": "5. error handling",
       "source_file": "CLAUDE.md",
-      "source_location": "L132"
+      "source_location": "L134"
     },
     {
       "_origin": "ast",
@@ -55366,7 +55366,7 @@
       "node_kind": "heading",
       "norm_label": "6. project-specific context",
       "source_file": "CLAUDE.md",
-      "source_location": "L144"
+      "source_location": "L146"
     },
     {
       "_origin": "ast",
@@ -55378,7 +55378,7 @@
       "node_kind": "heading",
       "norm_label": "7. method & delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L155"
+      "source_location": "L157"
     },
     {
       "_origin": "ast",
@@ -56295,7 +56295,7 @@
       "node_kind": "heading",
       "norm_label": "conventions of the night gate",
       "source_file": "CLAUDE.md",
-      "source_location": "L117"
+      "source_location": "L119"
     },
     {
       "_origin": "ast",
@@ -56307,7 +56307,7 @@
       "node_kind": "heading",
       "norm_label": "full method",
       "source_file": "CLAUDE.md",
-      "source_location": "L170"
+      "source_location": "L172"
     },
     {
       "_origin": "ast",
@@ -56319,7 +56319,7 @@
       "node_kind": "heading",
       "norm_label": "goal loops (/goal)",
       "source_file": "CLAUDE.md",
-      "source_location": "L173"
+      "source_location": "L175"
     },
     {
       "_origin": "ast",
@@ -56367,7 +56367,7 @@
       "node_kind": "heading",
       "norm_label": "mask, don't omit, when a secret could surface in output",
       "source_file": "CLAUDE.md",
-      "source_location": "L84"
+      "source_location": "L86"
     },
     {
       "_origin": "ast",
@@ -56379,7 +56379,7 @@
       "node_kind": "heading",
       "norm_label": "navigation before reading (graphify)",
       "source_file": "CLAUDE.md",
-      "source_location": "L186"
+      "source_location": "L188"
     },
     {
       "_origin": "ast",
@@ -56391,7 +56391,7 @@
       "node_kind": "heading",
       "norm_label": "never delegate",
       "source_file": "CLAUDE.md",
-      "source_location": "L165"
+      "source_location": "L167"
     },
     {
       "_origin": "ast",
@@ -56403,7 +56403,7 @@
       "node_kind": "heading",
       "norm_label": "never expose secrets",
       "source_file": "CLAUDE.md",
-      "source_location": "L81"
+      "source_location": "L83"
     },
     {
       "_origin": "ast",
@@ -56415,7 +56415,7 @@
       "node_kind": "heading",
       "norm_label": "one-shot secret handoff (interactive login)",
       "source_file": "CLAUDE.md",
-      "source_location": "L88"
+      "source_location": "L90"
     },
     {
       "_origin": "ast",
@@ -56427,7 +56427,7 @@
       "node_kind": "heading",
       "norm_label": "patterns before reinventing",
       "source_file": "CLAUDE.md",
-      "source_location": "L209"
+      "source_location": "L211"
     },
     {
       "_origin": "ast",
@@ -56439,7 +56439,7 @@
       "node_kind": "heading",
       "norm_label": "public repo, private work",
       "source_file": "CLAUDE.md",
-      "source_location": "L176"
+      "source_location": "L178"
     },
     {
       "_origin": "ast",
@@ -60487,7 +60487,7 @@
       "node_kind": "heading",
       "norm_label": "the first-touch trigger",
       "source_file": "CLAUDE.md",
-      "source_location": "L148"
+      "source_location": "L150"
     },
     {
       "_origin": "ast",
@@ -60499,7 +60499,7 @@
       "node_kind": "heading",
       "norm_label": "the minimal-code ladder",
       "source_file": "CLAUDE.md",
-      "source_location": "L192"
+      "source_location": "L194"
     },
     {
       "_origin": "ast",
@@ -60511,7 +60511,7 @@
       "node_kind": "heading",
       "norm_label": "three strikes, then architecture",
       "source_file": "CLAUDE.md",
-      "source_location": "L205"
+      "source_location": "L207"
     },
     {
       "_origin": "ast",
@@ -60523,7 +60523,7 @@
       "node_kind": "heading",
       "norm_label": "what you hand to a human to run is code",
       "source_file": "CLAUDE.md",
-      "source_location": "L102"
+      "source_location": "L104"
     },
     {
       "_origin": "ast",
@@ -60535,7 +60535,7 @@
       "node_kind": "heading",
       "norm_label": "when to delegate — and to whom",
       "source_file": "CLAUDE.md",
-      "source_location": "L160"
+      "source_location": "L162"
     },
     {
       "_origin": "semantic",

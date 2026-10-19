@@ -70,13 +70,15 @@ For trivial tasks, use judgment: the rules bias toward caution over speed.
 - **One file, one responsibility** — no monolithic files.
 - **No dead code** — no commented-out code, unused imports or placeholder functions.
 - **Respect existing patterns** — naming, structure, formatting, architecture: consistency over preference.
+- **Same agents, same rules, same gates for BOTH turni** (Luca, 2026-10-19: «riallinea notte e giorno le regole agenti deve essere tutto uguale») — roles/ is the single source; genera-agenti.sh projects identical mirrors; canone_ruoli() injects the same canon; fondi, deploy-gas, and all gates apply to any agent regardless of turno. No rule exists for one turno only.
+
 - **Git e clasp AUTOMATICI e sicuri (LEGGE, Luca 2026-10-15: «diventi legge il poter fare git e clasp in maniera sicura e automatica»)** — valgono per TUTTA la flotta, non per un repo:
   - **git push/pull**: gia' automatici nei turni (self-pull, consegne su rami, mai su main).
   - **git merge**: `tools/fondi.sh` fonde SOLO a quattro condizioni verdi (fondibile, lente PULITA, banco verde, censore APPROVA); la consegna del giorno lo prova da se' (`GIORNO_FONDI=0` spegne). Ogni NO dice quale.
   - **clasp**: SOLO via `tools/deploy-gas.sh` — banco, lente, backup isolato verificato, MANIFEST con rollback, cancello dei target (lista nera dei vivi, impronta per cartella). Il clasp nudo resta negato dall'hook. La guida pratica: `docs/guida-cancelli-automatici.md`.
   - I VIVI in produzione non si toccano mai; il rollback e' scritto prima di spingere; tutto lascia traccia nei log.
 
-- **Deploy goes through the gate** (Luca, 2026-10-15: «la maturità del progetto e dei partecipanti») — an agent deploys Apps Script ONLY via `tools/deploy-gas.sh`: banco verde, lente PULITA, backup isolato verificato, MANIFEST con rollback, e il cancello dei target (lista nera dei vivi in `~/.gas-vivi`, impronta per cartella con `--approva-target`). Raw `clasp push`/`clasp deploy` restano VIETATI e negati dall'hook (`tools/clasp-block-hook.sh`): il cancello non si aggira, si usa. I vivi in produzione non si toccano mai.
+- **Deploy goes through the gate** (Luca, 2026-10-15: «la maturità del progetto e dei partecipanti») — an agent (any turno: night or day) deploys Apps Script ONLY via `tools/deploy-gas.sh`: banco verde, lente PULITA, backup isolato verificato, MANIFEST con rollback, e il cancello dei target (lista nera dei vivi in `~/.gas-vivi`, impronta per cartella con `--approva-target`). Raw `clasp push`/`clasp deploy` restano VIETATI e negati dall'hook (`tools/clasp-block-hook.sh`): il cancello non si aggira, si usa. I vivi in produzione non si toccano mai.
 
 ### Never expose secrets
 Never log, print, paste or commit credentials, tokens or sensitive data (credential files, `.env`, key exports). Refer to secrets by file path, not by value. If a secret appears in something to be committed or shared, stop and flag it.
@@ -121,7 +123,7 @@ dal <title> dell'HTML quando la fonte vera era un setTitle() nel .gs, che vince 
 - **The issue-closing keyword stays in INGLESE** (`Closes #N`, `Fixes #N`) — GitHub does not auto-close with the Italian translation.
 - **Mirror / read-only folders**: the night shift honours a `.night-mirror` file at the repo root (one folder per line, like `.night-verify`): those folders are declared to the agent and never written.
 <!-- Nate nel set 3 "flusso delle idee" (2026-08-22): vivevano solo in commenti di codice
-(night-shift/*.sh) o in SAL.md, mai dove un agente di giorno o un progetto onboardato le
+(night-shift/*.sh) o in SAL.md, mai dove qualsiasi agente o progetto onboardato le
 leggesse. Il giudice aggiornato il 2026-09-23 (sì di Luca); il parere sulle PR delle issue e' la
 decisione D10 di Luca (2026-09-23: «b», il censore giudica ma non fonde); la keyword inglese verificata piu'
 volte nella storia del sistema (SAL.md); .night-mirror: prima il prompt ne parlava senza che una
