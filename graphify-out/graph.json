@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "481d217707dcd2165e199199f9cde2264995a961",
+  "built_at_commit": "6701ab5e2b0a6245c84b2d56f69657a73f22af66",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -53975,6 +53975,17 @@
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_sonda_mute",
+      "source_file": "tools/sonda-mute.sh",
+      "source_location": "L1",
+      "target": "tools_sonda_mute_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "relation": "defines",
       "source": "tools_specchio",
       "source_file": "tools/specchio.sh",
@@ -94543,8 +94554,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 897,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_6_la_rotta_corretta_il_parco_è_il_corpus_non_la_cava",
       "label": "2026-08-24 (6) — la rotta corretta: il parco è il corpus, non la cava",
@@ -94555,8 +94566,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 897,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_7_7_ciclo_set_1_3_tre_oracoli_residui_e_il_rilevatore_meccanico",
       "label": "2026-08-24 (7) — 7° ciclo, Set 1/3: tre oracoli residui e il rilevatore meccanico",
@@ -94567,8 +94578,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 897,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_8_7_ciclo_set_2_3_il_flusso_di_progettazione_dogfooddato_su_un_caso_vero",
       "label": "2026-08-24 (8) — 7° ciclo, Set 2/3: il flusso di progettazione dogfooddato su un caso vero",
@@ -94579,8 +94590,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 897,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_2026_08_24_9_7_ciclo_set_3_3_il_hub_impara_a_giudicare_i_banchi",
       "label": "2026-08-24 (9) — 7° ciclo, Set 3/3: il hub impara a giudicare i banchi",
@@ -94891,8 +94902,8 @@
     },
     {
       "_origin": "ast",
-      "community": 80,
-      "community_name": "SAL — il diario vivo del sistema",
+      "community": 897,
+      "community_name": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
       "file_type": "document",
       "id": "sal_archivio_riepilogo_dei_tre_set_30_giri_6_ciclo_agenti_progettare_flusso_interazione",
       "label": "Riepilogo dei tre set (30 giri, 6° ciclo) — \"agenti, progettare, flusso/interazione\"",
@@ -116899,6 +116910,36 @@
       },
       "norm_label": "skill-reminder-hook.sh script",
       "source_file": "tools/skill-reminder-hook.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 898,
+      "community_name": "sonda-mute.sh",
+      "file_type": "code",
+      "id": "tools_sonda_mute",
+      "label": "sonda-mute.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "sonda-mute.sh",
+      "source_file": "tools/sonda-mute.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 898,
+      "community_name": "sonda-mute.sh",
+      "file_type": "code",
+      "id": "tools_sonda_mute_sh__entry",
+      "label": "sonda-mute.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "sonda-mute.sh script",
+      "source_file": "tools/sonda-mute.sh",
       "source_location": "L1"
     },
     {
