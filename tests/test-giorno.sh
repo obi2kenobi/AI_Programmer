@@ -187,7 +187,8 @@ GA=$(bash "$GP" consegna "$R" "questa non deve passare" 2>&1); GA_RC=$?
 if [ "$GA_RC" -ne 0 ] && grep -q "batteria avversaria" <<<"$GA" && grep -q "AGGIRA" <<<"$GA"; then
   ok "batteria rossa: consegna FERMATA prima del push, con la riga AGGIRA nel log"
 else ko "batteria rossa: consegna fermata (rc=$GA_RC: $GA)"; fi
-git -C "$R" show HEAD:base.txt 2>/dev/null | grep -q "boccera" && ko "batteria rossa: il commit sporco NON esiste" || ok "batteria rossa: il commit sporco NON esiste (sciolto)"
+BASE_TXT=$(git -C "$R" show HEAD:base.txt 2>/dev/null)   # E-002: cattura-prima
+grep -q "boccera" <<<"$BASE_TXT" && ko "batteria rossa: il commit sporco NON esiste" || ok "batteria rossa: il commit sporco NON esiste (sciolto)"
 grep -q "boccera" "$R/base.txt" && ok "batteria rossa: il lavoro NON e' distrutto" || ko "batteria rossa: il lavoro NON e' distrutto"
 printf '#!/bin/bash\necho "VERDETTO: 0 aggirati non riconosciuti"\nexit 0\n' > "$R/tools/giri-avversari.sh"
 sleep 1
