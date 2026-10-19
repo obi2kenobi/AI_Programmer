@@ -935,6 +935,17 @@ Intento dichiarato dall'autore: $INTENTO_PR"
             https://*)
               log "REPO $REPO: PR di $ORIGINE → $PR_CACCIA"
               log "REPO $REPO: $(lente_pr "$DIR" "origin/$DB" "$CACCIA_BRANCH" "$PR_CACCIA")"  # D2: lente sicurezza automatica
+              # (19/10, unificazione — Luca: «le modifiche della notte devono valere
+              # anche per il giorno»): anche il TURNO prova a chiudere il cerchio con
+              # fondi (le 4 condizioni). Se una manca, la PR resta aperta e il censore
+              # DELIBERA nel suo ciclo come sempre: la via rapida non sostituisce la lenta.
+              if [ -f "$HERE/../tools/fondi.sh" ]; then
+                N_NOTTE=$(printf '%s' "$PR_CACCIA" | grep -oE '[0-9]+$')
+                if [ -n "$N_NOTTE" ]; then
+                  FONDI_NOTTE=$(bash "$HERE/../tools/fondi.sh" "$DIR" "$N_NOTTE" 2>&1); FN_RC=$?
+                  log "REPO $REPO: fondi-notte: $(tail -1 <<<"$FONDI_NOTTE")"
+                fi
+              fi
               PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
               # la sacca si consuma quando la PR esiste: le micro-migliorie sono
               # in viaggio (se la PR verra' rigettata, restano visibili li')
