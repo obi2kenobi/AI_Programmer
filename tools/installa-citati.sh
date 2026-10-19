@@ -26,7 +26,7 @@ CITATI="docs/ngiri-paralleli.md tools/privacy-check.sh tests/test-errori.sh tool
 # (16/10, dal gate-rosso di stanotte x6): i DENTI della legge viaggiano con
 # l'installatore — deploy-gas e fondi citati nel CLAUDE.md devono esserci
 # anche nella repo satellite nuova, o la legge si dichiara e non si puo' applicare
-GUARDIANI=".githooks tools/pre-commit.sh tools/deploy-gas.sh tools/fondi.sh"
+GUARDIANI=".githooks tools/pre-commit.sh tools/deploy-gas.sh tools/fondi.sh docs/guida-cancelli-automatici.md"
 FORMATI="docs/campo/README.md tools/garante-standard.sh"
 STATO="DEBITI.md docs/errori/REGISTRO.md"
 
