@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "6701ab5e2b0a6245c84b2d56f69657a73f22af66",
+  "built_at_commit": "eeed1aec62cd55046998927877415b5d2ae3de3a",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -48775,6 +48775,17 @@
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_banco_selettivo",
+      "source_file": "tools/banco-selettivo.sh",
+      "source_location": "L1",
+      "target": "tools_banco_selettivo_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "context": "import",
       "relation": "imports",
       "source": "tools_bc_index",
@@ -52156,6 +52167,17 @@
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_mappa_test",
+      "source_file": "tools/mappa-test.sh",
+      "source_location": "L1",
+      "target": "tools_mappa_test_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "context": "import",
       "relation": "imports",
       "source": "tools_margine_documento",
@@ -52952,6 +52974,17 @@
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_raccogli_debiti",
+      "source_file": "tools/raccogli-debiti.sh",
+      "source_location": "L1",
+      "target": "tools_raccogli_debiti_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "context": "import",
       "relation": "imports",
       "source": "tools_rating_dso_clienti",
@@ -53497,6 +53530,17 @@
       "source_file": "tools/sal-archivia.sh",
       "source_location": "L1",
       "target": "tools_sal_archivia_sh__entry",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "tools_sal_episodi",
+      "source_file": "tools/sal-episodi.sh",
+      "source_location": "L1",
+      "target": "tools_sal_episodi_sh__entry",
       "weight": 1.0
     },
     {
@@ -81945,8 +81989,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_commenta_una_volta",
       "label": "commenta_una_volta()",
@@ -81975,8 +82019,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "night_shift_lib_conta_non_convergenza",
       "label": "conta_non_convergenza()",
@@ -82095,8 +82139,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_funzione_definita_e_chiamata",
       "label": "funzione_definita_e_chiamata()",
@@ -82230,8 +82274,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_lock_turno_orfano",
       "label": "lock_turno_orfano()",
@@ -82335,8 +82379,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_pr_chiusa_ferma",
       "label": "pr_chiusa_ferma()",
@@ -82350,8 +82394,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_prendi_lock_turno",
       "label": "prendi_lock_turno()",
@@ -82395,8 +82439,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "night_shift_lib_rianima_ollama",
       "label": "rianima_ollama()",
@@ -82410,8 +82454,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_riga_verifica_vuota",
       "label": "riga_verifica_vuota()",
@@ -82815,8 +82859,8 @@
     },
     {
       "_origin": "ast",
-      "community": 99,
-      "community_name": "test-lib.sh script",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_night_shift_shift_repo",
       "label": "shift_repo()",
@@ -98835,8 +98879,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 899,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata",
       "label": "test-consegna-dichiarata.sh",
@@ -98850,8 +98894,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 899,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_g",
       "label": "g()",
@@ -98865,8 +98909,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 899,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_ko",
       "label": "ko()",
@@ -98880,8 +98924,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 899,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_ok",
       "label": "ok()",
@@ -98895,8 +98939,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 899,
+      "community_name": "test-consegna-dichiarata.sh",
       "file_type": "code",
       "id": "tests_test_consegna_dichiarata_sh__entry",
       "label": "test-consegna-dichiarata.sh script",
@@ -104776,7 +104820,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa",
       "label": "test-lock-turno-corsa.sh",
@@ -104791,7 +104835,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_ko",
       "label": "ko()",
@@ -104806,7 +104850,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_ok",
       "label": "ok()",
@@ -104821,7 +104865,7 @@
     {
       "_origin": "ast",
       "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community_name": "test-lock-turno-corsa.sh",
       "file_type": "code",
       "id": "tests_test_lock_turno_corsa_sh__entry",
       "label": "test-lock-turno-corsa.sh script",
@@ -106095,8 +106139,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge",
       "label": "test-non-converge.sh",
@@ -106110,8 +106154,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ko",
       "label": "ko()",
@@ -106125,8 +106169,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ok",
       "label": "ok()",
@@ -106140,8 +106184,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 880,
+      "community_name": "test-non-converge.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_sh__entry",
       "label": "test-non-converge.sh script",
@@ -108735,8 +108779,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama",
       "label": "test-rianima-ollama.sh",
@@ -108750,8 +108794,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
@@ -108765,8 +108809,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
@@ -108780,8 +108824,8 @@
     },
     {
       "_origin": "ast",
-      "community": 880,
-      "community_name": "rianima_ollama",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_sh__entry",
       "label": "test-rianima-ollama.sh script",
@@ -112282,6 +112326,36 @@
     },
     {
       "_origin": "ast",
+      "community": 900,
+      "community_name": "banco-selettivo.sh",
+      "file_type": "code",
+      "id": "tools_banco_selettivo",
+      "label": "banco-selettivo.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "banco-selettivo.sh",
+      "source_file": "tools/banco-selettivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 900,
+      "community_name": "banco-selettivo.sh",
+      "file_type": "code",
+      "id": "tools_banco_selettivo_sh__entry",
+      "label": "banco-selettivo.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "banco-selettivo.sh script",
+      "source_file": "tools/banco-selettivo.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 174,
       "community_name": "anonimizza.py",
       "file_type": "code",
@@ -113062,8 +113136,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "tools_ciclo_vivo",
       "label": "ciclo-vivo.sh",
@@ -113077,8 +113151,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "tools_ciclo_vivo_corpo_agent",
       "label": "corpo_agent()",
@@ -113092,8 +113166,8 @@
     },
     {
       "_origin": "ast",
-      "community": 780,
-      "community_name": "prendi_lock_turno",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "tools_ciclo_vivo_sh__entry",
       "label": "ciclo-vivo.sh script",
@@ -115284,6 +115358,36 @@
     },
     {
       "_origin": "ast",
+      "community": 901,
+      "community_name": "mappa-test.sh",
+      "file_type": "code",
+      "id": "tools_mappa_test",
+      "label": "mappa-test.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "mappa-test.sh",
+      "source_file": "tools/mappa-test.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 901,
+      "community_name": "mappa-test.sh",
+      "file_type": "code",
+      "id": "tools_mappa_test_sh__entry",
+      "label": "mappa-test.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "mappa-test.sh script",
+      "source_file": "tools/mappa-test.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 34,
       "community_name": "sys",
       "file_type": "code",
@@ -116163,6 +116267,36 @@
     },
     {
       "_origin": "ast",
+      "community": 902,
+      "community_name": "raccogli-debiti.sh",
+      "file_type": "code",
+      "id": "tools_raccogli_debiti",
+      "label": "raccogli-debiti.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "raccogli-debiti.sh",
+      "source_file": "tools/raccogli-debiti.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 902,
+      "community_name": "raccogli-debiti.sh",
+      "file_type": "code",
+      "id": "tools_raccogli_debiti_sh__entry",
+      "label": "raccogli-debiti.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "raccogli-debiti.sh script",
+      "source_file": "tools/raccogli-debiti.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
       "community": 38,
       "community_name": "leggi_numero",
       "file_type": "code",
@@ -116597,6 +116731,36 @@
       },
       "norm_label": "sal-archivia.sh script",
       "source_file": "tools/sal-archivia.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 903,
+      "community_name": "sal-episodi.sh",
+      "file_type": "code",
+      "id": "tools_sal_episodi",
+      "label": "sal-episodi.sh",
+      "metadata": {
+        "kind": "file",
+        "language": "bash"
+      },
+      "norm_label": "sal-episodi.sh",
+      "source_file": "tools/sal-episodi.sh",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 903,
+      "community_name": "sal-episodi.sh",
+      "file_type": "code",
+      "id": "tools_sal_episodi_sh__entry",
+      "label": "sal-episodi.sh script",
+      "metadata": {
+        "kind": "bash_entrypoint",
+        "language": "bash"
+      },
+      "norm_label": "sal-episodi.sh script",
+      "source_file": "tools/sal-episodi.sh",
       "source_location": "L1"
     },
     {
