@@ -201,6 +201,15 @@ fi
 # backslash al suo interno rompe o inietta nello script AppleScript. Stessa lezione
 # già applicata al body della gh issue in morning-gate.sh, mai portata qui.
 escape_as() { printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
+# (20/10, Luca: «vorrei includere sempre tutte le regole sia nel notturno
+# che nel diurno»): il BODY tecnico passa attraverso umanizza — il gemma
+# locale lo riscrive in italiano naturale con le regole anti-stile-AI.
+# Se il modello e' muto, il BODY tecnico resta (degrado dichiarato, mai silenzio).
+if [ -f "$HERE/../tools/umanizza.sh" ]; then
+  BODY_UMANO=$(printf '%s' "$BODY" | bash "$HERE/../tools/umanizza.sh" 2>/dev/null)
+  [ -n "$BODY_UMANO" ] && BODY="$BODY_UMANO" && echo "digest: umanizzato dal gemma (notte e giorno insieme)"
+fi
+
 SUBJ_ESC=$(escape_as "$SUBJ")
 BODY_ESC=$(escape_as "$BODY")
 DEST_ESC=$(escape_as "$DEST")

@@ -145,6 +145,9 @@ consegna)
   tail -2 <<<"$PUSH_OUT" >&2
   [ "$PUSH_RC" -eq 0 ] || { log "⛔ push fallito"; exit 1; }
   BODY_PR="Consegna del turno di GIORNO attraverso il cancello condiviso: lente sicurezza automatica, forme di segreto verificate prima del push, file nuovi solo se dichiarati. Il censore lascia il parere a comando (giorno.sh parere) — la fusione resta umana."
+  # (20/10): il corpo della PR passa da umanizza (le regole del notturno
+  # valgono anche per il giorno — tutto quello che un umano legge è naturale)
+  BODY_PR=$(printf '%s' "$BODY_PR" | bash "$HERE/tools/umanizza.sh" 2>/dev/null || printf '%s' "$BODY_PR")
   # il corpo passa dal cancello delle destinazioni (come i corpi PR della notte)
   BODY_PR=$(printf '%s' "$BODY_PR" | corpo_da_destinazioni pr-body)
   # (15/10, dal test nella sessione remota): non ogni gh digerisce --draft —
