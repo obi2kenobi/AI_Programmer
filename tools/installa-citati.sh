@@ -15,6 +15,13 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="${1:?uso: installa-citati.sh <cartella-repo> [--solo-mancanti]}"
 SOLO_MANCANTI=0; [ "${2:-}" = "--solo-mancanti" ] && SOLO_MANCANTI=1
 [ -d "$DEST" ] || { echo "installa-citati: $DEST non esiste" >&2; exit 1; }
+# (20/10, dal campo: Claude Code Remote blocca bash per permessi) — se non
+# possiamo eseguire script, LO DICHIARIAMO e copiamo solo i file inerti
+PUO_ESEGUIRE=1
+bash -c 'true' >/dev/null 2>&1 || PUO_ESEGUIRE=0
+if [ "$PUO_ESEGUIRE" -eq 0 ]; then
+  echo "installa-citati: esecuzione BLOCCATA dall'ambiente (dichiarato) — solo file, hook dal Mac"
+fi
 
 # le lenti dello standard coi loro dati (report REPO-F: la lente senza la sua lista di esclusione
 # non e' la lente — 10 rossi il giorno zero); gli strumenti citati (report REPO-I, Budget Vendite,
