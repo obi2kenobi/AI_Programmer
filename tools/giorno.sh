@@ -220,7 +220,15 @@ parere)
   [ -f "$HERE/night-shift/revisore.sh" ] || { echo "⛔ revisore.sh assente" >&2; exit 2; }
   log "censore in parere sulla PR #$N di ${DIR##*/} — parere, mai fusione"
   OUT=$(GIORNO_PARERE=1 bash "$HERE/night-shift/revisore.sh" "$DIR" "$N" 2>&1); RC=$?
-  grep -aE "DELIBERA|PARERE:|canone|rigett" <<<"$OUT" | sed 's/^\[revisore [^]]*\] //' | head -6
+  PARERE_GREZZO=$(grep -aE "DELIBERA|PARERE:|canone|rigett" <<<"$OUT" | sed 's/^\[revisore [^]]*\] //' | head -6)
+  # (21/10): il parere del censore passa da umanizza — le regole del notturno
+  # valgono anche per ciò che il giorno legge del censore
+  if [ -f "$HERE/tools/umanizza.sh" ]; then
+    PARERE_UMANO=$(printf '%s' "$PARERE_GREZZO" | bash "$HERE/tools/umanizza.sh" 2>/dev/null || printf '%s' "$PARERE_GREZZO")
+    printf '%s\n' "$PARERE_UMANO"
+  else
+    printf '%s\n' "$PARERE_GREZZO"
+  fi
   riga_giorno "$DIR" "parere PR #$N (rc=$RC)"
   exit "$RC"
   ;;
@@ -425,6 +433,7 @@ rivedi)
 # ── bilancino: il conto del giorno, letto dal log vero ───────────────────────────
 bilancino)
   DATA="${2:-${GIORNO_DATA:-$(date +%F)}}"
+  UMANO=0; [ "${3:-}" = "--umano" ] && UMANO=1
   [ -f "$GIORNO_LOG" ] || { echo "giorno.sh bilancino: nessun log ($GIORNO_LOG) — il giorno non ha ancora consegnato niente"; exit 0; }
   RIGHE=$(grep "^\[GIORNO $DATA " "$GIORNO_LOG" 2>/dev/null || true)
   [ -n "$RIGHE" ] || { echo "GIORNO $DATA: nessuna azione registrata"; exit 0; }

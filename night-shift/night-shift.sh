@@ -62,7 +62,20 @@ trap 'rm -rf "$TURN_LOCK"' EXIT
 # dichiarando se ha dovuto scalare qualcosa.
 # (2026-09-24, R5 R1): il reset nudo buttava il lavoro del giorno; allinea_hub (lib.sh) lo mette da parte e lo dice
 allinea_hub "$HERE" 2>&1 | while IFS= read -r l; do log "self-pull: $l"; done
-log "$(ambiente_turno)"   # T3#6: bash, ramo di timeout, sandbox — le differenze Mac/Linux si leggono qui
+log "$(ambiente_turno)"
+# (21/10): le PR pendenti di fondi-notte si RIPROVANO qui — a inizio ciclo
+# la quarantena del censore e' scaduta per tutte quelle create al ciclo prima
+PEND="$HOME/.night-shift-work/.fondi-pendenti"
+if [ -s "$PEND" ]; then
+  while IFS=' ' read -r P_DIR P_N; do
+    [ -n "$P_DIR" ] && [ -n "$P_N" ] || continue
+    if [ -d "$P_DIR" ]; then
+      FONDI_RETRY=$(bash "$HERE/../tools/fondi.sh" "$P_DIR" "$P_N" 2>&1); FR_RC=$?
+      log "fondi-ritenta: PR #$P_N — $(tail -1 <<<"$FONDI_RETRY")"
+    fi
+  done < "$PEND"
+  : > "$PEND"   # consumate (si riempiono al prossimo giro se serve)
+fi   # T3#6: bash, ramo di timeout, sandbox — le differenze Mac/Linux si leggono qui
 # (studio deepseek-harness profiles, 2026-09-23): la configurazione del turno
 # vive in UNA dichiarazione (profiles/notturno.conf) ricomposta a ogni ciclo —
 # il nostro exec-per-ciclo e' un hot-reload gratis. I default nel codice sono
@@ -942,8 +955,11 @@ Intento dichiarato dall'autore: $INTENTO_PR"
               if [ -f "$HERE/../tools/fondi.sh" ]; then
                 N_NOTTE=$(printf '%s' "$PR_CACCIA" | grep -oE '[0-9]+$')
                 if [ -n "$N_NOTTE" ]; then
-                  FONDI_NOTTE=$(bash "$HERE/../tools/fondi.sh" "$DIR" "$N_NOTTE" 2>&1); FN_RC=$?
-                  log "REPO $REPO: fondi-notte: $(tail -1 <<<"$FONDI_NOTTE")"
+                  # (21/10): non provare SUBITO (la quarantena del censore boccia
+                  # una PR di 10 secondi sempre) — MEMORIZZA la PR e ritenta al
+                  # ciclo dopo, quando la quarantena e' scaduta
+                  echo "$DIR $N_NOTTE" >> "$HOME/.night-shift-work/.fondi-pendenti"
+                  log "REPO $REPO: fondi-notte: PR #$N_NOTTE memorizzata — ritento al ciclo dopo (quarantena)"
                 fi
               fi
               PR_CREATED=$((PR_CREATED+1))  # locale a shift_repo, inizializzata prima della caccia
