@@ -106,9 +106,10 @@ fi
 # DOPO l'exit: «command not found» a ogni fix, REVIEW vuota, e questo test passava lo
 # stesso perche' non pretendeva la riga. Ora la pretende: il verdetto e' una delle tre
 # parole, mai vuoto (col mock la risposta e' codice, quindi UNCLEAR — ma detto).
+REVIEW_OUT=$(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')
 grep -qE '^REVIEW: (CORRECT|WRONG|UNCLEAR)$' <<<"$OUT" \
   && ok "AUTO-REVIEW eseguita: la riga REVIEW porta un verdetto" \
-  || ko "AUTO-REVIEW non eseguita: $(echo "$OUT" | grep -E 'REVIEW|not found' | head -2 | tr '\n' ' ')"
+  || ko "AUTO-REVIEW non eseguita: $REVIEW_OUT"
 # (2026-09-25, D42, risposta delegata): il solver verificava il BLOCCO del modello, non quello che scriveva. Un blocco che
 # ridefinisce due funzioni esistenti, o aggiunge codice fuori dalla funzione, sostituiva la funzione chiesta con tutto il
 # blocco ed usciva APPLICATO. Ora oltre una funzione e' una PROPOSTA (rc 3), e il file non si tocca. Un commento davanti
