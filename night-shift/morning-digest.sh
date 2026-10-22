@@ -206,7 +206,7 @@ escape_as() { printf '%s' "$1" | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g'; }
 # locale lo riscrive in italiano naturale con le regole anti-stile-AI.
 # Se il modello e' muto, il BODY tecnico resta (degrado dichiarato, mai silenzio).
 if [ -f "$(dirname "$0")/../tools/umanizza.sh" ]; then
-  BODY_UMANO=$(printf '%s' "$BODY" | bash "$(dirname "$0")/../tools/umanizza.sh" 2>/dev/null)
+  BODY_UMANO=$(printf '%s' "$BODY" | ASK_TIMEOUT=30 bash "$(dirname "$0")/../tools/umanizza.sh" 2>/dev/null || true)
   [ -n "$BODY_UMANO" ] && BODY="$BODY_UMANO" && echo "digest: umanizzato dal gemma (notte e giorno insieme)"
 fi
 
