@@ -5,7 +5,9 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0; FAIL=0
+# ok: incrementa il contatore dei successi e stampa il risultato
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
+# ko: incrementa il contatore dei fallimenti e stampa il risultato
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 source "$HERE/night-shift/lib.sh"
 F=$(mktemp -d); git -C "$F" init -q

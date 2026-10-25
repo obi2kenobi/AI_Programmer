@@ -37,9 +37,9 @@ grep -q "sentinelle: 0/1" <<<"$OUT" && ok "senza banco che morde: 0/1 dichiarato
 # ── RiskKernel: il ciclo A-B ────────────────────────────────────────────────
 ciclo_ab() {  # le ultime 4 firme (A|B|A|B) → 0 se loop
   local u="$1"
-  local a b c d
+  local a b
   a=$(printf '%s' "$u" | cut -d'|' -f1); b=$(printf '%s' "$u" | cut -d'|' -f2)
-  c=$(printf '%s' "$u" | cut -d'|' -f3); d=$(printf '%s' "$u" | cut -d'|' -f4)
+  local c=$(printf '%s' "$u" | cut -d'|' -f3); local d=$(printf '%s' "$u" | cut -d'|' -f4)
   [ -n "$a" ] && [ "$a" = "$c" ] && [ "$b" = "$d" ] && [ "$a" != "$b" ]
 }
 ciclo_ab "read x|edit x|read x|edit x" && ok "A-B-A-B: loop dichiarato" || ko "ciclo A-B non visto"
