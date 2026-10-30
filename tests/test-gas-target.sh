@@ -6,6 +6,7 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 DG="$HERE/tools/deploy-gas.sh"
 export HOME="$PWD"
 PASS=0; FAIL=0
+# ok increments the success counter and prints a formatted OK message
 ok(){ PASS=$((PASS+1)); echo "OK   $1"; }; ko(){ FAIL=$((FAIL+1)); echo "FAIL $1"; }
 bash -n "$DG" && ok "sintassi" || exit 1
 T=$(mktemp -d); cd "$T"; git init -q -b main; git -c user.name=t -c user.email=t@t commit -qm i --allow-empty

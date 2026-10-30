@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "9324d1e6903ce26675d4ef1e555f95a5b7bb7d93",
+  "built_at_commit": "f7f136028ed8e85a220e8df0e285bc4b0a63ef52",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -15864,6 +15864,127 @@
       "source_file": "docs/campo/2026-10-21-riordino-legno-righe-per-gruppo-e-catena-pr.md",
       "source_location": "L13",
       "target": "docs_campo_2026_10_21_riordino_legno_righe_per_gruppo_e_catena_pr_proposta_al_canone",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L1",
+      "target": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L15",
+      "target": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_cosa_ha_retto_ostacolato",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L10",
+      "target": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_cosa_ho_improvvisato",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L4",
+      "target": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_cosa_ho_usato",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L22",
+      "target": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_proposta_al_canone",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L27",
+      "target": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_seguito_stessa_sessione_dopo_le_pr_147_164_165_166_167",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L1",
+      "target": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_2026_10_22_riordino_legno_matrice_offerte_quadratura_dal_vecchio_script_lead_time_importo_archivio_in_arrivo",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_2026_10_22_riordino_legno_matrice_offerte_quadratura_dal_vecchio_script_lead_time_importo_archivio_in_arrivo",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L15",
+      "target": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_cosa_ha_retto_ostacolato",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_2026_10_22_riordino_legno_matrice_offerte_quadratura_dal_vecchio_script_lead_time_importo_archivio_in_arrivo",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L10",
+      "target": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_cosa_ho_improvvisato",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_2026_10_22_riordino_legno_matrice_offerte_quadratura_dal_vecchio_script_lead_time_importo_archivio_in_arrivo",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L4",
+      "target": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_cosa_ho_usato",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "relation": "contains",
+      "source": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_2026_10_22_riordino_legno_matrice_offerte_quadratura_dal_vecchio_script_lead_time_importo_archivio_in_arrivo",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L20",
+      "target": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_proposta_al_canone",
       "weight": 1.0
     },
     {
@@ -38645,7 +38766,7 @@
       "relation": "defines",
       "source": "tests_test_gas_target",
       "source_file": "tests/test-gas-target.sh",
-      "source_location": "L9",
+      "source_location": "L10",
       "target": "tests_test_gas_target_ko",
       "weight": 1.0
     },
@@ -38656,7 +38777,7 @@
       "relation": "defines",
       "source": "tests_test_gas_target",
       "source_file": "tests/test-gas-target.sh",
-      "source_location": "L9",
+      "source_location": "L10",
       "target": "tests_test_gas_target_ok",
       "weight": 1.0
     },
@@ -38679,7 +38800,7 @@
       "relation": "calls",
       "source": "tests_test_gas_target_sh__entry",
       "source_file": "tests/test-gas-target.sh",
-      "source_location": "L15",
+      "source_location": "L16",
       "target": "tests_test_gas_target_ko",
       "weight": 1.0
     },
@@ -38691,7 +38812,7 @@
       "relation": "calls",
       "source": "tests_test_gas_target_sh__entry",
       "source_file": "tests/test-gas-target.sh",
-      "source_location": "L10",
+      "source_location": "L11",
       "target": "tests_test_gas_target_ok",
       "weight": 1.0
     },
@@ -39403,7 +39524,7 @@
       "relation": "defines",
       "source": "tests_test_goal_issue",
       "source_file": "tests/test-goal-issue.sh",
-      "source_location": "L8",
+      "source_location": "L10",
       "target": "tests_test_goal_issue_ko",
       "weight": 1.0
     },
@@ -39414,7 +39535,7 @@
       "relation": "defines",
       "source": "tests_test_goal_issue",
       "source_file": "tests/test-goal-issue.sh",
-      "source_location": "L7",
+      "source_location": "L8",
       "target": "tests_test_goal_issue_ok",
       "weight": 1.0
     },
@@ -39437,7 +39558,7 @@
       "relation": "calls",
       "source": "tests_test_goal_issue_sh__entry",
       "source_file": "tests/test-goal-issue.sh",
-      "source_location": "L14",
+      "source_location": "L16",
       "target": "tests_test_goal_issue_ko",
       "weight": 1.0
     },
@@ -39449,7 +39570,7 @@
       "relation": "calls",
       "source": "tests_test_goal_issue_sh__entry",
       "source_file": "tests/test-goal-issue.sh",
-      "source_location": "L14",
+      "source_location": "L16",
       "target": "tests_test_goal_issue_ok",
       "weight": 1.0
     },
@@ -39700,7 +39821,7 @@
       "relation": "defines",
       "source": "tests_test_grafo_stabile",
       "source_file": "tests/test-grafo-stabile.sh",
-      "source_location": "L17",
+      "source_location": "L19",
       "target": "tests_test_grafo_stabile_ko",
       "weight": 1.0
     },
@@ -39733,7 +39854,7 @@
       "relation": "defines",
       "source": "tests_test_grafo_stabile",
       "source_file": "tests/test-grafo-stabile.sh",
-      "source_location": "L16",
+      "source_location": "L17",
       "target": "tests_test_grafo_stabile_ok",
       "weight": 1.0
     },
@@ -39767,7 +39888,7 @@
       "relation": "calls",
       "source": "tests_test_grafo_stabile_sh__entry",
       "source_file": "tests/test-grafo-stabile.sh",
-      "source_location": "L19",
+      "source_location": "L21",
       "target": "tests_test_grafo_stabile_ko",
       "weight": 1.0
     },
@@ -39779,7 +39900,7 @@
       "relation": "calls",
       "source": "tests_test_grafo_stabile_sh__entry",
       "source_file": "tests/test-grafo-stabile.sh",
-      "source_location": "L19",
+      "source_location": "L21",
       "target": "tests_test_grafo_stabile_ok",
       "weight": 1.0
     },
@@ -77375,6 +77496,162 @@
     },
     {
       "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini",
+      "label": "2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "node_kind": "page",
+      "norm_label": "2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_2026_10_22_riordino_legno_secondo_giro_pr_concorrenti_sonde_sul_vivo_contratti_f1_listini",
+      "label": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "node_kind": "heading",
+      "norm_label": "2026-10-22 — riordino-legno, secondo giro: pr concorrenti, sonde sul vivo, contratti f1, listini",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L15"
+    },
+    {
+      "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L10"
+    },
+    {
+      "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L4"
+    },
+    {
+      "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_proposta_al_canone",
+      "label": "Proposta al canone",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L22"
+    },
+    {
+      "_origin": "ast",
+      "community": 904,
+      "community_name": "2026-10-22 — riordino-legno, secondo giro: PR concorrenti, sonde sul vivo, contratti F1, listini",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_giro_2_pr_concorrenti_sonde_contratti_listini_seguito_stessa_sessione_dopo_le_pr_147_164_165_166_167",
+      "label": "Seguito (stessa sessione, dopo le PR #147–#164): #165, #166, #167",
+      "node_kind": "heading",
+      "norm_label": "seguito (stessa sessione, dopo le pr #147–#164): #165, #166, #167",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-giro-2-pr-concorrenti-sonde-contratti-listini.md",
+      "source_location": "L27"
+    },
+    {
+      "_origin": "ast",
+      "community": 909,
+      "community_name": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo",
+      "label": "2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "node_kind": "page",
+      "norm_label": "2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 909,
+      "community_name": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_2026_10_22_riordino_legno_matrice_offerte_quadratura_dal_vecchio_script_lead_time_importo_archivio_in_arrivo",
+      "label": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "node_kind": "heading",
+      "norm_label": "2026-10-22 — riordino-legno: matrice offerte, quadratura dal vecchio script, lead time, importo archivio, «in arrivo»",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L1"
+    },
+    {
+      "_origin": "ast",
+      "community": 909,
+      "community_name": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_cosa_ha_retto_ostacolato",
+      "label": "Cosa ha retto / ostacolato",
+      "node_kind": "heading",
+      "norm_label": "cosa ha retto / ostacolato",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L15"
+    },
+    {
+      "_origin": "ast",
+      "community": 909,
+      "community_name": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_cosa_ho_improvvisato",
+      "label": "Cosa ho improvvisato",
+      "node_kind": "heading",
+      "norm_label": "cosa ho improvvisato",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L10"
+    },
+    {
+      "_origin": "ast",
+      "community": 909,
+      "community_name": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_cosa_ho_usato",
+      "label": "Cosa ho usato",
+      "node_kind": "heading",
+      "norm_label": "cosa ho usato",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L4"
+    },
+    {
+      "_origin": "ast",
+      "community": 909,
+      "community_name": "2026-10-22 — riordino-legno: matrice offerte, Quadratura dal vecchio script, lead time, importo archivio, «In arrivo»",
+      "file_type": "document",
+      "id": "docs_campo_2026_10_22_riordino_legno_matrice_quadratura_lead_time_in_arrivo_proposta_al_canone",
+      "label": "Proposta al canone",
+      "node_kind": "heading",
+      "norm_label": "proposta al canone",
+      "source_file": "docs/campo/2026-10-22-riordino-legno-matrice-quadratura-lead-time-in-arrivo.md",
+      "source_location": "L20"
+    },
+    {
+      "_origin": "ast",
       "community": 230,
       "community_name": "Report dal campo — come si è comportato AI_Programmer, a ogni uso",
       "file_type": "document",
@@ -82570,8 +82847,8 @@
     },
     {
       "_origin": "ast",
-      "community": 868,
-      "community_name": "giorno.sh",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_aggiungi_consegna",
       "label": "aggiungi_consegna()",
@@ -82780,8 +83057,8 @@
     },
     {
       "_origin": "ast",
-      "community": 904,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "night_shift_lib_conta_non_convergenza",
       "label": "conta_non_convergenza()",
@@ -102786,7 +103063,7 @@
       },
       "norm_label": "ko()",
       "source_file": "tests/test-gas-target.sh",
-      "source_location": "L9"
+      "source_location": "L10"
     },
     {
       "_origin": "ast",
@@ -102801,7 +103078,7 @@
       },
       "norm_label": "ok()",
       "source_file": "tests/test-gas-target.sh",
-      "source_location": "L9"
+      "source_location": "L10"
     },
     {
       "_origin": "ast",
@@ -103611,7 +103888,7 @@
       },
       "norm_label": "ko()",
       "source_file": "tests/test-goal-issue.sh",
-      "source_location": "L8"
+      "source_location": "L10"
     },
     {
       "_origin": "ast",
@@ -103626,7 +103903,7 @@
       },
       "norm_label": "ok()",
       "source_file": "tests/test-goal-issue.sh",
-      "source_location": "L7"
+      "source_location": "L8"
     },
     {
       "_origin": "ast",
@@ -103896,7 +104173,7 @@
       },
       "norm_label": "ko()",
       "source_file": "tests/test-grafo-stabile.sh",
-      "source_location": "L17"
+      "source_location": "L19"
     },
     {
       "_origin": "ast",
@@ -103941,7 +104218,7 @@
       },
       "norm_label": "ok()",
       "source_file": "tests/test-grafo-stabile.sh",
-      "source_location": "L16"
+      "source_location": "L17"
     },
     {
       "_origin": "ast",
@@ -106900,8 +107177,8 @@
     },
     {
       "_origin": "ast",
-      "community": 904,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge",
       "label": "test-non-converge.sh",
@@ -106915,8 +107192,8 @@
     },
     {
       "_origin": "ast",
-      "community": 904,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ko",
       "label": "ko()",
@@ -106930,8 +107207,8 @@
     },
     {
       "_origin": "ast",
-      "community": 904,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_ok",
       "label": "ok()",
@@ -106945,8 +107222,8 @@
     },
     {
       "_origin": "ast",
-      "community": 904,
-      "community_name": "test-non-converge.sh script",
+      "community": 147,
+      "community_name": "agente.sh script",
       "file_type": "code",
       "id": "tests_test_non_converge_sh__entry",
       "label": "test-non-converge.sh script",
@@ -109540,8 +109817,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 910,
+      "community_name": "test-rianima-ollama.sh",
       "file_type": "code",
       "id": "tests_test_rianima_ollama",
       "label": "test-rianima-ollama.sh",
@@ -109555,8 +109832,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 910,
+      "community_name": "test-rianima-ollama.sh",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ko",
       "label": "ko()",
@@ -109570,8 +109847,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 910,
+      "community_name": "test-rianima-ollama.sh",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_ok",
       "label": "ok()",
@@ -109585,8 +109862,8 @@
     },
     {
       "_origin": "ast",
-      "community": 147,
-      "community_name": "agente.sh script",
+      "community": 910,
+      "community_name": "test-rianima-ollama.sh",
       "file_type": "code",
       "id": "tests_test_rianima_ollama_sh__entry",
       "label": "test-rianima-ollama.sh script",

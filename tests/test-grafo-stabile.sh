@@ -13,7 +13,9 @@ HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SPINA="$HERE/tools/graphify-spina.sh"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 PASS=0; FAIL=0
+# ok increments the success counter and prints a formatted OK message
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
+# ko increments the failure counter and prints a formatted FAIL message
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 bash -n "$SPINA" && ok "sintassi spina" || { ko "sintassi spina"; exit 1; }
