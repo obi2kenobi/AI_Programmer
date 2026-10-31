@@ -7,7 +7,9 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0; FAIL=0
+# ok <msg>: incrementa il contatore dei successi e stampa il messaggio
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
+# ko <msg>: incrementa il contatore dei fallimenti e stampa il messaggio
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
 mkdir -p "$T/sat/tools"; cp "$HERE"/tools/*-hook.sh "$T/sat/tools/"
