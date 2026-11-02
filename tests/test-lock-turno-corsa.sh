@@ -6,7 +6,9 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 PASS=0; FAIL=0
+# ok: increments the success counter and prints a formatted OK message
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
+# ko: increments the failure counter and prints a formatted FAIL message
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 T=$(mktemp -d); trap 'rm -rf "$T"' EXIT
 

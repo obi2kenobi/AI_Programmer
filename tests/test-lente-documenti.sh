@@ -18,6 +18,7 @@ command -v vale >/dev/null 2>&1 || { echo "SKIP: vale non installato — banco d
 
 SB=$(mktemp -d /tmp/test-lente-doc.XXXXXX)
 trap 'rm -rf "$SB"' EXIT
+# Creates a temporary git repository for testing purposes
 nuova_repo() { git -C "$1" init -q -b main; git -C "$1" -c user.name=t -c user.email=t@t commit -qm init --allow-empty; }
 
 # ── fixture ─────────────────────────────────────────────────────────────────────
