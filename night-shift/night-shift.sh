@@ -645,7 +645,7 @@ PYIDX
           PASS_T=0; FAIL_T=0
           # (V1#1, V1#5, V4#6, 2026-09-24): i banchi del RAMO con i fix ($DIR), ciascuno sotto tetto — lib.sh gate_banchi
           GATE_OUT=$(gate_banchi "$DIR" 300)
-          read -r _ PASS_T FAIL_T <<<"$(tail -1 <<<"$GATE_OUT")"
+          read -r _ PASS_T FAIL_T _ <<<"$(tail -1 <<<"$GATE_OUT")"   # il «_» finale inghiotte «(di cui ambra-flaky: N)»: FAIL_T resta un intero
           while IFS= read -r l; do
             case "$l" in
               amber\ *) log "REPO $REPO: gate-amber in ${l#amber } — passato al retry (transitorio)" ;;
