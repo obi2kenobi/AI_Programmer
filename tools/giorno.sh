@@ -329,7 +329,8 @@ controllo)
     fi
   }
   gh auth status >/dev/null 2>&1; ctrl "gh autenticato" 1 $? "gh auth login"
-  [ -f "$HERE/tools/lente-sicurezza.sh" ]; ctrl "lente sicurezza (hub)" 1 $? "l'hub e' qui: $HERE"
+  if [ -f "$HERE/tools/lente-sicurezza.sh" ]; then LENTE_C=0; else LENTE_C=1; fi
+  ctrl "lente sicurezza (hub)" 1 "$LENTE_C" "l'hub e' qui: $HERE"
   HOOKS_P=$(git -C "$DIR" config --get core.hooksPath 2>/dev/null)
   if [ -n "$HOOKS_P" ] && [ -f "$DIR/$HOOKS_P/pre-push" ]; then ctrl "pre-push nel repo" 1 0 "$HOOKS_P/pre-push"; else ctrl "pre-push nel repo" 1 1 "git config core.hooksPath .githooks + copia-hook/installa-citati"; fi
   command -v vale >/dev/null 2>&1; ctrl "vale (lente documenti)" 0 $? "brew install vale"
