@@ -29,7 +29,10 @@ REGEX_REALE=$(grep -oE '\^night/\|\^claude/\|\^glm/' "$HERE/night-shift/morning-
 grep -q "in pensione" "$HERE/CLAUDE.md" && grep -q "revisore.sh" "$HERE/CLAUDE.md" \
   && ok "CLAUDE.md §4 dice chi giudica oggi (censore) e che il morning-gate e' in pensione" \
   || ko "CLAUDE.md §4 descrive ancora il morning-gate come il giudice delle PR"
-grep -q 'case "$BRANCH" in night/\*)' "$HERE/night-shift/revisore.sh" && grep -qx '  caccia:\*) ;;' "$HERE/night-shift/revisore.sh" \
+# (2026-11-10): dal 2026-10-09 il case va a capo (il ramo giorno/* a parere su richiesta): si cerca night/* SUBITO
+# dopo il case, non sulla stessa riga — la riga unica faceva rosso un filtro rimasto identico.
+DOPO_CASE=$(grep -A1 'case "$BRANCH" in' "$HERE/night-shift/revisore.sh")   # cattura prima (E-002: niente pipe in grep -q)
+grep -qx '  night/\*) ;;' <<<"$DOPO_CASE" && grep -qx '  caccia:\*) ;;' "$HERE/night-shift/revisore.sh" \
   && grep -q '`night/`.*`caccia:`\|`caccia:`.*`night/`' "$HERE/CLAUDE.md" \
   && ok "il filtro del censore citato in CLAUDE.md (night/ + caccia:) e' quello del codice" \
   || ko "filtro del censore e CLAUDE.md divergono"

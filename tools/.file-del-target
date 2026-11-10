@@ -68,3 +68,5 @@ Parsers.gs
 claude_desktop_config.json
 # (14/10) il file che il giro Q2 della notte lasciava nel container (SAL.md, D39): vive nel container, non nel repo
 /claude-satellite.md
+# riordino-legno: Code.gs citato con :riga dal SAL del 2026-10-14 (vive lì, non qui)
+Code.gs

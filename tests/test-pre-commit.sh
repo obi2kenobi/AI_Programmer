@@ -34,6 +34,7 @@ git -C "$SB" -c user.email=prova@invalid -c user.name=prova commit -q --allow-em
 mkdir -p "$SB/tools" "$SB/docs/campo"
 cp "$HOOK" "$HERE/tools/cita-verifica.sh" "$HERE/tools/privacy-check.sh" "$SB/tools/"
 : > "$SB/docs/campo/2026-08-28-repo-l-fix.md"; : > "$SB/tools/indici_crisi.py"
+mkdir -p "$SB/night-shift"; : > "$SB/night-shift/agente.sh"   # (2026-11-10): la radice night-shift/ dei nomi nudi
 gancio() { ( cd "$SB" && HOME="$SB" bash tools/pre-commit.sh "$@" ); }
 trap 'rm -rf "$SB"' EXIT
 
@@ -62,10 +63,10 @@ cleanup
 # nomi NUDI col convenzione: un .md staged che cita un report di campo per
 # basename NON è pendente (docs/campo/ è una delle radici di risoluzione)
 PROBE2="$SB/docs/_probe_menu.md"
-printf 'vedi `2026-08-28-repo-l-fix.md` e `indici_crisi.py`\n' > "$PROBE2"
+printf 'vedi `2026-08-28-repo-l-fix.md`, `indici_crisi.py` e `agente.sh`\n' > "$PROBE2"
 git -C "$SB" add "$PROBE2"
 OUT=$(gancio); RC=$?
-[ "$RC" -eq 0 ] && ok "nomi nudi risolti contro tools/ e docs/campo/ (convenzioni)"   || { echo "$OUT" | grep pendenti | head -1 | sed 's/^/    /'; ko "convenzione dei nomi nudi non risolta"; }
+[ "$RC" -eq 0 ] && ok "nomi nudi risolti contro tools/, docs/campo/ e night-shift/ (convenzioni)"   || { echo "$OUT" | grep pendenti | head -1 | sed 's/^/    /'; ko "convenzione dei nomi nudi non risolta"; }
 git -C "$SB" restore --staged "$PROBE2" >/dev/null 2>&1; rm -f "$PROBE2"
 
 # pipeline seguita da && (controllo 5, report REPO-W 5/9: la regola-prosa violata
