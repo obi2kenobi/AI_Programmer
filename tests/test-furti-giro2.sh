@@ -19,7 +19,8 @@ printf 'IBAN IT60X0542811101000000123456\n' | bash "$HERE/tools/destinazioni-pul
   && ko "IBAN passa" || ok "IBAN: destinazione SPORCA"
 
 # ── DeployProof: le sentinelle del diff ──────────────────────────────────────
-R=$TMP/rep; git -C "$R" init 2>/dev/null || { mkdir -p "$R" && git -C "$R" init -q; }
+# (2026-11-10): -b main — con init.defaultBranch diverso (master, in cloud) la base «main» non esisteva: 0/0
+R=$TMP/rep; mkdir -p "$R" && git -C "$R" init -q -b main
 cd "$R"
 printf 'def uguale(a, b):\n    return a == b\n' > calc.py
 printf 'from calc import uguale\nassert uguale(2, 2) and not uguale(2, 3)\nprint("verde")\n' > banco.py
@@ -33,6 +34,9 @@ grep -q "sentinelle: 1/1" <<<"$OUT" && ok "mutazione della riga cambiata: il ban
 printf 'print("altro")\n' > banco.py
 OUT=$(bash "$HERE/tools/mutazione-diff.sh" "$R" main "python3 banco.py" 2>/dev/null | tail -1)
 grep -q "sentinelle: 0/1" <<<"$OUT" && ok "senza banco che morde: 0/1 dichiarato (diff non presidiato)" || ko "atteso 0/1: $OUT"
+# base inesistente: non e' «0/0» (nessun sito), e' un perimetro non giudicabile
+bash "$HERE/tools/mutazione-diff.sh" "$R" nonesiste "python3 banco.py" >"$TMP/md.out" 2>&1; RC=$?
+[ "$RC" -eq 2 ] && grep -q "base inesistente" "$TMP/md.out" && ok "base inesistente: rc 2, detto (non sentinelle 0/0)" || ko "base inesistente: rc $RC $(cat "$TMP/md.out")"
 
 # ── RiskKernel: il ciclo A-B ────────────────────────────────────────────────
 ciclo_ab() {  # le ultime 4 firme (A|B|A|B) → 0 se loop

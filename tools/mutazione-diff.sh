@@ -16,6 +16,9 @@
 set -uo pipefail
 DIR="${1:?dir}" BASE="${2:?base}" VERIFICA="${3:?comando}"
 cd "$DIR" || exit 2
+# (2026-11-10): una base che non esiste dava «sentinelle: 0/0», rc 0 — lo stesso verdetto di un diff senza `==`.
+# Assente non e' zero: si dice e si esce 2.
+git rev-parse --verify -q "$BASE^{commit}" >/dev/null || { echo "mutazione-diff: base inesistente: $BASE — perimetro non giudicabile" >&2; exit 2; }
 
 SITI=$(git diff "$BASE"...HEAD --unified=0 -- '*.py' 2>/dev/null | grep -aE '^\+' | grep -avE '^\+\+\+' | grep -a ' == ' | head -3 || true)
 N=0; K=0
