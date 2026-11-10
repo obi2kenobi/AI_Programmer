@@ -10,6 +10,8 @@
 # Uso: auditoria-conoscenza.sh [giorni-soglia=90]
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=../night-shift/lib.sh
+. "$HERE/night-shift/lib.sh"   # mtime() portabile (2026-11-10: su Linux `stat -f` stampa lo stato del FS e l'aritmetica moriva)
 SOGLIA="${1:-90}"
 ORA=$(date +%s)
 VECCHIE=0; TOTALI=0
@@ -18,7 +20,7 @@ for f in "$HERE"/patterns/*.md; do
   [ -f "$f" ] || continue
   case "$(basename "$f")" in README.md) continue ;; esac
   TOTALI=$((TOTALI+1))
-  M=$(stat -f %m "$f" 2>/dev/null || stat -c %Y "$f" 2>/dev/null || echo "$ORA")
+  M=$(mtime "$f") || M=$ORA
   GIORNI=$(( (ORA - M) / 86400 ))
   if [ "$GIORNI" -ge "$SOGLIA" ]; then
     VECCHIE=$((VECCHIE+1))

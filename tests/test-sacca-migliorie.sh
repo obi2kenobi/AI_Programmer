@@ -122,7 +122,7 @@ if bash "$SM" flotta repo-C <<<"$DA" >/dev/null 2>&1; then ok "flotta: rc 0 alla
 # o il registro di oggi sporca la prova)
 SHA_DC=$(printf '%s\n' "$DC" | bash "$SM" fingerprint)
 mkdir -p "$SACCA_WORK/.sacca-template"
-printf '%s repo-X\n%s repo-Y\n' "$SHA_DC" "$SHA_DC" > "$SACCA_WORK/.sacca-template/$(date -v-1d +%Y%m%d)"
+printf '%s repo-X\n%s repo-Y\n' "$SHA_DC" "$SHA_DC" > "$SACCA_WORK/.sacca-template/$(date -v-1d +%Y%m%d 2>/dev/null || date -d "-1 day" +%Y%m%d)"
 if bash "$SM" flotta repo-Z <<<"$DC" >/dev/null 2>&1; then ko "flotta: il registro di IERI non conta (finestra di un giorno)"; else ok "flotta: il registro di IERI non conta (finestra di un giorno)"; fi
 
 # ── cablaggio nel turno: la consegna della caccia passa dalla sacca ──────────────
