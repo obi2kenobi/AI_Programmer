@@ -3,6 +3,8 @@
 # (la misura che mancava: 4 finestre sono il singhiozzo o l'inizio del peggio?)
 set -uo pipefail
 L="${1:-$HOME/night-shift.log}"
+# (2026-11-10): un log assente dava «0 finestre mute» per tre notti — assente non e' zero
+[ -f "$L" ] || { echo "sonda-mute: log assente: $L — niente da contare (non «0 mute»)" >&2; exit 2; }
 echo "SONDA MUTE (ultime 3 notti)"
 for i in 1 2 3; do
   D=$(date -v-${i}d +%F 2>/dev/null || date -d "-$i day" +%F)
