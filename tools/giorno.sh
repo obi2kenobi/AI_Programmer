@@ -114,17 +114,17 @@ consegna)
   # (legge dal Round 2 della Vetrina, 2026-10-09): il banco del repo decide —
   # una consegna col .night-verify ROSSO non si spinge. La notte lo chiama
   # «banco CHIUSO»; qui e' soft: commit sciolto, lavoro in albero, si rilancia.
-  # (Limite dichiarato: i .night-verify con righe @N girano incomplete a mano —
-  # vale per loro la regola del registro, notte 2026-10-09.)
+  # (2026-11-10): riga per riga con verifica_righe (lib.sh), budget @N compresi — il file intero valeva
+  # quanto la sua ULTIMA riga, e le righe @N morivano di «command not found» senza dirlo.
   if [ -f "$DIR/.night-verify" ]; then
-    VERIFICA=$(cd "$DIR" && bash .night-verify 2>&1); VER_RC=$?
+    VERIFICA=$(verifica_righe "$DIR" 2>&1); VER_RC=$?
     if [ "$VER_RC" -ne 0 ]; then
       git reset -q --soft HEAD~1
       log "⛔ .night-verify ROSSO — consegna fermata (soft, il lavoro resta): $(tail -2 <<<"$VERIFICA" | tr '\n' ' ' | cut -c1-140)"
       riga_giorno "$DIR" "consegna FERMATA dal banco (rosso)"
       exit 1
     fi
-    log "banco verde: $(tail -1 <<<"$VERIFICA" | cut -c1-100)"
+    log "banco verde: ogni riga di .night-verify (verifica_righe)"
   fi
   # (D1 del debito 2026-09-26, scelta 2 di Luca 2026-10-14): la batteria avversaria prova HEAD e rifiuta un albero
   # sporco, quindi un cambio che rompe un attacco si vedeva solo alla consegna dopo. Qui l'albero e' pulito (il
@@ -422,7 +422,7 @@ rivedi)
   DIR="$2"
   KO=0
   if [ -f "$DIR/.night-verify" ]; then
-    (cd "$DIR" && bash .night-verify >/dev/null 2>&1) && log "banco: VERDE" || { log "banco: ROSSO"; KO=1; }
+    RIGHE_R=$(verifica_righe "$DIR" 2>&1) && log "banco: VERDE" || { log "banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }
   else
     log "banco: assente (dichiarato)"
   fi

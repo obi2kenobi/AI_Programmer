@@ -118,6 +118,30 @@ esegui_verifica() {
   return "$rc"
 }
 
+# verifica_righe <dir>: il .night-verify di <dir> giudicato COME LO LEGGE IL TURNO (2026-11-10, revisione dell'hub).
+# Cinque cancelli (fondi, deploy-gas, giorno consegna/rivedi, banco-selettivo) eseguivano `bash .night-verify` intero:
+# il rc di un file bash e' quello dell'ULTIMA riga (lo dice l'intestazione di ogni .night-verify), e una riga rossa in
+# mezzo passava per «banco VERDE» — anche nell'auto-merge. Qui: riga per riga, budget 120 s o `@N ` in testa, oppure il
+# file intero se dichiara «# FORMATO: script». Stampa «ROSSA: <riga>» per ogni riga rossa; rc 0 solo se nessuna lo e'.
+verifica_righe() {
+  local dir="$1" hdr riga sec rc=0
+  [ -f "$dir/.night-verify" ] || { echo "verifica_righe: $dir/.night-verify assente" >&2; return 2; }
+  hdr=$(head -10 "$dir/.night-verify")   # (E-002): cattura-prima, mai il tubo a grep -q
+  if grep -q '^# FORMATO: script' <<<"$hdr"; then
+    (cd "$dir" && ai_timeout 1800 bash .night-verify >/dev/null 2>&1 </dev/null) || { echo "ROSSA: .night-verify (formato script)"; return 1; }
+    return 0
+  fi
+  while IFS= read -r riga; do
+    case "$riga" in ''|'#'*) continue ;; esac
+    sec=120
+    case "$riga" in @*' '*) sec="${riga%% *}"; sec="${sec#@}"; riga="${riga#* }" ;; esac
+    if ! (cd "$dir" && ai_timeout "$sec" bash -c "$riga" >/dev/null 2>&1 </dev/null); then
+      rc=1; echo "ROSSA: $(printf '%s' "$riga" | cut -c1-110)"
+    fi
+  done < "$dir/.night-verify"
+  return "$rc"
+}
+
 # GH_NON_SO: il segno di «gh non ha risposto» per le guardie anti-doppione del turno (2026-09-25, ottavo ventaglio, O2 R3).
 # Era `$(gh … || true)`: l'errore era vuoto, cioe' «non c'e'», e la scrittura (issue, PR, commento) si rifaceva.
 GH_NON_SO="__gh_non_ha_risposto__"

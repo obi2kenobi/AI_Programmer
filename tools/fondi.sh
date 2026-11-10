@@ -10,6 +10,8 @@
 # Uso: fondi.sh <dir-repo> <n-pr>
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=../night-shift/lib.sh
+. "$HERE/night-shift/lib.sh"   # verifica_righe: il banco riga per riga, come lo legge il turno
 DIR="${1:?uso: fondi.sh <dir> <n-pr>}"; N="${2:?}"
 REPO=$(cd "$DIR" && git remote get-url origin 2>/dev/null | sed -e 's#.*github.com[:/]##' -e 's#\.git$##')
 [ -n "$REPO" ] || { echo "⛔ origin non GitHub" >&2; exit 2; }
@@ -26,7 +28,8 @@ fi
 VER=$(gh pr view "$N" --repo "$REPO" --json comments --jq '.comments[].body' 2>/dev/null | grep -oE 'LENTE SICUREZZA: [A-Z]+' | tail -1)
 case "$VER" in *"PULITA") echo "2. lente: $VER";; *) echo "2. lente: ${VER:-ASSENTE} — serve il verdetto PULITA nel commento"; KO=1;; esac
 if [ -f "$DIR/.night-verify" ]; then
-  (cd "$DIR" && bash .night-verify >/dev/null 2>&1) && echo "3. banco: VERDE" || { echo "3. banco: ROSSO"; KO=1; }
+  # (2026-11-10): era `bash .night-verify` intero — il rc dell'ULTIMA riga: un rosso in mezzo fondeva lo stesso
+  RIGHE_R=$(verifica_righe "$DIR" 2>&1) && echo "3. banco: VERDE (riga per riga)" || { echo "3. banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }
 else
   echo "3. banco: assente (dichiarato)"
 fi

@@ -23,24 +23,9 @@ if ! git worktree add --detach "$WT" "origin/$BASE" >/dev/null 2>&1; then
 fi
 trap 'git worktree remove --force "$WT" 2>/dev/null' EXIT
 echo "verify-standalone: giro su origin/$BASE in $WT (la copia del turno non si tocca)"
-# (2026-10-01): il _timeout.sh vive nell'HUB (i satelliti non ce l'hanno) — senza di
-# lui ogni riga moriva di «command not found» e il verify diceva rosso fantasma
-source "$HOME/night-shift-work/AI_Programmer/llm/_timeout.sh" 2>/dev/null || true
-command -v ai_timeout >/dev/null 2>&1 || { echo "verify-standalone: ai_timeout assente (llm/_timeout.sh dell'hub) — righe @N senza tetto" >&2; }
+# (2026-10-01): ai_timeout vive nell'HUB (i satelliti non ce l'hanno); dal 2026-11-10 arriva con lib.sh, caricata
+# accanto a questo script — non piu' dal percorso fisso ~/night-shift-work/AI_Programmer
 cd "$WT" || exit 2
-HDR_NV=$(head -10 .night-verify 2>/dev/null)   # (E-002): cattura-prima, mai il tubo a grep -q
-if grep -q '^# FORMATO: script' <<<"$HDR_NV"; then
-  ai_timeout 1800 bash .night-verify; RC=$?
-else
-  RC=0
-  while IFS= read -r riga; do
-    case "$riga" in ''|'#'*) continue ;; esac
-    sec=120
-    case "$riga" in @*' '*) sec="${riga%% *}"; sec="${sec#@}"; riga="${riga#* }" ;; esac
-    if ai_timeout "$sec" bash -c "$riga" >/dev/null 2>&1; then :; else
-      RC=1; echo "ROSSA: $(printf '%s' "$riga" | cut -c1-110)"
-    fi
-  done < .night-verify
-fi
+verifica_righe .; RC=$?   # (2026-11-10): la stessa logica, ora una sola in lib.sh (la usano anche fondi, deploy-gas, giorno)
 [ $RC -eq 0 ] && echo "verify-standalone: VERDE" || echo "verify-standalone: ROSSO"
 exit $RC

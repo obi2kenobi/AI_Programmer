@@ -784,6 +784,25 @@ grep -q 'BRANCH="night/auto-$(date +%Y%m%d-%H%M)"' "$NS_T" && ! grep -q 'BRANCH=
   && grep -q "grep -E '^(night|notte)/auto-' | head -10" "$NS_T" \
   && ok "D35: i rami dell'auto-miglioramento nascono night/auto-*, e la scopa riconosce anche i vecchi notte/auto-*" || ko "D35: i rami nascono ancora notte/auto-*"
 
+# --- (2026-11-10): verifica_righe — il .night-verify si giudica riga per riga, non dal rc dell'ultima riga.
+# I cancelli (fondi, deploy-gas, giorno) eseguivano il file intero: un rosso in mezzo seguito da un verde era «VERDE».
+if command -v verifica_righe >/dev/null; then
+  VR=$(mktemp -d)
+  printf 'false\ntrue\n' > "$VR/.night-verify"
+  OUTV=$(verifica_righe "$VR"); RCV=$?
+  [ "$RCV" -eq 1 ] && grep -qx "ROSSA: false" <<<"$OUTV" && ok "verifica_righe: un rosso in mezzo resta rosso (bash intero diceva verde)" \
+    || ko "verifica_righe: rosso in mezzo (rc $RCV): $OUTV"
+  (cd "$VR" && bash .night-verify >/dev/null 2>&1) && ok "verifica_righe: (controprova) il file intero dava rc 0 — il difetto che cura" || ko "controprova: il file intero non e' piu' verde"
+  printf '# commento\n\ntrue\n@5 echo ok\n' > "$VR/.night-verify"
+  verifica_righe "$VR" >/dev/null && ok "verifica_righe: commenti, righe vuote e @N rispettati, tutto verde" || ko "verifica_righe: verde negato"
+  printf '# FORMATO: script\nX=1\n[ "$X" = 1 ]\n' > "$VR/.night-verify"
+  verifica_righe "$VR" >/dev/null && ok "verifica_righe: «# FORMATO: script» gira intero (le variabili passano fra righe)" || ko "verifica_righe: formato script spezzato"
+  rm -f "$VR/.night-verify"; verifica_righe "$VR" 2>/dev/null; [ $? -eq 2 ] && ok "verifica_righe: .night-verify assente = rc 2 (non verde)" || ko "verifica_righe: assente non dichiarato"
+  rm -rf "$VR"
+else
+  ko "verifica_righe non definita in lib.sh"
+fi
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

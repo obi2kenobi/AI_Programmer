@@ -72,6 +72,13 @@ FAKE_CLASP_PULL=vuoto FAKE_CLASP_PUSH_RC=0 deploy
 grep -q "BACKUP vuoto" <<<"$OUT" && [ "$RC" -eq 1 ] && ! grep -q "clasp push" "$CLASP_LOG" && ok "E. backup vuoto: stop, push mai chiamato" || ko "E. backup vuoto (rc=$RC) $OUT"
 FAKE_CLASP_PULL=errore FAKE_CLASP_PUSH_RC=0 deploy
 grep -q "BACKUP non riuscito" <<<"$OUT" && [ "$RC" -eq 1 ] && ! grep -q "clasp push" "$CLASP_LOG" && ok "E. backup fallito: stop, push mai chiamato" || ko "E. backup fallito (rc=$RC) $OUT"
+# G. (2026-11-10) un rosso IN MEZZO al .night-verify ferma il push (era il rc dell'ultima riga: «banco VERDE»)
+printf 'false\ntrue\n' > .night-verify
+FAKE_CLASP_PULL=file FAKE_CLASP_PUSH_RC=0 deploy
+grep -q "1. banco: ROSSO — ROSSA: false" <<<"$OUT" && ! grep -q "clasp push" "$CLASP_LOG" && ok "G. rosso in mezzo al banco: ROSSO detto, push mai chiamato" \
+  || ko "G. rosso in mezzo al banco ignorato (rc=$RC): $(grep -E 'banco|DEPLOY' <<<"$OUT" | tr '\n' ' ')"
+rm -f .night-verify
+
 # F. (2026-11-10) la lente con RILIEVI ferma il push: un segreto nel diff verso origin/main
 printf 'TOKEN = "%s"\n' "ghp_$(printf 'A%.0s' $(seq 1 24))" > Segreto.js
 git add Segreto.js; git -c user.name=t -c user.email=t@t commit -qm segreto
