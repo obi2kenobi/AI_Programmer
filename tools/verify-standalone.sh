@@ -10,7 +10,12 @@ set -uo pipefail
 DIR="${1:?uso: verify-standalone.sh <dir-repo>}"
 cd "$DIR" || exit 2
 git fetch -q origin 2>/dev/null || true
-BASE=$(git rev-parse --abbrev-ref origin/HEAD 2>/dev/null | sed 's|origin/||'); BASE="${BASE:-main}"
+# (2026-11-10): era `git rev-parse --abbrev-ref origin/HEAD | sed …` — senza origin/HEAD stampa «origin/HEAD» (non
+# fallisce): BASE diventava «HEAD», il fallback su main non scattava e il worktree non nasceva. Ora default_branch()
+# di lib.sh (origin/HEAD, poi ls-remote, poi gh, poi main dichiarato).
+# shellcheck source=../night-shift/lib.sh
+. "$(cd "$(dirname "$0")/.." && pwd)/night-shift/lib.sh"
+BASE=$(default_branch .)
 WT=$(mktemp -d "${TMPDIR:-/tmp}/verify-standalone.XXXXXX")
 rmdir "$WT" 2>/dev/null
 if ! git worktree add --detach "$WT" "origin/$BASE" >/dev/null 2>&1; then
