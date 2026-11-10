@@ -41,7 +41,10 @@ fi
 printf '[gas-target %s] push verso %s (%s)\n' "$(date '+%F %T')" "$TARGET" "$(git log --format=%h -1 2>/dev/null || echo no-git)" >> "$REG.log"
 echo "TARGET: $TARGET (approvato per questa cartella)"
 if [ -f .night-verify ]; then (bash .night-verify >/dev/null 2>&1) && echo "1. banco: VERDE" || { echo "1. banco: ROSSO"; KO=1; }; else echo "1. banco: assente (dichiarato)"; fi
-LEN=$(bash "$HERE/tools/lente-sicurezza.sh" "$PWD" origin/$(cd "$PWD" && git remote get-url origin >/dev/null 2>&1 && echo main || echo main) 2>/dev/null; true)
+# (2026-11-10): era `LEN=$(bash lente… ; true)` e poi `LEN_RC=$?` — il $? era quello del `true`: la lente
+# risultava SEMPRE «PULITA» e il push partiva anche con RILIEVI (1) o DEGRADATA (2). Ora il rc e' quello della lente.
+# (La base era `origin/$(… && echo main || echo main)`: main in ogni caso, scritta per quello che e'.)
+LEN=$(bash "$HERE/tools/lente-sicurezza.sh" "$PWD" origin/main 2>/dev/null)
 LEN_RC=$?
 [ "$LEN_RC" -eq 0 ] && echo "2. lente: PULITA" || { echo "2. lente: rc=$LEN_RC — solo PULITA si spedisce"; KO=1; }
 # (difetto trovato facendo il deploy VERO del Riordino 15/10): il backup va
