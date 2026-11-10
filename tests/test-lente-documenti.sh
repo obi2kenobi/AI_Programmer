@@ -17,10 +17,10 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 bash -n "$LD" && bash -n "$AN" && ok "sintassi (lente + annota)" || { ko "sintassi"; exit 1; }
-command -v vale >/dev/null 2>&1 || { echo "SKIP: vale non installato — banco dichiarato saltato"; exit 0; }
-
 SB=$(mktemp -d /tmp/test-lente-doc.XXXXXX)
 trap 'rm -rf "$SB"' EXIT
+# (2026-11-10): senza Vale era «SKIP» e la suite lo contava rosso (verde senza verdetto): ora un vale finto
+VALE_FINTO_DIR="$SB/vale-finto"; . "$HERE/tests/vale-finto.sh"
 nuova_repo() { git -C "$1" init -q -b main; git -C "$1" -c user.name=t -c user.email=t@t commit -qm init --allow-empty; }
 
 # ── fixture ─────────────────────────────────────────────────────────────────────

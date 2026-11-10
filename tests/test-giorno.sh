@@ -24,21 +24,7 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SB=$(mktemp -d /tmp/test-giorno.XXXXXX)
 trap 'rm -rf "$SB"' EXIT
-# (2026-11-10): senza Vale (sessioni cloud) la lente documenti esce 0 «SALTATA» e quattro attese erano rosse
-# per l'ambiente, non per il codice. Se Vale manca, uno FINTO con la sola regola di casa (ASCII,
-# tools/lente-documenti.vale.ini) nel formato line: percorso:riga:colonna:controllo:messaggio. Dove Vale c'e', vince il vero.
-if ! command -v vale >/dev/null 2>&1; then
-  mkdir -p "$SB/vale-finto"
-  cat > "$SB/vale-finto/vale" <<'VALE'
-#!/bin/bash
-f="${*: -1}"
-python3 -c 'import sys
-for n, r in enumerate(open(sys.argv[1], encoding="utf-8", errors="replace"), 1):
-    if any(ord(c) > 127 for c in r): print(f"{sys.argv[1]}:{n}:1:casa.AsciiSolo:carattere non ASCII")' "$f"
-VALE
-  chmod +x "$SB/vale-finto/vale"; export PATH="$SB/vale-finto:$PATH"
-  echo "INFO vale assente: il banco usa un vale FINTO (solo la regola ASCII della casa)"
-fi
+VALE_FINTO_DIR="$SB/vale-finto"; . "$HERE/tests/vale-finto.sh"   # Vale vero se c'e', finto se manca
 # (2026-11-10): il percorso del registro si INCIDE nello stub — "$SB" fra apici singoli arrivava vuoto (SB non e'
 # esportata): lo stub scriveva in /reg, e «osserva --lenti» era rosso sempre (o sporcava / se root)
 WSTUB="$SB/wstub"; printf '#!/bin/bash\necho "$*" >> "%s/reg"\nexit 0\n' "$SB" > "$WSTUB"; chmod +x "$WSTUB"
