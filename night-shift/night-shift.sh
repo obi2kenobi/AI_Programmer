@@ -65,7 +65,9 @@ allinea_hub "$HERE" 2>&1 | while IFS= read -r l; do log "self-pull: $l"; done
 log "$(ambiente_turno)"
 # (21/10): le PR pendenti di fondi-notte si RIPROVANO qui — a inizio ciclo
 # la quarantena del censore e' scaduta per tutte quelle create al ciclo prima
-PEND="$HOME/.night-shift-work/.fondi-pendenti"
+# (2026-11-10, E-061 ancora vivo qui): era $HOME/.night-shift-work (col punto) — cartella che nessuno crea:
+# la scrittura falliva e il ritento non partiva mai. Il WORK vero e' ~/night-shift-work.
+PEND="$HOME/night-shift-work/.fondi-pendenti"
 if [ -s "$PEND" ]; then
   while IFS=' ' read -r P_DIR P_N; do
     [ -n "$P_DIR" ] && [ -n "$P_N" ] || continue
@@ -958,7 +960,7 @@ Intento dichiarato dall'autore: $INTENTO_PR"
                   # (21/10): non provare SUBITO (la quarantena del censore boccia
                   # una PR di 10 secondi sempre) — MEMORIZZA la PR e ritenta al
                   # ciclo dopo, quando la quarantena e' scaduta
-                  echo "$DIR $N_NOTTE" >> "$HOME/.night-shift-work/.fondi-pendenti"
+                  echo "$DIR $N_NOTTE" >> "$PEND"
                   log "REPO $REPO: fondi-notte: PR #$N_NOTTE memorizzata — ritento al ciclo dopo (quarantena)"
                 fi
               fi
