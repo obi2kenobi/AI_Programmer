@@ -91,8 +91,14 @@ consegna)
   case "$BR" in
     giorno/*) ;;
     # (edge dichiarato, dal banco del flusso reale): due consegne nello STESSO
-    # secondo generano lo stesso nome ramo — la seconda va a monte sul push
-    *) BR="giorno/$(date +%Y%m%d-%H%M%S)"; git checkout -b "$BR" -q ;;
+    # secondo generano lo stesso nome ramo — la seconda andava a monte sul push
+    # (non-fast-forward). Curato 2026-11-10: se il nome c'e' gia' (qui o su origin) si aggiunge -2, -3...
+    *) BR="giorno/$(date +%Y%m%d-%H%M%S)"; BASE_BR="$BR"; N_BR=1
+       while git rev-parse -q --verify "refs/heads/$BR" >/dev/null || git ls-remote -q --exit-code --heads origin "$BR" >/dev/null 2>&1; do
+         N_BR=$((N_BR+1)); BR="$BASE_BR-$N_BR"
+       done
+       [ "$N_BR" -gt 1 ] && log "ramo $BASE_BR gia' esistente: uso $BR"
+       git checkout -b "$BR" -q ;;
   esac
   GD_CONSEGNA=$(git -C "$DIR" rev-parse --absolute-git-dir 2>/dev/null)
   if [ "$TUTTO" -eq 1 ]; then

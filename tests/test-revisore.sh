@@ -8,7 +8,10 @@
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 REV="$HERE/night-shift/revisore.sh"
-export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+# (2026-11-10): il locale UTF-8 si SCEGLIE fra gli installati, come tools/pre-commit.sh (C.utf8 su un Linux
+# minimo): en_US.UTF-8 fisso, dove non c'e', faceva «setlocale: cannot change locale» in ogni uscita catturata
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG="${UTF_LOCALE:-en_US.UTF-8}" LC_ALL="${UTF_LOCALE:-en_US.UTF-8}"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }

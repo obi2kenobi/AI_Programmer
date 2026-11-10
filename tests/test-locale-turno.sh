@@ -22,7 +22,10 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 # il locale ostile del turno, ricreato da zero: niente altro dell'ambiente conta
-TURNO="env -i PATH=/usr/bin:/bin LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8"
+# (2026-11-10): il locale UTF-8 si SCEGLIE fra gli installati, come tools/pre-commit.sh (C.utf8 su un Linux
+# minimo): en_US.UTF-8 fisso, dove non c'e', faceva «setlocale: cannot change locale» in ogni uscita catturata
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+TURNO="env -i PATH=/usr/bin:/bin LANG="${UTF_LOCALE:-en_US.UTF-8}" LC_ALL="${UTF_LOCALE:-en_US.UTF-8}""
 ORDINE_C='!Code.gs !Index.html !appsscript.json '
 righe='!Code.gs
 !Index.html
