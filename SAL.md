@@ -157,6 +157,8 @@
 - [2026-10-14 (2) — D1 chiusa: la batteria avversaria gira fra il commit e il push (scelta 2 di Luca)](#2026-10-14-2--d1-chiusa-la-batteria-avversaria-gira-fra-il-commit-e-il-push-scelta-2-di-luca)
 - [2026-10-14 (3) — passo 3/7 di banco-passaggio non e' piu' muto su albero sporco](#2026-10-14-3--passo-37-di-banco-passaggio-non-e-piu-muto-su-albero-sporco)
 - [2026-10-14 (4) — `gas_qualita.py`: i due falsi negativi misurati su riordino-legno (proposta dei report di campo del 2026-09-30 e 2026-10-01)](#2026-10-14-4--gas_qualitapy-i-due-falsi-negativi-misurati-su-riordino-legno-proposta-dei-report-di-campo-del-2026-09-30-e-2026-10-01)
+- [2026-11-10 — il Brain: l'indice ad albero con le fonti verificate (richiesta di Luca, dal video sulle LLM Wiki)](#2026-11-10--il-brain-lindice-ad-albero-con-le-fonti-verificate-richiesta-di-luca-dal-video-sulle-llm-wiki)
+- [2026-11-10 (2) — revisione dell'hub: la suite da «si ferma al 27° banco» a 223/224, e due cancelli che mentivano](#2026-11-10-2--revisione-dellhub-la-suite-da-si-ferma-al-27-banco-a-223224-e-due-cancelli-che-mentivano)
 
 ## Stato
 
@@ -5543,3 +5545,42 @@ Su richiesta di Luca («affronta R1 e R2 adesso»), prima del lavoro nuovo.
 - **Banco** `tests/test-gas-qualita-segreti-manifest.sh` (21 attese: sette positivi e nove negativi, manifest a quattro valori), scritto prima, 7 rosse prima della cura; i due rami sabotati tornano rossi (6 e 1 rosse). `test-gas-qualita-rilevatore.sh` 13/13 e `test-gas-qualita-secret-pattern.sh` 2/2 invariati. **Sul repo vero**: `Code.gs:8` è segnalato, il valore non compare nell'output (0 occorrenze).
 - **Limite dichiarato:** l'entropia è un'euristica (un segreto fatto di sole parole passerebbe; un identificativo casuale assegnato a un nome con `token` verrebbe segnalato: per questo la famiglia porta la sua domanda discriminante).
 - **La terza proposta, fatta nello stesso passo:** una nuova famiglia «funzioni pubbliche che restituiscono un token o usano un segreto»: una funzione globale senza `_` finale (esclusi `doGet`, `doPost`, `onXxx`) che restituisce un token (`return token`, `return getAccessToken_()`, `….access_token`) o che legge/usa un segreto (`client_secret`, `getProperty('…SECRET|PASSWORD|PRIVATE_KEY|API_KEY…')`) è un sito `file:riga nome() [motivo]`. Banco `tests/test-gas-qualita-funzioni-pubbliche.sh` (11 attese: quattro positivi, sei negativi tra cui una funzione che USA un token per restituire dati), scritto prima (11 rosse), poi verde. Sui due progetti di riordino-legno oggi: 0 e 0 (nessun falso positivo; `getAccessToken` è privato dalla correzione del 2026-10-03). Limite: il controllo vede solo funzioni top-level con la forma `function nome(` e un `return` che nomina il token.
+
+### 2026-11-10 — il Brain: l'indice ad albero con le fonti verificate (richiesta di Luca, dal video sulle LLM Wiki)
+
+- **La richiesta.** «Leggi questo video e implementa il sistema in AI_Programmer» — il «Brain» del video: le LLM Wiki
+  a grafo (Karpathy) e i loro cinque problemi (indicizzazione sequenziale, fonti non verificate, uso personale, tetto
+  di documenti, niente permessi), con le cinque risposte.
+- **Fatto.** `tools/brain.py` + `tools/brain_*.py` (otto moduli, una responsabilita' ciascuno), documentato in
+  `docs/brain.md` con la tabella problema → risposta → funzione. Indice ad albero (documento → cartella → mappa)
+  parallelo e incrementale per impronta; database SQLite in WAL (piu' persone insieme); ricerca a discesa con
+  riferimenti al volo; verifica delle fonti a due giudici (deterministico severo sui numeri e sulle negazioni, poi
+  modello); `[generale]` per le frasi senza fonte; ruoli e regole con `nega` che vince. Funziona senza modello
+  (concetto-vaccino: deterministico prima di intelligente); con `BRAIN_LLM`/`BRAIN_GIUDICE` usa il contratto di `llm/`.
+- **Misurato eseguendo.** Hub intero: 498 documenti in 1,3 s, secondo giro 0 rifatti; domande 0,05–0,09 s.
+  `tests/test-brain.sh` 29/29, scritto col codice (non prima: dichiarato); cinque sabotaggi, tutti rossi (4, 3, 2, 1, 1).
+  Il primo sabotaggio della sintesi parziale era VERDE: il buco nel banco l'ha trovato il sabotaggio, attesa aggiunta.
+- **Domande aperte (in docs/brain.md):** la soglia 0.6 non e' calibrata (servono frasi etichettate); `--utente` non e'
+  autenticato (i permessi filtrano, non proteggono da chi si dichiara un altro); la ricerca e' lessicale.
+
+### 2026-11-10 (2) — revisione dell'hub: la suite da «si ferma al 27° banco» a 223/224, e due cancelli che mentivano
+
+- **La richiesta.** Luca: «ricontrolla il repo AI_Programmer per migliorarlo e renderlo più efficace e funzionale».
+- **Come.** Un revisore in sola lettura (13 rilievi con comando e uscita), poi la suite in `--tutti` e un worktree
+  pulito di origin/main per separare i rossi preesistenti dai miei. Ogni cura con l'attesa vista ROSSA prima.
+- **Il fatto grosso.** Su `main` la suite si fermava al banco 27/221: i 194 dopo non giravano. Ora 223/224; l'unico
+  rosso è `test-grafo-stabile` (graphify assente in cloud, dichiarato in DEBITI).
+- **Due cancelli che mentivano (i più gravi).** `deploy-gas.sh` leggeva il rc di un `true`: lente sicurezza SEMPRE
+  «PULITA». `fondi.sh` (auto-merge) e `deploy-gas.sh` giudicavano il banco dal rc dell'ULTIMA riga di
+  `.night-verify`: con un rosso in mezzo, fusione e push partivano. Ora `verifica_righe()` in lib.sh; prove:
+  `tests/test-fondi.sh` (primo banco dell'auto-merge) e le attese F e G di `test-deploy-gas-esito`, rosse col vecchio.
+- **Altri difetti veri curati:** fondi-notte scriveva in `~/.night-shift-work` (E-061 ancora vivo: ritento mai
+  partito); `verify-standalone` senza origin/HEAD non partiva; `mutazione-diff` diceva «0/0» su base inesistente;
+  `auditoria-conoscenza` moriva su Linux (`stat -f`); `giorno.sh` due consegne nello stesso secondo = stesso ramo;
+  `lente-scudo` saltava il controllo 5 in silenzio; uno stub di banco scriveva in `/reg` (la radice del disco).
+- **Test rimasti indietro, aggiornati:** censore (case a capo), gate_banchi (TOTALE con ambra), canarini (3 fissi),
+  vale e clasp FINTI dove mancano (`tests/vale-finto.sh`), locale scelto fra gli installati (18 banchi).
+- **Smentito eseguendo:** il SAL del 2026-10-14 attribuiva i 6 rossi di test-giorno al locale: erano ramo
+  duplicato, stub in `/reg` e Vale assente.
+- **Mio errore, a registro:** E-062 (un commento a metà riga spense il ramo di riserva di un hook; preso dalla suite).
+- **Aperto (DEBITI, sezione 2026-11-10):** sei domande di dominio, sette rinvii risolvibili.

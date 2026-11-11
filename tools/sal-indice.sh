@@ -24,7 +24,7 @@ if not sal.strip():
     sys.exit(1)
 
 def slug(v):
-    """L'ancora che GitHub da' al titolo. (2026-09-24, quinto ventaglio, R1 R4): era
+    r"""L'ancora che GitHub da' al titolo. (2026-09-24, quinto ventaglio, R1 R4): era
     `re.sub(r'[^\w-]+', '-', …)` — ogni gruppo di non-parola diventava UN trattino, GitHub invece toglie la
     punteggiatura e fa di OGNI spazio un trattino, senza fondere: «(8) — l'hub: n.2» e' «8--lhub-n2». Sul
     diario vero 146 link su 146 non combaciavano. Le lettere accentate restano (\w e' Unicode: revisione

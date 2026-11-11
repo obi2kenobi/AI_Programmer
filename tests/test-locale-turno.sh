@@ -22,7 +22,10 @@ ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 # il locale ostile del turno, ricreato da zero: niente altro dell'ambiente conta
-TURNO="env -i PATH=/usr/bin:/bin LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8"
+# (2026-11-10): il locale UTF-8 si SCEGLIE fra gli installati, come tools/pre-commit.sh (C.utf8 su un Linux
+# minimo): en_US.UTF-8 fisso, dove non c'e', faceva «setlocale: cannot change locale» in ogni uscita catturata
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+TURNO="env -i PATH=/usr/bin:/bin LANG="${UTF_LOCALE:-en_US.UTF-8}" LC_ALL="${UTF_LOCALE:-en_US.UTF-8}""
 ORDINE_C='!Code.gs !Index.html !appsscript.json '
 righe='!Code.gs
 !Index.html
@@ -57,8 +60,13 @@ else
 fi
 
 # 4) la trappola del sort e' ancora li' (BSD sort di macOS; come sopra: verde = mondo cambiato)
+# (2026-11-10): solo dove il locale del turno esiste — senza en_US.UTF-8 (Linux minimo) sort ricade in C e
+# il «mondo cambiato» era un falso allarme d'ambiente, come la trappola bash 3.2 qui sopra
+LOCALI=$(locale -a 2>/dev/null)
 got=$($TURNO sh -c "printf '%s\n' '$righe' | sort | tr '\n' ' '" 2>/dev/null)
-if [ "$got" = "$ORDINE_C" ]; then
+if ! grep -qiE '^en_US\.utf-?8$' <<<"$LOCALI"; then
+  echo "--   locale en_US.UTF-8 assente: la trappola del sort e' del Mac, qui non si prova"
+elif [ "$got" = "$ORDINE_C" ]; then
   ko "sort senza LC_ALL=C dà l'ordine di byte anche nel locale del turno: BSD sort e' cambiato — aggiornare E-059"
 else
   ok "sort senza LC_ALL=C riordina nel locale del turno («${got}»): la trappola e' viva"
@@ -80,6 +88,12 @@ if bash "$HERE/tools/claude-md-cervello.sh" "$TMP" >/dev/null 2>&1; then
 else
   ko "claude-md-cervello.sh non gira (il banco del typo non ha potuto giudicare)"
 fi
+
+# 6) (2026-11-10) lo stesso typo nel CODICE del turno: le PR di fondi-notte si memorizzavano in
+#    ~/.night-shift-work/.fondi-pendenti, cartella mai creata — il ritento al ciclo dopo non partiva mai
+NEL_CODICE=$(grep -n '"\$HOME/\.night-shift-work' "$HERE"/night-shift/*.sh "$HERE"/tools/*.sh 2>/dev/null || true)
+[ -z "$NEL_CODICE" ] && ok "nessun \$HOME/.night-shift-work (col punto) nel codice del turno e dei tool" \
+  || ko "percorso col punto (E-061) nel codice: $NEL_CODICE"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

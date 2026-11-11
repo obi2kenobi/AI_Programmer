@@ -52,7 +52,8 @@ COMMAND="$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)"
 SESSIONE="$(jq -r '.session_id // "senza-sessione"' <<<"$INPUT" 2>/dev/null)"
 sal_conteggio() { # il numero di edit di QUESTA sessione in questa cartella (0 se di un'altra sessione)
   local sid n
-  read -r sid n < "/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")" 2>/dev/null || { echo 0; return; }
+  # (2026-11-10): 2> PRIMA del < — la redirezione fallita parla prima di essere zittita (stderr al primo Edit)
+  read -r sid n 2>/dev/null < "/tmp/ai-programmer-sal-counter.$(sal_hash "$PWD")" || { echo 0; return; }
   [ "$sid" = "$SESSIONE" ] && [ "${n:-x}" -ge 0 ] 2>/dev/null && echo "$n" || echo 0
 }
 sal_promemoria() {

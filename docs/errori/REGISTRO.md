@@ -1320,3 +1320,16 @@
 - Guardia: tests/test-locale-turno.sh (check 5-6): il generatore deve citare `~/night-shift-work` e nessun percorso `~/.night-shift...` col punto.
 - Verifica guardia: vista rossa sul generatore col punto (2 FAIL sui controlli del puntatore), verde dopo la correzione (i due controlli OK; resta il FAIL del check 4, non toccato: il BSD sort di macOS non c'e' su Linux).
 - Aggiramento: le CLAUDE.md gia' installate portano il percorso col punto finché non vengono corrette (CatsFinance: corretto a mano con sed, commit c1fb620 sul suo repo); rigenerarle in massa resta decisione del proprietario (come E-060, D15). La riga di E-060 «percorso che esiste» e' superata da questa voce.
+
+## E-062 Un commento a meta' riga ha spento il ramo di riserva di `pattern-reminder-hook.sh`
+
+- Data / sessione: 2026-11-10, sessione cloud «Brain + revisione dell'hub» (ramo claude/admiring-allen-na6rxr).
+- Famiglia: R3 (la correzione meccanica verificata sul solo banco del file toccato, non su quelli che lo usano).
+- Chi l'ha trovato: la suite completa (`tools/suite.sh . --tutti`), confrontata con un worktree pulito di origin/main: solo questo rosso era nuovo.
+- Sintomo: tests/test-hook-sal-promemoria.sh «sessione nuova: il conteggio non riparte» (6 OK, 1 FAIL; su main 7/0).
+- Causa prossima: sostituendo `read … < file 2>/dev/null ||` con `read … 2>/dev/null < file ||` ho incollato il commento dopo `||`: il `{ echo 0; return; }` che seguiva sulla stessa riga e' diventato commento, e la funzione non tornava piu' 0 a sessione nuova.
+- Causa del ragionamento: ho verificato il gesto con tests/test-pattern-reminder-hook.sh (verde) e una mini-prova di `read`, non coi banchi degli hook che leggono quel conteggio.
+- Perché non ci ha fermati: shellcheck e `bash -n` non vedono un ramo diventato commento; il pre-commit non esegue i banchi.
+- Guardia: tests/test-hook-sal-promemoria.sh (il caso «sessione nuova»).
+- Verifica guardia: rossa col commento in linea (6 OK, 1 FAIL), verde col commento sulla riga sopra (7 OK, 0 FAIL).
+- Aggiramento: nessuno — corretto nello stesso ramo prima della PR.

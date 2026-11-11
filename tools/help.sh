@@ -38,6 +38,8 @@ IL DIARIO E LA MEMORIA
   sal-indice.sh               rigenera l'indice del SAL (dopo ogni voce nuova)
   sal-archivia.sh [giorni]    ruota le voci vecchie all'archivio (append-only)
   campo-triage.sh             quanti report dal campo non sono ancora processati
+  python3 brain.py indicizza <dir>    il Brain: indice ad albero dei documenti (parallelo, incrementale)
+  python3 brain.py chiedi "<domanda>"  risposta con le fonti VERIFICATE riga per riga (docs/brain.md)
 
 LA PROPAGAZIONE (portare il metodo altrove)
   sync-repo.sh <owner/repo> --standard    PR col sistema intero nel repo target

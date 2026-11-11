@@ -17,7 +17,7 @@ Ogni NO dice QUALE condizione e' mancata. Esempio VERO del 14/10:
   (PR di 4 minuti: protezione legittima; esenzione GIORNO_SUBITO=1 in coda)
 
 Come provarlo da soli: apri una PR piccola, fai girare `giorno.sh lente`,
-poi `fondi.sh` — e LEGGI le quattro righe: sono la guida vera.
+poi `tools/fondi.sh` — e LEGGI le quattro righe: sono la guida vera.
 
 ## DEPLOY-GAS — clasp finalmente permesso, col protocollo
 `tools/deploy-gas.sh <dir-progetto-clasp>` spinge su Apps Script SOLO con:

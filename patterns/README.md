@@ -17,6 +17,7 @@ documenti (DEBITI: da valutare se vale i token).
 | [banco-browser-per-webapp-gas](banco-browser-per-webapp-gas.md) | progetto onboardato: dashboard.html/dashboard_scripts.html | 2026-08-21 |
 | [banco-progetto-locale](banco-progetto-locale.md) | REPO-N | 2026-08-28 |
 | [banco-sintetico-per-calcoli-critici](banco-sintetico-per-calcoli-critici.md) | REPO-G: tools/test-sp.js · gas/Sp.js:366 | 2026-08-21 |
+| [bsd-sed-niente-interrogativo](bsd-sed-niente-interrogativo.md) | tools/giorno.sh (slug GitHub) | 2026-10-10 |
 | [chiave-stabile-etichetta-libera](chiave-stabile-etichetta-libera.md) | REPO-I: 2 punti ciclo Fase 3 | 2026-08-28 |
 | [citazione-non-presidio](citazione-non-presidio.md) | REPO-A: tools/pattern-strumenti.js:senzaControllo | 2026-08-07 |
 | [clasp-push-non-e-produzione](clasp-push-non-e-produzione.md) | REPO-K 3ª sessione (deployment versionato) | 2026-09-01 |

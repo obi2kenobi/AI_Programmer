@@ -521,6 +521,8 @@ SENTINELLE=""
 SENTINELLE="n/d (repo senza verifiche dichiarate)"
 if [ -x "$HERE/../tools/mutazione-diff.sh" ] && [ -f "$DIR/.night-verify" ]; then
   SENTINELLE=$(ai_timeout 120 bash "$HERE/../tools/mutazione-diff.sh" "$DIR" "$DB" "bash .night-verify" 2>/dev/null | tail -1 || true)
+  # (2026-11-10): mutazione-diff esce 2 senza stdout se la base non esiste — vuoto non e' un verdetto
+  [ -z "$SENTINELLE" ] && SENTINELLE="n/d (sentinelle non giudicabili: base $DB assente o timeout)"
   case "$SENTINELLE" in
     sentinelle:*0/*) log "sentinelle del diff: $SENTINELLE — NESSUNA verifica morde le righe cambiate" ;;
     sentinelle:*) log "sentinelle del diff: $SENTINELLE" ;;

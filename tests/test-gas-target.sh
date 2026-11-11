@@ -8,6 +8,11 @@ export HOME="$PWD"
 PASS=0; FAIL=0
 ok(){ PASS=$((PASS+1)); echo "OK   $1"; }; ko(){ FAIL=$((FAIL+1)); echo "FAIL $1"; }
 bash -n "$DG" && ok "sintassi" || exit 1
+# (2026-11-10): un clasp FINTO in testa al PATH — senza clasp (sessioni cloud) il cancello usciva «clasp assente»
+# prima di arrivare ai target (6 rossi); col clasp vero sul Mac il banco poteva toccare Apps Script. Il finto
+# registra le chiamate e non tocca niente.
+FINTI=$(mktemp -d); printf '#!/bin/bash\necho "clasp-finto $*" >> "%s/chiamate"\nexit 0\n' "$FINTI" > "$FINTI/clasp"; chmod +x "$FINTI/clasp"
+export PATH="$FINTI:$PATH"
 T=$(mktemp -d); cd "$T"; git init -q -b main; git -c user.name=t -c user.email=t@t commit -qm i --allow-empty
 VIVO="1yCrYK_vYWrE5FAKE"; mkdir -p "$HOME"; echo "$VIVO" > "$HOME/.gas-vivi"
 printf '{"scriptId":"%s"}' "$VIVO" > .clasp.json

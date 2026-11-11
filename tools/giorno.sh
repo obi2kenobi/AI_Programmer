@@ -91,8 +91,14 @@ consegna)
   case "$BR" in
     giorno/*) ;;
     # (edge dichiarato, dal banco del flusso reale): due consegne nello STESSO
-    # secondo generano lo stesso nome ramo — la seconda va a monte sul push
-    *) BR="giorno/$(date +%Y%m%d-%H%M%S)"; git checkout -b "$BR" -q ;;
+    # secondo generano lo stesso nome ramo — la seconda andava a monte sul push
+    # (non-fast-forward). Curato 2026-11-10: se il nome c'e' gia' (qui o su origin) si aggiunge -2, -3...
+    *) BR="giorno/$(date +%Y%m%d-%H%M%S)"; BASE_BR="$BR"; N_BR=1
+       while git rev-parse -q --verify "refs/heads/$BR" >/dev/null || git ls-remote -q --exit-code --heads origin "$BR" >/dev/null 2>&1; do
+         N_BR=$((N_BR+1)); BR="$BASE_BR-$N_BR"
+       done
+       [ "$N_BR" -gt 1 ] && log "ramo $BASE_BR gia' esistente: uso $BR"
+       git checkout -b "$BR" -q ;;
   esac
   GD_CONSEGNA=$(git -C "$DIR" rev-parse --absolute-git-dir 2>/dev/null)
   if [ "$TUTTO" -eq 1 ]; then
@@ -108,17 +114,17 @@ consegna)
   # (legge dal Round 2 della Vetrina, 2026-10-09): il banco del repo decide —
   # una consegna col .night-verify ROSSO non si spinge. La notte lo chiama
   # «banco CHIUSO»; qui e' soft: commit sciolto, lavoro in albero, si rilancia.
-  # (Limite dichiarato: i .night-verify con righe @N girano incomplete a mano —
-  # vale per loro la regola del registro, notte 2026-10-09.)
+  # (2026-11-10): riga per riga con verifica_righe (lib.sh), budget @N compresi — il file intero valeva
+  # quanto la sua ULTIMA riga, e le righe @N morivano di «command not found» senza dirlo.
   if [ -f "$DIR/.night-verify" ]; then
-    VERIFICA=$(cd "$DIR" && bash .night-verify 2>&1); VER_RC=$?
+    VERIFICA=$(verifica_righe "$DIR" 2>&1); VER_RC=$?
     if [ "$VER_RC" -ne 0 ]; then
       git reset -q --soft HEAD~1
       log "⛔ .night-verify ROSSO — consegna fermata (soft, il lavoro resta): $(tail -2 <<<"$VERIFICA" | tr '\n' ' ' | cut -c1-140)"
       riga_giorno "$DIR" "consegna FERMATA dal banco (rosso)"
       exit 1
     fi
-    log "banco verde: $(tail -1 <<<"$VERIFICA" | cut -c1-100)"
+    log "banco verde: ogni riga di .night-verify (verifica_righe)"
   fi
   # (D1 del debito 2026-09-26, scelta 2 di Luca 2026-10-14): la batteria avversaria prova HEAD e rifiuta un albero
   # sporco, quindi un cambio che rompe un attacco si vedeva solo alla consegna dopo. Qui l'albero e' pulito (il
@@ -323,7 +329,8 @@ controllo)
     fi
   }
   gh auth status >/dev/null 2>&1; ctrl "gh autenticato" 1 $? "gh auth login"
-  [ -f "$HERE/tools/lente-sicurezza.sh" ]; ctrl "lente sicurezza (hub)" 1 $? "l'hub e' qui: $HERE"
+  if [ -f "$HERE/tools/lente-sicurezza.sh" ]; then LENTE_C=0; else LENTE_C=1; fi
+  ctrl "lente sicurezza (hub)" 1 "$LENTE_C" "l'hub e' qui: $HERE"
   HOOKS_P=$(git -C "$DIR" config --get core.hooksPath 2>/dev/null)
   if [ -n "$HOOKS_P" ] && [ -f "$DIR/$HOOKS_P/pre-push" ]; then ctrl "pre-push nel repo" 1 0 "$HOOKS_P/pre-push"; else ctrl "pre-push nel repo" 1 1 "git config core.hooksPath .githooks + copia-hook/installa-citati"; fi
   command -v vale >/dev/null 2>&1; ctrl "vale (lente documenti)" 0 $? "brew install vale"
@@ -415,7 +422,7 @@ rivedi)
   DIR="$2"
   KO=0
   if [ -f "$DIR/.night-verify" ]; then
-    (cd "$DIR" && bash .night-verify >/dev/null 2>&1) && log "banco: VERDE" || { log "banco: ROSSO"; KO=1; }
+    RIGHE_R=$(verifica_righe "$DIR" 2>&1) && log "banco: VERDE" || { log "banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }
   else
     log "banco: assente (dichiarato)"
   fi

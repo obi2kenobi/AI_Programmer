@@ -334,15 +334,15 @@ if command -v gate_banchi >/dev/null; then
   printf '#!/bin/bash\necho "0 OK, 0 FAIL"\n' > "$GB/tests/test-muto.sh"
   T0=$(date +%s); OUTG=$(gate_banchi "$GB" 2); DURG=$(( $(date +%s) - T0 ))
   [ -f "$GB/girato-qui" ] && ok "gate_banchi: esegue i banchi della copia che giudica (non quella viva)" || ko "gate_banchi: i banchi di <dir> non sono girati"
-  grep -qx "TOTALE 1 3" <<<"$OUTG" && ok "gate_banchi: 1 verde, 3 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
+  grep -qE "^TOTALE 1 3( |$)" <<<"$OUTG" && ok "gate_banchi: 1 verde, 3 rossi contati" || ko "gate_banchi: conteggio «$(tail -1 <<<"$OUTG")»"
   grep -c "rosso test-muto.sh — verde senza verdetto" <<<"$OUTG" >/dev/null && ok "gate_banchi: il banco muto (rc 0, «0 OK») e' rosso, come nella suite" \
     || ko "gate_banchi: il banco muto passa il gate: $(grep muto <<<"$OUTG")"
   # (settimo ventaglio, V1 R6): zero banchi era «TOTALE 0 0», letto verde dal fixer; la suite con zero banchi e' rossa.
   # E quattro banchi ermetici (test-ask-*, ai-timeout, stdin-timeout: nessun cervello, misurato) restavano fuori.
   GB0=$(mktemp -d); mkdir -p "$GB0/tests"
-  grep -qx "TOTALE 0 1" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi senza banchi e' rosso (come la suite)" || ko "V1 R6: gate_banchi senza banchi: $(gate_banchi "$GB0" 2 | tail -1)"
+  grep -qE "^TOTALE 0 1( |$)" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi senza banchi e' rosso (come la suite)" || ko "V1 R6: gate_banchi senza banchi: $(gate_banchi "$GB0" 2 | tail -1)"
   printf '#!/bin/bash\necho "1 OK, 0 FAIL"\n' > "$GB0/tests/test-ask-ermetico.sh"
-  grep -qx "TOTALE 1 0" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi giudica anche test-ask-* (ermetici, come nella suite)" || ko "V1 R6: test-ask-* ancora escluso: $(gate_banchi "$GB0" 2 | tail -1)"
+  grep -qE "^TOTALE 1 0( |$)" <<<"$(gate_banchi "$GB0" 2)" && ok "V1 R6: gate_banchi giudica anche test-ask-* (ermetici, come nella suite)" || ko "V1 R6: test-ask-* ancora escluso: $(gate_banchi "$GB0" 2 | tail -1)"
   rm -rf "$GB0"
   grep -c "rosso test-appeso.sh — SFORO" <<<"$OUTG" >/dev/null && [ "$DURG" -lt 25 ] && ok "gate_banchi: il banco appeso muore al tetto e si dice sforo (${DURG}s)" || ko "gate_banchi: banco appeso non fermato (${DURG}s): $OUTG"
   grep -c "rosso test-rosso.sh — FAIL rotto davvero" <<<"$OUTG" >/dev/null && ok "gate_banchi: il rosso dice la sua riga FAIL" || ko "gate_banchi: rosso senza motivo: $OUTG"
@@ -783,6 +783,25 @@ NS_T="$HERE/night-shift/night-shift.sh"
 grep -q 'BRANCH="night/auto-$(date +%Y%m%d-%H%M)"' "$NS_T" && ! grep -q 'BRANCH="notte/auto-' "$NS_T" \
   && grep -q "grep -E '^(night|notte)/auto-' | head -10" "$NS_T" \
   && ok "D35: i rami dell'auto-miglioramento nascono night/auto-*, e la scopa riconosce anche i vecchi notte/auto-*" || ko "D35: i rami nascono ancora notte/auto-*"
+
+# --- (2026-11-10): verifica_righe — il .night-verify si giudica riga per riga, non dal rc dell'ultima riga.
+# I cancelli (fondi, deploy-gas, giorno) eseguivano il file intero: un rosso in mezzo seguito da un verde era «VERDE».
+if command -v verifica_righe >/dev/null; then
+  VR=$(mktemp -d)
+  printf 'false\ntrue\n' > "$VR/.night-verify"
+  OUTV=$(verifica_righe "$VR"); RCV=$?
+  [ "$RCV" -eq 1 ] && grep -qx "ROSSA: false" <<<"$OUTV" && ok "verifica_righe: un rosso in mezzo resta rosso (bash intero diceva verde)" \
+    || ko "verifica_righe: rosso in mezzo (rc $RCV): $OUTV"
+  (cd "$VR" && bash .night-verify >/dev/null 2>&1) && ok "verifica_righe: (controprova) il file intero dava rc 0 — il difetto che cura" || ko "controprova: il file intero non e' piu' verde"
+  printf '# commento\n\ntrue\n@5 echo ok\n' > "$VR/.night-verify"
+  verifica_righe "$VR" >/dev/null && ok "verifica_righe: commenti, righe vuote e @N rispettati, tutto verde" || ko "verifica_righe: verde negato"
+  printf '# FORMATO: script\nX=1\n[ "$X" = 1 ]\n' > "$VR/.night-verify"
+  verifica_righe "$VR" >/dev/null && ok "verifica_righe: «# FORMATO: script» gira intero (le variabili passano fra righe)" || ko "verifica_righe: formato script spezzato"
+  rm -f "$VR/.night-verify"; verifica_righe "$VR" 2>/dev/null; [ $? -eq 2 ] && ok "verifica_righe: .night-verify assente = rc 2 (non verde)" || ko "verifica_righe: assente non dichiarato"
+  rm -rf "$VR"
+else
+  ko "verifica_righe non definita in lib.sh"
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

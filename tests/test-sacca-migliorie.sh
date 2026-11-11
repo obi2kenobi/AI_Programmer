@@ -7,7 +7,10 @@ set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SM="$HERE/tools/sacca-migliorie.sh"
 NS="$HERE/night-shift/night-shift.sh"
-export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+# (2026-11-10): il locale UTF-8 si SCEGLIE fra gli installati, come tools/pre-commit.sh (C.utf8 su un Linux
+# minimo): en_US.UTF-8 fisso, dove non c'e', faceva «setlocale: cannot change locale» in ogni uscita catturata
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG="${UTF_LOCALE:-en_US.UTF-8}" LC_ALL="${UTF_LOCALE:-en_US.UTF-8}"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
@@ -122,7 +125,7 @@ if bash "$SM" flotta repo-C <<<"$DA" >/dev/null 2>&1; then ok "flotta: rc 0 alla
 # o il registro di oggi sporca la prova)
 SHA_DC=$(printf '%s\n' "$DC" | bash "$SM" fingerprint)
 mkdir -p "$SACCA_WORK/.sacca-template"
-printf '%s repo-X\n%s repo-Y\n' "$SHA_DC" "$SHA_DC" > "$SACCA_WORK/.sacca-template/$(date -v-1d +%Y%m%d)"
+printf '%s repo-X\n%s repo-Y\n' "$SHA_DC" "$SHA_DC" > "$SACCA_WORK/.sacca-template/$(date -v-1d +%Y%m%d 2>/dev/null || date -d "-1 day" +%Y%m%d)"
 if bash "$SM" flotta repo-Z <<<"$DC" >/dev/null 2>&1; then ko "flotta: il registro di IERI non conta (finestra di un giorno)"; else ok "flotta: il registro di IERI non conta (finestra di un giorno)"; fi
 
 # ── cablaggio nel turno: la consegna della caccia passa dalla sacca ──────────────

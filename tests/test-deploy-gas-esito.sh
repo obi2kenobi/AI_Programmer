@@ -40,6 +40,9 @@ chmod +x "$T/bin/clasp"; export PATH="$T/bin:$PATH"
 # progetto finto con target gia' approvato (il cancello dei target resta in piedi: non lo aggira nessuno)
 P="$T/proj"; mkdir -p "$P"; cd "$P" || exit 1
 git init -q -b main; git -c user.name=t -c user.email=t@t commit -qm i --allow-empty
+# (2026-11-10): un'origine vera — senza origin/main la lente esce DEGRADATA (2) e il deploy si ferma; prima
+# il banco passava perche' deploy-gas leggeva il rc del `true` (lente sempre «PULITA»)
+git clone -q --bare . "$T/origin.git"; git remote add origin "$T/origin.git"; git fetch -q origin
 printf '{"scriptId":"1BANCOFINTO_FAKE"}' > .clasp.json
 echo "1BANCOFINTO_FAKE" > .git/gas-targets
 deploy(){ rm -rf .git/deploy-backup; : > "$CLASP_LOG"; OUT=$(bash "$DG" "$P" 2>&1); RC=$?; }
@@ -69,7 +72,22 @@ FAKE_CLASP_PULL=vuoto FAKE_CLASP_PUSH_RC=0 deploy
 grep -q "BACKUP vuoto" <<<"$OUT" && [ "$RC" -eq 1 ] && ! grep -q "clasp push" "$CLASP_LOG" && ok "E. backup vuoto: stop, push mai chiamato" || ko "E. backup vuoto (rc=$RC) $OUT"
 FAKE_CLASP_PULL=errore FAKE_CLASP_PUSH_RC=0 deploy
 grep -q "BACKUP non riuscito" <<<"$OUT" && [ "$RC" -eq 1 ] && ! grep -q "clasp push" "$CLASP_LOG" && ok "E. backup fallito: stop, push mai chiamato" || ko "E. backup fallito (rc=$RC) $OUT"
+# G. (2026-11-10) un rosso IN MEZZO al .night-verify ferma il push (era il rc dell'ultima riga: «banco VERDE»)
+printf 'false\ntrue\n' > .night-verify
+FAKE_CLASP_PULL=file FAKE_CLASP_PUSH_RC=0 deploy
+grep -q "1. banco: ROSSO — ROSSA: false" <<<"$OUT" && ! grep -q "clasp push" "$CLASP_LOG" && ok "G. rosso in mezzo al banco: ROSSO detto, push mai chiamato" \
+  || ko "G. rosso in mezzo al banco ignorato (rc=$RC): $(grep -E 'banco|DEPLOY' <<<"$OUT" | tr '\n' ' ')"
+rm -f .night-verify
+
+# F. (2026-11-10) la lente con RILIEVI ferma il push: un segreto nel diff verso origin/main
+printf 'TOKEN = "%s"\n' "ghp_$(printf 'A%.0s' $(seq 1 24))" > Segreto.js
+git add Segreto.js; git -c user.name=t -c user.email=t@t commit -qm segreto
+FAKE_CLASP_PULL=file FAKE_CLASP_PUSH_RC=0 deploy
+grep -q "2. lente: rc=1" <<<"$OUT" && ! grep -q "clasp push" "$CLASP_LOG" && ok "F. lente con RILIEVI: rc=1 detto, push mai chiamato" \
+  || ko "F. lente con rilievi ignorata (rc=$RC): $OUT"
+git reset -q --hard HEAD~1
 printf '{"scriptId":"1ALTRO_FAKE"}' > .clasp.json
+
 FAKE_CLASP_PULL=file deploy
 grep -q "TARGET SCONOSCIUTO" <<<"$OUT" && [ "$RC" -eq 1 ] && ! grep -q "clasp push" "$CLASP_LOG" && ok "E. target sconosciuto: stop, push mai chiamato" || ko "E. target (rc=$RC) $OUT"
 

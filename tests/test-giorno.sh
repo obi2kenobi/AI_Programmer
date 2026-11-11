@@ -10,7 +10,10 @@ GP="$HERE/tools/giorno.sh"
 GP_LDOC="$HERE/tools/lente-documenti.sh"
 PP="$HERE/tools/pre-push.sh"
 MD="$HERE/night-shift/morning-digest.sh"
-export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+# (2026-11-10): il locale UTF-8 si SCEGLIE fra gli installati, come tools/pre-commit.sh (C.utf8 su un Linux
+# minimo): en_US.UTF-8 fisso, dove non c'e', faceva «setlocale: cannot change locale» in ogni uscita catturata
+UTF_LOCALE=$(locale -a 2>/dev/null | grep -iE '^(en_US|C)\.(utf8|UTF-8)$' | head -1)
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH" LANG="${UTF_LOCALE:-en_US.UTF-8}" LC_ALL="${UTF_LOCALE:-en_US.UTF-8}"
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
@@ -21,10 +24,10 @@ ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
 
 SB=$(mktemp -d /tmp/test-giorno.XXXXXX)
 trap 'rm -rf "$SB"' EXIT
-WSTUB="$SB/wstub"; printf '#!/bin/bash
-echo "$*" >> "$SB/reg"
-exit 0
-' > "$WSTUB"; chmod +x "$WSTUB"
+VALE_FINTO_DIR="$SB/vale-finto"; . "$HERE/tests/vale-finto.sh"   # Vale vero se c'e', finto se manca
+# (2026-11-10): il percorso del registro si INCIDE nello stub — "$SB" fra apici singoli arrivava vuoto (SB non e'
+# esportata): lo stub scriveva in /reg, e «osserva --lenti» era rosso sempre (o sporcava / se root)
+WSTUB="$SB/wstub"; printf '#!/bin/bash\necho "$*" >> "%s/reg"\nexit 0\n' "$SB" > "$WSTUB"; chmod +x "$WSTUB"
 export GIORNO_LOG="$SB/giorno.log"
 
 # stub gh: registra le chiamate e risponde da PR creata — PRIMO in PATH, cosi' lo

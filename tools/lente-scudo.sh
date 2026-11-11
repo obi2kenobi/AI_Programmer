@@ -67,7 +67,12 @@ if [ -f profiles/notturno.conf ]; then
     else
       scudo 1 "5. PROFILO: MODELLO=$MOD dichiarato ma ASSENTE in ollama (ollama pull $MOD) — la notte resterebbe muta"
     fi
+  else
+    # (2026-11-10): senza ollama (o senza MODELLO) il controllo spariva dall'uscita — un salto mai silenzioso
+    scudo 0 "5. profilo: ${MOD:-MODELLO non dichiarato} — ollama assente, presenza del modello NON verificata (dichiarato)"
   fi
+else
+  scudo 0 "5. profilo del turno assente (profiles/notturno.conf) — dichiarato"
 fi
 
 echo ""

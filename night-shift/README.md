@@ -42,9 +42,12 @@ MATTINA (7:30):     morning-digest.sh → email: lezioni da approvare, sospesi, 
 
 ## I numeri che scelgono il modello (MacBook Air M5, 24 GB, misurati 2026-08-18)
 
-> Storia: questa tabella scelse il 27B Q4_K_M ad agosto. Il modello di turno oggi è
-> `qwen3.8-27b:iq3s` (12 GB, 3/3 in 48 s — `cervello/decisione-modello-unico.md`, 2026-09-21);
-> «operativa» qui sotto vale per allora.
+> Storia: questa tabella scelse il 27B Q4_K_M ad agosto; dal 2026-09-21 girò `qwen3.8-27b:iq3s`
+> (12 GB, 3/3 in 48 s — `cervello/decisione-modello-unico.md`). Il modello di turno OGGI è
+> `gemma4:26b-notturno` (`profiles/notturno.conf`, riga `MODELLO=`, e il default di `night-shift.sh`):
+> la decisione del cambio non è nel diario né nel cervello — domanda aperta (2026-11-10), qui non si
+> inventa. Il report `docs/campo/2026-11-03-revisione-errori-della-notte.md` ne misura il peso sul Mac
+> (~15 GB wired su 24). «Operativa» qui sotto vale per agosto.
 
 | Quant | Velocità | Esito |
 |---|---|---|
@@ -134,7 +137,7 @@ legge il riepilogo (lo usa `morning-digest`).
   dell'hub prima di partire; PR BOZZA mai su main; le proposte non applicabili finiscono come
   commento nell'issue (una per issue), non come PR.
 - `risolvi-issue.sh <dir> <issue.md>` — il risolutore senza agente: chiama Ollama in locale
-  (`qwen3.8-27b:iq3s`), il modello scrive il codice, lo script lo applica e lo verifica
+  (il modello di turno, `MODELLO` in `profiles/notturno.conf`), il modello scrive il codice, lo script lo applica e lo verifica
   (`node --check`, rollback). Exit: 0 applicato · 1 fallito · 2 uso · 3 proposta non applicabile.
 - `night-shift/morning-gate.sh` / `night-shift/morning-digest.sh` — il giudizio del mattino e il riepilogo che lo legge.
 - `night-shift/install.sh` — installazione: i comandi in ~/.local/bin (lanciatori, non symlink), LaunchAgent 23:00 + Ollama always-on. Verifica che il

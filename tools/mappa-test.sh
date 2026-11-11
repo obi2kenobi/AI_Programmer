@@ -8,12 +8,12 @@ set -uo pipefail
 DIR="${1:?uso: mappa-test.sh <dir-repo>}"
 cd "$DIR" || exit 2
 MAPPA="$(git rev-parse --absolute-git-dir 2>/dev/null || echo .git)/test-mappa"
-> "$MAPPA"
+: > "$MAPPA"
 N_MAPPATI=0; N_SALTATI=0
 for banco in tests/test-*.sh tests/banco-*.js tests/banco-*.sh; do
   [ -f "$banco" ] || continue
   # i file sorgente che il banco tocca: i require/import nei .js, i bash nei .sh
-  FILES=$(grep -oE "require\(['\"]\.\./[^'\"]+['\"]\)|source .*\.sh|\. .*\.sh|bash .*tools/[a-z-]+\.sh|bash .*lib\.sh|\.\./tools/[a-z-]+\.sh" "$banco" 2>/dev/null 2>/dev/null \
+  FILES=$(grep -oE "require\(['\"]\.\./[^'\"]+['\"]\)|source .*\.sh|\. .*\.sh|bash .*tools/[a-z-]+\.sh|bash .*lib\.sh|\.\./tools/[a-z-]+\.sh" "$banco" 2>/dev/null \
     | sed -e "s/require(['\"]//" -e "s/['\"])$//" -e "s|^source ||" -e "s|^\. ||" \
     | sort -u | head -20)
   if [ -n "$FILES" ]; then

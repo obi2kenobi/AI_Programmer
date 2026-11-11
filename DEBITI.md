@@ -305,3 +305,26 @@ scorciatoie, dichiarate:
 |---|---|---|---|
 | 2026-09-24 ✅ SALDATO (2026-09-24: `aggiungi_consegna` + `dichiara_file_nuovo` in `night-shift/lib.sh`, nei due punti dopo `night-shift/agente.sh` — caccia e cascata dell'issue; banco `tests/test-consegna-dichiarata.sh`. Gli altri due punti restano `add -A` per scelta dichiarata nel codice: fix deterministici e opencode — la domanda su opencode è nella sezione di dominio sopra) | T5#2b: i quattro punti di consegna di `night-shift/night-shift.sh` fanno `git add -A`, che prende anche un file NUOVO scritto dall'agente (ad es. un file «di passaggio» con dati letti). Proposta: `git add -u` più i soli file nuovi dichiarati dalle azioni `write` di `night-shift/agente.sh` e dal test generato di risolvi-issue | cambia la consegna in quattro punti e il contratto dell'agente; il rischio è già ridotto da stanotte (l'allowlist non legge fuori dal progetto, le forme di segreto si controllano prima del push) | un banco con un file non dichiarato che NON entra nel commit, rosso prima; poi la cura |
 
+
+## Revisione dell'hub del 2026-11-10 (sessione Brain) — domande di dominio per Luca
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-11-10 | Domanda di dominio: il modello di turno è `gemma4:26b-notturno` (`profiles/notturno.conf`), ma il cambio da `qwen3.8-27b:iq3s` non è scritto né nel SAL né nel cervello (`cervello/decisione-modello-unico.md` dice ancora qwen) | il perché lo sa solo chi l'ha deciso; qui non si inventa | una risposta di Luca → una nota decisione nel cervello |
+| 2026-11-10 | Domanda di dominio: il Brain (`docs/brain.md`) verifica le citazioni con soglia 0.6 NON calibrata | calibrarla vuole un campione di frasi etichettate vera/falsa rispetto alla fonte: chi lo prepara? | campione etichettato → misura della soglia |
+| 2026-11-10 | Domanda di dominio: il Brain filtra per ruolo ma `--utente` è dichiarato, non autenticato | per un uso personale basta; per più persone serve un servizio che autentica (server/MCP): si vuole? | decisione di Luca |
+| 2026-11-10 | Domanda di dominio: `tools/privacy-check.sh` è rosso per costruzione dove manca `repos.key` (sessioni cloud) — fail-closed voluto | un'uscita distinta «non verificabile» cambia il contratto di tutti i lettori di `.night-verify` | decisione di Luca |
+| 2026-11-10 | Domanda di dominio: sei tool mai richiamati da altri file (adatta-night-verify, banco-selettivo, censimento-contesto, raccogli-debiti, sal-episodi, sonda-mute) | servono ancora? collegarli a `help.sh` con un banco o archiviarli | decisione di Luca |
+| 2026-11-10 | Domanda di dominio: la skill gas-sviluppo dice «Sempre: references/metodo.md» (79 KB, ~20k token) mentre metodo.md stesso dice «Livello 0, il resto quando serve» | è la porta d'ingresso di ogni sviluppo GAS: cambiarla cambia cosa legge ogni agente | decisione di Luca |
+
+## Revisione dell'hub del 2026-11-10 — rinviato risolvibile
+
+| Data | Scorciatoia | Perché rimandata | Quando si salda |
+|---|---|---|---|
+| 2026-11-10 | `tools/lente-documenti.sh` esce 0 «SALTATA» se Vale manca: `giorno.sh rivedi` dice allora PRONTO su un documento non giudicato | correggerlo cambia il contratto rc di tre chiamanti in `tools/giorno.sh` (consegna, osserva, rivedi) | un passo dedicato: rc 2 «non giudicato» + i chiamanti + banco |
+| 2026-11-10 | `tools/metodo-reminder-hook.sh` emette `hookSpecificOutput` per l'evento Stop, che lo schema di Claude Code non accetta (revisore, dedotto dal cli.js installato) | va provato in una sessione vera prima di cambiare il formato | prova in sessione + `{"decision":"block",…}` col limite di un'ora |
+| 2026-11-10 | `tools/sync-repo.sh` (controllo del puntatore satellite) dichiara ALLINEATO anche il percorso col punto `~/.night-shift-work` (E-061) | il grep combacia con entrambe le forme | ancorare il grep al backtick iniziale + banco |
+| 2026-11-10 | La riga di `.night-verify` su `sal-indice.sh` è rossa con un SAL modificato e non committato (confronta col `git diff`) | serve un `--controlla` che non scrive | `sal-indice.sh --controlla` + banco |
+| 2026-11-10 | README.md e DEBITI.md dicono che la suite gira da `.night-verify` (`@540`): vive in `.night-verify-profonda` (`@1800 … --tutti`) | solo documenti, fuori dal passo | prossima cura della documentazione |
+| 2026-11-10 | `tests/test-grafo-stabile.sh` senza graphify stampa SKIP e la suite lo conta rosso (l'unico rosso in cloud, 223/224) | graphify vero non si finge | installare graphify nell'ambiente cloud, o una classe «saltato per ambiente» nella suite |
+| 2026-11-10 | `tools/banco-selettivo.sh` esegue ancora `.night-verify` intero (il difetto curato in fondi/deploy-gas/giorno) | il tool non è richiamato da nessuno (vedi domanda sopra) | se resta: `verifica_righe` di lib.sh |

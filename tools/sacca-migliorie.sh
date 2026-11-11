@@ -31,7 +31,8 @@ log() { echo "[sacca $(date '+%H:%M:%S')] $*" >&2; }
 sacca_dir() { printf '%s/.git/sacca' "$1"; }
 tot_sacca() {  # $1=dir -> "n righe" su stdout
   local I="$1/.git/sacca/indice" n r
-  n=$(grep -c . "$I" 2>/dev/null || echo 0); r=$(awk -F'|' '{a+=$2} END{print a+0}' "$I" 2>/dev/null)
+  # (2026-11-10): `grep -c … || echo 0` su file vuoto stampava «0» e poi «0» (grep -c esce 1 con zero righe)
+  n=$(grep -c . "$I" 2>/dev/null) || n=${n:-0}; r=$(awk -F'|' '{a+=$2} END{print a+0}' "$I" 2>/dev/null)
   printf '%s %s' "${n:-0}" "${r:-0}"
 }
 

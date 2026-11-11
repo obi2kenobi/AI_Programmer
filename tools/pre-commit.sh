@@ -126,7 +126,8 @@ while IFS= read -r f; do
     # (2026-09-20): un nome nudo si risolve anche nella CARTELLA del documento che lo cita
     # (docs/bc/README.md cita `CORREZIONI.md` che vive accanto a lui — l'indice BC generato
     # da bc_index.py era bloccato al primo commit che lo toccava dall'hook attivo)
-    [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e "patterns/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
+    # (2026-11-10): anche night-shift/ — il SAL cita `lib.sh`, `agente.sh` per nome nudo, e ogni commit del SAL era rosso
+    [ -e "$m" ] || [ -e "$(dirname "$f")/$m" ] || [ -e "tools/$m" ] || [ -e "tests/$m" ] || [ -e "docs/campo/$m" ] || [ -e "patterns/$m" ] || [ -e "night-shift/$m" ] || [ -e ".claude/skills/gas-sviluppo/references/$m" ] || PEND="$PEND $f: $m"
   done < <(indice "$f" | grep -oE '`[A-Za-z0-9_./-]+\.(md|sh|py)`' | tr -d '`')
 # (2026-09-24, quinto ventaglio, R1 R5): SAL-ARCHIVIO.md e' storia congelata — cita i file com'erano quando
 # fu scritto; ci entra in stage solo l'indice rigenerato da sal-indice. Qui e al controllo 6 non si guarda.
