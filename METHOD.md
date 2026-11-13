@@ -161,3 +161,117 @@ Il sistema si auto-migliora dalle proprie sessioni di codice:
     toccare production, regola [FIRMA]) — non per ogni passo del sentiero.
     REGOLA PRATICA: se alla mia domanda "procedo?" la risposta scontata
     e' "si, ovviamente" — NON CHIEDERE. Vai, e dichiaralo nel digest.
+
+## Revisioni della maratona 12-13/11/2026 (15-18 + regola aurea)
+
+### Le regole vincolanti della workspace (ora anche nell'hub)
+## Il ciclo di lavoro
+piccolo: selezione-contesto -> chiarimento -> compito singolo verificabile -> fatto
+medio:   selezione-contesto -> brainstorming -> design-doc (vincoli PRIMA delle
+         opzioni) -> commessa -> verifica
+grande:  come medio + turno notturno di revisione + censore + digest del mattino
+## Le regole vincolanti (non si negoziano)
+1. LEGGERE PRIMA: il codice esistente si legge prima di proporre; i file della
+   workspace si esplorano con priorità a MIGLIORAMENTI.md e ai report
+2. CHIEDERE INVECE DI INDovinare: se manca un dato (formula, campo, tracciato,
+   decisione), si CHIEDE. La formula non si indovina. Mai.
+3. BANCO PRIMA DELLA FINE: nulla si dichiara fatto senza prova verificabile
+   (test, diff, esecuzione). "Nessuna proposta" dichiarata conta quanto una.
+4. DIFF PRIMA DI TOCCARE: ogni modifica a file esistenti parte da un diff
+   mostrato e approvato. Non si cancella codice per "ottimizzare".
+5. ASSUNZIONI DICHIARATE: ogni assunzione si scrive esplicitamente; vietato
+   attribuire al contesto cose che il contesto non dice.
+6. NO INVENZIONI: percentuali, meccanismi e dati non verificabili non si
+   dichiarano. Se non sai, scrivi "non so" e chiedi.
+## Formato delle consegne
+- compito piccolo: codice + max 5 righe di spiegazione
+- proposta: cosa / perché / prova / cosa NON ho toccato
+- a fine turno: aggiorna MIGLIORAMENTI.md con la VERITÀ di ciò che hai fatto
+## Contesto della workspace
+- MIGLIORAMENTI.md: diario dei lavori (da leggere all'inizio del turno)
+- CHECKLIST-REVISIONE.md: regole per le revisioni codice
+- Golilla/: repo GAS in lavorazione (intoccabile senza diff approvato)
+- AUDIT di riferimento: il titolare umano fa da arbitro; tu rispetti il metodo
+## SELEZIONE-CONTESTO COL GRAFO (installato 13/11)
+La workspace ha il grafo della repo Golilla: usalo PRIMA di leggere file a caso.
+Comandi (il grafo vive in graphify-out/ della repo):
+    export PATH="$HOME/.venvs/graphify/bin:$PATH"
+    cd Golilla
+    graphify query "termine da cercare"        # dove vive una cosa nel codice
+    graphify affected "nome_funzione"          # chi la usa (impatto di un cambio)
+Regola: prima `graphify query`, poi leggi i file trovati, poi proponi.
+Il grafo è il teletrasporto (D1): sostituisce il grep alla cieca.
+Se il grafo è degradato/assente lo dichiari e cadi su grep -rn, dichiarandolo.
+## IL CENSORE, DI GIORNO
+Il censore notturno (caccia-lente, caccia-miglioria) vive nel turno
+dell'harness: NON gira in OpenClaw. Il suo equivalente diurno è questo
+contratto: diff approvato prima di toccare + banco prima della fine +
+registro in MIGLIORAMENTI.md. La notte di revisione resta il lavoro
+dell'harness stesso (night-shift), che legge gli stessi file.
+## I CANCELLI DEL GIORNO (trapianto dal turno di notte, 13/11)
+APERTURA DELLA SESSIONE — caccia-miglioria in miniatura:
+  all'inizio del turno su un repo, invece di aspettare il compito, fai UNA
+  passata di candidati: `graphify query`/lettura mirata dei punti caldi già
+  noti (MIGLIORAMENTI.md + CHECKLIST-REVISIONE.md), proponi max 3 candidati
+  col metodo (cosa/perché/prova). Il backlog del giorno nasce da qui.
+  Se disponibile lo script vero dell'harness:
+    bash ~/ai-programmer-combo/night-shift/caccia-miglioria.sh --aiuto
+  altrimenti equivalente a mano, dichiarandolo.
+CHIUSURA DELLA SESSIONE — caccia-lente + digest:
+  1. sul diff della sessione (git diff), caccia ai pattern lenti noti:
+     loop con I/O ripetuti, regex ricompilate, fetch seriali, letture
+     ripetute di PropertiesService/cache assenti — stesso canone della
+     CHECKLIST. Trovato = voce in MIGLIORAMENTI.md (domani si apre con quella)
+  2. DIGEST DI FINE SESSIONE in fondo a MIGLIORAMENTI.md, tre righe:
+     fatto / sospeso (e perché) / lezione del turno.
+     È il morning-digest in miniatura: "nessuna proposta" dichiarata conta.
+BUDGET PER RICHIESTA (watchdog del giorno): se una risposta dell'engine
+supera i 120s senza una parola, DICHIARA il problema e proponi di spezzare
+il compito — la richiesta ibernata è difetto noto, non pazienza.
+## REGOLE DEI TOOL (aggiunte dopo l'incidente apply_patch del 13/11)
+1. I diff si PROPPONGONO in chat come testo (blocco diff/codice), NON si
+   applicano: apply_patch/edit su file .gs e repo SOLO dopo OK esplicito
+   dell'umano nel turno. Il diario (MIGLIORAMENTI.md, digest) e' l'unica
+   eccezione consentita.
+2. Se usi apply_patch, la prima riga deve essere ESATTAMENTE:
+       *** Begin Patch
+   (senza asterischi finali; chiude con *** End Patch)
+3. Mai ripetere un tool fallito con argomenti IDENTICI piu' di una volta:
+   al secondo fallimento cambi strategia (es. proponi il diff in chat) o
+   dichiara il problema e chiedi.
+4. Nei comandi ai file system usa SEMPRE percorsi assoluti
+   (/Users/luca/...), mai la tilde ~.
+## LE NOTE NON SONO IL DIFF (aggiunta dopo i due rimbotti del 13/11)
+1. PROVA PRIMA DELLA DICHIARAZIONE (versione diff): prima di dichiarare
+   "rimosso/aggiunto X", la prova si QUOTA dal diff (le righe con '-').
+   Poi, dopo l'applicazione, si LANCIA la guardia:
+     bash ~/ai-programmer-combo/tools/verifica-diff.sh <file>        --assenti SIMBOLO_RIMOSSO --presenti SIMBOLO_NUOVO
+   La fine del turno si dichiara solo se la guardia è verde.
+2. ALLINEAMENTO PER COSTRUZIONE (anti-pattern degli array "paralleli"):
+   mai mappare risposte a record per indice su un sottoinsieme filtrato
+   (urls[i] ↔ batch[i] disallinea al primo scarto). Pattern obbligato:
+   items[] con {url, rec} e fetchAll(items.map(...)) → items[i].rec.
+3. CONFIG NON SI HARDCODA: se un nome header/valore vive in CONFIG.*,
+   si referenzia da lì (grep su CONFIG prima di scrivere una stringa fissa).
+## ROUTING DEI CERVELLI (che testa per che compito)
+- grep/lettura/analisi veloce → glm-5.3-flash (economico, onesto)
+- programmazione/feature/diff → coder-next (il campione)
+- decisione/architettura/revisione difficile → chiedi all'umano (sei tu il terzo cervello)
+Se hai dubbi su quale: parti dal economico, scala al campione se non basta.
+## REGOLA AUREA: VERIFICA DA SOLO PRIMA DI CHIEDERE (rev.18bis, 13/11)
+Prima di presentare qualsiasi elenco di decisioni, compiti o blocchi
+all'umano, l'agente DEVE aver gia' fatto tutto cio' che puo' fare da solo:
+- verificare con i tool (clasp pull, git status, grep)
+- chiudere le voci che risultano gia' risolte (aggiornando la coda)
+- proporre risposte quando ha il contesto per farlo
+- lasciare all'umano SOLO cio' che richiede la sua firma, credenziali
+  o decisione di dominio
+La coda DECISIONI-DOVUTE.md si presenta gia' DEPURATA: ogni voce che
+l'agente poteva verificare e non l'ha fatto e' un difetto dell'agente.
+## COSTO PER TURNO (rev.18ter)
+Nel digest di fine sessione, registra SEMPRE:
+- secondi totali di lavoro
+- token approssimativi (righe di output × 4)
+- costo stimato (se remote: token × prezzo/M; se locale: 0€)
+Nel MIGLIORAMENTI.md: "turno del <data>: Xs, ~Y token, ~Z€"
+Dopo una settimana: la pagella dei costi dice quale cervello conviene quando.
