@@ -1,3 +1,7 @@
+# CLAUDE.md — per Claude Code
+
+> **Il metodo vive in METHOD.md** — questo file contiene solo le regole specifiche per Claude Code. Le regole generali (ciclo, cancelletti, regola aurea) sono VINCOLANTI e stanno Lì. Non duplicare: riferisci.
+
 # CLAUDE.md — Standard Working Rules
 
 <!--

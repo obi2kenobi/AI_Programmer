@@ -1,3 +1,7 @@
+# AGENTS.md — per agenti generici
+
+> **Il metodo vive in METHOD.md** — questo file contiene solo le regole specifiche per agenti generici. Le regole generali (ciclo, cancelletti, regola aurea) sono VINCOLANTI e stanno Lì. Non duplicare: riferisci.
+
 # AGENTS.md — il contratto d'ingresso per agenti LLM in questo repo
 
 > Se sei un agente LLM (Claude Code, OpenCode, sessione cloud, subagent) e sei
