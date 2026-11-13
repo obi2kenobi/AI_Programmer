@@ -1,0 +1,4 @@
+COMPITO 3 — VERIFIA DATI
+
+Usa la funzione loadRecordByTracking_ del progetto per dirmi: che cosa contiene
+il campo note del tracking TEST-LDV-001? Riportami il valore esatto.

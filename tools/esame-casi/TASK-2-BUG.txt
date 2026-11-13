@@ -1,0 +1,35 @@
+COMPITO 2 — CACCIA AL BUG
+
+Questo codice registra uno "strike" per un corriere. Contiene UN bug introdotto
+apposta (il resto del codice è corretto). Trovalo, spiegalo e correggilo.
+
+REGOLE:
+- Indica il bug con precisione (riga e perché è sbagliato)
+- Proponi la correzione
+- NON segnalare problemi che non esistono: ogni falsa segnalazione conta negativo
+
+=== CODICE ===
+
+// Registra uno strike (idempotente: salta se esiste già stesso carrier+prov+riferimento).
+// Ritorna true se aggiunto, false se già presente. NON invia mail.
+function registraStrike_(carrier, provincia, data, markupPct, fonte, riferimento) {
+  const n = normCart_(carrier, provincia);
+  if (!n.carrier || !n.provincia) return false;
+  const rif = String(riferimento || '').trim();
+  const sh = getCartelliniSheet_();
+  const last = sh.getLastRow();
+  if (last > 2 && rif) {
+    const vals = sh.getRange(2, 1, last - 1, CARTELLINI_COLS.length).getValues();
+    const iC = CARTELLINI_COLS.indexOf('carrier'), iP = CARTELLINI_COLS.indexOf('provincia'),
+      iR = CARTELLINI_COLS.indexOf('riferimento');
+    for (let r = 0; r < vals.length; r++) {
+      if (String(vals[r][iC]).trim().toUpperCase() === n.carrier
+        && String(vals[r][iP]).trim().toUpperCase() === n.provincia
+        && String(vals[r][iR]).trim() === rif) return false;
+    }
+  }
+  sh.appendRow([n.carrier, n.provincia, String(data || '').substring(0, 10),
+    Math.round((Number(markupPct) || 0) * 10) / 10, String(fonte || ''), rif,
+    (Session.getActiveUser().getEmail() || 'n/d')]);
+  return true;
+}

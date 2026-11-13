@@ -1,0 +1,14 @@
+PROGRAMMAZIONE DI GIORNO — compito vero, come se fossimo in coppia alle 11 del mattino.
+Scrivi una feature COMPLETA e utilizzabile, pronta al commit, per un gestionale
+tesoreria (FastAPI + Postgres + Jinja). Nessuna askesis: codice pieno.
+
+FEATURE: "Solleciti scaduti per fornitore"
+- Endpoint GET /solleciti che restituisce, per ogni fornitore con partite
+  scadute da piu' di N giorni (parametro, default 30): fornitore, numero
+  partite scadute, totale dovuto, giorni del ritardo piu' antico
+- Pagina HTMX che aggiorna la tabella quando cambia N (select 15/30/60)
+- Funzione di servizio pura scaduti(fatture, oggi, giorni) separata dal router
+- 3 test pytest della funzione pura (caso vuoto, boundary esattamente N giorni, zona negativa)
+- Stile di casa: type hints, docstring breve in italiano, nessuna dipendenza nuova
+
+Consegna: i 3 file (router, servizio, template) + i test. Diretto, niente preamboli.

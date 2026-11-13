@@ -89,3 +89,75 @@ docs/stato-2026-08-22.md") molto probabilmente si riferiva al repo onboardato di
 quella voce (issue #12), non al hub — ma qui, nella mappa DEL HUB, era una citazione senza
 presidio. Rimossa; se un report numerico del hub servirà davvero, va scritto con dati veri
 al momento, non promesso qui in anticipo. -->
+
+## Revisione 15 lenti — le regole nate dalla maratona 12-13/11/2026
+
+Quattro regole nuove, tutte da incidenti veri (due rimbotti a un agente di
+livello campione, un banco rosso colpevole del proprio test):
+
+1. **Le note non sono il diff** (incidente: diff dichiarava rimosso un loop
+   che teneva, con costante orfana → ReferenceError). La prova di ogni
+   "rimosso/aggiunto" si QUOTA dal diff (le righe '-'), e dopo l'applicazione
+   si lancia `tools/verifica-diff.sh <file> --assenti X --presenti Y`.
+   La fine si dichiara solo a guardia verde.
+2. **Allineamento per costruzione**: mai mappare risposte a record per indice
+   su un sottoinsieme filtrato (urls[i]↔batch[i] disallinea al primo scarto
+   → il dedup scartava i DDT sbagliati). Pattern obbligato: `items[]` con
+   `{url, rec}` e ritorno per `items[i].rec`.
+3. **La CONFIG non si hardcoda**: nome header/valore che vive in CONFIG.*
+   si referenzia da lì (grep su CONFIG prima di ogni stringa fissa).
+4. **Il banco può mentire quanto il diff**: un rosso va letto PRIMA di
+   correggere il codice — nella maratona il banco era buggy due volte su
+   tre (aspettativa autocontraddittoria, fallback dimenticato). Verificare
+   il verificatore è parte del verificare.
+
+E una promozione: il **ciclo diurno eredita i cancelli della notte** —
+apertura con caccia-miglioria in miniatura (il backlog nasce dai fatti),
+budget per richiesta (richiesta ibernata = si dichiara, non si aspetta),
+chiusura con caccia-lente sul diff del giorno + digest tre righe
+(fatto/sospeso/lezione) nel diario dei lavori. L'esame d'ingresso per i
+cervelli: `docs/esame-modello.md`.
+
+## Revisione 16 lenti — le regole del turno autonomo (13/11 sera)
+
+5. **Le priorità del mandato si leggono IN ORDINE**: il fallback scatta solo
+   DOPO aver verificato che il primario non c'è (incidente: rapporto UX
+   esistente ignorato, tre ore di recency bias sul territorio familiare).
+6. **L'header non è una lettura**: scagionare "da commento d'intestazione"
+   si dichiara come assunzione (Main.gs: 56 funzioni, header letto, resto no).
+7. **Rami di esecuzione mutuamente esclusivi** (già dimostrata col catch):
+   prima di giudicare un ramo, chiedersi cosa è già successo negli altri.
+8. **Documentazione viva** (v. docs/documentazione-viva.md): nessun diff
+   senza la sua riga di documento; la doc si verifica come il codice;
+   il documento generato firma la propria fonte.
+
+E il cambio d'epoca: da oggi il sistema gira con la testa in API — il mini
+del 30/11 non è un inizio ma un TRASLOCO del cervello da remoto a locale
+(profiles/mini.sh, esame della quant al giorno-1). Si lavora già da mini.
+
+
+## Revisione 17 lenti — il METABOLISMO (13/11 sera, decisione di Luca)
+Il sistema si auto-migliora dalle proprie sessioni di codice:
+9. A FINE SESSIONE ogni lezione/incidente/recidiva e' CANDIDATO di regola:
+   su ramo auto/regola-<data> dell'harness — METHOD +1 datato, recidiva(2a)
+   -> riga in .night-verify, buco ripetuto -> proposta di tool. PR aperta.
+10. IL MERGE E' DI LUCA, SEMPRE: l'agente scrive le proprie regole su un
+   ramo; il cancello umano non si delega (volpe e pollaio).
+11. LA PROMOZIONE ESIGE LA RECIDIVA CONTATA O LA PROVA: niente regole
+   d'umore, solo sangue versato (la liturgia dell'hub).
+12. LA CODA DELLE DECISIONI: quando un blocco e' umano ([FIRMA], dati,
+   segreti), non basta dichiararlo — si ISCRIVE a DECISIONI-DOVUTE.md
+   (cosa/chI/perche'/cosa blocca). Il digest del mattino la ripresenta
+   finche' Luca non la chiude. Il collaboratore vero non esegue soltanto:
+   TIEDE IL CONTAPIOGGI con l'umano.
+
+
+## Revisione 18 lenti — AUTONOMIA DI PASSO vs DIREZIONE (13/11 sera)
+13. DIREZIONE = umano, PASSO = agente. L'umano decide LA META (mandato,
+    priorità, approvazione diff). Tra una meta e l'altra l'agente CAMMINA
+    DA SOLO: se il passo segue logicamente dal mandato approvato (stesso
+    pattern, stessa area, stessa natura), si esegue e si DICHIARA dopo.
+    Il "Procedo?" è per i bivi di direzione (cambio area, approccio nuovo,
+    toccare production, regola [FIRMA]) — non per ogni passo del sentiero.
+    REGOLA PRATICA: se alla mia domanda "procedo?" la risposta scontata
+    e' "si, ovviamente" — NON CHIEDERE. Vai, e dichiaralo nel digest.

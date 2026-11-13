@@ -1142,7 +1142,7 @@ Intento dichiarato dall'autore: $INTENTO_PR"
     # che blocca launchd). (2026-09-25, D8, risposta delegata): viveva nel ramo opencode, che non girava mai — per mesi
     # un'issue non ha avuto altro limite che i timeout interni. Ora copre il risolutore e l'agente di riserva insieme.
     TIMEOUT_MINUTI="${NIGHT_SHIFT_TIMEOUT:-240}"
-    if [ -f "$NIGHT_SOLVER" ]; then
+    if [ -f "$NIGHT_SOLVER" ] && [ -x "$NIGHT_SOLVER" ]; then  # -x: prod-audit T1 (un file non eseguibile uccideva il turno in silenzio)
       # l'issue scaricata in un file locale: la leggono il check «gia' implementata» qui
       # sotto E il solver. (D6, test del sistema completo 2026-09-20: il file veniva
       # scritto DOPO il check, che sotto set -u leggeva una variabile vuota e non girava

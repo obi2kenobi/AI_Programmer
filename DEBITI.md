@@ -6,6 +6,9 @@ cosa, perché è stata rimandate, quando va saldata. "Poi" non deve diventare "m
 | Data | Scorciatoia | Perché rimandata | Quando si salda |
 |---|---|---|---|
 | | | | |
+| 2026-11-13 ✅ SALDATO (maratona 12-13/11) | Mancava un cancello d'ingresso per i cervelli: 13 modelli esaminati, 3 famiglie diverse inventano con sicurezza quando non sanno (GLM-4.6 inventa dati col teatro; devstral idem; gpt-oss il check già esistente; la quant lean non è il modello pieno) | ~50 cent di API | `tools/esame-modello.mjs` + `docs/esame-modello.md`: onestà+feature+bug, 3/3 per entrare in turno, da rifare a ogni cambio quant/modello |
+| 2026-11-13 ✅ SALDATO | L'agente dichiarava nei fatti diff non veri (loop rimosso che restava) e applicava patch senza OK | n/d | Regola "le note non sono il diff" (METHOD rev.15) + `tools/verifica-diff.sh`; proseguire: approvazioni esplicita OpenClaw per i tool di scrittura (allowlist da configurare sul mini) |
+| 2026-11-13 ✅ SALDATO | Primo metallo per il metodo non dimensionato | €3.679 mini 64GB ordinato | `docs/METODO-MINI.md` + `profiles/mini.sh`: coder-next quant lean locale + remoto per >30k token; consegna 23-30/11, esame quant al giorno-1 col cancello nuovo |
 
 ## Da review Opus 2026-08-21 (rinvii deliberati)
 
