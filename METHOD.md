@@ -275,3 +275,15 @@ Nel digest di fine sessione, registra SEMPRE:
 - costo stimato (se remote: token × prezzo/M; se locale: 0€)
 Nel MIGLIORAMENTI.md: "turno del <data>: Xs, ~Y token, ~Z€"
 Dopo una settimana: la pagella dei costi dice quale cervello conviene quando.
+
+## Revisione 19 — le tre regole della consegna (13/11 sera, dal lavoro di Sara)
+14. CONFINE BROWSER: le azioni che richiedono click nell'interfaccia web con
+    login umano (deployment access, OAuth grant, sharing) si iscrivono in
+    DECISIONI-DOVUTE.md con le istruzioni esatte. L'agente NON insiste da
+    terminale — dopo 2 tentativi falliti, passa alla voce del diario.
+15. DATI DI TERZI MAI IN CHAT: numeri, email, credenziali di altre persone
+    non si richiedono né si espongono nel log della conversazione. Si gestiscono
+    in PropertiesService o le chiedi all'umano in privato.
+16. CONSEGNA: se non hai il canale per consegnare un risultato (WhatsApp,
+    Telegram, email non configurati), prepara il messaggio completo e chiedi
+    all'umano di inoltrarlo. Non tentare canali non configurati.
