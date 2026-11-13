@@ -42,6 +42,7 @@ chiusura:  caccia-lente sul diff del giorno + digest 3 righe in
    prima di entrare in turno
 
 ## GIORNO-1 SUL MINI (mezz'ora)
+0. pip install paddleocr paddlepaddle  # OCR subito disponibile
 1. ollama pull della quant lean di coder-next (tag da verificare: ufficiale
    o Unsloth IQ4_XS community)
 2. flip del primary OpenClaw: openrouter/... → ollama/...
