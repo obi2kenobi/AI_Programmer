@@ -5,7 +5,7 @@ richieste dalla policy valgono sull'artefatto esatto che sta per scrivere.
 
 ## FONDI — auto-merge opzionale, spento di default
 `tools/fondi.sh <dir-repo> <n-pr>` esce 2 senza toccare la PR finché non viene
-attivato con `FONDI_AUTO=1`. La consegna di `giorno.sh` lo chiama soltanto se
+attivato con `FONDI_AUTO=1`. La consegna di `tools/giorno.sh` lo chiama soltanto se
 anche `GIORNO_FONDI=1`; il default resta spento.
 
 Se attivo, il wrapper non si fida di un commento storico né del working tree.

@@ -78,7 +78,7 @@ For trivial tasks, use judgment: the rules bias toward caution over speed.
 
 - **Git e clasp AUTOMATICI e sicuri (LEGGE, Luca 2026-10-15: «diventi legge il poter fare git e clasp in maniera sicura e automatica»)** — valgono per TUTTA la flotta, non per un repo:
   - **git push/pull**: gia' automatici nei turni (self-pull, consegne su rami, mai su main).
-  - **git merge**: `tools/fondi.sh` e' SPENTO di default (`FONDI_AUTO=1` e `GIORNO_FONDI=1` lo attivano). Se attivo, non riusa commenti storici: `night-shift/revisore.sh` esegue banco sandboxed+lente+censore in UNA review fresca sul `headRefOid`, pubblica il parere con quel commit e solo allora il wrapper fonde con `--match-head-commit`. Il post-merge sul ramo di default resta obbligatorio. Ogni NO dice quale.
+  - **git merge**: `tools/fondi.sh` e' SPENTO di default (`FONDI_AUTO=1` e `GIORNO_FONDI=1` lo attivano). Se attivo, non riusa commenti storici: il revisore forte esegue banco sandboxed+lente+censore in UNA review fresca sul `headRefOid`, pubblica il parere con quel commit e solo allora il wrapper fonde con `--match-head-commit`. Il post-merge sul ramo di default resta obbligatorio. Ogni NO dice quale.
   - **clasp**: SOLO via `tools/deploy-gas.sh` — banco, lente, backup isolato verificato, MANIFEST con rollback, cancello dei target (lista nera dei vivi, impronta per cartella). Il clasp nudo resta negato dall'hook. La guida pratica: `docs/guida-cancelli-automatici.md`.
   - I VIVI in produzione non si toccano mai; il rollback e' scritto prima di spingere; tutto lascia traccia nei log.
 
