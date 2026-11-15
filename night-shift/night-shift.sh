@@ -459,31 +459,46 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
       if [ "$PR_SYNC" = "$GH_NON_SO" ]; then
         log "REPO $REPO: ⚠ gh non ha risposto (PR aperte): il riallineo allo standard non si propone in questo ciclo — non al buio"
       elif grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
-        # (2026-10-02, approvato da Luca «con gusto»): il riallineo auto-verificato.
-        # (AUDIT-KIMI P0.2, 15/11): il ramo selezionava la PRIMA PR dell'elenco
-        # (head -1) invece di quella col titolo atteso, e fondeva senza banco,
-        # lente, parere del cancelliere ne' --match-head-commit. SPENTO di default:
-        # si riattiva solo con RIALLINEO_AUTO=1 E cura completa (selezione per
-        # titolo+autore, checkout di headRefOid, allowlist path, banco, review).
+        # (2026-10-02, approvato da Luca): il riallineo auto-verificato.
+        # Si riattiva con RIALLINEO_AUTO=1. La selezione per titolo sceglie la
+        # PR, headRefOid sceglie l'artefatto, sync verifica la forma standard;
+        # dopo NON c'e' un merge laterale: fondi chiede una review fresca e
+        # usa --match-head-commit sullo stesso SHA. Autore e path restano
+        # contenuto da giudicare nella review, non un'asserzione del titolo.
         if [ "${RIALLINEO_AUTO:-0}" != "1" ]; then
           log "REPO $REPO: PR di riallineo presente — auto-merge SPENTO (audit P0.2): resta al revisore/giorno"
         else
         PR_STD_NUM=$(printf '%s\n' "$PR_SYNC" | grep -F "adotta lo standard" | head -1 | grep -oE '[0-9]+' | head -1)
-        PR_STD_BRANCH=$(cd "$DIR" && gh pr view "$PR_STD_NUM" --json headRefName -q .headRefName 2>/dev/null) || PR_STD_BRANCH=""
-        if [ -n "$PR_STD_BRANCH" ]; then
-          VERIFICA_STD=$(cd "$DIR" && git fetch -q origin "$PR_STD_BRANCH" 2>/dev/null             && git checkout -q "origin/$PR_STD_BRANCH" 2>/dev/null             && bash "$HERE/../tools/sync-repo.sh" --from-local "$DIR" 2>&1 | tail -1)
+        PR_STD_JSON=$(cd "$DIR" && gh pr view "$PR_STD_NUM" --json headRefName,headRefOid 2>/dev/null) || PR_STD_JSON=""
+        PR_STD_BRANCH=$(jq -r '.headRefName // empty' <<<"$PR_STD_JSON")
+        PR_STD_HEAD=$(jq -r '.headRefOid // empty' <<<"$PR_STD_JSON")
+        if [ -n "$PR_STD_BRANCH" ] && [ -n "$PR_STD_HEAD" ]; then
+          SYNC_RC=1; VERIFICA_RAW=""
+          if (cd "$DIR" && git fetch -q origin "$PR_STD_BRANCH" 2>/dev/null) && \
+             git -C "$DIR" cat-file -e "${PR_STD_HEAD}^{commit}" 2>/dev/null && \
+             git -C "$DIR" checkout -q --detach "$PR_STD_HEAD" 2>/dev/null; then
+            VERIFICA_RAW=$(cd "$DIR" && bash "$HERE/../tools/sync-repo.sh" --from-local "$DIR" 2>&1); SYNC_RC=$?
+          else
+            VERIFICA_RAW="fetch/checkout del commit $PR_STD_HEAD non riuscito"
+          fi
+          VERIFICA_STD=$(tail -1 <<<"$VERIFICA_RAW")
           git -C "$DIR" checkout -q "$DB" 2>/dev/null || true
-          case "$VERIFICA_STD" in
-            *ALLINEATO*)
-              if (cd "$DIR" && gh pr merge "$PR_STD_NUM" --squash --delete-branch >/dev/null 2>&1); then
-                log "REPO $REPO: riallineo AUTO-FUSO: PR #$PR_STD_NUM verificata identica allo standard (idempotenza sync-repo) — il giorno resta per le altre"
+          if [ "$SYNC_RC" -eq 0 ] && grep -q 'ALLINEATO' <<<"$VERIFICA_STD"; then
+            if [ -f "$HERE/../tools/fondi.sh" ]; then
+              FONDI_STD_OUT=$(FONDI_AUTO=1 FONDI_CLASSE=standard bash "$HERE/../tools/fondi.sh" "$DIR" "$PR_STD_NUM" 2>&1); FONDI_STD_RC=$?
+              if [ "$FONDI_STD_RC" -eq 0 ] && grep -q '^FONDI: SI' <<<"$FONDI_STD_OUT"; then
+                log "REPO $REPO: riallineo AUTO-FUSO: PR #$PR_STD_NUM sul commit $PR_STD_HEAD, standard+review verdi"
               else
-                log "REPO $REPO: riallineo verificato ma fusione fallita (PR #$PR_STD_NUM) — al giorno"
-              fi ;;
-            *) log "REPO $REPO: PR di riallineo #$PR_STD_NUM NON e' solo standard (verifica: $(printf '%s' "$VERIFICA_STD" | cut -c1-80)) — al giorno" ;;
-          esac
+                log "REPO $REPO: riallineo NON fusa (PR #$PR_STD_NUM, review/wrapper rc=$FONDI_STD_RC): $(tail -1 <<<"$FONDI_STD_OUT" | cut -c1-120)"
+              fi
+            else
+              log "REPO $REPO: riallineo NON fusa: tools/fondi.sh assente; la PR resta al revisore"
+            fi
+          else
+            log "REPO $REPO: PR di riallineo #$PR_STD_NUM NON e' solo standard (verifica rc=$SYNC_RC: $(printf '%s' "$VERIFICA_STD" | cut -c1-80)) — al giorno"
+          fi
         else
-          log "REPO $REPO: PR di riallineo gia' aperta ma illeggibile — aspetto il giorno"
+          log "REPO $REPO: PR di riallineo gia' aperta ma branch/headRefOid illeggibili — aspetto il giorno"
         fi
         fi  # fine ramo RIALLINEO_AUTO=1 (audit P0.2)
       else
