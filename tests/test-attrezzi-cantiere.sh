@@ -72,5 +72,17 @@ else
     || ko "rizzo-scegli: rc=$RC fuori contratto (atteso 0 o 1)"
 fi
 
+# 7. verifica-doc.sh — il diario che cita un .gs fantasma esce rosso, uno vero verde
+#    (15/11: il fix E-002 con -print -quit non deve aver cambiato il verdetto)
+mkdir -p "$T/repo" && echo 'function a(){}' > "$T/repo/Vero.gs"
+printf '| Vero.gs | ok |\n| Fantasma.gs | ok |\n' > "$T/diario.md"
+OUT=$(bash "$HERE/tools/verifica-doc.sh" "$T/diario.md" "$T/repo" 2>&1); RC=$?
+[ $RC -eq 1 ] && grep -q "FANTASMA: Fantasma.gs" <<<"$OUT" && ! grep -q "FANTASMA: Vero.gs" <<<"$OUT" \
+  && ok "verifica-doc: fantasma rosso, vero verde (post fix E-002)" \
+  || ko "verifica-doc: rc=$RC — $(tr '\n' ' ' <<<"$OUT" | cut -c1-120)"
+printf '| Vero.gs | ok |\n' > "$T/diario2.md"
+bash "$HERE/tools/verifica-doc.sh" "$T/diario2.md" "$T/repo" >/dev/null 2>&1 \
+  && ok "verifica-doc: diario senza fantasmi esce 0" || ko "verifica-doc: diario pulito esce rosso"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
