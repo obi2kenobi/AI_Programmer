@@ -4,6 +4,7 @@
 set -euo pipefail
 HUB="$(cd "$(dirname "$0")/.." && pwd)"
 WS="${1:-$HOME/openclaw-lab}"
+mkdir -p "$WS"  # 15/11: su macchina nuova la workspace non esiste ancora — il cp del METODO falliva al passo 1
 echo "=== Installazione metodo AI_Programmer in $WS ==="
 
 # 1. METODO
@@ -51,7 +52,7 @@ fi
 echo ""
 echo "=== INSTALLAZIONE COMPLETATA ==="
 echo "File installati:"
-find "$WS/tools" "$WS/profiles" "$WS/METODO-AI-PROGRAMMER.md" -type f 2>/dev/null | wc -l | awk '{print "  "$1" file tool/metodo"'
+find "$WS/tools" "$WS/profiles" "$WS/METODO-AI-PROGRAMMER.md" -type f 2>/dev/null | wc -l | awk '{print "  "$1" file tool/metodo"}'
 echo ""
 echo "Per il turno notturno: source $WS/profiles/mini.sh (o max.sh)"
 echo "Per l'esame di un cervello nuovo: node $WS/tools/esame-modello.mjs --help"
