@@ -39,13 +39,24 @@ def chiama_server(testo: str) -> dict | None:
         return None
 
 
-def anonimizza(testo: str, diz_path: str) -> str:
-    """Sostituisce i PII con segnaposto via rizzo-pii e accumula il dizionario
-    (merge, mai overwrite). Server spento: passthrough DETTO su stderr."""
+def anonimizza(testo: str, diz_path: str, require_server: bool = False) -> str:
+    """Anonimizza e accumula il dizionario; in modalita' stretta mai raw.
+
+    require_server=True e' per l'agente: server assente o risposta malformata
+    sollevano RuntimeError e il chiamante blocca. Il default storico resta
+    passthrough detto su stderr per gli altri comandi interattivi.
+    """
     risp = chiama_server(testo)
     if risp is None:
+        if require_server:
+            raise RuntimeError("anonimizzazione non eseguita: server PII non raggiungibile")
         print("anonimizza: server spento — passthrough (il LLM vedrà i dati veri)", file=sys.stderr)
         return testo
+    if require_server and (
+        not isinstance(risp.get("anonymized_text"), str)
+        or not isinstance(risp.get("mapping"), dict)
+    ):
+        raise RuntimeError("anonimizzazione non eseguita: risposta PII malformata")
     # dizionario CUMULATIVO: merge, non overwrite (Claude 2026-09-28: se il file A
     # ha [FULLNAME_1]=Mario e il file B ha [FULLNAME_1]=Luigi, il vecchio codice
     # sovrascriveva: il ripristino del file A metteva Luigi — corruzione silenziosa)
@@ -68,7 +79,7 @@ def anonimizza(testo: str, diz_path: str) -> str:
     fd = os.open(diz_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w") as f:
         json.dump(vecchio, f, ensure_ascii=False, indent=1)
-    return risp.get("anonymized_text", testo)
+    return risp["anonymized_text"] if require_server else risp.get("anonymized_text", testo)
 
 
 def de_anonimizza(testo: str, diz_path: str) -> str:
@@ -91,13 +102,19 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("--diz", required=True, help="percorso del dizionario locale")
     p.add_argument("--ripristina", action="store_true", help="de-anonimizza invece di anonimizzare")
+    p.add_argument("--require-server", action="store_true", help="fail-closed: nessun passthrough su errore")
     args = p.parse_args()
 
     testo = sys.stdin.read()
-    if args.ripristina:
-        risultato = de_anonimizza(testo, args.diz)
-    else:
-        risultato = anonimizza(testo, args.diz)
+    try:
+        if args.ripristina:
+            risultato = de_anonimizza(testo, args.diz)
+        else:
+            risultato = anonimizza(testo, args.diz, require_server=args.require_server)
+    except (RuntimeError, OSError, json.JSONDecodeError) as exc:
+        # Solo il motivo tecnico: l'input non finisce mai nel messaggio.
+        print(str(exc), file=sys.stderr)
+        sys.exit(3)
     sys.stdout.write(risultato)
 
 

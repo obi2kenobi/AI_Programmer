@@ -88,7 +88,8 @@ TURNO=0; RIPETIZIONI=0; PREV_STRIPPED=""
 # iniziale si MISURA all'ingresso — prompt + contesto del progetto. La pressione
 # del num_ctx (lezione #172) diventa un numero nel log, non un'ipotesi a posteriori.
 log "contesto iniziale: ~$(token_stimati "$(printf '%s' "${2:-}" | wc -c | tr -d ' ')") token stimati (prompt $(printf '%s' "${2:-}" | wc -c | tr -d ' ') byte) — num_ctx 12240: la pressione si vede subito"
-ANON_DIZ=$(mktemp /tmp/anon-diz-XXXXXX.json)  # diz PII: locale, attivo solo con AGENTE_ANONIMIZZA=1
+ANON_DIZ=$(mktemp /tmp/anon-diz-XXXXXX)  # su macOS gli X devono chiudere il template: niente suffisso .json
+ANON_TOOL="${AGENTE_ANONIMIZZA_TOOL:-$HERE/tools/anonimizza.py}"
 while [ "$TURNO" -lt "$MAX_TURNI" ]; do
   TURNO=$((TURNO+1))
   ELAPSED=$(( $(date +%s) - T_INIZIO ))
@@ -289,24 +290,25 @@ REMINDER: you run unattended at night — nobody answers. Decide autonomously wi
       case "$(percorso_ammesso "$REAL" "$REAL_DIR" && echo dentro)" in dentro)
         if [ -f "$REAL" ]; then
           RAW_CONTENT=$(head -c 24000 "$REAL")
-          # (audit-5): GDPR gate fail-closed — il server PII DEVE esserci quando
-          # l'anonimizzazione e' attiva; se manca, il read si blocca (non passthrough)
+          # (P1.10, revisione-notte): TUTTO il ramo anonimizzato e'
+          # fail-closed: server, tool, output vuoto o risposta malformata.
+          # Il contenuto originale non e' MAI il fallback di un errore.
           if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ]; then
-            if ! curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1; then
+            if ! curl -sf --max-time 3 "${PII_URL:-http://127.0.0.1:5005}/health" >/dev/null 2>&1; then
               RESULT="ERROR: PII server down — read blocked for GDPR. Retry later or declare finish."
               log "  read: $FPATH BLOCCATO (server PII spento — fail-closed)"
-            elif [ -f "$HERE/tools/anonimizza.py" ]; then
-              ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
-              if [ -n "$ANON_OUT" ] && ! grep -q "passthrough" <<<"$ANON_OUT"; then
+            elif [ -f "$ANON_TOOL" ]; then
+              ANON_OUT=$(printf '%s' "$RAW_CONTENT" | python3 "$ANON_TOOL" --require-server --diz "$ANON_DIZ" 2>/dev/null); ANON_RC=$?
+              if [ "$ANON_RC" -eq 0 ] && { [ -n "$ANON_OUT" ] || [ -z "$RAW_CONTENT" ]; }; then
                 RESULT="File $FPATH content:\n$ANON_OUT"
                 log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, PII anonimizzato)"
               else
-                RESULT="File $FPATH content:\n$RAW_CONTENT"
-                log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, passthrough dichiarato)"
+                RESULT="ERROR: PII anonymization failed or empty — read blocked, raw content NOT returned."
+                log "  read: $FPATH BLOCCATO (anonimizzatore rc=$ANON_RC o output vuoto — fail-closed)"
               fi
             else
-              RESULT="File $FPATH content:\n$RAW_CONTENT"
-              log "  read: $FPATH ($(wc -c < "$REAL" | tr -d ' ') bytes, tool assente)"
+              RESULT="ERROR: PII anonymizer missing — read blocked, raw content NOT returned."
+              log "  read: $FPATH BLOCCATO (tool anonimizzatore assente — fail-closed)"
             fi
           else
             RESULT="File $FPATH content:\n$RAW_CONTENT"
@@ -356,21 +358,37 @@ REMINDER: you run unattended at night — nobody answers. Decide autonomously wi
       if ! gate_allowlist_ok "$CMD"; then
         RESULT="ERROR: command not allowed. run accepts only read-only tools: grep, cat, diff, wc, head, tail, ls, test, jq, echo, and git diff/log/show/grep/status/rev-parse/ls-files/blame. To change files use edit or write."
         log "  run: RIFIUTATO (fuori dall'allowlist di sola lettura): $CMD"
-      elif command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ]; then
-        PROFILO=$(mktemp /tmp/agente-sandbox.XXXXXX)
-        sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO"
-        RESULT="Command: $CMD\nOutput:\n$(sandbox-exec -f "$PROFILO" bash -c "$CMD" 2>&1 | head -30)"
-        rm -f "$PROFILO"
-        log "  run (sandbox): $CMD"
       else
-        RUN_RAW=$(eval "$CMD" 2>&1 | head -30)
-        # GDPR: anche il run legge dati — se l'anonimizzazione e' attiva, filtra
-        if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ] && curl -sf --max-time 3 http://127.0.0.1:5005/health >/dev/null 2>&1 && [ -f "$HERE/tools/anonimizza.py" ]; then
-          RUN_ANON=$(printf '%s' "$RUN_RAW" | python3 "$HERE/tools/anonimizza.py" --diz "$ANON_DIZ" 2>/dev/null)
-          if [ -n "$RUN_ANON" ] && ! grep -q "passthrough" <<<"$RUN_ANON"; then RUN_RAW="$RUN_ANON"; log "  run: output PII anonimizzato"; fi
+        # Ottieni prima l'output, poi applica UNO stesso gate PII ai due rami:
+        # prima la sandbox rimandava il raw senza passare dall'anonimizzatore.
+        if command -v sandbox-exec >/dev/null 2>&1 && [ -f "$HERE/night-shift/sandbox.sb" ]; then
+          PROFILO=$(mktemp /tmp/agente-sandbox.XXXXXX)
+          sed -e "s|__WORKDIR__|$PWD|g" -e "s|__HOME__|$HOME|g" "$HERE/night-shift/sandbox.sb" > "$PROFILO"
+          RUN_RAW=$(sandbox-exec -f "$PROFILO" bash -c "$CMD" 2>&1 | head -30)
+          rm -f "$PROFILO"
+          log "  run (sandbox): $CMD"
+        else
+          RUN_RAW=$(eval "$CMD" 2>&1 | head -30)
+          log "  run: $CMD"
+        fi
+        if [ "${AGENTE_ANONIMIZZA:-0}" = "1" ]; then
+          if ! curl -sf --max-time 3 "${PII_URL:-http://127.0.0.1:5005}/health" >/dev/null 2>&1; then
+            RUN_RAW="ERROR: PII server down — run output BLOCKED; raw content NOT returned."
+            log "  run: output BLOCCATO (server PII spento)"
+          elif [ ! -f "$ANON_TOOL" ]; then
+            RUN_RAW="ERROR: PII anonymizer missing — run output BLOCKED; raw content NOT returned."
+            log "  run: output BLOCCATO (tool assente)"
+          else
+            RUN_ANON=$(printf '%s' "$RUN_RAW" | python3 "$ANON_TOOL" --require-server --diz "$ANON_DIZ" 2>/dev/null); RUN_ANON_RC=$?
+            if [ "$RUN_ANON_RC" -eq 0 ] && { [ -n "$RUN_ANON" ] || [ -z "$RUN_RAW" ]; }; then
+              RUN_RAW="$RUN_ANON"; log "  run: output PII anonimizzato"
+            else
+              RUN_RAW="ERROR: PII anonymization failed or empty — run output BLOCKED; raw content NOT returned."
+              log "  run: output BLOCCATO (anonimizzatore rc=$RUN_ANON_RC o output vuoto)"
+            fi
+          fi
         fi
         RESULT="Command: $CMD\nOutput:\n$RUN_RAW"
-        log "  run: $CMD"
       fi ;;
 
     __formato__)
