@@ -154,6 +154,19 @@ OUT=$(bash "$RUNNER" --tutti "$SB8/non-esiste" 2>&1); RC=$?
   && ok "--tutti + dir inesistente: rosso dichiarato, non la suite del chiamante" || ko "--tutti + dir inesistente: rc $RC, $(tail -1 <<<"$OUT")"
 rm -rf "$SB8"
 
+# 9. (P2.1, 15/11): il tetto per banco. Un banco appeso non mangia piu' il budget
+# della suite: con SUITE_TIMEOUT_BANCO=2 un banco da 10 s scade (rc 124, «SCADUTO»
+# nominato) e con --tutti il fratello veloce corre lo stesso. Il timeout nudo e'
+# vietato su macOS: l'implementazione resta dietro variabile/perl (banco
+# portabilita' verde).
+SB9=$(mktemp -d /tmp/test-suite9.XXXXXX); mkdir -p "$SB9/tests"
+printf '#!/bin/bash\nsleep 10\necho "1 OK, 0 FAIL"\n' > "$SB9/tests/test-lento.sh"
+printf '#!/bin/bash\ntouch "%s/segno-veloce"\necho "1 OK, 0 FAIL"\n' "$SB9" > "$SB9/tests/test-veloce.sh"
+OUT=$(SUITE_TIMEOUT_BANCO=2 bash "$RUNNER" --tutti "$SB9" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && grep -q "SCADUTO" <<<"$OUT" && grep -q "test-lento" <<<"$OUT" && [ -f "$SB9/segno-veloce" ] \
+  && ok "P2.1: banco appeso = SCADUTO e nominato, il fratello veloce corre" || ko "P2.1: tetto per banco (rc $RC): $(tail -3 <<<"$OUT" | tr '\n' ' ')"
+rm -rf "$SB9"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]

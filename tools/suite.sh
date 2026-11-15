@@ -32,6 +32,35 @@ done
 DIR="${DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 cd -- "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco eseguito"; exit 1; }   # (Q3 R3): senza guardia girava la suite del chiamante
 
+# (P2.1, 15/11): il tetto per banco, autosufficiente — stessa implementazione
+# collaudata di llm/_timeout.sh e del fallback di fondi.sh. Il comando GNU resta
+# dietro una variabile: nudo viola il banco di portabilita' (assente su macOS).
+suite_timeout() {
+  local secs="$1"; shift
+  local gnu="" t0=$SECONDS rc
+  if command -v timeout >/dev/null 2>&1; then gnu=timeout; elif command -v gtimeout >/dev/null 2>&1; then gnu=gtimeout; fi
+  if [ -n "$gnu" ]; then
+    rc=0; command "$gnu" -k 5 "$secs" "$@" || rc=$?
+    case "$secs" in *[!0-9]*|"") ;; *) [ "$rc" -eq 137 ] && [ $((SECONDS - t0)) -ge "$secs" ] && rc=124 ;; esac
+    return "$rc"
+  fi
+  command perl -e '
+    my $s = shift; my $pid = 0;
+    $SIG{ALRM} = sub {
+      if ($pid) {
+        kill "TERM", -$pid;
+        for (1 .. 50) { last if waitpid($pid, 1) > 0; select(undef, undef, undef, 0.1) }
+        kill "KILL", -$pid;
+      }
+      exit 124 };
+    alarm $s;
+    $pid = fork();
+    if ($pid == 0) { setpgrp(0, 0); exec @ARGV or exit 127 }
+    waitpid($pid, 0);
+    exit(($? & 127) ? 128 + ($? & 127) : $? >> 8);
+  ' "$secs" "$@"
+}
+
 # (2026-09-24, E-047): una cache di bytecode FRESCA per ogni giro della suite. Un sabotaggio a mano della
 # stessa dimensione, nello stesso secondo, lascia valido il .pyc in tools/__pycache__: i banchi che
 # importano il modulo giudicavano il codice di prima. Con PYTHONPYCACHEPREFIX Python legge e scrive il
@@ -57,19 +86,13 @@ for t in tests/test-*.sh; do
   # (AUDIT-KIMI P2.1, 15/11): OGNI banco ha un budget proprio — prima un solo
   # test appeso poteva mangiare l'intero budget della suite senza lasciare
   # quadro. SUITE_TIMEOUT_BANCO (default 300s) e' il tetto per banco; rc 124 =
-  # scaduto, nominato nel report. Ai timeout serve ai_timeout se disponibile,
-  # altrimenti il timeout di sistema (GNU/gtimeout) o nessun tetto (dichiarato).
+  # scaduto, nominato nel report. Il timeout e' SEMPRE garantito dalla funzione
+  # locale suite_timeout (stessa implementazione collaudata di llm/_timeout.sh:
+  # GNU timeout/gtimeout dietro variabile — nudo e' assente su macOS e il banco
+  # di portabilita' lo vieta — altrimenti perl con TERM al gruppo, 5s di grazia,
+  # poi KILL). Nessuna dipendenza dall'ambiente del chiamante.
   BUDGET_BANCO="${SUITE_TIMEOUT_BANCO:-300}"
-  if declare -F ai_timeout >/dev/null 2>&1; then
-    OUT=$(ai_timeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
-  elif command -v timeout >/dev/null 2>&1; then
-    OUT=$(timeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
-  elif command -v gtimeout >/dev/null 2>&1; then
-    OUT=$(gtimeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
-  else
-    OUT=$(bash "$t" 2>&1); RC_B=$?
-    [ "${SENZA_TETTO_DICHIARATO:-0}" = 0 ] && { echo "⚠ suite: nessun timeout disponibile (ai_timeout/timeout/gtimeout) — banchi senza tetto, dichiarato una volta" >&2; SENZA_TETTO_DICHIARATO=1; }
-  fi
+  OUT=$(suite_timeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
   if [ "$RC_B" -eq 124 ]; then
     echo "FALLITO ($N/$TOT): $t — SCADUTO dopo ${BUDGET_BANCO}s (budget per banco, audit P2.1)"
     if [ "$TUTTI" -eq 1 ]; then ROSSI_TOT=$(( ROSSI_TOT + 1 )); continue; fi
