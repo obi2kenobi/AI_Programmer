@@ -14,7 +14,7 @@ if command -v tesseract >/dev/null 2>&1; then
       tesseract "$img" - -l ita+eng 2>/dev/null
     done > "$OUT"
   else
-    tesseract "$F" "$OUT" -l ita+eng 2>/dev/null && cat "$OUT"
+    tesseract "$F" - -l ita+eng 2>/dev/null > "$OUT"
   fi
   echo "→ $OUT ($(wc -l < "$OUT") righe)"
 elif command -v paddleocr >/dev/null 2>&1; then
