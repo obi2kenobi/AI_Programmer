@@ -98,6 +98,23 @@ if [ "$PP_RC" -eq 0 ]; then
   ok "pre-push delegato: PRE_PUSH_FAILOPEN=1 = override una tantum, push passa"
 else ko "pre-push delegato: override FAILOPEN (rc=$PP_RC: $PP_OUT)"; fi
 
+# revisione-notte: una ref NUOVA senza base remota leggibile non puo' essere
+# saltata e poi contata come controllata. Prima questo caso usciva 0 con
+# «riga non controllata»: proprio il ramo nuovo era il momento da proteggere.
+git -C "$R" remote set-head origin --delete >/dev/null 2>&1 || true
+git -C "$R" update-ref -d refs/remotes/origin/main
+ZERO_SHA=0000000000000000000000000000000000000000
+PP_OUT=$(cd "$R" && bash "$PP" <<< "refs/heads/night/senza-base $(git -C "$R" rev-parse HEAD) refs/heads/night/senza-base $ZERO_SHA" 2>&1); PP_RC=$?
+if [ "$PP_RC" -ne 0 ] && grep -q "base non determinabile" <<<"$PP_OUT" && grep -q "push BLOCCATO" <<<"$PP_OUT"; then
+  ok "pre-push: base indeterminabile = BLOCCO (mai ref nuova non controllata)"
+else ko "pre-push: base indeterminabile = BLOCCO (rc=$PP_RC: $PP_OUT)"; fi
+PP_OUT=$(cd "$R" && PRE_PUSH_FAILOPEN=1 bash "$PP" <<< "refs/heads/night/senza-base $(git -C "$R" rev-parse HEAD) refs/heads/night/senza-base $ZERO_SHA" 2>&1); PP_RC=$?
+[ "$PP_RC" -eq 0 ] && grep -q "override esplicito" <<<"$PP_OUT" \
+  && ok "pre-push: base indeterminabile, override esplicito e dichiarato" \
+  || ko "pre-push: override su base indeterminabile (rc=$PP_RC: $PP_OUT)"
+git -C "$R" fetch -q origin
+git -C "$R" remote set-head origin main >/dev/null 2>&1
+
 # dipendenze non pinnate: AVVISO nel pre-push, mai blocco
 printf 'requests\npandas\n' > "$R/requirements.txt"
 git -C "$R" add -A && git -C "$R" -c user.name=t -c user.email=t@t commit -qm req

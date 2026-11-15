@@ -12,10 +12,10 @@
 # AVVISA (non blocca: la dipendenza non pinnata e' qualita', non sicurezza).
 #
 # stdin: le righe di git pre-push «<ref locale> <sha locale> <ref remoto> <sha remoto>».
-# Esce: 0 = push consentito · 1 = SEGRETO nel diff, push fermato.
-# Il cancello degradato NON bricka il giorno: se la lente non si trova o torna
-# rc 2, si dichiara a voce alta e si passa (la notte ha il suo cancello in
-# aggiunta; qui il fallimento silente sarebbe peggio del passaggio dichiarato).
+# Esce: 0 = push consentito · 1 = controllo rosso o non eseguibile, push fermato.
+# Fail-closed: lente assente/degradata o base non determinabile BLOCCANO.
+# L'unica eccezione e' PRE_PUSH_FAILOPEN=1: override una tantum, esplicito e
+# SEMPRE stampato nel log; va poi dichiarato nel diario (audit Q3, 15/11).
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 log() { echo "[pre-push $(date '+%H:%M:%S')] $*" >&2; }
@@ -53,7 +53,12 @@ while read -r L_REF L_SHA R_REF R_SHA; do
   elif git rev-parse -q --verify "origin/$DB" >/dev/null 2>&1; then
     BASE="origin/$DB"
   else
-    log "⚠ $L_REF: base non determinabile (niente origin/$DB) — riga non controllata, dichiarato"
+    if [ "${PRE_PUSH_FAILOPEN:-0}" = "1" ]; then
+      log "⚠ $L_REF: base non determinabile (niente origin/$DB) — ref NON controllata, passaggio con override esplicito"
+    else
+      log "⛔ $L_REF: base non determinabile (niente origin/$DB) — push BLOCCATO: una ref non controllata non e' una ref pulita"
+      BLOCCO=1
+    fi
     continue
   fi
   RIGHE=$(git diff --numstat "$BASE...$L_SHA" 2>/dev/null | awk '{a+=$1+$2} END{print a+0}')
