@@ -1,16 +1,39 @@
 #!/bin/bash
 # rizzo-scegli.sh — router dei cervelli del cantiere AI_Programmer (Rizzo Flow, locale)
 # Uso: rizzo-scegli.sh "descrizione del compito"
-# Output: economico | coder | frontiera   (più probabilità, una riga JSON su stderr se -v)
+# Output: economico | coder | frontiera | ricerca   (probabilità su stderr se -v)
 # Regola (rev.23): la risposta è un CONSIGLIO di routing, non un ordine.
 # Se il server non risponde: exit 1, il chiamante cade sul default (coder) dichiarandolo.
+# rev.31: il prompt NON vive più qui — fonte unica: rizzo-flow/calibrazione-camarlinghi/prompt-router.json
+# Quarta classe «ricerca»: web/immagini/PDF/ragionamento aperto — MAI al coder (incidente DUO 15/11).
 
 TASK="$1"
 VERBOSE="$2"
+HERE="$(cd "$(dirname "$0")" && pwd)"
+PROMPT_JSON="$HERE/rizzo-flow/calibrazione-camarlinghi/prompt-router.json"
+
+# Costruisce la request dalla fonte unica (python per l'escaping corretto)
+REQ=$(TASK="$TASK" python3 - "$PROMPT_JSON" <<'PYEOF'
+import json, os, sys
+p = json.load(open(sys.argv[1]))
+task = os.environ["TASK"]
+req = {
+    "state": p["state"],
+    "questions": {
+        p["question_id"]: {
+            "type": "choice",
+            "instructions": p["instructions_prefix"] + task,
+            "options": [{"id": o["id"], "description": o["description"]} for o in p["options"]],
+        }
+    },
+}
+print(json.dumps(req, ensure_ascii=False))
+PYEOF
+)
 
 RISP=$(curl -s --max-time 10 http://127.0.0.1:8017/v1/decisions \
   -H 'Content-Type: application/json' \
-  -d "{\"state\": \"Router dei cervelli del cantiere AI_Programmer. economico: grep, lettura file, ricerche, conteggi, verifiche di stato. coder: scrivere o modificare codice, fix bug, nuove feature, test. frontiera: architettura, decisioni costose o irreversibili, revisioni di diff, scelte che toccano la produzione.\", \"questions\": {\"cervello\": {\"type\": \"choice\", \"instructions\": \"Quale cervello serve per questo compito? Compito: ${TASK//\"/\\\"}\", \"options\": [{\"id\": \"economico\", \"description\": \"grep, lettura file, ricerca, conteggio, verifica stato: nessuna riga di codice scritta\"}, {\"id\": \"coder\", \"description\": \"scrivere o modificare codice sorgente, fix bug, feature, test automatizzati\"}, {\"id\": \"frontiera\", \"description\": \"architettura, decisioni costose o irreversibili, revisioni difficili, impatto su produzione\"}]}}}")
+  -d "$REQ")
 
 if [ -z "$RISP" ]; then
   echo "rizzo-scegli: server non raggiungibile (127.0.0.1:8017)" >&2

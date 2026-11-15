@@ -61,12 +61,16 @@ else
   ok "graphify-patch-gs: pacchetto graphify assente qui — prova saltata (dichiarato)"
 fi
 
-# 6. rizzo-scegli.sh — server su: risposta valida; server giù: rc 1 dichiarato (rev.23)
+# 6. rizzo-scegli.sh — server su: risposta valida (4 classi, rev.31); server giù: rc 1 dichiarato (rev.23)
 OUT=$(bash "$HERE/tools/rizzo-scegli.sh" "conta i file di una repo" 2>/dev/null); RC=$?
 if [ $RC -eq 0 ]; then
-  grep -qxE "economico|coder|frontiera" <<<"$OUT" \
+  grep -qxE "economico|coder|frontiera|ricerca" <<<"$OUT" \
     && ok "rizzo-scegli: server su, risposta valida ($OUT)" \
     || ko "rizzo-scegli: risposta fuori contratto — $OUT"
+  # 6b. invariante DUO (rev.31): un task su immagini NON deve finire al coder
+  DUO=$(bash "$HERE/tools/rizzo-scegli.sh" "leggi questa foto del documento e trascrivi il testo" 2>/dev/null)
+  [ "$DUO" != "coder" ] && ok "rizzo-scegli: task immagine → $DUO (mai coder)" \
+    || ko "rizzo-scegli: INVARIANTE DUO VIOLATA — task immagine al coder"
 else
   [ $RC -eq 1 ] && ok "rizzo-scegli: server giù → rc 1 dichiarato (fallback coder spetta al chiamante)" \
     || ko "rizzo-scegli: rc=$RC fuori contratto (atteso 0 o 1)"
