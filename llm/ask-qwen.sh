@@ -3,8 +3,10 @@
 # Contratto comune ai wrapper llm/ask-*: prompt come argomento, contesto via stdin,
 # risposta pulita su stdout, statistiche su stderr. Exit 0 ok / 1 errore.
 #
-# Variabili: QWEN_MODEL (default qwen3.8-27b:iq3s — un solo modello, decisione
-#            2026-09-21, vedi cervello/decisione-modello-unico.md; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
+# Variabili: QWEN_MODEL (default agent-qwen:latest — 15/11/2026: i default precedenti
+#            qwen3.8-27b:iq3s e gemma4:26b-notturno non erano installati, il wrapper era
+#            morto; agent-qwen è il cervello locale della catena openclaw. Storia:
+#            cervello/decisione-modello-unico.md; sovrascrivibile anche con ASK_MODEL) · QWEN_CTX (16384) · QWEN_THINK
 #            ASK_TIMEOUT secondi (1800 — soglia alta di default, configurabile; il turno
 #            ha il suo watchdog per-issue di 240 min dal 2026-09-01, NIGHT_SHIFT_TIMEOUT)
 set -euo pipefail
@@ -40,7 +42,7 @@ trap 'log_ask_usage ask-qwen "${#PROMPT}"' EXIT
 # questo wrapper per il banco avversariale, quindi il gate avrebbe usato il modello che
 # "0/3 in 442 s" mentre la notte usava il 14b. Un solo modello: lo stesso del turno (oggi
 # qwen3.8-27b:iq3s, cervello/decisione-modello-unico.md — il 27b quantizzato, non quello di allora).
-MODEL="${QWEN_MODEL:-${ASK_MODEL:-gemma4:26b-notturno}}"
+MODEL="${QWEN_MODEL:-${ASK_MODEL:-agent-qwen:latest}}"
 CTX="${QWEN_CTX:-16384}"
 THINK="${QWEN_THINK:-${THINK:-false}}"   # THINK: il profilo del turno (D11)
 API="http://localhost:11434"
