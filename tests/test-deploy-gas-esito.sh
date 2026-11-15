@@ -45,6 +45,9 @@ git init -q -b main; git -c user.name=t -c user.email=t@t commit -qm i --allow-e
 git clone -q --bare . "$T/origin.git"; git remote add origin "$T/origin.git"; git fetch -q origin
 printf '{"scriptId":"1BANCOFINTO_FAKE"}' > .clasp.json
 echo "1BANCOFINTO_FAKE" > .git/gas-targets
+# (audit Q5, 15/11): banco assente = KO. Gli scenari A-F provano il PUSH, quindi
+# il banco della fixture c'e' ed e' VERDE; il cancello-banco e' provato a parte (G e H).
+printf 'true\n' > .night-verify
 deploy(){ rm -rf .git/deploy-backup; : > "$CLASP_LOG"; OUT=$(bash "$DG" "$P" 2>&1); RC=$?; }
 
 # ── A. il messaggio del backup dice i byte VERI (10+20=30), non i caratteri dell'elenco dei percorsi
@@ -77,7 +80,13 @@ printf 'false\ntrue\n' > .night-verify
 FAKE_CLASP_PULL=file FAKE_CLASP_PUSH_RC=0 deploy
 grep -q "1. banco: ROSSO — ROSSA: false" <<<"$OUT" && ! grep -q "clasp push" "$CLASP_LOG" && ok "G. rosso in mezzo al banco: ROSSO detto, push mai chiamato" \
   || ko "G. rosso in mezzo al banco ignorato (rc=$RC): $(grep -E 'banco|DEPLOY' <<<"$OUT" | tr '\n' ' ')"
+
+# H. (audit Q5, 15/11) banco ASSENTE = KO: in un gate di scrittura l'assenza di prove blocca
 rm -f .night-verify
+FAKE_CLASP_PULL=file FAKE_CLASP_PUSH_RC=0 deploy
+grep -q "1. banco: ASSENTE" <<<"$OUT" && [ "$RC" -eq 1 ] && ! grep -q "clasp push" "$CLASP_LOG" && ok "H. banco assente: KO, push mai chiamato" \
+  || ko "H. banco assente ignorato (rc=$RC): $(grep -E 'banco|DEPLOY' <<<"$OUT" | tr '\n' ' ')"
+printf 'true\n' > .night-verify
 
 # F. (2026-11-10) la lente con RILIEVI ferma il push: un segreto nel diff verso origin/main
 printf 'TOKEN = "%s"\n' "ghp_$(printf 'A%.0s' $(seq 1 24))" > Segreto.js
