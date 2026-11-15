@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "8af2193ea14bd497f102a804777d2e129c3b4884",
+  "built_at_commit": "0b5c9e9d1737125ae8048410111d6148bb63c438",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -561,7 +561,7 @@
       "relation": "contains",
       "source": "claude_6_project_specific_context",
       "source_file": "CLAUDE.md",
-      "source_location": "L154",
+      "source_location": "L155",
       "target": "claude_the_first_touch_trigger",
       "weight": 1.0
     },
@@ -572,7 +572,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L176",
+      "source_location": "L177",
       "target": "claude_full_method",
       "weight": 1.0
     },
@@ -583,7 +583,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L179",
+      "source_location": "L180",
       "target": "claude_goal_loops_goal",
       "weight": 1.0
     },
@@ -594,7 +594,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L192",
+      "source_location": "L193",
       "target": "claude_navigation_before_reading_graphify",
       "weight": 1.0
     },
@@ -605,7 +605,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L171",
+      "source_location": "L172",
       "target": "claude_never_delegate",
       "weight": 1.0
     },
@@ -616,7 +616,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L215",
+      "source_location": "L216",
       "target": "claude_patterns_before_reinventing",
       "weight": 1.0
     },
@@ -627,7 +627,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L182",
+      "source_location": "L183",
       "target": "claude_public_repo_private_work",
       "weight": 1.0
     },
@@ -638,7 +638,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L198",
+      "source_location": "L199",
       "target": "claude_the_minimal_code_ladder",
       "weight": 1.0
     },
@@ -649,7 +649,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L211",
+      "source_location": "L212",
       "target": "claude_three_strikes_then_architecture",
       "weight": 1.0
     },
@@ -660,7 +660,7 @@
       "relation": "contains",
       "source": "claude_7_method_delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L166",
+      "source_location": "L167",
       "target": "claude_when_to_delegate_and_to_whom",
       "weight": 1.0
     },
@@ -1331,7 +1331,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L138",
+      "source_location": "L139",
       "target": "claude_5_error_handling",
       "weight": 1.0
     },
@@ -1342,7 +1342,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L150",
+      "source_location": "L151",
       "target": "claude_6_project_specific_context",
       "weight": 1.0
     },
@@ -1353,7 +1353,7 @@
       "relation": "contains",
       "source": "claude_claude_md_standard_working_rules",
       "source_file": "CLAUDE.md",
-      "source_location": "L161",
+      "source_location": "L162",
       "target": "claude_7_method_delegation",
       "weight": 1.0
     },
@@ -20479,7 +20479,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L190",
+      "source_location": "L197",
       "target": "method_contesto_della_workspace",
       "weight": 1.0
     },
@@ -20490,7 +20490,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L271",
+      "source_location": "L278",
       "target": "method_costo_per_turno_rev_18ter",
       "weight": 1.0
     },
@@ -20501,7 +20501,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L186",
+      "source_location": "L193",
       "target": "method_formato_delle_consegne",
       "weight": 1.0
     },
@@ -20512,7 +20512,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L211",
+      "source_location": "L218",
       "target": "method_i_cancelli_del_giorno_trapianto_dal_turno_di_notte_13_11",
       "weight": 1.0
     },
@@ -20523,7 +20523,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L75",
+      "source_location": "L77",
       "target": "method_i_pattern",
       "weight": 1.0
     },
@@ -20534,7 +20534,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L205",
+      "source_location": "L212",
       "target": "method_il_censore_di_giorno",
       "weight": 1.0
     },
@@ -20545,7 +20545,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L8",
+      "source_location": "L10",
       "target": "method_il_ciclo",
       "weight": 1.0
     },
@@ -20556,7 +20556,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L168",
+      "source_location": "L175",
       "target": "method_il_ciclo_di_lavoro",
       "weight": 1.0
     },
@@ -20567,7 +20567,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L79",
+      "source_location": "L81",
       "target": "method_la_mappa_completa",
       "weight": 1.0
     },
@@ -20578,7 +20578,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L244",
+      "source_location": "L251",
       "target": "method_le_note_non_sono_il_diff_aggiunta_dopo_i_due_rimbotti_del_13_11",
       "weight": 1.0
     },
@@ -20589,7 +20589,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L61",
+      "source_location": "L63",
       "target": "method_le_regole_che_contano_le_altre_stanno_nelle_fonti",
       "weight": 1.0
     },
@@ -20600,7 +20600,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L173",
+      "source_location": "L180",
       "target": "method_le_regole_vincolanti_non_si_negoziano",
       "weight": 1.0
     },
@@ -20611,7 +20611,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L38",
+      "source_location": "L40",
       "target": "method_lo_standard_2026_08_26_non_un_opzione",
       "weight": 1.0
     },
@@ -20622,7 +20622,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L261",
+      "source_location": "L268",
       "target": "method_regola_aurea_verifica_da_solo_prima_di_chiedere_rev_18bis_13_11",
       "weight": 1.0
     },
@@ -20633,7 +20633,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L231",
+      "source_location": "L238",
       "target": "method_regole_dei_tool_aggiunte_dopo_l_incidente_apply_patch_del_13_11",
       "weight": 1.0
     },
@@ -20644,7 +20644,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L93",
+      "source_location": "L95",
       "target": "method_revisione_15_lenti_le_regole_nate_dalla_maratona_12_13_11_2026",
       "weight": 1.0
     },
@@ -20655,7 +20655,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L121",
+      "source_location": "L123",
       "target": "method_revisione_16_lenti_le_regole_del_turno_autonomo_13_11_sera",
       "weight": 1.0
     },
@@ -20666,7 +20666,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L139",
+      "source_location": "L141",
       "target": "method_revisione_17_lenti_il_metabolismo_13_11_sera_decisione_di_luca",
       "weight": 1.0
     },
@@ -20677,7 +20677,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L155",
+      "source_location": "L162",
       "target": "method_revisione_18_lenti_autonomia_di_passo_vs_direzione_13_11_sera",
       "weight": 1.0
     },
@@ -20688,7 +20688,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L279",
+      "source_location": "L286",
       "target": "method_revisione_19_le_tre_regole_della_consegna_13_11_sera_dal_lavoro_di_sara",
       "weight": 1.0
     },
@@ -20699,7 +20699,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L165",
+      "source_location": "L172",
       "target": "method_revisioni_della_maratona_12_13_11_2026_15_18_regola_aurea",
       "weight": 1.0
     },
@@ -20710,7 +20710,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L256",
+      "source_location": "L263",
       "target": "method_routing_dei_cervelli_che_testa_per_che_compito",
       "weight": 1.0
     },
@@ -20721,7 +20721,7 @@
       "relation": "contains",
       "source": "method_method_md_il_metodo_in_una_pagina",
       "source_file": "METHOD.md",
-      "source_location": "L195",
+      "source_location": "L202",
       "target": "method_selezione_contesto_col_grafo_installato_13_11",
       "weight": 1.0
     },
@@ -20732,7 +20732,7 @@
       "relation": "contains",
       "source": "method_revisioni_della_maratona_12_13_11_2026_15_18_regola_aurea",
       "source_file": "METHOD.md",
-      "source_location": "L167",
+      "source_location": "L174",
       "target": "method_le_regole_vincolanti_della_workspace_ora_anche_nell_hub",
       "weight": 1.0
     },
@@ -79619,7 +79619,7 @@
       "node_kind": "heading",
       "norm_label": "5. error handling",
       "source_file": "CLAUDE.md",
-      "source_location": "L138"
+      "source_location": "L139"
     },
     {
       "_origin": "ast",
@@ -79631,7 +79631,7 @@
       "node_kind": "heading",
       "norm_label": "6. project-specific context",
       "source_file": "CLAUDE.md",
-      "source_location": "L150"
+      "source_location": "L151"
     },
     {
       "_origin": "ast",
@@ -79643,7 +79643,7 @@
       "node_kind": "heading",
       "norm_label": "7. method & delegation",
       "source_file": "CLAUDE.md",
-      "source_location": "L161"
+      "source_location": "L162"
     },
     {
       "_origin": "ast",
@@ -80584,7 +80584,7 @@
       "node_kind": "heading",
       "norm_label": "full method",
       "source_file": "CLAUDE.md",
-      "source_location": "L176"
+      "source_location": "L177"
     },
     {
       "_origin": "ast",
@@ -80596,7 +80596,7 @@
       "node_kind": "heading",
       "norm_label": "goal loops (/goal)",
       "source_file": "CLAUDE.md",
-      "source_location": "L179"
+      "source_location": "L180"
     },
     {
       "_origin": "ast",
@@ -80656,7 +80656,7 @@
       "node_kind": "heading",
       "norm_label": "navigation before reading (graphify)",
       "source_file": "CLAUDE.md",
-      "source_location": "L192"
+      "source_location": "L193"
     },
     {
       "_origin": "ast",
@@ -80668,7 +80668,7 @@
       "node_kind": "heading",
       "norm_label": "never delegate",
       "source_file": "CLAUDE.md",
-      "source_location": "L171"
+      "source_location": "L172"
     },
     {
       "_origin": "ast",
@@ -80704,7 +80704,7 @@
       "node_kind": "heading",
       "norm_label": "patterns before reinventing",
       "source_file": "CLAUDE.md",
-      "source_location": "L215"
+      "source_location": "L216"
     },
     {
       "_origin": "ast",
@@ -80716,7 +80716,7 @@
       "node_kind": "heading",
       "norm_label": "public repo, private work",
       "source_file": "CLAUDE.md",
-      "source_location": "L182"
+      "source_location": "L183"
     },
     {
       "_origin": "ast",
@@ -84764,7 +84764,7 @@
       "node_kind": "heading",
       "norm_label": "the first-touch trigger",
       "source_file": "CLAUDE.md",
-      "source_location": "L154"
+      "source_location": "L155"
     },
     {
       "_origin": "ast",
@@ -84776,7 +84776,7 @@
       "node_kind": "heading",
       "norm_label": "the minimal-code ladder",
       "source_file": "CLAUDE.md",
-      "source_location": "L198"
+      "source_location": "L199"
     },
     {
       "_origin": "ast",
@@ -84788,7 +84788,7 @@
       "node_kind": "heading",
       "norm_label": "three strikes, then architecture",
       "source_file": "CLAUDE.md",
-      "source_location": "L211"
+      "source_location": "L212"
     },
     {
       "_origin": "ast",
@@ -84812,7 +84812,7 @@
       "node_kind": "heading",
       "norm_label": "when to delegate — and to whom",
       "source_file": "CLAUDE.md",
-      "source_location": "L166"
+      "source_location": "L167"
     },
     {
       "_origin": "semantic",
@@ -107104,7 +107104,7 @@
       "node_kind": "heading",
       "norm_label": "contesto della workspace",
       "source_file": "METHOD.md",
-      "source_location": "L190"
+      "source_location": "L197"
     },
     {
       "_origin": "ast",
@@ -107116,7 +107116,7 @@
       "node_kind": "heading",
       "norm_label": "costo per turno (rev.18ter)",
       "source_file": "METHOD.md",
-      "source_location": "L271"
+      "source_location": "L278"
     },
     {
       "_origin": "ast",
@@ -107128,7 +107128,7 @@
       "node_kind": "heading",
       "norm_label": "formato delle consegne",
       "source_file": "METHOD.md",
-      "source_location": "L186"
+      "source_location": "L193"
     },
     {
       "_origin": "ast",
@@ -107140,7 +107140,7 @@
       "node_kind": "heading",
       "norm_label": "i cancelli del giorno (trapianto dal turno di notte, 13/11)",
       "source_file": "METHOD.md",
-      "source_location": "L211"
+      "source_location": "L218"
     },
     {
       "_origin": "ast",
@@ -107152,7 +107152,7 @@
       "node_kind": "heading",
       "norm_label": "i pattern",
       "source_file": "METHOD.md",
-      "source_location": "L75"
+      "source_location": "L77"
     },
     {
       "_origin": "ast",
@@ -107164,7 +107164,7 @@
       "node_kind": "heading",
       "norm_label": "il censore, di giorno",
       "source_file": "METHOD.md",
-      "source_location": "L205"
+      "source_location": "L212"
     },
     {
       "_origin": "ast",
@@ -107176,7 +107176,7 @@
       "node_kind": "heading",
       "norm_label": "il ciclo",
       "source_file": "METHOD.md",
-      "source_location": "L8"
+      "source_location": "L10"
     },
     {
       "_origin": "ast",
@@ -107188,7 +107188,7 @@
       "node_kind": "heading",
       "norm_label": "il ciclo di lavoro",
       "source_file": "METHOD.md",
-      "source_location": "L168"
+      "source_location": "L175"
     },
     {
       "_origin": "ast",
@@ -107200,7 +107200,7 @@
       "node_kind": "heading",
       "norm_label": "la mappa completa",
       "source_file": "METHOD.md",
-      "source_location": "L79"
+      "source_location": "L81"
     },
     {
       "_origin": "ast",
@@ -107212,7 +107212,7 @@
       "node_kind": "heading",
       "norm_label": "le note non sono il diff (aggiunta dopo i due rimbotti del 13/11)",
       "source_file": "METHOD.md",
-      "source_location": "L244"
+      "source_location": "L251"
     },
     {
       "_origin": "ast",
@@ -107224,7 +107224,7 @@
       "node_kind": "heading",
       "norm_label": "le regole che contano (le altre stanno nelle fonti)",
       "source_file": "METHOD.md",
-      "source_location": "L61"
+      "source_location": "L63"
     },
     {
       "_origin": "ast",
@@ -107236,7 +107236,7 @@
       "node_kind": "heading",
       "norm_label": "le regole vincolanti della workspace (ora anche nell'hub)",
       "source_file": "METHOD.md",
-      "source_location": "L167"
+      "source_location": "L174"
     },
     {
       "_origin": "ast",
@@ -107248,7 +107248,7 @@
       "node_kind": "heading",
       "norm_label": "le regole vincolanti (non si negoziano)",
       "source_file": "METHOD.md",
-      "source_location": "L173"
+      "source_location": "L180"
     },
     {
       "_origin": "ast",
@@ -107260,7 +107260,7 @@
       "node_kind": "heading",
       "norm_label": "lo standard (2026-08-26 — «non un'opzione»)",
       "source_file": "METHOD.md",
-      "source_location": "L38"
+      "source_location": "L40"
     },
     {
       "_origin": "ast",
@@ -107284,7 +107284,7 @@
       "node_kind": "heading",
       "norm_label": "regola aurea: verifica da solo prima di chiedere (rev.18bis, 13/11)",
       "source_file": "METHOD.md",
-      "source_location": "L261"
+      "source_location": "L268"
     },
     {
       "_origin": "ast",
@@ -107296,7 +107296,7 @@
       "node_kind": "heading",
       "norm_label": "regole dei tool (aggiunte dopo l'incidente apply_patch del 13/11)",
       "source_file": "METHOD.md",
-      "source_location": "L231"
+      "source_location": "L238"
     },
     {
       "_origin": "ast",
@@ -107308,7 +107308,7 @@
       "node_kind": "heading",
       "norm_label": "revisione 15 lenti — le regole nate dalla maratona 12-13/11/2026",
       "source_file": "METHOD.md",
-      "source_location": "L93"
+      "source_location": "L95"
     },
     {
       "_origin": "ast",
@@ -107320,7 +107320,7 @@
       "node_kind": "heading",
       "norm_label": "revisione 16 lenti — le regole del turno autonomo (13/11 sera)",
       "source_file": "METHOD.md",
-      "source_location": "L121"
+      "source_location": "L123"
     },
     {
       "_origin": "ast",
@@ -107332,7 +107332,7 @@
       "node_kind": "heading",
       "norm_label": "revisione 17 lenti — il metabolismo (13/11 sera, decisione di luca)",
       "source_file": "METHOD.md",
-      "source_location": "L139"
+      "source_location": "L141"
     },
     {
       "_origin": "ast",
@@ -107344,7 +107344,7 @@
       "node_kind": "heading",
       "norm_label": "revisione 18 lenti — autonomia di passo vs direzione (13/11 sera)",
       "source_file": "METHOD.md",
-      "source_location": "L155"
+      "source_location": "L162"
     },
     {
       "_origin": "ast",
@@ -107356,7 +107356,7 @@
       "node_kind": "heading",
       "norm_label": "revisione 19 — le tre regole della consegna (13/11 sera, dal lavoro di sara)",
       "source_file": "METHOD.md",
-      "source_location": "L279"
+      "source_location": "L286"
     },
     {
       "_origin": "ast",
@@ -107368,7 +107368,7 @@
       "node_kind": "heading",
       "norm_label": "revisioni della maratona 12-13/11/2026 (15-18 + regola aurea)",
       "source_file": "METHOD.md",
-      "source_location": "L165"
+      "source_location": "L172"
     },
     {
       "_origin": "ast",
@@ -107380,7 +107380,7 @@
       "node_kind": "heading",
       "norm_label": "routing dei cervelli (che testa per che compito)",
       "source_file": "METHOD.md",
-      "source_location": "L256"
+      "source_location": "L263"
     },
     {
       "_origin": "ast",
@@ -107392,7 +107392,7 @@
       "node_kind": "heading",
       "norm_label": "selezione-contesto col grafo (installato 13/11)",
       "source_file": "METHOD.md",
-      "source_location": "L195"
+      "source_location": "L202"
     },
     {
       "_origin": "ast",

@@ -1,7 +1,9 @@
 # METHOD.md — il metodo in una pagina
 
 > Il sistema ha molte stanze; questa è la porta. Ogni elemento rimanda alla sua fonte
-> di verità. Ultima revisione: 2026-09-23 (revisione in dieci giri: regola 5 riscritta sulla
+> di verità. Ultima revisione: 2026-11-15 (riconciliazione rev.30: merge delle PR
+> al revisore; percorsi hub corretti in ~/openclaw-lab/_harness/). La precedente:
+> 2026-09-23 (revisione in dieci giri: regola 5 riscritta sulla
 > decisione privacy del giorno — il testo era spezzato a metà di un nome di file —, conteggio
 > dei pattern). La precedente: 2026-08-28 (revisione 14 lenti).
 
@@ -143,6 +145,11 @@ Il sistema si auto-migliora dalle proprie sessioni di codice:
    -> riga in .night-verify, buco ripetuto -> proposta di tool. PR aperta.
 10. IL MERGE E' DI LUCA, SEMPRE: l'agente scrive le proprie regole su un
    ramo; il cancello umano non si delega (volpe e pollaio).
+   (15/11/2026 — riconciliazione con rev.30 del METODO di workspace: per le
+   PR di codice che passano la checklist L2 il cancelliere è il REVISORE,
+   modello diverso dall'operaio — la volpe non controlla se stessa. La
+   regola 10 resta piena per le regole del metodo stesso e per ciò che
+   tocca produzione o segreti.)
 11. LA PROMOZIONE ESIGE LA RECIDIVA CONTATA O LA PROVA: niente regole
    d'umore, solo sangue versato (la liturgia dell'hub).
 12. LA CODA DELLE DECISIONI: quando un blocco e' umano ([FIRMA], dati,
@@ -215,7 +222,7 @@ APERTURA DELLA SESSIONE — caccia-miglioria in miniatura:
   noti (MIGLIORAMENTI.md + CHECKLIST-REVISIONE.md), proponi max 3 candidati
   col metodo (cosa/perché/prova). Il backlog del giorno nasce da qui.
   Se disponibile lo script vero dell'harness:
-    bash ~/ai-programmer-combo/night-shift/caccia-miglioria.sh --aiuto
+    bash ~/openclaw-lab/_harness/ai-programmer-combo/night-shift/caccia-miglioria.sh --aiuto
   altrimenti equivalente a mano, dichiarandolo.
 CHIUSURA DELLA SESSIONE — caccia-lente + digest:
   1. sul diff della sessione (git diff), caccia ai pattern lenti noti:
@@ -245,7 +252,7 @@ il compito — la richiesta ibernata è difetto noto, non pazienza.
 1. PROVA PRIMA DELLA DICHIARAZIONE (versione diff): prima di dichiarare
    "rimosso/aggiunto X", la prova si QUOTA dal diff (le righe con '-').
    Poi, dopo l'applicazione, si LANCIA la guardia:
-     bash ~/ai-programmer-combo/tools/verifica-diff.sh <file>        --assenti SIMBOLO_RIMOSSO --presenti SIMBOLO_NUOVO
+     bash ~/openclaw-lab/_harness/ai-programmer-combo/tools/verifica-diff.sh <file>        --assenti SIMBOLO_RIMOSSO --presenti SIMBOLO_NUOVO
    La fine del turno si dichiara solo se la guardia è verde.
 2. ALLINEAMENTO PER COSTRUZIONE (anti-pattern degli array "paralleli"):
    mai mappare risposte a record per indice su un sottoinsieme filtrato

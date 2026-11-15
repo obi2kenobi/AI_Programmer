@@ -121,7 +121,8 @@ dal <title> dell'HTML quando la fonte vera era un setTitle() nel .gs, che vince 
 - **Review changes before committing** — check `git diff` so only intended changes are included.
 
 ### Conventions of the night gate
-- **Branches start with `night/`, `claude/` or `glm/`** — any other prefix (`feature/x`, `fix/y`) is invisible to every judge, silently. Who judges what today:
+- **Branches start with `night/`, `claude/`, `glm/`, `campagna/` or `fix/`** — any other prefix (`feature/x`, `hotfix/y`) is invisible to every judge, silently. Who judges what today:
+  - **il REVISORE del cantiere OpenClaw** (agente `frontiera`, METODO di workspace rev.30, dal 15/11/2026) è il giudice e il cancelliere di TUTTE le PR dei repo del cantiere: checklist L2, merge se verde. È il giudice che ha sostituito censore e morning-gate;
   - **the censore** (night-shift/revisore.sh in the hub, in the night cycle) deliberates — and may merge — ONLY draft PRs on `night/` titled `caccia:`. On issue PRs (`night/issue-N`) it runs the same guards and proofs, judges the diff against the issue text and leaves only a motivated **parere** as a PR comment: it never merges, readies or closes them. Any other PR it defers as «non mio»;
   - **the morning-gate** (night-shift/morning-gate.sh in the hub) is **in pensione** from launchd since 2026-09-23: it can still be run by hand, and then judges PRs on `night/`, `claude/`, `glm/`. PRs on `claude/*` and `glm/*` have no automatic judge today, and issue PRs are merged only by Luca: Luca's review looks at them.
 - **The issue-closing keyword stays in INGLESE** (`Closes #N`, `Fixes #N`) — GitHub does not auto-close with the Italian translation.
