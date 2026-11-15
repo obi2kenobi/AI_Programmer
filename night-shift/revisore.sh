@@ -406,7 +406,10 @@ NV_DICHIARATE=$(git show "$DB:.night-verify" 2>/dev/null || true)
 # non puo' rompere il codice, e il banco che gira sul codice e' quello del
 # chiamante. Il salto si DICHIARA nel log, come ogni guardia saltata.
 if [ "${GIORNO_SUBITO:-0}" = "1" ]; then
-  FILE_PR=$(git diff --name-only "$DB...$TESTA" 2>/dev/null | grep -cE '\.(sh|py|js|gs|html)$' || true)
+  # (AUDIT-KIMI Q4, 15/11): era $TESTA, mai definita — con set -u il ramo
+  # GIORNO_SUBITO moriva qui e la review fresca non partiva mai. Il diff si
+  # misura sul commit della PR (HEAD_OID), come il resto del revisore.
+  FILE_PR=$(git diff --name-only "$DB...$HEAD_OID" 2>/dev/null | grep -cE '\.(sh|py|js|gs|html)$' || true)
   if [ "${FILE_PR:-1}" -eq 0 ]; then
     log "prove: SALTATE su richiesta del giorno (PR docs-only, banco del chiamante verificato da fondi)"
     NV_DICHIARATE=""

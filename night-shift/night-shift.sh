@@ -460,11 +460,15 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
         log "REPO $REPO: ⚠ gh non ha risposto (PR aperte): il riallineo allo standard non si propone in questo ciclo — non al buio"
       elif grep -qF "adotta lo standard" <<<"$PR_SYNC"; then
         # (2026-10-02, approvato da Luca «con gusto»): il riallineo auto-verificato.
-        # La PR di riallineo non aspetta piu' il giorno: si prova l'IDENTITA' — il
-        # branch della PR, dopo un giro di sync-repo --from-local, deve essere ALLINEATO
-        # (cioe': la PR porta ESATTAMENTE lo standard, ne' piu' ne' meno). Se coincide,
-        # e' deterministicamente lo standard: si fonde. Se no, resta al giorno.
-        PR_STD_NUM=$(printf '%s' "$PR_SYNC" | head -1 | grep -oE '[0-9]+' | head -1)
+        # (AUDIT-KIMI P0.2, 15/11): il ramo selezionava la PRIMA PR dell'elenco
+        # (head -1) invece di quella col titolo atteso, e fondeva senza banco,
+        # lente, parere del cancelliere ne' --match-head-commit. SPENTO di default:
+        # si riattiva solo con RIALLINEO_AUTO=1 E cura completa (selezione per
+        # titolo+autore, checkout di headRefOid, allowlist path, banco, review).
+        if [ "${RIALLINEO_AUTO:-0}" != "1" ]; then
+          log "REPO $REPO: PR di riallineo presente — auto-merge SPENTO (audit P0.2): resta al revisore/giorno"
+        else
+        PR_STD_NUM=$(printf '%s\n' "$PR_SYNC" | grep -F "adotta lo standard" | head -1 | grep -oE '[0-9]+' | head -1)
         PR_STD_BRANCH=$(cd "$DIR" && gh pr view "$PR_STD_NUM" --json headRefName -q .headRefName 2>/dev/null) || PR_STD_BRANCH=""
         if [ -n "$PR_STD_BRANCH" ]; then
           VERIFICA_STD=$(cd "$DIR" && git fetch -q origin "$PR_STD_BRANCH" 2>/dev/null             && git checkout -q "origin/$PR_STD_BRANCH" 2>/dev/null             && bash "$HERE/../tools/sync-repo.sh" --from-local "$DIR" 2>&1 | tail -1)
@@ -481,6 +485,7 @@ Correggere il comando o il codice che verifica, chiudere l'issue quando tornano 
         else
           log "REPO $REPO: PR di riallineo gia' aperta ma illeggibile — aspetto il giorno"
         fi
+        fi  # fine ramo RIALLINEO_AUTO=1 (audit P0.2)
       else
         SYNC_OUT=$(bash "$HERE/../tools/sync-repo.sh" "$REPO" --standard 2>&1 | tail -1)
         # (D15, test del sistema completo 2026-09-20): il log diceva «PR di riallineo

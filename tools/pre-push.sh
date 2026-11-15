@@ -30,8 +30,13 @@ elif [ -f "${AI_PROGRAMMER_HUB:-/inesistente}/tools/lente-sicurezza.sh" ]; then
 elif [ -f "$HOME/night-shift-work/AI_Programmer/tools/lente-sicurezza.sh" ]; then
   LENTE="$HOME/night-shift-work/AI_Programmer/tools/lente-sicurezza.sh"
 else
-  log "⚠ cancello segreti SALTATO (dichiarato): lente-sicurezza.sh non trovata (nemmeno in AI_PROGRAMMER_HUB=${AI_PROGRAMMER_HUB:-<vuoto>})"
-  exit 0
+  log "⛔ cancello segreti: lente-sicurezza.sh non trovata (nemmeno in AI_PROGRAMMER_HUB=${AI_PROGRAMMER_HUB:-<vuoto>})"
+  # (AUDIT-KIMI Q3, 15/11): fail-open qui voleva dire che un satellite senza
+  # hub pushava segreti col solo avviso — e l'incidente P0.1 e' arrivato
+  # davvero. Sul ramo condiviso si BLOCCA; sui rami di lavoro si dichiara.
+  if [ "${PRE_PUSH_FAILOPEN:-0}" = "1" ]; then exit 0; fi
+  log "⛔ push BLOCCATO: senza lente non si spinge (override una tantum: PRE_PUSH_FAILOPEN=1, dichiaralo nel diario)"
+  exit 1
 fi
 DEPS=""
 if [ -f "$(dirname "$LENTE")/lente-dipendenze.sh" ]; then DEPS="$(dirname "$LENTE")/lente-dipendenze.sh"; fi
@@ -59,7 +64,14 @@ while read -r L_REF L_SHA R_REF R_SHA; do
     grep '^- ' <<<"$RAP" | head -5 >&2
     BLOCCO=1
   elif [ "$RC" -ne 0 ]; then
-    log "⚠ lente degradata (rc=$RC) su $L_REF: passaggio dichiarato"
+    # (AUDIT-KIMI Q3): lente degradata = controllo non fatto. Sul ramo
+    # condiviso blocca; altrove dichiara (override: PRE_PUSH_FAILOPEN=1)
+    if [ "${PRE_PUSH_FAILOPEN:-0}" = "1" ]; then
+      log "⚠ lente degradata (rc=$RC) su $L_REF: passaggio dichiarato (override esplicito)"
+    else
+      log "⛔ lente degradata (rc=$RC) su $L_REF: push BLOCCATO — un controllo rotto non e' un controllo verde"
+      BLOCCO=1
+    fi
   fi
   # dipendenze: avviso, mai blocco
   if [ -n "$DEPS" ]; then

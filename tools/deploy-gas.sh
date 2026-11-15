@@ -102,7 +102,7 @@ fi
 printf '[gas-target %s] push verso %s (%s)\n' "$(date '+%F %T')" "$TARGET" "$(git log --format=%h -1 2>/dev/null || echo no-git)" >> "$REG.log"
 echo "TARGET: $TARGET (approvato per questa cartella)"
 # (2026-11-10): era `bash .night-verify` intero — il rc dell'ULTIMA riga: un rosso in mezzo spediva lo stesso
-if [ -f .night-verify ]; then RIGHE_R=$(verifica_righe . 2>&1) && echo "1. banco: VERDE (riga per riga)" || { echo "1. banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }; else echo "1. banco: assente (dichiarato)"; fi
+if [ -f .night-verify ]; then RIGHE_R=$(verifica_righe . 2>&1) && echo "1. banco: VERDE (riga per riga)" || { echo "1. banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }; else echo "1. banco: ASSENTE — gate di scrittura, l'assenza blocca (audit Q5)"; KO=1; fi
 # (2026-11-10): era `LEN=$(bash lente… ; true)` e poi `LEN_RC=$?` — il $? era quello del `true`: la lente
 # risultava SEMPRE «PULITA» e il push partiva anche con RILIEVI (1) o DEGRADATA (2). Ora il rc e' quello della lente.
 # (La base era `origin/$(… && echo main || echo main)`: main in ogni caso, scritta per quello che e'.)

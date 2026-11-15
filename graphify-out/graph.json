@@ -1,5 +1,5 @@
 {
-  "built_at_commit": "39e218adf42ab16bfed8894493cd9a042d31b2b3",
+  "built_at_commit": "8ea55df0b1ed8840783f5c44cb896d15f619f8e1",
   "directed": false,
   "graph": {},
   "hyperedges": [],
@@ -22153,7 +22153,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_sh__entry",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1534",
+      "source_location": "L1539",
       "target": "night_shift_lib_lock_turno_orfano",
       "weight": 1.0
     },
@@ -22165,7 +22165,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_sh__entry",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1596",
+      "source_location": "L1601",
       "target": "night_shift_lib_pr_aperte_per_scopa",
       "weight": 1.0
     },
@@ -22261,7 +22261,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_sh__entry",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1651",
+      "source_location": "L1656",
       "target": "night_shift_night_shift_shift_repo",
       "weight": 1.0
     },
@@ -22285,7 +22285,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_shift_repo",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1409",
+      "source_location": "L1414",
       "target": "night_shift_lib_aggiungi_consegna",
       "weight": 1.0
     },
@@ -22297,7 +22297,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_shift_repo",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1094",
+      "source_location": "L1099",
       "target": "night_shift_lib_commenta_una_volta",
       "weight": 1.0
     },
@@ -22309,7 +22309,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_shift_repo",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1233",
+      "source_location": "L1238",
       "target": "night_shift_lib_conta_non_convergenza",
       "weight": 1.0
     },
@@ -22321,7 +22321,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_shift_repo",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L676",
+      "source_location": "L681",
       "target": "night_shift_lib_forme_prima_del_push",
       "weight": 1.0
     },
@@ -22333,7 +22333,7 @@
       "relation": "calls",
       "source": "night_shift_night_shift_shift_repo",
       "source_file": "night-shift/night-shift.sh",
-      "source_location": "L1176",
+      "source_location": "L1181",
       "target": "night_shift_lib_funzione_definita_e_chiamata",
       "weight": 1.0
     },
@@ -22830,7 +22830,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L429",
+      "source_location": "L432",
       "target": "llm_timeout_ai_timeout",
       "weight": 1.0
     },
@@ -22842,7 +22842,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L470",
+      "source_location": "L473",
       "target": "night_shift_lib_gate_allowlist_ok",
       "weight": 1.0
     },
@@ -22854,7 +22854,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L435",
+      "source_location": "L438",
       "target": "night_shift_lib_riga_verifica_vuota",
       "weight": 1.0
     },
@@ -22866,7 +22866,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L671",
+      "source_location": "L674",
       "target": "night_shift_revisore_azione_gh",
       "weight": 1.0
     },
@@ -22890,7 +22890,7 @@
       "relation": "calls",
       "source": "night_shift_revisore_sh__entry",
       "source_file": "night-shift/revisore.sh",
-      "source_location": "L699",
+      "source_location": "L702",
       "target": "night_shift_revisore_registra_rigetto",
       "weight": 1.0
     },
@@ -57563,6 +57563,18 @@
     },
     {
       "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.55,
+      "context": "import",
+      "relation": "imports_from",
+      "source": "tools_fondi",
+      "source_file": "tools/fondi.sh",
+      "source_location": "L19",
+      "target": "night_shift_lib",
+      "weight": 1.0
+    },
+    {
+      "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "relation": "defines",
@@ -90802,8 +90814,8 @@
     },
     {
       "_origin": "ast",
-      "community": 868,
-      "community_name": "giorno.sh",
+      "community": 11,
+      "community_name": "night-shift.sh script",
       "file_type": "code",
       "id": "night_shift_lib_aggiungi_consegna",
       "label": "aggiungi_consegna()",

@@ -44,7 +44,28 @@ for t in tests/test-*.sh; do
   # (2026-09-24, terzo ventaglio, V4#1): il banco in corso, su stderr — se un budget taglia la suite,
   # l'ultima riga dice dove si e' fermata
   echo "▶ $t" >&2
-  OUT=$(bash "$t" 2>&1) || {
+  # (AUDIT-KIMI P2.1, 15/11): OGNI banco ha un budget proprio — prima un solo
+  # test appeso poteva mangiare l'intero budget della suite senza lasciare
+  # quadro. SUITE_TIMEOUT_BANCO (default 300s) e' il tetto per banco; rc 124 =
+  # scaduto, nominato nel report. Ai timeout serve ai_timeout se disponibile,
+  # altrimenti il timeout di sistema (GNU/gtimeout) o nessun tetto (dichiarato).
+  BUDGET_BANCO="${SUITE_TIMEOUT_BANCO:-300}"
+  if declare -F ai_timeout >/dev/null 2>&1; then
+    OUT=$(ai_timeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
+  elif command -v timeout >/dev/null 2>&1; then
+    OUT=$(timeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
+  elif command -v gtimeout >/dev/null 2>&1; then
+    OUT=$(gtimeout "$BUDGET_BANCO" bash "$t" 2>&1); RC_B=$?
+  else
+    OUT=$(bash "$t" 2>&1); RC_B=$?
+    [ "${SENZA_TETTO_DICHIARATO:-0}" = 0 ] && { echo "⚠ suite: nessun timeout disponibile (ai_timeout/timeout/gtimeout) — banchi senza tetto, dichiarato una volta" >&2; SENZA_TETTO_DICHIARATO=1; }
+  fi
+  if [ "$RC_B" -eq 124 ]; then
+    echo "FALLITO ($N/$TOT): $t — SCADUTO dopo ${BUDGET_BANCO}s (budget per banco, audit P2.1)"
+    if [ "$TUTTI" -eq 1 ]; then ROSSI_TOT=$(( ROSSI_TOT + 1 )); continue; fi
+    exit 1
+  fi
+  [ "$RC_B" -ne 0 ] && {
     echo "FALLITO ($N/$TOT): $t"
     echo "$OUT" | tail -10
     # (--tutti): il quadro completo — il primo rosso non nasconde i fratelli

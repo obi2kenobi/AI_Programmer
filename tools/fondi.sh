@@ -69,9 +69,21 @@ else
   echo "fondi: hub assente — fallback interni (ai_timeout, verifica_righe)" >&2
 fi
 DIR="${1:?uso: fondi.sh <dir> <n-pr>}"; N="${2:?}"
+# (AUDIT-KIMI P0.3/Q2, 15/11): l'auto-merge e' SPENTO di default. Le quattro
+# condizioni non formavano una catena di evidenza sullo stesso artefatto:
+# parere e lente letti dai commenti senza legame con headRefOid, banco sul
+# working tree e non sull'head della PR, merge senza --match-head-commit.
+# Riattivazione solo con FONDI_AUTO=1 dopo la cura completa.
+if [ "${FONDI_AUTO:-0}" != "1" ]; then
+  echo "FONDI: NO — auto-merge spento (audit P0.3). La PR resta al revisore forte (revisore.sh, che lega giudizio e fusione allo SHA)." >&2
+  exit 2
+fi
 REPO=$(cd "$DIR" && git remote get-url origin 2>/dev/null | sed -e 's#.*github.com[:/]##' -e 's#\.git$##')
 [ -n "$REPO" ] || { echo "⛔ origin non GitHub" >&2; exit 2; }
 KO=0
+# (P0.3): l'head della PR e' l'artefatto su cui deve valere OGNI prova
+HEAD_OID=$(gh pr view "$N" --repo "$REPO" --json headRefOid --jq .headRefOid 2>/dev/null)
+[ -n "$HEAD_OID" ] || { echo "0. headRefOid illeggibile — senza SHA non c'e' catena di evidenza"; exit 2; }
 ST=$(gh pr view "$N" --repo "$REPO" --json mergeable,state,isDraft --jq '"\(.state) \(.mergeable) \(.isDraft)"' 2>/dev/null)
 if [[ "$ST" == *MERGEABLE*true* ]]; then
   echo "1. fondibile: SI — bozza promossa a pronta (le 4 condizioni sono la review)"
@@ -87,7 +99,9 @@ if [ -f "$DIR/.night-verify" ]; then
   # (2026-11-10): era `bash .night-verify` intero — il rc dell'ULTIMA riga: un rosso in mezzo fondeva lo stesso
   RIGHE_R=$(verifica_righe "$DIR" 2>&1) && echo "3. banco: VERDE (riga per riga)" || { echo "3. banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }
 else
-  echo "3. banco: assente (dichiarato)"
+  # (AUDIT-KIMI Q5, 15/11): banco assente NON e' un dettaglio dichiarabile:
+  # in un gate di scrittura assente/vuoto/illeggibile = KO. Punto.
+  echo "3. banco: ASSENTE — in un gate di scrittura l'assenza di prove blocca (audit Q5)"; KO=1
 fi
 # (18/10): prima LEGGI il parere gia' scritto nella PR (il censore non si ripete:
 # se ha gia' giudicato questo commit, il suo verdetto e' nel commento). Solo se
@@ -111,5 +125,7 @@ else
   esac
 fi
 [ "$KO" -eq 0 ] || { echo "FONDI: NO ($KO condizioni mancate, scritte sopra)"; exit 1; }
-gh pr merge "$N" --repo "$REPO" --merge 2>&1 | tail -1
-echo "FONDI: SI — PR #$N fusa dal sistema (4 condizioni verdi, censore approva)"
+# (P0.3): il merge vale SOLO per lo SHA approvato — se la PR e' avanzata
+# dopo il parere, GitHub rifiuta e si ricomincia la catena di evidenza
+gh pr merge "$N" --repo "$REPO" --merge --match-head-commit "$HEAD_OID" 2>&1 | tail -1
+echo "FONDI: SI — PR #$N fusa dal sistema (4 condizioni verdi sul commit $HEAD_OID, censore approva)"

@@ -13,5 +13,7 @@ HUB="${AI_PROGRAMMER_HUB:-$HOME/night-shift-work/AI_Programmer}"
 if [ -f "$HUB/tools/pre-push.sh" ]; then
   exec bash "$HUB/tools/pre-push.sh"
 fi
-echo "[pre-push] ⚠ cancello segreti SALTATO (dichiarato): tools/pre-push.sh non trovato (né locale né in $HUB)" >&2
-exit 0
+echo "[pre-push] ⛔ cancello segreti BLOCCANTE: tools/pre-push.sh non trovato (né locale né in $HUB)" >&2
+echo "[pre-push] una dipendenza guasta non e' un permesso (audit Q3). Override una tantum: PRE_PUSH_FAILOPEN=1, da dichiarare nel diario" >&2
+[ "${PRE_PUSH_FAILOPEN:-0}" = "1" ] && exit 0
+exit 1
