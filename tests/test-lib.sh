@@ -347,6 +347,31 @@ if command -v gate_banchi >/dev/null; then
   grep -c "rosso test-appeso.sh — SFORO" <<<"$OUTG" >/dev/null && [ "$DURG" -lt 25 ] && ok "gate_banchi: il banco appeso muore al tetto e si dice sforo (${DURG}s)" || ko "gate_banchi: banco appeso non fermato (${DURG}s): $OUTG"
   grep -c "rosso test-rosso.sh — FAIL rotto davvero" <<<"$OUTG" >/dev/null && ok "gate_banchi: il rosso dice la sua riga FAIL" || ko "gate_banchi: rosso senza motivo: $OUTG"
   rm -rf "$GB"
+
+  # revisione-notte / audit P1.4: fail→pass NON e' ambra per tutti. Senza
+  # una riga motivata in tests/.flaky il primo rosso resta il verdetto; solo
+  # il test dichiarato ha diritto a UNA riprova. Il contatore prova quante
+  # volte il test e' davvero partito, non soltanto il testo dell'esito.
+  GBF=$(mktemp -d); mkdir -p "$GBF/tests"
+  cat > "$GBF/tests/test-transitorio.sh" <<'EOF'
+#!/bin/bash
+n=$(cat "$(dirname "$0")/../n" 2>/dev/null || echo 0); n=$((n+1)); echo "$n" > "$(dirname "$0")/../n"
+if [ ! -f "$(dirname "$0")/../primo-rosso" ]; then touch "$(dirname "$0")/../primo-rosso"; echo 'FAIL transitorio'; exit 1; fi
+echo '1 OK, 0 FAIL'
+EOF
+  OUTF=$(gate_banchi "$GBF" 5)
+  NF=$(cat "$GBF/tests/../n")
+  grep -qE '^TOTALE 0 1 ' <<<"$OUTF" && [ "$NF" = 1 ] && ! grep -qi 'amber|ambra' <<<"$OUTF" \
+    && ok "P1.4: fail→pass NON dichiarato resta rosso e gira UNA sola volta" \
+    || ko "P1.4: test non dichiarato promosso/ripetuto: n=$NF, $OUTF"
+  : > "$GBF/n"; rm -f "$GBF/primo-rosso"
+  printf 'test-transitorio.sh transitorio noto del fixture\n' > "$GBF/tests/.flaky"
+  OUTF=$(gate_banchi "$GBF" 5)
+  NF=$(cat "$GBF/n")
+  grep -qE '^TOTALE 1 0 .*ambra-flaky: 1' <<<"$OUTF" && [ "$NF" = 2 ] && grep -q 'AMBRA test-transitorio.sh' <<<"$OUTF" \
+    && ok "P1.4: fail→pass DICHIARATO = ambra dopo esattamente una riprova" \
+    || ko "P1.4: flaky dichiarato non gestito: n=$NF, $OUTF"
+  rm -rf "$GBF"
 else
   ko "gate_banchi assente da night-shift/lib.sh"
 fi

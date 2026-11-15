@@ -269,37 +269,26 @@ gate_banchi() {
     # DICHIARATO flaky (tests/.flaky, col motivo) ha una seconda chance. Se passa:
     # ambra, contato a parte — il verde-tre-volte-di-fila promuove (si toglie
     # dalla dispensa), il rosso-doppio resta rosso.
-    if [ "$rc" -ne 0 ] && grep -q "^$(basename "$tt") " "$dir/tests/.flaky" 2>/dev/null; then
-      out2=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc2=$?
-      if [ "$rc2" -eq 0 ]; then
-        pass=$((pass+1)); ambra=$((ambra+1))
-        echo "AMBRA $(basename "$tt") — flaky dichiarato: fallito e passato alla riprova"
-        continue
-      fi
-    fi
     if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
       pass=$((pass+1)); continue
     fi
     if [ "$rc" -eq 0 ]; then
       fail=$((fail+1)); echo "rosso $nome — verde senza verdetto (manca «N OK, 0 FAIL» con N >= 1)"; continue
     fi
-    sleep 2
-    out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
-    # (furto giro 5, nextest «fail→retry→pass = FLAKY»): il rosso di un test
-    # DICHIARATO flaky (tests/.flaky, col motivo) ha una seconda chance. Se passa:
-    # ambra, contato a parte — il verde-tre-volte-di-fila promuove (si toglie
-    # dalla dispensa), il rosso-doppio resta rosso.
+    # (revisione-notte, P1.4): UNA riprova esiste SOLO per i test elencati
+    # in tests/.flaky. Prima ogni rosso veniva rieseguito dopo 2 s e un
+    # fail→pass diventava «amber» anche senza dispensa: una regressione
+    # intermittente poteva cosi' passare il gate senza proprietario né motivo.
     if [ "$rc" -ne 0 ] && grep -q "^$(basename "$tt") " "$dir/tests/.flaky" 2>/dev/null; then
-      out2=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc2=$?
-      if [ "$rc2" -eq 0 ]; then
+      sleep 2
+      out=$(cd "$dir" && ai_timeout "$sec" bash "$tt" 2>&1 </dev/null); rc=$?
+      if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
         pass=$((pass+1)); ambra=$((ambra+1))
         echo "AMBRA $(basename "$tt") — flaky dichiarato: fallito e passato alla riprova"
         continue
       fi
     fi
-    if [ "$rc" -eq 0 ] && grep -qE '^[1-9][0-9]* OK, 0 FAIL( |$)' <<<"$out"; then
-      pass=$((pass+1)); echo "amber $nome"
-    elif [ "$rc" -eq 0 ]; then
+    if [ "$rc" -eq 0 ]; then
       fail=$((fail+1)); echo "rosso $nome — verde senza verdetto (manca «N OK, 0 FAIL» con N >= 1)"
     else
       fail=$((fail+1))
