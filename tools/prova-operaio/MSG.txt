@@ -1,0 +1,1 @@
+Sei l'operaio. Task in /tmp/prova-operaio/TASK.md: leggilo, eseguilo tutto, lavora solo in quella cartella. Non aprire PR, non toccare altro. Rispondi con il report breve.
