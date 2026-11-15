@@ -26,3 +26,7 @@ night-shift/.sal-turni.md.1
 docs/giri/*/A*-L*.md
 docs/giri/*/V[0-9]*.md
 docs/giri/*/grezzi/
+
+# tools/rizzo-flow/ e' un repo git a se stante (router dei cervelli, servizio launchd):
+# vive annidato qui ma NON si vendorizza — la sua storia resta sua (15/11/2026)
+tools/rizzo-flow/

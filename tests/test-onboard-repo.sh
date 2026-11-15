@@ -164,10 +164,14 @@ git -C "$T4" checkout -q -b night/issue-7; echo fix > "$T4/fix.txt"; git -C "$T4
 PRIMA7=$(git -C "$ORIGIN4" rev-parse night/issue-7)
 UNA=$(basename "$(ls -d "$HERE"/.claude/skills/*/ | head -1)"); mkdir -p "$T4/.claude/skills/$UNA"; cp -r "$HERE/.claude/skills/$UNA/." "$T4/.claude/skills/$UNA/"
 OUT4=$(onboard "$ORIGIN4" turno); RC4=$?
-git clone -q "$ORIGIN4" "$TMP/check4"
 [ "$(git -C "$ORIGIN4" rev-parse night/issue-7)" = "$PRIMA7" ] && ok "caso 4 (S2 R1): il ramo della PR notturna resta com'era" || ko "caso 4 (S2 R1): lo standard e' finito sul ramo della PR notturna"
-MANCA4=""; for x in "$HERE"/.claude/skills/*; do [ -e "$TMP/check4/.claude/skills/$(basename "$x")" ] || MANCA4="$MANCA4 $(basename "$x")"; done
-[ -z "$MANCA4" ] && [ "$RC4" -eq 0 ] && ok "caso 4 (S4 R3): ogni skill e' su main dell'origin, anche quella rimasta non tracciata nella copia" || ko "caso 4: su main mancano:$MANCA4 (rc $RC4)"
+# (15/11: il clone qui era nudo — il flake APFS copyfile dava un finto rosso «su main
+# mancano: <tutte le skill>» con l'onboard innocente, vedi debug del 15/11. Ora come gli
+# altri casi: clona_verifica con retry, e il controllo skill solo se il clone c'e'.)
+if clona_verifica "$ORIGIN4" "$TMP/check4"; then
+  MANCA4=""; for x in "$HERE"/.claude/skills/*; do [ -e "$TMP/check4/.claude/skills/$(basename "$x")" ] || MANCA4="$MANCA4 $(basename "$x")"; done
+  [ -z "$MANCA4" ] && [ "$RC4" -eq 0 ] && ok "caso 4 (S4 R3): ogni skill e' su main dell'origin, anche quella rimasta non tracciata nella copia" || ko "caso 4: su main mancano:$MANCA4 (rc $RC4)"
+fi
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

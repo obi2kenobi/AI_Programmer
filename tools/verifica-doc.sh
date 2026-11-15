@@ -7,7 +7,10 @@ set -uo pipefail
 D="${1:?diario}"; R="${2:?repo}"; RC=0; N=0
 for f in $(grep -oE '[A-Za-z0-9_]+\.gs' "$D" | sort -u); do
   N=$((N+1))
-  if ! find "$R" -name "$f" | grep -q .; then
+  # E-002 (15/11): «find | grep -q» sotto pipefail — find muore di SIGPIPE e il
+  # fantasma veniva dichiarato anche a file esistente. -print -quit ferma find
+  # alla prima occorrenza: niente pipe, niente SIGPIPE.
+  if [ -z "$(find "$R" -name "$f" -print -quit)" ]; then
     echo "✗ FANTASMA: $f citato in $D ma assente in $R"; RC=1
   fi
 done
