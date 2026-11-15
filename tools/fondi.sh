@@ -127,5 +127,10 @@ fi
 [ "$KO" -eq 0 ] || { echo "FONDI: NO ($KO condizioni mancate, scritte sopra)"; exit 1; }
 # (P0.3): il merge vale SOLO per lo SHA approvato — se la PR e' avanzata
 # dopo il parere, GitHub rifiuta e si ricomincia la catena di evidenza
-gh pr merge "$N" --repo "$REPO" --merge --match-head-commit "$HEAD_OID" 2>&1 | tail -1
+# (AUDIT-KIMI Q10, 15/11): il rifiuto era INVISIBILE — `gh … | tail -1`
+# non veniva controllato e lo script annunciava «FONDI: SI» con rc 0 anche
+# a merge fallito. Ora il rifiuto = NO, con la risposta di GitHub nominata.
+ESITO_MERGE=$(gh pr merge "$N" --repo "$REPO" --merge --match-head-commit "$HEAD_OID" 2>&1) || {
+  echo "FONDI: NO — GitHub ha rifiutato il merge sul commit $HEAD_OID: $(tail -1 <<<"$ESITO_MERGE" | cut -c1-140)"; exit 1; }
+tail -1 <<<"$ESITO_MERGE"
 echo "FONDI: SI — PR #$N fusa dal sistema (4 condizioni verdi sul commit $HEAD_OID, censore approva)"
