@@ -88,7 +88,7 @@
 | `Transport_Method` | string |  |  | ☐ |
 | `Entry_Point` | string |  |  | ☐ |
 | `Area` | string |  |  | ☐ |
-| `Archived_By` | string | FRANCESCA.RUSSO |  | ☐ |
+| `Archived_By` | string | Azienda-Q4.RUSSO |  | ☐ |
 | `Date_Archived` | date | 2024-01-04 |  | ☐ |
 | `Time_Archived` | string | 09:46:56.783 |  | ☐ |
 | `Interaction_Exist` | bool | False |  | ☐ |

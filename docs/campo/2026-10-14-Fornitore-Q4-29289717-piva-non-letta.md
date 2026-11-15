@@ -1,9 +1,9 @@
-# 2026-10-14 — hasslacher-29289717-piva-non-letta
+# 2026-10-14 — Fornitore-Q4-29289717-piva-non-letta
 **Autore**: sessione Claude (con Luca)
 
 ## Cosa ho usato
 - Registrazione_Fatture_Acquisto: grep sul codice (`gas/AutomazioneSD.gs:734`, `gas/Claude.gs:64`, `gas/Regole.gs:146`), skill `gas-agent` e `gas-sviluppo` (`metodo.md`, `consegna.md`), un worktree per PR, il cancello `tools/gate.sh` e `tools/debiti-riapertura.sh`.
-- Sei PR sul repo delle fatture, tutte con banco rosso prima del codice e sabotaggi: #384 prompt della P.IVA, #385 `sondaLetturaPiva`, #386/#387 rilettura Hasslacher (lista piena, poi vuota), #388 messaggio Chat a Maurizio, #389 `sondaPercheNonRegistrate`, #390 rilettura Noritec, #391 prima nota di credito (29289711).
+- Sei PR sul repo delle fatture, tutte con banco rosso prima del codice e sabotaggi: #384 prompt della P.IVA, #385 `sondaLetturaPiva`, #386/#387 rilettura Fornitore-Q4 (lista piena, poi vuota), #388 messaggio Chat a Maurizio, #389 `sondaPercheNonRegistrate`, #390 rilettura Noritec, #391 prima nota di credito (29289711).
 - Il PDF della 29289717 è stato letto con PyMuPDF installato in un venv del sandbox: `pdftotext` non c'è.
 
 ## Cosa ho improvvisato

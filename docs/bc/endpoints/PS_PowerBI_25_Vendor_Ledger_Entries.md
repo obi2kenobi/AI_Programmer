@@ -87,6 +87,6 @@
 | `User_ID` | string | USER_EEB83BD8DDC34A4B92AB0B7EB961D38D |  | ☐ |
 | `Vendor_Bill_List` | string |  |  | ☐ |
 | `Vendor_Bill_No` | string |  |  | ☐ |
-| `Vendor_Name` | string | HASSLACHER PREDING Holzindustrie GmbH |  | ☐ |
+| `Vendor_Name` | string | Fornitore-Q4 PREDING Holzindustrie GmbH |  | ☐ |
 | `Vendor_No` | string | 0001253 |  | ☐ |
 | `Vendor_Posting_Group` | string | FOR_UE |  | ☐ |

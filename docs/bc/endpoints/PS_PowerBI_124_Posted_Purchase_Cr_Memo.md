@@ -113,7 +113,7 @@
 | `Transaction_Specification` | string |  |  | ☐ |
 | `Transaction_Type` | string |  |  | ☐ |
 | `Transport_Method` | string |  |  | ☐ |
-| `User_ID` | string | FRANCESCA.RUSSO |  | ☐ |
+| `User_ID` | string | Azienda-Q4.RUSSO |  | ☐ |
 | `VAT_Base_Discount_Percent` | float | 0 |  | ☐ |
 | `VAT_Bus_Posting_Group` | string | FOR_NAZ |  | ☐ |
 | `VAT_Country_Region_Code` | string | IT |  | ☐ |

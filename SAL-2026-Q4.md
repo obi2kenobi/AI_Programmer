@@ -5469,8 +5469,8 @@ Primo uso dal vivo della skill `n-giri`. Il brief è `docs/giri/2026-09-23-notte
     una da `tests/test-portabilita.sh`; e un banco che cercava «Rossi» dove l'oracolo stampa il cliente normalizzato.
 - **Registrazione fatture, 14/10: la P.IVA del fornitore a piè di pagina, la rilettura, la Chat e le note di credito.** Sette
   PR sul repo delle fatture (#384–#391), ognuna con banco rosso prima e sabotaggi; il dettaglio è in
-  `docs/campo/2026-10-14-hasslacher-29289717-piva-non-letta.md`.
-  - VERIFICATO sul vivo da Luca: col prompt corretto la 29289717 Hasslacher esce con `ATU27313902` (`sondaLetturaPiva`), la
+  `docs/campo/2026-10-14-Fornitore-Q4-29289717-piva-non-letta.md`.
+  - VERIFICATO sul vivo da Luca: col prompt corretto la 29289717 Fornitore-Q4 esce con `ATU27313902` (`sondaLetturaPiva`), la
     rilettura l'ha riscritta (riga 140), e `sondaPercheNonRegistrate` dà 139 righe: 114 registrate, 24 no (11 a mano, 10 non
     mappate, 3 guasti), 0 pronte.
   - ASSUNTO (non verificato da qui): la Noritec 15272017 ha lo stesso difetto della P.IVA; il messaggio Chat a Maurizio parte

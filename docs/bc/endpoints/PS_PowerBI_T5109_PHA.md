@@ -25,7 +25,7 @@
 | `Applies_to_Doc_Type` | string |   |  | ☐ |
 | `Applies_to_ID` | string |  |  | ☐ |
 | `Applies_to_Occurrence_No` | int | 0 |  | ☐ |
-| `Archived_By` | string | FRANCESCA.RUSSO |  | ☐ |
+| `Archived_By` | string | Azienda-Q4.RUSSO |  | ☐ |
 | `Area` | string |  |  | ☐ |
 | `Assigned_User_ID` | string |  |  | ☐ |
 | `Bal_Account_No` | string |  |  | ☐ |

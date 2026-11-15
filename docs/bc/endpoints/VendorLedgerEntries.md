@@ -34,4 +34,4 @@
 | `Credit_Amount_LCY` | float | 6754.61 |  | ☐ |
 | `Remaining_Amt_LCY` | float | 0 |  | ☐ |
 | `Original_Amt_LCY` | float | -6754.61 |  | ☐ |
-| `Vendor_Name` | string | HASSLACHER PREDING Holzindustrie GmbH |  | ☐ |
+| `Vendor_Name` | string | Fornitore-Q4 PREDING Holzindustrie GmbH |  | ☐ |
