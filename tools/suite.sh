@@ -16,10 +16,20 @@
 # Uso: suite.sh [dir-repo]   (default: la radice del repo che lo contiene)
 # Esce: 0 = tutti i test superati · 1 = almeno un test fallito (o zero test)
 set -uo pipefail
-DIR="${1:-$(cd "$(dirname "$0")/.." && pwd)}"
 # (2026-10-02): --tutti accettato OVUNQUE nella riga (prima o dopo la dir)
+# (15/11): la promessa era tradita — DIR leggeva $1 PRIMA della scansione, e
+# `suite.sh --tutti` moriva su «cd: --tutti». Ora: prima i flag, poi la dir
+# (primo argomento che non e' un flag).
 TUTTI=0
-for _a in "$@"; do [ "$_a" = "--tutti" ] && TUTTI=1; done
+DIR=""
+for _a in "$@"; do
+  case "$_a" in
+    --tutti) TUTTI=1 ;;
+    --*) ;;                      # flag futuri: ignorati, mai scambiati per dir
+    *) [ -z "$DIR" ] && DIR="$_a" ;;
+  esac
+done
+DIR="${DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
 cd -- "$DIR" || { echo "⛔ suite: dir inesistente: $DIR — nessun banco eseguito"; exit 1; }   # (Q3 R3): senza guardia girava la suite del chiamante
 
 # (2026-09-24, E-047): una cache di bytecode FRESCA per ogni giro della suite. Un sabotaggio a mano della

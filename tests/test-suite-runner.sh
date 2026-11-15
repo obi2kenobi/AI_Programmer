@@ -135,6 +135,25 @@ grep -q 'SUITE_SENZA_RETE=1 sandbox-exec' "$HERE/night-shift/revisore.sh" && ok 
 NET=""; for f in agente cervello-impara risolvi-issue; do grep -q '^# rete: localhost' "$HERE/tests/test-$f.sh" || NET="$NET $f"; done
 [ -z "$NET" ] && ok "D22: i banchi col server finto su localhost lo dichiarano" || ko "D22: non dichiarano la rete:$NET"
 
+# 8. (15/11): --tutti OVUNQUE nella riga — la promessa del commento era tradita:
+# DIR leggeva $1 prima della scansione dei flag e `suite.sh --tutti <dir>` moriva
+# su «cd: --tutti». Con --tutti un rosso non ferma i banchi fratelli.
+SB8=$(mktemp -d /tmp/test-suite8.XXXXXX); mkdir -p "$SB8/tests"
+printf '#!/bin/bash\ntouch "%s/segno-a"\necho "1 OK, 0 FAIL"\n' "$SB8" > "$SB8/tests/test-a.sh"
+printf '#!/bin/bash\ntouch "%s/segno-b"\necho "rosso apposta"\nexit 1\n' "$SB8" > "$SB8/tests/test-b.sh"
+printf '#!/bin/bash\ntouch "%s/segno-c"\necho "1 OK, 0 FAIL"\n' "$SB8" > "$SB8/tests/test-c.sh"
+OUT=$(bash "$RUNNER" --tutti "$SB8" 2>&1); RC=$?
+[ "$RC" -eq 1 ] && [ -f "$SB8/segno-a" ] && [ -f "$SB8/segno-b" ] && [ -f "$SB8/segno-c" ] && grep -q "rossi, TUTTI visti" <<<"$OUT" \
+  && ok "--tutti come PRIMO argomento: gira, il rosso non ferma i fratelli" || ko "--tutti primo argomento: rc $RC — $(tail -2 <<<"$OUT" | tr '\n' ' ')"
+rm -f "$SB8"/segno-*
+OUT=$(bash "$RUNNER" "$SB8" --tutti 2>&1); RC=$?
+[ "$RC" -eq 1 ] && [ -f "$SB8/segno-c" ] \
+  && ok "--tutti dopo la dir: idem" || ko "--tutti dopo la dir: rc $RC — $(tail -2 <<<"$OUT" | tr '\n' ' ')"
+OUT=$(bash "$RUNNER" --tutti "$SB8/non-esiste" 2>&1); RC=$?
+[ "$RC" -ne 0 ] && grep -c 'inesistente' <<<"$OUT" >/dev/null \
+  && ok "--tutti + dir inesistente: rosso dichiarato, non la suite del chiamante" || ko "--tutti + dir inesistente: rc $RC, $(tail -1 <<<"$OUT")"
+rm -rf "$SB8"
+
 echo ""
 echo "$PASS OK, $FAIL FAIL"
 [ $FAIL -eq 0 ]
