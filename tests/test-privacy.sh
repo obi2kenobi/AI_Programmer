@@ -210,7 +210,13 @@ with socket.socket() as s:
 print(port, flush=True)
 http.server.HTTPServer(("127.0.0.1", port), H).serve_forever()
 NERSRV
+NER_PID=""
+# (15/11: 3 avvii, un solo kill finale → 2 server orfani a giro, trovati
+# processi ner.py vecchi di 4 ore. Ora ogni avvio uccide il precedente e la
+# trap EXIT chiude l'ultimo anche se il test muore in mezzo)
+trap 'rm -rf "$TMP"; [ -n "${NER_PID:-}" ] && { kill "$NER_PID" 2>/dev/null; wait "$NER_PID" 2>/dev/null; }; [ -n "${RAD9:-}" ] && rm -rf "$RAD9"' EXIT
 avvia_ner() {  # avvia_ner <risposta.json>: server finto su porta libera, PID in $NER_PID
+  [ -n "$NER_PID" ] && { kill "$NER_PID" 2>/dev/null; wait "$NER_PID" 2>/dev/null; }
   NER_RSP="$RAD9/risp-$(date +%s%N).json"; printf '%s' "$1" > "$NER_RSP"
   python3 "$NER_SERVER" "$NER_RSP" > "$RAD9/port" 2>/dev/null &
   NER_PID=$!
