@@ -190,9 +190,10 @@ consegna)
       # git e clasp in maniera sicura e automatica»): la consegna che ha passato
       # banco, cancello segreti e lente PROVA a chiudere il cerchio da sola —
       # decide fondi con le sue quattro condizioni (censore incluso). Se una
-      # manca, la PR resta aperta come sempre: la legge aggiunge una via, non
-      # toglie il controllo. Si spegne con GIORNO_FONDI=0.
-      if [ "${GIORNO_FONDI:-1}" = "1" ] && [ -f "$HERE/tools/fondi.sh" ]; then
+      # manca, la PR resta aperta come sempre. FONDI_AUTO e' spento di default;
+      # anche il chiamante entra in questa via solo con GIORNO_FONDI=1. Fondi
+      # non legge commenti storici: review fresca sullo stesso headRefOid.
+      if [ "${GIORNO_FONDI:-0}" = "1" ] && [ -f "$HERE/tools/fondi.sh" ]; then
         N_AUTO=$(printf '%s' "$PR_URL" | grep -oE '[0-9]+$')
         if [ -n "$N_AUTO" ]; then
           log "legge: provo a chiudere il cerchio (fondi decide)"

@@ -33,6 +33,7 @@ cat > "$STUB" <<'EOF'
 # distinguono dal RUOLO nel prompt: l'avversario SMASCHERA, il censore delibera.
 MODELLO="$1"; shift; PROMPT=$(cat)
 printf x >> "${REVISORE_STUB_LOG:-/dev/null}"   # (2026-10-06): contatore di chiamate — il banco prova che lo sticky NON chiama il cervello
+[ -n "${REVISORE_STUB_PROMPT:-}" ] && printf '%s' "$PROMPT" > "$REVISORE_STUB_PROMPT"
 case "$PROMPT" in
   *"LENTE SICUREZZA"*) printf '{"sicuro":%s,"rilievi":["stub: la lente dice cosi"]}\n' "${REVISORE_STUB_LENTE:-true}" ;;
   *SMASCHERA*) printf '```\ngrep -c "function viva" utils.js\n```\n' ;;
@@ -54,6 +55,16 @@ export GHSTUB_JSON="$GHSTUB/pr.json"
 mkdir -p "$GHSTUB"
 cat > "$GHSTUB/gh" <<'EOF'
 #!/bin/bash
+# I pareri non-DRY lasciano qui il corpo pubblicato: il banco verifica SHA e
+# rifiuto di pubblicazione, non soltanto che un comando sia stato «tentato».
+if [ "$1" = "pr" ] && [ "$2" = "comment" ]; then
+  [ "${GH_COMMENT_FAIL:-0}" = 1 ] && exit 1
+  while [ $# -gt 0 ]; do
+    if [ "$1" = "--body-file" ]; then cp "$2" "$GHSTUB_JSON.commento"; break; fi
+    shift
+  done
+  exit 0
+fi
 # minimale: `gh pr view N --json ...` risponde dal file $GHSTUB_JSON
 # (2026-09-23, giro A6): come il gh vero, la PR porta il suo commit (headRefOid) — se il caso non lo
 # fissa, e' la punta del ramo nominato nel repo corrente
@@ -676,6 +687,55 @@ OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_DRY=1 REVISORE_STUB="$STUB4" bas
 [ "$RC" -eq 0 ] && grep -q "DELIBERA: APPROVA" <<<"$OUT" \
   && ok "l'intento dell'autore arriva al censore (giudica contro l'intento)" \
   || ko "intento non ricevuto: rc=$RC $(grep -m1 -aE 'DELIBERA|RIGETTA' <<<"$OUT" | cut -c1-70)"
+
+# revisione-notte: il percorso reale fondi→revisore su una PR standard. Una
+# PR docs-only NON salta il banco; la richiesta arriva dal corpo della PR, non
+# da una issue inventata; il parere pubblicato porta il commit revisto.
+SB=$(nuova_repo)
+git -C "$SB" checkout -q -b claude/standard-test
+printf '# standard\n' > "$SB/README.md"
+git -C "$SB" add README.md && git -C "$SB" -c user.name=t -c user.email=t@t commit -qm standard
+HEAD_STD=$(git -C "$SB" rev-parse claude/standard-test)
+git -C "$SB" checkout -q main
+python3 - "$GHSTUB_JSON" "$HEAD_STD" <<'PYSTD'
+import json, sys
+from datetime import datetime, timezone
+d = {"number": 7, "title": "chore: adotta lo standard", "headRefName": "claude/standard-test",
+     "headRefOid": sys.argv[2], "isDraft": False, "state": "OPEN",
+     "createdAt": datetime.now(timezone.utc).isoformat(),
+     "body": "Allinea soltanto il contratto standard; non toccare codice."}
+open(sys.argv[1], "w").write(json.dumps(d))
+PYSTD
+STUB_STD="$RADICE/stub-standard"
+python3 - "$STUB" "$STUB_STD" "$RADICE/prompt-standard" <<'PYSTUB'
+import shlex, sys
+src, dst, log = sys.argv[1:]
+s = open(src).read().replace('function viva', '# standard').replace('utils.js', 'README.md')
+needle = 'MODELLO="$1"; shift; PROMPT=$(cat)\n'
+s = s.replace(needle, needle + 'printf \'%s\' "$PROMPT" > ' + shlex.quote(log) + '\n', 1)
+open(dst, 'w').write(s)
+PYSTUB
+chmod +x "$STUB_STD"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_STUB="$STUB_STD" REVISORE_STUB_PROMPT="$RADICE/prompt-standard" \
+  GIORNO_PARERE=1 GIORNO_SUBITO=1 FONDI_CLASSE=standard bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 4 ] && grep -q 'PARERE: APPROVA' <<<"$OUT" && ! grep -q 'prove: SALTATE' <<<"$OUT" \
+  && ok "fondi→revisore: PR standard docs-only, banco eseguito e parere APPROVA" \
+  || ko "PR standard docs-only: rc=$RC $(tail -2 <<<"$OUT")"
+grep -q 'Allinea soltanto il contratto standard' "$RADICE/prompt-standard" \
+  && ok "la review del giorno giudica il corpo della PR, non una issue inventata" \
+  || ko "corpo PR non arrivato al censore"
+grep -q "Commit revisto: $HEAD_STD" "$GHSTUB_JSON.commento" \
+  && ok "il parere pubblicato lega review e prove allo SHA della PR" \
+  || ko "commento senza SHA: $(cat "$GHSTUB_JSON.commento" 2>/dev/null)"
+
+# Se GitHub rifiuta il commento, il chiamante non riceve un'approvazione senza
+# prova pubblicata: rc 2, niente marker di parere riuscito.
+PARERE_MARKER="$SB/.git/revisore/parere-7-$HEAD_STD"
+OUT=$(cd "$SB" && PATH="$GHSTUB:$PATH" REVISORE_STUB="$STUB_STD" GH_COMMENT_FAIL=1 \
+  GIORNO_PARERE=1 GIORNO_SUBITO=1 FONDI_CLASSE=standard bash "$REV" "$SB" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && grep -q 'NON pubblicato' <<<"$OUT" && ! grep -q 'PARERE: APPROVA' <<<"$OUT" \
+  && ok "commento di review rifiutato: nessun APPROVA restituito al chiamante" \
+  || ko "commento rifiutato ma approvazione restituita: rc=$RC, $OUT"
 
 echo ""
 echo "$PASS OK, $FAIL FAIL"

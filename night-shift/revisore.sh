@@ -218,13 +218,27 @@ case "$BRANCH" in
     else
       log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2
     fi ;;
-  *) log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2;; esac
+  *)
+    if [ "${GIORNO_PARERE:-0}" = "1" ] && [ "${FONDI_CLASSE:-}" = "standard" ]; then
+      case "$BRANCH" in
+        claude/*) MODO="parere"; log "PR standard del giorno ($BRANCH): modo PARERE, mai fusione diretta del revisore" ;;
+        *) log "guardia: branch $BRANCH non e' una corsia di fondi — non mio"; exit 2 ;;
+      esac
+    else
+      log "guardia: branch $BRANCH non e' night/* — non mio"; exit 2
+    fi ;;
+esac
 case "$TITLE" in
   caccia:*) ;;
   giorno:*) [ "${GIORNO_PARERE:-0}" = "1" ] && MODO="parere" || { log "guardia: titolo '$TITLE' non mio (ramo giorno senza richiesta)"; exit 2; } ;;
   *) case "$BRANCH" in
        night/issue-*) MODO="parere"; log "PR di issue ($BRANCH): modo PARERE — si giudica, non si fonde (D10)" ;;
-       *) log "guardia: titolo non 'caccia:' — non mio"; exit 2 ;;
+       *)
+         if [ "${GIORNO_PARERE:-0}" = "1" ] && [ "$MODO" = "parere" ]; then
+           log "parere richiesto dal giorno: giudico la PR senza fusione diretta"
+         else
+           log "guardia: titolo non 'caccia:' — non mio"; exit 2
+         fi ;;
      esac ;;
 esac
 # (emendamento 14/10, fondi.sh): in parere-del-giorno la PR FINALE si giudica
@@ -398,25 +412,10 @@ log "prove: in sandbox (profilo $PROFILO_PROVE; i banchi di rete si saltano, dic
 # lette da `git show $DB:.night-verify`, eseguite sul working tree della PR. Prima si
 # leggeva il file del branch sotto giudizio: la PR poteva scrivere le proprie prove.
 NV_DICHIARATE=$(git show "$DB:.night-verify" 2>/dev/null || true)
-# (17/10, legge dei cancelli): su richiesta esplicita del giorno (GIORNO_SUBITO),
-# se la PR tocca SOLO documenti e configurazione (niente .sh/.py/.js/.gs/.html),
-# il censore SI FIDA del banco del chiamante (fondi l'ha gia' verificato alla
-# sua condizione 3) e NON rigira le prove nella sandbox — dove l'ambiente diverso
-# le farebbe fallire per motivi che non sono della PR. Il motivo: una PR docs-only
-# non puo' rompere il codice, e il banco che gira sul codice e' quello del
-# chiamante. Il salto si DICHIARA nel log, come ogni guardia saltata.
-if [ "${GIORNO_SUBITO:-0}" = "1" ]; then
-  # (AUDIT-KIMI Q4, 15/11): era $TESTA, mai definita — con set -u il ramo
-  # GIORNO_SUBITO moriva qui e la review fresca non partiva mai. Il diff si
-  # misura sul commit della PR (HEAD_OID), come il resto del revisore.
-  FILE_PR=$(git diff --name-only "$DB...$HEAD_OID" 2>/dev/null | grep -cE '\.(sh|py|js|gs|html)$' || true)
-  if [ "${FILE_PR:-1}" -eq 0 ]; then
-    log "prove: SALTATE su richiesta del giorno (PR docs-only, banco del chiamante verificato da fondi)"
-    NV_DICHIARATE=""
-  else
-    log "prove: PR tocca $FILE_PR file di codice — le prove girano nella sandbox come sempre"
-  fi
-fi
+# Nessun bypass docs-only: anche una PR di soli documenti esegue il banco
+# letto dal ramo di default. GIORNO_SUBITO toglie soltanto la quarantena,
+# non le prove; il vecchio ramo che azzerava NV_DICHIARATE cadeva poi nel
+# ramo «banco assente» e rendeva impossibile proprio la review richiesta.
 
 if [ -n "$NV_DICHIARATE" ]; then
   # (report BusinessPlan): un .night-verify senza comandi NON e' una prova superata
@@ -567,12 +566,19 @@ Giudica:
 Decidi dentro di te, poi rispondi SOLO con il JSON su una riga — nessuna parola prima, nessuna spiegazione dopo, nessuna analisi scritta:
 {\"verdetto\": \"APPROVA\"|\"RIGETTA\", \"rischio\": \"basso\"|\"medio\"|\"alto\", \"motivi\": [\"...\", \"...\"]}"
 if [ "$MODO" = "parere" ]; then
-  ISSUE_N="${BRANCH#night/issue-}"
-  ISSUE_JSON=$(gh issue view "$ISSUE_N" --json title,body 2>/dev/null)
-  [ -n "$ISSUE_JSON" ] || rinvia "issue #$ISSUE_N illeggibile: senza la richiesta non si giudica la risposta"
+  if [[ "$BRANCH" == night/issue-* ]]; then
+    ISSUE_N="issue ${BRANCH#night/issue-}"
+    ISSUE_JSON=$(gh issue view "${BRANCH#night/issue-}" --json title,body 2>/dev/null)
+  else
+    # Una PR del giorno o di sync non ha una issue numerica implicita: la
+    # richiesta da giudicare e' il suo titolo/corpo, non una issue inventata.
+    ISSUE_N="$BRANCH"
+    ISSUE_JSON=$(gh pr view "$PR" --json title,body 2>/dev/null)
+  fi
+  [ -n "$ISSUE_JSON" ] || rinvia "richiesta di $ISSUE_N illeggibile: senza il mandato non si giudica la risposta"
   CENS_PROMPT="Sei il CENSORE di una pull request notturna. NON l'hai scritta tu: l'ha scritta un altro modello ($AUTORE_MODEL), tu sei un processo separato, senza la sua memoria, e il tuo compito e' trovare il motivo per RIGETTARLA. L'onere della prova e' della PR: nel dubbio, RIGETTA. Il tuo e' un PARERE: la decisione resta a una persona.
 
-La PR dichiara di risolvere questa issue:
+La PR dichiara di risolvere questa richiesta ($ISSUE_N):
 Titolo: $(printf '%s' "$ISSUE_JSON" | jq -r '.title // ""')
 Richiesta: $(printf '%s' "$ISSUE_JSON" | jq -r '.body // ""' | head -c 4000)
 
@@ -584,8 +590,8 @@ Diff:
 $DIFF
 
 Giudica:
-1. il diff fa DAVVERO quello che chiede la issue, tutto e solo quello?
-2. tocca qualcosa fuori dallo scope della issue?
+1. il diff fa DAVVERO quello che chiede la richiesta, tutto e solo quello?
+2. tocca qualcosa fuori dallo scope della richiesta?
 3. lascia i file coerenti e funzionanti?
 4. i commenti aggiunti dicono la verita' sul codice?
 5. il diff rispetta il canone del dominio qui sopra, quando morde?
@@ -667,12 +673,16 @@ esac
 # ══ DELIBERA ═══════════════════════════════════════════════════════════════════
 
 if [ "$MODO" = "parere" ]; then
-  log "PARERE: $VERDETTO PR #$PR ($N_RIGHE righe, $N_FILE file) — la fusione resta di Luca"
   PAR_FILE=$(mktemp /tmp/revisore-parere.XXXXXX)
-  printf 'Parere del censore notturno: %s (rischio %s).\nGiudicata contro la issue #%s (censore: %s, autore: %s).\nProve: verifiche dichiarate verdi · banco avversario superato · lente sicurezza pulita · %s righe/%s file.\nMotivi: %s\nIl censore NON fonde le PR delle issue: la fusione e la decisione sono di Luca (D10, 2026-09-23).\n' \
-    "$VERDETTO" "$(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')" "$ISSUE_N" "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$PAR_FILE"
-  azione_gh gh pr comment "$PR" --body-file "$PAR_FILE" || true
+  printf 'Parere del censore notturno: %s (rischio %s).\nRiferimento: %s.\nCommit revisto: %s.\nCensore: %s; autore: %s.\nProve: verifiche dichiarate verdi · banco avversario superato · lente sicurezza pulita · %s righe/%s file.\nMotivi: %s\nIn modalita parere il revisore NON fonde: il chiamante puo fondere SOLO questo stesso commit.\n' \
+    "$VERDETTO" "$(printf '%s' "$CENS_RISP" | jq -r '.rischio // "?"')" "$ISSUE_N" "$HEAD_OID" "$GIUDICE_MODEL" "$AUTORE_MODEL" "$N_RIGHE" "$N_FILE" "$(echo "$MOTIVI" | tr '\n' ' ' | taglia_caratteri 400)" > "$PAR_FILE"
+  if ! azione_gh gh pr comment "$PR" --body-file "$PAR_FILE"; then
+    rm -f "$PAR_FILE"
+    log "parere PR #$PR NON pubblicato: nessun attestato da mostrare al chiamante, al giorno"
+    exit 2
+  fi
   rm -f "$PAR_FILE"; touch "$PARERE_FILE"
+  log "PARERE: $VERDETTO PR #$PR ($N_RIGHE righe, $N_FILE file), commit $HEAD_OID — review scritta nella PR"
   exit 4
 fi
 

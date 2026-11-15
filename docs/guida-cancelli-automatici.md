@@ -1,30 +1,41 @@
 # Guida ai cancelli automatici (fondi e deploy-gas) — per chi non l'ha mai fatto
 
-Dal 14/10 (Luca: «la maturita' del progetto e dei partecipanti») i cancelli umani
-cambiano guardia: non si tolgono — li apre il sistema QUANDO le condizioni sono vere.
+I cancelli umani non si tolgono: il sistema li apre soltanto quando le prove
+richieste dalla policy valgono sull'artefatto esatto che sta per scrivere.
 
-## FONDI — l'auto-merge a quattro condizioni
-`tools/fondi.sh <dir-repo> <n-pr>` fonde una PR SOLO se:
-1. fondibile (GitHub pulito, non bozza)
-2. la lente sicurezza ha scritto PULITA nel commento della PR
-3. il banco del repo e' verde (.night-verify)
-4. il CENSORE approva (parere del revisore)
+## FONDI — auto-merge opzionale, spento di default
+`tools/fondi.sh <dir-repo> <n-pr>` esce 2 senza toccare la PR finché non viene
+attivato con `FONDI_AUTO=1`. La consegna di `giorno.sh` lo chiama soltanto se
+anche `GIORNO_FONDI=1`; il default resta spento.
 
-Ogni NO dice QUALE condizione e' mancata. Esempio VERO del 14/10:
-- bloccato: PR vetrina #1 → "lente ASSENTE" + "tocca .night-verify: le prove
-  non si giudicano da chi le scrive" (GIUSTO: quella PR resta al giorno)
-- quasi: PR hub #291 → 1-2-3 VERDI, fermata solo dalla quarantena del respiro
-  (PR di 4 minuti: protezione legittima; esenzione GIORNO_SUBITO=1 in coda)
+Se attivo, il wrapper non si fida di un commento storico né del working tree.
+Per ogni richiesta esegue una REVIEW FRESCA tramite `night-shift/revisore.sh`:
+1. PR aperta e fondibile, in una corsia ammessa;
+2. checkout del `headRefOid` e banco letto dal ramo di default, in sandbox;
+3. lente sicurezza pulita sullo stesso commit;
+4. censore approva e il parere viene pubblicato nella PR con `Commit revisto:
+   <SHA>`. Se il commento non si pubblica, non c'e' approvazione utilizzabile.
 
-Come provarlo da soli: apri una PR piccola, fai girare `giorno.sh lente`,
-poi `tools/fondi.sh` — e LEGGI le quattro righe: sono la guida vera.
+Solo dopo queste prove la bozza viene promossa e il merge usa
+`--match-head-commit <SHA>`: se la PR e' avanzata, GitHub rifiuta e la catena
+ricomincia. Dopo il merge il banco sul ramo di default resta obbligatorio;
+un rosso post-merge va gestito subito dal cancelliere, non nascosto.
 
-## DEPLOY-GAS — clasp finalmente permesso, col protocollo
-`tools/deploy-gas.sh <dir-progetto-clasp>` spinge su Apps Script SOLO con:
-1. banco verde 2. lente PULITA 3. BACKUP del vivo VERIFICATO non vuoto
-4. MANIFEST con rollback scritto. Senza backup: SI FERMA. Mai senza ritorno.
+Un satellite senza il revisore dell'hub non ha un fallback piu' debole:
+`fondi` si ferma. Il riallineo automatico (`RIALLINEO_AUTO=1`) verifica prima
+il commit standard con sync-repo, poi passa dalla STESSA via; non esegue un
+`gh pr merge` proprio.
+
+## DEPLOY-GAS — clasp soltanto col protocollo
+`tools/deploy-gas.sh <dir-progetto-clasp>` richiede banco verde, lente pulita,
+target approvato, backup isolato non vuoto e MANIFEST con rollback. Senza una
+di queste condizioni si ferma. La produzione e il test visivo restano regole
+L3: il successo di `clasp push` non e' da solo una prova di produzione.
 
 ## Le regole per chi arriva nuovo
-- Un NO del cancello non e' un errore: e' il sistema che ti dice cosa manca.
-- Non si aggira una guardia: la si emenda, con una riga e un motivo scritto.
-- Il log dice sempre chi ha aperto quale porta e perche'.
+- Un NO non e' un errore: dice quale prova manca.
+- Non si aggira una guardia: si corregge con test e motivo scritto.
+- L'override `PRE_PUSH_FAILOPEN=1` e' una tantum e va dichiarato; non e' una
+  configurazione permanente.
+- Il log nomina sempre il commit e l'esito reale; un comando tentato non e' un
+  comando riuscito.

@@ -1,85 +1,112 @@
 #!/bin/bash
-# test-fondi.sh — banco dell'auto-merge (tools/fondi.sh, 2026-11-10). Nato da un difetto: la condizione
-# 3 («banco verde») eseguiva `bash .night-verify` intero, cioe' il rc dell'ULTIMA riga — un rosso in mezzo fondeva.
-# gh e' FINTO (nessuna rete, nessuna PR vera): risponde alle domande di fondi e registra la fusione.
-# (AUDIT-KIMI Q10, 15/11): quattro regressioni anti-bypass — 1) spento di default; 2) banco
-# assente = KO; 3) il merge porta --match-head-commit con lo SHA approvato; 4) il rifiuto
-# di GitHub (SHA avanzato dopo il parere) = «FONDI: NO», mai «SI» annunciato a vuoto.
+# test-fondi.sh — il wrapper di merge esiste solo sopra una REVIEW FRESCA del
+# revisore sul commit della PR. Niente commenti storici, banco sul working tree
+# o merge laterale. Tutti gli attori esterni sono finti; il wrapper e' reale.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
+TMP=$(mktemp -d /tmp/test-fondi.XXXXXX); trap 'rm -rf "$TMP"' EXIT
 PASS=0; FAIL=0
 ok() { PASS=$((PASS+1)); echo "OK   $1"; }
 ko() { FAIL=$((FAIL+1)); echo "FAIL $1"; }
+H="$TMP/hub"; mkdir -p "$H/tools" "$H/night-shift"
+cp "$HERE/tools/fondi.sh" "$H/tools/fondi.sh"
+cat > "$H/night-shift/revisore.sh" <<'REV'
+#!/bin/bash
+printf '%s\n' "$*" >> "$REV_REGISTRO"
+printf '%s\n' "${REV_OUTPUT:-PARERE: APPROVA}" >&2
+exit "${REV_RC:-4}"
+REV
+chmod +x "$H/night-shift/revisore.sh"
 mkdir -p "$TMP/bin"
-SHA_FISSO="abc123def456"
 cat > "$TMP/bin/gh" <<'GH'
 #!/bin/bash
-case "$*" in
-  *"pr merge"*) [ "${GH_MERGE_RIFIUTA:-0}" = 1 ] && { echo "head sha non coincide — il commit e' avanzato dopo il parere" >&2; exit 1; }
-                echo "gh $*" >> "$GH_REGISTRO"; echo "merged" ;;
-  *"pr ready"*) : ;;
-  *headRefOid*) echo "$SHA_FISSO" ;;
-  *mergeable*) echo "OPEN MERGEABLE false" ;;
-  *comments*) cat "$GH_COMMENTI" ;;
+printf '%s\n' "$*" >> "$GH_REGISTRO"
+case "$1 $2" in
+  "pr view") cat "$GH_PR_JSON" ;;
+  "pr ready") [ "${GH_READY_RIFIUTA:-0}" = 1 ] && { echo 'ready rifiutato' >&2; exit 1; }; echo ready ;;
+  "pr merge") [ "${GH_MERGE_RIFIUTA:-0}" = 1 ] && { echo 'head cambiato' >&2; exit 1; }; echo merged ;;
 esac
 GH
-chmod +x "$TMP/bin/gh"; export PATH="$TMP/bin:$PATH" GH_REGISTRO="$TMP/fusioni" SHA_FISSO
-printf 'LENTE SICUREZZA: PULITA\nPARERE: APPROVA\n' > "$TMP/commenti"; export GH_COMMENTI="$TMP/commenti"
+chmod +x "$TMP/bin/gh"
+export PATH="$TMP/bin:$PATH" GH_REGISTRO="$TMP/gh.log" REV_REGISTRO="$TMP/rev.log"
 R="$TMP/repo"; mkdir -p "$R"; git -C "$R" init -q -b main; git -C "$R" remote add origin https://github.com/finto/repo.git
-fondi() { : > "$GH_REGISTRO"; OUT=$(bash "$HERE/tools/fondi.sh" "$R" 7 2>&1); RC=$?; }
+SHA_FISSO=abc123def456
+cat > "$TMP/pr.json" <<EOF
+{"headRefOid":"$SHA_FISSO","headRefName":"giorno/prova","mergeable":"MERGEABLE","state":"OPEN","isDraft":false}
+EOF
+export GH_PR_JSON="$TMP/pr.json"
+fondi() {
+  : > "$GH_REGISTRO"; : > "$REV_REGISTRO"
+  OUT=$(FONDI_AUTO=1 bash "$H/tools/fondi.sh" "$R" 7 2>&1); RC=$?
+}
 
-# ── Regressione 1 (Q10): l'auto-merge e' SPENTO di default (audit P0.3) ──────
-printf 'true\n' > "$R/.night-verify"
-unset FONDI_AUTO; fondi
-[ "$RC" -eq 2 ] && grep -q "auto-merge spento" <<<"$OUT" && [ ! -s "$GH_REGISTRO" ] \
-  && ok "spento di default: rc 2, nessuna chiamata a gh pr merge" || ko "spento di default (rc $RC): $OUT"
-export FONDI_AUTO=1   # da qui in poi il banco prova le condizioni: il gate deve essere acceso
+# 1. Default spento: nessuna chiamata esterna, nessuna review auto-assolta.
+OUT=$(bash "$H/tools/fondi.sh" "$R" 7 2>&1); RC=$?
+[ "$RC" -eq 2 ] && grep -q 'auto-merge spento' <<<"$OUT" && [ ! -e "$GH_REGISTRO" ] \
+  && ok "spento di default: nessuna chiamata gh/review/merge" || ko "default spento: rc=$RC, $OUT"
 
-# ── Verde pieno: fonde E il merge e' legato allo SHA approvato (regressione 3) ──
+# 2. Verde: la review fresca approva e il merge e' vincolato allo stesso SHA.
 fondi
-[ "$RC" -eq 0 ] && grep -q "FONDI: SI" <<<"$OUT" && grep -q -- "--match-head-commit $SHA_FISSO" "$GH_REGISTRO" \
-  && ok "quattro condizioni verdi: fonde con --match-head-commit $SHA_FISSO" || ko "verde (rc $RC): $OUT / $(cat "$GH_REGISTRO" 2>/dev/null)"
+[ "$RC" -eq 0 ] && grep -q 'FONDI: SI' <<<"$OUT" && grep -q -- "--match-head-commit $SHA_FISSO" "$GH_REGISTRO" \
+  && grep -q "$R 7" "$REV_REGISTRO" && ok "review fresca approva: merge solo sullo SHA revisto" || ko "verde: rc=$RC, $OUT"
 
-# ── Un rosso IN MEZZO al .night-verify ferma la fusione e dice quale riga ─────
-printf 'false\ntrue\n' > "$R/.night-verify"; fondi
-[ "$RC" -eq 1 ] && grep -q "3. banco: ROSSO — ROSSA: false" <<<"$OUT" && [ ! -s "$GH_REGISTRO" ] \
-  && ok "un rosso IN MEZZO al .night-verify ferma la fusione e dice quale riga" || ko "rosso in mezzo (rc $RC, fusioni: $(cat "$GH_REGISTRO")): $OUT"
+# 3. Non si leggono commenti come prova: la sola via e' il revisore eseguito ora.
+! grep -q 'comments' "$GH_REGISTRO" && ok "nessun commento storico usato come attestato" || ko "il wrapper legge ancora i commenti"
 
-# ── Regressione 2 (Q10/Q5): banco assente = KO, non piu' «dichiarato» ─────────
-rm -f "$R/.night-verify"; fondi
-[ "$RC" -eq 1 ] && grep -q "3. banco: ASSENTE" <<<"$OUT" && [ ! -s "$GH_REGISTRO" ] \
-  && ok "banco assente: KO — in un gate di scrittura l'assenza di prove blocca" || ko "banco assente (rc $RC): $OUT"
-printf 'true\n' > "$R/.night-verify"
-
-# ── Il veto NON APPROVABILE non fonde (bug del glob *APPROVA*, 15/11) ─────────
-printf 'LENTE SICUREZZA: PULITA\nNON APPROVABILE\n' > "$GH_COMMENTI"
+# 4. Due richieste = due review fresche, anche sullo stesso SHA.
 fondi
-[ "$RC" -eq 1 ] && [ ! -s "$GH_REGISTRO" ] && grep -q "4. censore: NON APPROVABILE" <<<"$OUT" \
-  && ok "il veto NON APPROVABILE non fonde (bug del glob *APPROVA*)" || ko "veto (rc $RC): $OUT"
+cp "$REV_REGISTRO" "$TMP/rev-prima"
+fondi
+N_REV=$(cat "$TMP/rev-prima" "$REV_REGISTRO" | grep -c .)
+[ "$N_REV" -eq 2 ] && ok "stesso SHA, nuova richiesta: review ripetuta davvero" || ko "review non fresca: $N_REV chiamate"
 
-printf 'LENTE SICUREZZA: PULITA\nDELIBERA: APPROVA\n' > "$GH_COMMENTI"; fondi
-[ "$RC" -eq 0 ] && [ -s "$GH_REGISTRO" ] \
-  && ok "la formula esatta DELIBERA: APPROVA fonde" || ko "delibera (rc $RC): $OUT"
+# 5. PR non fondibile: il revisore non viene nemmeno chiamato.
+python3 - "$TMP/pr.json" "$SHA_FISSO" <<'PY'
+import json,sys
+p=sys.argv[1]; d=json.load(open(p)); d['mergeable']='CONFLICTING'; json.dump(d,open(p,'w'))
+PY
+fondi
+[ "$RC" -ne 0 ] && [ ! -s "$REV_REGISTRO" ] && ! grep -q 'pr merge' "$GH_REGISTRO" \
+  && ok "PR in conflitto: NO prima della review, nessun merge" || ko "conflitto: rc=$RC, $OUT / $(cat "$GH_REGISTRO")"
 
-# ── Regressione 4 (Q10): GitHub rifiuta il merge (SHA avanzato dopo il parere) ─
-# Prima il rifiuto era invisibile: `gh … | tail -1` non controllato, «FONDI: SI» a vuoto.
-export GH_MERGE_RIFIUTA=1; fondi
-[ "$RC" -eq 1 ] && grep -q "FONDI: NO — GitHub ha rifiutato il merge" <<<"$OUT" && ! grep -q "FONDI: SI" <<<"$OUT" \
-  && ok "GitHub rifiuta il merge (SHA avanzato): FONDI NO, rc 1 — mai SI a vuoto" || ko "rifiuto merge (rc $RC): $OUT"
-unset GH_MERGE_RIFIUTA
+# 6. Il wrapper non diventa un merge generico fuori dalle corsie consentite.
+python3 - "$TMP/pr.json" "$SHA_FISSO" <<'PY'
+import json,sys
+p=sys.argv[1]; d=json.load(open(p)); d.update(mergeable='MERGEABLE',headRefName='claude/non-fondi'); json.dump(d,open(p,'w'))
+PY
+fondi
+[ "$RC" -ne 0 ] && [ ! -s "$REV_REGISTRO" ] && ! grep -q 'pr merge' "$GH_REGISTRO" \
+  && ok "branch fuori dalle corsie di fondi: NO, resta al cancelliere" || ko "branch fuori scope: rc=$RC, $OUT"
 
-# ── Satellite senza hub: i fallback interni (stessa cura di deploy-gas.sh) ────
-H="$TMP/satellite"; mkdir -p "$H/tools"; cp "$HERE/tools/fondi.sh" "$H/tools/"
-printf 'LENTE SICUREZZA: PULITA\nPARERE: APPROVA\n' > "$GH_COMMENTI"
-OUT2=$(FONDI_AUTO=1 bash "$H/tools/fondi.sh" "$R" 7 2>&1); RC2=$?
-[ "$RC2" -eq 0 ] && grep -q "FONDI: SI" <<<"$OUT2" \
-  && ok "satellite senza hub: fonde coi fallback interni" || ko "satellite (rc $RC2): $OUT2"
+# 7. Review rinviata o veto esplicito: mai merge.
+python3 - "$TMP/pr.json" "$SHA_FISSO" <<'PY'
+import json,sys
+p=sys.argv[1]; d=json.load(open(p)); d['headRefName']='giorno/prova'; json.dump(d,open(p,'w'))
+PY
+REV_RC=2 REV_OUTPUT='prove rosse' fondi
+[ "$RC" -ne 0 ] && ! grep -q 'pr merge' "$GH_REGISTRO" && ok "review rinviata = FONDI NO" || ko "rinvio: rc=$RC, $OUT"
+REV_RC=4 REV_OUTPUT='PARERE: NON APPROVABILE' fondi
+[ "$RC" -ne 0 ] && ! grep -q 'pr merge' "$GH_REGISTRO" && ok "veto della review = FONDI NO" || ko "veto: rc=$RC, $OUT"
 
-printf 'false\n' > "$R/.night-verify"
-OUT3=$(FONDI_AUTO=1 bash "$H/tools/fondi.sh" "$R" 7 2>&1); RC3=$?
-[ "$RC3" -eq 1 ] && grep -q "3. banco: ROSSO" <<<"$OUT3" \
-  && ok "satellite senza hub: il banco rosso ferma la fusione" || ko "satellite rosso (rc $RC3): $OUT3"
-printf 'true\n' > "$R/.night-verify"
+# 8. Su bozza, ready avviene SOLO dopo approvazione; ready fallito ferma.
+python3 - "$TMP/pr.json" "$SHA_FISSO" <<'PY'
+import json,sys
+p=sys.argv[1]; d=json.load(open(p)); d['isDraft']=True; json.dump(d,open(p,'w'))
+PY
+GH_READY_RIFIUTA=1 fondi
+[ "$RC" -ne 0 ] && grep -q 'pr ready' "$GH_REGISTRO" && ! grep -q 'pr merge' "$GH_REGISTRO" \
+  && ok "bozza: ready dopo la review; rifiuto ready = nessun merge" || ko "ready fallito: rc=$RC, $OUT"
+
+# 9. Rifiuto GitHub allo SHA atteso: NO, mai successo a vuoto.
+GH_MERGE_RIFIUTA=1 fondi
+[ "$RC" -eq 1 ] && grep -q 'FONDI: NO' <<<"$OUT" && ! grep -q 'FONDI: SI' <<<"$OUT" \
+  && ok "GitHub rifiuta il merge sullo SHA: FONDI NO" || ko "rifiuto merge: rc=$RC, $OUT"
+
+# 10. Senza revisore il percorso attivo e' fail-closed, anche nei satelliti.
+mv "$H/night-shift/revisore.sh" "$TMP/revisore.tolto"
+fondi
+[ "$RC" -eq 2 ] && grep -q 'revisore.*assente' <<<"$OUT" && ! grep -q 'pr merge' "$GH_REGISTRO" \
+  && ok "revisore assente = NO; nessun fallback debole nei satelliti" || ko "revisore assente: rc=$RC, $OUT"
+
 echo "$PASS OK, $FAIL FAIL"
 [ "$FAIL" -eq 0 ]

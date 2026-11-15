@@ -1,136 +1,74 @@
 #!/bin/bash
-# fondi.sh — l'AUTO-MERGE a condizioni (emendamento D10, Luca 14/10: «la maturita'
-# del progetto e dei partecipanti ci impone... pull push in maniera automatica»).
-# Il cancello umano NON sparisce: cambia guardia. La PR si fonde SOLO se:
-#   1. e' fondibile (GitHub pulito)
-#   2. la lente sicurezza ha detto PULITA (o RILIEVI gia' curati: verdetto nel commento)
-#   3. il banco del repo e' verde (.night-verify)
-#   4. il CENSORE APPROVA (parere del revisore — l'umano resta informato, decide il sistema)
-# Ogni condizione mancata = NO con la riga che dice quale. Mai silenzio.
-# Uso: fondi.sh <dir-repo> <n-pr>
+# fondi.sh — wrapper OPZIONALE di merge sopra il revisore forte.
+#
+# Le quattro condizioni (fondibilita', lente, banco, censore) non si leggono
+# piu' da commenti separati e senza data: TUTTE devono valere sullo stesso
+# headRefOid in UNA chiamata fresca a night-shift/revisore.sh. Quello e' il
+# solo componente che sa fare checkout staccato, prove sandboxed e giudizio.
+#
+# SPENTO di default: FONDI_AUTO=1 lo attiva. Le PR giorno/* e night/issue-*
+# sono la corsia ordinaria; una PR claude/* di sync puo' entrare SOLO quando
+# il chiamante dichiara FONDI_CLASSE=standard (riallineo gia' verificato).
+# Uso: fondi.sh <dir-repo> <n-pr>. Esce 0=fusa, 1=NO, 2=spento/indisponibile.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
-# (15/11, stessa cura di deploy-gas.sh, caso PR #128): lo script e'
-# AUTOSUFFICIENTE. Se l'hub c'e' si usa l'hub (una sola logica), altrimenti
-# fallback interni, dichiarati in uscita: nei satelliti la cartella
-# night-shift/ NON c'e' e il source nudo rompeva il cancello.
-if [ -f "$HERE/night-shift/lib.sh" ]; then
-  # shellcheck source=../night-shift/lib.sh
-  . "$HERE/night-shift/lib.sh"   # verifica_righe: il banco riga per riga, come lo legge il turno
-else
-  # ── fallback satellite: ai_timeout (stessa implementazione collaudata
-  #    dell'hub, llm/_timeout.sh: GNU timeout/gtimeout, altrimenti perl con
-  #    TERM al gruppo, 5s di grazia, poi KILL — rc 124 allo scadere) ─────────
-  ai_timeout() {
-    local secs="$1"; shift
-    local gnu="" t0=$SECONDS rc
-    if command -v timeout >/dev/null 2>&1; then gnu=timeout; elif command -v gtimeout >/dev/null 2>&1; then gnu=gtimeout; fi
-    if [ -n "$gnu" ]; then
-      rc=0; command "$gnu" -k 5 "$secs" "$@" || rc=$?
-      case "$secs" in *[!0-9]*|"") ;; *) [ "$rc" -eq 137 ] && [ $((SECONDS - t0)) -ge "$secs" ] && rc=124 ;; esac
-      return "$rc"
-    fi
-    command perl -e '
-      my $s = shift; my $pid = 0;
-      $SIG{ALRM} = sub {
-        if ($pid) {
-          kill "TERM", -$pid;
-          for (1 .. 50) { last if waitpid($pid, 1) > 0; select(undef, undef, undef, 0.1) }
-          kill "KILL", -$pid;
-        }
-        exit 124 };
-      alarm $s;
-      $pid = fork();
-      if ($pid == 0) { setpgrp(0, 0); exec @ARGV or exit 127 }
-      waitpid($pid, 0);
-      exit(($? & 127) ? 128 + ($? & 127) : $? >> 8);
-    ' "$secs" "$@"
-  }
-  # ── fallback satellite: verifica_righe, il banco riga per riga (stesso
-  #    contratto di .night-verify: una riga = un comando, @sec = budget) ──────
-  verifica_righe() {
-    local dir="$1" hdr riga sec rc=0
-    [ -f "$dir/.night-verify" ] || { echo "verifica_righe: $dir/.night-verify assente" >&2; return 2; }
-    hdr=$(head -10 "$dir/.night-verify")
-    if grep -q '^# FORMATO: script' <<<"$hdr"; then
-      (cd "$dir" && ai_timeout 1800 bash .night-verify >/dev/null 2>&1 </dev/null) || { echo "ROSSA: .night-verify (formato script)"; return 1; }
-      return 0
-    fi
-    while IFS= read -r riga; do
-      case "$riga" in ''|'#'*) continue ;; esac
-      sec=120
-      case "$riga" in @*' '*) sec="${riga%% *}"; sec="${sec#@}"; riga="${riga#* }" ;; esac
-      if ! (cd "$dir" && ai_timeout "$sec" bash -c "$riga" >/dev/null 2>&1 </dev/null); then
-        rc=1; echo "ROSSA: $(printf '%s' "$riga" | cut -c1-110)"
-      fi
-    done < "$dir/.night-verify"
-    return "$rc"
-  }
-  echo "fondi: hub assente — fallback interni (ai_timeout, verifica_righe)" >&2
-fi
 DIR="${1:?uso: fondi.sh <dir> <n-pr>}"; N="${2:?}"
-# (AUDIT-KIMI P0.3/Q2, 15/11): l'auto-merge e' SPENTO di default. Le quattro
-# condizioni non formavano una catena di evidenza sullo stesso artefatto:
-# parere e lente letti dai commenti senza legame con headRefOid, banco sul
-# working tree e non sull'head della PR, merge senza --match-head-commit.
-# Riattivazione solo con FONDI_AUTO=1 dopo la cura completa.
+
 if [ "${FONDI_AUTO:-0}" != "1" ]; then
-  echo "FONDI: NO — auto-merge spento (audit P0.3). La PR resta al revisore forte (revisore.sh, che lega giudizio e fusione allo SHA)." >&2
+  echo "FONDI: NO — auto-merge spento di default; la PR resta al revisore forte" >&2
   exit 2
 fi
+
+REVISORE=""
+if [ -f "$HERE/night-shift/revisore.sh" ]; then
+  REVISORE="$HERE/night-shift/revisore.sh"
+elif [ -f "${AI_PROGRAMMER_HUB:-/inesistente}/night-shift/revisore.sh" ]; then
+  REVISORE="${AI_PROGRAMMER_HUB%/}/night-shift/revisore.sh"
+elif [ -f "$HOME/night-shift-work/AI_Programmer/night-shift/revisore.sh" ]; then
+  REVISORE="$HOME/night-shift-work/AI_Programmer/night-shift/revisore.sh"
+else
+  echo "FONDI: NO — revisore.sh assente (né locale né nell'hub): nessun fallback debole" >&2
+  exit 2
+fi
+
 REPO=$(cd "$DIR" && git remote get-url origin 2>/dev/null | sed -e 's#.*github.com[:/]##' -e 's#\.git$##')
-[ -n "$REPO" ] || { echo "⛔ origin non GitHub" >&2; exit 2; }
-KO=0
-# (P0.3): l'head della PR e' l'artefatto su cui deve valere OGNI prova
-HEAD_OID=$(gh pr view "$N" --repo "$REPO" --json headRefOid --jq .headRefOid 2>/dev/null)
-[ -n "$HEAD_OID" ] || { echo "0. headRefOid illeggibile — senza SHA non c'e' catena di evidenza"; exit 2; }
-ST=$(gh pr view "$N" --repo "$REPO" --json mergeable,state,isDraft --jq '"\(.state) \(.mergeable) \(.isDraft)"' 2>/dev/null)
-if [[ "$ST" == *MERGEABLE*true* ]]; then
-  echo "1. fondibile: SI — bozza promossa a pronta (le 4 condizioni sono la review)"
-  gh pr ready "$N" --repo "$REPO" >/dev/null 2>&1 || true
-elif [[ "$ST" == *MERGEABLE*false* ]]; then
-  echo "1. fondibile: SI ($ST)"
-else
-  echo "1. fondibile: NO ($ST) — conflitti"; KO=1
+[ -n "$REPO" ] || { echo "FONDI: NO — origin non GitHub" >&2; exit 2; }
+PR_JSON=$(gh pr view "$N" --repo "$REPO" --json headRefOid,headRefName,mergeable,state,isDraft 2>/dev/null) || PR_JSON=""
+[ -n "$PR_JSON" ] || { echo "FONDI: NO — PR #$N illeggibile"; exit 1; }
+HEAD_OID=$(jq -r '.headRefOid // empty' <<<"$PR_JSON")
+BRANCH=$(jq -r '.headRefName // empty' <<<"$PR_JSON")
+STATE=$(jq -r '.state // empty' <<<"$PR_JSON")
+MERGEABLE=$(jq -r '.mergeable // empty' <<<"$PR_JSON")
+IS_DRAFT=$(jq -r '.isDraft // empty' <<<"$PR_JSON")
+[ -n "$HEAD_OID" ] && [ "$HEAD_OID" != "null" ] || { echo "FONDI: NO — headRefOid assente"; exit 1; }
+if [ "$STATE" != "OPEN" ] || [ "$MERGEABLE" != "MERGEABLE" ]; then
+  echo "FONDI: NO — PR #$N non fondibile (state=$STATE, mergeable=$MERGEABLE)"
+  exit 1
 fi
-VER=$(gh pr view "$N" --repo "$REPO" --json comments --jq '.comments[].body' 2>/dev/null | grep -oE 'LENTE SICUREZZA: [A-Z]+' | tail -1)
-case "$VER" in *"PULITA") echo "2. lente: $VER";; *) echo "2. lente: ${VER:-ASSENTE} — serve il verdetto PULITA nel commento"; KO=1;; esac
-if [ -f "$DIR/.night-verify" ]; then
-  # (2026-11-10): era `bash .night-verify` intero — il rc dell'ULTIMA riga: un rosso in mezzo fondeva lo stesso
-  RIGHE_R=$(verifica_righe "$DIR" 2>&1) && echo "3. banco: VERDE (riga per riga)" || { echo "3. banco: ROSSO — $(head -2 <<<"$RIGHE_R" | tr '\n' ' ' | cut -c1-140)"; KO=1; }
-else
-  # (AUDIT-KIMI Q5, 15/11): banco assente NON e' un dettaglio dichiarabile:
-  # in un gate di scrittura assente/vuoto/illeggibile = KO. Punto.
-  echo "3. banco: ASSENTE — in un gate di scrittura l'assenza di prove blocca (audit Q5)"; KO=1
+case "$BRANCH" in
+  giorno/*|night/issue-*) ;;
+  claude/*)
+    [ "${FONDI_CLASSE:-}" = "standard" ] || { echo "FONDI: NO — PR claude/* non standard resta al cancelliere"; exit 1; } ;;
+  *) echo "FONDI: NO — branch $BRANCH fuori dalle corsie di questo wrapper"; exit 1 ;;
+esac
+
+echo "1. PR: APERTA e FONDIBILE — commit $HEAD_OID"
+# Review SEMPRE fresca: un commento vecchio non puo' approvare un commit nuovo.
+# Il revisore legge da solo lo SHA remoto; se questo cambia dopo la review, il
+# --match-head-commit sotto rifiuta il merge invece di fondere codice diverso.
+REV_OUT=$(GIORNO_PARERE=1 GIORNO_SUBITO=1 bash "$REVISORE" "$DIR" "$N" 2>&1); REV_RC=$?
+printf '%s\n' "$REV_OUT" | grep -aE 'PARERE:|prove:|guardia:|censore:' | tail -12 || true
+if [ "$REV_RC" -ne 4 ] || ! grep -qE '(^|\] )PARERE: APPROVA( |$)' <<<"$REV_OUT"; then
+  echo "FONDI: NO — nessuna approvazione fresca sul commit della PR (revisore rc=$REV_RC)"
+  exit 1
 fi
-# (18/10): prima LEGGI il parere gia' scritto nella PR (il censore non si ripete:
-# se ha gia' giudicato questo commit, il suo verdetto e' nel commento). Solo se
-# non c'e' ancora un parere, lo chiedi — e con GIORNO_SUBITO il censore ripete.
-PAR_ESISTE=$(gh pr view "$N" --repo "$REPO" --json comments --jq '.comments[].body' 2>/dev/null   | grep -oE "(PARERE: APPROVA|DELIBERA: APPROVA|NON APPROVABILE)" | tail -1)
-# (15/11, rassegna frontiera): le formule di approvazione si confrontano
-# ESATTE, mai col glob *APPROVA* — «NON APPROVABILE» contiene «APPROVA» e un
-# veto veniva contato come approvazione. Formule canoniche dell'audit 06/11:
-# «PARERE: APPROVA» e «DELIBERA: APPROVA».
-if [ -n "$PAR_ESISTE" ]; then
-  case "$PAR_ESISTE" in
-    "PARERE: APPROVA"|"DELIBERA: APPROVA") echo "4. censore: APPROVA (parere gia' nel commento)";;
-    *) echo "4. censore: $PAR_ESISTE (gia' detto nel commento — senza APPROVA esatto non si fonde)"; KO=1;;
-  esac
-else
-  PAR=$(GIORNO_PARERE=1 GIORNO_SUBITO=1 bash "$HERE/night-shift/revisore.sh" "$DIR" "$N" 2>&1)
-  PAR_VER=$(grep -oE "(PARERE: APPROVA|DELIBERA: APPROVA|NON APPROVABILE)" <<<"$PAR" | tail -1)
-  case "$PAR_VER" in
-    "PARERE: APPROVA"|"DELIBERA: APPROVA") echo "4. censore: APPROVA";;
-    *) echo "4. censore: ${PAR_VER:-muto} — senza APPROVA esatto non si fonde"; KO=1;;
-  esac
+echo "2-4. prove: VERDI nella chiamata del revisore (banco sandboxed + lente + censore)"
+
+if [ "$IS_DRAFT" = "true" ]; then
+  READY_OUT=$(gh pr ready "$N" --repo "$REPO" 2>&1) || {
+    echo "FONDI: NO — PR approvata ma promozione da bozza rifiutata: $(tail -1 <<<"$READY_OUT" | cut -c1-140)"; exit 1; }
 fi
-[ "$KO" -eq 0 ] || { echo "FONDI: NO ($KO condizioni mancate, scritte sopra)"; exit 1; }
-# (P0.3): il merge vale SOLO per lo SHA approvato — se la PR e' avanzata
-# dopo il parere, GitHub rifiuta e si ricomincia la catena di evidenza
-# (AUDIT-KIMI Q10, 15/11): il rifiuto era INVISIBILE — `gh … | tail -1`
-# non veniva controllato e lo script annunciava «FONDI: SI» con rc 0 anche
-# a merge fallito. Ora il rifiuto = NO, con la risposta di GitHub nominata.
 ESITO_MERGE=$(gh pr merge "$N" --repo "$REPO" --merge --match-head-commit "$HEAD_OID" 2>&1) || {
   echo "FONDI: NO — GitHub ha rifiutato il merge sul commit $HEAD_OID: $(tail -1 <<<"$ESITO_MERGE" | cut -c1-140)"; exit 1; }
 tail -1 <<<"$ESITO_MERGE"
-echo "FONDI: SI — PR #$N fusa dal sistema (4 condizioni verdi sul commit $HEAD_OID, censore approva)"
+echo "FONDI: SI — PR #$N fusa sul commit $HEAD_OID dopo review fresca; post-merge obbligatorio sul ramo di default"
