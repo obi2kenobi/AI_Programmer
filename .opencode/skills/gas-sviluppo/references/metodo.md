@@ -174,6 +174,14 @@ non lo è, e quello costa il giro intero.
   applicare: il diff si passa con `-i`).
 - **Tre prodotti, non uno**: difetti trovati · migliorie progettate ·
   funzionalità nuove progettate. Chi porta solo difetti ha fatto un terzo.
+- **Il sed e il sort di macOS non sono quelli di Linux** (pagato due volte:
+  slug GitHub vuoto in silenzio, 2026-10-10; rosso «solo del turno» per dieci
+  cicli, 2026-10-05): mai `\?` nel BRE di BSD sed — strip in due tempi o
+  python; `LC_ALL=C sort` quando l'ordine è parte dell'atteso; graffe
+  `«${var}»` quando una virgoletta tipografica segue la variabile. Per
+  riprodurre un rosso «solo del turno» a mano:
+  `env -i PATH=/usr/bin:/bin LC_ALL=en_US.UTF-8 /bin/bash <test>`.
+  Pattern: `bsd-sed-niente-interrogativo` e `locale-del-turno`.
 
 
 ## Le tre regole della fase 2 (dal campo REPO-I, 2026-08-27 — catalogo 44 idee esaurito)
