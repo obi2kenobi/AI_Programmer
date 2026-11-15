@@ -85,11 +85,18 @@ if [ "$PP_RC" -ne 0 ] && grep -q "forme di segreto" <<<"$PP_OUT"; then
 else ko "pre-push: il segreto BLOCCA il push (rc=$PP_RC)"; fi
 git -C "$R" reset -q --hard HEAD~1
 
-# hub assente (satellite senza copia locale): dichiara e passa, non bricks
+# hub assente (satellite senza copia locale): (audit Q3, 15/11) FAIL-CLOSED —
+# una dipendenza guasta non e' un permesso: blocca e dichiara l'override
 PP_OUT=$(cd "$R" && AI_PROGRAMMER_HUB="$SB/non-esiste" bash "$HERE/.githooks/pre-push" <<< "" 2>&1); PP_RC=$?
-if [ "$PP_RC" -eq 0 ] && grep -qi "SALTATO" <<<"$PP_OUT"; then
-  ok "pre-push delegato: hub assente = avviso dichiarato, push non bloccato"
-else ko "pre-push delegato: hub assente = avviso dichiarato (rc=$PP_RC: $PP_OUT)"; fi
+if [ "$PP_RC" -ne 0 ] && grep -q "BLOCCANTE" <<<"$PP_OUT"; then
+  ok "pre-push delegato: hub assente = BLOCCANTE dichiarato (fail-closed, Q3)"
+else ko "pre-push delegato: hub assente = BLOCCANTE (rc=$PP_RC: $PP_OUT)"; fi
+
+# l'override una tantum esiste ma va dichiarato: con PRE_PUSH_FAILOPEN=1 passa
+PP_OUT=$(cd "$R" && PRE_PUSH_FAILOPEN=1 AI_PROGRAMMER_HUB="$SB/non-esiste" bash "$HERE/.githooks/pre-push" <<< "" 2>&1); PP_RC=$?
+if [ "$PP_RC" -eq 0 ]; then
+  ok "pre-push delegato: PRE_PUSH_FAILOPEN=1 = override una tantum, push passa"
+else ko "pre-push delegato: override FAILOPEN (rc=$PP_RC: $PP_OUT)"; fi
 
 # dipendenze non pinnate: AVVISO nel pre-push, mai blocco
 printf 'requests\npandas\n' > "$R/requirements.txt"
