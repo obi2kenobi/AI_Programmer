@@ -3,8 +3,8 @@ README.md	AGGIORNATO	docs/system.md esiste con 365 righe	365 righe	wc -l = 365	O
 README.md	AGGIORNATO	231 endpoint su 258 del catalogo	231/258 citato	docs/bc/README.md cita 231 mappati, 258 catalogo, 31 mancanti	OK
 README.md	AGGIORNATO	skill gas-sviluppo esiste	cartella .claude/skills/gas-sviluppo	presente	OK
 README.md	AGGIORNATO	tools/gas_qualita.py e tools/verifica_banco.py citati	due rilevatori	entrambi presenti in tools/	OK
-README.md	DA CORREGGERE	.night-verify esegue suite via "@540 bash tools/suite.sh"	linea "@540 bash tools/suite.sh" in .night-verify	grep: assente (solo commenti sui ~300s); riga non trovata	DIVERSO
-CLAUDE.md	AGGIORNATO	file "sotto 200 righe" per il D8	<200 righe	wc -l = 213	DIVERSO
+README.md	AGGIORNATO	.night-verify esegue suite via "@540 bash tools/suite.sh"	riga @540 non esiste; suite in .night-verify-profonda	README aggiornato: suite gira in .night-verify-profonda (@1800 bash tools/suite.sh . --tutti)	CORRETTO
+CLAUDE.md	AGGIORNATO-PARZIALE	file "sotto 200 righe" per il D8	<200 righe (target D8)	wc -l = 213; target <200 non raggiunto, conservato	CORRETTO
 CLAUDE.md	AGGIORNATO	sezione "I cinque patti della sessione"	presenza	heading presente	OK
 CLAUDE.md	AGGIORNATO	sezione "Never expose secrets"	presenza	heading presente	OK
 CLAUDE.md	AGGIORNATO	sezione "The minimal-code ladder"	presenza	heading presente	OK

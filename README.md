@@ -52,7 +52,7 @@ per gli agenti.
   assignee GitHub per le commesse, `AGENTS.md` §0bis.
 - **Ogni uso lascia il segno**: report dal campo a fine sessione
   (hook Stop + `docs/campo/`).
-- Suite: `bash tools/suite.sh` (ogni `tests/test-*.sh`, riepilogo N/TOT in uscita; la notte la
-  esegue dalla riga `@540 bash tools/suite.sh` di `.night-verify`).
+- Suite: `bash tools/suite.sh` (ogni `tests/test-*.sh`, riepilogo N/TOT in uscita; la notte la esegue dalla riga `@1800 bash tools/suite.sh . --tutti` di
+  `.night-verify-profonda` (gira una volta al giorno)).
 - **Il primo giorno** in un clone fresco (guardiani del commit, identità git, prerequisiti, rossi
   attesi senza le chiavi locali): `AGENTS.md` §0ter.
