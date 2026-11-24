@@ -4,7 +4,7 @@ Repo: `AI_Programmer` — hub di metodo per sviluppo assistito da AI di Gruppo C
 Ra-mo di riferimento: `op/M-012-4` (catena R1→R4), base `8079dc5`.
 
 ## Struttura reale (osservata)
-- Root: `README.md`, `AGENTS.md`, `CLAUDE.md`, `METHOD.md`, `PROJECT.md`, `DEBITI.md`, `SAL.md`, `SAL-ARCHIVIO.md`
+- Root: `README.md`, `AGENTS.md`, `CLAUDE.md` (44 righe; originale 213 righe in `docs/REGOLE-CLAUDE-originale.md`), `METHOD.md`, `PROJECT.md`, `DEBITI.md`, `SAL.md`, `SAL-ARCHIVIO.md`
 - `docs/`: `system.md` (365 righe), `MANUALE-OPERATIVO.md`, `benvenuto-collaboratori.md`, `documentazione-viva.md`, `eventi.md`, `funzionalita.md`, `mappa-dominio-gas-src.md`, `regole-cancelli.md`, `test-modelli-notturni-protocollo.md`, e sottocartelle `bc/`, `campo/`, `errori/`, `giri/`, `studi/`, `archivio/` (assente: nessun file superato da archiviare)
 - `llm/`, `night-shift/`, `tools/`, `tests/`, `roles/`, `loops/`, `patterns/`, `cervello/`, `graphify-out/`, `metrics/`, `profiles/`, `router/`
 
