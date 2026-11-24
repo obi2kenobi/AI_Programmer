@@ -1,0 +1,12 @@
+README.md
+CLAUDE.md
+AGENTS.md
+docs/MANUALE-OPERATIVO.md
+docs/METODO-MINI.md
+docs/brain.md
+docs/documentazione-viva.md
+docs/funzionalita.md
+docs/regole-cancelli.md
+docs/mappa-dominio-gas-src.md
+docs/GRAMMATICA_DOMINIO_TEMPLATE.md
+docs/bc/README.md
