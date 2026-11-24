@@ -1,0 +1,61 @@
+file	classe	affermazione	atteso	trovato	esito
+README.md	AGGIORNATO	docs/system.md esiste con 365 righe	365 righe	wc -l = 365	OK
+README.md	AGGIORNATO	231 endpoint su 258 del catalogo	231/258 citato	docs/bc/README.md cita 231 mappati, 258 catalogo, 31 mancanti	OK
+README.md	AGGIORNATO	skill gas-sviluppo esiste	cartella .claude/skills/gas-sviluppo	presente	OK
+README.md	AGGIORNATO	tools/gas_qualita.py e tools/verifica_banco.py citati	due rilevatori	entrambi presenti in tools/	OK
+README.md	DA CORREGGERE	.night-verify esegue suite via "@540 bash tools/suite.sh"	linea "@540 bash tools/suite.sh" in .night-verify	grep: assente (solo commenti sui ~300s); riga non trovata	DIVERSO
+CLAUDE.md	AGGIORNATO	file "sotto 200 righe" per il D8	<200 righe	wc -l = 213	DIVERSO
+CLAUDE.md	AGGIORNATO	sezione "I cinque patti della sessione"	presenza	heading presente	OK
+CLAUDE.md	AGGIORNATO	sezione "Never expose secrets"	presenza	heading presente	OK
+CLAUDE.md	AGGIORNATO	sezione "The minimal-code ladder"	presenza	heading presente	OK
+CLAUDE.md	AGGIORNATO	sezione "Navigation before reading (graphify)"	presenza	heading presente	OK
+AGENTS.md	AGGIORNATO	§0ter con 4 comandi (git hooks, identita, health, suite)	4 comandi citati	git config, system-health.sh, suite.sh citati	OK
+AGENTS.md	AGGIORNATO	.githooks contiene pre-commit, commit-msg, pre-push	3 hook	3 file presenti	OK
+AGENTS.md	AGGIORNATO	§0bis "Lavoro distribuito"	presenza	heading presente	OK
+AGENTS.md	AGGIORNATO	§1 mappa contiene CLAUDE.md, METHOD.md, docs/system.md, SAL.md	4 file citati	4 citati	OK
+AGENTS.md	AGGIORNATO	roles/ ha 14 agenti	14	ls roles | wc -l = 14	OK
+docs/MANUALE-OPERATIVO.md	AGGIORNATO	§Ogni mattina (2 min) e §Ogni sera (5 min)	presenza	headings presenti	OK
+docs/MANUALE-OPERATIVO.md	AGGIORNATO	§Settimanale e §Se qualcosa non funziona	presenza	headings presenti	OK
+docs/MANUALE-OPERATIVO.md	AGGIORNATO	§Configurazione (una volta sola)	presenza	heading presente	OK
+docs/MANUALE-OPERATIVO.md	AGGIORNATO	file ha 107 righe	107	wc -l = 107	OK
+docs/MANUALE-OPERATIVO.md	AGGIORNATO	§Quando vuoi delegare e §Quando costruisci qualcosa di nuovo	presenza	headings presenti	OK
+docs/METODO-MINI.md	AGGIORNATO	§LA MACCHINA e §I CERVELLI	presenza	headings presenti	OK
+docs/METODO-MINI.md	AGGIORNATO	§IL CICLO DIURNO	presenza	heading presente	OK
+docs/METODO-MINI.md	AGGIORNATO	§LA NOTTE	presenza	heading presente	OK
+docs/METODO-MINI.md	AGGIORNATO	§I CANCELLI PERMANENTI	presenza	heading presente	OK
+docs/METODO-MINI.md	AGGIORNATO	§GIORNO-1 SUL MINI e §APRILE	presenza	headings presenti	OK
+docs/brain.md	AGGIORNATO	§I cinque problemi, le cinque risposte	presenza	heading presente	OK
+docs/brain.md	AGGIORNATO	§Misurato (2026-11-10)	presenza	heading presente	OK
+docs/brain.md	AGGIORNATO	§Limiti dichiarati e domande aperte	presenza	heading presente	OK
+docs/brain.md	AGGIORNATO	§Uso e §Con un modello	presenza	headings presenti	OK
+docs/brain.md	AGGIORNATO	file 118 righe	118	wc -l = 118	OK
+docs/documentazione-viva.md	AGGIORNATO	§I tre livelli e §Le tre regole nuove	presenza	headings presenti	OK
+docs/documentazione-viva.md	AGGIORNATO	§Il circolo che si chiude	presenza	heading presente	OK
+docs/documentazione-viva.md	AGGIORNATO	file 38 righe	38	wc -l = 38	OK
+docs/documentazione-viva.md	AGGIORNATO	titolo "Documentazione viva"	presenza	heading presente	OK
+docs/documentazione-viva.md	AGGIORNATO	menzione "revisione 16"	presenza	grep: presente	OK
+docs/funzionalita.md	AGGIORNATO	file ha 2 righe	2	wc -l = 2	OK
+docs/funzionalita.md	AGGIORNATO	contiene "prova percorsi fondi"	presente	presente	OK
+docs/funzionalita.md	AGGIORNATO	contiene "14/10"	presente	presente	OK
+docs/funzionalita.md	AGGIORNATO	nessuna intestazione markdown	0 righe '^#'	0	OK
+docs/funzionalita.md	AGGIORNATO	nessuna URL	0 URL	grep http: 0	OK
+docs/regole-cancelli.md	AGGIORNATO	6 regole mappated (6 bullet)	6	grep -c '^- ' = 6	OK
+docs/regole-cancelli.md	AGGIORNATO	Deploy is the human's → tools/clasp-block-hook.sh	presenza e file	tools/clasp-block-hook.sh presente	OK
+docs/regole-cancelli.md	AGGIORNATO	Oracoli → tools/py-gate.sh	presenza	tools/py-gate.sh presente	OK
+docs/regole-cancelli.md	AGGIORNATO	Rilevatori → tools/gas_qualita.py	presenza	tools/gas_qualita.py presente	OK
+docs/regole-cancelli.md	AGGIORNATO	Chi sta toccando cosa ADESSO → tools/presidio.sh	presenza	tools/presidio.sh presente	OK
+docs/mappa-dominio-gas-src.md	AGGIORNATO	censo: 91 progetti → 12 categorie	91	grep: presente	OK
+docs/mappa-dominio-gas-src.md	AGGIORNATO	§Il censimento presente	presenza	heading presente	OK
+docs/mappa-dominio-gas-src.md	AGGIORNATO	§Piano del Set 1 (eseguito)	presenza	heading presente	OK
+docs/mappa-dominio-gas-src.md	AGGIORNATO	file 99 righe	99	wc -l = 99	OK
+docs/mappa-dominio-gas-src.md	AGGIORNATO	mentione oracoli (5+ righe)	>=1	grep -c oracolo = 5	OK
+docs/GRAMMATICA_DOMINIO_TEMPLATE.md	AGGIORNATO	§Codici articolo e §Business Unit / dimensioni	presenza	headings presenti	OK
+docs/GRAMMATICA_DOMINIO_TEMPLATE.md	AGGIORNATO	§Convenzioni fornitori/clienti e §Termini di dominio ricorrenti	presenza	headings presenti	OK
+docs/GRAMMATICA_DOMINIO_TEMPLATE.md	AGGIORNATO	file 40 righe	40	wc -l = 40	OK
+docs/GRAMMATICA_DOMINIO_TEMPLATE.md	AGGIORNATO	titolo "Grammatica di dominio — template"	presenza	heading presente	OK
+docs/GRAMMATICA_DOMINIO_TEMPLATE.md	AGGIORNATO	template (non documento di progetto)	keyword template	presente	OK
+docs/bc/README.md	AGGIORNATO	231 mappati claim coerente con catalogo	231	docs/bc/README.md cita 231; 258 catalogo	OK
+docs/bc/README.md	AGGIORNATO	"0 su 231" campi verificati	0	linea citata presente	OK
+docs/bc/README.md	AGGIORNATO	"143 su 231" file con data	143	linea citata presente	OK
+docs/bc/README.md	AGGIORNATO	tools/bc_map.py e tools/bc_index.py esistono	2 file	entrambi presenti	OK
+docs/bc/README.md	AGGIORNATO	258 servizi, 31 mancanti al censimento	258/31	citati nella stessa sezione	OK
