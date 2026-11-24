@@ -2,6 +2,7 @@ documento	righe	ultimo_commit
 AGENTS.md	165	8079dc5 2026-11-13
 CLAUDE.md	213	8079dc5 2026-11-13
 README.md	58	8079dc5 2026-11-13
+cervello/README.md	42	8079dc5 2026-11-13
 docs/GRAMMATICA_DOMINIO_TEMPLATE.md	40	8079dc5 2026-11-13
 docs/MANUALE-OPERATIVO.md	107	8079dc5 2026-11-13
 docs/METODO-MINI.md	56	8079dc5 2026-11-13
@@ -395,3 +396,9 @@ docs/system.md	365	8079dc5 2026-11-13
 docs/test-modelli-notturni-protocollo.md	36	8079dc5 2026-11-13
 docs/test-processo-2026-08-21.md	46	8079dc5 2026-11-13
 docs/test-sistema-completo.md	99	8079dc5 2026-11-13
+llm/README.md	61	8079dc5 2026-11-13
+loops/README.md	6	8079dc5 2026-11-13
+night-shift/README.md	243	8079dc5 2026-11-13
+patterns/README.md	80	8079dc5 2026-11-13
+roles/README.md	67	8079dc5 2026-11-13
+router/README.md	34	8079dc5 2026-11-13
