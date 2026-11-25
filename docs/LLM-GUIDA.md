@@ -24,3 +24,6 @@ Ra-mo di riferimento: `op/M-012-4` (catena R1→R4), base `8079dc5`.
 
 ## Per chi arriva
 Leggi `README.md` → `docs/system.md` → `docs/MANUALE-OPERATIVO.md`. Non modificare `docs/_inventario.tsv` o `docs/_revisione.tsv` senza mandato.
+
+## Istruzioni d'uso
+Le istruzioni d'uso sintetiche di ogni software del repo (per umani e AI) sono in `docs/ISTRUZIONI.md`.
