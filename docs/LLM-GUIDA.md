@@ -22,6 +22,9 @@ Ra-mo di riferimento: `op/M-012-4` (catena R1→R4), base `8079dc5`.
 ## Documenti superati
 - Nessun `docs/archivio/` presente sul ramo; nessun documento superato da elencare.
 
+## Scheda tecnica
+Scheda tecnica sintetica: `docs/SCHEDA-TECNICA.md`.
+
 ## Per chi arriva
 Leggi `README.md` → `docs/system.md` → `docs/MANUALE-OPERATIVO.md`. Non modificare `docs/_inventario.tsv` o `docs/_revisione.tsv` senza mandato.
 
